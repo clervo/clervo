@@ -1,0 +1,16 @@
+{
+  "schema": "mock-authorization",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "authorizationId": "auth_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "paymentId": "0xreal-payment-reference",
+    "operationId": "op_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "quoteId": "quote_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "quoteHash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "requestHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "amount": { "asset": "mock:usdc", "amountAtomic": "1000", "decimals": 6 },
+    "verifiedAt": "2026-07-30T12:01:00.000Z",
+    "authorizationHash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+  }
+}

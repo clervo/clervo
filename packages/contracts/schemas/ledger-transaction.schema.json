@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ledger-transaction.schema.json",
+  "title": "Clervo immutable balanced mock charge transaction",
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "amount": {
+      "type": "object",
+      "required": ["asset", "amountAtomic", "decimals"],
+      "properties": {
+        "asset": { "type": "string", "pattern": "^mock:[A-Za-z0-9._-]{2,123}$" },
+        "amountAtomic": { "type": "string", "pattern": "^(?:0|[1-9][0-9]{0,77})$" },
+        "decimals": { "type": "integer", "minimum": 0, "maximum": 30 }
+      },
+      "additionalProperties": false
+    },
+    "posting": {
+      "type": "object",
+      "required": ["account", "direction", "amount"],
+      "properties": {
+        "account": { "enum": ["mock_customer_funds", "merchant_receivable"] },
+        "direction": { "enum": ["debit", "credit"] },
+        "amount": { "$ref": "#/$defs/amount" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "transactionId", "operationId", "settlementId", "occurredAt", "postings", "transactionHash"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "transactionId": { "type": "string", "pattern": "^ledger_[A-Za-z0-9]{20,64}$" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "settlementId": { "type": "string", "pattern": "^settle_[A-Za-z0-9]{20,64}$" },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "postings": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "allOf": [
+            { "$ref": "#/$defs/posting" },
+            { "type": "object", "properties": { "account": { "const": "mock_customer_funds" }, "direction": { "const": "debit" } } }
+          ]
+        },
+        {
+          "allOf": [
+            { "$ref": "#/$defs/posting" },
+            { "type": "object", "properties": { "account": { "const": "merchant_receivable" }, "direction": { "const": "credit" } } }
+          ]
+        }
+      ],
+      "minItems": 2,
+      "maxItems": 2,
+      "items": false
+    },
+    "previousTransactionHash": { "$ref": "#/$defs/hash" },
+    "transactionHash": { "$ref": "#/$defs/hash" }
+  },
+  "additionalProperties": false
+}

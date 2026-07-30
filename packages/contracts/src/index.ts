@@ -5,6 +5,7 @@ export * from './catalog.js';
 export * from './commerce.js';
 export * from './discovery.js';
 export * from './idempotency.js';
+export * from './mock-commerce.js';
 export * from './problems.js';
 export * from './receipt.js';
 export * from './state-machine.js';

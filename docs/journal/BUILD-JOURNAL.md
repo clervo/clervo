@@ -77,3 +77,15 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Cost/network effects: bounded read-only official specification requests and local work only; no provider, facilitator, wallet, cloud, IAM, deployment, or payment mutations; 0 USDC spent.
 - Claims still unknown: live HTTP challenge serving, PaymentPayload parsing, real networks/assets/payees, verification, authorization, ledger, settlement, reconciliation, product execution, and production behavior.
 - Exact next ticket: N2.2 — build ledger, mock settlement, replay, and reconciliation.
+
+## 2026-07-30 — N2.2 mock ledger, settlement, replay, and reconciliation
+
+- Reviewed only the controlling Stage 2 exit criteria and repository-local N1/N2 contracts; no external provider, facilitator, wallet, or competitor research was needed.
+- Added a deterministic dependency-injected mock commerce kernel that verifies exact mock payment/quote/request/ceiling bindings before one execution, then seals authorization, settlement, balanced ledger, and receipt evidence.
+- Added idempotent replay and conflict behavior. Same-key retries replay stored completion or quarantine evidence without another execution or posting; changed requests fail closed.
+- Added settlement quarantine and reconciliation. Unknown outcomes create no ledger entry or receipt; only definitive, tamper-valid evidence bound to the same authorization and settlement ID can complete from stored execution evidence.
+- Added three strict schemas, six fixtures, and eight adversarial tests covering the complete flow, replay, conflicts, cross-key payment reuse, rejected payments, quarantine, reconciliation, and tampered evidence.
+- Validation: lint and strict TypeScript typecheck passed; 14 Draft 2020-12 schemas and 25 fixtures validated; N1.1 passed 8/8, N1.2 7/7, N1.3 6/6, N2.1 7/7, and N2.2 8/8. Clean-room/stack/environment checks, deterministic regeneration, loopback staging smoke, full-history secret scan, and diff checks passed. Long history-scan commands exceeded the tool's 30-second foreground limit; N0.3 signal cleanup was hardened so its intentionally injected fixture is synchronously removed on termination. The shell resolved Node.js 22.23.1, so exact pinned Node.js 24 acceptance remains a CI/provisioned-shell check.
+- Cost/network effects: local work only; no provider, facilitator, wallet, cloud, IAM, deployment, or payment mutations; 0 USDC spent.
+- Claims still unknown: PostgreSQL transactionality, process-crash recovery, pg-boss recovery, live HTTP/payment/provider behavior, alert delivery, real settlement, and remote deployment.
+- Exact next ticket: N3.1 — build redacted observability and alerts.

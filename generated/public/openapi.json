@@ -584,6 +584,235 @@
         ],
         "additionalProperties": false
       },
+      "LedgerTransaction": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ledger-transaction.schema.json",
+        "title": "Clervo immutable balanced mock charge transaction",
+        "$defs": {
+          "hash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "amount": {
+            "type": "object",
+            "required": [
+              "asset",
+              "amountAtomic",
+              "decimals"
+            ],
+            "properties": {
+              "asset": {
+                "type": "string",
+                "pattern": "^mock:[A-Za-z0-9._-]{2,123}$"
+              },
+              "amountAtomic": {
+                "type": "string",
+                "pattern": "^(?:0|[1-9][0-9]{0,77})$"
+              },
+              "decimals": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              }
+            },
+            "additionalProperties": false
+          },
+          "posting": {
+            "type": "object",
+            "required": [
+              "account",
+              "direction",
+              "amount"
+            ],
+            "properties": {
+              "account": {
+                "enum": [
+                  "mock_customer_funds",
+                  "merchant_receivable"
+                ]
+              },
+              "direction": {
+                "enum": [
+                  "debit",
+                  "credit"
+                ]
+              },
+              "amount": {
+                "$ref": "#/$defs/amount"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "transactionId",
+          "operationId",
+          "settlementId",
+          "occurredAt",
+          "postings",
+          "transactionHash"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "transactionId": {
+            "type": "string",
+            "pattern": "^ledger_[A-Za-z0-9]{20,64}$"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "settlementId": {
+            "type": "string",
+            "pattern": "^settle_[A-Za-z0-9]{20,64}$"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "postings": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/posting"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "account": {
+                        "const": "mock_customer_funds"
+                      },
+                      "direction": {
+                        "const": "debit"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/posting"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "account": {
+                        "const": "merchant_receivable"
+                      },
+                      "direction": {
+                        "const": "credit"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "minItems": 2,
+            "maxItems": 2,
+            "items": false
+          },
+          "previousTransactionHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "transactionHash": {
+            "$ref": "#/$defs/hash"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MockAuthorization": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/mock-authorization.schema.json",
+        "title": "Clervo non-payable mock authorization evidence",
+        "$defs": {
+          "hash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "amount": {
+            "type": "object",
+            "required": [
+              "asset",
+              "amountAtomic",
+              "decimals"
+            ],
+            "properties": {
+              "asset": {
+                "type": "string",
+                "pattern": "^mock:[A-Za-z0-9._-]{2,123}$"
+              },
+              "amountAtomic": {
+                "type": "string",
+                "pattern": "^(?:0|[1-9][0-9]{0,77})$"
+              },
+              "decimals": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "authorizationId",
+          "paymentId",
+          "operationId",
+          "quoteId",
+          "quoteHash",
+          "requestHash",
+          "amount",
+          "verifiedAt",
+          "authorizationHash"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "authorizationId": {
+            "type": "string",
+            "pattern": "^auth_[A-Za-z0-9]{20,64}$"
+          },
+          "paymentId": {
+            "type": "string",
+            "pattern": "^mock:[A-Za-z0-9._-]{8,128}$"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "quoteId": {
+            "type": "string",
+            "pattern": "^quote_[A-Za-z0-9]{20,64}$"
+          },
+          "quoteHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "requestHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "amount": {
+            "$ref": "#/$defs/amount"
+          },
+          "verifiedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "authorizationHash": {
+            "$ref": "#/$defs/hash"
+          }
+        },
+        "additionalProperties": false
+      },
       "MockPaymentRequired": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://api.clervo.dev/schemas/2026-07-29.1/mock-payment-required.schema.json",
@@ -771,6 +1000,134 @@
             "additionalProperties": false
           }
         },
+        "additionalProperties": false
+      },
+      "MockSettlement": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/mock-settlement.schema.json",
+        "title": "Clervo mock settlement or quarantine evidence",
+        "$defs": {
+          "hash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "amount": {
+            "type": "object",
+            "required": [
+              "asset",
+              "amountAtomic",
+              "decimals"
+            ],
+            "properties": {
+              "asset": {
+                "type": "string",
+                "pattern": "^mock:[A-Za-z0-9._-]{2,123}$"
+              },
+              "amountAtomic": {
+                "type": "string",
+                "pattern": "^(?:0|[1-9][0-9]{0,77})$"
+              },
+              "decimals": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "settlementId",
+          "operationId",
+          "authorizationHash",
+          "amount",
+          "outcome",
+          "observedAt",
+          "settlementHash"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "settlementId": {
+            "type": "string",
+            "pattern": "^settle_[A-Za-z0-9]{20,64}$"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "authorizationHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "amount": {
+            "$ref": "#/$defs/amount"
+          },
+          "outcome": {
+            "enum": [
+              "settled",
+              "unknown"
+            ]
+          },
+          "referenceHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "settlementHash": {
+            "$ref": "#/$defs/hash"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "type": "object",
+              "properties": {
+                "outcome": {
+                  "const": "settled"
+                }
+              },
+              "required": [
+                "outcome"
+              ]
+            },
+            "then": {
+              "type": "object",
+              "properties": {
+                "referenceHash": {
+                  "$ref": "#/$defs/hash"
+                }
+              },
+              "required": [
+                "referenceHash"
+              ]
+            }
+          },
+          {
+            "if": {
+              "type": "object",
+              "properties": {
+                "outcome": {
+                  "const": "unknown"
+                }
+              },
+              "required": [
+                "outcome"
+              ]
+            },
+            "then": {
+              "not": {
+                "required": [
+                  "referenceHash"
+                ]
+              }
+            }
+          }
+        ],
         "additionalProperties": false
       },
       "OperationReceipt": {

@@ -3,11 +3,19 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { rmSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const fixturePath = path.join(repositoryRoot, 'tests', 'security', 'n0.3-secret-fixture.txt');
+
+for (const signal of ['SIGINT', 'SIGTERM']) {
+  process.once(signal, () => {
+    rmSync(fixturePath, { force: true });
+    process.exit(128 + (signal === 'SIGINT' ? 2 : 15));
+  });
+}
 
 function runNode(relativePath, options = {}) {
   return spawnSync(process.execPath, [path.join(repositoryRoot, relativePath)], {
@@ -33,6 +41,7 @@ try {
   assert.match(staging, /run: npm run staging:smoke/);
 
   await mkdir(path.dirname(fixturePath), { recursive: true });
+  await rm(fixturePath, { force: true });
   await writeFile(
     fixturePath,
     ['injected failure fixture', 'password=' + 'N0threeFailureFixtureValue123456789'].join('\n'),

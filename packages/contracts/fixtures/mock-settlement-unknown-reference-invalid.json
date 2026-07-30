@@ -1,0 +1,15 @@
+{
+  "schema": "mock-settlement",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "settlementId": "settle_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "operationId": "op_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "authorizationHash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+    "amount": { "asset": "mock:usdc", "amountAtomic": "1000", "decimals": 6 },
+    "outcome": "unknown",
+    "referenceHash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+    "observedAt": "2026-07-30T12:01:02.000Z",
+    "settlementHash": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+  }
+}

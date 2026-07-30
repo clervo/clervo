@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/mock-authorization.schema.json",
+  "title": "Clervo non-payable mock authorization evidence",
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "amount": {
+      "type": "object",
+      "required": ["asset", "amountAtomic", "decimals"],
+      "properties": {
+        "asset": { "type": "string", "pattern": "^mock:[A-Za-z0-9._-]{2,123}$" },
+        "amountAtomic": { "type": "string", "pattern": "^(?:0|[1-9][0-9]{0,77})$" },
+        "decimals": { "type": "integer", "minimum": 0, "maximum": 30 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "authorizationId", "paymentId", "operationId", "quoteId", "quoteHash", "requestHash", "amount", "verifiedAt", "authorizationHash"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "authorizationId": { "type": "string", "pattern": "^auth_[A-Za-z0-9]{20,64}$" },
+    "paymentId": { "type": "string", "pattern": "^mock:[A-Za-z0-9._-]{8,128}$" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "quoteId": { "type": "string", "pattern": "^quote_[A-Za-z0-9]{20,64}$" },
+    "quoteHash": { "$ref": "#/$defs/hash" },
+    "requestHash": { "$ref": "#/$defs/hash" },
+    "amount": { "$ref": "#/$defs/amount" },
+    "verifiedAt": { "type": "string", "format": "date-time" },
+    "authorizationHash": { "$ref": "#/$defs/hash" }
+  },
+  "additionalProperties": false
+}

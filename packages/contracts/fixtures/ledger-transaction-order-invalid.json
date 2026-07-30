@@ -1,0 +1,16 @@
+{
+  "schema": "ledger-transaction",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "transactionId": "ledger_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "operationId": "op_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "settlementId": "settle_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "occurredAt": "2026-07-30T12:01:02.000Z",
+    "postings": [
+      { "account": "merchant_receivable", "direction": "credit", "amount": { "asset": "mock:usdc", "amountAtomic": "1000", "decimals": 6 } },
+      { "account": "mock_customer_funds", "direction": "debit", "amount": { "asset": "mock:usdc", "amountAtomic": "1000", "decimals": 6 } }
+    ],
+    "transactionHash": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+  }
+}
