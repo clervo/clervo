@@ -11,6 +11,8 @@ import {
   createDiscoveryDocument,
   createLlmsText,
   createOpenApiDocument,
+  SEARCH_FREE_PATH,
+  SEARCH_PAID_PATH,
 } from '../../dist/packages/contracts/src/index.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -20,14 +22,14 @@ async function json(relative) {
   return JSON.parse(await readFile(path.join(generated, relative), 'utf8'));
 }
 
-test('generated OpenAPI is deterministic, schema-complete, and truthfully non-callable', async () => {
+test('generated OpenAPI is deterministic, schema-complete, and truthfully exposes only search HTTP paths', async () => {
   const document = await json('openapi.json');
   assert.equal(document.openapi, '3.1.1');
   assert.equal(document.jsonSchemaDialect, 'https://json-schema.org/draft/2020-12/schema');
-  assert.deepEqual(document.paths, {});
+  assert.deepEqual(Object.keys(document.paths).sort(), [SEARCH_FREE_PATH, SEARCH_PAID_PATH].sort());
   assert.deepEqual(document['x-clervo-status'], {
-    lifecycle: 'contract_preview',
-    callable: false,
+    lifecycle: 'implemented_unverified',
+    callable: true,
     paymentImplemented: false,
     deploymentVerified: false,
   });
@@ -39,7 +41,8 @@ test('embedded and published schemas compile under Draft 2020-12 with resolved r
   const document = await json('openapi.json');
   const ajv = new Ajv2020({ strict: true, allErrors: true });
   addFormats(ajv);
-  for (const schema of Object.values(document.components.schemas)) assert.doesNotThrow(() => ajv.compile(schema));
+  for (const schema of Object.values(document.components.schemas)) ajv.addSchema(schema);
+  for (const schema of Object.values(document.components.schemas)) assert.ok(ajv.getSchema(schema.$id));
   for (const fileName of await readdir(path.join(generated, 'schemas', CONTRACT_VERSION))) {
     assert.deepEqual(
       JSON.parse(await readFile(path.join(generated, 'schemas', CONTRACT_VERSION, fileName), 'utf8')),
@@ -48,30 +51,33 @@ test('embedded and published schemas compile under Draft 2020-12 with resolved r
   }
 });
 
-test('discovery publishes no fictional products, endpoints, or payment readiness', async () => {
+test('discovery publishes the implemented search product without payment or deployment readiness', async () => {
   const discovery = await json('.well-known/clervo.json');
   assert.deepEqual(discovery, createDiscoveryDocument());
-  assert.equal(discovery.callable, false);
+  assert.equal(discovery.callable, true);
   assert.equal(discovery.payment.implemented, false);
-  assert.deepEqual(discovery.products, []);
-  assert.match(discovery.description, /not available yet/);
+  assert.equal(discovery.products.length, 1);
+  assert.equal(discovery.products[0].productId, 'search.query');
+  assert.equal(discovery.products[0].payment.payable, false);
+  assert.match(discovery.description, /deployment.*not verified/i);
+  assert.deepEqual(await json('catalog.json'), { contractVersion: CONTRACT_VERSION, catalogVersion: discovery.discoveryVersion, products: discovery.products });
 });
 
-test('llms.txt follows proposal structure and states preview limitations', async () => {
+test('llms.txt publishes search.query and states payment/deployment limitations', async () => {
   const llms = await readFile(path.join(generated, 'llms.txt'), 'utf8');
   assert.equal(llms, createLlmsText());
   assert.match(llms, /^# Clervo Next\n\n> /);
-  assert.match(llms, /Callable products: none/);
+  assert.match(llms, /Callable products: search\.query/);
   assert.match(llms, /x402 payment implementation: not implemented/);
   assert.doesNotMatch(llms, /live service|available now|production-ready/i);
 });
 
-test('generation fails closed if false availability is injected', () => {
+test('generation fails closed if implemented routes disappear or payment readiness is injected', () => {
   const unsafeOpenApi = structuredClone(createOpenApiDocument({}));
-  unsafeOpenApi['x-clervo-status'].callable = true;
+  delete unsafeOpenApi.paths[SEARCH_FREE_PATH];
   assert.throws(
     () => assertPreviewArtifacts(unsafeOpenApi, createDiscoveryDocument(), createLlmsText()),
-    /openapi_must_not_claim_callable/,
+    /openapi_search_paths_required/,
   );
 
   const unsafeDiscovery = structuredClone(createDiscoveryDocument());
@@ -85,6 +91,7 @@ test('generation fails closed if false availability is injected', () => {
 test('generated public artifacts contain no common secret material', async () => {
   const files = [
     path.join(generated, 'openapi.json'),
+    path.join(generated, 'catalog.json'),
     path.join(generated, '.well-known/clervo.json'),
     path.join(generated, 'llms.txt'),
   ];

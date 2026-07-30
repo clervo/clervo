@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/search-http-result.schema.json",
+  "title": "Clervo search HTTP result envelope",
+  "type": "object",
+  "required": [
+    "contractVersion",
+    "operationId",
+    "operation",
+    "state",
+    "replayed",
+    "fundingMode",
+    "requestHash",
+    "output"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "2026-07-29.1"
+    },
+    "operationId": {
+      "type": "string",
+      "pattern": "^op_[A-Za-z0-9]{20,64}$"
+    },
+    "operation": {
+      "const": "search.query"
+    },
+    "state": {
+      "const": "RECEIPTED"
+    },
+    "replayed": {
+      "type": "boolean"
+    },
+    "fundingMode": {
+      "enum": [
+        "free",
+        "paid"
+      ]
+    },
+    "requestHash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "output": {
+      "type": "object",
+      "required": [
+        "searchResponse"
+      ],
+      "properties": {
+        "searchResponse": {
+          "$ref": "search-response.schema.json"
+        },
+        "synthesisReport": {
+          "$ref": "retrieval-synthesis.schema.json"
+        }
+      },
+      "additionalProperties": false
+    },
+    "receipt": {
+      "$ref": "operation-receipt.schema.json"
+    }
+  },
+  "additionalProperties": false
+}

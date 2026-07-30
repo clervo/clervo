@@ -35,8 +35,10 @@ for (const fileName of (await readdir(schemaDirectory)).filter((name) => name.en
 const openapi = contractModule.createOpenApiDocument(schemas);
 const discovery = contractModule.createDiscoveryDocument();
 const llms = contractModule.createLlmsText();
+const catalog = contractModule.createCatalogDocument();
 contractModule.assertPreviewArtifacts(openapi, discovery, llms);
 await writeFile(path.join(outputDirectory, 'openapi.json'), stableJson(openapi));
+await writeFile(path.join(outputDirectory, 'catalog.json'), stableJson(catalog));
 await mkdir(path.join(outputDirectory, '.well-known'), { recursive: true });
 await writeFile(path.join(outputDirectory, '.well-known', 'clervo.json'), stableJson(discovery));
 await writeFile(path.join(outputDirectory, 'llms.txt'), llms);

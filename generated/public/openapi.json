@@ -2,11 +2,133 @@
   "openapi": "3.1.1",
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
-    "title": "Clervo Next contract preview",
+    "title": "Clervo Next search contract",
     "version": "2026-07-29.1",
-    "description": "Generated repository-local contract documentation. No callable product API or payment flow is claimed."
+    "description": "Generated repository-local contract for the bounded search.query HTTP slice. Deployment is not verified and public payment is not implemented."
   },
-  "paths": {},
+  "paths": {
+    "/v1/search/free": {
+      "post": {
+        "summary": "Execute free search sample",
+        "description": "Bounded, idempotent free-sample route with an in-memory quota reference implementation.",
+        "operationId": "execute_free_search_sample",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchHttpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchHttpResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "409": {
+            "description": "Idempotency conflict"
+          },
+          "429": {
+            "description": "Free quota exceeded"
+          },
+          "502": {
+            "description": "Search executor failed closed"
+          }
+        }
+      }
+    },
+    "/v1/search/paid": {
+      "post": {
+        "summary": "Request paid search",
+        "description": "Returns an explicitly non-payable mock x402 challenge by default. Mock-paid execution exists only through test dependency injection.",
+        "operationId": "request_paid_search",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchHttpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mock-paid test execution completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchHttpResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "402": {
+            "description": "Non-payable mock payment challenge",
+            "headers": {
+              "PAYMENT-REQUIRED": {
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MockPaymentRequired"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency conflict"
+          },
+          "502": {
+            "description": "Mock-paid execution failed closed"
+          }
+        }
+      }
+    }
+  },
   "components": {
     "schemas": {
       "AdapterManifest": {
@@ -4599,6 +4721,96 @@
         ],
         "additionalProperties": false
       },
+      "SearchHttpRequest": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/search-http-request.schema.json",
+        "title": "Clervo bounded search HTTP request",
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "maxResults": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "default": 10
+          },
+          "synthesize": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SearchHttpResult": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/search-http-result.schema.json",
+        "title": "Clervo search HTTP result envelope",
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "operationId",
+          "operation",
+          "state",
+          "replayed",
+          "fundingMode",
+          "requestHash",
+          "output"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "operation": {
+            "const": "search.query"
+          },
+          "state": {
+            "const": "RECEIPTED"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "fundingMode": {
+            "enum": [
+              "free",
+              "paid"
+            ]
+          },
+          "requestHash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "output": {
+            "type": "object",
+            "required": [
+              "searchResponse"
+            ],
+            "properties": {
+              "searchResponse": {
+                "$ref": "search-response.schema.json"
+              },
+              "synthesisReport": {
+                "$ref": "retrieval-synthesis.schema.json"
+              }
+            },
+            "additionalProperties": false
+          },
+          "receipt": {
+            "$ref": "operation-receipt.schema.json"
+          }
+        },
+        "additionalProperties": false
+      },
       "SearchResponse": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://api.clervo.dev/schemas/2026-07-29.1/search-response.schema.json",
@@ -4942,8 +5154,8 @@
     }
   },
   "x-clervo-status": {
-    "lifecycle": "contract_preview",
-    "callable": false,
+    "lifecycle": "implemented_unverified",
+    "callable": true,
     "paymentImplemented": false,
     "deploymentVerified": false
   }

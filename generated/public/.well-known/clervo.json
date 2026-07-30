@@ -1,10 +1,10 @@
 {
-  "discoveryVersion": "2026-07-30.1",
+  "discoveryVersion": "2026-07-30.2",
   "contractVersion": "2026-07-29.1",
   "name": "Clervo Next",
-  "description": "Machine-readable preview of Clervo Next contracts. Products and payment execution are not available yet.",
-  "lifecycle": "contract_preview",
-  "callable": false,
+  "description": "Machine-readable contract for the implemented repository-local search.query HTTP slice. Public deployment and real payment are not verified.",
+  "lifecycle": "implemented_unverified",
+  "callable": true,
   "payment": {
     "protocol": "x402",
     "implemented": false,
@@ -12,14 +12,30 @@
   },
   "artifacts": {
     "openapi": "https://api.clervo.dev/openapi.json",
+    "catalog": "https://api.clervo.dev/catalog.json",
     "llms": "https://api.clervo.dev/llms.txt",
     "schemas": "https://api.clervo.dev/schemas/2026-07-29.1/"
   },
-  "products": [],
+  "products": [
+    {
+      "productId": "search.query",
+      "status": "implemented_unverified",
+      "deliveryModes": [
+        "sync"
+      ],
+      "freeEndpoint": "https://api.clervo.dev/v1/search/free",
+      "paidEndpoint": "https://api.clervo.dev/v1/search/paid",
+      "payment": {
+        "challengeImplemented": true,
+        "payable": false,
+        "mockExecutionAvailableByInjectionOnly": true
+      }
+    }
+  ],
   "limitations": [
-    "No product HTTP handlers are implemented.",
-    "No catalog product is published or callable.",
-    "No x402 verification or settlement flow is implemented.",
-    "No production deployment is verified."
+    "Public deployment is not verified.",
+    "Real x402 verification, facilitator authorization, and settlement are not implemented.",
+    "The default paid route is explicitly non-payable and does not execute.",
+    "The reference free quota is process-local and must be replaced by a durable limiter before production."
   ]
 }

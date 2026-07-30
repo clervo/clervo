@@ -1,0 +1,20 @@
+{
+  "contractVersion": "2026-07-29.1",
+  "catalogVersion": "2026-07-30.2",
+  "products": [
+    {
+      "productId": "search.query",
+      "status": "implemented_unverified",
+      "deliveryModes": [
+        "sync"
+      ],
+      "freeEndpoint": "https://api.clervo.dev/v1/search/free",
+      "paidEndpoint": "https://api.clervo.dev/v1/search/paid",
+      "payment": {
+        "challengeImplemented": true,
+        "payable": false,
+        "mockExecutionAvailableByInjectionOnly": true
+      }
+    }
+  ]
+}

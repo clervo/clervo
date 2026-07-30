@@ -1,0 +1,5 @@
+{
+  "schema": "search-http-request",
+  "valid": false,
+  "value": { "query": "current ethereum finality", "unbounded": true }
+}

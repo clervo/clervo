@@ -18,5 +18,6 @@ export * from './retrieval.js';
 export * from './routing.js';
 export * from './search.js';
 export * from './search-benchmark.js';
+export * from './search-http.js';
 export * from './state-machine.js';
 export * from './types.js';
