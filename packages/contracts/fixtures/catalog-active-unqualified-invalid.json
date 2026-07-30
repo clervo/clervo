@@ -1,0 +1,22 @@
+{
+  "schema": "catalog-entry",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "catalogVersion": "2026-07-29.1",
+    "productId": "ai.chat",
+    "title": "Unqualified AI",
+    "summary": "Must not activate without qualified supply and terms review.",
+    "status": "active",
+    "identity": { "kind": "exact", "name": "provider/model", "substitutionPolicy": "qualified_equivalent" },
+    "capabilities": ["ai.chat"],
+    "deliveryModes": ["sync"],
+    "inputSchema": "https://api.clervo.dev/schemas/ai.chat/input.json",
+    "outputSchema": "https://api.clervo.dev/schemas/ai.chat/output.json",
+    "pricing": { "model": "quoted", "maximumChargeRequired": false, "priceVersion": "ai-1" },
+    "qualifiedAdapterIds": [],
+    "terms": { "status": "unreviewed", "reference": "https://example.invalid/terms-review/ai" },
+    "dataPolicy": { "classification": "customer_confidential", "payloadRetention": "none", "maximumRetentionSeconds": 0 },
+    "updatedAt": "2026-07-29T18:00:00.000Z"
+  }
+}

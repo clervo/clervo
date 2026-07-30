@@ -20,8 +20,9 @@
     "scan:secrets": "node ./scripts/scan-secrets.mjs",
     "test:n0.3": "node ./scripts/test-n0.3.mjs",
     "test:n1.1": "npm run build && node --test ./tests/contract/n1.1.test.mjs",
+    "test:n1.2": "npm run build && node --test ./tests/contract/n1.2.test.mjs",
     "staging:smoke": "node ./scripts/staging-smoke.mjs",
-    "test": "npm run lint && npm run typecheck && npm run verify:boundary && npm run verify:stack && npm run verify:environments && npm run scan:secrets && npm run test:n0.3 && npm run contracts && npm run test:n1.1"
+    "test": "npm run lint && npm run typecheck && npm run verify:boundary && npm run verify:stack && npm run verify:environments && npm run scan:secrets && npm run test:n0.3 && npm run contracts && npm run test:n1.1 && npm run test:n1.2"
   },
   "dependencies": {
     "pg-boss": "12.26.3"

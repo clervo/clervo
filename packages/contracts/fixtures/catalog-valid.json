@@ -1,0 +1,27 @@
+{
+  "schema": "catalog-entry",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "catalogVersion": "2026-07-29.1",
+    "productId": "search.web",
+    "title": "Web search",
+    "summary": "Qualified web retrieval with normalized evidence.",
+    "status": "active",
+    "identity": { "kind": "alias", "name": "clervo/search-web", "substitutionPolicy": "qualified_equivalent" },
+    "capabilities": ["web.search", "citations"],
+    "deliveryModes": ["sync", "async"],
+    "inputSchema": "https://api.clervo.dev/schemas/search.web/input.json",
+    "outputSchema": "https://api.clervo.dev/schemas/search.web/output.json",
+    "pricing": {
+      "model": "quoted",
+      "displayPrice": { "asset": "eip155:8453/erc20:USDC", "amountAtomic": "1000", "decimals": 6 },
+      "maximumChargeRequired": true,
+      "priceVersion": "search-web-1"
+    },
+    "qualifiedAdapterIds": ["adapter_mock.search"],
+    "terms": { "status": "approved", "reviewedAt": "2026-07-29T18:00:00.000Z", "reference": "https://example.invalid/terms-review/search" },
+    "dataPolicy": { "classification": "customer_confidential", "payloadRetention": "bounded", "maximumRetentionSeconds": 3600 },
+    "updatedAt": "2026-07-29T18:00:00.000Z"
+  }
+}

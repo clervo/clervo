@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/audit-event.schema.json",
+  "title": "Clervo append-only redacted audit event",
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  },
+  "type": "object",
+  "required": ["contractVersion", "eventId", "sequence", "occurredAt", "eventType", "outcome", "actor", "facts", "eventHash"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "eventId": { "type": "string", "pattern": "^evt_[A-Za-z0-9]{20,64}$" },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "eventType": { "type": "string", "pattern": "^[a-z][a-z0-9_.]{2,79}$" },
+    "outcome": { "enum": ["success", "failure", "unknown", "denied"] },
+    "actor": {
+      "type": "object",
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "enum": ["service", "worker", "operator", "system"] },
+        "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$" }
+      },
+      "additionalProperties": false
+    },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "operationState": { "enum": ["RECEIVED", "VALIDATED", "QUOTED", "PAYMENT_REQUIRED", "AUTHORIZED", "RESERVED", "EXECUTING", "EXECUTION_UNKNOWN", "EXECUTED", "VERIFYING", "VERIFIED", "SETTLING", "SETTLEMENT_UNKNOWN", "SETTLED", "RECEIPTED", "RECONCILING", "FAILED"] },
+    "traceId": { "type": "string", "pattern": "^(?!0{32}$)[a-f0-9]{32}$" },
+    "spanId": { "type": "string", "pattern": "^(?!0{16}$)[a-f0-9]{16}$" },
+    "facts": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "required": ["name", "value"],
+        "properties": {
+          "name": { "enum": ["adapter_id", "attempt", "duration_ms", "error_code", "from_state", "http_status", "latency_ms", "product_id", "qualification_id", "receipt_hash", "retryable", "route_id", "to_state"] },
+          "value": { "anyOf": [{ "type": "null" }, { "type": "boolean" }, { "type": "number" }, { "type": "string", "maxLength": 256 }] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "previousEventHash": { "$ref": "#/$defs/hash" },
+    "eventHash": { "$ref": "#/$defs/hash" }
+  },
+  "additionalProperties": false
+}

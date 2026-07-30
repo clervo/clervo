@@ -44,3 +44,14 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Cost/network effects: read-only official standards/Ajv/npm/Node metadata and archive requests; local dependency installation and loopback HTTP only; no provider/cloud/IAM/deployment mutations or payments; 0 USDC spent.
 - Claims still unknown: database uniqueness/concurrency/retention enforcement; HTTP status/header behavior; catalog, adapter, receipt, and audit compatibility; OpenAPI/discovery; provider execution; payment and production behavior.
 - Exact next ticket: N1.2 — define catalog, adapter, receipt, and audit contracts.
+
+## 2026-07-29 — N1.2 catalog, adapter, receipt, and audit contracts
+
+- Added strict catalog entries with activation gates for qualified supply, reviewed terms, non-free maximum charges, exact-identity non-substitution, schema references, delivery modes, and bounded payload-retention policy.
+- Defined the provider-neutral adapter interface (`capabilities`, `qualify`, `health`, `estimateCost`, `execute`, `normalize`, `classifyError`) plus dated/expiring qualification artifacts and fail-closed unknown-consumption retry classification. Manifests accept secret names only, never values.
+- Added canonical SHA-256 sealed receipts that bind request/quote/result/provenance and keep customer charge separate from supplier cost, plus append-orderable audit events with an allowlist of scalar facts and optional W3C-compatible trace identifiers. Raw payloads, credentials, authorization proofs, settlement material, and provider responses are not contract fields.
+- Published five additional strict JSON Schema Draft 2020-12 schemas and nine positive/negative fixtures. Failure evidence rejects active unqualified catalogs, exact-identity substitution, non-free products without a charge ceiling, secret values in manifest name lists, paid unsettled receipts, and secret-bearing arbitrary audit fields.
+- Validation: Node.js 24.18.1 with npm 10.9.8 ran `npm test` with exit 0. All Stage 0/N1.1 gates passed; 9 schemas and 15 fixtures validated; N1.1 passed 8/8 and N1.2 passed 7/7. Focused staging smoke, production audit (0 vulnerabilities), syntax, typecheck, secret scan, and diff checks passed.
+- Cost/network effects: read-only public standards evidence and local dependency audit metadata; local compilation/tests and loopback HTTP only; no provider/cloud/IAM/deployment/payment mutations; 0 USDC spent.
+- Claims still unknown: generated OpenAPI/discovery; transactional persistence/immutability; signatures or external anchoring; real adapter qualification, lawful terms, health, identity, cost, or execution; observability pipeline; payload retention enforcement; payment and production behavior.
+- Exact next ticket: N1.3 — generate/test OpenAPI and discovery.

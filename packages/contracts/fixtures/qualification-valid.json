@@ -1,0 +1,16 @@
+{
+  "schema": "qualification-result",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "qualificationId": "qual_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "adapterId": "adapter_mock.search",
+    "productId": "search.web",
+    "status": "passed",
+    "checkedAt": "2026-07-29T18:00:00.000Z",
+    "expiresAt": "2026-08-05T18:00:00.000Z",
+    "termsStatus": "approved",
+    "checks": [{ "name": "fixture_conformance", "status": "passed", "evidenceHash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" }],
+    "observed": { "latencyMsP95": 12, "maximumSupplierCost": { "asset": "USD", "amountAtomic": "1", "decimals": 6 }, "identity": "mock-search-v1" }
+  }
+}

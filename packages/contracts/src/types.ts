@@ -24,6 +24,12 @@ export type OperationState = (typeof operationStates)[number];
 export type JsonPrimitive = null | boolean | number | string;
 export type JsonValue = JsonPrimitive | JsonValue[] | { [key: string]: JsonValue };
 
+export interface AssetAmount {
+  asset: string;
+  amountAtomic: string;
+  decimals: number;
+}
+
 export interface OperationRequest<TInput extends JsonValue = JsonValue> {
   contractVersion: typeof CONTRACT_VERSION;
   operation: string;

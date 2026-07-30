@@ -1,0 +1,14 @@
+{
+  "schema": "adapter-manifest",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "adapterId": "adapter_mock.search",
+    "adapterVersion": "1.0.0",
+    "providerId": "provider_mock.search",
+    "failureDomain": "mock:local",
+    "productIds": ["search.web"],
+    "requiredSecretNames": [],
+    "dataResidency": ["LOCAL"]
+  }
+}

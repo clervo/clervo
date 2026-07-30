@@ -1,0 +1,21 @@
+{
+  "schema": "operation-receipt",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "receiptId": "rcpt_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "operationId": "op_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "productId": "search.web",
+    "requestHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "quoteId": "quote_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "quoteHash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "fundingMode": "paid",
+    "customerCharge": { "asset": "USDC", "amountAtomic": "1000", "decimals": 6 },
+    "supplierCost": { "asset": "USD", "amountAtomic": "500", "decimals": 6 },
+    "settlement": { "status": "not_required" },
+    "resultHash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+    "provenance": [{ "adapterId": "adapter_mock.search", "qualificationId": "qual_01JZ8Q5Y4QFD48Q24H6M5F4K9P", "providerReferenceHash": "sha256:5555555555555555555555555555555555555555555555555555555555555555" }],
+    "completedAt": "2026-07-29T18:00:01.000Z",
+    "receiptHash": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+  }
+}
