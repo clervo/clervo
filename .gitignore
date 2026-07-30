@@ -16,6 +16,7 @@ coverage/
 # Runtime state
 data/
 tmp/
+.staging-state/
 *.log
 *.sqlite
 *.sqlite-shm

@@ -12,7 +12,11 @@
   "scripts": {
     "verify:boundary": "./scripts/verify-clean-room-boundary.sh",
     "verify:stack": "node ./scripts/verify-stack-decision.mjs",
-    "test": "npm run verify:boundary && npm run verify:stack"
+    "verify:environments": "node ./scripts/verify-environments.mjs",
+    "scan:secrets": "node ./scripts/scan-secrets.mjs",
+    "test:n0.3": "node ./scripts/test-n0.3.mjs",
+    "staging:smoke": "node ./scripts/staging-smoke.mjs",
+    "test": "npm run verify:boundary && npm run verify:stack && npm run verify:environments && npm run scan:secrets && npm run test:n0.3"
   },
   "dependencies": {
     "pg-boss": "12.26.3"

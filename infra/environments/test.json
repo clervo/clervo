@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "test",
+  "kind": "ephemeral",
+  "public": false,
+  "productionDataAllowed": false,
+  "mockProvidersByDefault": true,
+  "deploymentApprovalRequired": false,
+  "secretSource": "test-fixtures-only",
+  "databaseBoundary": "clervo-test-ephemeral",
+  "queueBoundary": "clervo-test-ephemeral",
+  "service": {
+    "host": "127.0.0.1",
+    "port": 3100,
+    "healthPath": "/healthz"
+  }
+}

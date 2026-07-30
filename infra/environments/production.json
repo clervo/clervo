@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "production",
+  "kind": "remote",
+  "public": true,
+  "productionDataAllowed": true,
+  "mockProvidersByDefault": false,
+  "deploymentApprovalRequired": true,
+  "secretSource": "github-environment-production",
+  "databaseBoundary": "clervo-production",
+  "queueBoundary": "clervo-production",
+  "service": {
+    "host": "127.0.0.1",
+    "port": 3300,
+    "healthPath": "/healthz"
+  }
+}

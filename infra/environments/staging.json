@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "staging",
+  "kind": "remote",
+  "public": false,
+  "productionDataAllowed": false,
+  "mockProvidersByDefault": true,
+  "deploymentApprovalRequired": true,
+  "secretSource": "github-environment-staging",
+  "databaseBoundary": "clervo-staging",
+  "queueBoundary": "clervo-staging",
+  "service": {
+    "host": "127.0.0.1",
+    "port": 3200,
+    "healthPath": "/healthz"
+  }
+}

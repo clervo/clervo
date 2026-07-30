@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "environment": "staging",
+  "service": "clervo-api-hello",
+  "artifact": "source-checkout",
+  "healthPath": "/healthz",
+  "smokePath": "/hello",
+  "rollback": {
+    "strategy": "redeploy-previous-verified-commit",
+    "requiredInput": "previousReleaseId",
+    "verificationCommand": "npm run staging:smoke"
+  },
+  "liveDeploymentStatus": "not-provisioned"
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "name": "development",
+  "kind": "local",
+  "public": false,
+  "productionDataAllowed": false,
+  "mockProvidersByDefault": true,
+  "deploymentApprovalRequired": false,
+  "secretSource": "local-untracked-env",
+  "databaseBoundary": "clervo-development",
+  "queueBoundary": "clervo-development",
+  "service": {
+    "host": "127.0.0.1",
+    "port": 3000,
+    "healthPath": "/healthz"
+  }
+}

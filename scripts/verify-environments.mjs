@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const names = ['development', 'test', 'staging', 'production'];
+
+async function readJson(relativePath) {
+  return JSON.parse(await readFile(path.join(repositoryRoot, relativePath), 'utf8'));
+}
+
+try {
+  const environments = await Promise.all(
+    names.map((name) => readJson(`infra/environments/${name}.json`)),
+  );
+  const manifest = await readJson('infra/staging/release-manifest.json');
+  const envExample = await readFile(path.join(repositoryRoot, '.env.example'), 'utf8');
+
+  for (const [index, environment] of environments.entries()) {
+    assert.equal(environment.schemaVersion, 1, `${names[index]} schema version drift`);
+    assert.equal(environment.name, names[index], `${names[index]} name drift`);
+    assert.equal(environment.productionDataAllowed, environment.name === 'production');
+    assert.match(environment.databaseBoundary, new RegExp(environment.name));
+    assert.match(environment.queueBoundary, new RegExp(environment.name));
+    assert.equal(environment.service.healthPath, '/healthz');
+  }
+
+  assert.equal(new Set(environments.map((item) => item.databaseBoundary)).size, names.length);
+  assert.equal(new Set(environments.map((item) => item.queueBoundary)).size, names.length);
+
+  const staging = environments.find((item) => item.name === 'staging');
+  const production = environments.find((item) => item.name === 'production');
+  assert.equal(staging.deploymentApprovalRequired, true);
+  assert.equal(production.deploymentApprovalRequired, true);
+  assert.notEqual(staging.secretSource, production.secretSource);
+  assert.notEqual(staging.databaseBoundary, production.databaseBoundary);
+  assert.notEqual(staging.queueBoundary, production.queueBoundary);
+
+  assert.equal(manifest.environment, 'staging');
+  assert.equal(manifest.healthPath, staging.service.healthPath);
+  assert.equal(manifest.rollback.strategy, 'redeploy-previous-verified-commit');
+  assert.equal(manifest.rollback.requiredInput, 'previousReleaseId');
+  assert.equal(manifest.liveDeploymentStatus, 'not-provisioned');
+
+  assert.match(envExample, /^CLERVO_ENV=development$/m);
+  assert.match(envExample, /^DATABASE_URL=$/m);
+  assert.match(envExample, /^QUEUE_DATABASE_URL=$/m);
+  assert.doesNotMatch(envExample, /postgres(?:ql)?:\/\/[^\s:@]+:[^\s@]+@/i);
+
+  console.log('environment contract: PASS');
+  console.log(`environments: ${names.join(', ')}`);
+  console.log('staging/production shared database boundaries: 0');
+  console.log('staging/production shared queue boundaries: 0');
+  console.log('network calls made: 0');
+  console.log('USDC spent: 0');
+} catch (error) {
+  console.error(`environment contract: FAIL: ${error.message}`);
+  process.exitCode = 1;
+}
