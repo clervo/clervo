@@ -3,6 +3,8 @@ import { CONTRACT_VERSION } from './types.js';
 import type { RetrievalPathAssessment, RetrievalPathDecision, RetrievalQualificationSnapshot } from './retrieval.js';
 import { createRetrievalQualificationSnapshot } from './retrieval.js';
 import { hashJson } from './receipt.js';
+import { hashQueryRewritePlan, validateQueryRewritePlan, type QueryRewritePlan } from './query-rewrite.js';
+import { normalizeSearchLocaleOptions } from './search-locale.js';
 
 export const federationAttemptOutcomes = ['succeeded', 'failed', 'deadline_exceeded', 'cancelled'] as const;
 export const federationFailureCodes = ['adapter_failed', 'invalid_adapter_response', 'deadline_exceeded', 'caller_cancelled'] as const;
@@ -16,7 +18,10 @@ export interface RetrievalQueryExecution {
   failureDomain: string;
   role: 'primary' | 'fallback';
   mechanism: 'provider_api' | 'public_archive';
+  rewriteVariantId: 'identity' | 'exact_phrase';
   query: string;
+  language: string;
+  region: string;
 }
 
 export interface RetrievalQueryPlan {
@@ -24,20 +29,27 @@ export interface RetrievalQueryPlan {
   planId: string;
   operationId: string;
   query: string;
+  language: string;
+  region: string;
   createdAt: string;
   deadlineAt: string;
   qualificationId: string;
   qualificationSha256: string;
+  rewriteId: string;
+  rewriteSha256: string;
+  rewrite: Readonly<QueryRewritePlan>;
   executions: readonly Readonly<RetrievalQueryExecution>[];
 }
 
 export interface CreateRetrievalQueryPlanInput {
   planId: string;
   operationId: string;
-  query: string;
+  rewrite: QueryRewritePlan;
   createdAt: string;
   deadlineAt: string;
   qualification: RetrievalQualificationSnapshot;
+  language?: string;
+  region?: string;
 }
 
 export interface RetrievalFederationCandidateInput {
@@ -90,9 +102,13 @@ export interface RetrievalFederationReport {
   planId: string;
   operationId: string;
   query: string;
+  language: string;
+  region: string;
   deadlineAt: string;
   qualificationId: string;
   qualificationSha256: string;
+  rewriteId: string;
+  rewriteSha256: string;
   outcome: 'complete' | 'partial' | 'failed' | 'cancelled';
   attempts: readonly Readonly<RetrievalFederationAttempt>[];
   candidates: readonly Readonly<RetrievalFederationCandidate>[];
@@ -157,29 +173,42 @@ function qualificationHash(snapshot: RetrievalQualificationSnapshot): string {
 export function createRetrievalQueryPlan(input: CreateRetrievalQueryPlanInput): Readonly<RetrievalQueryPlan> {
   if (!/^plan_[A-Za-z0-9]{20,64}$/u.test(input.planId)) throw new Error('invalid_federation_plan_id');
   if (!/^op_[A-Za-z0-9]{20,64}$/u.test(input.operationId)) throw new Error('invalid_federation_operation_id');
-  const query = text(input.query, 'federation_query', 2_000);
+  const rewrite = validateQueryRewritePlan(input.rewrite);
+  if (rewrite.operationId !== input.operationId || rewrite.createdAt !== input.createdAt) throw new Error('federation_rewrite_binding_invalid');
+  const query = text(rewrite.normalizedQuery, 'federation_query', 2_000);
+  const locale = normalizeSearchLocaleOptions(input);
   const createdAt = timestamp(input.createdAt, 'federation_created_at');
   const deadlineAt = timestamp(input.deadlineAt, 'federation_deadline_at');
   if (deadlineAt <= createdAt || deadlineAt - createdAt > 30_000) throw new Error('invalid_federation_deadline_window');
   const qualification = validateQualification(input.qualification, input.createdAt);
   const paths = [...qualification.paths].sort((left, right) => (left.role === right.role ? left.pathId.localeCompare(right.pathId) : left.role === 'primary' ? -1 : 1));
-  const executions = paths.map((path) => Object.freeze({
-    pathId: path.pathId,
-    providerId: path.providerId,
-    failureDomain: path.failureDomain,
-    role: path.role,
-    mechanism: path.mechanism,
-    query,
-  }));
+  const executions = paths.map((path) => {
+    const variant = rewrite.variants[path.role === 'primary' ? 0 : 1];
+    if (variant === undefined) throw new Error('invalid_federation_rewrite');
+    return Object.freeze({
+      pathId: path.pathId,
+      providerId: path.providerId,
+      failureDomain: path.failureDomain,
+      role: path.role,
+      mechanism: path.mechanism,
+      rewriteVariantId: variant.variantId,
+      query: variant.query,
+      ...locale,
+    });
+  });
   return Object.freeze({
     contractVersion: CONTRACT_VERSION,
     planId: input.planId,
     operationId: input.operationId,
     query,
+    ...locale,
     createdAt: input.createdAt,
     deadlineAt: input.deadlineAt,
     qualificationId: qualification.qualificationId,
     qualificationSha256: qualificationHash(qualification),
+    rewriteId: rewrite.rewriteId,
+    rewriteSha256: hashQueryRewritePlan(rewrite),
+    rewrite,
     executions: Object.freeze(executions),
   });
 }
@@ -188,17 +217,26 @@ function validatePlan(plan: RetrievalQueryPlan): void {
   if (plan.contractVersion !== CONTRACT_VERSION) throw new Error('invalid_federation_plan_version');
   if (!/^plan_[A-Za-z0-9]{20,64}$/u.test(plan.planId) || !/^op_[A-Za-z0-9]{20,64}$/u.test(plan.operationId)) throw new Error('invalid_federation_plan');
   if (!/^rqual_[A-Za-z0-9]{20,64}$/u.test(plan.qualificationId) || !/^sha256:[a-f0-9]{64}$/u.test(plan.qualificationSha256)) throw new Error('invalid_federation_qualification_hash');
+  if (!/^rewrite_[A-Za-z0-9]{20,64}$/u.test(plan.rewriteId) || !/^sha256:[a-f0-9]{64}$/u.test(plan.rewriteSha256)) throw new Error('invalid_federation_rewrite_hash');
+  const rewrite = validateQueryRewritePlan(plan.rewrite);
+  if (rewrite.rewriteId !== plan.rewriteId || rewrite.operationId !== plan.operationId || rewrite.createdAt !== plan.createdAt
+    || rewrite.normalizedQuery !== plan.query || hashQueryRewritePlan(rewrite) !== plan.rewriteSha256) throw new Error('invalid_federation_rewrite_hash');
+  const locale = normalizeSearchLocaleOptions(plan);
+  if (locale.language !== plan.language || locale.region !== plan.region) throw new Error('invalid_federation_locale');
   if (text(plan.query, 'federation_query', 2_000) !== plan.query) throw new Error('invalid_federation_plan');
   const createdAt = timestamp(plan.createdAt, 'federation_created_at');
   const deadlineAt = timestamp(plan.deadlineAt, 'federation_deadline_at');
   if (deadlineAt <= createdAt || deadlineAt - createdAt > 30_000 || plan.executions.length !== 2) throw new Error('invalid_federation_plan');
   if (new Set(plan.executions.map((execution) => execution.pathId)).size !== 2 || new Set(plan.executions.map((execution) => execution.failureDomain)).size !== 2) throw new Error('invalid_federation_plan');
-  if (plan.executions[0]?.role !== 'primary' || plan.executions[1]?.role !== 'fallback' || plan.executions.some((execution) => execution.query !== plan.query)) throw new Error('invalid_federation_plan');
+  if (plan.executions[0]?.role !== 'primary' || plan.executions[0]?.rewriteVariantId !== 'identity' || plan.executions[0]?.query !== rewrite.variants[0]?.query
+    || plan.executions[1]?.role !== 'fallback' || plan.executions[1]?.rewriteVariantId !== 'exact_phrase' || plan.executions[1]?.query !== rewrite.variants[1]?.query) throw new Error('invalid_federation_plan');
   for (const execution of plan.executions) {
     if (!/^retrieval_[a-z0-9][a-z0-9._-]{2,63}$/u.test(execution.pathId)
       || !/^provider_[a-z0-9][a-z0-9._-]{2,63}$/u.test(execution.providerId)
       || !/^[a-z0-9][a-z0-9._-]{2,63}$/u.test(execution.failureDomain)
-      || !['provider_api', 'public_archive'].includes(execution.mechanism)) throw new Error('invalid_federation_plan');
+      || !['provider_api', 'public_archive'].includes(execution.mechanism)
+      || text(execution.query, 'federation_execution_query', 2_000) !== execution.query
+      || execution.language !== plan.language || execution.region !== plan.region) throw new Error('invalid_federation_plan');
   }
 }
 
@@ -299,9 +337,13 @@ export async function runRetrievalFederation(input: RunRetrievalFederationInput)
     planId: input.plan.planId,
     operationId: input.plan.operationId,
     query: input.plan.query,
+    language: input.plan.language,
+    region: input.plan.region,
     deadlineAt: input.plan.deadlineAt,
     qualificationId: input.plan.qualificationId,
     qualificationSha256: input.plan.qualificationSha256,
+    rewriteId: input.plan.rewriteId,
+    rewriteSha256: input.plan.rewriteSha256,
     outcome,
     attempts,
     candidates,

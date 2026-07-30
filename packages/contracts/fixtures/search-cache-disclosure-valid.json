@@ -1,0 +1,20 @@
+{
+  "schema": "search-cache-disclosure",
+  "valid": true,
+  "value": {
+    "policyId": "search_cache_disclosure_v1",
+    "outcome": "stale_revalidated",
+    "requestSha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "responseSha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "observedAt": "2026-07-30T19:00:00.000Z",
+    "maximumResults": 10,
+    "freshnessLifetimeSeconds": 60,
+    "ageSeconds": 0,
+    "residentAgeSeconds": 120,
+    "freshnessRemainingSeconds": 60,
+    "revalidationPerformed": true,
+    "storedAt": "2026-07-30T18:58:00.000Z",
+    "previousValidatedAt": "2026-07-30T18:58:30.000Z",
+    "validatedAt": "2026-07-30T19:00:00.000Z"
+  }
+}

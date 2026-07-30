@@ -8,14 +8,18 @@
     "generatedAt": "2026-07-30T19:00:00.000Z",
     "deduplicatedCount": 0,
     "results": [],
-    "citations": [{
-      "citationId": "cite_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
-      "resultId": "sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
-      "canonicalUrl": "https://example.com/evidence",
-      "quote": "not structurally allowed",
-      "startOffset": 0,
-      "endOffset": 24,
-      "verified": true
-    }]
+    "citations": [
+      {
+        "citationId": "cite_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+        "resultId": "sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+        "canonicalUrl": "https://example.com/evidence",
+        "quote": "not structurally allowed",
+        "startOffset": 0,
+        "endOffset": 24,
+        "verified": true
+      }
+    ],
+    "language": "en",
+    "region": "US"
   }
 }

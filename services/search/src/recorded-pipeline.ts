@@ -2,6 +2,7 @@ import {
   assembleRetrievalCandidates,
   createRetrievalQualificationSnapshot,
   createRetrievalQueryPlan,
+  createQueryRewritePlan,
   hashRetrievalAssembly,
   retrievalCheckNames,
   runRetrievalFederation,
@@ -174,13 +175,21 @@ export function createRecordedSearchExecutor(options: RecordedSearchExecutorOpti
       const qualificationValue = qualification(input.operationId, createdAt);
       const deadlineAt = new Date(Date.parse(createdAt) + 10_000).toISOString();
       const idSuffix = suffix(input.operationId);
-      const plan = createRetrievalQueryPlan({
-        planId: `plan_${idSuffix}`,
+      const rewrite = createQueryRewritePlan({
+        rewriteId: `rewrite_${idSuffix}`,
         operationId: input.operationId,
         query: input.query,
         createdAt,
+      });
+      const plan = createRetrievalQueryPlan({
+        planId: `plan_${idSuffix}`,
+        operationId: input.operationId,
+        rewrite,
+        createdAt,
         deadlineAt,
         qualification: qualificationValue,
+        language: input.language,
+        region: input.region,
       });
       const federation = await runRetrievalFederation({
         federationId: `fed_${idSuffix}`,

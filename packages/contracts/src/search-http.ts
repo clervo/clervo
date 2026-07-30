@@ -1,6 +1,8 @@
 import { canonicalRequestHash } from './canonical-request.js';
 import type { RetrievalSynthesisReport } from './retrieval-synthesis.js';
 import { verifySearchCitation, type SearchResponse } from './search.js';
+import { verifySearchCacheDisclosure } from './search-cache.js';
+import { normalizeSearchLocaleOptions } from './search-locale.js';
 import { CONTRACT_VERSION, type JsonValue } from './types.js';
 
 export const SEARCH_PRODUCT_ID = 'search.query' as const;
@@ -14,6 +16,8 @@ export interface SearchHttpRequest {
   query: string;
   maxResults?: number;
   synthesize?: boolean;
+  language?: string;
+  region?: string;
 }
 
 export interface SearchExecutionOutput {
@@ -76,7 +80,7 @@ export class InMemoryFreeSearchQuota {
 export function normalizeSearchHttpRequest(value: unknown): Readonly<Required<SearchHttpRequest>> {
   if (value === null || typeof value !== 'object' || Array.isArray(value)) throw new TypeError('invalid_search_request');
   const record = value as Record<string, unknown>;
-  const allowed = new Set(['query', 'maxResults', 'synthesize']);
+  const allowed = new Set(['query', 'maxResults', 'synthesize', 'language', 'region']);
   if (Object.keys(record).some((key) => !allowed.has(key))) throw new TypeError('search_request_additional_property');
   if (typeof record.query !== 'string') throw new TypeError('invalid_search_query');
   const query = record.query.trim();
@@ -85,7 +89,8 @@ export function normalizeSearchHttpRequest(value: unknown): Readonly<Required<Se
   if (!Number.isInteger(maxResults) || (maxResults as number) < 1 || (maxResults as number) > SEARCH_MAX_RESULTS) throw new TypeError('invalid_search_max_results');
   const synthesize = record.synthesize ?? true;
   if (typeof synthesize !== 'boolean') throw new TypeError('invalid_search_synthesize');
-  return Object.freeze({ query, maxResults: maxResults as number, synthesize });
+  const locale = normalizeSearchLocaleOptions({ language: record.language, region: record.region });
+  return Object.freeze({ query, maxResults: maxResults as number, synthesize, ...locale });
 }
 
 export function searchHttpRequestHash(request: Readonly<Required<SearchHttpRequest>>, target: typeof SEARCH_FREE_PATH | typeof SEARCH_PAID_PATH = SEARCH_FREE_PATH): string {
@@ -102,8 +107,10 @@ export function searchHttpRequestHash(request: Readonly<Required<SearchHttpReque
 export function assertSearchExecutionOutput(output: SearchExecutionOutput, input: Readonly<SearchExecutorInput>): void {
   if (output === null || typeof output !== 'object') throw new TypeError('invalid_search_execution_output');
   const response = output.searchResponse;
-  if (response.contractVersion !== CONTRACT_VERSION || response.operationId !== input.operationId || response.query !== input.query) throw new TypeError('search_execution_binding_invalid');
+  const locale = normalizeSearchLocaleOptions(input);
+  if (response.contractVersion !== CONTRACT_VERSION || response.operationId !== input.operationId || response.query !== input.query || response.language !== locale.language || response.region !== locale.region) throw new TypeError('search_execution_binding_invalid');
   if (response.results.length > input.maxResults) throw new TypeError('search_execution_result_limit_exceeded');
+  if (!verifySearchCacheDisclosure(response, input.maxResults)) throw new TypeError('search_execution_cache_disclosure_invalid');
   if (!response.citations.every((citation) => verifySearchCitation(citation, response.results).valid)) throw new TypeError('search_execution_citation_invalid');
   if (output.synthesisReport !== undefined) {
     const synthesis = output.synthesisReport;

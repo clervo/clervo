@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/search-cache-disclosure.schema.json",
+  "title": "Clervo search cache freshness and revalidation disclosure",
+  "type": "object",
+  "required": ["policyId", "outcome", "requestSha256", "responseSha256", "observedAt", "maximumResults", "freshnessLifetimeSeconds", "ageSeconds", "residentAgeSeconds", "freshnessRemainingSeconds", "revalidationPerformed"],
+  "properties": {
+    "policyId": { "const": "search_cache_disclosure_v1" },
+    "outcome": { "enum": ["miss", "fresh_hit", "stale_revalidated"] },
+    "requestSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "responseSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "maximumResults": { "type": "integer", "minimum": 1, "maximum": 100 },
+    "freshnessLifetimeSeconds": { "type": "integer", "minimum": 0, "maximum": 31536000 },
+    "ageSeconds": { "type": "integer", "minimum": 0, "maximum": 31536000 },
+    "residentAgeSeconds": { "type": "integer", "minimum": 0 },
+    "freshnessRemainingSeconds": { "type": "integer", "minimum": 0, "maximum": 31536000 },
+    "revalidationPerformed": { "type": "boolean" },
+    "storedAt": { "type": "string", "format": "date-time" },
+    "validatedAt": { "type": "string", "format": "date-time" },
+    "previousValidatedAt": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "outcome": { "const": "miss" } }, "required": ["outcome"] },
+      "then": {
+        "properties": {
+          "freshnessLifetimeSeconds": { "const": 0 },
+          "ageSeconds": { "const": 0 },
+          "residentAgeSeconds": { "const": 0 },
+          "freshnessRemainingSeconds": { "const": 0 },
+          "revalidationPerformed": { "const": false },
+          "storedAt": false,
+          "validatedAt": false,
+          "previousValidatedAt": false
+        }
+      }
+    },
+    {
+      "if": { "properties": { "outcome": { "const": "fresh_hit" } }, "required": ["outcome"] },
+      "then": {
+        "required": ["storedAt", "validatedAt"],
+        "properties": {
+          "freshnessLifetimeSeconds": { "type": "integer", "minimum": 1 },
+          "freshnessRemainingSeconds": { "type": "integer", "minimum": 1 },
+          "revalidationPerformed": { "const": false },
+          "previousValidatedAt": false
+        }
+      }
+    },
+    {
+      "if": { "properties": { "outcome": { "const": "stale_revalidated" } }, "required": ["outcome"] },
+      "then": {
+        "required": ["storedAt", "validatedAt", "previousValidatedAt"],
+        "properties": {
+          "freshnessLifetimeSeconds": { "type": "integer", "minimum": 1 },
+          "ageSeconds": { "type": "integer", "const": 0 },
+          "revalidationPerformed": { "const": true }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "query-rewrite",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "rewriteId": "rewrite_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "operationId": "op_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "originalQuery": "Clervo evidence",
+    "normalizedQuery": "Clervo evidence",
+    "createdAt": "2026-07-30T23:58:00.000Z",
+    "policy": "deterministic_token_preserving_v1",
+    "variants": [
+      { "variantId": "identity", "kind": "identity", "query": "Clervo evidence", "tokenCount": 2 },
+      { "variantId": "exact_phrase", "kind": "exact_phrase", "query": "\"Clervo evidence\"", "tokenCount": 2 },
+      { "variantId": "expanded", "kind": "expanded", "query": "Clervo evidence unrelated terms", "tokenCount": 5 }
+    ]
+  }
+}

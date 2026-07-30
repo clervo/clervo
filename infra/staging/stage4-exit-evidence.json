@@ -22,9 +22,9 @@
     },
     {
       "id": "query_rewriting",
-      "status": "missing",
+      "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "No query rewriting implementation or staging evidence exists."
+      "evidence": "N4.12 proves bounded deterministic token-preserving identity and exact-phrase rewrites with hash-bound federation integration locally; no staging execution evidence exists."
     },
     {
       "id": "parallel_retrieval",
@@ -46,15 +46,15 @@
     },
     {
       "id": "isolated_javascript_retrieval",
-      "status": "missing",
+      "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "No browser or JavaScript rendering path exists."
+      "evidence": "N4.13 proves a versioned injected browser boundary with successful robots-compliant static preflight, disposable-process isolation attestation, core-authorized same-origin public network requests, strict request/byte/deadline/cancellation limits, and hash-bound receipts locally; no concrete browser adapter or staging execution evidence exists."
     },
     {
       "id": "retrieval_safety_controls",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.3 proves timeout, size, redirect, MIME, DNS rebinding, and SSRF controls with injected transport; robots enforcement is not implemented."
+      "evidence": "N4.3 proves static timeout, size, redirect, MIME, DNS rebinding, SSRF, and robots controls; N4.13 reuses successful robots-compliant preflight and adds core-authorized browser-network controls locally."
     },
     {
       "id": "prompt_injection_boundaries",
@@ -70,15 +70,15 @@
     },
     {
       "id": "disclosed_cache_freshness",
-      "status": "missing",
+      "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "No cache implementation or cache-age disclosure contract exists."
+      "evidence": "N4.14 proves a strict request- and response-bound cache disclosure for miss, fresh-hit, and stale-revalidated outcomes with recomputed ages, freshness lifetime, revalidation evidence, schema validation, and public HTTP output locally; no durable cache or staging execution evidence exists."
     },
     {
       "id": "language_and_region_options",
-      "status": "missing",
+      "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "The search HTTP request contract exposes no language or region controls."
+      "evidence": "N4.15 proves strict canonical language and region controls, defaults, request/cache identity binding, recorded federation and assembly propagation, public response disclosure, and fail-closed output substitution locally; no live provider honoring or staging execution evidence exists."
     },
     {
       "id": "separate_raw_and_synthesis_prices",
@@ -114,7 +114,7 @@
       "id": "ssrf_and_security_suite",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "Injected SSRF, redirect, MIME, size, timeout, and extraction isolation tests pass locally; no staging security run exists."
+      "evidence": "Injected static and JavaScript SSRF/rebinding, redirect/origin, MIME, size, timeout, cancellation, transcript, and isolation-attestation tests pass locally; no staging security run exists."
     },
     {
       "id": "blockrun_compatible_baseline_improvement",

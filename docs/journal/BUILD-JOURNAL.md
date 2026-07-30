@@ -246,3 +246,47 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Deployment checked: checked-in staging/discovery state and local loopback hello smoke only. No public search deployment, live provider/model/browser, telemetry delivery, real payment, facilitator/wallet, cloud/IAM mutation, or USDC spend occurred.
 - Decision: N4.11 is complete, Stage 4 remains open, search is not the reference pattern, and Stage 5 is not authorized.
 - Exact next ticket: N4.12 — implement and test bounded query rewriting as the first named Stage 4 remediation. Paused until explicitly authorized.
+
+## 2026-07-30 — N4.12 bounded query rewriting
+
+- Added a versioned deterministic rewrite contract producing exactly two token-preserving forms: normalized identity and escaped exact phrase. Inputs are capped at 2,000 characters and 64 tokens; no model, synonym expansion, inferred facts, tools, provider syntax, or external state is used.
+- Integrated the immutable rewrite artifact into N4.5 federation planning. Its SHA-256, operation ID, timestamp, normalized response query, role mapping, and execution queries are revalidated before adapters can run.
+- Preserved the normalized original query for response assembly, ranking, citations, and synthesis while routing identity to primary and exact phrase to fallback.
+- Added strict schema fixtures and adversarial tests for determinism, bounds, token preservation, artifact substitution, and execution-query substitution.
+- Updated Stage 4 evidence truthfully: query rewriting is now `repository_verified` and remains `stagingVerified=false`. Stage 4, reference-pattern authorization, and Stage 5 remain blocked.
+- Validation: focused N4.12 passed 4/4; N4.5/N4.6 regressions passed 19/19. Canonical acceptance passed lint, typecheck, boundary, stack/environment, secret scan, N0.3 negative control, build, 30 schemas/56 fixtures, discovery generation, Stage 4 verification, and N1.1–N4.12 at 144/144 tests. Loopback staging smoke and diff checks passed.
+- No external network, live provider/model/browser, deployment, payment, wallet/facilitator, or USDC spend occurred.
+- Exact next ticket: N4.13 — implement isolated JavaScript retrieval as the next named Stage 4 remediation. Paused until explicitly authorized.
+
+## 2026-07-31 — N4.13 isolated JavaScript retrieval
+
+- Added a versioned JavaScript retrieval boundary that requires a fresh successful N4.3 static receipt with final robots allowance and renderable HTML/XHTML before an injected browser adapter can run.
+- Core-owned authorization restricts every browser request to the preflight origin and public DNS addresses, counts attempts before asynchronous resolution, and validates the adapter's connected-address and byte transcript exactly.
+- Required a sandboxed disposable browser process attestation with ephemeral storage, blocked service workers/downloads, denied permissions, and core-authorized network interception. Forged isolation or hidden requests reject output atomically.
+- Added absolute deadline and live cancellation races, request/network/rendered-byte ceilings, safe adapter failure codes, immutable receipts, strict schema fixtures, and adversarial tests.
+- Updated Stage 4 evidence truthfully: isolated JavaScript retrieval is now `repository_verified` and remains `stagingVerified=false`. No concrete browser dependency or adapter was installed; Stage 4, reference-pattern authorization, and Stage 5 remain blocked.
+- Validation: focused N4.13 passed 6/6. Canonical acceptance passed lint, typecheck, boundary, stack/environment, secret scan, N0.3 negative control, build, 31 schemas/58 fixtures, discovery generation, Stage 4 verification, and N1.1–N4.13 at 150/150 tests. Loopback staging smoke and diff checks passed.
+- No external network, live browser/provider/model, deployment, payment, wallet/facilitator, or USDC spend occurred.
+- Exact next ticket: N4.14 — implement disclosed cache freshness as the next named Stage 4 remediation. Paused until explicitly authorized.
+
+## 2026-07-30 — N4.14 disclosed cache freshness
+
+- Added a versioned cache disclosure on every search response with explicit `miss`, `fresh_hit`, and `stale_revalidated` outcomes bound by canonical request and response SHA-256 hashes.
+- Freshness lifetime, validated age, resident age, remaining freshness, and revalidation evidence are recomputed from strict ISO timestamps. Future-dated claims, expired fresh hits, non-stale or non-current revalidation, request/response substitution, and derived-field tampering fail closed.
+- The recorded pipeline truthfully emits `miss`; no durable result cache or staging cache behavior is claimed. Public HTTP output includes the disclosure while retaining `Cache-Control: no-store` for transport caching.
+- Added strict schema/fixtures, generated discovery/OpenAPI artifacts, executor-boundary verification, a decision record, and five focused adversarial/HTTP tests.
+- Updated Stage 4 evidence truthfully: disclosed cache freshness is now `repository_verified` and remains `stagingVerified=false`. Stage 4, reference-pattern authorization, and Stage 5 remain blocked.
+- Validation: focused N4.14 passed 5/5. Canonical acceptance passed lint, typecheck, boundary, stack/environment, secret scan, N0.3 negative control, build, 32 schemas/60 fixtures, discovery generation, Stage 4 verification, and N1.1–N4.14 at 155/155 tests. Loopback staging smoke and diff checks passed.
+- No external network, live cache/provider/model/browser, deployment, payment, wallet/facilitator, or USDC spend occurred.
+- Exact next ticket: select and explicitly authorize the next named Stage 4 remediation; no N4.15 scope is inferred here.
+
+## 2026-07-30 — N4.15 language and region options
+
+- Added provider-neutral `language` and `region` search controls with deterministic `en`/`US` defaults, strict canonical BCP 47 language validation, and recognized uppercase region validation.
+- Bound locale options into canonical HTTP request identity and cache request identity, propagated them through both retrieval paths, federation, assembly, and public search responses, and rejected executor output substitution before HTTP output or receipt construction.
+- Kept provider claims bounded: the recorded adapters carry the options, but no live Brave, Common Crawl, browser, or other provider was called or shown to honor them.
+- Added strict schema coverage, one invalid locale fixture, a decision record, and six focused tests covering defaults, malformed/non-canonical values, request/cache separation, response/cache binding, executor substitution, and end-to-end recorded propagation.
+- Updated Stage 4 evidence truthfully: language and region options are now `repository_verified` and remain `stagingVerified=false`. Stage 4, reference-pattern authorization, and Stage 5 remain blocked.
+- Validation: focused N4.15 passed 6/6. Canonical acceptance passed lint, typecheck, boundary, stack/environment, secret scan, N0.3 negative control, build, 32 schemas/61 fixtures, discovery generation, Stage 4 verification, and N1.1–N4.15 at 161/161 tests. Loopback staging smoke and diff checks passed.
+- No external network, live provider/model/browser, deployment, payment, wallet/facilitator, or USDC spend occurred.
+- Exact next ticket: select and explicitly authorize the next named Stage 4 remediation; no N4.16 scope is inferred here.

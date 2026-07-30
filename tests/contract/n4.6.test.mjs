@@ -5,6 +5,7 @@ import {
   assembleRetrievalCandidates,
   createRetrievalQualificationSnapshot,
   createRetrievalQueryPlan,
+  createQueryRewritePlan,
   runRetrievalFederation,
   verifySearchCitation,
 } from '../../dist/packages/contracts/src/index.js';
@@ -32,7 +33,8 @@ function qualification(evaluatedAt) {
 async function federation(candidateSets = {}) {
   const createdAt = new Date().toISOString();
   const qualificationValue = qualification(createdAt);
-  const plan = createRetrievalQueryPlan({ planId: ids.plan, operationId: ids.operation, query: 'clervo deterministic search', createdAt, deadlineAt: new Date(Date.parse(createdAt) + 5_000).toISOString(), qualification: qualificationValue });
+  const rewrite = createQueryRewritePlan({ rewriteId: 'rewrite_01JZ8Q5Y4QFD48Q24H6M5F4K9P', operationId: ids.operation, query: 'clervo deterministic search', createdAt });
+  const plan = createRetrievalQueryPlan({ planId: ids.plan, operationId: ids.operation, rewrite, createdAt, deadlineAt: new Date(Date.parse(createdAt) + 5_000).toISOString(), qualification: qualificationValue });
   const adapter = (pathId) => ({ async execute() { return { rawResponse: { pathId }, candidates: candidateSets[pathId] ?? [] }; } });
   const report = await runRetrievalFederation({ federationId: ids.federation, plan, qualification: qualificationValue, adapters: { retrieval_primary: adapter('retrieval_primary'), retrieval_fallback: adapter('retrieval_fallback') } });
   return { qualification: qualificationValue, report };

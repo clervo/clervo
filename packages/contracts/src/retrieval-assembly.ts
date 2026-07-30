@@ -5,6 +5,7 @@ import type { RetrievalFederationCandidate, RetrievalFederationReport } from './
 import { createRetrievalQualificationSnapshot, type RetrievalPathDecision, type RetrievalQualificationSnapshot } from './retrieval.js';
 import { hashJson } from './receipt.js';
 import { createSearchResponse, type SearchResponse } from './search.js';
+import { normalizeSearchLocaleOptions } from './search-locale.js';
 
 const maximumAssemblyCandidates = 20;
 const maximumAssemblyWindowMs = 30_000;
@@ -52,6 +53,8 @@ export interface RetrievalAssemblyReport {
   federationId: string;
   operationId: string;
   query: string;
+  language: string;
+  region: string;
   createdAt: string;
   deadlineAt: string;
   qualificationId: string;
@@ -138,6 +141,8 @@ function validateQualification(input: AssembleRetrievalCandidatesInput): Readonl
 function validateFederation(report: RetrievalFederationReport, createdMs: number): void {
   if (report.contractVersion !== CONTRACT_VERSION || !/^fed_[A-Za-z0-9]{20,64}$/u.test(report.federationId)) throw new Error('invalid_assembly_federation');
   if (!/^op_[A-Za-z0-9]{20,64}$/u.test(report.operationId) || report.query.length < 1 || report.query.length > 2_000) throw new Error('invalid_assembly_federation');
+  const locale = normalizeSearchLocaleOptions(report);
+  if (locale.language !== report.language || locale.region !== report.region) throw new Error('invalid_assembly_federation');
   if (report.attempts.length !== 2 || report.attempts[0]?.role !== 'primary' || report.attempts[1]?.role !== 'fallback') throw new Error('invalid_assembly_federation');
   if (report.attempts.some((attempt) => timestamp(attempt.completedAt, 'assembly_attempt_completed_at') > createdMs)) throw new Error('invalid_assembly_federation');
   const observations = new Set<string>();
@@ -243,9 +248,9 @@ export async function assembleRetrievalCandidates(input: AssembleRetrievalCandid
       relevanceScore: tokenCoverage(input.federation.query, `${success.candidate.title}\n${success.candidate.snippet}\n${item.extraction.normalizedText}`),
     };
   });
-  const ranked = createSearchResponse({ operationId: input.federation.operationId, query: input.federation.query, now: input.createdAt, maxResults: input.maximumResults, evidence });
+  const ranked = createSearchResponse({ operationId: input.federation.operationId, query: input.federation.query, language: input.federation.language, region: input.federation.region, now: input.createdAt, maxResults: input.maximumResults, evidence });
   const citations = ranked.results.map((result) => ({ citationId: deterministicId('cite', input.assemblyId, selected.findIndex((candidate) => deterministicId('sr', input.assemblyId, selected.indexOf(candidate)) === result.resultId)), resultId: result.resultId, canonicalUrl: result.canonicalUrl, quote: result.evidenceText.slice(0, Math.min(1_000, result.evidenceText.length)), startOffset: 0, endOffset: Math.min(1_000, result.evidenceText.length) }));
-  const searchResponse = createSearchResponse({ operationId: input.federation.operationId, query: input.federation.query, now: input.createdAt, maxResults: input.maximumResults, evidence, citations });
+  const searchResponse = createSearchResponse({ operationId: input.federation.operationId, query: input.federation.query, language: input.federation.language, region: input.federation.region, now: input.createdAt, maxResults: input.maximumResults, evidence, citations });
   const rankedByExtraction = new Map<string, { resultId: string; citationId: string }>();
   for (const result of searchResponse.results) {
     const success = successes.find((item) => deterministicId('sr', input.assemblyId, selected.indexOf(item.candidate)) === result.resultId)!;
@@ -270,6 +275,8 @@ export async function assembleRetrievalCandidates(input: AssembleRetrievalCandid
     federationId: input.federation.federationId,
     operationId: input.federation.operationId,
     query: input.federation.query,
+    language: input.federation.language,
+    region: input.federation.region,
     createdAt: input.createdAt,
     deadlineAt: input.deadlineAt,
     qualificationId: qualification.qualificationId,

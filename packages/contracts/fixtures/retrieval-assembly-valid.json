@@ -17,66 +17,97 @@
     "extractedCount": 1,
     "retainedCount": 1,
     "rankedCount": 1,
-    "candidateRecords": [{
-      "observationId": "obs_01JZ8Q5Y4QFD48Q24H6M5F4K9P_001_primary",
-      "pathId": "retrieval_primary",
-      "providerId": "provider_primary",
-      "sourceOrdinal": 1,
-      "rawResponseSha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-      "requestedUrl": "https://example.com/article",
-      "outcome": "ranked",
-      "fetchId": "fetch_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
-      "extractionId": "extract_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
-      "finalUrl": "https://example.com/article",
-      "bodySha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
-      "normalizedTextSha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
-      "similarityBasisPoints": 0,
-      "resultId": "sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
-      "citationId": "cite_01JZ8Q5Y4QFD48Q24H6M5F4K9P001"
-    }],
+    "candidateRecords": [
+      {
+        "observationId": "obs_01JZ8Q5Y4QFD48Q24H6M5F4K9P_001_primary",
+        "pathId": "retrieval_primary",
+        "providerId": "provider_primary",
+        "sourceOrdinal": 1,
+        "rawResponseSha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "requestedUrl": "https://example.com/article",
+        "outcome": "ranked",
+        "fetchId": "fetch_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
+        "extractionId": "extract_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
+        "finalUrl": "https://example.com/article",
+        "bodySha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "normalizedTextSha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "similarityBasisPoints": 0,
+        "resultId": "sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
+        "citationId": "cite_01JZ8Q5Y4QFD48Q24H6M5F4K9P001"
+      }
+    ],
     "searchResponse": {
       "contractVersion": "2026-07-29.1",
       "operationId": "op_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
       "query": "clervo deterministic search",
       "generatedAt": "2026-07-30T23:00:00.000Z",
       "deduplicatedCount": 0,
-      "results": [{
-        "resultId": "sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
-        "sourceId": "adapter_primary",
-        "url": "https://example.com/article",
-        "canonicalUrl": "https://example.com/article",
-        "hostname": "example.com",
-        "title": "Clervo deterministic search",
-        "snippet": "Bounded evidence.",
-        "evidenceText": "Clervo deterministic search evidence.",
-        "retrievedAt": "2026-07-30T22:59:59.000Z",
-        "authorityScore": 60,
-        "relevanceScore": 100,
-        "rank": 1,
-        "score": { "freshness": 100, "authority": 60, "relevance": 100, "diversity": 100, "totalBasisPoints": 9000 }
-      }],
-      "citations": [{
-        "citationId": "cite_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
-        "resultId": "sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
-        "canonicalUrl": "https://example.com/article",
-        "quote": "Clervo deterministic search evidence.",
-        "startOffset": 0,
-        "endOffset": 37
-      }]
+      "results": [
+        {
+          "resultId": "sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
+          "sourceId": "adapter_primary",
+          "url": "https://example.com/article",
+          "canonicalUrl": "https://example.com/article",
+          "hostname": "example.com",
+          "title": "Clervo deterministic search",
+          "snippet": "Bounded evidence.",
+          "evidenceText": "Clervo deterministic search evidence.",
+          "retrievedAt": "2026-07-30T22:59:59.000Z",
+          "authorityScore": 60,
+          "relevanceScore": 100,
+          "rank": 1,
+          "score": {
+            "freshness": 100,
+            "authority": 60,
+            "relevance": 100,
+            "diversity": 100,
+            "totalBasisPoints": 9000
+          }
+        }
+      ],
+      "citations": [
+        {
+          "citationId": "cite_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
+          "resultId": "sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
+          "canonicalUrl": "https://example.com/article",
+          "quote": "Clervo deterministic search evidence.",
+          "startOffset": 0,
+          "endOffset": 37
+        }
+      ],
+      "cache": {
+        "policyId": "search_cache_disclosure_v1",
+        "requestSha256": "sha256:894f016c704d87480abdd9380cd26ba340f3b93e77ceace45524c3608e1e4dc4",
+        "responseSha256": "sha256:6e919dd9d83971dd5bfb24cac42966134cdd2bfab5d66e9c6abd5ae92259d328",
+        "observedAt": "2026-07-30T23:00:00.000Z",
+        "maximumResults": 20,
+        "outcome": "miss",
+        "freshnessLifetimeSeconds": 0,
+        "ageSeconds": 0,
+        "residentAgeSeconds": 0,
+        "freshnessRemainingSeconds": 0,
+        "revalidationPerformed": false
+      },
+      "language": "en",
+      "region": "US"
     },
-    "provenance": [{
-      "resultId": "sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
-      "citationId": "cite_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
-      "observationId": "obs_01JZ8Q5Y4QFD48Q24H6M5F4K9P_001_primary",
-      "pathId": "retrieval_primary",
-      "providerId": "provider_primary",
-      "sourceOrdinal": 1,
-      "rawResponseSha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-      "fetchId": "fetch_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
-      "extractionId": "extract_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
-      "sourceBodySha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
-      "normalizedTextSha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-    }],
-    "synthesisPerformed": false
+    "provenance": [
+      {
+        "resultId": "sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
+        "citationId": "cite_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
+        "observationId": "obs_01JZ8Q5Y4QFD48Q24H6M5F4K9P_001_primary",
+        "pathId": "retrieval_primary",
+        "providerId": "provider_primary",
+        "sourceOrdinal": 1,
+        "rawResponseSha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "fetchId": "fetch_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
+        "extractionId": "extract_01JZ8Q5Y4QFD48Q24H6M5F4K9P001",
+        "sourceBodySha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "normalizedTextSha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    ],
+    "synthesisPerformed": false,
+    "language": "en",
+    "region": "US"
   }
 }

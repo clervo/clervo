@@ -1,0 +1,311 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/javascript-retrieval-receipt.schema.json",
+  "title": "Clervo isolated JavaScript retrieval receipt",
+  "$defs": {
+    "request": {
+      "type": "object",
+      "required": [
+        "url",
+        "resourceType",
+        "resolvedAddresses",
+        "connectedAddress",
+        "status",
+        "transferredBytes"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        "resourceType": {
+          "enum": [
+            "document",
+            "stylesheet",
+            "script",
+            "image",
+            "font",
+            "xhr",
+            "fetch",
+            "other"
+          ]
+        },
+        "resolvedAddresses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "oneOf": [
+              {
+                "format": "ipv4"
+              },
+              {
+                "format": "ipv6"
+              }
+            ]
+          }
+        },
+        "connectedAddress": {
+          "type": "string",
+          "oneOf": [
+            {
+              "format": "ipv4"
+            },
+            {
+              "format": "ipv6"
+            }
+          ]
+        },
+        "status": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599
+        },
+        "transferredBytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "isolation": {
+      "type": "object",
+      "required": [
+        "runtime",
+        "lifecycle",
+        "sandboxed",
+        "storage",
+        "serviceWorkers",
+        "downloads",
+        "permissions",
+        "networkInterception"
+      ],
+      "properties": {
+        "runtime": {
+          "const": "browser_process"
+        },
+        "lifecycle": {
+          "const": "disposable_per_render"
+        },
+        "sandboxed": {
+          "const": true
+        },
+        "storage": {
+          "const": "ephemeral"
+        },
+        "serviceWorkers": {
+          "const": "blocked"
+        },
+        "downloads": {
+          "const": "blocked"
+        },
+        "permissions": {
+          "const": "denied"
+        },
+        "networkInterception": {
+          "const": "core_authorized_same_origin"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "contractVersion",
+    "renderId",
+    "preflightFetchId",
+    "preflightBodySha256",
+    "requestedUrl",
+    "startedAt",
+    "completedAt",
+    "deadlineAt",
+    "policyId",
+    "outcome",
+    "invocation",
+    "requests"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "2026-07-29.1"
+    },
+    "renderId": {
+      "type": "string",
+      "pattern": "^render_[A-Za-z0-9]{20,64}$"
+    },
+    "preflightFetchId": {
+      "type": "string",
+      "pattern": "^fetch_[A-Za-z0-9]{20,64}$"
+    },
+    "preflightBodySha256": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "requestedUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://"
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "deadlineAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "policyId": {
+      "const": "isolated_same_origin_browser_v1"
+    },
+    "outcome": {
+      "enum": [
+        "succeeded",
+        "rejected"
+      ]
+    },
+    "invocation": {
+      "enum": [
+        "succeeded",
+        "failed",
+        "deadline_exceeded",
+        "cancelled",
+        "output_rejected"
+      ]
+    },
+    "failureCode": {
+      "enum": [
+        "adapter_failed",
+        "deadline_exceeded",
+        "caller_cancelled",
+        "invalid_renderer_output"
+      ]
+    },
+    "finalUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://"
+    },
+    "contentType": {
+      "enum": [
+        "text/html",
+        "application/xhtml+xml"
+      ]
+    },
+    "contentLengthBytes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2097152
+    },
+    "bodySha256": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "requestCount": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 64
+    },
+    "networkBytes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 16777216
+    },
+    "requests": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/request"
+      }
+    },
+    "isolation": {
+      "$ref": "#/$defs/isolation"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "succeeded"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "required": [
+          "finalUrl",
+          "contentType",
+          "contentLengthBytes",
+          "bodySha256",
+          "requestCount",
+          "networkBytes",
+          "isolation"
+        ],
+        "properties": {
+          "invocation": {
+            "const": "succeeded"
+          },
+          "failureCode": false,
+          "finalUrl": {},
+          "contentType": {},
+          "contentLengthBytes": {},
+          "bodySha256": {},
+          "requestCount": {},
+          "networkBytes": {},
+          "requests": {
+            "type": "array",
+            "minItems": 1
+          },
+          "isolation": {}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "rejected"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "required": [
+          "failureCode"
+        ],
+        "properties": {
+          "invocation": {
+            "enum": [
+              "failed",
+              "deadline_exceeded",
+              "cancelled",
+              "output_rejected"
+            ]
+          },
+          "failureCode": {},
+          "finalUrl": false,
+          "contentType": false,
+          "contentLengthBytes": false,
+          "bodySha256": false,
+          "requestCount": false,
+          "networkBytes": false,
+          "isolation": false,
+          "requests": {
+            "type": "array",
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

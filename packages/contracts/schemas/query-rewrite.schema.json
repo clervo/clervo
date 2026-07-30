@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/query-rewrite.schema.json",
+  "title": "Clervo bounded deterministic query rewrite plan",
+  "$defs": {
+    "variant": {
+      "type": "object",
+      "required": ["variantId", "kind", "query", "tokenCount"],
+      "properties": {
+        "variantId": { "enum": ["identity", "exact_phrase"] },
+        "kind": { "enum": ["identity", "exact_phrase"] },
+        "query": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "tokenCount": { "type": "integer", "minimum": 1, "maximum": 64 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "rewriteId", "operationId", "originalQuery", "normalizedQuery", "createdAt", "policy", "variants"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "rewriteId": { "type": "string", "pattern": "^rewrite_[A-Za-z0-9]{20,64}$" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "originalQuery": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "normalizedQuery": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "policy": { "const": "deterministic_token_preserving_v1" },
+    "variants": {
+      "type": "array",
+      "prefixItems": [
+        { "type": "object", "$ref": "#/$defs/variant", "properties": { "variantId": { "const": "identity" }, "kind": { "const": "identity" } } },
+        { "type": "object", "$ref": "#/$defs/variant", "properties": { "variantId": { "const": "exact_phrase" }, "kind": { "const": "exact_phrase" } } }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    }
+  },
+  "additionalProperties": false
+}

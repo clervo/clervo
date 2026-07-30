@@ -1,4 +1,6 @@
 import { CONTRACT_VERSION } from './types.js';
+import { createSearchCacheDisclosure, type SearchCacheDisclosure, type SearchCacheEvidence } from './search-cache.js';
+import { normalizeSearchLocaleOptions } from './search-locale.js';
 
 const TRACKING_PARAMETERS = new Set([
   'dclid',
@@ -57,10 +59,13 @@ export interface SearchResponse {
   contractVersion: typeof CONTRACT_VERSION;
   operationId: string;
   query: string;
+  language: string;
+  region: string;
   generatedAt: string;
   deduplicatedCount: number;
   results: readonly Readonly<SearchResult>[];
   citations: readonly Readonly<SearchCitation>[];
+  cache: Readonly<SearchCacheDisclosure>;
 }
 
 export interface RankSearchInput {
@@ -72,7 +77,10 @@ export interface RankSearchInput {
 export interface CreateSearchResponseInput extends RankSearchInput {
   operationId: string;
   query: string;
+  language?: string;
+  region?: string;
   citations?: readonly SearchCitation[];
+  cache?: SearchCacheEvidence;
 }
 
 function assertText(value: string, name: string, maximum: number): void {
@@ -209,6 +217,7 @@ export function createSearchResponse(input: CreateSearchResponseInput): Readonly
   if (!/^op_[A-Za-z0-9]{20,64}$/u.test(input.operationId)) throw new Error('invalid_search_operation_id');
   assertText(input.query, 'search_query', 2_000);
   timestamp(input.now, 'search_now');
+  const locale = normalizeSearchLocaleOptions(input);
   const results = rankSearchEvidence(input);
   const uniqueCanonicalUrls = new Set(input.evidence.map((evidence) => canonicalizeSearchUrl(evidence.url)));
   const citations = input.citations ?? [];
@@ -220,13 +229,15 @@ export function createSearchResponse(input: CreateSearchResponseInput): Readonly
     const verification = verifySearchCitation(citation, results);
     if (!verification.valid) throw new Error(verification.code);
   }
-  return Object.freeze({
+  const response = {
     contractVersion: CONTRACT_VERSION,
     operationId: input.operationId,
     query: input.query,
+    ...locale,
     generatedAt: input.now,
     deduplicatedCount: input.evidence.length - uniqueCanonicalUrls.size,
     results,
     citations: Object.freeze(citations.map((citation) => Object.freeze({ ...citation }))),
-  });
+  };
+  return Object.freeze({ ...response, cache: createSearchCacheDisclosure(response, input.maxResults, input.cache) });
 }

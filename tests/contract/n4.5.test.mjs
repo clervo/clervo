@@ -3,6 +3,7 @@ import test from 'node:test';
 import {
   createRetrievalQualificationSnapshot,
   createRetrievalQueryPlan,
+  createQueryRewritePlan,
   runRetrievalFederation,
 } from '../../dist/packages/contracts/src/index.js';
 
@@ -11,6 +12,7 @@ const ids = {
   plan: 'plan_01JZ8Q5Y4QFD48Q24H6M5F4K9P',
   operation: 'op_01JZ8Q5Y4QFD48Q24H6M5F4K9P',
   federation: 'fed_01JZ8Q5Y4QFD48Q24H6M5F4K9P',
+  rewrite: 'rewrite_01JZ8Q5Y4QFD48Q24H6M5F4K9P',
 };
 
 function iso(offsetMs = 0) { return new Date(Date.now() + offsetMs).toISOString(); }
@@ -31,7 +33,8 @@ function qualification(evaluatedAt = iso()) {
 
 function plan(deadlineMs = 1_000) {
   const createdAt = iso();
-  return createRetrievalQueryPlan({ planId: ids.plan, operationId: ids.operation, query: '  Clervo   search  ', createdAt, deadlineAt: new Date(Date.parse(createdAt) + deadlineMs).toISOString(), qualification: qualification(createdAt) });
+  const rewrite = createQueryRewritePlan({ rewriteId: ids.rewrite, operationId: ids.operation, query: '  Clervo   search  ', createdAt });
+  return createRetrievalQueryPlan({ planId: ids.plan, operationId: ids.operation, rewrite, createdAt, deadlineAt: new Date(Date.parse(createdAt) + deadlineMs).toISOString(), qualification: qualification(createdAt) });
 }
 
 function runInput(planValue = plan(), overrides = {}) {
@@ -47,22 +50,27 @@ function adapter(pathId, delayMs = 0) {
   };
 }
 
-test('query planning normalizes one identity query, revalidates qualification, hashes it, and orders primary then fallback', () => {
+test('query planning binds deterministic rewrite variants, revalidates qualification, and orders primary then fallback', () => {
   const result = plan();
   assert.equal(result.query, 'Clervo search');
   assert.deepEqual(result.executions.map((item) => item.role), ['primary', 'fallback']);
-  assert.equal(result.executions.every((item) => item.query === result.query), true);
+  assert.deepEqual(result.executions.map((item) => item.query), ['Clervo search', '"Clervo search"']);
+  assert.deepEqual(result.executions.map((item) => item.rewriteVariantId), ['identity', 'exact_phrase']);
   assert.match(result.qualificationSha256, /^sha256:[a-f0-9]{64}$/u);
+  assert.match(result.rewriteSha256, /^sha256:[a-f0-9]{64}$/u);
   assert.equal(Object.isFrozen(result.executions[0]), true);
 });
 
 test('planning fails closed for a closed two-path gate, stale qualification, and unsafe deadline window', () => {
   const createdAt = iso();
   const good = qualification(createdAt);
+  const rewrite = createQueryRewritePlan({ rewriteId: ids.rewrite, operationId: ids.operation, query: 'query', createdAt });
   const closed = { ...good, paths: good.paths.map((path, index) => index === 1 ? { ...path, failureDomain: good.paths[0].failureDomain } : path) };
-  assert.throws(() => createRetrievalQueryPlan({ planId: ids.plan, operationId: ids.operation, query: 'query', createdAt, deadlineAt: new Date(Date.parse(createdAt) + 1_000).toISOString(), qualification: closed }), /federation_qualification_gate_closed/u);
-  assert.throws(() => createRetrievalQueryPlan({ planId: ids.plan, operationId: ids.operation, query: 'query', createdAt: new Date(Date.parse(createdAt) + 61_000).toISOString(), deadlineAt: new Date(Date.parse(createdAt) + 62_000).toISOString(), qualification: good }), /federation_qualification_gate_closed/u);
-  assert.throws(() => createRetrievalQueryPlan({ planId: ids.plan, operationId: ids.operation, query: 'query', createdAt, deadlineAt: new Date(Date.parse(createdAt) + 30_001).toISOString(), qualification: good }), /invalid_federation_deadline_window/u);
+  assert.throws(() => createRetrievalQueryPlan({ planId: ids.plan, operationId: ids.operation, rewrite, createdAt, deadlineAt: new Date(Date.parse(createdAt) + 1_000).toISOString(), qualification: closed }), /federation_qualification_gate_closed/u);
+  const staleCreatedAt = new Date(Date.parse(createdAt) + 61_000).toISOString();
+  const staleRewrite = createQueryRewritePlan({ rewriteId: ids.rewrite, operationId: ids.operation, query: 'query', createdAt: staleCreatedAt });
+  assert.throws(() => createRetrievalQueryPlan({ planId: ids.plan, operationId: ids.operation, rewrite: staleRewrite, createdAt: staleCreatedAt, deadlineAt: new Date(Date.parse(createdAt) + 62_000).toISOString(), qualification: good }), /federation_qualification_gate_closed/u);
+  assert.throws(() => createRetrievalQueryPlan({ planId: ids.plan, operationId: ids.operation, rewrite, createdAt, deadlineAt: new Date(Date.parse(createdAt) + 30_001).toISOString(), qualification: good }), /invalid_federation_deadline_window/u);
 });
 
 test('federation starts both paths without sequential fallback and preserves plan-order provenance', async () => {

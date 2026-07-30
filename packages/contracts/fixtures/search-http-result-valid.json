@@ -17,7 +17,22 @@
         "generatedAt": "2026-07-30T19:00:00.000Z",
         "deduplicatedCount": 0,
         "results": [],
-        "citations": []
+        "citations": [],
+        "cache": {
+          "policyId": "search_cache_disclosure_v1",
+          "requestSha256": "sha256:41aad06b0f6551cf82f3e1beaf9ec24f663ba86c632e4794ad5788eab59ef038",
+          "responseSha256": "sha256:49106f69371b26b0c0565937fad68e7edb99cb011e9e132365cc3f6337da0319",
+          "observedAt": "2026-07-30T19:00:00.000Z",
+          "maximumResults": 10,
+          "outcome": "miss",
+          "freshnessLifetimeSeconds": 0,
+          "ageSeconds": 0,
+          "residentAgeSeconds": 0,
+          "freshnessRemainingSeconds": 0,
+          "revalidationPerformed": false
+        },
+        "language": "en",
+        "region": "US"
       }
     }
   }

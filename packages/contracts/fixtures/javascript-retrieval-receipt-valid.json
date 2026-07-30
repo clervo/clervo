@@ -1,0 +1,25 @@
+{
+  "schema": "javascript-retrieval-receipt",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "renderId": "render_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "preflightFetchId": "fetch_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "preflightBodySha256": "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+    "requestedUrl": "https://example.com/article",
+    "startedAt": "2026-07-31T00:00:00.000Z",
+    "completedAt": "2026-07-31T00:00:00.100Z",
+    "deadlineAt": "2026-07-31T00:00:05.000Z",
+    "policyId": "isolated_same_origin_browser_v1",
+    "outcome": "succeeded",
+    "invocation": "succeeded",
+    "finalUrl": "https://example.com/article",
+    "contentType": "text/html",
+    "contentLengthBytes": 18,
+    "bodySha256": "sha256:fca81d5ad7e2c8ebcbca87e9bf7fda766292033fb998034256656eebd979023a",
+    "requestCount": 1,
+    "networkBytes": 256,
+    "requests": [{ "url": "https://example.com/article", "resourceType": "document", "resolvedAddresses": ["93.184.216.34"], "connectedAddress": "93.184.216.34", "status": 200, "transferredBytes": 256 }],
+    "isolation": { "runtime": "browser_process", "lifecycle": "disposable_per_render", "sandboxed": true, "storage": "ephemeral", "serviceWorkers": "blocked", "downloads": "blocked", "permissions": "denied", "networkInterception": "core_authorized_same_origin" }
+  }
+}

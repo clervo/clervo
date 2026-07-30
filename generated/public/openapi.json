@@ -1056,6 +1056,317 @@
         },
         "additionalProperties": false
       },
+      "JavascriptRetrievalReceipt": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/javascript-retrieval-receipt.schema.json",
+        "title": "Clervo isolated JavaScript retrieval receipt",
+        "$defs": {
+          "request": {
+            "type": "object",
+            "required": [
+              "url",
+              "resourceType",
+              "resolvedAddresses",
+              "connectedAddress",
+              "status",
+              "transferredBytes"
+            ],
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https?://"
+              },
+              "resourceType": {
+                "enum": [
+                  "document",
+                  "stylesheet",
+                  "script",
+                  "image",
+                  "font",
+                  "xhr",
+                  "fetch",
+                  "other"
+                ]
+              },
+              "resolvedAddresses": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "oneOf": [
+                    {
+                      "format": "ipv4"
+                    },
+                    {
+                      "format": "ipv6"
+                    }
+                  ]
+                }
+              },
+              "connectedAddress": {
+                "type": "string",
+                "oneOf": [
+                  {
+                    "format": "ipv4"
+                  },
+                  {
+                    "format": "ipv6"
+                  }
+                ]
+              },
+              "status": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 599
+              },
+              "transferredBytes": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false
+          },
+          "isolation": {
+            "type": "object",
+            "required": [
+              "runtime",
+              "lifecycle",
+              "sandboxed",
+              "storage",
+              "serviceWorkers",
+              "downloads",
+              "permissions",
+              "networkInterception"
+            ],
+            "properties": {
+              "runtime": {
+                "const": "browser_process"
+              },
+              "lifecycle": {
+                "const": "disposable_per_render"
+              },
+              "sandboxed": {
+                "const": true
+              },
+              "storage": {
+                "const": "ephemeral"
+              },
+              "serviceWorkers": {
+                "const": "blocked"
+              },
+              "downloads": {
+                "const": "blocked"
+              },
+              "permissions": {
+                "const": "denied"
+              },
+              "networkInterception": {
+                "const": "core_authorized_same_origin"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "renderId",
+          "preflightFetchId",
+          "preflightBodySha256",
+          "requestedUrl",
+          "startedAt",
+          "completedAt",
+          "deadlineAt",
+          "policyId",
+          "outcome",
+          "invocation",
+          "requests"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "renderId": {
+            "type": "string",
+            "pattern": "^render_[A-Za-z0-9]{20,64}$"
+          },
+          "preflightFetchId": {
+            "type": "string",
+            "pattern": "^fetch_[A-Za-z0-9]{20,64}$"
+          },
+          "preflightBodySha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "requestedUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deadlineAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "policyId": {
+            "const": "isolated_same_origin_browser_v1"
+          },
+          "outcome": {
+            "enum": [
+              "succeeded",
+              "rejected"
+            ]
+          },
+          "invocation": {
+            "enum": [
+              "succeeded",
+              "failed",
+              "deadline_exceeded",
+              "cancelled",
+              "output_rejected"
+            ]
+          },
+          "failureCode": {
+            "enum": [
+              "adapter_failed",
+              "deadline_exceeded",
+              "caller_cancelled",
+              "invalid_renderer_output"
+            ]
+          },
+          "finalUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "contentType": {
+            "enum": [
+              "text/html",
+              "application/xhtml+xml"
+            ]
+          },
+          "contentLengthBytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2097152
+          },
+          "bodySha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "requestCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 64
+          },
+          "networkBytes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16777216
+          },
+          "requests": {
+            "type": "array",
+            "maxItems": 64,
+            "items": {
+              "$ref": "#/$defs/request"
+            }
+          },
+          "isolation": {
+            "$ref": "#/$defs/isolation"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "succeeded"
+                }
+              },
+              "required": [
+                "outcome"
+              ]
+            },
+            "then": {
+              "required": [
+                "finalUrl",
+                "contentType",
+                "contentLengthBytes",
+                "bodySha256",
+                "requestCount",
+                "networkBytes",
+                "isolation"
+              ],
+              "properties": {
+                "invocation": {
+                  "const": "succeeded"
+                },
+                "failureCode": false,
+                "finalUrl": {},
+                "contentType": {},
+                "contentLengthBytes": {},
+                "bodySha256": {},
+                "requestCount": {},
+                "networkBytes": {},
+                "requests": {
+                  "type": "array",
+                  "minItems": 1
+                },
+                "isolation": {}
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "rejected"
+                }
+              },
+              "required": [
+                "outcome"
+              ]
+            },
+            "then": {
+              "required": [
+                "failureCode"
+              ],
+              "properties": {
+                "invocation": {
+                  "enum": [
+                    "failed",
+                    "deadline_exceeded",
+                    "cancelled",
+                    "output_rejected"
+                  ]
+                },
+                "failureCode": {},
+                "finalUrl": false,
+                "contentType": false,
+                "contentLengthBytes": false,
+                "bodySha256": false,
+                "requestCount": false,
+                "networkBytes": false,
+                "isolation": false,
+                "requests": {
+                  "type": "array",
+                  "maxItems": 0
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      },
       "LedgerTransaction": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ledger-transaction.schema.json",
@@ -2424,6 +2735,121 @@
         },
         "additionalProperties": false
       },
+      "QueryRewrite": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/query-rewrite.schema.json",
+        "title": "Clervo bounded deterministic query rewrite plan",
+        "$defs": {
+          "variant": {
+            "type": "object",
+            "required": [
+              "variantId",
+              "kind",
+              "query",
+              "tokenCount"
+            ],
+            "properties": {
+              "variantId": {
+                "enum": [
+                  "identity",
+                  "exact_phrase"
+                ]
+              },
+              "kind": {
+                "enum": [
+                  "identity",
+                  "exact_phrase"
+                ]
+              },
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "tokenCount": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 64
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "rewriteId",
+          "operationId",
+          "originalQuery",
+          "normalizedQuery",
+          "createdAt",
+          "policy",
+          "variants"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "rewriteId": {
+            "type": "string",
+            "pattern": "^rewrite_[A-Za-z0-9]{20,64}$"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "originalQuery": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "normalizedQuery": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "policy": {
+            "const": "deterministic_token_preserving_v1"
+          },
+          "variants": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "object",
+                "$ref": "#/$defs/variant",
+                "properties": {
+                  "variantId": {
+                    "const": "identity"
+                  },
+                  "kind": {
+                    "const": "identity"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "$ref": "#/$defs/variant",
+                "properties": {
+                  "variantId": {
+                    "const": "exact_phrase"
+                  },
+                  "kind": {
+                    "const": "exact_phrase"
+                  }
+                }
+              }
+            ],
+            "items": false,
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "additionalProperties": false
+      },
       "Quote": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://api.clervo.dev/schemas/2026-07-29.1/quote.schema.json",
@@ -2686,10 +3112,13 @@
               "contractVersion",
               "operationId",
               "query",
+              "language",
+              "region",
               "generatedAt",
               "deduplicatedCount",
               "results",
-              "citations"
+              "citations",
+              "cache"
             ],
             "properties": {
               "contractVersion": {
@@ -2703,6 +3132,16 @@
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 2000
+              },
+              "language": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 35,
+                "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+              },
+              "region": {
+                "type": "string",
+                "pattern": "^[A-Z]{2}$"
               },
               "generatedAt": {
                 "type": "string",
@@ -2725,6 +3164,9 @@
                 "items": {
                   "$ref": "#/$defs/citation"
                 }
+              },
+              "cache": {
+                "$ref": "search-cache-disclosure.schema.json"
               }
             },
             "additionalProperties": false
@@ -3104,6 +3546,8 @@
           "federationId",
           "operationId",
           "query",
+          "language",
+          "region",
           "createdAt",
           "deadlineAt",
           "qualificationId",
@@ -3139,6 +3583,16 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 2000
+          },
+          "language": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 35,
+            "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+          },
+          "region": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
           },
           "createdAt": {
             "type": "string",
@@ -3402,9 +3856,13 @@
           "planId",
           "operationId",
           "query",
+          "language",
+          "region",
           "deadlineAt",
           "qualificationId",
           "qualificationSha256",
+          "rewriteId",
+          "rewriteSha256",
           "outcome",
           "attempts",
           "candidates"
@@ -3430,6 +3888,16 @@
             "minLength": 1,
             "maxLength": 2000
           },
+          "language": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 35,
+            "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+          },
+          "region": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
           "deadlineAt": {
             "type": "string",
             "format": "date-time"
@@ -3439,6 +3907,14 @@
             "pattern": "^rqual_[A-Za-z0-9]{20,64}$"
           },
           "qualificationSha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "rewriteId": {
+            "type": "string",
+            "pattern": "^rewrite_[A-Za-z0-9]{20,64}$"
+          },
+          "rewriteSha256": {
             "type": "string",
             "pattern": "^sha256:[a-f0-9]{64}$"
           },
@@ -4721,6 +5197,189 @@
         ],
         "additionalProperties": false
       },
+      "SearchCacheDisclosure": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/search-cache-disclosure.schema.json",
+        "title": "Clervo search cache freshness and revalidation disclosure",
+        "type": "object",
+        "required": [
+          "policyId",
+          "outcome",
+          "requestSha256",
+          "responseSha256",
+          "observedAt",
+          "maximumResults",
+          "freshnessLifetimeSeconds",
+          "ageSeconds",
+          "residentAgeSeconds",
+          "freshnessRemainingSeconds",
+          "revalidationPerformed"
+        ],
+        "properties": {
+          "policyId": {
+            "const": "search_cache_disclosure_v1"
+          },
+          "outcome": {
+            "enum": [
+              "miss",
+              "fresh_hit",
+              "stale_revalidated"
+            ]
+          },
+          "requestSha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "responseSha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "maximumResults": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "freshnessLifetimeSeconds": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 31536000
+          },
+          "ageSeconds": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 31536000
+          },
+          "residentAgeSeconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "freshnessRemainingSeconds": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 31536000
+          },
+          "revalidationPerformed": {
+            "type": "boolean"
+          },
+          "storedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "previousValidatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "miss"
+                }
+              },
+              "required": [
+                "outcome"
+              ]
+            },
+            "then": {
+              "properties": {
+                "freshnessLifetimeSeconds": {
+                  "const": 0
+                },
+                "ageSeconds": {
+                  "const": 0
+                },
+                "residentAgeSeconds": {
+                  "const": 0
+                },
+                "freshnessRemainingSeconds": {
+                  "const": 0
+                },
+                "revalidationPerformed": {
+                  "const": false
+                },
+                "storedAt": false,
+                "validatedAt": false,
+                "previousValidatedAt": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "fresh_hit"
+                }
+              },
+              "required": [
+                "outcome"
+              ]
+            },
+            "then": {
+              "required": [
+                "storedAt",
+                "validatedAt"
+              ],
+              "properties": {
+                "freshnessLifetimeSeconds": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "freshnessRemainingSeconds": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "revalidationPerformed": {
+                  "const": false
+                },
+                "previousValidatedAt": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "stale_revalidated"
+                }
+              },
+              "required": [
+                "outcome"
+              ]
+            },
+            "then": {
+              "required": [
+                "storedAt",
+                "validatedAt",
+                "previousValidatedAt"
+              ],
+              "properties": {
+                "freshnessLifetimeSeconds": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "ageSeconds": {
+                  "type": "integer",
+                  "const": 0
+                },
+                "revalidationPerformed": {
+                  "const": true
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      },
       "SearchHttpRequest": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://api.clervo.dev/schemas/2026-07-29.1/search-http-request.schema.json",
@@ -4744,6 +5403,18 @@
           "synthesize": {
             "type": "boolean",
             "default": true
+          },
+          "language": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 35,
+            "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$",
+            "default": "en"
+          },
+          "region": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$",
+            "default": "US"
           }
         },
         "additionalProperties": false
@@ -4986,10 +5657,13 @@
           "contractVersion",
           "operationId",
           "query",
+          "language",
+          "region",
           "generatedAt",
           "deduplicatedCount",
           "results",
-          "citations"
+          "citations",
+          "cache"
         ],
         "properties": {
           "contractVersion": {
@@ -5003,6 +5677,16 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 2000
+          },
+          "language": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 35,
+            "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+          },
+          "region": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
           },
           "generatedAt": {
             "type": "string",
@@ -5025,6 +5709,9 @@
             "items": {
               "$ref": "#/$defs/citation"
             }
+          },
+          "cache": {
+            "$ref": "search-cache-disclosure.schema.json"
           }
         },
         "additionalProperties": false

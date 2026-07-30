@@ -10,21 +10,45 @@
     "deadlineAt": "2026-07-30T22:00:05.000Z",
     "qualificationId": "rqual_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
     "qualificationSha256": "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+    "rewriteId": "rewrite_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "rewriteSha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     "outcome": "partial",
     "attempts": [
-      { "pathId": "retrieval_primary", "providerId": "provider_primary", "role": "primary", "startedAt": "2026-07-30T22:00:00.000Z", "completedAt": "2026-07-30T22:00:00.100Z", "outcome": "succeeded", "candidateCount": 1, "rawResponseSha256": "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824" },
-      { "pathId": "retrieval_fallback", "providerId": "provider_fallback", "role": "fallback", "startedAt": "2026-07-30T22:00:00.000Z", "completedAt": "2026-07-30T22:00:00.200Z", "outcome": "failed", "failureCode": "adapter_failed", "candidateCount": 0 }
+      {
+        "pathId": "retrieval_primary",
+        "providerId": "provider_primary",
+        "role": "primary",
+        "startedAt": "2026-07-30T22:00:00.000Z",
+        "completedAt": "2026-07-30T22:00:00.100Z",
+        "outcome": "succeeded",
+        "candidateCount": 1,
+        "rawResponseSha256": "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+      },
+      {
+        "pathId": "retrieval_fallback",
+        "providerId": "provider_fallback",
+        "role": "fallback",
+        "startedAt": "2026-07-30T22:00:00.000Z",
+        "completedAt": "2026-07-30T22:00:00.200Z",
+        "outcome": "failed",
+        "failureCode": "adapter_failed",
+        "candidateCount": 0
+      }
     ],
-    "candidates": [{
-      "url": "https://example.com/article",
-      "title": "Clervo search",
-      "snippet": "Deterministic evidence metadata.",
-      "retrievedAt": "2026-07-30T22:00:00.050Z",
-      "observationId": "obs_01JZ8Q5Y4QFD48Q24H6M5F4K9P_001_primary",
-      "pathId": "retrieval_primary",
-      "providerId": "provider_primary",
-      "sourceOrdinal": 1,
-      "rawResponseSha256": "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
-    }]
+    "candidates": [
+      {
+        "url": "https://example.com/article",
+        "title": "Clervo search",
+        "snippet": "Deterministic evidence metadata.",
+        "retrievedAt": "2026-07-30T22:00:00.050Z",
+        "observationId": "obs_01JZ8Q5Y4QFD48Q24H6M5F4K9P_001_primary",
+        "pathId": "retrieval_primary",
+        "providerId": "provider_primary",
+        "sourceOrdinal": 1,
+        "rawResponseSha256": "sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+      }
+    ],
+    "language": "en",
+    "region": "US"
   }
 }
