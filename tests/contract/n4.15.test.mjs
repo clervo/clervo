@@ -48,14 +48,14 @@ test('search responses disclose locale and bind it into cache verification', () 
 
 test('executor output locale substitution is rejected before HTTP or receipt construction', () => {
   const value = response('en', 'US');
-  const input = { operationId, requestHash, fundingMode: 'free', query: value.query, maxResults: 3, synthesize: false, language: 'en', region: 'GB' };
+  const input = { operationId, productId: 'search.web', requestHash, fundingMode: 'free', query: value.query, maxResults: 3, synthesize: false, language: 'en', region: 'GB' };
   assert.throws(() => assertSearchExecutionOutput({ searchResponse: value }, input), /search_execution_binding_invalid/u);
   assert.doesNotThrow(() => assertSearchExecutionOutput({ searchResponse: response('en', 'GB') }, input));
 });
 
 test('the recorded pipeline propagates locale through federation, assembly, and public output', async () => {
   const executor = createRecordedSearchExecutor();
-  const output = await executor.execute({ operationId, requestHash, fundingMode: 'free', query: 'regional evidence', maxResults: 2, synthesize: false, language: 'fr', region: 'CA' });
+  const output = await executor.execute({ operationId, productId: 'search.web', requestHash, fundingMode: 'free', query: 'regional evidence', maxResults: 2, synthesize: false, language: 'fr', region: 'CA' });
   assert.equal(executor.lastRun.federation.language, 'fr');
   assert.equal(executor.lastRun.federation.region, 'CA');
   assert.equal(executor.lastRun.assembly.language, 'fr');

@@ -19,7 +19,7 @@
     "contractVersion": { "const": "2026-07-29.1" },
     "alertId": { "type": "string", "pattern": "^alert_[A-Za-z0-9]{20,64}$" },
     "occurredAt": { "type": "string", "format": "date-time" },
-    "code": { "enum": ["commerce.settlement_unknown", "dependency.database_unavailable", "dependency.facilitator_unavailable", "dependency.network_unavailable", "dependency.provider_unavailable", "security.telemetry_redaction"] },
+    "code": { "enum": ["commerce.settlement_unknown", "dependency.database_unavailable", "dependency.facilitator_unavailable", "dependency.network_unavailable", "dependency.provider_unavailable", "search.execution_failure", "security.telemetry_redaction"] },
     "severity": { "enum": ["warning", "critical"] },
     "status": { "const": "firing" },
     "summary": { "type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\u0000-\\u001f\\u007f]*$" },

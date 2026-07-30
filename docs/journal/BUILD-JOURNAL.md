@@ -290,3 +290,32 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Validation: focused N4.15 passed 6/6. Canonical acceptance passed lint, typecheck, boundary, stack/environment, secret scan, N0.3 negative control, build, 32 schemas/61 fixtures, discovery generation, Stage 4 verification, and N1.1–N4.15 at 161/161 tests. Loopback staging smoke and diff checks passed.
 - No external network, live provider/model/browser, deployment, payment, wallet/facilitator, or USDC spend occurred.
 - Exact next ticket: select and explicitly authorize the next named Stage 4 remediation; no N4.16 scope is inferred here.
+
+## 2026-07-30 — N4.16 separate raw retrieval and synthesis prices
+
+- Preserved `search.query` as the stable HTTP operation while introducing exact billable product identities: `search.web` for `synthesize=false` and `search.answer` for `synthesize=true`.
+- Published distinct fixed mock-USDC prices and price versions for both products in generated discovery, catalog, and `llms.txt`.
+- Bound product identity through canonical request hashing, executor input, HTTP output, quotes, non-payable challenges, mock payment verification, charges, and immutable receipts; synthesis now requires a synthesis report.
+- Added focused adversarial tests proving exact quote/receipt pricing and rejecting cross-product quote, payment, and idempotency replay before unauthorized execution.
+- Updated Stage 4 evidence truthfully: separate raw and synthesis prices are now `repository_verified` and remain `stagingVerified=false`. Stage 4, reference-pattern authorization, and Stage 5 remain blocked.
+- No external network, live provider/model/browser, deployment, real payment, wallet/facilitator, or USDC spend occurred.
+
+## 2026-07-31 — N4.17 bounded search monitoring
+
+- Added an internal search monitor using the existing N3.1 fixed-cardinality metrics and delivery-neutral alerts for availability, latency, execution failures, quota rejections, mock payment challenges, and mock-paid completions.
+- Wired lifecycle recording into the search HTTP server without adding a public endpoint or changing customer response schemas; monitor and injected exporter failures are contained.
+- Added strict immutable snapshots capped at 128 metric points and 32 alerts, with no query, URL, request hash, subject, error detail, or operation identifier in metric dimensions.
+- Added a fixed safe `search.execution_failure` alert plus strict schema fixtures and six focused adversarial/HTTP tests.
+- Updated Stage 4 evidence truthfully: monitoring is now `repository_verified` and remains `stagingVerified=false`. No collector, dashboard, paging channel, delivered alert, or staging process is claimed; Stage 4 and Stage 5 authorization remain blocked.
+- Focused N4.17 passed 6/6; contract validation passed 33 schemas/63 fixtures. No external network, deployment, payment, or USDC spend occurred.
+
+## 2026-07-31 — N4.18 isolated GCP staging deployment preparation and attempt
+
+- Received explicit owner authorization for new-resource-only GCP staging work in project `bloxsniper-prod`, region `us-central1`, with stop-and-report behavior for unavailable credentials or control-plane ambiguity.
+- Inspected the execution environment before mutation: the authorized project/region were present, but `gcloud`, ADC, metadata identity, a container builder, and a usable browser control plane were unavailable. The attempt stopped before Cloud Run inspection or mutation; no resource was created or modified.
+- Added a pinned multi-stage Node.js 24.18.1 container, a Cloud Run-compatible staging search entry point, release-bound `/healthz`, periodic bounded monitoring snapshots to structured stdout, and explicit `allowMockPaidExecution=false`.
+- Added a guarded GCP operator script pinned to the authorized target and isolated service, with one-instance maximum, pre-deploy revision capture, remote smoke evidence collection, and explicit traffic rollback.
+- Added a live smoke collector proving release health, the recorded free sample, and the paid route's non-payable `402` challenge behavior while truthfully recording that live providers and real payment are unproven.
+- Added focused N4.18 tests and operator/attempt documentation. No Stage 4 staging claim changed: the release remains `not-provisioned`, all checks remain `stagingVerified=false`, and Stage 4/Stage 5 authorization remains blocked.
+- Validation: focused `npm run test:n4.18` passed 4/4. Canonical `npm test` passed with the exact pinned Node.js 24.18.1 runtime, including lint, typecheck, clean-room boundary, stack/environment checks, full-history secret scan, N0.3 negative control, build, 33 schemas/63 fixtures, discovery generation, blocked Stage 4 verification, and N1.1 through N4.18 at 177/177 tests. Contract files run serially in canonical acceptance so bounded worker deadlines measure product behavior rather than cross-ticket CPU contention; concurrency within each file remains unchanged. `git diff --check` and the real unauthenticated GCP fail-closed path passed.
+- Cost/network effects: two failed metadata reachability probes and one failed browser-control-plane startup only; no authenticated cloud API, provider, payment, wallet, deployment, resource mutation, billable call, or USDC spend occurred.

@@ -82,9 +82,9 @@
     },
     {
       "id": "separate_raw_and_synthesis_prices",
-      "status": "missing",
+      "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "No separately published raw and synthesis prices exist."
+      "evidence": "N4.16 publishes distinct fixed mock-USDC prices and price versions for search.web raw retrieval and search.answer synthesis, binds the selected product through request hashes, quotes, challenges, execution results, receipts, and catalog discovery, and rejects cross-product quote, payment, and idempotency replay locally; no payable route or staging execution evidence exists."
     },
     {
       "id": "quality_latency_and_cost_benchmarks",
@@ -136,9 +136,9 @@
     },
     {
       "id": "monitoring",
-      "status": "missing",
+      "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "Observability contracts exist, but telemetry export, alert delivery, dashboards, and staging monitoring are unverified."
+      "evidence": "N4.17 wires bounded fixed-cardinality availability, latency, execution-failure, quota, challenge, and mock-paid completion signals into the loopback search server, produces strict immutable monitoring snapshots and safe alerts, and contains injected exporter failures locally; no collector, dashboard, paging channel, delivered alert, or staging monitoring evidence exists."
     },
     {
       "id": "cost_caps",
@@ -150,5 +150,5 @@
   "decision": "blocked",
   "referencePatternAuthorized": false,
   "stage5Authorized": false,
-  "nextAction": "Complete the named missing capabilities, provision an approved staging control plane, qualify two live lawful retrieval paths, deploy free and payable routes with monitoring and hard cost caps, then replace every stagingVerified=false value using fresh evidence and rerun N4.11."
+  "nextAction": "Provision an approved staging control plane, qualify two live lawful retrieval paths, deploy free and payable routes with a real telemetry collector, dashboards, delivered alerts, and hard cost caps, then replace every stagingVerified=false value using fresh evidence and rerun N4.11."
 }

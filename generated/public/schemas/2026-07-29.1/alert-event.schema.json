@@ -58,6 +58,7 @@
         "dependency.facilitator_unavailable",
         "dependency.network_unavailable",
         "dependency.provider_unavailable",
+        "search.execution_failure",
         "security.telemetry_redaction"
       ]
     },

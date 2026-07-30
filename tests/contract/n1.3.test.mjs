@@ -56,18 +56,19 @@ test('discovery publishes the implemented search product without payment or depl
   assert.deepEqual(discovery, createDiscoveryDocument());
   assert.equal(discovery.callable, true);
   assert.equal(discovery.payment.implemented, false);
-  assert.equal(discovery.products.length, 1);
-  assert.equal(discovery.products[0].productId, 'search.query');
-  assert.equal(discovery.products[0].payment.payable, false);
+  assert.equal(discovery.products.length, 2);
+  assert.deepEqual(discovery.products.map(({ productId }) => productId), ['search.web', 'search.answer']);
+  assert.ok(discovery.products.every((product) => product.payment.payable === false));
+  assert.deepEqual(discovery.products.map(({ selection, pricing }) => [selection.synthesize, pricing.displayPrice.amountAtomic]), [[false, '1000'], [true, '2500']]);
   assert.match(discovery.description, /deployment.*not verified/i);
   assert.deepEqual(await json('catalog.json'), { contractVersion: CONTRACT_VERSION, catalogVersion: discovery.discoveryVersion, products: discovery.products });
 });
 
-test('llms.txt publishes search.query and states payment/deployment limitations', async () => {
+test('llms.txt publishes separately priced search products and states payment/deployment limitations', async () => {
   const llms = await readFile(path.join(generated, 'llms.txt'), 'utf8');
   assert.equal(llms, createLlmsText());
   assert.match(llms, /^# Clervo Next\n\n> /);
-  assert.match(llms, /Callable products: search\.query/);
+  assert.match(llms, /Callable products: search\.web, search\.answer/);
   assert.match(llms, /x402 payment implementation: not implemented/);
   assert.doesNotMatch(llms, /live service|available now|production-ready/i);
 });

@@ -1,0 +1,14 @@
+.git
+.github
+.staging-state
+data
+dist
+docs
+generated
+node_modules
+tests
+tmp
+*.log
+.env
+.env.*
+!.env.example

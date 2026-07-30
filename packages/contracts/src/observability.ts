@@ -22,6 +22,7 @@ export const alertCodes = [
   'dependency.facilitator_unavailable',
   'dependency.network_unavailable',
   'dependency.provider_unavailable',
+  'search.execution_failure',
   'security.telemetry_redaction',
 ] as const;
 
@@ -183,6 +184,7 @@ const alertDefinitions: Record<AlertCode, { severity: AlertEvent['severity']; su
   'dependency.facilitator_unavailable': { severity: 'critical', summary: 'Payment facilitator dependency is unavailable.' },
   'dependency.network_unavailable': { severity: 'warning', summary: 'External network dependency is unavailable.' },
   'dependency.provider_unavailable': { severity: 'warning', summary: 'Provider dependency is unavailable.' },
+  'search.execution_failure': { severity: 'warning', summary: 'A bounded search execution failed closed.' },
   'security.telemetry_redaction': { severity: 'warning', summary: 'Sensitive or unsafe telemetry content was redacted.' },
 };
 
@@ -195,6 +197,7 @@ export function alertsForLog(record: LogRecord, alertId: (code: AlertCode) => st
   if (record.severity === 'error' && attributes.dependency === 'facilitator') codes.add('dependency.facilitator_unavailable');
   if (record.severity === 'error' && attributes.dependency === 'network') codes.add('dependency.network_unavailable');
   if (record.severity === 'error' && attributes.dependency === 'provider') codes.add('dependency.provider_unavailable');
+  if (record.severity === 'error' && attributes.component === 'search' && attributes.outcome === 'execution_failure') codes.add('search.execution_failure');
   const labels = record.attributes
     .filter((attribute): attribute is { name: MetricAttributeName; value: string } => metricAttributeNames.includes(attribute.name as MetricAttributeName) && typeof attribute.value === 'string')
     .map((attribute) => Object.freeze({ name: attribute.name, value: attribute.value }));

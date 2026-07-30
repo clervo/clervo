@@ -10,13 +10,14 @@ import {
   SEARCH_FREE_PATH,
   SEARCH_MAX_BODY_BYTES,
   SEARCH_PAID_PATH,
-  SEARCH_PRODUCT_ID,
   assertSearchExecutionOutput,
   createMockChallengeResponse,
   createSearchHttpResult,
   normalizeSearchHttpRequest,
   sealQuote,
   searchHttpRequestHash,
+  searchProductId,
+  searchProductPricing,
   validateIdempotencyKey,
 } from '../../../dist/packages/contracts/src/index.js';
 
@@ -75,16 +76,35 @@ function parseMockPayment(value) {
 export function createSearchServer({
   executor,
   now = () => new Date().toISOString(),
+  monotonicNow = () => performance.now(),
   freeQuota = new InMemoryFreeSearchQuota(),
   commerce = new MockCommerceKernel(),
+  monitor,
   allowMockPaidExecution = false,
   publicOrigin = 'https://api.clervo.dev',
+  environment,
+  releaseId,
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
+  if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
   const idempotency = new Map();
+
+  const record = (input) => {
+    try { monitor?.record(input); } catch { /* Monitoring must never alter customer response behavior. */ }
+  };
 
   return http.createServer(async (request, response) => {
     const url = new URL(request.url ?? '/', 'http://loopback.invalid');
+    if (request.method === 'GET' && url.pathname === '/healthz' && url.search === '') {
+      send(response, 200, {
+        status: 'ok',
+        service: 'clervo-search-api',
+        environment: environment ?? 'unknown',
+        releaseId: releaseId ?? 'unknown',
+        paidExecutionEnabled: allowMockPaidExecution,
+      });
+      return;
+    }
     if (request.method !== 'POST' || ![SEARCH_FREE_PATH, SEARCH_PAID_PATH].includes(url.pathname)) {
       send(response, 404, problem(404, 'not_found', 'Not found', 'No route matches this request.', url.pathname), {}, PROBLEM_TYPE);
       return;
@@ -95,6 +115,8 @@ export function createSearchServer({
     }
 
     let operationId;
+    let productId;
+    const startedAt = monotonicNow();
     try {
       const keyHeader = request.headers['idempotency-key'];
       if (typeof keyHeader !== 'string') throw Object.assign(new Error('idempotency_key_required'), { status: 400 });
@@ -118,7 +140,8 @@ export function createSearchServer({
       operationId = stored?.operationId ?? identifier('op', `${keyHeader}:${requestHash}`);
       idempotency.set(keyHeader, { operationId, requestHash });
       const fundingMode = url.pathname === SEARCH_FREE_PATH ? 'free' : 'paid';
-      const executionInput = Object.freeze({ ...normalized, operationId, requestHash, fundingMode });
+      productId = searchProductId(normalized);
+      const executionInput = Object.freeze({ ...normalized, operationId, productId, requestHash, fundingMode });
 
       if (fundingMode === 'free') {
         const subject = request.socket.remoteAddress ?? 'loopback-unknown';
@@ -130,6 +153,7 @@ export function createSearchServer({
         };
         if (!quota.allowed) {
           idempotency.delete(keyHeader);
+          record({ timestamp: now(), productId, outcome: 'quota_rejected', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
           send(response, 429, problem(429, 'free_quota_exceeded', 'Free search quota exceeded', 'The bounded free sample quota is exhausted.', url.pathname, operationId), { ...quotaHeaders, 'retry-after': String(Math.max(1, Math.ceil((Date.parse(quota.resetAt) - Date.parse(now())) / 1_000))) }, PROBLEM_TYPE);
           return;
         }
@@ -138,27 +162,30 @@ export function createSearchServer({
         idempotency.set(keyHeader, { operationId, requestHash, pending });
         const result = await pending;
         idempotency.set(keyHeader, { operationId, requestHash, response: result });
+        record({ timestamp: now(), productId, outcome: 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
         send(response, 200, result, quotaHeaders);
         return;
       }
 
       const issuedAt = now();
       const expiresAt = new Date(Date.parse(issuedAt) + 300_000).toISOString();
+      const pricing = searchProductPricing(productId);
       const quote = sealQuote({
         contractVersion: CONTRACT_VERSION,
         quoteId: identifier('quote', `${operationId}:${requestHash}`),
         operationId,
-        productId: SEARCH_PRODUCT_ID,
+        productId,
         requestHash,
-        priceVersion: 'search-query-mock-1',
-        maximumCharge: { asset: 'mock:usdc', amountAtomic: '1000', decimals: 6 },
+        priceVersion: pricing.priceVersion,
+        maximumCharge: pricing.maximumCharge,
         issuedAt,
         expiresAt,
       });
-      const challenge = createMockChallengeResponse({ quote, resourceUrl: `${publicOrigin}${SEARCH_PAID_PATH}`, description: 'Non-payable mock challenge for search.query', network: 'mock:local', asset: 'mock:usdc', payTo: 'mock:nonpayable-search', maxTimeoutSeconds: 60, now: issuedAt });
+      const challenge = createMockChallengeResponse({ quote, resourceUrl: `${publicOrigin}${SEARCH_PAID_PATH}`, description: `Non-payable mock challenge for ${productId}`, network: 'mock:local', asset: 'mock:usdc', payTo: 'mock:nonpayable-search', maxTimeoutSeconds: 60, now: issuedAt });
       const payment = parseMockPayment(request.headers[MOCK_PAYMENT_HEADER]);
       if (!allowMockPaidExecution || payment === undefined) {
         idempotency.delete(keyHeader);
+        record({ timestamp: now(), productId, outcome: 'payment_challenge', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
         send(response, challenge.status, { ...challenge.body, quote }, { [PAYMENT_REQUIRED_HEADER]: challenge.headers[PAYMENT_REQUIRED_HEADER] });
         return;
       }
@@ -187,6 +214,8 @@ export function createSearchServer({
       idempotency.set(keyHeader, { operationId, requestHash, pending });
       const result = await pending;
       idempotency.set(keyHeader, { operationId, requestHash, response: result });
+      record({ timestamp: now(), productId, outcome: 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
+      record({ timestamp: now(), productId, outcome: 'paid_completion', operationId });
       send(response, 200, result, { 'idempotency-replayed': String(result.replayed) });
     } catch (error) {
       const code = errorCode(error);
@@ -197,6 +226,7 @@ export function createSearchServer({
         if (stored?.response === undefined) idempotency.delete(keyHeader);
       }
       const status = Number.isInteger(error?.status) ? error.status : code === 'idempotency_conflict' ? 409 : !executorFailure && (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 502;
+      if (executorFailure && productId !== undefined) record({ timestamp: now(), productId, outcome: 'execution_failure', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
       send(response, status, problem(status, code, status === 502 ? 'Search execution failed' : 'Invalid search request', status === 502 ? 'The bounded search executor failed closed.' : 'The request did not satisfy the search HTTP contract.', url.pathname, operationId), {}, PROBLEM_TYPE);
     }
   });

@@ -76,8 +76,8 @@ export async function loadStage4ExitInputs(root = repositoryRoot) {
     readJson('generated/public/.well-known/clervo.json'),
     readJson('generated/public/openapi.json'),
   ]);
-  const product = discovery.products.find((value) => value.productId === 'search.query');
-  assert.ok(product, 'search.query discovery product is required');
+  const products = discovery.products.filter((value) => value.productId === 'search.web' || value.productId === 'search.answer');
+  assert.equal(products.length, 2, 'search.web and search.answer discovery products are required');
   return {
     evidence,
     actualSourceState: {
@@ -86,7 +86,7 @@ export async function loadStage4ExitInputs(root = repositoryRoot) {
       stagingUsesMockProvidersByDefault: staging.mockProvidersByDefault,
       discoveryLifecycle: discovery.lifecycle,
       discoveryPaymentImplemented: discovery.payment.implemented,
-      discoveryPaidRoutePayable: product.payment.payable,
+      discoveryPaidRoutePayable: products.some((product) => product.payment.payable),
       openApiDeploymentVerified: openapi['x-clervo-status'].deploymentVerified,
       openApiPaymentImplemented: openapi['x-clervo-status'].paymentImplemented,
     },

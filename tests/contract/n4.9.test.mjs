@@ -90,11 +90,11 @@ test('bounded free route executes the existing search contract and replays witho
 test('free route rejects idempotency conflicts, excess quota, query parameters, and unbounded input', async () => {
   const executor = recordedExecutor();
   await withServer({ executor, now: () => now, freeQuota: new InMemoryFreeSearchQuota(1, 60_000) }, async (origin) => {
-    assert.equal((await post(origin, SEARCH_FREE_PATH, 'idem_n49_conflict', { query: 'first' })).status, 200);
-    const conflict = await post(origin, SEARCH_FREE_PATH, 'idem_n49_conflict', { query: 'second' });
+    assert.equal((await post(origin, SEARCH_FREE_PATH, 'idem_n49_conflict', { query: 'first', synthesize: false })).status, 200);
+    const conflict = await post(origin, SEARCH_FREE_PATH, 'idem_n49_conflict', { query: 'second', synthesize: false });
     assert.equal(conflict.status, 409);
     assert.equal((await conflict.json()).code, 'idempotency_conflict');
-    const limited = await post(origin, SEARCH_FREE_PATH, 'idem_n49_limited1', { query: 'third' });
+    const limited = await post(origin, SEARCH_FREE_PATH, 'idem_n49_limited1', { query: 'third', synthesize: false });
     assert.equal(limited.status, 429);
     assert.equal((await limited.json()).code, 'free_quota_exceeded');
     assert.equal((await post(origin, `${SEARCH_FREE_PATH}?query=hidden`, 'idem_n49_query_01', { query: 'body' })).status, 400);

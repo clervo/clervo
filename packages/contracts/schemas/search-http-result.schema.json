@@ -3,11 +3,12 @@
   "$id": "https://api.clervo.dev/schemas/2026-07-29.1/search-http-result.schema.json",
   "title": "Clervo search HTTP result envelope",
   "type": "object",
-  "required": ["contractVersion", "operationId", "operation", "state", "replayed", "fundingMode", "requestHash", "output"],
+  "required": ["contractVersion", "operationId", "operation", "productId", "state", "replayed", "fundingMode", "requestHash", "output"],
   "properties": {
     "contractVersion": { "const": "2026-07-29.1" },
     "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
     "operation": { "const": "search.query" },
+    "productId": { "enum": ["search.web", "search.answer"] },
     "state": { "const": "RECEIPTED" },
     "replayed": { "type": "boolean" },
     "fundingMode": { "enum": ["free", "paid"] },

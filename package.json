@@ -45,7 +45,12 @@
     "test:n4.13": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.13.test.mjs",
     "test:n4.14": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.14.test.mjs",
     "test:n4.15": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.15.test.mjs",
+    "test:n4.16": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.16.test.mjs",
+    "test:n4.17": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.17.test.mjs",
+    "test:n4.18": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.18.test.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
+    "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",
+    "staging:gcp": "./scripts/gcp-staging.sh",
     "test": "node ./scripts/verify-runtime.mjs && node ./scripts/run-acceptance.mjs",
     "test:contracts": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/*.test.mjs"
   },

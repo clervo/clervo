@@ -73,7 +73,7 @@ test('future timestamps, response substitution, request-bound changes, and deriv
   assert.equal(verifySearchCacheDisclosure({ ...value, generatedAt: '2026-07-30T19:00:01.000Z' }, 3), false);
   assert.equal(verifySearchCacheDisclosure({ ...value, cache: { ...value.cache, ageSeconds: 1 } }, 3), false);
   assert.equal(verifySearchCacheDisclosure(value, 2), false);
-  assert.throws(() => assertSearchExecutionOutput({ searchResponse: { ...value, cache: { ...value.cache, responseSha256: `sha256:${'f'.repeat(64)}` } } }, { operationId, requestHash: `sha256:${'a'.repeat(64)}`, fundingMode: 'free', query: value.query, maxResults: 3, synthesize: false }), /search_execution_cache_disclosure_invalid/u);
+  assert.throws(() => assertSearchExecutionOutput({ searchResponse: { ...value, cache: { ...value.cache, responseSha256: `sha256:${'f'.repeat(64)}` } } }, { operationId, productId: 'search.web', requestHash: `sha256:${'a'.repeat(64)}`, fundingMode: 'free', query: value.query, maxResults: 3, synthesize: false, language: 'en', region: 'US' }), /search_execution_cache_disclosure_invalid/u);
 });
 
 test('the public free route returns explicit miss provenance while disabling transport caches', async () => {

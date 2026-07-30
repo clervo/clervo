@@ -1,0 +1,57 @@
+#!/usr/bin/env node
+
+import { createRecordedSearchExecutor } from '../../../dist/services/search/src/recorded-pipeline.js';
+import { createSearchMonitor } from '../../../dist/services/search/src/monitoring.js';
+import { createSearchServer } from './search-server.mjs';
+
+const environment = process.env.CLERVO_ENV ?? 'staging';
+const releaseId = process.env.CLERVO_RELEASE_ID;
+const host = process.env.CLERVO_HTTP_HOST ?? '0.0.0.0';
+const port = Number(process.env.PORT ?? process.env.CLERVO_HTTP_PORT ?? '8080');
+const publicOrigin = process.env.CLERVO_PUBLIC_ORIGIN ?? 'https://unverified.invalid';
+
+if (!releaseId) throw new Error('CLERVO_RELEASE_ID is required');
+if (!Number.isSafeInteger(port) || port < 1 || port > 65_535) throw new Error('invalid HTTP port');
+
+const monitor = createSearchMonitor({
+  export(snapshot) {
+    console.log(JSON.stringify({ event: 'clervo.search.monitoring_snapshot', snapshot }));
+  },
+});
+const server = createSearchServer({
+  executor: createRecordedSearchExecutor(),
+  monitor,
+  environment,
+  releaseId,
+  publicOrigin,
+  allowMockPaidExecution: false,
+});
+
+const exportTimer = setInterval(() => {
+  void monitor.exportSnapshot(new Date().toISOString());
+}, 60_000);
+exportTimer.unref();
+
+for (const signal of ['SIGINT', 'SIGTERM']) {
+  process.once(signal, () => {
+    clearInterval(exportTimer);
+    server.close((error) => {
+      if (error) {
+        console.error(JSON.stringify({ event: 'clervo.search.shutdown_failed', message: error.message }));
+        process.exitCode = 1;
+      }
+    });
+  });
+}
+
+server.listen(port, host, () => {
+  console.log(JSON.stringify({
+    event: 'clervo.search.started',
+    environment,
+    releaseId,
+    host,
+    port,
+    paidExecutionEnabled: false,
+    retrievalMode: 'recorded',
+  }));
+});

@@ -1,11 +1,12 @@
 # Clervo Next
 
-> Repository-local search.query HTTP implementation. Public deployment is not verified and real x402 payment is not implemented.
+> Repository-local search.query HTTP implementation with separately priced raw retrieval and synthesized-answer products. Public deployment is not verified and real x402 payment is not implemented.
 
 Important status:
 
 - Lifecycle: implemented_unverified
-- Callable products: search.query
+- Callable products: search.web, search.answer
+- Product selection: synthesize=false selects search.web; synthesize=true selects search.answer
 - Free endpoint: POST /v1/search/free
 - Paid endpoint: POST /v1/search/paid (non-payable mock challenge by default)
 - x402 payment implementation: not implemented
@@ -14,6 +15,6 @@ Important status:
 ## Machine-readable contracts
 
 - [OpenAPI contract](https://api.clervo.dev/openapi.json): Search request, free-sample, and non-payable paid-challenge paths.
-- [Catalog](https://api.clervo.dev/catalog.json): Versioned search.query publication.
+- [Catalog](https://api.clervo.dev/catalog.json): Versioned search.web and search.answer pricing publication.
 - [Discovery document](https://api.clervo.dev/.well-known/clervo.json): Explicit implementation and payment limitations.
 - [JSON Schemas](https://api.clervo.dev/schemas/2026-07-29.1/): Draft 2020-12 contracts.

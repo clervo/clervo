@@ -5,7 +5,20 @@ import { verifySearchCacheDisclosure } from './search-cache.js';
 import { normalizeSearchLocaleOptions } from './search-locale.js';
 import { CONTRACT_VERSION, type JsonValue } from './types.js';
 
-export const SEARCH_PRODUCT_ID = 'search.query' as const;
+export const SEARCH_OPERATION_ID = 'search.query' as const;
+export const SEARCH_RAW_PRODUCT_ID = 'search.web' as const;
+export const SEARCH_SYNTHESIS_PRODUCT_ID = 'search.answer' as const;
+export type SearchProductId = typeof SEARCH_RAW_PRODUCT_ID | typeof SEARCH_SYNTHESIS_PRODUCT_ID;
+export const SEARCH_PRODUCT_PRICING = Object.freeze({
+  [SEARCH_RAW_PRODUCT_ID]: Object.freeze({
+    priceVersion: 'search-web-mock-1',
+    maximumCharge: Object.freeze({ asset: 'mock:usdc', amountAtomic: '1000', decimals: 6 }),
+  }),
+  [SEARCH_SYNTHESIS_PRODUCT_ID]: Object.freeze({
+    priceVersion: 'search-answer-mock-1',
+    maximumCharge: Object.freeze({ asset: 'mock:usdc', amountAtomic: '2500', decimals: 6 }),
+  }),
+} as const);
 export const SEARCH_FREE_PATH = '/v1/search/free' as const;
 export const SEARCH_PAID_PATH = '/v1/search/paid' as const;
 export const SEARCH_MAX_BODY_BYTES = 16_384;
@@ -27,6 +40,7 @@ export interface SearchExecutionOutput {
 
 export interface SearchExecutorInput extends Required<SearchHttpRequest> {
   operationId: string;
+  productId: SearchProductId;
   requestHash: string;
   fundingMode: 'free' | 'paid';
 }
@@ -38,7 +52,8 @@ export interface SearchExecutor {
 export interface SearchHttpResult {
   contractVersion: typeof CONTRACT_VERSION;
   operationId: string;
-  operation: typeof SEARCH_PRODUCT_ID;
+  operation: typeof SEARCH_OPERATION_ID;
+  productId: SearchProductId;
   state: 'RECEIPTED';
   replayed: boolean;
   fundingMode: 'free' | 'paid';
@@ -93,14 +108,22 @@ export function normalizeSearchHttpRequest(value: unknown): Readonly<Required<Se
   return Object.freeze({ query, maxResults: maxResults as number, synthesize, ...locale });
 }
 
+export function searchProductId(request: Pick<Required<SearchHttpRequest>, 'synthesize'>): SearchProductId {
+  return request.synthesize ? SEARCH_SYNTHESIS_PRODUCT_ID : SEARCH_RAW_PRODUCT_ID;
+}
+
+export function searchProductPricing(productId: SearchProductId): (typeof SEARCH_PRODUCT_PRICING)[SearchProductId] {
+  return SEARCH_PRODUCT_PRICING[productId];
+}
+
 export function searchHttpRequestHash(request: Readonly<Required<SearchHttpRequest>>, target: typeof SEARCH_FREE_PATH | typeof SEARCH_PAID_PATH = SEARCH_FREE_PATH): string {
   return canonicalRequestHash({
     contractVersion: CONTRACT_VERSION,
-    operation: SEARCH_PRODUCT_ID,
+    operation: SEARCH_OPERATION_ID,
     method: 'POST',
     target,
     contentType: 'application/json',
-    body: request,
+    body: { productId: searchProductId(request), request },
   });
 }
 
@@ -112,6 +135,8 @@ export function assertSearchExecutionOutput(output: SearchExecutionOutput, input
   if (response.results.length > input.maxResults) throw new TypeError('search_execution_result_limit_exceeded');
   if (!verifySearchCacheDisclosure(response, input.maxResults)) throw new TypeError('search_execution_cache_disclosure_invalid');
   if (!response.citations.every((citation) => verifySearchCitation(citation, response.results).valid)) throw new TypeError('search_execution_citation_invalid');
+  if (input.productId !== searchProductId(input)) throw new TypeError('search_product_binding_invalid');
+  if (input.synthesize && output.synthesisReport === undefined) throw new TypeError('search_synthesis_required');
   if (output.synthesisReport !== undefined) {
     const synthesis = output.synthesisReport;
     if (!input.synthesize || synthesis.operationId !== input.operationId || synthesis.query !== input.query) throw new TypeError('search_synthesis_binding_invalid');
@@ -126,7 +151,8 @@ export function createSearchHttpResult(input: SearchExecutorInput, output: Searc
   return Object.freeze({
     contractVersion: CONTRACT_VERSION,
     operationId: input.operationId,
-    operation: SEARCH_PRODUCT_ID,
+    operation: SEARCH_OPERATION_ID,
+    productId: input.productId,
     state: 'RECEIPTED',
     replayed,
     fundingMode: input.fundingMode,
