@@ -234,3 +234,15 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Claims still unknown: live Brave/Common Crawl qualification and provider-to-fetch adapters; public staging search behavior and Stage 4 exit; durable distributed idempotency/quota/commerce state; HTTP disconnect cancellation; calibrated/live quality, quotas, latency, costs, availability, and SLOs; real x402 verification, authorization, facilitator, and settlement.
 - Cost/network effects: repository-local recorded bytes, worker threads, and loopback HTTP only; no external provider, crawler, archive, browser, model, credential, cloud/IAM/deployment mutation, wallet/facilitator/real payment, external traffic, or USDC spend.
 - Exact next ticket: N4.11 — perform bounded Stage 4 staging/exit verification and decide whether search may become the reference pattern before Stage 5 begins. Paused until explicitly authorized.
+
+## 2026-07-30 — N4.11 bounded Stage 4 exit verification
+
+- Added a source-bound Stage 4 exit evidence manifest covering all 22 §7.1 requirements and gate checks. Repository-local proof, absent evidence, contradictory source state, and staging verification remain distinct.
+- Added a deterministic verifier that binds the decision to the checked-in staging release, environment, discovery, and OpenAPI state. Reference-pattern and Stage 5 authorization can be true only when every named check is staging-verified.
+- The observed decision is **blocked**: all 22 checks lack staging verification. The release manifest says `not-provisioned`; discovery says deployment is unverified, payment is not implemented, and the paid route is non-payable.
+- Named implementation gaps include query rewriting, isolated JavaScript retrieval, robots enforcement, cache-freshness disclosure, language/region options, separate raw/synthesis prices, delivered monitoring, live provider paths, and live hard cost-cap evidence.
+- Added four adversarial tests proving forged pass claims, missing requirement coverage, and invented source state fail closed. No discovery/readiness claim or runtime product behavior changed.
+- Validation: focused N4.11 passed 4/4. Canonical acceptance passed lint, typecheck, boundary, stack/environment, secret scan, N0.3 negative control, build, 29 schemas/54 fixtures, discovery generation, Stage 4 exit verification, and N1.1–N4.11 at 140/140 tests. Loopback staging smoke and diff checks passed.
+- Deployment checked: checked-in staging/discovery state and local loopback hello smoke only. No public search deployment, live provider/model/browser, telemetry delivery, real payment, facilitator/wallet, cloud/IAM mutation, or USDC spend occurred.
+- Decision: N4.11 is complete, Stage 4 remains open, search is not the reference pattern, and Stage 5 is not authorized.
+- Exact next ticket: N4.12 — implement and test bounded query rewriting as the first named Stage 4 remediation. Paused until explicitly authorized.

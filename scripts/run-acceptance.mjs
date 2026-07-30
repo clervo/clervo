@@ -14,7 +14,7 @@ const contractTests = [
   'tests/contract/n4.1.test.mjs', 'tests/contract/n4.2.test.mjs', 'tests/contract/n4.3.test.mjs',
   'tests/contract/n4.4.test.mjs', 'tests/contract/n4.5.test.mjs', 'tests/contract/n4.6.test.mjs',
   'tests/contract/n4.7.test.mjs', 'tests/contract/n4.8.test.mjs', 'tests/contract/n4.9.test.mjs',
-  'tests/contract/n4.10.test.mjs',
+  'tests/contract/n4.10.test.mjs', 'tests/contract/n4.11.test.mjs',
 ];
 
 const gates = [
@@ -28,6 +28,7 @@ const gates = [
   ['build', tsc, ['--project', 'tsconfig.json']],
   ['contract schemas', node, ['scripts/validate-contracts.mjs']],
   ['discovery generation', node, ['scripts/generate-discovery.mjs']],
+  ['Stage 4 exit verification', node, ['scripts/verify-stage4-exit.mjs']],
   ['contract tests', node, ['--test', ...contractTests]],
 ];
 

@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "stage": 4,
+  "evaluatedAt": "2026-07-30T23:55:00.000Z",
+  "scope": "bounded_repository_and_staging_exit_verification",
+  "sourceState": {
+    "stagingReleaseStatus": "not-provisioned",
+    "stagingPublic": false,
+    "stagingUsesMockProvidersByDefault": true,
+    "discoveryLifecycle": "implemented_unverified",
+    "discoveryPaymentImplemented": false,
+    "discoveryPaidRoutePayable": false,
+    "openApiDeploymentVerified": false,
+    "openApiPaymentImplemented": false
+  },
+  "checks": [
+    {
+      "id": "federated_lawful_retrieval",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "N4.2 and N4.10 prove two independent recorded adapter boundaries; no live supplier was qualified or called."
+    },
+    {
+      "id": "query_rewriting",
+      "status": "missing",
+      "stagingVerified": false,
+      "evidence": "No query rewriting implementation or staging evidence exists."
+    },
+    {
+      "id": "parallel_retrieval",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "N4.5 and N4.10 prove bounded parallel recorded-path federation only."
+    },
+    {
+      "id": "url_normalization_and_near_duplicate_removal",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "N4.1 and N4.4 prove deterministic URL normalization and content deduplication locally."
+    },
+    {
+      "id": "freshness_authority_relevance_diversity_ranking",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "N4.1 and N4.6 prove deterministic recorded-evidence scoring and ranking."
+    },
+    {
+      "id": "isolated_javascript_retrieval",
+      "status": "missing",
+      "stagingVerified": false,
+      "evidence": "No browser or JavaScript rendering path exists."
+    },
+    {
+      "id": "retrieval_safety_controls",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "N4.3 proves timeout, size, redirect, MIME, DNS rebinding, and SSRF controls with injected transport; robots enforcement is not implemented."
+    },
+    {
+      "id": "prompt_injection_boundaries",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "N4.7 and N4.10 prove fixed no-tools/no-actions synthesis over explicitly untrusted recorded evidence."
+    },
+    {
+      "id": "evidence_tied_citations",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "N4.1, N4.6, N4.7, and N4.10 prove exact offset-bound citation verification locally."
+    },
+    {
+      "id": "disclosed_cache_freshness",
+      "status": "missing",
+      "stagingVerified": false,
+      "evidence": "No cache implementation or cache-age disclosure contract exists."
+    },
+    {
+      "id": "language_and_region_options",
+      "status": "missing",
+      "stagingVerified": false,
+      "evidence": "The search HTTP request contract exposes no language or region controls."
+    },
+    {
+      "id": "separate_raw_and_synthesis_prices",
+      "status": "missing",
+      "stagingVerified": false,
+      "evidence": "No separately published raw and synthesis prices exist."
+    },
+    {
+      "id": "quality_latency_and_cost_benchmarks",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "N4.8 passes a deterministic synthetic recorded corpus; it is not calibrated live or staging evidence."
+    },
+    {
+      "id": "two_independent_retrieval_paths",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "Two recorded paths pass locally, but neither path is live-qualified or connected to staging."
+    },
+    {
+      "id": "deterministic_schema",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "Strict versioned search schemas and generated OpenAPI pass repository acceptance."
+    },
+    {
+      "id": "citation_verifier",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "Exact citation verification passes repository acceptance and adversarial tests."
+    },
+    {
+      "id": "ssrf_and_security_suite",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "Injected SSRF, redirect, MIME, size, timeout, and extraction isolation tests pass locally; no staging security run exists."
+    },
+    {
+      "id": "blockrun_compatible_baseline_improvement",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "N4.8 beats the named compatible baseline on a synthetic recorded corpus only."
+    },
+    {
+      "id": "deployed_free_sample",
+      "status": "contradicted",
+      "stagingVerified": false,
+      "evidence": "The staging release manifest says not-provisioned and discovery says deployment is unverified."
+    },
+    {
+      "id": "deployed_paid_route",
+      "status": "contradicted",
+      "stagingVerified": false,
+      "evidence": "Discovery says payment is not implemented and the paid route is explicitly non-payable."
+    },
+    {
+      "id": "monitoring",
+      "status": "missing",
+      "stagingVerified": false,
+      "evidence": "Observability contracts exist, but telemetry export, alert delivery, dashboards, and staging monitoring are unverified."
+    },
+    {
+      "id": "cost_caps",
+      "status": "repository_verified",
+      "stagingVerified": false,
+      "evidence": "N3.2 proves process-local atomic cost reservations; no live provider spend cap or staging traffic-stop evidence exists."
+    }
+  ],
+  "decision": "blocked",
+  "referencePatternAuthorized": false,
+  "stage5Authorized": false,
+  "nextAction": "Complete the named missing capabilities, provision an approved staging control plane, qualify two live lawful retrieval paths, deploy free and payable routes with monitoring and hard cost caps, then replace every stagingVerified=false value using fresh evidence and rerun N4.11."
+}
