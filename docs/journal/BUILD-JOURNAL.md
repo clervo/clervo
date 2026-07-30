@@ -66,3 +66,14 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Cost/network effects: three bounded read-only specification requests, one returning 404; local generation/tests only; no provider, cloud, IAM, deployment, or payment mutations; 0 USDC spent.
 - Claims still unknown: live HTTP artifact serving, product paths/schemas/examples, security/x402 behavior, persistence, real providers, catalog publication, payment/settlement, remote publication, and production behavior.
 - Exact next ticket: N2.1 — build quote and mock x402 challenge.
+
+## 2026-07-30 — N2.1 hash-bound quote and mock x402 challenge
+
+- Ran a bounded preflight against the official `x402-foundation/x402` v2 core and HTTP transport specifications after the former Coinbase raw path returned 404. No provider, facilitator, wallet, or competitor survey was performed.
+- Added deterministic quotes binding operation, product, request hash, price version, maximum charge, issue/expiry times, and a canonical SHA-256 quote hash.
+- Added an x402 v2-shaped offline 402 response using the canonical base64 `PAYMENT-REQUIRED` header. The only accepted payee is `mock:*`; the challenge is marked non-payable and explicitly disables signature acceptance, verification, facilitator use, authorization, settlement, and execution.
+- Added strict schemas/fixtures and seven adversarial tests. Expired/tampered quotes, excessive timeout, asset mismatch, non-mock payees, altered request binding, and injected payment-readiness claims fail closed.
+- Validation: Node.js 24.18.1 compiled successfully; contract validation passed 11 schemas and 19 fixtures; N1.1/N1.2 passed 15/15, N1.3 passed 6/6, and N2.1 passed 7/7. The N0.3 injected-secret acceptance and loopback staging smoke passed; the working-tree/full-history secret scan passed without printing values; generated top-level artifacts were byte-stable; `git diff --check` passed.
+- Cost/network effects: bounded read-only official specification requests and local work only; no provider, facilitator, wallet, cloud, IAM, deployment, or payment mutations; 0 USDC spent.
+- Claims still unknown: live HTTP challenge serving, PaymentPayload parsing, real networks/assets/payees, verification, authorization, ledger, settlement, reconciliation, product execution, and production behavior.
+- Exact next ticket: N2.2 — build ledger, mock settlement, replay, and reconciliation.

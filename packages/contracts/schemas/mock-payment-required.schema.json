@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/mock-payment-required.schema.json",
+  "title": "Clervo non-payable mock x402 v2 PaymentRequired",
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  },
+  "type": "object",
+  "required": ["x402Version", "error", "resource", "accepts", "extensions"],
+  "properties": {
+    "x402Version": { "const": 2 },
+    "error": { "const": "PAYMENT-SIGNATURE header is required" },
+    "resource": {
+      "type": "object",
+      "required": ["url", "description", "mimeType"],
+      "properties": {
+        "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "description": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "mimeType": { "const": "application/json" }
+      },
+      "additionalProperties": false
+    },
+    "accepts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["scheme", "network", "amount", "asset", "payTo", "maxTimeoutSeconds", "extra"],
+        "properties": {
+          "scheme": { "const": "exact" },
+          "network": { "type": "string", "pattern": "^[a-z0-9]+:[A-Za-z0-9._-]+$" },
+          "amount": { "type": "string", "pattern": "^(?:0|[1-9][0-9]{0,77})$" },
+          "asset": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{1,127}$" },
+          "payTo": { "type": "string", "pattern": "^mock:[A-Za-z0-9._-]{8,128}$" },
+          "maxTimeoutSeconds": { "type": "integer", "minimum": 1, "maximum": 3600 },
+          "extra": {
+            "type": "object",
+            "required": ["mock", "payable", "clervo"],
+            "properties": {
+              "mock": { "const": true },
+              "payable": { "const": false },
+              "clervo": {
+                "type": "object",
+                "required": ["quoteId", "quoteHash", "requestHash", "priceVersion", "quoteExpiresAt"],
+                "properties": {
+                  "quoteId": { "type": "string", "pattern": "^quote_[A-Za-z0-9]{20,64}$" },
+                  "quoteHash": { "$ref": "#/$defs/hash" },
+                  "requestHash": { "$ref": "#/$defs/hash" },
+                  "priceVersion": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$" },
+                  "quoteExpiresAt": { "type": "string", "format": "date-time" }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "required": ["clervo"],
+      "properties": {
+        "clervo": {
+          "type": "object",
+          "required": ["mode", "paymentSignatureAccepted", "verificationImplemented", "facilitatorConfigured", "authorizationImplemented", "settlementImplemented", "executionAllowed"],
+          "properties": {
+            "mode": { "const": "mock" },
+            "paymentSignatureAccepted": { "const": false },
+            "verificationImplemented": { "const": false },
+            "facilitatorConfigured": { "const": false },
+            "authorizationImplemented": { "const": false },
+            "settlementImplemented": { "const": false },
+            "executionAllowed": { "const": false }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

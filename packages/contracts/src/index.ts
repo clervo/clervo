@@ -2,6 +2,7 @@ export * from './adapter.js';
 export * from './audit.js';
 export * from './canonical-request.js';
 export * from './catalog.js';
+export * from './commerce.js';
 export * from './discovery.js';
 export * from './idempotency.js';
 export * from './problems.js';

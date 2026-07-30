@@ -1,0 +1,17 @@
+{
+  "schema": "quote",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "quoteId": "quote_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "operationId": "op_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "productId": "search.web",
+    "requestHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "priceVersion": "2026-07-30.1",
+    "maximumCharge": { "asset": "mock:usdc", "amountAtomic": "1000", "decimals": 6 },
+    "issuedAt": "2026-07-30T12:00:00.000Z",
+    "expiresAt": "2026-07-30T12:05:00.000Z",
+    "quoteHash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "supplierCost": "secret"
+  }
+}

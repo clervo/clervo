@@ -1,0 +1,19 @@
+{
+  "schema": "mock-payment-required",
+  "valid": false,
+  "value": {
+    "x402Version": 2,
+    "error": "PAYMENT-SIGNATURE header is required",
+    "resource": { "url": "https://api.clervo.dev/operations/search.web", "description": "Unsafe mock", "mimeType": "application/json" },
+    "accepts": [{
+      "scheme": "exact",
+      "network": "mock:local",
+      "amount": "1000",
+      "asset": "mock:usdc",
+      "payTo": "mock:nonpayable-test-only",
+      "maxTimeoutSeconds": 60,
+      "extra": { "mock": true, "payable": false, "clervo": { "quoteId": "quote_01JZ8Q5Y4QFD48Q24H6M5F4K9P", "quoteHash": "sha256:2222222222222222222222222222222222222222222222222222222222222222", "requestHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111", "priceVersion": "2026-07-30.1", "quoteExpiresAt": "2026-07-30T12:05:00.000Z" } }
+    }],
+    "extensions": { "clervo": { "mode": "mock", "paymentSignatureAccepted": true, "verificationImplemented": false, "facilitatorConfigured": false, "authorizationImplemented": false, "settlementImplemented": false, "executionAllowed": false } }
+  }
+}
