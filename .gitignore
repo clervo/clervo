@@ -1,0 +1,28 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+secrets/
+private/
+
+# Dependencies and generated output
+node_modules/
+.venv/
+vendor/
+dist/
+build/
+coverage/
+
+# Runtime state
+data/
+tmp/
+*.log
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+*.swp
