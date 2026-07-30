@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/retrieval-federation.schema.json",
+  "title": "Clervo deterministic two-path retrieval federation report",
+  "$defs": {
+    "attempt": {
+      "type": "object",
+      "required": ["pathId", "providerId", "role", "startedAt", "completedAt", "outcome", "candidateCount"],
+      "properties": {
+        "pathId": { "type": "string", "pattern": "^retrieval_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "providerId": { "type": "string", "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "role": { "enum": ["primary", "fallback"] },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "outcome": { "enum": ["succeeded", "failed", "deadline_exceeded", "cancelled"] },
+        "failureCode": { "enum": ["adapter_failed", "invalid_adapter_response", "deadline_exceeded", "caller_cancelled"] },
+        "candidateCount": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "rawResponseSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "allOf": [
+        { "if": { "properties": { "outcome": { "const": "succeeded" } }, "required": ["outcome"] }, "then": { "required": ["rawResponseSha256"], "properties": { "rawResponseSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }, "failureCode": false } } },
+        { "if": { "properties": { "outcome": { "enum": ["failed", "deadline_exceeded", "cancelled"] } }, "required": ["outcome"] }, "then": { "required": ["failureCode"], "properties": { "failureCode": { "enum": ["adapter_failed", "invalid_adapter_response", "deadline_exceeded", "caller_cancelled"] }, "candidateCount": { "const": 0 }, "rawResponseSha256": false } } }
+      ],
+      "additionalProperties": false
+    },
+    "candidate": {
+      "type": "object",
+      "required": ["url", "title", "snippet", "retrievedAt", "observationId", "pathId", "providerId", "sourceOrdinal", "rawResponseSha256"],
+      "properties": {
+        "url": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "snippet": { "type": "string", "minLength": 1, "maxLength": 5000 },
+        "retrievedAt": { "type": "string", "format": "date-time" },
+        "observationId": { "type": "string", "pattern": "^obs_[A-Za-z0-9_]{20,90}$" },
+        "pathId": { "type": "string", "pattern": "^retrieval_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "providerId": { "type": "string", "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "sourceOrdinal": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "rawResponseSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "federationId", "planId", "operationId", "query", "deadlineAt", "qualificationId", "qualificationSha256", "outcome", "attempts", "candidates"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "federationId": { "type": "string", "pattern": "^fed_[A-Za-z0-9]{20,64}$" },
+    "planId": { "type": "string", "pattern": "^plan_[A-Za-z0-9]{20,64}$" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "query": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "deadlineAt": { "type": "string", "format": "date-time" },
+    "qualificationId": { "type": "string", "pattern": "^rqual_[A-Za-z0-9]{20,64}$" },
+    "qualificationSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "outcome": { "enum": ["complete", "partial", "failed", "cancelled"] },
+    "attempts": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/attempt" } },
+    "candidates": { "type": "array", "maxItems": 200, "items": { "$ref": "#/$defs/candidate" } }
+  },
+  "additionalProperties": false
+}

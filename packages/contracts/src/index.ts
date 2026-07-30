@@ -11,6 +11,7 @@ export * from './observability.js';
 export * from './problems.js';
 export * from './receipt.js';
 export * from './retrieval-fetch.js';
+export * from './retrieval-federation.js';
 export * from './retrieval.js';
 export * from './routing.js';
 export * from './search.js';
