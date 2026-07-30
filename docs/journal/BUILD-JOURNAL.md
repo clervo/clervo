@@ -124,3 +124,15 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Claims still unknown: lawful/live retrieval, extraction, normalized content and near-duplicate detection, calibrated provider quality, query rewriting, SSRF/browser isolation, prompt-injection defense, synthesis, benchmarks, HTTP/mock-paid integration, and production behavior.
 - Cost/network effects: repository-local work only; no provider, crawler, browser, model, database, wallet, cloud, IAM, deployment, payment, or external traffic; 0 USDC spent.
 - Exact next ticket: N4.2 — select and qualify two independent lawful retrieval paths and define the retrieval/extraction safety boundary.
+
+## 2026-07-30 — N4.2 retrieval qualification and safety boundary
+
+- Provisionally selected Brave Search API as the real-time primary and Common Crawl URL Index/archive as the fallback based on bounded official-source review; recorded that independent operation does not imply live qualification.
+- Added an immutable evidence-dated qualification snapshot with exact primary/fallback roles, independent failure domains, terms state, content-use permissions, expiry, six mandatory checks, derived route eligibility, and an exact two-path gate.
+- Added a fail-closed retrieval-target decision boundary covering HTTP(S)/default-port policy, per-hop redirects, DNS results, local/private/link-local/metadata destinations, robots state, MIME allowlisting, byte ceilings, and content-use restrictions.
+- Official terms review recorded Brave's plan-specific storage rights and third-party-content limitation, and Common Crawl's limited license, separate publisher terms, legal-compliance duty, and as-is warranty.
+- Brave developer/terms endpoints returned HTTP 403 and no credential was available; Common Crawl documentation was reachable but no bounded URL Index/range-read probe was performed. Both live route gates remain closed.
+- Validation: pinned Node.js 24.18.1/npm 10.9.8 `npm test` passed with exit code 0, including lint/typecheck, boundary, stack/environment, working-tree plus full-history secret scan, N0.3 injected-secret rejection/cleanup, 21 Draft 2020-12 schemas and 39 fixtures, and N1.1 through N4.2 at 69/69 tests. Discovery generated 21 schemas; retrieval source/generated schema semantic parity, loopback staging smoke, and `git diff --check` passed.
+- Claims still unknown: real provider schema/quota/error behavior, archive throttling and extraction behavior, DNS/socket enforcement, robots cache, parser isolation, retrieval quality, and production availability.
+- Cost/network effects: bounded read-only official documentation requests plus local validation; no billable provider calls, credentials, cloud/IAM/deployment mutations, wallet/payment, or USDC spend.
+- Exact next ticket: N4.3 — implement the bounded retrieval/fetch safety adapter boundary and run explicitly authorized qualification probes; do not begin synthesis.

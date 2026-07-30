@@ -1,0 +1,13 @@
+{
+  "schema": "retrieval-qualification",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "qualificationId": "rqual_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "evaluatedAt": "2026-07-30T20:00:00.000Z",
+    "paths": [],
+    "independentFailureDomains": true,
+    "twoPathGatePassed": true,
+    "liveQualified": true
+  }
+}

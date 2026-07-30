@@ -9,6 +9,7 @@ export * from './mock-commerce.js';
 export * from './observability.js';
 export * from './problems.js';
 export * from './receipt.js';
+export * from './retrieval.js';
 export * from './routing.js';
 export * from './search.js';
 export * from './state-machine.js';

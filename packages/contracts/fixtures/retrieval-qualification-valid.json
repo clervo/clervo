@@ -1,0 +1,59 @@
+{
+  "schema": "retrieval-qualification",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "qualificationId": "rqual_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "evaluatedAt": "2026-07-30T20:00:00.000Z",
+    "paths": [
+      {
+        "pathId": "retrieval_brave.search",
+        "providerId": "provider_brave.search",
+        "failureDomain": "brave_api",
+        "role": "primary",
+        "mechanism": "provider_api",
+        "selected": true,
+        "checkedAt": "2026-07-30T19:30:00.000Z",
+        "expiresAt": "2026-08-06T19:30:00.000Z",
+        "termsStatus": "restricted",
+        "allowedContentUse": ["search_metadata", "transient_extraction", "retained_evidence"],
+        "restrictionsAcknowledged": true,
+        "checks": [
+          { "name": "terms", "status": "passed", "evidence": [{ "url": "https://api.search.brave.com/app/terms", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" }] },
+          { "name": "authentication", "status": "passed", "evidence": [{ "url": "https://api.search.brave.com/app/documentation/authentication", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" }] },
+          { "name": "quota", "status": "passed", "evidence": [{ "url": "https://api.search.brave.com/app/documentation/rate-limiting", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" }] },
+          { "name": "response_contract", "status": "passed", "evidence": [{ "url": "https://api.search.brave.com/app/documentation/web-search/get-started", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" }] },
+          { "name": "content_use", "status": "passed", "evidence": [{ "url": "https://api.search.brave.com/app/terms", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" }] },
+          { "name": "failure_isolation", "status": "passed", "evidence": [{ "url": "https://api.search.brave.com/app/documentation", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff" }] }
+        ],
+        "routeEligible": true,
+        "failureCodes": []
+      },
+      {
+        "pathId": "retrieval_commoncrawl.archive",
+        "providerId": "provider_commoncrawl",
+        "failureDomain": "commoncrawl_archive",
+        "role": "fallback",
+        "mechanism": "public_archive",
+        "selected": true,
+        "checkedAt": "2026-07-30T19:30:00.000Z",
+        "expiresAt": "2026-08-06T19:30:00.000Z",
+        "termsStatus": "restricted",
+        "allowedContentUse": ["archive_replay", "transient_extraction", "retained_evidence"],
+        "restrictionsAcknowledged": true,
+        "checks": [
+          { "name": "terms", "status": "passed", "evidence": [{ "url": "https://commoncrawl.org/terms-of-use", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:1111111111111111111111111111111111111111111111111111111111111111" }] },
+          { "name": "authentication", "status": "passed", "evidence": [{ "url": "https://commoncrawl.org/get-started", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:2222222222222222222222222222222222222222222222222222222222222222" }] },
+          { "name": "quota", "status": "passed", "evidence": [{ "url": "https://commoncrawl.org/get-started", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:3333333333333333333333333333333333333333333333333333333333333333" }] },
+          { "name": "response_contract", "status": "passed", "evidence": [{ "url": "https://commoncrawl.org/get-started", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:4444444444444444444444444444444444444444444444444444444444444444" }] },
+          { "name": "content_use", "status": "passed", "evidence": [{ "url": "https://commoncrawl.org/terms-of-use", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:5555555555555555555555555555555555555555555555555555555555555555" }] },
+          { "name": "failure_isolation", "status": "passed", "evidence": [{ "url": "https://commoncrawl.org/overview", "observedAt": "2026-07-30T19:00:00.000Z", "sha256": "sha256:6666666666666666666666666666666666666666666666666666666666666666" }] }
+        ],
+        "routeEligible": true,
+        "failureCodes": []
+      }
+    ],
+    "independentFailureDomains": true,
+    "twoPathGatePassed": true
+  }
+}
