@@ -30,24 +30,30 @@ function major(version) {
 }
 
 try {
-  const [manifestSource, lockSource, nodeVersionSource, versionsSource] = await Promise.all([
+  const [manifestSource, lockSource, nvmSource, nodeVersionSource, toolVersionsSource, versionsSource] = await Promise.all([
     read('package.json'),
     read('package-lock.json'),
     read('.nvmrc'),
+    read('.node-version'),
+    read('.tool-versions'),
     read('infra/stack-versions.env'),
   ]);
 
   const manifest = JSON.parse(manifestSource);
   const lockfile = JSON.parse(lockSource);
   const versions = parseVersionFile(versionsSource);
-  const nodeVersion = nodeVersionSource.trim();
+  const nodeVersion = nvmSource.trim();
+  const toolVersion = toolVersionsSource.trim().match(/^nodejs\s+(\S+)$/)?.[1];
   const rootLock = lockfile.packages?.[''];
 
   assert.equal(manifest.private, true, 'workspace must remain private');
   assert.equal(manifest.type, 'module', 'Node.js module system must be ESM');
   assert.equal(manifest.engines?.node, versions.NODE_VERSION_RANGE, 'Node engine range drift');
   assert.equal(nodeVersion, versions.NODE_VERSION, '.nvmrc drift');
+  assert.equal(nodeVersionSource.trim(), versions.NODE_VERSION, '.node-version drift');
+  assert.equal(toolVersion, versions.NODE_VERSION, '.tool-versions drift');
   assert.equal(major(nodeVersion), '24', 'runtime must remain on Node.js 24 LTS');
+  assert.equal(process.versions.node, versions.NODE_VERSION, 'executing Node.js runtime drift');
   assert.equal(manifest.packageManager, `npm@${versions.NPM_VERSION}`, 'npm pin drift');
 
   assert.equal(versions.POSTGRES_MAJOR, '18', 'database must remain PostgreSQL 18');
@@ -64,7 +70,7 @@ try {
   assert.equal(lockfile.packages?.['node_modules/typescript']?.version, manifest.devDependencies?.typescript, 'resolved TypeScript drift');
 
   console.log('stack decision: PASS');
-  console.log(`runtime: TypeScript ${manifest.devDependencies.typescript} on Node.js ${nodeVersion}`);
+  console.log(`runtime: TypeScript ${manifest.devDependencies.typescript} on executing Node.js ${process.versions.node}`);
   console.log(`database: PostgreSQL ${versions.POSTGRES_VERSION}`);
   console.log(`durable queue: pg-boss ${versions.PG_BOSS_VERSION} on PostgreSQL`);
   console.log(`package manager: npm ${versions.NPM_VERSION}`);

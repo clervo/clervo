@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -62,24 +62,45 @@ async function scanWorkingTree() {
 
 function scanHistoryRange(range) {
   if (!range) return [];
-  const commits = unique(git(['rev-list', range]));
+  const objects = unique(git(['rev-list', '--objects', range]));
+  const objectIds = objects.map((entry) => entry.split(' ', 1)[0]);
+  const objectNames = new Map(objects.map((entry) => {
+    const separator = entry.indexOf(' ');
+    return [entry.slice(0, separator === -1 ? undefined : separator), separator === -1 ? '' : entry.slice(separator + 1)];
+  }));
+  if (objectIds.length === 0) return [];
+
+  const batch = spawnSync('git', ['-C', repositoryRoot, 'cat-file', '--batch'], {
+    input: `${objectIds.join('\n')}\n`,
+    maxBuffer: 256 * 1024 * 1024,
+  });
+  if (batch.status !== 0) throw new Error(batch.stderr.toString('utf8').trim() || 'git cat-file --batch failed');
+
   const findings = [];
-  for (const commit of commits) {
-    const files = unique(git(['ls-tree', '-r', '--name-only', commit]));
-    for (const file of files) {
-      let content;
-      try {
-        content = git(['show', `${commit}:${file}`]);
-      } catch {
-        continue;
-      }
-      findings.push(...findingsFor(`history:${commit.slice(0, 12)}:${file}`, content));
+  let offset = 0;
+  while (offset < batch.stdout.length) {
+    const headerEnd = batch.stdout.indexOf(10, offset);
+    if (headerEnd === -1) throw new Error('truncated git cat-file header');
+    const header = batch.stdout.subarray(offset, headerEnd).toString('utf8');
+    const [objectId, type, sizeSource] = header.split(' ');
+    if (type === 'missing') throw new Error(`missing Git object ${objectId}`);
+    const size = Number(sizeSource);
+    if (!Number.isSafeInteger(size) || size < 0) throw new Error(`invalid Git object size for ${objectId}`);
+    const contentStart = headerEnd + 1;
+    const contentEnd = contentStart + size;
+    if (contentEnd >= batch.stdout.length) throw new Error(`truncated Git object ${objectId}`);
+    if (type === 'blob' && size <= maximumTextBytes) {
+      const content = batch.stdout.subarray(contentStart, contentEnd).toString('utf8');
+      const name = objectNames.get(objectId) || '<historical-path-unavailable>';
+      findings.push(...findingsFor(`history:${objectId.slice(0, 12)}:${name}`, content));
     }
+    offset = contentEnd + 1;
   }
   return findings;
 }
 
 function requestedHistoryRange() {
+  if (process.env.SECRET_SCAN_SKIP_HISTORY === '1') return '';
   const base = process.env.SECRET_SCAN_BASE_SHA;
   const head = process.env.SECRET_SCAN_HEAD_SHA ?? 'HEAD';
   if (base && base !== nullHash) return `${base}..${head}`;
@@ -103,7 +124,7 @@ try {
     process.exitCode = 1;
   } else {
     console.log('secret scan: PASS');
-    console.log('scope: working tree plus committed history');
+    console.log(`scope: working tree${process.env.SECRET_SCAN_SKIP_HISTORY === '1' ? '' : ' plus committed history'}`);
     console.log('secret values printed: 0');
     console.log('network calls made: 0');
     console.log('USDC spent: 0');

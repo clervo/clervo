@@ -47,13 +47,17 @@ try {
     ['injected failure fixture', 'password=' + 'N0threeFailureFixtureValue123456789'].join('\n'),
     { encoding: 'utf8', flag: 'wx' },
   );
-  const rejected = runNode('scripts/scan-secrets.mjs');
+  const scannerTestEnvironment = {
+    ...process.env,
+    SECRET_SCAN_SKIP_HISTORY: '1',
+  };
+  const rejected = runNode('scripts/scan-secrets.mjs', { env: scannerTestEnvironment });
   assert.notEqual(rejected.status, 0, 'secret scanner must reject an injected credential');
   assert.match(rejected.stderr, /generic assigned secret/);
   assert.doesNotMatch(rejected.stderr, /N0threeFailureFixtureValue/);
   await rm(fixturePath, { force: true });
 
-  const clean = runNode('scripts/scan-secrets.mjs');
+  const clean = runNode('scripts/scan-secrets.mjs', { env: scannerTestEnvironment });
   assert.equal(clean.status, 0, clean.stderr);
 
   const stagingSmoke = runNode('scripts/staging-smoke.mjs', {

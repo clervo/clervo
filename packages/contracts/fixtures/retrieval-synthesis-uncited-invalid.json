@@ -1,0 +1,26 @@
+{
+  "schema": "retrieval-synthesis",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "synthesisId": "syn_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "assemblyId": "asm_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "assemblySha256": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "operationId": "op_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "query": "clervo security boundary",
+    "createdAt": "2026-07-30T23:00:06.000Z",
+    "deadlineAt": "2026-07-30T23:00:11.000Z",
+    "policyId": "retrieval_cited_claims_v1",
+    "evidenceCount": 1,
+    "outcome": "synthesized",
+    "invocation": { "outcome": "succeeded" },
+    "answer": "An uncited answer.",
+    "claims": [{
+      "claimId": "claim_1",
+      "text": "An uncited answer.",
+      "citationIds": []
+    }],
+    "citations": [],
+    "synthesisPerformed": true
+  }
+}

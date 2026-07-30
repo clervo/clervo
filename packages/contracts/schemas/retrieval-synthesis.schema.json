@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/retrieval-synthesis.schema.json",
+  "title": "Clervo bounded citation-preserving retrieval synthesis report",
+  "$defs": {
+    "invocation": {
+      "type": "object",
+      "required": ["outcome"],
+      "properties": {
+        "outcome": { "enum": ["not_invoked", "succeeded", "failed", "deadline_exceeded", "cancelled", "output_rejected"] },
+        "failureCode": { "enum": ["adapter_failed", "deadline_exceeded", "caller_cancelled", "invalid_model_output"] }
+      },
+      "allOf": [
+        { "if": { "properties": { "outcome": { "enum": ["not_invoked", "succeeded"] } }, "required": ["outcome"] }, "then": { "properties": { "failureCode": false } } },
+        { "if": { "properties": { "outcome": { "enum": ["failed", "deadline_exceeded", "cancelled", "output_rejected"] } }, "required": ["outcome"] }, "then": { "required": ["failureCode"] } }
+      ],
+      "additionalProperties": false
+    },
+    "claim": {
+      "type": "object",
+      "required": ["claimId", "text", "citationIds"],
+      "properties": {
+        "claimId": { "type": "string", "pattern": "^claim_[1-9][0-9]*$" },
+        "text": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "citationIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^cite_[A-Za-z0-9]{20,64}$" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "citation": {
+      "type": "object",
+      "required": ["citationId", "resultId", "canonicalUrl", "quote", "startOffset", "endOffset", "observationId", "pathId", "providerId", "sourceOrdinal", "rawResponseSha256", "fetchId", "extractionId", "sourceBodySha256", "normalizedTextSha256", "title", "rank"],
+      "properties": {
+        "citationId": { "type": "string", "pattern": "^cite_[A-Za-z0-9]{20,64}$" },
+        "resultId": { "type": "string", "pattern": "^sr_[A-Za-z0-9]{20,64}$" },
+        "canonicalUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "quote": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "startOffset": { "type": "integer", "minimum": 0 },
+        "endOffset": { "type": "integer", "minimum": 1, "maximum": 100000 },
+        "observationId": { "type": "string", "pattern": "^obs_[A-Za-z0-9_]{20,90}$" },
+        "pathId": { "type": "string", "pattern": "^retrieval_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "providerId": { "type": "string", "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "sourceOrdinal": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "rawResponseSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "fetchId": { "type": "string", "pattern": "^fetch_[A-Za-z0-9]{20,64}$" },
+        "extractionId": { "type": "string", "pattern": "^extract_[A-Za-z0-9]{20,64}$" },
+        "sourceBodySha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "normalizedTextSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "rank": { "type": "integer", "minimum": 1, "maximum": 100 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "synthesisId", "assemblyId", "assemblySha256", "operationId", "query", "createdAt", "deadlineAt", "policyId", "evidenceCount", "outcome", "invocation", "claims", "citations", "synthesisPerformed"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "synthesisId": { "type": "string", "pattern": "^syn_[A-Za-z0-9]{20,64}$" },
+    "assemblyId": { "type": "string", "pattern": "^asm_[A-Za-z0-9]{20,55}$" },
+    "assemblySha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "query": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "deadlineAt": { "type": "string", "format": "date-time" },
+    "policyId": { "const": "retrieval_cited_claims_v1" },
+    "evidenceCount": { "type": "integer", "minimum": 0, "maximum": 20 },
+    "outcome": { "enum": ["synthesized", "insufficient_evidence", "failed", "cancelled"] },
+    "invocation": { "$ref": "#/$defs/invocation" },
+    "answer": { "type": "string", "minLength": 1, "maxLength": 6000 },
+    "claims": { "type": "array", "maxItems": 10, "items": { "$ref": "#/$defs/claim" } },
+    "citations": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/citation" } },
+    "synthesisPerformed": { "type": "boolean" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "outcome": { "const": "synthesized" } }, "required": ["outcome"] },
+      "then": {
+        "required": ["answer"],
+        "properties": {
+          "answer": { "type": "string", "minLength": 1, "maxLength": 6000 },
+          "invocation": { "type": "object", "properties": { "outcome": { "const": "succeeded" } }, "required": ["outcome"] },
+          "claims": { "type": "array", "minItems": 1 },
+          "citations": { "type": "array", "minItems": 1 },
+          "synthesisPerformed": { "const": true }
+        }
+      },
+      "else": {
+        "properties": {
+          "answer": false,
+          "claims": { "type": "array", "maxItems": 0 },
+          "citations": { "type": "array", "maxItems": 0 },
+          "synthesisPerformed": { "const": false }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

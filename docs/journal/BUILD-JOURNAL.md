@@ -170,3 +170,42 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Claims still unknown: credentialed Brave and Common Crawl URL-index/range-read behavior; live adapter schemas, quota/throttling, quality, freshness, and availability; retrieval-to-fetch integration; synthesis; benchmarks; HTTP/payment integration; production availability.
 - Cost/network effects: repository-local validation and loopback smoke only; no live provider, crawler, archive, browser, model, credential, cloud/IAM/deployment mutation, wallet/payment, external traffic, or USDC spend.
 - Exact next ticket: N4.6 — assemble federation candidates through bounded fetch, extraction, content deduplication, deterministic ranking, and citation binding while preserving per-path provenance; do not begin synthesis.
+
+## 2026-07-30 — N4.6 bounded retrieval evidence assembly
+
+- Added a deterministic assembly boundary that reconstructs and hash-matches qualification, revalidates federation attempts/observations before fan-out, and requires both selected paths to authorize transient extraction.
+- Added stable observation-derived fetch/extraction/result/citation identities, assembly-owned absolute-deadline races, candidate-local safe failures, explicit candidate/result/byte/output/worker limits, and terminal accounting for ranked, retained-unranked, duplicate, rejected, failed, and omitted candidates.
+- Reused the real N4.3 fetch-receipt contract, N4.4 worker extraction and content deduplication, and N4.1 ranking/citation verifier to produce immutable result-to-observation/path/provider/raw-response/fetch/body/extraction/text-hash provenance with `synthesisPerformed: false`.
+- Added one strict schema, two fixtures, and eight focused tests covering real extraction, deterministic ranking/citations, exact/near duplicates, local failure containment, non-cooperative dependency timeout, limits, forged qualification/federation metadata, content-use gates, unsafe bounds, and deep immutability.
+- Validation: canonical `npm test` passed with exit code 0, including lint/typecheck, clean-room boundary, stack/environment checks, working-tree plus full-history secret scan, N0.3 injected-secret rejection/cleanup, 25 Draft 2020-12 schemas and 47 fixtures, and N1.1 through N4.6 at 112/112 tests. N4.6 passed 8/8. Deterministic discovery generated 25 schemas; assembly schema semantic parity, OpenAPI component presence, loopback staging smoke, and `git diff --check` passed. The available shell executed Node.js 22.23.1/npm 10.9.8 rather than the pinned Node.js 24.18.1 runtime, so exact Node-24 execution remains required before a runtime-specific release claim.
+- Claims still unknown: credentialed Brave and Common Crawl URL-index/range-read behavior; live provider adapters and retrieval/extraction quality; calibrated ranking/deduplication; complete model-facing prompt-injection defense; synthesis; benchmarks; HTTP/mock-paid integration; production availability.
+- Cost/network effects: repository-local validation and loopback smoke only; no live provider, crawler, archive, external fetch, browser, model, credential, cloud/IAM/deployment mutation, wallet/payment, external traffic, or USDC spend.
+- Exact next ticket: N4.7 — build a bounded model-facing prompt-injection boundary and citation-preserving synthesis contract over assembled evidence; do not begin benchmarks or HTTP/payment exposure.
+
+## 2026-07-30 — N4.7 bounded citation-preserving retrieval synthesis
+
+- Added an assembly-hash-bound synthesis boundary with a frozen fixed policy that treats evidence as untrusted data, ignores embedded instructions, disables tools/external actions, and requires known citation IDs for every claim.
+- Added exact claims-only model-output validation, deterministic answer rendering, copied assembly provenance, no-model insufficient-evidence behavior, safe fixed failure codes, cancellation/deadline containment, and deeply immutable reports.
+- Added one strict schema, two fixtures, and eight focused tests covering instruction-like evidence, fabricated/duplicate/missing/uncited citation IDs, extra/empty/oversized output, forged assembly/provenance, cancellation, non-cooperative adapters, safe exceptions, and immutability.
+- Focused validation: `npm run test:n4.7` passed 8/8. Canonical totals are recorded under N4.8.
+- Claims still unknown: complete live-model prompt-injection resistance, semantic entailment quality, live model schemas/cost/latency, calibrated search quality, HTTP/payment integration, and production availability.
+- Cost/network effects: repository-local validation only; no live model/provider/external call, cloud/IAM/deployment mutation, wallet/payment, external traffic, or USDC spend.
+- Exact next ticket: N4.8 — benchmark recorded search quality against a named BlockRun-compatible baseline; do not begin HTTP/payment exposure.
+
+## 2026-07-30 — N4.8 recorded search quality benchmark
+
+- Added a pure independent evaluator over immutable recorded observations with canonical ground-truth corpus hashing and required relevance, freshness, citation, duplicate, adversarial-injection, and provider-failure categories.
+- Added exact citation re-verification, category-aware recall/freshness/citation/duplicate metrics, all-case p95 recorded latency and average recorded cost, dedicated resilience metrics, weighted quality scoring, named-baseline improvement, fixed thresholds, and fail-closed codes.
+- Added one strict schema, two fixtures, and six focused tests covering metric recomputation, corpus identity, invalid citations, latency/cost/resilience/improvement gates, category/identity/binding rejection, and immutability.
+- Validation: canonical `npm test` passed with exit code 0 while executing the exact pinned Node.js 24.18.1 runtime and npm 10.9.8, including lint/typecheck, clean-room boundary, stack/environment checks, working-tree plus full-history secret scan, N0.3 injected-secret rejection/cleanup, 27 Draft 2020-12 schemas and 51 fixtures, deterministic discovery, and N1.1 through N4.8 at 126/126 TAP tests. N4.7 passed 8/8 and N4.8 passed 6/6; N4.7/N4.8 source/generated schema semantic parity, OpenAPI component presence, loopback staging smoke, and `git diff --check` passed.
+- Claims still unknown: statistically calibrated or live search quality; human relevance judgments; live provider/model quality, latency, cost, quotas, and availability; production SLOs; HTTP/payment integration; durable benchmark history; production availability.
+- Cost/network effects: repository-local validation only; no live provider, crawler, archive, external fetch, browser, model, credential, cloud/IAM/deployment mutation, wallet/payment, external traffic, or USDC spend.
+- Exact next ticket: define and implement the bounded free-sample HTTP route over the completed search pipeline without payment exposure; keep mock-paid routing separate.
+
+## 2026-07-30 — permanent Node.js runtime enforcement
+
+- Installed the checksum-verified official Node.js 24.18.1 Linux x64 executable at `/usr/local/bin/node`; retained the pinned npm 10.9.8 installation. The active process now reports Node.js 24.18.1 rather than the previous Node.js 22.23.1.
+- Replaced the permissive Node engine range with exact `24.18.1` pins across `.nvmrc`, `.node-version`, `.tool-versions`, `package.json`, `package-lock.json`, and `infra/stack-versions.env`; enabled npm `engine-strict`; and added `scripts/verify-runtime.mjs` as the install guard and first step of every repository npm task.
+- Extended stack verification to compare the executing process with every committed runtime declaration. A deliberate pre-install mismatch check under Node.js 22.23.1 failed with exit code 1 before the runtime replacement, proving fail-fast rejection.
+- Reworked the full-history secret scan to stream each unique reachable Git object once through `git cat-file --batch` instead of spawning `git show` per file per commit. N0.3 keeps an isolated working-tree behavior test while canonical acceptance independently scans the working tree plus all committed history.
+- Replaced the deeply nested canonical npm chain with one fail-fast acceptance orchestrator that runs the same validators directly, builds/generates once, and executes all contract tests in one TAP process. Canonical `npm test` passed under Node.js 24.18.1 with 126/126 tests, 0 failures, 27 schemas, 51 fixtures, no external network calls, and 0 USDC spent.

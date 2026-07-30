@@ -14,12 +14,12 @@ The Stage 0 choice should minimize independent failure domains without pretendin
 
 Use this foundational stack:
 
-1. **Runtime:** TypeScript 7 on **Node.js 24 LTS**, using ECMAScript modules and npm workspaces when packages are introduced. Production must stay within `>=24.12.0 <25` until an explicit upgrade ADR. Node 24.12 is the first Node 24 release where built-in type stripping is stable, but Clervo will retain the TypeScript compiler for full type checking and language support.
+1. **Runtime:** TypeScript 7 on **Node.js 24 LTS**, using ECMAScript modules and npm workspaces when packages are introduced. All repository execution is pinned exactly to `24.18.1` until an explicit upgrade ADR updates every runtime declaration together. Node 24.12 is the first Node 24 release where built-in type stripping is stable, but Clervo will retain the TypeScript compiler for full type checking and language support.
 2. **Database:** **PostgreSQL 18**, with deployment artifacts initially pinned to the current `18.4` minor release. PostgreSQL is the authoritative store for operations, idempotency records, quotes, receipts, reconciliation, and the balanced ledger.
 3. **Durable queue:** **pg-boss 12.26.3**, backed by the same PostgreSQL cluster. Jobs may be inserted in the same database transaction as application state. Workers must still use idempotent handlers, explicit state transitions, bounded retries, dead-letter handling, and reconciliation because process crashes and external side effects can produce redelivery or unknown outcomes.
 4. **Package manager:** **npm 10.9.8**, committed through `package-lock.json`. Exact direct dependency versions are used; automated upgrades require tests and review.
 
-Version declarations are cross-checked by `scripts/verify-stack-decision.mjs`. N0.2 selects versions but does not provision PostgreSQL, create schemas, start workers, or establish CI and environments.
+Version declarations and the executing process are cross-checked by `scripts/verify-runtime.mjs` and `scripts/verify-stack-decision.mjs`. `.nvmrc`, `.node-version`, and `.tool-versions` support common version managers; `.npmrc` enables strict engine rejection; installation and the canonical acceptance command fail before doing work when the active runtime differs. N0.2 selects versions but does not provision PostgreSQL, create schemas, or start workers.
 
 ## Evidence reviewed
 

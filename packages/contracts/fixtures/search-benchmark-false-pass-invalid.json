@@ -1,0 +1,22 @@
+{
+  "schema": "search-benchmark",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "benchmarkId": "bench_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "corpusId": "corpus_recorded_search_v1",
+    "corpusVersion": "2026-07-30.1",
+    "corpusSha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "baselineId": "baseline_blockrun_compatible_v1",
+    "evaluatedAt": "2026-07-30T23:30:00.000Z",
+    "policyId": "search_recorded_quality_v1",
+    "caseCount": 1,
+    "candidate": { "recallBasisPoints": 0, "freshnessBasisPoints": 0, "citationValidityBasisPoints": 0, "duplicateBasisPoints": 10000, "p95LatencyMs": 120000, "averageCostMicrousd": 1000000000, "injectionPassBasisPoints": 0, "providerFailurePassBasisPoints": 0, "qualityScoreBasisPoints": 0 },
+    "baseline": { "recallBasisPoints": 0, "freshnessBasisPoints": 0, "citationValidityBasisPoints": 0, "duplicateBasisPoints": 0, "p95LatencyMs": 0, "averageCostMicrousd": 0, "injectionPassBasisPoints": 0, "providerFailurePassBasisPoints": 0, "qualityScoreBasisPoints": 0 },
+    "baselineImprovementBasisPoints": 0,
+    "outcome": "passed",
+    "failureCodes": ["recall_below_threshold"],
+    "cases": [{ "caseId": "bcase_falsepass000000000", "category": "relevance", "candidate": { "recallBasisPoints": 0, "freshnessBasisPoints": 0, "citationValidityBasisPoints": 0, "duplicateBasisPoints": 10000, "p95LatencyMs": 120000, "averageCostMicrousd": 1000000000, "injectionPassBasisPoints": 0, "providerFailurePassBasisPoints": 0, "qualityScoreBasisPoints": 0 }, "baseline": { "recallBasisPoints": 0, "freshnessBasisPoints": 0, "citationValidityBasisPoints": 0, "duplicateBasisPoints": 0, "p95LatencyMs": 0, "averageCostMicrousd": 0, "injectionPassBasisPoints": 0, "providerFailurePassBasisPoints": 0, "qualityScoreBasisPoints": 0 } }],
+    "scope": "recorded_offline_corpus"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/retrieval-assembly.schema.json",
+  "title": "Clervo bounded retrieval evidence assembly report",
+  "$defs": {
+    "score": {
+      "type": "object",
+      "required": ["freshness", "authority", "relevance", "diversity", "totalBasisPoints"],
+      "properties": {
+        "freshness": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "authority": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "relevance": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "diversity": { "enum": [40, 100] },
+        "totalBasisPoints": { "type": "integer", "minimum": 0, "maximum": 10000 }
+      },
+      "additionalProperties": false
+    },
+    "result": {
+      "type": "object",
+      "required": ["resultId", "sourceId", "url", "canonicalUrl", "hostname", "title", "snippet", "evidenceText", "retrievedAt", "authorityScore", "relevanceScore", "rank", "score"],
+      "properties": {
+        "resultId": { "type": "string", "pattern": "^sr_[A-Za-z0-9]{20,64}$" },
+        "sourceId": { "type": "string", "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "url": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "canonicalUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "hostname": { "type": "string", "minLength": 1, "maxLength": 253 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "snippet": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "evidenceText": { "type": "string", "minLength": 1, "maxLength": 100000 },
+        "retrievedAt": { "type": "string", "format": "date-time" },
+        "publishedAt": { "type": "string", "format": "date-time" },
+        "authorityScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "relevanceScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "rank": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "score": { "$ref": "#/$defs/score" }
+      },
+      "additionalProperties": false
+    },
+    "citation": {
+      "type": "object",
+      "required": ["citationId", "resultId", "canonicalUrl", "quote", "startOffset", "endOffset"],
+      "properties": {
+        "citationId": { "type": "string", "pattern": "^cite_[A-Za-z0-9]{20,64}$" },
+        "resultId": { "type": "string", "pattern": "^sr_[A-Za-z0-9]{20,64}$" },
+        "canonicalUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "quote": { "type": "string", "minLength": 1, "maxLength": 1000 },
+        "startOffset": { "const": 0 },
+        "endOffset": { "type": "integer", "minimum": 1, "maximum": 1000 }
+      },
+      "additionalProperties": false
+    },
+    "searchResponse": {
+      "type": "object",
+      "required": ["contractVersion", "operationId", "query", "generatedAt", "deduplicatedCount", "results", "citations"],
+      "properties": {
+        "contractVersion": { "const": "2026-07-29.1" },
+        "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+        "query": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "generatedAt": { "type": "string", "format": "date-time" },
+        "deduplicatedCount": { "type": "integer", "minimum": 0 },
+        "results": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/result" } },
+        "citations": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/citation" } }
+      },
+      "additionalProperties": false
+    },
+    "candidateRecord": {
+      "type": "object",
+      "required": ["observationId", "pathId", "providerId", "sourceOrdinal", "rawResponseSha256", "requestedUrl", "outcome"],
+      "properties": {
+        "observationId": { "type": "string", "pattern": "^obs_[A-Za-z0-9_]{20,90}$" },
+        "pathId": { "type": "string", "pattern": "^retrieval_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "providerId": { "type": "string", "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "sourceOrdinal": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "rawResponseSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "requestedUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "outcome": { "enum": ["ranked", "retained_unranked", "exact_duplicate", "near_duplicate", "fetch_rejected", "extraction_failed", "candidate_limit"] },
+        "fetchId": { "type": "string", "pattern": "^fetch_[A-Za-z0-9]{20,64}$" },
+        "extractionId": { "type": "string", "pattern": "^extract_[A-Za-z0-9]{20,64}$" },
+        "finalUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "bodySha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "normalizedTextSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "duplicateOfExtractionId": { "type": "string", "pattern": "^extract_[A-Za-z0-9]{20,64}$" },
+        "similarityBasisPoints": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "resultId": { "type": "string", "pattern": "^sr_[A-Za-z0-9]{20,64}$" },
+        "citationId": { "type": "string", "pattern": "^cite_[A-Za-z0-9]{20,64}$" },
+        "failureCode": { "enum": ["fetch_rejected", "extraction_failed", "candidate_limit"] }
+      },
+      "allOf": [
+        { "if": { "properties": { "outcome": { "const": "ranked" } }, "required": ["outcome"] }, "then": { "required": ["fetchId", "extractionId", "finalUrl", "bodySha256", "normalizedTextSha256", "similarityBasisPoints", "resultId", "citationId"], "properties": { "fetchId": {}, "extractionId": {}, "finalUrl": {}, "bodySha256": {}, "normalizedTextSha256": {}, "similarityBasisPoints": {}, "resultId": {}, "citationId": {}, "failureCode": false, "duplicateOfExtractionId": false } } },
+        { "if": { "properties": { "outcome": { "const": "retained_unranked" } }, "required": ["outcome"] }, "then": { "required": ["fetchId", "extractionId", "finalUrl", "bodySha256", "normalizedTextSha256", "similarityBasisPoints"], "properties": { "fetchId": {}, "extractionId": {}, "finalUrl": {}, "bodySha256": {}, "normalizedTextSha256": {}, "similarityBasisPoints": {}, "failureCode": false, "duplicateOfExtractionId": false, "resultId": false, "citationId": false } } },
+        { "if": { "properties": { "outcome": { "enum": ["exact_duplicate", "near_duplicate"] } }, "required": ["outcome"] }, "then": { "required": ["fetchId", "extractionId", "finalUrl", "bodySha256", "normalizedTextSha256", "similarityBasisPoints", "duplicateOfExtractionId"], "properties": { "fetchId": {}, "extractionId": {}, "finalUrl": {}, "bodySha256": {}, "normalizedTextSha256": {}, "similarityBasisPoints": {}, "duplicateOfExtractionId": {}, "failureCode": false, "resultId": false, "citationId": false } } },
+        { "if": { "properties": { "outcome": { "const": "fetch_rejected" } }, "required": ["outcome"] }, "then": { "required": ["fetchId", "failureCode"], "properties": { "fetchId": {}, "failureCode": { "const": "fetch_rejected" }, "extractionId": false, "finalUrl": false, "bodySha256": false, "normalizedTextSha256": false, "duplicateOfExtractionId": false, "similarityBasisPoints": false, "resultId": false, "citationId": false } } },
+        { "if": { "properties": { "outcome": { "const": "extraction_failed" } }, "required": ["outcome"] }, "then": { "required": ["fetchId", "extractionId", "failureCode"], "properties": { "fetchId": {}, "extractionId": {}, "failureCode": { "const": "extraction_failed" }, "finalUrl": false, "bodySha256": false, "normalizedTextSha256": false, "duplicateOfExtractionId": false, "similarityBasisPoints": false, "resultId": false, "citationId": false } } },
+        { "if": { "properties": { "outcome": { "const": "candidate_limit" } }, "required": ["outcome"] }, "then": { "required": ["failureCode"], "properties": { "failureCode": { "const": "candidate_limit" }, "fetchId": false, "extractionId": false, "finalUrl": false, "bodySha256": false, "normalizedTextSha256": false, "duplicateOfExtractionId": false, "similarityBasisPoints": false, "resultId": false, "citationId": false } } }
+      ],
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["resultId", "citationId", "observationId", "pathId", "providerId", "sourceOrdinal", "rawResponseSha256", "fetchId", "extractionId", "sourceBodySha256", "normalizedTextSha256"],
+      "properties": {
+        "resultId": { "type": "string", "pattern": "^sr_[A-Za-z0-9]{20,64}$" },
+        "citationId": { "type": "string", "pattern": "^cite_[A-Za-z0-9]{20,64}$" },
+        "observationId": { "type": "string", "pattern": "^obs_[A-Za-z0-9_]{20,90}$" },
+        "pathId": { "type": "string", "pattern": "^retrieval_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "providerId": { "type": "string", "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "sourceOrdinal": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "rawResponseSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "fetchId": { "type": "string", "pattern": "^fetch_[A-Za-z0-9]{20,64}$" },
+        "extractionId": { "type": "string", "pattern": "^extract_[A-Za-z0-9]{20,64}$" },
+        "sourceBodySha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "normalizedTextSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "assemblyId", "federationId", "operationId", "query", "createdAt", "deadlineAt", "qualificationId", "qualificationSha256", "selectedCandidateCount", "omittedCandidateCount", "fetchedCount", "extractedCount", "retainedCount", "rankedCount", "candidateRecords", "searchResponse", "provenance", "synthesisPerformed"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "assemblyId": { "type": "string", "pattern": "^asm_[A-Za-z0-9]{20,55}$" },
+    "federationId": { "type": "string", "pattern": "^fed_[A-Za-z0-9]{20,64}$" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "query": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "deadlineAt": { "type": "string", "format": "date-time" },
+    "qualificationId": { "type": "string", "pattern": "^rqual_[A-Za-z0-9]{20,64}$" },
+    "qualificationSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "selectedCandidateCount": { "type": "integer", "minimum": 0, "maximum": 20 },
+    "omittedCandidateCount": { "type": "integer", "minimum": 0, "maximum": 200 },
+    "fetchedCount": { "type": "integer", "minimum": 0, "maximum": 20 },
+    "extractedCount": { "type": "integer", "minimum": 0, "maximum": 20 },
+    "retainedCount": { "type": "integer", "minimum": 0, "maximum": 20 },
+    "rankedCount": { "type": "integer", "minimum": 0, "maximum": 20 },
+    "candidateRecords": { "type": "array", "maxItems": 200, "items": { "$ref": "#/$defs/candidateRecord" } },
+    "searchResponse": { "$ref": "#/$defs/searchResponse" },
+    "provenance": { "type": "array", "maxItems": 20, "items": { "$ref": "#/$defs/provenance" } },
+    "synthesisPerformed": { "const": false }
+  },
+  "additionalProperties": false
+}
