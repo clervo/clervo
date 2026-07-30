@@ -1,0 +1,1174 @@
+{
+  "openapi": "3.1.1",
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "info": {
+    "title": "Clervo Next contract preview",
+    "version": "2026-07-29.1",
+    "description": "Generated repository-local contract documentation. No callable product API or payment flow is claimed."
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "AdapterManifest": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/adapter-manifest.schema.json",
+        "title": "Clervo adapter manifest",
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "adapterId",
+          "adapterVersion",
+          "providerId",
+          "failureDomain",
+          "productIds",
+          "requiredSecretNames",
+          "dataResidency"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "adapterId": {
+            "type": "string",
+            "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+          },
+          "adapterVersion": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+          },
+          "providerId": {
+            "type": "string",
+            "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$"
+          },
+          "failureDomain": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._:-]{2,127}$"
+          },
+          "productIds": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$"
+            }
+          },
+          "requiredSecretNames": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]{2,127}$"
+            }
+          },
+          "dataResidency": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z0-9][A-Z0-9_-]{1,31}$"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuditEvent": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/audit-event.schema.json",
+        "title": "Clervo append-only redacted audit event",
+        "$defs": {
+          "hash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "eventId",
+          "sequence",
+          "occurredAt",
+          "eventType",
+          "outcome",
+          "actor",
+          "facts",
+          "eventHash"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "eventId": {
+            "type": "string",
+            "pattern": "^evt_[A-Za-z0-9]{20,64}$"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventType": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.]{2,79}$"
+          },
+          "outcome": {
+            "enum": [
+              "success",
+              "failure",
+              "unknown",
+              "denied"
+            ]
+          },
+          "actor": {
+            "type": "object",
+            "required": [
+              "type",
+              "id"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "service",
+                  "worker",
+                  "operator",
+                  "system"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+              }
+            },
+            "additionalProperties": false
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "operationState": {
+            "enum": [
+              "RECEIVED",
+              "VALIDATED",
+              "QUOTED",
+              "PAYMENT_REQUIRED",
+              "AUTHORIZED",
+              "RESERVED",
+              "EXECUTING",
+              "EXECUTION_UNKNOWN",
+              "EXECUTED",
+              "VERIFYING",
+              "VERIFIED",
+              "SETTLING",
+              "SETTLEMENT_UNKNOWN",
+              "SETTLED",
+              "RECEIPTED",
+              "RECONCILING",
+              "FAILED"
+            ]
+          },
+          "traceId": {
+            "type": "string",
+            "pattern": "^(?!0{32}$)[a-f0-9]{32}$"
+          },
+          "spanId": {
+            "type": "string",
+            "pattern": "^(?!0{16}$)[a-f0-9]{16}$"
+          },
+          "facts": {
+            "type": "array",
+            "maxItems": 32,
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "value"
+              ],
+              "properties": {
+                "name": {
+                  "enum": [
+                    "adapter_id",
+                    "attempt",
+                    "duration_ms",
+                    "error_code",
+                    "from_state",
+                    "http_status",
+                    "latency_ms",
+                    "product_id",
+                    "qualification_id",
+                    "receipt_hash",
+                    "retryable",
+                    "route_id",
+                    "to_state"
+                  ]
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string",
+                      "maxLength": 256
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "previousEventHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "eventHash": {
+            "$ref": "#/$defs/hash"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CatalogEntry": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/catalog-entry.schema.json",
+        "title": "Clervo catalog entry",
+        "$defs": {
+          "amount": {
+            "type": "object",
+            "required": [
+              "asset",
+              "amountAtomic",
+              "decimals"
+            ],
+            "properties": {
+              "asset": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{1,127}$"
+              },
+              "amountAtomic": {
+                "type": "string",
+                "pattern": "^(?:0|[1-9][0-9]{0,77})$"
+              },
+              "decimals": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "catalogVersion",
+          "productId",
+          "title",
+          "summary",
+          "status",
+          "identity",
+          "capabilities",
+          "deliveryModes",
+          "inputSchema",
+          "outputSchema",
+          "pricing",
+          "qualifiedAdapterIds",
+          "terms",
+          "dataPolicy",
+          "updatedAt"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "catalogVersion": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$"
+          },
+          "productId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "qualified",
+              "active",
+              "degraded",
+              "disabled",
+              "blocked_by_terms",
+              "retired"
+            ]
+          },
+          "identity": {
+            "type": "object",
+            "required": [
+              "kind",
+              "name",
+              "substitutionPolicy"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "exact",
+                  "alias"
+                ]
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "substitutionPolicy": {
+                "enum": [
+                  "none",
+                  "qualified_equivalent"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "capabilities": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_.-]{1,63}$"
+            }
+          },
+          "deliveryModes": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "sync",
+                "async"
+              ]
+            }
+          },
+          "inputSchema": {
+            "type": "string",
+            "format": "uri"
+          },
+          "outputSchema": {
+            "type": "string",
+            "format": "uri"
+          },
+          "pricing": {
+            "type": "object",
+            "required": [
+              "model",
+              "maximumChargeRequired",
+              "priceVersion"
+            ],
+            "properties": {
+              "model": {
+                "enum": [
+                  "free",
+                  "fixed",
+                  "metered",
+                  "quoted"
+                ]
+              },
+              "displayPrice": {
+                "$ref": "#/$defs/amount"
+              },
+              "maximumChargeRequired": {
+                "type": "boolean"
+              },
+              "priceVersion": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$"
+              }
+            },
+            "additionalProperties": false
+          },
+          "qualifiedAdapterIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+            }
+          },
+          "terms": {
+            "type": "object",
+            "required": [
+              "status",
+              "reference"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "approved",
+                  "restricted",
+                  "blocked",
+                  "unreviewed"
+                ]
+              },
+              "reviewedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "reference": {
+                "type": "string",
+                "format": "uri",
+                "maxLength": 500
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 500
+              }
+            },
+            "additionalProperties": false
+          },
+          "dataPolicy": {
+            "type": "object",
+            "required": [
+              "classification",
+              "payloadRetention",
+              "maximumRetentionSeconds"
+            ],
+            "properties": {
+              "classification": {
+                "enum": [
+                  "public",
+                  "customer_confidential",
+                  "sensitive"
+                ]
+              },
+              "payloadRetention": {
+                "enum": [
+                  "none",
+                  "bounded"
+                ]
+              },
+              "maximumRetentionSeconds": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 31536000
+              }
+            },
+            "additionalProperties": false
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "active",
+                    "degraded"
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "then": {
+              "properties": {
+                "qualifiedAdapterIds": {
+                  "type": "array",
+                  "minItems": 1
+                },
+                "terms": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "approved",
+                        "restricted"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "type": "object",
+              "properties": {
+                "identity": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "const": "exact"
+                    }
+                  },
+                  "required": [
+                    "kind"
+                  ]
+                }
+              },
+              "required": [
+                "identity"
+              ]
+            },
+            "then": {
+              "properties": {
+                "identity": {
+                  "type": "object",
+                  "properties": {
+                    "substitutionPolicy": {
+                      "const": "none"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "type": "object",
+              "properties": {
+                "pricing": {
+                  "type": "object",
+                  "properties": {
+                    "model": {
+                      "not": {
+                        "const": "free"
+                      }
+                    }
+                  },
+                  "required": [
+                    "model"
+                  ]
+                }
+              },
+              "required": [
+                "pricing"
+              ]
+            },
+            "then": {
+              "properties": {
+                "pricing": {
+                  "type": "object",
+                  "properties": {
+                    "maximumChargeRequired": {
+                      "const": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      },
+      "OperationReceipt": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/operation-receipt.schema.json",
+        "title": "Clervo immutable operation receipt",
+        "$defs": {
+          "hash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "amount": {
+            "type": "object",
+            "required": [
+              "asset",
+              "amountAtomic",
+              "decimals"
+            ],
+            "properties": {
+              "asset": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{1,127}$"
+              },
+              "amountAtomic": {
+                "type": "string",
+                "pattern": "^(?:0|[1-9][0-9]{0,77})$"
+              },
+              "decimals": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "receiptId",
+          "operationId",
+          "productId",
+          "requestHash",
+          "quoteId",
+          "quoteHash",
+          "fundingMode",
+          "customerCharge",
+          "supplierCost",
+          "settlement",
+          "resultHash",
+          "provenance",
+          "completedAt",
+          "receiptHash"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "receiptId": {
+            "type": "string",
+            "pattern": "^rcpt_[A-Za-z0-9]{20,64}$"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "productId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$"
+          },
+          "requestHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "quoteId": {
+            "type": "string",
+            "pattern": "^quote_[A-Za-z0-9]{20,64}$"
+          },
+          "quoteHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "fundingMode": {
+            "enum": [
+              "free",
+              "sponsored",
+              "paid"
+            ]
+          },
+          "customerCharge": {
+            "$ref": "#/$defs/amount"
+          },
+          "supplierCost": {
+            "$ref": "#/$defs/amount"
+          },
+          "settlement": {
+            "type": "object",
+            "required": [
+              "status"
+            ],
+            "properties": {
+              "status": {
+                "enum": [
+                  "not_required",
+                  "settled"
+                ]
+              },
+              "referenceHash": {
+                "$ref": "#/$defs/hash"
+              }
+            },
+            "additionalProperties": false
+          },
+          "resultHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "provenance": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "adapterId",
+                "qualificationId",
+                "providerReferenceHash"
+              ],
+              "properties": {
+                "adapterId": {
+                  "type": "string",
+                  "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+                },
+                "qualificationId": {
+                  "type": "string",
+                  "pattern": "^qual_[A-Za-z0-9]{20,64}$"
+                },
+                "providerReferenceHash": {
+                  "$ref": "#/$defs/hash"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "previousReceiptHash": {
+            "$ref": "#/$defs/hash"
+          },
+          "receiptHash": {
+            "$ref": "#/$defs/hash"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "type": "object",
+              "properties": {
+                "fundingMode": {
+                  "const": "paid"
+                }
+              },
+              "required": [
+                "fundingMode"
+              ]
+            },
+            "then": {
+              "properties": {
+                "settlement": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "const": "settled"
+                    },
+                    "referenceHash": {
+                      "$ref": "#/$defs/hash"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "referenceHash"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "type": "object",
+              "properties": {
+                "settlement": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "const": "not_required"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                }
+              },
+              "required": [
+                "settlement"
+              ]
+            },
+            "then": {
+              "properties": {
+                "settlement": {
+                  "type": "object",
+                  "not": {
+                    "type": "object",
+                    "properties": {
+                      "referenceHash": {
+                        "$ref": "#/$defs/hash"
+                      }
+                    },
+                    "required": [
+                      "referenceHash"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      },
+      "OperationRequest": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/operation-request.schema.json",
+        "title": "Clervo operation request",
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "operation",
+          "input"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "operation": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$",
+            "maxLength": 120
+          },
+          "input": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "OperationResult": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/operation-result.schema.json",
+        "title": "Clervo successful operation result",
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "operationId",
+          "operation",
+          "state",
+          "replayed",
+          "output"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "operation": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$"
+          },
+          "state": {
+            "const": "RECEIPTED"
+          },
+          "replayed": {
+            "type": "boolean"
+          },
+          "output": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "OperationSnapshot": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/operation-snapshot.schema.json",
+        "title": "Clervo durable operation snapshot",
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "operationId",
+          "operation",
+          "idempotencyKey",
+          "requestHash",
+          "state",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "operation": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$"
+          },
+          "requestHash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "state": {
+            "enum": [
+              "RECEIVED",
+              "VALIDATED",
+              "QUOTED",
+              "PAYMENT_REQUIRED",
+              "AUTHORIZED",
+              "RESERVED",
+              "EXECUTING",
+              "EXECUTION_UNKNOWN",
+              "EXECUTED",
+              "VERIFYING",
+              "VERIFIED",
+              "SETTLING",
+              "SETTLEMENT_UNKNOWN",
+              "SETTLED",
+              "RECEIPTED",
+              "RECONCILING",
+              "FAILED"
+            ]
+          },
+          "quoteExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Problem": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/problem.schema.json",
+        "title": "Clervo RFC 9457 problem detail",
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail",
+          "instance",
+          "code",
+          "retryable"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://api\\.clervo\\.dev/problems/"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "status": {
+            "type": "integer",
+            "minimum": 400,
+            "maximum": 599
+          },
+          "detail": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri-reference"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,63}$"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "retryable": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "QualificationResult": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/qualification-result.schema.json",
+        "title": "Clervo adapter qualification result",
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "qualificationId",
+          "adapterId",
+          "productId",
+          "status",
+          "checkedAt",
+          "expiresAt",
+          "termsStatus",
+          "checks",
+          "observed"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "qualificationId": {
+            "type": "string",
+            "pattern": "^qual_[A-Za-z0-9]{20,64}$"
+          },
+          "adapterId": {
+            "type": "string",
+            "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+          },
+          "productId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$"
+          },
+          "status": {
+            "enum": [
+              "passed",
+              "failed",
+              "blocked"
+            ]
+          },
+          "checkedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "termsStatus": {
+            "enum": [
+              "approved",
+              "restricted",
+              "blocked",
+              "unreviewed"
+            ]
+          },
+          "checks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "status"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_.-]{1,63}$"
+                },
+                "status": {
+                  "enum": [
+                    "passed",
+                    "failed",
+                    "not_run"
+                  ]
+                },
+                "evidenceHash": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                },
+                "code": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{2,63}$"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "observed": {
+            "type": "object",
+            "properties": {
+              "latencyMsP95": {
+                "type": "number",
+                "minimum": 0
+              },
+              "maximumSupplierCost": {
+                "type": "object",
+                "required": [
+                  "asset",
+                  "amountAtomic",
+                  "decimals"
+                ],
+                "properties": {
+                  "asset": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{1,127}$"
+                  },
+                  "amountAtomic": {
+                    "type": "string",
+                    "pattern": "^(?:0|[1-9][0-9]{0,77})$"
+                  },
+                  "decimals": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 30
+                  }
+                },
+                "additionalProperties": false
+              },
+              "identity": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "x-clervo-status": {
+    "lifecycle": "contract_preview",
+    "callable": false,
+    "paymentImplemented": false,
+    "deploymentVerified": false
+  }
+}

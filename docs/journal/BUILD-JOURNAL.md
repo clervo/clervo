@@ -55,3 +55,14 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Cost/network effects: read-only public standards evidence and local dependency audit metadata; local compilation/tests and loopback HTTP only; no provider/cloud/IAM/deployment/payment mutations; 0 USDC spent.
 - Claims still unknown: generated OpenAPI/discovery; transactional persistence/immutability; signatures or external anchoring; real adapter qualification, lawful terms, health, identity, cost, or execution; observability pipeline; payload retention enforcement; payment and production behavior.
 - Exact next ticket: N1.3 — generate/test OpenAPI and discovery.
+
+## 2026-07-30 — N1.3 generated OpenAPI and truthful discovery preview
+
+- Ran a bounded preflight against OpenAPI 3.1.1 and the current informal `llms.txt` proposal; stopped without competitor/provider research. An attempted official x402 resource-server documentation URL returned 404, so no x402 discovery contract was inferred or published.
+- Added deterministic OpenAPI 3.1.1 generation from all nine existing Draft 2020-12 schemas, exact versioned public schema copies, `/.well-known/clervo.json`, and `/llms.txt`.
+- Kept the preview truthful: OpenAPI has no paths or production server claim; discovery is non-callable with no products, unimplemented x402 payment, unverified settlement, and unverified deployment. A generator guard rejects injected false-live or false-payment states before writing artifacts.
+- Added six focused tests covering OpenAPI shape/schema count, strict schema compilation and copy parity, discovery truth, `llms.txt` proposal structure, false-readiness rejection, and common secret patterns.
+- Validation: Node.js 24.18.1 with npm 10.9.8 ran `npm test` with exit 0. Clean-room, stack, environment, working-tree/history secret, and N0.3 injected-failure gates passed; 9 schemas and 15 fixtures validated; N1.1 passed 8/8, N1.2 passed 7/7, and N1.3 passed 6/6. A second generation produced byte-identical top-level OpenAPI, discovery, and `llms.txt` hashes; `git diff --check` passed.
+- Cost/network effects: three bounded read-only specification requests, one returning 404; local generation/tests only; no provider, cloud, IAM, deployment, or payment mutations; 0 USDC spent.
+- Claims still unknown: live HTTP artifact serving, product paths/schemas/examples, security/x402 behavior, persistence, real providers, catalog publication, payment/settlement, remote publication, and production behavior.
+- Exact next ticket: N2.1 — build quote and mock x402 challenge.

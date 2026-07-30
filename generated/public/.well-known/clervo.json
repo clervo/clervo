@@ -1,0 +1,25 @@
+{
+  "discoveryVersion": "2026-07-30.1",
+  "contractVersion": "2026-07-29.1",
+  "name": "Clervo Next",
+  "description": "Machine-readable preview of Clervo Next contracts. Products and payment execution are not available yet.",
+  "lifecycle": "contract_preview",
+  "callable": false,
+  "payment": {
+    "protocol": "x402",
+    "implemented": false,
+    "settlementVerified": false
+  },
+  "artifacts": {
+    "openapi": "https://api.clervo.dev/openapi.json",
+    "llms": "https://api.clervo.dev/llms.txt",
+    "schemas": "https://api.clervo.dev/schemas/2026-07-29.1/"
+  },
+  "products": [],
+  "limitations": [
+    "No product HTTP handlers are implemented.",
+    "No catalog product is published or callable.",
+    "No x402 verification or settlement flow is implemented.",
+    "No production deployment is verified."
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/qualification-result.schema.json",
+  "title": "Clervo adapter qualification result",
+  "type": "object",
+  "required": [
+    "contractVersion",
+    "qualificationId",
+    "adapterId",
+    "productId",
+    "status",
+    "checkedAt",
+    "expiresAt",
+    "termsStatus",
+    "checks",
+    "observed"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "2026-07-29.1"
+    },
+    "qualificationId": {
+      "type": "string",
+      "pattern": "^qual_[A-Za-z0-9]{20,64}$"
+    },
+    "adapterId": {
+      "type": "string",
+      "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+    },
+    "productId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed",
+        "blocked"
+      ]
+    },
+    "checkedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "termsStatus": {
+      "enum": [
+        "approved",
+        "restricted",
+        "blocked",
+        "unreviewed"
+      ]
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "status"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]{1,63}$"
+          },
+          "status": {
+            "enum": [
+              "passed",
+              "failed",
+              "not_run"
+            ]
+          },
+          "evidenceHash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,63}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "observed": {
+      "type": "object",
+      "properties": {
+        "latencyMsP95": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maximumSupplierCost": {
+          "type": "object",
+          "required": [
+            "asset",
+            "amountAtomic",
+            "decimals"
+          ],
+          "properties": {
+            "asset": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{1,127}$"
+            },
+            "amountAtomic": {
+              "type": "string",
+              "pattern": "^(?:0|[1-9][0-9]{0,77})$"
+            },
+            "decimals": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 30
+            }
+          },
+          "additionalProperties": false
+        },
+        "identity": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

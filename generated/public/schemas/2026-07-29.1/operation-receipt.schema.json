@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/operation-receipt.schema.json",
+  "title": "Clervo immutable operation receipt",
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "amount": {
+      "type": "object",
+      "required": [
+        "asset",
+        "amountAtomic",
+        "decimals"
+      ],
+      "properties": {
+        "asset": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{1,127}$"
+        },
+        "amountAtomic": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]{0,77})$"
+        },
+        "decimals": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 30
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "contractVersion",
+    "receiptId",
+    "operationId",
+    "productId",
+    "requestHash",
+    "quoteId",
+    "quoteHash",
+    "fundingMode",
+    "customerCharge",
+    "supplierCost",
+    "settlement",
+    "resultHash",
+    "provenance",
+    "completedAt",
+    "receiptHash"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "2026-07-29.1"
+    },
+    "receiptId": {
+      "type": "string",
+      "pattern": "^rcpt_[A-Za-z0-9]{20,64}$"
+    },
+    "operationId": {
+      "type": "string",
+      "pattern": "^op_[A-Za-z0-9]{20,64}$"
+    },
+    "productId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$"
+    },
+    "requestHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "quoteId": {
+      "type": "string",
+      "pattern": "^quote_[A-Za-z0-9]{20,64}$"
+    },
+    "quoteHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "fundingMode": {
+      "enum": [
+        "free",
+        "sponsored",
+        "paid"
+      ]
+    },
+    "customerCharge": {
+      "$ref": "#/$defs/amount"
+    },
+    "supplierCost": {
+      "$ref": "#/$defs/amount"
+    },
+    "settlement": {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "not_required",
+            "settled"
+          ]
+        },
+        "referenceHash": {
+          "$ref": "#/$defs/hash"
+        }
+      },
+      "additionalProperties": false
+    },
+    "resultHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "provenance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "adapterId",
+          "qualificationId",
+          "providerReferenceHash"
+        ],
+        "properties": {
+          "adapterId": {
+            "type": "string",
+            "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+          },
+          "qualificationId": {
+            "type": "string",
+            "pattern": "^qual_[A-Za-z0-9]{20,64}$"
+          },
+          "providerReferenceHash": {
+            "$ref": "#/$defs/hash"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "previousReceiptHash": {
+      "$ref": "#/$defs/hash"
+    },
+    "receiptHash": {
+      "$ref": "#/$defs/hash"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "fundingMode": {
+            "const": "paid"
+          }
+        },
+        "required": [
+          "fundingMode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "settlement": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "settled"
+              },
+              "referenceHash": {
+                "$ref": "#/$defs/hash"
+              }
+            },
+            "required": [
+              "status",
+              "referenceHash"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "settlement": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "not_required"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "settlement"
+        ]
+      },
+      "then": {
+        "properties": {
+          "settlement": {
+            "type": "object",
+            "not": {
+              "type": "object",
+              "properties": {
+                "referenceHash": {
+                  "$ref": "#/$defs/hash"
+                }
+              },
+              "required": [
+                "referenceHash"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}
