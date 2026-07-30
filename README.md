@@ -4,9 +4,9 @@ Clean-room repository for the Clervo BlockRun-10x mission.
 
 ## Current state
 
-Tickets **N0.1** through **N0.3** are complete: the independent repository boundary is enforced; the foundational runtime, database, and durable queue are pinned; and CI, secret scanning, environment separation, and a staging readiness contract are established.
+Tickets **N0.1** through **N1.1** are complete: the independent foundation and staging boundary are established, and the first product contracts now define versioned operation envelopes, RFC 9457 errors, fail-closed lifecycle states, canonical request fingerprints, and replay-safe idempotency decisions.
 
-The selected foundation is TypeScript on Node.js 24 LTS, PostgreSQL 18, and pg-boss 12 backed by the same PostgreSQL cluster. npm manages the JavaScript workspace. The repository now contains immutable-action-pinned GitHub workflows, a local and CI secret scanner, distinct development/test/staging/production contracts, and a minimal staging hello-service smoke test. A live remote staging target is **not provisioned**: no Git remote, hosting credential, or deployment provider was available during N0.3.
+The selected foundation is TypeScript on Node.js 24 LTS, PostgreSQL 18, and pg-boss 12 backed by the same PostgreSQL cluster. npm manages the JavaScript workspace. `packages/contracts` publishes the repository-local source of truth for operation request/result/problem/snapshot schemas and lifecycle logic. Persistence, HTTP handlers, catalog/adapter contracts, payments, and live deployment remain intentionally unimplemented.
 
 ## Authority
 

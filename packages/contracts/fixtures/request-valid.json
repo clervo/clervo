@@ -1,0 +1,9 @@
+{
+  "schema": "operation-request",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "operation": "search.web",
+    "input": { "query": "current ethereum finality" }
+  }
+}

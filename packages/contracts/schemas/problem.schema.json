@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/problem.schema.json",
+  "title": "Clervo RFC 9457 problem detail",
+  "type": "object",
+  "required": ["type", "title", "status", "detail", "instance", "code", "retryable"],
+  "properties": {
+    "type": { "type": "string", "format": "uri", "pattern": "^https://api\\.clervo\\.dev/problems/" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "status": { "type": "integer", "minimum": 400, "maximum": 599 },
+    "detail": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "instance": { "type": "string", "format": "uri-reference" },
+    "code": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "retryable": { "type": "boolean" }
+  },
+  "additionalProperties": false
+}

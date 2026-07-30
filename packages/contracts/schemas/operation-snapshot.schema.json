@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/operation-snapshot.schema.json",
+  "title": "Clervo durable operation snapshot",
+  "type": "object",
+  "required": ["contractVersion", "operationId", "operation", "idempotencyKey", "requestHash", "state", "createdAt", "updatedAt"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "operation": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$" },
+    "idempotencyKey": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$" },
+    "requestHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "state": { "enum": ["RECEIVED", "VALIDATED", "QUOTED", "PAYMENT_REQUIRED", "AUTHORIZED", "RESERVED", "EXECUTING", "EXECUTION_UNKNOWN", "EXECUTED", "VERIFYING", "VERIFIED", "SETTLING", "SETTLEMENT_UNKNOWN", "SETTLED", "RECEIPTED", "RECONCILING", "FAILED"] },
+    "quoteExpiresAt": { "type": "string", "format": "date-time" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

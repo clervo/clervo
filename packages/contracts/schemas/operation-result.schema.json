@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/operation-result.schema.json",
+  "title": "Clervo successful operation result",
+  "type": "object",
+  "required": ["contractVersion", "operationId", "operation", "state", "replayed", "output"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "operation": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$" },
+    "state": { "const": "RECEIPTED" },
+    "replayed": { "type": "boolean" },
+    "output": {
+      "anyOf": [
+        { "type": "object" },
+        { "type": "array" },
+        { "type": "string" },
+        { "type": "number" },
+        { "type": "boolean" },
+        { "type": "null" }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

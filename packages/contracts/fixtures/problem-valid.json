@@ -1,0 +1,14 @@
+{
+  "schema": "problem",
+  "valid": true,
+  "value": {
+    "type": "https://api.clervo.dev/problems/idempotency-conflict",
+    "title": "Idempotency key conflict",
+    "status": 409,
+    "detail": "The key is already bound to a different canonical request.",
+    "instance": "/v1/operations/op_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "code": "idempotency_conflict",
+    "operationId": "op_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "retryable": false
+  }
+}

@@ -10,19 +10,26 @@
   },
   "packageManager": "npm@10.9.8",
   "scripts": {
+    "lint": "node ./scripts/lint.mjs",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "build": "tsc --project tsconfig.json",
+    "contracts": "npm run build && node ./scripts/validate-contracts.mjs",
     "verify:boundary": "./scripts/verify-clean-room-boundary.sh",
     "verify:stack": "node ./scripts/verify-stack-decision.mjs",
     "verify:environments": "node ./scripts/verify-environments.mjs",
     "scan:secrets": "node ./scripts/scan-secrets.mjs",
     "test:n0.3": "node ./scripts/test-n0.3.mjs",
+    "test:n1.1": "npm run build && node --test ./tests/contract/n1.1.test.mjs",
     "staging:smoke": "node ./scripts/staging-smoke.mjs",
-    "test": "npm run verify:boundary && npm run verify:stack && npm run verify:environments && npm run scan:secrets && npm run test:n0.3"
+    "test": "npm run lint && npm run typecheck && npm run verify:boundary && npm run verify:stack && npm run verify:environments && npm run scan:secrets && npm run test:n0.3 && npm run contracts && npm run test:n1.1"
   },
   "dependencies": {
     "pg-boss": "12.26.3"
   },
   "devDependencies": {
     "@types/node": "24.3.0",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
     "typescript": "7.0.2"
   }
 }

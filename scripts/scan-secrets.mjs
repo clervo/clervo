@@ -52,7 +52,9 @@ async function scanWorkingTree() {
     try {
       findings.push(...findingsFor(`working-tree:${file}`, await readFile(path.join(repositoryRoot, file), 'utf8')));
     } catch (error) {
-      if (error.code !== 'EISDIR') throw error;
+      // `git ls-files --cached` includes tracked paths deleted by the pending
+      // change. Their committed content is still covered by the history scan.
+      if (error.code !== 'EISDIR' && error.code !== 'ENOENT') throw error;
     }
   }
   return findings;
