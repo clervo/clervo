@@ -80,6 +80,10 @@ export interface MockPaidOperationInput {
   settle: (authorization: MockAuthorization) => Omit<MockSettlement, 'contractVersion' | 'operationId' | 'authorizationHash' | 'amount' | 'settlementHash'>;
 }
 
+export interface MockAsyncPaidOperationInput extends Omit<MockPaidOperationInput, 'execute'> {
+  execute: () => Promise<MockExecutionEvidence>;
+}
+
 export type MockPaidOperationResult =
   | {
       kind: 'completed';
@@ -134,6 +138,70 @@ export class MockCommerceKernel {
     this.#claimPaymentId(authorization.paymentId);
     this.#claimSettlementId(input.settlementId);
     const evidence = input.execute();
+    const settlement = sealMockSettlement(input.settle(authorization), authorization, input.settlementId);
+
+    if (settlement.outcome === 'unknown') {
+      const result: MockPaidOperationResult = Object.freeze({
+        kind: 'quarantined',
+        replayed: false,
+        operationId: input.quote.operationId,
+        reason: 'settlement_unknown',
+        authorization,
+        settlement,
+      });
+      this.#operations.set(input.idempotencyKey, {
+        requestHash: input.requestHash,
+        quote: input.quote,
+        output: evidence.output,
+        evidence,
+        authorization,
+        settlement,
+        result,
+        ledgerTransactionId: input.ledgerTransactionId,
+        receiptId: input.receiptId,
+      });
+      return result;
+    }
+
+    const result = this.#complete(input.quote, input.requestHash, evidence, authorization, settlement, input.ledgerTransactionId, input.receiptId, false);
+    this.#operations.set(input.idempotencyKey, {
+      requestHash: input.requestHash,
+      quote: input.quote,
+      output: evidence.output,
+      evidence,
+      authorization,
+      settlement,
+      result,
+      ledgerTransactionId: input.ledgerTransactionId,
+      receiptId: input.receiptId,
+    });
+    return result;
+  }
+
+  async processAsync(input: MockAsyncPaidOperationInput): Promise<MockPaidOperationResult> {
+    validateIdempotencyKey(input.idempotencyKey);
+    const stored = this.#operations.get(input.idempotencyKey);
+    const decision = decideIdempotency(input.requestHash, stored && {
+      operationId: stored.quote.operationId,
+      requestHash: stored.requestHash,
+      terminal: stored.result.kind === 'completed',
+    });
+    if (decision.kind === 'conflict') throw new TypeError('idempotency_conflict');
+    if (decision.kind === 'replay') return replayResult(stored!.result);
+    if (decision.kind === 'in_progress') return replayResult(stored!.result);
+
+    assertPaidInput(input);
+    const authorization = verifyMockPayment(input);
+    this.#claimPaymentId(authorization.paymentId);
+    this.#claimSettlementId(input.settlementId);
+    let evidence: MockExecutionEvidence;
+    try {
+      evidence = await input.execute();
+    } catch (error) {
+      this.#paymentIds.delete(authorization.paymentId);
+      this.#settlementIds.delete(input.settlementId);
+      throw error;
+    }
     const settlement = sealMockSettlement(input.settle(authorization), authorization, input.settlementId);
 
     if (settlement.outcome === 'unknown') {
@@ -324,7 +392,7 @@ export function verifyMockSettlement(settlement: MockSettlement, authorization: 
   }
 }
 
-function assertPaidInput(input: MockPaidOperationInput): void {
+function assertPaidInput(input: Pick<MockPaidOperationInput, 'requestHash' | 'quote' | 'now'>): void {
   if (input.requestHash !== input.quote.requestHash) throw new TypeError('request_hash_differs_from_quote');
   if (!Number.isFinite(Date.parse(input.now))) throw new TypeError('now_must_be_date_time');
 }

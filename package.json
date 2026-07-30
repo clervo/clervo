@@ -38,6 +38,7 @@
     "test:n4.7": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.7.test.mjs",
     "test:n4.8": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.8.test.mjs",
     "test:n4.9": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.9.test.mjs",
+    "test:n4.10": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.10.test.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
     "test": "node ./scripts/verify-runtime.mjs && node ./scripts/run-acceptance.mjs",
     "test:contracts": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/*.test.mjs"

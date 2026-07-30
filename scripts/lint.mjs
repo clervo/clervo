@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const roots = ['packages', 'scripts', 'tests'];
+const roots = ['packages', 'scripts', 'services', 'tests'];
 const extensions = new Set(['.ts', '.mjs', '.json']);
 
 async function filesBelow(relative) {

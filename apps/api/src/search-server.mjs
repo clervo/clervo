@@ -110,6 +110,11 @@ export function createSearchServer({
         send(response, 200, { ...stored.response, replayed: true }, { 'idempotency-replayed': 'true' });
         return;
       }
+      if (stored?.pending) {
+        const pendingResult = await stored.pending;
+        send(response, 200, { ...pendingResult, replayed: true }, { 'idempotency-replayed': 'true' });
+        return;
+      }
       operationId = stored?.operationId ?? identifier('op', `${keyHeader}:${requestHash}`);
       idempotency.set(keyHeader, { operationId, requestHash });
       const fundingMode = url.pathname === SEARCH_FREE_PATH ? 'free' : 'paid';
@@ -128,8 +133,10 @@ export function createSearchServer({
           send(response, 429, problem(429, 'free_quota_exceeded', 'Free search quota exceeded', 'The bounded free sample quota is exhausted.', url.pathname, operationId), { ...quotaHeaders, 'retry-after': String(Math.max(1, Math.ceil((Date.parse(quota.resetAt) - Date.parse(now())) / 1_000))) }, PROBLEM_TYPE);
           return;
         }
-        const output = await executor.execute(executionInput);
-        const result = createSearchHttpResult(executionInput, output, false);
+        const pending = Promise.resolve(executor.execute(executionInput))
+          .then((output) => createSearchHttpResult(executionInput, output, false));
+        idempotency.set(keyHeader, { operationId, requestHash, pending });
+        const result = await pending;
         idempotency.set(keyHeader, { operationId, requestHash, response: result });
         send(response, 200, result, quotaHeaders);
         return;
@@ -157,7 +164,7 @@ export function createSearchServer({
       }
 
       let executionOutput;
-      const paid = commerce.process({
+      const pending = commerce.processAsync({
         idempotencyKey: keyHeader,
         requestHash,
         quote,
@@ -167,21 +174,28 @@ export function createSearchServer({
         settlementId: identifier('settle', operationId),
         ledgerTransactionId: identifier('ledger', operationId),
         receiptId: identifier('rcpt', operationId),
-        execute: () => {
-          executionOutput = executor.execute(executionInput);
-          if (executionOutput instanceof Promise) throw new TypeError('mock_paid_executor_must_be_synchronous');
+        execute: async () => {
+          executionOutput = await executor.execute(executionInput);
           assertSearchExecutionOutput(executionOutput, executionInput);
           return { output: executionOutput, supplierCost: { asset: 'mock:usd', amountAtomic: '400', decimals: 6 }, provenance: [{ adapterId: 'adapter_mock.search', qualificationId: identifier('qual', operationId), providerReferenceHash: requestHash }] };
         },
         settle: () => ({ settlementId: identifier('settle', operationId), outcome: 'settled', referenceHash: requestHash, observedAt: issuedAt }),
+      }).then((paid) => {
+        if (paid.kind !== 'completed' || executionOutput === undefined) throw new TypeError('mock_paid_operation_not_completed');
+        return createSearchHttpResult(executionInput, executionOutput, paid.replayed, paid.receipt);
       });
-      if (paid.kind !== 'completed' || executionOutput === undefined) throw new TypeError('mock_paid_operation_not_completed');
-      const result = createSearchHttpResult(executionInput, executionOutput, paid.replayed, paid.receipt);
+      idempotency.set(keyHeader, { operationId, requestHash, pending });
+      const result = await pending;
       idempotency.set(keyHeader, { operationId, requestHash, response: result });
-      send(response, 200, result, { 'idempotency-replayed': String(paid.replayed) });
+      send(response, 200, result, { 'idempotency-replayed': String(result.replayed) });
     } catch (error) {
       const code = errorCode(error);
-      const executorFailure = code.startsWith('search_execution_') || code.startsWith('search_synthesis_') || code === 'mock_paid_operation_not_completed' || code === 'mock_paid_executor_must_be_synchronous';
+      const executorFailure = code.startsWith('search_execution_') || code.startsWith('search_synthesis_') || code === 'mock_paid_operation_not_completed';
+      if (operationId !== undefined) {
+        const keyHeader = request.headers['idempotency-key'];
+        const stored = typeof keyHeader === 'string' ? idempotency.get(keyHeader) : undefined;
+        if (stored?.response === undefined) idempotency.delete(keyHeader);
+      }
       const status = Number.isInteger(error?.status) ? error.status : code === 'idempotency_conflict' ? 409 : !executorFailure && (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 502;
       send(response, status, problem(status, code, status === 502 ? 'Search execution failed' : 'Invalid search request', status === 502 ? 'The bounded search executor failed closed.' : 'The request did not satisfy the search HTTP contract.', url.pathname, operationId), {}, PROBLEM_TYPE);
     }
