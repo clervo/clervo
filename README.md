@@ -4,9 +4,9 @@ Clean-room repository for the Clervo BlockRun-10x mission.
 
 ## Current state
 
-Only ticket **N0.1** is complete here: the independent repository boundary and mandatory architecture directories exist, and the repository includes an executable proof that it does not depend on the legacy runtime.
+Tickets **N0.1** and **N0.2** are complete: the independent repository boundary is enforced, and the foundational runtime, database, and durable queue have been selected and pinned.
 
-Runtime, database, queue, package manager, application code, provider integrations, payment code, CI, and deployment configuration are intentionally **not selected or implemented yet**. Those decisions belong to later ordered tickets.
+The selected foundation is TypeScript on Node.js 24 LTS, PostgreSQL 18, and pg-boss 12 backed by the same PostgreSQL cluster. npm manages the JavaScript workspace. Application code, database provisioning, provider integrations, payment code, CI, environments, and deployment configuration are intentionally **not implemented yet**. Those outputs belong to later ordered tickets.
 
 ## Authority
 
@@ -29,6 +29,7 @@ Run:
 
 ```sh
 ./scripts/verify-clean-room-boundary.sh
+./scripts/verify-stack-decision.mjs
 ```
 
-The command uses standard POSIX tools plus Git and performs no network access, provider calls, cloud changes, or payments.
+The commands use local POSIX tools, Git, and Node.js. They perform no network access, provider calls, cloud changes, or payments. The stack verifier checks decision metadata and version consistency; it does not connect to PostgreSQL or start a worker.

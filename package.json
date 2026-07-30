@@ -1,0 +1,24 @@
+{
+  "name": "clervo-next",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Clean-room Clervo platform workspace",
+  "license": "UNLICENSED",
+  "type": "module",
+  "engines": {
+    "node": ">=24.12.0 <25"
+  },
+  "packageManager": "npm@10.9.8",
+  "scripts": {
+    "verify:boundary": "./scripts/verify-clean-room-boundary.sh",
+    "verify:stack": "node ./scripts/verify-stack-decision.mjs",
+    "test": "npm run verify:boundary && npm run verify:stack"
+  },
+  "dependencies": {
+    "pg-boss": "12.26.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.0",
+    "typescript": "7.0.2"
+  }
+}

@@ -39,7 +39,9 @@ printf '%s\n' "$required_directories" | while IFS= read -r directory; do
   [ -d "$repo_root/$directory" ] || fail "missing required directory: $directory"
 done
 
-symlinks=$(find "$repo_root" -path "$repo_root/.git" -prune -o -type l -print)
+symlinks=$(find "$repo_root" \
+  \( -path "$repo_root/.git" -o -path "$repo_root/node_modules" \) -prune \
+  -o -type l -print)
 [ -z "$symlinks" ] || fail "symlinks are forbidden:\n$symlinks"
 
 [ ! -e "$repo_root/.gitmodules" ] || fail '.gitmodules is forbidden'
@@ -51,7 +53,9 @@ legacy_name=x402-platform
 legacy_absolute=/workspace/$legacy_name
 legacy_relative=../$legacy_name
 
-legacy_matches=$(find "$repo_root" -path "$repo_root/.git" -prune -o -type f -print0 \
+legacy_matches=$(find "$repo_root" \
+  \( -path "$repo_root/.git" -o -path "$repo_root/node_modules" \) -prune \
+  -o -type f -print0 \
   | xargs -0 grep -Il -e "$legacy_absolute" -e "$legacy_relative" 2>/dev/null || true)
 
 allowed_legacy_references="$repo_root/README.md
@@ -68,7 +72,9 @@ fi
 
 manifest_names='package.json pyproject.toml requirements.txt Cargo.toml go.mod pom.xml build.gradle build.gradle.kts composer.json Gemfile'
 for manifest_name in $manifest_names; do
-  escaping_dependencies=$(find "$repo_root" -path "$repo_root/.git" -prune -o -name "$manifest_name" -type f -print0 \
+  escaping_dependencies=$(find "$repo_root" \
+    \( -path "$repo_root/.git" -o -path "$repo_root/node_modules" \) -prune \
+    -o -name "$manifest_name" -type f -print0 \
     | xargs -0 -r grep -InE '(file:|path[[:space:]]*=|replace[[:space:]]+)[^#\n]*(\.\./|/workspace/)' \
     || true)
   [ -z "$escaping_dependencies" ] \
