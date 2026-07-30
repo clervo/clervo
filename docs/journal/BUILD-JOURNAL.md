@@ -136,3 +136,15 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Claims still unknown: real provider schema/quota/error behavior, archive throttling and extraction behavior, DNS/socket enforcement, robots cache, parser isolation, retrieval quality, and production availability.
 - Cost/network effects: bounded read-only official documentation requests plus local validation; no billable provider calls, credentials, cloud/IAM/deployment mutations, wallet/payment, or USDC spend.
 - Exact next ticket: N4.3 — implement the bounded retrieval/fetch safety adapter boundary and run explicitly authorized qualification probes; do not begin synthesis.
+
+## 2026-07-30 — N4.3 bounded retrieval/fetch safety adapter
+
+- Added a provider-neutral bounded fetch adapter with injectable DNS/transport seams and a default Node.js HTTP(S) transport that pins the validated address and rejects connected-address mismatch.
+- Enforced fail-closed validation on every robots/content redirect hop, absolute deadlines across DNS/connect/streaming, response aborts, declared and streamed byte ceilings, MIME/content-use allowlists, and immutable SHA-256-bound receipts that preserve issued-hop evidence on failure.
+- Added robots retrieval and expiring cache behavior with longest matching user-agent specificity, normalized percent-encoded rule precedence, allow-on-equal-specificity, and archive-only explicit `not_applicable` policy.
+- Added one strict schema, two fixtures, and fourteen focused tests covering successful/cache behavior, SSRF/rebinding, redirect revalidation, robots uncertainty/disallow/precedence, deadlines, MIME, byte bounds, unsafe inputs, failed-hop evidence, archive replay, and immutability.
+- Ran one bounded, non-billable Common Crawl collection-metadata probe: HTTP 200, 34,675 bytes, SHA-256 `eac053eb9d810c1ca519c99e7fdcf3c24a8042809becbbf6c6854a5795c1d52a`. This proves endpoint reachability only; no URL-index lookup or archive range read occurred, and both provider route gates remain closed.
+- Validation: pinned Node.js 24.18.1/npm 10.9.8 `npm test` passed with exit code 0, including lint/typecheck, boundary, stack/environment, working-tree plus full-history secret scan, N0.3 injected-secret rejection/cleanup, 22 Draft 2020-12 schemas and 41 fixtures, and N1.1 through N4.3 at 83/83 tests. Discovery generated 22 schemas; fetch-receipt source/generated semantic parity, loopback staging smoke, and `git diff --check` passed.
+- Claims still unknown: credentialed Brave behavior; Common Crawl URL-index/range-read behavior; parser/browser isolation; extraction quality; prompt-injection boundaries; content-level deduplication; query rewriting; synthesis; benchmarks; production availability.
+- Cost/network effects: one bounded public Common Crawl metadata request plus local validation; no credential, billable provider call, archive object read, cloud/IAM/deployment mutation, wallet/payment, or USDC spend.
+- Exact next ticket: N4.4 — build isolated deterministic extraction/normalization and content-level near-duplicate detection; do not begin synthesis.

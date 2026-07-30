@@ -170,21 +170,21 @@ function isForbiddenIpv4(address: string): boolean {
   const [a = -1, b = -1] = parts;
   return a === 0 || a === 10 || a === 127 || (a === 100 && b >= 64 && b <= 127)
     || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 0)
-    || (a === 192 && b === 168) || (a === 198 && (b === 18 || b === 19)) || a >= 224;
+    || (a === 192 && b === 168) || (a === 198 && (b === 18 || b === 19 || b === 51))
+    || (a === 203 && b === 0) || a >= 224;
 }
 
-function isForbiddenAddress(address: string): boolean {
+export function isForbiddenRetrievalAddress(address: string): boolean {
   const kind = isIP(address);
   if (kind === 0) return true;
   if (kind === 4) return isForbiddenIpv4(address);
   const normalized = address.toLowerCase();
-  if (normalized === '::' || normalized === '::1' || normalized.startsWith('fc') || normalized.startsWith('fd') || /^fe[89ab]/u.test(normalized)) return true;
-  if (normalized.startsWith('2001:db8:')) return true;
-  if (normalized.startsWith('::ffff:')) return isForbiddenIpv4(normalized.slice(7));
+  if (!/^[23]/u.test(normalized)) return true;
+  if (normalized.startsWith('2001:') || normalized.startsWith('2002:') || normalized.startsWith('3fff:')) return true;
   return false;
 }
 
-function validateTargetUrl(value: string): URL | undefined {
+export function validateRetrievalUrl(value: string): URL | undefined {
   try {
     const url = new URL(value);
     if (!['http:', 'https:'].includes(url.protocol) || url.username !== '' || url.password !== '') return undefined;
@@ -203,9 +203,9 @@ export function evaluateRetrievalTarget(input: RetrievalTargetInput): Readonly<R
   if (input.hops.length === 0) failures.push('target_missing');
   if (input.hops.length > 6) failures.push('redirect_limit_exceeded');
   for (const [index, hop] of input.hops.entries()) {
-    if (validateTargetUrl(hop.url) === undefined) failures.push(`unsafe_url_hop_${index}`);
+    if (validateRetrievalUrl(hop.url) === undefined) failures.push(`unsafe_url_hop_${index}`);
     if (hop.resolvedAddresses.length === 0) failures.push(`dns_resolution_missing_hop_${index}`);
-    else if (hop.resolvedAddresses.some(isForbiddenAddress)) failures.push(`unsafe_address_hop_${index}`);
+    else if (hop.resolvedAddresses.some(isForbiddenRetrievalAddress)) failures.push(`unsafe_address_hop_${index}`);
   }
   if (input.robotsStatus === 'disallowed') failures.push('robots_disallowed');
   if (input.robotsStatus === 'unavailable') failures.push('robots_unavailable');
