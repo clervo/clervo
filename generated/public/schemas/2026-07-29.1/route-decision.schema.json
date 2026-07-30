@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/route-decision.schema.json",
+  "title": "Clervo deterministic provider route decision",
+  "$defs": {
+    "amount": {
+      "type": "object",
+      "required": [
+        "asset",
+        "amountAtomic",
+        "decimals"
+      ],
+      "properties": {
+        "asset": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{1,127}$"
+        },
+        "amountAtomic": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]{0,77})$"
+        },
+        "decimals": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 30
+        }
+      },
+      "additionalProperties": false
+    },
+    "rejection": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "adapterId": {
+          "type": "string",
+          "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+        },
+        "code": {
+          "enum": [
+            "adapter_excluded",
+            "budget_expired",
+            "circuit_open",
+            "cost_estimate_expired",
+            "cost_limit_exceeded",
+            "deadline_insufficient",
+            "dependency_unavailable",
+            "health_not_routable",
+            "health_stale",
+            "no_exact_product_match",
+            "qualification_expired",
+            "qualification_not_passed",
+            "request_limit_exceeded"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "contractVersion",
+    "operationId",
+    "productId",
+    "decidedAt",
+    "outcome",
+    "rejections"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "2026-07-29.1"
+    },
+    "operationId": {
+      "type": "string",
+      "pattern": "^op_[A-Za-z0-9]{20,64}$"
+    },
+    "productId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$"
+    },
+    "decidedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "outcome": {
+      "enum": [
+        "selected",
+        "rejected"
+      ]
+    },
+    "adapterId": {
+      "type": "string",
+      "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+    },
+    "circuitPermit": {
+      "enum": [
+        "normal",
+        "probe"
+      ]
+    },
+    "reservationId": {
+      "type": "string",
+      "pattern": "^res_[A-Za-z0-9]{20,64}$"
+    },
+    "maximumSupplierCost": {
+      "$ref": "#/$defs/amount"
+    },
+    "rejections": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/rejection"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "selected"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "properties": {
+          "adapterId": true,
+          "circuitPermit": true,
+          "reservationId": true,
+          "maximumSupplierCost": true
+        },
+        "required": [
+          "adapterId",
+          "circuitPermit",
+          "reservationId",
+          "maximumSupplierCost"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "rejected"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "not": {
+          "anyOf": [
+            {
+              "properties": {
+                "adapterId": true
+              },
+              "required": [
+                "adapterId"
+              ]
+            },
+            {
+              "properties": {
+                "reservationId": true
+              },
+              "required": [
+                "reservationId"
+              ]
+            },
+            {
+              "properties": {
+                "maximumSupplierCost": true
+              },
+              "required": [
+                "maximumSupplierCost"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/trace-span.schema.json",
+  "title": "Clervo redacted trace span",
+  "$defs": {
+    "attribute": {
+      "type": "object",
+      "required": ["name", "value"],
+      "properties": {
+        "name": { "enum": ["adapter_id", "component", "dependency", "error_code", "http_status", "operation_state", "outcome", "product_id", "retryable", "route_id"] },
+        "value": { "anyOf": [{ "type": "null" }, { "type": "boolean" }, { "type": "number" }, { "type": "string", "maxLength": 256 }] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "traceId", "spanId", "name", "kind", "startedAt", "endedAt", "status", "attributes", "redactionCount"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "traceId": { "type": "string", "pattern": "^(?!0{32}$)[a-f0-9]{32}$" },
+    "spanId": { "type": "string", "pattern": "^(?!0{16}$)[a-f0-9]{16}$" },
+    "parentSpanId": { "type": "string", "pattern": "^(?!0{16}$)[a-f0-9]{16}$" },
+    "name": { "type": "string", "pattern": "^[a-z][a-z0-9_.]{2,79}$" },
+    "kind": { "enum": ["internal", "server", "client", "producer", "consumer"] },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "endedAt": { "type": "string", "format": "date-time" },
+    "status": { "enum": ["unset", "ok", "error"] },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "attributes": { "type": "array", "maxItems": 16, "items": { "$ref": "#/$defs/attribute" } },
+    "redactionCount": { "type": "integer", "minimum": 0 }
+  },
+  "additionalProperties": false
+}

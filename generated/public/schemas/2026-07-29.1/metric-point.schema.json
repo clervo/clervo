@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/metric-point.schema.json",
+  "title": "Clervo bounded-cardinality metric point",
+  "$defs": {
+    "attribute": {
+      "type": "object",
+      "required": [
+        "name",
+        "value"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "component",
+            "dependency",
+            "outcome",
+            "product_id"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "contractVersion",
+    "timestamp",
+    "name",
+    "instrument",
+    "unit",
+    "value",
+    "attributes"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "2026-07-29.1"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "name": {
+      "enum": [
+        "clervo.alerts",
+        "clervo.operation.duration",
+        "clervo.operations",
+        "clervo.redactions"
+      ]
+    },
+    "instrument": {
+      "enum": [
+        "counter",
+        "histogram"
+      ]
+    },
+    "unit": {
+      "enum": [
+        "1",
+        "s"
+      ]
+    },
+    "value": {
+      "type": "number",
+      "minimum": 0
+    },
+    "attributes": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/attribute"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "name": {
+            "const": "clervo.operation.duration"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "then": {
+        "properties": {
+          "instrument": {
+            "const": "histogram"
+          },
+          "unit": {
+            "const": "s"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "name": {
+            "enum": [
+              "clervo.alerts",
+              "clervo.operations",
+              "clervo.redactions"
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "then": {
+        "properties": {
+          "instrument": {
+            "const": "counter"
+          },
+          "unit": {
+            "const": "1"
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

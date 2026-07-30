@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/log-record.schema.json",
+  "title": "Clervo redacted structured log record",
+  "$defs": {
+    "attribute": {
+      "type": "object",
+      "required": ["name", "value"],
+      "properties": {
+        "name": { "enum": ["adapter_id", "component", "dependency", "error_code", "http_status", "operation_state", "outcome", "product_id", "retryable", "route_id"] },
+        "value": { "anyOf": [{ "type": "null" }, { "type": "boolean" }, { "type": "number" }, { "type": "string", "maxLength": 256 }] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "timestamp", "severity", "eventName", "body", "service", "attributes", "redactionCount"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "severity": { "enum": ["debug", "info", "warn", "error"] },
+    "eventName": { "type": "string", "pattern": "^[a-z][a-z0-9_.]{2,79}$" },
+    "body": { "type": "string", "maxLength": 256, "pattern": "^[^\\u0000-\\u001f\\u007f]*$" },
+    "service": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$" },
+    "traceId": { "type": "string", "pattern": "^(?!0{32}$)[a-f0-9]{32}$" },
+    "spanId": { "type": "string", "pattern": "^(?!0{16}$)[a-f0-9]{16}$" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "attributes": { "type": "array", "maxItems": 16, "items": { "$ref": "#/$defs/attribute" } },
+    "redactionCount": { "type": "integer", "minimum": 0 }
+  },
+  "additionalProperties": false
+}

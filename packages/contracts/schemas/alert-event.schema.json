@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/alert-event.schema.json",
+  "title": "Clervo delivery-neutral alert event",
+  "$defs": {
+    "label": {
+      "type": "object",
+      "required": ["name", "value"],
+      "properties": {
+        "name": { "enum": ["component", "dependency", "outcome", "product_id"] },
+        "value": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "alertId", "occurredAt", "code", "severity", "status", "summary", "fingerprint", "service", "labels"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "alertId": { "type": "string", "pattern": "^alert_[A-Za-z0-9]{20,64}$" },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "code": { "enum": ["commerce.settlement_unknown", "dependency.database_unavailable", "dependency.facilitator_unavailable", "dependency.network_unavailable", "dependency.provider_unavailable", "security.telemetry_redaction"] },
+    "severity": { "enum": ["warning", "critical"] },
+    "status": { "const": "firing" },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\u0000-\\u001f\\u007f]*$" },
+    "fingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "service": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$" },
+    "traceId": { "type": "string", "pattern": "^(?!0{32}$)[a-f0-9]{32}$" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "labels": { "type": "array", "maxItems": 4, "items": { "$ref": "#/$defs/label" } }
+  },
+  "additionalProperties": false
+}

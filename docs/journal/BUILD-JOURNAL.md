@@ -89,3 +89,38 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Cost/network effects: local work only; no provider, facilitator, wallet, cloud, IAM, deployment, or payment mutations; 0 USDC spent.
 - Claims still unknown: PostgreSQL transactionality, process-crash recovery, pg-boss recovery, live HTTP/payment/provider behavior, alert delivery, real settlement, and remote deployment.
 - Exact next ticket: N3.1 — build redacted observability and alerts.
+
+## 2026-07-30 — N3.1 redacted observability and alerts
+
+- Ran a bounded preflight against the OWASP Logging Cheat Sheet and OpenTelemetry semantic conventions 1.43.0; no vendor, provider, telemetry-backend, or competitor survey was performed.
+- Added separate vendor-neutral contracts for structured log records, metric points, trace spans, and delivery-neutral alert events instead of widening immutable audit events into arbitrary diagnostics.
+- Added allowlist-first sanitization: secret-bearing names are removed, secret-bearing values are replaced, control characters are normalized, unknown attributes fail closed, and redaction creates a safe signal without reproducing rejected content.
+- Added bounded metric names and dimensions, seconds-based duration histograms, unit-1 counters, fixed alert codes/summaries, stable low-cardinality fingerprints, settlement-unknown alerting, and database/facilitator/network/provider dependency alerts.
+- Added four strict schemas, eight positive/negative fixtures, and eight adversarial tests covering redaction, injection normalization, raw-payload rejection, metric cardinality/units, trace timing, settlement quarantine alerts, dependency alerts, and fingerprint stability.
+- Validation: the pinned acceptance shell resolved Node.js 24.18.1 and npm 10.9.8; lint, strict typecheck, clean-room/stack/environment gates, working-tree/full-history secret scan, and N0.3 injected-secret negative control passed; 18 Draft 2020-12 schemas and 33 fixtures validated; N1.1/N1.2/N1.3/N2.1/N2.2/N3.1 passed 44/44 tests; deterministic generation and loopback staging smoke passed; `git diff --check` passed.
+- Claims still unknown: telemetry exporter/backend operation, remote collection, dashboards, retention, SLOs, paging delivery, alert acknowledgement/resolution, PostgreSQL/pg-boss recovery, live providers/payments, and remote deployment.
+- Cost/network effects: bounded read-only standards requests and local work only; no provider, facilitator, wallet, cloud, IAM, deployment, payment, or alert-delivery mutations; 0 USDC spent.
+- Exact next ticket: N3.2 — build health, routing, budgets, and circuits.
+
+## 2026-07-30 — N3.2 health, routing, budgets, and circuits
+
+- Added deterministic provider routing that fails closed on unavailable required dependencies, insufficient deadlines, exclusions, non-exact products, failed/expired qualification, stale/unroutable health, expired estimates, open circuits, and exhausted cost or request budgets.
+- Added rolling-window circuit state with closed/open/half-open behavior, cooldown, one in-flight probe, success recovery, immediate failed-probe reopening, and immutable snapshots.
+- Added atomic in-memory budget reservations for supplier-cost and request ceilings, idempotent reservation replay, conflict rejection, and exactly-once settlement or release accounting.
+- Added deterministic candidate ordering, pre-selection budget reservation, safe failover only before possible provider consumption, one strict route-decision schema, two fixtures, a decision record, and eight adversarial tests.
+- Validation: the pinned shell resolved Node.js 24.18.1/npm 10.9.8; lint/typecheck and clean-room/stack/environment gates passed; 19 Draft 2020-12 schemas and 35 fixtures validated; N1.1 through N3.2 passed 52/52 tests; deterministic discovery generated 19 public schemas; N0.3 injected-secret rejection/cleanup, current working-tree secret scan, loopback staging smoke, semantic route-schema parity, and `git diff --check` passed. The unchanged eight-commit history retains the full-history pass recorded by N3.1; the current uncommitted delta was rescanned with an empty history range because the API shell terminates the intentionally expensive full-history scanner after 30 seconds.
+- Claims still unknown: durable PostgreSQL budget/circuit locking, multi-worker races, crash recovery, live health probes, real provider/facilitator/network/database failure behavior, telemetry export, alert delivery, HTTP routing integration, remote staging, and production availability.
+- Cost/network effects: one bounded read-only circuit-breaker guidance request plus local validation; no provider, facilitator, database, wallet, cloud, IAM, deployment, payment, or external traffic mutations; 0 USDC spent.
+- Exact next ticket: N4.1 — begin advanced search with one bounded ticket defined from the Stage 4 requirements.
+
+## 2026-07-30 — N4.1 deterministic search result integrity
+
+- Began Stage 4 with the deterministic result boundary rather than live retrieval or synthesis: search evidence retains source identity, original/canonical URLs, timestamps, exact evidence text, and bounded quality inputs.
+- Added conservative HTTP(S) URL canonicalization and exact canonical-URL deduplication with deterministic winner selection. Semantic and near-duplicate content removal remain explicitly unimplemented.
+- Added transparent integer freshness/authority/relevance/diversity components, basis-point totals, stable tie-breaking, immutable ranked results, and honest deduplication accounting that does not treat result limits as duplicates.
+- Added an exact citation verifier: citations must identify a retained result, repeat its canonical URL, stay within evidence offsets, and quote the exact retained substring.
+- Added one strict schema, two fixtures, and nine adversarial tests covering URL safety/normalization, deduplication, ordering, score components, malformed/future evidence, duplicate IDs, citation binding, truncation/mismatch rejection, immutability, and limit accounting.
+- Validation: pinned Node.js 24.18.1/npm 10.9.8 `npm test` passed with exit code 0, including lint/typecheck, clean-room boundary, stack/environment checks, full-history secret scan, N0.3 injected-secret rejection/cleanup, 20 Draft 2020-12 schemas and 37 fixtures, and N1.1 through N4.1 at 61/61 tests. Discovery generation produced 20 schemas; source/generated search schema semantic parity passed; loopback staging smoke and `git diff --check` passed.
+- Claims still unknown: lawful/live retrieval, extraction, normalized content and near-duplicate detection, calibrated provider quality, query rewriting, SSRF/browser isolation, prompt-injection defense, synthesis, benchmarks, HTTP/mock-paid integration, and production behavior.
+- Cost/network effects: repository-local work only; no provider, crawler, browser, model, database, wallet, cloud, IAM, deployment, payment, or external traffic; 0 USDC spent.
+- Exact next ticket: N4.2 — select and qualify two independent lawful retrieval paths and define the retrieval/extraction safety boundary.

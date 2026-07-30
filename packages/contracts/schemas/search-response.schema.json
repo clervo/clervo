@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/search-response.schema.json",
+  "title": "Clervo deterministic search response",
+  "$defs": {
+    "score": {
+      "type": "object",
+      "required": ["freshness", "authority", "relevance", "diversity", "totalBasisPoints"],
+      "properties": {
+        "freshness": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "authority": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "relevance": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "diversity": { "enum": [40, 100] },
+        "totalBasisPoints": { "type": "integer", "minimum": 0, "maximum": 10000 }
+      },
+      "additionalProperties": false
+    },
+    "result": {
+      "type": "object",
+      "required": ["resultId", "sourceId", "url", "canonicalUrl", "hostname", "title", "snippet", "evidenceText", "retrievedAt", "authorityScore", "relevanceScore", "rank", "score"],
+      "properties": {
+        "resultId": { "type": "string", "pattern": "^sr_[A-Za-z0-9]{20,64}$" },
+        "sourceId": { "type": "string", "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "url": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "canonicalUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "hostname": { "type": "string", "minLength": 1, "maxLength": 253 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "snippet": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "evidenceText": { "type": "string", "minLength": 1, "maxLength": 100000 },
+        "retrievedAt": { "type": "string", "format": "date-time" },
+        "publishedAt": { "type": "string", "format": "date-time" },
+        "authorityScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "relevanceScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "rank": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "score": { "$ref": "#/$defs/score" }
+      },
+      "additionalProperties": false
+    },
+    "citation": {
+      "type": "object",
+      "required": ["citationId", "resultId", "canonicalUrl", "quote", "startOffset", "endOffset"],
+      "properties": {
+        "citationId": { "type": "string", "pattern": "^cite_[A-Za-z0-9]{20,64}$" },
+        "resultId": { "type": "string", "pattern": "^sr_[A-Za-z0-9]{20,64}$" },
+        "canonicalUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "quote": { "type": "string", "minLength": 1, "maxLength": 10000 },
+        "startOffset": { "type": "integer", "minimum": 0 },
+        "endOffset": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "operationId", "query", "generatedAt", "deduplicatedCount", "results", "citations"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "query": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "deduplicatedCount": { "type": "integer", "minimum": 0 },
+    "results": { "type": "array", "maxItems": 100, "items": { "$ref": "#/$defs/result" } },
+    "citations": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/$defs/citation" } }
+  },
+  "additionalProperties": false
+}

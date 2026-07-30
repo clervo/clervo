@@ -73,6 +73,110 @@
         },
         "additionalProperties": false
       },
+      "AlertEvent": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/alert-event.schema.json",
+        "title": "Clervo delivery-neutral alert event",
+        "$defs": {
+          "label": {
+            "type": "object",
+            "required": [
+              "name",
+              "value"
+            ],
+            "properties": {
+              "name": {
+                "enum": [
+                  "component",
+                  "dependency",
+                  "outcome",
+                  "product_id"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "alertId",
+          "occurredAt",
+          "code",
+          "severity",
+          "status",
+          "summary",
+          "fingerprint",
+          "service",
+          "labels"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "alertId": {
+            "type": "string",
+            "pattern": "^alert_[A-Za-z0-9]{20,64}$"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "code": {
+            "enum": [
+              "commerce.settlement_unknown",
+              "dependency.database_unavailable",
+              "dependency.facilitator_unavailable",
+              "dependency.network_unavailable",
+              "dependency.provider_unavailable",
+              "security.telemetry_redaction"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "warning",
+              "critical"
+            ]
+          },
+          "status": {
+            "const": "firing"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]*$"
+          },
+          "fingerprint": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "service": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+          },
+          "traceId": {
+            "type": "string",
+            "pattern": "^(?!0{32}$)[a-f0-9]{32}$"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "labels": {
+            "type": "array",
+            "maxItems": 4,
+            "items": {
+              "$ref": "#/$defs/label"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "AuditEvent": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://api.clervo.dev/schemas/2026-07-29.1/audit-event.schema.json",
@@ -725,6 +829,249 @@
             "$ref": "#/$defs/hash"
           }
         },
+        "additionalProperties": false
+      },
+      "LogRecord": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/log-record.schema.json",
+        "title": "Clervo redacted structured log record",
+        "$defs": {
+          "attribute": {
+            "type": "object",
+            "required": [
+              "name",
+              "value"
+            ],
+            "properties": {
+              "name": {
+                "enum": [
+                  "adapter_id",
+                  "component",
+                  "dependency",
+                  "error_code",
+                  "http_status",
+                  "operation_state",
+                  "outcome",
+                  "product_id",
+                  "retryable",
+                  "route_id"
+                ]
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 256
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "timestamp",
+          "severity",
+          "eventName",
+          "body",
+          "service",
+          "attributes",
+          "redactionCount"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "severity": {
+            "enum": [
+              "debug",
+              "info",
+              "warn",
+              "error"
+            ]
+          },
+          "eventName": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.]{2,79}$"
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 256,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]*$"
+          },
+          "service": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+          },
+          "traceId": {
+            "type": "string",
+            "pattern": "^(?!0{32}$)[a-f0-9]{32}$"
+          },
+          "spanId": {
+            "type": "string",
+            "pattern": "^(?!0{16}$)[a-f0-9]{16}$"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "attributes": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "$ref": "#/$defs/attribute"
+            }
+          },
+          "redactionCount": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false
+      },
+      "MetricPoint": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/metric-point.schema.json",
+        "title": "Clervo bounded-cardinality metric point",
+        "$defs": {
+          "attribute": {
+            "type": "object",
+            "required": [
+              "name",
+              "value"
+            ],
+            "properties": {
+              "name": {
+                "enum": [
+                  "component",
+                  "dependency",
+                  "outcome",
+                  "product_id"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "timestamp",
+          "name",
+          "instrument",
+          "unit",
+          "value",
+          "attributes"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "enum": [
+              "clervo.alerts",
+              "clervo.operation.duration",
+              "clervo.operations",
+              "clervo.redactions"
+            ]
+          },
+          "instrument": {
+            "enum": [
+              "counter",
+              "histogram"
+            ]
+          },
+          "unit": {
+            "enum": [
+              "1",
+              "s"
+            ]
+          },
+          "value": {
+            "type": "number",
+            "minimum": 0
+          },
+          "attributes": {
+            "type": "array",
+            "maxItems": 4,
+            "items": {
+              "$ref": "#/$defs/attribute"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "name": {
+                  "const": "clervo.operation.duration"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "then": {
+              "properties": {
+                "instrument": {
+                  "const": "histogram"
+                },
+                "unit": {
+                  "const": "s"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "name": {
+                  "enum": [
+                    "clervo.alerts",
+                    "clervo.operations",
+                    "clervo.redactions"
+                  ]
+                }
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "then": {
+              "properties": {
+                "instrument": {
+                  "const": "counter"
+                },
+                "unit": {
+                  "const": "1"
+                }
+              }
+            }
+          }
+        ],
         "additionalProperties": false
       },
       "MockAuthorization": {
@@ -1792,6 +2139,533 @@
           },
           "quoteHash": {
             "$ref": "#/$defs/hash"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RouteDecision": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/route-decision.schema.json",
+        "title": "Clervo deterministic provider route decision",
+        "$defs": {
+          "amount": {
+            "type": "object",
+            "required": [
+              "asset",
+              "amountAtomic",
+              "decimals"
+            ],
+            "properties": {
+              "asset": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{1,127}$"
+              },
+              "amountAtomic": {
+                "type": "string",
+                "pattern": "^(?:0|[1-9][0-9]{0,77})$"
+              },
+              "decimals": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 30
+              }
+            },
+            "additionalProperties": false
+          },
+          "rejection": {
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "adapterId": {
+                "type": "string",
+                "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+              },
+              "code": {
+                "enum": [
+                  "adapter_excluded",
+                  "budget_expired",
+                  "circuit_open",
+                  "cost_estimate_expired",
+                  "cost_limit_exceeded",
+                  "deadline_insufficient",
+                  "dependency_unavailable",
+                  "health_not_routable",
+                  "health_stale",
+                  "no_exact_product_match",
+                  "qualification_expired",
+                  "qualification_not_passed",
+                  "request_limit_exceeded"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "operationId",
+          "productId",
+          "decidedAt",
+          "outcome",
+          "rejections"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "productId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$"
+          },
+          "decidedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "outcome": {
+            "enum": [
+              "selected",
+              "rejected"
+            ]
+          },
+          "adapterId": {
+            "type": "string",
+            "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+          },
+          "circuitPermit": {
+            "enum": [
+              "normal",
+              "probe"
+            ]
+          },
+          "reservationId": {
+            "type": "string",
+            "pattern": "^res_[A-Za-z0-9]{20,64}$"
+          },
+          "maximumSupplierCost": {
+            "$ref": "#/$defs/amount"
+          },
+          "rejections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/rejection"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "selected"
+                }
+              },
+              "required": [
+                "outcome"
+              ]
+            },
+            "then": {
+              "properties": {
+                "adapterId": true,
+                "circuitPermit": true,
+                "reservationId": true,
+                "maximumSupplierCost": true
+              },
+              "required": [
+                "adapterId",
+                "circuitPermit",
+                "reservationId",
+                "maximumSupplierCost"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "rejected"
+                }
+              },
+              "required": [
+                "outcome"
+              ]
+            },
+            "then": {
+              "not": {
+                "anyOf": [
+                  {
+                    "properties": {
+                      "adapterId": true
+                    },
+                    "required": [
+                      "adapterId"
+                    ]
+                  },
+                  {
+                    "properties": {
+                      "reservationId": true
+                    },
+                    "required": [
+                      "reservationId"
+                    ]
+                  },
+                  {
+                    "properties": {
+                      "maximumSupplierCost": true
+                    },
+                    "required": [
+                      "maximumSupplierCost"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      },
+      "SearchResponse": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/search-response.schema.json",
+        "title": "Clervo deterministic search response",
+        "$defs": {
+          "score": {
+            "type": "object",
+            "required": [
+              "freshness",
+              "authority",
+              "relevance",
+              "diversity",
+              "totalBasisPoints"
+            ],
+            "properties": {
+              "freshness": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "authority": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "relevance": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "diversity": {
+                "enum": [
+                  40,
+                  100
+                ]
+              },
+              "totalBasisPoints": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10000
+              }
+            },
+            "additionalProperties": false
+          },
+          "result": {
+            "type": "object",
+            "required": [
+              "resultId",
+              "sourceId",
+              "url",
+              "canonicalUrl",
+              "hostname",
+              "title",
+              "snippet",
+              "evidenceText",
+              "retrievedAt",
+              "authorityScore",
+              "relevanceScore",
+              "rank",
+              "score"
+            ],
+            "properties": {
+              "resultId": {
+                "type": "string",
+                "pattern": "^sr_[A-Za-z0-9]{20,64}$"
+              },
+              "sourceId": {
+                "type": "string",
+                "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https?://"
+              },
+              "canonicalUrl": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https?://"
+              },
+              "hostname": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 253
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "snippet": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "evidenceText": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "retrievedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "authorityScore": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "relevanceScore": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "rank": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100
+              },
+              "score": {
+                "$ref": "#/$defs/score"
+              }
+            },
+            "additionalProperties": false
+          },
+          "citation": {
+            "type": "object",
+            "required": [
+              "citationId",
+              "resultId",
+              "canonicalUrl",
+              "quote",
+              "startOffset",
+              "endOffset"
+            ],
+            "properties": {
+              "citationId": {
+                "type": "string",
+                "pattern": "^cite_[A-Za-z0-9]{20,64}$"
+              },
+              "resultId": {
+                "type": "string",
+                "pattern": "^sr_[A-Za-z0-9]{20,64}$"
+              },
+              "canonicalUrl": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https?://"
+              },
+              "quote": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 10000
+              },
+              "startOffset": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "endOffset": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "operationId",
+          "query",
+          "generatedAt",
+          "deduplicatedCount",
+          "results",
+          "citations"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "generatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deduplicatedCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "results": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/$defs/result"
+            }
+          },
+          "citations": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": {
+              "$ref": "#/$defs/citation"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "TraceSpan": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/trace-span.schema.json",
+        "title": "Clervo redacted trace span",
+        "$defs": {
+          "attribute": {
+            "type": "object",
+            "required": [
+              "name",
+              "value"
+            ],
+            "properties": {
+              "name": {
+                "enum": [
+                  "adapter_id",
+                  "component",
+                  "dependency",
+                  "error_code",
+                  "http_status",
+                  "operation_state",
+                  "outcome",
+                  "product_id",
+                  "retryable",
+                  "route_id"
+                ]
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 256
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "traceId",
+          "spanId",
+          "name",
+          "kind",
+          "startedAt",
+          "endedAt",
+          "status",
+          "attributes",
+          "redactionCount"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "traceId": {
+            "type": "string",
+            "pattern": "^(?!0{32}$)[a-f0-9]{32}$"
+          },
+          "spanId": {
+            "type": "string",
+            "pattern": "^(?!0{16}$)[a-f0-9]{16}$"
+          },
+          "parentSpanId": {
+            "type": "string",
+            "pattern": "^(?!0{16}$)[a-f0-9]{16}$"
+          },
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.]{2,79}$"
+          },
+          "kind": {
+            "enum": [
+              "internal",
+              "server",
+              "client",
+              "producer",
+              "consumer"
+            ]
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "enum": [
+              "unset",
+              "ok",
+              "error"
+            ]
+          },
+          "operationId": {
+            "type": "string",
+            "pattern": "^op_[A-Za-z0-9]{20,64}$"
+          },
+          "attributes": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "$ref": "#/$defs/attribute"
+            }
+          },
+          "redactionCount": {
+            "type": "integer",
+            "minimum": 0
           }
         },
         "additionalProperties": false

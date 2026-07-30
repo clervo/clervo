@@ -1,0 +1,1 @@
+{"schema":"metric-point","valid":false,"value":{"contractVersion":"2026-07-29.1","timestamp":"2026-07-30T16:00:00.000Z","name":"clervo.operations","instrument":"counter","unit":"1","value":1,"attributes":[{"name":"operation_id","value":"op_01JZ8Q5Y4QFD48Q24H6M5F4K9P"}]}}
