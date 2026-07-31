@@ -4,6 +4,7 @@ export * from './canonical-request.js';
 export * from './catalog.js';
 export * from './commerce.js';
 export * from './discovery.js';
+export * from './development-retrieval-supply.js';
 export * from './extraction.js';
 export * from './idempotency.js';
 export * from './javascript-retrieval.js';

@@ -339,3 +339,22 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Focused `npm run test:n4.19` passed 6/6. Canonical `npm test` was run once; lint and typecheck passed, then the clean-room boundary stopped on a pre-existing untracked owner master-plan reference file. That owner file was preserved unchanged.
 - No provider call, repository installation, deployment, credential use, payment, wallet operation, or USDC spend occurred.
 - Stage 4 remains blocked, search is not the reference pattern, and Stage 5 remains unauthorized. No next ticket is inferred.
+
+## 2026-07-31 — N4.20 concrete development-only retrieval supply qualification
+
+- Added an additive development-only decision behind N4.19 that computes readiness from exact provider identity, independent failure domains, evidence freshness, capability/health, bounded use and zero-cost ceilings, terms/resale status, fail-closed behavior, and exact substitution policy. Production authorization remains structurally false.
+- Bounded the concrete composition to a self-hosted SearXNG boundary, Wikimedia Wikipedia and OpenStreetMap Nominatim upstream identities, and separate direct Common Crawl. Wikipedia and Nominatim returned one healthy zero-cost response each; Common Crawl returned `CC-MAIN-2026-30` collection/index metadata. No broker instance or WARC range read ran.
+- Terms remain explicit: Wikimedia commercial reuse requires applicable license/attribution/share-alike compliance; public Nominatim resale is prohibited; Common Crawl commercial content use requires origin-rights review. Therefore the concrete composition is provisional and development-only, not a general-Web or production-ready route.
+- Added SHA-256-bound evidence summaries, a strict schema and generated discovery artifacts, plus deterministic success/failure fixtures for every required N4.20 fail-closed condition.
+- Focused `npm run test:n4.20`, contract validation at 35 schemas/66 fixtures, discovery generation at 35 schemas, and `git diff --check` passed.
+- Canonical `npm test` was invoked exactly once. Lint, typecheck, clean-room boundary, stack, and environment passed; `scripts/scan-secrets.mjs` then failed with `secret scan: FAIL: spawnSync git EPERM`. Per ticket instruction it was not rerun, the Stage 4 verifier was not started, and no commit was created.
+- External hosts contacted: `docs.searxng.org`, `foundation.wikimedia.org`, `en.wikipedia.org`, `operations.osmfoundation.org`, `nominatim.openstreetmap.org`, `commoncrawl.org`, and `index.commoncrawl.org`. No credentials, provider installation, cloud/deployment mutation, payment, wallet/facilitator action, or USDC spend occurred.
+- The last verified Stage 4 decision remains blocked with 21 checks; search is not the reference pattern and Stage 5 was not started. Proposed N4.21 remains unauthorized until N4.20 acceptance is explicitly resumed and completed.
+
+## 2026-07-31 — N4.20 closeout after owner-authorized external acceptance
+
+- Recorded owner-supplied external execution evidence for the explicitly authorized canonical retry outside the Codex sandbox: 184 tests, 184 passed, 0 failed, `acceptance: PASS`, Node.js 24.18.1, 0 external network calls, and 0 USDC spent. Codex did not run the successful retry; the earlier Codex invocation had stopped only because sandbox policy denied the secret scanner's `spawnSync git` child process with `EPERM`.
+- Ran `npm run verify:stage4-exit` exactly once. Runtime enforcement and verifier integrity passed, but the decision remained `blocked` with 21 blocking checks before and 21 after, reference-pattern authorization false, and Stage 5 authorization false. The verifier made 0 external network calls and spent 0 USDC.
+- Preserved the concrete supply truth: the composition is development-only and provisional; no self-hosted SearXNG broker health/configuration ran, public Nominatim is not resale-qualified, and Common Crawl live WARC range access and commercial content clearance remain unproven.
+- Updated only the N4.20 completion evidence, active ticket state/handoff, README, and append-only journal. The external master plan is mounted read-only (`fuse.grpcfuse ro`), so its stale N4.19 current-handoff block could not be synchronized from this container and still requires an owner-side update. Final `git diff --check` passed once after the writable documentation updates.
+- N4.20 is complete and bounded. Stage 4 remains blocked, search is not the reference pattern, Stage 5 was not started, and proposed N4.21 remains unauthorized.

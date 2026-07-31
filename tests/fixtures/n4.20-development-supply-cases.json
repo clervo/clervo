@@ -1,0 +1,55 @@
+{
+  "success": {
+    "broker": { "qualificationStatus": "passed", "healthStatus": "healthy" },
+    "archive": { "qualificationStatus": "passed", "resaleStatus": "permitted" }
+  },
+  "providerFailure": {
+    "upstreamIndex": 0,
+    "patch": { "healthStatus": "unavailable" }
+  },
+  "staleQualification": {
+    "evaluatedAt": "2026-08-02T04:17:03.000Z"
+  },
+  "duplicateProvider": {
+    "upstreamIndex": 1,
+    "copyFromUpstreamIndex": 0,
+    "fields": ["providerId", "observedProviderId"]
+  },
+  "duplicateFailureDomain": {
+    "upstreamIndex": 1,
+    "copyFromUpstreamIndex": 0,
+    "fields": ["failureDomain"]
+  },
+  "missingTerms": {
+    "upstreamIndex": 0,
+    "removeEvidence": "terms"
+  },
+  "prohibitedTerms": {
+    "upstreamIndex": 0,
+    "patch": { "termsStatus": "prohibited" }
+  },
+  "unknownQuota": {
+    "upstreamIndex": 0,
+    "patch": { "quotaStatus": "unknown" }
+  },
+  "missingCostCeiling": {
+    "upstreamIndex": 0,
+    "removeField": "costCeilingUsdMicros"
+  },
+  "identitySubstitution": {
+    "upstreamIndex": 0,
+    "patch": { "observedProviderId": "provider_substituted.wikipedia" }
+  },
+  "publicSharedSearxng": {
+    "broker": { "deployment": "public_shared", "endpointScope": "remote_public" }
+  },
+  "commonCrawlCountedAsBrokerUpstream": {
+    "upstreamIndex": 1,
+    "patch": { "role": "direct_archive", "mechanism": "common_crawl_direct" }
+  },
+  "dishonestReady": {
+    "upstreamIndex": 0,
+    "patch": { "healthStatus": "unavailable" },
+    "claimedDevelopmentReady": true
+  }
+}

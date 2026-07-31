@@ -1,86 +1,83 @@
 # Active ticket state
 
-**Ticket:** N4.19 — provider-neutral lawful free-first retrieval supply
+**Ticket:** N4.20 — concrete development-only free-first retrieval supply qualification
 **Stage:** 4
-**One question:** What is the smallest provider-neutral contract and qualification change required so Clervo search is not locked to paid Brave while preserving all completed Stage 4 guarantees?
-**Result:** complete; focused tests pass; canonical acceptance blocked by preserved pre-existing owner file
+**One question:** What is the smallest bounded implementation and evidence change required to qualify the first concrete provider-neutral free-first retrieval supply path behind the N4.19 contract without weakening any completed Stage 4 guarantee?
+**Result:** complete; concrete supply decision remains development-only and provisional; Stage 4 exit remains blocked
+
+## Authoritative inputs
+
+- `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md`
+- `/workspace/clervo-next/AGENTS.md` and `/workspace/clervo-next/.cline/rules/`
+- Owner-authorized N4.20 prompt dated 2026-07-31
+- Clean `main` at `ad744086a25db9ac03c6760e1fba6294d32f83a6`
 
 ## Acceptance criteria
 
-- Brave is optional rather than required.
-- Ready search supply cannot depend on one provider.
-- A self-hosted metasearch broker is not ready without at least two independently qualified upstream engines.
-- Public SearXNG instances cannot become production supply.
-- Common Crawl remains a separate failure domain.
-- Exactly one extraction worker may be selected behind the existing safety boundary.
-- Deferred tools cannot become core dependencies.
-- Named providers and sources cannot be silently substituted.
-- Existing Stage 4 provenance, normalization, deduplication, ranking, citations, synthesis, benchmarks, deployment evidence, stage-exit verification, and safety contracts remain unchanged unless one named compatibility edit is essential.
-- Focused adversarial tests pass; canonical acceptance is run once and any owner-state blocker is recorded without mutation.
+- Represent one development-only composition: one self-hosted metasearch broker, two explicitly named independently qualified upstream providers/failure domains, and separate direct Common Crawl archive access.
+- Preserve provider neutrality, safe failure, explicit identities, no silent substitution, and all completed Stage 4 guarantees.
+- Record timestamp, capability, health, quota/bounded-use, terms/resale, and failure evidence for every component.
+- Reject fewer than two upstreams, duplicate provider/failure domains, public shared SearXNG, stale qualification, unknown/prohibited terms, missing quota/cost ceiling, Common Crawl counted as broker upstream, identity substitution, and dishonest readiness.
+- Mark unavailable live gates provisional or blocked; do not claim production readiness.
+- Keep Stage 4 blocked, search non-reference, and Stage 5 unauthorized unless source-bound evidence proves otherwise.
 
 ## Decisions already made
 
-- N4.18 is complete and will not be reopened.
-- Brave is an optional qualified adapter, not a launch dependency.
-- Self-hosted SearXNG may serve only as a provider-neutral broker; every enabled upstream must be qualified independently.
-- Public shared SearXNG instances are not production supply.
-- Common Crawl stays an independent archive/corpus failure domain, not a SearXNG engine.
-- Evaluate exactly one extraction worker: Crawl4AI first; select it only if the existing bounded safety contract fits.
-- ScrapeGraphAI, Agent Browser/browser-use-style tools, Agent Reach, Scrapling, and similar tools are deferred and will not be installed or made dependencies.
-- Stage 5 is out of scope and unauthorized.
-
-## Files inspected
-
-- `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md` current handoff and pre-N4.19 amendment
-- `/workspace/clervo-next/package.json`
-- `/workspace/clervo-next/packages/contracts/schemas/retrieval-qualification.schema.json`
-- `/workspace/clervo-next/packages/contracts/schemas/qualification-result.schema.json`
-- `/workspace/clervo-next/packages/contracts/fixtures/retrieval-qualification-valid.json`
-- `/workspace/clervo-next/packages/contracts/fixtures/retrieval-qualification-false-ready-invalid.json`
-- `/workspace/clervo-next/tests/contract/n4.17.test.mjs`
-- `/workspace/clervo-next/tests/contract/n4.18.test.mjs`
-- Existing owner diff in `/workspace/clervo-next/README.md`
-- `/workspace/clervo-next/packages/contracts/src/retrieval.ts`
-- Official SearXNG engine-settings and limiter documentation
-- Official Common Crawl index/archive and terms pages
-- Official Crawl4AI repository; two official documentation paths returned 404
+- N4.19 is complete and remains the provider-neutral qualification contract.
+- N4.18 private Cloud Run staging is not mutated.
+- The broker approach is self-hosted SearXNG; public shared instances are ineligible.
+- Common Crawl remains a separate direct archive path, never a broker upstream.
+- Exactly two reasonable broker upstream candidates will be evaluated; the list will not expand.
+- Brave is not required; extraction-worker selection is out of scope.
+- No credentials, paid calls, cloud/IAM/payment changes, or USDC spend are authorized.
 
 ## Files changed
 
 - `docs/journal/ACTIVE-TICKET-STATE.md`
-- `packages/contracts/src/retrieval-supply.ts`
+- `packages/contracts/src/development-retrieval-supply.ts`
 - `packages/contracts/src/index.ts`
-- `packages/contracts/schemas/retrieval-supply.schema.json`
-- `packages/contracts/fixtures/retrieval-supply-valid.json`
-- `packages/contracts/fixtures/retrieval-supply-false-ready-invalid.json`
-- `tests/contract/n4.19.test.mjs`
+- `packages/contracts/schemas/development-retrieval-supply.schema.json`
+- `packages/contracts/fixtures/development-retrieval-supply-provisional.json`
+- `tests/contract/n4.20.test.mjs`
+- `tests/fixtures/n4.20-development-supply-cases.json`
 - `package.json`
 - `scripts/run-acceptance.mjs`
-- `docs/tickets/N4.19.md`
-- `docs/evidence/N4.19-retrieval-supply-evidence.md`
+- `generated/public/openapi.json`
+- `generated/public/schemas/2026-07-29.1/development-retrieval-supply.schema.json`
+- `docs/tickets/N4.20.md`
+- `docs/evidence/N4.20-development-retrieval-supply-evidence.md`
 - `docs/journal/BUILD-JOURNAL.md`
-- `README.md` (owner N4.18 changes preserved; N4.19 text added)
+- `README.md`
 
-## Tests still required
+## External handoff constraint
 
-- `npm run test:n4.19`: passed 6/6
-- `npm test`: run once; lint/typecheck passed, then pre-existing owner file failed clean-room boundary
-- Final diff/schema verification only; do not rerun canonical acceptance
+- `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md` is mounted read-only from the host (`fuse.grpcfuse ro`) and its N4.19 current-handoff block could not be updated inside this container. This active-ticket state contains the complete N4.20 handoff and exact proposed next ticket; the external master-plan handoff still requires owner-side synchronization.
+
+## Tests run and results
+
+- `npm run test:n4.20`: passed, 7/7.
+- `npm run contracts`: passed, 35 schemas / 66 fixtures.
+- `npm run generate:discovery`: passed, 35 schemas.
+- First canonical `npm test`: stopped because the Codex sandbox blocked `scripts/scan-secrets.mjs` from spawning `git`, producing `secret scan: FAIL: spawnSync git EPERM`.
+- Owner-authorized canonical retry outside Codex: passed with 184 tests, 184 passed, 0 failed, `acceptance: PASS`, Node.js 24.18.1, 0 external network calls, and 0 USDC spent. Codex did not run the successful retry.
+- `npm run verify:stage4-exit`: run exactly once during closeout; runtime enforcement and verification passed, decision `blocked`, 21 blocking checks, reference pattern false, Stage 5 authorization false, 0 external network calls, and 0 USDC spent.
+- Blocking checks: 21 before and 21 after.
+- Final `git diff --check`: passed once after documentation updates.
+
+## Current Stage 4 blockers
+
+- Supply remains provisional because no self-hosted SearXNG instance/configuration health ran and Common Crawl stopped before an index-to-WARC range read.
+- Public Nominatim is development-only and cannot be resold through the public service. Common Crawl commercial content use still requires legal/rights review.
+- The source-bound verifier still reports 21 blocking checks; search is not the reference pattern and Stage 5 remains unauthorized.
 
 ## Exact next action
 
-- Verify generated schema/discovery artifacts, exact diff, and repository status; then commit N4.19 and stop.
+- Stop after the N4.20 commit and completion report. Exact proposed next ticket, still unauthorized: N4.21 — run one isolated loopback self-hosted SearXNG development composition and one bounded direct Common Crawl index-to-WARC range-read proof, preserving the Nominatim non-resale restriction and zero-cost ceiling.
 
-## Out of scope / parking lot
+## Out-of-scope parking lot
 
-- N4.18 changes or evidence reopening
-- Stage 4 redesign
-- Stage 5
-- Public shared SearXNG production use
-- Installation of SearXNG, Crawl4AI, Scrapling, ScrapeGraphAI, Agent Browser, browser-use, Agent Reach, or similar repositories
-- Provider secrets, billable calls, wallet/payment changes, public deployment, IAM, or cloud mutation
-- Deferred candidate feature claims
+- Stage 5; production readiness; N4.18 deployment mutation; real payments; cloud/IAM/billing; extraction-worker selection; unrelated connectors, browser tools, marketing, SDK/MCP/RPC/crypto/AI work.
 
 ## Stop condition
 
-- N4.19 focused tests pass, canonical acceptance is invoked once with any preserved owner-state blocker recorded, evidence/handoff are updated once, the bounded commit is created, and work stops before the next ticket.
+- Commit only the bounded N4.20 work, report, and stop. Do not begin N4.21 or Stage 5.

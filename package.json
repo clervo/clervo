@@ -49,6 +49,7 @@
     "test:n4.17": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.17.test.mjs",
     "test:n4.18": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.18.test.mjs",
     "test:n4.19": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.19.test.mjs",
+    "test:n4.20": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.20.test.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
     "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",
     "staging:gcp": "./scripts/gcp-staging.sh",

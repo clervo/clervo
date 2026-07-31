@@ -1,0 +1,142 @@
+{
+  "schema": "development-retrieval-supply",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "qualificationId": "dsqual_01K1Q20FREEFIRSTDEV01",
+    "n419DecisionId": "rsupply_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "evaluatedAt": "2026-07-31T04:17:03.000Z",
+    "environment": "development",
+    "productionAuthorization": false,
+    "broker": {
+      "brokerId": "broker_searxng.self_hosted.dev",
+      "softwareId": "searxng",
+      "observedVersion": "2026.7.31+057a77168",
+      "deployment": "self_hosted",
+      "endpointScope": "loopback_only",
+      "qualificationStatus": "provisional",
+      "healthStatus": "not_run",
+      "checkedAt": "2026-07-31T04:17:03.000Z",
+      "expiresAt": "2026-08-01T04:17:03.000Z",
+      "evidence": [
+        {
+          "name": "identity",
+          "url": "https://docs.searxng.org/admin/settings/settings_engines.html",
+          "observedAt": "2026-07-31T04:17:03.000Z",
+          "summary": "Official SearXNG documentation identified version 2026.7.31+057a77168 and operator-configured engine settings.",
+          "sha256": "sha256:16abf5703e641c5d76c9b0571c604fad29ebf35456e9455cec4005320bff94b6"
+        }
+      ],
+      "upstreams": [
+        {
+          "sourceId": "source_wikimedia.wikipedia",
+          "providerId": "provider_wikimedia.wikipedia",
+          "observedProviderId": "provider_wikimedia.wikipedia",
+          "failureDomain": "wikimedia_foundation",
+          "role": "broker_upstream",
+          "mechanism": "searxng_engine",
+          "qualificationStatus": "passed",
+          "checkedAt": "2026-07-31T04:17:03.000Z",
+          "expiresAt": "2026-08-01T04:17:03.000Z",
+          "capabilities": ["encyclopedic_search"],
+          "healthStatus": "healthy",
+          "quotaStatus": "bounded",
+          "requestCeiling": 1,
+          "costCeilingUsdMicros": 0,
+          "termsStatus": "restricted",
+          "restrictionsAcknowledged": true,
+          "resaleStatus": "permitted_with_attribution",
+          "safeFailure": "fail_closed",
+          "substitutionPolicy": "exact",
+          "evidence": [
+            { "name": "identity", "url": "https://en.wikipedia.org/w/api.php", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Bounded Wikipedia API response was served by en.wikipedia.org and identified pageid 548297.", "sha256": "sha256:e13350cf0be3b9aa7b8c36877946aa8caca6fdd5e0e8bd565d49fdb99158d9a1" },
+            { "name": "capability", "url": "https://en.wikipedia.org/w/api.php", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Wikipedia search returned title Metasearch engine and reported 158 total hits for the bounded query.", "sha256": "sha256:18b848fc65f20285adb003eea29a673b5c5969c1cb45fe061f9d3b26f753e52a" },
+            { "name": "health", "url": "https://en.wikipedia.org/w/api.php", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Wikipedia returned a successful JSON query.search response within the 20-second request deadline.", "sha256": "sha256:1dcb6c0f8f544d5cba9fbbfd6f35081a8f73e194683ea83ce594768d8138e407" },
+            { "name": "bounded_use", "url": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use/en", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "N4.20 made one Wikipedia request with srlimit=1 and a zero-USDC local cost ceiling; no provider quota was asserted.", "sha256": "sha256:79f7c3b984a5b0a1f48bb613cf4dbdeea8234841668188b33e680f88cff47113" },
+            { "name": "terms", "url": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use/en", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Wikimedia terms permit commercial reuse under applicable free licenses with attribution and share-alike obligations and prohibit abusive automated use.", "sha256": "sha256:03d44b1b985891dc38f5c40fe517ff141792d397b0b04aa567f777b40e85ba53" }
+          ],
+          "developmentEligible": true,
+          "productionEligible": true,
+          "failureCodes": []
+        },
+        {
+          "sourceId": "source_openstreetmap.nominatim",
+          "providerId": "provider_openstreetmap.nominatim",
+          "observedProviderId": "provider_openstreetmap.nominatim",
+          "failureDomain": "openstreetmap_foundation_nominatim",
+          "role": "broker_upstream",
+          "mechanism": "searxng_engine",
+          "qualificationStatus": "passed",
+          "checkedAt": "2026-07-31T04:17:03.000Z",
+          "expiresAt": "2026-08-01T04:17:03.000Z",
+          "capabilities": ["place_search"],
+          "healthStatus": "healthy",
+          "quotaStatus": "known",
+          "requestCeiling": 1,
+          "costCeilingUsdMicros": 0,
+          "termsStatus": "restricted",
+          "restrictionsAcknowledged": true,
+          "resaleStatus": "prohibited",
+          "safeFailure": "fail_closed",
+          "substitutionPolicy": "exact",
+          "evidence": [
+            { "name": "identity", "url": "https://nominatim.openstreetmap.org/search", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Bounded Nominatim response was served by nominatim.openstreetmap.org and returned OSM relation 62422 for Berlin.", "sha256": "sha256:a17ce5b50b22fe392dfeb20defcf492ba53846d16d725e98fe4e941f73a766ba" },
+            { "name": "capability", "url": "https://nominatim.openstreetmap.org/search", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Nominatim place search returned Berlin coordinates and administrative-boundary metadata in JSONv2.", "sha256": "sha256:35cd8f9b5ed771f621058b23658cd73749e2bfd09d651192772b132100dcc5dd" },
+            { "name": "health", "url": "https://nominatim.openstreetmap.org/search", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Nominatim returned one successful JSON place result within the 20-second request deadline.", "sha256": "sha256:fbade8a37868a19393d114613617f66106370a9c3db57ad5f7f11cf2dc8c0d7b" },
+            { "name": "bounded_use", "url": "https://operations.osmfoundation.org/policies/nominatim/", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Public Nominatim policy sets an absolute maximum of one request per second, requires caching, and this ticket made one request with a zero-USDC ceiling.", "sha256": "sha256:59fb01d10507d4552b8db0b8dc6265e2bec69309d691805079acaa9773f927a7" },
+            { "name": "terms", "url": "https://operations.osmfoundation.org/policies/nominatim/", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Public Nominatim permits bounded external use but prohibits API resale and requires geocoding resellers to run their own service.", "sha256": "sha256:db65550f4881c52c21cfbbb5b4e21925c3d2e89aeb10c88ca9722b2c1c4298bf" }
+          ],
+          "developmentEligible": true,
+          "productionEligible": false,
+          "failureCodes": []
+        }
+      ],
+      "failureCodes": ["broker_qualification_not_passed", "broker_health_not_run"]
+    },
+    "archive": {
+      "sourceId": "source_commoncrawl.archive",
+      "providerId": "provider_commoncrawl",
+      "observedProviderId": "provider_commoncrawl",
+      "failureDomain": "commoncrawl_archive",
+      "role": "direct_archive",
+      "mechanism": "common_crawl_direct",
+      "qualificationStatus": "provisional",
+      "checkedAt": "2026-07-31T04:17:03.000Z",
+      "expiresAt": "2026-08-01T04:17:03.000Z",
+      "capabilities": ["collection_discovery", "url_index_metadata"],
+      "healthStatus": "healthy",
+      "quotaStatus": "bounded",
+      "requestCeiling": 1,
+      "costCeilingUsdMicros": 0,
+      "termsStatus": "restricted",
+      "restrictionsAcknowledged": true,
+      "resaleStatus": "legal_review_required",
+      "safeFailure": "fail_closed",
+      "substitutionPolicy": "exact",
+      "evidence": [
+        { "name": "identity", "url": "https://index.commoncrawl.org/collinfo.json", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Common Crawl collinfo was served directly by index.commoncrawl.org and identified CC-MAIN-2026-30.", "sha256": "sha256:e3eadd33a29223f59dec3d2b284848068976c73856084ff6a67819e791913a68" },
+        { "name": "capability", "url": "https://index.commoncrawl.org/collinfo.json", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Common Crawl advertised July 2026 timegate and CDX index endpoints for direct archive discovery.", "sha256": "sha256:e2ecb1a48bf579d846e2aaa4a31ec7e6e231965a7a43dfc073f216b9c2d3541d" },
+        { "name": "health", "url": "https://index.commoncrawl.org/collinfo.json", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Common Crawl returned current collection metadata within the 20-second request deadline; no WARC range read was attempted.", "sha256": "sha256:8c2281cc6ab6e78af58f331358e38e660a1c6abb71fb1757f3103f1bb12392bd" },
+        { "name": "bounded_use", "url": "https://index.commoncrawl.org/collinfo.json", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "N4.20 made one Common Crawl collection request with a zero-USDC local cost ceiling; no provider quota was asserted.", "sha256": "sha256:b3f24ea699a215d656d2101754095c646913d9dcb76b8a16955edc30c10102ba" },
+        { "name": "terms", "url": "https://commoncrawl.org/terms-of-use", "observedAt": "2026-07-31T04:17:03.000Z", "summary": "Common Crawl grants a limited service license, leaves crawled-content rights with originators, and recommends legal review before commercial use.", "sha256": "sha256:5dd835accc152ea9b63e369c88da3cfe04cdccbfd331efcb9a7ef3db728bce1f" }
+      ],
+      "developmentEligible": false,
+      "productionEligible": false,
+      "failureCodes": ["qualification_provisional", "archive_not_eligible"]
+    },
+    "brokerReady": false,
+    "archiveReady": false,
+    "developmentReady": false,
+    "productionReady": false,
+    "result": "provisional",
+    "failureCodes": ["broker_qualification_not_passed", "broker_health_not_run", "archive_not_eligible"],
+    "productionBlockers": [
+      "development_only_environment",
+      "production_authorization_absent",
+      "production_ineligible_source_openstreetmap.nominatim",
+      "production_ineligible_source_commoncrawl.archive",
+      "broker_not_development_ready",
+      "archive_not_development_ready"
+    ]
+  }
+}
