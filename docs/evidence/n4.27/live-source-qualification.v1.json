@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "clervo.n4.27.live-source-qualification.v1",
+  "evaluatedAt": "2026-07-31T19:35:00.000Z",
+  "productionGeneralWebProviderCostUsd":0,
+  "sourceClasses": [
+    {"identity":"provider_wikimedia_action_api_v1","class":"public encyclopedia metadata and current pages","termsState":"qualified","deadlineMs":1200,"independentFailureDomain":true},
+    {"identity":"provider_crossref_rest_api_v1","class":"public research metadata and DOI landing pages","termsState":"qualified","deadlineMs":1200,"independentFailureDomain":true},
+    {"identity":"bounded_direct_current_page","class":"current public page fetch after discovery","termsState":"policy_checked","deadlineMs":600,"independentFailureDomain":false}
+  ],
+  "preflightConsideredButNotConnected": [
+    "approved-domain sitemaps and feeds",
+    "public product/catalog and WooCommerce Store APIs",
+    "official company press and developer indexes",
+    "GitHub official metadata",
+    "Schema.org and JSON-LD discovery",
+    "Common Crawl CDXJ metadata only"
+  ],
+  "regression": {
+    "recall":0.4318,"precision":0.4280,"p95LatencyMs":1302.33,
+    "focusedMissTasks":15,"tasksWithAnyLiveRelevantResultWhenFocusedMissed":6,
+    "tasksWhereLiveImprovedRecallWhenFocusedMissed":5,"uniqueContributionRate":0.3333,
+    "relevantContributions":{"provider_wikimedia_action_api_v1":7,"provider_crossref_rest_api_v1":18},
+    "largestSourceShare":0.72
+  },
+  "holdout":{"recall":0.08,"precision":0.08,"p95LatencyMs":1718.76},
+  "gates": {
+    "recallAtLeast035Regression":true,"precisionAtLeast060Regression":false,"p95AtMost4000Regression":true,
+    "uniqueContributionAtLeast030Regression":true,"noSourceOver070Regression":false,
+    "recallAtLeast035Holdout":false,"precisionAtLeast060Holdout":false,"p95AtMost4000Holdout":true,
+    "perSourceDeadlineAndCancellationImplemented":true
+  },
+  "externalDependencyStops":[{"source":"public Cloud Run fixture ingress","failures":2,"action":"route_disabled_and_service_deleted","reason":"organization policy rejected public IAM twice"}],
+  "decision":"failed_quality_and_source_concentration_gates"
+}

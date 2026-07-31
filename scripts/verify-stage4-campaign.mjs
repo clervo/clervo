@@ -16,7 +16,7 @@ const REQUIRED_EXTERNAL_REASONS = Object.freeze([
   'payable_route_authorization_unavailable',
   'alert_delivery_channel_unavailable',
 ]);
-const CURRENT_EXTERNAL_REASONS = Object.freeze(['payable_route_authorization_unavailable']);
+const CURRENT_EXTERNAL_REASONS = Object.freeze(['n427r_separate_authority_required']);
 
 export function validateStage4Campaign(matrix, stageResult, packageJson, tsconfig) {
   assert.equal(matrix.schemaVersion, 1, 'campaign schema version drift');
@@ -86,27 +86,43 @@ export function validateStage4Campaign(matrix, stageResult, packageJson, tsconfi
 
   const current = matrix.currentCampaignState;
   assert.match(current.evaluatedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u);
-  assert.equal(current.sourceBinding, 'docs/evidence/n4.26/stage4-binding.v1.json');
+  assert.equal(current.sourceBinding, 'docs/evidence/n4.27/stage4-binding.v1.json');
   assert.equal(current.startingBlockerCount, matrix.blockerCount, 'current campaign must preserve the starting count');
-  assert.deepEqual(current.closedCheckIds, stageResult.sourceBinding.binding.closedCheckIds, 'current closed IDs must match the hash-bound N4.26 source');
+  assert.deepEqual(current.closedCheckIds, stageResult.sourceBinding.binding.closedCheckIds, 'current closed IDs must preserve the hash-bound N4.26 closures');
   assert.equal(current.blockerCount, stageResult.blockingCheckIds.length, 'current blocker count must match Stage 4 evidence');
-  assert.equal(current.blockerCount, 10, 'N4.26 current blocker count drift');
+  assert.equal(current.blockerCount, 10, 'N4.27 current blocker count drift');
   assert.deepEqual(current.blockerIds, [...stageResult.blockingCheckIds], 'current blockers must match Stage 4 order and identity');
+  assert.deepEqual(current.blockerIds, stageResult.sourceBinding.latestBinding.remainingBlockers.map((value) => value.id), 'current blockers must match the hash-bound N4.27 source');
   assert.equal(current.closedCheckIds.length + current.blockerCount, current.startingBlockerCount, 'current campaign must account for all starting blockers');
   assert.equal(current.authenticatedStaging.authenticatedControlPlaneAccess, true, 'current authenticated staging access must be recorded');
   assert.equal(current.authenticatedStaging.clusterState, 'deleted_after_evidence_capture', 'ticket cluster must not retain active burn');
   assert.equal(current.authenticatedStaging.dataDiskState, 'deleted_after_evidence_capture', 'ticket data disk must not retain active burn');
   assert.equal(current.authenticatedStaging.legacyResourcesReadOrMutated, false, 'legacy resources remain out of scope');
+  assert.deepEqual(current.n427Qualification, {
+    holdoutFinalRunCount: 1,
+    mandatoryGatesPassed: false,
+    browserSuccessfulRuns: 18,
+    browserAttemptedRuns: 20,
+    mockX402Executed: false,
+    activeComputeUsdPerDay: 0,
+    retainedIdleExposureUsdPerDay: 0,
+  });
   assert.deepEqual(current.campaignQueue.map((item) => [item.ticket, item.status]), [
     ['N4.23A', 'complete'],
     ['N4.23B', 'complete'],
     ['N4.24', 'complete'],
     ['N4.25', 'complete'],
     ['N4.26', 'complete'],
-    ['N4.27', 'blocked_external'],
+    ['N4.27', 'complete'],
     ['N4.28', 'pending'],
   ]);
-  assert.equal(current.campaignQueue.find((item) => item.ticket === 'N4.27')?.reason, 'separate_payment_authority_required');
+  assert.equal(current.campaignQueue.find((item) => item.ticket === 'N4.27')?.result, 'blocked_mandatory_gates_failed');
+  assert.equal(current.campaignQueue.find((item) => item.ticket === 'N4.28')?.reason, 'blocked_until_n4.27r_passes_and_is_separately_authorized');
+  assert.deepEqual(current.smallestRepairTicket, {
+    ticket: 'N4.27R',
+    status: 'unauthorized',
+    reason: 'representative_lawful_supply_and_deterministic_browser_repair_required',
+  });
   assert.equal(current.externalBlocker.status, 'blocked_external');
   assert.deepEqual(current.externalBlocker.reasons, CURRENT_EXTERNAL_REASONS);
   assert.equal(current.externalBlocker.ownerIntervention.length, 1);
@@ -118,8 +134,8 @@ export function validateStage4Campaign(matrix, stageResult, packageJson, tsconfi
     startingBlockerCount: matrix.blockerCount,
     blockerCount: current.blockerCount,
     closedCheckIds: Object.freeze([...current.closedCheckIds]),
-    nextTicket: 'N4.27',
-    nextTicketStatus: 'blocked_external',
+    nextTicket: 'N4.27R',
+    nextTicketStatus: 'unauthorized',
     externalReasons: Object.freeze([...current.externalBlocker.reasons]),
   });
 }
@@ -141,7 +157,7 @@ async function main() {
   const result = validateStage4Campaign(inputs.matrix, inputs.stageResult, inputs.packageJson, inputs.tsconfig);
   console.log('stage4 remediation campaign: PASS');
   console.log(`starting blockers: ${result.startingBlockerCount}`);
-  console.log(`closed by N4.26: ${result.closedCheckIds.length}`);
+  console.log(`closed before N4.27: ${result.closedCheckIds.length}`);
   console.log(`blocking checks: ${result.blockerCount}`);
   console.log(`next ticket: ${result.nextTicket}`);
   console.log(`next ticket status: ${result.nextTicketStatus}`);

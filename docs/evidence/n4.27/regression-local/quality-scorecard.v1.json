@@ -1,0 +1,288 @@
+{
+  "schemaVersion": "clervo.n4.26.quality-scorecard.v1",
+  "generatedAt": "2026-07-31T18:59:53.295Z",
+  "corpus": {
+    "schemaVersion": "clervo.n4.26.benchmark-corpus.v1",
+    "sha256": "sha256:40a6872068f9aeebff8519b959f474a70ba19fccdd9371866fd9b9d656f29f62",
+    "tasks": 50,
+    "families": 5
+  },
+  "families": {
+    "commerce_marketplaces": {
+      "corpusTasks": 10,
+      "evaluatedRetrievalTasks": 9,
+      "connectorLifecycleTasks": 1,
+      "relevantResultRecall": 0.8333,
+      "precision": 0.8704,
+      "freshness": 1,
+      "structuredFieldAccuracy": 1,
+      "exactCitationValidity": 1,
+      "duplicateSuppression": 1,
+      "averageDomainDiversity": 1.8889,
+      "localeCorrectness": 1,
+      "successfulExtractionRate": 1,
+      "promptInjectionResistance": {
+        "status": "not_proven_in_staging",
+        "score": null,
+        "reason": "No hostile live page completed the unavailable browser boundary."
+      },
+      "changeDetectionAccuracy": {
+        "status": "unavailable_not_implemented",
+        "score": null,
+        "reason": "Stage 5 change detection is not implemented and N4.26 cannot begin it."
+      },
+      "honestNoResultOrDegradedBehavior": 1,
+      "latencyMs": {
+        "p50": 2612.43,
+        "p95": 5671.65,
+        "p99": 5671.65
+      },
+      "resultCount": {
+        "average": 2.8889,
+        "p95": 3
+      }
+    },
+    "property_local_markets": {
+      "corpusTasks": 10,
+      "evaluatedRetrievalTasks": 8,
+      "connectorLifecycleTasks": 2,
+      "relevantResultRecall": 1,
+      "precision": 0.9583,
+      "freshness": 1,
+      "structuredFieldAccuracy": 1,
+      "exactCitationValidity": 1,
+      "duplicateSuppression": 1,
+      "averageDomainDiversity": 1.625,
+      "localeCorrectness": 1,
+      "successfulExtractionRate": 1,
+      "promptInjectionResistance": {
+        "status": "not_proven_in_staging",
+        "score": null,
+        "reason": "No hostile live page completed the unavailable browser boundary."
+      },
+      "changeDetectionAccuracy": {
+        "status": "unavailable_not_implemented",
+        "score": null,
+        "reason": "Stage 5 change detection is not implemented and N4.26 cannot begin it."
+      },
+      "honestNoResultOrDegradedBehavior": 1,
+      "latencyMs": {
+        "p50": 2140.14,
+        "p95": 4261.71,
+        "p99": 4261.71
+      },
+      "resultCount": {
+        "average": 2.875,
+        "p95": 3
+      }
+    },
+    "company_competitive": {
+      "corpusTasks": 10,
+      "evaluatedRetrievalTasks": 9,
+      "connectorLifecycleTasks": 1,
+      "relevantResultRecall": 0.8889,
+      "precision": 0.8519,
+      "freshness": 0.8889,
+      "structuredFieldAccuracy": 0.8889,
+      "exactCitationValidity": 0.8889,
+      "duplicateSuppression": 1,
+      "averageDomainDiversity": 1.5556,
+      "localeCorrectness": 1,
+      "successfulExtractionRate": 0.8889,
+      "promptInjectionResistance": {
+        "status": "not_proven_in_staging",
+        "score": null,
+        "reason": "No hostile live page completed the unavailable browser boundary."
+      },
+      "changeDetectionAccuracy": {
+        "status": "unavailable_not_implemented",
+        "score": null,
+        "reason": "Stage 5 change detection is not implemented and N4.26 cannot begin it."
+      },
+      "honestNoResultOrDegradedBehavior": 1,
+      "latencyMs": {
+        "p50": 1776.16,
+        "p95": 2183.67,
+        "p99": 2183.67
+      },
+      "resultCount": {
+        "average": 2.5556,
+        "p95": 3
+      }
+    },
+    "research_evidence": {
+      "corpusTasks": 10,
+      "evaluatedRetrievalTasks": 9,
+      "connectorLifecycleTasks": 1,
+      "relevantResultRecall": 0.7778,
+      "precision": 0.7778,
+      "freshness": 0.8889,
+      "structuredFieldAccuracy": 0.8889,
+      "exactCitationValidity": 0.8889,
+      "duplicateSuppression": 1,
+      "averageDomainDiversity": 1,
+      "localeCorrectness": 1,
+      "successfulExtractionRate": 0.8889,
+      "promptInjectionResistance": {
+        "status": "not_proven_in_staging",
+        "score": null,
+        "reason": "No hostile live page completed the unavailable browser boundary."
+      },
+      "changeDetectionAccuracy": {
+        "status": "unavailable_not_implemented",
+        "score": null,
+        "reason": "Stage 5 change detection is not implemented and N4.26 cannot begin it."
+      },
+      "honestNoResultOrDegradedBehavior": 1,
+      "latencyMs": {
+        "p50": 82.2,
+        "p95": 403.63,
+        "p99": 403.63
+      },
+      "resultCount": {
+        "average": 2.2222,
+        "p95": 3
+      }
+    },
+    "developer_agent_retrieval": {
+      "corpusTasks": 10,
+      "evaluatedRetrievalTasks": 9,
+      "connectorLifecycleTasks": 1,
+      "relevantResultRecall": 1,
+      "precision": 0.963,
+      "freshness": 1,
+      "structuredFieldAccuracy": 1,
+      "exactCitationValidity": 1,
+      "duplicateSuppression": 1,
+      "averageDomainDiversity": 1.1111,
+      "localeCorrectness": 1,
+      "successfulExtractionRate": 1,
+      "promptInjectionResistance": {
+        "status": "not_proven_in_staging",
+        "score": null,
+        "reason": "No hostile live page completed the unavailable browser boundary."
+      },
+      "changeDetectionAccuracy": {
+        "status": "unavailable_not_implemented",
+        "score": null,
+        "reason": "Stage 5 change detection is not implemented and N4.26 cannot begin it."
+      },
+      "honestNoResultOrDegradedBehavior": 1,
+      "latencyMs": {
+        "p50": 79.31,
+        "p95": 405.32,
+        "p99": 405.32
+      },
+      "resultCount": {
+        "average": 2.3333,
+        "p95": 3
+      }
+    }
+  },
+  "baselines": {
+    "focused": {
+      "tasks": 44,
+      "recall": 0.8409,
+      "precision": 0.8295,
+      "exactCitationValidity": 0,
+      "successfulExtractionRate": 0.9091,
+      "p95LatencyMs": 459.28,
+      "averageOperationCostUsd": 0.00002179
+    },
+    "live": {
+      "tasks": 44,
+      "recall": 0.4205,
+      "precision": 0.4258,
+      "exactCitationValidity": 0,
+      "successfulExtractionRate": 0.5,
+      "p95LatencyMs": 2437.07,
+      "averageOperationCostUsd": 0.00002948
+    },
+    "simple": {
+      "tasks": 44,
+      "recall": 0.875,
+      "precision": 0.8674,
+      "exactCitationValidity": 0,
+      "successfulExtractionRate": 0.9545,
+      "p95LatencyMs": 2413.35,
+      "averageOperationCostUsd": 0.00004023
+    },
+    "combined": {
+      "tasks": 44,
+      "recall": 0.8977,
+      "precision": 0.8826,
+      "exactCitationValidity": 0.9545,
+      "successfulExtractionRate": 0.9545,
+      "p95LatencyMs": 4734.09,
+      "averageOperationCostUsd": 0.00004847
+    },
+    "raw_scrapling": {
+      "status": "historical_component_observation_not_rerun_in_n426_staging",
+      "source": "docs/evidence/N4.23A-zero-provider-cost-supply-and-benchmark.md",
+      "version": "0.4.12",
+      "staticCases": 6,
+      "wallTimeMsRange": [
+        2.366,
+        9.387
+      ],
+      "boundary": "extraction_only_after_Clervo_fetch_authorization"
+    },
+    "raw_crawl4ai": {
+      "status": "historical_component_observation_not_rerun_in_n426_staging",
+      "source": "docs/evidence/N4.23A-zero-provider-cost-supply-and-benchmark.md",
+      "version": "0.9.2",
+      "playwrightVersion": "1.61.0",
+      "historicalJavascriptRenderMs": 1010.363,
+      "n426RuntimeStatus": "unavailable_worker_never_started"
+    },
+    "simple_meilisearch": {
+      "status": "historical_component_observation_plus_n426_focused_route",
+      "source": "docs/evidence/N4.23A-zero-provider-cost-supply-and-benchmark.md",
+      "version": "1.51.0",
+      "historicalTopHitLatencyMs": 9.761,
+      "n426FocusedRouteMetrics": "baselines.focused"
+    },
+    "searxng": {
+      "status": "completed",
+      "tasks": 44,
+      "recall": 0,
+      "precision": 0,
+      "successfulResponseRate": 1,
+      "p95LatencyMs": 1141.28,
+      "observedFailure": "wikimedia_upstream_suspended_after_bounded_requests",
+      "productionDependency": false
+    },
+    "firecrawl_open_source": {
+      "status": "unavailable_pending_bounded_staging_attempt",
+      "productionDependency": false
+    },
+    "paid": {
+      "exa": "unavailable_no_charge_free_entitlement",
+      "tavily": "unavailable_no_charge_free_entitlement",
+      "firecrawl_hosted": "unavailable_no_charge_free_entitlement",
+      "productionDependency": false
+    }
+  },
+  "claimDecision": {
+    "classification": "not_yet_commercially_competitive",
+    "advancedLiveIntelligenceAuthorized": false,
+    "reasons": [
+      "one_or_more_families_below_quality_or_citation_floor",
+      "live_federation_recall_below_floor"
+    ],
+    "prohibitedClaimsRemainProhibited": [
+      "best Web search",
+      "better than Google",
+      "whole-Web coverage",
+      "unrestricted closed-platform access"
+    ]
+  },
+  "operationCosts": {
+    "grossMeasuredUsd": 0.00615856,
+    "thirdPartyGeneralWebSearchProviderProductionUsd": 0
+  },
+  "rawArtifact": {
+    "file": "raw-benchmark-results.v1.json.gz",
+    "sha256": "sha256:fecc804a51c9b19193b205ac1ec4b17098e58ab09faec15f3d971eedccf4cd9b"
+  }
+}

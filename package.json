@@ -59,6 +59,7 @@
     "test:n4.24": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.24.test.mjs",
     "test:n4.25": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.25.test.mjs",
     "test:n4.26": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.26.test.mjs",
+    "test:n4.27": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n4.27.test.mjs",
     "benchmark:n4.23a": "node ./scripts/verify-runtime.mjs && node ./scripts/benchmarks/n4.23a/benchmark-n4.23a.mjs",
     "benchmark:n4.26": "node ./scripts/verify-runtime.mjs && node ./scripts/benchmarks/n4.26/evaluate-n4.26.mjs",
     "benchmark:n4.26:searxng": "node ./scripts/verify-runtime.mjs && node ./scripts/benchmarks/n4.26/evaluate-searxng.mjs",

@@ -539,3 +539,62 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   N4.28 and was not run.
 - Exact next ticket: N4.27 only after separate payment authority. Stop after
   the N4.26 commit; do not begin N4.27, N4.28, Stage 5, AI, or Sandbox.
+
+## 2026-07-31 — N4.27 blocked Search quality and browser qualification
+
+- Continued the existing N4.27 worktree at
+  `4712a7f2ff69eea03ecf584f9902a200cc8b24ff` without resetting, stashing,
+  discarding or rerunning prior work. Inspected every modified/untracked file,
+  all frozen benchmark inputs, three regression attempts, the 28-loss ledger,
+  final holdout, browser/security/source/cache/locale/token/cost evidence and
+  cleanup record.
+- Preserved the frozen 50-task corpus, labels, evaluation rules, source
+  observations and implementation freeze. The final holdout marker records one
+  execution at `2026-07-31T19:34:33.784Z`, its scorecard hash matches, all 900
+  compressed raw rows are intact, and the holdout was not rerun.
+- Classified all 28 N4.26 simple-to-combined losses: 25 non-query-
+  discriminating ranking/relevance losses and three live extraction failures,
+  with zero unexplained or deduplication-attributed losses. The final regression
+  improved combined recall/precision to 0.8864/0.8826, citation validity and
+  extraction to 0.9545, and recorded p95 2404.62 ms; mandatory regression and
+  family gates still did not all pass.
+- Recorded the truthful frozen-holdout failure: repaired balanced recall and
+  precision 0.04/0.04, citation validity 1.0, extraction 0.92, nDCG@10 and
+  MRR@10 zero, success@3 zero, and p95 4688.24 ms. All five family floors
+  failed and thorough mode did not improve recall.
+- Browser qualification attempted exactly 20 consecutive runs, completed 18
+  JavaScript markers and clean teardown receipts with zero surviving orphans,
+  and failed runs 12 and 18 with `crawl4ai_render_failed`. All exercised
+  loopback/private/link-local/metadata/resolved-private/redirect denials passed,
+  but controlled DNS rebinding, complete robots, MIME/decompression and hostile-
+  page staging tests remain absent. Browser reliability and the mandatory
+  security suite therefore failed.
+- Preserved the connected cache, locale and prompt-injection gaps; the numeric
+  duplicate confusion matrix and relevant-evidence token-retention gate remain
+  unproven. Live holdout recall/precision were 0.08/0.08 and source-
+  concentration/precision gates failed. Direct Exa testing was unavailable;
+  no parity, superiority, advanced-search or highest-performing claim is made.
+- Because mandatory prerequisites failed, mock x402 correctly never started:
+  no challenge, authorization, verification, mock settlement, receipt, replay,
+  real payment or USDC action occurred. The route remains non-payable.
+- Validated the cleanup record for the isolated VM/disk, NAT/router, firewall,
+  subnet/network, service-account binding, fixture service, artifact images and
+  ticket budget. No N4.27 resource is retained; active compute and idle exposure
+  remain USD 0/day. Conservative gross ticket upper bound is USD 0.25; third-
+  party general-Web production provider cost is USD 0.000000; 0 USDC was spent.
+- Hash-bound 23 final N4.27 artifacts and preserved all ten inherited Stage 4
+  blockers. Added the ticket/evidence report, updated the source-bound verifier,
+  launch authority, README, external master plan and active handoff, and named
+  N4.27R as the smallest exact repair ticket. N4.28 and Stage 5 remain
+  unauthorized.
+- Validation: N4.27 passed 10/10; N4.24/N4.25/N4.26 regressions passed 33/33;
+  N4.22 historical/current campaign consistency passed 5/5; typecheck passed;
+  lint passed across 236 files; working-tree/history secret
+  scan, clean-room boundary, JSON/gzip/hash integrity and diff checks passed.
+  The Stage 4 verifier ran exactly once after final evidence binding and passed
+  integrity with decision `blocked`, 10 blockers, 23 N4.27 bound artifacts,
+  reference-pattern authorization false, Stage 5 authorization false, zero
+  external verifier calls and 0 USDC. Canonical `npm test` did not run.
+- N4.27 is complete as blocked. Exact next ticket: N4.27R only under separate
+  authority. Stop after this commit; do not begin N4.27R, N4.28, mock x402,
+  Stage 5, AI, Sandbox, production release, real settlement or USDC spending.

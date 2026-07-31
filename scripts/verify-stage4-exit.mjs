@@ -78,7 +78,46 @@ export async function validateStage4SourceBindings(root, evidence) {
     assert.equal(sha256(bytes), artifact.sha256, `${name}: bound artifact digest mismatch`);
   }
 
-  return Object.freeze({ binding, artifactCount: Object.keys(binding.artifactBindings).length });
+  const n427Source = evidence.sourceBindings?.n427;
+  assert.ok(n427Source, 'N4.27 source binding is required');
+  assert.equal(n427Source.path, 'docs/evidence/n4.27/stage4-binding.v1.json', 'N4.27 binding path drift');
+  assert.equal(n427Source.schemaVersion, 'clervo.n4.27.stage4-binding.v1', 'N4.27 binding schema drift');
+  assert.equal(n427Source.startingBlockerCount, 10, 'N4.27 must preserve the ten inherited blockers');
+
+  const n427Binding = JSON.parse(await readFile(path.join(root, n427Source.path), 'utf8'));
+  assert.equal(n427Binding.schemaVersion, n427Source.schemaVersion, 'N4.27 bound document schema mismatch');
+  assert.equal(n427Binding.startingBlockerCount, n427Source.startingBlockerCount, 'N4.27 starting blocker mismatch');
+  assert.equal(n427Binding.holdoutFinalRunCount, 1, 'N4.27 frozen holdout must execute exactly once');
+  assert.equal(n427Binding.mandatoryQualityGatesPassed, false, 'N4.27 quality failure must remain explicit');
+  assert.equal(n427Binding.browserMandatoryGatePassed, false, 'N4.27 browser failure must remain explicit');
+  assert.equal(n427Binding.securityMandatoryGatePassed, false, 'N4.27 security-suite incompleteness must remain explicit');
+  assert.equal(n427Binding.mockX402Executed, false, 'N4.27 mock x402 must remain unexecuted after prerequisite failure');
+  assert.equal(n427Binding.referencePatternAuthorized, false, 'N4.27 cannot authorize the reference pattern');
+  assert.equal(n427Binding.stage5Authorized, false, 'N4.27 cannot authorize Stage 5');
+  assert.equal(n427Binding.advancedLiveIntelligenceAuthorized, false, 'N4.27 cannot authorize the advanced claim');
+  assert.equal(n427Binding.exaParityAuthorized, false, 'N4.27 cannot authorize Exa parity');
+  assert.equal(n427Binding.activeComputeUsdPerDay, 0, 'N4.27 cleanup must leave zero active compute exposure');
+  assert.equal(n427Binding.usdcSpent, 0, 'N4.27 must spend no USDC');
+  assert.equal(n427Binding.smallestRepairTicket, 'N4.27R', 'N4.27 repair ticket drift');
+  const n427Remaining = n427Binding.remainingBlockers.map((value) => value.id);
+  assert.equal(new Set(n427Remaining).size, n427Remaining.length, 'N4.27 blocker IDs must be unique');
+  assert.equal(n427Remaining.length, n427Source.startingBlockerCount, 'N4.27 must account for every inherited blocker');
+  assert.deepEqual(n427Remaining, evidence.checks.filter((check) => !check.stagingVerified).map((check) => check.id), 'N4.27 blockers must match the Stage 4 manifest');
+  assert.ok(n427Binding.remainingBlockers.every((value) => typeof value.reason === 'string' && value.reason.length >= 100), 'every N4.27 blocker needs an explicit reason');
+
+  for (const [name, artifact] of Object.entries(n427Binding.artifactBindings)) {
+    assert.match(artifact.path, /^(?:benchmarks\/n4\.27|docs\/evidence\/n4\.27)\/[A-Za-z0-9_./-]+$/u, `${name}: artifact must stay in N4.27 benchmark/evidence boundaries`);
+    assert.match(artifact.sha256, /^sha256:[a-f0-9]{64}$/u, `${name}: invalid artifact digest`);
+    const bytes = await readFile(path.join(root, artifact.path));
+    assert.equal(sha256(bytes), artifact.sha256, `${name}: bound artifact digest mismatch`);
+  }
+
+  return Object.freeze({
+    binding,
+    artifactCount: Object.keys(binding.artifactBindings).length,
+    latestBinding: n427Binding,
+    latestArtifactCount: Object.keys(n427Binding.artifactBindings).length,
+  });
 }
 
 export function evaluateStage4Exit(evidence, actualSourceState) {
@@ -151,6 +190,7 @@ async function main() {
   console.log(`reference pattern authorized: ${evidence.referencePatternAuthorized}`);
   console.log(`Stage 5 authorized: ${evidence.stage5Authorized}`);
   console.log(`N4.26 bound artifacts: ${sourceBinding.artifactCount}`);
+  console.log(`N4.27 bound artifacts: ${sourceBinding.latestArtifactCount}`);
   console.log('network calls made: 0 external');
   console.log('USDC spent: 0');
 }

@@ -23,6 +23,7 @@ import { DurableRetrievalCache, retrievalCachePolicySha256 } from '../../../dist
 const PORT = Number(process.env.PORT ?? '8080');
 const DATA_ROOT = process.env.CLERVO_N426_DATA_ROOT ?? '/var/lib/clervo-n426';
 const MEILI_ENDPOINT = process.env.CLERVO_N426_MEILI_ENDPOINT ?? 'http://clervo-n426-meilisearch:7700/';
+const MEILI_MASTER_KEY_FILE = process.env.CLERVO_N427_MEILI_MASTER_KEY_FILE ?? '/var/run/clervo-n426-meili/masterKey';
 const MAXIMUM_OPERATIONS = Number(process.env.CLERVO_N426_MAXIMUM_OPERATIONS ?? '600');
 const OPERATION_COST_CEILING_USD = Number(process.env.CLERVO_N426_OPERATION_COST_CEILING_USD ?? '0.002');
 const USER_AGENT = 'Clervo-N4.26-Staging/1.0 (mo@clervo.dev)';
@@ -143,7 +144,7 @@ async function waitForMeili(masterKey) {
 
 async function createRuntime() {
   await mkdir(DATA_ROOT, { recursive: true });
-  const masterKey = (await readFile('/var/run/clervo-n426-meili/masterKey', 'utf8')).trim();
+  const masterKey = (await readFile(MEILI_MASTER_KEY_FILE, 'utf8')).trim();
   if (masterKey.length < 16) throw new Error('meilisearch_master_key_unavailable');
   await waitForMeili(masterKey);
   const index = createMeilisearchFocusedIndexAdapter({
@@ -251,6 +252,8 @@ async function executeSearch(input) {
   const route = input.route ?? 'combined';
   if (query === '' || query.length > 500 || !['combined', 'focused', 'live', 'simple'].includes(route)) throw new Error('invalid_benchmark_query');
   const maximumResults = Math.max(1, Math.min(10, Number(input.maximumResults ?? 5)));
+  const verticalProfile = ['commerce','property','companies','research','developer_documentation','generic_fallback'].includes(input.verticalProfile) ? input.verticalProfile : 'generic_fallback';
+  const operatingProfile = ['fast','balanced','thorough'].includes(input.operatingProfile) ? input.operatingProfile : 'balanced';
   const started = performance.now();
   state.operationCount += 1;
   try {
@@ -279,7 +282,7 @@ async function executeSearch(input) {
         const focusedAdapter = state.routeStopped.focused ? { identity: createFocusedConnectedRoute(runtime.focused).identity, search: async () => { throw new Error('focused_route_stopped'); } } : createFocusedConnectedRoute(runtime.focused);
         const liveAdapter = state.routeStopped.live ? { identity: createLiveConnectedRoute(runtime.live).identity, search: async () => { throw new Error('live_route_stopped'); } } : createLiveConnectedRoute(runtime.live);
         const pipeline = new ConnectedRetrievalPipeline({ focused: focusedAdapter, live: liveAdapter, directFetch: runtime.directFetch });
-        result = await pipeline.searchWeb({ operationId: `op_${createHash('sha256').update(`${state.operationCount}:${query}`).digest('hex').slice(0, 32)}`, query, language: input.language ?? 'en', region: input.region ?? 'US', maximumResults, generatedAt, deadlineMs: 15_000 });
+        result = await pipeline.searchWeb({ operationId: `op_${createHash('sha256').update(`${state.operationCount}:${query}`).digest('hex').slice(0, 32)}`, query, language: input.language ?? 'en', region: input.region ?? 'US', maximumResults, generatedAt, deadlineMs: 15_000, verticalProfile, operatingProfile });
       }
     }
     if (!state.citationVerifierAvailable && route === 'combined') throw new Error('citation_verifier_unavailable');

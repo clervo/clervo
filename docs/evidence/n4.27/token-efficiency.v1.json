@@ -1,0 +1,19 @@
+{
+  "schemaVersion":"clervo.n4.27.token-efficiency.v1",
+  "evaluatedAt":"2026-07-31T19:35:00.000Z",
+  "scope":"holdout repaired_balanced repetition 1",
+  "fullCharacters":5921008,
+  "boundedCitationCharacters":60154,
+  "characterReduction":0.98984,
+  "estimatedFullTokens":1480252,
+  "estimatedBoundedTokens":15039,
+  "labelledRelevantCharacters":0,
+  "relevantEvidenceRetention":null,
+  "duplicateEvidenceBlocks":0,
+  "totalEvidenceBlocks":231,
+  "duplicateEvidenceRatio":0,
+  "fullContentOptionalInContract":true,
+  "gates":{"reductionAtLeast060":true,"relevantRetentionAtLeast095":false,"noLargeDuplicateBlocks":true},
+  "mandatoryGatePass":false,
+  "reason":"The repaired balanced route found no evaluator-labelled relevant result on answerable holdout cases; relevant-evidence retention cannot be established from an empty relevant set."
+}

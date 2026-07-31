@@ -19,6 +19,7 @@ import {
   type ConnectedRouteAttempt,
   type ConnectedRouteEvidence,
   type RetrievalRouteId,
+  type SearchVerticalProfile,
   verifyUntrustedEvidenceBoundary,
 } from '../../../packages/contracts/src/index.js';
 import type { FocusedIndexRoute } from './focused-index.js';
@@ -82,7 +83,7 @@ interface AttemptResult {
   evidence: readonly Readonly<ConnectedRouteEvidence>[];
 }
 
-async function attemptRoute(adapter: ConnectedRouteAdapter, query: string, input: SearchWebInput, startedAt: string, deadlineAt: string, signal?: AbortSignal): Promise<AttemptResult> {
+async function attemptRoute(adapter: ConnectedRouteAdapter, queries: readonly string[], input: SearchWebInput, startedAt: string, deadlineAt: string, signal?: AbortSignal): Promise<AttemptResult> {
   if (signal?.aborted) return { attempt: Object.freeze({ routeId: adapter.identity.routeId, providerId: adapter.identity.providerId, healthIdentity: adapter.identity.healthIdentity, circuitIdentity: adapter.identity.circuitIdentity, failureDomain: adapter.identity.failureDomain, startedAt, completedAt: startedAt, outcome: 'cancelled', resultCount: 0, failureCode: 'cancelled' }), evidence: Object.freeze([]) };
   const controller = new AbortController();
   const cancel = (): void => controller.abort();
@@ -93,8 +94,15 @@ async function attemptRoute(adapter: ConnectedRouteAdapter, query: string, input
     timer = setTimeout(() => { controller.abort(); resolve('deadline_exceeded'); }, remaining);
     signal?.addEventListener('abort', () => resolve('cancelled'), { once: true });
   });
-  const execution = Promise.resolve().then(() => adapter.search({ query, language: input.language, region: input.region, maximumResults: input.maximumResults, generatedAt: startedAt, deadlineAt, signal: controller.signal }))
-    .then((evidence) => ({ kind: 'succeeded' as const, evidence }), (error: unknown) => ({ kind: 'failed' as const, error }));
+  const execution = Promise.resolve().then(async () => {
+    const settled = await Promise.allSettled(queries.map((query) => adapter.search({ query, language: input.language, region: input.region, maximumResults: input.maximumResults, generatedAt: startedAt, deadlineAt, signal: controller.signal })));
+    const evidence = settled.flatMap((item) => item.status === 'fulfilled' ? item.value : []);
+    if (evidence.length === 0) {
+      const failure = settled.find((item): item is PromiseRejectedResult => item.status === 'rejected');
+      throw failure?.reason instanceof Error ? failure.reason : new Error('route_failed');
+    }
+    return Object.freeze(evidence);
+  }).then((evidence) => ({ kind: 'succeeded' as const, evidence }), (error: unknown) => ({ kind: 'failed' as const, error }));
   const settled = await Promise.race([execution, terminal.then((kind) => ({ kind }))]);
   if (timer !== undefined) clearTimeout(timer);
   signal?.removeEventListener('abort', cancel);
@@ -113,6 +121,8 @@ export interface SearchWebInput {
   maximumResults: number;
   generatedAt: string;
   deadlineMs: number;
+  verticalProfile?: SearchVerticalProfile;
+  operatingProfile?: 'fast' | 'balanced' | 'thorough';
   signal?: AbortSignal;
 }
 
@@ -134,10 +144,14 @@ export class ConnectedRetrievalPipeline {
     if (!/^op_[A-Za-z0-9]{20,64}$/u.test(input.operationId) || input.query.trim() === '' || !Number.isInteger(input.maximumResults) || input.maximumResults < 1 || input.maximumResults > 100
       || !Number.isInteger(input.deadlineMs) || input.deadlineMs < 1 || input.deadlineMs > 30_000) throw new Error('invalid_connected_search_request');
     const rewrite = createQueryRewritePlan({ rewriteId: `rewrite_${digest(input.operationId).slice(0, 32)}`, operationId: input.operationId, query: input.query, createdAt: input.generatedAt });
-    const deadlineAt = new Date(Date.parse(input.generatedAt) + input.deadlineMs).toISOString();
+    const operatingProfile = input.operatingProfile ?? 'balanced';
+    const profileDeadlineMs = operatingProfile === 'fast' ? 750 : operatingProfile === 'balanced' ? 1_800 : 5_800;
+    const deadlineAt = new Date(Date.parse(input.generatedAt) + Math.min(input.deadlineMs, profileDeadlineMs)).toISOString();
+    const routeQueries = operatingProfile === 'thorough' ? Object.freeze([...new Set(rewrite.variants.map((variant) => variant.query))]) : Object.freeze([rewrite.normalizedQuery]);
+    const cancelledLive: AttemptResult = { attempt: Object.freeze({ routeId: this.dependencies.live.identity.routeId, providerId: this.dependencies.live.identity.providerId, healthIdentity: this.dependencies.live.identity.healthIdentity, circuitIdentity: this.dependencies.live.identity.circuitIdentity, failureDomain: this.dependencies.live.identity.failureDomain, startedAt: input.generatedAt, completedAt: input.generatedAt, outcome: 'cancelled', resultCount: 0, failureCode: 'fast_profile_live_route_skipped' }), evidence: Object.freeze([]) };
     const [focused, live] = await Promise.all([
-      attemptRoute(this.dependencies.focused, rewrite.variants[0]!.query, input, input.generatedAt, deadlineAt, input.signal),
-      attemptRoute(this.dependencies.live, rewrite.variants[1]!.query, input, input.generatedAt, deadlineAt, input.signal),
+      attemptRoute(this.dependencies.focused, routeQueries, input, input.generatedAt, deadlineAt, input.signal),
+      operatingProfile === 'fast' ? Promise.resolve(cancelledLive) : attemptRoute(this.dependencies.live, routeQueries, input, input.generatedAt, deadlineAt, input.signal),
     ]);
     const attempts = Object.freeze([focused.attempt, live.attempt]);
     const succeeded = [focused, live].filter((attempt) => attempt.attempt.outcome === 'succeeded');
@@ -150,7 +164,7 @@ export class ConnectedRetrievalPipeline {
       const boundary = createUntrustedEvidenceBoundary(item.routeId, item.evidenceText, item.extraction);
       if (!verifyUntrustedEvidenceBoundary(boundary)) throw new Error('connected_result_prompt_injection_boundary_failed');
     }
-    const ranked = rankConnectedEvidence({ evidence: succeeded.flatMap((attempt) => attempt.evidence), now: input.generatedAt, maximumResults: input.maximumResults, nearDuplicateThresholdBasisPoints: 8_500 });
+    const ranked = rankConnectedEvidence({ evidence: succeeded.flatMap((attempt) => attempt.evidence), now: input.generatedAt, maximumResults: input.maximumResults, nearDuplicateThresholdBasisPoints: 8_500, query: rewrite.normalizedQuery, verticalProfile: input.verticalProfile ?? 'generic_fallback' });
     const citations: readonly Readonly<ConnectedCitation>[] = Object.freeze(ranked.results.map((result) => {
       const endOffset = Math.min(result.evidenceText.length, 280);
       return Object.freeze({ citationId: `ccite_${digest(`${result.resultId}\n${result.extraction.extractionId}`).slice(0, 36)}`, resultId: result.resultId, routeId: result.routeId, canonicalUrl: result.canonicalUrl, quote: result.evidenceText.slice(0, endOffset), startOffset: 0, endOffset, extractionId: result.extraction.extractionId });

@@ -246,8 +246,8 @@
     ]
   },
   "currentCampaignState": {
-    "evaluatedAt": "2026-07-31T17:56:00.000Z",
-    "sourceBinding": "docs/evidence/n4.26/stage4-binding.v1.json",
+    "evaluatedAt": "2026-07-31T20:25:17.816Z",
+    "sourceBinding": "docs/evidence/n4.27/stage4-binding.v1.json",
     "startingBlockerCount": 21,
     "closedCheckIds": [
       "federated_lawful_retrieval",
@@ -288,6 +288,15 @@
       "dataDiskState": "deleted_after_evidence_capture",
       "legacyResourcesReadOrMutated": false
     },
+    "n427Qualification": {
+      "holdoutFinalRunCount": 1,
+      "mandatoryGatesPassed": false,
+      "browserSuccessfulRuns": 18,
+      "browserAttemptedRuns": 20,
+      "mockX402Executed": false,
+      "activeComputeUsdPerDay": 0,
+      "retainedIdleExposureUsdPerDay": 0
+    },
     "campaignQueue": [
       {
         "ticket": "N4.23A",
@@ -311,20 +320,26 @@
       },
       {
         "ticket": "N4.27",
-        "status": "blocked_external",
-        "reason": "separate_payment_authority_required"
+        "status": "complete",
+        "result": "blocked_mandatory_gates_failed"
       },
       {
         "ticket": "N4.28",
         "status": "pending",
+        "reason": "blocked_until_n4.27r_passes_and_is_separately_authorized",
         "dependsOn": ["N4.27"]
       }
     ],
+    "smallestRepairTicket": {
+      "ticket": "N4.27R",
+      "status": "unauthorized",
+      "reason": "representative_lawful_supply_and_deterministic_browser_repair_required"
+    },
     "externalBlocker": {
       "status": "blocked_external",
-      "reasons": ["payable_route_authorization_unavailable"],
+      "reasons": ["n427r_separate_authority_required"],
       "ownerIntervention": [
-        "Provide separate N4.27 payment authority covering mock or testnet commerce configuration and any expressly permitted facilitator, payee, payer, settlement, receipt and replay proof; N4.26 authorizes none of those actions."
+        "Separately authorize N4.27R to replace the narrow lawful supply/index, add labelled duplicate and hostile-page fixtures, make browser fixtures local and deterministic, and freeze a new independent holdout without reusing or rerunning the N4.27 holdout."
       ]
     },
     "referencePatternAuthorized": false,

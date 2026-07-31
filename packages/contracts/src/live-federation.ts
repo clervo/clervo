@@ -147,6 +147,26 @@ export interface ConnectedSearchScore {
   totalBasisPoints: number;
 }
 
+export type SearchVerticalProfile = 'commerce' | 'property' | 'companies' | 'research' | 'developer_documentation' | 'generic_fallback';
+
+export interface ConnectedRankingProfile {
+  profile: SearchVerticalProfile;
+  relevanceWeight: number;
+  authorityWeight: number;
+  freshnessWeight: number;
+  diversityWeight: number;
+  nearDuplicateThresholdBasisPoints: number;
+}
+
+export const connectedRankingProfiles: Readonly<Record<SearchVerticalProfile, Readonly<ConnectedRankingProfile>>> = Object.freeze({
+  commerce: Object.freeze({ profile: 'commerce', relevanceWeight: 55, authorityWeight: 15, freshnessWeight: 15, diversityWeight: 15, nearDuplicateThresholdBasisPoints: 9_200 }),
+  property: Object.freeze({ profile: 'property', relevanceWeight: 52, authorityWeight: 18, freshnessWeight: 15, diversityWeight: 15, nearDuplicateThresholdBasisPoints: 9_200 }),
+  companies: Object.freeze({ profile: 'companies', relevanceWeight: 50, authorityWeight: 25, freshnessWeight: 15, diversityWeight: 10, nearDuplicateThresholdBasisPoints: 9_000 }),
+  research: Object.freeze({ profile: 'research', relevanceWeight: 45, authorityWeight: 30, freshnessWeight: 15, diversityWeight: 10, nearDuplicateThresholdBasisPoints: 8_800 }),
+  developer_documentation: Object.freeze({ profile: 'developer_documentation', relevanceWeight: 55, authorityWeight: 25, freshnessWeight: 10, diversityWeight: 10, nearDuplicateThresholdBasisPoints: 9_000 }),
+  generic_fallback: Object.freeze({ profile: 'generic_fallback', relevanceWeight: 50, authorityWeight: 20, freshnessWeight: 15, diversityWeight: 15, nearDuplicateThresholdBasisPoints: 9_000 }),
+});
+
 export interface ConnectedSearchResult extends ConnectedRouteEvidence {
   resultId: string;
   canonicalUrl: string;
@@ -222,44 +242,102 @@ function digest(value: string): string {
   return createHash('sha256').update(value).digest('hex');
 }
 
+const lexicalStopWords = new Set(['a', 'an', 'and', 'at', 'by', 'for', 'from', 'in', 'is', 'of', 'on', 'or', 'the', 'to', 'with']);
+
+function lexicalTokens(value: string): readonly string[] {
+  return Object.freeze((value.normalize('NFKC').toLocaleLowerCase('en-US').match(/[\p{L}\p{N}]+/gu) ?? []).filter((token) => token.length > 1 && !lexicalStopWords.has(token)));
+}
+
+function lexicalRelevance(query: string, item: ConnectedRouteEvidence): number {
+  const tokens = [...new Set(lexicalTokens(query))];
+  if (tokens.length === 0) return Math.max(0, Math.min(100, item.relevanceScore));
+  const title = item.title.normalize('NFKC').toLocaleLowerCase('en-US');
+  const evidence = item.evidenceText.normalize('NFKC').toLocaleLowerCase('en-US');
+  const url = canonicalizeSearchUrl(item.url).toLocaleLowerCase('en-US');
+  const normalizedQuery = tokens.join(' ');
+  const titleHits = tokens.filter((token) => title.includes(token)).length;
+  const evidenceHits = tokens.filter((token) => evidence.includes(token)).length;
+  const urlHits = tokens.filter((token) => url.includes(token)).length;
+  const coverage = evidenceHits / tokens.length;
+  const titleCoverage = titleHits / tokens.length;
+  const exactTitle = title.includes(normalizedQuery) ? 1 : 0;
+  const exactEvidence = evidence.includes(normalizedQuery) ? 1 : 0;
+  const urlCoverage = urlHits / tokens.length;
+  const raw = coverage * 38 + titleCoverage * 30 + exactTitle * 14 + exactEvidence * 8 + urlCoverage * 5 + Math.max(0, Math.min(100, item.relevanceScore)) * 0.05;
+  return Math.max(0, Math.min(100, Math.round(raw)));
+}
+
+function preferredRepresentative(left: RankedCandidate, right: RankedCandidate): RankedCandidate {
+  const comparison = right.relevance - left.relevance || right.item.authorityScore - left.item.authorityScore || right.freshness - left.freshness
+    || left.sourceRank - right.sourceRank || left.canonicalUrl.localeCompare(right.canonicalUrl);
+  return comparison > 0 ? right : left;
+}
+
+interface RankedCandidate {
+  item: ConnectedRouteEvidence;
+  canonicalUrl: string;
+  hostname: string;
+  freshness: number;
+  relevance: number;
+  sourceRank: number;
+}
+
 export function rankConnectedEvidence(input: {
   evidence: readonly ConnectedRouteEvidence[];
   now: string;
   maximumResults: number;
   nearDuplicateThresholdBasisPoints: number;
+  query?: string;
+  verticalProfile?: SearchVerticalProfile;
 }): Readonly<{ results: readonly Readonly<ConnectedSearchResult>[]; exactDuplicateCount: number; nearDuplicateCount: number }> {
   if (!Number.isInteger(input.maximumResults) || input.maximumResults < 1 || input.maximumResults > 100
     || !Number.isInteger(input.nearDuplicateThresholdBasisPoints) || input.nearDuplicateThresholdBasisPoints < 5_000 || input.nearDuplicateThresholdBasisPoints > 10_000) throw new Error('invalid_connected_ranking_limits');
-  const ordered = [...input.evidence].map((item) => ({ ...item, canonicalUrl: canonicalizeSearchUrl(item.url) }))
-    .sort((left, right) => left.canonicalUrl.localeCompare(right.canonicalUrl) || left.routeId.localeCompare(right.routeId) || left.extraction.extractionId.localeCompare(right.extraction.extractionId));
-  const retained: typeof ordered = [];
+  const profile = connectedRankingProfiles[input.verticalProfile ?? 'generic_fallback'];
+  const routeRanks = new Map<RetrievalRouteId, number>();
+  const ordered: RankedCandidate[] = [...input.evidence].map((item) => {
+    const sourceRank = (routeRanks.get(item.routeId) ?? 0) + 1;
+    routeRanks.set(item.routeId, sourceRank);
+    const canonicalUrl = canonicalizeSearchUrl(item.url);
+    return { item, canonicalUrl, hostname: new URL(canonicalUrl).hostname, freshness: scoreFreshness(item.publishedAt ?? item.retrievedAt, input.now), relevance: lexicalRelevance(input.query ?? '', item), sourceRank };
+  });
+  const retained: RankedCandidate[] = [];
   let exactDuplicateCount = 0;
   let nearDuplicateCount = 0;
   for (const candidate of ordered) {
-    if (candidate.extraction.instructionHandling !== 'untrusted_data_only') throw new Error('prompt_injection_boundary_substitution');
-    const exact = retained.find((item) => item.canonicalUrl === candidate.canonicalUrl || item.extraction.normalizedTextSha256 === candidate.extraction.normalizedTextSha256);
-    if (exact !== undefined) { exactDuplicateCount += 1; continue; }
-    const near = retained.find((item) => contentSimilarityBasisPoints(item.evidenceText, candidate.evidenceText) >= input.nearDuplicateThresholdBasisPoints);
-    if (near !== undefined) { nearDuplicateCount += 1; continue; }
+    if (candidate.item.extraction.instructionHandling !== 'untrusted_data_only') throw new Error('prompt_injection_boundary_substitution');
+    const exactIndex = retained.findIndex((item) => item.canonicalUrl === candidate.canonicalUrl || (item.hostname === candidate.hostname && item.item.extraction.normalizedTextSha256 === candidate.item.extraction.normalizedTextSha256));
+    if (exactIndex >= 0) { exactDuplicateCount += 1; retained[exactIndex] = preferredRepresentative(retained[exactIndex]!, candidate); continue; }
+    const adaptiveThreshold = Math.max(input.nearDuplicateThresholdBasisPoints, profile.nearDuplicateThresholdBasisPoints);
+    const nearIndex = retained.findIndex((item) => item.hostname === candidate.hostname && contentSimilarityBasisPoints(item.item.evidenceText, candidate.item.evidenceText) >= adaptiveThreshold);
+    if (nearIndex >= 0) { nearDuplicateCount += 1; retained[nearIndex] = preferredRepresentative(retained[nearIndex]!, candidate); continue; }
     retained.push(candidate);
   }
-  const preliminary = retained.map((item) => ({
-    ...item,
-    resultId: `csr_${digest(`${item.routeId}\n${item.canonicalUrl}\n${item.extraction.normalizedTextSha256}`).slice(0, 40)}`,
-    hostname: new URL(item.canonicalUrl).hostname,
-    freshness: scoreFreshness(item.publishedAt ?? item.retrievedAt, input.now),
-  })).sort((left, right) => right.relevanceScore - left.relevanceScore || right.authorityScore - left.authorityScore || right.freshness - left.freshness || left.canonicalUrl.localeCompare(right.canonicalUrl) || left.routeId.localeCompare(right.routeId));
+  const preliminary = retained.map((candidate) => ({
+    ...candidate.item,
+    canonicalUrl: candidate.canonicalUrl,
+    resultId: `csr_${digest(`${candidate.item.routeId}\n${candidate.canonicalUrl}\n${candidate.item.extraction.normalizedTextSha256}`).slice(0, 40)}`,
+    hostname: candidate.hostname,
+    freshness: candidate.freshness,
+    calibratedRelevance: Math.min(100, Math.round(candidate.relevance * 0.85 + (100 / (60 + candidate.sourceRank)) * 60 * 0.15)),
+    sourceRank: candidate.sourceRank,
+  })).sort((left, right) => right.calibratedRelevance - left.calibratedRelevance || right.authorityScore - left.authorityScore || right.freshness - left.freshness || left.sourceRank - right.sourceRank || left.canonicalUrl.localeCompare(right.canonicalUrl));
   const domains = new Map<string, number>();
-  const scored = preliminary.map((item) => {
-    const count = domains.get(item.hostname) ?? 0;
-    domains.set(item.hostname, count + 1);
-    const diversity = count === 0 ? 100 : 35;
-    const score = Object.freeze({ freshness: item.freshness, authority: item.authorityScore, relevance: item.relevanceScore, diversity, totalBasisPoints: item.freshness * 30 + item.authorityScore * 25 + item.relevanceScore * 35 + diversity * 10 });
-    const { freshness: _freshness, ...result } = item;
-    return { ...result, score, rank: 0 };
-  });
-  scored.sort((left, right) => right.score.totalBasisPoints - left.score.totalBasisPoints || right.score.relevance - left.score.relevance || right.score.authority - left.score.authority || left.canonicalUrl.localeCompare(right.canonicalUrl) || left.routeId.localeCompare(right.routeId));
-  return Object.freeze({ results: Object.freeze(scored.slice(0, input.maximumResults).map((result, index) => Object.freeze({ ...result, rank: index + 1 }))), exactDuplicateCount, nearDuplicateCount });
+  const remaining = [...preliminary];
+  const scored: Array<ConnectedSearchResult> = [];
+  while (remaining.length > 0 && scored.length < input.maximumResults) {
+    const choices = remaining.map((item) => {
+      const count = domains.get(item.hostname) ?? 0;
+      const diversity = count === 0 ? 100 : count === 1 ? 55 : 25;
+      const totalBasisPoints = item.calibratedRelevance * profile.relevanceWeight + item.authorityScore * profile.authorityWeight + item.freshness * profile.freshnessWeight + diversity * profile.diversityWeight;
+      return { item, diversity, totalBasisPoints };
+    }).sort((left, right) => right.totalBasisPoints - left.totalBasisPoints || right.item.calibratedRelevance - left.item.calibratedRelevance || right.item.authorityScore - left.item.authorityScore || left.item.sourceRank - right.item.sourceRank || left.item.canonicalUrl.localeCompare(right.item.canonicalUrl));
+    const selected = choices[0]!;
+    remaining.splice(remaining.indexOf(selected.item), 1);
+    domains.set(selected.item.hostname, (domains.get(selected.item.hostname) ?? 0) + 1);
+    const { freshness, calibratedRelevance, sourceRank: _sourceRank, ...result } = selected.item;
+    scored.push({ ...result, relevanceScore: calibratedRelevance, score: Object.freeze({ freshness, authority: result.authorityScore, relevance: calibratedRelevance, diversity: selected.diversity, totalBasisPoints: selected.totalBasisPoints }), rank: scored.length + 1 });
+  }
+  return Object.freeze({ results: Object.freeze(scored.map((result) => Object.freeze(result))), exactDuplicateCount, nearDuplicateCount });
 }
 
 export function assertConnectedRetrievalResponse(response: ConnectedRetrievalResponse): void {

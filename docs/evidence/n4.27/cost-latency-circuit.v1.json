@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "clervo.n4.27.cost-latency-circuit.v1",
+  "evaluatedAt": "2026-07-31T19:42:00.000Z",
+  "ticketCeilings":{"grossUsd":15,"configuredDailyBurnUsd":5,"thirdPartyGeneralWebProviderProductionCostUsd":0,"realUsdcSpent":0},
+  "grossEconomicCostEstimateUsd":{"upperBound":0.25,"vm":0.08,"disk":0.002,"cloudNat":0.03,"cloudBuild":0.04,"cloudRunArtifactAndNetwork":0.01,"conservativeContingency":0.088,"basis":"public list-rate upper bounds and measured resource duration; billing export lagged"},
+  "startupCreditOffsetUsd":{"observed":null,"assumed":0,"reason":"billing export and credit allocation were not available at capture; credits are not used to reduce economic cost"},
+  "cashCostUsd":{"observed":null,"upperBound":0.25},
+  "resourceDuration":{"browserVmCreatedAt":"2026-07-31T19:05:26.049Z","browserVmDeletedAtApprox":"2026-07-31T19:40:00.000Z","machine":"e2-standard-4","bootDisk":"20 GB pd-balanced","cloudBuildMinutesApprox":10.93},
+  "operationCostUsd":{"regressionCombinedAverage":0.00003987,"regressionFocusedAverage":0.00002192,"regressionLiveAverage":0.00002054,"browserSuccessfulAverageEstimate":0.00012,"internalMaximum":0.002,"unboundedExecutionAfterMaximum":false},
+  "candidatePricesUsd":{"searchWeb":{"breakEven":0.00004,"twoX":0.00008,"threeX":0.00012,"fiveX":0.00020},"webFetch":{"breakEven":0.000015,"twoX":0.00003,"threeX":0.000045,"fiveX":0.000075},"webExtractBrowser":{"breakEven":0.00012,"twoX":0.00024,"threeX":0.00036,"fiveX":0.00060}},
+  "latencyDistributions":{"regression":{"focusedP95Ms":320.15,"liveP95Ms":1302.33,"simpleP95Ms":1571.24,"combinedP95Ms":2404.62},"holdout":{"fast":{"p50Ms":210.45,"p95Ms":3776.80,"variance":1482702.40},"balanced":{"p50Ms":420.67,"p95Ms":4688.24,"variance":2630584.23},"thorough":{"p50Ms":1040.31,"p95Ms":4103.67,"variance":1791243.31}},"browser":{"successfulP95Ms":2580.911,"attempts":20,"successes":18}},
+  "controls":{"routeConcurrency":"repository_verified_not_full_staging_proven","perDomainConcurrency":"repository_verified_not_full_staging_proven","browserMinuteBudget":"bounded_by_vm_and_worker_limits_not_application_meter_proven","requestCostCeiling":"staging_proven_in_n426","crawlIndexBudgets":"staging_proven_in_n426","storageCeiling":"20_GB_ephemeral_boot_disk","circuitOpen":"staging_proven_in_n426","halfOpenProbe":"repository_verified","restoration":"repository_verified","allRoutesDown":"staging_proven_in_n426","globalKillSwitch":"staging_browser_denial_observed"},
+  "cleanup":{"vmAndAutoDeleteDisk":"deleted","natAndRouter":"deleted","firewall":"deleted","subnetAndNetwork":"deleted","serviceAccountAndIamBinding":"deleted","fixtureService":"deleted","n427ArtifactImages":"deleted","ticketBudget":"deleted","activeComputeUsdPerDay":0,"retainedIdleExposureUsdPerDay":0,"retainedResources":[]},
+  "mandatoryGatePass":false,
+  "reason":"Quality and browser gates fail independently, and route/domain concurrency plus browser-minute metering lack complete staging proof."
+}

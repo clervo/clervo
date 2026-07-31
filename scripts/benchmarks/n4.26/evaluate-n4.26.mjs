@@ -6,7 +6,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 const baseUrl = process.env.CLERVO_N426_BASE_URL ?? 'http://127.0.0.1:18080';
 const corpusPath = new URL('../../../benchmarks/n4.26/corpus.v1.json', import.meta.url);
-const outputRoot = new URL('../../../docs/evidence/n4.26/', import.meta.url);
+const outputRoot = new URL(process.env.CLERVO_BENCHMARK_OUTPUT_RELATIVE ?? '../../../docs/evidence/n4.26/', import.meta.url);
 const corpus = JSON.parse(await readFile(corpusPath, 'utf8'));
 const routes = ['focused', 'live', 'simple', 'combined'];
 
@@ -69,7 +69,7 @@ for (const task of corpus.tasks) {
   }
   for (const route of routes) {
     let execution;
-    try { execution = await request('/v1/search', { query: task.query, route, maximumResults: 3, language: task.locale.language, region: task.locale.region }); }
+    try { execution = await request('/v1/search', { query: task.query, route, maximumResults: 3, language: task.locale.language, region: task.locale.region, verticalProfile: ({ commerce_marketplaces:'commerce', property_local_markets:'property', company_competitive:'companies', research_evidence:'research', developer_agent_retrieval:'developer_documentation' })[task.family] }); }
     catch (error) { execution = { status: 0, durationMs: 0, payload: { code: error instanceof Error ? error.message : 'transport_failed', lifecycle: 'unavailable' } }; }
     raw.push({ task, route, execution, metrics: measure(task, execution) });
   }

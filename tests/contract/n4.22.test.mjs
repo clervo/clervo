@@ -15,9 +15,9 @@ test('N4.22 historical 21-blocker snapshot is preserved while current remediatio
   assert.equal(result.startingBlockerCount, 21);
   assert.equal(result.blockerCount, 10);
   assert.equal(result.closedCheckIds.length, 11);
-  assert.equal(result.nextTicket, 'N4.27');
-  assert.equal(result.nextTicketStatus, 'blocked_external');
-  assert.deepEqual(result.externalReasons, ['payable_route_authorization_unavailable']);
+  assert.equal(result.nextTicket, 'N4.27R');
+  assert.equal(result.nextTicketStatus, 'unauthorized');
+  assert.deepEqual(result.externalReasons, ['n427r_separate_authority_required']);
 });
 
 test('missing or substituted blocker identities fail closed', async () => {

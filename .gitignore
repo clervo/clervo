@@ -12,6 +12,8 @@ vendor/
 dist/
 build/
 coverage/
+__pycache__/
+*.pyc
 
 # Runtime state
 data/

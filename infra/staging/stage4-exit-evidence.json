@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "stage": 4,
-  "evaluatedAt": "2026-07-31T17:42:00.000Z",
+  "evaluatedAt": "2026-07-31T20:25:17.816Z",
   "scope": "bounded_repository_and_staging_exit_verification",
   "sourceState": {
     "stagingReleaseStatus": "verified-private-recorded-only",
@@ -18,6 +18,11 @@
       "path": "docs/evidence/n4.26/stage4-binding.v1.json",
       "schemaVersion": "clervo.n4.26.stage4-binding.v1",
       "startingBlockerCount": 21
+    },
+    "n427": {
+      "path": "docs/evidence/n4.27/stage4-binding.v1.json",
+      "schemaVersion": "clervo.n4.27.stage4-binding.v1",
+      "startingBlockerCount": 10
     }
   },
   "checks": [
@@ -55,19 +60,19 @@
       "id": "isolated_javascript_retrieval",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.25 adds the exact-attested one-page boundary. N4.26 deployed a digest-pinned browser image, private authorization gateway and gateway-only/default-deny policies, but attempt one was quota-denied and attempt two expired during image pull. No worker started or produced runtime attestation, page, teardown, orphan-reaper or kill-switch execution evidence."
+      "evidence": "N4.27 repaired the runtime and proved exact image attestation, gateway-only execution, ephemeral teardown and zero surviving orphans across 18 successful JavaScript runs. The mandatory qualification required 20 of 20 consecutive clean starts and teardowns; runs 12 and 18 failed with crawl4ai_render_failed, so the browser remains unqualified."
     },
     {
       "id": "retrieval_safety_controls",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.3/N4.13/N4.25 prove the complete controls locally. N4.26 staged static current-page retrieval plus private/metadata egress exclusions, but the browser never started and the complete deployed robots, rebinding, redirect, MIME, decompression, timeout/cancellation and browser containment transcript is absent."
+      "evidence": "N4.27 observed 403 denials for loopback, RFC1918, link-local, metadata, a hostname resolving private and a redirect to private, plus kill-switch and stopped-worker behavior. The complete mandatory staging robots, controlled DNS-rebinding, MIME, decompression, cancellation and hostile-page suite remains incomplete."
     },
     {
       "id": "prompt_injection_boundaries",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.7/N4.10/N4.25 prove the immutable no-authority boundary locally. N4.26 included hostile query/corpus cases, but no malicious live page completed the unavailable browser path; staging page-content prompt-injection resistance remains unproven."
+      "evidence": "N4.7/N4.10/N4.25 and the N4.27 repository regressions preserve the immutable no-authority boundary. N4.27 did not complete the controlled hostile live-page staging execution through a qualified browser, so page-content prompt-injection resistance remains unproven in staging."
     },
     {
       "id": "evidence_tied_citations",
@@ -79,19 +84,19 @@
       "id": "disclosed_cache_freshness",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.26 used persistent-disk-backed environment-separated storage and proved a route/normalized-URL/policy-bound integrity key with miss, fresh hit and disclosed stale reuse. The probe was not integrated as connected-search read-through, and staging removal/denylist invalidation was not executed."
+      "evidence": "N4.27 preserved connected cache implementation and repository proofs for miss, fresh hit, disclosed stale degradation, eviction, route/URL/policy binding, integrity failure and denylist invalidation. A complete connected staging transcript was not captured, so repository proof does not close this staging gate."
     },
     {
       "id": "language_and_region_options",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.15 proves strict locale controls locally and N4.26 propagated language/region through staging requests. The upstream adapters did not prove that every selected source truthfully honored the requested locale rather than merely receiving or echoing it."
+      "evidence": "N4.27 propagated language and region correctly through regression and holdout requests and responses. The evidence still does not independently prove that Wikimedia and Crossref honor every requested locale or exclude silent unsupported substitution."
     },
     {
       "id": "separate_raw_and_synthesis_prices",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.16 publishes distinct fixed mock-USDC prices and price versions for search.web raw retrieval and search.answer synthesis, binds the selected product through request hashes, quotes, challenges, execution results, receipts, and catalog discovery, and rejects cross-product quote, payment, and idempotency replay locally; no payable route or staging execution evidence exists."
+      "evidence": "N4.16 repository contracts preserve distinct mock-USDC prices and version binding. N4.27 explicitly gated mock x402 on all benchmark, browser, security, cache, locale and cost prerequisites; those failed, so challenge, authorization, verification, mock settlement, receipt and replay were correctly never started."
     },
     {
       "id": "quality_latency_and_cost_benchmarks",
@@ -121,13 +126,13 @@
       "id": "ssrf_and_security_suite",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.25 deterministic adversarial tests cover the full suite. N4.26 deployed default-deny policies and private/metadata exclusions, but no browser worker started, so the complete authenticated staging SSRF/rebinding/redirect/MIME/decompression/cancellation/browser-containment suite remains absent."
+      "evidence": "N4.27 passed every destination and redirect denial it exercised and observed no surviving worker or gateway containers after shutdown. Controlled DNS rebinding, complete robots denial, MIME/decompression adversarial retrieval and hostile-page staging coverage remain absent; the mandatory suite is incomplete."
     },
     {
       "id": "blockrun_compatible_baseline_improvement",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.26 compared focused, live, simple-combination, combined and bounded SearXNG observations. Combined recall 0.8333 and precision 0.8144 did not beat the simple combination at 0.8750 and 0.8523; no material named-workflow improvement is proven."
+      "evidence": "N4.27 improved the N4.26 regression to 0.8864 recall and 0.8826 precision, but the frozen independent holdout produced only 0.04 recall and precision, zero nDCG@10 and MRR@10, and 4688.24 ms balanced p95. Direct Exa comparison was unavailable; no material superiority or parity is proven."
     },
     {
       "id": "deployed_free_sample",
@@ -139,7 +144,7 @@
       "id": "deployed_paid_route",
       "status": "contradicted",
       "stagingVerified": false,
-      "evidence": "N4.18 deployed the paid endpoint but remote smoke returned the expected non-payable HTTP 402 challenge with executionAllowed=false; real payment remains unimplemented."
+      "evidence": "N4.27 prerequisite gates failed before the gated mock x402 step, so no challenge, authorization, verification, mock settlement, receipt or replay ran. N4.18's endpoint remains explicitly non-payable; no real payment or USDC action occurred."
     },
     {
       "id": "monitoring",
@@ -151,11 +156,11 @@
       "id": "cost_caps",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.26 proved quota exhaustion, an unsafe operation-ceiling stop, circuit opening, route removal, both-down behavior and a global kill-switch/restoration. The gate remains open because no half-open probe exists, browser-minute cost is unmeasured, and staging per-route/per-domain concurrency was declared rather than enforced."
+      "evidence": "N4.27 added repository-verified half-open probe/restoration and bounded browser resources, then deleted the isolated VM, disk, NAT, router, firewall, network, service-account binding, fixture service, images and budget for USD 0/day active exposure. Full staging route/domain concurrency and browser-minute application metering remain unproven."
     }
   ],
   "decision": "blocked",
   "referencePatternAuthorized": false,
   "stage5Authorized": false,
-  "nextAction": "Execute N4.27 only after its separate payment authority is present: preserve the ten remaining Stage 4 blockers, keep all routes non-payable until authorized, and do not begin Stage 5."
+  "nextAction": "Execute N4.27R only under separate authorization: replace the narrow lawful supply/index, add labelled duplicate and hostile-page fixtures, make browser fixtures local and deterministic, freeze a new independent holdout, and do not begin N4.28 or Stage 5."
 }

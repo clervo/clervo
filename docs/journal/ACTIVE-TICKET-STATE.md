@@ -1,34 +1,36 @@
 # Active ticket state
 
-**Ticket:** N4.26 — live staging quality, monitoring, budgets, and traffic stops
+**Ticket:** N4.27 — Search quality, browser qualification, and gated mock x402
 **Stage:** 4 — Search vertical slice
-**Result:** complete with ten truthful Stage 4 blockers remaining
+**Result:** blocked with ten truthful Stage 4 blockers remaining
 
 ## Decision
 
-- The two real route identities operated in isolated private staging.
-- The 50-task/five-family benchmark produced 182 raw executions.
-- Clervo is `not_yet_commercially_competitive`; “Advanced live intelligence
-  for agents” is not authorized. “Clervo-owned live Web retrieval” remains the
-  maximum truthful positioning.
-- Eleven of the 21 starting blockers closed on hash-bound staging evidence;
-  ten remain. Search is not the reference pattern and Stage 5 is unauthorized.
-- Payment remained mock-only and non-payable. Third-party general-Web
-  production provider cost is USD `0.000000`; 0 USDC was spent.
+- The frozen 50-task holdout executed exactly once and must never be rerun.
+- Repaired balanced recall/precision were 0.04/0.04, nDCG@10 and MRR@10 were
+  zero, successful extraction was 0.92, and p95 was 4688.24 ms.
+- Browser qualification completed 18 of 20 attempted runs. Tested destination
+  and redirect denials passed, but the complete mandatory security suite is
+  incomplete.
+- Mandatory prerequisites failed, so mock x402 never started. No challenge,
+  authorization, settlement, receipt, replay, real payment or USDC action ran.
+- Search is not commercially competitive or the reference pattern. Exa parity,
+  “Advanced live intelligence for agents,” N4.28 and Stage 5 are unauthorized.
 
-## Live proof and cleanup
+## Evidence and cleanup
 
-- Deployed digest-pinned Search, Meilisearch and retrieval-gateway workloads in
-  the private `clervo-n426` GKE namespace with default-deny policies, fixed
-  quota, persistent storage, USD 10 budget and USD 5/day ceiling.
-- Delivered the primary `mo@clervo.dev` verification route, observed nonzero
-  critical-event metric points, and bound the enabled alert policy. No
-  qualified Telegram route existed.
-- Browser attempt one was quota-denied and attempt two expired during image
-  pull; no worker/runtime attestation is claimed.
-- Deleted the exact N4.26 cluster and data disk after capture. Active compute
-  exposure is USD 0/day; retained artifact/logging storage upper bound is USD
-  0.01/day.
+- All 28 N4.26 simple-to-combined losses are classified: 25 ranking/relevance,
+  three extraction, zero unexplained.
+- Final regression combined recall/precision improved to 0.8864/0.8826, with
+  citation validity and extraction 0.9545 and p95 2404.62 ms; mandatory
+  regression/family requirements still did not all pass.
+- Live-source holdout recall/precision were 0.08/0.08; source quality and
+  concentration gates failed.
+- The isolated N4.27 VM/disk, NAT/router, firewall, subnet/network, service-
+  account binding, fixture service, artifact images and ticket budget were
+  deleted. Active incremental compute and retained idle exposure are USD 0/day.
+- Third-party general-Web production provider cost is USD `0.000000`; 0 USDC
+  was spent.
 
 ## Current Stage 4 blockers
 
@@ -43,18 +45,19 @@
 9. `deployed_paid_route`
 10. `cost_caps`
 
-Exact reasons and bound artifact hashes are in
-`docs/evidence/n4.26/stage4-binding.v1.json` and the N4.26 evidence report.
+Exact reasons and artifact hashes are in
+`docs/evidence/n4.27/stage4-binding.v1.json` and the N4.27 evidence report.
 
 ## Exact next action
 
-N4.27 only, after separate payment authority defines the allowed mock/testnet
-facilitator, payee/payer, settlement, receipt and replay scope. Preserve all ten
-remaining blockers unless new evidence closes them. Do not spend USDC or make
-any route payable without explicit authority.
+N4.27R only, under separate authority: replace the narrow live supply/index
+with lawful vertical source adapters and a representative focused index; add
+labelled duplicate and hostile-page fixtures; make browser fixtures local and
+deterministic; then freeze a new independent holdout and run the complete
+gates. Never reuse or rerun the N4.27 holdout.
 
 ## Stop condition
 
-Commit N4.26 atomically and stop. Do not begin N4.27, N4.28, Stage 5, AI,
-Sandbox, production release, real settlement, USDC spending, or legacy
-migration in this run. Canonical `npm test` remains reserved for N4.28.
+Commit N4.27 atomically as blocked and stop. Do not begin N4.27R, N4.28, mock
+x402, Stage 5, AI, Sandbox, production release, real settlement, USDC spending,
+or legacy migration in this run. Canonical `npm test` remains reserved.

@@ -1,0 +1,1141 @@
+{
+  "schemaVersion": "clervo.n4.27.n426-regression-loss-ledger.v1",
+  "generatedAt": "2026-07-31T18:45:00.000Z",
+  "sourceArtifact": {
+    "path": "docs/evidence/n4.26/raw-benchmark-results.v1.json.gz",
+    "sha256": "sha256:82771effdc16f089dd7457a301d6400432808c40cc080078ff0a85dc23c1c0df",
+    "rows": 182
+  },
+  "evaluatorBoundary": "Relevance and expected disposition reproduce the frozen N4.26 expectedTerms evaluator; this ledger does not retroactively claim those labels are production-grade qrels.",
+  "unexplainedLosses": 0,
+  "lossCount": 28,
+  "classifications": {
+    "extraction_failure": 3,
+    "relevance_score_too_low": 25
+  },
+  "losses": [
+    {
+      "taskId": "commerce-01",
+      "query": "online marketplace business model network effects",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Online_marketplace",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 2,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:22:23.372Z",
+        "completedAt": "2026-07-31T17:22:23.372Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "commerce-03",
+      "query": "Apple iPhone 15 exact product model specifications",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 2,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:23:09.884Z",
+        "completedAt": "2026-07-31T17:23:09.884Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "commerce-03",
+      "query": "Apple iPhone 15 exact product model specifications",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Online_marketplace",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 3,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:23:09.884Z",
+        "completedAt": "2026-07-31T17:23:09.884Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "commerce-04",
+      "query": "Nintendo Switch OLED model exact product",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Homebrew_(video_games)",
+        "title": "Special pages",
+        "providerId": "provider_wikimedia_action_api_v1",
+        "routeId": "clervo.live-federation.v1"
+      },
+      "sourceRoute": "clervo.live-federation.v1",
+      "rankBeforeProcessing": 1,
+      "scoreComponents": {
+        "freshness": null,
+        "authority": 92,
+        "relevance": 100,
+        "diversity": null,
+        "totalBasisPoints": null,
+        "basis": "not_scored_because_combined_live_attempt_failed_before_merge"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "not_emitted_by_failed_live_attempt",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "extraction_failure",
+      "exactCause": "The simple route observed the candidate, but the later combined attempt ended failed with live_federation_current_pages_unavailable and returned zero live candidates.",
+      "attempt": {
+        "routeId": "clervo.live-federation.v1",
+        "providerId": "provider_clervo_live_federation_v1",
+        "healthIdentity": "clervo.health.live_federation",
+        "circuitIdentity": "clervo.circuit.live_federation",
+        "failureDomain": "clervo.live_federation",
+        "startedAt": "2026-07-31T17:23:33.014Z",
+        "completedAt": "2026-07-31T17:23:33.014Z",
+        "outcome": "failed",
+        "resultCount": 0,
+        "failureCode": "live_federation_current_pages_unavailable"
+      }
+    },
+    {
+      "taskId": "commerce-05",
+      "query": "Etsy company marketplace overview",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Creative_Market",
+        "title": "Special pages",
+        "providerId": "provider_wikimedia_action_api_v1",
+        "routeId": "clervo.live-federation.v1"
+      },
+      "sourceRoute": "clervo.live-federation.v1",
+      "rankBeforeProcessing": 3,
+      "scoreComponents": {
+        "freshness": null,
+        "authority": 92,
+        "relevance": 100,
+        "diversity": null,
+        "totalBasisPoints": null,
+        "basis": "not_scored_because_combined_live_attempt_failed_before_merge"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "not_emitted_by_failed_live_attempt",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "extraction_failure",
+      "exactCause": "The simple route observed the candidate, but the later combined attempt ended failed with live_federation_current_pages_unavailable and returned zero live candidates.",
+      "attempt": {
+        "routeId": "clervo.live-federation.v1",
+        "providerId": "provider_clervo_live_federation_v1",
+        "healthIdentity": "clervo.health.live_federation",
+        "circuitIdentity": "clervo.circuit.live_federation",
+        "failureDomain": "clervo.live_federation",
+        "startedAt": "2026-07-31T17:23:56.137Z",
+        "completedAt": "2026-07-31T17:23:56.137Z",
+        "outcome": "failed",
+        "resultCount": 0,
+        "failureCode": "live_federation_current_pages_unavailable"
+      }
+    },
+    {
+      "taskId": "commerce-06",
+      "query": "eBay seller fees United Kingdom current",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Advance-fee_scam",
+        "title": "Special pages",
+        "providerId": "provider_wikimedia_action_api_v1",
+        "routeId": "clervo.live-federation.v1"
+      },
+      "sourceRoute": "clervo.live-federation.v1",
+      "rankBeforeProcessing": 3,
+      "scoreComponents": {
+        "freshness": null,
+        "authority": 92,
+        "relevance": 100,
+        "diversity": null,
+        "totalBasisPoints": null,
+        "basis": "not_scored_because_combined_live_attempt_failed_before_merge"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "not_emitted_by_failed_live_attempt",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "extraction_failure",
+      "exactCause": "The simple route observed the candidate, but the later combined attempt ended failed with live_federation_current_pages_unavailable and returned zero live candidates.",
+      "attempt": {
+        "routeId": "clervo.live-federation.v1",
+        "providerId": "provider_clervo_live_federation_v1",
+        "healthIdentity": "clervo.health.live_federation",
+        "circuitIdentity": "clervo.circuit.live_federation",
+        "failureDomain": "clervo.live_federation",
+        "startedAt": "2026-07-31T17:24:18.655Z",
+        "completedAt": "2026-07-31T17:24:18.655Z",
+        "outcome": "failed",
+        "resultCount": 0,
+        "failureCode": "live_federation_current_pages_unavailable"
+      }
+    },
+    {
+      "taskId": "commerce-08",
+      "query": "product recall contradictory stale marketplace listing",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Online_marketplace",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 1,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:24:45.436Z",
+        "completedAt": "2026-07-31T17:24:45.436Z",
+        "outcome": "succeeded",
+        "resultCount": 6
+      }
+    },
+    {
+      "taskId": "company-01",
+      "query": "competitive intelligence definition company",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 3,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:24:58.581Z",
+        "completedAt": "2026-07-31T17:24:58.581Z",
+        "outcome": "succeeded",
+        "resultCount": 5
+      }
+    },
+    {
+      "taskId": "company-02",
+      "query": "market research company competition",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Market_research",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 1,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:24:59.753Z",
+        "completedAt": "2026-07-31T17:24:59.753Z",
+        "outcome": "succeeded",
+        "resultCount": 8
+      }
+    },
+    {
+      "taskId": "company-02",
+      "query": "market research company competition",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Online_marketplace",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 3,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:24:59.753Z",
+        "completedAt": "2026-07-31T17:24:59.753Z",
+        "outcome": "succeeded",
+        "resultCount": 8
+      }
+    },
+    {
+      "taskId": "company-03",
+      "query": "Apple annual report SEC EDGAR",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Scientific_literature",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 3,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:25:01.106Z",
+        "completedAt": "2026-07-31T17:25:01.106Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "company-07",
+      "query": "Microsoft latest annual report revenue",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Scientific_literature",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 3,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:25:04.905Z",
+        "completedAt": "2026-07-31T17:25:04.905Z",
+        "outcome": "succeeded",
+        "resultCount": 5
+      }
+    },
+    {
+      "taskId": "developer-03",
+      "query": "Model Context Protocol MCP agents",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 1,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:25:18.649Z",
+        "completedAt": "2026-07-31T17:25:18.649Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "developer-03",
+      "query": "Model Context Protocol MCP agents",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Representational_state_transfer",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 2,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:25:18.649Z",
+        "completedAt": "2026-07-31T17:25:18.649Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "developer-04",
+      "query": "REST representational state transfer",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Representational_state_transfer",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 1,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:25:20.106Z",
+        "completedAt": "2026-07-31T17:25:20.106Z",
+        "outcome": "succeeded",
+        "resultCount": 4
+      }
+    },
+    {
+      "taskId": "property-02",
+      "query": "real estate market definition",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Real_estate",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 1,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:24:49.020Z",
+        "completedAt": "2026-07-31T17:24:49.020Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "property-02",
+      "query": "real estate market definition",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Market_research",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 2,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:24:49.020Z",
+        "completedAt": "2026-07-31T17:24:49.020Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "property-02",
+      "query": "real estate market definition",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Online_marketplace",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 3,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:24:49.020Z",
+        "completedAt": "2026-07-31T17:24:49.020Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "property-03",
+      "query": "American Community Survey housing data",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Real_estate",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 2,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:24:50.778Z",
+        "completedAt": "2026-07-31T17:24:50.778Z",
+        "outcome": "succeeded",
+        "resultCount": 8
+      }
+    },
+    {
+      "taskId": "property-04",
+      "query": "United Kingdom house price index current",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Real_estate",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 2,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:24:52.288Z",
+        "completedAt": "2026-07-31T17:24:52.288Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "property-05",
+      "query": "New York City property tax records official",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Real_estate",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 1,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:24:53.765Z",
+        "completedAt": "2026-07-31T17:24:53.765Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "property-08",
+      "query": "stale property listing changed price evidence",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Real_estate",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 2,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:24:56.907Z",
+        "completedAt": "2026-07-31T17:24:56.907Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "research-03",
+      "query": "DOI 10.1038 nature exact article metadata",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Scientific_literature",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 1,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:25:09.285Z",
+        "completedAt": "2026-07-31T17:25:09.285Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "research-07",
+      "query": "open access research license evidence",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Market_research",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 1,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:25:13.192Z",
+        "completedAt": "2026-07-31T17:25:13.192Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "research-07",
+      "query": "open access research license evidence",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 2,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:25:13.192Z",
+        "completedAt": "2026-07-31T17:25:13.192Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "research-07",
+      "query": "open access research license evidence",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Scientific_literature",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 3,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:25:13.192Z",
+        "completedAt": "2026-07-31T17:25:13.192Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "research-08",
+      "query": "current Crossref metadata REST API",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 1,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:25:14.571Z",
+        "completedAt": "2026-07-31T17:25:14.571Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    },
+    {
+      "taskId": "research-08",
+      "query": "current Crossref metadata REST API",
+      "candidate": {
+        "canonicalUrl": "https://en.wikipedia.org/wiki/Representational_state_transfer",
+        "title": "Special pages",
+        "providerId": "provider_meilisearch_1_51_0",
+        "routeId": "clervo.focused-index.v1"
+      },
+      "sourceRoute": "clervo.focused-index.v1",
+      "rankBeforeProcessing": 3,
+      "scoreComponents": {
+        "freshness": 100,
+        "authority": 88,
+        "relevance": 80,
+        "diversity": 35,
+        "totalBasisPoints": 8350,
+        "basis": "recomputed_from_N4.26_constant_focused_adapter_and_same-day_evidence"
+      },
+      "deduplication": {
+        "decision": "retained_not_removed",
+        "exactDuplicateCountForTask": 0,
+        "nearDuplicateCountForTask": 0
+      },
+      "finalDisposition": "truncated_after_non_query_discriminating_ranking",
+      "expectedDisposition": "retain_as_relevant_under_frozen_N4.26_evaluator",
+      "lossClassification": "relevance_score_too_low",
+      "exactCause": "createFocusedConnectedRoute assigned every candidate relevance=80 and authority=88; rankConnectedEvidence then assigned the first canonical URL full diversity before final scoring, so URL order and a premature same-domain diversity penalty displaced a Meilisearch-relevant candidate.",
+      "attempt": {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "healthIdentity": "clervo.health.focused_index",
+        "circuitIdentity": "clervo.circuit.focused_index",
+        "failureDomain": "clervo.focused_index",
+        "startedAt": "2026-07-31T17:25:14.571Z",
+        "completedAt": "2026-07-31T17:25:14.571Z",
+        "outcome": "succeeded",
+        "resultCount": 9
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion":"clervo.n4.27.mandatory-gate-summary.v1",
+  "evaluatedAt":"2026-07-31T19:42:00.000Z",
+  "regression":{"recall":0.8864,"precision":0.8826,"citationValidity":0.9545,"successfulExtraction":0.9545,"p95Ms":2404.62,"pass":false},
+  "holdout":{"recall":0.04,"precision":0.04,"citationValidity":1,"successfulExtraction":0.92,"nDCG10":0,"MRR10":0,"success3":0,"p95Ms":4688.24,"pass":false},
+  "families":{"regressionPass":false,"holdoutPass":false,"lowestRegressionRecall":0.7778,"lowestHoldoutRecall":0,"lowestHoldoutNDCG10":0},
+  "live":{"regressionRecall":0.4318,"regressionPrecision":0.428,"holdoutRecall":0.08,"holdoutPrecision":0.08,"largestSourceShare":0.72,"pass":false},
+  "profiles":{"fastP50Ms":210.45,"fastP95Ms":3776.8,"balancedP50Ms":420.67,"balancedP95Ms":4688.24,"thoroughP95Ms":4103.67,"thoroughRecallImprovement":0,"pass":false},
+  "browser":{"javascriptSuccessRate":0.9,"successfulP95Ms":2580.911,"twentyConsecutive":false,"securitySuiteComplete":false,"pass":false},
+  "dedup":{"numericConfusionMatrixProven":false,"pass":false},
+  "cacheLocaleInjection":{"cacheStagingComplete":false,"localeUpstreamHonorComplete":false,"hostilePageStagingPassRate":null,"pass":false},
+  "tokenEfficiency":{"reduction":0.98984,"relevantRetention":null,"pass":false},
+  "costAndControls":{"providerCostUsd":0,"activeComputeUsdPerDay":0,"allControlsStagingComplete":false,"pass":false},
+  "directExa":{"available":false,"pass":false},
+  "mockX402":{"permittedToStart":false,"executed":false,"pass":false},
+  "allMandatoryGatesPass":false,
+  "ticketDecision":"blocked",
+  "smallestRepairTicket":"N4.27R — replace the narrow live supply/index with lawful vertical source adapters and a representative focused index; add labelled duplicate and hostile-page fixtures; make browser fixtures local and deterministic; then re-freeze a new independent holdout and rerun all N4.27 gates without beginning N4.28."
+}

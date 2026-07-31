@@ -316,26 +316,27 @@ general-Web search-provider API cost. Paid services may be benchmarked only
 under separate permission and cannot become hidden production dependencies.
 
 This authority does not itself authorize new cloud/IAM/deployment mutation,
-credentials, provider calls, N4.27 payment work, USDC spend, AI, Sandbox,
+credentials, provider calls, N4.27R repair work, USDC spend, AI, Sandbox,
 later-pillar implementation, legacy mutation, runtime search changes, or the
 canonical `npm test`.
 
 ## 14. Current transition and exact next ticket
 
-N4.26 is complete as temporary isolated-staging proof. It produced a 50-task,
-five-family corpus and 182 executions, delivered the primary owner-email
-monitoring path, disclosed gross/post-credit economics, and exercised bounded
-route, circuit, quota, cache, unsafe-cost and global traffic stops. Eleven of
-the 21 starting Stage 4 blockers now have hash-bound staging evidence; ten
-remain. The temporary cluster and data disk were deleted after capture.
+N4.27 is complete as a truthful blocked qualification. Its final frozen
+holdout ran exactly once: repaired balanced recall and precision were 0.04,
+nDCG@10 and MRR@10 were zero, successful extraction was 0.92, and p95 was
+4688.24 ms. Browser qualification completed 18/20 runs; observed gateway
+denials passed, but the complete mandatory security suite remains incomplete.
 
-Browser runtime attestation, complete staging retrieval/security and hostile-
-page proof, connected cache behavior, upstream locale honoring, compatible
-baseline improvement, complete cost controls, and payable commerce remain
-open. Search is not the reference pattern; Stage 5 is unauthorized; lifecycle
-truth is unchanged.
+All ten inherited Stage 4 blockers remain. The gated mock x402 proof was never
+started because its benchmark, browser, security, cache, locale and cost
+prerequisites failed. The isolated N4.27 compute/network resources were deleted,
+leaving USD 0/day active incremental exposure. No route became payable and no
+USDC was spent.
 
-The exact next engineering ticket is **N4.27**, but it may begin only after a
-separate payment authority defines its permitted mock/testnet facilitator,
-payee/payer, receipt and replay scope. N4.26 authorizes no N4.27 work, payable
-route, settlement, USDC spend, N4.28, Stage 5, AI, or Sandbox.
+Search is not commercially competitive or the reference pattern; Exa parity,
+the advanced claim, N4.28 and Stage 5 remain unauthorized. The smallest exact
+repair ticket is **N4.27R**: replace the narrow lawful supply/index, add labelled
+duplicate and hostile-page fixtures, make browser fixtures local and
+deterministic, then freeze a new independent holdout. N4.27R requires separate
+authority and must never reuse or rerun the N4.27 holdout.
