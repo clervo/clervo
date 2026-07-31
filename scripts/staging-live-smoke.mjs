@@ -26,7 +26,7 @@ async function post(route, idempotencyKey, body, headers = {}) {
 
 const observedAt = new Date().toISOString();
 const nonce = Date.now().toString(36);
-const healthResponse = await fetch(`${normalizedOrigin}/healthz`, {
+const healthResponse = await fetch(`${normalizedOrigin}/v1/health`, {
   headers: authorizationHeaders,
   signal: AbortSignal.timeout(15_000),
 });

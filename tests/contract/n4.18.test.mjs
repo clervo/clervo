@@ -20,7 +20,7 @@ async function freePort() {
 async function waitForHealth(origin) {
   for (let attempt = 0; attempt < 40; attempt += 1) {
     try {
-      const response = await fetch(`${origin}/healthz`);
+      const response = await fetch(`${origin}/v1/health`);
       if (response.status === 200) return;
     } catch {
       // The child may still be binding its listener.
@@ -60,7 +60,7 @@ async function withStagingProcess(run) {
 
 test('deployable staging entry point exposes release health and keeps mock-paid execution disabled', async () => {
   await withStagingProcess(async ({ origin, releaseId }) => {
-    const healthResponse = await fetch(`${origin}/healthz`);
+    const healthResponse = await fetch(`${origin}/v1/health`);
     assert.equal(healthResponse.status, 200);
     assert.deepEqual(await healthResponse.json(), {
       status: 'ok',

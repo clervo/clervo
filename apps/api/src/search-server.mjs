@@ -95,7 +95,7 @@ export function createSearchServer({
 
   return http.createServer(async (request, response) => {
     const url = new URL(request.url ?? '/', 'http://loopback.invalid');
-    if (request.method === 'GET' && url.pathname === '/healthz' && url.search === '') {
+    if (request.method === 'GET' && ['/healthz', '/v1/health'].includes(url.pathname) && url.search === '') {
       send(response, 200, {
         status: 'ok',
         service: 'clervo-search-api',
