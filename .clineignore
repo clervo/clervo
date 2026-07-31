@@ -1,0 +1,69 @@
+# Dependencies and package caches
+node_modules/
+**/node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+
+# Generated/build outputs
+dist/
+**/dist/
+build/
+**/build/
+coverage/
+**/coverage/
+.next/
+out/
+tmp/
+temp/
+.cache/
+**/.cache/
+
+# Runtime data and large artifacts
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*.csv
+*.xlsx
+*.parquet
+*.warc
+*.warc.gz
+*.zip
+*.tar
+*.tar.gz
+*.mp4
+*.mov
+*.webm
+*.wav
+*.mp3
+*.pdf
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Git and editor internals
+.git/
+.vscode/
+.idea/
+.DS_Store
+
+# Product archives and design candidates are not relevant to Stages 4-9
+docs/experience-candidates/
+docs/brand-candidates/
+docs/site-studies/
+docs/motion-content/
+99_ARCHIVE/
+
+# Generated contract artifacts should be accessed only when explicitly required
+**/generated/
+**/artifacts/
+**/snapshots/
+
+# Do not ignore core project instructions, package manifests, schemas, tests, or current ticket evidence.
