@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clervo-crawl4ai-worker
+  namespace: clervo-search-browser
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: clervo-crawl4ai-worker
+  template:
+    metadata:
+      labels:
+        app: clervo-crawl4ai-worker
+    spec:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      hostNetwork: false
+      hostPID: false
+      hostIPC: false
+      terminationGracePeriodSeconds: 5
+      restartPolicy: Always
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: crawl4ai
+          image: invalid.local/clervo/crawl4ai:n4.25-unattested
+          imagePullPolicy: Never
+          command: ["/usr/bin/prlimit"]
+          args: ["--nproc=64:64", "--nofile=256:256", "--fsize=67108864:67108864", "--", "/opt/clervo/crawl4ai-worker"]
+          env:
+            - name: CLERVO_RETRIEVAL_GATEWAY
+              value: "https://clervo-retrieval-authorization-gateway.clervo-search-control.svc.cluster.local:8443"
+            - name: CLERVO_CRAWL4AI_KILL_SWITCH
+              value: "engaged"
+          ports: []
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "384Mi"
+              ephemeral-storage: "32Mi"
+            limits:
+              cpu: "1"
+              memory: "768Mi"
+              ephemeral-storage: "64Mi"
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: browser-state
+              mountPath: /run/clervo-browser
+            - name: temp
+              mountPath: /tmp
+      volumes:
+        - name: browser-state
+          emptyDir:
+            medium: Memory
+            sizeLimit: "64Mi"
+        - name: temp
+          emptyDir:
+            medium: Memory
+            sizeLimit: "16Mi"

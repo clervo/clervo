@@ -66,7 +66,7 @@
         "normalizedTextSha256": { "$ref": "#/$defs/hash" },
         "instructionHandling": { "const": "untrusted_data_only" },
         "renderMode": { "enum": ["static", "crawl4ai_javascript"] },
-        "crawl4aiStatus": { "enum": ["not_used", "provisional_n4_25"] }
+        "crawl4aiStatus": { "enum": ["not_used", "provisional_n4_25", "runtime_attested"] }
       }
     },
     "score": {

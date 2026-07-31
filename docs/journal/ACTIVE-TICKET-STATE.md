@@ -1,42 +1,35 @@
 # Active ticket state
 
-**Ticket:** N4.24 — Independent live-federation route and connected local retrieval pipeline
+**Ticket:** N4.25 — Browser retrieval, durable cache, and complete search security boundary
 **Stage:** 4 — Search vertical slice remediation
-**One question:** Can Clervo connect an independent lawful live-federation route to the focused-index route through one bounded deterministic local retrieval pipeline without identity substitution or unsafe source use?
-**Result:** complete; repository-verified only
-
-## Authoritative inputs
-
-- `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md`
-- `AGENTS.md`, `.codex-autonomy-policy.md`, and the N4.22 source-bound Stage 4 campaign
-- N4.23A selection evidence, N4.23B focused-index evidence, and existing retrieval/fetch/extraction contracts
+**One question:** Can Clervo production-harden the internal JavaScript fallback, retrieval/cache behavior, and prompt-injection boundary without exposing a browser surface or claiming isolation that this container cannot prove?
+**Result:** complete; repository-verified with browser/runtime and staging proof honestly unavailable
 
 ## Decision and implementation
 
-- Implemented exact route identity `clervo.live-federation.v1` with independent provider, adapter, health, circuit, and failure-domain identities.
-- Selected Wikimedia Action API and Crossref REST metadata as the smallest qualified open-data set; Common Crawl CDXJ/index is metadata-only provisional and archived bodies fail closed.
-- Added direct current-page retrieval through the existing URL/DNS/robots/redirect/MIME/byte/deadline controls and a provisional internal-only Crawl4AI `0.9.2` / Playwright `1.61.0` fallback selected only by deterministic JavaScript-required evidence.
-- Connected focused and live routes with deterministic rewrite, parallel execution, deadlines/cancellation, route identity, normalization, exact/near deduplication, freshness/authority/relevance/diversity ranking, locale propagation, extraction provenance, evidence-offset citations, prompt-injection isolation, deterministic schema/replay, and honest degradation.
-- Completed local `search.web`, `web.fetch`, and `web.extract`; `search.answer` remains preview-only and `research.report` unavailable.
+- Added gateway-only, no-ingress Crawl4AI isolation with exact runtime attestation, one-page/process/output/resource ceilings, ephemeral state, deterministic teardown, orphan reaping, and kill switch. Missing proof is `unavailable`.
+- Hardened fetch with cancellation, compressed/decompressed limits, robots crawl-delay, shared per-domain concurrency, and retained per-hop DNS/socket/redirect/MIME/byte enforcement.
+- Added environment-separated durable filesystem/PostgreSQL cache adapters with URL/route/policy keys, integrity checks, visible freshness, disclosed stale-while-degraded, forced refresh/eviction/removal/denylist invalidation, and no customer/secret/wallet/browser-state fields.
+- Bound exact retrieved content/provenance as untrusted evidence with no authority over routes, tools, payments, system policy, citations, or execution.
 
 ## Evidence and validation
 
-- `npm run test:n4.24`: 12/12 passed; `npm run test:n4.23b`: 8/8 passed.
-- Contracts passed 40 schemas / 75 fixtures; discovery generated 40 schemas; build/typecheck passed.
-- Official terms/documentation review was bounded and read-only; no provider API or current publisher page was probed. No staging evidence or `stagingVerified` value changed.
+- Focused N4.25: 13/13 passed; N4.23B regression: 8/8; N4.24 regression: 12/12.
+- Contracts: 43 schemas / 81 fixtures; discovery: 43 schemas.
+- Typecheck and lint passed (228 source/contract files); full working-tree/history secret scan, clean-room boundary, and diff checks passed.
+- Stage 4 verifier ran exactly once: integrity passed, decision `blocked`, 21 blockers, reference pattern false, Stage 5 false, 0 external calls, 0 USDC.
+- Canonical `npm test` remains reserved for N4.28 and did not run.
+- Docker/Podman, Crawl4AI, Playwright, digest-pinned image/gateway, and staging identity are absent. Worker stays zero-replica/kill-switched and unavailable. No staging evidence was promoted.
 
 ## Cost, network, and credentials
 
-- Official hosts contacted: Wikimedia Foundation, MediaWiki, Crossref, Common Crawl, and Common Crawl Index documentation only.
-- Third-party search-provider API cost: USD 0.000000. Infrastructure cost: USD 0.000000. Credentials/secrets: none inspected, used, or printed. USDC spent: 0.
-- No deployment, cloud/IAM/billing, wallet/facilitator, payment, or legacy-runtime action occurred.
+- Deterministic injected/loopback fixtures only; 0 external calls; USD 0.000000 third-party search-provider and infrastructure cost; 0 USDC.
+- No secret, provider account, cloud/IAM/deployment, wallet/facilitator, payment, legacy runtime, or `/run/secrets/clervo-legacy.env` access.
 
 ## Exact next action
 
-- N4.25 only after this commit and explicit continuation: production-isolate/qualify the provisional Crawl4AI fallback, durable cache, and staging security controls. Do not begin N4.26, N4.27, N4.28, Stage 5, or any expansion stage in this run.
+- N4.26 only after this commit and explicit continuation: calibrated live staging benchmarks plus monitoring delivery, infrastructure/provider budgets, cost caps, circuits, and traffic-stop drills. Do not begin N4.27, N4.28, Stage 5, or any expansion stage in this run.
 
-**Commit:** N4.24 atomic implementation commit; final hash is recorded in the closeout report.
+## Stage and stop condition
 
-## Stop condition
-
-- Commit N4.24 atomically and stop. Stage 4 remains blocked on 21 source-bound checks; reference-pattern and Stage 5 authorization remain false.
+- Stage 4 remains blocked on exactly 21 source-bound checks; reference-pattern and Stage 5 authorization remain false. Commit N4.25 atomically and stop.

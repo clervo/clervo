@@ -264,7 +264,8 @@
         "crawl4aiStatus": {
           "enum": [
             "not_used",
-            "provisional_n4_25"
+            "provisional_n4_25",
+            "runtime_attested"
           ]
         }
       }

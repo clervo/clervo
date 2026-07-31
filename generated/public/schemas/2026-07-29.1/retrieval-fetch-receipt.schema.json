@@ -89,6 +89,11 @@
         "expiresAt": {
           "type": "string",
           "format": "date-time"
+        },
+        "crawlDelayMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60000
         }
       },
       "additionalProperties": false
@@ -163,6 +168,18 @@
     "contentLengthBytes": {
       "type": "integer",
       "minimum": 0
+    },
+    "compressedLengthBytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "contentEncoding": {
+      "enum": [
+        "identity",
+        "gzip",
+        "deflate",
+        "br"
+      ]
     },
     "bodySha256": {
       "type": "string",

@@ -3,6 +3,7 @@ import {
   CRAWL4AI_WORKER_ID,
   PLAYWRIGHT_VERSION,
   type RetrievalFetchReceipt,
+  type Crawl4AiWorkerHealth,
 } from '../../../packages/contracts/src/index.js';
 
 export interface Crawl4AiRenderResult {
@@ -28,6 +29,7 @@ export interface Crawl4AiRenderResult {
 
 export interface Crawl4AiRenderer {
   render(input: Readonly<{ url: string; deadlineAt: string; signal: AbortSignal }>): Promise<Readonly<Crawl4AiRenderResult>>;
+  health?: () => Readonly<Crawl4AiWorkerHealth>;
 }
 
 export function javascriptRequiredDeterministically(receipt: RetrievalFetchReceipt, body: Uint8Array): boolean {

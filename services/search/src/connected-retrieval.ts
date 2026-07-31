@@ -11,6 +11,7 @@ import {
   assertConnectedRetrievalResponse,
   assertLiveFederationRuntimeIdentity,
   createQueryRewritePlan,
+  createUntrustedEvidenceBoundary,
   liveFederationRuntimeIdentity,
   rankConnectedEvidence,
   type ConnectedCitation,
@@ -18,6 +19,7 @@ import {
   type ConnectedRouteAttempt,
   type ConnectedRouteEvidence,
   type RetrievalRouteId,
+  verifyUntrustedEvidenceBoundary,
 } from '../../../packages/contracts/src/index.js';
 import type { FocusedIndexRoute } from './focused-index.js';
 import type { LiveFederationRoute, LiveExtractResult } from './live-federation.js';
@@ -145,6 +147,8 @@ export class ConnectedRetrievalPipeline {
       const expected = item.routeId === FOCUSED_INDEX_ROUTE_ID ? focusedConnectedIdentity : liveConnectedIdentity;
       if (item.routeId === FOCUSED_INDEX_ROUTE_ID && item.providerId !== expected.providerId) throw new Error('connected_result_provider_identity_substitution');
       if (item.language !== input.language || item.region !== input.region) throw new Error('connected_result_locale_substitution');
+      const boundary = createUntrustedEvidenceBoundary(item.routeId, item.evidenceText, item.extraction);
+      if (!verifyUntrustedEvidenceBoundary(boundary)) throw new Error('connected_result_prompt_injection_boundary_failed');
     }
     const ranked = rankConnectedEvidence({ evidence: succeeded.flatMap((attempt) => attempt.evidence), now: input.generatedAt, maximumResults: input.maximumResults, nearDuplicateThresholdBasisPoints: 8_500 });
     const citations: readonly Readonly<ConnectedCitation>[] = Object.freeze(ranked.results.map((result) => {

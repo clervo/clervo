@@ -1,0 +1,12 @@
+{
+  "schema": "crawl4ai-worker-health",
+  "valid": true,
+  "value": {
+    "lifecycle": "unavailable",
+    "isolationProven": false,
+    "killSwitchEngaged": false,
+    "activeJobs": 0,
+    "orphanCount": 0,
+    "reason": "runtime_attestation_missing"
+  }
+}

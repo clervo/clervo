@@ -29,6 +29,7 @@ export * from './search-cache.js';
 export * from './search-benchmark.js';
 export * from './search-http.js';
 export * from './search-locale.js';
+export * from './search-security.js';
 export * from './state-machine.js';
 export * from './types.js';
 export * from './zero-provider-search-supply.js';

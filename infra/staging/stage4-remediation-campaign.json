@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "ticket": "N4.22",
-  "evaluatedAt": "2026-07-31T05:42:23.323Z",
+  "evaluatedAt": "2026-07-31T15:29:39.000Z",
   "startingCommit": "0060277",
   "typescript": {
     "workspaceVersion": "7.0.2",
@@ -73,14 +73,14 @@
     {
       "id": "isolated_javascript_retrieval",
       "requiredEvidence": "A concrete disposable browser process must execute in staging behind the N4.13 preflight/network boundary with isolation, byte, request, deadline, and cancellation receipts.",
-      "missingEvidence": "Only the injected browser contract exists; no concrete browser adapter or staging browser execution exists.",
+      "missingEvidence": "N4.25 adds the exact-attested worker and isolation manifests but deliberately keeps zero replicas and unavailable health because no pinned image, gateway, container/browser runtime, or staging execution exists.",
       "dependencyGroup": "N4.25",
       "resolutionBoundary": ["local", "staging"]
     },
     {
       "id": "retrieval_safety_controls",
       "requiredEvidence": "Staging security runs must prove robots, timeout, size, redirect, MIME, public-DNS, rebinding, and SSRF enforcement against the deployed retrieval path.",
-      "missingEvidence": "All controls are repository-tested only; no deployed live retrieval security transcript exists.",
+      "missingEvidence": "N4.25 expands deterministic repository proof through crawl-delay, concurrency, compression and cancellation, but no deployed live retrieval security transcript exists.",
       "dependencyGroup": "N4.25",
       "resolutionBoundary": ["local", "staging"]
     },
@@ -101,7 +101,7 @@
     {
       "id": "disclosed_cache_freshness",
       "requiredEvidence": "Staging must demonstrate miss, fresh hit, and stale revalidation against a durable environment-separated cache with truthful age and lifetime disclosure.",
-      "missingEvidence": "The disclosure contract is process-local; no durable staging cache or revalidation evidence exists.",
+      "missingEvidence": "N4.25 adds environment-separated filesystem/PostgreSQL durable adapters and local stale/poisoning/eviction proof; no staging PostgreSQL cache execution or revalidation transcript exists.",
       "dependencyGroup": "N4.25",
       "resolutionBoundary": ["local", "staging"]
     },
@@ -150,7 +150,7 @@
     {
       "id": "ssrf_and_security_suite",
       "requiredEvidence": "A staging suite must exercise private/metadata targets, DNS rebinding, redirects, MIME/size limits, cancellation, and browser network containment without escaping the service boundary.",
-      "missingEvidence": "Injected local tests pass; no authenticated staging security run or concrete browser exists.",
+      "missingEvidence": "N4.25 adversarial local tests and an exact-attested adapter pass; no digest-pinned browser runtime, gateway, or authenticated staging security run exists.",
       "dependencyGroup": "N4.25",
       "resolutionBoundary": ["local", "staging"]
     },
@@ -198,15 +198,15 @@
     },
     {
       "ticket": "N4.24",
-      "goal": "Wire qualified providers through query rewriting, parallel fetch, normalization, ranking, locale, provenance, citations, schema validation, and safe degradation; deploy and collect staging traces.",
+      "goal": "Wire both exact local routes through query rewriting, parallel fetch, normalization, ranking, locale, provenance, citations, schema validation, and safe degradation while preserving missing staging traces.",
       "dependsOn": ["N4.23"],
-      "status": "pending"
+      "status": "complete"
     },
     {
       "ticket": "N4.25",
-      "goal": "Add a concrete isolated browser, durable staging cache, retrieval safety, and authenticated staging SSRF/security drills.",
+      "goal": "Repository-harden the exact-attested isolated browser boundary, durable environment-separated cache, retrieval safety, and adversarial suite while preserving unavailable staging proof.",
       "dependsOn": ["N4.24"],
-      "status": "pending"
+      "status": "complete"
     },
     {
       "ticket": "N4.26",

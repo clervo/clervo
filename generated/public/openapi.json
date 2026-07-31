@@ -1077,7 +1077,8 @@
               "crawl4aiStatus": {
                 "enum": [
                   "not_used",
-                  "provisional_n4_25"
+                  "provisional_n4_25",
+                  "runtime_attested"
                 ]
               }
             }
@@ -1275,6 +1276,108 @@
             }
           }
         }
+      },
+      "Crawl4aiWorkerHealth": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://schemas.clervo.dev/2026-07-29.1/crawl4ai-worker-health.schema.json",
+        "title": "Clervo internal Crawl4AI worker health",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "lifecycle",
+          "isolationProven",
+          "killSwitchEngaged",
+          "activeJobs",
+          "orphanCount",
+          "reason"
+        ],
+        "properties": {
+          "lifecycle": {
+            "enum": [
+              "ready",
+              "degraded",
+              "unavailable"
+            ]
+          },
+          "isolationProven": {
+            "type": "boolean"
+          },
+          "killSwitchEngaged": {
+            "type": "boolean"
+          },
+          "activeJobs": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "orphanCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reason": {
+            "enum": [
+              "runtime_attested",
+              "runtime_attestation_missing",
+              "runtime_attestation_invalid",
+              "startup_cleanup_pending",
+              "kill_switch_engaged",
+              "orphan_cleanup_required",
+              "worker_failure"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "lifecycle": {
+                  "const": "ready"
+                }
+              },
+              "required": [
+                "lifecycle"
+              ]
+            },
+            "then": {
+              "properties": {
+                "isolationProven": {
+                  "const": true
+                },
+                "killSwitchEngaged": {
+                  "const": false
+                },
+                "orphanCount": {
+                  "const": 0
+                },
+                "reason": {
+                  "const": "runtime_attested"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "killSwitchEngaged": {
+                  "const": true
+                }
+              },
+              "required": [
+                "killSwitchEngaged"
+              ]
+            },
+            "then": {
+              "properties": {
+                "lifecycle": {
+                  "const": "unavailable"
+                },
+                "reason": {
+                  "const": "kill_switch_engaged"
+                }
+              }
+            }
+          }
+        ]
       },
       "DevelopmentRetrievalSupply": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -4768,6 +4871,163 @@
         },
         "additionalProperties": false
       },
+      "RetrievalCacheDisclosure": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://schemas.clervo.dev/2026-07-29.1/retrieval-cache-disclosure.schema.json",
+        "title": "Clervo route-bound durable retrieval cache disclosure",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "state",
+          "reason",
+          "cacheKey",
+          "routeId",
+          "normalizedUrl",
+          "requestPolicySha256",
+          "observedAt",
+          "staleWhileDegraded"
+        ],
+        "properties": {
+          "state": {
+            "enum": [
+              "miss",
+              "fresh",
+              "stale_while_degraded"
+            ]
+          },
+          "reason": {
+            "enum": [
+              "not_found",
+              "forced_refresh",
+              "fresh_hit",
+              "stale_disclosed",
+              "expired",
+              "poisoned",
+              "denylisted"
+            ]
+          },
+          "cacheKey": {
+            "$ref": "#/$defs/hash"
+          },
+          "routeId": {
+            "enum": [
+              "clervo.focused-index.v1",
+              "clervo.live-federation.v1"
+            ]
+          },
+          "normalizedUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "requestPolicySha256": {
+            "$ref": "#/$defs/hash"
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fetchedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ageSeconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "staleWhileDegraded": {
+            "type": "boolean"
+          },
+          "bodySha256": {
+            "$ref": "#/$defs/hash"
+          }
+        },
+        "$defs": {
+          "hash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "enum": [
+                    "fresh",
+                    "stale_while_degraded"
+                  ]
+                }
+              },
+              "required": [
+                "state"
+              ]
+            },
+            "then": {
+              "required": [
+                "fetchedAt",
+                "expiresAt",
+                "ageSeconds",
+                "bodySha256"
+              ],
+              "properties": {
+                "fetchedAt": true,
+                "expiresAt": true,
+                "ageSeconds": true,
+                "bodySha256": true
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "stale_while_degraded"
+                }
+              },
+              "required": [
+                "state"
+              ]
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "const": "stale_disclosed"
+                },
+                "staleWhileDegraded": {
+                  "const": true
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "enum": [
+                    "miss",
+                    "fresh"
+                  ]
+                }
+              },
+              "required": [
+                "state"
+              ]
+            },
+            "then": {
+              "properties": {
+                "staleWhileDegraded": {
+                  "const": false
+                }
+              }
+            }
+          }
+        ]
+      },
       "RetrievalExecutionProof": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://api.clervo.dev/schemas/2026-07-29.1/retrieval-execution-proof.schema.json",
@@ -5615,6 +5875,11 @@
               "expiresAt": {
                 "type": "string",
                 "format": "date-time"
+              },
+              "crawlDelayMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 60000
               }
             },
             "additionalProperties": false
@@ -5689,6 +5954,18 @@
           "contentLengthBytes": {
             "type": "integer",
             "minimum": 0
+          },
+          "compressedLengthBytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "contentEncoding": {
+            "enum": [
+              "identity",
+              "gzip",
+              "deflate",
+              "br"
+            ]
           },
           "bodySha256": {
             "type": "string",
@@ -7839,6 +8116,127 @@
           }
         },
         "additionalProperties": false
+      },
+      "UntrustedEvidenceBoundary": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://schemas.clervo.dev/2026-07-29.1/untrusted-evidence-boundary.schema.json",
+        "title": "Clervo retrieved-page prompt-injection boundary",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "policyId",
+          "routeId",
+          "exactEvidence",
+          "exactEvidenceSha256",
+          "provenance",
+          "provenanceSha256",
+          "pageEffects"
+        ],
+        "properties": {
+          "policyId": {
+            "const": "clervo.search.untrusted-evidence.v1"
+          },
+          "routeId": {
+            "enum": [
+              "clervo.focused-index.v1",
+              "clervo.live-federation.v1"
+            ]
+          },
+          "exactEvidence": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100000
+          },
+          "exactEvidenceSha256": {
+            "$ref": "#/$defs/hash"
+          },
+          "provenanceSha256": {
+            "$ref": "#/$defs/hash"
+          },
+          "provenance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "fetchId",
+              "extractionId",
+              "sourceBodySha256",
+              "normalizedTextSha256",
+              "instructionHandling",
+              "renderMode",
+              "crawl4aiStatus"
+            ],
+            "properties": {
+              "fetchId": {
+                "type": "string",
+                "pattern": "^fetch_[A-Za-z0-9]{20,64}$"
+              },
+              "extractionId": {
+                "type": "string",
+                "pattern": "^extract_[A-Za-z0-9]{20,64}$"
+              },
+              "sourceBodySha256": {
+                "$ref": "#/$defs/hash"
+              },
+              "normalizedTextSha256": {
+                "$ref": "#/$defs/hash"
+              },
+              "instructionHandling": {
+                "const": "untrusted_data_only"
+              },
+              "renderMode": {
+                "enum": [
+                  "static",
+                  "crawl4ai_javascript"
+                ]
+              },
+              "crawl4aiStatus": {
+                "enum": [
+                  "not_used",
+                  "provisional_n4_25",
+                  "runtime_attested"
+                ]
+              }
+            }
+          },
+          "pageEffects": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "route",
+              "tools",
+              "payment",
+              "systemPolicy",
+              "citations",
+              "execution"
+            ],
+            "properties": {
+              "route": {
+                "const": false
+              },
+              "tools": {
+                "const": false
+              },
+              "payment": {
+                "const": false
+              },
+              "systemPolicy": {
+                "const": false
+              },
+              "citations": {
+                "const": false
+              },
+              "execution": {
+                "const": false
+              }
+            }
+          }
+        },
+        "$defs": {
+          "hash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          }
+        }
       },
       "ZeroProviderSearchSupply": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",

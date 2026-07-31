@@ -3,6 +3,7 @@ import { lookup } from 'node:dns/promises';
 import http from 'node:http';
 import https from 'node:https';
 import { isIP } from 'node:net';
+import { brotliDecompressSync, unzipSync } from 'node:zlib';
 import { CONTRACT_VERSION } from './types.js';
 import {
   isForbiddenRetrievalAddress,
@@ -23,6 +24,7 @@ export interface RetrievalFetchRequest {
   mode: RetrievalContentUseMode;
   providerAllowedContentUse: readonly RetrievalContentUseMode[];
   maximumBytes: number;
+  maximumCompressedBytes?: number;
   deadlineAt: string;
   userAgent: string;
   robotsPolicy?: 'enforce' | 'not_applicable';
@@ -49,6 +51,8 @@ export interface RetrievalFetchDependencies {
   now?: () => Date;
   robotsCache?: Map<string, RetrievalRobotsCacheEntry>;
   robotsTtlMs?: number;
+  domainGovernor?: RetrievalDomainGovernor;
+  signal?: AbortSignal;
 }
 
 export interface RetrievalFetchHopReceipt {
@@ -65,6 +69,7 @@ export interface RetrievalRobotsReceipt {
   robotsUrl?: string;
   fetchedAt?: string;
   expiresAt?: string;
+  crawlDelayMs?: number;
 }
 
 export interface RetrievalFetchReceipt {
@@ -79,8 +84,51 @@ export interface RetrievalFetchReceipt {
   robots: readonly Readonly<RetrievalRobotsReceipt>[];
   contentType?: string;
   contentLengthBytes?: number;
+  compressedLengthBytes?: number;
+  contentEncoding?: 'identity' | 'gzip' | 'deflate' | 'br';
   bodySha256?: string;
   failureCode?: string;
+}
+
+export interface RetrievalDomainGovernor {
+  acquire(origin: string, crawlDelayMs: number, deadlineAt: string, signal?: AbortSignal): Promise<() => void>;
+}
+
+export class InMemoryRetrievalDomainGovernor implements RetrievalDomainGovernor {
+  private readonly active = new Map<string, number>();
+  private readonly nextAllowedAt = new Map<string, number>();
+
+  constructor(
+    readonly maximumConcurrencyPerDomain = 2,
+    readonly minimumDelayMs = 1_000,
+    readonly maximumDelayMs = 60_000,
+    private readonly now: () => number = Date.now,
+    private readonly sleep: (milliseconds: number) => Promise<void> = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)),
+  ) {
+    if (!Number.isInteger(maximumConcurrencyPerDomain) || maximumConcurrencyPerDomain < 1 || maximumConcurrencyPerDomain > 16
+      || !Number.isInteger(minimumDelayMs) || minimumDelayMs < 0 || !Number.isInteger(maximumDelayMs) || maximumDelayMs < minimumDelayMs) throw new Error('invalid_retrieval_domain_governor');
+  }
+
+  async acquire(origin: string, crawlDelayMs: number, deadlineAt: string, signal?: AbortSignal): Promise<() => void> {
+    const deadlineMs = timestamp(deadlineAt, 'retrieval_domain_deadline');
+    const delayMs = Math.min(this.maximumDelayMs, Math.max(this.minimumDelayMs, crawlDelayMs));
+    if (this.now() >= deadlineMs) throw new RetrievalBoundaryError('deadline_exceeded');
+    while ((this.active.get(origin) ?? 0) >= this.maximumConcurrencyPerDomain || (this.nextAllowedAt.get(origin) ?? 0) > this.now()) {
+      if (signal?.aborted) throw new RetrievalBoundaryError('caller_cancelled');
+      const waitMs = Math.max(1, Math.min(25, (this.nextAllowedAt.get(origin) ?? this.now()) - this.now()));
+      if (this.now() + waitMs >= deadlineMs) throw new RetrievalBoundaryError('deadline_exceeded');
+      await this.sleep(waitMs);
+    }
+    if (signal?.aborted) throw new RetrievalBoundaryError('caller_cancelled');
+    this.active.set(origin, (this.active.get(origin) ?? 0) + 1);
+    this.nextAllowedAt.set(origin, this.now() + delayMs);
+    let released = false;
+    return () => {
+      if (released) return;
+      released = true;
+      this.active.set(origin, Math.max(0, (this.active.get(origin) ?? 1) - 1));
+    };
+  }
 }
 
 export interface RetrievalFetchResult {
@@ -181,15 +229,24 @@ async function awaitBeforeDeadline<T>(
   deadlineMs: number,
   now: () => Date,
   onLateResult?: (result: T) => void,
+  signal?: AbortSignal,
 ): Promise<T> {
   const remaining = deadlineMs - now().getTime();
   if (remaining <= 0) throw new RetrievalBoundaryError('deadline_exceeded');
   let timer: ReturnType<typeof setTimeout> | undefined;
   let timedOut = false;
+  let removeAbort: (() => void) | undefined;
   operation.then((result) => {
     if (timedOut) onLateResult?.(result);
   }).catch(() => undefined);
   try {
+    const cancelled = new Promise<never>((_resolve, reject) => {
+      if (signal === undefined) return;
+      const abort = () => { timedOut = true; reject(new RetrievalBoundaryError('caller_cancelled')); };
+      removeAbort = () => signal.removeEventListener('abort', abort);
+      signal.addEventListener('abort', abort, { once: true });
+      if (signal.aborted) abort();
+    });
     return await Promise.race([
       operation,
       new Promise<never>((_resolve, reject) => {
@@ -198,29 +255,24 @@ async function awaitBeforeDeadline<T>(
           reject(new RetrievalBoundaryError('deadline_exceeded'));
         }, remaining);
       }),
+      cancelled,
     ]);
   } finally {
     if (timer !== undefined) clearTimeout(timer);
+    removeAbort?.();
   }
 }
 
-async function readBoundedBody(response: RetrievalTransportResponse, maximumBytes: number, deadlineMs: number, now: () => Date): Promise<Uint8Array> {
+async function readBoundedBody(response: RetrievalTransportResponse, maximumBytes: number, deadlineMs: number, now: () => Date, signal?: AbortSignal): Promise<Uint8Array> {
   const chunks: Uint8Array[] = [];
   let length = 0;
   const iterator = response.body[Symbol.asyncIterator]();
   try {
     while (true) {
+      if (signal?.aborted) throw new RetrievalBoundaryError('caller_cancelled');
       const remaining = deadlineMs - now().getTime();
       if (remaining <= 0) throw new RetrievalBoundaryError('deadline_exceeded');
-      let timer: ReturnType<typeof setTimeout> | undefined;
-      const next = await Promise.race([
-        iterator.next(),
-        new Promise<never>((_resolve, reject) => {
-          timer = setTimeout(() => reject(new RetrievalBoundaryError('deadline_exceeded')), remaining);
-        }),
-      ]).finally(() => {
-        if (timer !== undefined) clearTimeout(timer);
-      });
+      const next = await awaitBeforeDeadline(iterator.next(), deadlineMs, now, undefined, signal);
       if (next.done) break;
       length += next.value.byteLength;
       if (length > maximumBytes) throw new RetrievalBoundaryError('response_too_large');
@@ -237,6 +289,22 @@ async function readBoundedBody(response: RetrievalTransportResponse, maximumByte
     offset += chunk.byteLength;
   }
   return body;
+}
+
+function decodeBoundedBody(encoded: Uint8Array, encoding: 'identity' | 'gzip' | 'deflate' | 'br', maximumBytes: number): Uint8Array {
+  if (encoding === 'identity') return encoded;
+  try {
+    const decoded = encoding === 'br'
+      ? brotliDecompressSync(encoded, { maxOutputLength: maximumBytes })
+      : unzipSync(encoded, { maxOutputLength: maximumBytes });
+    if (decoded.byteLength > maximumBytes) throw new RetrievalBoundaryError('decompressed_response_too_large');
+    return Uint8Array.from(decoded);
+  } catch (error) {
+    if (error instanceof RetrievalBoundaryError) throw error;
+    const code = (error as NodeJS.ErrnoException).code;
+    if (code === 'ERR_BUFFER_TOO_LARGE') throw new RetrievalBoundaryError('decompressed_response_too_large');
+    throw new RetrievalBoundaryError('invalid_compressed_response');
+  }
 }
 
 function redirectTarget(current: URL, response: RetrievalTransportResponse): URL | undefined {
@@ -258,30 +326,47 @@ async function requestWithRedirects(
   resolveHost: (hostname: string) => Promise<readonly string[]>,
   transport: (request: RetrievalTransportRequest) => Promise<RetrievalTransportResponse>,
   hopSink: RetrievalFetchHopReceipt[],
-  beforeRequest?: (url: URL) => Promise<void>,
-): Promise<{ response: RetrievalTransportResponse; url: URL; hops: RetrievalFetchHopReceipt[] }> {
+  signal?: AbortSignal,
+  domainGovernor?: RetrievalDomainGovernor,
+  beforeRequest?: (url: URL) => Promise<number>,
+): Promise<{ response: RetrievalTransportResponse; url: URL; hops: RetrievalFetchHopReceipt[]; release?: () => void }> {
   const hops: RetrievalFetchHopReceipt[] = [];
   let url = initialUrl;
   for (let redirectCount = 0; redirectCount <= maximumRedirects; redirectCount += 1) {
-    if (beforeRequest !== undefined) await awaitBeforeDeadline(beforeRequest(url), deadlineMs, now);
-    const addresses = validateResolvedAddresses(await awaitBeforeDeadline(resolveHost(url.hostname), deadlineMs, now));
+    const crawlDelayMs = beforeRequest === undefined ? 0 : await awaitBeforeDeadline(beforeRequest(url), deadlineMs, now, undefined, signal);
+    const addresses = validateResolvedAddresses(await awaitBeforeDeadline(resolveHost(url.hostname), deadlineMs, now, undefined, signal));
     const address = addresses[0]!;
-    const response = await awaitBeforeDeadline(
-      transport({ url, address, deadlineAt, headers }),
-      deadlineMs,
-      now,
-      (lateResponse) => lateResponse.abort(),
-    );
+    const release = domainGovernor === undefined || kind === 'robots' ? undefined : await domainGovernor.acquire(url.origin, crawlDelayMs, deadlineAt, signal);
+    let response: RetrievalTransportResponse;
+    try {
+      response = await awaitBeforeDeadline(
+        transport({ url, address, deadlineAt, headers }),
+        deadlineMs,
+        now,
+        (lateResponse) => lateResponse.abort(),
+        signal,
+      );
+    } catch (error) {
+      release?.();
+      throw error;
+    }
     if (normalizeAddress(response.remoteAddress) !== normalizeAddress(address)) {
       response.abort();
+      release?.();
       throw new RetrievalBoundaryError('connected_address_mismatch');
     }
     const hop = { kind, url: url.href, resolvedAddresses: addresses, connectedAddress: normalizeAddress(response.remoteAddress), status: response.status } as const;
     hops.push(hop);
     hopSink.push(hop);
-    const target = redirectTarget(url, response);
-    if (target === undefined) return { response, url, hops };
+    let target: URL | undefined;
+    try { target = redirectTarget(url, response); } catch (error) {
+      response.abort();
+      release?.();
+      throw error;
+    }
+    if (target === undefined) return { response, url, hops, ...(release === undefined ? {} : { release }) };
     response.abort();
+    release?.();
     if (redirectCount === maximumRedirects) throw new RetrievalBoundaryError('redirect_limit_exceeded');
     url = target;
   }
@@ -303,10 +388,10 @@ function normalizeRobotsOctets(value: string): string {
   });
 }
 
-function robotsAllows(body: string, userAgent: string, target: URL): boolean {
+function robotsDecision(body: string, userAgent: string, target: URL): Readonly<{ allowed: boolean; crawlDelayMs: number }> {
   const agentToken = userAgent.toLowerCase().split(/[\s/]/u, 1)[0] ?? userAgent.toLowerCase();
-  const groups: { agents: string[]; rules: { allow: boolean; pattern: string }[] }[] = [];
-  let group: { agents: string[]; rules: { allow: boolean; pattern: string }[] } | undefined;
+  const groups: { agents: string[]; rules: { allow: boolean; pattern: string }[]; crawlDelays: number[] }[] = [];
+  let group: { agents: string[]; rules: { allow: boolean; pattern: string }[]; crawlDelays: number[] } | undefined;
   for (const rawLine of body.split(/\r?\n/u).slice(0, 20_000)) {
     const line = rawLine.replace(/#.*$/u, '').trim();
     if (line === '') continue;
@@ -316,12 +401,14 @@ function robotsAllows(body: string, userAgent: string, target: URL): boolean {
     const value = line.slice(separator + 1).trim();
     if (field === 'user-agent') {
       if (group === undefined || group.rules.length > 0) {
-        group = { agents: [], rules: [] };
+        group = { agents: [], rules: [], crawlDelays: [] };
         groups.push(group);
       }
       group.agents.push(value.toLowerCase());
     } else if ((field === 'allow' || field === 'disallow') && group !== undefined && value !== '') {
       group.rules.push({ allow: field === 'allow', pattern: value });
+    } else if (field === 'crawl-delay' && group !== undefined && /^\d+(?:\.\d{1,3})?$/u.test(value)) {
+      group.crawlDelays.push(Math.min(60_000, Math.ceil(Number(value) * 1_000)));
     }
   }
   const exactMatches = groups.map((candidate) => ({
@@ -338,7 +425,10 @@ function robotsAllows(body: string, userAgent: string, target: URL): boolean {
     normalizedPattern: normalizeRobotsOctets(rule.pattern),
   })).filter((rule) => robotsPattern(rule.normalizedPattern).test(path));
   matches.sort((left, right) => right.normalizedPattern.length - left.normalizedPattern.length || Number(right.allow) - Number(left.allow));
-  return matches[0]?.allow ?? true;
+  return Object.freeze({
+    allowed: matches[0]?.allow ?? true,
+    crawlDelayMs: Math.max(0, ...applicable.flatMap((candidate) => candidate.crawlDelays)),
+  });
 }
 
 function freezeReceipt(receipt: RetrievalFetchReceipt): Readonly<RetrievalFetchReceipt> {
@@ -356,6 +446,8 @@ function failureCode(error: unknown): string {
 export async function fetchRetrieval(request: RetrievalFetchRequest, dependencies: RetrievalFetchDependencies = {}): Promise<RetrievalFetchResult> {
   if (!/^fetch_[A-Za-z0-9]{20,64}$/u.test(request.fetchId)) throw new Error('invalid_retrieval_fetch_id');
   if (!Number.isSafeInteger(request.maximumBytes) || request.maximumBytes < 1 || request.maximumBytes > maximumResponseBytes) throw new Error('invalid_retrieval_maximum_bytes');
+  const maximumCompressedBytes = request.maximumCompressedBytes ?? Math.min(request.maximumBytes, 1024 * 1024);
+  if (!Number.isSafeInteger(maximumCompressedBytes) || maximumCompressedBytes < 1 || maximumCompressedBytes > maximumResponseBytes) throw new Error('invalid_retrieval_maximum_compressed_bytes');
   if (!/^[\x20-\x7e]{1,256}$/u.test(request.userAgent) || request.userAgent.trim() === '') throw new Error('invalid_retrieval_user_agent');
   const robotsTtlMs = dependencies.robotsTtlMs ?? 3_600_000;
   if (!Number.isSafeInteger(robotsTtlMs) || robotsTtlMs < 1_000 || robotsTtlMs > maximumRobotsTtlMs) throw new Error('invalid_robots_ttl');
@@ -370,6 +462,7 @@ export async function fetchRetrieval(request: RetrievalFetchRequest, dependencie
   const robots: RetrievalRobotsReceipt[] = robotsNotApplicable ? [{ status: 'not_applicable', cacheHit: false }] : [];
   let finalUrl: string | undefined;
   let response: RetrievalTransportResponse | undefined;
+  let releaseDomain: (() => void) | undefined;
   try {
     if (initialUrl === undefined) throw new RetrievalBoundaryError('unsafe_url');
     if (!request.providerAllowedContentUse.includes(request.mode)) throw new RetrievalBoundaryError('content_use_not_allowed');
@@ -377,49 +470,57 @@ export async function fetchRetrieval(request: RetrievalFetchRequest, dependencie
     const resolveHost = dependencies.resolve ?? defaultResolve;
     const transport = dependencies.request ?? defaultRequest;
     const cache = dependencies.robotsCache ?? new Map<string, RetrievalRobotsCacheEntry>();
-    const checkRobots = async (target: URL): Promise<void> => {
-      if (robotsNotApplicable) return;
+    const checkRobots = async (target: URL): Promise<number> => {
+      if (robotsNotApplicable) return 0;
       const cacheKey = `${target.origin}|${request.userAgent.toLowerCase()}`;
       let entry = cache.get(cacheKey);
       let cacheHit = entry !== undefined && timestamp(entry.expiresAt, 'robots_expiry') > startedMs;
       if (!cacheHit) {
         const robotsUrl = new URL('/robots.txt', target.origin);
-        const robotsFetch = await requestWithRedirects('robots', robotsUrl, request.deadlineAt, { accept: 'text/plain', 'user-agent': request.userAgent }, deadlineMs, now, resolveHost, transport, hops);
+        const robotsFetch = await requestWithRedirects('robots', robotsUrl, request.deadlineAt, { accept: 'text/plain', 'accept-encoding': 'identity', 'user-agent': request.userAgent }, deadlineMs, now, resolveHost, transport, hops, dependencies.signal);
         if (robotsFetch.response.status < 200 || robotsFetch.response.status >= 300) {
           robotsFetch.response.abort();
           robots.push({ status: 'unavailable', cacheHit: false, robotsUrl: robotsFetch.url.href });
           throw new RetrievalBoundaryError('robots_unavailable');
         }
-        const body = await readBoundedBody(robotsFetch.response, maximumRobotsBytes, deadlineMs, now);
+        const body = await readBoundedBody(robotsFetch.response, maximumRobotsBytes, deadlineMs, now, dependencies.signal);
         const fetchedAt = now().toISOString();
         const expiresAt = new Date(now().getTime() + robotsTtlMs).toISOString();
         entry = { body: new TextDecoder('utf-8', { fatal: true }).decode(body), fetchedAt, expiresAt, robotsUrl: robotsFetch.url.href };
         cache.set(cacheKey, entry);
         cacheHit = false;
       }
+      const parsedDecision = robotsDecision(entry!.body, request.userAgent, target);
       const decision: RetrievalRobotsReceipt = {
-        status: robotsAllows(entry!.body, request.userAgent, target) ? 'allowed' : 'disallowed',
+        status: parsedDecision.allowed ? 'allowed' : 'disallowed',
         cacheHit,
         robotsUrl: entry!.robotsUrl,
         fetchedAt: entry!.fetchedAt,
         expiresAt: entry!.expiresAt,
+        crawlDelayMs: parsedDecision.crawlDelayMs,
       };
       robots.push(decision);
       if (decision.status === 'disallowed') throw new RetrievalBoundaryError('robots_disallowed');
+      return parsedDecision.crawlDelayMs;
     };
-    const fetched = await requestWithRedirects('content', initialUrl, request.deadlineAt, { accept: [...allowedContentTypes].join(', '), 'user-agent': request.userAgent }, deadlineMs, now, resolveHost, transport, hops, checkRobots);
+    const fetched = await requestWithRedirects('content', initialUrl, request.deadlineAt, { accept: [...allowedContentTypes].join(', '), 'accept-encoding': 'gzip, deflate, br', 'user-agent': request.userAgent }, deadlineMs, now, resolveHost, transport, hops, dependencies.signal, dependencies.domainGovernor, checkRobots);
     response = fetched.response;
+    releaseDomain = fetched.release;
     finalUrl = fetched.url.href;
     if (response.status < 200 || response.status >= 300) throw new RetrievalBoundaryError('upstream_status_rejected');
     const contentType = header(response, 'content-type')?.split(';', 1)[0]?.trim().toLowerCase();
     if (contentType === undefined || !allowedContentTypes.has(contentType)) throw new RetrievalBoundaryError('content_type_not_allowed');
+    const rawEncoding = header(response, 'content-encoding')?.trim().toLowerCase() ?? 'identity';
+    if (!['identity', 'gzip', 'deflate', 'br'].includes(rawEncoding)) throw new RetrievalBoundaryError('content_encoding_not_allowed');
+    const contentEncoding = rawEncoding as 'identity' | 'gzip' | 'deflate' | 'br';
     const declaredLength = header(response, 'content-length');
     if (declaredLength !== undefined) {
       const parsed = Number(declaredLength);
       if (!Number.isSafeInteger(parsed) || parsed < 0) throw new RetrievalBoundaryError('invalid_content_length');
-      if (parsed > request.maximumBytes) throw new RetrievalBoundaryError('response_too_large');
+      if (parsed > maximumCompressedBytes) throw new RetrievalBoundaryError(contentEncoding === 'identity' ? 'response_too_large' : 'compressed_response_too_large');
     }
-    const body = await readBoundedBody(response, request.maximumBytes, deadlineMs, now);
+    const encodedBody = await readBoundedBody(response, maximumCompressedBytes, deadlineMs, now, dependencies.signal);
+    const body = decodeBoundedBody(encodedBody, contentEncoding, request.maximumBytes);
     ensureBeforeDeadline(deadlineMs, now);
     const bodySha256 = `sha256:${createHash('sha256').update(body).digest('hex')}`;
     ensureBeforeDeadline(deadlineMs, now);
@@ -436,6 +537,8 @@ export async function fetchRetrieval(request: RetrievalFetchRequest, dependencie
       robots,
       contentType,
       contentLengthBytes: body.byteLength,
+      compressedLengthBytes: encodedBody.byteLength,
+      contentEncoding,
       bodySha256,
     });
     return { receipt, body };
@@ -454,5 +557,7 @@ export async function fetchRetrieval(request: RetrievalFetchRequest, dependencie
       failureCode: failureCode(error),
     });
     return { receipt };
+  } finally {
+    releaseDomain?.();
   }
 }

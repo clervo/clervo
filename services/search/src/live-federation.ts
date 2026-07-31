@@ -5,12 +5,14 @@ import {
   canonicalizeSearchUrl,
   extractRetrieval,
   fetchRetrieval,
+  InMemoryRetrievalDomainGovernor,
   liveFederationRuntimeIdentity,
   type ConnectedExtractionProvenance,
   type ConnectedRouteEvidence,
   type LiveDiscoveryCandidate,
   type RetrievalFetchDependencies,
   type RetrievalFetchResult,
+  type RetrievalDomainGovernor,
 } from '../../../packages/contracts/src/index.js';
 import type { OpenDataDiscoveryAdapter } from '../../../adapters/search/src/open-data.js';
 import {
@@ -37,9 +39,11 @@ export class LiveFederationCircuit {
 
 export interface DirectCurrentPageFetchOptions {
   maximumBytes: number;
+  maximumCompressedBytes?: number;
   deadlineMs: number;
   userAgent: string;
   dependencies?: RetrievalFetchDependencies;
+  domainGovernor?: RetrievalDomainGovernor;
 }
 
 export type DirectCurrentPageFetch = (url: string, signal?: AbortSignal) => Promise<Readonly<RetrievalFetchResult>>;
@@ -52,6 +56,8 @@ export function createDirectCurrentPageFetch(options: DirectCurrentPageFetchOpti
   if (!Number.isInteger(options.maximumBytes) || options.maximumBytes < 1 || options.maximumBytes > 16 * 1024 * 1024
     || !Number.isInteger(options.deadlineMs) || options.deadlineMs < 1 || options.deadlineMs > 30_000
     || !/Clervo/u.test(options.userAgent) || !/\(.+@.+\)/u.test(options.userAgent)) throw new Error('invalid_direct_current_page_fetch_options');
+  const boundaryNow = options.dependencies?.now ?? (() => new Date());
+  const domainGovernor = options.domainGovernor ?? new InMemoryRetrievalDomainGovernor(2, 1_000, 60_000, () => boundaryNow().getTime());
   return async (url, signal) => {
     const canonical = canonicalizeSearchUrl(url);
     const parsed = new URL(canonical);
@@ -65,9 +71,10 @@ export function createDirectCurrentPageFetch(options: DirectCurrentPageFetchOpti
       mode: 'retained_evidence',
       providerAllowedContentUse: ['search_metadata', 'transient_extraction', 'retained_evidence'],
       maximumBytes: options.maximumBytes,
+      maximumCompressedBytes: options.maximumCompressedBytes ?? Math.min(options.maximumBytes, 1024 * 1024),
       deadlineAt: new Date(started.getTime() + options.deadlineMs).toISOString(),
       userAgent: options.userAgent,
-    }, options.dependencies);
+    }, { ...options.dependencies, domainGovernor, ...(signal === undefined ? {} : { signal }) });
   };
 }
 
@@ -88,12 +95,14 @@ export async function extractCurrentPage(input: {
   const extractionId = `extract_${createHash('sha256').update(`${input.fetch.receipt.fetchId}\n${input.fetch.receipt.bodySha256}`).digest('hex').slice(0, 32)}`;
   if (javascriptRequiredDeterministically(input.fetch.receipt, input.fetch.body)) {
     if (input.crawl4ai === undefined) throw new Error('crawl4ai_provisional_unavailable');
+    const browserHealth = input.crawl4ai.health?.();
+    if (browserHealth !== undefined && (browserHealth.lifecycle !== 'ready' || !browserHealth.isolationProven)) throw new Error('crawl4ai_isolation_unavailable');
     const rendered = await input.crawl4ai.render({ url: input.fetch.receipt.finalUrl, deadlineAt: input.deadlineAt, signal: input.signal });
     assertCrawl4AiRenderResult(rendered);
     return Object.freeze({
       title: rendered.title.normalize('NFKC').replace(/\s+/gu, ' ').trim(),
       text: rendered.text.normalize('NFKC').replace(/\r\n?/gu, '\n').trim(),
-      provenance: Object.freeze({ fetchId: input.fetch.receipt.fetchId, extractionId, sourceBodySha256: rendered.sourceBodySha256, normalizedTextSha256: rendered.normalizedTextSha256, instructionHandling: 'untrusted_data_only', renderMode: 'crawl4ai_javascript', crawl4aiStatus: 'provisional_n4_25' }),
+      provenance: Object.freeze({ fetchId: input.fetch.receipt.fetchId, extractionId, sourceBodySha256: rendered.sourceBodySha256, normalizedTextSha256: rendered.normalizedTextSha256, instructionHandling: 'untrusted_data_only', renderMode: 'crawl4ai_javascript', crawl4aiStatus: browserHealth === undefined ? 'provisional_n4_25' : 'runtime_attested' }),
     });
   }
   const extraction = await extractRetrieval({ extractionId, receipt: input.fetch.receipt, body: input.fetch.body, maximumOutputCharacters: 100_000, workerTimeoutMs: 2_000 });

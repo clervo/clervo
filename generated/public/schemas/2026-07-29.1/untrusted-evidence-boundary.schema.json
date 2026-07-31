@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.clervo.dev/2026-07-29.1/untrusted-evidence-boundary.schema.json",
+  "title": "Clervo retrieved-page prompt-injection boundary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policyId",
+    "routeId",
+    "exactEvidence",
+    "exactEvidenceSha256",
+    "provenance",
+    "provenanceSha256",
+    "pageEffects"
+  ],
+  "properties": {
+    "policyId": {
+      "const": "clervo.search.untrusted-evidence.v1"
+    },
+    "routeId": {
+      "enum": [
+        "clervo.focused-index.v1",
+        "clervo.live-federation.v1"
+      ]
+    },
+    "exactEvidence": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100000
+    },
+    "exactEvidenceSha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "provenanceSha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fetchId",
+        "extractionId",
+        "sourceBodySha256",
+        "normalizedTextSha256",
+        "instructionHandling",
+        "renderMode",
+        "crawl4aiStatus"
+      ],
+      "properties": {
+        "fetchId": {
+          "type": "string",
+          "pattern": "^fetch_[A-Za-z0-9]{20,64}$"
+        },
+        "extractionId": {
+          "type": "string",
+          "pattern": "^extract_[A-Za-z0-9]{20,64}$"
+        },
+        "sourceBodySha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "normalizedTextSha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "instructionHandling": {
+          "const": "untrusted_data_only"
+        },
+        "renderMode": {
+          "enum": [
+            "static",
+            "crawl4ai_javascript"
+          ]
+        },
+        "crawl4aiStatus": {
+          "enum": [
+            "not_used",
+            "provisional_n4_25",
+            "runtime_attested"
+          ]
+        }
+      }
+    },
+    "pageEffects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "route",
+        "tools",
+        "payment",
+        "systemPolicy",
+        "citations",
+        "execution"
+      ],
+      "properties": {
+        "route": {
+          "const": false
+        },
+        "tools": {
+          "const": false
+        },
+        "payment": {
+          "const": false
+        },
+        "systemPolicy": {
+          "const": false
+        },
+        "citations": {
+          "const": false
+        },
+        "execution": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

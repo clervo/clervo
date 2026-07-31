@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "stage": 4,
-  "evaluatedAt": "2026-07-31T05:19:00.000Z",
+  "evaluatedAt": "2026-07-31T15:29:39.000Z",
   "scope": "bounded_repository_and_staging_exit_verification",
   "sourceState": {
     "stagingReleaseStatus": "verified-private-recorded-only",
@@ -48,19 +48,19 @@
       "id": "isolated_javascript_retrieval",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.13 proves a versioned injected browser boundary with successful robots-compliant static preflight, disposable-process isolation attestation, core-authorized same-origin public network requests, strict request/byte/deadline/cancellation limits, and hash-bound receipts locally; no concrete browser adapter or staging execution evidence exists."
+      "evidence": "N4.25 adds an exact-attested one-page Crawl4AI worker boundary, gateway-only network policy, hard resource/output limits, teardown/orphan reaping, kill switch, and dishonest-health rejection locally. The runtime stays unavailable because no pinned image, container/browser runtime, authorization gateway, or staging execution evidence exists."
     },
     {
       "id": "retrieval_safety_controls",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.3 proves static timeout, size, redirect, MIME, DNS rebinding, SSRF, and robots controls; N4.13 reuses successful robots-compliant preflight and adds core-authorized browser-network controls locally."
+      "evidence": "N4.3/N4.13/N4.25 locally prove URL/protocol denial, pre/post-DNS socket pinning, rebinding/private/metadata/IPv6 denial, every-hop redirects, robots and crawl-delay, per-domain concurrency, MIME, compressed/decompressed/output ceilings, deadline/cancellation, and gateway-authorized browser network controls. No deployed security transcript exists."
     },
     {
       "id": "prompt_injection_boundaries",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.7 and N4.10 prove fixed no-tools/no-actions synthesis over explicitly untrusted recorded evidence."
+      "evidence": "N4.7/N4.10 prove fixed no-tools/no-actions synthesis, and N4.25 hash-binds exact page text, route and extraction provenance with zero authority over route, tools, payment, system policy, citations or execution. No staging live-content proof exists."
     },
     {
       "id": "evidence_tied_citations",
@@ -72,7 +72,7 @@
       "id": "disclosed_cache_freshness",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.14 proves a strict request- and response-bound cache disclosure for miss, fresh-hit, and stale-revalidated outcomes with recomputed ages, freshness lifetime, revalidation evidence, schema validation, and public HTTP output locally; no durable cache or staging execution evidence exists."
+      "evidence": "N4.14 plus N4.25 locally prove visible freshness and environment-separated filesystem/PostgreSQL durable cache boundaries with normalized-URL/exact-route/policy keys, checksums, poisoning rejection, forced refresh/eviction/removal/denylist invalidation, and disclosed stale-while-degraded. No staging PostgreSQL execution exists."
     },
     {
       "id": "language_and_region_options",
@@ -114,7 +114,7 @@
       "id": "ssrf_and_security_suite",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "Injected static and JavaScript SSRF/rebinding, redirect/origin, MIME, size, timeout, cancellation, transcript, and isolation-attestation tests pass locally; no staging security run exists."
+      "evidence": "N4.25 deterministic adversarial tests add private/metadata/IPv6 targets, DNS rebinding, private redirects, decompression and output floods, unsupported MIME, timeout/cancellation, browser crash/state leakage, worker unavailable, orphan cleanup, kill switch, cache poisoning/identity/stale behavior, malicious instructions, and dishonest health. No authenticated staging run exists."
     },
     {
       "id": "blockrun_compatible_baseline_improvement",
@@ -150,5 +150,5 @@
   "decision": "blocked",
   "referencePatternAuthorized": false,
   "stage5Authorized": false,
-  "nextAction": "Keep the verified private recorded-only free sample bounded, then qualify two live lawful retrieval paths and complete payable routing, staging security/benchmark runs, a real telemetry collector, dashboards, delivered alerts, and hard cost caps before rerunning N4.11."
+  "nextAction": "Execute N4.26 only: run calibrated live staging benchmarks and prove monitoring delivery, infrastructure/provider budgets, cost caps, circuits, and traffic-stop drills while preserving all unresolved staging, supplier, commerce, and Stage 5 gates."
 }

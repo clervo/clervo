@@ -119,7 +119,7 @@ export interface ConnectedExtractionProvenance {
   normalizedTextSha256: string;
   instructionHandling: 'untrusted_data_only';
   renderMode: 'static' | 'crawl4ai_javascript';
-  crawl4aiStatus: 'not_used' | 'provisional_n4_25';
+  crawl4aiStatus: 'not_used' | 'provisional_n4_25' | 'runtime_attested';
 }
 
 export interface ConnectedRouteEvidence {

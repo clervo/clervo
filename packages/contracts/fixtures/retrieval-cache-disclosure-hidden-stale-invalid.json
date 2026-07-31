@@ -1,0 +1,18 @@
+{
+  "schema": "retrieval-cache-disclosure",
+  "valid": false,
+  "value": {
+    "state": "stale_while_degraded",
+    "reason": "fresh_hit",
+    "cacheKey": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "routeId": "clervo.live-federation.v1",
+    "normalizedUrl": "https://example.com/page",
+    "requestPolicySha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "observedAt": "2026-07-31T18:00:00.000Z",
+    "fetchedAt": "2026-07-31T17:58:00.000Z",
+    "expiresAt": "2026-07-31T17:59:00.000Z",
+    "ageSeconds": 120,
+    "staleWhileDegraded": false,
+    "bodySha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  }
+}

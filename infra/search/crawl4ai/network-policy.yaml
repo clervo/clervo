@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: clervo-crawl4ai-default-deny
+  namespace: clervo-search-browser
+spec:
+  podSelector:
+    matchLabels:
+      app: clervo-crawl4ai-worker
+  policyTypes: ["Ingress", "Egress"]
+  ingress: []
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: clervo-search-control
+          podSelector:
+            matchLabels:
+              app: clervo-retrieval-authorization-gateway
+      ports:
+        - protocol: TCP
+          port: 8443

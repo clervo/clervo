@@ -23,7 +23,8 @@
         "cacheHit": { "type": "boolean" },
         "robotsUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
         "fetchedAt": { "type": "string", "format": "date-time" },
-        "expiresAt": { "type": "string", "format": "date-time" }
+        "expiresAt": { "type": "string", "format": "date-time" },
+        "crawlDelayMs": { "type": "integer", "minimum": 0, "maximum": 60000 }
       },
       "additionalProperties": false
     }
@@ -42,6 +43,8 @@
     "robots": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/robots" } },
     "contentType": { "enum": ["text/html", "text/plain", "application/xhtml+xml", "application/json", "application/pdf"] },
     "contentLengthBytes": { "type": "integer", "minimum": 0 },
+    "compressedLengthBytes": { "type": "integer", "minimum": 0 },
+    "contentEncoding": { "enum": ["identity", "gzip", "deflate", "br"] },
     "bodySha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
     "failureCode": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,95}$" }
   },
