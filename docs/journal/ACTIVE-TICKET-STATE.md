@@ -1,35 +1,48 @@
 # Active ticket state
 
-**Ticket:** N4.25 — Browser retrieval, durable cache, and complete search security boundary
-**Stage:** 4 — Search vertical slice remediation
-**One question:** Can Clervo production-harden the internal JavaScript fallback, retrieval/cache behavior, and prompt-injection boundary without exposing a browser surface or claiming isolation that this container cannot prove?
-**Result:** complete; repository-verified with browser/runtime and staging proof honestly unavailable
+**Ticket:** NPLAN.2 — Clervo Live Intelligence First Revenue Release authority
+**Stage:** planning amendment; Stage 4 Search remains active
+**Result:** complete at the documentation and repository-authority boundary
 
-## Decision and implementation
+## Decision
 
-- Added gateway-only, no-ingress Crawl4AI isolation with exact runtime attestation, one-page/process/output/resource ceilings, ephemeral state, deterministic teardown, orphan reaping, and kill switch. Missing proof is `unavailable`.
-- Hardened fetch with cancellation, compressed/decompressed limits, robots crawl-delay, shared per-domain concurrency, and retained per-hop DNS/socket/redirect/MIME/byte enforcement.
-- Added environment-separated durable filesystem/PostgreSQL cache adapters with URL/route/policy keys, integrity checks, visible freshness, disclosed stale-while-degraded, forced refresh/eviction/removal/denylist invalidation, and no customer/secret/wallet/browser-state fields.
-- Bound exact retrieved content/provenance as untrusted evidence with no authority over routes, tools, payments, system policy, citations, or execution.
+- Permanent company identity: Clervo — outcome infrastructure for agents.
+- First Revenue Release: Clervo Live Intelligence.
+- Permanent narrative: Find → Understand → Act.
+- Current product: Discover → Retrieve → Structure → Verify → Monitor.
+- AI and Sandbox follow the First Revenue Release as additive layers; RPC,
+  Prediction, and Crypto Intelligence remain later additive expansions.
+- Historical Stages 0–4, ticket IDs, commits, evidence, and outcomes are
+  unchanged.
 
-## Evidence and validation
+## Truth preserved
 
-- Focused N4.25: 13/13 passed; N4.23B regression: 8/8; N4.24 regression: 12/12.
-- Contracts: 43 schemas / 81 fixtures; discovery: 43 schemas.
-- Typecheck and lint passed (228 source/contract files); full working-tree/history secret scan, clean-room boundary, and diff checks passed.
-- Stage 4 verifier ran exactly once: integrity passed, decision `blocked`, 21 blockers, reference pattern false, Stage 5 false, 0 external calls, 0 USDC.
-- Canonical `npm test` remains reserved for N4.28 and did not run.
-- Docker/Podman, Crawl4AI, Playwright, digest-pinned image/gateway, and staging identity are absent. Worker stays zero-replica/kill-switched and unavailable. No staging evidence was promoted.
-
-## Cost, network, and credentials
-
-- Deterministic injected/loopback fixtures only; 0 external calls; USD 0.000000 third-party search-provider and infrastructure cost; 0 USDC.
-- No secret, provider account, cloud/IAM/deployment, wallet/facilitator, payment, legacy runtime, or `/run/secrets/clervo-legacy.env` access.
+- Search remains `preview`; AI and Sandbox remain `unavailable`; RPC,
+  Prediction, and Crypto Intelligence remain `planned_post_launch`.
+- The First Revenue Release is not ready.
+- Stage 4 remains blocked on exactly 21 source-bound checks; search is not the
+  reference pattern and Stage 5 Live Intelligence productization is not
+  authorized.
+- NPLAN.2 changed no runtime search behavior, staging evidence, verifier source,
+  cloud, deployment, provider, credential, wallet, payment, USDC, or legacy
+  state.
+- Canonical `npm test` remains reserved for N4.28 and did not run. The Stage 4
+  verifier did not run.
 
 ## Exact next action
 
-- N4.26 only after this commit and explicit continuation: calibrated live staging benchmarks plus monitoring delivery, infrastructure/provider budgets, cost caps, circuits, and traffic-stop drills. Do not begin N4.27, N4.28, Stage 5, or any expansion stage in this run.
+N4.26 only: benchmark the actual Clervo Live Intelligence launch product
+across commerce/marketplaces, property/local markets, companies/competitors,
+research/evidence, and developer/agent retrieval. Measure relevant-result
+recall, precision, freshness, structured-field accuracy, exact citation
+validity, duplicate suppression, domain diversity, change accuracy where
+implemented, latency, degradation, infrastructure cost, and bounded worst-case
+cost. Include selected free/open-source components and permitted paid
+benchmarks without making paid providers production dependencies; prove
+monitoring delivery, infrastructure/provider budgets, cost caps, circuits, and
+traffic-stop drills.
 
-## Stage and stop condition
+## Stop condition
 
-- Stage 4 remains blocked on exactly 21 source-bound checks; reference-pattern and Stage 5 authorization remain false. Commit N4.25 atomically and stop.
+Commit NPLAN.2 atomically and stop. Do not begin N4.26, N4.27, N4.28, Stage 5,
+AI, Sandbox, deployment, payment, or any expansion stage in this run.

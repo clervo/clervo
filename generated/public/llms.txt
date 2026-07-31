@@ -1,21 +1,25 @@
-# Clervo Next
+# Clervo
 
-> Find, reason, and execute through one outcome-oriented platform. The Initial Commercial Release is scoped to Search, AI, and Sandbox; only the repository-local search slice is currently implemented, and it remains unverified.
+> Clervo is outcome infrastructure for agents. Clervo Live Intelligence is the planned First Revenue Release; only a repository-local search slice is currently implemented, and it remains unverified.
 
 Important status:
 
 - Lifecycle: implemented_unverified
-- Initial Commercial Release pillars: Search, AI, Sandbox
+- First Revenue Release: Clervo Live Intelligence
+- Current product path: Discover, Retrieve, Structure, Verify, Monitor
+- Permanent expansion: Find, Understand, Act
 - Search release lifecycle: preview
-- AI release lifecycle: unavailable
-- Sandbox release lifecycle: unavailable
-- Planned post-launch expansion: RPC, Prediction, Crypto intelligence
+- AI release lifecycle: unavailable; additive after First Revenue Release
+- Sandbox release lifecycle: unavailable; additive after AI
+- Planned later platform expansion: RPC, Prediction, Crypto intelligence
 - Callable products: search.web, search.answer
 - Product selection: synthesize=false selects search.web; synthesize=true selects search.answer
 - Free endpoint: POST /v1/search/free
 - Paid endpoint: POST /v1/search/paid (non-payable mock challenge by default)
 - x402 payment implementation: not implemented
+- First Revenue Release ready: false
 - Production deployment: not verified
+- llms.txt is a documentation map, not a search or AI ranking claim
 
 ## Machine-readable contracts
 

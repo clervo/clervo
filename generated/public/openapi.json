@@ -2,9 +2,9 @@
   "openapi": "3.1.1",
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
-    "title": "Clervo Next search contract",
+    "title": "Clervo Live Intelligence search contract",
     "version": "2026-07-29.1",
-    "description": "Generated repository-local contract for separately priced raw retrieval and synthesized-answer products on the bounded search.query HTTP slice. Deployment is not verified and public payment is not implemented."
+    "description": "Generated repository-local contract for separately priced raw retrieval and synthesized-answer products on the bounded search.query HTTP slice. This is not the finished First Revenue Release. Deployment is not verified and public payment is not implemented."
   },
   "paths": {
     "/v1/search/free": {
@@ -3683,27 +3683,97 @@
         "type": "object",
         "required": [
           "scopeVersion",
-          "initialCommercialRelease",
+          "company",
+          "firstRevenueRelease",
           "fullPlatformExpansion",
           "pillars"
         ],
         "properties": {
           "scopeVersion": {
-            "const": "2026-07-31.1"
+            "const": "2026-07-31.2"
           },
-          "initialCommercialRelease": {
+          "company": {
             "type": "object",
             "required": [
+              "name",
+              "identity",
+              "permanentNarrative"
+            ],
+            "properties": {
+              "name": {
+                "const": "Clervo"
+              },
+              "identity": {
+                "const": "outcome infrastructure for agents"
+              },
+              "permanentNarrative": {
+                "const": [
+                  "find",
+                  "understand",
+                  "act"
+                ]
+              }
+            },
+            "additionalProperties": false
+          },
+          "firstRevenueRelease": {
+            "type": "object",
+            "required": [
+              "productId",
+              "productName",
               "requiredPillars",
+              "requirements",
               "ready"
             ],
             "properties": {
+              "productId": {
+                "const": "clervo.live_intelligence"
+              },
+              "productName": {
+                "const": "Clervo Live Intelligence"
+              },
               "requiredPillars": {
                 "const": [
-                  "search",
-                  "ai",
-                  "sandbox"
+                  "search"
                 ]
+              },
+              "requirements": {
+                "type": "array",
+                "minItems": 16,
+                "maxItems": 16,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "requirementId",
+                    "verified"
+                  ],
+                  "properties": {
+                    "requirementId": {
+                      "enum": [
+                        "search",
+                        "fetch",
+                        "extract",
+                        "provenance_exact_citations",
+                        "compare",
+                        "monitoring",
+                        "changes",
+                        "alerts",
+                        "machine_readable_api",
+                        "mcp_sdk_access",
+                        "bounded_pricing_receipts",
+                        "tested_onboarding",
+                        "production_deployment",
+                        "public_product_pages_documentation",
+                        "real_demonstrations",
+                        "external_useful_paid_result"
+                      ]
+                    },
+                    "verified": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false
+                }
               },
               "ready": {
                 "type": "boolean"
@@ -3759,8 +3829,9 @@
                 },
                 "release": {
                   "enum": [
-                    "initial_commercial_release",
-                    "post_launch_expansion"
+                    "first_revenue_release",
+                    "additive_expansion",
+                    "later_platform_expansion"
                   ]
                 },
                 "lifecycle": {
@@ -3787,7 +3858,10 @@
                   "if": {
                     "properties": {
                       "release": {
-                        "const": "post_launch_expansion"
+                        "enum": [
+                          "additive_expansion",
+                          "later_platform_expansion"
+                        ]
                       }
                     },
                     "required": [

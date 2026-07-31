@@ -444,3 +444,43 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Validation: N4.25 13/13, N4.23B 8/8, N4.24 12/12, contracts 43 schemas/81 fixtures, discovery 43 schemas, typecheck, lint over 228 source/contract files, full working-tree/history secret scan, clean-room boundary, and diff checks passed. The Stage 4 verifier ran exactly once and passed integrity with decision `blocked`, 21 blockers, reference-pattern authorization false, Stage 5 authorization false, 0 external calls, and 0 USDC. Canonical `npm test` did not run and remains reserved for N4.28.
 - Network/cost: deterministic injected/loopback fixtures only, zero external calls, USD 0.000000 provider/infrastructure cost, no credentials/cloud/deployment/payment/wallet/legacy access, and 0 USDC.
 - Stage 4 remains blocked on 21 checks before and after; no `stagingVerified` value changed, search is not the reference pattern, and Stage 5 remains unauthorized. Exact next ticket: N4.26 only; stop after the N4.25 commit.
+
+## 2026-07-31 — NPLAN.2 Clervo Live Intelligence First Revenue Release authority
+
+- Installed `docs/product/CLERVO-LIVE-INTELLIGENCE-LAUNCH-AUTHORITY.md` as the
+  one canonical repository product/launch authority. Clervo remains outcome
+  infrastructure for agents; Clervo Live Intelligence is the First Revenue
+  Release; the permanent narrative is Find → Understand → Act.
+- Preserved every completed Stage 0–4 ticket, commit, outcome, evidence, and
+  append-only journal entry. Marked NPLAN.1 as an explicit historical decision
+  without changing its recorded result; amended only future stages.
+- Reordered the future program to Live Intelligence productization; access,
+  onboarding, and distribution; production hardening/deployment; bounded real
+  settlement; external paid demand/launch; AI; Secure Sandbox; combined
+  workflows; RPC; Prediction; Crypto Intelligence; and Stage 16 compatibility.
+- Added a versioned fail-closed First Revenue Release scope with 16 required
+  proofs. Search remains `preview`, AI/Sandbox `unavailable`, later pillars
+  `planned_post_launch`, every launch proof false, both release gates false,
+  payment unimplemented, and deployment unverified.
+- Synchronized generated discovery, README, builder, brand, marketing, website
+  prototype, solution-pack framework, autonomy policy, ticket, evidence, and
+  handoff. Defined seven connector access modes, the exact claims ladder, five
+  solution packs, full onboarding/recovery journey, discovery/distribution
+  system, legacy migration boundary, and candidate AI/media constraints.
+- N4.26 now targets the actual Live Intelligence launch product across five
+  task families and the required recall, precision, freshness, structured-field
+  accuracy, citation, duplicate, diversity, change, latency, degradation, and
+  bounded-cost metrics, with free/open and permitted paid comparison groups but
+  no paid production dependency.
+- Validation: NPLAN.2 6/6; NPLAN.1 history 2/2; discovery 6/6 and 43 schemas;
+  contracts 43 schemas/81 fixtures; product-scope consistency, typecheck, lint
+  across 229 files, full secret scan, clean-room boundary, contradiction audit,
+  and diff checks passed. One initial discovery test caught a stale heading
+  assertion; it was synchronized and passed on focused rerun. Canonical
+  `npm test` and the Stage 4 verifier did not run.
+- Network/cost/state: 0 external calls, USD 0.000000 provider/infrastructure
+  cost, no credentials/secrets/cloud/IAM/deployment/provider/payment/wallet/
+  legacy access or mutation, and 0 USDC. The same 21 Stage 4 blockers remain;
+  reference-pattern and Stage 5 authorization remain false.
+- NPLAN.2 is complete. Exact next ticket: N4.26 only. Stop here; do not begin
+  N4.27, N4.28, Stage 5, AI, Sandbox, or any expansion stage.

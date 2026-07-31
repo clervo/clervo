@@ -1,5 +1,11 @@
 # NPLAN.1 focused Initial Commercial Release
 
+> **Historical decision record:** NPLAN.1 remains preserved as the decision
+> completed at commit `9c792ec`. NPLAN.2 supersedes only its forward release
+> and future-stage authority. The text below records the historical outcome and
+> is not the current launch definition; see
+> `docs/product/CLERVO-LIVE-INTELLIGENCE-LAUNCH-AUTHORITY.md`.
+
 **Status:** owner-authorized product and roadmap decision
 **Date:** 2026-07-31
 

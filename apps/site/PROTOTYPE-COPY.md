@@ -6,31 +6,47 @@
 
 **Buy outcomes. Not integrations.**
 
-Find → Reason → Execute.
+**Clervo Live Intelligence**
 
-One wallet and one machine-discoverable x402 platform combining advanced Search, broad AI inference, and a secure Sandbox.
+Clervo-owned live Web retrieval for agents: discover, retrieve, structure,
+verify, compare, and monitor the open Web and authorized sources.
+
+Permanent expansion: **Find → Understand → Act**.
 
 Primary journey: **Install → Ask → Fund → Approve → Result → Receipt**.
 
-## Outcome workflow placeholders
+No working CTA, public product route, production deployment, payable x402
+route, package, external customer, or First Revenue Release is claimed.
 
-- Commerce and price intelligence.
-- Real-estate research and lawful monitoring.
-- Competitor and market research.
-- Lead and company research from lawful public data.
-- Document and data processing.
-- Developer and data workflows.
-- Recurring lawful monitoring and alerts.
+## Current product and solution-pack placeholders
 
-These are content directions, not implemented-agent claims. A workflow may be promoted only after its exact calls, bounded payment, useful result, verification, receipt, safe failure behavior, and repeatable proof pass.
+Current product path: **Discover → Retrieve → Structure → Verify → Monitor**.
+
+- Commerce and Marketplace Intelligence.
+- Property and Local-Market Intelligence.
+- Company and Competitive Intelligence.
+- Research and Evidence.
+- Developer and Agent Context.
+
+These are content directions, not implemented-product claims. A workflow may
+be promoted only after its exact calls, access modes, bounded price and
+payment, useful result, evidence, receipt, safe failure, operations, benchmark,
+and repeatable real demonstration pass.
 
 ## Capability framing
 
-- Search — `preview`; the repository-local slice is implemented but Stage 4 remains blocked.
-- AI — `unavailable`; required for Initial Commercial Release, not started.
-- Sandbox — `unavailable`; required for Initial Commercial Release, not started.
+- Search — `preview`; repository-local behavior exists but Stage 4 remains
+  blocked on 21 source-bound checks.
+- Clervo Live Intelligence First Revenue Release — not ready; compare,
+  customer monitoring, changes, alerts, MCP/SDK access, production deployment,
+  public product experience, and external useful paid proof remain unproven.
+- AI — `unavailable`; additive after the First Revenue Release.
+- Sandbox — `unavailable`; additive after the AI layer.
 - RPC — `planned/post-launch`.
 - Prediction — `planned/post-launch`.
 - Crypto Intelligence — `planned/post-launch`.
 
-No price, provider, customer, transaction, metric, screenshot, agent, or command is represented here as proven.
+Before comparative proof, the permitted positioning is **Clervo-owned live Web
+retrieval**. “Advanced live intelligence for agents” remains gated. No price,
+provider, customer, transaction, revenue, accuracy, metric, screenshot, agent,
+command, or result is represented here as proven.

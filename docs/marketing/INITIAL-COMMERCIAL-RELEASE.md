@@ -1,27 +1,56 @@
-# Initial Commercial Release marketing scope
+# Clervo Live Intelligence First Revenue Release marketing scope
 
 ## Position
 
-**Buy outcomes. Not integrations.** Clervo combines Search, AI, and Sandbox so a customer can `Find → Reason → Execute` through one wallet, one bounded x402 flow, and one machine-discoverable platform.
+**Buy outcomes. Not integrations.** Clervo is outcome infrastructure for
+agents. The First Revenue Release is **Clervo Live Intelligence**, using one
+machine-discoverable API and one bounded x402 flow to discover, retrieve,
+structure, verify, compare, and monitor the open Web and authorized sources.
+The permanent expansion narrative is **Find → Understand → Act**.
 
-Lead with useful, reproducible work—not “three APIs” and never six-service availability. Launch material is built from one-request demonstrations, ready-made agents, executable guides, and task pages only after each underlying behavior is proven.
+Before comparative commercial proof, use **Clervo-owned live Web retrieval**.
+After the benchmark gate passes, use **Advanced live intelligence for agents**.
+Never use a general superiority claim when only one named workflow comparison
+has passed.
 
-## Launch-content lanes
+## Solution-pack lanes
 
-- Commerce: current price and assortment intelligence with cited sources and bounded analysis.
-- Real estate: lawful public-listing and market research with recurring change monitoring.
-- Research: competitor, market, company, and evidence-backed briefing workflows.
-- Sales and lead intelligence: lawful company research and public-signal qualification, not personal-data harvesting or unsolicited outreach automation.
-- Operational monitoring: recurring lawful page, policy, release, and market changes with safe alerts.
-- Developer and data workflows: dependency research, document/data processing, extraction, normalization, and isolated transformations.
+- Commerce and Marketplace Intelligence.
+- Property and Local-Market Intelligence.
+- Company and Competitive Intelligence.
+- Research and Evidence.
+- Developer and Agent Context.
 
-Each published page must name the exact customer job, callable products, data boundary, price or maximum charge only when verified, failure behavior, receipt/provenance, and a reproducible proof. Ready-made agents remain candidates until their end-to-end evidence passes.
+Commerce is one pack, not the company. Each published page names the exact
+customer job, callable products, connector access mode, data boundary, source
+policy, price or maximum charge only when verified, failure behavior,
+receipt/provenance, and reproducible proof.
+
+## Proof-led launch system
+
+Marketing uses real one-request demonstrations, source/result evidence,
+benchmark comparisons, failure proofs, build updates, and working templates.
+The public journey is **Install → Ask → Fund → Approve → Result → Receipt**.
+There is no traditional API key requirement for the primary x402 journey and
+no manual payment-header construction.
+
+OpenAPI, MCP, TypeScript and Python SDKs, raw HTTP examples, x402 discovery and
+x402scan, `llms.txt`, JSON-LD, sitemaps, registries, GitHub, task pages, working
+examples, and status must tell the same truth. `llms.txt` alone is not a search
+or AI ranking strategy.
 
 ## Evidence labels
 
-- **Build in public:** implementation progress; never a readiness claim.
-- **Capability preview:** callable or recorded evidence exists but launch gates are incomplete.
-- **Launch-ready proof:** deployed, repeatable, paid/receipt-safe behavior has passed its source-bound gate.
-- **Post-launch roadmap:** additive RPC, Prediction, or Crypto Intelligence work that is not currently available.
+- **Build in public:** implementation progress; never readiness.
+- **Capability preview:** repository or recorded evidence exists; launch gates
+  remain incomplete.
+- **Launch-ready proof:** deployed, repeatable, paid/receipt-safe behavior has
+  passed its source-bound gate.
+- **Market-verified:** an external buyer received and paid for a useful result.
+- **Post-launch roadmap:** AI, Sandbox, RPC, Prediction, or Crypto work that is
+  not currently available.
 
-No placeholder may contain invented prices, providers, commands, transactions, customer logos, testimonials, usage metrics, screenshots, or agents presented as live.
+No placeholder may contain invented prices, providers, commands, transactions,
+customers, logos, testimonials, revenue, usage, accuracy, screenshots,
+dashboards, agents, or results. Closed platforms are authorized connectors,
+never unrestricted anonymous Web coverage.

@@ -1,14 +1,26 @@
 {
   "artifact": "prototype_scope_only",
-  "headline": "Find → Reason → Execute",
-  "tagline": "Buy outcomes. Not integrations.",
+  "company": {
+    "name": "Clervo",
+    "identity": "outcome infrastructure for agents",
+    "tagline": "Buy outcomes. Not integrations.",
+    "permanentNarrative": ["Find", "Understand", "Act"]
+  },
+  "headline": "Clervo Live Intelligence",
+  "currentProductPath": ["Discover", "Retrieve", "Structure", "Verify", "Monitor"],
   "journey": ["Install", "Ask", "Fund", "Approve", "Result", "Receipt"],
-  "initialCommercialRelease": [
-    { "id": "search", "label": "Search", "lifecycle": "preview" },
+  "firstRevenueRelease": {
+    "productId": "clervo.live_intelligence",
+    "productName": "Clervo Live Intelligence",
+    "requiredPillars": ["search"],
+    "ready": false,
+    "lifecycle": "preview"
+  },
+  "additiveExpansion": [
     { "id": "ai", "label": "AI", "lifecycle": "unavailable" },
     { "id": "sandbox", "label": "Sandbox", "lifecycle": "unavailable" }
   ],
-  "postLaunchExpansion": [
+  "laterPlatformExpansion": [
     { "id": "rpc", "label": "RPC", "lifecycle": "planned_post_launch" },
     { "id": "prediction", "label": "Prediction", "lifecycle": "planned_post_launch" },
     { "id": "crypto_intelligence", "label": "Crypto Intelligence", "lifecycle": "planned_post_launch" }
