@@ -1,0 +1,35 @@
+{
+  "schema": "retrieval-supply",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "decisionId": "rsupply_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "evaluatedAt": "2026-07-31T02:30:00.000Z",
+    "broker": {
+      "brokerId": "broker_searxng.self_hosted",
+      "deployment": "self_hosted",
+      "selected": true,
+      "upstreams": [
+        { "sourceId": "source_engine.alpha", "providerId": "provider_engine.alpha", "failureDomain": "engine_alpha", "qualificationId": "qual_01JZ8Q5Y4QFD48Q24H6M5F4K9A", "qualificationStatus": "passed", "substitutionPolicy": "exact" },
+        { "sourceId": "source_engine.beta", "providerId": "provider_engine.beta", "failureDomain": "engine_beta", "qualificationId": "qual_01JZ8Q5Y4QFD48Q24H6M5F4K9B", "qualificationStatus": "passed", "substitutionPolicy": "exact" }
+      ]
+    },
+    "archive": { "sourceId": "source_commoncrawl.archive", "providerId": "provider_commoncrawl", "failureDomain": "commoncrawl_archive", "qualificationId": "qual_01JZ8Q5Y4QFD48Q24H6M5F4K9C", "qualificationStatus": "passed", "substitutionPolicy": "exact", "mechanism": "public_archive", "directAccess": true },
+    "optionalAdapters": [
+      { "sourceId": "source_brave.search", "providerId": "provider_brave.search", "failureDomain": "brave_api", "qualificationId": "qual_01JZ8Q5Y4QFD48Q24H6M5F4K9D", "qualificationStatus": "not_run", "substitutionPolicy": "exact" }
+    ],
+    "extractionWorkers": [
+      { "workerId": "worker_crawl4ai", "selected": false, "qualificationStatus": "not_run", "safetyBoundary": "bounded_retrieval_adapter", "deterministicFixturesPassed": false, "timeoutEnforced": false, "resourceLimitsEnforced": false, "failureIsolationPassed": false, "substitutionPolicy": "exact" }
+    ],
+    "deferredTools": [
+      { "toolId": "tool_scrapegraphai", "disposition": "deferred", "coreDependency": false },
+      { "toolId": "tool_agent_browser", "disposition": "deferred", "coreDependency": false },
+      { "toolId": "tool_browser_use", "disposition": "deferred", "coreDependency": false },
+      { "toolId": "tool_agent_reach", "disposition": "deferred", "coreDependency": false }
+    ],
+    "brokerReady": true,
+    "archiveIndependent": true,
+    "readySearchSupply": true,
+    "failureCodes": []
+  }
+}

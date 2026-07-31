@@ -330,3 +330,12 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Runtime limits remain 1 CPU, 512 MiB, concurrency 8, timeout 60 seconds, min instances 0, and max instances 1. The service is private/authenticated and intentionally left running as the verified staging slice.
 - Claims still unproven: live lawful retrieval suppliers, concrete browser execution, durable staging cache semantics, staging security and benchmark runs, payable routing/real settlement, monitoring snapshot collection, dashboards, paging or delivered alerts, and hard live-provider spend stops.
 - Cost/network effects: Cloud Build, Artifact Registry, Cloud Run deployment, authenticated smoke, control-plane inspection, and log reads only; no external retrieval provider or model call, no wallet/facilitator call, no real payment, and 0 USDC spent.
+
+## 2026-07-31 — N4.19 provider-neutral lawful free-first retrieval supply
+
+- Added one additive retrieval-supply qualification contract and strict schema without changing completed Stage 4 retrieval, safety, provenance, normalization, deduplication, ranking, citation, synthesis, benchmark, deployment, or exit-verification contracts.
+- Made Brave an optional exact-identity adapter. Ready supply requires a self-hosted metasearch broker with at least two independently qualified upstream providers plus direct independently qualified Common Crawl archive access; public shared SearXNG is ineligible.
+- Evaluated Crawl4AI first and alone from primary sources. It remains unselected because Clervo-specific deterministic fixtures, timeouts, resource limits, and failure isolation were not proven. All other named worker/browser candidates remain deferred and uninstalled.
+- Focused `npm run test:n4.19` passed 6/6. Canonical `npm test` was run once; lint and typecheck passed, then the clean-room boundary stopped on a pre-existing untracked owner master-plan reference file. That owner file was preserved unchanged.
+- No provider call, repository installation, deployment, credential use, payment, wallet operation, or USDC spend occurred.
+- Stage 4 remains blocked, search is not the reference pattern, and Stage 5 remains unauthorized. No next ticket is inferred.

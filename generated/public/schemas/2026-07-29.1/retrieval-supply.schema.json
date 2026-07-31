@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/retrieval-supply.schema.json",
+  "title": "Clervo provider-neutral retrieval supply decision",
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": [
+        "sourceId",
+        "providerId",
+        "failureDomain",
+        "qualificationId",
+        "qualificationStatus",
+        "substitutionPolicy"
+      ],
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "pattern": "^source_[a-z0-9][a-z0-9._-]{2,63}$"
+        },
+        "providerId": {
+          "type": "string",
+          "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$"
+        },
+        "failureDomain": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$"
+        },
+        "qualificationId": {
+          "type": "string",
+          "pattern": "^qual_[A-Za-z0-9]{20,64}$"
+        },
+        "qualificationStatus": {
+          "enum": [
+            "passed",
+            "failed",
+            "blocked",
+            "not_run"
+          ]
+        },
+        "substitutionPolicy": {
+          "const": "exact"
+        }
+      },
+      "additionalProperties": false
+    },
+    "archive": {
+      "type": "object",
+      "required": [
+        "sourceId",
+        "providerId",
+        "failureDomain",
+        "qualificationId",
+        "qualificationStatus",
+        "substitutionPolicy",
+        "mechanism",
+        "directAccess"
+      ],
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "pattern": "^source_[a-z0-9][a-z0-9._-]{2,63}$"
+        },
+        "providerId": {
+          "type": "string",
+          "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$"
+        },
+        "failureDomain": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$"
+        },
+        "qualificationId": {
+          "type": "string",
+          "pattern": "^qual_[A-Za-z0-9]{20,64}$"
+        },
+        "qualificationStatus": {
+          "enum": [
+            "passed",
+            "failed",
+            "blocked",
+            "not_run"
+          ]
+        },
+        "substitutionPolicy": {
+          "const": "exact"
+        },
+        "mechanism": {
+          "const": "public_archive"
+        },
+        "directAccess": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "worker": {
+      "type": "object",
+      "required": [
+        "workerId",
+        "selected",
+        "qualificationStatus",
+        "safetyBoundary",
+        "deterministicFixturesPassed",
+        "timeoutEnforced",
+        "resourceLimitsEnforced",
+        "failureIsolationPassed",
+        "substitutionPolicy"
+      ],
+      "properties": {
+        "workerId": {
+          "type": "string",
+          "pattern": "^worker_[a-z0-9][a-z0-9._-]{2,63}$"
+        },
+        "selected": {
+          "type": "boolean"
+        },
+        "qualificationStatus": {
+          "enum": [
+            "passed",
+            "failed",
+            "blocked",
+            "not_run"
+          ]
+        },
+        "safetyBoundary": {
+          "const": "bounded_retrieval_adapter"
+        },
+        "deterministicFixturesPassed": {
+          "type": "boolean"
+        },
+        "timeoutEnforced": {
+          "type": "boolean"
+        },
+        "resourceLimitsEnforced": {
+          "type": "boolean"
+        },
+        "failureIsolationPassed": {
+          "type": "boolean"
+        },
+        "substitutionPolicy": {
+          "const": "exact"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "contractVersion",
+    "decisionId",
+    "evaluatedAt",
+    "broker",
+    "archive",
+    "optionalAdapters",
+    "extractionWorkers",
+    "deferredTools",
+    "brokerReady",
+    "archiveIndependent",
+    "readySearchSupply",
+    "failureCodes"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "2026-07-29.1"
+    },
+    "decisionId": {
+      "type": "string",
+      "pattern": "^rsupply_[A-Za-z0-9]{20,64}$"
+    },
+    "evaluatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "broker": {
+      "type": "object",
+      "required": [
+        "brokerId",
+        "deployment",
+        "selected",
+        "upstreams"
+      ],
+      "properties": {
+        "brokerId": {
+          "type": "string",
+          "pattern": "^broker_[a-z0-9][a-z0-9._-]{2,63}$"
+        },
+        "deployment": {
+          "enum": [
+            "self_hosted",
+            "public_shared"
+          ]
+        },
+        "selected": {
+          "type": "boolean"
+        },
+        "upstreams": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 5,
+          "items": {
+            "$ref": "#/$defs/source"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "archive": {
+      "$ref": "#/$defs/archive"
+    },
+    "optionalAdapters": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "extractionWorkers": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "$ref": "#/$defs/worker"
+      }
+    },
+    "deferredTools": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": [
+          "toolId",
+          "disposition",
+          "coreDependency"
+        ],
+        "properties": {
+          "toolId": {
+            "type": "string",
+            "pattern": "^tool_[a-z0-9][a-z0-9._-]{2,63}$"
+          },
+          "disposition": {
+            "const": "deferred"
+          },
+          "coreDependency": {
+            "const": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "brokerReady": {
+      "type": "boolean"
+    },
+    "archiveIndependent": {
+      "type": "boolean"
+    },
+    "selectedExtractionWorkerId": {
+      "type": "string",
+      "pattern": "^worker_[a-z0-9][a-z0-9._-]{2,63}$"
+    },
+    "readySearchSupply": {
+      "type": "boolean"
+    },
+    "failureCodes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]{2,95}$"
+      }
+    }
+  },
+  "additionalProperties": false
+}

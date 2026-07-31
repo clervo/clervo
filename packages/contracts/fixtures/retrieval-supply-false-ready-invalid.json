@@ -1,0 +1,23 @@
+{
+  "schema": "retrieval-supply",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "decisionId": "rsupply_01JZ8Q5Y4QFD48Q24H6M5F4K9P",
+    "evaluatedAt": "2026-07-31T02:30:00.000Z",
+    "broker": {
+      "brokerId": "broker_searxng.public",
+      "deployment": "public_shared",
+      "selected": true,
+      "upstreams": []
+    },
+    "archive": { "sourceId": "source_commoncrawl.archive", "providerId": "provider_commoncrawl", "failureDomain": "commoncrawl_archive", "qualificationId": "qual_01JZ8Q5Y4QFD48Q24H6M5F4K9C", "qualificationStatus": "not_run", "substitutionPolicy": "qualified_equivalent", "mechanism": "metasearch_engine", "directAccess": false },
+    "optionalAdapters": [],
+    "extractionWorkers": [],
+    "deferredTools": [{ "toolId": "tool_agent_reach", "disposition": "selected", "coreDependency": true }],
+    "brokerReady": true,
+    "archiveIndependent": true,
+    "readySearchSupply": true,
+    "failureCodes": []
+  }
+}

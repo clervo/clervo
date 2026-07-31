@@ -16,7 +16,7 @@ const contractTests = [
   'tests/contract/n4.7.test.mjs', 'tests/contract/n4.8.test.mjs', 'tests/contract/n4.9.test.mjs',
   'tests/contract/n4.10.test.mjs', 'tests/contract/n4.11.test.mjs', 'tests/contract/n4.12.test.mjs', 'tests/contract/n4.13.test.mjs',
   'tests/contract/n4.14.test.mjs', 'tests/contract/n4.15.test.mjs', 'tests/contract/n4.16.test.mjs', 'tests/contract/n4.17.test.mjs',
-  'tests/contract/n4.18.test.mjs',
+  'tests/contract/n4.18.test.mjs', 'tests/contract/n4.19.test.mjs',
 ];
 
 const gates = [
