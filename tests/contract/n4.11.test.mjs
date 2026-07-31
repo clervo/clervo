@@ -14,10 +14,10 @@ test('bounded verification names every §7.1 check and blocks Stage 4 exit truth
   const { evidence, actualSourceState } = await loadStage4ExitInputs();
   const result = evaluateStage4Exit(evidence, actualSourceState);
   assert.equal(result.decision, 'blocked');
-  assert.equal(result.blockingCheckIds.length, REQUIRED_STAGE4_CHECK_IDS.length);
+  assert.equal(result.blockingCheckIds.length, REQUIRED_STAGE4_CHECK_IDS.length - 1);
   assert.equal(evidence.referencePatternAuthorized, false);
   assert.equal(evidence.stage5Authorized, false);
-  assert.ok(result.blockingCheckIds.includes('deployed_free_sample'));
+  assert.ok(!result.blockingCheckIds.includes('deployed_free_sample'));
   assert.ok(result.blockingCheckIds.includes('deployed_paid_route'));
   assert.ok(result.blockingCheckIds.includes('monitoring'));
   assert.ok(result.blockingCheckIds.includes('cost_caps'));

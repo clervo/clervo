@@ -25,7 +25,7 @@ try {
     assert.equal(environment.productionDataAllowed, environment.name === 'production');
     assert.match(environment.databaseBoundary, new RegExp(environment.name));
     assert.match(environment.queueBoundary, new RegExp(environment.name));
-    assert.equal(environment.service.healthPath, '/healthz');
+    assert.equal(environment.service.healthPath, environment.name === 'staging' ? '/v1/health' : '/healthz');
   }
 
   assert.equal(new Set(environments.map((item) => item.databaseBoundary)).size, names.length);
@@ -41,9 +41,16 @@ try {
 
   assert.equal(manifest.environment, 'staging');
   assert.equal(manifest.healthPath, staging.service.healthPath);
-  assert.equal(manifest.rollback.strategy, 'redeploy-previous-verified-commit');
-  assert.equal(manifest.rollback.requiredInput, 'previousReleaseId');
-  assert.equal(manifest.liveDeploymentStatus, 'not-provisioned');
+  assert.equal(manifest.service, 'clervo-stage4-slice-staging');
+  assert.equal(manifest.releaseId, '2f6fd6c');
+  assert.equal(manifest.revision, 'clervo-stage4-slice-staging-00001-7fn');
+  assert.match(manifest.artifact, /@sha256:16bcfbf77f874c0e323a67b18712df4d92318b71227838de141a0bbca0e72354$/u);
+  assert.equal(manifest.access, 'private-authenticated');
+  assert.equal(manifest.retrievalMode, 'recorded');
+  assert.equal(manifest.paidExecutionEnabled, false);
+  assert.equal(manifest.rollback.strategy, 'restore-previous-revision-or-delete-first-deployment');
+  assert.equal(manifest.rollback.requiredInput, '.staging-state/previous-revision');
+  assert.equal(manifest.liveDeploymentStatus, 'verified-private-recorded-only');
 
   assert.match(envExample, /^CLERVO_ENV=development$/m);
   assert.match(envExample, /^DATABASE_URL=$/m);

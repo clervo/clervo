@@ -142,3 +142,27 @@ test('container artifact pins the runtime, builds before runtime, and drops root
   assert.match(dockerfile, /^USER node$/mu);
   assert.match(dockerfile, /staging-search-main\.mjs/u);
 });
+
+test('checked-in deployment evidence binds the verified private release and keeps paid execution disabled', async () => {
+  const [manifest, evidence, smoke] = await Promise.all([
+    readFile(path.join(repositoryRoot, 'infra/staging/release-manifest.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(repositoryRoot, 'infra/staging/n4.18-deployment-evidence.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(repositoryRoot, 'infra/staging/live-smoke-evidence-2f6fd6c.json'), 'utf8').then(JSON.parse),
+  ]);
+  assert.equal(manifest.liveDeploymentStatus, 'verified-private-recorded-only');
+  assert.equal(manifest.releaseId, evidence.release.releaseId);
+  assert.equal(manifest.revision, evidence.release.revision);
+  assert.equal(manifest.origin, evidence.release.canonicalUrl);
+  assert.equal(manifest.artifact, evidence.artifact.image);
+  assert.equal(evidence.artifact.buildStatus, 'SUCCESS');
+  assert.equal(evidence.runtime.authenticatedInvocationRequired, true);
+  assert.equal(evidence.runtime.maxScale, '1');
+  assert.equal(evidence.runtime.paidExecutionEnabled, false);
+  assert.deepEqual(evidence.smoke, smoke);
+  assert.equal(smoke.health.status, 200);
+  assert.equal(smoke.freeSample.status, 200);
+  assert.equal(smoke.paidRoute.status, 402);
+  assert.equal(smoke.paidRoute.executionAllowed, false);
+  assert.equal(evidence.claims.monitoringSnapshotDeliveryVerified, false);
+  assert.equal(evidence.claims.alertDeliveryVerified, false);
+});

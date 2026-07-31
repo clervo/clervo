@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "ticket": "N4.18",
+  "capturedAt": "2026-07-31T00:40:00.000Z",
+  "authorization": {
+    "provider": "gcp",
+    "project": "bloxsniper-prod",
+    "region": "us-central1",
+    "service": "clervo-stage4-slice-staging",
+    "newResourcesOnly": true
+  },
+  "release": {
+    "releaseId": "2f6fd6c",
+    "revision": "clervo-stage4-slice-staging-00001-7fn",
+    "canonicalUrl": "https://clervo-stage4-slice-staging-jbtbib4yqa-uc.a.run.app",
+    "urls": [
+      "https://clervo-stage4-slice-staging-1056938182028.us-central1.run.app",
+      "https://clervo-stage4-slice-staging-jbtbib4yqa-uc.a.run.app"
+    ],
+    "traffic": [
+      {
+        "latestRevision": true,
+        "percent": 100,
+        "revisionName": "clervo-stage4-slice-staging-00001-7fn"
+      }
+    ],
+    "readyConditions": [
+      {
+        "lastTransitionTime": "2026-07-31T00:39:31.046476Z",
+        "status": "True",
+        "type": "Ready"
+      },
+      {
+        "lastTransitionTime": "2026-07-31T00:39:22.336026Z",
+        "status": "True",
+        "type": "ConfigurationsReady"
+      },
+      {
+        "lastTransitionTime": "2026-07-31T00:39:31.015364Z",
+        "status": "True",
+        "type": "RoutesReady"
+      }
+    ]
+  },
+  "artifact": {
+    "buildId": "52167bac-b84b-4533-b400-1a4769e87b11",
+    "buildStatus": "SUCCESS",
+    "buildCreateTime": "2026-07-31T00:38:50.208450795Z",
+    "buildFinishTime": "2026-07-31T00:39:18.531553Z",
+    "image": "us-central1-docker.pkg.dev/bloxsniper-prod/cloud-run-source-deploy/clervo-stage4-slice-staging@sha256:16bcfbf77f874c0e323a67b18712df4d92318b71227838de141a0bbca0e72354",
+    "digest": "sha256:16bcfbf77f874c0e323a67b18712df4d92318b71227838de141a0bbca0e72354"
+  },
+  "runtime": {
+    "environment": [
+      {
+        "name": "CLERVO_ENV",
+        "value": "staging"
+      },
+      {
+        "name": "CLERVO_RELEASE_ID",
+        "value": "2f6fd6c"
+      },
+      {
+        "name": "CLERVO_PUBLIC_ORIGIN",
+        "value": "https://clervo-stage4-slice-staging-1056938182028.us-central1.run.app"
+      }
+    ],
+    "resources": {
+      "limits": {
+        "cpu": "1",
+        "memory": "512Mi"
+      }
+    },
+    "concurrency": 8,
+    "timeoutSeconds": 60,
+    "maxScale": "1",
+    "authenticatedInvocationRequired": true,
+    "paidExecutionEnabled": false,
+    "retrievalMode": "recorded"
+  },
+  "smoke": {
+    "schemaVersion": 1,
+    "observedAt": "2026-07-31T00:39:35.351Z",
+    "origin": "https://clervo-stage4-slice-staging-jbtbib4yqa-uc.a.run.app",
+    "releaseId": "2f6fd6c",
+    "health": {
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "service": "clervo-search-api",
+        "environment": "staging",
+        "releaseId": "2f6fd6c",
+        "paidExecutionEnabled": false
+      }
+    },
+    "freeSample": {
+      "status": 200,
+      "fundingMode": "free",
+      "productId": "search.answer",
+      "resultCount": 2,
+      "synthesisOutcome": "synthesized"
+    },
+    "paidRoute": {
+      "status": 402,
+      "executionAllowed": false,
+      "paymentMode": "non-payable-challenge"
+    },
+    "externalProviderCallsProven": false,
+    "realPaymentProven": false
+  },
+  "requestEvidence": [
+    {
+      "timestamp": "2026-07-31T00:39:35.434982Z",
+      "httpRequest": {
+        "requestMethod": "GET",
+        "status": 200,
+        "requestUrl": "https://clervo-stage4-slice-staging-jbtbib4yqa-uc.a.run.app/v1/health",
+        "userAgent": "node"
+      }
+    },
+    {
+      "timestamp": "2026-07-31T00:39:35.516062Z",
+      "httpRequest": {
+        "requestMethod": "POST",
+        "status": 200,
+        "requestUrl": "https://clervo-stage4-slice-staging-jbtbib4yqa-uc.a.run.app/v1/search/free",
+        "userAgent": "node"
+      }
+    },
+    {
+      "timestamp": "2026-07-31T00:39:35.780757Z",
+      "httpRequest": {
+        "requestMethod": "POST",
+        "status": 402,
+        "requestUrl": "https://clervo-stage4-slice-staging-jbtbib4yqa-uc.a.run.app/v1/search/paid",
+        "userAgent": "node"
+      }
+    }
+  ],
+  "startupEvidence": [
+    {
+      "timestamp": "2026-07-31T00:39:27.160910Z",
+      "event": "clervo.search.started",
+      "releaseId": "2f6fd6c",
+      "paidExecutionEnabled": false
+    }
+  ],
+  "rollback": {
+    "previousRevision": null,
+    "mode": "delete-first-deployment",
+    "stateFileHex": "0a",
+    "scriptedRollbackPreviouslyExercised": true
+  },
+  "spend": {
+    "externalProviderCalls": 0,
+    "realPayments": 0,
+    "usdc": 0
+  },
+  "claims": {
+    "liveDeploymentVerified": true,
+    "freeSampleVerifiedRemotely": true,
+    "paidRouteDeployed": true,
+    "paidRoutePayable": false,
+    "telemetryRequestLogsVerified": true,
+    "monitoringSnapshotDeliveryVerified": false,
+    "alertDeliveryVerified": false,
+    "rollbackStateCaptured": true
+  }
+}

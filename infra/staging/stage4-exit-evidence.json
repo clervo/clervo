@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "stage": 4,
-  "evaluatedAt": "2026-07-30T23:55:00.000Z",
+  "evaluatedAt": "2026-07-31T00:40:00.000Z",
   "scope": "bounded_repository_and_staging_exit_verification",
   "sourceState": {
-    "stagingReleaseStatus": "not-provisioned",
+    "stagingReleaseStatus": "verified-private-recorded-only",
     "stagingPublic": false,
     "stagingUsesMockProvidersByDefault": true,
     "discoveryLifecycle": "implemented_unverified",
@@ -124,15 +124,15 @@
     },
     {
       "id": "deployed_free_sample",
-      "status": "contradicted",
-      "stagingVerified": false,
-      "evidence": "The staging release manifest says not-provisioned and discovery says deployment is unverified."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.18 release 2f6fd6c deployed a private authenticated Cloud Run revision and returned HTTP 200 for the recorded search.answer free sample; no live supplier call is claimed."
     },
     {
       "id": "deployed_paid_route",
       "status": "contradicted",
       "stagingVerified": false,
-      "evidence": "Discovery says payment is not implemented and the paid route is explicitly non-payable."
+      "evidence": "N4.18 deployed the paid endpoint but remote smoke returned the expected non-payable HTTP 402 challenge with executionAllowed=false; real payment remains unimplemented."
     },
     {
       "id": "monitoring",
@@ -150,5 +150,5 @@
   "decision": "blocked",
   "referencePatternAuthorized": false,
   "stage5Authorized": false,
-  "nextAction": "Provision an approved staging control plane, qualify two live lawful retrieval paths, deploy free and payable routes with a real telemetry collector, dashboards, delivered alerts, and hard cost caps, then replace every stagingVerified=false value using fresh evidence and rerun N4.11."
+  "nextAction": "Keep the verified private recorded-only free sample bounded, then qualify two live lawful retrieval paths and complete payable routing, staging security/benchmark runs, a real telemetry collector, dashboards, delivered alerts, and hard cost caps before rerunning N4.11."
 }
