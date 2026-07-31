@@ -1,0 +1,22 @@
+{
+  "schema": "zero-provider-search-supply",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "decisionId": "zsupply_01K1QZEROAPICOSTN423A",
+    "evaluatedAt": "2026-07-31T07:45:00.000Z",
+    "environment": "development",
+    "providerApiCostUsdMicros": 1,
+    "infrastructureAccounting": { "measured": true, "capped": true, "includedInCustomerPricing": true },
+    "routes": [],
+    "tools": {},
+    "lawfulness": {},
+    "paidSearchProviderDependencies": ["hosted_search_api"],
+    "benchmark": {},
+    "routeIdentitiesIndependent": false,
+    "benchmarkVerified": false,
+    "stage4Ready": true,
+    "nextTicket": "N4.23B",
+    "failureCodes": []
+  }
+}

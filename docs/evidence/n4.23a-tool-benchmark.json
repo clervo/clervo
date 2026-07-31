@@ -1,0 +1,312 @@
+{
+  "schemaVersion": 1,
+  "ticket": "N4.23A",
+  "observedAt": "2026-07-31T07:45:02.323Z",
+  "corpusSha256": "04d171bfe04349dfb85280d923ccb06efaa8eb404d94ca0e5a58eaebbe05badb",
+  "corpusRouteIds": [
+    "static_commerce",
+    "javascript_commerce",
+    "real_estate",
+    "documentation",
+    "news",
+    "sitemap",
+    "rss",
+    "robots",
+    "robots_denial",
+    "redirect",
+    "oversized_response",
+    "unsupported_mime"
+  ],
+  "forbiddenTargets": [
+    "http://127.0.0.1/private",
+    "http://[::1]/private",
+    "http://169.254.169.254/computeMetadata/v1/",
+    "http://metadata.google.internal/computeMetadata/v1/"
+  ],
+  "pins": {
+    "scrapling": {
+      "version": "0.4.12",
+      "license": "BSD-3-Clause",
+      "sdistSha256": "c6f06d0ea54208d430d47402c4e66760280718dc5b116fa99985beb7b9a517f4"
+    },
+    "crawl4ai": {
+      "version": "0.9.2",
+      "license": "Apache-2.0",
+      "sdistSha256": "58dbfa05a82c1cfa667a20383a1d0f7a42187304da5e4d0661a6f59b0ed6a406"
+    },
+    "meilisearch": {
+      "version": "1.51.0",
+      "license": "MIT AND BUSL-1.1",
+      "communityBinarySha256": "73f4f8809a80c5293a594de100b6121cb60879f9869875bdbc732c03771de560",
+      "enterpriseFeaturesSelected": false
+    }
+  },
+  "observations": {
+    "scrapling": [
+      {
+        "corpusId": "static_commerce",
+        "bodySha256": "f69dd9248c7ddded1d3d49b36896a8b07f3021380dc16407ea6dc143623df54f",
+        "configuration": {
+          "followRedirects": false,
+          "impersonate": null,
+          "proxy": null,
+          "retriesAfterFailure": 0,
+          "stealthyHeaders": false,
+          "timeoutSeconds": 5,
+          "totalAttempts": 1
+        },
+        "markerFound": true,
+        "maxRssKiB": 47860,
+        "responseBytes": 260,
+        "status": 200,
+        "tool": "scrapling_http",
+        "version": "0.4.12",
+        "wallMs": 9.387
+      },
+      {
+        "corpusId": "real_estate",
+        "bodySha256": "2fbd2bbcea00417f9e5ddffab946077c9999ee58ff9f4a08436c709088cea996",
+        "configuration": {
+          "followRedirects": false,
+          "impersonate": null,
+          "proxy": null,
+          "retriesAfterFailure": 0,
+          "stealthyHeaders": false,
+          "timeoutSeconds": 5,
+          "totalAttempts": 1
+        },
+        "markerFound": true,
+        "maxRssKiB": 47992,
+        "responseBytes": 235,
+        "status": 200,
+        "tool": "scrapling_http",
+        "version": "0.4.12",
+        "wallMs": 4.761
+      },
+      {
+        "corpusId": "documentation",
+        "bodySha256": "a04791b2faa3d6c94e5153363ef47e909b2c7e0c2f1d410b2df063b0b0ef352b",
+        "configuration": {
+          "followRedirects": false,
+          "impersonate": null,
+          "proxy": null,
+          "retriesAfterFailure": 0,
+          "stealthyHeaders": false,
+          "timeoutSeconds": 5,
+          "totalAttempts": 1
+        },
+        "markerFound": true,
+        "maxRssKiB": 47636,
+        "responseBytes": 194,
+        "status": 200,
+        "tool": "scrapling_http",
+        "version": "0.4.12",
+        "wallMs": 5.594
+      },
+      {
+        "corpusId": "news",
+        "bodySha256": "0781e0b296f5a962a18651364b1489718acc38b15609ac52a8bb65caf5c5e8e2",
+        "configuration": {
+          "followRedirects": false,
+          "impersonate": null,
+          "proxy": null,
+          "retriesAfterFailure": 0,
+          "stealthyHeaders": false,
+          "timeoutSeconds": 5,
+          "totalAttempts": 1
+        },
+        "markerFound": true,
+        "maxRssKiB": 47988,
+        "responseBytes": 243,
+        "status": 200,
+        "tool": "scrapling_http",
+        "version": "0.4.12",
+        "wallMs": 2.366
+      },
+      {
+        "corpusId": "sitemap",
+        "bodySha256": "76274670abecc1a1bc0e36a9b6daf279d9a0e3cbb41824b7b3b34cd44b216930",
+        "configuration": {
+          "followRedirects": false,
+          "impersonate": null,
+          "proxy": null,
+          "retriesAfterFailure": 0,
+          "stealthyHeaders": false,
+          "timeoutSeconds": 5,
+          "totalAttempts": 1
+        },
+        "markerFound": true,
+        "maxRssKiB": 47868,
+        "responseBytes": 278,
+        "status": 200,
+        "tool": "scrapling_http",
+        "version": "0.4.12",
+        "wallMs": 5.141
+      },
+      {
+        "corpusId": "rss",
+        "bodySha256": "9a85693c5bf18d817254d5aafc8487602a1959ac0674e2f07520a3d488a4eef4",
+        "configuration": {
+          "followRedirects": false,
+          "impersonate": null,
+          "proxy": null,
+          "retriesAfterFailure": 0,
+          "stealthyHeaders": false,
+          "timeoutSeconds": 5,
+          "totalAttempts": 1
+        },
+        "markerFound": true,
+        "maxRssKiB": 47860,
+        "responseBytes": 213,
+        "status": 200,
+        "tool": "scrapling_http",
+        "version": "0.4.12",
+        "wallMs": 2.771
+      }
+    ],
+    "redirect": {
+      "expectedStatus": 302,
+      "followed": false,
+      "bodySha256": "093452239d0e2e43b06b9d5cd8ac735c26449e340e001f87904765bb30e2293e",
+      "configuration": {
+        "followRedirects": false,
+        "impersonate": null,
+        "proxy": null,
+        "retriesAfterFailure": 0,
+        "stealthyHeaders": false,
+        "timeoutSeconds": 5,
+        "totalAttempts": 1
+      },
+      "markerFound": true,
+      "maxRssKiB": 47860,
+      "responseBytes": 8,
+      "status": 302,
+      "tool": "scrapling_http",
+      "version": "0.4.12",
+      "wallMs": 3.445
+    },
+    "crawl4ai": {
+      "bodySha256": "5067ff8c7fe98ee2baa483eaf2e8b1cb0a8a912ff7b17d73eb6e67c490fa4365",
+      "configuration": {
+        "downloads": false,
+        "llmIntegration": false,
+        "pageTimeoutMs": 5000,
+        "persistentContext": false,
+        "proxy": null,
+        "robotsCheck": true,
+        "stealth": false,
+        "userJavaScript": false
+      },
+      "markerFound": true,
+      "maxRssKiB": 145772,
+      "responseBytes": 368,
+      "stateDestroyed": true,
+      "status": 200,
+      "success": true,
+      "tool": "crawl4ai_javascript",
+      "version": "0.9.2",
+      "wallMs": 1010.363
+    },
+    "meilisearch": {
+      "tool": "meilisearch_open_core",
+      "version": "1.51.0",
+      "indexedDocuments": 4,
+      "topHitId": "static_commerce",
+      "expectedTopHit": true,
+      "indexMs": 311.596,
+      "queryMs": 9.761,
+      "totalWallMs": 416.468,
+      "maxRssKiB": 334464,
+      "configuration": {
+        "bind": "127.0.0.1",
+        "analytics": false,
+        "environment": "development",
+        "masterKeyRequired": true,
+        "rankingOwner": "clervo"
+      }
+    },
+    "clervoBoundary": {
+      "robots": {
+        "allowed": false,
+        "finalUrl": "https://public.example/corpus",
+        "failureCodes": [
+          "robots_disallowed"
+        ]
+      },
+      "oversized": {
+        "allowed": false,
+        "finalUrl": "https://public.example/corpus",
+        "failureCodes": [
+          "response_too_large"
+        ]
+      },
+      "unsupportedMime": {
+        "allowed": false,
+        "finalUrl": "https://public.example/corpus",
+        "failureCodes": [
+          "content_type_not_allowed"
+        ]
+      },
+      "forbiddenTargets": [
+        {
+          "target": "http://127.0.0.1/private",
+          "allowed": false,
+          "failureCodes": [
+            "unsafe_url_hop_0",
+            "unsafe_address_hop_0"
+          ]
+        },
+        {
+          "target": "http://[::1]/private",
+          "allowed": false,
+          "failureCodes": [
+            "unsafe_url_hop_0",
+            "unsafe_address_hop_0"
+          ]
+        },
+        {
+          "target": "http://169.254.169.254/computeMetadata/v1/",
+          "allowed": false,
+          "failureCodes": [
+            "unsafe_url_hop_0",
+            "unsafe_address_hop_0"
+          ]
+        },
+        {
+          "target": "http://metadata.google.internal/computeMetadata/v1/",
+          "allowed": false,
+          "failureCodes": [
+            "unsafe_url_hop_0",
+            "unsafe_address_hop_0"
+          ]
+        }
+      ]
+    }
+  },
+  "selectedConfiguration": {
+    "focusedIndexRouteId": "clervo.focused-index.v1",
+    "liveFederationRouteId": "clervo.live-federation.v1",
+    "defaultHttpWorker": "scrapling_http_0.4.12_non_stealth",
+    "javascriptFallback": "crawl4ai_0.9.2_internal_only_provisional_until_n4.25",
+    "index": "meilisearch_1.51.0_community_features_only",
+    "rankingOwner": "clervo",
+    "paidSearchProviderDependencies": []
+  },
+  "safetyBoundary": {
+    "robotsOwnedByClervoCore": true,
+    "redirectsOwnedByClervoCore": true,
+    "responseByteLimitOwnedByClervoCore": true,
+    "mimePolicyOwnedByClervoCore": true,
+    "ssrfAndRebindingPolicyOwnedByClervoCore": true,
+    "browserProductionIsolationStillRequired": true,
+    "commonCrawlBodiesPaidOutputAllowed": false
+  },
+  "network": {
+    "externalCallsDuringBenchmark": 0,
+    "loopbackOnly": true
+  },
+  "cost": {
+    "thirdPartySearchProviderCostUsd": "0.000000",
+    "infrastructureCostMeasuredHereUsd": "0.000000"
+  }
+}

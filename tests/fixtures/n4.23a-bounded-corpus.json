@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "userAgent": "ClervoSearchBot/0.1 (+https://clervo.dev/crawler; contact=search-ops@clervo.dev)",
+  "maximumResponseBytes": 65536,
+  "routes": [
+    {
+      "id": "static_commerce",
+      "path": "/commerce/static",
+      "contentType": "text/html; charset=utf-8",
+      "body": "<!doctype html><html lang=\"en\"><head><title>Northstar Trail Shoe</title><link rel=\"canonical\" href=\"/commerce/static\"></head><body><main><h1>Northstar Trail Shoe</h1><p data-price=\"129.00\">USD 129.00</p><p>In stock. Updated 2026-07-30.</p></main></body></html>",
+      "expectedMarker": "USD 129.00"
+    },
+    {
+      "id": "javascript_commerce",
+      "path": "/commerce/javascript",
+      "contentType": "text/html; charset=utf-8",
+      "body": "<!doctype html><html lang=\"en\"><head><title>Prism Commerce</title></head><body><main><h1>Prism Commerce Item</h1><div id=\"rendered\">Loading</div><script>document.getElementById('rendered').textContent='JS_COMMERCE_RENDERED_PRICE_149_00';document.getElementById('rendered').dataset.ready='true';</script></main></body></html>",
+      "expectedMarker": "JS_COMMERCE_RENDERED_PRICE_149_00"
+    },
+    {
+      "id": "real_estate",
+      "path": "/real-estate/listing",
+      "contentType": "text/html; charset=utf-8",
+      "body": "<!doctype html><html lang=\"en\"><head><title>Lawful Sample Listing</title></head><body><main><h1>12 Example Avenue</h1><p>Two bedrooms. Public sample listing updated 2026-07-29.</p><p>LISTING_MARKER_TWO_BEDROOMS</p></main></body></html>",
+      "expectedMarker": "LISTING_MARKER_TWO_BEDROOMS"
+    },
+    {
+      "id": "documentation",
+      "path": "/docs/api",
+      "contentType": "text/html; charset=utf-8",
+      "body": "<!doctype html><html lang=\"en\"><head><title>Example API</title></head><body><article><h1>Search API</h1><pre>POST /v1/example</pre><p>DOCS_MARKER_IDEMPOTENCY_REQUIRED</p></article></body></html>",
+      "expectedMarker": "DOCS_MARKER_IDEMPOTENCY_REQUIRED"
+    },
+    {
+      "id": "news",
+      "path": "/news/release",
+      "contentType": "text/html; charset=utf-8",
+      "body": "<!doctype html><html lang=\"en\"><head><title>Sample Release</title><meta property=\"article:published_time\" content=\"2026-07-30T10:00:00Z\"></head><body><article><h1>Sample Release</h1><p>NEWS_MARKER_RELEASE_2026_07_30</p></article></body></html>",
+      "expectedMarker": "NEWS_MARKER_RELEASE_2026_07_30"
+    },
+    {
+      "id": "sitemap",
+      "path": "/sitemap.xml",
+      "contentType": "application/xml; charset=utf-8",
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"><url><loc>http://fixture.invalid/commerce/static</loc><lastmod>2026-07-30</lastmod></url><url><loc>http://fixture.invalid/docs/api</loc><lastmod>2026-07-29</lastmod></url></urlset>",
+      "expectedMarker": "commerce/static"
+    },
+    {
+      "id": "rss",
+      "path": "/feed.xml",
+      "contentType": "application/rss+xml; charset=utf-8",
+      "body": "<?xml version=\"1.0\"?><rss version=\"2.0\"><channel><title>Example News</title><item><title>Sample Release</title><link>http://fixture.invalid/news/release</link><guid>release-2026-07-30</guid></item></channel></rss>",
+      "expectedMarker": "release-2026-07-30"
+    },
+    {
+      "id": "robots",
+      "path": "/robots.txt",
+      "contentType": "text/plain; charset=utf-8",
+      "body": "User-agent: ClervoSearchBot\nAllow: /\nDisallow: /denied\nCrawl-delay: 2\n",
+      "expectedMarker": "Disallow: /denied"
+    },
+    {
+      "id": "robots_denial",
+      "path": "/denied/private",
+      "contentType": "text/html; charset=utf-8",
+      "body": "<!doctype html><html><body>DENIED_CONTENT_MUST_NOT_BE_FETCHED</body></html>",
+      "expectedMarker": "DENIED_CONTENT_MUST_NOT_BE_FETCHED"
+    },
+    {
+      "id": "redirect",
+      "path": "/redirect",
+      "status": 302,
+      "location": "/commerce/static",
+      "contentType": "text/plain; charset=utf-8",
+      "body": "redirect",
+      "expectedMarker": "redirect"
+    },
+    {
+      "id": "oversized_response",
+      "path": "/oversized",
+      "contentType": "text/plain; charset=utf-8",
+      "generatedBytes": 131072,
+      "expectedMarker": ""
+    },
+    {
+      "id": "unsupported_mime",
+      "path": "/unsupported",
+      "contentType": "application/octet-stream",
+      "body": "UNSUPPORTED_BINARY_PAYLOAD",
+      "expectedMarker": ""
+    }
+  ],
+  "forbiddenTargets": [
+    "http://127.0.0.1/private",
+    "http://[::1]/private",
+    "http://169.254.169.254/computeMetadata/v1/",
+    "http://metadata.google.internal/computeMetadata/v1/"
+  ]
+}

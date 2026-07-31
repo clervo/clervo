@@ -7244,6 +7244,307 @@
           }
         },
         "additionalProperties": false
+      },
+      "ZeroProviderSearchSupply": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/zero-provider-search-supply.schema.json",
+        "title": "Clervo zero-provider-cost search supply decision",
+        "$defs": {
+          "route": {
+            "type": "object",
+            "required": [
+              "routeId",
+              "role",
+              "discoveryDependency",
+              "indexStateIdentity",
+              "healthIdentity",
+              "failureDomain"
+            ],
+            "properties": {
+              "routeId": {
+                "enum": [
+                  "clervo.focused-index.v1",
+                  "clervo.live-federation.v1"
+                ]
+              },
+              "role": {
+                "enum": [
+                  "focused_index",
+                  "live_federation"
+                ]
+              },
+              "discoveryDependency": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9._-]{2,95}$"
+              },
+              "indexStateIdentity": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9._-]{2,95}$"
+              },
+              "healthIdentity": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9._-]{2,95}$"
+              },
+              "failureDomain": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9._-]{2,95}$"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "decisionId",
+          "evaluatedAt",
+          "environment",
+          "providerApiCostUsdMicros",
+          "infrastructureAccounting",
+          "routes",
+          "tools",
+          "lawfulness",
+          "paidSearchProviderDependencies",
+          "benchmark",
+          "routeIdentitiesIndependent",
+          "benchmarkVerified",
+          "stage4Ready",
+          "nextTicket",
+          "failureCodes"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "decisionId": {
+            "type": "string",
+            "pattern": "^zsupply_[A-Za-z0-9]{20,64}$"
+          },
+          "evaluatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "environment": {
+            "const": "development"
+          },
+          "providerApiCostUsdMicros": {
+            "const": 0
+          },
+          "infrastructureAccounting": {
+            "type": "object",
+            "required": [
+              "measured",
+              "capped",
+              "includedInCustomerPricing"
+            ],
+            "properties": {
+              "measured": {
+                "const": true
+              },
+              "capped": {
+                "const": true
+              },
+              "includedInCustomerPricing": {
+                "const": true
+              }
+            },
+            "additionalProperties": false
+          },
+          "routes": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "$ref": "#/$defs/route"
+            }
+          },
+          "tools": {
+            "type": "object",
+            "required": [
+              "scrapling",
+              "crawl4ai",
+              "meilisearch"
+            ],
+            "properties": {
+              "scrapling": {
+                "type": "object",
+                "required": [
+                  "version",
+                  "license",
+                  "sdistSha256",
+                  "mode"
+                ],
+                "properties": {
+                  "version": {
+                    "const": "0.4.12"
+                  },
+                  "license": {
+                    "const": "BSD-3-Clause"
+                  },
+                  "sdistSha256": {
+                    "const": "c6f06d0ea54208d430d47402c4e66760280718dc5b116fa99985beb7b9a517f4"
+                  },
+                  "mode": {
+                    "const": "http_default_non_stealth"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "crawl4ai": {
+                "type": "object",
+                "required": [
+                  "version",
+                  "license",
+                  "sdistSha256",
+                  "playwrightVersion",
+                  "mode"
+                ],
+                "properties": {
+                  "version": {
+                    "const": "0.9.2"
+                  },
+                  "license": {
+                    "const": "Apache-2.0"
+                  },
+                  "sdistSha256": {
+                    "const": "58dbfa05a82c1cfa667a20383a1d0f7a42187304da5e4d0661a6f59b0ed6a406"
+                  },
+                  "playwrightVersion": {
+                    "const": "1.61.0"
+                  },
+                  "mode": {
+                    "const": "javascript_internal_provisional_until_n4_25"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "meilisearch": {
+                "type": "object",
+                "required": [
+                  "version",
+                  "license",
+                  "communityBinarySha256",
+                  "communityFeaturesOnly",
+                  "enterpriseFeaturesSelected"
+                ],
+                "properties": {
+                  "version": {
+                    "const": "1.51.0"
+                  },
+                  "license": {
+                    "const": "MIT AND BUSL-1.1"
+                  },
+                  "communityBinarySha256": {
+                    "const": "73f4f8809a80c5293a594de100b6121cb60879f9869875bdbc732c03771de560"
+                  },
+                  "communityFeaturesOnly": {
+                    "const": true
+                  },
+                  "enterpriseFeaturesSelected": {
+                    "const": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "lawfulness": {
+            "type": "object",
+            "required": [
+              "robotsEnforced",
+              "approvedOrUserAuthorizedDomainsOnly",
+              "unrestrictedCrawlingAllowed",
+              "publicNominatimProductionAllowed",
+              "commonCrawlMetadataDiscoveryAllowed",
+              "commonCrawlBodiesPaidOutputAllowed",
+              "credentialedGeneralWebAccountsAllowed"
+            ],
+            "properties": {
+              "robotsEnforced": {
+                "const": true
+              },
+              "approvedOrUserAuthorizedDomainsOnly": {
+                "const": true
+              },
+              "unrestrictedCrawlingAllowed": {
+                "const": false
+              },
+              "publicNominatimProductionAllowed": {
+                "const": false
+              },
+              "commonCrawlMetadataDiscoveryAllowed": {
+                "const": true
+              },
+              "commonCrawlBodiesPaidOutputAllowed": {
+                "const": false
+              },
+              "credentialedGeneralWebAccountsAllowed": {
+                "const": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "paidSearchProviderDependencies": {
+            "type": "array",
+            "maxItems": 0
+          },
+          "benchmark": {
+            "type": "object",
+            "required": [
+              "corpusSha256",
+              "scraplingPassed",
+              "crawl4aiPassed",
+              "meilisearchPassed",
+              "clervoBoundaryPassed",
+              "externalCalls"
+            ],
+            "properties": {
+              "corpusSha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "scraplingPassed": {
+                "type": "boolean"
+              },
+              "crawl4aiPassed": {
+                "type": "boolean"
+              },
+              "meilisearchPassed": {
+                "type": "boolean"
+              },
+              "clervoBoundaryPassed": {
+                "type": "boolean"
+              },
+              "externalCalls": {
+                "const": 0
+              }
+            },
+            "additionalProperties": false
+          },
+          "routeIdentitiesIndependent": {
+            "const": true
+          },
+          "benchmarkVerified": {
+            "type": "boolean"
+          },
+          "stage4Ready": {
+            "const": false
+          },
+          "nextTicket": {
+            "const": "N4.23B"
+          },
+          "failureCodes": {
+            "type": "array",
+            "minItems": 3,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{2,95}$"
+            }
+          }
+        },
+        "additionalProperties": false
       }
     }
   },

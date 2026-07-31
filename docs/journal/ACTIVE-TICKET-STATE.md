@@ -1,64 +1,48 @@
 # Active ticket state
 
-**Ticket:** NPLAN.1 — Focused Initial Commercial Release Amendment
-**Stage:** planning authority amendment; Stage 4 remains active
-**One question:** How does all source-controlled authority adopt Search + AI + Sandbox for the initial release while preserving RPC + Prediction + Crypto Intelligence as truthful additive expansion?
+**Ticket:** N4.23A — Zero-provider-cost supply amendment and bounded tool benchmark
+**Stage:** 4 — Search vertical slice remediation
+**One question:** Which smallest Clervo-controlled crawler, JavaScript fallback, and open-core index configuration can replace every required paid general-Web search API dependency without weakening Stage 4?
 **Result:** complete; atomic commit pending
 
 ## Authoritative inputs
 
 - `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md`
-- `AGENTS.md`, `.codex-autonomy-policy.md`, and `.cline/rules/*`
-- Owner-authorized NPLAN.1 decision dated 2026-07-31
-- N4.22 Stage 4 campaign evidence and N4.23 owner-action package
-- Clean `main` starting at `cf3fa44`
+- `AGENTS.md`, `.codex-autonomy-policy.md`, and the owner-authorized zero-provider-cost campaign
+- N4.22 blocker matrix, N4.23 owner-action package, and completed N4.19–N4.21 evidence
+- Clean starting commit `9c792ec`; preserved untracked N4.23A benchmark work after container recreation
 
-## Exact acceptance criteria
+## Decision
 
-- Initial Commercial Release requires exactly Search, AI, and Sandbox plus every shared launch/commerce/operations gate.
-- Full Platform Expansion adds RPC, Prediction, and Crypto Intelligence after launch without breaking existing identifiers or versioned behavior.
-- Lifecycle states distinguish available, degraded, preview, planned/post-launch, and unavailable.
-- Planned expansion pillars cannot be published as live.
-- Roadmap, repository authority, discovery/catalog, prototype copy, builder, brand/marketing, and agent framework agree.
-- Stage 4 remains blocked on 21 checks; N4.23 remains valid and paused; no implementation stage starts.
+- Provider API cost for both required search paths is exactly zero; paid/eventually-paid hosted search APIs are prohibited core dependencies.
+- Select Scrapling `0.4.12` as the default non-stealth HTTP/frontier worker.
+- Select Crawl4AI `0.9.2` with Playwright `1.61.0` only as an internal JavaScript fallback, provisional until N4.25 isolation.
+- Select Meilisearch `1.51.0` community features as the first persisted index; Clervo owns ranking.
+- Preserve exact future route identities `clervo.focused-index.v1` and `clervo.live-federation.v1` with independent discovery, index, health, and failure-domain state.
+- Public Nominatim is excluded; Common Crawl metadata is discovery-only and archived bodies stay development-only/out of paid results.
 
-## Decisions made
+## Evidence and validation
 
-- Preserve completed Stages 0–4. Renumber only the future program: Stage 5 AI; 6 Sandbox; 7 outcomes; 8 distribution; 9 hardening; 10 settlement proof; 11 focused launch; 12 RPC; 13 Prediction; 14 Crypto Intelligence; 15 all-six expansion verification.
-- Current product-scope truth: Search `preview`; AI/Sandbox `unavailable`; RPC/Prediction/Crypto Intelligence `planned_post_launch`.
-- Initial and full-platform gates are separate source functions. Both currently return false.
-- Generated discovery remains search-only, `implemented_unverified`, non-payable, and deployment-unverified; release scope is additive metadata.
-- No binary brand/motion source or prior `AI_BUILDER.md`/site implementation existed. Added Markdown authority and prototype-only site fixtures; no production site was built.
+- Bounded benchmark passed over static/JS commerce, real estate, docs, news, sitemap, RSS, redirect, robots denial, oversize, unsupported MIME, and private/metadata targets.
+- Loopback-only benchmark: six Scrapling markers, one Crawl4AI rendered marker with destroyed state, four Meilisearch documents with the required top hit, and strict Clervo boundary failures.
+- Focused N4.23A tests: 7/7 passed.
+- Contract validation: 38 schemas / 71 fixtures passed.
+- External benchmark calls: 0; credentials/secrets: none; cloud/deployment/payment mutation: none; USDC: 0.
+- Stage 4 remains blocked on 21 source-bound checks; no `stagingVerified` field changed.
 
 ## Files changed
 
-- External master plan.
-- Product-scope contract, schema, fixtures, exports, discovery/catalog/llms generation, focused tests, scripts, and package wiring.
-- README, autonomy/Cline authority, NPLAN decision/ticket, active state, and append-only journal.
-- `AI_BUILDER.md`, brand and marketing addenda, prototype site copy/metadata, and ten-agent use-case framework.
-- Generated discovery artifacts after validation.
-
-## Tests run
-
-- Focused `npm run test:nplan.1`: passed 4/4.
-- `npm run contracts`: passed 37 schemas/69 fixtures.
-- `npm run test:n1.3`: passed 6/6; discovery generated 37 schemas.
-- `npm run verify:product-scope`, `npm run typecheck`, clean-room boundary, secret scan, and `git diff --check`: passed.
-- Canonical `npm test`: ran exactly once and passed 209/209; zero external network calls and 0 USDC.
-- Canonical Stage 4 verifier: decision `blocked`; 21 checks; reference pattern false; Stage 5 authorization false.
-
-## Current blocker
-
-- NPLAN.1 has no internal blocker. Stage 4 still has the unchanged external N4.23 prerequisites recorded in `docs/evidence/N4.23-owner-action-package.md`.
+- N4.23A contract, schema, fixtures, focused tests, package/acceptance wiring, bounded benchmark harness/corpus, and machine-readable evidence.
+- N4.23A ticket/evidence, historical N4.23 owner-package amendment, README, active state, append-only journal, generated discovery, and writable external master-plan handoff.
 
 ## Exact next action
 
-- Finalize the writable master-plan handoff, append journal evidence, run final non-canonical diff/secret checks, commit once, and stop.
+- N4.23B only: implement the bounded focused owned-index route using the selected pins and safety boundary, then commit and stop. Do not begin N4.24 or a later stage.
 
 ## Out of scope / parking lot
 
-- N4.23 implementation; provider contact/purchase; credentials; cloud/IAM/deployment; payment; AI/Sandbox/RPC/Prediction/Crypto implementation; production site; agent implementation; Stage 5 or later work.
+- Live federation/product pipeline (N4.24), production browser/cache/security (N4.25), live quality/monitoring/cost caps (N4.26), staging commerce (N4.27), final exit (N4.28), AI/Sandbox/expansion implementation, real USDC, production deployment, IAM/billing change, and any secret/legacy dependency.
 
 ## Stop condition
 
-- Commit NPLAN.1 as one atomic amendment, report, and stop. Do not begin N4.23 or any later implementation stage.
+- Commit N4.23A as one atomic ticket and stop per `AGENTS.md`. N4.23B is not started in this ticket.
