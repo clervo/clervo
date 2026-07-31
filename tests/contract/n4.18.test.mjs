@@ -135,6 +135,8 @@ test('GCP operator script is pinned to the authorized target and fails closed wi
 test('container artifact pins the runtime, builds before runtime, and drops root', async () => {
   const dockerfile = await readFile(path.join(repositoryRoot, 'Dockerfile'), 'utf8');
   assert.match(dockerfile, /^FROM node:24\.18\.1-bookworm-slim AS build$/mu);
+  assert.match(dockerfile, /COPY \.nvmrc \.node-version \.tool-versions \.\//u);
+  assert.match(dockerfile, /COPY infra\/stack-versions\.env \.\/infra\/stack-versions\.env/u);
   assert.match(dockerfile, /COPY scripts\/verify-runtime\.mjs \.\/scripts\/verify-runtime\.mjs/u);
   assert.match(dockerfile, /RUN npm run build/u);
   assert.match(dockerfile, /^USER node$/mu);

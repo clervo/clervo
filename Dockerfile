@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts
 COPY tsconfig.json ./
+COPY .nvmrc .node-version .tool-versions ./
+COPY infra/stack-versions.env ./infra/stack-versions.env
 COPY scripts/verify-runtime.mjs ./scripts/verify-runtime.mjs
 COPY packages ./packages
 COPY services ./services
