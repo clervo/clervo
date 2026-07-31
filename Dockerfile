@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts
 COPY tsconfig.json ./
+COPY scripts/verify-runtime.mjs ./scripts/verify-runtime.mjs
 COPY packages ./packages
 COPY services ./services
 RUN npm run build
