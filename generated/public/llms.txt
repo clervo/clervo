@@ -1,10 +1,15 @@
 # Clervo Next
 
-> Repository-local search.query HTTP implementation with separately priced raw retrieval and synthesized-answer products. Public deployment is not verified and real x402 payment is not implemented.
+> Find, reason, and execute through one outcome-oriented platform. The Initial Commercial Release is scoped to Search, AI, and Sandbox; only the repository-local search slice is currently implemented, and it remains unverified.
 
 Important status:
 
 - Lifecycle: implemented_unverified
+- Initial Commercial Release pillars: Search, AI, Sandbox
+- Search release lifecycle: preview
+- AI release lifecycle: unavailable
+- Sandbox release lifecycle: unavailable
+- Planned post-launch expansion: RPC, Prediction, Crypto intelligence
 - Callable products: search.web, search.answer
 - Product selection: synthesize=false selects search.web; synthesize=true selects search.answer
 - Free endpoint: POST /v1/search/free
@@ -15,6 +20,6 @@ Important status:
 ## Machine-readable contracts
 
 - [OpenAPI contract](https://api.clervo.dev/openapi.json): Search request, free-sample, and non-payable paid-challenge paths.
-- [Catalog](https://api.clervo.dev/catalog.json): Versioned search.web and search.answer pricing publication.
-- [Discovery document](https://api.clervo.dev/.well-known/clervo.json): Explicit implementation and payment limitations.
+- [Catalog](https://api.clervo.dev/catalog.json): Versioned scope plus search.web and search.answer pricing publication.
+- [Discovery document](https://api.clervo.dev/.well-known/clervo.json): Explicit release scope, lifecycle, implementation, and payment limitations.
 - [JSON Schemas](https://api.clervo.dev/schemas/2026-07-29.1/): Draft 2020-12 contracts.

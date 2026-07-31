@@ -8,8 +8,9 @@ import {
 } from './search-http.js';
 import type { AssetAmount } from './types.js';
 import { CONTRACT_VERSION } from './types.js';
+import { assertProductScope, createProductScopeDocument, type ProductScopeDocument } from './product-scope.js';
 
-export const DISCOVERY_VERSION = '2026-07-30.3' as const;
+export const DISCOVERY_VERSION = '2026-07-31.1' as const;
 export const PUBLIC_ORIGIN = 'https://api.clervo.dev' as const;
 
 export interface OpenApiDocument {
@@ -42,6 +43,7 @@ export interface DiscoveryDocument {
   lifecycle: 'implemented_unverified';
   callable: true;
   payment: { protocol: 'x402'; implemented: false; settlementVerified: false };
+  releaseScope: ProductScopeDocument;
   artifacts: { openapi: string; catalog: string; llms: string; schemas: string };
   products: readonly [DiscoveryProduct, DiscoveryProduct];
   limitations: string[];
@@ -93,6 +95,7 @@ export function createDiscoveryDocument(): DiscoveryDocument {
     lifecycle: 'implemented_unverified',
     callable: true,
     payment: { protocol: 'x402', implemented: false, settlementVerified: false },
+    releaseScope: createProductScopeDocument(),
     artifacts: { openapi: `${PUBLIC_ORIGIN}/openapi.json`, catalog: `${PUBLIC_ORIGIN}/catalog.json`, llms: `${PUBLIC_ORIGIN}/llms.txt`, schemas: `${PUBLIC_ORIGIN}/schemas/${CONTRACT_VERSION}/` },
     products: [
       product(SEARCH_RAW_PRODUCT_ID, 'Web search evidence', 'Normalized ranked retrieval evidence without synthesized prose.', false),
@@ -103,11 +106,12 @@ export function createDiscoveryDocument(): DiscoveryDocument {
 }
 
 export function createCatalogDocument(): Record<string, unknown> {
-  return { contractVersion: CONTRACT_VERSION, catalogVersion: DISCOVERY_VERSION, products: createDiscoveryDocument().products };
+  const discovery = createDiscoveryDocument();
+  return { contractVersion: CONTRACT_VERSION, catalogVersion: DISCOVERY_VERSION, releaseScope: discovery.releaseScope, products: discovery.products };
 }
 
 export function createLlmsText(): string {
-  return ['# Clervo Next', '', '> Repository-local search.query HTTP implementation with separately priced raw retrieval and synthesized-answer products. Public deployment is not verified and real x402 payment is not implemented.', '', 'Important status:', '', '- Lifecycle: implemented_unverified', '- Callable products: search.web, search.answer', '- Product selection: synthesize=false selects search.web; synthesize=true selects search.answer', '- Free endpoint: POST /v1/search/free', '- Paid endpoint: POST /v1/search/paid (non-payable mock challenge by default)', '- x402 payment implementation: not implemented', '- Production deployment: not verified', '', '## Machine-readable contracts', '', `- [OpenAPI contract](${PUBLIC_ORIGIN}/openapi.json): Search request, free-sample, and non-payable paid-challenge paths.`, `- [Catalog](${PUBLIC_ORIGIN}/catalog.json): Versioned search.web and search.answer pricing publication.`, `- [Discovery document](${PUBLIC_ORIGIN}/.well-known/clervo.json): Explicit implementation and payment limitations.`, `- [JSON Schemas](${PUBLIC_ORIGIN}/schemas/${CONTRACT_VERSION}/): Draft 2020-12 contracts.`, ''].join('\n');
+  return ['# Clervo Next', '', '> Find, reason, and execute through one outcome-oriented platform. The Initial Commercial Release is scoped to Search, AI, and Sandbox; only the repository-local search slice is currently implemented, and it remains unverified.', '', 'Important status:', '', '- Lifecycle: implemented_unverified', '- Initial Commercial Release pillars: Search, AI, Sandbox', '- Search release lifecycle: preview', '- AI release lifecycle: unavailable', '- Sandbox release lifecycle: unavailable', '- Planned post-launch expansion: RPC, Prediction, Crypto intelligence', '- Callable products: search.web, search.answer', '- Product selection: synthesize=false selects search.web; synthesize=true selects search.answer', '- Free endpoint: POST /v1/search/free', '- Paid endpoint: POST /v1/search/paid (non-payable mock challenge by default)', '- x402 payment implementation: not implemented', '- Production deployment: not verified', '', '## Machine-readable contracts', '', `- [OpenAPI contract](${PUBLIC_ORIGIN}/openapi.json): Search request, free-sample, and non-payable paid-challenge paths.`, `- [Catalog](${PUBLIC_ORIGIN}/catalog.json): Versioned scope plus search.web and search.answer pricing publication.`, `- [Discovery document](${PUBLIC_ORIGIN}/.well-known/clervo.json): Explicit release scope, lifecycle, implementation, and payment limitations.`, `- [JSON Schemas](${PUBLIC_ORIGIN}/schemas/${CONTRACT_VERSION}/): Draft 2020-12 contracts.`, ''].join('\n');
 }
 
 export function assertPreviewArtifacts(openapi: OpenApiDocument, discovery: DiscoveryDocument, llms: string): void {
@@ -120,6 +124,12 @@ export function assertPreviewArtifacts(openapi: OpenApiDocument, discovery: Disc
   if (!discovery.callable || discovery.products.length !== 2 || !productIds.includes(SEARCH_RAW_PRODUCT_ID) || !productIds.includes(SEARCH_SYNTHESIS_PRODUCT_ID)) failures.push('discovery_search_products_required');
   if (discovery.products.some((product) => product.selection.synthesize !== (product.productId === SEARCH_SYNTHESIS_PRODUCT_ID) || product.pricing.priceVersion !== SEARCH_PRODUCT_PRICING[product.productId].priceVersion || product.pricing.displayPrice.amountAtomic !== SEARCH_PRODUCT_PRICING[product.productId].maximumCharge.amountAtomic)) failures.push('discovery_search_pricing_invalid');
   if (discovery.payment.implemented || discovery.payment.settlementVerified || discovery.products.some((product) => product.payment.payable)) failures.push('discovery_must_not_claim_payment');
+  try {
+    assertProductScope(discovery.releaseScope);
+  } catch {
+    failures.push('discovery_product_scope_invalid');
+  }
+  if (discovery.releaseScope.initialCommercialRelease.ready || discovery.releaseScope.fullPlatformExpansion.ready) failures.push('discovery_must_not_claim_release_ready');
   if (!llms.includes('Callable products: search.web, search.answer')) failures.push('llms_missing_callable_products');
   if (!llms.includes('x402 payment implementation: not implemented')) failures.push('llms_missing_payment_status');
   if (failures.length > 0) throw new TypeError(`unsafe discovery artifacts: ${failures.join(', ')}`);

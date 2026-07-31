@@ -61,7 +61,10 @@ test('discovery publishes the implemented search product without payment or depl
   assert.ok(discovery.products.every((product) => product.payment.payable === false));
   assert.deepEqual(discovery.products.map(({ selection, pricing }) => [selection.synthesize, pricing.displayPrice.amountAtomic]), [[false, '1000'], [true, '2500']]);
   assert.match(discovery.description, /deployment.*not verified/i);
-  assert.deepEqual(await json('catalog.json'), { contractVersion: CONTRACT_VERSION, catalogVersion: discovery.discoveryVersion, products: discovery.products });
+  assert.deepEqual(await json('catalog.json'), { contractVersion: CONTRACT_VERSION, catalogVersion: discovery.discoveryVersion, releaseScope: discovery.releaseScope, products: discovery.products });
+  assert.deepEqual(discovery.releaseScope.initialCommercialRelease.requiredPillars, ['search', 'ai', 'sandbox']);
+  assert.equal(discovery.releaseScope.initialCommercialRelease.ready, false);
+  assert.deepEqual(discovery.releaseScope.pillars.slice(3).map(({ lifecycle }) => lifecycle), ['planned_post_launch', 'planned_post_launch', 'planned_post_launch']);
 });
 
 test('llms.txt publishes separately priced search products and states payment/deployment limitations', async () => {
@@ -70,6 +73,8 @@ test('llms.txt publishes separately priced search products and states payment/de
   assert.match(llms, /^# Clervo Next\n\n> /);
   assert.match(llms, /Callable products: search\.web, search\.answer/);
   assert.match(llms, /x402 payment implementation: not implemented/);
+  assert.match(llms, /Initial Commercial Release pillars: Search, AI, Sandbox/);
+  assert.match(llms, /Planned post-launch expansion: RPC, Prediction, Crypto intelligence/);
   assert.doesNotMatch(llms, /live service|available now|production-ready/i);
 });
 
@@ -86,6 +91,13 @@ test('generation fails closed if implemented routes disappear or payment readine
   assert.throws(
     () => assertPreviewArtifacts(createOpenApiDocument({}), unsafeDiscovery, createLlmsText()),
     /discovery_must_not_claim_payment/,
+  );
+
+  const falseExpansion = structuredClone(createDiscoveryDocument());
+  falseExpansion.releaseScope.pillars.find(({ pillarId }) => pillarId === 'rpc').lifecycle = 'available';
+  assert.throws(
+    () => assertPreviewArtifacts(createOpenApiDocument({}), falseExpansion, createLlmsText()),
+    /discovery_product_scope_invalid/,
   );
 });
 

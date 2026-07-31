@@ -1,0 +1,17 @@
+{
+  "schema": "product-scope",
+  "valid": false,
+  "value": {
+    "scopeVersion": "2026-07-31.1",
+    "initialCommercialRelease": { "requiredPillars": ["search", "ai", "sandbox"], "ready": false },
+    "fullPlatformExpansion": { "requiredPillars": ["search", "ai", "sandbox", "rpc", "prediction", "crypto_intelligence"], "ready": false },
+    "pillars": [
+      { "pillarId": "search", "release": "initial_commercial_release", "lifecycle": "preview", "capabilityIds": ["search.web"] },
+      { "pillarId": "ai", "release": "initial_commercial_release", "lifecycle": "unavailable", "capabilityIds": ["ai.chat"] },
+      { "pillarId": "sandbox", "release": "initial_commercial_release", "lifecycle": "unavailable", "capabilityIds": ["sandbox.run"] },
+      { "pillarId": "rpc", "release": "post_launch_expansion", "lifecycle": "available", "capabilityIds": ["rpc.call"] },
+      { "pillarId": "prediction", "release": "post_launch_expansion", "lifecycle": "planned_post_launch", "capabilityIds": ["prediction.markets"] },
+      { "pillarId": "crypto_intelligence", "release": "post_launch_expansion", "lifecycle": "planned_post_launch", "capabilityIds": ["crypto.wallet"] }
+    ]
+  }
+}

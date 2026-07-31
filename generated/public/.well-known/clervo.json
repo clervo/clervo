@@ -1,5 +1,5 @@
 {
-  "discoveryVersion": "2026-07-30.3",
+  "discoveryVersion": "2026-07-31.1",
   "contractVersion": "2026-07-29.1",
   "name": "Clervo Next",
   "description": "Machine-readable contract for separately priced raw retrieval and synthesized-answer products on the implemented repository-local search.query HTTP slice. Public deployment and real payment are not verified.",
@@ -9,6 +9,98 @@
     "protocol": "x402",
     "implemented": false,
     "settlementVerified": false
+  },
+  "releaseScope": {
+    "scopeVersion": "2026-07-31.1",
+    "initialCommercialRelease": {
+      "requiredPillars": [
+        "search",
+        "ai",
+        "sandbox"
+      ],
+      "ready": false
+    },
+    "fullPlatformExpansion": {
+      "requiredPillars": [
+        "search",
+        "ai",
+        "sandbox",
+        "rpc",
+        "prediction",
+        "crypto_intelligence"
+      ],
+      "ready": false
+    },
+    "pillars": [
+      {
+        "pillarId": "search",
+        "release": "initial_commercial_release",
+        "lifecycle": "preview",
+        "capabilityIds": [
+          "search.web",
+          "search.answer"
+        ]
+      },
+      {
+        "pillarId": "ai",
+        "release": "initial_commercial_release",
+        "lifecycle": "unavailable",
+        "capabilityIds": [
+          "ai.chat",
+          "ai.embed",
+          "ai.image",
+          "ai.speech"
+        ]
+      },
+      {
+        "pillarId": "sandbox",
+        "release": "initial_commercial_release",
+        "lifecycle": "unavailable",
+        "capabilityIds": [
+          "sandbox.run",
+          "sandbox.session.create",
+          "sandbox.session.exec",
+          "sandbox.artifact.get",
+          "sandbox.session.destroy"
+        ]
+      },
+      {
+        "pillarId": "rpc",
+        "release": "post_launch_expansion",
+        "lifecycle": "planned_post_launch",
+        "capabilityIds": [
+          "rpc.call",
+          "rpc.batch",
+          "rpc.health",
+          "rpc.archive",
+          "rpc.broadcast"
+        ]
+      },
+      {
+        "pillarId": "prediction",
+        "release": "post_launch_expansion",
+        "lifecycle": "planned_post_launch",
+        "capabilityIds": [
+          "prediction.markets",
+          "prediction.market",
+          "prediction.compare",
+          "prediction.history",
+          "prediction.signal"
+        ]
+      },
+      {
+        "pillarId": "crypto_intelligence",
+        "release": "post_launch_expansion",
+        "lifecycle": "planned_post_launch",
+        "capabilityIds": [
+          "crypto.wallet",
+          "crypto.token",
+          "crypto.transaction",
+          "crypto.protocol",
+          "crypto.report"
+        ]
+      }
+    ]
   },
   "artifacts": {
     "openapi": "https://api.clervo.dev/openapi.json",

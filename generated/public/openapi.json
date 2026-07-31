@@ -2978,6 +2978,142 @@
         },
         "additionalProperties": false
       },
+      "ProductScope": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/product-scope.schema.json",
+        "title": "Clervo product release scope",
+        "type": "object",
+        "required": [
+          "scopeVersion",
+          "initialCommercialRelease",
+          "fullPlatformExpansion",
+          "pillars"
+        ],
+        "properties": {
+          "scopeVersion": {
+            "const": "2026-07-31.1"
+          },
+          "initialCommercialRelease": {
+            "type": "object",
+            "required": [
+              "requiredPillars",
+              "ready"
+            ],
+            "properties": {
+              "requiredPillars": {
+                "const": [
+                  "search",
+                  "ai",
+                  "sandbox"
+                ]
+              },
+              "ready": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "fullPlatformExpansion": {
+            "type": "object",
+            "required": [
+              "requiredPillars",
+              "ready"
+            ],
+            "properties": {
+              "requiredPillars": {
+                "const": [
+                  "search",
+                  "ai",
+                  "sandbox",
+                  "rpc",
+                  "prediction",
+                  "crypto_intelligence"
+                ]
+              },
+              "ready": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "pillars": {
+            "type": "array",
+            "minItems": 6,
+            "maxItems": 6,
+            "items": {
+              "type": "object",
+              "required": [
+                "pillarId",
+                "release",
+                "lifecycle",
+                "capabilityIds"
+              ],
+              "properties": {
+                "pillarId": {
+                  "enum": [
+                    "search",
+                    "ai",
+                    "sandbox",
+                    "rpc",
+                    "prediction",
+                    "crypto_intelligence"
+                  ]
+                },
+                "release": {
+                  "enum": [
+                    "initial_commercial_release",
+                    "post_launch_expansion"
+                  ]
+                },
+                "lifecycle": {
+                  "enum": [
+                    "available",
+                    "degraded",
+                    "preview",
+                    "planned_post_launch",
+                    "unavailable"
+                  ]
+                },
+                "capabilityIds": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9]*(?:[._][a-z][a-z0-9]*)+$"
+                  }
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "release": {
+                        "const": "post_launch_expansion"
+                      }
+                    },
+                    "required": [
+                      "release"
+                    ]
+                  },
+                  "then": {
+                    "properties": {
+                      "lifecycle": {
+                        "enum": [
+                          "planned_post_launch",
+                          "unavailable"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "QualificationResult": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://api.clervo.dev/schemas/2026-07-29.1/qualification-result.schema.json",

@@ -1,0 +1,17 @@
+{
+  "artifact": "prototype_scope_only",
+  "headline": "Find → Reason → Execute",
+  "tagline": "Buy outcomes. Not integrations.",
+  "journey": ["Install", "Ask", "Fund", "Approve", "Result", "Receipt"],
+  "initialCommercialRelease": [
+    { "id": "search", "label": "Search", "lifecycle": "preview" },
+    { "id": "ai", "label": "AI", "lifecycle": "unavailable" },
+    { "id": "sandbox", "label": "Sandbox", "lifecycle": "unavailable" }
+  ],
+  "postLaunchExpansion": [
+    { "id": "rpc", "label": "RPC", "lifecycle": "planned_post_launch" },
+    { "id": "prediction", "label": "Prediction", "lifecycle": "planned_post_launch" },
+    { "id": "crypto_intelligence", "label": "Crypto Intelligence", "lifecycle": "planned_post_launch" }
+  ],
+  "productionWebsite": false
+}
