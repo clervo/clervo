@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "ticket": "N4.22",
+  "evaluatedAt": "2026-07-31T05:42:23.323Z",
+  "startingCommit": "0060277",
+  "typescript": {
+    "workspaceVersion": "7.0.2",
+    "target": "ES2023",
+    "normalTypecheckPassed": true,
+    "repositoryChangeRequired": false,
+    "conclusion": "TypeScript 7.0.2 accepts ES2023; the Mac warning is an older editor language-service mismatch. Select the workspace TypeScript version."
+  },
+  "stagingAccess": {
+    "provider": "gcp",
+    "project": "bloxsniper-prod",
+    "region": "us-central1",
+    "service": "clervo-stage4-slice-staging",
+    "authenticatedInvocationRequired": true,
+    "activeGcloudAccount": false,
+    "applicationDefaultCredentialsPresent": false,
+    "accessTokenAvailable": false,
+    "credentialEnvironmentNamesPresent": [],
+    "supportedCredentialEnvironmentNames": [
+      "GOOGLE_APPLICATION_CREDENTIALS",
+      "CLERVO_STAGING_IDENTITY_TOKEN"
+    ],
+    "unauthenticatedHealth": {
+      "host": "clervo-stage4-slice-staging-jbtbib4yqa-uc.a.run.app",
+      "path": "/v1/health",
+      "httpStatus": 403,
+      "responseBytes": 304,
+      "responseSha256": "sha256:7e003d2f633eeeb1b8536c627a1adeb02fe4eaa9487e631f91d8e9515043c5fe"
+    },
+    "safeFailure": "no deployment, log read, authenticated smoke, or evidence promotion attempted"
+  },
+  "blockerCount": 21,
+  "blockers": [
+    {
+      "id": "federated_lawful_retrieval",
+      "requiredEvidence": "A staging product request must execute federated retrieval through at least two exact lawful production-eligible supplier identities with provenance, bounded failure, and no silent substitution.",
+      "missingEvidence": "Only recorded adapters and a development-only SearXNG composition exist; public Nominatim is non-resale, Common Crawl is legal-review gated, and no live supplier is product-connected or staging-executed.",
+      "dependencyGroup": "N4.23",
+      "resolutionBoundary": ["owner", "local", "staging"]
+    },
+    {
+      "id": "query_rewriting",
+      "requiredEvidence": "A staging search trace must bind the accepted query to the bounded deterministic rewrite variants consumed by live retrieval.",
+      "missingEvidence": "Repository tests pass, but no deployed live-provider trace proves rewrite propagation.",
+      "dependencyGroup": "N4.24",
+      "resolutionBoundary": ["local", "staging"]
+    },
+    {
+      "id": "parallel_retrieval",
+      "requiredEvidence": "A staging trace must show two independent qualified retrieval paths start within the same bounded execution window and degrade independently.",
+      "missingEvidence": "Parallelism is proven only with recorded adapters; no qualified live paths are wired or deployed.",
+      "dependencyGroup": "N4.24",
+      "resolutionBoundary": ["owner", "local", "staging"]
+    },
+    {
+      "id": "url_normalization_and_near_duplicate_removal",
+      "requiredEvidence": "Staging output must demonstrate canonical URL normalization and exact/near-duplicate accounting over live provider results.",
+      "missingEvidence": "Deterministic repository fixtures pass; no live staging corpus/output evidence exists.",
+      "dependencyGroup": "N4.24",
+      "resolutionBoundary": ["local", "staging"]
+    },
+    {
+      "id": "freshness_authority_relevance_diversity_ranking",
+      "requiredEvidence": "Staging results must expose source-bound freshness, authority, relevance, and diversity components over live observations.",
+      "missingEvidence": "Ranking is repository-verified only and has no calibrated live staging evidence.",
+      "dependencyGroup": "N4.24",
+      "resolutionBoundary": ["local", "staging"]
+    },
+    {
+      "id": "isolated_javascript_retrieval",
+      "requiredEvidence": "A concrete disposable browser process must execute in staging behind the N4.13 preflight/network boundary with isolation, byte, request, deadline, and cancellation receipts.",
+      "missingEvidence": "Only the injected browser contract exists; no concrete browser adapter or staging browser execution exists.",
+      "dependencyGroup": "N4.25",
+      "resolutionBoundary": ["local", "staging"]
+    },
+    {
+      "id": "retrieval_safety_controls",
+      "requiredEvidence": "Staging security runs must prove robots, timeout, size, redirect, MIME, public-DNS, rebinding, and SSRF enforcement against the deployed retrieval path.",
+      "missingEvidence": "All controls are repository-tested only; no deployed live retrieval security transcript exists.",
+      "dependencyGroup": "N4.25",
+      "resolutionBoundary": ["local", "staging"]
+    },
+    {
+      "id": "prompt_injection_boundaries",
+      "requiredEvidence": "A staging live-content test must prove instruction-like source text remains quoted untrusted evidence and cannot invoke tools or actions.",
+      "missingEvidence": "Recorded repository fixtures pass; no live-content staging execution exists.",
+      "dependencyGroup": "N4.24",
+      "resolutionBoundary": ["local", "staging"]
+    },
+    {
+      "id": "evidence_tied_citations",
+      "requiredEvidence": "A staging response must bind every cited claim to exact extracted text offsets, source identity, retrieval timestamp, and content hash.",
+      "missingEvidence": "Citation binding is repository-only because live provider-to-fetch execution is absent.",
+      "dependencyGroup": "N4.24",
+      "resolutionBoundary": ["local", "staging"]
+    },
+    {
+      "id": "disclosed_cache_freshness",
+      "requiredEvidence": "Staging must demonstrate miss, fresh hit, and stale revalidation against a durable environment-separated cache with truthful age and lifetime disclosure.",
+      "missingEvidence": "The disclosure contract is process-local; no durable staging cache or revalidation evidence exists.",
+      "dependencyGroup": "N4.25",
+      "resolutionBoundary": ["local", "staging"]
+    },
+    {
+      "id": "language_and_region_options",
+      "requiredEvidence": "Staging live suppliers must receive and truthfully honor or reject supported language and region values without substitution.",
+      "missingEvidence": "Request propagation is repository-tested, but no live provider honoring evidence exists.",
+      "dependencyGroup": "N4.24",
+      "resolutionBoundary": ["owner", "local", "staging"]
+    },
+    {
+      "id": "separate_raw_and_synthesis_prices",
+      "requiredEvidence": "Deployed staging discovery, challenges, execution, and receipts must preserve distinct search.web and search.answer prices and price versions.",
+      "missingEvidence": "Prices are published locally, but the deployed paid route is non-payable and discovery says payment is unimplemented.",
+      "dependencyGroup": "N4.27",
+      "resolutionBoundary": ["owner", "local", "staging"]
+    },
+    {
+      "id": "quality_latency_and_cost_benchmarks",
+      "requiredEvidence": "A repeatable staging benchmark must use live qualified paths and record quality, citation validity, p50/p95 latency, provider cost, and failure behavior.",
+      "missingEvidence": "Only a deterministic synthetic recorded benchmark exists; no live calibrated staging run exists.",
+      "dependencyGroup": "N4.26",
+      "resolutionBoundary": ["owner", "local", "staging"]
+    },
+    {
+      "id": "two_independent_retrieval_paths",
+      "requiredEvidence": "Two independently operated, production-eligible retrieval paths must execute through the product in staging with exact identities and isolated degradation.",
+      "missingEvidence": "The broker and archive mechanics are development-only; Nominatim cannot be resold, Common Crawl needs legal review, and neither path is product-connected.",
+      "dependencyGroup": "N4.23",
+      "resolutionBoundary": ["owner", "local", "staging"]
+    },
+    {
+      "id": "deterministic_schema",
+      "requiredEvidence": "The deployed staging release must serve responses and discovery matching the checked-in strict schemas with release-bound hashes.",
+      "missingEvidence": "Generated schemas pass locally, but the deployed release predates N4.21 and exposes only the recorded implementation.",
+      "dependencyGroup": "N4.24",
+      "resolutionBoundary": ["local", "staging"]
+    },
+    {
+      "id": "citation_verifier",
+      "requiredEvidence": "The deployed staging path must reject tampered live citations and accept exact source-bound citations.",
+      "missingEvidence": "Adversarial repository tests pass; no staging verifier run over live retrieval exists.",
+      "dependencyGroup": "N4.24",
+      "resolutionBoundary": ["local", "staging"]
+    },
+    {
+      "id": "ssrf_and_security_suite",
+      "requiredEvidence": "A staging suite must exercise private/metadata targets, DNS rebinding, redirects, MIME/size limits, cancellation, and browser network containment without escaping the service boundary.",
+      "missingEvidence": "Injected local tests pass; no authenticated staging security run or concrete browser exists.",
+      "dependencyGroup": "N4.25",
+      "resolutionBoundary": ["local", "staging"]
+    },
+    {
+      "id": "blockrun_compatible_baseline_improvement",
+      "requiredEvidence": "A calibrated staging benchmark must materially beat the named compatible baseline on quality/citation/freshness while remaining within latency and cost ceilings.",
+      "missingEvidence": "Only a synthetic recorded corpus beats the baseline; no live supplier comparison exists.",
+      "dependencyGroup": "N4.26",
+      "resolutionBoundary": ["owner", "local", "staging"]
+    },
+    {
+      "id": "deployed_paid_route",
+      "requiredEvidence": "The staging paid route must publish a payable x402 challenge, verify authorization, execute only after verification, settle or safely reconcile, receipt once, and replay without a second charge.",
+      "missingEvidence": "The deployed route intentionally returns a non-payable challenge with executionAllowed=false; no facilitator/payee authorization or real payment implementation is available.",
+      "dependencyGroup": "N4.27",
+      "resolutionBoundary": ["owner", "local", "staging"]
+    },
+    {
+      "id": "monitoring",
+      "requiredEvidence": "Staging must deliver bounded provider/product metrics, dashboards or queryable collector evidence, and at least one safe alert through an approved channel.",
+      "missingEvidence": "Only process-local snapshots and Cloud Run request logs exist; no snapshot collector, dashboard, paging delivery, or alert-channel credential is available.",
+      "dependencyGroup": "N4.26",
+      "resolutionBoundary": ["owner", "local", "staging"]
+    },
+    {
+      "id": "cost_caps",
+      "requiredEvidence": "A staging live-provider drill must prove request, provider-cost, concurrency, timeout, circuit, and kill-switch ceilings stop external traffic without charging an unverified result.",
+      "missingEvidence": "Atomic reservations pass locally, but no live provider spend cap or staging traffic-stop drill exists.",
+      "dependencyGroup": "N4.26",
+      "resolutionBoundary": ["owner", "local", "staging"]
+    }
+  ],
+  "campaignQueue": [
+    {
+      "ticket": "N4.22",
+      "goal": "Bind the exact blocker matrix, TypeScript conclusion, staging-access preflight, dependency order, and external stop decision.",
+      "dependsOn": [],
+      "status": "complete"
+    },
+    {
+      "ticket": "N4.23",
+      "goal": "Approve and qualify two production/resale-eligible independent retrieval paths and provide authenticated access to the existing staging control plane.",
+      "dependsOn": ["N4.22"],
+      "status": "blocked_external"
+    },
+    {
+      "ticket": "N4.24",
+      "goal": "Wire qualified providers through query rewriting, parallel fetch, normalization, ranking, locale, provenance, citations, schema validation, and safe degradation; deploy and collect staging traces.",
+      "dependsOn": ["N4.23"],
+      "status": "pending"
+    },
+    {
+      "ticket": "N4.25",
+      "goal": "Add a concrete isolated browser, durable staging cache, retrieval safety, and authenticated staging SSRF/security drills.",
+      "dependsOn": ["N4.24"],
+      "status": "pending"
+    },
+    {
+      "ticket": "N4.26",
+      "goal": "Run calibrated live staging benchmarks and prove monitoring delivery, provider budgets, cost caps, circuits, and kill switches.",
+      "dependsOn": ["N4.25"],
+      "status": "pending"
+    },
+    {
+      "ticket": "N4.27",
+      "goal": "Implement and deploy the payable x402 route with authorized facilitator/payee configuration, safe reconciliation, receipts, and replay proof.",
+      "dependsOn": ["N4.24"],
+      "status": "blocked_external"
+    },
+    {
+      "ticket": "N4.28",
+      "goal": "Re-run every source-bound staging check, require zero blockers, authorize the reference pattern only on a truthful pass, synchronize, and stop before Stage 5.",
+      "dependsOn": ["N4.25", "N4.26", "N4.27"],
+      "status": "pending"
+    }
+  ],
+  "externalBlocker": {
+    "status": "blocked_external",
+    "reasons": [
+      "staging_credentials_unavailable",
+      "lawful_production_supply_decision_missing",
+      "common_crawl_legal_approval_missing",
+      "payable_route_authorization_unavailable",
+      "alert_delivery_channel_unavailable"
+    ],
+    "ownerIntervention": [
+      "Activate an authorized gcloud identity or mount approved application-default credentials with Cloud Run, Cloud Build, Artifact Registry, and log read/deploy access for bloxsniper-prod/us-central1 without requiring Codex to change IAM.",
+      "Approve two independent production/resale-eligible general-Web retrieval suppliers and their terms, replacing public Nominatim; explicitly approve Common Crawl content use or select a legally cleared archive alternative.",
+      "Provide the approved provider credential environment-variable names and mounted values after supplier selection; no provider credential is currently present.",
+      "Authorize staging facilitator/payee configuration and any separate bounded real-settlement proof needed for deployed_paid_route; the current campaign prohibits wallet/facilitator transactions and USDC spend.",
+      "Provide an approved staging alert-delivery channel and its credential environment-variable name if Cloud Logging alone is insufficient for the monitoring gate."
+    ]
+  },
+  "stage5Started": false,
+  "usdcSpent": 0
+}

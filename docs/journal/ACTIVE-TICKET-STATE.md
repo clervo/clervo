@@ -1,84 +1,91 @@
 # Active ticket state
 
-**Ticket:** N4.21 — isolated SearXNG loopback and direct Common Crawl WARC proof
+**Ticket:** N4.22 — source-bound Stage 4 remediation campaign control
 **Stage:** 4
-**One question:** Can one repository-controlled loopback SearXNG development composition and one independent direct Common Crawl index-to-WARC range path execute within strict identity, byte, freshness, safety, truthfulness, and zero-USDC bounds?
-**Result:** complete; development execution verified; production remains unauthorized; Stage 4 exit remains blocked
+**One question:** Which exact 21 source-bound checks remain, what evidence closes each, in what dependency order, and can the campaign proceed from this container without mislabeling local evidence as staging proof?
+**Result:** complete; campaign blocked by genuine external prerequisites; Stage 4 remains blocked
 
 ## Authoritative inputs
 
-- `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md`, synchronized to N4.20 before ticket execution
+- `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md`
 - `/workspace/clervo-next/AGENTS.md`
 - `/workspace/clervo-next/.codex-autonomy-policy.md`
-- Owner-authorized N4.21 prompt dated 2026-07-31
-- Clean `main` at `f003b90`
+- Owner-authorized Stage 4 remediation campaign prompt dated 2026-07-31
+- Clean `main` at `0060277`
 
-## Acceptance criteria met
+## TypeScript conclusion
 
-- Ran SearXNG at exact official commit `057a77168d3175ce2e42e5b10f46a8df073886d5` in a dedicated virtual environment/process bound only to `127.0.0.1:18888`.
-- Configured exactly two development engines and failure domains: Wikipedia / Wikimedia and OpenStreetMap public Nominatim / OSMF Nominatim.
-- Preserved public Nominatim's non-resale restriction and kept production readiness structurally false.
-- Performed one accepted exact Common Crawl index lookup and one exact index-derived 954-byte WARC range retrieval.
-- Recorded timestamps, hosts, statuses, byte ceilings, hashes, exact identities, failure domains, and safe failure.
-- Added deterministic fixtures/tests for every named N4.21 failure mode.
-- Updated only the genuinely strengthened Stage 4 evidence text; no staging-verification boolean changed.
-- Ran focused validation, contract validation, discovery generation, boundary/diff checks, canonical acceptance once, and the separate Stage 4 verifier command once.
+- Workspace TypeScript: `7.0.2`.
+- Repository target: `ES2023`.
+- `npm run typecheck`: passed under Node.js 24.18.1.
+- Repository change needed: no. The Mac warning is an older VS Code language-service mismatch; select the workspace TypeScript version.
 
-## Decisions and constraints preserved
+## Exact blocker state
 
-- The self-hosted proof used process/virtual-environment isolation because the outer container denied both privileged Docker mount namespaces and rootless subordinate UID/GID mapping. No container proof is claimed.
-- SearXNG exposed no non-loopback listener and was stopped after two bounded broker requests.
-- The OpenStreetMap engine used one-result Nominatim settings with extra tags disabled, preventing optional Wikidata enrichment from becoming a third upstream.
-- The first Common Crawl index HTTP 502 failed closed and authorized no range. One repair succeeded; no further provider repair was attempted.
-- No N4.18 deployment, product route, credential, cloud/IAM/billing state, payment, wallet, facilitator, or production resource changed.
-- Public Nominatim is not resale-qualified; Common Crawl origin-content rights remain legal-review gated; general-Web quality remains unproven.
+- `infra/staging/stage4-remediation-campaign.json` contains all 21 identifiers in the exact order returned by the Stage 4 verifier.
+- Every blocker records required source-bound evidence, current missing evidence, dependency group, and local/staging/owner boundary.
+- Every remaining check requires staging evidence; repository-local proof cannot reduce the count.
+- Queue: N4.23 lawful supply/access; N4.24 live product pipeline; N4.25 browser/cache/security; N4.26 benchmark/monitoring/cost; N4.27 payable route; N4.28 final zero-blocker verification.
+- N4.23 and N4.27 are `blocked_external`; dependent groups were not started.
+
+## Genuine external blocker evidence
+
+- Target staging service is private/authenticated `clervo-stage4-slice-staging` in `bloxsniper-prod/us-central1`.
+- No active gcloud account is selected; access-token generation fails.
+- Application-default credentials are absent.
+- Credential environment-variable names present: none.
+- Supported future names: `GOOGLE_APPLICATION_CREDENTIALS`, `CLERVO_STAGING_IDENTITY_TOKEN`.
+- One bounded unauthenticated health request returned HTTP 403, 304 bytes, SHA-256 `7e003d2f633eeeb1b8536c627a1adeb02fe4eaa9487e631f91d8e9515043c5fe`.
+- No deployment, staging mutation, authenticated log read/smoke, provider call, evidence promotion, payment, or USDC spend occurred.
+
+## Exact owner intervention required
+
+1. Activate an authorized gcloud identity or mount approved ADC with Cloud Run, Cloud Build, Artifact Registry, and log read/deploy access for the existing project/region; Codex must not change IAM.
+2. Approve two independent production/resale-eligible general-Web suppliers and their terms, replacing public Nominatim; approve Common Crawl content use or a legally cleared archive alternative.
+3. Provide selected provider credential environment-variable names and mounted values.
+4. Authorize staging facilitator/payee configuration and any separately bounded real-settlement proof required by `deployed_paid_route`; current authority prohibits facilitator/wallet transactions and USDC spend.
+5. Provide an approved staging alert-delivery channel and its credential environment-variable name if Cloud Logging is insufficient.
 
 ## Files changed
 
-- `infra/development/n4.21-searxng/settings.yml`
-- `packages/contracts/src/retrieval-execution-proof.ts`
-- `packages/contracts/src/index.ts`
-- `packages/contracts/schemas/retrieval-execution-proof.schema.json`
-- `packages/contracts/fixtures/retrieval-execution-proof-valid.json`
-- `tests/contract/n4.21.test.mjs`
-- `tests/fixtures/n4.21-retrieval-execution-cases.json`
+- `infra/staging/stage4-remediation-campaign.json`
+- `scripts/verify-stage4-campaign.mjs`
+- `tests/contract/n4.22.test.mjs`
 - `package.json`
 - `scripts/run-acceptance.mjs`
-- `generated/public/openapi.json`
-- `generated/public/schemas/2026-07-29.1/retrieval-execution-proof.schema.json`
-- `infra/staging/stage4-exit-evidence.json`
-- `docs/tickets/N4.21.md`
-- `docs/evidence/N4.21-loopback-and-warc-evidence.md`
+- `docs/tickets/N4.22.md`
+- `docs/evidence/N4.22-stage4-remediation-campaign.md`
 - `docs/journal/ACTIVE-TICKET-STATE.md`
 - `docs/journal/BUILD-JOURNAL.md`
 - `README.md`
 
 ## Tests and exact results
 
-- `npm run test:n4.21`: passed, 9/9 (rerun after final source binding change; passed 9/9).
-- `npm run lint`: passed, 180 source/contract files.
-- `npm run contracts`: passed, 36 schemas / 67 fixtures.
-- `npm run generate:discovery`: passed, 36 schemas.
-- `./scripts/verify-clean-room-boundary.sh`: passed, zero legacy dependencies.
-- `npm test`: invoked exactly once; passed 200/200 with `acceptance: PASS`, Node.js 24.18.1, 0 external network calls during acceptance, and 0 USDC spent.
-- `npm run verify:stage4-exit`: invoked exactly once as the separate closeout command; passed with decision `blocked`, 21 blocking checks, reference-pattern authorization false, Stage 5 authorization false, 0 external network calls, and 0 USDC spent.
-- Final `git diff --check`: passed after documentation updates.
+- `npm run typecheck`: passed.
+- `npm run test:n4.22`: passed 5/5.
+- `npm run lint`: passed 182 source/contract files.
+- `npm run verify:stage4-campaign`: passed with 21 exact blockers and N4.23 `blocked_external`.
+- Canonical `npm test`: passed 205/205, 36 schemas / 67 fixtures, `acceptance: PASS`, zero external network calls during acceptance, and 0 USDC spent.
+- `npm run verify:stage4-exit`: verifier execution passed; decision `blocked`, 21 blockers, reference pattern false, Stage 5 authorization false.
+- `./scripts/verify-clean-room-boundary.sh` and final `git diff --check`: passed.
 
-## Current Stage 4 blockers
+## Network, credentials, deployment, and cost
 
-- The two live development mechanics are not connected to Clervo product execution or staging.
-- Public Nominatim cannot be resold; Common Crawl content requires legal/rights review.
-- General-Web recall, freshness, ranking, quality, quota, long-run availability, operating cost, monitoring, and hard provider spend stops are not proven.
-- Twenty-one source-bound checks remain blocking; search is not the reference pattern and Stage 5 is unauthorized.
+- External host contacted: `clervo-stage4-slice-staging-jbtbib4yqa-uc.a.run.app` once.
+- Credential values used/read/printed: none.
+- Credential environment-variable names involved: none present; supported future names are `GOOGLE_APPLICATION_CREDENTIALS` and `CLERVO_STAGING_IDENTITY_TOKEN`.
+- Deployment/staging mutation: none.
+- Provider/crawling/payment/wallet/facilitator activity: none.
+- USDC spent: 0.
 
 ## Exact next action
 
-- Stop after the N4.21 commit and completion report. No next ticket is authorized or inferred. Do not begin N4.22 or Stage 5.
+- Owner supplies the five named prerequisites. Resume with N4.23 only after authenticated staging access and the lawful production-supplier decision are available.
 
 ## Out of scope / parking lot
 
-- N4.22; Stage 5; production readiness; N4.18 deployment mutation; product adapter wiring; public Nominatim resale; Common Crawl legal clearance; extraction-worker selection; real payment; cloud/IAM/billing; unrelated refactors.
+- N4.23–N4.28 until prerequisites exist; Stage 5; production deployment; IAM/billing changes; real payment; public Nominatim resale; unapproved Common Crawl commercial use; unrelated pillars/refactors.
 
 ## Stop condition
 
-- Commit only bounded N4.21 work, update the external master-plan handoff, report completion, and stop.
+- Commit N4.22, synchronize the writable external master plan, report the genuine external blockers and exact owner actions, and stop. Do not begin N4.23 or Stage 5.
