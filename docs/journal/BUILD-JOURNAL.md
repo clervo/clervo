@@ -358,3 +358,9 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Preserved the concrete supply truth: the composition is development-only and provisional; no self-hosted SearXNG broker health/configuration ran, public Nominatim is not resale-qualified, and Common Crawl live WARC range access and commercial content clearance remain unproven.
 - Updated only the N4.20 completion evidence, active ticket state/handoff, README, and append-only journal. The external master plan is mounted read-only (`fuse.grpcfuse ro`), so its stale N4.19 current-handoff block could not be synchronized from this container and still requires an owner-side update. Final `git diff --check` passed once after the writable documentation updates.
 - N4.20 is complete and bounded. Stage 4 remains blocked, search is not the reference pattern, Stage 5 was not started, and proposed N4.21 remains unauthorized.
+
+## 2026-07-31 — N4.20 external master-plan synchronization preparation
+
+- Compared the read-only external master plan's stale N4.19 handoff with committed N4.20 repository evidence at `d5080c9` and the autonomous-container policy at `1da9b73`.
+- Added `docs/evidence/MASTER-PLAN-N4.20-SYNC.patch` as the minimal owner-applied synchronization artifact. It records N4.20 completion, owner-supplied canonical acceptance at 184/184, the blocked 21-check Stage 4 decision, false reference-pattern and Stage 5 authorizations, and exact next ticket N4.21.
+- The external master plan was not modified and is not yet synchronized because `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md` remains mounted read-only. No tests ran because only documentation changed; no external host was contacted; no payment or USDC spend occurred; N4.21 and Stage 5 were not started.
