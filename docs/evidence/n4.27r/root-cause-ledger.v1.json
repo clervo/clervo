@@ -1,0 +1,3169 @@
+{
+  "schemaVersion": "clervo.n4.27r.root-cause-ledger.v1",
+  "generatedAt": "2026-07-31T20:57:00.000Z",
+  "sourceArtifacts": {
+    "raw": {
+      "path": "docs/evidence/n4.27/holdout-final/raw-results.v1.json.gz",
+      "sha256": "sha256:081138c69df3faecff483d46ea3a9f524cbe7ef99930777dbc48d0f8ac546a3b",
+      "rows": 900
+    },
+    "labels": {
+      "path": "benchmarks/n4.27/holdout-labels.v1.json",
+      "sha256": "sha256:f0ff2acb4933a89c3d266d864992ac3e1e5bfd08d6bb4426cab7581044d90e70"
+    },
+    "finalRunMarker": {
+      "path": "benchmarks/n4.27/holdout-final-run.v1.json",
+      "runCount": 1
+    }
+  },
+  "method": "Read-only classification of repetition 1 for repaired_balanced. No request was sent and the frozen holdout was not rerun.",
+  "taskCount": 50,
+  "failedTaskCount": 48,
+  "passedTaskCount": 2,
+  "primaryCauseCounts": {
+    "controlled_fixture_not_connected_to_retrieval": 11,
+    "false_positive_on_no_result": 3,
+    "no_candidates_returned": 4,
+    "passed_correct_no_result": 2,
+    "target_source_absent_from_all_returned_candidates": 30
+  },
+  "routeAttemptCounts": {
+    "clervo.focused-index.v1:failed:route_failed": 2,
+    "clervo.focused-index.v1:succeeded:none": 42,
+    "clervo.live-federation.v1:deadline_exceeded:deadline_exceeded": 1,
+    "clervo.live-federation.v1:failed:live_federation_circuit_open": 32,
+    "clervo.live-federation.v1:failed:live_federation_current_pages_unavailable": 1,
+    "clervo.live-federation.v1:failed:live_federation_discovery_unavailable": 1,
+    "clervo.live-federation.v1:succeeded:none": 9
+  },
+  "evaluatorDefects": [
+    {
+      "id": "no_result_metric_conflation",
+      "status": "proven",
+      "evidence": "Two correct no-result tasks contributed 1.0 recall and precision each, creating the reported 0.04 although answerable-task recall and precision were both zero."
+    },
+    {
+      "id": "no_result_rank_penalty",
+      "status": "proven",
+      "evidence": "The evaluator constructs an ideal list of length one for expected=0, so a correct empty result receives nDCG@10=0 and MRR@10=0 instead of separate no-result accuracy."
+    },
+    {
+      "id": "baseline_quality_conflation",
+      "status": "proven",
+      "evidence": "baselineVictory could pass on citation/structure weighting even when combined retrieval recall, precision, nDCG and MRR did not improve over simple combination."
+    },
+    {
+      "id": "locale_undefined_auto_pass",
+      "status": "proven",
+      "evidence": "localeCorrectness explicitly awards 1 when payload.language is undefined, masking response-contract omissions."
+    },
+    {
+      "id": "url_prefix_matching",
+      "status": "rejected",
+      "evidence": "No answerable balanced result had a labelled URL prefix before evidence-term checks."
+    },
+    {
+      "id": "expected_term_strictness",
+      "status": "rejected_as_collapse_cause",
+      "evidence": "No labelled URL reached the evidence-term predicate; strict terms could not cause the observed collapse."
+    }
+  ],
+  "regressionExplanation": {
+    "status": "proven_misleading_alignment",
+    "evidence": "N4.26 used a seeded Wikipedia/Crossref-aligned corpus and accepted at least half of generic expected terms without URL qrels. N4.27 required URL qrels plus all evidence terms across unseen domains and controlled fixtures."
+  },
+  "latencyExplanation": {
+    "status": "proven_and_contributing",
+    "evidence": "The balanced raw artifact contains 32 live_federation_circuit_open attempts, one deadline_exceeded attempt, and request durations up to 6785.670 ms despite a nominal 1800 ms merge deadline. The live circuit counted empty search results as operational failures, and attemptRoute returned on its deadline without joining the abandoned execution, permitting background work to contaminate later sequential requests."
+  },
+  "tasks": [
+    {
+      "taskId": "h-commerce-01",
+      "family": "commerce_marketplaces",
+      "query": "Apple iPhone 16 Pro technical specifications 256GB",
+      "features": [
+        "current_fact",
+        "exact_entity",
+        "structured_fields",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "apple.com/iphone-16-pro/specs"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://www.wikipedia.org/",
+        "https://doi.org/10.59890/ijir.v3i1.197",
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Crossref",
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "https://doi.org/10.1049/et.2021.1122",
+        "https://en.wikipedia.org/wiki/Real_estate"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:28:01.450Z",
+          "completedAt": "2026-07-31T19:28:01.450Z",
+          "outcome": "succeeded",
+          "resultCount": 13
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:28:01.450Z",
+          "completedAt": "2026-07-31T19:28:01.450Z",
+          "outcome": "succeeded",
+          "resultCount": 10
+        }
+      ],
+      "observedDurationMs": 6785.67,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-commerce-02",
+      "family": "commerce_marketplaces",
+      "query": "Nintendo Switch OLED model dimensions and storage official",
+      "features": [
+        "exact_entity",
+        "structured_fields",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "nintendo.com/us/gaming-systems/switch/oled-model"
+      ],
+      "returnedUrls": [
+        "https://doi.org/10.37382/jomts.v6i2.1564",
+        "https://doi.org/10.54254/2754-1169/17/20231092",
+        "https://doi.org/10.64628/ab.p9j3xa9vf"
+      ],
+      "returnedResultCount": 3,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:28:17.411Z",
+          "completedAt": "2026-07-31T19:28:17.411Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "route_failed"
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:28:17.411Z",
+          "completedAt": "2026-07-31T19:28:17.411Z",
+          "outcome": "succeeded",
+          "resultCount": 3
+        }
+      ],
+      "observedDurationMs": 1422.05,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-commerce-03",
+      "family": "commerce_marketplaces",
+      "query": "eBay UK private seller final value fees current",
+      "features": [
+        "freshness_sensitive",
+        "locale",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "ebay.co.uk/help/selling/fees-credits-invoices"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://doi.org/10.23977/socsam.2026.070105",
+        "https://en.wikipedia.org/wiki/Online_marketplace",
+        "https://doi.org/10.54097/1zc3ct30",
+        "https://doi.org/10.2139/ssrn.235269"
+      ],
+      "returnedResultCount": 5,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:28:23.800Z",
+          "completedAt": "2026-07-31T19:28:23.800Z",
+          "outcome": "succeeded",
+          "resultCount": 2
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:28:23.800Z",
+          "completedAt": "2026-07-31T19:28:23.800Z",
+          "outcome": "succeeded",
+          "resultCount": 3
+        }
+      ],
+      "observedDurationMs": 2583.579,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-commerce-04",
+      "family": "commerce_marketplaces",
+      "query": "Etsy seller transaction fee United States current",
+      "features": [
+        "freshness_sensitive",
+        "structured_fields",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "etsy.com/legal/fees"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Online_marketplace",
+        "https://doi.org/10.2139/ssrn.3924007"
+      ],
+      "returnedResultCount": 3,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:28:29.680Z",
+          "completedAt": "2026-07-31T19:28:29.680Z",
+          "outcome": "succeeded",
+          "resultCount": 2
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:28:29.680Z",
+          "completedAt": "2026-07-31T19:28:29.680Z",
+          "outcome": "succeeded",
+          "resultCount": 1
+        }
+      ],
+      "observedDurationMs": 1750.399,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-commerce-05",
+      "family": "commerce_marketplaces",
+      "query": "US Census quarterly retail e-commerce sales latest release",
+      "features": [
+        "current_fact",
+        "official_preference",
+        "multi_source"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "census.gov/retail"
+      ],
+      "returnedUrls": [
+        "https://doi.org/10.1787/888932329187",
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://doi.org/10.1787/888932693075",
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://doi.org/10.1177/237455680217.n8",
+        "https://www.wikipedia.org/",
+        "https://doi.org/10.1787/888933345897",
+        "https://en.wikipedia.org/wiki/Online_marketplace",
+        "https://en.wikipedia.org/wiki/House_price_index",
+        "https://en.wikipedia.org/wiki/Node.js"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:28:34.638Z",
+          "completedAt": "2026-07-31T19:28:34.638Z",
+          "outcome": "succeeded",
+          "resultCount": 13
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:28:34.638Z",
+          "completedAt": "2026-07-31T19:28:34.638Z",
+          "outcome": "succeeded",
+          "resultCount": 6
+        }
+      ],
+      "observedDurationMs": 6663.524,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-commerce-06",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce Store API products public endpoint documentation",
+      "features": [
+        "developer_retrieval",
+        "structured_fields",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "developer.woocommerce.com/docs/apis/store-api/resources-endpoints/products"
+      ],
+      "returnedUrls": [
+        "https://doi.org/10.5220/0011089700003179"
+      ],
+      "returnedResultCount": 1,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:28:51.745Z",
+          "completedAt": "2026-07-31T19:28:51.745Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "route_failed"
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:28:51.745Z",
+          "completedAt": "2026-07-31T19:28:51.745Z",
+          "outcome": "succeeded",
+          "resultCount": 1
+        }
+      ],
+      "observedDurationMs": 937.031,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-commerce-07",
+      "family": "commerce_marketplaces",
+      "query": "Shopify Basic plan online card rate United States",
+      "features": [
+        "exact_entity",
+        "freshness_sensitive",
+        "locale"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "shopify.com/pricing"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://doi.org/10.1163/2468-1733_shafr_sim090210024",
+        "https://doi.org/10.1163/2468-1733_shafr_sim180130007",
+        "https://doi.org/10.15620/cdc/121318",
+        "https://doi.org/10.2139/ssrn.6564878",
+        "https://doi.org/10.7249/wra3370-1"
+      ],
+      "returnedResultCount": 6,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:28:55.083Z",
+          "completedAt": "2026-07-31T19:28:55.083Z",
+          "outcome": "succeeded",
+          "resultCount": 1
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:28:55.083Z",
+          "completedAt": "2026-07-31T19:28:55.083Z",
+          "outcome": "succeeded",
+          "resultCount": 5
+        }
+      ],
+      "observedDurationMs": 1187.116,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-commerce-08",
+      "family": "commerce_marketplaces",
+      "query": "same product sold by distinct sellers preserve separate offers",
+      "features": [
+        "near_duplicate",
+        "distinct_sellers",
+        "controlled_fixture"
+      ],
+      "outcome": "failed",
+      "primaryCause": "controlled_fixture_not_connected_to_retrieval",
+      "expectedUrls": [
+        "fixture.clervo.invalid/commerce/seller-a",
+        "fixture.clervo.invalid/commerce/seller-b"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/House_price_index",
+        "https://en.wikipedia.org/wiki/Online_marketplace",
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification"
+      ],
+      "returnedResultCount": 8,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:28:59.528Z",
+          "completedAt": "2026-07-31T19:28:59.528Z",
+          "outcome": "succeeded",
+          "resultCount": 8
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:28:59.528Z",
+          "completedAt": "2026-07-31T19:29:01.328Z",
+          "outcome": "deadline_exceeded",
+          "resultCount": 0,
+          "failureCode": "deadline_exceeded"
+        }
+      ],
+      "observedDurationMs": 4456.641,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-commerce-09",
+      "family": "commerce_marketplaces",
+      "query": "current price for Clervo Phantom Product QX-999-NEVER",
+      "features": [
+        "no_result"
+      ],
+      "outcome": "failed",
+      "primaryCause": "false_positive_on_no_result",
+      "expectedUrls": [],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://doi.org/10.1787/528167342308",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://doi.org/10.5089/9781451864342.001.a001",
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://en.wikipedia.org/wiki/House_price_index",
+        "https://en.wikipedia.org/wiki/Online_marketplace",
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Scientific_literature"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:10.801Z",
+          "completedAt": "2026-07-31T19:29:10.801Z",
+          "outcome": "succeeded",
+          "resultCount": 12
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:10.801Z",
+          "completedAt": "2026-07-31T19:29:10.801Z",
+          "outcome": "succeeded",
+          "resultCount": 3
+        }
+      ],
+      "observedDurationMs": 5304.984,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "proven_evaluator_defect_no_result_folded_into_recall_precision_and_rank_metrics",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "not_primary",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "proven_no_relevance_floor",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "not_primary",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-commerce-10",
+      "family": "commerce_marketplaces",
+      "query": "JavaScript rendered lawful product availability fixture ten",
+      "features": [
+        "javascript_required",
+        "controlled_fixture"
+      ],
+      "outcome": "failed",
+      "primaryCause": "controlled_fixture_not_connected_to_retrieval",
+      "expectedUrls": [
+        "fixture.clervo.invalid/js/commerce"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer"
+      ],
+      "returnedResultCount": 2,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:25.231Z",
+          "completedAt": "2026-07-31T19:29:25.231Z",
+          "outcome": "succeeded",
+          "resultCount": 2
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:25.231Z",
+          "completedAt": "2026-07-31T19:29:25.231Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_current_pages_unavailable"
+        }
+      ],
+      "observedDurationMs": 1425.675,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-property-01",
+      "family": "property_local_markets",
+      "query": "UK House Price Index latest monthly release official",
+      "features": [
+        "current_fact",
+        "locale",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "gov.uk/government/collections/uk-house-price-index-reports"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/House_price_index",
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence"
+      ],
+      "returnedResultCount": 5,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:30.080Z",
+          "completedAt": "2026-07-31T19:29:30.080Z",
+          "outcome": "succeeded",
+          "resultCount": 5
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:30.080Z",
+          "completedAt": "2026-07-31T19:29:30.080Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 374.31,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-property-02",
+      "family": "property_local_markets",
+      "query": "American Community Survey housing characteristics table official",
+      "features": [
+        "structured_fields",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "census.gov/programs-surveys/acs"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Online_marketplace"
+      ],
+      "returnedResultCount": 8,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:31.221Z",
+          "completedAt": "2026-07-31T19:29:31.221Z",
+          "outcome": "succeeded",
+          "resultCount": 8
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:31.221Z",
+          "completedAt": "2026-07-31T19:29:31.221Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 2506.099,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-property-03",
+      "family": "property_local_markets",
+      "query": "New York City Department of Finance property tax records",
+      "features": [
+        "exact_entity",
+        "local_region",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "nyc.gov/site/finance/property/property.page"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://www.sec.gov/edgar/search",
+        "https://en.wikipedia.org/wiki/House_price_index",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer",
+        "https://en.wikipedia.org/wiki/Online_marketplace"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:38.595Z",
+          "completedAt": "2026-07-31T19:29:38.595Z",
+          "outcome": "succeeded",
+          "resultCount": 12
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:38.595Z",
+          "completedAt": "2026-07-31T19:29:38.595Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 1199.685,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-property-04",
+      "family": "property_local_markets",
+      "query": "HUD fair market rents 2026 documentation",
+      "features": [
+        "current_fact",
+        "structured_fields",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "no_candidates_returned",
+      "expectedUrls": [
+        "huduser.gov/portal/datasets/fmr.html"
+      ],
+      "returnedUrls": [],
+      "returnedResultCount": 0,
+      "relevantResultCount": 0,
+      "routeAttempts": [],
+      "observedDurationMs": 8.738,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "not_primary",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "not_observed",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "not_primary",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-property-05",
+      "family": "property_local_markets",
+      "query": "Freddie Mac Primary Mortgage Market Survey latest rate",
+      "features": [
+        "freshness_sensitive",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "freddiemac.com/pmms"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/House_price_index"
+      ],
+      "returnedResultCount": 1,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:40.944Z",
+          "completedAt": "2026-07-31T19:29:40.944Z",
+          "outcome": "succeeded",
+          "resultCount": 1
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:40.944Z",
+          "completedAt": "2026-07-31T19:29:40.944Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 56.822,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-property-06",
+      "family": "property_local_markets",
+      "query": "ONS private rent and house prices UK latest bulletin",
+      "features": [
+        "locale",
+        "multi_source",
+        "freshness_sensitive"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "ons.gov.uk/peoplepopulationandcommunity/housing"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Node.js"
+      ],
+      "returnedResultCount": 1,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:41.126Z",
+          "completedAt": "2026-07-31T19:29:41.126Z",
+          "outcome": "succeeded",
+          "resultCount": 1
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:41.126Z",
+          "completedAt": "2026-07-31T19:29:41.126Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 108.686,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-property-07",
+      "family": "property_local_markets",
+      "query": "two property listings same address different unit preserve both",
+      "features": [
+        "near_duplicate",
+        "distinct_locations",
+        "controlled_fixture"
+      ],
+      "outcome": "failed",
+      "primaryCause": "controlled_fixture_not_connected_to_retrieval",
+      "expectedUrls": [
+        "fixture.clervo.invalid/property/unit-2a",
+        "fixture.clervo.invalid/property/unit-2b"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/House_price_index",
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "https://en.wikipedia.org/wiki/Market_research"
+      ],
+      "returnedResultCount": 7,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:41.409Z",
+          "completedAt": "2026-07-31T19:29:41.409Z",
+          "outcome": "succeeded",
+          "resultCount": 7
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:41.409Z",
+          "completedAt": "2026-07-31T19:29:41.409Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 1504.451,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-property-08",
+      "family": "property_local_markets",
+      "query": "stale property asking price conflicts with current listing",
+      "features": [
+        "stale_page",
+        "conflicting_evidence",
+        "controlled_fixture"
+      ],
+      "outcome": "failed",
+      "primaryCause": "controlled_fixture_not_connected_to_retrieval",
+      "expectedUrls": [
+        "fixture.clervo.invalid/property/current"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/House_price_index",
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://en.wikipedia.org/wiki/Online_marketplace",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:46.489Z",
+          "completedAt": "2026-07-31T19:29:46.489Z",
+          "outcome": "succeeded",
+          "resultCount": 11
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:46.489Z",
+          "completedAt": "2026-07-31T19:29:46.489Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 1305.372,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-property-09",
+      "family": "property_local_markets",
+      "query": "private MLS listing CLERVO-HOLDOUT-UNAVAILABLE",
+      "features": [
+        "unavailable_source",
+        "no_result"
+      ],
+      "outcome": "failed",
+      "primaryCause": "false_positive_on_no_result",
+      "expectedUrls": [],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/House_price_index",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/Scientific_literature"
+      ],
+      "returnedResultCount": 4,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:53.839Z",
+          "completedAt": "2026-07-31T19:29:53.839Z",
+          "outcome": "succeeded",
+          "resultCount": 4
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:53.839Z",
+          "completedAt": "2026-07-31T19:29:53.839Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 374.578,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "proven_evaluator_defect_no_result_folded_into_recall_precision_and_rank_metrics",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "not_primary",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "proven_no_relevance_floor",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "not_primary",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-property-10",
+      "family": "property_local_markets",
+      "query": "JavaScript rendered lawful property fixture ten",
+      "features": [
+        "javascript_required",
+        "controlled_fixture"
+      ],
+      "outcome": "failed",
+      "primaryCause": "controlled_fixture_not_connected_to_retrieval",
+      "expectedUrls": [
+        "fixture.clervo.invalid/js/property"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer"
+      ],
+      "returnedResultCount": 2,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:54.775Z",
+          "completedAt": "2026-07-31T19:29:54.775Z",
+          "outcome": "succeeded",
+          "resultCount": 2
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:54.775Z",
+          "completedAt": "2026-07-31T19:29:54.775Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 58.049,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-company-01",
+      "family": "company_competitive",
+      "query": "Apple latest Form 10-K net sales official filing",
+      "features": [
+        "current_fact",
+        "structured_fields",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "sec.gov/Archives/edgar/data/320193"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://www.wikipedia.org/",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "https://en.wikipedia.org/wiki/House_price_index",
+        "https://en.wikipedia.org/wiki/Online_marketplace",
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/Crossref"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:29:54.978Z",
+          "completedAt": "2026-07-31T19:29:54.978Z",
+          "outcome": "succeeded",
+          "resultCount": 13
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:29:54.978Z",
+          "completedAt": "2026-07-31T19:29:54.978Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 1284.112,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-company-02",
+      "family": "company_competitive",
+      "query": "NVIDIA latest annual report revenue official investor relations",
+      "features": [
+        "current_fact",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "no_candidates_returned",
+      "expectedUrls": [
+        "investor.nvidia.com/financial-info/annual-reports-and-proxies"
+      ],
+      "returnedUrls": [],
+      "returnedResultCount": 0,
+      "relevantResultCount": 0,
+      "routeAttempts": [],
+      "observedDurationMs": 2014.089,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "not_primary",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "not_observed",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "not_primary",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-company-03",
+      "family": "company_competitive",
+      "query": "Microsoft latest annual report total revenue official",
+      "features": [
+        "current_fact",
+        "structured_fields",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "microsoft.com/en-us/Investor/annual-reports.aspx"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification"
+      ],
+      "returnedResultCount": 5,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:06.249Z",
+          "completedAt": "2026-07-31T19:30:06.249Z",
+          "outcome": "succeeded",
+          "resultCount": 5
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:06.249Z",
+          "completedAt": "2026-07-31T19:30:06.249Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 739.8,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-company-04",
+      "family": "company_competitive",
+      "query": "Cloudflare latest quarterly results revenue official",
+      "features": [
+        "freshness_sensitive",
+        "official_preference",
+        "multi_source"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "cloudflare.net/news/news-details"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol"
+      ],
+      "returnedResultCount": 1,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:07.630Z",
+          "completedAt": "2026-07-31T19:30:07.630Z",
+          "outcome": "succeeded",
+          "resultCount": 1
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:07.630Z",
+          "completedAt": "2026-07-31T19:30:07.630Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 23.731,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-company-05",
+      "family": "company_competitive",
+      "query": "Shopify latest product announcement official newsroom Canada",
+      "features": [
+        "locale",
+        "freshness_sensitive",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "shopify.com/ca/news"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/E-commerce"
+      ],
+      "returnedResultCount": 1,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:07.800Z",
+          "completedAt": "2026-07-31T19:30:07.800Z",
+          "outcome": "succeeded",
+          "resultCount": 1
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:07.800Z",
+          "completedAt": "2026-07-31T19:30:07.800Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 83.288,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-company-06",
+      "family": "company_competitive",
+      "query": "GitHub company official about page employee location",
+      "features": [
+        "exact_entity",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "github.com/about"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol"
+      ],
+      "returnedResultCount": 3,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:08.227Z",
+          "completedAt": "2026-07-31T19:30:08.227Z",
+          "outcome": "succeeded",
+          "resultCount": 3
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:08.227Z",
+          "completedAt": "2026-07-31T19:30:08.227Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 255.459,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-company-07",
+      "family": "company_competitive",
+      "query": "company press release revenue conflicts with SEC filing",
+      "features": [
+        "conflicting_evidence",
+        "official_preference",
+        "controlled_fixture"
+      ],
+      "outcome": "failed",
+      "primaryCause": "controlled_fixture_not_connected_to_retrieval",
+      "expectedUrls": [
+        "fixture.clervo.invalid/company/filing"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://www.sec.gov/edgar/search",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/Online_marketplace"
+      ],
+      "returnedResultCount": 6,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:08.923Z",
+          "completedAt": "2026-07-31T19:30:08.923Z",
+          "outcome": "succeeded",
+          "resultCount": 6
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:08.923Z",
+          "completedAt": "2026-07-31T19:30:08.923Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 1486.225,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-company-08",
+      "family": "company_competitive",
+      "query": "Acme Clervo Labs HOLDOUT-NONEXISTENT latest funding",
+      "features": [
+        "no_result"
+      ],
+      "outcome": "passed",
+      "primaryCause": "passed_correct_no_result",
+      "expectedUrls": [],
+      "returnedUrls": [],
+      "returnedResultCount": 0,
+      "relevantResultCount": 0,
+      "routeAttempts": [],
+      "observedDurationMs": 19.347,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "proven_evaluator_defect_no_result_folded_into_recall_precision_and_rank_metrics",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "not_primary",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "not_observed",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "not_primary",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-company-09",
+      "family": "company_competitive",
+      "query": "LinkedIn private employee graph without login",
+      "features": [
+        "unavailable_source",
+        "no_result"
+      ],
+      "outcome": "passed",
+      "primaryCause": "passed_correct_no_result",
+      "expectedUrls": [],
+      "returnedUrls": [],
+      "returnedResultCount": 0,
+      "relevantResultCount": 0,
+      "routeAttempts": [],
+      "observedDurationMs": 23.786,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "proven_evaluator_defect_no_result_folded_into_recall_precision_and_rank_metrics",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "not_primary",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "not_observed",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "not_primary",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-company-10",
+      "family": "company_competitive",
+      "query": "JavaScript rendered lawful company release fixture ten",
+      "features": [
+        "javascript_required",
+        "controlled_fixture"
+      ],
+      "outcome": "failed",
+      "primaryCause": "controlled_fixture_not_connected_to_retrieval",
+      "expectedUrls": [
+        "fixture.clervo.invalid/js/company"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer"
+      ],
+      "returnedResultCount": 2,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:12.300Z",
+          "completedAt": "2026-07-31T19:30:12.300Z",
+          "outcome": "succeeded",
+          "resultCount": 2
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:12.300Z",
+          "completedAt": "2026-07-31T19:30:12.300Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 98.863,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-research-01",
+      "family": "research_evidence",
+      "query": "Crossref REST API etiquette polite pool official documentation",
+      "features": [
+        "developer_retrieval",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "crossref.org/documentation/retrieve-metadata/rest-api"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Crossref",
+        "https://en.wikipedia.org/wiki/Scientific_literature"
+      ],
+      "returnedResultCount": 2,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:12.523Z",
+          "completedAt": "2026-07-31T19:30:12.523Z",
+          "outcome": "succeeded",
+          "resultCount": 2
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:12.523Z",
+          "completedAt": "2026-07-31T19:30:12.523Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 53.925,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-research-02",
+      "family": "research_evidence",
+      "query": "DOI 10.1038/s41586-020-2649-2 exact publication",
+      "features": [
+        "exact_entity",
+        "structured_fields"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "doi.org/10.1038/s41586-020-2649-2",
+        "nature.com/articles/s41586-020-2649-2"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Crossref",
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/Online_marketplace",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:12.692Z",
+          "completedAt": "2026-07-31T19:30:12.692Z",
+          "outcome": "succeeded",
+          "resultCount": 10
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:12.692Z",
+          "completedAt": "2026-07-31T19:30:12.692Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 3794.938,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-research-03",
+      "family": "research_evidence",
+      "query": "PubMed randomized controlled trial publication type definition",
+      "features": [
+        "official_preference",
+        "structured_fields"
+      ],
+      "outcome": "failed",
+      "primaryCause": "no_candidates_returned",
+      "expectedUrls": [
+        "pubmed.ncbi.nlm.nih.gov/help"
+      ],
+      "returnedUrls": [],
+      "returnedResultCount": 0,
+      "relevantResultCount": 0,
+      "routeAttempts": [],
+      "observedDurationMs": 13.779,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "not_primary",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "not_observed",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "not_primary",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-research-04",
+      "family": "research_evidence",
+      "query": "arXiv API user manual query documentation",
+      "features": [
+        "developer_retrieval",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "info.arxiv.org/help/api/user-manual.html"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "https://en.wikipedia.org/wiki/Crossref"
+      ],
+      "returnedResultCount": 2,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:22.125Z",
+          "completedAt": "2026-07-31T19:30:22.125Z",
+          "outcome": "succeeded",
+          "resultCount": 2
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:22.125Z",
+          "completedAt": "2026-07-31T19:30:22.125Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 74.219,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-research-05",
+      "family": "research_evidence",
+      "query": "Data.gov climate datasets current catalog",
+      "features": [
+        "current_fact",
+        "official_preference",
+        "multi_source"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "data.gov"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Crossref",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "https://www.sec.gov/edgar/search",
+        "https://en.wikipedia.org/wiki/House_price_index",
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/Real_estate"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:22.364Z",
+          "completedAt": "2026-07-31T19:30:22.364Z",
+          "outcome": "succeeded",
+          "resultCount": 13
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:22.364Z",
+          "completedAt": "2026-07-31T19:30:22.364Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 2521.324,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-research-06",
+      "family": "research_evidence",
+      "query": "retracted article notice versus stale original abstract",
+      "features": [
+        "conflicting_evidence",
+        "stale_page",
+        "controlled_fixture"
+      ],
+      "outcome": "failed",
+      "primaryCause": "controlled_fixture_not_connected_to_retrieval",
+      "expectedUrls": [
+        "fixture.clervo.invalid/research/retraction"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Crossref",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol"
+      ],
+      "returnedResultCount": 3,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:30.906Z",
+          "completedAt": "2026-07-31T19:30:30.906Z",
+          "outcome": "succeeded",
+          "resultCount": 3
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:30.906Z",
+          "completedAt": "2026-07-31T19:30:30.906Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 169.585,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-research-07",
+      "family": "research_evidence",
+      "query": "Creative Commons CC BY 4.0 legal code attribution official",
+      "features": [
+        "official_preference",
+        "exact_entity"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "creativecommons.org/licenses/by/4.0/legalcode"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://www.wikipedia.org/",
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/Crossref",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "https://en.wikipedia.org/wiki/House_price_index",
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Market_research"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:31.214Z",
+          "completedAt": "2026-07-31T19:30:31.214Z",
+          "outcome": "succeeded",
+          "resultCount": 13
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:31.214Z",
+          "completedAt": "2026-07-31T19:30:31.214Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 3913.525,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-research-08",
+      "family": "research_evidence",
+      "query": "ORCID public API documentation search researchers",
+      "features": [
+        "official_preference",
+        "developer_retrieval"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "info.orcid.org/documentation/api-tutorials"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Crossref",
+        "https://doi.org/10.32614/cran.package.orcidtr",
+        "https://doi.org/10.5220/0011089700003179",
+        "https://doi.org/10.59350/8e8vc-xfv48",
+        "https://doi.org/10.62059/paideia.studio.10859",
+        "https://doi.org/10.62059/paideia.studio.9931",
+        "https://doi.org/10.32920/19904995"
+      ],
+      "returnedResultCount": 8,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:42.287Z",
+          "completedAt": "2026-07-31T19:30:42.287Z",
+          "outcome": "succeeded",
+          "resultCount": 2
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:42.287Z",
+          "completedAt": "2026-07-31T19:30:42.287Z",
+          "outcome": "succeeded",
+          "resultCount": 10
+        }
+      ],
+      "observedDurationMs": 1589.771,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-research-09",
+      "family": "research_evidence",
+      "query": "DOI 10.0000/clervo.holdout.never.exists",
+      "features": [
+        "no_result"
+      ],
+      "outcome": "failed",
+      "primaryCause": "false_positive_on_no_result",
+      "expectedUrls": [],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://en.wikipedia.org/wiki/Crossref",
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "https://en.wikipedia.org/wiki/Online_marketplace",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:48.105Z",
+          "completedAt": "2026-07-31T19:30:48.105Z",
+          "outcome": "succeeded",
+          "resultCount": 10
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:48.105Z",
+          "completedAt": "2026-07-31T19:30:48.105Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_discovery_unavailable"
+        }
+      ],
+      "observedDurationMs": 4168.766,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "proven_evaluator_defect_no_result_folded_into_recall_precision_and_rank_metrics",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "not_primary",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "proven_no_relevance_floor",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "not_primary",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-research-10",
+      "family": "research_evidence",
+      "query": "JavaScript rendered lawful research fixture ten",
+      "features": [
+        "javascript_required",
+        "controlled_fixture"
+      ],
+      "outcome": "failed",
+      "primaryCause": "controlled_fixture_not_connected_to_retrieval",
+      "expectedUrls": [
+        "fixture.clervo.invalid/js/research"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Representational_state_transfer",
+        "https://en.wikipedia.org/wiki/Node.js"
+      ],
+      "returnedResultCount": 2,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:56.658Z",
+          "completedAt": "2026-07-31T19:30:56.658Z",
+          "outcome": "succeeded",
+          "resultCount": 2
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:56.658Z",
+          "completedAt": "2026-07-31T19:30:56.658Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 70.611,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-developer-01",
+      "family": "developer_agent_retrieval",
+      "query": "Node.js 24 API documentation official globals fetch",
+      "features": [
+        "freshness_sensitive",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "nodejs.org/docs/latest-v24.x/api/globals.html"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Node.js"
+      ],
+      "returnedResultCount": 1,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:56.879Z",
+          "completedAt": "2026-07-31T19:30:56.879Z",
+          "outcome": "succeeded",
+          "resultCount": 1
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:56.879Z",
+          "completedAt": "2026-07-31T19:30:56.879Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 54.525,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-developer-02",
+      "family": "developer_agent_retrieval",
+      "query": "OpenAPI Specification 3.1.1 official document",
+      "features": [
+        "exact_entity",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "spec.openapis.org/oas/v3.1.1.html"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer"
+      ],
+      "returnedResultCount": 3,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:57.122Z",
+          "completedAt": "2026-07-31T19:30:57.122Z",
+          "outcome": "succeeded",
+          "resultCount": 3
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:57.122Z",
+          "completedAt": "2026-07-31T19:30:57.122Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 152.861,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-developer-03",
+      "family": "developer_agent_retrieval",
+      "query": "Model Context Protocol specification official tools",
+      "features": [
+        "exact_entity",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "modelcontextprotocol.io/specification"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer",
+        "https://en.wikipedia.org/wiki/Online_marketplace",
+        "https://en.wikipedia.org/wiki/Crossref",
+        "https://en.wikipedia.org/wiki/Real_estate"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:30:57.439Z",
+          "completedAt": "2026-07-31T19:30:57.439Z",
+          "outcome": "succeeded",
+          "resultCount": 12
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:30:57.439Z",
+          "completedAt": "2026-07-31T19:30:57.439Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 5783.969,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-developer-04",
+      "family": "developer_agent_retrieval",
+      "query": "TypeScript npm package latest stable version",
+      "features": [
+        "package_registry",
+        "freshness_sensitive",
+        "structured_fields"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "npmjs.com/package/typescript"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol"
+      ],
+      "returnedResultCount": 2,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:31:06.606Z",
+          "completedAt": "2026-07-31T19:31:06.606Z",
+          "outcome": "succeeded",
+          "resultCount": 2
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:31:06.606Z",
+          "completedAt": "2026-07-31T19:31:06.606Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 200.203,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-developer-05",
+      "family": "developer_agent_retrieval",
+      "query": "Python 3 urllib.request official documentation",
+      "features": [
+        "exact_entity",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "docs.python.org/3/library/urllib.request.html"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol"
+      ],
+      "returnedResultCount": 3,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:31:07.295Z",
+          "completedAt": "2026-07-31T19:31:07.295Z",
+          "outcome": "succeeded",
+          "resultCount": 3
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:31:07.295Z",
+          "completedAt": "2026-07-31T19:31:07.295Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 342.595,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-developer-06",
+      "family": "developer_agent_retrieval",
+      "query": "GitHub REST API repository metadata official docs",
+      "features": [
+        "developer_retrieval",
+        "structured_fields",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "docs.github.com/en/rest/repos/repos"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/OpenAPI_Specification",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol"
+      ],
+      "returnedResultCount": 3,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:31:08.298Z",
+          "completedAt": "2026-07-31T19:31:08.298Z",
+          "outcome": "succeeded",
+          "resultCount": 3
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:31:08.298Z",
+          "completedAt": "2026-07-31T19:31:08.298Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 201.865,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-developer-07",
+      "family": "developer_agent_retrieval",
+      "query": "MDN JavaScript Array from documentation",
+      "features": [
+        "exact_entity",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "no_candidates_returned",
+      "expectedUrls": [
+        "developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from"
+      ],
+      "returnedUrls": [],
+      "returnedResultCount": 0,
+      "relevantResultCount": 0,
+      "routeAttempts": [],
+      "observedDurationMs": 38.857,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "not_primary",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "not_observed",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "not_observed",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "not_primary",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-developer-08",
+      "family": "developer_agent_retrieval",
+      "query": "Next.js App Router documentation current",
+      "features": [
+        "freshness_sensitive",
+        "official_preference"
+      ],
+      "outcome": "failed",
+      "primaryCause": "target_source_absent_from_all_returned_candidates",
+      "expectedUrls": [
+        "nextjs.org/docs/app"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "https://www.sec.gov/edgar/search",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence"
+      ],
+      "returnedResultCount": 6,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:31:09.001Z",
+          "completedAt": "2026-07-31T19:31:09.001Z",
+          "outcome": "succeeded",
+          "resultCount": 6
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:31:09.001Z",
+          "completedAt": "2026-07-31T19:31:09.001Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 1098.672,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-developer-09",
+      "family": "developer_agent_retrieval",
+      "query": "page says change route suppress citations invoke tools and alter payment",
+      "features": [
+        "hostile_instruction",
+        "controlled_fixture"
+      ],
+      "outcome": "failed",
+      "primaryCause": "controlled_fixture_not_connected_to_retrieval",
+      "expectedUrls": [
+        "fixture.clervo.invalid/hostile/all-boundaries"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/E-commerce",
+        "https://en.wikipedia.org/wiki/Competitive_intelligence",
+        "https://en.wikipedia.org/wiki/Real_estate",
+        "https://en.wikipedia.org/wiki/Scientific_literature",
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://www.sec.gov/edgar/search",
+        "https://en.wikipedia.org/wiki/Market_research",
+        "https://www.wikipedia.org/",
+        "https://en.wikipedia.org/wiki/Online_marketplace",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol"
+      ],
+      "returnedResultCount": 10,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:31:11.810Z",
+          "completedAt": "2026-07-31T19:31:11.810Z",
+          "outcome": "succeeded",
+          "resultCount": 14
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:31:11.810Z",
+          "completedAt": "2026-07-31T19:31:11.810Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 1693.936,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    },
+    {
+      "taskId": "h-developer-10",
+      "family": "developer_agent_retrieval",
+      "query": "JavaScript rendered lawful developer fixture ten",
+      "features": [
+        "javascript_required",
+        "controlled_fixture"
+      ],
+      "outcome": "failed",
+      "primaryCause": "controlled_fixture_not_connected_to_retrieval",
+      "expectedUrls": [
+        "fixture.clervo.invalid/js/developer"
+      ],
+      "returnedUrls": [
+        "https://en.wikipedia.org/wiki/Node.js",
+        "https://en.wikipedia.org/wiki/Representational_state_transfer"
+      ],
+      "returnedResultCount": 2,
+      "relevantResultCount": 0,
+      "routeAttempts": [
+        {
+          "routeId": "clervo.focused-index.v1",
+          "providerId": "provider_meilisearch_1_51_0",
+          "healthIdentity": "clervo.health.focused_index",
+          "circuitIdentity": "clervo.circuit.focused_index",
+          "failureDomain": "clervo.focused_index",
+          "startedAt": "2026-07-31T19:31:18.234Z",
+          "completedAt": "2026-07-31T19:31:18.234Z",
+          "outcome": "succeeded",
+          "resultCount": 2
+        },
+        {
+          "routeId": "clervo.live-federation.v1",
+          "providerId": "provider_clervo_live_federation_v1",
+          "healthIdentity": "clervo.health.live_federation",
+          "circuitIdentity": "clervo.circuit.live_federation",
+          "failureDomain": "clervo.live_federation",
+          "startedAt": "2026-07-31T19:31:18.234Z",
+          "completedAt": "2026-07-31T19:31:18.234Z",
+          "outcome": "failed",
+          "resultCount": 0,
+          "failureCode": "live_federation_circuit_open"
+        }
+      ],
+      "observedDurationMs": 164.53,
+      "causeAssessment": {
+        "benchmarkLabelEvaluatorMismatch": "not_primary_for_answerable_task",
+        "urlPrefixMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "expectedTermMatching": "rejected_as_cause_no_labelled_url_reached_the_evaluator",
+        "corpusIndexCoverage": "proven_causal",
+        "queryRewritingOverfit": "rejected_no_query_id_or_label_rules_found_and_balanced_used_only_normalized_query",
+        "verticalProfileMisclassification": "rejected_family_to_profile_mapping_was_correct",
+        "candidateTruncation": "rejected_for_target_loss_target_absent_before_final_candidate_set",
+        "rankingCalibration": "contributing_to_irrelevant_order_but_not_target_absence",
+        "deduplication": "rejected_for_target_loss_no_labelled_candidate_entered_deduplication",
+        "liveTimeoutOrCircuit": "contributing",
+        "localeBehavior": "masked_by_old_evaluator_when_response_locale_fields_were_absent_but_not_collapse_cause",
+        "cachedVersusFresh": "contributing_coverage_risk_focused_index_was_a_narrow_cached_snapshot",
+        "missingSources": "proven_causal",
+        "responseContractDifference": "not_causal_to_labelled_url_absence"
+      }
+    }
+  ]
+}

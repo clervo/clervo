@@ -4,7 +4,7 @@
   "title": "Clervo connected retrieval response v1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["contractVersion", "schemaVersion", "operationId", "productId", "query", "rewriteQueries", "language", "region", "generatedAt", "status", "degradedRoutes", "attempts", "exactDuplicateCount", "nearDuplicateCount", "results", "citations"],
+  "required": ["contractVersion", "schemaVersion", "operationId", "productId", "query", "rewriteQueries", "language", "region", "generatedAt", "status", "degradedRoutes", "attempts", "exactDuplicateCount", "nearDuplicateCount", "candidateFlow", "results", "citations"],
   "properties": {
     "contractVersion": { "const": "2026-07-29.1" },
     "schemaVersion": { "const": "clervo.connected-retrieval.response.v1" },
@@ -20,6 +20,7 @@
     "attempts": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/attempt" } },
     "exactDuplicateCount": { "type": "integer", "minimum": 0 },
     "nearDuplicateCount": { "type": "integer", "minimum": 0 },
+    "candidateFlow": { "type": "array", "maxItems": 200, "items": { "$ref": "#/$defs/candidateFlow" } },
     "results": { "type": "array", "maxItems": 100, "items": { "$ref": "#/$defs/result" } },
     "citations": { "type": "array", "maxItems": 100, "items": { "$ref": "#/$defs/citation" } }
   },
@@ -48,7 +49,7 @@
       "additionalProperties": false,
       "required": ["sourceId", "sourceName", "sourceUrl", "license", "notice"],
       "properties": {
-        "sourceId": { "enum": ["focused_index", "wikimedia", "crossref", "common_crawl"] },
+        "sourceId": { "enum": ["focused_index", "wikimedia", "crossref", "common_crawl", "official_site_feed", "public_catalog", "government_open_data", "corporate_disclosure", "research_registry", "developer_registry"] },
         "sourceName": { "type": "string", "minLength": 1 },
         "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
         "license": { "type": "string", "minLength": 1 },
@@ -72,12 +73,13 @@
     "score": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["freshness", "authority", "relevance", "diversity", "totalBasisPoints"],
+      "required": ["freshness", "authority", "relevance", "diversity", "reciprocalRankFusion", "totalBasisPoints"],
       "properties": {
         "freshness": { "type": "integer", "minimum": 0, "maximum": 100 },
         "authority": { "type": "integer", "minimum": 0, "maximum": 100 },
         "relevance": { "type": "integer", "minimum": 0, "maximum": 100 },
         "diversity": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "reciprocalRankFusion": { "type": "integer", "minimum": 0, "maximum": 10000 },
         "totalBasisPoints": { "type": "integer", "minimum": 0, "maximum": 10000 }
       }
     },
@@ -105,6 +107,24 @@
         "hostname": { "type": "string", "minLength": 1 },
         "rank": { "type": "integer", "minimum": 1, "maximum": 100 },
         "score": { "$ref": "#/$defs/score" }
+      }
+    },
+    "candidateFlow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidateId", "routeId", "providerId", "adapterId", "canonicalUrl", "sourceRank", "lexicalRelevance", "reciprocalRankFusion", "disposition"],
+      "properties": {
+        "candidateId": { "type": "string", "pattern": "^candidate_[a-f0-9]{32}$" },
+        "routeId": { "$ref": "#/$defs/routeId" },
+        "providerId": { "type": "string", "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "adapterId": { "type": "string", "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$" },
+        "canonicalUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "sourceRank": { "type": "integer", "minimum": 1, "maximum": 200 },
+        "lexicalRelevance": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "reciprocalRankFusion": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "disposition": { "enum": ["ranked", "below_relevance_floor", "exact_duplicate", "near_duplicate", "candidate_limit"] },
+        "resultId": { "type": "string", "pattern": "^csr_[a-f0-9]{40}$" },
+        "duplicateOfCandidateId": { "type": "string", "pattern": "^candidate_[a-f0-9]{32}$" }
       }
     },
     "citation": {

@@ -1,0 +1,452 @@
+{
+  "schemaVersion": "clervo.n4.27r.labels.v1",
+  "createdAt": "2026-07-31T20:55:00.000Z",
+  "split": "sealed_validation",
+  "labels": [
+    {
+      "taskId": "r-commerce-11",
+      "expected": [
+        {
+          "url": "https://sealed-commerce-11-1.n427r.invalid/evidence/commerce-11-1",
+          "requiredEvidenceTerms": [
+            "kestrel goods eleven",
+            "com-v-11-qz",
+            "catalogue code com-v-11-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-commerce-12",
+      "expected": [
+        {
+          "url": "https://sealed-commerce-12-1.n427r.invalid/evidence/commerce-12-1",
+          "requiredEvidenceTerms": [
+            "lumen seller twelve",
+            "com-v-12-qz",
+            "catalogue code com-v-12-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        },
+        {
+          "url": "https://sealed-commerce-12-2.n427r.invalid/evidence/commerce-12-2",
+          "requiredEvidenceTerms": [
+            "lumen seller twelve",
+            "com-v-12-qz",
+            "catalogue code com-v-12-qz answer 2"
+          ],
+          "grade": 2,
+          "official": false
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": true,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-commerce-13",
+      "expected": [
+        {
+          "url": "https://sealed-commerce-13-1.n427r.invalid/evidence/commerce-13-1",
+          "requiredEvidenceTerms": [
+            "mosaic outlet thirteen",
+            "com-v-13-qz",
+            "catalogue code com-v-13-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-commerce-14",
+      "expected": [
+        {
+          "url": "https://sealed-commerce-14-1.n427r.invalid/evidence/commerce-14-1",
+          "requiredEvidenceTerms": [
+            "nimbus catalog fourteen",
+            "com-v-14-qz",
+            "catalogue code com-v-14-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-commerce-15",
+      "expected": [],
+      "noResult": true,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "No catalogue document names the unique entity; generic family matches are not relevant."
+    },
+    {
+      "taskId": "r-property-11",
+      "expected": [
+        {
+          "url": "https://sealed-property-11-1.n427r.invalid/evidence/property-11-1",
+          "requiredEvidenceTerms": [
+            "kingfisher shire eleven",
+            "pro-v-11-qz",
+            "locality record pro-v-11-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-property-12",
+      "expected": [
+        {
+          "url": "https://sealed-property-12-1.n427r.invalid/evidence/property-12-1",
+          "requiredEvidenceTerms": [
+            "laurel canton twelve",
+            "pro-v-12-qz",
+            "locality record pro-v-12-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        },
+        {
+          "url": "https://sealed-property-12-2.n427r.invalid/evidence/property-12-2",
+          "requiredEvidenceTerms": [
+            "laurel canton twelve",
+            "pro-v-12-qz",
+            "locality record pro-v-12-qz answer 2"
+          ],
+          "grade": 2,
+          "official": false
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": true,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-property-13",
+      "expected": [
+        {
+          "url": "https://sealed-property-13-1.n427r.invalid/evidence/property-13-1",
+          "requiredEvidenceTerms": [
+            "maple province thirteen",
+            "pro-v-13-qz",
+            "locality record pro-v-13-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-property-14",
+      "expected": [
+        {
+          "url": "https://sealed-property-14-1.n427r.invalid/evidence/property-14-1",
+          "requiredEvidenceTerms": [
+            "northstar prefecture fourteen",
+            "pro-v-14-qz",
+            "locality record pro-v-14-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-property-15",
+      "expected": [],
+      "noResult": true,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "No catalogue document names the unique entity; generic family matches are not relevant."
+    },
+    {
+      "taskId": "r-company-11",
+      "expected": [
+        {
+          "url": "https://sealed-company-11-1.n427r.invalid/evidence/company-11-1",
+          "requiredEvidenceTerms": [
+            "keystone river eleven",
+            "com-v-11-qz",
+            "filing segment com-v-11-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-company-12",
+      "expected": [
+        {
+          "url": "https://sealed-company-12-1.n427r.invalid/evidence/company-12-1",
+          "requiredEvidenceTerms": [
+            "lucid forge twelve",
+            "com-v-12-qz",
+            "filing segment com-v-12-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        },
+        {
+          "url": "https://sealed-company-12-2.n427r.invalid/evidence/company-12-2",
+          "requiredEvidenceTerms": [
+            "lucid forge twelve",
+            "com-v-12-qz",
+            "filing segment com-v-12-qz answer 2"
+          ],
+          "grade": 2,
+          "official": false
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": true,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-company-13",
+      "expected": [
+        {
+          "url": "https://sealed-company-13-1.n427r.invalid/evidence/company-13-1",
+          "requiredEvidenceTerms": [
+            "merit coast thirteen",
+            "com-v-13-qz",
+            "filing segment com-v-13-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-company-14",
+      "expected": [
+        {
+          "url": "https://sealed-company-14-1.n427r.invalid/evidence/company-14-1",
+          "requiredEvidenceTerms": [
+            "nova trestle fourteen",
+            "com-v-14-qz",
+            "filing segment com-v-14-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-company-15",
+      "expected": [],
+      "noResult": true,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "No catalogue document names the unique entity; generic family matches are not relevant."
+    },
+    {
+      "taskId": "r-research-11",
+      "expected": [
+        {
+          "url": "https://sealed-research-11-1.n427r.invalid/evidence/research-11-1",
+          "requiredEvidenceTerms": [
+            "kernel experiment eleven",
+            "res-v-11-qz",
+            "registry identifier res-v-11-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-research-12",
+      "expected": [
+        {
+          "url": "https://sealed-research-12-1.n427r.invalid/evidence/research-12-1",
+          "requiredEvidenceTerms": [
+            "lattice meta study twelve",
+            "res-v-12-qz",
+            "registry identifier res-v-12-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        },
+        {
+          "url": "https://sealed-research-12-2.n427r.invalid/evidence/research-12-2",
+          "requiredEvidenceTerms": [
+            "lattice meta study twelve",
+            "res-v-12-qz",
+            "registry identifier res-v-12-qz answer 2"
+          ],
+          "grade": 2,
+          "official": false
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": true,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-research-13",
+      "expected": [
+        {
+          "url": "https://sealed-research-13-1.n427r.invalid/evidence/research-13-1",
+          "requiredEvidenceTerms": [
+            "monsoon dataset thirteen",
+            "res-v-13-qz",
+            "registry identifier res-v-13-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-research-14",
+      "expected": [
+        {
+          "url": "https://sealed-research-14-1.n427r.invalid/evidence/research-14-1",
+          "requiredEvidenceTerms": [
+            "nebula review fourteen",
+            "res-v-14-qz",
+            "registry identifier res-v-14-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-research-15",
+      "expected": [],
+      "noResult": true,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "No catalogue document names the unique entity; generic family matches are not relevant."
+    },
+    {
+      "taskId": "r-developer-11",
+      "expected": [
+        {
+          "url": "https://sealed-developer-11-1.n427r.invalid/evidence/developer-11-1",
+          "requiredEvidenceTerms": [
+            "kite cli eleven",
+            "dev-v-11-qz",
+            "version contract dev-v-11-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-developer-12",
+      "expected": [
+        {
+          "url": "https://sealed-developer-12-1.n427r.invalid/evidence/developer-12-1",
+          "requiredEvidenceTerms": [
+            "loom api twelve",
+            "dev-v-12-qz",
+            "version contract dev-v-12-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        },
+        {
+          "url": "https://sealed-developer-12-2.n427r.invalid/evidence/developer-12-2",
+          "requiredEvidenceTerms": [
+            "loom api twelve",
+            "dev-v-12-qz",
+            "version contract dev-v-12-qz answer 2"
+          ],
+          "grade": 2,
+          "official": false
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": true,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-developer-13",
+      "expected": [
+        {
+          "url": "https://sealed-developer-13-1.n427r.invalid/evidence/developer-13-1",
+          "requiredEvidenceTerms": [
+            "matrix runtime thirteen",
+            "dev-v-13-qz",
+            "version contract dev-v-13-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-developer-14",
+      "expected": [
+        {
+          "url": "https://sealed-developer-14-1.n427r.invalid/evidence/developer-14-1",
+          "requiredEvidenceTerms": [
+            "nexus package fourteen",
+            "dev-v-14-qz",
+            "version contract dev-v-14-qz answer 1"
+          ],
+          "grade": 3,
+          "official": true
+        }
+      ],
+      "noResult": false,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "URL qrel and independently recorded evidence terms are both required."
+    },
+    {
+      "taskId": "r-developer-15",
+      "expected": [],
+      "noResult": true,
+      "multipleValidAnswers": false,
+      "evaluatorNote": "No catalogue document names the unique entity; generic family matches are not relevant."
+    }
+  ]
+}

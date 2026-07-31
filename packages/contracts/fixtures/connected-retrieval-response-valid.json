@@ -19,6 +19,9 @@
     ],
     "exactDuplicateCount": 0,
     "nearDuplicateCount": 0,
+    "candidateFlow": [
+      { "candidateId": "candidate_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "routeId": "clervo.focused-index.v1", "providerId": "provider_meilisearch_1_51_0", "adapterId": "adapter_meilisearch_focused_1_51_0", "canonicalUrl": "https://docs.example/evidence", "sourceRank": 1, "lexicalRelevance": 80, "reciprocalRankFusion": 9836, "disposition": "ranked", "resultId": "csr_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" }
+    ],
     "results": [
       {
         "routeId": "clervo.focused-index.v1",
@@ -38,7 +41,7 @@
         "resultId": "csr_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "hostname": "docs.example",
         "rank": 1,
-        "score": { "freshness": 100, "authority": 88, "relevance": 80, "diversity": 100, "totalBasisPoints": 9000 }
+        "score": { "freshness": 100, "authority": 88, "relevance": 80, "diversity": 100, "reciprocalRankFusion": 9836, "totalBasisPoints": 9000 }
       }
     ],
     "citations": [

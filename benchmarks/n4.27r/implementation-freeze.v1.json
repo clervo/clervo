@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "clervo.n4.27r.implementation-freeze.v1",
+  "frozenAt": "2026-07-31T21:16:00.000Z",
+  "tuningComplete": true,
+  "sealedValidationMayRun": true,
+  "postValidationTuningAllowed": false,
+  "originalN427HoldoutMayRun": false,
+  "files": [
+    {
+      "path": "package.json",
+      "bytes": 7324,
+      "sha256": "sha256:ec4fed62ebeb104f25d1a96824e6739a6b38fb70288892ac33f7a9b6a29c49c4"
+    },
+    {
+      "path": "packages/contracts/src/live-federation.ts",
+      "bytes": 23512,
+      "sha256": "sha256:8d3fda0d1c6eb986ad601cece83f3beb685f4c78feccc18f3927a9cb7fc94b99"
+    },
+    {
+      "path": "packages/contracts/schemas/connected-retrieval-response.schema.json",
+      "bytes": 9093,
+      "sha256": "sha256:cd4855740319c638522964b96ef72fb33d45c95c22ff9f3e3f4ef2f7482343e4"
+    },
+    {
+      "path": "packages/contracts/fixtures/connected-retrieval-response-valid.json",
+      "bytes": 3561,
+      "sha256": "sha256:2ff8a57f305b5551b753e9830a8436a9ab34dab0d90481360e11c1901f0e68c5"
+    },
+    {
+      "path": "packages/contracts/fixtures/connected-retrieval-response-route-invalid.json",
+      "bytes": 676,
+      "sha256": "sha256:bbb45cc64f3abc5a24347d0146a5c956e6262a0b4635406407139a452aae69ec"
+    },
+    {
+      "path": "services/search/src/connected-retrieval.ts",
+      "bytes": 15053,
+      "sha256": "sha256:ec987d627f13440c7dec2c18af607d46cccdc2a9f7d2dbb7fe713aa0c7b13576"
+    },
+    {
+      "path": "services/search/src/live-federation.ts",
+      "bytes": 19145,
+      "sha256": "sha256:2ddd1a03c26ca47e4d82cbc93a90dce7ca783e60957bde130ce344e5c1b5b8d4"
+    },
+    {
+      "path": "infra/n4.27r/browser-boundary.mjs",
+      "bytes": 3000,
+      "sha256": "sha256:4a4f5351405e5e919386b232dbbb7519b206df30b9080bfd6914ddce7ebf1991"
+    },
+    {
+      "path": "infra/n4.27r/browser-worker.mjs",
+      "bytes": 4808,
+      "sha256": "sha256:4e32670945db36ab7c8110a00bc4afdd747059cf6834edd9989ae15ba8b1bf6e"
+    },
+    {
+      "path": "scripts/benchmarks/n4.27r/create-corpus.mjs",
+      "bytes": 12385,
+      "sha256": "sha256:15e306e78d7c725be4847c047b577f13bc65ba4285ac52930814e1dfdf8ed192"
+    },
+    {
+      "path": "scripts/benchmarks/n4.27r/build-root-cause-ledger.mjs",
+      "bytes": 8027,
+      "sha256": "sha256:a7f24494fe2813bff37b18d6ddff6e3d0f86ea34a92bc76ba187ff8fff84a4fc"
+    },
+    {
+      "path": "scripts/benchmarks/n4.27r/fixture-runtime.mjs",
+      "bytes": 5792,
+      "sha256": "sha256:4ca7f4f47c2e77d77bd3ba8b4a6e8bb4eb887cb4a6e7fbf928437efd85f447b2"
+    },
+    {
+      "path": "scripts/benchmarks/n4.27r/evaluate.mjs",
+      "bytes": 14228,
+      "sha256": "sha256:4bfde6f7bb844cad10c7994f28237eb086a262c03049765ce4adaea58d815e3b"
+    },
+    {
+      "path": "scripts/benchmarks/n4.27r/qualify-browser.mjs",
+      "bytes": 11179,
+      "sha256": "sha256:cb805bcfa0e1a75cab324b1d3f1ccd45d5f568989fecda4fb59e46a97f2251b1"
+    },
+    {
+      "path": "scripts/benchmarks/n4.27r/freeze-implementation.mjs",
+      "bytes": 1780,
+      "sha256": "sha256:344e5786bb2b6222cc354abf400c53b8f9e73be3bfa6bb7aa3eff96b345e8c71"
+    },
+    {
+      "path": "tests/contract/n4.27.test.mjs",
+      "bytes": 10081,
+      "sha256": "sha256:5f2f80713185575d1fba27ae256c1c2f483c921532330d9bf80f9a70e4da8265"
+    },
+    {
+      "path": "tests/contract/n4.27r.test.mjs",
+      "bytes": 9159,
+      "sha256": "sha256:41e9c1b53bf8504dc1c6520944d35a5110309b8de2c9b3211d46df1432f53f15"
+    }
+  ]
+}

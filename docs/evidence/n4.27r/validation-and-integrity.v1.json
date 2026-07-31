@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "clervo.n4.27r.validation-and-integrity.v1",
+  "validatedAt": "2026-07-31T21:25:16Z",
+  "focusedTests": {
+    "n4.24": { "passed": 12, "failed": 0 },
+    "n4.27": { "passed": 10, "failed": 0 },
+    "n4.27r": { "passed": 8, "failed": 0 },
+    "totalPassed": 30,
+    "totalFailed": 0
+  },
+  "contracts": {
+    "passed": true,
+    "schemas": 43,
+    "fixtures": 81
+  },
+  "typecheck": true,
+  "lint": {
+    "passed": true,
+    "files": 243
+  },
+  "secretScan": {
+    "passed": true,
+    "secretValuesPrinted": 0,
+    "networkCalls": 0,
+    "usdcSpent": 0
+  },
+  "cleanRoomBoundary": {
+    "passed": true,
+    "legacyRuntimeDependencies": 0,
+    "networkCalls": 0,
+    "usdcSpent": 0
+  },
+  "artifactIntegrity": {
+    "passed": true,
+    "benchmarkFreezeSha256": "sha256:f68521465e838d2a46a55cb979bca6625d2f868542027aaebc69c2dc4e86ba67",
+    "implementationFreezeSha256": "sha256:9c9ee511ef0f40586725a02e6ae64702a2a157984c0cdeb603e41ffbcf12185a",
+    "implementationFiles": 17,
+    "originalN427HoldoutRunCount": 1,
+    "sealedN427rValidationRunCount": 1,
+    "sealedN427rRawRows": 100,
+    "gzipArtifactsReadable": true,
+    "jsonArtifactsParse": true
+  },
+  "browserCleanup": {
+    "qualificationOrphans": 0,
+    "qualificationRetainedState": 0,
+    "postValidationProcesses": 0,
+    "postValidationTemporaryStateDirectories": 0
+  },
+  "gitDiffCheck": true,
+  "canonicalNpmTestRun": false,
+  "stage4VerifierRun": false,
+  "originalN427HoldoutRerun": false,
+  "sealedN427rValidationRerun": false,
+  "postValidationImplementationTuning": false
+}

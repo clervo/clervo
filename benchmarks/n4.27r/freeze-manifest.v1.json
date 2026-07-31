@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "clervo.n4.27r.benchmark-freeze.v1",
+  "frozenAt": "2026-07-31T20:55:00.000Z",
+  "splitBeforeImplementation": true,
+  "originalN427HoldoutMayRun": false,
+  "querySpecificRulesAllowed": false,
+  "artifacts": {
+    "developmentCorpus": {
+      "path": "benchmarks/n4.27r/development-corpus.v1.json",
+      "bytes": 23336,
+      "sha256": "sha256:bf41d26e5496908901fb4de142f457fa016b2f303df65ad2863ffbbb9f7b7d4a"
+    },
+    "developmentLabels": {
+      "path": "benchmarks/n4.27r/development-labels.v1.json",
+      "bytes": 29083,
+      "sha256": "sha256:7e1a12e5803a0446d21bb0377219d610f687930ea750b675b6906174bf93e8f0"
+    },
+    "sealedValidationCorpus": {
+      "path": "benchmarks/n4.27r/sealed-validation-corpus.v1.json",
+      "bytes": 12542,
+      "sha256": "sha256:e111b12cb5fd78f66004c7406f6697a615416a99e5814c88af3f80e996e4c642"
+    },
+    "sealedValidationLabels": {
+      "path": "benchmarks/n4.27r/sealed-validation-labels.v1.json",
+      "bytes": 14013,
+      "sha256": "sha256:e154128d5ac49a504cd11dff6a6678c73153e78123ed768243af91d6033e8343"
+    },
+    "sourceCatalog": {
+      "path": "benchmarks/n4.27r/source-catalog.v1.json",
+      "bytes": 153654,
+      "sha256": "sha256:d6dbb4bc00fc0d7b03574b097308585ae1dad93417196b198be84aee9f270f4e"
+    }
+  },
+  "counts": {
+    "total": 75,
+    "development": 50,
+    "sealedValidation": 25,
+    "byFamily": {
+      "commerce_marketplaces": 15,
+      "property_local_markets": 15,
+      "company_competitive": 15,
+      "research_evidence": 15,
+      "developer_agent_retrieval": 15
+    }
+  },
+  "coverage": {
+    "javascriptRequired": 15,
+    "hostilePages": 5,
+    "noResult": 10,
+    "locale": 35,
+    "degradedSource": 5,
+    "focusedMissExpected": 25
+  }
+}

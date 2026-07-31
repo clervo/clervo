@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "clervo.n4.27r.live-source-qualification.v1",
+  "evaluatedAt": "2026-07-31T21:15:00.000Z",
+  "scope": "controlled_repair_entry_runtime_not_public_production_qualification",
+  "productionGeneralWebProviderCostUsd": 0,
+  "paidOrEventuallyPaidGeneralWebProviderConnected": false,
+  "publicSharedSearxngConnected": false,
+  "closedPlatformBypassUsed": false,
+  "sourceClasses": [
+    {
+      "sourceId": "official_site_feed",
+      "families": ["commerce_marketplaces", "property_local_markets", "company_competitive", "research_evidence", "developer_agent_retrieval"],
+      "qualification": "domain_terms_robots_and_content_use_must_be_approved_per_site",
+      "controlledAdapter": "adapter_n427r_official_site_feed_v1",
+      "productionConnection": "not_deployed"
+    },
+    {
+      "sourceId": "public_catalog",
+      "families": ["commerce_marketplaces"],
+      "qualification": "public_product_endpoints_only_no_cart_checkout_customer_session_or_write",
+      "officialDocumentation": "https://developer.woocommerce.com/docs/apis/store-api/",
+      "controlledAdapter": "adapter_n427r_public_catalog_v1",
+      "productionConnection": "not_deployed"
+    },
+    {
+      "sourceId": "government_open_data",
+      "families": ["property_local_markets", "company_competitive"],
+      "qualification": "public_read_only_api_with_source_specific_user_agent_quota_and_terms",
+      "officialDocumentation": [
+        "https://www.census.gov/data/developers/guidance/api-user-guide.html",
+        "https://www.sec.gov/search-filings/edgar-application-programming-interfaces"
+      ],
+      "controlledAdapter": "adapter_n427r_government_open_data_v1",
+      "productionConnection": "not_deployed"
+    },
+    {
+      "sourceId": "corporate_disclosure",
+      "families": ["company_competitive"],
+      "qualification": "issuer_or_regulator_official_public_disclosures_only",
+      "officialDocumentation": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "controlledAdapter": "adapter_n427r_corporate_disclosure_v1",
+      "productionConnection": "not_deployed"
+    },
+    {
+      "sourceId": "research_registry",
+      "families": ["research_evidence"],
+      "qualification": "public_metadata_only_with_attribution_and_polite_pool_identity",
+      "officialDocumentation": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/",
+      "controlledAdapter": "adapter_n427r_research_registry_v1",
+      "productionConnection": "crossref_existing_adapter_only"
+    },
+    {
+      "sourceId": "developer_registry",
+      "families": ["developer_agent_retrieval"],
+      "qualification": "public_metadata_gets_only_source_quota_and_rate_headers_honored",
+      "officialDocumentation": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "controlledAdapter": "adapter_n427r_developer_registry_v1",
+      "productionConnection": "not_deployed"
+    }
+  ],
+  "existingProductionAdaptersPreserved": [
+    "provider_wikimedia_action_api_v1",
+    "provider_crossref_rest_api_v1"
+  ],
+  "runtimeRepairs": {
+    "perSourceDeadlineMs": 250,
+    "boundedMergeDeadlineMs": 1500,
+    "maximumSourceAdapters": 8,
+    "sourceQuota": "max(2, ceil(maximumResults * 0.6))",
+    "healthIdentity": "clervo.health.live_source.<adapterId>",
+    "circuitIdentity": "clervo.circuit.live_source.<adapterId>",
+    "suspensionThreshold": 3,
+    "suspensionMs": 30000,
+    "callerCancellationPropagated": true,
+    "emptySuccessfulSearchCountsAsOperationalSuccess": true,
+    "roundRobinDiscoveryMerge": true,
+    "candidateContributionExposedByAdapter": true
+  },
+  "developmentResults": {
+    "recall": 0.4444,
+    "precision": 1,
+    "p95LatencyMs": 4.109,
+    "focusedMissTasks": 15,
+    "tasksWithUniqueRelevantLiveContribution": 15,
+    "uniqueContributionRate": 1,
+    "largestSourceShare": 0.2,
+    "contributionsByAdapter": {
+      "adapter_n427r_corporate_disclosure_v1": 1,
+      "adapter_n427r_developer_registry_v1": 3,
+      "adapter_n427r_government_open_data_v1": 3,
+      "adapter_n427r_official_site_feed_v1": 2,
+      "adapter_n427r_public_catalog_v1": 3,
+      "adapter_n427r_research_registry_v1": 3
+    }
+  },
+  "focusedValidation": {
+    "threeTimeoutsSuspendOnlyTheStalledSource": true,
+    "healthySourceRemainsHealthy": true,
+    "aggregateCircuitRemainsClosedWhenAnotherSourceSettlesSuccessfully": true,
+    "threeCallsCompleteUnder500Ms": true
+  },
+  "gates": {
+    "recallAtLeast035": true,
+    "precisionAtLeast060": true,
+    "p95AtMost4000": true,
+    "uniqueContributionAtLeast030": true,
+    "largestSourceShareAtMost070": true,
+    "boundedMerge": true,
+    "suspendedSourceIsolation": true
+  },
+  "decision": "passed_controlled_repair_entry; production_source_connections_remain_a_later_staging_qualification"
+}

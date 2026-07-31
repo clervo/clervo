@@ -46,7 +46,8 @@ test('calibrated ranking is query-sensitive and no longer favors canonical URL o
     evidence(FOCUSED_INDEX_ROUTE_ID, 'https://z.example/mcp', 'Model Context Protocol tools', 'Official model context protocol tools specification', 80, 95),
   ] });
   assert.equal(ranked.results[0].canonicalUrl, 'https://z.example/mcp');
-  assert.ok(ranked.results[0].score.relevance > ranked.results[1].score.relevance);
+  assert.equal(ranked.candidateFlow.find((candidate) => candidate.canonicalUrl === 'https://a.example/irrelevant').disposition, 'below_relevance_floor');
+  assert.ok(ranked.results[0].score.relevance > 0);
 });
 
 test('dedup retains the strongest representative and preserves distinct sellers', () => {

@@ -1,0 +1,844 @@
+{
+  "schemaVersion": "clervo.n4.27r.corpus.v1",
+  "createdAt": "2026-07-31T20:55:00.000Z",
+  "split": "development",
+  "tuningAllowed": true,
+  "executionLimit": null,
+  "tasks": [
+    {
+      "id": "r-commerce-01",
+      "split": "development",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Aster Loom One COM-D-01-QZ verified product offer model and current seller terms",
+      "entity": "Aster Loom One",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "official_source"
+      ]
+    },
+    {
+      "id": "r-commerce-02",
+      "split": "development",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Brindle Cart Two authoritative evidence verified product offer model and current seller terms",
+      "entity": "Brindle Cart Two",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "distinct_sellers"
+      ]
+    },
+    {
+      "id": "r-commerce-03",
+      "split": "development",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Cobalt Kiosk Three COM-D-03-QZ verified product offer model and current seller terms",
+      "entity": "Cobalt Kiosk Three",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "official_source",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-commerce-04",
+      "split": "development",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Dahlia Market Four authoritative evidence verified product offer model and current seller terms",
+      "entity": "Dahlia Market Four",
+      "locale": {
+        "language": "fr",
+        "region": "FR"
+      },
+      "features": [
+        "semantic",
+        "locale"
+      ]
+    },
+    {
+      "id": "r-commerce-05",
+      "split": "development",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Ember Shelf Five COM-D-05-QZ verified product offer model and current seller terms",
+      "entity": "Ember Shelf Five",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-commerce-06",
+      "split": "development",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Fable Store Six authoritative evidence verified product offer model and current seller terms",
+      "entity": "Fable Store Six",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "semantic",
+        "official_source",
+        "freshness_sensitive",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-commerce-07",
+      "split": "development",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Garnet Bazaar Seven COM-D-07-QZ verified product offer model and current seller terms",
+      "entity": "Garnet Bazaar Seven",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "distinct_sellers"
+      ]
+    },
+    {
+      "id": "r-commerce-08",
+      "split": "development",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Harbor Offer Eight authoritative evidence verified product offer model and current seller terms",
+      "entity": "Harbor Offer Eight",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "hostile_page"
+      ]
+    },
+    {
+      "id": "r-commerce-09",
+      "split": "development",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Indigo Vendor Nine COM-D-09-QZ verified product offer model and current seller terms",
+      "entity": "Indigo Vendor Nine",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "locale",
+        "degraded_source",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-commerce-10",
+      "split": "development",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Juniper Basket Ten authoritative evidence verified product offer model and current seller terms",
+      "entity": "Juniper Basket Ten",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "no_result"
+      ]
+    },
+    {
+      "id": "r-property-01",
+      "split": "development",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Alder Quay One PRO-D-01-QZ official local housing indicator and location record",
+      "entity": "Alder Quay One",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "official_source"
+      ]
+    },
+    {
+      "id": "r-property-02",
+      "split": "development",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Birch Ward Two authoritative evidence official local housing indicator and location record",
+      "entity": "Birch Ward Two",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "distinct_locations"
+      ]
+    },
+    {
+      "id": "r-property-03",
+      "split": "development",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Cedar Parish Three PRO-D-03-QZ official local housing indicator and location record",
+      "entity": "Cedar Parish Three",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "official_source",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-property-04",
+      "split": "development",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Dogwood Borough Four authoritative evidence official local housing indicator and location record",
+      "entity": "Dogwood Borough Four",
+      "locale": {
+        "language": "fr",
+        "region": "FR"
+      },
+      "features": [
+        "semantic",
+        "locale"
+      ]
+    },
+    {
+      "id": "r-property-05",
+      "split": "development",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Elm District Five PRO-D-05-QZ official local housing indicator and location record",
+      "entity": "Elm District Five",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-property-06",
+      "split": "development",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Fir County Six authoritative evidence official local housing indicator and location record",
+      "entity": "Fir County Six",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "semantic",
+        "official_source",
+        "freshness_sensitive",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-property-07",
+      "split": "development",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Grove Precinct Seven PRO-D-07-QZ official local housing indicator and location record",
+      "entity": "Grove Precinct Seven",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "distinct_locations"
+      ]
+    },
+    {
+      "id": "r-property-08",
+      "split": "development",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Hazel Township Eight authoritative evidence official local housing indicator and location record",
+      "entity": "Hazel Township Eight",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "hostile_page"
+      ]
+    },
+    {
+      "id": "r-property-09",
+      "split": "development",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Iris Municipality Nine PRO-D-09-QZ official local housing indicator and location record",
+      "entity": "Iris Municipality Nine",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "locale",
+        "degraded_source",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-property-10",
+      "split": "development",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Jade Region Ten authoritative evidence official local housing indicator and location record",
+      "entity": "Jade Region Ten",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "no_result"
+      ]
+    },
+    {
+      "id": "r-company-01",
+      "split": "development",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Axiom Harbor One COM-D-01-QZ official company disclosure and competitive segment",
+      "entity": "Axiom Harbor One",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "official_source"
+      ]
+    },
+    {
+      "id": "r-company-02",
+      "split": "development",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Beacon Foundry Two authoritative evidence official company disclosure and competitive segment",
+      "entity": "Beacon Foundry Two",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "multiple_valid_answers"
+      ]
+    },
+    {
+      "id": "r-company-03",
+      "split": "development",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Cipher Orchard Three COM-D-03-QZ official company disclosure and competitive segment",
+      "entity": "Cipher Orchard Three",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "official_source",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-company-04",
+      "split": "development",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Delta Lantern Four authoritative evidence official company disclosure and competitive segment",
+      "entity": "Delta Lantern Four",
+      "locale": {
+        "language": "fr",
+        "region": "FR"
+      },
+      "features": [
+        "semantic",
+        "locale"
+      ]
+    },
+    {
+      "id": "r-company-05",
+      "split": "development",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Echo Meridian Five COM-D-05-QZ official company disclosure and competitive segment",
+      "entity": "Echo Meridian Five",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-company-06",
+      "split": "development",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Flux Prairie Six authoritative evidence official company disclosure and competitive segment",
+      "entity": "Flux Prairie Six",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "semantic",
+        "official_source",
+        "freshness_sensitive",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-company-07",
+      "split": "development",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Glyph Summit Seven COM-D-07-QZ official company disclosure and competitive segment",
+      "entity": "Glyph Summit Seven",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "multiple_valid_answers"
+      ]
+    },
+    {
+      "id": "r-company-08",
+      "split": "development",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Helix Timber Eight authoritative evidence official company disclosure and competitive segment",
+      "entity": "Helix Timber Eight",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "hostile_page"
+      ]
+    },
+    {
+      "id": "r-company-09",
+      "split": "development",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Ion Valley Nine COM-D-09-QZ official company disclosure and competitive segment",
+      "entity": "Ion Valley Nine",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "locale",
+        "degraded_source",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-company-10",
+      "split": "development",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Junction Works Ten authoritative evidence official company disclosure and competitive segment",
+      "entity": "Junction Works Ten",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "no_result"
+      ]
+    },
+    {
+      "id": "r-research-01",
+      "split": "development",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Aurora Method One RES-D-01-QZ registered evidence record method and identifier",
+      "entity": "Aurora Method One",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "official_source"
+      ]
+    },
+    {
+      "id": "r-research-02",
+      "split": "development",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Boreal Study Two authoritative evidence registered evidence record method and identifier",
+      "entity": "Boreal Study Two",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "multiple_valid_answers"
+      ]
+    },
+    {
+      "id": "r-research-03",
+      "split": "development",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Cascade Trial Three RES-D-03-QZ registered evidence record method and identifier",
+      "entity": "Cascade Trial Three",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "official_source",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-research-04",
+      "split": "development",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Drift Dataset Four authoritative evidence registered evidence record method and identifier",
+      "entity": "Drift Dataset Four",
+      "locale": {
+        "language": "fr",
+        "region": "FR"
+      },
+      "features": [
+        "semantic",
+        "locale"
+      ]
+    },
+    {
+      "id": "r-research-05",
+      "split": "development",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Equinox Review Five RES-D-05-QZ registered evidence record method and identifier",
+      "entity": "Equinox Review Five",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-research-06",
+      "split": "development",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Flora Evidence Six authoritative evidence registered evidence record method and identifier",
+      "entity": "Flora Evidence Six",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "semantic",
+        "official_source",
+        "freshness_sensitive",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-research-07",
+      "split": "development",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Glacier Paper Seven RES-D-07-QZ registered evidence record method and identifier",
+      "entity": "Glacier Paper Seven",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "multiple_valid_answers"
+      ]
+    },
+    {
+      "id": "r-research-08",
+      "split": "development",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Horizon Protocol Eight authoritative evidence registered evidence record method and identifier",
+      "entity": "Horizon Protocol Eight",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "hostile_page"
+      ]
+    },
+    {
+      "id": "r-research-09",
+      "split": "development",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Isotope Survey Nine RES-D-09-QZ registered evidence record method and identifier",
+      "entity": "Isotope Survey Nine",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "locale",
+        "degraded_source",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-research-10",
+      "split": "development",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Jetstream Analysis Ten authoritative evidence registered evidence record method and identifier",
+      "entity": "Jetstream Analysis Ten",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "no_result"
+      ]
+    },
+    {
+      "id": "r-developer-01",
+      "split": "development",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Arcade SDK One DEV-D-01-QZ official current API version and agent integration",
+      "entity": "Arcade SDK One",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "official_source"
+      ]
+    },
+    {
+      "id": "r-developer-02",
+      "split": "development",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Bastion Package Two authoritative evidence official current API version and agent integration",
+      "entity": "Bastion Package Two",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "distinct_versions"
+      ]
+    },
+    {
+      "id": "r-developer-03",
+      "split": "development",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Circuit API Three DEV-D-03-QZ official current API version and agent integration",
+      "entity": "Circuit API Three",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "official_source",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-developer-04",
+      "split": "development",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Dynamo Agent Four authoritative evidence official current API version and agent integration",
+      "entity": "Dynamo Agent Four",
+      "locale": {
+        "language": "fr",
+        "region": "FR"
+      },
+      "features": [
+        "semantic",
+        "locale"
+      ]
+    },
+    {
+      "id": "r-developer-05",
+      "split": "development",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Ember Runtime Five DEV-D-05-QZ official current API version and agent integration",
+      "entity": "Ember Runtime Five",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-developer-06",
+      "split": "development",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Fjord Library Six authoritative evidence official current API version and agent integration",
+      "entity": "Fjord Library Six",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "semantic",
+        "official_source",
+        "freshness_sensitive",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-developer-07",
+      "split": "development",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Gimbal Protocol Seven DEV-D-07-QZ official current API version and agent integration",
+      "entity": "Gimbal Protocol Seven",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "distinct_versions"
+      ]
+    },
+    {
+      "id": "r-developer-08",
+      "split": "development",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Helio Toolkit Eight authoritative evidence official current API version and agent integration",
+      "entity": "Helio Toolkit Eight",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "hostile_page"
+      ]
+    },
+    {
+      "id": "r-developer-09",
+      "split": "development",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Index Module Nine DEV-D-09-QZ official current API version and agent integration",
+      "entity": "Index Module Nine",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "locale",
+        "degraded_source",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-developer-10",
+      "split": "development",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Jolt Framework Ten authoritative evidence official current API version and agent integration",
+      "entity": "Jolt Framework Ten",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "no_result"
+      ]
+    }
+  ]
+}

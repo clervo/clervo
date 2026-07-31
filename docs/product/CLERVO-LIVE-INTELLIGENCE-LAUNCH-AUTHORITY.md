@@ -334,9 +334,18 @@ prerequisites failed. The isolated N4.27 compute/network resources were deleted,
 leaving USD 0/day active incremental exposure. No route became payable and no
 USDC was spent.
 
-Search is not commercially competitive or the reference pattern; Exa parity,
-the advanced claim, N4.28 and Stage 5 remain unauthorized. The smallest exact
-repair ticket is **N4.27R**: replace the narrow lawful supply/index, add labelled
-duplicate and hostile-page fixtures, make browser fixtures local and
-deterministic, then freeze a new independent holdout. N4.27R requires separate
-authority and must never reuse or rerun the N4.27 holdout.
+N4.27R subsequently completed its separately authorized controlled repair-entry
+scope without touching the original holdout. A new 75-task corpus was split
+before implementation; the 50-task development split and once-only 25-task
+sealed validation met their repair-entry gates. Controlled browser/security
+proof reached 20/20 startups and clean teardowns with complete local denial and
+hostile-page coverage. This did not deploy production source connections or
+promote staging evidence, and it did not run mock x402, payment, the Stage 4
+verifier or canonical acceptance.
+
+All ten source-bound Stage 4 blockers therefore remain. Search is not
+commercially competitive or the reference pattern; Exa parity, the advanced
+claim, N4.28 and Stage 5 remain unauthorized. The smallest proposed next ticket
+is **N4.27S**, an unauthorized deployment of the exact frozen repair for
+remaining non-payment staging proof. Neither N4.27 nor N4.27R sealed data may be
+rerun or used for tuning.

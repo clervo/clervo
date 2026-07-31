@@ -72,12 +72,20 @@ function digest(value: string): string {
   return `sha256:${createHash('sha256').update(value).digest('hex')}`;
 }
 
+const discoveryStopWords = new Set(['a', 'an', 'and', 'at', 'authoritative', 'by', 'current', 'evidence', 'for', 'from', 'in', 'is', 'of', 'official', 'on', 'or', 'the', 'to', 'verified', 'with']);
+
+function discoveryTokens(value: string): readonly string[] {
+  return Object.freeze([...new Set(value.normalize('NFKC').toLocaleLowerCase('en-US').match(/[\p{L}\p{N}]+(?:[-_.][\p{L}\p{N}]+)*/gu) ?? [])].filter((token) => token.length > 1 && !discoveryStopWords.has(token)));
+}
+
 function metadataEvidence(candidate: LiveDiscoveryCandidate, query: string): ConnectedRouteEvidence | undefined {
-  const tokens = [...new Set(query.toLocaleLowerCase('en-US').match(/[\p{L}\p{N}]+/gu) ?? [])].filter((token) => token.length > 2);
+  const tokens = discoveryTokens(query);
   const text = `${candidate.title}\n${candidate.snippet}`.normalize('NFKC').replace(/\s+/gu, ' ').trim();
   const lower = text.toLocaleLowerCase('en-US');
   const hits = tokens.filter((token) => lower.includes(token)).length;
-  if (tokens.length > 0 && hits < Math.max(1, Math.ceil(tokens.length * 0.3))) return undefined;
+  const title = candidate.title.normalize('NFKC').toLocaleLowerCase('en-US');
+  const titleHits = tokens.filter((token) => title.includes(token)).length;
+  if (tokens.length > 0 && (hits < Math.max(2, Math.ceil(tokens.length * 0.5)) || titleHits < Math.min(3, tokens.length))) return undefined;
   const bodyHash = digest(text);
   const identity = createHash('sha256').update(`${candidate.adapterId}\n${candidate.currentUrl}\n${text}`).digest('hex');
   return Object.freeze({
@@ -89,8 +97,8 @@ function metadataEvidence(candidate: LiveDiscoveryCandidate, query: string): Con
     evidenceText: text,
     retrievedAt: candidate.retrievedAt,
     ...(candidate.publishedAt === undefined ? {} : { publishedAt: candidate.publishedAt }),
-    authorityScore: candidate.attribution.sourceId === 'wikimedia' ? 88 : candidate.attribution.sourceId === 'crossref' ? 92 : 60,
-    relevanceScore: Math.min(100, 35 + hits * 15),
+    authorityScore: candidate.attribution.sourceId === 'wikimedia' ? 88 : candidate.attribution.sourceId === 'crossref' ? 92 : candidate.attribution.sourceId === 'common_crawl' ? 60 : 90,
+    relevanceScore: Math.min(100, Math.round(45 + 40 * hits / Math.max(1, tokens.length) + 15 * titleHits / Math.max(1, tokens.length))),
     language: candidate.language,
     region: candidate.region,
     attribution: candidate.attribution,
@@ -173,6 +181,8 @@ export interface LiveFederationSearchRequest {
 export class LiveFederationRoute {
   readonly identity = liveFederationRuntimeIdentity;
   readonly circuit: LiveFederationCircuit;
+  private readonly sourceFailures = new Map<string, number>();
+  private readonly sourceSuspendedAt = new Map<string, number>();
 
   constructor(readonly dependencies: Readonly<{
     adapters: readonly OpenDataDiscoveryAdapter[];
@@ -183,7 +193,7 @@ export class LiveFederationRoute {
     perPageDeadlineMs?: number;
   }>) {
     assertLiveFederationRuntimeIdentity(this.identity);
-    if (dependencies.adapters.length < 1 || dependencies.adapters.length > 3 || new Set(dependencies.adapters.map((adapter) => adapter.adapterId)).size !== dependencies.adapters.length) throw new Error('invalid_live_federation_adapter_set');
+    if (dependencies.adapters.length < 1 || dependencies.adapters.length > 8 || new Set(dependencies.adapters.map((adapter) => adapter.adapterId)).size !== dependencies.adapters.length) throw new Error('invalid_live_federation_adapter_set');
     if (dependencies.perSourceDeadlineMs !== undefined && (!Number.isInteger(dependencies.perSourceDeadlineMs) || dependencies.perSourceDeadlineMs < 100 || dependencies.perSourceDeadlineMs > 4_000)) throw new Error('invalid_live_source_deadline');
     if (dependencies.perPageDeadlineMs !== undefined && (!Number.isInteger(dependencies.perPageDeadlineMs) || dependencies.perPageDeadlineMs < 100 || dependencies.perPageDeadlineMs > 4_000)) throw new Error('invalid_live_page_deadline');
     this.circuit = dependencies.circuit ?? new LiveFederationCircuit();
@@ -193,24 +203,51 @@ export class LiveFederationRoute {
     return Object.freeze({ identity: 'clervo.health.live_federation', routeId: LIVE_FEDERATION_ROUTE_ID, status: this.circuit.state.status === 'closed' ? 'healthy' : 'unavailable', checkedAt });
   }
 
+  sourceHealth(checkedAt: string): readonly Readonly<{ adapterId: string; healthIdentity: string; circuitIdentity: string; status: 'healthy' | 'suspended'; consecutiveFailures: number; checkedAt: string }>[] {
+    const now = Date.parse(checkedAt);
+    return Object.freeze(this.dependencies.adapters.map((adapter) => {
+      const suspendedAt = this.sourceSuspendedAt.get(adapter.adapterId);
+      const suspended = suspendedAt !== undefined && now - suspendedAt < 30_000;
+      return Object.freeze({ adapterId: adapter.adapterId, healthIdentity: `clervo.health.live_source.${adapter.adapterId}`, circuitIdentity: `clervo.circuit.live_source.${adapter.adapterId}`, status: suspended ? 'suspended' as const : 'healthy' as const, consecutiveFailures: this.sourceFailures.get(adapter.adapterId) ?? 0, checkedAt });
+    }));
+  }
+
   async search(request: Readonly<LiveFederationSearchRequest>): Promise<readonly Readonly<ConnectedRouteEvidence>[]> {
     this.circuit.acquire();
     const sourceBudgetMs = Math.min(this.dependencies.perSourceDeadlineMs ?? 1_200, Math.max(1, Date.parse(request.deadlineAt) - Date.parse(request.generatedAt)));
-    const searches = await Promise.allSettled(this.dependencies.adapters.map(async (adapter) => {
+    const sourceHealth = new Map(this.sourceHealth(request.generatedAt).map((source) => [source.adapterId, source]));
+    const adapters = this.dependencies.adapters.filter((adapter) => sourceHealth.get(adapter.adapterId)?.status !== 'suspended');
+    const searches = await Promise.allSettled(adapters.map(async (adapter) => {
       const controller = new AbortController();
       const cancel = (): void => controller.abort();
       request.signal.addEventListener('abort', cancel, { once: true });
-      const timer = setTimeout(() => controller.abort(), sourceBudgetMs);
+      let timer: ReturnType<typeof setTimeout> | undefined;
       try {
-        return await adapter.search({ query: request.query, language: request.language, region: request.region, maximumResults: request.maximumResults,
-          deadlineAt: new Date(Date.parse(request.generatedAt) + sourceBudgetMs).toISOString(), signal: controller.signal, retrievedAt: request.generatedAt });
+        const deadline = new Promise<never>((_resolve, reject) => { timer = setTimeout(() => { controller.abort(); reject(new Error('live_source_deadline_exceeded')); }, sourceBudgetMs); });
+        const candidates = await Promise.race([adapter.search({ query: request.query, language: request.language, region: request.region, maximumResults: Math.max(2, Math.ceil(request.maximumResults * 0.6)),
+          deadlineAt: new Date(Date.parse(request.generatedAt) + sourceBudgetMs).toISOString(), signal: controller.signal, retrievedAt: request.generatedAt }), deadline]);
+        this.sourceFailures.set(adapter.adapterId, 0);
+        this.sourceSuspendedAt.delete(adapter.adapterId);
+        return candidates;
+      } catch (error) {
+        const failures = Math.min(3, (this.sourceFailures.get(adapter.adapterId) ?? 0) + 1);
+        this.sourceFailures.set(adapter.adapterId, failures);
+        if (failures >= 3) this.sourceSuspendedAt.set(adapter.adapterId, Date.parse(request.generatedAt));
+        throw error;
       } finally {
-        clearTimeout(timer);
+        if (timer !== undefined) clearTimeout(timer);
         request.signal.removeEventListener('abort', cancel);
       }
     }));
-    const candidates = searches.flatMap((settled) => settled.status === 'fulfilled' ? settled.value : []).sort((left, right) => left.currentUrl.localeCompare(right.currentUrl) || left.adapterId.localeCompare(right.adapterId)).slice(0, Math.min(20, request.maximumResults * 3));
-    if (candidates.length === 0) { this.circuit.failure(); throw new Error('live_federation_discovery_unavailable'); }
+    const successfulSearches = searches.filter((settled): settled is PromiseFulfilledResult<readonly LiveDiscoveryCandidate[]> => settled.status === 'fulfilled');
+    const bySource = successfulSearches.map((settled) => [...settled.value].sort((left, right) => left.currentUrl.localeCompare(right.currentUrl)));
+    const candidates: LiveDiscoveryCandidate[] = [];
+    const sourceQuota = Math.max(2, Math.ceil(request.maximumResults * 0.6));
+    for (let rank = 0; candidates.length < Math.min(40, request.maximumResults * 4) && bySource.some((items) => rank < Math.min(items.length, sourceQuota)); rank += 1) {
+      for (const items of bySource) if (rank < Math.min(items.length, sourceQuota)) candidates.push(items[rank]!);
+    }
+    if (successfulSearches.length === 0) { this.circuit.failure(); throw new Error('live_federation_discovery_unavailable'); }
+    if (candidates.length === 0) { this.circuit.success(); return Object.freeze([]); }
     const evidence = (await Promise.all(candidates.map(async (candidate): Promise<ConnectedRouteEvidence | undefined> => {
       if (candidate.routeId !== LIVE_FEDERATION_ROUTE_ID || candidate.language !== request.language || candidate.region !== request.region) throw new Error('live_federation_candidate_identity_substitution');
       const fallback = metadataEvidence(candidate, request.query);
@@ -222,10 +259,12 @@ export class LiveFederationRoute {
       try {
         const fetched = await this.dependencies.fetch(candidate.currentUrl, controller.signal);
         const extracted = await extractCurrentPage({ fetch: fetched, deadlineAt: request.deadlineAt, signal: controller.signal, ...(this.dependencies.crawl4ai === undefined ? {} : { crawl4ai: this.dependencies.crawl4ai }) });
-        const terms = request.query.toLocaleLowerCase('en-US').match(/[\p{L}\p{N}]+/gu) ?? [];
+        const terms = discoveryTokens(request.query);
         const lower = `${candidate.title} ${extracted.text}`.toLocaleLowerCase('en-US');
-        const relevance = Math.min(100, 25 + terms.reduce((score, term) => score + (lower.includes(term) ? 25 : 0), 0));
-        const authority = candidate.attribution.sourceId === 'wikimedia' ? 92 : candidate.attribution.sourceId === 'crossref' ? 90 : 55;
+        const hits = terms.filter((term) => lower.includes(term)).length;
+        if (terms.length > 0 && hits < Math.max(2, Math.ceil(terms.length * 0.5))) return undefined;
+        const relevance = Math.min(100, Math.round(40 + 60 * hits / Math.max(1, terms.length)));
+        const authority = candidate.attribution.sourceId === 'wikimedia' ? 92 : candidate.attribution.sourceId === 'crossref' ? 90 : candidate.attribution.sourceId === 'common_crawl' ? 55 : 90;
         return Object.freeze({
           routeId: LIVE_FEDERATION_ROUTE_ID, providerId: candidate.providerId, adapterId: candidate.adapterId,
           url: candidate.currentUrl, title: extracted.title || candidate.title, evidenceText: extracted.text,
@@ -236,8 +275,15 @@ export class LiveFederationRoute {
       } catch { return fallback; }
       finally { clearTimeout(timer); request.signal.removeEventListener('abort', cancel); }
     }))).filter((item): item is ConnectedRouteEvidence => item !== undefined);
-    const rankedEvidence = evidence.sort((left, right) => right.relevanceScore - left.relevanceScore || right.authorityScore - left.authorityScore || left.url.localeCompare(right.url)).slice(0, request.maximumResults);
-    if (rankedEvidence.length === 0) { this.circuit.failure(); throw new Error('live_federation_current_pages_unavailable'); }
+    const orderedEvidence = evidence.sort((left, right) => right.relevanceScore - left.relevanceScore || right.authorityScore - left.authorityScore || left.url.localeCompare(right.url));
+    const perSource = new Map<string, number>();
+    const rankedEvidence = orderedEvidence.filter((item) => {
+      const count = perSource.get(item.adapterId) ?? 0;
+      if (count >= sourceQuota) return false;
+      perSource.set(item.adapterId, count + 1);
+      return true;
+    }).slice(0, request.maximumResults);
+    if (rankedEvidence.length === 0) { this.circuit.success(); return Object.freeze([]); }
     this.circuit.success();
     return Object.freeze(rankedEvidence);
   }

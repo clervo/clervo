@@ -598,3 +598,65 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - N4.27 is complete as blocked. Exact next ticket: N4.27R only under separate
   authority. Stop after this commit; do not begin N4.27R, N4.28, mock x402,
   Stage 5, AI, Sandbox, production release, real settlement or USDC spending.
+
+## 2026-07-31 — N4.27R search generalization, live-route and browser repair
+
+- Started from clean HEAD `4ee469c2041af455281c131c0a090bcf31f1095a` and
+  preserved every N4.26/N4.27 artifact. The original N4.27 holdout marker still
+  records one execution; no original query, label, result or hash changed and
+  the holdout was not rerun.
+- Produced a read-only 50-task root-cause ledger. Forty-eight balanced tasks
+  failed: 30 target sources absent, 11 controlled fixtures disconnected, four
+  answerable zero-candidate tasks and three false-positive no-result tasks.
+  The two correct no-results caused the published 0.04; answerable recall and
+  precision were both zero. Recorded 32 live-circuit-open attempts.
+- Proved four evaluator defects independently: no-result recall/precision
+  conflation, no-result rank penalty, baseline/citation quality conflation and
+  undefined-locale auto-pass. URL-prefix matching and required-term strictness
+  were rejected as collapse causes because no labelled URL reached them.
+- Before implementation, created and hash-froze a separate 75-task N4.27R
+  corpus: 50 development and 25 sealed-validation tasks, exactly 15 per family,
+  with unseen entities/domains, multiple answers, no-result/locale/freshness,
+  15 JavaScript, five hostile and five degraded-source cases. Original holdout
+  URLs/entities/answers are forbidden.
+- Repaired candidate retention and deterministic ranking: per-adapter source
+  rank, intact hyphenated identifiers, a pre-rerank lexical floor, RRF `k=60`,
+  additive score disclosure and complete candidate dispositions. Same-host
+  dedup remains conservative and distinct seller/location/version evidence is
+  retained. Valid empty results now remain ready instead of poisoning circuits.
+- Repaired live federation with hard per-source deadlines, caller cancellation,
+  source-specific health/circuit/suspension, quotas, round-robin merge and
+  contribution accounting. The controlled six-class live route achieved
+  0.4444 recall, 1.0000 precision, 4.109 ms p95, relevant contribution on 15/15
+  focused misses and 0.20 largest-source share. Production deployment of those
+  source classes remains unqualified; paid providers and public SearXNG remain
+  absent.
+- Replaced the flaky public browser fixture with controlled certificate-pinned
+  HTTPS while retaining the N4.27 gateway/default-deny design. Real Chromium
+  completed 20/20 startups and clean teardowns, zero orphans/retained state, 20
+  JavaScript fixtures and 910.016 ms p95. Private/loopback/link-local/metadata,
+  redirect, rebinding, robots, MIME, decompression and output denials passed.
+  Eight hostile pages changed no routing, ranking, payment, tool, citation,
+  secret or policy state. This is controlled local proof, not staging promotion.
+- Development combined recall, precision, citation validity, nDCG@10, MRR@10
+  and success@3 were all 1.0000 with 8.327 ms p95 and retrieval quality 1.0000
+  versus simple 0.5966. Froze 17 implementation files at SHA-256
+  `9c9ee511ef0f40586725a02e6ae64702a2a157984c0cdeb603e41ffbcf12185a`.
+- Ran the sealed 25-task validation exactly once after freeze. Combined recall,
+  precision, citation validity, nDCG@10, MRR@10 and success@3 were all 1.0000,
+  p95 was 3.216 ms and retrieval quality 1.0000 versus simple 0.6936. Raw hash:
+  `ad66d23f87da7a775f9a98fc8ec858162de4146d9367a92015bc8c2584efc56f`.
+  No post-validation tuning occurred or is allowed.
+- N4.27R created no cloud resource. Read-only cloud name filters returned no
+  isolated N4.27 compute/network/artifact resource. Provider production cost,
+  incremental cloud cost and active/idle daily exposure are USD 0.000000. Mock
+  x402 and real payment did not run; 0 USDC was spent and reserved 0.03 USDC
+  remains untouched.
+- Focused N4.24/N4.27/N4.27R tests passed 30/30; build, typecheck and lint passed.
+  Final integrity/secret/boundary checks are recorded in the closure evidence.
+  Canonical `npm test` and the Stage 4 verifier did not run.
+- N4.27R is complete at controlled repair-entry level. All ten source-bound
+  Stage 4 blockers remain because staging, connected cache, upstream locale and
+  payment evidence were not promoted. No commercial, Exa-parity, advanced,
+  reference-pattern or Stage 5 claim is authorized. Proposed exact next ticket:
+  N4.27S under separate authority; stop without beginning it, N4.28 or Stage 5.

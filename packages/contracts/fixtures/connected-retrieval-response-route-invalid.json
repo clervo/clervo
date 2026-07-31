@@ -16,6 +16,7 @@
     "attempts": [],
     "exactDuplicateCount": 0,
     "nearDuplicateCount": 0,
+    "candidateFlow": [],
     "results": [],
     "citations": []
   }

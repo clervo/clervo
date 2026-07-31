@@ -1,38 +1,66 @@
 # Active ticket state
 
-**Ticket:** N4.27 — Search quality, browser qualification, and gated mock x402
+**Ticket:** N4.27R — Search generalization, live-route and browser reliability repair
 **Stage:** 4 — Search vertical slice
-**Result:** blocked with ten truthful Stage 4 blockers remaining
+**Ticket result:** completed at controlled repair-entry level
+**Stage result:** blocked with ten truthful Stage 4 blockers remaining
 
 ## Decision
 
-- The frozen 50-task holdout executed exactly once and must never be rerun.
-- Repaired balanced recall/precision were 0.04/0.04, nDCG@10 and MRR@10 were
-  zero, successful extraction was 0.92, and p95 was 4688.24 ms.
-- Browser qualification completed 18 of 20 attempted runs. Tested destination
-  and redirect denials passed, but the complete mandatory security suite is
-  incomplete.
-- Mandatory prerequisites failed, so mock x402 never started. No challenge,
-  authorization, settlement, receipt, replay, real payment or USDC action ran.
-- Search is not commercially competitive or the reference pattern. Exa parity,
-  “Advanced live intelligence for agents,” N4.28 and Stage 5 are unauthorized.
+- The original frozen N4.27 holdout still has run count one. It was not rerun,
+  changed, relabelled or used as a tuning target.
+- A separate 75-task N4.27R corpus was split and hashed before implementation:
+  50 development tasks and 25 once-only sealed-validation tasks, 15 per family.
+- The implementation was frozen across 17 files. The sealed validation executed
+  exactly once and passed the N4.27R repair-entry quality gates.
+- Controlled local browser/security qualification passed 20/20 real Chromium
+  startups and clean teardowns, zero orphans/retained state, 20 JavaScript
+  fixtures, 910.016 ms p95, all required denial classes and eight hostile pages.
+- This does not qualify production staging, commercial competitiveness, Exa
+  parity, advanced live intelligence, the reference pattern, N4.28 or Stage 5.
 
-## Evidence and cleanup
+## Scores and implementation
 
-- All 28 N4.26 simple-to-combined losses are classified: 25 ranking/relevance,
-  three extraction, zero unexplained.
-- Final regression combined recall/precision improved to 0.8864/0.8826, with
-  citation validity and extraction 0.9545 and p95 2404.62 ms; mandatory
-  regression/family requirements still did not all pass.
-- Live-source holdout recall/precision were 0.08/0.08; source quality and
-  concentration gates failed.
-- The isolated N4.27 VM/disk, NAT/router, firewall, subnet/network, service-
-  account binding, fixture service, artifact images and ticket budget were
-  deleted. Active incremental compute and retained idle exposure are USD 0/day.
-- Third-party general-Web production provider cost is USD `0.000000`; 0 USDC
-  was spent.
+- Development combined: recall 1.0000, precision 1.0000, citation validity
+  1.0000, nDCG@10 1.0000, MRR@10 1.0000, success@3 1.0000, p95 8.327 ms.
+- Sealed combined: recall 1.0000, precision 1.0000, citation validity 1.0000,
+  nDCG@10 1.0000, MRR@10 1.0000, success@3 1.0000, p95 3.216 ms.
+- Sealed combined retrieval quality was 1.0000 versus simple combination
+  0.6936. This is controlled repair evidence, not a market comparison.
+- Candidate flow now exposes lexical, RRF (`k=60`), authority, freshness,
+  diversity and final disposition. Hyphenated identifiers stay intact, weak
+  matches are filtered before reranking, and empty valid searches no longer
+  poison source or aggregate circuits.
+- Controlled live recall/precision were 0.4444/1.0000; live contributed on
+  15/15 development focused misses and the largest source share was 0.20.
+
+## Root causes preserved
+
+- Forty-eight original balanced tasks failed: 30 missing target sources, 11
+  disconnected fixtures, four answerable zero-candidate tasks and three
+  false-positive no-result tasks. Two correct no-result tasks produced the old
+  reported 0.04; answerable recall and precision were actually both zero.
+- Proven evaluator defects: no-result metric conflation, no-result rank penalty,
+  baseline/citation quality conflation and undefined-locale auto-pass.
+- URL-prefix and required-term predicates were rejected as collapse causes
+  because no labelled URL reached either predicate.
+- Empty discovery incorrectly opened the live circuit, creating 32 circuit-open
+  attempts; abandoned deadline work contributed to later latency inflation.
+
+## Cost, commerce and cleanup
+
+- N4.27R created no cloud resource. Read-only name-filter revalidation found no
+  isolated N4.27 compute, disk, network, router, firewall, Cloud Run or artifact
+  resource. Active incremental compute and retained idle exposure remain USD
+  0/day.
+- Third-party general-Web production provider cost is USD `0.000000`.
+- Mock x402 and real payment did not run. No USDC was spent; reserved 0.03 USDC
+  remains untouched.
 
 ## Current Stage 4 blockers
+
+The authoritative count is unchanged because N4.27R was controlled local repair
+proof and the Stage 4 verifier was not run:
 
 1. `isolated_javascript_retrieval`
 2. `retrieval_safety_controls`
@@ -45,19 +73,17 @@
 9. `deployed_paid_route`
 10. `cost_caps`
 
-Exact reasons and artifact hashes are in
-`docs/evidence/n4.27/stage4-binding.v1.json` and the N4.27 evidence report.
-
 ## Exact next action
 
-N4.27R only, under separate authority: replace the narrow live supply/index
-with lawful vertical source adapters and a representative focused index; add
-labelled duplicate and hostile-page fixtures; make browser fixtures local and
-deterministic; then freeze a new independent holdout and run the complete
-gates. Never reuse or rerun the N4.27 holdout.
+Proposed ticket N4.27S only, under separate authority: deploy the exact frozen
+N4.27R repair to isolated staging without rerunning either sealed set, then
+prove production-eligible source connections, connected cache, upstream locale,
+browser/security containment and cost meters. Keep mock x402, real payment,
+N4.28 and Stage 5 out of scope.
 
 ## Stop condition
 
-Commit N4.27 atomically as blocked and stop. Do not begin N4.27R, N4.28, mock
-x402, Stage 5, AI, Sandbox, production release, real settlement, USDC spending,
-or legacy migration in this run. Canonical `npm test` remains reserved.
+Commit N4.27R atomically and stop. Do not begin N4.27S, N4.28, mock x402,
+Stage 5, website/DNS work, production release, real settlement, AI, Sandbox,
+legacy mutation or any expansion stage. Canonical `npm test` and the Stage 4
+verifier did not run.

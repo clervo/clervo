@@ -1,0 +1,226 @@
+{
+  "schemaVersion": "clervo.n4.27r.scorecard.v1",
+  "generatedAt": "2026-07-31T21:16:26.369Z",
+  "mode": "sealed-validation",
+  "executionCount": 25,
+  "corpus": {
+    "path": "benchmarks/n4.27r/sealed-validation-corpus.v1.json",
+    "sha256": "sha256:e111b12cb5fd78f66004c7406f6697a615416a99e5814c88af3f80e996e4c642"
+  },
+  "labels": {
+    "path": "benchmarks/n4.27r/sealed-validation-labels.v1.json",
+    "sha256": "sha256:e154128d5ac49a504cd11dff6a6678c73153e78123ed768243af91d6033e8343"
+  },
+  "benchmarkFreezeSha256": "sha256:f68521465e838d2a46a55cb979bca6625d2f868542027aaebc69c2dc4e86ba67",
+  "implementationFreezeSha256": "sha256:9c9ee511ef0f40586725a02e6ae64702a2a157984c0cdeb603e41ffbcf12185a",
+  "evaluatorCorrections": [
+    "answerable_recall_separate_from_no_result_accuracy",
+    "precision_is_relevant_results_divided_by_returned_results",
+    "no_result_excluded_from_ndcg_and_mrr",
+    "explicit_locale_required",
+    "combined_additive_value_uses_retrieval_metrics_only"
+  ],
+  "scorecards": {
+    "focused_index": {
+      "tasks": 25,
+      "answerableTasks": 20,
+      "noResultTasks": 5,
+      "recall": 0.5,
+      "precision": 0.1042,
+      "citationValidity": 0,
+      "nDCG10": 0.5,
+      "MRR10": 0.5,
+      "success3": 0.5,
+      "honestNoResult": 0,
+      "localeCorrectness": 1,
+      "latencyMs": {
+        "p50": 0.175,
+        "p95": 0.778
+      },
+      "retrievalQualityScore": 0.4011
+    },
+    "live_federation": {
+      "tasks": 25,
+      "answerableTasks": 20,
+      "noResultTasks": 5,
+      "recall": 0.5,
+      "precision": 1,
+      "citationValidity": 0.6,
+      "nDCG10": 0.5,
+      "MRR10": 0.5,
+      "success3": 0.5,
+      "honestNoResult": 1,
+      "localeCorrectness": 1,
+      "latencyMs": {
+        "p50": 0.998,
+        "p95": 2.925
+      },
+      "retrievalQualityScore": 0.625
+    },
+    "simple_combination": {
+      "tasks": 25,
+      "answerableTasks": 20,
+      "noResultTasks": 5,
+      "recall": 1,
+      "precision": 0.2252,
+      "citationValidity": 0,
+      "nDCG10": 0.7456,
+      "MRR10": 0.6542,
+      "success3": 0.8,
+      "honestNoResult": 0,
+      "localeCorrectness": 1,
+      "latencyMs": {
+        "p50": 1.025,
+        "p95": 2.546
+      },
+      "retrievalQualityScore": 0.6936
+    },
+    "repaired_balanced": {
+      "tasks": 25,
+      "answerableTasks": 20,
+      "noResultTasks": 5,
+      "recall": 1,
+      "precision": 1,
+      "citationValidity": 1,
+      "nDCG10": 1,
+      "MRR10": 1,
+      "success3": 1,
+      "honestNoResult": 1,
+      "localeCorrectness": 1,
+      "latencyMs": {
+        "p50": 2.246,
+        "p95": 3.216
+      },
+      "retrievalQualityScore": 1
+    }
+  },
+  "familyScorecards": {
+    "commerce_marketplaces": {
+      "tasks": 5,
+      "answerableTasks": 4,
+      "noResultTasks": 1,
+      "recall": 1,
+      "precision": 1,
+      "citationValidity": 1,
+      "nDCG10": 1,
+      "MRR10": 1,
+      "success3": 1,
+      "honestNoResult": 1,
+      "localeCorrectness": 1,
+      "latencyMs": {
+        "p50": 2.355,
+        "p95": 7.585
+      },
+      "retrievalQualityScore": 1
+    },
+    "property_local_markets": {
+      "tasks": 5,
+      "answerableTasks": 4,
+      "noResultTasks": 1,
+      "recall": 1,
+      "precision": 1,
+      "citationValidity": 1,
+      "nDCG10": 1,
+      "MRR10": 1,
+      "success3": 1,
+      "honestNoResult": 1,
+      "localeCorrectness": 1,
+      "latencyMs": {
+        "p50": 2.572,
+        "p95": 2.901
+      },
+      "retrievalQualityScore": 1
+    },
+    "company_competitive": {
+      "tasks": 5,
+      "answerableTasks": 4,
+      "noResultTasks": 1,
+      "recall": 1,
+      "precision": 1,
+      "citationValidity": 1,
+      "nDCG10": 1,
+      "MRR10": 1,
+      "success3": 1,
+      "honestNoResult": 1,
+      "localeCorrectness": 1,
+      "latencyMs": {
+        "p50": 2.042,
+        "p95": 2.304
+      },
+      "retrievalQualityScore": 1
+    },
+    "research_evidence": {
+      "tasks": 5,
+      "answerableTasks": 4,
+      "noResultTasks": 1,
+      "recall": 1,
+      "precision": 1,
+      "citationValidity": 1,
+      "nDCG10": 1,
+      "MRR10": 1,
+      "success3": 1,
+      "honestNoResult": 1,
+      "localeCorrectness": 1,
+      "latencyMs": {
+        "p50": 2.437,
+        "p95": 3.216
+      },
+      "retrievalQualityScore": 1
+    },
+    "developer_agent_retrieval": {
+      "tasks": 5,
+      "answerableTasks": 4,
+      "noResultTasks": 1,
+      "recall": 1,
+      "precision": 1,
+      "citationValidity": 1,
+      "nDCG10": 1,
+      "MRR10": 1,
+      "success3": 1,
+      "honestNoResult": 1,
+      "localeCorrectness": 1,
+      "latencyMs": {
+        "p50": 1.329,
+        "p95": 1.61
+      },
+      "retrievalQualityScore": 1
+    }
+  },
+  "liveContribution": {
+    "focusedMissTasks": 10,
+    "tasksWithUniqueRelevantLiveContribution": 10,
+    "uniqueContributionRate": 1,
+    "byAdapter": {
+      "adapter_n427r_corporate_disclosure_v1": 3,
+      "adapter_n427r_developer_registry_v1": 3,
+      "adapter_n427r_government_open_data_v1": 2,
+      "adapter_n427r_official_site_feed_v1": 2,
+      "adapter_n427r_public_catalog_v1": 2,
+      "adapter_n427r_research_registry_v1": 3
+    },
+    "largestSourceShare": 0.2
+  },
+  "unexplainedLosses": [],
+  "gates": {
+    "recall": true,
+    "precision": true,
+    "citationValidity": true,
+    "ranking": true,
+    "familyFloors": true,
+    "combinedAddsValue": true,
+    "noUnexplainedRelevantLoss": true,
+    "liveQuality": true,
+    "liveUniqueContribution": true,
+    "liveSourceDiversity": true,
+    "balancedP95": true,
+    "honestNoResult": true,
+    "localeExplicit": true
+  },
+  "mandatoryQualityGatePass": true,
+  "browserAndSecurityGateBoundSeparately": true,
+  "rawArtifact": {
+    "path": "docs/evidence/n4.27r/sealed-validation/raw-results.v1.json.gz",
+    "sha256": "sha256:ad66d23f87da7a775f9a98fc8ec858162de4146d9367a92015bc8c2584efc56f",
+    "rows": 100
+  }
+}

@@ -1,0 +1,444 @@
+{
+  "schemaVersion": "clervo.n4.27r.corpus.v1",
+  "createdAt": "2026-07-31T20:55:00.000Z",
+  "split": "sealed_validation",
+  "tuningAllowed": false,
+  "executionLimit": 1,
+  "tasks": [
+    {
+      "id": "r-commerce-11",
+      "split": "sealed_validation",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Kestrel Goods Eleven COM-V-11-QZ verified product offer model and current seller terms",
+      "entity": "Kestrel Goods Eleven",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "official_source",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-commerce-12",
+      "split": "sealed_validation",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Lumen Seller Twelve authoritative evidence verified product offer model and current seller terms",
+      "entity": "Lumen Seller Twelve",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "semantic",
+        "distinct_sellers",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-commerce-13",
+      "split": "sealed_validation",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Mosaic Outlet Thirteen COM-V-13-QZ verified product offer model and current seller terms",
+      "entity": "Mosaic Outlet Thirteen",
+      "locale": {
+        "language": "de",
+        "region": "DE"
+      },
+      "features": [
+        "exact",
+        "locale",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-commerce-14",
+      "split": "sealed_validation",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Nimbus Catalog Fourteen authoritative evidence verified product offer model and current seller terms",
+      "entity": "Nimbus Catalog Fourteen",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "official_source",
+        "freshness_sensitive",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-commerce-15",
+      "split": "sealed_validation",
+      "family": "commerce_marketplaces",
+      "verticalProfile": "commerce",
+      "query": "Orchid Merchant Fifteen COM-V-15-QZ verified product offer model and current seller terms",
+      "entity": "Orchid Merchant Fifteen",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "no_result",
+        "locale"
+      ]
+    },
+    {
+      "id": "r-property-11",
+      "split": "sealed_validation",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Kingfisher Shire Eleven PRO-V-11-QZ official local housing indicator and location record",
+      "entity": "Kingfisher Shire Eleven",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "official_source",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-property-12",
+      "split": "sealed_validation",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Laurel Canton Twelve authoritative evidence official local housing indicator and location record",
+      "entity": "Laurel Canton Twelve",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "semantic",
+        "distinct_locations",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-property-13",
+      "split": "sealed_validation",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Maple Province Thirteen PRO-V-13-QZ official local housing indicator and location record",
+      "entity": "Maple Province Thirteen",
+      "locale": {
+        "language": "de",
+        "region": "DE"
+      },
+      "features": [
+        "exact",
+        "locale",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-property-14",
+      "split": "sealed_validation",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Northstar Prefecture Fourteen authoritative evidence official local housing indicator and location record",
+      "entity": "Northstar Prefecture Fourteen",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "official_source",
+        "freshness_sensitive",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-property-15",
+      "split": "sealed_validation",
+      "family": "property_local_markets",
+      "verticalProfile": "property",
+      "query": "Oakland Commune Fifteen PRO-V-15-QZ official local housing indicator and location record",
+      "entity": "Oakland Commune Fifteen",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "no_result",
+        "locale"
+      ]
+    },
+    {
+      "id": "r-company-11",
+      "split": "sealed_validation",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Keystone River Eleven COM-V-11-QZ official company disclosure and competitive segment",
+      "entity": "Keystone River Eleven",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "official_source",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-company-12",
+      "split": "sealed_validation",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Lucid Forge Twelve authoritative evidence official company disclosure and competitive segment",
+      "entity": "Lucid Forge Twelve",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "semantic",
+        "multiple_valid_answers",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-company-13",
+      "split": "sealed_validation",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Merit Coast Thirteen COM-V-13-QZ official company disclosure and competitive segment",
+      "entity": "Merit Coast Thirteen",
+      "locale": {
+        "language": "de",
+        "region": "DE"
+      },
+      "features": [
+        "exact",
+        "locale",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-company-14",
+      "split": "sealed_validation",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Nova Trestle Fourteen authoritative evidence official company disclosure and competitive segment",
+      "entity": "Nova Trestle Fourteen",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "official_source",
+        "freshness_sensitive",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-company-15",
+      "split": "sealed_validation",
+      "family": "company_competitive",
+      "verticalProfile": "companies",
+      "query": "Orbit Meadow Fifteen COM-V-15-QZ official company disclosure and competitive segment",
+      "entity": "Orbit Meadow Fifteen",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "no_result",
+        "locale"
+      ]
+    },
+    {
+      "id": "r-research-11",
+      "split": "sealed_validation",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Kernel Experiment Eleven RES-V-11-QZ registered evidence record method and identifier",
+      "entity": "Kernel Experiment Eleven",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "official_source",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-research-12",
+      "split": "sealed_validation",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Lattice Meta Study Twelve authoritative evidence registered evidence record method and identifier",
+      "entity": "Lattice Meta Study Twelve",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "semantic",
+        "multiple_valid_answers",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-research-13",
+      "split": "sealed_validation",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Monsoon Dataset Thirteen RES-V-13-QZ registered evidence record method and identifier",
+      "entity": "Monsoon Dataset Thirteen",
+      "locale": {
+        "language": "de",
+        "region": "DE"
+      },
+      "features": [
+        "exact",
+        "locale",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-research-14",
+      "split": "sealed_validation",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Nebula Review Fourteen authoritative evidence registered evidence record method and identifier",
+      "entity": "Nebula Review Fourteen",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "official_source",
+        "freshness_sensitive",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-research-15",
+      "split": "sealed_validation",
+      "family": "research_evidence",
+      "verticalProfile": "research",
+      "query": "Osmium Protocol Fifteen RES-V-15-QZ registered evidence record method and identifier",
+      "entity": "Osmium Protocol Fifteen",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "no_result",
+        "locale"
+      ]
+    },
+    {
+      "id": "r-developer-11",
+      "split": "sealed_validation",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Kite CLI Eleven DEV-V-11-QZ official current API version and agent integration",
+      "entity": "Kite CLI Eleven",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "exact",
+        "official_source",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-developer-12",
+      "split": "sealed_validation",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Loom API Twelve authoritative evidence official current API version and agent integration",
+      "entity": "Loom API Twelve",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "semantic",
+        "distinct_versions",
+        "locale",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-developer-13",
+      "split": "sealed_validation",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Matrix Runtime Thirteen DEV-V-13-QZ official current API version and agent integration",
+      "entity": "Matrix Runtime Thirteen",
+      "locale": {
+        "language": "de",
+        "region": "DE"
+      },
+      "features": [
+        "exact",
+        "locale",
+        "javascript_required"
+      ]
+    },
+    {
+      "id": "r-developer-14",
+      "split": "sealed_validation",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Nexus Package Fourteen authoritative evidence official current API version and agent integration",
+      "entity": "Nexus Package Fourteen",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "features": [
+        "semantic",
+        "official_source",
+        "freshness_sensitive",
+        "focused_miss_expected"
+      ]
+    },
+    {
+      "id": "r-developer-15",
+      "split": "sealed_validation",
+      "family": "developer_agent_retrieval",
+      "verticalProfile": "developer_documentation",
+      "query": "Opcode SDK Fifteen DEV-V-15-QZ official current API version and agent integration",
+      "entity": "Opcode SDK Fifteen",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "features": [
+        "exact",
+        "no_result",
+        "locale"
+      ]
+    }
+  ]
+}

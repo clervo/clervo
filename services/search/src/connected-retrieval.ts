@@ -96,14 +96,19 @@ async function attemptRoute(adapter: ConnectedRouteAdapter, queries: readonly st
   });
   const execution = Promise.resolve().then(async () => {
     const settled = await Promise.allSettled(queries.map((query) => adapter.search({ query, language: input.language, region: input.region, maximumResults: input.maximumResults, generatedAt: startedAt, deadlineAt, signal: controller.signal })));
-    const evidence = settled.flatMap((item) => item.status === 'fulfilled' ? item.value : []);
-    if (evidence.length === 0) {
+    const fulfilled = settled.filter((item): item is PromiseFulfilledResult<readonly Readonly<ConnectedRouteEvidence>[]> => item.status === 'fulfilled');
+    const evidence = fulfilled.flatMap((item) => item.value);
+    if (fulfilled.length === 0) {
       const failure = settled.find((item): item is PromiseRejectedResult => item.status === 'rejected');
       throw failure?.reason instanceof Error ? failure.reason : new Error('route_failed');
     }
     return Object.freeze(evidence);
   }).then((evidence) => ({ kind: 'succeeded' as const, evidence }), (error: unknown) => ({ kind: 'failed' as const, error }));
   const settled = await Promise.race([execution, terminal.then((kind) => ({ kind }))]);
+  if (settled.kind === 'deadline_exceeded' || settled.kind === 'cancelled') {
+    controller.abort();
+    await Promise.race([execution, new Promise((resolve) => setTimeout(resolve, 25))]);
+  }
   if (timer !== undefined) clearTimeout(timer);
   signal?.removeEventListener('abort', cancel);
   const common = { routeId: adapter.identity.routeId, providerId: adapter.identity.providerId, healthIdentity: adapter.identity.healthIdentity, circuitIdentity: adapter.identity.circuitIdentity, failureDomain: adapter.identity.failureDomain, startedAt };
@@ -174,7 +179,7 @@ export class ConnectedRetrievalPipeline {
       contractVersion: CONTRACT_VERSION, schemaVersion: LIVE_FEDERATION_RESPONSE_SCHEMA, operationId: input.operationId, productId: 'search.web' as const,
       query: rewrite.normalizedQuery, rewriteQueries: Object.freeze([rewrite.variants[0]!.query, rewrite.variants[1]!.query]) as readonly [string, string],
       language: input.language, region: input.region, generatedAt: input.generatedAt, status: degradedRoutes.length === 0 ? 'ready' as const : 'degraded' as const,
-      degradedRoutes, attempts, exactDuplicateCount: ranked.exactDuplicateCount, nearDuplicateCount: ranked.nearDuplicateCount, results: ranked.results, citations,
+      degradedRoutes, attempts, exactDuplicateCount: ranked.exactDuplicateCount, nearDuplicateCount: ranked.nearDuplicateCount, candidateFlow: ranked.candidateFlow, results: ranked.results, citations,
     });
     assertConnectedRetrievalResponse(response);
     return response;

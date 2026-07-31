@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "clervo.n4.27r.current-state-preflight.v1",
+  "evaluatedAt": "2026-07-31T21:15:00.000Z",
+  "officialSourcesReviewed": [
+    {
+      "topic": "reciprocal_rank_fusion",
+      "url": "https://learn.microsoft.com/en-us/azure/search/hybrid-search-ranking",
+      "finding": "RRF combines ranked lists using reciprocal rank contributions, commonly with k=60, without relying on incompatible raw score scales."
+    },
+    {
+      "topic": "browser_nonpersistent_context_and_teardown",
+      "url": "https://playwright.dev/docs/api/class-browsercontext",
+      "finding": "Non-persistent browser contexts do not write browsing data to disk and should be explicitly closed."
+    },
+    {
+      "topic": "browser_crawling_isolation",
+      "url": "https://playwright.dev/docs/docker",
+      "finding": "Untrusted crawling should run as a separate non-root user with process reaping and sandbox isolation."
+    },
+    {
+      "topic": "crawl4ai_bounded_configuration",
+      "url": "https://docs.crawl4ai.com/api/parameters/",
+      "finding": "Browser and crawler settings expose bounded cache, wait, page and output behavior; caller scripts remain disabled here."
+    },
+    {
+      "topic": "wikimedia_api_etiquette",
+      "url": "https://www.mediawiki.org/wiki/API:Etiquette",
+      "finding": "Meaningful user-agent identity, request limits and API etiquette remain mandatory."
+    },
+    {
+      "topic": "sec_public_current_disclosures",
+      "url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+      "finding": "Public JSON APIs require no key and are updated throughout the day, subject to SEC automated-access policy."
+    },
+    {
+      "topic": "census_public_data",
+      "url": "https://www.census.gov/data/developers/guidance/api-user-guide.html",
+      "finding": "The Census API exposes public statistical and geographic data under its documented query and terms controls."
+    },
+    {
+      "topic": "github_public_metadata_quota",
+      "url": "https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api",
+      "finding": "Unauthenticated public-data requests are limited to 60 per hour and rate-limit headers/backoff must be honored."
+    },
+    {
+      "topic": "woocommerce_public_catalog",
+      "url": "https://developer.woocommerce.com/docs/apis/store-api/",
+      "finding": "Public unauthenticated product endpoints exist, while session, customer, checkout and write behavior is out of scope."
+    }
+  ],
+  "adopted": [
+    "deterministic_RRF_k60_contribution_exposure",
+    "nonpersistent_ephemeral_browser_state",
+    "nonroot_browser_process_and_explicit_teardown",
+    "source_specific_deadlines_quotas_and_backoff",
+    "public_read_only_metadata_and_catalog_endpoints_only"
+  ],
+  "rejected": [
+    "paid_or_eventually_paid_general_web_provider",
+    "public_shared_searxng",
+    "closed_platform_bypass",
+    "browser_stealth_proxy_rotation_login_cookies_downloads_or_caller_scripts"
+  ]
+}

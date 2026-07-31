@@ -89,7 +89,7 @@ export const reviewedOpenDataSources: readonly Readonly<ReviewedOpenDataSource>[
 ]);
 
 export interface OpenDataAttribution {
-  sourceId: ReviewedOpenDataSource['sourceId'] | 'focused_index';
+  sourceId: ReviewedOpenDataSource['sourceId'] | 'focused_index' | 'official_site_feed' | 'public_catalog' | 'government_open_data' | 'corporate_disclosure' | 'research_registry' | 'developer_registry';
   sourceName: string;
   sourceUrl: string;
   license: string;
@@ -145,6 +145,23 @@ export interface ConnectedSearchScore {
   relevance: number;
   diversity: number;
   totalBasisPoints: number;
+  reciprocalRankFusion: number;
+}
+
+export type ConnectedCandidateDisposition = 'ranked' | 'below_relevance_floor' | 'exact_duplicate' | 'near_duplicate' | 'candidate_limit';
+
+export interface ConnectedCandidateFlowRecord {
+  candidateId: string;
+  routeId: RetrievalRouteId;
+  providerId: string;
+  adapterId: string;
+  canonicalUrl: string;
+  sourceRank: number;
+  lexicalRelevance: number;
+  reciprocalRankFusion: number;
+  disposition: ConnectedCandidateDisposition;
+  resultId?: string;
+  duplicateOfCandidateId?: string;
 }
 
 export type SearchVerticalProfile = 'commerce' | 'property' | 'companies' | 'research' | 'developer_documentation' | 'generic_fallback';
@@ -214,6 +231,7 @@ export interface ConnectedRetrievalResponse {
   attempts: readonly Readonly<ConnectedRouteAttempt>[];
   exactDuplicateCount: number;
   nearDuplicateCount: number;
+  candidateFlow: readonly Readonly<ConnectedCandidateFlowRecord>[];
   results: readonly Readonly<ConnectedSearchResult>[];
   citations: readonly Readonly<ConnectedCitation>[];
 }
@@ -245,7 +263,7 @@ function digest(value: string): string {
 const lexicalStopWords = new Set(['a', 'an', 'and', 'at', 'by', 'for', 'from', 'in', 'is', 'of', 'on', 'or', 'the', 'to', 'with']);
 
 function lexicalTokens(value: string): readonly string[] {
-  return Object.freeze((value.normalize('NFKC').toLocaleLowerCase('en-US').match(/[\p{L}\p{N}]+/gu) ?? []).filter((token) => token.length > 1 && !lexicalStopWords.has(token)));
+  return Object.freeze((value.normalize('NFKC').toLocaleLowerCase('en-US').match(/[\p{L}\p{N}]+(?:[-_.][\p{L}\p{N}]+)*/gu) ?? []).filter((token) => token.length > 1 && !lexicalStopWords.has(token)));
 }
 
 function lexicalRelevance(query: string, item: ConnectedRouteEvidence): number {
@@ -289,38 +307,74 @@ export function rankConnectedEvidence(input: {
   nearDuplicateThresholdBasisPoints: number;
   query?: string;
   verticalProfile?: SearchVerticalProfile;
-}): Readonly<{ results: readonly Readonly<ConnectedSearchResult>[]; exactDuplicateCount: number; nearDuplicateCount: number }> {
+  minimumRelevance?: number;
+}): Readonly<{ results: readonly Readonly<ConnectedSearchResult>[]; exactDuplicateCount: number; nearDuplicateCount: number; candidateFlow: readonly Readonly<ConnectedCandidateFlowRecord>[] }> {
   if (!Number.isInteger(input.maximumResults) || input.maximumResults < 1 || input.maximumResults > 100
     || !Number.isInteger(input.nearDuplicateThresholdBasisPoints) || input.nearDuplicateThresholdBasisPoints < 5_000 || input.nearDuplicateThresholdBasisPoints > 10_000) throw new Error('invalid_connected_ranking_limits');
   const profile = connectedRankingProfiles[input.verticalProfile ?? 'generic_fallback'];
-  const routeRanks = new Map<RetrievalRouteId, number>();
+  if (input.minimumRelevance !== undefined && (!Number.isInteger(input.minimumRelevance) || input.minimumRelevance < 0 || input.minimumRelevance > 100)) throw new Error('invalid_connected_relevance_floor');
+  const sourceRanks = new Map<string, number>();
   const ordered: RankedCandidate[] = [...input.evidence].map((item) => {
-    const sourceRank = (routeRanks.get(item.routeId) ?? 0) + 1;
-    routeRanks.set(item.routeId, sourceRank);
+    const sourceIdentity = `${item.routeId}:${item.adapterId}`;
+    const sourceRank = (sourceRanks.get(sourceIdentity) ?? 0) + 1;
+    sourceRanks.set(sourceIdentity, sourceRank);
     const canonicalUrl = canonicalizeSearchUrl(item.url);
     return { item, canonicalUrl, hostname: new URL(canonicalUrl).hostname, freshness: scoreFreshness(item.publishedAt ?? item.retrievedAt, input.now), relevance: lexicalRelevance(input.query ?? '', item), sourceRank };
   });
   const retained: RankedCandidate[] = [];
+  const flow = new Map<string, ConnectedCandidateFlowRecord>();
+  const candidateId = (candidate: RankedCandidate): string => `candidate_${digest(`${candidate.item.routeId}\n${candidate.item.adapterId}\n${candidate.canonicalUrl}\n${candidate.item.extraction.normalizedTextSha256}`).slice(0, 32)}`;
   let exactDuplicateCount = 0;
   let nearDuplicateCount = 0;
   for (const candidate of ordered) {
     if (candidate.item.extraction.instructionHandling !== 'untrusted_data_only') throw new Error('prompt_injection_boundary_substitution');
     const exactIndex = retained.findIndex((item) => item.canonicalUrl === candidate.canonicalUrl || (item.hostname === candidate.hostname && item.item.extraction.normalizedTextSha256 === candidate.item.extraction.normalizedTextSha256));
-    if (exactIndex >= 0) { exactDuplicateCount += 1; retained[exactIndex] = preferredRepresentative(retained[exactIndex]!, candidate); continue; }
+    const identity = candidateId(candidate);
+    const reciprocalRankFusion = Math.round(10_000 * 60 / (60 + candidate.sourceRank));
+    flow.set(identity, { candidateId: identity, routeId: candidate.item.routeId, providerId: candidate.item.providerId, adapterId: candidate.item.adapterId, canonicalUrl: candidate.canonicalUrl, sourceRank: candidate.sourceRank, lexicalRelevance: candidate.relevance, reciprocalRankFusion, disposition: 'candidate_limit' });
+    if (exactIndex >= 0) {
+      exactDuplicateCount += 1;
+      const existing = retained[exactIndex]!;
+      const representative = preferredRepresentative(existing, candidate);
+      if (representative === candidate) {
+        const existingId = candidateId(existing);
+        flow.set(existingId, { ...flow.get(existingId)!, disposition: 'exact_duplicate', duplicateOfCandidateId: identity });
+      } else flow.set(identity, { ...flow.get(identity)!, disposition: 'exact_duplicate', duplicateOfCandidateId: candidateId(existing) });
+      retained[exactIndex] = representative;
+      continue;
+    }
     const adaptiveThreshold = Math.max(input.nearDuplicateThresholdBasisPoints, profile.nearDuplicateThresholdBasisPoints);
     const nearIndex = retained.findIndex((item) => item.hostname === candidate.hostname && contentSimilarityBasisPoints(item.item.evidenceText, candidate.item.evidenceText) >= adaptiveThreshold);
-    if (nearIndex >= 0) { nearDuplicateCount += 1; retained[nearIndex] = preferredRepresentative(retained[nearIndex]!, candidate); continue; }
+    if (nearIndex >= 0) {
+      nearDuplicateCount += 1;
+      const existing = retained[nearIndex]!;
+      const representative = preferredRepresentative(existing, candidate);
+      if (representative === candidate) {
+        const existingId = candidateId(existing);
+        flow.set(existingId, { ...flow.get(existingId)!, disposition: 'near_duplicate', duplicateOfCandidateId: identity });
+      } else flow.set(identity, { ...flow.get(identity)!, disposition: 'near_duplicate', duplicateOfCandidateId: candidateId(existing) });
+      retained[nearIndex] = representative;
+      continue;
+    }
     retained.push(candidate);
   }
+  const minimumRelevance = input.minimumRelevance ?? 45;
   const preliminary = retained.map((candidate) => ({
     ...candidate.item,
     canonicalUrl: candidate.canonicalUrl,
     resultId: `csr_${digest(`${candidate.item.routeId}\n${candidate.canonicalUrl}\n${candidate.item.extraction.normalizedTextSha256}`).slice(0, 40)}`,
     hostname: candidate.hostname,
     freshness: candidate.freshness,
-    calibratedRelevance: Math.min(100, Math.round(candidate.relevance * 0.85 + (100 / (60 + candidate.sourceRank)) * 60 * 0.15)),
+    reciprocalRankFusion: Math.round(10_000 * 60 / (60 + candidate.sourceRank)),
+    lexicalRelevance: candidate.relevance,
+    calibratedRelevance: Math.min(100, Math.round(candidate.relevance * 0.85 + (100 * 60 / (60 + candidate.sourceRank)) * 0.15)),
     sourceRank: candidate.sourceRank,
-  })).sort((left, right) => right.calibratedRelevance - left.calibratedRelevance || right.authorityScore - left.authorityScore || right.freshness - left.freshness || left.sourceRank - right.sourceRank || left.canonicalUrl.localeCompare(right.canonicalUrl));
+  })).filter((item) => {
+    if (item.lexicalRelevance >= minimumRelevance) return true;
+    const id = candidateId(retained.find((candidate) => candidate.canonicalUrl === item.canonicalUrl && candidate.item.adapterId === item.adapterId)!);
+    flow.set(id, { ...flow.get(id)!, disposition: 'below_relevance_floor' });
+    return false;
+  }).sort((left, right) => right.calibratedRelevance - left.calibratedRelevance || right.reciprocalRankFusion - left.reciprocalRankFusion || right.authorityScore - left.authorityScore || right.freshness - left.freshness || left.sourceRank - right.sourceRank || left.canonicalUrl.localeCompare(right.canonicalUrl));
   const domains = new Map<string, number>();
   const remaining = [...preliminary];
   const scored: Array<ConnectedSearchResult> = [];
@@ -334,10 +388,14 @@ export function rankConnectedEvidence(input: {
     const selected = choices[0]!;
     remaining.splice(remaining.indexOf(selected.item), 1);
     domains.set(selected.item.hostname, (domains.get(selected.item.hostname) ?? 0) + 1);
-    const { freshness, calibratedRelevance, sourceRank: _sourceRank, ...result } = selected.item;
-    scored.push({ ...result, relevanceScore: calibratedRelevance, score: Object.freeze({ freshness, authority: result.authorityScore, relevance: calibratedRelevance, diversity: selected.diversity, totalBasisPoints: selected.totalBasisPoints }), rank: scored.length + 1 });
+    const { freshness, lexicalRelevance: _lexicalRelevance, calibratedRelevance, reciprocalRankFusion, sourceRank: _sourceRank, ...result } = selected.item;
+    const rankedResult = { ...result, relevanceScore: calibratedRelevance, score: Object.freeze({ freshness, authority: result.authorityScore, relevance: calibratedRelevance, diversity: selected.diversity, reciprocalRankFusion, totalBasisPoints: selected.totalBasisPoints }), rank: scored.length + 1 };
+    scored.push(rankedResult);
+    const candidate = retained.find((item) => item.canonicalUrl === result.canonicalUrl && item.item.adapterId === result.adapterId)!;
+    const id = candidateId(candidate);
+    flow.set(id, { ...flow.get(id)!, disposition: 'ranked', resultId: rankedResult.resultId });
   }
-  return Object.freeze({ results: Object.freeze(scored.map((result) => Object.freeze(result))), exactDuplicateCount, nearDuplicateCount });
+  return Object.freeze({ results: Object.freeze(scored.map((result) => Object.freeze(result))), exactDuplicateCount, nearDuplicateCount, candidateFlow: Object.freeze([...flow.values()].map((record) => Object.freeze(record))) });
 }
 
 export function assertConnectedRetrievalResponse(response: ConnectedRetrievalResponse): void {
@@ -347,5 +405,6 @@ export function assertConnectedRetrievalResponse(response: ConnectedRetrievalRes
   const expectedStatus = failed.length === 0 ? 'ready' : failed.length === 1 ? 'degraded' : 'unavailable';
   if (expectedStatus === 'unavailable' || response.status !== expectedStatus || JSON.stringify([...response.degradedRoutes].sort()) !== JSON.stringify(failed)) throw new Error('dishonest_connected_response_status');
   if (response.results.some((result) => !['clervo.focused-index.v1', LIVE_FEDERATION_ROUTE_ID].includes(result.routeId))) throw new Error('connected_result_route_identity_invalid');
+  if (response.candidateFlow.some((record) => record.disposition === 'ranked' && !response.results.some((result) => result.resultId === record.resultId))) throw new Error('connected_candidate_flow_invalid');
   if (!response.citations.every((citation) => verifyConnectedCitation(citation, response.results))) throw new Error('connected_citation_invalid');
 }
