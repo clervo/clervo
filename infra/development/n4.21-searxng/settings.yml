@@ -1,0 +1,44 @@
+use_default_settings:
+  engines:
+    keep_only:
+      - wikipedia
+      - openstreetmap
+
+general:
+  instance_name: "Clervo N4.21 loopback development proof"
+  debug: false
+
+search:
+  safe_search: 1
+  formats:
+    - json
+
+server:
+  bind_address: "127.0.0.1"
+  port: 18888
+  secret_key: "n421-loopback-development-key-not-confidential"
+  limiter: false
+  image_proxy: false
+
+outgoing:
+  request_timeout: 12.0
+  max_request_timeout: 12.0
+  useragent_suffix: "Clervo-N4.21-development-proof"
+
+engines:
+  - name: wikipedia
+    engine: wikipedia
+    shortcut: wp
+    categories:
+      - general
+    display_type:
+      - infobox
+      - list
+    disabled: false
+
+  - name: openstreetmap
+    engine: openstreetmap
+    shortcut: osm
+    base_url: "https://nominatim.openstreetmap.org/"
+    search_string: "search?{query}&polygon_geojson=0&format=jsonv2&addressdetails=1&extratags=0&dedupe=1&limit=1"
+    disabled: false

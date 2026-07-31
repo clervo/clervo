@@ -1,0 +1,39 @@
+{
+  "brokerUnavailable": {
+    "brokerPatch": { "healthStatus": "unavailable" }
+  },
+  "oneUpstreamUnavailable": {
+    "upstreamIndex": 1,
+    "upstreamPatch": { "status": "unavailable", "brokerHttpStatus": 503, "resultCount": 0, "responseBytes": 0 }
+  },
+  "duplicateFailureDomain": {
+    "upstreamIndex": 1,
+    "copyFromUpstreamIndex": 0,
+    "field": "failureDomain"
+  },
+  "identitySubstitution": {
+    "upstreamIndex": 0,
+    "upstreamPatch": { "observedProviderId": "provider_substituted.wikipedia" }
+  },
+  "staleEvidence": {
+    "evaluatedAt": "2026-08-01T05:19:00.000Z"
+  },
+  "commonCrawlIndexMiss": {
+    "indexPatch": { "httpStatus": 200, "matchStatus": "miss", "responseBytes": 1 },
+    "rangePatch": { "status": "not_attempted", "httpStatus": 0, "responseBytes": 0 }
+  },
+  "invalidRange": {
+    "rangePatch": { "rangeEnd": 215768883 }
+  },
+  "excessiveRange": {
+    "indexPatch": { "length": 1048577 },
+    "rangePatch": { "rangeEnd": 216816507, "maximumRangeBytes": 1048576, "responseBytes": 1048577 }
+  },
+  "contentHashMismatch": {
+    "rangePatch": { "observedCompressedSha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" }
+  },
+  "dishonestReadyStatus": {
+    "brokerPatch": { "healthStatus": "unavailable" },
+    "claimedDevelopmentReady": true
+  }
+}

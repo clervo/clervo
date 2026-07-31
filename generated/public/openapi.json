@@ -4037,6 +4037,481 @@
         },
         "additionalProperties": false
       },
+      "RetrievalExecutionProof": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/retrieval-execution-proof.schema.json",
+        "title": "Clervo bounded development retrieval execution proof",
+        "$defs": {
+          "sha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "upstream": {
+            "type": "object",
+            "required": [
+              "engineName",
+              "providerId",
+              "observedProviderId",
+              "failureDomain",
+              "upstreamHost",
+              "observedAt",
+              "status",
+              "brokerHttpStatus",
+              "responseByteLimit",
+              "responseBytes",
+              "responseSha256",
+              "resultCount",
+              "resaleStatus",
+              "developmentOnly",
+              "safeFailure"
+            ],
+            "properties": {
+              "engineName": {
+                "enum": [
+                  "wikipedia",
+                  "openstreetmap"
+                ]
+              },
+              "providerId": {
+                "enum": [
+                  "provider_wikimedia.wikipedia",
+                  "provider_openstreetmap.nominatim"
+                ]
+              },
+              "observedProviderId": {
+                "type": "string",
+                "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$"
+              },
+              "failureDomain": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$"
+              },
+              "upstreamHost": {
+                "type": "string",
+                "format": "hostname"
+              },
+              "observedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "status": {
+                "enum": [
+                  "succeeded",
+                  "unavailable"
+                ]
+              },
+              "brokerHttpStatus": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 599
+              },
+              "responseByteLimit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1048576
+              },
+              "responseBytes": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1048576
+              },
+              "responseSha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "resultCount": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "resaleStatus": {
+                "enum": [
+                  "permitted_with_attribution",
+                  "prohibited"
+                ]
+              },
+              "developmentOnly": {
+                "type": "boolean"
+              },
+              "safeFailure": {
+                "const": "fail_closed"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "proofId",
+          "n420QualificationId",
+          "evaluatedAt",
+          "evidenceExpiresAt",
+          "environment",
+          "productionAuthorization",
+          "broker",
+          "archive",
+          "brokerReady",
+          "archiveReady",
+          "developmentReady",
+          "productionReady",
+          "status",
+          "failureCodes",
+          "productionBlockers"
+        ],
+        "properties": {
+          "contractVersion": {
+            "const": "2026-07-29.1"
+          },
+          "proofId": {
+            "type": "string",
+            "pattern": "^rexec_[A-Za-z0-9]{20,64}$"
+          },
+          "n420QualificationId": {
+            "type": "string",
+            "pattern": "^dsqual_[A-Za-z0-9]{20,64}$"
+          },
+          "evaluatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "evidenceExpiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "environment": {
+            "const": "development"
+          },
+          "productionAuthorization": {
+            "const": false
+          },
+          "broker": {
+            "type": "object",
+            "required": [
+              "brokerId",
+              "softwareId",
+              "expectedSourceCommit",
+              "observedSourceCommit",
+              "observedVersion",
+              "isolationMode",
+              "settingsSha256",
+              "bindHost",
+              "bindPort",
+              "endpointOrigin",
+              "checkedAt",
+              "healthStatus",
+              "safeFailure",
+              "upstreams"
+            ],
+            "properties": {
+              "brokerId": {
+                "const": "broker_searxng.self_hosted.dev"
+              },
+              "softwareId": {
+                "const": "searxng"
+              },
+              "expectedSourceCommit": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{40}$"
+              },
+              "observedSourceCommit": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{40}$"
+              },
+              "observedVersion": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              "isolationMode": {
+                "enum": [
+                  "python_venv_process",
+                  "container"
+                ]
+              },
+              "settingsSha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "bindHost": {
+                "const": "127.0.0.1"
+              },
+              "bindPort": {
+                "type": "integer",
+                "minimum": 1024,
+                "maximum": 65535
+              },
+              "endpointOrigin": {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^http://127\\.0\\.0\\.1:[0-9]+$"
+              },
+              "checkedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "healthStatus": {
+                "enum": [
+                  "healthy",
+                  "unavailable"
+                ]
+              },
+              "safeFailure": {
+                "const": "fail_closed"
+              },
+              "upstreams": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": {
+                  "$ref": "#/$defs/upstream"
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "archive": {
+            "type": "object",
+            "required": [
+              "providerId",
+              "observedProviderId",
+              "failureDomain",
+              "directAccess",
+              "termsStatus",
+              "productionEligible",
+              "index",
+              "range"
+            ],
+            "properties": {
+              "providerId": {
+                "const": "provider_commoncrawl"
+              },
+              "observedProviderId": {
+                "type": "string",
+                "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$"
+              },
+              "failureDomain": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$"
+              },
+              "directAccess": {
+                "const": true
+              },
+              "termsStatus": {
+                "const": "legal_review_required"
+              },
+              "productionEligible": {
+                "const": false
+              },
+              "index": {
+                "type": "object",
+                "required": [
+                  "host",
+                  "requestedAt",
+                  "httpStatus",
+                  "responseByteLimit",
+                  "responseBytes",
+                  "responseSha256",
+                  "collection",
+                  "targetUrl",
+                  "matchStatus",
+                  "filename",
+                  "offset",
+                  "length",
+                  "payloadDigest"
+                ],
+                "properties": {
+                  "host": {
+                    "const": "index.commoncrawl.org"
+                  },
+                  "requestedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "httpStatus": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 599
+                  },
+                  "responseByteLimit": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1048576
+                  },
+                  "responseBytes": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1048576
+                  },
+                  "responseSha256": {
+                    "$ref": "#/$defs/sha256"
+                  },
+                  "collection": {
+                    "type": "string",
+                    "pattern": "^CC-MAIN-[0-9]{4}-[0-9]{2}$"
+                  },
+                  "targetUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "pattern": "^https://"
+                  },
+                  "matchStatus": {
+                    "enum": [
+                      "hit",
+                      "miss"
+                    ]
+                  },
+                  "filename": {
+                    "type": "string",
+                    "pattern": "^crawl-data/CC-MAIN-[0-9]{4}-[0-9]{2}/.+\\.warc\\.gz$"
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "length": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1048576
+                  },
+                  "payloadDigest": {
+                    "type": "string",
+                    "pattern": "^[A-Z2-7]{32}$"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "range": {
+                "type": "object",
+                "required": [
+                  "host",
+                  "requestedAt",
+                  "status",
+                  "httpStatus",
+                  "rangeStart",
+                  "rangeEnd",
+                  "maximumRangeBytes",
+                  "responseBytes",
+                  "contentRange",
+                  "expectedCompressedSha256",
+                  "observedCompressedSha256",
+                  "decodedBytes",
+                  "decodedSha256",
+                  "warcTargetUri",
+                  "warcPayloadDigest",
+                  "safeFailure"
+                ],
+                "properties": {
+                  "host": {
+                    "const": "data.commoncrawl.org"
+                  },
+                  "requestedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "status": {
+                    "enum": [
+                      "retrieved",
+                      "failed",
+                      "not_attempted"
+                    ]
+                  },
+                  "httpStatus": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 599
+                  },
+                  "rangeStart": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "rangeEnd": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "maximumRangeBytes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1048576
+                  },
+                  "responseBytes": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1048576
+                  },
+                  "contentRange": {
+                    "type": "string",
+                    "pattern": "^bytes [0-9]+-[0-9]+/[0-9]+$"
+                  },
+                  "expectedCompressedSha256": {
+                    "$ref": "#/$defs/sha256"
+                  },
+                  "observedCompressedSha256": {
+                    "$ref": "#/$defs/sha256"
+                  },
+                  "decodedBytes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 8388608
+                  },
+                  "decodedSha256": {
+                    "$ref": "#/$defs/sha256"
+                  },
+                  "warcTargetUri": {
+                    "type": "string",
+                    "format": "uri",
+                    "pattern": "^https://"
+                  },
+                  "warcPayloadDigest": {
+                    "type": "string",
+                    "pattern": "^[A-Z2-7]{32}$"
+                  },
+                  "safeFailure": {
+                    "const": "fail_closed"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "brokerReady": {
+            "type": "boolean"
+          },
+          "archiveReady": {
+            "type": "boolean"
+          },
+          "developmentReady": {
+            "type": "boolean"
+          },
+          "productionReady": {
+            "const": false
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "degraded",
+              "blocked"
+            ]
+          },
+          "failureCodes": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{2,127}$"
+            }
+          },
+          "productionBlockers": {
+            "type": "array",
+            "minItems": 5,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{2,127}$"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "RetrievalFederation": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://api.clervo.dev/schemas/2026-07-29.1/retrieval-federation.schema.json",

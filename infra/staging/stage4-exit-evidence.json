@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "stage": 4,
-  "evaluatedAt": "2026-07-31T00:40:00.000Z",
+  "evaluatedAt": "2026-07-31T05:19:00.000Z",
   "scope": "bounded_repository_and_staging_exit_verification",
   "sourceState": {
     "stagingReleaseStatus": "verified-private-recorded-only",
@@ -18,7 +18,7 @@
       "id": "federated_lawful_retrieval",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.2 and N4.10 prove two independent recorded adapter boundaries; no live supplier was qualified or called."
+      "evidence": "N4.2 and N4.10 prove two independent recorded adapter boundaries. N4.21 adds one bounded live development-only SearXNG composition, but public Nominatim is not resale-qualified and no live supply is connected to the product or staging."
     },
     {
       "id": "query_rewriting",
@@ -96,7 +96,7 @@
       "id": "two_independent_retrieval_paths",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "Two recorded paths pass locally, but neither path is live-qualified or connected to staging."
+      "evidence": "N4.21 proves one loopback SearXNG development broker and one independent direct Common Crawl index-to-WARC range read with exact bounds and hashes. Neither path is connected to the Clervo product or staging, and production terms/quality remain unqualified."
     },
     {
       "id": "deterministic_schema",

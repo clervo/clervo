@@ -18,6 +18,7 @@ export * from './retrieval-assembly.js';
 export * from './retrieval-federation.js';
 export * from './retrieval-synthesis.js';
 export * from './retrieval-supply.js';
+export * from './retrieval-execution-proof.js';
 export * from './retrieval.js';
 export * from './routing.js';
 export * from './search.js';
