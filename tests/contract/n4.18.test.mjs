@@ -126,7 +126,7 @@ test('GCP operator script is pinned to the authorized target and fails closed wi
   const result = spawnSync('/bin/bash', ['./scripts/gcp-staging.sh', 'inspect'], {
     cwd: repositoryRoot,
     encoding: 'utf8',
-    env: { PATH: '/usr/bin:/bin', GCP_PROJECT: 'bloxsniper-prod', GCP_REGION: 'us-central1' },
+    env: { PATH: '/clervo-test-no-tools', GCP_PROJECT: 'bloxsniper-prod', GCP_REGION: 'us-central1' },
   });
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /required command not found: gcloud/u);

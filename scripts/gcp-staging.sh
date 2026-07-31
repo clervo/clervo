@@ -22,8 +22,16 @@ gcloud auth print-access-token >/dev/null 2>&1 || die "gcloud has no active auth
 action="${1:-}"
 case "$action" in
   inspect)
-    gcloud run services describe "$SERVICE" --project "$project" --region "$region" --format=json 2>/dev/null \
-      || printf '{"service":"%s","status":"absent"}\n' "$SERVICE"
+    inspect_error="$(mktemp)"
+    trap 'rm -f "$inspect_error"' EXIT
+    if gcloud run services describe "$SERVICE" --project "$project" --region "$region" --format=json 2>"$inspect_error"; then
+      :
+    elif grep -Fq "Cannot find service [$SERVICE]" "$inspect_error"; then
+      printf '{"service":"%s","status":"absent"}\n' "$SERVICE"
+    else
+      cat "$inspect_error" >&2
+      die "could not inspect isolated Cloud Run service"
+    fi
     ;;
   deploy)
     release_id="${CLERVO_RELEASE_ID:-}"
@@ -31,11 +39,13 @@ case "$action" in
     mkdir -p "$STATE_DIR"
     previous_revision="$(gcloud run services describe "$SERVICE" --project "$project" --region "$region" --format='value(status.traffic[0].revisionName)' 2>/dev/null || true)"
     printf '%s\n' "$previous_revision" > "$STATE_DIR/previous-revision"
+    project_number="$(gcloud projects describe "$project" --format='value(projectNumber)')"
+    origin="https://${SERVICE}-${project_number}.${region}.run.app"
     gcloud run deploy "$SERVICE" \
       --project "$project" \
       --region "$region" \
       --source . \
-      --allow-unauthenticated \
+      --no-invoker-iam-check \
       --ingress all \
       --cpu 1 \
       --memory 512Mi \
@@ -43,13 +53,11 @@ case "$action" in
       --min-instances 0 \
       --max-instances 1 \
       --timeout 60s \
-      --set-env-vars "CLERVO_ENV=staging,CLERVO_RELEASE_ID=$release_id"
+      --set-env-vars "CLERVO_ENV=staging,CLERVO_RELEASE_ID=$release_id,CLERVO_PUBLIC_ORIGIN=$origin"
     origin="$(gcloud run services describe "$SERVICE" --project "$project" --region "$region" --format='value(status.url)')"
-    gcloud run services update "$SERVICE" \
-      --project "$project" \
-      --region "$region" \
-      --update-env-vars "CLERVO_PUBLIC_ORIGIN=$origin"
+    identity_token="$(gcloud auth print-identity-token --audiences="$origin" 2>/dev/null || true)"
     CLERVO_STAGING_ORIGIN="$origin" CLERVO_RELEASE_ID="$release_id" \
+      CLERVO_STAGING_IDENTITY_TOKEN="$identity_token" \
       CLERVO_STAGING_EVIDENCE_PATH="infra/staging/live-smoke-evidence-$release_id.json" \
       node ./scripts/staging-live-smoke.mjs
     printf 'gcp staging: PASS\nservice=%s\norigin=%s\n' "$SERVICE" "$origin"
@@ -57,7 +65,11 @@ case "$action" in
   rollback)
     [[ -f "$STATE_DIR/previous-revision" ]] || die "no previous revision state exists"
     previous_revision="$(cat "$STATE_DIR/previous-revision")"
-    [[ -n "$previous_revision" ]] || die "the service had no previous revision; delete the isolated service explicitly if rollback is required"
+    if [[ -z "$previous_revision" ]]; then
+      gcloud run services delete "$SERVICE" --project "$project" --region "$region" --quiet
+      printf 'gcp staging rollback: PASS\nservice=%s\naction=deleted-first-deployment\n' "$SERVICE"
+      exit 0
+    fi
     gcloud run services update-traffic "$SERVICE" \
       --project "$project" \
       --region "$region" \

@@ -9,14 +9,16 @@ const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url))
 const origin = process.env.CLERVO_STAGING_ORIGIN;
 const expectedReleaseId = process.env.CLERVO_RELEASE_ID;
 const evidencePath = process.env.CLERVO_STAGING_EVIDENCE_PATH;
+const identityToken = process.env.CLERVO_STAGING_IDENTITY_TOKEN;
 
 if (!origin || !expectedReleaseId) throw new Error('CLERVO_STAGING_ORIGIN and CLERVO_RELEASE_ID are required');
 const normalizedOrigin = new URL(origin).origin;
+const authorizationHeaders = identityToken ? { authorization: `Bearer ${identityToken}` } : {};
 
 async function post(route, idempotencyKey, body, headers = {}) {
   return fetch(`${normalizedOrigin}${route}`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json', 'idempotency-key': idempotencyKey, ...headers },
+    headers: { 'content-type': 'application/json', 'idempotency-key': idempotencyKey, ...authorizationHeaders, ...headers },
     body: JSON.stringify(body),
     signal: AbortSignal.timeout(30_000),
   });
@@ -24,7 +26,10 @@ async function post(route, idempotencyKey, body, headers = {}) {
 
 const observedAt = new Date().toISOString();
 const nonce = Date.now().toString(36);
-const healthResponse = await fetch(`${normalizedOrigin}/healthz`, { signal: AbortSignal.timeout(15_000) });
+const healthResponse = await fetch(`${normalizedOrigin}/healthz`, {
+  headers: authorizationHeaders,
+  signal: AbortSignal.timeout(15_000),
+});
 assert.equal(healthResponse.status, 200);
 const health = await healthResponse.json();
 assert.equal(health.status, 'ok');

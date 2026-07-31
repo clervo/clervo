@@ -33,7 +33,7 @@ CLERVO_RELEASE_ID="$(git rev-parse HEAD)" \
 npm run staging:gcp -- deploy
 ```
 
-The command deploys source through Cloud Build, allows unauthenticated access for the staging proof, limits instances to one, binds the HTTPS Cloud Run origin into the non-payable challenge, runs `/healthz`, executes one recorded free request, confirms the paid route stays `402` and non-payable, and writes a new `infra/staging/live-smoke-evidence-<release>.json` file without overwriting prior evidence.
+The command deploys source through Cloud Build, disables the Cloud Run invoker IAM check on this isolated service, limits instances to one, binds the deterministic HTTPS Cloud Run origin into the non-payable challenge during the initial create, runs `/healthz`, executes one recorded free request, confirms the paid route stays `402` and non-payable, and writes a new `infra/staging/live-smoke-evidence-<release>.json` file without overwriting prior evidence. The smoke collector also accepts an operator identity token when organizational policy preserves authenticated invocation.
 
 Review Cloud Run request logs for the JSON `clervo.search.started` event and periodic `clervo.search.monitoring_snapshot` events. Cloud Run log ingestion alone is not evidence of a configured dashboard, delivered page, or alert receipt.
 
@@ -45,7 +45,7 @@ GCP_REGION=us-central1 \
 npm run staging:gcp -- rollback
 ```
 
-Rollback routes 100% of traffic to the revision captured before deployment. If no previous revision existed, the script refuses to guess; explicitly delete the isolated service only after confirming it was created by this ticket and no evidence needs to be retained.
+Rollback routes 100% of traffic to the revision captured before deployment. If no previous revision existed, rollback deletes the isolated first-deployment service after the operator has retained its evidence.
 
 ## Stage 4 evidence rule
 
