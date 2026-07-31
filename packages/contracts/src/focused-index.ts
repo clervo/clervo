@@ -7,6 +7,7 @@ export const FOCUSED_INDEX_DOCUMENT_SCHEMA = 'clervo.focused-index.document.v1' 
 export const FOCUSED_INDEX_PROVIDER_ID = 'provider_meilisearch_1_51_0' as const;
 export const FOCUSED_INDEX_ADAPTER_ID = 'adapter_meilisearch_focused_1_51_0' as const;
 export const FOCUSED_INDEX_HEALTH_IDENTITY = 'clervo.health.focused_index' as const;
+export const FOCUSED_INDEX_CIRCUIT_IDENTITY = 'clervo.circuit.focused_index' as const;
 export const FOCUSED_INDEX_FAILURE_DOMAIN = 'clervo.focused_index' as const;
 export const SCRAPLING_WORKER_ID = 'worker_scrapling_0_4_12' as const;
 export const SCRAPLING_VERSION = '0.4.12' as const;

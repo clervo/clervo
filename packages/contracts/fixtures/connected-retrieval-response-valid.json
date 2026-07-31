@@ -1,0 +1,48 @@
+{
+  "schema": "connected-retrieval-response",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "schemaVersion": "clervo.connected-retrieval.response.v1",
+    "operationId": "op_01K1N424CONNECTED000001",
+    "productId": "search.web",
+    "query": "bounded retrieval",
+    "rewriteQueries": ["bounded retrieval", "\"bounded retrieval\""],
+    "language": "en",
+    "region": "US",
+    "generatedAt": "2026-07-31T15:00:00.000Z",
+    "status": "ready",
+    "degradedRoutes": [],
+    "attempts": [
+      { "routeId": "clervo.focused-index.v1", "providerId": "provider_meilisearch_1_51_0", "healthIdentity": "clervo.health.focused_index", "circuitIdentity": "clervo.circuit.focused_index", "failureDomain": "clervo.focused_index", "startedAt": "2026-07-31T15:00:00.000Z", "completedAt": "2026-07-31T15:00:00.000Z", "outcome": "succeeded", "resultCount": 1 },
+      { "routeId": "clervo.live-federation.v1", "providerId": "provider_clervo_live_federation_v1", "healthIdentity": "clervo.health.live_federation", "circuitIdentity": "clervo.circuit.live_federation", "failureDomain": "clervo.live_federation", "startedAt": "2026-07-31T15:00:00.000Z", "completedAt": "2026-07-31T15:00:00.000Z", "outcome": "succeeded", "resultCount": 0 }
+    ],
+    "exactDuplicateCount": 0,
+    "nearDuplicateCount": 0,
+    "results": [
+      {
+        "routeId": "clervo.focused-index.v1",
+        "providerId": "provider_meilisearch_1_51_0",
+        "adapterId": "adapter_meilisearch_focused_1_51_0",
+        "url": "https://docs.example/evidence",
+        "title": "Bounded evidence",
+        "evidenceText": "Bounded retrieval evidence.",
+        "retrievedAt": "2026-07-31T15:00:00.000Z",
+        "authorityScore": 88,
+        "relevanceScore": 80,
+        "language": "en",
+        "region": "US",
+        "attribution": { "sourceId": "focused_index", "sourceName": "Clervo focused index", "sourceUrl": "https://docs.example/evidence", "license": "approved", "notice": "Source policy approved." },
+        "extraction": { "fetchId": "fetch_aaaaaaaaaaaaaaaaaaaa", "extractionId": "extract_aaaaaaaaaaaaaaaaaaaa", "sourceBodySha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "normalizedTextSha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "instructionHandling": "untrusted_data_only", "renderMode": "static", "crawl4aiStatus": "not_used" },
+        "canonicalUrl": "https://docs.example/evidence",
+        "resultId": "csr_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "hostname": "docs.example",
+        "rank": 1,
+        "score": { "freshness": 100, "authority": 88, "relevance": 80, "diversity": 100, "totalBasisPoints": 9000 }
+      }
+    ],
+    "citations": [
+      { "citationId": "ccite_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "resultId": "csr_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "routeId": "clervo.focused-index.v1", "canonicalUrl": "https://docs.example/evidence", "quote": "Bounded retrieval evidence.", "startOffset": 0, "endOffset": 27, "extractionId": "extract_aaaaaaaaaaaaaaaaaaaa" }
+    ]
+  }
+}

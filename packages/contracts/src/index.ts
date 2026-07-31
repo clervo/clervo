@@ -7,6 +7,7 @@ export * from './discovery.js';
 export * from './development-retrieval-supply.js';
 export * from './extraction.js';
 export * from './focused-index.js';
+export * from './live-federation.js';
 export * from './idempotency.js';
 export * from './javascript-retrieval.js';
 export * from './mock-commerce.js';
