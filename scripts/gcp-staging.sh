@@ -45,7 +45,6 @@ case "$action" in
       --project "$project" \
       --region "$region" \
       --source . \
-      --no-invoker-iam-check \
       --ingress all \
       --cpu 1 \
       --memory 512Mi \
