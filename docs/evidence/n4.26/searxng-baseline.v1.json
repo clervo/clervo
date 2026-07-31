@@ -1,0 +1,461 @@
+{
+  "schemaVersion": "clervo.n4.26.searxng-baseline.v1",
+  "generatedAt": "2026-07-31T17:29:10.654Z",
+  "identity": {
+    "repository": "https://github.com/searxng/searxng",
+    "commit": "057a77168d3175ce2e42e5b10f46a8df073886d5",
+    "packageVersion": "2026.7.31+057a77168",
+    "engine": "wikipedia",
+    "bind": "127.0.0.1:18888",
+    "productionDependency": false
+  },
+  "tasks": 44,
+  "recall": 0,
+  "precision": 0,
+  "successfulResponseRate": 1,
+  "p95LatencyMs": 1141.28,
+  "providerChargeUsd": 0,
+  "observedFailure": "wikimedia_upstream_suspended_after_bounded_requests",
+  "rows": [
+    {
+      "id": "commerce-01",
+      "family": "commerce_marketplaces",
+      "status": 200,
+      "durationMs": 1064.0182300000001,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "commerce-02",
+      "family": "commerce_marketplaces",
+      "status": 200,
+      "durationMs": 1312.2103620000003,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "commerce-03",
+      "family": "commerce_marketplaces",
+      "status": 200,
+      "durationMs": 1141.2783140000001,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "commerce-04",
+      "family": "commerce_marketplaces",
+      "status": 200,
+      "durationMs": 709.4691330000005,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "commerce-05",
+      "family": "commerce_marketplaces",
+      "status": 200,
+      "durationMs": 508.493109,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "commerce-06",
+      "family": "commerce_marketplaces",
+      "status": 200,
+      "durationMs": 722.6243290000002,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "commerce-07",
+      "family": "commerce_marketplaces",
+      "status": 200,
+      "durationMs": 1433.7998610000004,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "commerce-08",
+      "family": "commerce_marketplaces",
+      "status": 200,
+      "durationMs": 615.7656470000002,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "commerce-09",
+      "family": "commerce_marketplaces",
+      "status": 200,
+      "durationMs": 708.3875740000012,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "property-01",
+      "family": "property_local_markets",
+      "status": 200,
+      "durationMs": 825.4882629999993,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "property-02",
+      "family": "property_local_markets",
+      "status": 200,
+      "durationMs": 452.24094800000057,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "property-03",
+      "family": "property_local_markets",
+      "status": 200,
+      "durationMs": 3.4651639999992767,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "property-04",
+      "family": "property_local_markets",
+      "status": 200,
+      "durationMs": 3.4724239999995916,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "property-05",
+      "family": "property_local_markets",
+      "status": 200,
+      "durationMs": 4.418288000000757,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "property-06",
+      "family": "property_local_markets",
+      "status": 200,
+      "durationMs": 3.4568010000002687,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "property-07",
+      "family": "property_local_markets",
+      "status": 200,
+      "durationMs": 3.3453090000002703,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "property-08",
+      "family": "property_local_markets",
+      "status": 200,
+      "durationMs": 2.553330000000642,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "company-01",
+      "family": "company_competitive",
+      "status": 200,
+      "durationMs": 3.102629999999408,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "company-02",
+      "family": "company_competitive",
+      "status": 200,
+      "durationMs": 3.5941920000004757,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "company-03",
+      "family": "company_competitive",
+      "status": 200,
+      "durationMs": 3.282646999999997,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "company-04",
+      "family": "company_competitive",
+      "status": 200,
+      "durationMs": 3.134092000000237,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "company-05",
+      "family": "company_competitive",
+      "status": 200,
+      "durationMs": 2.9139390000000276,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "company-06",
+      "family": "company_competitive",
+      "status": 200,
+      "durationMs": 5.439829999999347,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "company-07",
+      "family": "company_competitive",
+      "status": 200,
+      "durationMs": 5.990925000000061,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "company-08",
+      "family": "company_competitive",
+      "status": 200,
+      "durationMs": 3.535746999999901,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "company-09",
+      "family": "company_competitive",
+      "status": 200,
+      "durationMs": 9.565384999999878,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "research-01",
+      "family": "research_evidence",
+      "status": 200,
+      "durationMs": 3.131158999998661,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "research-02",
+      "family": "research_evidence",
+      "status": 200,
+      "durationMs": 3.705536999999822,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "research-03",
+      "family": "research_evidence",
+      "status": 200,
+      "durationMs": 4.833918000000267,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "research-04",
+      "family": "research_evidence",
+      "status": 200,
+      "durationMs": 7.036893999998938,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "research-05",
+      "family": "research_evidence",
+      "status": 200,
+      "durationMs": 3.8048109999999724,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "research-06",
+      "family": "research_evidence",
+      "status": 200,
+      "durationMs": 4.476402000000235,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "research-07",
+      "family": "research_evidence",
+      "status": 200,
+      "durationMs": 5.228923999999097,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "research-08",
+      "family": "research_evidence",
+      "status": 200,
+      "durationMs": 4.164646999999604,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "research-09",
+      "family": "research_evidence",
+      "status": 200,
+      "durationMs": 3.7718089999998483,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "developer-01",
+      "family": "developer_agent_retrieval",
+      "status": 200,
+      "durationMs": 6.104255000000194,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "developer-02",
+      "family": "developer_agent_retrieval",
+      "status": 200,
+      "durationMs": 5.416336999998748,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "developer-03",
+      "family": "developer_agent_retrieval",
+      "status": 200,
+      "durationMs": 4.958961999998792,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "developer-04",
+      "family": "developer_agent_retrieval",
+      "status": 200,
+      "durationMs": 3.456933999999819,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "developer-05",
+      "family": "developer_agent_retrieval",
+      "status": 200,
+      "durationMs": 4.53516800000034,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "developer-06",
+      "family": "developer_agent_retrieval",
+      "status": 200,
+      "durationMs": 4.197072999999364,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "developer-07",
+      "family": "developer_agent_retrieval",
+      "status": 200,
+      "durationMs": 3.6716619999988325,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "developer-08",
+      "family": "developer_agent_retrieval",
+      "status": 200,
+      "durationMs": 5.234330000001137,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    },
+    {
+      "id": "developer-09",
+      "family": "developer_agent_retrieval",
+      "status": 200,
+      "durationMs": 4.992381000000023,
+      "resultCount": 0,
+      "recall": 0,
+      "precision": 0,
+      "results": []
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "clervo.n4.26.stage4-binding.v1",
+  "evaluatedAt": "2026-07-31T17:42:00.000Z",
+  "startingBlockerCount": 21,
+  "closedCheckIds": [
+    "federated_lawful_retrieval",
+    "query_rewriting",
+    "parallel_retrieval",
+    "url_normalization_and_near_duplicate_removal",
+    "freshness_authority_relevance_diversity_ranking",
+    "evidence_tied_citations",
+    "quality_latency_and_cost_benchmarks",
+    "two_independent_retrieval_paths",
+    "deterministic_schema",
+    "citation_verifier",
+    "monitoring"
+  ],
+  "remainingBlockers": [
+    {"id":"isolated_javascript_retrieval","reason":"Two bounded staging attempts produced no running browser container or exact runtime attestation: quota rejected the first before pod creation and the second expired while pulling the image."},
+    {"id":"retrieval_safety_controls","reason":"Static retrieval and network-policy controls ran, but the deployed browser path and full staging robots, rebinding, redirect, MIME, decompression, cancellation and private-target transcript remain incomplete."},
+    {"id":"prompt_injection_boundaries","reason":"The corpus includes hostile query text and repository fixtures preserve hostile page text, but no malicious live page was successfully executed through the staging browser boundary."},
+    {"id":"disclosed_cache_freshness","reason":"Persistent staging storage proved miss, fresh hit and disclosed stale reuse, but the cache probe is not yet integrated as read-through behavior in connected search and removal/denylist staging invalidation was not run."},
+    {"id":"language_and_region_options","reason":"Language and region were schema-bound and propagated; the adapters echoed region but did not prove that every upstream truthfully honors locale rather than merely receiving it."},
+    {"id":"separate_raw_and_synthesis_prices","reason":"N4.27-owned deployed mock discovery, challenge, receipt and replay evidence remains absent and the route is intentionally non-payable."},
+    {"id":"ssrf_and_security_suite","reason":"Default-deny policies and private/metadata exclusions deployed, but no running browser existed for the complete authenticated staging adversarial suite."},
+    {"id":"blockrun_compatible_baseline_improvement","reason":"Clervo did not beat its simple-combination baseline on recall or precision, and the SearXNG baseline was rate-limited; no material named-workflow superiority is proven."},
+    {"id":"deployed_paid_route","reason":"Real payment, facilitator verification, settlement and USDC spending were prohibited; the paid route remains non-payable."},
+    {"id":"cost_caps","reason":"Budget, quota, unsafe-ceiling, circuit-open, route-removal and kill-switch stops passed, but no half-open circuit restoration exists, browser-minute cost is unmeasured, and per-route/per-domain concurrency is declared rather than enforced by the staging runtime."}
+  ],
+  "artifactBindings": {
+    "rawBenchmark": {"path":"docs/evidence/n4.26/raw-benchmark-results.v1.json.gz","sha256":"sha256:82771effdc16f089dd7457a301d6400432808c40cc080078ff0a85dc23c1c0df"},
+    "scorecard": {"path":"docs/evidence/n4.26/quality-scorecard.v1.json","sha256":"sha256:e37d46cccf3111978849093c85d616527f26ebd2eb20c732325a235ea4240c58"},
+    "runtimeMetrics": {"path":"docs/evidence/n4.26/benchmark-runtime-metrics.v1.json","sha256":"sha256:6fc519c874d146b1b705f3d029c3abc5e85580660da27bd681b0e332de440a84"},
+    "drills": {"path":"docs/evidence/n4.26/traffic-stop-drills.v1.json","sha256":"sha256:d4322572b9f830911db0b6ba6e7d0649aa5cb797b853b4b5f4d547834dedd953"},
+    "costCeiling": {"path":"docs/evidence/n4.26/cost-ceiling-drill.v1.json","sha256":"sha256:d55e194b47e5cf6f46a35cb37ce17f782ba3812caca65720c1c320cef5d77db7"},
+    "circuit": {"path":"docs/evidence/n4.26/circuit-drill.v1.json","sha256":"sha256:8a499e033bcef888a9646596e3ede7f6c0115b5008dd4ca5610cb026c1d4b586"},
+    "monitoring": {"path":"docs/evidence/n4.26/monitoring-delivery.v1.json","sha256":"sha256:5ccad2ded746a237169eb701dd9f1da7bb1f91c7198397ffb4c3cc5d676f4676"},
+    "infrastructure": {"path":"docs/evidence/n4.26/infrastructure-evidence.v1.json","sha256":"sha256:43bda2fdd3813855e5e1d474bbe69a50d951dff1aa407434c8c0c9ac87eea477"},
+    "costModel": {"path":"docs/evidence/n4.26/cost-model.v1.json","sha256":"sha256:dd2905d1f32110462d3b9e4232573327b57e0863aff5928bc3ce2ed82faf885d"}
+  },
+  "claimDecision": "not_yet_commercially_competitive",
+  "advancedLiveIntelligenceAuthorized": false,
+  "stage5Authorized": false,
+  "usdcSpent": 0
+}

@@ -1,0 +1,25 @@
+steps:
+  - id: search
+    name: gcr.io/cloud-builders/docker
+    args: [build, -f, infra/n4.26/search.Dockerfile, -t, us-central1-docker.pkg.dev/$PROJECT_ID/clervo-n426/search:$BUILD_ID, .]
+  - id: gateway
+    name: gcr.io/cloud-builders/docker
+    waitFor: ['-']
+    args: [build, -f, infra/n4.26/gateway.Dockerfile, -t, us-central1-docker.pkg.dev/$PROJECT_ID/clervo-n426/gateway:$BUILD_ID, .]
+  - id: meilisearch
+    name: gcr.io/cloud-builders/docker
+    waitFor: ['-']
+    args: [build, -f, infra/n4.26/meilisearch.Dockerfile, -t, us-central1-docker.pkg.dev/$PROJECT_ID/clervo-n426/meilisearch:$BUILD_ID, .]
+  - id: browser
+    name: gcr.io/cloud-builders/docker
+    waitFor: ['-']
+    args: [build, -f, infra/n4.26/browser.Dockerfile, -t, us-central1-docker.pkg.dev/$PROJECT_ID/clervo-n426/browser:$BUILD_ID, .]
+images:
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-n426/search:$BUILD_ID
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-n426/gateway:$BUILD_ID
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-n426/meilisearch:$BUILD_ID
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-n426/browser:$BUILD_ID
+options:
+  logging: CLOUD_LOGGING_ONLY
+  dynamicSubstitutions: true
+timeout: 1800s

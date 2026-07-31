@@ -13,6 +13,10 @@ After the benchmark gate passes, use **Advanced live intelligence for agents**.
 Never use a general superiority claim when only one named workflow comparison
 has passed.
 
+N4.26 did not pass that gate: the current classification is **not yet
+commercially competitive**. “Advanced live intelligence for agents” therefore
+remains unauthorized.
+
 ## Solution-pack lanes
 
 - Commerce and Marketplace Intelligence.

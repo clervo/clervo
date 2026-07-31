@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: clervo-n426-crawl4ai-worker
+  namespace: clervo-n426
+  labels: {app: clervo-n426-crawl4ai-worker, ticket: n4-26}
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 60
+  ttlSecondsAfterFinished: 600
+  template:
+    metadata:
+      labels: {app: clervo-n426-crawl4ai-worker, ticket: n4-26}
+    spec:
+      serviceAccountName: clervo-n426-browser
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 5
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: crawl4ai
+          image: us-central1-docker.pkg.dev/bloxsniper-prod/clervo-n426/browser@sha256:1d7cfbeeff2ccfa6bd4be016539a74d152bd6f2db98750c222df55b66575073d
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: HOME, value: /tmp}
+            - {name: CLERVO_N426_TARGET_URL, value: "https://quotes.toscrape.com/js/"}
+            - {name: CLERVO_N426_GATEWAY, value: "http://clervo-n426-retrieval-gateway:8080"}
+            - name: CLERVO_N426_BROWSER_KILL_SWITCH
+              valueFrom: {configMapKeyRef: {name: clervo-n426-browser-control, key: killSwitch}}
+          resources:
+            requests: {cpu: "500m", memory: "768Mi", ephemeral-storage: "64Mi"}
+            limits: {cpu: "1", memory: "1536Mi", ephemeral-storage: "256Mi"}
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          volumeMounts:
+            - {name: browser-state, mountPath: /run/clervo-browser}
+            - {name: temp, mountPath: /tmp}
+      volumes:
+        - name: browser-state
+          emptyDir: {medium: Memory, sizeLimit: 64Mi}
+        - name: temp
+          emptyDir: {medium: Memory, sizeLimit: 64Mi}

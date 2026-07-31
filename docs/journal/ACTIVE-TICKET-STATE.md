@@ -1,48 +1,60 @@
 # Active ticket state
 
-**Ticket:** NPLAN.2 — Clervo Live Intelligence First Revenue Release authority
-**Stage:** planning amendment; Stage 4 Search remains active
-**Result:** complete at the documentation and repository-authority boundary
+**Ticket:** N4.26 — live staging quality, monitoring, budgets, and traffic stops
+**Stage:** 4 — Search vertical slice
+**Result:** complete with ten truthful Stage 4 blockers remaining
 
 ## Decision
 
-- Permanent company identity: Clervo — outcome infrastructure for agents.
-- First Revenue Release: Clervo Live Intelligence.
-- Permanent narrative: Find → Understand → Act.
-- Current product: Discover → Retrieve → Structure → Verify → Monitor.
-- AI and Sandbox follow the First Revenue Release as additive layers; RPC,
-  Prediction, and Crypto Intelligence remain later additive expansions.
-- Historical Stages 0–4, ticket IDs, commits, evidence, and outcomes are
-  unchanged.
+- The two real route identities operated in isolated private staging.
+- The 50-task/five-family benchmark produced 182 raw executions.
+- Clervo is `not_yet_commercially_competitive`; “Advanced live intelligence
+  for agents” is not authorized. “Clervo-owned live Web retrieval” remains the
+  maximum truthful positioning.
+- Eleven of the 21 starting blockers closed on hash-bound staging evidence;
+  ten remain. Search is not the reference pattern and Stage 5 is unauthorized.
+- Payment remained mock-only and non-payable. Third-party general-Web
+  production provider cost is USD `0.000000`; 0 USDC was spent.
 
-## Truth preserved
+## Live proof and cleanup
 
-- Search remains `preview`; AI and Sandbox remain `unavailable`; RPC,
-  Prediction, and Crypto Intelligence remain `planned_post_launch`.
-- The First Revenue Release is not ready.
-- Stage 4 remains blocked on exactly 21 source-bound checks; search is not the
-  reference pattern and Stage 5 Live Intelligence productization is not
-  authorized.
-- NPLAN.2 changed no runtime search behavior, staging evidence, verifier source,
-  cloud, deployment, provider, credential, wallet, payment, USDC, or legacy
-  state.
-- Canonical `npm test` remains reserved for N4.28 and did not run. The Stage 4
-  verifier did not run.
+- Deployed digest-pinned Search, Meilisearch and retrieval-gateway workloads in
+  the private `clervo-n426` GKE namespace with default-deny policies, fixed
+  quota, persistent storage, USD 10 budget and USD 5/day ceiling.
+- Delivered the primary `mo@clervo.dev` verification route, observed nonzero
+  critical-event metric points, and bound the enabled alert policy. No
+  qualified Telegram route existed.
+- Browser attempt one was quota-denied and attempt two expired during image
+  pull; no worker/runtime attestation is claimed.
+- Deleted the exact N4.26 cluster and data disk after capture. Active compute
+  exposure is USD 0/day; retained artifact/logging storage upper bound is USD
+  0.01/day.
+
+## Current Stage 4 blockers
+
+1. `isolated_javascript_retrieval`
+2. `retrieval_safety_controls`
+3. `prompt_injection_boundaries`
+4. `disclosed_cache_freshness`
+5. `language_and_region_options`
+6. `separate_raw_and_synthesis_prices`
+7. `ssrf_and_security_suite`
+8. `blockrun_compatible_baseline_improvement`
+9. `deployed_paid_route`
+10. `cost_caps`
+
+Exact reasons and bound artifact hashes are in
+`docs/evidence/n4.26/stage4-binding.v1.json` and the N4.26 evidence report.
 
 ## Exact next action
 
-N4.26 only: benchmark the actual Clervo Live Intelligence launch product
-across commerce/marketplaces, property/local markets, companies/competitors,
-research/evidence, and developer/agent retrieval. Measure relevant-result
-recall, precision, freshness, structured-field accuracy, exact citation
-validity, duplicate suppression, domain diversity, change accuracy where
-implemented, latency, degradation, infrastructure cost, and bounded worst-case
-cost. Include selected free/open-source components and permitted paid
-benchmarks without making paid providers production dependencies; prove
-monitoring delivery, infrastructure/provider budgets, cost caps, circuits, and
-traffic-stop drills.
+N4.27 only, after separate payment authority defines the allowed mock/testnet
+facilitator, payee/payer, settlement, receipt and replay scope. Preserve all ten
+remaining blockers unless new evidence closes them. Do not spend USDC or make
+any route payable without explicit authority.
 
 ## Stop condition
 
-Commit NPLAN.2 atomically and stop. Do not begin N4.26, N4.27, N4.28, Stage 5,
-AI, Sandbox, deployment, payment, or any expansion stage in this run.
+Commit N4.26 atomically and stop. Do not begin N4.27, N4.28, Stage 5, AI,
+Sandbox, production release, real settlement, USDC spending, or legacy
+migration in this run. Canonical `npm test` remains reserved for N4.28.

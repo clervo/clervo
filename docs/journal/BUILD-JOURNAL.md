@@ -484,3 +484,58 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   reference-pattern and Stage 5 authorization remain false.
 - NPLAN.2 is complete. Exact next ticket: N4.26 only. Stop here; do not begin
   N4.27, N4.28, Stage 5, AI, Sandbox, or any expansion stage.
+
+## 2026-07-31 — N4.26 live staging quality, monitoring, costs, and traffic stops
+
+- Created the empty preferred project `clervo-n426-staging-20260731`; billing
+  linkage failed because the billing-account project quota was exhausted. Used
+  only new `clervo-n426-*` resources in the authenticated fallback project and
+  did not read, connect, stop, or mutate legacy/unrelated resources.
+- Deployed digest-pinned Search, Meilisearch and retrieval-gateway workloads in
+  a private Calico/default-deny GKE namespace with ClusterIP-only services,
+  fixed quota, persistent 10 GB storage, mock-only payment, a USD 10 ticket
+  budget and a USD 5/day ceiling. Both route identities executed independently.
+- Built the versioned 50-task/five-family corpus and evaluator. The 182 raw
+  records show focused recall/precision 0.8409/0.8295, live 0.1250/0.1364,
+  simple 0.8750/0.8523 and combined 0.8333/0.8144 with 0.9091 citation validity
+  and 1630.51 ms p95. SearXNG returned no relevant results after Wikimedia
+  suspension; paid baselines lacked no-charge entitlement; Firecrawl remained
+  unavailable. Classification: not yet commercially competitive.
+- Browser attempt one was rejected by namespace CPU quota and attempt two
+  expired while pulling the pinned image. No worker started and no runtime
+  isolation, hostile live-page, teardown, orphan, or complete SSRF proof is
+  claimed. Persistent-cache miss/fresh/disclosed-stale behavior passed, but
+  connected read-through and staging removal/denylist invalidation remain open.
+- Repaired the Cloud Logging metric source binding from
+  `jsonPayload.severity` to envelope `severity=ERROR`, observed two nonzero
+  DELTA points, bound the enabled policy to the owner-email channel, and
+  received HTTP 200 from the verification-code delivery request. No qualified
+  Telegram route existed; alert payloads excluded queries, URLs, customer
+  payloads, secrets, wallets, and payment data.
+- Passed focused/live/both-down, citation, cache, stale, kill-switch/restore,
+  timeout/circuit, quota, and unsafe-cost-ceiling drills. The circuit opens but
+  lacks half-open restoration; browser-minute and enforced route/domain
+  concurrency proof remain absent. Payment stayed mock-only/non-payable,
+  third-party general-Web production provider cost remained USD 0.000000, and
+  0 USDC was spent.
+- Estimated gross ticket infrastructure cost at USD 0.30 with credit allocation
+  pending billing lag. Active runtime exposure was USD 4.05784/day. After
+  evidence capture, deleted the exact N4.26 cluster and data disk and terminated
+  the port-forward; active compute exposure is now USD 0/day, with retained
+  artifact/logging storage bounded at an estimated USD 0.01/day upper bound.
+- Hash-bound eleven blocker closures and ten remaining blocker reasons without
+  changing the historical N4.22 snapshot. Search is not the reference pattern,
+  “Advanced live intelligence for agents” remains unauthorized, and Stage 5
+  remains unauthorized.
+- Validation: N4.26 passed 8/8; N4.22 campaign regression passed 5/5;
+  N4.23B/N4.24/N4.25 regressions passed 8/8, 12/12 and 13/13; typecheck,
+  lint across 233 source/contract files, full working-tree/history secret scan,
+  clean-room boundary, JSON/gzip integrity and diff checks passed. Read-only
+  deployment cleanup and retained monitoring/budget queries passed. The Stage
+  4 verifier ran exactly once after final binding and passed integrity with
+  decision `blocked`, 10 current blockers, nine bound artifacts,
+  reference-pattern authorization false, Stage 5 authorization false, zero
+  external verifier calls and 0 USDC. Canonical `npm test` remains reserved for
+  N4.28 and was not run.
+- Exact next ticket: N4.27 only after separate payment authority. Stop after
+  the N4.26 commit; do not begin N4.27, N4.28, Stage 5, AI, or Sandbox.

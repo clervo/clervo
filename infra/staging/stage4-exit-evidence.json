@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "stage": 4,
-  "evaluatedAt": "2026-07-31T15:29:39.000Z",
+  "evaluatedAt": "2026-07-31T17:42:00.000Z",
   "scope": "bounded_repository_and_staging_exit_verification",
   "sourceState": {
     "stagingReleaseStatus": "verified-private-recorded-only",
@@ -13,72 +13,79 @@
     "openApiDeploymentVerified": false,
     "openApiPaymentImplemented": false
   },
+  "sourceBindings": {
+    "n426": {
+      "path": "docs/evidence/n4.26/stage4-binding.v1.json",
+      "schemaVersion": "clervo.n4.26.stage4-binding.v1",
+      "startingBlockerCount": 21
+    }
+  },
   "checks": [
     {
       "id": "federated_lawful_retrieval",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.2 and N4.10 prove two independent recorded adapter boundaries. N4.21 adds one bounded live development-only SearXNG composition, but public Nominatim is not resale-qualified and no live supply is connected to the product or staging."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.26 executed the deployed connected search product through clervo.focused-index.v1 and clervo.live-federation.v1 using approved focused current pages plus qualified Wikimedia/Crossref discovery and bounded direct current-page fetch. Exact provider/adapter/provenance identities are present in the hash-bound raw artifact; provider API charge remained USD 0."
     },
     {
       "id": "query_rewriting",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.12 proves bounded deterministic token-preserving identity and exact-phrase rewrites with hash-bound federation integration locally; no staging execution evidence exists."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.26 raw combined responses bind the accepted normalized query to both token-preserving identity and exact-phrase rewriteQueries consumed by the two staging attempts."
     },
     {
       "id": "parallel_retrieval",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.5 and N4.10 prove bounded parallel recorded-path federation only."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.26 raw combined responses show both independent route attempts share the same bounded startedAt/deadline window and degrade independently; focused-only and live-only removal drills each preserve the other route without substitution."
     },
     {
       "id": "url_normalization_and_near_duplicate_removal",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.1 and N4.4 prove deterministic URL normalization and content deduplication locally."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.26 live staging outputs expose canonicalUrl plus exactDuplicateCount and nearDuplicateCount over the versioned 50-task corpus; the evaluator records duplicate suppression of 1.0000 for every family."
     },
     {
       "id": "freshness_authority_relevance_diversity_ranking",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.1 and N4.6 prove deterministic recorded-evidence scoring and ranking."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.26 staging results expose retrievedAt and the deterministic freshness, authority, relevance, diversity and total-basis-point score components with stable rank over current-page evidence."
     },
     {
       "id": "isolated_javascript_retrieval",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.25 adds an exact-attested one-page Crawl4AI worker boundary, gateway-only network policy, hard resource/output limits, teardown/orphan reaping, kill switch, and dishonest-health rejection locally. The runtime stays unavailable because no pinned image, container/browser runtime, authorization gateway, or staging execution evidence exists."
+      "evidence": "N4.25 adds the exact-attested one-page boundary. N4.26 deployed a digest-pinned browser image, private authorization gateway and gateway-only/default-deny policies, but attempt one was quota-denied and attempt two expired during image pull. No worker started or produced runtime attestation, page, teardown, orphan-reaper or kill-switch execution evidence."
     },
     {
       "id": "retrieval_safety_controls",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.3/N4.13/N4.25 locally prove URL/protocol denial, pre/post-DNS socket pinning, rebinding/private/metadata/IPv6 denial, every-hop redirects, robots and crawl-delay, per-domain concurrency, MIME, compressed/decompressed/output ceilings, deadline/cancellation, and gateway-authorized browser network controls. No deployed security transcript exists."
+      "evidence": "N4.3/N4.13/N4.25 prove the complete controls locally. N4.26 staged static current-page retrieval plus private/metadata egress exclusions, but the browser never started and the complete deployed robots, rebinding, redirect, MIME, decompression, timeout/cancellation and browser containment transcript is absent."
     },
     {
       "id": "prompt_injection_boundaries",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.7/N4.10 prove fixed no-tools/no-actions synthesis, and N4.25 hash-binds exact page text, route and extraction provenance with zero authority over route, tools, payment, system policy, citations or execution. No staging live-content proof exists."
+      "evidence": "N4.7/N4.10/N4.25 prove the immutable no-authority boundary locally. N4.26 included hostile query/corpus cases, but no malicious live page completed the unavailable browser path; staging page-content prompt-injection resistance remains unproven."
     },
     {
       "id": "evidence_tied_citations",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.1, N4.6, N4.7, and N4.10 prove exact offset-bound citation verification locally."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.26 returned exact quote/offset/extraction/source-bound citations in live staging. The evaluator independently recomputed exact quote slices and recorded 0.9091 validity overall, with every non-empty family score at 0.7778 or higher; failures are disclosed rather than accepted."
     },
     {
       "id": "disclosed_cache_freshness",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.14 plus N4.25 locally prove visible freshness and environment-separated filesystem/PostgreSQL durable cache boundaries with normalized-URL/exact-route/policy keys, checksums, poisoning rejection, forced refresh/eviction/removal/denylist invalidation, and disclosed stale-while-degraded. No staging PostgreSQL execution exists."
+      "evidence": "N4.26 used persistent-disk-backed environment-separated storage and proved a route/normalized-URL/policy-bound integrity key with miss, fresh hit and disclosed stale reuse. The probe was not integrated as connected-search read-through, and staging removal/denylist invalidation was not executed."
     },
     {
       "id": "language_and_region_options",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.15 proves strict canonical language and region controls, defaults, request/cache identity binding, recorded federation and assembly propagation, public response disclosure, and fail-closed output substitution locally; no live provider honoring or staging execution evidence exists."
+      "evidence": "N4.15 proves strict locale controls locally and N4.26 propagated language/region through staging requests. The upstream adapters did not prove that every selected source truthfully honored the requested locale rather than merely receiving or echoing it."
     },
     {
       "id": "separate_raw_and_synthesis_prices",
@@ -88,39 +95,39 @@
     },
     {
       "id": "quality_latency_and_cost_benchmarks",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.8 passes a deterministic synthetic recorded corpus; it is not calibrated live or staging evidence."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.26 produced a versioned 50-task/five-family corpus, 182 raw executions, family scorecard, focused/live/simple/combined comparisons, a 44-task SearXNG observation, p50/p95/p99 latency, result-count, quality, failure and bounded operation-cost evidence. The truthful outcome is not yet commercially competitive."
     },
     {
       "id": "two_independent_retrieval_paths",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.21 proves one loopback SearXNG development broker and one independent direct Common Crawl index-to-WARC range read with exact bounds and hashes. Neither path is connected to the Clervo product or staging, and production terms/quality remain unqualified."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.26 deployed and product-connected clervo.focused-index.v1 and clervo.live-federation.v1 with distinct provider, adapter, health, circuit and failure-domain identities. Each route returned useful results while the other was deliberately removed; both-down failed closed."
     },
     {
       "id": "deterministic_schema",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "Strict versioned search schemas and generated OpenAPI pass repository acceptance."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.26 deployed the strict clervo.connected-retrieval.response.v1 machine-readable response; 182 executions were parsed by the evaluator and combined responses passed the existing runtime assertion before serving."
     },
     {
       "id": "citation_verifier",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "Exact citation verification passes repository acceptance and adversarial tests."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.26 accepted exact source-bound citations in staging, independently revalidated quote offsets in the evaluator, and failed the complete combined operation with citation_verifier_unavailable during the controlled verifier-failure drill."
     },
     {
       "id": "ssrf_and_security_suite",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.25 deterministic adversarial tests add private/metadata/IPv6 targets, DNS rebinding, private redirects, decompression and output floods, unsupported MIME, timeout/cancellation, browser crash/state leakage, worker unavailable, orphan cleanup, kill switch, cache poisoning/identity/stale behavior, malicious instructions, and dishonest health. No authenticated staging run exists."
+      "evidence": "N4.25 deterministic adversarial tests cover the full suite. N4.26 deployed default-deny policies and private/metadata exclusions, but no browser worker started, so the complete authenticated staging SSRF/rebinding/redirect/MIME/decompression/cancellation/browser-containment suite remains absent."
     },
     {
       "id": "blockrun_compatible_baseline_improvement",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N4.8 beats the named compatible baseline on a synthetic recorded corpus only."
+      "evidence": "N4.26 compared focused, live, simple-combination, combined and bounded SearXNG observations. Combined recall 0.8333 and precision 0.8144 did not beat the simple combination at 0.8750 and 0.8523; no material named-workflow improvement is proven."
     },
     {
       "id": "deployed_free_sample",
@@ -136,19 +143,19 @@
     },
     {
       "id": "monitoring",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.17 wires bounded fixed-cardinality availability, latency, execution-failure, quota, challenge, and mock-paid completion signals into the loopback search server, produces strict immutable monitoring snapshots and safe alerts, and contains injected exporter failures locally; no collector, dashboard, paging channel, delivered alert, or staging monitoring evidence exists."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "N4.26 emitted queryable bounded staging metrics/events; Cloud Logging observed critical events, the repaired log metric produced two nonzero DELTA points, the enabled alert policy targets mo@clervo.dev, and sendVerificationCode returned HTTP 200. Alerts exclude secrets, payloads, queries, URLs and wallets; Telegram remains unavailable but the required approved primary route is delivered."
     },
     {
       "id": "cost_caps",
       "status": "repository_verified",
       "stagingVerified": false,
-      "evidence": "N3.2 proves process-local atomic cost reservations; no live provider spend cap or staging traffic-stop evidence exists."
+      "evidence": "N4.26 proved quota exhaustion, an unsafe operation-ceiling stop, circuit opening, route removal, both-down behavior and a global kill-switch/restoration. The gate remains open because no half-open probe exists, browser-minute cost is unmeasured, and staging per-route/per-domain concurrency was declared rather than enforced."
     }
   ],
   "decision": "blocked",
   "referencePatternAuthorized": false,
   "stage5Authorized": false,
-  "nextAction": "Execute N4.26 only: run calibrated live staging benchmarks and prove monitoring delivery, infrastructure/provider budgets, cost caps, circuits, and traffic-stop drills while preserving all unresolved staging, supplier, commerce, and Stage 5 gates."
+  "nextAction": "Execute N4.27 only after its separate payment authority is present: preserve the ten remaining Stage 4 blockers, keep all routes non-payable until authorized, and do not begin Stage 5."
 }

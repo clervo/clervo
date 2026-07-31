@@ -9,14 +9,15 @@ function clone(value) {
   return structuredClone(value);
 }
 
-test('N4.22 campaign matrix exactly covers the 21 source-bound staging blockers and stops at the external gate', async () => {
+test('N4.22 historical 21-blocker snapshot is preserved while current remediation stays source-bound', async () => {
   const inputs = await loadStage4CampaignInputs();
   const result = validateStage4Campaign(inputs.matrix, inputs.stageResult, inputs.packageJson, inputs.tsconfig);
-  assert.equal(result.blockerCount, 21);
-  assert.equal(result.nextTicket, 'N4.23');
+  assert.equal(result.startingBlockerCount, 21);
+  assert.equal(result.blockerCount, 10);
+  assert.equal(result.closedCheckIds.length, 11);
+  assert.equal(result.nextTicket, 'N4.27');
   assert.equal(result.nextTicketStatus, 'blocked_external');
-  assert.ok(result.externalReasons.includes('staging_credentials_unavailable'));
-  assert.ok(result.externalReasons.includes('lawful_production_supply_decision_missing'));
+  assert.deepEqual(result.externalReasons, ['payable_route_authorization_unavailable']);
 });
 
 test('missing or substituted blocker identities fail closed', async () => {
@@ -32,7 +33,7 @@ test('missing or substituted blocker identities fail closed', async () => {
   substituted.blockers[0].id = 'invented_local_success';
   assert.throws(
     () => validateStage4Campaign(substituted, inputs.stageResult, inputs.packageJson, inputs.tsconfig),
-    /must match exact Stage 4 order and identity/u,
+    /historical N4\.22 blockers must preserve exact Stage 4 order and identity/u,
   );
 });
 

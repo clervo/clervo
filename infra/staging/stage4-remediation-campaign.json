@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "ticket": "N4.22",
+  "snapshotStatus": "historical_n4.22_preflight_preserved",
   "evaluatedAt": "2026-07-31T15:29:39.000Z",
   "startingCommit": "0060277",
   "typescript": {
@@ -243,6 +244,92 @@
       "Authorize staging facilitator/payee configuration and any separate bounded real-settlement proof needed for deployed_paid_route; the current campaign prohibits wallet/facilitator transactions and USDC spend.",
       "Provide an approved staging alert-delivery channel and its credential environment-variable name if Cloud Logging alone is insufficient for the monitoring gate."
     ]
+  },
+  "currentCampaignState": {
+    "evaluatedAt": "2026-07-31T17:56:00.000Z",
+    "sourceBinding": "docs/evidence/n4.26/stage4-binding.v1.json",
+    "startingBlockerCount": 21,
+    "closedCheckIds": [
+      "federated_lawful_retrieval",
+      "query_rewriting",
+      "parallel_retrieval",
+      "url_normalization_and_near_duplicate_removal",
+      "freshness_authority_relevance_diversity_ranking",
+      "evidence_tied_citations",
+      "quality_latency_and_cost_benchmarks",
+      "two_independent_retrieval_paths",
+      "deterministic_schema",
+      "citation_verifier",
+      "monitoring"
+    ],
+    "blockerCount": 10,
+    "blockerIds": [
+      "isolated_javascript_retrieval",
+      "retrieval_safety_controls",
+      "prompt_injection_boundaries",
+      "disclosed_cache_freshness",
+      "language_and_region_options",
+      "separate_raw_and_synthesis_prices",
+      "ssrf_and_security_suite",
+      "blockrun_compatible_baseline_improvement",
+      "deployed_paid_route",
+      "cost_caps"
+    ],
+    "authenticatedStaging": {
+      "provider": "gcp",
+      "project": "bloxsniper-prod",
+      "zone": "us-central1-a",
+      "authenticatedControlPlaneAccess": true,
+      "resourceBoundary": "new_clervo_n426_prefixed_resources_only",
+      "publicIngress": false,
+      "cluster": "clervo-n426-staging",
+      "clusterState": "deleted_after_evidence_capture",
+      "dataDisk": "clervo-n426-staging-data",
+      "dataDiskState": "deleted_after_evidence_capture",
+      "legacyResourcesReadOrMutated": false
+    },
+    "campaignQueue": [
+      {
+        "ticket": "N4.23A",
+        "status": "complete"
+      },
+      {
+        "ticket": "N4.23B",
+        "status": "complete"
+      },
+      {
+        "ticket": "N4.24",
+        "status": "complete"
+      },
+      {
+        "ticket": "N4.25",
+        "status": "complete"
+      },
+      {
+        "ticket": "N4.26",
+        "status": "complete"
+      },
+      {
+        "ticket": "N4.27",
+        "status": "blocked_external",
+        "reason": "separate_payment_authority_required"
+      },
+      {
+        "ticket": "N4.28",
+        "status": "pending",
+        "dependsOn": ["N4.27"]
+      }
+    ],
+    "externalBlocker": {
+      "status": "blocked_external",
+      "reasons": ["payable_route_authorization_unavailable"],
+      "ownerIntervention": [
+        "Provide separate N4.27 payment authority covering mock or testnet commerce configuration and any expressly permitted facilitator, payee, payer, settlement, receipt and replay proof; N4.26 authorizes none of those actions."
+      ]
+    },
+    "referencePatternAuthorized": false,
+    "stage5Authorized": false,
+    "usdcSpent": 0
   },
   "stage5Started": false,
   "usdcSpent": 0

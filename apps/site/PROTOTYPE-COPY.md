@@ -35,8 +35,8 @@ and repeatable real demonstration pass.
 
 ## Capability framing
 
-- Search — `preview`; repository-local behavior exists but Stage 4 remains
-  blocked on 21 source-bound checks.
+- Search — `preview`; temporary isolated-staging behavior exists but Stage 4
+  remains blocked on 10 of the 21 starting source-bound checks.
 - Clervo Live Intelligence First Revenue Release — not ready; compare,
   customer monitoring, changes, alerts, MCP/SDK access, production deployment,
   public product experience, and external useful paid proof remain unproven.

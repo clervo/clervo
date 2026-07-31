@@ -1,0 +1,1038 @@
+{
+  "schemaVersion": "clervo.n4.26.metrics.v1",
+  "capturedAt": "2026-07-31T17:30:36.438Z",
+  "requestCount": 177,
+  "usefulResultRate": 0.7853107344632768,
+  "latencyMs": {
+    "p50": 24.03518899998744,
+    "p95": 10273.290278,
+    "p99": 10475.335351000002
+  },
+  "cache": {
+    "hit": 0,
+    "stale": 0,
+    "miss": 0
+  },
+  "quota": {
+    "used": 177,
+    "limit": 600
+  },
+  "concurrency": {
+    "perRoute": 1,
+    "perDomain": 2
+  },
+  "costs": {
+    "grossUsd": 0.0060189475865599995,
+    "providerSearchUsd": 0
+  },
+  "operationCostCeilingUsd": 0.002,
+  "trafficStopped": false,
+  "routeDegradation": {
+    "focused": false,
+    "live": false
+  },
+  "citationVerifierAvailable": true,
+  "cacheAvailable": true,
+  "recentEvents": [
+    {
+      "timestamp": "2026-07-31T17:25:00.466Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 53.68960400001379,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000021073792080000276
+    },
+    {
+      "timestamp": "2026-07-31T17:25:00.675Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.11701299998094328,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:00.896Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 52.898929999995744,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000021057978599999915
+    },
+    {
+      "timestamp": "2026-07-31T17:25:01.752Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 645.6750769999926,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000032913501539999854
+    },
+    {
+      "timestamp": "2026-07-31T17:25:01.979Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 7.3722539999871515,
+      "resultCount": 0,
+      "estimatedCostUsd": 0.000020147445079999744
+    },
+    {
+      "timestamp": "2026-07-31T17:25:02.161Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.1519339999940712,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:02.335Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 6.106273000012152,
+      "resultCount": 0,
+      "estimatedCostUsd": 0.000020122125460000246
+    },
+    {
+      "timestamp": "2026-07-31T17:25:02.511Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 5.561339999985648,
+      "resultCount": 0,
+      "estimatedCostUsd": 0.000020111226799999714
+    },
+    {
+      "timestamp": "2026-07-31T17:25:02.697Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 10.866716999997152,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.000020217334339999943
+    },
+    {
+      "timestamp": "2026-07-31T17:25:02.881Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.11060000001452863,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:03.072Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 12.008758999989368,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.000020240175179999788
+    },
+    {
+      "timestamp": "2026-07-31T17:25:03.272Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 19.47517499999958,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.000020389503499999995
+    },
+    {
+      "timestamp": "2026-07-31T17:25:03.470Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 16.73280599998543,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.00002033465611999971
+    },
+    {
+      "timestamp": "2026-07-31T17:25:03.664Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.163790999999037,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:03.849Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 17.66140300000552,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.00002035322806000011
+    },
+    {
+      "timestamp": "2026-07-31T17:25:04.075Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 28.06085000000894,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.000020561217000000182
+    },
+    {
+      "timestamp": "2026-07-31T17:25:04.302Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 24.03518899998744,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00002048070377999975
+    },
+    {
+      "timestamp": "2026-07-31T17:25:04.508Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.12772799999220297,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:04.704Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 25.509373999986565,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020510187479999734
+    },
+    {
+      "timestamp": "2026-07-31T17:25:05.068Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 162.7086850000196,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000023254173700000392
+    },
+    {
+      "timestamp": "2026-07-31T17:25:05.291Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 33.15187000000151,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020663037400000033
+    },
+    {
+      "timestamp": "2026-07-31T17:25:05.503Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.13879799999995157,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:05.714Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 37.31268599999021,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020746253719999807
+    },
+    {
+      "timestamp": "2026-07-31T17:25:06.172Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 257.21751600000425,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00002514435032000009
+    },
+    {
+      "timestamp": "2026-07-31T17:25:06.384Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 6.370881999988342,
+      "resultCount": 0,
+      "estimatedCostUsd": 0.000020127417639999768
+    },
+    {
+      "timestamp": "2026-07-31T17:25:06.555Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.11960900001577102,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:06.729Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 6.6027999999932945,
+      "resultCount": 0,
+      "estimatedCostUsd": 0.000020132055999999867
+    },
+    {
+      "timestamp": "2026-07-31T17:25:06.904Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 7.427964000002248,
+      "resultCount": 0,
+      "estimatedCostUsd": 0.000020148559280000046
+    },
+    {
+      "timestamp": "2026-07-31T17:25:07.087Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 13.923956999991788,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.000020278479139999837
+    },
+    {
+      "timestamp": "2026-07-31T17:25:07.265Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.2044820000010077,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:07.453Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 13.72836800001096,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.00002027456736000022
+    },
+    {
+      "timestamp": "2026-07-31T17:25:07.659Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 23.82287499998347,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.00002047645749999967
+    },
+    {
+      "timestamp": "2026-07-31T17:25:07.852Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 12.766035000007832,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.000020255320700000158
+    },
+    {
+      "timestamp": "2026-07-31T17:25:08.034Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.11356900000828318,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:08.215Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 14.70910800001002,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.0000202941821600002
+    },
+    {
+      "timestamp": "2026-07-31T17:25:08.415Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 21.5701199999894,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.00002043140239999979
+    },
+    {
+      "timestamp": "2026-07-31T17:25:08.655Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 48.16970699999365,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020963394139999876
+    },
+    {
+      "timestamp": "2026-07-31T17:25:08.860Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.1175470000016503,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:09.077Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 51.411083000013605,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000021028221660000273
+    },
+    {
+      "timestamp": "2026-07-31T17:25:09.847Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 561.9335129999963,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00003123867025999993
+    },
+    {
+      "timestamp": "2026-07-31T17:25:10.089Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 6.617167000018526,
+      "resultCount": 0,
+      "estimatedCostUsd": 0.00002013234334000037
+    },
+    {
+      "timestamp": "2026-07-31T17:25:10.258Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.21357999998144805,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:10.441Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 10.071664999995846,
+      "resultCount": 0,
+      "estimatedCostUsd": 0.00002020143329999992
+    },
+    {
+      "timestamp": "2026-07-31T17:25:10.626Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 7.025121999991825,
+      "resultCount": 0,
+      "estimatedCostUsd": 0.000020140502439999837
+    },
+    {
+      "timestamp": "2026-07-31T17:25:10.813Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 17.471913999994285,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.000020349438279999886
+    },
+    {
+      "timestamp": "2026-07-31T17:25:11.002Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.17310600000200793,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:11.186Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 17.577157000021543,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.000020351543140000432
+    },
+    {
+      "timestamp": "2026-07-31T17:25:11.399Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 26.838348000019323,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.00002053676696000039
+    },
+    {
+      "timestamp": "2026-07-31T17:25:11.604Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 14.038344999979017,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020280766899999582
+    },
+    {
+      "timestamp": "2026-07-31T17:25:11.788Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.11704500002088025,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:11.972Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 13.846547000022838,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00002027693094000046
+    },
+    {
+      "timestamp": "2026-07-31T17:25:12.196Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 39.26249500000267,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020785249900000055
+    },
+    {
+      "timestamp": "2026-07-31T17:25:12.477Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 46.35987600000226,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020927197520000045
+    },
+    {
+      "timestamp": "2026-07-31T17:25:12.768Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.13269600001513027,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:12.997Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 54.13472199998796,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00002108269443999976
+    },
+    {
+      "timestamp": "2026-07-31T17:25:13.747Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 555.5428929999762,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00003111085785999953
+    },
+    {
+      "timestamp": "2026-07-31T17:25:13.981Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 47.87082599999849,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00002095741651999997
+    },
+    {
+      "timestamp": "2026-07-31T17:25:14.169Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.11199999999371357,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:14.390Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 48.81683999998495,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.0000209763367999997
+    },
+    {
+      "timestamp": "2026-07-31T17:25:15.128Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 556.9508600000117,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000031139017200000235
+    },
+    {
+      "timestamp": "2026-07-31T17:25:15.369Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 27.793344999983674,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020555866899999674
+    },
+    {
+      "timestamp": "2026-07-31T17:25:15.571Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.11576300000888295,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:15.770Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 28.574370999995153,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020571487419999903
+    },
+    {
+      "timestamp": "2026-07-31T17:25:16.162Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 197.51514699999825,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00002395030293999997
+    },
+    {
+      "timestamp": "2026-07-31T17:25:16.367Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 10.776118000008864,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.00002021552236000018
+    },
+    {
+      "timestamp": "2026-07-31T17:25:16.575Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.251559999975143,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:16.755Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 10.767078000004403,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.00002021534156000009
+    },
+    {
+      "timestamp": "2026-07-31T17:25:16.950Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 14.11899699998321,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.000020282379939999665
+    },
+    {
+      "timestamp": "2026-07-31T17:25:17.159Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 26.668651999993017,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020533373039999862
+    },
+    {
+      "timestamp": "2026-07-31T17:25:17.341Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.19927899999311194,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:17.525Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 14.54470399999991,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00002029089408
+    },
+    {
+      "timestamp": "2026-07-31T17:25:17.749Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 36.09781800000928,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00002072195636000019
+    },
+    {
+      "timestamp": "2026-07-31T17:25:17.998Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 52.78754800002207,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000021055750960000443
+    },
+    {
+      "timestamp": "2026-07-31T17:25:18.216Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.11754900001687929,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:18.445Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 49.72734000001219,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020994546800000246
+    },
+    {
+      "timestamp": "2026-07-31T17:25:19.273Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 623.8938469999994,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00003247787693999999
+    },
+    {
+      "timestamp": "2026-07-31T17:25:19.557Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 15.445796000014525,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00002030891592000029
+    },
+    {
+      "timestamp": "2026-07-31T17:25:19.734Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.22852299999794923,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:19.918Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 16.358620999992127,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020327172419999844
+    },
+    {
+      "timestamp": "2026-07-31T17:25:20.152Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 45.296480999997584,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020905929619999954
+    },
+    {
+      "timestamp": "2026-07-31T17:25:20.357Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 14.250941000005696,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.000020285018820000117
+    },
+    {
+      "timestamp": "2026-07-31T17:25:20.540Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.1598099999828264,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:20.719Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 12.474752000009175,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.000020249495040000185
+    },
+    {
+      "timestamp": "2026-07-31T17:25:20.925Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 27.356374000024516,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.000020547127480000492
+    },
+    {
+      "timestamp": "2026-07-31T17:25:21.126Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 15.93218600002001,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.0000203186437200004
+    },
+    {
+      "timestamp": "2026-07-31T17:25:21.317Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.12020599999232218,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:21.501Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 18.272349999984726,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020365446999999697
+    },
+    {
+      "timestamp": "2026-07-31T17:25:21.734Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 41.62989300000481,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.0000208325978600001
+    },
+    {
+      "timestamp": "2026-07-31T17:25:21.956Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 25.76781300001312,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000020515356260000263
+    },
+    {
+      "timestamp": "2026-07-31T17:25:22.146Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.11799400002928451,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:22.361Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 16.688209999992978,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.00002033376419999986
+    },
+    {
+      "timestamp": "2026-07-31T17:25:22.613Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 61.18713500001468,
+      "resultCount": 3,
+      "estimatedCostUsd": 0.000021223742700000296
+    },
+    {
+      "timestamp": "2026-07-31T17:25:22.821Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 12.848734999948647,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.000020256974699998973
+    },
+    {
+      "timestamp": "2026-07-31T17:25:23.009Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.18595600000116974,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:23.190Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 13.062158000015188,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.000020261243160000305
+    },
+    {
+      "timestamp": "2026-07-31T17:25:23.414Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 40.32673600001726,
+      "resultCount": 2,
+      "estimatedCostUsd": 0.000020806534720000348
+    },
+    {
+      "timestamp": "2026-07-31T17:25:23.612Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "focused",
+      "state": "ready",
+      "durationMs": 14.07485000003362,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.000020281497000000675
+    },
+    {
+      "timestamp": "2026-07-31T17:25:23.793Z",
+      "event": "search_failed",
+      "severity": "ERROR",
+      "routeId": "live",
+      "state": "unavailable",
+      "code": "live_federation_circuit_open",
+      "durationMs": 0.19853400002466515,
+      "estimatedCostUsd": 0
+    },
+    {
+      "timestamp": "2026-07-31T17:25:23.973Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "simple",
+      "state": "ready",
+      "durationMs": 14.219992999976967,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.00002028439985999954
+    },
+    {
+      "timestamp": "2026-07-31T17:25:24.179Z",
+      "event": "search_completed",
+      "severity": "INFO",
+      "routeId": "combined",
+      "state": "degraded",
+      "durationMs": 19.33282299997518,
+      "resultCount": 1,
+      "estimatedCostUsd": 0.000020386656459999506
+    }
+  ]
+}

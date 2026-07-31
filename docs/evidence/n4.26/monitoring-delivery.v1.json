@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "clervo.n4.26.monitoring-delivery.v1",
+  "capturedAt": "2026-07-31T17:41:25.000Z",
+  "destination": {
+    "type": "email",
+    "address": "mo@clervo.dev",
+    "channelResource": "projects/bloxsniper-prod/notificationChannels/2840148240575273198",
+    "displayName": "clervo-n426-owner-email",
+    "enabled": true,
+    "verificationCodeDeliveryRequestHttpStatus": 200
+  },
+  "secondChannel": {
+    "type": "telegram",
+    "qualifiedSecretOrConfigurationFound": false,
+    "status": "remaining_blocker_no_qualified_second_channel"
+  },
+  "metric": {
+    "name": "logging.googleapis.com/user/clervo_n426_critical_events",
+    "kind": "DELTA",
+    "valueType": "INT64",
+    "sourceBindingRepair": "severity is promoted to the Cloud Logging envelope; metric repaired from jsonPayload.severity to severity=ERROR without changing the threshold",
+    "observedPoints": [
+      {"startTime": "2026-07-31T17:38:41.000Z", "endTime": "2026-07-31T17:39:41.000Z", "value": 1},
+      {"startTime": "2026-07-31T17:39:41.000Z", "endTime": "2026-07-31T17:40:41.000Z", "value": 1}
+    ]
+  },
+  "alertPolicy": {
+    "resource": "projects/bloxsniper-prod/alertPolicies/11148079881653748993",
+    "displayName": "clervo-n426-critical-events-email",
+    "enabled": true,
+    "condition": "critical event count above zero",
+    "notificationChannelBound": true,
+    "mailboxReceiptObservableByCodex": false
+  },
+  "triggerEvidence": [
+    {"requiredTrigger": "all_retrieval_routes_unavailable", "event": "search_failed", "code": "connected_retrieval_both_routes_unavailable", "observed": true},
+    {"requiredTrigger": "browser_worker_unavailable", "event": "kubernetes_job_failed", "code": "DeadlineExceeded", "observed": true, "alertMetricIntegrated": false},
+    {"requiredTrigger": "elevated_failure_rate", "event": "search_failed", "observedCount": 43, "observed": true},
+    {"requiredTrigger": "citation_verification_failure", "event": "search_failed", "code": "citation_verifier_unavailable", "observed": true},
+    {"requiredTrigger": "cost_threshold_breach", "event": "search_failed", "code": "operation_cost_not_bounded", "observed": true},
+    {"requiredTrigger": "quota_exhaustion", "event": "control_quota_exhaust", "observed": true},
+    {"requiredTrigger": "circuit_opened", "event": "search_failed", "code": "live_federation_circuit_open", "observed": true},
+    {"requiredTrigger": "traffic_kill_switch_activated", "event": "control_traffic_stop", "observed": true}
+  ],
+  "payloadSafety": {
+    "secrets": false,
+    "customerPayloads": false,
+    "queries": false,
+    "urls": false,
+    "wallets": false
+  },
+  "conclusion": "primary_email_delivery_path_accepted_secondary_channel_open"
+}

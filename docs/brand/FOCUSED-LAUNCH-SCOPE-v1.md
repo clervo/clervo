@@ -28,6 +28,9 @@ Until comparative proof passes, public copy says **Clervo-owned live Web
 retrieval**. Afterwards, **Advanced live intelligence for agents** is allowed.
 All specific superiority claims require exact published evidence.
 
+N4.26 classified the current product **not yet commercially competitive**, so
+the comparative gate remains open and the advanced claim remains unauthorized.
+
 ## Motion narrative
 
 The red request beam enters; Live Intelligence qualifies sources, retrieves

@@ -139,8 +139,8 @@ without evidence sufficient for that exact claim. Fake users, customers,
 revenue, accuracy, transactions, wallets, logos, testimonials, screenshots,
 metrics, dashboards, or results are prohibited.
 
-N4.26 is the benchmark authority for the actual Clervo Live Intelligence
-launch product, not isolated search components. It must cover representative
+N4.26 is the completed first benchmark authority for the actual Clervo Live
+Intelligence launch product, not isolated search components. It covers representative
 tasks across:
 
 - commerce and marketplaces;
@@ -156,7 +156,10 @@ degradation, infrastructure cost, and bounded worst-case cost. Comparison
 groups include selected free/open-source component baselines and permitted
 paid benchmarks. Paid providers may be bounded comparison subjects but cannot
 be production dependencies. Missing launch-product capabilities remain failed
-or not-yet-proven gates; the benchmark must not relabel them as complete.
+or not-yet-proven gates; the benchmark does not relabel them as complete. Its
+classification is **not yet commercially competitive**. Therefore the
+strongest current positioning remains **“Clervo-owned live Web retrieval”**
+and “Advanced live intelligence for agents” is not authorized.
 
 ## 7. Onboarding and payment experience
 
@@ -312,21 +315,27 @@ priced. Core production search routes retain USD 0 mandatory third-party
 general-Web search-provider API cost. Paid services may be benchmarked only
 under separate permission and cannot become hidden production dependencies.
 
-This authority does not authorize cloud/IAM/deployment mutation, credentials,
-provider calls, payment, USDC spend, AI, Sandbox, later-pillar implementation,
-legacy mutation, runtime search changes, N4.26 implementation, or the canonical
-`npm test`.
+This authority does not itself authorize new cloud/IAM/deployment mutation,
+credentials, provider calls, N4.27 payment work, USDC spend, AI, Sandbox,
+later-pillar implementation, legacy mutation, runtime search changes, or the
+canonical `npm test`.
 
 ## 14. Current transition and exact next ticket
 
-N4.25 remains complete at commit `8f6535c`. Stage 4 remains blocked on exactly
-21 source-bound staging checks before and after NPLAN.2. No staging evidence,
-reference-pattern authorization, payment readiness, deployment truth, or
-capability lifecycle is promoted by this documentation decision.
+N4.26 is complete as temporary isolated-staging proof. It produced a 50-task,
+five-family corpus and 182 executions, delivered the primary owner-email
+monitoring path, disclosed gross/post-credit economics, and exercised bounded
+route, circuit, quota, cache, unsafe-cost and global traffic stops. Eleven of
+the 21 starting Stage 4 blockers now have hash-bound staging evidence; ten
+remain. The temporary cluster and data disk were deleted after capture.
 
-The exact next engineering ticket is **N4.26**: benchmark the actual Clervo
-Live Intelligence launch-product workflows across the five representative task
-families and prove monitoring delivery, infrastructure/provider budgets, hard
-cost caps, circuits, and traffic-stop drills. N4.26 must preserve missing
-product gates honestly and cannot implement N4.27, N4.28, Stage 5, AI, or
-Sandbox.
+Browser runtime attestation, complete staging retrieval/security and hostile-
+page proof, connected cache behavior, upstream locale honoring, compatible
+baseline improvement, complete cost controls, and payable commerce remain
+open. Search is not the reference pattern; Stage 5 is unauthorized; lifecycle
+truth is unchanged.
+
+The exact next engineering ticket is **N4.27**, but it may begin only after a
+separate payment authority defines its permitted mock/testnet facilitator,
+payee/payer, receipt and replay scope. N4.26 authorizes no N4.27 work, payable
+route, settlement, USDC spend, N4.28, Stage 5, AI, or Sandbox.

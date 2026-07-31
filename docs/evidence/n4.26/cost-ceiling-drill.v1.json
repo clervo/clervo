@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "clervo.n4.26.cost-ceiling-drill.v1",
+  "generatedAt": "2026-07-31T17:36:25.708Z",
+  "configuredUnsafeCeilingUsd": 0.003,
+  "authorizedHardCeilingUsd": 0.002,
+  "httpStatus": 503,
+  "code": "operation_cost_not_bounded",
+  "lifecycle": "unavailable",
+  "resultAccepted": false,
+  "providerChargeUsd": 0,
+  "usdcSpent": 0,
+  "passed": true
+}

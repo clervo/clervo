@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -33,6 +34,52 @@ export const REQUIRED_STAGE4_CHECK_IDS = Object.freeze([
 ]);
 
 const STATUSES = new Set(['repository_verified', 'staging_verified', 'missing', 'contradicted']);
+
+function sha256(bytes) {
+  return `sha256:${createHash('sha256').update(bytes).digest('hex')}`;
+}
+
+export async function validateStage4SourceBindings(root, evidence) {
+  const source = evidence.sourceBindings?.n426;
+  assert.ok(source, 'N4.26 source binding is required');
+  assert.equal(source.path, 'docs/evidence/n4.26/stage4-binding.v1.json', 'N4.26 binding path drift');
+  assert.equal(source.schemaVersion, 'clervo.n4.26.stage4-binding.v1', 'N4.26 binding schema drift');
+  assert.equal(source.startingBlockerCount, 21, 'N4.26 must preserve the 21-blocker starting state');
+
+  const binding = JSON.parse(await readFile(path.join(root, source.path), 'utf8'));
+  assert.equal(binding.schemaVersion, source.schemaVersion, 'N4.26 bound document schema mismatch');
+  assert.equal(binding.startingBlockerCount, source.startingBlockerCount, 'N4.26 starting blocker mismatch');
+  assert.equal(binding.stage5Authorized, false, 'N4.26 cannot authorize Stage 5');
+  assert.equal(binding.advancedLiveIntelligenceAuthorized, false, 'N4.26 cannot authorize the advanced claim without proof');
+  assert.equal(binding.usdcSpent, 0, 'N4.26 must not spend USDC');
+
+  const closed = binding.closedCheckIds;
+  const remaining = binding.remainingBlockers.map((value) => value.id);
+  assert.equal(new Set(closed).size, closed.length, 'N4.26 closed check IDs must be unique');
+  assert.equal(new Set(remaining).size, remaining.length, 'N4.26 remaining blocker IDs must be unique');
+  assert.equal(closed.length + remaining.length, source.startingBlockerCount, 'N4.26 must account for all 21 starting blockers');
+  assert.deepEqual(
+    closed,
+    evidence.checks.filter((check) => check.stagingVerified && check.id !== 'deployed_free_sample').map((check) => check.id),
+    'N4.26 closed IDs must exactly equal newly staging-verified checks',
+  );
+  assert.ok(binding.remainingBlockers.every((value) => typeof value.reason === 'string' && value.reason.length >= 80), 'every N4.26 blocker needs an explicit reason');
+  assert.deepEqual(
+    remaining,
+    evidence.checks.filter((check) => !check.stagingVerified).map((check) => check.id),
+    'N4.26 remaining blockers must match the Stage 4 manifest',
+  );
+  assert.equal(binding.claimDecision, 'not_yet_commercially_competitive', 'N4.26 claim decision drift');
+
+  for (const [name, artifact] of Object.entries(binding.artifactBindings)) {
+    assert.match(artifact.path, /^docs\/evidence\/n4\.26\/[a-z0-9.-]+$/u, `${name}: artifact must stay in N4.26 evidence`);
+    assert.match(artifact.sha256, /^sha256:[a-f0-9]{64}$/u, `${name}: invalid artifact digest`);
+    const bytes = await readFile(path.join(root, artifact.path));
+    assert.equal(sha256(bytes), artifact.sha256, `${name}: bound artifact digest mismatch`);
+  }
+
+  return Object.freeze({ binding, artifactCount: Object.keys(binding.artifactBindings).length });
+}
 
 export function evaluateStage4Exit(evidence, actualSourceState) {
   assert.equal(evidence.schemaVersion, 1, 'stage4 evidence schema version drift');
@@ -76,6 +123,7 @@ export async function loadStage4ExitInputs(root = repositoryRoot) {
     readJson('generated/public/.well-known/clervo.json'),
     readJson('generated/public/openapi.json'),
   ]);
+  const sourceBinding = await validateStage4SourceBindings(root, evidence);
   const products = discovery.products.filter((value) => value.productId === 'search.web' || value.productId === 'search.answer');
   assert.equal(products.length, 2, 'search.web and search.answer discovery products are required');
   return {
@@ -90,17 +138,19 @@ export async function loadStage4ExitInputs(root = repositoryRoot) {
       openApiDeploymentVerified: openapi['x-clervo-status'].deploymentVerified,
       openApiPaymentImplemented: openapi['x-clervo-status'].paymentImplemented,
     },
+    sourceBinding,
   };
 }
 
 async function main() {
-  const { evidence, actualSourceState } = await loadStage4ExitInputs();
+  const { evidence, actualSourceState, sourceBinding } = await loadStage4ExitInputs();
   const result = evaluateStage4Exit(evidence, actualSourceState);
   console.log('stage4 exit verification: PASS');
   console.log(`decision: ${result.decision}`);
   console.log(`blocking checks: ${result.blockingCheckIds.length}`);
   console.log(`reference pattern authorized: ${evidence.referencePatternAuthorized}`);
   console.log(`Stage 5 authorized: ${evidence.stage5Authorized}`);
+  console.log(`N4.26 bound artifacts: ${sourceBinding.artifactCount}`);
   console.log('network calls made: 0 external');
   console.log('USDC spent: 0');
 }

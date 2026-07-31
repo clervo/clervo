@@ -1,0 +1,36 @@
+{
+  "displayName": "clervo-n426-critical-events-email",
+  "documentation": {
+    "content": "N4.26 isolated staging emitted a bounded operational failure or traffic-stop event. Payloads, queries, URLs, secrets, wallets and customer data are intentionally excluded. Inspect only the clervo-n426 namespace and restore traffic only after a controlled probe.",
+    "mimeType": "text/markdown"
+  },
+  "combiner": "OR",
+  "enabled": true,
+  "notificationChannels": [
+    "projects/bloxsniper-prod/notificationChannels/2840148240575273198"
+  ],
+  "alertStrategy": {"autoClose": "1800s"},
+  "conditions": [
+    {
+      "displayName": "clervo-n426 critical event count above zero",
+      "conditionThreshold": {
+        "filter": "resource.type = \"k8s_container\" AND metric.type = \"logging.googleapis.com/user/clervo_n426_critical_events\"",
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 0,
+        "duration": "0s",
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "perSeriesAligner": "ALIGN_DELTA",
+            "crossSeriesReducer": "REDUCE_SUM"
+          }
+        ]
+      }
+    }
+  ],
+  "userLabels": {
+    "product": "clervo",
+    "ticket": "n4-26",
+    "environment": "staging"
+  }
+}
