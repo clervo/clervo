@@ -18,6 +18,7 @@ const contractTests = [
   'tests/contract/n4.14.test.mjs', 'tests/contract/n4.15.test.mjs', 'tests/contract/n4.16.test.mjs', 'tests/contract/n4.17.test.mjs',
   'tests/contract/n4.18.test.mjs', 'tests/contract/n4.19.test.mjs', 'tests/contract/n4.20.test.mjs', 'tests/contract/n4.21.test.mjs', 'tests/contract/n4.22.test.mjs',
   'tests/contract/n4.23a.test.mjs',
+  'tests/contract/n4.23b.test.mjs',
   'tests/contract/nplan.1.test.mjs',
 ];
 

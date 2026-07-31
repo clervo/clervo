@@ -412,3 +412,13 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Validation: N4.23A passed 7/7; contracts passed 38 schemas/71 fixtures; discovery passed 6/6 and generated 38 schemas; lint passed 196 files; TypeScript, clean-room boundary, secret scan, and the Stage 4 verifier passed. Canonical `npm test` did not run and remains reserved for N4.28.
 - Network/cost/deployment: the benchmark and validation used loopback only with zero external calls, USD 0.000000 third-party search-provider cost, no cloud/IAM/deployment mutation, no wallet/facilitator/payment action, and 0 USDC. No credential environment variable or value was used.
 - N4.23A is complete. The exact next ticket is N4.23B, but it was not started because `AGENTS.md` requires stopping after one committed ticket. N4.24, Stage 5, and every later stage remain unstarted.
+
+## 2026-07-31 — N4.23B focused owned-index route
+
+- Implemented only `clervo.focused-index.v1`: approved-domain and exact explicit-seed frontier, bounded sitemap/RSS/Atom discovery, fail-closed policy/denylist admission, and the existing Clervo URL/DNS/robots/redirect/MIME/byte/deadline boundary before extraction.
+- Added the Scrapling `0.4.12` extraction-only worker and the persisted Meilisearch `1.51.0` community adapter. Analytics is disabled, a master key is required, and exact provider, adapter, health, failure-domain, and worker identities reject substitution or dishonest health.
+- Added versioned focused-index documents and provenance, canonical URLs, SHA-256 fingerprints, exact/near-duplicate suppression, stale/expired filtering, deterministic Clervo ranking, deletion, recrawl, rebuild, pause/resume frontier snapshots, corruption checksums, and hard quota/concurrency/delay ceilings.
+- Focused `npm run test:n4.23b` passed 8/8; contracts passed 39 schemas/73 fixtures; discovery generated 39 schemas. The temporary pinned Scrapling environment passed a bounded in-memory worker smoke with zero network calls.
+- No staging evidence or `stagingVerified` value changed. Stage 4 remains blocked on 21 checks; search is not the reference pattern and Stage 5 is unauthorized.
+- Third-party search-provider API cost was USD 0.000000; no credentials, provider account, cloud/IAM/deployment mutation, payment, wallet/facilitator action, or USDC spend occurred.
+- Exact next ticket: N4.24 — implement the independent live-federation path. Stop here; do not begin N4.25 or any later stage.

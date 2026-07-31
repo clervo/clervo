@@ -1,48 +1,41 @@
 # Active ticket state
 
-**Ticket:** N4.23A — Zero-provider-cost supply amendment and bounded tool benchmark
+**Ticket:** N4.23B — Focused owned-index route
 **Stage:** 4 — Search vertical slice remediation
-**One question:** Which smallest Clervo-controlled crawler, JavaScript fallback, and open-core index configuration can replace every required paid general-Web search API dependency without weakening Stage 4?
-**Result:** complete; atomic commit pending
+**One question:** Can Clervo implement a bounded, lawful, persisted focused index behind the selected Scrapling 0.4.12 and Meilisearch 1.51.0 identities without weakening the existing retrieval boundary?
+**Result:** complete; repository-verified only
 
 ## Authoritative inputs
 
 - `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md`
-- `AGENTS.md`, `.codex-autonomy-policy.md`, and the owner-authorized zero-provider-cost campaign
-- N4.22 blocker matrix, N4.23 owner-action package, and completed N4.19–N4.21 evidence
-- Clean starting commit `9c792ec`; preserved untracked N4.23A benchmark work after container recreation
+- `AGENTS.md`, `.codex-autonomy-policy.md`, and the N4.22 source-bound Stage 4 campaign
+- N4.23A selection evidence and the existing retrieval/fetch/extraction contracts
 
-## Decision
+## Decision and implementation
 
-- Provider API cost for both required search paths is exactly zero; paid/eventually-paid hosted search APIs are prohibited core dependencies.
-- Select Scrapling `0.4.12` as the default non-stealth HTTP/frontier worker.
-- Select Crawl4AI `0.9.2` with Playwright `1.61.0` only as an internal JavaScript fallback, provisional until N4.25 isolation.
-- Select Meilisearch `1.51.0` community features as the first persisted index; Clervo owns ranking.
-- Preserve exact future route identities `clervo.focused-index.v1` and `clervo.live-federation.v1` with independent discovery, index, health, and failure-domain state.
-- Public Nominatim is excluded; Common Crawl metadata is discovery-only and archived bodies stay development-only/out of paid results.
+- Implemented route identity `clervo.focused-index.v1` with independent persisted-index, health, and failure-domain identities.
+- Admission requires an approved domain or exact explicit seed, an approved content-use policy, and a non-denylisted domain; unresolved policy fails closed.
+- Sitemap XML and RSS/Atom discovery are bounded and deterministic. Existing Clervo URL/DNS/robots/redirect/MIME/byte/deadline controls remain the fetch boundary.
+- Scrapling `0.4.12` is an extraction-only worker with no network, impersonation, stealth, proxy, CAPTCHA, or browser surface.
+- Meilisearch `1.51.0` is a persisted community-feature adapter with analytics disabled, required master key, exact version/provider/health/failure identity, and honest unavailable status.
+- Clervo owns canonicalization, content fingerprints, exact/near-duplicate suppression, freshness, deterministic ranking, deletion, expiry filtering, recrawl, rebuild, and provenance.
 
 ## Evidence and validation
 
-- Bounded benchmark passed over static/JS commerce, real estate, docs, news, sitemap, RSS, redirect, robots denial, oversize, unsupported MIME, and private/metadata targets.
-- Loopback-only benchmark: six Scrapling markers, one Crawl4AI rendered marker with destroyed state, four Meilisearch documents with the required top hit, and strict Clervo boundary failures.
-- Focused N4.23A tests: 7/7 passed.
-- Contract validation: 38 schemas / 71 fixtures passed.
-- External benchmark calls: 0; credentials/secrets: none; cloud/deployment/payment mutation: none; USDC: 0.
-- Stage 4 remains blocked on 21 source-bound checks; no `stagingVerified` field changed.
+- Focused N4.23B tests cover explicit seeds, sitemap/feed discovery, robots denial, denylist/removal, duplicate and near-duplicate suppression, stale/expired records, pause/resume, quota/concurrency, private targets, redirect/MIME/byte rejection, index/worker unavailable, corrupted frontier state, provider identity substitution, dishonest health, and deterministic replay/ranking.
+- The pinned Scrapling worker was smoke-tested against a bounded in-memory HTML fixture using a temporary Scrapling `0.4.12` environment; it made no network request.
+- Stage 4 remains blocked on 21 source-bound checks; no `stagingVerified` field, reference-pattern authorization, or Stage 5 authorization changed.
 
-## Files changed
+## Cost, network, and credentials
 
-- N4.23A contract, schema, fixtures, focused tests, package/acceptance wiring, bounded benchmark harness/corpus, and machine-readable evidence.
-- N4.23A ticket/evidence, historical N4.23 owner-package amendment, README, active state, append-only journal, generated discovery, and writable external master-plan handoff.
+- Third-party search-provider API cost: USD 0.000000.
+- Focused fixtures use loopback/injected transport only; no external provider or cloud call was made.
+- Credentials/secrets: none inspected, used, or printed. No wallet, facilitator, payment, deployment, IAM, billing, or USDC action occurred; USDC spent: 0.
 
 ## Exact next action
 
-- N4.23B only: implement the bounded focused owned-index route using the selected pins and safety boundary, then commit and stop. Do not begin N4.24 or a later stage.
-
-## Out of scope / parking lot
-
-- Live federation/product pipeline (N4.24), production browser/cache/security (N4.25), live quality/monitoring/cost caps (N4.26), staging commerce (N4.27), final exit (N4.28), AI/Sandbox/expansion implementation, real USDC, production deployment, IAM/billing change, and any secret/legacy dependency.
+- N4.24 only after this commit and explicit continuation: implement the independent live-federation path. Do not begin N4.25, N4.26, N4.27, N4.28, Stage 5, or any expansion stage in this run.
 
 ## Stop condition
 
-- Commit N4.23A as one atomic ticket and stop per `AGENTS.md`. N4.23B is not started in this ticket.
+- Commit N4.23B as one atomic commit and stop. Stage 4 remains blocked and local proof must not be promoted to staging evidence.

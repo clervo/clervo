@@ -1,0 +1,28 @@
+{
+  "schema": "focused-index-document",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "schemaVersion": "clervo.focused-index.document.v1",
+    "routeId": "clervo.focused-index.v1",
+    "documentId": "fid_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "providerId": "provider_substituted_index",
+    "title": "Focused source",
+    "content": "Deterministic extracted focused-index content.",
+    "contentFingerprint": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "fetchedAt": "2026-07-31T12:00:00.000Z",
+    "staleAt": "2026-08-01T12:00:00.000Z",
+    "expiresAt": "2026-08-07T12:00:00.000Z",
+    "recrawlAt": "2026-08-01T12:00:00.000Z",
+    "provenance": {
+      "sourceUrl": "https://docs.example/source",
+      "canonicalUrl": "https://docs.example/source",
+      "domain": "docs.example",
+      "fetchedAt": "2026-07-31T12:00:00.000Z",
+      "contentHash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "mime": "text/html",
+      "language": "en",
+      "freshnessState": "fresh"
+    }
+  }
+}

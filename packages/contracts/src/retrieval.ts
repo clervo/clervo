@@ -213,7 +213,7 @@ export function evaluateRetrievalTarget(input: RetrievalTargetInput): Readonly<R
   if (!Number.isSafeInteger(input.contentLengthBytes) || input.contentLengthBytes < 0) throw new Error('invalid_retrieval_content_length');
   if (input.contentLengthBytes > input.maximumBytes) failures.push('response_too_large');
   const mime = input.contentType.split(';', 1)[0]?.trim().toLowerCase();
-  if (mime === undefined || !['text/html', 'text/plain', 'application/xhtml+xml', 'application/json', 'application/pdf'].includes(mime)) failures.push('content_type_not_allowed');
+  if (mime === undefined || !['text/html', 'text/plain', 'application/xhtml+xml', 'application/json', 'application/pdf', 'application/xml', 'text/xml', 'application/rss+xml', 'application/atom+xml'].includes(mime)) failures.push('content_type_not_allowed');
   const finalUrl = input.hops.at(-1)?.url;
   return Object.freeze({
     allowed: failures.length === 0,

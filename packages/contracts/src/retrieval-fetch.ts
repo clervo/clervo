@@ -11,7 +11,7 @@ import {
 } from './retrieval.js';
 
 const redirectStatuses = new Set([301, 302, 303, 307, 308]);
-const allowedContentTypes = new Set(['text/html', 'text/plain', 'application/xhtml+xml', 'application/json', 'application/pdf']);
+const allowedContentTypes = new Set(['text/html', 'text/plain', 'application/xhtml+xml', 'application/json', 'application/pdf', 'application/xml', 'text/xml', 'application/rss+xml', 'application/atom+xml']);
 const maximumRedirects = 5;
 const maximumRobotsBytes = 256 * 1024;
 const maximumResponseBytes = 16 * 1024 * 1024;
