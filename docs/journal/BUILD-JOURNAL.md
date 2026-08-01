@@ -806,3 +806,88 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   intentionally not performed here. Proposed N4.27T remains the smallest next
   product ticket but remains unauthorized. Commit this evidence, report, and
   stop.
+
+## 2026-08-01 — Autonomous Codex engineering and creative studio
+
+- Classified the work as exact owner-authorized repository-control-plane and
+  cloud-devbox maintenance. It did not authorize or begin proposed N4.27T,
+  N4.28, mock x402, Stage 5, AI, Sandbox, production, provider integration,
+  deployment, IAM, billing, wallet, payment, or USDC work.
+- Implemented five installed, version-controlled Codex profiles: repository-
+  sandboxed `engineering` and `design`, guarded host-capable
+  `studio-maintenance`, isolated loopback `browser-debug`, and deterministic
+  containerized `visual-qa`. All use approval policy `never`; the everyday
+  profile denies shell network and writes outside `/workspace/clervo-next`.
+  Final prompt-render startups loaded the intended permissions in 958.628 to
+  1736.062 ms. Every installed profile was byte-identical to its template.
+- Added reviewed global forbidden-command rules and a PreToolUse guard for
+  host-capable profiles. Final health proof passed safe-command allowance and
+  denials for destructive Git, global Docker deletion, legacy access,
+  environment enumeration, external browser navigation, Figma writes, cloud
+  IAM, cluster/infrastructure mutation and wallet/payment actions. Common
+  credential variables are filtered and no credential value was recorded.
+- Retained OpenAI Developer Docs, remote Context7 and browser-debug-only Chrome
+  DevTools MCP. Final discovery found 5, 2 and 29 tools in 638.435, 295.443 and
+  353.536 ms respectively; complete schemas were retained. An intentionally
+  absent MCP failed independently with `ENOENT`. Figma is prepared disabled
+  pending owner OAuth/file authority. Playwright MCP and the defective local
+  Context7 stdio server were removed/not retained.
+- Added and validated the authority-specific `clervo-cloud-cleanup`,
+  `clervo-benchmark-freeze`, `clervo-x402-proof`, `clervo-release-handoff` and
+  compact `clervo-design-studio` skills alongside the existing
+  `clervo-engineering-stage` skill. Codex prompt rendering discovered all six,
+  including an explicit skill-routing probe.
+- Installed pinned studio packages from a lockfile without lifecycle scripts:
+  Playwright 1.62.1, axe Playwright 4.12.1, Lighthouse 13.4.1, Chrome DevTools
+  MCP 1.6.0, MCP SDK 1.30.0 and SVGO 4.0.2. Both repository and studio npm
+  audits reported zero vulnerabilities. Retained the official Playwright image
+  at immutable digest `sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e`.
+- Proved browser separation with distinct disposable container IDs, loopback-
+  only DevTools, visual-QA network mode `none`, no shared mounts and complete
+  teardown. Chromium, Firefox and WebKit each passed desktop/mobile stable
+  screenshots, axe, keyboard, layout-shift and reduced-motion checks. Forced
+  colors, a 100 ms route delay and 4x CPU throttle passed. The repository-only
+  fixture scored Lighthouse performance/accessibility 1.00/1.00, CLS 0 and
+  LCP 750.802 ms; it is not deployed-product or customer evidence.
+- Native `rg` located the four representative references in median 4.184 ms;
+  TypeScript semantic lookup returned the same references in 64.422 ms, so
+  Serena was rejected. Deterministic summaries reduced Codex feature output
+  75.80% and repository inventory output 87.53% while retaining full raw logs;
+  RTK and Caveman were rejected as automatic evidence filters.
+- Added the studio ADR, cloud-devbox runbook, architecture/profile guide, MCP,
+  skill, CLI, candidate, security, authentication, recovery, upgrade,
+  rejected/deferred and machine-readable inventories, health/benchmark scripts,
+  clean-VM restoration and snapshot-readiness evidence. No billable snapshot
+  was created. Frontend/media frameworks remain deferred to exact future
+  product tickets; no product dependency was added.
+- Preserved every material failed/degraded attempt: Context7 stdio behavior,
+  two visual-QA failures, health metadata and timing observations, navigation
+  and compression fixture failures, the launcher strict-debug failure,
+  ShellCheck and sandboxed audit failures, an incomplete startup benchmark,
+  and the clean-room fixture failure. Repairs were rerun without modifying any
+  sealed/frozen/final/once-only product corpus or verifier.
+- Final verification passed: studio health; five TOML parses and installed-copy
+  comparisons; six current skill validations; Node syntax; ShellCheck; JSON
+  parsing; MCP discovery/failure isolation; browser isolation; cross-browser
+  visual QA; dependency audits; typecheck; lint across 256 source/contract
+  files; product-scope consistency; clean-room boundary with zero legacy
+  dependencies/network calls/USDC; secret scan across worktree and history with
+  zero values printed; and diff integrity. Canonical product tests and the Stage
+  4 verifier did not run.
+- External effects were limited to official documentation/source research,
+  npm registry metadata/package download/audit, the official Microsoft browser
+  image pull, and read-only OpenAI Developer Docs/Context7 discovery. There was
+  no product-provider call, cloud resource, deployment, IAM/billing change,
+  secret change, wallet/payment action, or production effect. Direct material
+  cost was USD 0.000000 and USDC spent was 0. Task containers and temporary
+  scaffolds were removed; the pinned browser image and installed profile/tool
+  cache remain for recovery. Unrelated projects and the legacy environment were
+  untouched.
+- Implementation commit:
+  `59e91567f58c665f695cb4522a14f73e9733ec0a` (`chore(codex): build
+  autonomous studio`).
+- Exact next action before returning to the roadmap: start the next authorized
+  session with `bash scripts/codex-studio/launch.sh engineering`, re-read the
+  current handoff, and obtain explicit owner authorization for N4.27T if that is
+  still the desired next product ticket. N4.27T remains proposed and
+  unauthorized; stop without beginning it, N4.28 or Stage 5.
