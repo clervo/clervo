@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clervo Engineering Stage"
+  short_description: "Preflight Clervo authority before engineering"
+  default_prompt: "Use $clervo-engineering-stage to classify authority and execute only the exact authorized Clervo task."

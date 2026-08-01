@@ -1,0 +1,12 @@
+# Safe Clervo engineering defaults. Launch from /workspace/clervo-next so the
+# primary workspace and the only configured writable root are the repository.
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+web_search = "cached"
+model_reasoning_effort = "high"
+
+[sandbox_workspace_write]
+writable_roots = ["/workspace/clervo-next"]
+network_access = false
+exclude_tmpdir_env_var = true
+exclude_slash_tmp = true
