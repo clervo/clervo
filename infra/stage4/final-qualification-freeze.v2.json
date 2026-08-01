@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "clervo.stage4.final-qualification-freeze.v2",
+  "frozenAt": "2026-08-01T21:23:00Z",
+  "candidateCommit": "ff491e6f85e82d6767afa4db34064132d7e80478",
+  "supersedesPreExecutionFreeze": {
+    "path": "infra/stage4/final-qualification-freeze.v1.json",
+    "sha256": "sha256:96022de1c8faf636c2fb03db4cf6713aad61c92c37c24c5e0b84743bd4d22d71",
+    "workloadExecutionCount": 0,
+    "preservedFailure": "docs/evidence/stage4/final-cloud-preflight-failure.v1.json"
+  },
+  "executionCountAtFreeze": 0,
+  "maximumExecutionCount": 1,
+  "runner": {
+    "path": "infra/stage4/run-final-qualification.v2.sh",
+    "sha256": "sha256:831e7cb306329c0691cec785ce5ce110c0ba34cb2e40c3b6aa07bea4d08ff7c8"
+  },
+  "portableImageArchives": {
+    "browser": {
+      "sha256": "sha256:1e48ec0d102ee76c5a51b6175976a7c1acf74e1a12d0291d69b779f0d11c2377",
+      "bytes": 342952479,
+      "frozenLocalImageId": "sha256:552de4dc382af6e73acd746cdb76cc17771e7cd7eb10532df25dc7f5b7e27fa0"
+    },
+    "commerce": {
+      "sha256": "sha256:13c6659a1c82642980524e2efa461e265ca353f024e68b16bac7a9513f6ce78d",
+      "bytes": 79997120,
+      "frozenLocalImageId": "sha256:d4ed7e42f56509dcefa69dd2c4539996574cc1a0677fbf5e9ea27648d0309400"
+    }
+  },
+  "unchangedAcceptance": {
+    "browserJavascriptRunsRequired": 20,
+    "browserHostileRunsRequired": 8,
+    "allBrowserRunsMustPass": true,
+    "privateMockRawAndSynthesisCommerceMustPass": true,
+    "replayMustNotExecuteTwice": true,
+    "finalContainerOrphansRequired": 0,
+    "realPayment": false,
+    "usdcMaximum": 0
+  },
+  "failurePolicy": {
+    "failClosed": true,
+    "preserveFailure": true,
+    "rerunForbiddenAfterWorkloadStart": true,
+    "postResultTuningForbidden": true
+  }
+}
