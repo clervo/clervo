@@ -1,25 +1,25 @@
 {
   "schemaVersion": "clervo.autonomous-dispatch-state.v1",
   "policy": "infra/control-plane/autonomous-completion-policy.v1.json",
-  "evaluatedAt": "2026-08-01T20:12:39.000Z",
+  "evaluatedAt": "2026-08-01T20:37:27.780Z",
   "programStatus": "active",
   "currentStage": 4,
   "activeTicket": {
     "id": "N4.27T",
-    "state": "active",
-    "result": "isolated_cloud_qualification_authorized_not_executed",
+    "state": "completed",
+    "result": "isolated_cloud_qualification_failed_preserved_cleanup_complete",
     "closeoutCommit": null,
-    "scope": "Execute the hash-bound N4.27T validation exactly once in one isolated zonal GKE cluster, preserve the result, synchronously clean all exact ticket resources, and stop."
+    "scope": "Executed the hash-bound N4.27T validation exactly once in one isolated zonal GKE cluster, preserved the failed result, synchronously cleaned all exact ticket resources, and stopped."
   },
   "nextTicket": {
-    "id": "N4.28",
-    "title": "N4.28 remaining Stage 4 closure",
-    "scopeSource": "external master plan Stage 4 queue",
-    "ownerAuthority": "nplan4_dispatch_only_after_stage4_predecessor_closeout",
-    "localAdmission": "blocked_gate",
+    "id": "N4.27U",
+    "title": "Isolated Chromium process-launch failure repair",
+    "scopeSource": "docs/evidence/n4.27t/qualification-closeout.v1.json#nextRepair",
+    "ownerAuthority": "NPLAN.4 bounded automatic repair after failed qualification",
+    "localAdmission": "ready_fresh_dispatch_cycle",
     "cloudAdmission": "not_in_scope",
     "paymentAdmission": "not_in_scope",
-    "sealedBoundary": "N4.27T validation is frozen and may execute once only; its observed result cannot be tuned or rerun."
+    "sealedBoundary": "N4.27T corpus, labels, evaluator, result and once-only execution are immutable and cannot be reused, rerun or tuned against; any later qualification requires a new independent pre-split procedure."
   },
   "immediateOwnerBlockers": [
     {
@@ -41,14 +41,15 @@
   "activeAuthorityBindings": {
     "trustedExternalManifestAdmission": "not_implemented_fail_closed",
     "separatelyExplicitCloudAction": {
-      "authorized": true,
-      "ticketId": "N4.27T",
-      "authoritySource": "owner_interactive_instruction_outside_workspace_manifest",
-      "planRef": "infra/n4.27t/cloud-execution-plan.v1.json",
-      "planSha256": "sha256:b0cfad45e1bc7082a66bd5893bf3797b5dfc9c5979ca9a306cd21bc4ef14c91c",
-      "maximumGrossCostUsd": 5,
-      "maximumConfiguredExposureUsdPerDay": 5,
-      "validationMaximumExecutions": 1
+      "authorized": false,
+      "ticketId": null,
+      "authoritySource": null,
+      "planRef": null,
+      "planSha256": null,
+      "maximumGrossCostUsd": 0,
+      "maximumConfiguredExposureUsdPerDay": 0,
+      "validationMaximumExecutions": 0,
+      "historicalCloseoutRef": "docs/evidence/n4.27t/qualification-closeout.v1.json"
     },
     "realPayment": {
       "authorized": false,

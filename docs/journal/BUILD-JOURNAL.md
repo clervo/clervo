@@ -1259,3 +1259,83 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   After commit and post-commit checks, stop. N4.27T isolated cloud qualification
   is `blocked_owner` until the exact finite cloud identity/resource/cost/
   no-IAM-billing/cleanup package and a separate explicit owner action exist.
+
+## 2026-08-01 — N4.27T once-only isolated cloud qualification and cleanup
+
+- The owner separately authorized the exact N4.27T cloud execution plan after
+  granting the configured deployer access. The plan was limited to project
+  `bloxsniper-prod`, zone `us-central1-a`, exact `clervo-n427t-*` resources,
+  one validation execution, USD 5 gross and daily ceilings, synchronous
+  cleanup and zero residual exposure. The owner reported USD 1,700 in startup
+  credits; the runtime blocked billing inspection, so credit balance/expiry and
+  actual billed cost remain unverified and the attached-billing USD 5 ceiling
+  controlled. No IAM or billing mutation ran.
+- Preflight exact-prefix inventory found zero ticket instance, disk, address,
+  firewall, cluster, repository, alert or pending operation. The fail-closed
+  resource gate admitted USD 4.05784/day candidate exposure. Frozen
+  implementation commit was
+  `c54db9e7923e26ad414cec5a061d139a2d51ab78`; the armed execution-manifest
+  commit was `e0387d173afd6bbbb10c67ade3f8649fcf7e79a8`.
+- Preserved ordinary setup failures without concealing them. The first Artifact
+  Registry create command used unsupported `--async=false` and created no
+  resource; the corrected synchronous command created the exact repository.
+  `gcloud components install` was rejected by the snap-managed installation;
+  the official `gke-gcloud-auth-plugin` 577.0.0 Debian package was downloaded,
+  checked against published SHA-256
+  `77b1c1fa16bfaf3339366ac8b5427106e5812c9c6db91da127d3e9dc9f46982d`,
+  and installed on the devbox. A final read-only Artifact Registry operations
+  list command was unsupported; repository deletion had already completed and
+  fresh negative inventory independently proved absence.
+- Built and pushed the frozen qualification image at
+  `sha256:554a865f572123704d352135cd6de1c422d5b2db70e43dd2a724ae0ef123c12e`
+  with Node 24.18.1 and Chromium 151.0.7922.71. Created one zonal GKE cluster
+  using the original create operation only; no create retry or fallback ran.
+  The frozen Job was applied once at 2026-08-01T20:27:32Z with
+  `backoffLimit: 0`. Its only pod ran as UID 65534 with read-only root,
+  `RuntimeDefault`, no service-account token, zero restarts, exact image digest
+  and exit code 0. The infrastructure success preserves the evaluator result;
+  it is not a product-gate pass.
+- The final qualification failed. All ten live public developer metadata tasks
+  passed: developer retrieval 10/10 at USD 0 provider API cash cost. Browser
+  execution passed 0/20: all 12 JavaScript and eight hostile fixtures returned
+  `browser_process_failed:` without diagnostic detail. Mandatory browser,
+  JavaScript and hostile gates failed and `finalGatePass` is false. Execution
+  count is one; no rerun, relabelling, tuning or reuse is authorized. The raw
+  result hash is
+  `eb5e5b8b4f8ac622b4b7e4790479480c57008b9781255727a7703e93e2502425`.
+- Cleanup was synchronous. Deleted the namespace, then the cluster under the
+  original delete operation, then the Artifact Registry repository/image and
+  local image. Fresh inventory found zero exact-prefix instances, disks,
+  addresses, firewalls, clusters, repositories, alerts, unknown resources or
+  pending container/compute operations. The cluster lifetime from create-start
+  to delete-complete was 1,033.357 seconds; estimated gross cost is USD
+  0.0485324, reported conservatively as USD 0.05, against the USD 5 ceiling.
+  Actual provider billing is unknown, provider API cash cost is USD 0, residual
+  exposure is USD 0/day, USDC spent is 0 and the 0.03 USDC reserve is untouched.
+- No public ingress, monitoring policy, payment, mock x402, wallet, IAM,
+  billing, secret, production, customer, legacy or unrelated-resource mutation
+  ran. N4.27S and every earlier sealed/final artifact remained unchanged.
+- Closeout evidence hash is
+  `c15693caca4dfefc8a192abdaeeb5ea056e4dadbdbef8596a30def4ea1a4e14d`.
+  The pre-run freeze and armed execution manifest remain byte-immutable; the
+  separate closeout binds them to the raw result, Kubernetes evidence and
+  cleanup evidence. The synchronized external master-plan hash is
+  `1fc5e6afdb8e519631ffbf13f551c89379c264b6aca963edc1d22c0316fa86b8`.
+- Closeout validation passed N4.27T cloud 4/4, NPLAN.4 5/5, TypeScript
+  typecheck, lint across 263 source/contract files, autonomous completion,
+  product scope, secret scan and clean-room boundary. The first N4.27T closeout
+  run passed 7/8 because one historical assertion still expected active cloud
+  authority; it was synchronized to require completed/consumed authority and
+  the N4.27U local handoff, then passed 8/8. Canonical `npm test`, the protected
+  Stage 4 exit verifier and every frozen qualification did not run.
+- Product truth did not advance. Search remains `preview`; the other five cores
+  remain `unavailable`; all five Stage 4 blockers remain; Search is not the
+  reference pattern; N4.28, Stage 5, production and payment remain
+  unauthorized.
+- N4.27U is the exact bounded repair for a fresh local dispatcher cycle. It may
+  use synthetic development-only fixtures to diagnose the nonroot Chromium
+  process-launch/diagnostic boundary, repair the smallest proven cause and
+  freeze a new independent pre-split requalification procedure. It has no
+  cloud authority and may not open, reuse, rerun or tune against N4.27T final
+  evidence. Final closeout commit is the commit containing this entry; after
+  post-commit verification, stop this worker before N4.27U implementation.

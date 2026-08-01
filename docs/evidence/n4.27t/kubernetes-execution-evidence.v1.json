@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "clervo.n4.27t.kubernetes-execution-evidence.v1",
+  "ticket": "N4.27T",
+  "projectId": "bloxsniper-prod",
+  "cluster": {
+    "name": "clervo-n427t-qualification",
+    "zone": "us-central1-a",
+    "version": "1.35.6-gke.1250000"
+  },
+  "namespace": "clervo-n427t-isolated",
+  "job": {
+    "name": "clervo-n427t-validation-once",
+    "uid": "d1f2c983-c7b4-47c5-add4-15142b7d924b",
+    "createdAt": "2026-08-01T20:27:32Z",
+    "startedAt": "2026-08-01T20:27:32Z",
+    "completedAt": "2026-08-01T20:28:09Z",
+    "succeeded": 1
+  },
+  "pod": {
+    "name": "clervo-n427t-validation-once-rz8vh",
+    "uid": "1c5eae23-0bca-4773-bbe8-0932992b5fd6",
+    "node": "gke-clervo-n427t-qualifi-default-pool-ed397314-xf5f",
+    "scheduledAt": "2026-08-01T20:27:33Z",
+    "containerStartedAt": "2026-08-01T20:27:49Z",
+    "containerFinishedAt": "2026-08-01T20:28:02Z",
+    "restartCount": 0,
+    "exitCode": 0,
+    "runAsUser": 65534,
+    "readOnlyRootFilesystem": true,
+    "seccompProfile": "RuntimeDefault",
+    "serviceAccountTokenMounted": false
+  },
+  "image": {
+    "reference": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-n427t/qualification@sha256:554a865f572123704d352135cd6de1c422d5b2db70e43dd2a724ae0ef123c12e",
+    "digest": "sha256:554a865f572123704d352135cd6de1c422d5b2db70e43dd2a724ae0ef123c12e"
+  },
+  "executionCount": 1,
+  "rerunAuthorized": false,
+  "infrastructureExecutionSucceeded": true,
+  "qualificationGatePassed": false,
+  "resultReference": "docs/evidence/n4.27t/final-qualification-result.v1.json"
+}

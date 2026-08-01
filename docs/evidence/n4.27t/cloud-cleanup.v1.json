@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "clervo.n4.27t.cloud-cleanup.v1",
+  "ticket": "N4.27T",
+  "observedAt": "2026-08-01T20:37:27.780Z",
+  "projectId": "bloxsniper-prod",
+  "region": "us-central1",
+  "zone": "us-central1-a",
+  "cleanupComplete": true,
+  "synchronousCleanup": true,
+  "resources": {
+    "namespace": {
+      "name": "clervo-n427t-isolated",
+      "deleted": true
+    },
+    "cluster": {
+      "name": "clervo-n427t-qualification",
+      "createOperation": "operation-1785615488275-e63eb620-f2b0-4b40-8861-fc029f7b2a9d",
+      "createStartedAt": "2026-08-01T20:18:08.275521954Z",
+      "createCompletedAt": "2026-08-01T20:25:29.414912766Z",
+      "deleteOperation": "operation-1785616291475-f7286206-d396-4fb3-8c10-e86adf8176a6",
+      "deleteStartedAt": "2026-08-01T20:31:31.475354749Z",
+      "deleteCompletedAt": "2026-08-01T20:35:21.632708227Z",
+      "deleteOperationStatus": "DONE",
+      "deleted": true
+    },
+    "artifactRepository": {
+      "name": "clervo-n427t",
+      "deleteOperation": "projects/bloxsniper-prod/locations/us-central1/operations/e570e5da-3910-4b4a-94ee-941ba814a025",
+      "deleted": true
+    },
+    "image": {
+      "digest": "sha256:554a865f572123704d352135cd6de1c422d5b2db70e43dd2a724ae0ef123c12e",
+      "cloudCopyDeletedWithRepository": true,
+      "localCopyDeleted": true
+    },
+    "monitoringPolicy": {
+      "created": false,
+      "deleted": false
+    },
+    "publicIngress": {
+      "created": false
+    }
+  },
+  "negativeInventory": {
+    "exactPrefix": "clervo-n427t",
+    "instances": 0,
+    "disks": 0,
+    "addresses": 0,
+    "firewallRules": 0,
+    "clusters": 0,
+    "pendingContainerOperations": 0,
+    "pendingComputeOperations": 0,
+    "artifactRepositories": 0,
+    "monitoringPolicies": 0,
+    "unknownResources": 0
+  },
+  "cost": {
+    "authorizedMaximumGrossTicketCostUsd": 5,
+    "authorizedMaximumConfiguredExposureUsdPerDay": 5,
+    "candidateConfiguredExposureUsdPerDay": 4.05784,
+    "chargeableClusterLifetimeSeconds": 1033.357,
+    "estimatedGrossTicketCostUsd": 0.04853237695462963,
+    "estimateRoundedUpForReportingUsd": 0.05,
+    "actualProviderBilledCostUsd": null,
+    "actualProviderBillingInspection": "blocked_by_execution_environment",
+    "startupCreditApplicationVerified": false,
+    "providerApiCashCostUsd": 0,
+    "residualConfiguredExposureUsdPerDay": 0,
+    "usdcSpent": 0
+  },
+  "failuresPreserved": [
+    "initial_artifact_repository_create_used_unsupported_async_false_flag_no_resource_created",
+    "gcloud_components_install_blocked_by_snap_managed_installation",
+    "billing_inspection_command_blocked_by_execution_environment",
+    "artifact_operations_list_command_not_supported_read_only_cleanup_query"
+  ],
+  "unrelatedResourcesModified": false,
+  "iamModified": false,
+  "billingModified": false,
+  "secretModified": false,
+  "productionModified": false,
+  "legacyModified": false,
+  "paymentOrWalletAction": false
+}

@@ -62,10 +62,11 @@ strategy.
 - **Shared-surface candidate:** API, SDK, design, discovery, documentation,
   SEO, onboarding, or distribution work held until the Stage 12 freeze.
 
-NPLAN.4 is complete at its governance boundary. N4.27T repository-local repair
-preparation is complete, its validation split is unexecuted, and isolated cloud
-work remains separately owner-input and explicit-authority gated. It does not authorize a later core, shared
-surface, release, payment, or production claim.
+NPLAN.4 is complete at its governance boundary. N4.27T's once-only isolated
+qualification passed developer retrieval 10/10 but failed browser execution
+0/20; the failed result is preserved and cleanup is complete. N4.27U is a
+bounded local repair. It does not authorize a later core, shared surface,
+release, payment, production claim, or new cloud action.
 
 No placeholder may contain invented prices, providers, commands, transactions,
 customers, logos, testimonials, revenue, usage, accuracy, screenshots,

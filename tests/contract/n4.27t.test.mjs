@@ -207,16 +207,18 @@ test('resource admission permits only fresh zero-inventory non-overlapping plans
   assert.throws(() => evaluateExclusiveResourceAdmission(resourceInput(), { now: new Date('2026-08-01T19:14:00.000Z') }), /stale_or_invalid/u);
 });
 
-test('ticket and dispatch state bind the one cloud action while payment and later stages stay closed', async () => {
+test('ticket and dispatch state close the consumed cloud action and hand off only a local repair', async () => {
   const ticket = await text('docs/tickets/N4.27T.md');
   for (const phrase of ['USD 5', 'Do not run canonical `npm test`', 'USDC spend: 0', 'N4.28', 'Stage 5']) assert.match(ticket, new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&'), 'u'));
   const state = await json('infra/control-plane/autonomous-dispatch-state.json');
   assert.equal(state.activeTicket.id, 'N4.27T');
-  assert.equal(state.activeTicket.state, 'active');
-  assert.equal(state.activeAuthorityBindings.separatelyExplicitCloudAction.authorized, true);
-  assert.equal(state.activeAuthorityBindings.separatelyExplicitCloudAction.validationMaximumExecutions, 1);
-  assert.equal(state.nextTicket.id, 'N4.28');
-  assert.equal(state.nextTicket.localAdmission, 'blocked_gate');
+  assert.equal(state.activeTicket.state, 'completed');
+  assert.equal(state.activeTicket.result, 'isolated_cloud_qualification_failed_preserved_cleanup_complete');
+  assert.equal(state.activeAuthorityBindings.separatelyExplicitCloudAction.authorized, false);
+  assert.equal(state.activeAuthorityBindings.separatelyExplicitCloudAction.validationMaximumExecutions, 0);
+  assert.equal(state.nextTicket.id, 'N4.27U');
+  assert.equal(state.nextTicket.localAdmission, 'ready_fresh_dispatch_cycle');
+  assert.equal(state.nextTicket.cloudAdmission, 'not_in_scope');
   assert.equal(state.nextTicket.paymentAdmission, 'not_in_scope');
   assert.equal(state.currentTruth.stage5Authorized, false);
   assert.equal(state.currentTruth.realPaymentAuthorized, false);

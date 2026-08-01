@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { buildValidationPlan } from '../../infra/n4.27t/qualify-validation.mjs';
 
 const text = (path) => readFile(new URL(`../../${path}`, import.meta.url), 'utf8');
+const sha256 = (value) => `sha256:${createHash('sha256').update(value).digest('hex')}`;
 const fixture = (id, hostile = false) => ({ id, path: `/synthetic/${id}`, marker: `SYNTHETIC_${id.toUpperCase()}`, ...(hostile ? { authority: 'untrusted_evidence_only' } : { requiresJavaScript: true }) });
 const corpus = {
   schemaVersion: 'clervo.n4.27t.corpus.v1', split: 'validation', status: 'frozen_not_executed', executionLimit: 1,
@@ -34,4 +36,24 @@ test('qualification image and job require one frozen digest and no retry', async
   assert.match(dockerfile, /validation-corpus\.v1\.json/u); assert.match(dockerfile, /USER 65534:65534/u); assert.match(dockerfile, /tini/u);
   assert.match(job, /backoffLimit: 0/u); assert.match(job, /automountServiceAccountToken: false/u); assert.match(job, /readOnlyRootFilesystem: true/u); assert.match(job, /type: RuntimeDefault/u);
   assert.match(worker, /ignore-certificate-errors-spki-list/u); assert.match(worker, /pinnedpubkey/u); assert.doesNotMatch(worker, /--no-sandbox|--disable-dev-shm-usage/u);
+});
+
+test('once-only failed result and zero-resource cleanup are preserved and hash-bound', async () => {
+  const closeout = JSON.parse(await text('docs/evidence/n4.27t/qualification-closeout.v1.json'));
+  const resultBytes = await text('docs/evidence/n4.27t/final-qualification-result.v1.json');
+  const kubernetesBytes = await text('docs/evidence/n4.27t/kubernetes-execution-evidence.v1.json');
+  const cleanupBytes = await text('docs/evidence/n4.27t/cloud-cleanup.v1.json');
+  const result = JSON.parse(resultBytes); const kubernetes = JSON.parse(kubernetesBytes); const cleanup = JSON.parse(cleanupBytes);
+
+  assert.equal(closeout.status, 'completed_failed_qualification_preserved');
+  assert.equal(closeout.executionCount, 1); assert.equal(closeout.maximumExecutions, 1); assert.equal(closeout.rerunAuthorized, false);
+  assert.equal(closeout.immutableBindings.finalResult.sha256, sha256(resultBytes));
+  assert.equal(closeout.immutableBindings.kubernetesExecution.sha256, sha256(kubernetesBytes));
+  assert.equal(closeout.immutableBindings.cleanup.sha256, sha256(cleanupBytes));
+  assert.equal(result.finalGatePass, false); assert.equal(result.metrics.developerPassed, 10); assert.equal(result.metrics.browserPassed, 0);
+  assert.equal(result.browser.length, 20); assert.ok(result.browser.every(({ failureCode }) => failureCode === 'browser_process_failed:'));
+  assert.equal(kubernetes.executionCount, 1); assert.equal(kubernetes.pod.restartCount, 0); assert.equal(kubernetes.qualificationGatePassed, false);
+  assert.equal(cleanup.cleanupComplete, true); assert.equal(cleanup.negativeInventory.unknownResources, 0);
+  assert.ok(Object.entries(cleanup.negativeInventory).filter(([key]) => key !== 'exactPrefix').every(([, count]) => count === 0));
+  assert.equal(cleanup.cost.residualConfiguredExposureUsdPerDay, 0); assert.ok(cleanup.cost.estimatedGrossTicketCostUsd < 5);
 });

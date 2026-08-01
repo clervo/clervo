@@ -114,10 +114,10 @@ documentation, discovery, JSON-LD, sitemap, SEO, and distribution pass.
 
 Only Search is currently a `preview`; the other five cores are `unavailable`
 and have not started implementation. N4.27S left five Stage 4 blockers.
-NPLAN.4 is complete at its governance boundary. N4.27T repository-local repair
-preparation is complete with an unexecuted validation split; its cloud phase
-remains separately owner-input and explicit-authority gated, and it does not authorize a later roadmap
-stage.
+NPLAN.4 is complete at its governance boundary. N4.27T's once-only isolated
+qualification passed developer retrieval 10/10 but failed browser execution
+0/20; the result is final and cleanup is complete. N4.27U is the next bounded
+local repair and does not authorize a later roadmap stage or new cloud action.
 
 ## Promotion rule
 

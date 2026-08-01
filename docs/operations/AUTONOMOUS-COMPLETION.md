@@ -175,9 +175,10 @@ investment return.
 
 ## Current dispatch
 
-NPLAN.4 is complete at its governance boundary. N4.27T repository-local repair
-preparation is complete and its new validation split remains unexecuted.
-N4.27T isolated cloud qualification is `blocked_owner` until the exact cloud
-identity/resource/cost/cleanup input package and separate explicit authority
-exist. Unattended external admission also needs the owner trust root. Payment,
-N4.28 and Stage 5 remain outside N4.27T.
+NPLAN.4 is complete at its governance boundary. N4.27T's new validation split
+executed exactly once in the separately authorized isolated qualification.
+Developer retrieval passed 10/10, browser execution failed 0/20, and the final
+gate failed. Cleanup is complete with USD 0/day residual exposure. N4.27U is
+ready for a fresh bounded local repair cycle under the automatic-repair policy;
+it has no cloud authority and cannot reuse or rerun N4.27T final evidence.
+Payment, N4.28 and Stage 5 remain outside the repair.

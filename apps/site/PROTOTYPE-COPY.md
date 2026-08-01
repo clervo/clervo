@@ -49,10 +49,11 @@ and repeatable real demonstration pass.
   access/design/discovery/distribution pass, production deployment, bounded
   settlement, and external useful paid proof remain incomplete.
 
-NPLAN.4 is complete at its governance boundary. N4.27T repository-local repair
-preparation is complete, its validation split is unexecuted, and isolated cloud
-work remains separately owner-input and explicit-authority gated. That bounded state does not start
-Stage 5 or any unavailable product core.
+NPLAN.4 is complete at its governance boundary. N4.27T's validation executed
+once in an authorized isolated qualification: developer retrieval passed 10/10
+and browser execution failed 0/20, so the final gate failed. Resources were
+cleaned to USD 0/day residual exposure. N4.27U is a bounded local repair; this
+state does not start Stage 5 or any unavailable product core.
 
 Shared API, MCP, SDK, onboarding, design, documentation, discovery, JSON-LD,
 sitemap, SEO, and distribution work begins once, after the Stage 12 core and

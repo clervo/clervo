@@ -402,10 +402,12 @@ SHA-256 values. The workspace external/x402 templates are non-authoritative and
 their validators reject `authorized` until an owner-controlled trust root,
 detached signatures, revocations, and mediated enforcement are implemented.
 
-NPLAN.4 is complete at its governance boundary. N4.27T then completed its
-repository-local repair preparation using a new independently pre-split corpus;
-N4.27S final evidence remains immutable and the new validation split has not
-executed. N4.27T isolated cloud qualification is `blocked_owner` until an exact
-environment/resource/identity/cost/cleanup input and separate explicit owner
-action exist. Mock x402, real payment, N4.28, Stage 5, production and legacy
-work remain outside N4.27T.
+NPLAN.4 is complete at its governance boundary. N4.27T used a new independently
+pre-split procedure and executed its validation exactly once in a separately
+authorized isolated qualification. Developer registry retrieval passed 10/10,
+but browser execution failed 0/20 with `browser_process_failed:`, so the final
+gate failed. The result is immutable; all exact cloud resources were cleaned to
+USD 0/day residual exposure. All five Stage 4 blockers remain. N4.27U is the
+next bounded local repair and may not reuse or rerun N4.27T final evidence.
+Mock x402, real payment, N4.28, Stage 5, production and legacy work remain
+unauthorized.

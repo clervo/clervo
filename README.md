@@ -8,11 +8,12 @@ The First Revenue Release is the all-six **Clervo Platform**: Live Intelligence/
 
 Tickets **N0.1** through **N4.27S**, NPLAN.1, NPLAN.2, NPLAN.3, and its NPLAN.3R handoff repair are complete at their recorded boundaries. NPLAN.3 changes the future launch program; it does not rewrite those historical outcomes. N4.27S completed one frozen private-staging qualification and failed its mandatory product gate: combined recall/precision were 0.8000/0.6803, browser qualification was 4/20, and hostile-page execution was 0/8. Five Stage 4 blockers remain: isolated JavaScript retrieval, prompt-injection boundaries, separate raw and synthesis prices, a deployed paid route, and cost-cap compliance. Mock x402 and payment were not started. Search is not commercially competitive, production-qualified, or the reference pattern, and Stage 5 remains unauthorized.
 
-NPLAN.4 is complete at its governance boundary. N4.27T has completed its
-repository-local repair preparation with a new unexecuted validation split;
-its isolated cloud qualification is now owner-blocked on exact finite cloud
-inputs and a separate explicit action. No Stage 4 blocker has closed from that
-local preparation.
+NPLAN.4 is complete at its governance boundary. N4.27T executed its new frozen
+validation split exactly once in an authorized isolated cloud qualification.
+Developer retrieval passed 10/10, but browser execution failed 0/20, so the
+final gate failed and all five Stage 4 blockers remain. All ticket cloud
+resources were deleted for USD 0/day residual exposure. N4.27U is the next
+bounded local repair; it cannot reuse or rerun N4.27T final evidence.
 That authorization does not start N4.28, mock x402, payment, Stage 5, any unavailable
 product core, or a later roadmap stage.
 
