@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "clervo.codex-studio.benchmark-attempt.v1",
+  "benchmark": "output-compression",
+  "attempt": 2,
+  "result": "failed",
+  "failure": "The sandbox reported EPERM when Node spawnSync executed the mise-managed npm symlink, despite direct shell execution succeeding; npm returned no capturable bytes.",
+  "repair": "Replace the environment-sensitive npm subprocess with native rg --files, a deterministic representative codebase-output case."
+}

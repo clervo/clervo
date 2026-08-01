@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "clervo.codex-studio.browser-isolation.v1",
+  "passed": true,
+  "checks": {
+    "distinctContainerIds": true,
+    "debugLoopbackOnly": true,
+    "debugDedicatedState": true,
+    "visualNetworkDisabled": true,
+    "noSharedMounts": true,
+    "chromeMcpOnlyInDebugProfile": true,
+    "visualRunnerCreatesFreshContainer": true
+  },
+  "debug": {
+    "containerId": "e37b08616f35e93c831cabfecc0230b484adf91c9c5c5eaaefe12813f873cf67",
+    "networkMode": "bridge",
+    "portBindings": {
+      "9222/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "9223"
+        }
+      ]
+    },
+    "mounts": []
+  },
+  "visual": {
+    "containerId": "d1f5561b18f001119a843760a7547142bd888857bda3ca49bd39a88ff52e33be",
+    "networkMode": "none",
+    "portBindings": {},
+    "mounts": []
+  },
+  "teardown": "Both disposable qualification containers are removed in finally."
+}

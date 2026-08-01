@@ -1,5 +1,5 @@
-# Everyday Clervo engineering: autonomous inside the clean-room repository,
-# fail-closed for shell network and every path outside the workspace.
+# Design preparation and authorized UI work stay repository-sandboxed. Figma is
+# preconfigured but intentionally disabled until owner OAuth and file authority.
 approval_policy = "never"
 sandbox_mode = "workspace-write"
 web_search = "cached"
@@ -17,14 +17,6 @@ inherit = "core"
 ignore_default_excludes = false
 exclude = ["*KEY*", "*TOKEN*", "*SECRET*", "*PASSWORD*", "*WALLET*", "*MNEMONIC*", "GOOGLE_APPLICATION_CREDENTIALS", "AWS_*", "AZURE_*"]
 
-[mcp_servers.openaiDeveloperDocs]
-url = "https://developers.openai.com/mcp"
-enabled = true
-required = false
-startup_timeout_sec = 10
-tool_timeout_sec = 45
-default_tools_approval_mode = "auto"
-
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
 enabled = true
@@ -32,3 +24,11 @@ required = false
 startup_timeout_sec = 10
 tool_timeout_sec = 45
 default_tools_approval_mode = "auto"
+
+[mcp_servers.figma]
+url = "https://mcp.figma.com/mcp"
+enabled = false
+required = false
+startup_timeout_sec = 10
+tool_timeout_sec = 45
+default_tools_approval_mode = "writes"

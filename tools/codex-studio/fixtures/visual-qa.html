@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Clervo studio visual-QA fixture</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --canvas: #070707;
+        --panel: #111111;
+        --text: #f6f6f2;
+        --muted: #b6b6ad;
+        --request: #ef4444;
+        --verified: #2dd878;
+        --warning: #f2c94c;
+        font-family: ui-sans-serif, system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: var(--canvas); color: var(--text); }
+      main { width: min(72rem, calc(100% - 2rem)); margin: 0 auto; padding: clamp(2rem, 7vw, 6rem) 0; }
+      .eyebrow { color: var(--warning); font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; }
+      h1 { max-width: 12ch; margin: .75rem 0 1rem; font-size: clamp(2.8rem, 8vw, 7rem); line-height: .92; letter-spacing: -.055em; }
+      p { max-width: 48rem; color: var(--muted); font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.6; }
+      .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 3rem; background: #303030; border: 1px solid #303030; }
+      .step { position: relative; min-height: 10rem; padding: 1.25rem; background: var(--panel); overflow: hidden; }
+      .step strong { display: block; margin-bottom: .6rem; }
+      .step:nth-child(1) strong { color: var(--request); }
+      .step:nth-child(2) strong { color: var(--warning); }
+      .step:nth-child(3) strong { color: var(--verified); }
+      .beam { position: absolute; inset: auto -25% 1.2rem; height: 1px; background: linear-gradient(90deg, transparent, var(--verified), transparent); animation: sweep 2s linear infinite; }
+      a, button { font: inherit; }
+      .actions { display: flex; gap: .75rem; margin-top: 2rem; }
+      .actions a, .actions button { border: 1px solid #666; border-radius: .25rem; padding: .8rem 1rem; background: transparent; color: var(--text); text-decoration: none; }
+      :focus-visible { outline: 3px solid var(--warning); outline-offset: 3px; }
+      @keyframes sweep { to { transform: translateX(45%); } }
+      @media (max-width: 42rem) { .flow { grid-template-columns: 1fr; } }
+      @media (prefers-reduced-motion: reduce) { .beam { animation: none; } }
+      @media (prefers-color-scheme: light) {
+        :root {
+          color-scheme: light;
+          --canvas: #f7f7f3;
+          --panel: #ffffff;
+          --text: #151515;
+          --muted: #4b4b47;
+          --request: #a81818;
+          --verified: #086b37;
+          --warning: #755600;
+        }
+        .flow { background: #b8b8b2; border-color: #b8b8b2; }
+      }
+      @media (forced-colors: active) { .flow, .step, .actions a, .actions button { border: 1px solid CanvasText; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">Repository-only visual QA fixture</div>
+      <h1>Buy outcomes. Not integrations.</h1>
+      <p>This credential-free fixture proves the studio harness. It is not a product screenshot, customer result, deployed interface, or availability claim.</p>
+      <section class="flow" aria-label="Outcome verification flow">
+        <article class="step"><strong>Request</strong><span>Bounded input enters.</span></article>
+        <article class="step"><strong>Qualify</strong><span>Evidence and risk stay visible.</span></article>
+        <article class="step"><strong>Verify</strong><span>Completion is earned.</span><span class="beam" aria-hidden="true"></span></article>
+      </section>
+      <nav class="actions" aria-label="Fixture actions">
+        <a href="#details">Read evidence</a>
+        <button type="button" id="verify">Verify fixture</button>
+      </nav>
+      <p id="details" role="status" aria-live="polite"></p>
+    </main>
+    <script>
+      document.querySelector('#verify').addEventListener('click', () => {
+        document.querySelector('#details').textContent = 'Fixture interaction verified.';
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clervo Release Handoff"
+  short_description: "Record truthful release handoffs"
+  default_prompt: "Use $clervo-release-handoff to verify, record, commit, and stop at the exact Clervo handoff boundary."

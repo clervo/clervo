@@ -1,0 +1,238 @@
+{
+  "schemaVersion": "clervo.codex-studio.health.v1",
+  "passed": false,
+  "checks": [
+    {
+      "name": "profile-copy:engineering",
+      "passed": true,
+      "sha256": "74d661b4cea08fa6239079e04c1587be765355d282f43b2695d23f42fd78d09d"
+    },
+    {
+      "name": "profile-start:engineering",
+      "passed": true,
+      "durationMs": 1151.531,
+      "exitCode": 0,
+      "permissionMode": "workspace-write",
+      "stderr": ""
+    },
+    {
+      "name": "profile-copy:studio-maintenance",
+      "passed": true,
+      "sha256": "f0e11f80c0063f973450341185caed7fffec87fc831bec2a6cb11f0837d5c8f0"
+    },
+    {
+      "name": "profile-start:studio-maintenance",
+      "passed": true,
+      "durationMs": 1148.314,
+      "exitCode": 0,
+      "permissionMode": "danger-full-access",
+      "stderr": ""
+    },
+    {
+      "name": "profile-copy:design",
+      "passed": true,
+      "sha256": "5a4999dc6d10c285912790337d8bd66e93d92f1b2e09d4b8ea70a28311ded1e7"
+    },
+    {
+      "name": "profile-start:design",
+      "passed": true,
+      "durationMs": 1145.416,
+      "exitCode": 0,
+      "permissionMode": "workspace-write",
+      "stderr": ""
+    },
+    {
+      "name": "profile-copy:browser-debug",
+      "passed": true,
+      "sha256": "baa39929afe421f34f536f2bdbde6df03880c45972133f81319d57d182707759"
+    },
+    {
+      "name": "profile-start:browser-debug",
+      "passed": true,
+      "durationMs": 1027.922,
+      "exitCode": 0,
+      "permissionMode": "danger-full-access",
+      "stderr": ""
+    },
+    {
+      "name": "profile-copy:visual-qa",
+      "passed": true,
+      "sha256": "48846c75182b7741496f225fec71a3885c06383cae49b9a56c2626c78a462741"
+    },
+    {
+      "name": "profile-start:visual-qa",
+      "passed": true,
+      "durationMs": 1058.746,
+      "exitCode": 0,
+      "permissionMode": "danger-full-access",
+      "stderr": ""
+    },
+    {
+      "name": "skill:clervo-engineering-stage",
+      "passed": true,
+      "skillSha256": "05455d1d026eac453c52c5cf3714ae96c68086962871b68fa5ebe4e5ffdcae61",
+      "metadataSha256": "31c89d17fc81a754e45e4c22870784b7f4b446c596f2d983cd2a3e53f0ef4641"
+    },
+    {
+      "name": "skill:clervo-cloud-cleanup",
+      "passed": false,
+      "skillSha256": "0a7b4bc6c58d97807c196b3ea69e049cf38a3b1b873d8bfcf6a8ee028f3530cd",
+      "metadataSha256": "2fc4fc531111b37ab8a46814d2798b74aad5b19073c975cc89d72aaa71e0c867"
+    },
+    {
+      "name": "skill:clervo-benchmark-freeze",
+      "passed": false,
+      "skillSha256": "6a92a983b63c50f8f44caf088eda1bfee46718d0a6269683241dbe5149762dca",
+      "metadataSha256": "48a3ad3635a847f46682ab1fe11b35202bb84d63e087a8d556ba680a84ddcaab"
+    },
+    {
+      "name": "skill:clervo-x402-proof",
+      "passed": false,
+      "skillSha256": "fe11ffe66a5c9d555335b053cd96a1eb4529a30ff4336732d71c18c19c30e749",
+      "metadataSha256": "b6e7c09569d4dc084b5fba2fd1a3c4507a8d63186f66994d7b3d1b4ef4337b26"
+    },
+    {
+      "name": "skill:clervo-release-handoff",
+      "passed": false,
+      "skillSha256": "d0e5a22f9a660a49f28092b0391a48a4ed0d61abe859cc2ebce65acbafed4e44",
+      "metadataSha256": "78f9b01880e14497f73cf6a6ba146780a95bb3ab434be3e7ec9d87520941a039"
+    },
+    {
+      "name": "skill:clervo-design-studio",
+      "passed": false,
+      "skillSha256": "9abff2cc7e40629343fd8e2a248537f4a137b1df69c8a084024609613a8a9365",
+      "metadataSha256": "254c6bda19c1a28b11885834fe8813683201ea7fa43d1b6201b9e3c1f31bc1b7"
+    },
+    {
+      "name": "package:@playwright/test",
+      "passed": true,
+      "expected": "1.62.1",
+      "actual": "1.62.1",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "package:@axe-core/playwright",
+      "passed": true,
+      "expected": "4.12.1",
+      "actual": "4.12.1",
+      "license": "MPL-2.0"
+    },
+    {
+      "name": "package:@modelcontextprotocol/sdk",
+      "passed": true,
+      "expected": "1.30.0",
+      "actual": "1.30.0",
+      "license": "MIT"
+    },
+    {
+      "name": "package:chrome-devtools-mcp",
+      "passed": true,
+      "expected": "1.6.0",
+      "actual": "1.6.0",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "package:lighthouse",
+      "passed": true,
+      "expected": "13.4.1",
+      "actual": "13.4.1",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "package:svgo",
+      "passed": true,
+      "expected": "4.0.2",
+      "actual": "4.0.2",
+      "license": "MIT"
+    },
+    {
+      "name": "hook:allows-safe",
+      "passed": true,
+      "output": ""
+    },
+    {
+      "name": "hook:blocks-destructive-git",
+      "passed": true,
+      "output": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Destructive filesystem or Git operations require separate authority.\"}}"
+    },
+    {
+      "name": "hook:blocks-external-browser",
+      "passed": true,
+      "output": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Browser-debug navigation is limited to local, credential-free targets.\"}}"
+    },
+    {
+      "name": "rules:destructive-git",
+      "passed": true,
+      "durationMs": 32.94,
+      "output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"reset\"],\"decision\":\"forbidden\",\"justification\":\"Destructive Git state rewriting is outside the studio boundary.\"}}],\"decision\":\"forbidden\"}"
+    },
+    {
+      "name": "docker-image:pinned-playwright",
+      "passed": true,
+      "imageId": "sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e",
+      "durationMs": 24.919
+    },
+    {
+      "name": "tool:codex",
+      "passed": true,
+      "durationMs": 29.427,
+      "version": "codex-cli 0.146.0"
+    },
+    {
+      "name": "tool:node",
+      "passed": true,
+      "durationMs": 3.175,
+      "version": "v24.18.1"
+    },
+    {
+      "name": "tool:npm",
+      "passed": true,
+      "durationMs": 49.704,
+      "version": "10.9.8"
+    },
+    {
+      "name": "tool:git",
+      "passed": true,
+      "durationMs": 1.498,
+      "version": "git version 2.43.0"
+    },
+    {
+      "name": "tool:docker",
+      "passed": true,
+      "durationMs": 9.061,
+      "version": "Docker version 29.7.1, build e9452d6"
+    },
+    {
+      "name": "tool:compose",
+      "passed": true,
+      "durationMs": 25.985,
+      "version": "Docker Compose version v5.3.1"
+    },
+    {
+      "name": "tool:jq",
+      "passed": true,
+      "durationMs": 1.425,
+      "version": "jq-1.7"
+    },
+    {
+      "name": "tool:shellcheck",
+      "passed": true,
+      "durationMs": 2.233,
+      "version": "ShellCheck - shell script analysis tool | version: 0.9.0"
+    }
+  ],
+  "profileStartupMs": {
+    "engineering": 1151.531,
+    "studio-maintenance": 1148.314,
+    "design": 1145.416,
+    "browser-debug": 1027.922,
+    "visual-qa": 1058.746
+  },
+  "credentialVariableNamesOnly": [],
+  "snapshotReadiness": {
+    "billableSnapshotCreated": false,
+    "reproducibleInstaller": "scripts/codex-studio/install.sh",
+    "pinnedBrowserImage": "sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e",
+    "machineLocalSecretsRecorded": false
+  }
+}

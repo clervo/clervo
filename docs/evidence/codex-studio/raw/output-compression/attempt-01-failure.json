@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "clervo.codex-studio.benchmark-attempt.v1",
+  "benchmark": "output-compression",
+  "attempt": 1,
+  "result": "failed",
+  "failure": "The npm dependency-tree case produced an empty captured stream, so its negative reduction ratio was invalid.",
+  "repair": "Use npm's deterministic JSON output, set the child working directory explicitly, and fail if canonical output is empty."
+}

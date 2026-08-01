@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "clervo.codex-studio.profile-startup-attempt.v1",
+  "result": "failed",
+  "method": "five no-model prompt renders per profile",
+  "failure": "The bounded 25-launch helper exceeded its execution window and terminated without a complete report.",
+  "disposition": "Helper removed as unreliable. Use complete health-check profile startup measurements; no partial medians were inferred or reported."
+}

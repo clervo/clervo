@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "clervo.codex-studio.inventory.v1",
+  "qualifiedAt": "2026-08-01",
+  "scope": "control_plane_and_devbox_maintenance_only",
+  "profiles": {
+    "engineering": { "sandbox": "workspace-write", "approval": "never", "mcp": ["openaiDeveloperDocs", "context7"] },
+    "studio-maintenance": { "sandbox": "danger-full-access", "approval": "never", "mcp": ["openaiDeveloperDocs"], "guardHook": true },
+    "design": { "sandbox": "workspace-write", "approval": "never", "mcp": ["context7"], "disabledMcp": ["figma"] },
+    "browser-debug": { "sandbox": "danger-full-access", "approval": "never", "mcp": ["chrome_devtools"], "guardHook": true, "loopbackPort": 9223 },
+    "visual-qa": { "sandbox": "danger-full-access", "approval": "never", "mcp": [], "guardHook": true, "containerNetwork": "none" }
+  },
+  "hostTools": {
+    "codex": "0.146.0",
+    "node": "24.18.1",
+    "npm": "10.9.8",
+    "git": "2.43.0",
+    "docker": "29.7.1",
+    "dockerCompose": "5.3.1",
+    "jq": "1.7",
+    "shellcheck": "0.9.0"
+  },
+  "packages": {
+    "@axe-core/playwright": "4.12.1",
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "@playwright/test": "1.62.1",
+    "chrome-devtools-mcp": "1.6.0",
+    "lighthouse": "13.4.1",
+    "svgo": "4.0.2"
+  },
+  "browserImage": {
+    "reference": "mcr.microsoft.com/playwright:v1.62.1-noble",
+    "digest": "sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e",
+    "browsers": { "chromium": "1234", "firefox": "1538", "webkit": "2336" }
+  },
+  "mcp": {
+    "openaiDeveloperDocs": { "transport": "remote", "url": "https://developers.openai.com/mcp", "required": false },
+    "context7": { "transport": "remote", "url": "https://mcp.context7.com/mcp", "required": false, "tools": 2 },
+    "chrome_devtools": { "transport": "stdio", "package": "chrome-devtools-mcp", "version": "1.6.0", "profile": "browser-debug", "tools": 29 },
+    "figma": { "transport": "remote", "url": "https://mcp.figma.com/mcp", "enabled": false, "authentication": "owner_oauth_required" }
+  },
+  "skills": [
+    "clervo-engineering-stage",
+    "clervo-cloud-cleanup",
+    "clervo-benchmark-freeze",
+    "clervo-x402-proof",
+    "clervo-release-handoff",
+    "clervo-design-studio"
+  ],
+  "safeguards": {
+    "apparmorWeakened": false,
+    "supportedSudo": false,
+    "secretValuesRecorded": false,
+    "personalBrowserProfileMounted": false,
+    "billableSnapshotCreated": false,
+    "productTicketStarted": false,
+    "productionChanged": false,
+    "cloudIamOrBillingChanged": false,
+    "walletOrPaymentAction": false,
+    "usdcSpent": "0"
+  }
+}

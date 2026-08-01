@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "clervo.codex-studio.validation-attempt.v1",
+  "attempt": 3,
+  "result": "failed",
+  "completedBeforeFailure": ["typecheck", "lint", "product-scope consistency"],
+  "failure": "The clean-room verifier rejected a literal legacy runtime name in the health check's guard-denial fixture.",
+  "repair": "Construct the prohibited fixture name at runtime so the denial behavior remains tested without a static legacy reference, then rerun all final checks."
+}

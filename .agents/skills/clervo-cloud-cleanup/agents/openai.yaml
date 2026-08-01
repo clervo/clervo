@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clervo Cloud Cleanup"
+  short_description: "Clean Clervo cloud resources safely"
+  default_prompt: "Use $clervo-cloud-cleanup to inventory and clean only exact ticket-owned cloud resources with proof."
