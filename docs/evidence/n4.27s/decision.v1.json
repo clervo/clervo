@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "clervo.n4.27s.decision.v1",
+  "decidedAt": "2026-08-01T00:36:02.000Z",
+  "ticket": "N4.27S",
+  "startingCommit": "e8272d002a6429067d7e8ee5dcad989a0f503af1",
+  "result": "completed_failed_qualification",
+  "qualificationOnly": true,
+  "finalRunCount": 1,
+  "postFinalTuningPerformed": false,
+  "architecture": {
+    "private": true,
+    "digestPinned": true,
+    "components": ["clervo.focused-index.v1 persisted in Meilisearch 1.51.0 community features", "repaired clervo.live-federation.v1 with deterministic rewrite/cancellation/circuits", "frozen N4.27R deterministic RRF and ranking path", "six zero-provider-cost official-interface adapters", "connected durable file cache", "citation verifier", "IAP-only staging API", "gateway-only ephemeral Chromium worker", "health/circuit/metrics/traffic/cost controls"],
+    "publicApplicationIngress": false,
+    "paymentEnabled": false,
+    "legacyDependency": false
+  },
+  "finalQuality": {
+    "combined": {"recall":0.8,"precision":0.6803,"citationValidity":1,"nDCG10":0.8048,"MRR10":0.8,"success3":0.8182,"successfulExtraction":0.8727,"honestLifecycle":1,"retrievalQuality":0.8172,"p50Ms":1004.983,"p95Ms":1465.432,"p99Ms":2014.189},
+    "focusedIndex": {"recall":0,"precision":0,"retrievalQuality":0.0455,"p95Ms":282.43},
+    "liveFederation": {"recall":0.84,"precision":0.6623,"retrievalQuality":0.6741,"p95Ms":2021.578},
+    "simpleCombination": {"recall":0.8,"precision":0.5483,"retrievalQuality":0.5705,"p95Ms":1703.767},
+    "familyRecallPrecision": {
+      "commerce_marketplaces": [1,0.85],
+      "property_local_markets": [0.9,0.605],
+      "company_competitive": [1,0.95],
+      "research_evidence": [1,0.8967],
+      "developer_agent_retrieval": [0.1,0.1]
+    },
+    "mandatoryGatePass": false,
+    "failedGates": ["recall","precision","nDCG10","MRR10","success3","successfulExtraction","familyFloors"]
+  },
+  "comparison": {
+    "N4.26_historical_staging": {"recall":0.8333,"precision":0.8144,"citationValidity":0.9091,"p95Ms":1630.51},
+    "N4.27_once_only_holdout": {"recall":0.04,"precision":0.04,"citationValidity":1,"nDCG10":0,"MRR10":0,"successfulExtraction":0.92,"p95Ms":4688.24},
+    "N4.27R_controlled_local_sealed": {"recall":1,"precision":1,"citationValidity":1,"nDCG10":1,"MRR10":1,"successfulExtraction":1,"p95Ms":3.216,"latencyComparableToStaging":false},
+    "disclosure": "N4.27R latency is controlled local fixture latency and is not comparable to N4.27S network-inclusive staging latency. N4.27S does not prove commercial competitiveness, Exa parity, best-Web-search status or production reliability."
+  },
+  "sourceMesh": {
+    "classes": 6,
+    "aggregateLiveGatePass": true,
+    "completeEverySourceQualificationPass": false,
+    "focusedMissContributionRate": 0.84,
+    "largestSuccessfulRelevantShare": 0.411,
+    "failedSourceClass": "developer_registry",
+    "failure": "zero relevant final-corpus contributions"
+  },
+  "browserAndSecurity": {
+    "browserMandatoryGatePass": false,
+    "successfulStartups": 4,
+    "attemptedStartups": 20,
+    "cleanTeardowns": 20,
+    "retainedState": 0,
+    "orphanProcessesAfterFinalQualification": 0,
+    "javascriptSuccessRate": 0.2,
+    "successfulRunP95Ms": 2753.65,
+    "hostileBoundaryPass": false,
+    "hostileRuns": 0,
+    "hostileAttempts": 8,
+    "destinationRedirectConnectedAddressDnsRebindingRobotsMimeDecompressionOutputDenialsPassed": true,
+    "stoppedRuntimeHonest": true,
+    "secretOrPayloadLoggingObserved": false
+  },
+  "cacheLocaleOperations": {
+    "operationsMandatoryGatePass": true,
+    "cacheMissFreshStaleRevalidationEvictionDenylistRoutePolicyIntegrityPassed": true,
+    "freshnessFieldsAndFailureDisclosurePassed": true,
+    "localePropagationAndUnsupportedDisclosurePassed": true,
+    "wikimediaLanguageSubdomainHonoringPassed": true,
+    "routeAndSourceConcurrencyPassed": true,
+    "quotaCircuitHalfOpenTimeoutAllRoutesDownTrafficStopRestorationPassed": true,
+    "providerGeneralWebSearchCostUsd": 0
+  },
+  "cost": {
+    "grossTicketEstimateUsd": 0.35,
+    "grossTicketLimitUsd": 12,
+    "maximumConfiguredDailyExposureUsd": 5.69248,
+    "dailyExposureLimitUsd": 5,
+    "dailyExposureGatePass": false,
+    "postTeardownActiveIncrementalUsdPerDay": 0,
+    "usdcSpent": 0,
+    "reservedUsdcTouched": false
+  },
+  "stage4": {
+    "startingBlockers": 10,
+    "closedBlockers": ["retrieval_safety_controls","disclosed_cache_freshness","language_and_region_options","ssrf_and_security_suite","blockrun_compatible_baseline_improvement"],
+    "remainingBlockers": [
+      {"id":"isolated_javascript_retrieval","reason":"Private staging achieved only 4 of 20 successful browser startups (20% versus the required 95% JavaScript success and 20 consecutive starts), although all 20 teardown checks were clean."},
+      {"id":"prompt_injection_boundaries","reason":"All eight controlled hostile-page executions failed before evidence extraction, so the required 100% live hostile boundary result was not observed even though no instruction gained authority."},
+      {"id":"separate_raw_and_synthesis_prices","reason":"N4.27S explicitly prohibited mock x402 and payment work; no deployed commerce challenge or separate raw/synthesis price proof was executed."},
+      {"id":"deployed_paid_route","reason":"No payable route, settlement, receipt or USDC action was authorized or executed; the deployed staging path remained mock-only and non-payable."},
+      {"id":"cost_caps","reason":"Application operation, quota, circuit, concurrency, timeout and restoration caps passed, but the replacement VM overlapped the rejected one-node GKE cluster for approximately 15 minutes, creating an estimated USD 5.69248/day configured exposure above the USD 5 ceiling."}
+    ],
+    "endingBlockers": 5,
+    "decision": "blocked",
+    "referencePatternAuthorized": false,
+    "stage5Authorized": false
+  },
+  "claims": {"commerciallyCompetitiveSearch":false,"exaParity":false,"bestWebSearch":false,"productionQualified":false,"n428Authorized":false,"stage5Authorized":false},
+  "nextTicket": {
+    "id": "N4.27T",
+    "title": "Frozen-result failure remediation for developer retrieval, browser/hostile reliability and cost-ceiling compliance",
+    "authorization": "proposed_only",
+    "scope": "Use N4.27S final evidence read-only; do not rerun its final corpus. Repair the independently identified developer-registry coverage/runtime defects, browser startup/hostile execution failures and resource-overlap control in a new pre-split corpus and new isolated deployment. Keep mock x402, real payment, N4.28 and Stage 5 unauthorized."
+  },
+  "artifactBindings": {
+    "corpusFreeze":"sha256:91d04005995188b7e21c30b5f2d1cfddf0868d746ccb111bbca5bfb1050b4757",
+    "implementationFreeze":"sha256:1c85e6426380698c9736ae56b5d97d94388fe040f0ba74e08144211fc078429b",
+    "finalMarker":"sha256:7c9acf780a3917f024f27d292e0e1c23646e5d1adba7f06261a05323512999ef",
+    "rawResults":"sha256:6a857e74938f9c58b2b66bf367788ce0dadcdf3cc57b70ebf7e3658c1f5c98ce",
+    "scorecard":"sha256:cfd684b0b66106aa84b3480bffd05b25aa8b5ca765a38c5e548f08f0edc880ef",
+    "browser":"sha256:6cacfd243c22ccae45c642ff6bc8faffd84cd9fcbad4bff06a307ad2ce54627d",
+    "operations":"sha256:0e33fde94bcc30787d32776719f40101ca8c69250e116c48ba894f7ac9c9406f",
+    "sourceMesh":"sha256:d98881f74a4a56861d0046bbf2c86bf00cf160f69023c81c523374c2a30f86c9",
+    "deployment":"sha256:5bd327acf2189aa769a9e9e5d97bca1a6a98b306b19f556872a9a22fcff6f3b6",
+    "cloudCost":"sha256:aeb76ad9f464342464e00c1c1536eb363bbf76058e18516b36b41b31f9a61ecc",
+    "corrections":"sha256:772835dfbf742d19b71c3238edfcb0bbbefdb200f16e5ea7bed35b17bc217824"
+  }
+}

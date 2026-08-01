@@ -1,89 +1,83 @@
 # Active ticket state
 
-**Ticket:** N4.27R — Search generalization, live-route and browser reliability repair
+**Ticket:** N4.27S — Frozen-repair staging qualification and remaining
+non-payment Stage 4 proof
 **Stage:** 4 — Search vertical slice
-**Ticket result:** completed at controlled repair-entry level
-**Stage result:** blocked with ten truthful Stage 4 blockers remaining
+**Ticket result:** completed with failed final staging qualification
+**Stage result:** blocked with five truthful Stage 4 blockers remaining
 
 ## Decision
 
-- The original frozen N4.27 holdout still has run count one. It was not rerun,
-  changed, relabelled or used as a tuning target.
-- A separate 75-task N4.27R corpus was split and hashed before implementation:
-  50 development tasks and 25 once-only sealed-validation tasks, 15 per family.
-- The implementation was frozen across 17 files. The sealed validation executed
-  exactly once and passed the N4.27R repair-entry quality gates.
-- Controlled local browser/security qualification passed 20/20 real Chromium
-  startups and clean teardowns, zero orphans/retained state, 20 JavaScript
-  fixtures, 910.016 ms p95, all required denial classes and eight hostile pages.
-- This does not qualify production staging, commercial competitiveness, Exa
-  parity, advanced live intelligence, the reference pattern, N4.28 or Stage 5.
+- N4.27 and N4.27R sealed artifacts were hash-verified and never rerun or
+  modified.
+- A separate 55-task N4.27S corpus was labelled and validated before final
+  qualification, with 11 tasks in each family and exactly one final run.
+- Implementation and evaluator were frozen before the final run. No post-run
+  tuning occurred.
+- Combined staging quality failed mandatory gates: recall 0.8000, precision
+  0.6803, citation validity 1.0000, nDCG@10 0.8048, MRR@10 0.8000,
+  success@3 0.8182, extraction 0.8727 and p95 1465.432 ms.
+- Browser qualification failed at 4/20 startups and 0/8 hostile runs. All 20
+  teardowns were clean; final retained-state and orphan counts were zero.
 
-## Scores and implementation
+## Sources, cache and operations
 
-- Development combined: recall 1.0000, precision 1.0000, citation validity
-  1.0000, nDCG@10 1.0000, MRR@10 1.0000, success@3 1.0000, p95 8.327 ms.
-- Sealed combined: recall 1.0000, precision 1.0000, citation validity 1.0000,
-  nDCG@10 1.0000, MRR@10 1.0000, success@3 1.0000, p95 3.216 ms.
-- Sealed combined retrieval quality was 1.0000 versus simple combination
-  0.6936. This is controlled repair evidence, not a market comparison.
-- Candidate flow now exposes lexical, RRF (`k=60`), authority, freshness,
-  diversity and final disposition. Hyphenated identifiers stay intact, weak
-  matches are filtered before reranking, and empty valid searches no longer
-  poison source or aggregate circuits.
-- Controlled live recall/precision were 0.4444/1.0000; live contributed on
-  15/15 development focused misses and the largest source share was 0.20.
+- Aggregate live federation passed its gates at 0.8400 recall, 0.6623
+  precision and 2021.578 ms p95, with relevant evidence on 84% of focused
+  misses and 41.10% largest-source share.
+- Five source classes contributed relevant evidence. Developer registry
+  contributed zero, so the every-source qualification failed.
+- Connected cache miss/fresh/stale/revalidation, route isolation, integrity,
+  eviction/removal/denylist, freshness fields and honest failure passed.
+- Locale propagation, Wikimedia language honoring and explicit unsupported
+  disclosures passed.
+- Route/source concurrency, quotas, circuit open/half-open restoration,
+  timeout storm, all-routes-down, traffic stop/restoration and unbounded-cost
+  stop passed.
+- Direct/redirect/address SSRF, DNS rebinding, robots, MIME, decompression,
+  output and gateway containment passed. Live prompt-injection proof did not.
 
-## Root causes preserved
+## Cost and cleanup
 
-- Forty-eight original balanced tasks failed: 30 missing target sources, 11
-  disconnected fixtures, four answerable zero-candidate tasks and three
-  false-positive no-result tasks. Two correct no-result tasks produced the old
-  reported 0.04; answerable recall and precision were actually both zero.
-- Proven evaluator defects: no-result metric conflation, no-result rank penalty,
-  baseline/citation quality conflation and undefined-locale auto-pass.
-- URL-prefix and required-term predicates were rejected as collapse causes
-  because no labelled URL reached either predicate.
-- Empty discovery incorrectly opened the live circuit, creating 32 circuit-open
-  attempts; abandoned deadline work contributed to later latency inflation.
-
-## Cost, commerce and cleanup
-
-- N4.27R created no cloud resource. Read-only name-filter revalidation found no
-  isolated N4.27 compute, disk, network, router, firewall, Cloud Run or artifact
-  resource. Active incremental compute and retained idle exposure remain USD
-  0/day.
-- Third-party general-Web production provider cost is USD `0.000000`.
-- Mock x402 and real payment did not run. No USDC was spent; reserved 0.03 USDC
-  remains untouched.
+- Estimated gross ticket and owner cash upper bound: USD 0.35, below USD 12.
+- Third-party general-Web provider cost: USD 0.000000.
+- Mock/real x402 did not run; USDC spend was zero and reserved 0.03 USDC was
+  untouched.
+- A rejected one-node GKE cluster overlapped its replacement VM for about 15
+  minutes, producing estimated configured exposure USD 5.69248/day over the
+  USD 5 ceiling. This is recorded as a control failure.
+- VM, disks, cluster, network, subnet, router/NAT, firewall, service account,
+  IAM binding, Artifact Registry images/repository, budget and exact Cloud
+  Build source objects were deleted. Active incremental exposure is USD 0/day.
 
 ## Current Stage 4 blockers
 
-The authoritative count is unchanged because N4.27R was controlled local repair
-proof and the Stage 4 verifier was not run:
+Five N4.27S-proven checks closed: `retrieval_safety_controls`,
+`disclosed_cache_freshness`, `language_and_region_options`,
+`ssrf_and_security_suite`, and `blockrun_compatible_baseline_improvement`.
+
+The exact remaining blockers are:
 
 1. `isolated_javascript_retrieval`
-2. `retrieval_safety_controls`
-3. `prompt_injection_boundaries`
-4. `disclosed_cache_freshness`
-5. `language_and_region_options`
-6. `separate_raw_and_synthesis_prices`
-7. `ssrf_and_security_suite`
-8. `blockrun_compatible_baseline_improvement`
-9. `deployed_paid_route`
-10. `cost_caps`
+2. `prompt_injection_boundaries`
+3. `separate_raw_and_synthesis_prices`
+4. `deployed_paid_route`
+5. `cost_caps`
+
+Stage 4 remains blocked. Search is not commercially competitive, production-
+qualified, Exa-parity, best-Web-search or the reference pattern. N4.28 and
+Stage 5 remain unauthorized.
 
 ## Exact next action
 
-Proposed ticket N4.27S only, under separate authority: deploy the exact frozen
-N4.27R repair to isolated staging without rerunning either sealed set, then
-prove production-eligible source connections, connected cache, upstream locale,
-browser/security containment and cost meters. Keep mock x402, real payment,
+Proposed ticket **N4.27T — Frozen-result failure remediation for developer
+retrieval, browser/hostile reliability and cost-ceiling compliance**, under
+separate authority only. Treat the N4.27S final corpus as read-only and use a
+new pre-split corpus and new isolated deployment. Keep mock x402, real payment,
 N4.28 and Stage 5 out of scope.
 
 ## Stop condition
 
-Commit N4.27R atomically and stop. Do not begin N4.27S, N4.28, mock x402,
-Stage 5, website/DNS work, production release, real settlement, AI, Sandbox,
-legacy mutation or any expansion stage. Canonical `npm test` and the Stage 4
-verifier did not run.
+Commit N4.27S atomically and stop. Do not begin N4.27T, N4.28, mock x402,
+payment, Stage 5, website/DNS work, production release, AI, Sandbox, legacy
+mutation or any expansion stage.

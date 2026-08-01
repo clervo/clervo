@@ -660,3 +660,74 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   payment evidence were not promoted. No commercial, Exa-parity, advanced,
   reference-pattern or Stage 5 claim is authorized. Proposed exact next ticket:
   N4.27S under separate authority; stop without beginning it, N4.28 or Stage 5.
+
+## 2026-08-01 — N4.27S frozen-repair private-staging qualification
+
+- Began from clean HEAD `e8272d002a6429067d7e8ee5dcad989a0f503af1`.
+  Hash-verified the N4.27 and N4.27R sealed artifacts and all N4.27R freeze
+  files before deployment; neither prior sealed set was rerun or modified.
+- Created, labelled, deterministically validated and froze a separate 55-task
+  corpus with 11 tasks in each of commerce, property, company, research and
+  developer retrieval. It includes official sources, freshness, exact/semantic,
+  multiple-source, no-result and multilingual/regional cases. Label validation
+  passed 55/55.
+- Deployed four digest-pinned components through an IAP-only private VM:
+  frozen search `c39a3e…236d5`, gateway `909de1…17bf4`, browser
+  `16e3b7…d4eb` and Meilisearch `ca79b2…ae794`. No public application ingress,
+  legacy state, customer/wallet secret, paid provider or payable path existed.
+- Qualified six official-interface, zero-provider-cost source classes with
+  independent health/circuit/quota/concurrency identities. Aggregate live
+  recall/precision/p95 were 0.8400/0.6623/2021.578 ms, with relevant evidence
+  on 42/50 focused misses and 41.10% largest share. Developer registry produced
+  zero relevant contributions, so complete every-source qualification failed.
+- Stabilized deployment-only defects before final freeze and recorded every
+  correction. Ranking weights, selected source classes, task-specific behavior
+  and evaluator rules did not change. The first repeatable operations artifact
+  failed due nested-disclosure assertion and exact-cache-URL mistakes and is
+  preserved by hash; the corrected repeatable operations run passed every gate.
+- Browser final qualification was preserved as a failure without retry or
+  tuning: 4/20 startups, 20/20 clean teardown checks, 20% JavaScript success,
+  2753.65 ms successful-run p95, zero final retained state/orphans, and 0/8
+  hostile executions. Destination/redirect/address SSRF, DNS rebinding, robots,
+  MIME, decompression, output, containment and stopped-runtime controls passed.
+- Connected cache/freshness, locale honoring/unsupported disclosure, exact
+  evidence/citations, route/source concurrency, quotas, circuit open/half-open,
+  timeout storm, all-routes-down, global stop/restoration and unbounded-cost
+  stop passed. No secret, wallet, query or customer payload was observed in the
+  captured health, metrics or monitoring evidence.
+- Froze 36 covered files, the evaluator, corpus and labels before the final
+  qualification. The 55-task/four-route corpus executed exactly once and wrote
+  220 raw rows. Combined recall/precision were 0.8000/0.6803, citation validity
+  1.0000, nDCG@10 0.8048, MRR@10 0.8000, success@3 0.8182, extraction 0.8727,
+  p50 1004.983 ms, p95 1465.432 ms and p99 2014.189 ms. Mandatory quality
+  failed; developer family recall/precision were 0.10/0.10. Combined retrieval
+  quality 0.8172 beat simple 0.5705 and focused 0.0455. No tuning or rerun
+  followed.
+- Estimated gross ticket and owner-cash upper bound are USD 0.35, below the USD
+  12 limit. Provider production cost is USD 0.000000; mock/real x402 did not run;
+  0 USDC was spent and reserved 0.03 USDC remains untouched. A rejected one-node
+  GKE cluster overlapped the replacement VM for about 15 minutes and created an
+  estimated USD 5.69248/day configured exposure above the USD 5 ceiling. This
+  failure is explicit and keeps `cost_caps` open.
+- Deleted the VM, boot/data disks, cluster, network, subnet, router/NAT,
+  firewall, Artifact Registry repository/images, service account/IAM binding,
+  budget and 17 exact Cloud Build source objects. Only provider-managed audit
+  and operation history remains. Direct inventory reports no ticket resource;
+  active incremental exposure is USD 0/day.
+- Closed five Stage 4 blockers: retrieval safety, cache freshness, locale,
+  SSRF/security and baseline improvement. Five remain: isolated JavaScript,
+  prompt injection, separate raw/synthesis prices, deployed paid route and cost
+  caps. Search is not commercially competitive, production-qualified, Exa-
+  parity, best-Web-search or the reference pattern; N4.28 and Stage 5 remain
+  unauthorized.
+- Validation passed: N4.27S 13/13, N4.27R 8/8, 43 schemas/81 fixtures, 43-
+  schema discovery, typecheck, lint across 250 files, secret scan, clean-room,
+  environment/product scope, 36-file freeze, 12 bound artifacts, 220-row gzip,
+  prior-sealed hashes and diff checks. Canonical `npm test` did not run. The
+  Stage 4 exit verifier ran exactly once after final bindings and passed
+  integrity with decision `blocked`, five blockers, reference-pattern false,
+  Stage 5 false, zero external verifier calls and 0 USDC.
+- Exact proposed next ticket: N4.27T under separate authority, using N4.27S
+  final evidence read-only and a new pre-split corpus to remediate developer
+  retrieval, browser/hostile reliability and cost-overlap enforcement. Stop
+  without beginning N4.27T, N4.28, mock x402, payment or Stage 5.

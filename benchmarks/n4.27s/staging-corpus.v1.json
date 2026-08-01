@@ -1,0 +1,946 @@
+{
+  "schemaVersion": "clervo.n4.27s.staging-corpus.v1",
+  "frozenAt": "2026-07-31T22:00:00.000Z",
+  "finalRunLimit": 1,
+  "priorSealedSetsProhibited": [
+    "benchmarks/n4.27",
+    "benchmarks/n4.27r/sealed-validation-corpus.v1.json"
+  ],
+  "tasks": [
+    {
+      "id": "n427s-commerce-01",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce LoginKit current USD offer",
+      "verticalProfile": "commerce",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "woocommerce_store_api",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-commerce-02",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce AI Semantic Search current USD offer",
+      "verticalProfile": "commerce",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "woocommerce_store_api",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-commerce-03",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce Store Vacation Mode current offer",
+      "verticalProfile": "commerce",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "woocommerce_store_api",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-commerce-04",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce Automatic Order Expiration current offer",
+      "verticalProfile": "commerce",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "woocommerce_store_api",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-commerce-05",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce Trendyol Integration current offer",
+      "verticalProfile": "commerce",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "woocommerce_store_api",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-commerce-06",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce Product Add-Ons current marketplace offer",
+      "verticalProfile": "commerce",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "woocommerce_store_api",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-commerce-07",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce Subscriptions current marketplace offer",
+      "verticalProfile": "commerce",
+      "locale": {
+        "language": "en",
+        "region": "CA"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "woocommerce_store_api",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-commerce-08",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce Bookings current marketplace offer",
+      "verticalProfile": "commerce",
+      "locale": {
+        "language": "en",
+        "region": "AU"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "woocommerce_store_api",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-commerce-09",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce Google for WooCommerce current offer",
+      "verticalProfile": "commerce",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "woocommerce_store_api",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-commerce-10",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce FMA Extra Fee and Charges current offer",
+      "verticalProfile": "commerce",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "woocommerce_store_api",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-commerce-11",
+      "family": "commerce_marketplaces",
+      "query": "WooCommerce nonexistent Quantum Narwhal extension 987654",
+      "verticalProfile": "commerce",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "woocommerce_store_api",
+      "answerable": false,
+      "freshnessSensitive": false,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-property-01",
+      "family": "property_local_markets",
+      "query": "NYC rolling sales property dataset",
+      "verticalProfile": "property",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "government_open_data",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-property-02",
+      "family": "property_local_markets",
+      "query": "Chicago building permits open data",
+      "verticalProfile": "property",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "government_open_data",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-property-03",
+      "family": "property_local_markets",
+      "query": "Seattle real property sales open data",
+      "verticalProfile": "property",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "government_open_data",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-property-04",
+      "family": "property_local_markets",
+      "query": "Austin issued construction permits open data",
+      "verticalProfile": "property",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "government_open_data",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-property-05",
+      "family": "property_local_markets",
+      "query": "San Francisco assessor property characteristics",
+      "verticalProfile": "property",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "government_open_data",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-property-06",
+      "family": "property_local_markets",
+      "query": "Los Angeles building permits open data",
+      "verticalProfile": "property",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "government_open_data",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-property-07",
+      "family": "property_local_markets",
+      "query": "Dallas building permits open data",
+      "verticalProfile": "property",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "government_open_data",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-property-08",
+      "family": "property_local_markets",
+      "query": "Montgomery County real property sales open data",
+      "verticalProfile": "property",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "government_open_data",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-property-09",
+      "family": "property_local_markets",
+      "query": "New Orleans building permits open data",
+      "verticalProfile": "property",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "government_open_data",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-property-10",
+      "family": "property_local_markets",
+      "query": "Vancouver property tax report open data",
+      "verticalProfile": "property",
+      "locale": {
+        "language": "en",
+        "region": "CA"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "government_open_data",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-property-11",
+      "family": "property_local_markets",
+      "query": "Open data nonexistent Zircon Borough property dataset 987654",
+      "verticalProfile": "property",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "government_open_data",
+      "answerable": false,
+      "freshnessSensitive": false,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-company-01",
+      "family": "company_competitive",
+      "query": "Astera Labs recent annual report 10-K",
+      "verticalProfile": "companies",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "sec_edgar",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-company-02",
+      "family": "company_competitive",
+      "query": "Reddit recent annual report 10-K",
+      "verticalProfile": "companies",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "sec_edgar",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-company-03",
+      "family": "company_competitive",
+      "query": "Rubrik recent annual report 10-K",
+      "verticalProfile": "companies",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "sec_edgar",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-company-04",
+      "family": "company_competitive",
+      "query": "CoreWeave recent annual report 10-K",
+      "verticalProfile": "companies",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "sec_edgar",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-company-05",
+      "family": "company_competitive",
+      "query": "Klaviyo recent annual report 10-K",
+      "verticalProfile": "companies",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "sec_edgar",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-company-06",
+      "family": "company_competitive",
+      "query": "Tempus AI recent annual report 10-K",
+      "verticalProfile": "companies",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "sec_edgar",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-company-07",
+      "family": "company_competitive",
+      "query": "Arm Holdings recent annual report 20-F",
+      "verticalProfile": "companies",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "sec_edgar",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-company-08",
+      "family": "company_competitive",
+      "query": "Birkenstock Holding recent annual report 20-F",
+      "verticalProfile": "companies",
+      "locale": {
+        "language": "de",
+        "region": "DE"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "sec_edgar",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-company-09",
+      "family": "company_competitive",
+      "query": "Maplebear Instacart recent annual report 10-K",
+      "verticalProfile": "companies",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "sec_edgar",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-company-10",
+      "family": "company_competitive",
+      "query": "Cava Group recent annual report 10-K",
+      "verticalProfile": "companies",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "sec_edgar",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-company-11",
+      "family": "company_competitive",
+      "query": "SEC nonexistent Quantum Narwhal Holdings 987654 10-K",
+      "verticalProfile": "companies",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "sec_edgar",
+      "answerable": false,
+      "freshnessSensitive": false,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-research-01",
+      "family": "research_evidence",
+      "query": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks DOI",
+      "verticalProfile": "research",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "crossref",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-research-02",
+      "family": "research_evidence",
+      "query": "Attention Is All You Need DOI",
+      "verticalProfile": "research",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "crossref",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-research-03",
+      "family": "research_evidence",
+      "query": "BERT Pre-training of Deep Bidirectional Transformers DOI",
+      "verticalProfile": "research",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "crossref",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-research-04",
+      "family": "research_evidence",
+      "query": "Mastering the game of Go with deep neural networks and tree search DOI 10.1038/nature16961",
+      "verticalProfile": "research",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "crossref",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-research-05",
+      "family": "research_evidence",
+      "query": "Direct Preference Optimization language models DOI",
+      "verticalProfile": "research",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "crossref",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-research-06",
+      "family": "research_evidence",
+      "query": "Segment Anything research paper DOI",
+      "verticalProfile": "research",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "crossref",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-research-07",
+      "family": "research_evidence",
+      "query": "A programmable dual-RNA-guided DNA endonuclease DOI 10.1126/science.1225829",
+      "verticalProfile": "research",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "crossref",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-research-08",
+      "family": "research_evidence",
+      "query": "LoRA Low-Rank Adaptation language models DOI",
+      "verticalProfile": "research",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "crossref",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-research-09",
+      "family": "research_evidence",
+      "query": "Chain-of-Thought Prompting Elicits Reasoning DOI",
+      "verticalProfile": "research",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "crossref",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-research-10",
+      "family": "research_evidence",
+      "query": "Toolformer language models teach themselves tools DOI",
+      "verticalProfile": "research",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "crossref",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-research-11",
+      "family": "research_evidence",
+      "query": "Crossref nonexistent Quantum Narwhal Study 987654 DOI",
+      "verticalProfile": "research",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "crossref",
+      "answerable": false,
+      "freshnessSensitive": false,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-developer-01",
+      "family": "developer_agent_retrieval",
+      "query": "npm package zod current version schema validation",
+      "verticalProfile": "developer_documentation",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "developer_registry",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-developer-02",
+      "family": "developer_agent_retrieval",
+      "query": "npm package hono current version web framework",
+      "verticalProfile": "developer_documentation",
+      "locale": {
+        "language": "en",
+        "region": "JP"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "developer_registry",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-developer-03",
+      "family": "developer_agent_retrieval",
+      "query": "npm package fastify current version web framework",
+      "verticalProfile": "developer_documentation",
+      "locale": {
+        "language": "en",
+        "region": "GB"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "developer_registry",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-developer-04",
+      "family": "developer_agent_retrieval",
+      "query": "npm package undici current version HTTP client",
+      "verticalProfile": "developer_documentation",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "developer_registry",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-developer-05",
+      "family": "developer_agent_retrieval",
+      "query": "npm package drizzle-orm current version TypeScript ORM",
+      "verticalProfile": "developer_documentation",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "developer_registry",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-developer-06",
+      "family": "developer_agent_retrieval",
+      "query": "GitHub repository modelcontextprotocol/typescript-sdk in:name",
+      "verticalProfile": "developer_documentation",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "developer_registry",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-developer-07",
+      "family": "developer_agent_retrieval",
+      "query": "GitHub repository openai agents python SDK",
+      "verticalProfile": "developer_documentation",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "developer_registry",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-developer-08",
+      "family": "developer_agent_retrieval",
+      "query": "GitHub repository microsoft playwright current release",
+      "verticalProfile": "developer_documentation",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "developer_registry",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-developer-09",
+      "family": "developer_agent_retrieval",
+      "query": "GitHub repository meilisearch engine current release",
+      "verticalProfile": "developer_documentation",
+      "locale": {
+        "language": "fr",
+        "region": "FR"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "developer_registry",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-developer-10",
+      "family": "developer_agent_retrieval",
+      "query": "GitHub repository cloudflare agents SDK",
+      "verticalProfile": "developer_documentation",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "developer_registry",
+      "answerable": true,
+      "freshnessSensitive": true,
+      "queryKind": "semantic",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    },
+    {
+      "id": "n427s-developer-11",
+      "family": "developer_agent_retrieval",
+      "query": "Developer registry nonexistent quantum-narwhal-sdk-987654",
+      "verticalProfile": "developer_documentation",
+      "locale": {
+        "language": "en",
+        "region": "US"
+      },
+      "accessMode": "official_api",
+      "sourceClass": "developer_registry",
+      "answerable": false,
+      "freshnessSensitive": false,
+      "queryKind": "exact",
+      "requiresJavascript": false,
+      "controlledDegradation": false
+    }
+  ]
+}

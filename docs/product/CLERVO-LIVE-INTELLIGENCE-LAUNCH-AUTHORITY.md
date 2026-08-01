@@ -316,36 +316,39 @@ general-Web search-provider API cost. Paid services may be benchmarked only
 under separate permission and cannot become hidden production dependencies.
 
 This authority does not itself authorize new cloud/IAM/deployment mutation,
-credentials, provider calls, N4.27R repair work, USDC spend, AI, Sandbox,
+credentials, provider calls, N4.27T repair work, USDC spend, AI, Sandbox,
 later-pillar implementation, legacy mutation, runtime search changes, or the
 canonical `npm test`.
 
 ## 14. Current transition and exact next ticket
 
-N4.27 is complete as a truthful blocked qualification. Its final frozen
-holdout ran exactly once: repaired balanced recall and precision were 0.04,
-nDCG@10 and MRR@10 were zero, successful extraction was 0.92, and p95 was
-4688.24 ms. Browser qualification completed 18/20 runs; observed gateway
-denials passed, but the complete mandatory security suite remains incomplete.
+N4.27S completed its separately authorized private-staging qualification of the
+frozen N4.27R repair without modifying or rerunning either prior sealed set. A
+new 55-task corpus was frozen and executed exactly once after implementation
+and evaluator freeze. No post-run tuning occurred.
 
-All ten inherited Stage 4 blockers remain. The gated mock x402 proof was never
-started because its benchmark, browser, security, cache, locale and cost
-prerequisites failed. The isolated N4.27 compute/network resources were deleted,
-leaving USD 0/day active incremental exposure. No route became payable and no
-USDC was spent.
+The final staging result failed. Repaired combined recall/precision were
+0.8000/0.6803, citation validity 1.0000, nDCG@10 0.8048, MRR@10 0.8000,
+success@3 0.8182, extraction 0.8727 and network-inclusive p95 1465.432 ms.
+Aggregate live routing passed, but developer registry produced no relevant
+final-corpus contribution. Browser qualification reached only 4/20 startups
+and zero of eight hostile runs, although all teardown checks were clean and
+the final orphan/state count was zero.
 
-N4.27R subsequently completed its separately authorized controlled repair-entry
-scope without touching the original holdout. A new 75-task corpus was split
-before implementation; the 50-task development split and once-only 25-task
-sealed validation met their repair-entry gates. Controlled browser/security
-proof reached 20/20 startups and clean teardowns with complete local denial and
-hostile-page coverage. This did not deploy production source connections or
-promote staging evidence, and it did not run mock x402, payment, the Stage 4
-verifier or canonical acceptance.
+Connected cache/freshness, locale disclosure, retrieval safety, SSRF controls,
+operational restoration and baseline improvement produced staging evidence.
+Five blockers closed. Five remain: `isolated_javascript_retrieval`,
+`prompt_injection_boundaries`, `separate_raw_and_synthesis_prices`,
+`deployed_paid_route`, and `cost_caps`. Cost remains open because the rejected
+one-node GKE cluster briefly overlapped the replacement VM, exceeding the USD
+5 configured daily-exposure ceiling even though gross ticket cost stayed about
+USD 0.35 and all resources were subsequently removed for USD 0/day.
 
-All ten source-bound Stage 4 blockers therefore remain. Search is not
-commercially competitive or the reference pattern; Exa parity, the advanced
-claim, N4.28 and Stage 5 remain unauthorized. The smallest proposed next ticket
-is **N4.27S**, an unauthorized deployment of the exact frozen repair for
-remaining non-payment staging proof. Neither N4.27 nor N4.27R sealed data may be
-rerun or used for tuning.
+No mock x402, payment or USDC action ran; the reserved 0.03 USDC remains
+untouched and provider general-Web cost is USD 0.000000. Search is not
+commercially competitive, production-qualified, the reference pattern, an Exa-
+parity result or the best Web search. N4.28 and Stage 5 remain unauthorized.
+The smallest proposed next ticket is **N4.27T — Frozen-result failure
+remediation for developer retrieval, browser/hostile reliability and cost-
+ceiling compliance** under separate authority. N4.27S final data may not be
+rerun or used as a tuning set.

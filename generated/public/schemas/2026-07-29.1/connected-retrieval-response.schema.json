@@ -19,6 +19,7 @@
     "attempts",
     "exactDuplicateCount",
     "nearDuplicateCount",
+    "candidateFlow",
     "results",
     "citations"
   ],
@@ -98,6 +99,13 @@
     "nearDuplicateCount": {
       "type": "integer",
       "minimum": 0
+    },
+    "candidateFlow": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "#/$defs/candidateFlow"
+      }
     },
     "results": {
       "type": "array",
@@ -203,7 +211,13 @@
             "focused_index",
             "wikimedia",
             "crossref",
-            "common_crawl"
+            "common_crawl",
+            "official_site_feed",
+            "public_catalog",
+            "government_open_data",
+            "corporate_disclosure",
+            "research_registry",
+            "developer_registry"
           ]
         },
         "sourceName": {
@@ -278,6 +292,7 @@
         "authority",
         "relevance",
         "diversity",
+        "reciprocalRankFusion",
         "totalBasisPoints"
       ],
       "properties": {
@@ -300,6 +315,11 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 100
+        },
+        "reciprocalRankFusion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
         },
         "totalBasisPoints": {
           "type": "integer",
@@ -410,6 +430,75 @@
         },
         "score": {
           "$ref": "#/$defs/score"
+        }
+      }
+    },
+    "candidateFlow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidateId",
+        "routeId",
+        "providerId",
+        "adapterId",
+        "canonicalUrl",
+        "sourceRank",
+        "lexicalRelevance",
+        "reciprocalRankFusion",
+        "disposition"
+      ],
+      "properties": {
+        "candidateId": {
+          "type": "string",
+          "pattern": "^candidate_[a-f0-9]{32}$"
+        },
+        "routeId": {
+          "$ref": "#/$defs/routeId"
+        },
+        "providerId": {
+          "type": "string",
+          "pattern": "^provider_[a-z0-9][a-z0-9._-]{2,63}$"
+        },
+        "adapterId": {
+          "type": "string",
+          "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$"
+        },
+        "canonicalUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        "sourceRank": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "lexicalRelevance": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "reciprocalRankFusion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "disposition": {
+          "enum": [
+            "ranked",
+            "below_relevance_floor",
+            "exact_duplicate",
+            "near_duplicate",
+            "candidate_limit"
+          ]
+        },
+        "resultId": {
+          "type": "string",
+          "pattern": "^csr_[a-f0-9]{40}$"
+        },
+        "duplicateOfCandidateId": {
+          "type": "string",
+          "pattern": "^candidate_[a-f0-9]{32}$"
         }
       }
     },

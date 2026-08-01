@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "clervo.n4.27s.corpus-freeze.v1",
+  "frozenAt": "2026-07-31T22:00:00.000Z",
+  "tasks": 55,
+  "tasksPerFamily": {
+    "commerce_marketplaces": 11,
+    "property_local_markets": 11,
+    "company_competitive": 11,
+    "research_evidence": 11,
+    "developer_agent_retrieval": 11
+  },
+  "corpusSha256": "sha256:38bcd1e7efa0fd926298a0b9c692018680b1046334acaa78fe17e9c5500ccf18",
+  "labelsSha256": "sha256:04853d46c0c43fc4676af9f72aa464d38a9621d20ad95fd3c21df0918cb1ccbd",
+  "labelValidationPath": "docs/evidence/n4.27s/label-validation.v1.json",
+  "labelValidationSha256": "sha256:19830719f8b648c15c17364f19d88b91caae645978f04a96f1f56ea5f4ba4283",
+  "finalRunCount": 1,
+  "finalRunMarkerPath": "benchmarks/n4.27s/final-staging-run.v1.json",
+  "finalRunMarkerSha256": "sha256:7c9acf780a3917f024f27d292e0e1c23646e5d1adba7f06261a05323512999ef",
+  "labelsValidated": true,
+  "implementationFrozen": true,
+  "implementationFreezePath": "benchmarks/n4.27s/implementation-freeze.v1.json",
+  "implementationFreezeSha256": "sha256:1c85e6426380698c9736ae56b5d97d94388fe040f0ba74e08144211fc078429b",
+  "evaluatorFrozen": true,
+  "evaluatorPath": "scripts/benchmarks/n4.27s/evaluate-staging.mjs",
+  "evaluatorSha256": "sha256:165f1027f54d107a4124b6e37e1bcc0a36b9895b9513791795d8edfe44d9342e"
+}

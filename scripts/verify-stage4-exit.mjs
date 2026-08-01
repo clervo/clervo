@@ -58,17 +58,8 @@ export async function validateStage4SourceBindings(root, evidence) {
   assert.equal(new Set(closed).size, closed.length, 'N4.26 closed check IDs must be unique');
   assert.equal(new Set(remaining).size, remaining.length, 'N4.26 remaining blocker IDs must be unique');
   assert.equal(closed.length + remaining.length, source.startingBlockerCount, 'N4.26 must account for all 21 starting blockers');
-  assert.deepEqual(
-    closed,
-    evidence.checks.filter((check) => check.stagingVerified && check.id !== 'deployed_free_sample').map((check) => check.id),
-    'N4.26 closed IDs must exactly equal newly staging-verified checks',
-  );
+  assert.ok(closed.every((id) => evidence.checks.find((check) => check.id === id)?.stagingVerified), 'N4.26 closed checks must remain staging-verified');
   assert.ok(binding.remainingBlockers.every((value) => typeof value.reason === 'string' && value.reason.length >= 80), 'every N4.26 blocker needs an explicit reason');
-  assert.deepEqual(
-    remaining,
-    evidence.checks.filter((check) => !check.stagingVerified).map((check) => check.id),
-    'N4.26 remaining blockers must match the Stage 4 manifest',
-  );
   assert.equal(binding.claimDecision, 'not_yet_commercially_competitive', 'N4.26 claim decision drift');
 
   for (const [name, artifact] of Object.entries(binding.artifactBindings)) {
@@ -102,11 +93,49 @@ export async function validateStage4SourceBindings(root, evidence) {
   const n427Remaining = n427Binding.remainingBlockers.map((value) => value.id);
   assert.equal(new Set(n427Remaining).size, n427Remaining.length, 'N4.27 blocker IDs must be unique');
   assert.equal(n427Remaining.length, n427Source.startingBlockerCount, 'N4.27 must account for every inherited blocker');
-  assert.deepEqual(n427Remaining, evidence.checks.filter((check) => !check.stagingVerified).map((check) => check.id), 'N4.27 blockers must match the Stage 4 manifest');
   assert.ok(n427Binding.remainingBlockers.every((value) => typeof value.reason === 'string' && value.reason.length >= 100), 'every N4.27 blocker needs an explicit reason');
 
   for (const [name, artifact] of Object.entries(n427Binding.artifactBindings)) {
     assert.match(artifact.path, /^(?:benchmarks\/n4\.27|docs\/evidence\/n4\.27)\/[A-Za-z0-9_./-]+$/u, `${name}: artifact must stay in N4.27 benchmark/evidence boundaries`);
+    assert.match(artifact.sha256, /^sha256:[a-f0-9]{64}$/u, `${name}: invalid artifact digest`);
+    const bytes = await readFile(path.join(root, artifact.path));
+    assert.equal(sha256(bytes), artifact.sha256, `${name}: bound artifact digest mismatch`);
+  }
+
+  const n427sSource = evidence.sourceBindings?.n427s;
+  assert.ok(n427sSource, 'N4.27S source binding is required');
+  assert.equal(n427sSource.path, 'docs/evidence/n4.27s/stage4-binding.v1.json', 'N4.27S binding path drift');
+  assert.equal(n427sSource.schemaVersion, 'clervo.n4.27s.stage4-binding.v1', 'N4.27S binding schema drift');
+  assert.equal(n427sSource.startingBlockerCount, 10, 'N4.27S must preserve the ten inherited blockers');
+
+  const n427sBinding = JSON.parse(await readFile(path.join(root, n427sSource.path), 'utf8'));
+  assert.equal(n427sBinding.schemaVersion, n427sSource.schemaVersion, 'N4.27S bound document schema mismatch');
+  assert.equal(n427sBinding.startingBlockerCount, n427sSource.startingBlockerCount, 'N4.27S starting blocker mismatch');
+  assert.equal(n427sBinding.finalRunCount, 1, 'N4.27S final staging corpus must execute exactly once');
+  assert.equal(n427sBinding.mandatoryQualityGatesPassed, false, 'N4.27S quality failure must remain explicit');
+  assert.equal(n427sBinding.aggregateLiveRouteGatesPassed, true, 'N4.27S aggregate live-route proof drift');
+  assert.equal(n427sBinding.completeEverySourceQualificationPassed, false, 'N4.27S developer-source contribution failure must remain explicit');
+  assert.equal(n427sBinding.browserMandatoryGatePassed, false, 'N4.27S browser failure must remain explicit');
+  assert.equal(n427sBinding.hostileBoundaryPassed, false, 'N4.27S hostile-page failure must remain explicit');
+  assert.equal(n427sBinding.operationsMandatoryGatePassed, true, 'N4.27S operations proof drift');
+  assert.equal(n427sBinding.dailyExposureGatePassed, false, 'N4.27S transient daily-exposure breach must remain explicit');
+  assert.equal(n427sBinding.mockX402Executed, false, 'N4.27S mock x402 must remain unexecuted');
+  assert.equal(n427sBinding.paymentExecuted, false, 'N4.27S payment must remain unexecuted');
+  assert.equal(n427sBinding.referencePatternAuthorized, false, 'N4.27S cannot authorize the reference pattern');
+  assert.equal(n427sBinding.stage5Authorized, false, 'N4.27S cannot authorize Stage 5');
+  assert.equal(n427sBinding.activeComputeUsdPerDay, 0, 'N4.27S cleanup must leave zero active compute exposure');
+  assert.equal(n427sBinding.providerGeneralWebSearchCostUsd, 0, 'N4.27S provider cost must remain zero');
+  assert.equal(n427sBinding.usdcSpent, 0, 'N4.27S must spend no USDC');
+  assert.equal(n427sBinding.smallestRepairTicket, 'N4.27T', 'N4.27S repair ticket drift');
+  assert.equal(new Set(n427sBinding.closedCheckIds).size, n427sBinding.closedCheckIds.length, 'N4.27S closed check IDs must be unique');
+  const n427sRemaining = n427sBinding.remainingBlockers.map((value) => value.id);
+  assert.equal(new Set(n427sRemaining).size, n427sRemaining.length, 'N4.27S blocker IDs must be unique');
+  assert.equal(n427sBinding.closedCheckIds.length + n427sRemaining.length, n427sSource.startingBlockerCount, 'N4.27S must account for all inherited blockers');
+  assert.deepEqual(n427sBinding.closedCheckIds, n427Remaining.filter((id) => evidence.checks.find((check) => check.id === id)?.stagingVerified), 'N4.27S closed IDs must exactly match newly staging-verified checks');
+  assert.deepEqual(n427sRemaining, evidence.checks.filter((check) => !check.stagingVerified).map((check) => check.id), 'N4.27S blockers must match the Stage 4 manifest');
+  assert.ok(n427sBinding.remainingBlockers.every((value) => typeof value.reason === 'string' && value.reason.length >= 100), 'every N4.27S blocker needs an explicit reason');
+  for (const [name, artifact] of Object.entries(n427sBinding.artifactBindings)) {
+    assert.match(artifact.path, /^(?:benchmarks\/n4\.27s|docs\/evidence\/n4\.27s)\/[A-Za-z0-9_./-]+$/u, `${name}: artifact must stay in N4.27S benchmark/evidence boundaries`);
     assert.match(artifact.sha256, /^sha256:[a-f0-9]{64}$/u, `${name}: invalid artifact digest`);
     const bytes = await readFile(path.join(root, artifact.path));
     assert.equal(sha256(bytes), artifact.sha256, `${name}: bound artifact digest mismatch`);
@@ -117,6 +146,8 @@ export async function validateStage4SourceBindings(root, evidence) {
     artifactCount: Object.keys(binding.artifactBindings).length,
     latestBinding: n427Binding,
     latestArtifactCount: Object.keys(n427Binding.artifactBindings).length,
+    currentBinding: n427sBinding,
+    currentArtifactCount: Object.keys(n427sBinding.artifactBindings).length,
   });
 }
 
@@ -191,6 +222,7 @@ async function main() {
   console.log(`Stage 5 authorized: ${evidence.stage5Authorized}`);
   console.log(`N4.26 bound artifacts: ${sourceBinding.artifactCount}`);
   console.log(`N4.27 bound artifacts: ${sourceBinding.latestArtifactCount}`);
+  console.log(`N4.27S bound artifacts: ${sourceBinding.currentArtifactCount}`);
   console.log('network calls made: 0 external');
   console.log('USDC spent: 0');
 }

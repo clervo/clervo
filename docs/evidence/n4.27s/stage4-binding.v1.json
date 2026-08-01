@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "clervo.n4.27s.stage4-binding.v1",
+  "evaluatedAt": "2026-08-01T00:36:02.000Z",
+  "startingBlockerCount": 10,
+  "closedCheckIds": [
+    "retrieval_safety_controls",
+    "disclosed_cache_freshness",
+    "language_and_region_options",
+    "ssrf_and_security_suite",
+    "blockrun_compatible_baseline_improvement"
+  ],
+  "remainingBlockers": [
+    {"id":"isolated_javascript_retrieval","reason":"Private staging achieved only 4 of 20 successful browser startups (20% versus the required 95% JavaScript success and 20 consecutive starts), although all 20 teardown checks were clean and no state or final-qualification orphan remained."},
+    {"id":"prompt_injection_boundaries","reason":"All eight controlled hostile-page executions failed before evidence extraction, so the required 100% live hostile boundary result was not observed even though no instruction gained routing, ranking, execution, payment, policy or citation authority."},
+    {"id":"separate_raw_and_synthesis_prices","reason":"N4.27S explicitly prohibited mock x402 and payment work; no deployed commerce challenge, mock settlement or separate raw/synthesis price proof was executed, so this payment prerequisite remains blocked by design."},
+    {"id":"deployed_paid_route","reason":"No payable route, authorization, settlement, receipt, replay or USDC action was authorized or executed; the private staging search path remained non-payable and all payment-related authority remains false."},
+    {"id":"cost_caps","reason":"Application operation, quota, circuit, concurrency, timeout, global-stop and restoration caps passed, but the replacement VM overlapped the rejected one-node GKE cluster for approximately 15 minutes, creating an estimated USD 5.69248/day configured exposure above the USD 5 ticket ceiling."}
+  ],
+  "artifactBindings": {
+    "corpusFreeze": {"path":"benchmarks/n4.27s/corpus-freeze.v1.json","sha256":"sha256:91d04005995188b7e21c30b5f2d1cfddf0868d746ccb111bbca5bfb1050b4757"},
+    "implementationFreeze": {"path":"benchmarks/n4.27s/implementation-freeze.v1.json","sha256":"sha256:1c85e6426380698c9736ae56b5d97d94388fe040f0ba74e08144211fc078429b"},
+    "finalRunMarker": {"path":"benchmarks/n4.27s/final-staging-run.v1.json","sha256":"sha256:7c9acf780a3917f024f27d292e0e1c23646e5d1adba7f06261a05323512999ef"},
+    "finalRaw": {"path":"docs/evidence/n4.27s/final-quality/raw-results.v1.json.gz","sha256":"sha256:6a857e74938f9c58b2b66bf367788ce0dadcdf3cc57b70ebf7e3658c1f5c98ce"},
+    "finalScorecard": {"path":"docs/evidence/n4.27s/final-quality/scorecard.v1.json","sha256":"sha256:cfd684b0b66106aa84b3480bffd05b25aa8b5ca765a38c5e548f08f0edc880ef"},
+    "browserQualification": {"path":"docs/evidence/n4.27s/browser-qualification.v1.json","sha256":"sha256:6cacfd243c22ccae45c642ff6bc8faffd84cd9fcbad4bff06a307ad2ce54627d"},
+    "latencyOperations": {"path":"docs/evidence/n4.27s/latency-and-operations.v1.json","sha256":"sha256:0e33fde94bcc30787d32776719f40101ca8c69250e116c48ba894f7ac9c9406f"},
+    "sourceMesh": {"path":"docs/evidence/n4.27s/source-mesh.v1.json","sha256":"sha256:d98881f74a4a56861d0046bbf2c86bf00cf160f69023c81c523374c2a30f86c9"},
+    "deploymentMonitoring": {"path":"docs/evidence/n4.27s/deployment-and-monitoring.v1.json","sha256":"sha256:5bd327acf2189aa769a9e9e5d97bca1a6a98b306b19f556872a9a22fcff6f3b6"},
+    "cloudCostCleanup": {"path":"docs/evidence/n4.27s/cloud-resources-and-cost.v1.json","sha256":"sha256:aeb76ad9f464342464e00c1c1536eb363bbf76058e18516b36b41b31f9a61ecc"},
+    "corrections": {"path":"docs/evidence/n4.27s/staging-corrections.v1.json","sha256":"sha256:772835dfbf742d19b71c3238edfcb0bbbefdb200f16e5ea7bed35b17bc217824"},
+    "decision": {"path":"docs/evidence/n4.27s/decision.v1.json","sha256":"sha256:153d17aedbd9ca2b8c8f27041386a4f141ea6c5bb499c352d5380a9ef7356f97"}
+  },
+  "finalRunCount": 1,
+  "mandatoryQualityGatesPassed": false,
+  "aggregateLiveRouteGatesPassed": true,
+  "completeEverySourceQualificationPassed": false,
+  "browserMandatoryGatePassed": false,
+  "hostileBoundaryPassed": false,
+  "operationsMandatoryGatePassed": true,
+  "dailyExposureGatePassed": false,
+  "mockX402Executed": false,
+  "paymentExecuted": false,
+  "claimDecision": "blocked_not_commercially_competitive",
+  "advancedLiveIntelligenceAuthorized": false,
+  "exaParityAuthorized": false,
+  "referencePatternAuthorized": false,
+  "stage5Authorized": false,
+  "activeComputeUsdPerDay": 0,
+  "providerGeneralWebSearchCostUsd": 0,
+  "usdcSpent": 0,
+  "smallestRepairTicket": "N4.27T"
+}

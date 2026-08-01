@@ -246,8 +246,8 @@
     ]
   },
   "currentCampaignState": {
-    "evaluatedAt": "2026-07-31T20:25:17.816Z",
-    "sourceBinding": "docs/evidence/n4.27/stage4-binding.v1.json",
+    "evaluatedAt": "2026-08-01T00:36:02.000Z",
+    "sourceBinding": "docs/evidence/n4.27s/stage4-binding.v1.json",
     "startingBlockerCount": 21,
     "closedCheckIds": [
       "federated_lawful_retrieval",
@@ -260,18 +260,18 @@
       "two_independent_retrieval_paths",
       "deterministic_schema",
       "citation_verifier",
-      "monitoring"
-    ],
-    "blockerCount": 10,
-    "blockerIds": [
-      "isolated_javascript_retrieval",
+      "monitoring",
       "retrieval_safety_controls",
-      "prompt_injection_boundaries",
       "disclosed_cache_freshness",
       "language_and_region_options",
-      "separate_raw_and_synthesis_prices",
       "ssrf_and_security_suite",
-      "blockrun_compatible_baseline_improvement",
+      "blockrun_compatible_baseline_improvement"
+    ],
+    "blockerCount": 5,
+    "blockerIds": [
+      "isolated_javascript_retrieval",
+      "prompt_injection_boundaries",
+      "separate_raw_and_synthesis_prices",
       "deployed_paid_route",
       "cost_caps"
     ],
@@ -280,11 +280,11 @@
       "project": "bloxsniper-prod",
       "zone": "us-central1-a",
       "authenticatedControlPlaneAccess": true,
-      "resourceBoundary": "new_clervo_n426_prefixed_resources_only",
+      "resourceBoundary": "new_clervo_n427s_prefixed_resources_only",
       "publicIngress": false,
-      "cluster": "clervo-n426-staging",
+      "cluster": "clervo-n427s-staging",
       "clusterState": "deleted_after_evidence_capture",
-      "dataDisk": "clervo-n426-staging-data",
+      "dataDisk": "clervo-n427s-data",
       "dataDiskState": "deleted_after_evidence_capture",
       "legacyResourcesReadOrMutated": false
     },
@@ -293,6 +293,21 @@
       "mandatoryGatesPassed": false,
       "browserSuccessfulRuns": 18,
       "browserAttemptedRuns": 20,
+      "mockX402Executed": false,
+      "activeComputeUsdPerDay": 0,
+      "retainedIdleExposureUsdPerDay": 0
+    },
+    "n427sQualification": {
+      "finalRunCount": 1,
+      "mandatoryQualityGatesPassed": false,
+      "aggregateLiveRouteGatesPassed": true,
+      "completeEverySourceQualificationPassed": false,
+      "browserSuccessfulRuns": 4,
+      "browserAttemptedRuns": 20,
+      "hostileRuns": 0,
+      "hostileAttempts": 8,
+      "operationsMandatoryGatesPassed": true,
+      "dailyExposureGatePassed": false,
       "mockX402Executed": false,
       "activeComputeUsdPerDay": 0,
       "retainedIdleExposureUsdPerDay": 0
@@ -324,22 +339,38 @@
         "result": "blocked_mandatory_gates_failed"
       },
       {
+        "ticket": "N4.27R",
+        "status": "complete",
+        "result": "controlled_repair_entry_passed"
+      },
+      {
+        "ticket": "N4.27S",
+        "status": "complete",
+        "result": "staging_qualification_failed"
+      },
+      {
+        "ticket": "N4.27T",
+        "status": "pending",
+        "reason": "separate_authority_required_for_new_corpus_and_failure_remediation",
+        "dependsOn": ["N4.27S"]
+      },
+      {
         "ticket": "N4.28",
         "status": "pending",
-        "reason": "blocked_until_n4.27r_passes_and_is_separately_authorized",
-        "dependsOn": ["N4.27"]
+        "reason": "blocked_until_stage4_passes_and_is_separately_authorized",
+        "dependsOn": ["N4.27T"]
       }
     ],
     "smallestRepairTicket": {
-      "ticket": "N4.27R",
-      "status": "unauthorized",
-      "reason": "representative_lawful_supply_and_deterministic_browser_repair_required"
+      "ticket": "N4.27T",
+      "status": "proposed_only",
+      "reason": "developer_retrieval_browser_hostile_and_cost_overlap_remediation_required"
     },
     "externalBlocker": {
       "status": "blocked_external",
-      "reasons": ["n427r_separate_authority_required"],
+      "reasons": ["n427t_separate_authority_required"],
       "ownerIntervention": [
-        "Separately authorize N4.27R to replace the narrow lawful supply/index, add labelled duplicate and hostile-page fixtures, make browser fixtures local and deterministic, and freeze a new independent holdout without reusing or rerunning the N4.27 holdout."
+        "Separately authorize N4.27T to use N4.27S evidence read-only, repair developer retrieval, browser/hostile reliability and cost-overlap enforcement, and freeze a new independent corpus without rerunning N4.27S final data."
       ]
     },
     "referencePatternAuthorized": false,

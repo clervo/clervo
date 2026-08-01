@@ -1,0 +1,223 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: clervo-n427s-staging
+  labels: {product: clervo, ticket: n4-27s, environment: staging}
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata: {name: clervo-n427s-hard-ceilings, namespace: clervo-n427s-staging}
+spec:
+  hard:
+    requests.cpu: "1600m"
+    requests.memory: "3Gi"
+    limits.cpu: "2"
+    limits.memory: "5Gi"
+    requests.storage: "10Gi"
+    persistentvolumeclaims: "1"
+    pods: "10"
+    services: "3"
+---
+apiVersion: v1
+kind: LimitRange
+metadata: {name: clervo-n427s-container-limits, namespace: clervo-n427s-staging}
+spec:
+  limits:
+    - type: Container
+      defaultRequest: {cpu: "50m", memory: "64Mi"}
+      default: {cpu: "250m", memory: "256Mi"}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata: {name: clervo-n427s-data, labels: {product: clervo, ticket: n4-27s}}
+spec:
+  capacity: {storage: 10Gi}
+  accessModes: [ReadWriteOnce]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: clervo-n427s-static
+  gcePersistentDisk: {pdName: clervo-n427s-data, fsType: ext4}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: clervo-n427s-data, namespace: clervo-n427s-staging}
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: clervo-n427s-static
+  volumeName: clervo-n427s-data
+  resources: {requests: {storage: 10Gi}}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: clervo-n427s-runtime, namespace: clervo-n427s-staging}
+automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: clervo-n427s-browser, namespace: clervo-n427s-staging}
+automountServiceAccountToken: false
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: clervo-n427s-default-deny, namespace: clervo-n427s-staging}
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: clervo-n427s-meilisearch, namespace: clervo-n427s-staging, labels: {app: clervo-n427s-meilisearch}}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: clervo-n427s-meilisearch}}
+  template:
+    metadata: {labels: {app: clervo-n427s-meilisearch, ticket: n4-27s}}
+    spec:
+      serviceAccountName: clervo-n427s-runtime
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext: {runAsNonRoot: true, runAsUser: 1000, runAsGroup: 1000, fsGroup: 1000, seccompProfile: {type: RuntimeDefault}}
+      initContainers:
+        - name: clervo-n427s-volume-owner
+          image: __SEARCH_IMAGE__
+          command: [/bin/sh, -c, "mkdir -p /var/lib/clervo-n427s/meili /var/lib/clervo-n427s/cache /var/lib/clervo-n427s/dumps /var/lib/clervo-n427s/snapshots && chown -R 1000:1000 /var/lib/clervo-n427s"]
+          securityContext: {runAsUser: 0, runAsNonRoot: false, allowPrivilegeEscalation: false, capabilities: {drop: [ALL], add: [CHOWN, FOWNER, DAC_OVERRIDE]}}
+          resources: {requests: {cpu: "10m", memory: "16Mi"}, limits: {cpu: "50m", memory: "32Mi"}}
+          volumeMounts: [{name: data, mountPath: /var/lib/clervo-n427s}]
+      containers:
+        - name: meilisearch
+          image: __MEILI_IMAGE__
+          ports: [{name: http, containerPort: 7700}]
+          env:
+            - {name: MEILI_ENV, value: production}
+            - {name: MEILI_NO_ANALYTICS, value: "true"}
+            - {name: MEILI_DB_PATH, value: /var/lib/clervo-n427s/meili}
+            - {name: MEILI_DUMP_DIR, value: /var/lib/clervo-n427s/dumps}
+            - {name: MEILI_SNAPSHOT_DIR, value: /var/lib/clervo-n427s/snapshots}
+            - {name: MEILI_MASTER_KEY, valueFrom: {secretKeyRef: {name: clervo-n427s-meili, key: masterKey}}}
+          resources: {requests: {cpu: "150m", memory: "256Mi"}, limits: {cpu: "400m", memory: "768Mi"}}
+          securityContext: {allowPrivilegeEscalation: false, capabilities: {drop: [ALL]}}
+          volumeMounts: [{name: data, mountPath: /var/lib/clervo-n427s}]
+      volumes: [{name: data, persistentVolumeClaim: {claimName: clervo-n427s-data}}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: clervo-n427s-meilisearch, namespace: clervo-n427s-staging}
+spec: {type: ClusterIP, selector: {app: clervo-n427s-meilisearch}, ports: [{name: http, port: 7700, targetPort: 7700}]}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: clervo-n427s-search, namespace: clervo-n427s-staging, labels: {app: clervo-n427s-search}}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: clervo-n427s-search}}
+  template:
+    metadata: {labels: {app: clervo-n427s-search, ticket: n4-27s}}
+    spec:
+      serviceAccountName: clervo-n427s-runtime
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext: {runAsNonRoot: true, runAsUser: 1000, runAsGroup: 1000, fsGroup: 1000, seccompProfile: {type: RuntimeDefault}}
+      containers:
+        - name: search
+          image: __SEARCH_IMAGE__
+          ports: [{name: http, containerPort: 8080}]
+          env:
+            - {name: CLERVO_N427S_DATA_ROOT, value: /var/lib/clervo-n427s/cache}
+            - {name: CLERVO_N427S_MEILI_ENDPOINT, value: "http://clervo-n427s-meilisearch:7700/"}
+            - {name: CLERVO_N427S_MAXIMUM_OPERATIONS, value: "900"}
+            - {name: CLERVO_N427S_MAXIMUM_CONCURRENT_ROUTES, value: "2"}
+            - {name: CLERVO_N427S_OPERATION_COST_CEILING_USD, value: "0.002"}
+            - {name: CLERVO_N427S_MEILI_MASTER_KEY_FILE, value: /var/run/clervo-n427s-meili/masterKey}
+          readinessProbe: {httpGet: {path: /healthz, port: 8080}, initialDelaySeconds: 10, periodSeconds: 5, timeoutSeconds: 3, failureThreshold: 36}
+          livenessProbe: {httpGet: {path: /healthz, port: 8080}, initialDelaySeconds: 300, periodSeconds: 15, timeoutSeconds: 3}
+          resources: {requests: {cpu: "200m", memory: "256Mi"}, limits: {cpu: "650m", memory: "1Gi"}}
+          securityContext: {allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: [ALL]}}
+          volumeMounts:
+            - {name: data, mountPath: /var/lib/clervo-n427s}
+            - {name: meili-key, mountPath: /var/run/clervo-n427s-meili, readOnly: true}
+            - {name: temp, mountPath: /tmp}
+      volumes:
+        - {name: data, persistentVolumeClaim: {claimName: clervo-n427s-data}}
+        - {name: meili-key, secret: {secretName: clervo-n427s-meili, defaultMode: 256}}
+        - {name: temp, emptyDir: {medium: Memory, sizeLimit: 32Mi}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: clervo-n427s-search, namespace: clervo-n427s-staging}
+spec: {type: ClusterIP, selector: {app: clervo-n427s-search}, ports: [{name: http, port: 8080, targetPort: 8080}]}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: clervo-n427s-gateway, namespace: clervo-n427s-staging, labels: {app: clervo-n427s-gateway}}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: clervo-n427s-gateway}}
+  template:
+    metadata: {labels: {app: clervo-n427s-gateway, ticket: n4-27s}}
+    spec:
+      serviceAccountName: clervo-n427s-runtime
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext: {runAsNonRoot: true, runAsUser: 1000, runAsGroup: 1000, seccompProfile: {type: RuntimeDefault}}
+      containers:
+        - name: gateway
+          image: __GATEWAY_IMAGE__
+          ports: [{name: proxy, containerPort: 8080}]
+          env: [{name: CLERVO_N427S_GATEWAY_MAXIMUM_ACTIVE, value: "2"}]
+          resources: {requests: {cpu: "50m", memory: "64Mi"}, limits: {cpu: "200m", memory: "256Mi"}}
+          securityContext: {allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: [ALL]}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: clervo-n427s-gateway, namespace: clervo-n427s-staging}
+spec: {type: ClusterIP, selector: {app: clervo-n427s-gateway}, ports: [{name: proxy, port: 8080, targetPort: 8080}]}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: clervo-n427s-meili-network, namespace: clervo-n427s-staging}
+spec:
+  podSelector: {matchLabels: {app: clervo-n427s-meilisearch}}
+  policyTypes: [Ingress, Egress]
+  ingress: [{from: [{podSelector: {matchLabels: {app: clervo-n427s-search}}}], ports: [{protocol: TCP, port: 7700}]}]
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: clervo-n427s-search-network, namespace: clervo-n427s-staging}
+spec:
+  podSelector: {matchLabels: {app: clervo-n427s-search}}
+  policyTypes: [Ingress, Egress]
+  ingress: [{from: [{namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: clervo-n427s-staging}}}], ports: [{protocol: TCP, port: 8080}]}]
+  egress:
+    - to: [{namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}}]
+      ports: [{protocol: UDP, port: 53}, {protocol: TCP, port: 53}]
+    - to: [{podSelector: {matchLabels: {app: clervo-n427s-meilisearch}}}]
+      ports: [{protocol: TCP, port: 7700}]
+    - to: [{ipBlock: {cidr: 0.0.0.0/0, except: [0.0.0.0/8, 10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.168.0.0/16, 224.0.0.0/4]}}]
+      ports: [{protocol: TCP, port: 443}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: clervo-n427s-gateway-network, namespace: clervo-n427s-staging}
+spec:
+  podSelector: {matchLabels: {app: clervo-n427s-gateway}}
+  policyTypes: [Ingress, Egress]
+  ingress: [{from: [{podSelector: {matchLabels: {app: clervo-n427s-browser}}}], ports: [{protocol: TCP, port: 8080}]}]
+  egress:
+    - to: [{namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}}]
+      ports: [{protocol: UDP, port: 53}, {protocol: TCP, port: 53}]
+    - to: [{ipBlock: {cidr: 0.0.0.0/0, except: [0.0.0.0/8, 10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.168.0.0/16, 224.0.0.0/4]}}]
+      ports: [{protocol: TCP, port: 80}, {protocol: TCP, port: 443}]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: clervo-n427s-browser-network, namespace: clervo-n427s-staging}
+spec:
+  podSelector: {matchLabels: {app: clervo-n427s-browser}}
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress:
+    - to: [{namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: kube-system}}}]
+      ports: [{protocol: UDP, port: 53}, {protocol: TCP, port: 53}]
+    - to: [{podSelector: {matchLabels: {app: clervo-n427s-gateway}}}]
+      ports: [{protocol: TCP, port: 8080}]
