@@ -942,3 +942,35 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Exact next proposed product task remains N4.27T under separate owner
   authority. N4.27T, N4.28, mock x402, Stage 5, AI, Sandbox, production release,
   real payment and all later stages remain unauthorized. Stop here.
+
+## 2026-08-01 — Native terminal-selection fallback
+
+- Classified the follow-up as exact owner-authorized Codex/tmux control-plane
+  maintenance after Shift-drag failed in the attached browser terminal. No
+  product code, behavior, lifecycle, stage, payment state or public claim was
+  changed.
+- Confirmed the live client was `xterm-256color` with clipboard capability,
+  tmux mouse capture enabled, default drag-to-copy bindings and a 200,000-line
+  history. The terminal did not provide the expected Shift mouse bypass.
+- Added a persistent conflict-free `prefix+y` binding: Ctrl+B followed by `y`
+  toggles tmux mouse capture off for native click-drag highlighting and back on
+  for wheel scrolling. The repository template and installed `.tmux.conf` are
+  byte-identical, and the existing `clervo` server loaded the binding with mouse
+  still on by default.
+- Health evidence at
+  `docs/evidence/codex-studio/raw/terminal-native-copy-fallback-health.json`
+  passed installed-copy, binding, isolated mouse-on → mouse-off → mouse-on,
+  200,000-line history and all existing studio checks. Typecheck, lint across
+  256 files, npm audits, Node/JSON parsing, secret scanning, clean-room boundary
+  and diff integrity passed. Product tests and the protected Stage 4 verifier
+  did not run.
+- External effects were limited to routine cached/install and npm audit
+  metadata. No provider, cloud, deployment, IAM/billing, secret, production,
+  wallet, payment or USDC action occurred. Cost was USD 0.000000 and 0 USDC.
+  The isolated preflight and health tmux servers were terminated; the live
+  `clervo` session remains attached with no task container or billable residue.
+- Implementation commit:
+  `185d0ee` (`fix(tmux): add native selection fallback`).
+- Product truth and authorization are unchanged. N4.27T remains the exact next
+  proposed product ticket under separate authority; N4.27T, N4.28, mock x402,
+  Stage 5 and later work remain unauthorized. Stop here.
