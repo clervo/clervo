@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "clervo.n4.27t.cloud-qualification-freeze.v1",
+  "ticket": "N4.27T",
+  "frozenAt": "2026-08-01T20:12:39.000Z",
+  "status": "implementation_frozen_validation_not_executed",
+  "implementationParentCommit": "8af7b665531fff75f021603f68cd335f8b4ba8af",
+  "implementationCommitRule": "commit_containing_this_freeze_before_image_build",
+  "validationExecutionCount": 0,
+  "maximumValidationExecutions": 1,
+  "n427sFinalMaterialUsed": false,
+  "artifactSha256": {
+    "benchmarks/n4.27t/validation-corpus.v1.json": "sha256:ff6084ca501644d6b1ffacfa0aca400c86bf7b2e474545b8be6d4dc945d9a109",
+    "benchmarks/n4.27t/validation-labels.v1.json": "sha256:57b6e54e4643a0f862883155213a1f4e8ba0d410c26015f34aefe74ccbfa8a86",
+    "benchmarks/n4.27t/split-freeze.v1.json": "sha256:b09d0818f18185f850f95b0b1da6af2a722625fe396c13693bf2a8235a5596e1",
+    "infra/n4.27t/developer-registry.mjs": "sha256:239f8b206fd508f6808d62c6fadaf401581bc96cfc764100440f22118bb9a06f",
+    "infra/n4.27t/browser-runtime.mjs": "sha256:edb79c59ec8acc7efb585da902569b0486ea3f4c0368be90ddf19aaab55fcb24",
+    "infra/n4.27t/validation-browser-worker.mjs": "sha256:6cb6625db34bf063310ad441a03c10a298f9172ce0a383fb4ef385efd1233b8f",
+    "infra/n4.27t/qualify-validation.mjs": "sha256:8b420131b59cb45ece906409669ac92227e74a22bf86fa5e99798fd04b900465",
+    "infra/n4.27t/qualification.Dockerfile": "sha256:b8ab6ac6112b6e87a6fa3c846449b6fdb3226bc61421e8a5a21cdebb8677b95d",
+    "infra/n4.27t/qualification-job.yaml": "sha256:aabbd615d652cff3a6ddbca20ba9d854293a42385233475e6e45ce56bce3ed81",
+    "infra/n4.27t/cloud-execution-plan.v1.json": "sha256:b0cfad45e1bc7082a66bd5893bf3797b5dfc9c5979ca9a306cd21bc4ef14c91c"
+  },
+  "imageDigest": null,
+  "executionManifest": null,
+  "result": null
+}

@@ -1,32 +1,27 @@
 {
   "schemaVersion": "clervo.autonomous-dispatch-state.v1",
   "policy": "infra/control-plane/autonomous-completion-policy.v1.json",
-  "evaluatedAt": "2026-08-01T19:24:26.000Z",
-  "programStatus": "blocked_owner",
+  "evaluatedAt": "2026-08-01T20:12:39.000Z",
+  "programStatus": "active",
   "currentStage": 4,
   "activeTicket": {
     "id": "N4.27T",
-    "state": "blocked_owner",
-    "result": "repository_local_repair_ready_cloud_unverified",
-    "closeoutCommit": "commit_containing_n4.27t_local_closeout",
-    "scope": "Prepared and validated a new independently pre-split repair for developer-registry retrieval, browser/hostile reliability and resource-overlap cost enforcement without executing protected N4.27S evidence or any cloud effect."
+    "state": "active",
+    "result": "isolated_cloud_qualification_authorized_not_executed",
+    "closeoutCommit": null,
+    "scope": "Execute the hash-bound N4.27T validation exactly once in one isolated zonal GKE cluster, preserve the result, synchronously clean all exact ticket resources, and stop."
   },
   "nextTicket": {
-    "id": "N4.27T",
-    "title": "N4.27T isolated cloud qualification continuation",
-    "scopeSource": "docs/tickets/N4.27T.md#stop-condition",
-    "ownerAuthority": "not_yet_supplied_for_external_effect",
-    "localAdmission": "blocked_owner",
-    "cloudAdmission": "blocked_owner_input_and_authority",
+    "id": "N4.28",
+    "title": "N4.28 remaining Stage 4 closure",
+    "scopeSource": "external master plan Stage 4 queue",
+    "ownerAuthority": "nplan4_dispatch_only_after_stage4_predecessor_closeout",
+    "localAdmission": "blocked_gate",
+    "cloudAdmission": "not_in_scope",
     "paymentAdmission": "not_in_scope",
-    "sealedBoundary": "N4.27S final corpus and final evidence remain read-only; use a new independent pre-split corpus and isolated procedure."
+    "sealedBoundary": "N4.27T validation is frozen and may execute once only; its observed result cannot be tuned or rerun."
   },
   "immediateOwnerBlockers": [
-    {
-      "inputId": "cloud_project_identity_and_budget_envelope",
-      "blocks": "N4.27T isolated cloud create and qualification phase",
-      "doesNotBlock": "N4.27T repository-local audit, design, implementation, fixtures, pre-split corpus preparation, and local validation"
-    },
     {
       "inputId": "autonomous_external_authority_trust_root",
       "blocks": "Unattended admission of every credential, cloud, production, customer, registry, domain, legacy, or real-payment effect",
@@ -45,6 +40,16 @@
   },
   "activeAuthorityBindings": {
     "trustedExternalManifestAdmission": "not_implemented_fail_closed",
+    "separatelyExplicitCloudAction": {
+      "authorized": true,
+      "ticketId": "N4.27T",
+      "authoritySource": "owner_interactive_instruction_outside_workspace_manifest",
+      "planRef": "infra/n4.27t/cloud-execution-plan.v1.json",
+      "planSha256": "sha256:b0cfad45e1bc7082a66bd5893bf3797b5dfc9c5979ca9a306cd21bc4ef14c91c",
+      "maximumGrossCostUsd": 5,
+      "maximumConfiguredExposureUsdPerDay": 5,
+      "validationMaximumExecutions": 1
+    },
     "realPayment": {
       "authorized": false,
       "ticketId": null,
