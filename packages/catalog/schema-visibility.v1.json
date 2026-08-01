@@ -2,6 +2,8 @@
   "policyVersion": "2026-08-01.1",
   "defaultVisibility": "deny",
   "schemas": [
+    { "file": "ai-model-catalog.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-model-catalog.schema.json", "visibility": "internal_control", "reason": "Internal AI route inventory and qualification state." },
+    { "file": "ai-route-qualification.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-route-qualification.schema.json", "visibility": "internal_control", "reason": "Internal exact-model qualification evidence." },
     { "file": "adapter-manifest.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/adapter-manifest.schema.json", "visibility": "internal_control", "reason": "Provider adapter control-plane contract." },
     { "file": "alert-event.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/alert-event.schema.json", "visibility": "internal_control", "reason": "Operational alert contract." },
     { "file": "audit-event.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/audit-event.schema.json", "visibility": "internal_control", "reason": "Internal audit record contract." },

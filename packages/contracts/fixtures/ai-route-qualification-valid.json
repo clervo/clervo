@@ -1,0 +1,32 @@
+{
+  "schema": "ai-route-qualification",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "schemaVersion": "ai-route-qualification.v1",
+    "qualificationId": "aiqual_01K0AIQUALIFICATION00001",
+    "routeId": "ai.route.recorded_chat",
+    "providerId": "provider.recorded",
+    "supplyFamilyId": "supply.recorded_test",
+    "exactModelId": "recorded-chat-v1",
+    "productIds": ["ai.chat"],
+    "checkedAt": "2026-08-01T23:30:00.000Z",
+    "expiresAt": "2026-08-08T23:30:00.000Z",
+    "status": "blocked",
+    "termsStatus": "unreviewed",
+    "resaleAllowed": false,
+    "checks": [
+      { "name": "authentication", "status": "not_run" },
+      { "name": "exact_identity", "status": "not_run" },
+      { "name": "input_dependence", "status": "not_run" },
+      { "name": "output_shape", "status": "not_run" },
+      { "name": "usage_reporting", "status": "not_run" },
+      { "name": "latency", "status": "not_run" },
+      { "name": "failure_handling", "status": "not_run" },
+      { "name": "cost_ceiling", "status": "not_run" },
+      { "name": "terms", "status": "not_run" }
+    ],
+    "observed": {},
+    "qualificationHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  }
+}
