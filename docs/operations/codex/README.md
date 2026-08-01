@@ -69,8 +69,10 @@ The source templates are under `docs/operations/codex/profiles`; installed
 copies are `$CODEX_HOME/<profile>.config.toml`. The installer places pinned
 packages and the hook under `$CODEX_HOME/studio` and the command rules under
 `$CODEX_HOME/rules` without storing authentication material. Every profile
-starts with the Codex alternate screen disabled and raw scrollback enabled, so
-terminal history remains directly selectable and copyable. The installer also
+starts with the Codex alternate screen disabled and formatted chat enabled, so
+conversation roles, Markdown, code, and tool output remain visually distinct
+while terminal history stays in the tmux pane. Use `/raw` or Alt+R only as a
+temporary copy-friendly view, then toggle it off again. The installer also
 copies `docs/operations/codex/tmux.conf` to the current devbox user's
 `.tmux.conf`; tmux mouse scrolling is enabled with a 200,000-line pane history.
 Normal mouse drag uses tmux copy mode and attempts a terminal clipboard copy on

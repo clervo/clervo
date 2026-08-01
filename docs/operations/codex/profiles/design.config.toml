@@ -8,7 +8,7 @@ allow_login_shell = false
 
 [tui]
 alternate_screen = "never"
-raw_output_mode = true
+raw_output_mode = false
 
 [sandbox_workspace_write]
 writable_roots = ["/workspace/clervo-next"]

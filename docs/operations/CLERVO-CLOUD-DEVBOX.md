@@ -14,8 +14,9 @@ authority. A proposed product ticket is not authorization.
    unexplained change.
 2. Run `bash scripts/codex-studio/install.sh` after a clean-VM restore, profile
    change, lockfile change, Codex-home repair, or terminal/tmux reset. This
-   restores raw Codex scrollback, disables the alternate screen, and installs
-   mouse-enabled tmux defaults with a 200,000-line history buffer.
+   restores formatted Codex chat, disables the alternate screen, and installs
+   mouse-enabled tmux defaults with a 200,000-line history buffer. Raw mode is
+   a temporary `/raw` or Alt+R copy view, not the persistent default.
 3. Run `node scripts/codex-studio/health-check.mjs`.
 4. Launch the least-privileged matching profile using the commands in
    `docs/operations/codex/README.md`.

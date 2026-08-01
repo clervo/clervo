@@ -33,9 +33,9 @@ for (const profile of profiles) {
   const installed = await readFile(installedPath);
   record(`profile-copy:${profile}`, source.equals(installed), { sha256: createHash("sha256").update(source).digest("hex") });
   const profileText = source.toString("utf8");
-  record(`profile-terminal:${profile}`, profileText.includes('[tui]\nalternate_screen = "never"\nraw_output_mode = true'), {
+  record(`profile-terminal:${profile}`, profileText.includes('[tui]\nalternate_screen = "never"\nraw_output_mode = false'), {
     alternateScreen: "never",
-    rawOutputMode: true,
+    rawOutputMode: false,
   });
   const parse = run(`profile-start:${profile}`, "codex", ["--profile", profile, "debug", "prompt-input", "Profile startup probe."]);
   const expectedMode = ["studio-maintenance", "browser-debug", "visual-qa"].includes(profile) ? "danger-full-access" : "workspace-write";

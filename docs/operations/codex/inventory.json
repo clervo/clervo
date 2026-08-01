@@ -11,7 +11,7 @@
   },
   "terminal": {
     "codexAlternateScreen": "never",
-    "codexRawOutputMode": true,
+    "codexRawOutputMode": false,
     "tmuxMouse": true,
     "tmuxHistoryLimit": 200000,
     "tmuxNativeSelectionToggle": "prefix+y"
