@@ -114,8 +114,10 @@ documentation, discovery, JSON-LD, sitemap, SEO, and distribution pass.
 
 Only Search is currently a `preview`; the other five cores are `unavailable`
 and have not started implementation. N4.27S left five Stage 4 blockers.
-N4.27T is owner-authorized under its recorded scope and stop conditions but
-paused before implementation, and does not authorize a later roadmap stage.
+NPLAN.4 is complete at its governance boundary, and N4.27T is the next admitted
+repository-local ticket under its recorded owner authorization; its cloud phase
+remains separately owner-input and explicit-authority gated, and it does not authorize a later roadmap
+stage.
 
 ## Promotion rule
 

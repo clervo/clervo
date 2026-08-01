@@ -1128,3 +1128,78 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Final repair validation and the new external-master hash are recorded in
   `docs/evidence/NPLAN.3R-acceptance-handoff-repair.md`.
 - Commit this bounded repair and stop before NPLAN.4 or product work.
+
+## 2026-08-01 — NPLAN.4 standing autonomous completion and owner-input package
+
+- The owner explicitly authorized continuous progress toward the truthful
+  all-six roadmap without repeated per-ticket approval, bounded repair tickets
+  for terminal failures, an exhaustive owner-only prerequisite list, safe x402
+  preparation, and USD 0 mandatory paid API dependency. NPLAN.4 translated
+  that mandate into fail-closed standing program authority; it did not grant
+  unlimited cloud, production, payment, lifecycle, cost, or secret authority.
+- Installed a private repository control plane with one exact ticket lease, one
+  worker cycle per ticket, clean predecessor and stage admission, fresh-cycle
+  dispatch, and explicit truth, evidence, cost, owner-input, cleanup, terms, and
+  unknown-outcome checks. Expected red/green defects stay inside the active
+  ticket; terminal closeout failures, post-commit regressions, and failed
+  qualifications create exact repair tickets. Two consecutive same-cause
+  repairs require an architecture decision.
+- Audited 29 genuinely human responsibilities and deduplicated them into 25
+  machine intake groups. Added a human guide, ignored input templates, and
+  operational validators for filled owner and prepared non-authoritative
+  external/x402 packages. Missing owner input blocks only the affected action
+  and cannot be invented, inferred, or used to skip a gate.
+- Fixed mandatory paid, eventually paid, trial-to-bill, and automatic-overage
+  third-party API cash spend at USD 0. Infrastructure spend remains separately
+  explicit, owner-input-bound, and explicitly authorized. No paid provider,
+  model inference, cloud, deployment, IAM/billing, production, domain, registry, customer, wallet,
+  payment, USDC, or legacy action occurred. Direct material cost was USD
+  0.000000, USDC spent was 0, the 0.03 USDC reserve remains untouched, and
+  active incremental exposure remains USD 0/day.
+- Prepared a dormant Stage 15 x402 input path that uses a public receiver
+  `payTo` address and separate payer address with a restricted wallet/KMS/HSM/
+  hardware/unix signer service reference. Raw keys, seeds, raw signer files,
+  signatures, and payment headers are forbidden from chat, Git, environment
+  dumps, arguments, logs, and evidence. The prepared input pins x402 v2, CAIP-2
+  network, exact six-decimal USDC asset, atomic amount, fees, facilitator,
+  expiry, request identity, one execution, evidence, alerts, kill switch, and
+  reconciliation. It caps proof spend at 0.01 USDC, preserves at least 0.02
+  USDC, and quarantines unknown settlement without a new authorization.
+- An independent read-only audit identified five pre-commit defects: a
+  bootstrap-state-specific validator, incomplete authorized-state validation,
+  a raw-file-capable payer signer reference, incomplete secondary alert
+  coordinates, and unfinished closeout evidence. All five were repaired before
+  commit. Future dispatch states now validate generically and prepared input
+  packages are covered by adversarial focused tests.
+- A second independent security audit then proved that self-declared workspace
+  hashes and approval references were forgeable and that lifecycle/stage
+  booleans could falsely declare completion. NPLAN.4 now rejects `authorized`
+  external/x402 workspace files, requires separate explicit owner authority for
+  external effects until a signed owner-controlled supervisor exists, adds that
+  trust root to the owner-only package, and derives completion from eight
+  ordered canonical evidence files with actual byte hashes, verifier/gate
+  metadata, and ancestor subject commits. It also repaired
+  future-dated envelopes, cleanup/runtime/credential validation, exact-resource
+  wildcards, all required x402 evidence flags, and a final bypass that could
+  label cloud/payment admission ready while trusted enforcement was unavailable.
+- Focused validation passed: autonomous-completion verifier; NPLAN.4 contract
+  tests 5/5; NPLAN.1, NPLAN.2, and NPLAN.3 regressions 2/2, 2/2, and 5/5;
+  TypeScript typecheck; lint across 259 source/contract files; product-scope
+  consistency; secret scan; clean-room boundary; JSON and Node syntax; active
+  transition/contradiction scan; and Git diff integrity. Canonical `npm test`
+  and the protected Stage 4 verifier did not run.
+- Product truth is unchanged. Search remains `preview`; the other five pillars
+  remain `unavailable`; Stage 4 retains five blockers; Search is not the
+  reference pattern; Stage 5 and the First Revenue Release remain false. No
+  sealed or once-only evidence was inspected, changed, executed, or authorized
+  for rerun.
+- Starting commit:
+  `bc92aa2a3309815d3008220fe2a284cf22111dc6`. Final implementation commit is
+  the commit containing this append-only entry and NPLAN.4 closeout evidence.
+- After atomic commit and a clean post-commit check, stop this worker. A fresh
+  cycle may admit N4.27T repository-local work under its recorded scope. Keep
+  N4.27S final evidence read-only and use a new independent pre-split
+  procedure. The N4.27T cloud phase remains owner-blocked on exact finite cloud
+  inputs and separate explicit authority; unattended admission also needs the
+  signed trust boundary. N4.28, mock x402, Stage 5, production, real payment,
+  later pillars, and legacy mutation remain outside this ticket.

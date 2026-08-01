@@ -6,9 +6,16 @@ The First Revenue Release is the all-six **Clervo Platform**: Live Intelligence/
 
 ## Current state
 
-Tickets **N0.1** through **N4.27S**, NPLAN.1, and NPLAN.2 are complete at their recorded boundaries. The forward-only NPLAN.3 decision changes the future launch program; it does not rewrite those historical outcomes. N4.27S completed one frozen private-staging qualification and failed its mandatory product gate: combined recall/precision were 0.8000/0.6803, browser qualification was 4/20, and hostile-page execution was 0/8. Five Stage 4 blockers remain: isolated JavaScript retrieval, prompt-injection boundaries, separate raw and synthesis prices, a deployed paid route, and cost-cap compliance. Mock x402 and payment were not started. Search is not commercially competitive, production-qualified, or the reference pattern, and Stage 5 remains unauthorized.
+Tickets **N0.1** through **N4.27S**, NPLAN.1, NPLAN.2, NPLAN.3, and its NPLAN.3R handoff repair are complete at their recorded boundaries. NPLAN.3 changes the future launch program; it does not rewrite those historical outcomes. N4.27S completed one frozen private-staging qualification and failed its mandatory product gate: combined recall/precision were 0.8000/0.6803, browser qualification was 4/20, and hostile-page execution was 0/8. Five Stage 4 blockers remain: isolated JavaScript retrieval, prompt-injection boundaries, separate raw and synthesis prices, a deployed paid route, and cost-cap compliance. Mock x402 and payment were not started. Search is not commercially competitive, production-qualified, or the reference pattern, and Stage 5 remains unauthorized.
 
-The owner explicitly authorized **N4.27T** under its recorded scope and stop conditions. It is paused before implementation while the NPLAN.3 planning surfaces are synchronized. That authorization does not start N4.28, mock x402, payment, Stage 5, any of the five unavailable product cores, or a later roadmap stage.
+NPLAN.4 is complete at its governance boundary. It installs one-ticket fresh-
+cycle dispatch, bounded repair tickets, a one-time owner prerequisite package,
+and a USD 0 mandatory paid-API cash rule. **N4.27T** is the next admitted
+repository-local ticket under its existing owner authorization. Its cloud phase
+remains blocked on exact owner-prepared resource/cost/cleanup inputs and a
+separate explicit owner action until trusted signed-manifest enforcement exists.
+That authorization does not start N4.28, mock x402, payment, Stage 5, any unavailable
+product core, or a later roadmap stage.
 
 The selected foundation is TypeScript on Node.js 24 LTS, PostgreSQL 18, and pg-boss 12 backed by the same PostgreSQL cluster. npm manages the workspace. `packages/contracts` remains the source of truth for versioned contracts and lifecycle. The truthful launch scope is all six pillars, with Search `preview`, five pillars `unavailable`, the release gate false, and public payment readiness false. N4.18's immutable private recorded-only release `2f6fd6c` remains the last verified release deployment; N4.26 through N4.27S were temporary qualification work, not releases. N4.27S cleaned up its isolated resources, leaving USD 0/day active incremental exposure. The remaining Stage 4 proof, all five unavailable product cores, cross-pillar freeze, shared access and distribution layer, payable settlement, production deployment, and external useful paid demand remain unimplemented or unverified.
 
@@ -21,6 +28,12 @@ The controlling plan is:
 The canonical repository launch authority is:
 
 `docs/product/CLERVO-LIVE-INTELLIGENCE-LAUNCH-AUTHORITY.md`
+
+Autonomous completion and the owner-only package are documented at:
+
+`docs/operations/AUTONOMOUS-COMPLETION.md`
+
+`docs/operations/OWNER-ONLY-PREREQUISITES.md`
 
 ## Runtime setup
 
@@ -41,6 +54,7 @@ Run:
 
 ```sh
 npm run verify:runtime
+npm run verify:autonomous-completion
 npm test
 npm run staging:smoke
 ```

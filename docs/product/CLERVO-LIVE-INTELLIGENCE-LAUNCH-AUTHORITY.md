@@ -4,6 +4,8 @@
 
 **Decision ticket:** NPLAN.3
 
+**Completion-governance amendment:** NPLAN.4
+
 **Effective date:** 2026-08-01
 **Canonical copy:** this file; its historical path is retained to avoid link churn
 
@@ -275,16 +277,31 @@ Each needs current identity, terms/resale, rights, privacy, quota, region, cost,
 hard ceiling, monitoring, health, fallback, and lifecycle qualification.
 Secrets and customer payloads never enter planning or public evidence.
 
-Core Search retains USD 0 mandatory third-party general-Web provider API cost.
-Infrastructure cost is real and must be measured, capped, monitored, and priced.
-Cloud/IAM/deployment mutations require an exact ticket, environment, resource
-allowlist, gross/daily ceiling, cleanup procedure, and unknown-outcome handling.
+Every required product-core and release path retains USD 0 mandatory paid,
+eventually-paid, or trial-to-bill third-party API cash cost. Qualified open-
+source/self-hosted supply, permitted public data, billing-disabled free official
+endpoints, explicit existing credits with a zero-cash ceiling, and optional
+customer BYOC adapters may be considered. None is working supply until its
+identity, terms, rights, privacy, quota, health, fallback, cost, and lifecycle
+pass. Hidden model-token spend and automatic overages are prohibited.
+
+Infrastructure cost is real and must be measured, capped, monitored, and
+priced. Cloud/IAM/deployment mutations require an exact ticket plus a finite
+owner-prepared input naming environment, resources, identities, operations,
+gross/daily/monthly ceiling, cleanup, evidence, expiry, and unknown-outcome
+handling. Until trusted signed-manifest enforcement exists, a separate explicit
+owner action is also required; workspace JSON is never authority.
 
 The 0.03 USDC reserve remains untouched until Stage 15. At least 0.02 USDC is
 reserved for final proof and contingency. Real settlement requires a separate
-exact authorization naming payer/receiver separation, recipient, network,
-asset, amount, facilitator, expiry, ceiling, evidence, reconciliation, and stop
-conditions. Owner-funded proof demonstrates plumbing, never demand or revenue.
+exact Stage 15 ticket, prepared payment input, and separate explicit owner
+authority naming payer/receiver
+separation, recipient, network, asset, amount, facilitator, expiry, ceiling,
+evidence, reconciliation, and stop conditions. The receiver supplies only its
+public `payTo` address and control attestation; its private key is neither
+required nor accepted. A different payer uses an opaque restricted signer
+reference outside chat and Git. Owner-funded proof demonstrates plumbing,
+never demand or revenue.
 
 ## 11. Authoritative future stage order
 
@@ -360,9 +377,13 @@ six-product compatibility and public truth, and launch Clervo Platform only if
 every gate passes.
 
 No stage begins before the prior exit is recorded, and no stage heading itself
-authorizes an implementation ticket.
+authorizes implementation. Under NPLAN.4, a fresh dispatcher cycle may admit
+the smallest next **exact** ticket without repeated owner approval after the
+prior ticket is committed and every admission gate passes. One worker executes
+one ticket and stops. External effects still require exact owner-prepared inputs
+and separate explicit authority until trusted signed enforcement exists.
 
-## 12. Current transition and exact stop
+## 12. Current transition and autonomous dispatch
 
 N4.27S remains completed with failed private qualification. Five Stage 4
 blockers remain: `isolated_javascript_retrieval`,
@@ -370,15 +391,22 @@ blockers remain: `isolated_javascript_retrieval`,
 `deployed_paid_route`, and `cost_caps`. Search is not commercially competitive,
 production-qualified, or the reference pattern.
 
-The owner explicitly authorized N4.27T under its recorded scope and stop
-conditions, then redirected this session to NPLAN.3 before N4.27T
-implementation or cloud mutation began. NPLAN.3 changes only forward product
-and release authority. It does not close a Stage 4 blocker or authorize Stage
-5, cloud/IAM/deployment mutation, provider calls, payment, wallet/USDC,
-production, legacy mutation, or any later product implementation.
+NPLAN.3 and its NPLAN.3R handoff repair are committed. The owner then explicitly
+authorized NPLAN.4 to replace repeated per-ticket approval with a standing
+fail-closed exact-ticket dispatcher, bounded automatic repair tickets, a one-
+time owner input package, and USD 0 mandatory third-party API cash spend.
+NPLAN.4 changes completion governance only. It does not close a Stage 4 blocker,
+change lifecycle, start a later pillar, or authorize an external effect.
+Its dispatcher binds completion to eight ordered evidence references and
+SHA-256 values. The workspace external/x402 templates are non-authoritative and
+their validators reject `authorized` until an owner-controlled trust root,
+detached signatures, revocations, and mediated enforcement are implemented.
 
-After NPLAN.3 is verified, recorded, and committed, stop. N4.27T remains the
-exact next product ticket under the owner's recorded authorization; its final
-corpus must be new and independent, N4.27S final evidence remains read-only,
-and any cloud action must also satisfy an exact environment/resource/cost/
-cleanup boundary.
+NPLAN.4 is complete at its governance boundary; its worker stops after the
+atomic commit and post-commit check. A fresh dispatch cycle admits N4.27T's
+repository-local phase under the owner's recorded authorization. N4.27S final
+evidence remains read-only; N4.27T uses a new independent pre-split corpus. Its
+cloud phase stays blocked until an exact environment/resource/identity/cost/
+cleanup owner input exists and is separately explicitly authorized. Mock x402,
+real payment, N4.28, Stage 5,
+production, and legacy work remain outside N4.27T.

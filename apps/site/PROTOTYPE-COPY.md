@@ -49,9 +49,10 @@ and repeatable real demonstration pass.
   access/design/discovery/distribution pass, production deployment, bounded
   settlement, and external useful paid proof remain incomplete.
 
-N4.27T is explicitly owner-authorized under its recorded scope and stop
-conditions but paused before implementation. That bounded authorization does
-not start Stage 5 or any unavailable product core.
+NPLAN.4 is complete at its governance boundary, and N4.27T is the next admitted
+repository-local ticket under its recorded owner authorization; cloud work
+remains separately owner-input and explicit-authority gated. That bounded authorization does not start
+Stage 5 or any unavailable product core.
 
 Shared API, MCP, SDK, onboarding, design, documentation, discovery, JSON-LD,
 sitemap, SEO, and distribution work begins once, after the Stage 12 core and

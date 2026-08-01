@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "clervo.x402-proof-authority.v1",
+  "ticketId": null,
+  "authorizationStatus": "not_authorized",
+  "authorityEffect": "none_without_trusted_external_verifier_or_separate_explicit_owner_action",
+  "environment": null,
+  "ownerApprovalReference": null,
+  "validFrom": null,
+  "expiresAt": null,
+  "integrity": {
+    "canonicalization": "RFC8785",
+    "sha256": null,
+    "verificationStatus": "not_verified_non_authoritative",
+    "revoked": false,
+    "revocationReference": null
+  },
+  "deployment": {
+    "releaseId": null,
+    "origin": null,
+    "productId": null,
+    "operationId": null,
+    "route": null,
+    "usefulResultAcceptanceRef": null
+  },
+  "receiver": {
+    "publicPayToAddress": null,
+    "ownerControlAttested": null,
+    "privateKeyRequiredOrAccepted": false
+  },
+  "payer": {
+    "publicAddress": null,
+    "differentFromReceiver": null,
+    "oneShotRestrictedSignerRef": null,
+    "signerPolicyAttestationRef": null,
+    "balanceCapAtomic": null
+  },
+  "payment": {
+    "protocolVersion": "x402-v2",
+    "scheme": "exact",
+    "networkCaip2": null,
+    "assetName": "USDC",
+    "assetContractOrMint": null,
+    "assetDecimals": null,
+    "exactAmountAtomic": null,
+    "maximumTotalAmountAtomic": null,
+    "maximumTotalUsdc": 0.01,
+    "maximumNetworkFeeUsd": null,
+    "maximumFacilitatorFeeUsd": null,
+    "maximumInfrastructureCostUsd": null,
+    "maximumExecutionCount": 1,
+    "minimumUntouchedContingencyUsdc": 0.02,
+    "quoteExpiryLimitSeconds": null
+  },
+  "facilitator": {
+    "identity": null,
+    "url": null,
+    "supportedSchemeNetworkAssetVerifiedAt": null,
+    "termsAcceptedReference": null,
+    "credentialRef": null
+  },
+  "requestIdentity": {
+    "requestHashProcedureRef": null,
+    "idempotencyKeyProcedureRef": null,
+    "nonceProcedureRef": null,
+    "operationStateAndLedgerRef": null
+  },
+  "evidence": {
+    "obtainAndCompare402BeforeSigning": true,
+    "safeTransactionIdentifierOnly": true,
+    "verifyUsefulResult": true,
+    "verifySettlementAndBalancedLedger": true,
+    "verifyReceiptAndExplorerEvidence": true,
+    "replaySameIdempotencyKeyWithoutCharge": true,
+    "recordExactSpendAndRemainingBalance": true,
+    "ownerFundedProofIsNotDemandOrRevenue": true
+  },
+  "safety": {
+    "killSwitchRef": null,
+    "alertReadinessRef": null,
+    "reconciliationProcedureRef": null,
+    "unknownSettlementAction": "quarantine_and_reconcile_without_new_authorization",
+    "newAuthorizationAfterUnknownSettlementAllowed": false
+  },
+  "stopConditions": []
+}

@@ -43,8 +43,12 @@ Search is currently `preview`; AI, Sandbox, RPC, Prediction, and Crypto
 Intelligence are `unavailable`. None of those five implementations has
 started. N4.27S left five truthful Stage 4 blockers, so Search is not
 commercially competitive, production-qualified, or the reference pattern.
-N4.27T is owner-authorized under its recorded scope and stop conditions but is
-paused before implementation. Compare, customer monitoring, changes, alerts,
+NPLAN.4 is complete at its governance boundary, and N4.27T is the next admitted
+repository-local ticket under its recorded owner authorization; its cloud phase
+still needs exact owner-prepared cloud inputs and separate explicit authority
+because workspace manifests are non-authoritative. Compare, customer
+monitoring, changes,
+alerts,
 all shared Stage 13 access and distribution surfaces, production deployment,
 payable settlement, and external demand remain unproven until their separate
 gates pass.
