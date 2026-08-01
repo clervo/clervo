@@ -1,0 +1,54 @@
+{
+  "schema": "live-intelligence-compare-request",
+  "valid": true,
+  "value": {
+    "baseline": {
+      "contractVersion": "2026-07-29.1",
+      "operationId": "op_01K0BASELINE000000000000",
+      "query": "clervo evidence change",
+      "language": "en",
+      "region": "US",
+      "generatedAt": "2026-08-01T10:00:00.000Z",
+      "deduplicatedCount": 0,
+      "results": [],
+      "citations": [],
+      "cache": {
+        "policyId": "search_cache_disclosure_v1",
+        "outcome": "miss",
+        "requestSha256": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "responseSha256": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "observedAt": "2026-08-01T10:00:00.000Z",
+        "maximumResults": 10,
+        "freshnessLifetimeSeconds": 0,
+        "ageSeconds": 0,
+        "residentAgeSeconds": 0,
+        "freshnessRemainingSeconds": 0,
+        "revalidationPerformed": false
+      }
+    },
+    "current": {
+      "contractVersion": "2026-07-29.1",
+      "operationId": "op_01K0CURRENT0000000000000",
+      "query": "clervo evidence change",
+      "language": "en",
+      "region": "US",
+      "generatedAt": "2026-08-01T11:00:00.000Z",
+      "deduplicatedCount": 0,
+      "results": [],
+      "citations": [],
+      "cache": {
+        "policyId": "search_cache_disclosure_v1",
+        "outcome": "miss",
+        "requestSha256": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "responseSha256": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "observedAt": "2026-08-01T11:00:00.000Z",
+        "maximumResults": 10,
+        "freshnessLifetimeSeconds": 0,
+        "ageSeconds": 0,
+        "residentAgeSeconds": 0,
+        "freshnessRemainingSeconds": 0,
+        "revalidationPerformed": false
+      }
+    }
+  }
+}

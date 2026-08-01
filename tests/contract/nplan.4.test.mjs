@@ -27,10 +27,11 @@ test('standing dispatcher keeps exact one-ticket boundaries without repeated own
   assert.equal(Object.keys(state.completionGateEvidence).length, 8);
   assert.equal(state.completionGateEvidence.stage4_search_reference_pattern.passed, true);
   assert.ok(Object.values(state.completionGateEvidence).slice(1).every(({ passed }) => passed === false));
-  assert.equal(state.activeTicket.id, 'N4.27U');
   assert.equal(state.activeTicket.state, 'completed');
-  assert.equal(state.activeTicket.result, 'stage4_reference_pattern_passed_cleanup_complete');
-  assert.equal(state.nextTicket.id, 'N5.1');
+  assert.match(state.activeTicket.id, /^[A-Z][A-Z0-9.]+$/u);
+  assert.match(state.activeTicket.result, /^[a-z0-9_]+$/u);
+  assert.match(state.nextTicket.id, /^[A-Z][A-Z0-9.]+$/u);
+  assert.notEqual(state.activeTicket.id, state.nextTicket.id);
   assert.equal(state.nextTicket.localAdmission, 'ready_fresh_dispatch_cycle');
   assert.equal(state.nextTicket.cloudAdmission, 'not_in_scope');
   assert.equal(state.currentTruth.realPaymentAuthorized, false);

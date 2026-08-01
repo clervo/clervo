@@ -56,7 +56,7 @@ test('canonical registry and visibility manifest validate against their strict D
 
 test('only proven Stage 4 operations and mock-only SKUs are instantiated', async () => {
   const registry = await json('packages/catalog/platform-registry.v1.json');
-  assert.deepEqual(registry.operations.map(({ operationId }) => operationId), ['search.web', 'search.answer', 'web.fetch', 'web.extract']);
+  assert.deepEqual(registry.operations.map(({ operationId }) => operationId), ['search.compare', 'search.web', 'search.answer', 'web.fetch', 'web.extract']);
   assert.ok(registry.operations.every(({ lifecycle, visibility }) => lifecycle === 'preview' && visibility === 'internal'));
   assert.deepEqual(registry.products.map(({ productId }) => productId), ['search.web', 'search.answer', 'web.fetch', 'web.extract']);
   assert.deepEqual(
@@ -88,12 +88,12 @@ test('registry invariants fail closed on dangling references, false public proje
   const visibility = await json('packages/catalog/schema-visibility.v1.json');
 
   const dangling = structuredClone(registry);
-  dangling.operations[0].capabilityId = 'search.missing';
+  dangling.operations.find(({ operationId }) => operationId === 'search.web').capabilityId = 'search.missing';
   assert.throws(() => assertPlatformRegistry(dangling, visibility), /operation_reference_invalid:search\.web/u);
 
   const leaked = structuredClone(registry);
-  leaked.operations[2].visibility = 'public';
-  leaked.operations[2].route = { method: 'POST', path: '/v1/web/fetch' };
+  leaked.operations.find(({ operationId }) => operationId === 'web.fetch').visibility = 'public';
+  leaked.operations.find(({ operationId }) => operationId === 'web.fetch').route = { method: 'POST', path: '/v1/web/fetch' };
   assert.throws(() => assertPlatformRegistry(leaked, visibility), /public_operation_schema_private:web\.fetch/u);
 
   const unbounded = structuredClone(registry);

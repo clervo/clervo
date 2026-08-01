@@ -1,25 +1,25 @@
 {
   "schemaVersion": "clervo.autonomous-dispatch-state.v1",
   "policy": "infra/control-plane/autonomous-completion-policy.v1.json",
-  "evaluatedAt": "2026-08-01T22:16:07.000Z",
+  "evaluatedAt": "2026-08-01T22:34:50.000Z",
   "programStatus": "active",
   "currentStage": 5,
   "activeTicket": {
-    "id": "N5.1",
+    "id": "N5.2",
     "state": "completed",
-    "result": "canonical_registry_foundation_verified",
+    "result": "deterministic_evidence_comparison_verified",
     "closeoutCommit": null,
-    "scope": "Established the unfrozen six-pillar capability/operation/product/SKU registry foundation and a default-deny schema-visibility boundary without external effects or stronger lifecycle claims."
+    "scope": "Implemented deterministic versioned Search snapshot comparison and typed change detection without external effects or stronger lifecycle claims."
   },
   "nextTicket": {
-    "id": "N5.2",
-    "title": "Live Intelligence evidence comparison and change detection",
+    "id": "N5.3",
+    "title": "Live Intelligence monitor definitions and durable snapshot lineage",
     "scopeSource": "/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md#stage-5-live-intelligence-productization-and-platform-registry-foundation",
     "ownerAuthority": "NPLAN.4 standing ordinary repository authority plus the owner's Stage Campaign Mode",
     "localAdmission": "ready_fresh_dispatch_cycle",
     "cloudAdmission": "not_in_scope",
     "paymentAdmission": "not_in_scope",
-    "sealedBoundary": "All Stage 4 final and failed qualification artifacts are immutable. N5.2 may consume only the N5.1 registry and published Stage 4 contracts/provenance boundaries; it cannot execute a competitive benchmark or begin monitoring delivery, provider calls, shared public site, SDK, MCP, final discovery, cloud, production or payment work."
+    "sealedBoundary": "All Stage 4 final and failed qualification artifacts are immutable. N5.3 may compose N5.2 comparison with published Search contracts only; it cannot execute providers, external schedules, monitoring delivery, notifications, alerts, competitive benchmarks, shared public site, SDK, MCP, final discovery, cloud, production or payment work."
   },
   "immediateOwnerBlockers": [
     {

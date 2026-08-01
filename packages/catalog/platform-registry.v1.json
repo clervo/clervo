@@ -44,6 +44,18 @@
   ],
   "operations": [
     {
+      "operationId": "search.compare",
+      "capabilityId": "search.web",
+      "productId": "search.web",
+      "route": null,
+      "deliveryModes": ["sync"],
+      "accessModes": ["open_web", "official_api", "customer_supplied_data", "unsupported"],
+      "inputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-compare-request.schema.json",
+      "outputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-comparison.schema.json",
+      "lifecycle": "preview",
+      "visibility": "internal"
+    },
+    {
       "operationId": "search.web",
       "capabilityId": "search.web",
       "productId": "search.web",

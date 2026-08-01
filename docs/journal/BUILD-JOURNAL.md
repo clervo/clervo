@@ -1418,3 +1418,33 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   for a fresh repository-local cycle. It has no competitive-benchmark execution,
   monitoring delivery, provider-call, cloud, production, payment, shared public
   site, SDK, MCP or final-discovery authority.
+
+## 2026-08-01 — N5.2 deterministic evidence comparison verified
+
+- Completed exact repository-local N5.2 under NPLAN.4 and Stage Campaign Mode.
+  Added versioned compare request/report contracts and a canonical-URL comparator
+  that emits deterministic added, removed and modified events while excluding
+  retrieval timestamps and run-local result IDs from material change.
+- Snapshot query/locale/time identity, URLs, entity/rank uniqueness and exact
+  citations fail closed. JCS/SHA-256 binds query identity, evidence sets, events
+  and the final report; tampering is detected. Outputs are deeply immutable.
+- Added internal registry operation `search.compare`, two strict internal-control
+  schemas and three fixtures. Public preview generation remains 14 allowlisted
+  schemas; no lifecycle or public route changed.
+- Validation passed: contracts 47 schemas/88 fixtures, N5.2 4/4, N5.1 6/6,
+  N4.1 9/9, NPLAN.4 5/5, autonomous completion, lint, typecheck,
+  full-history/working-tree secret scan, clean-room boundary and diff integrity.
+  One order-coupled N5.1 assertion and stale NPLAN.4 Stage 4 ticket IDs failed;
+  both were repaired to target durable identities/invariants and reruns passed.
+  No protected Stage 4 evidence or full historical suite ran.
+- External effects: official standards reads only. Provider API cash USD 0,
+  infrastructure USD 0, USDC 0, residual exposure USD 0/day. No credential,
+  provider, cloud, benchmark, production, payment, wallet, customer, monitoring
+  delivery, public-site, SDK, MCP, final-discovery or legacy action ran.
+- Truth remains: Search `preview`; AI, Sandbox, RPC, Prediction and Crypto
+  Intelligence `unavailable`; registry unfrozen; Stage 5 in progress; public
+  availability, commercial parity, demand, revenue and settlement unproven.
+- Final closeout commit is the commit containing this entry. N5.3 monitor
+  definitions, schedule/state invariants and durable snapshot lineage is ready
+  for a fresh repository-local cycle. It has no external execution or delivery
+  authority.

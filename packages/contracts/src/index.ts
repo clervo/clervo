@@ -10,6 +10,7 @@ export * from './focused-index.js';
 export * from './live-federation.js';
 export * from './idempotency.js';
 export * from './javascript-retrieval.js';
+export * from './live-intelligence-comparison.js';
 export * from './mock-commerce.js';
 export * from './observability.js';
 export * from './platform-registry.js';

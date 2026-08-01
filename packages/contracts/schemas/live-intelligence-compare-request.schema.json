@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-compare-request.schema.json",
+  "title": "Clervo Live Intelligence evidence comparison request",
+  "type": "object",
+  "required": ["baseline", "current"],
+  "properties": {
+    "baseline": { "$ref": "search-response.schema.json" },
+    "current": { "$ref": "search-response.schema.json" }
+  },
+  "additionalProperties": false
+}

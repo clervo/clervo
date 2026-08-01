@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-comparison.schema.json",
+  "title": "Clervo Live Intelligence deterministic evidence comparison",
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "snapshot": {
+      "type": "object",
+      "required": ["operationId", "generatedAt", "evidenceSetHash"],
+      "properties": {
+        "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+        "generatedAt": { "type": "string", "format": "date-time" },
+        "evidenceSetHash": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "nullableSha256": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/sha256" }] },
+    "nullableSource": { "type": ["string", "null"], "pattern": "^adapter_[a-z0-9][a-z0-9._-]{2,63}$" },
+    "nullableRank": { "type": ["integer", "null"], "minimum": 1, "maximum": 100 },
+    "event": {
+      "type": "object",
+      "required": ["changeId", "type", "canonicalUrl", "changedFields", "baselineFingerprint", "currentFingerprint", "baselineSourceId", "currentSourceId", "baselineRank", "currentRank"],
+      "properties": {
+        "changeId": { "type": "string", "pattern": "^chg_[a-f0-9]{32}$" },
+        "type": { "enum": ["added", "modified", "removed"] },
+        "canonicalUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
+        "changedFields": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 9,
+          "uniqueItems": true,
+          "items": { "enum": ["presence", "title", "snippet", "evidenceText", "publishedAt", "sourceId", "authorityScore", "relevanceScore", "rank"] }
+        },
+        "baselineFingerprint": { "$ref": "#/$defs/nullableSha256" },
+        "currentFingerprint": { "$ref": "#/$defs/nullableSha256" },
+        "baselineSourceId": { "$ref": "#/$defs/nullableSource" },
+        "currentSourceId": { "$ref": "#/$defs/nullableSource" },
+        "baselineRank": { "$ref": "#/$defs/nullableRank" },
+        "currentRank": { "$ref": "#/$defs/nullableRank" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "added" } }, "required": ["type"] },
+          "then": {
+            "properties": {
+              "changedFields": { "const": ["presence"] },
+              "baselineFingerprint": { "type": "null" },
+              "currentFingerprint": { "$ref": "#/$defs/sha256" },
+              "baselineSourceId": { "type": "null" },
+              "currentSourceId": { "type": "string" },
+              "baselineRank": { "type": "null" },
+              "currentRank": { "type": "integer" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "removed" } }, "required": ["type"] },
+          "then": {
+            "properties": {
+              "changedFields": { "const": ["presence"] },
+              "baselineFingerprint": { "$ref": "#/$defs/sha256" },
+              "currentFingerprint": { "type": "null" },
+              "baselineSourceId": { "type": "string" },
+              "currentSourceId": { "type": "null" },
+              "baselineRank": { "type": "integer" },
+              "currentRank": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "modified" } }, "required": ["type"] },
+          "then": {
+            "properties": {
+              "changedFields": {
+                "type": "array",
+                "items": { "enum": ["title", "snippet", "evidenceText", "publishedAt", "sourceId", "authorityScore", "relevanceScore", "rank"] }
+              },
+              "baselineFingerprint": { "$ref": "#/$defs/sha256" },
+              "currentFingerprint": { "$ref": "#/$defs/sha256" },
+              "baselineSourceId": { "type": "string" },
+              "currentSourceId": { "type": "string" },
+              "baselineRank": { "type": "integer" },
+              "currentRank": { "type": "integer" }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "schemaVersion", "comparisonId", "query", "baseline", "current", "summary", "events", "reportHash"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "schemaVersion": { "const": "live-intelligence-comparison.v1" },
+    "comparisonId": { "type": "string", "pattern": "^cmp_[a-f0-9]{32}$" },
+    "query": {
+      "type": "object",
+      "required": ["text", "language", "region", "identityHash"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "language": { "type": "string", "minLength": 2, "maxLength": 35, "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$" },
+        "region": { "type": "string", "pattern": "^[A-Z]{2}$" },
+        "identityHash": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "baseline": { "$ref": "#/$defs/snapshot" },
+    "current": { "$ref": "#/$defs/snapshot" },
+    "summary": {
+      "type": "object",
+      "required": ["baselineEntities", "currentEntities", "added", "removed", "modified", "unchanged"],
+      "properties": {
+        "baselineEntities": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "currentEntities": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "added": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "removed": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "modified": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "unchanged": { "type": "integer", "minimum": 0, "maximum": 100 }
+      },
+      "additionalProperties": false
+    },
+    "events": { "type": "array", "maxItems": 200, "items": { "$ref": "#/$defs/event" } },
+    "reportHash": { "$ref": "#/$defs/sha256" }
+  },
+  "additionalProperties": false
+}
