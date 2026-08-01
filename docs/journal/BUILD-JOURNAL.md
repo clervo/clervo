@@ -731,3 +731,22 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   final evidence read-only and a new pre-split corpus to remediate developer
   retrieval, browser/hostile reliability and cost-overlap enforcement. Stop
   without beginning N4.27T, N4.28, mock x402, payment or Stage 5.
+
+## 2026-08-01 — Codex control-plane guardrails
+
+- Performed owner-authorized cloud-devbox and Codex control-plane maintenance;
+  this was not product implementation and did not authorize N4.27T, N4.28,
+  mock x402, Stage 5, production release, AI, Sandbox, or any expansion stage.
+- Restored the canonical external master-plan authority at
+  `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md` with verified SHA-256
+  `b6964d617b8115fc37c27eaa9bed03626fb9abd4d0d6987095051d867cf889aa`.
+- Strengthened root `AGENTS.md` with authority precedence, clean-room and secret
+  boundaries, payment restrictions, frozen-evidence protection, truthful-claim
+  rules, ticket verification requirements, explicit stopping behavior, and a
+  narrow owner-authorized devbox/control-plane maintenance boundary.
+- No product implementation, provider call, cloud-resource creation, deployment,
+  wallet action, payment action, or USDC spending occurred.
+- Validation: diff integrity, clean-room boundary verification, and repository
+  secret scanning passed.
+- Next maintenance task: commit these guardrails, restart Codex so it reloads
+  them, then create the engineering profile and foundational Clervo skills.
