@@ -1,22 +1,22 @@
 {
   "schemaVersion": "clervo.autonomous-dispatch-state.v1",
   "policy": "infra/control-plane/autonomous-completion-policy.v1.json",
-  "evaluatedAt": "2026-08-01T07:16:38.000Z",
-  "programStatus": "active",
+  "evaluatedAt": "2026-08-01T19:24:26.000Z",
+  "programStatus": "blocked_owner",
   "currentStage": 4,
   "activeTicket": {
-    "id": "NPLAN.4",
-    "state": "completed",
-    "result": "verified_control_plane_only",
-    "closeoutCommit": "commit_containing_nplan4_closeout",
-    "scope": "Install the standing autonomous exact-ticket dispatcher and exhaustive owner-only prerequisite package without changing product lifecycle or executing external effects."
+    "id": "N4.27T",
+    "state": "blocked_owner",
+    "result": "repository_local_repair_ready_cloud_unverified",
+    "closeoutCommit": "commit_containing_n4.27t_local_closeout",
+    "scope": "Prepared and validated a new independently pre-split repair for developer-registry retrieval, browser/hostile reliability and resource-overlap cost enforcement without executing protected N4.27S evidence or any cloud effect."
   },
   "nextTicket": {
     "id": "N4.27T",
-    "title": "Frozen-result failure remediation for developer retrieval, browser/hostile reliability and cost-ceiling compliance",
-    "scopeSource": "docs/evidence/n4.27s/decision.v1.json#/nextTicket",
-    "ownerAuthority": "explicitly_authorized_under_recorded_scope_and_stop_conditions",
-    "localAdmission": "ready_fresh_dispatch_cycle",
+    "title": "N4.27T isolated cloud qualification continuation",
+    "scopeSource": "docs/tickets/N4.27T.md#stop-condition",
+    "ownerAuthority": "not_yet_supplied_for_external_effect",
+    "localAdmission": "blocked_owner",
     "cloudAdmission": "blocked_owner_input_and_authority",
     "paymentAdmission": "not_in_scope",
     "sealedBoundary": "N4.27S final corpus and final evidence remain read-only; use a new independent pre-split corpus and isolated procedure."

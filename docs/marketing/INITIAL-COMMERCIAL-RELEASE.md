@@ -62,9 +62,9 @@ strategy.
 - **Shared-surface candidate:** API, SDK, design, discovery, documentation,
   SEO, onboarding, or distribution work held until the Stage 12 freeze.
 
-NPLAN.4 is complete at its governance boundary, and N4.27T is the next admitted
-repository-local ticket under its recorded owner authorization; cloud work
-remains separately owner-input and explicit-authority gated. It does not authorize a later core, shared
+NPLAN.4 is complete at its governance boundary. N4.27T repository-local repair
+preparation is complete, its validation split is unexecuted, and isolated cloud
+work remains separately owner-input and explicit-authority gated. It does not authorize a later core, shared
 surface, release, payment, or production claim.
 
 No placeholder may contain invented prices, providers, commands, transactions,

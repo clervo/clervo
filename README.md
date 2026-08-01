@@ -8,12 +8,11 @@ The First Revenue Release is the all-six **Clervo Platform**: Live Intelligence/
 
 Tickets **N0.1** through **N4.27S**, NPLAN.1, NPLAN.2, NPLAN.3, and its NPLAN.3R handoff repair are complete at their recorded boundaries. NPLAN.3 changes the future launch program; it does not rewrite those historical outcomes. N4.27S completed one frozen private-staging qualification and failed its mandatory product gate: combined recall/precision were 0.8000/0.6803, browser qualification was 4/20, and hostile-page execution was 0/8. Five Stage 4 blockers remain: isolated JavaScript retrieval, prompt-injection boundaries, separate raw and synthesis prices, a deployed paid route, and cost-cap compliance. Mock x402 and payment were not started. Search is not commercially competitive, production-qualified, or the reference pattern, and Stage 5 remains unauthorized.
 
-NPLAN.4 is complete at its governance boundary. It installs one-ticket fresh-
-cycle dispatch, bounded repair tickets, a one-time owner prerequisite package,
-and a USD 0 mandatory paid-API cash rule. **N4.27T** is the next admitted
-repository-local ticket under its existing owner authorization. Its cloud phase
-remains blocked on exact owner-prepared resource/cost/cleanup inputs and a
-separate explicit owner action until trusted signed-manifest enforcement exists.
+NPLAN.4 is complete at its governance boundary. N4.27T has completed its
+repository-local repair preparation with a new unexecuted validation split;
+its isolated cloud qualification is now owner-blocked on exact finite cloud
+inputs and a separate explicit action. No Stage 4 blocker has closed from that
+local preparation.
 That authorization does not start N4.28, mock x402, payment, Stage 5, any unavailable
 product core, or a later roadmap stage.
 

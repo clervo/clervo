@@ -49,9 +49,9 @@ and repeatable real demonstration pass.
   access/design/discovery/distribution pass, production deployment, bounded
   settlement, and external useful paid proof remain incomplete.
 
-NPLAN.4 is complete at its governance boundary, and N4.27T is the next admitted
-repository-local ticket under its recorded owner authorization; cloud work
-remains separately owner-input and explicit-authority gated. That bounded authorization does not start
+NPLAN.4 is complete at its governance boundary. N4.27T repository-local repair
+preparation is complete, its validation split is unexecuted, and isolated cloud
+work remains separately owner-input and explicit-authority gated. That bounded state does not start
 Stage 5 or any unavailable product core.
 
 Shared API, MCP, SDK, onboarding, design, documentation, discovery, JSON-LD,

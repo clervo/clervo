@@ -1203,3 +1203,59 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   inputs and separate explicit authority; unattended admission also needs the
   signed trust boundary. N4.28, mock x402, Stage 5, production, real payment,
   later pillars, and legacy mutation remain outside this ticket.
+
+## 2026-08-01 — N4.27T repository-local frozen-result repair
+
+- The owner explicitly authorized N4.27T under its recorded scope and stop
+  conditions, and NPLAN.4 admitted one repository-local worker cycle. Starting
+  commit was `5b22c81df0ec7df09a04fa6e96a0118db9841666`.
+- Preserved every N4.27S final and earlier sealed artifact. Before repair
+  implementation, created disjoint development and validation material and a
+  hash-bound split freeze. The validation corpus and labels remain
+  `frozen_not_executed` with a one-run ceiling; implementation parsed only the
+  development split.
+- Implemented conservative exact npm package and GitHub repository metadata
+  lookup with bounded normalized fallback, attribution, quota, concurrency and
+  circuit controls. Generated a separate N4.27T staging entry that replaces
+  only the developer adapter while leaving the five other source adapters and
+  protected N4.27S shell unchanged.
+- Implemented a nonroot disposable Chromium worker with explicit preflight,
+  render, cleanup and supervisor budgets; process-group termination; `tini`
+  reaping; memory-backed shared memory; read-only root; gateway-only egress;
+  seccomp and hostile-output isolation. A local image built as
+  `sha256:3093f73db06255063ac633bce4226956925f03554b64fceacf9078ede176b73a`,
+  reported Node 24.18.1 and Chromium 151.0.7922.71, failed closed under the
+  default kill switch, and was deleted.
+- Implemented a fail-closed resource-exclusivity gate requiring a fresh
+  complete inventory, zero ticket resources, terminal deletion operations,
+  no unknowns, exact labels/names and combined projected exposure at or below
+  USD 5/day. Its receipt cannot authorize an external action.
+- Preserved three ordinary repair-process failures. The first staging generator
+  run created no output because a dotted schema identity was not transformed;
+  after repair it passed without changing the protected source hashes. The
+  first NPLAN.4 transition contract run passed 3/5 because snapshot assertions
+  still named NPLAN.4 as active; after a generic closeout-assertion repair it
+  passed 5/5. The first focused closeout run passed 7/8 because its final
+  assertion still expected N4.27T `active`; after synchronization to
+  `blocked_owner` it passed 8/8.
+- Final local validation passed: N4.27T 8/8; NPLAN.4 dispatcher 5/5; TypeScript
+  typecheck; lint across 262 source/contract files; autonomous-completion
+  verifier; product-scope consistency; secret scan; clean-room boundary; Node
+  syntax; JSON parse; frozen/protected artifact hashes; and Git diff integrity.
+  Canonical `npm test`, Stage 4 exit verification, N4.27S qualification and the
+  new validation split did not run.
+- Official npm Registry API, Playwright container, GitHub rate-limit and Google
+  Cloud deletion guidance informed the local design. The local Docker build
+  made ordinary registry and Debian package-download requests. No credentialed
+  provider, cloud, IAM, billing, secret, deployment, production, customer,
+  wallet, payment, USDC or legacy action occurred. Provider/infrastructure cost
+  was USD 0.000000, active incremental exposure is USD 0/day, USDC spent was 0,
+  and the reserved 0.03 USDC remains untouched.
+- Search remains `preview`; all five Stage 4 blockers remain source-bound.
+  Search is not commercially competitive, production-qualified or the
+  reference pattern. N4.28, mock x402, Stage 5, production, real payment and
+  later pillars remain unauthorized.
+- Final implementation commit is the commit containing this append-only entry.
+  After commit and post-commit checks, stop. N4.27T isolated cloud qualification
+  is `blocked_owner` until the exact finite cloud identity/resource/cost/
+  no-IAM-billing/cleanup package and a separate explicit owner action exist.

@@ -1,60 +1,53 @@
 # Active ticket state
 
-**Ticket:** NPLAN.4 — standing autonomous completion and owner-input package
+**Ticket:** N4.27T — frozen-result failure remediation
 
-**Ticket result:** completed at the repository control-plane evidence boundary;
-final commit is the commit containing this closeout
+**Ticket result:** repository-local repair preparation completed; isolated
+cloud qualification is `blocked_owner`
 
 **Starting commit:**
-`bc92aa2a3309815d3008220fe2a284cf22111dc6`
+`5b22c81df0ec7df09a04fa6e96a0118db9841666`
 
 ## Authority and result
 
-The owner authorized continuous progress toward the truthful six-product
-roadmap without repeated per-ticket approval. NPLAN.4 records that mandate as
-bounded standing program authority: one exact ticket per worker cycle, a clean
-verified closeout, then a fresh dispatch cycle. Terminal closeout failures,
-post-commit regressions, and failed qualifications become exact bounded repair
-tickets; they do not silently widen the active ticket or skip a gate.
+The owner explicitly authorized N4.27T under its recorded scope and stop
+conditions, and the NPLAN.4 dispatcher admitted this fresh repository-local
+cycle. The cycle prepared a new pre-split qualification, repaired developer
+registry selection, repaired the browser process/supervisor boundary, installed
+a fail-closed resource-exclusivity gate, wired a new staging entry, validated
+the local output and stopped before external effects.
 
-The repository now has a machine-readable completion policy and closed dispatch
-state, an exhaustive owner-only prerequisite package, operational validators
-for completed owner inputs and prepared non-authoritative external/x402 inputs,
-eight evidence/hash-bound completion gates, and a dormant bounded x402 input
-template. The validators reject workspace `authorized` state. Mandatory paid,
-eventually paid, trial-to-bill, and automatic-overage third-party API cash spend
-is fixed at USD 0.
+N4.27S final evidence and every earlier sealed artifact remain immutable. The
+new N4.27T validation split is frozen and has not executed.
 
 ## Product and payment truth
 
-- Clervo Platform remains the all-six First Revenue Release.
-- Search remains `preview`; AI, Sandbox, RPC, Prediction, and Crypto
+- Search remains `preview`; AI, Sandbox, RPC, Prediction and Crypto
   Intelligence remain `unavailable`.
-- Stage 4 remains blocked on the same five checks. Search is not the reference
-  pattern, Stage 5 is not open, and the First Revenue Release is not ready.
-- No runtime, lifecycle, Stage 4 evidence, cloud, production, wallet, payment,
-  customer, revenue, or legacy state changed.
-- Real payment remains unauthorized. The receiver contributes only a public
-  `payTo` address and ownership attestation; a separate payer uses a restricted
-  signer service. No private key, seed, or raw signer file is requested.
+- The same five Stage 4 blockers remain open until isolated validation proves
+  otherwise.
+- Search is not commercially competitive, production-qualified or the Stage 4
+  reference pattern. N4.28 and Stage 5 remain unauthorized.
+- No cloud, production, customer, wallet, payment, USDC or legacy action ran.
+- Active incremental exposure is USD 0/day. The 0.03 USDC reserve is untouched.
 
 ## Owner action boundary
 
-Repository-local N4.27T work needs no new owner input. Its cloud phase remains
-blocked until the ignored owner package contains exact finite cloud inputs with
-project, identity, resource/name allowlist, cost ceilings, credential reference,
-billing alert, cleanup, and unknown-outcome procedure and the owner separately
-authorizes that action. Unattended external admission additionally requires an
-owner-controlled signed trust boundary outside the workspace. The dormant Stage
-15 settlement proof requires a separate exact x402 ticket, prepared input, and
-owner authority and remains outside N4.27T.
+N4.27T's next phase requires an ignored owner package containing the exact
+cloud project, environment, region, resource/name allowlist, runtime identity,
+permitted operations, gross/daily/monthly/residual ceilings, alert, cleanup,
+expiry and unknown-outcome procedure. It also requires a separate explicit
+owner action for that exact finite package. Workspace JSON alone is not
+authority.
+
+The validated resource gate will reject create while a ticket resource or
+deletion operation remains active, inventory is stale/unknown, zero-resource
+evidence is missing, or candidate exposure exceeds USD 5/day.
 
 ## Exact next dispatch
 
-After this ticket is committed and the post-commit clean-tree check passes, a
-fresh worker cycle may admit N4.27T repository-local work under its recorded
-scope and stop conditions. N4.27S final evidence remains read-only; the repair
-must use a new independent pre-split corpus and procedure. Do not perform its
-cloud phase without exact owner-prepared inputs and separate explicit authority,
-and do not begin N4.28, mock x402, Stage 5, production, real payment, later
-pillars, or legacy mutation.
+N4.27T isolated cloud qualification remains the exact continuation but is not
+admitted until the owner boundary above is satisfied. When admitted, execute
+the frozen validation procedure at most once, preserve any failure, clean every
+ticket resource and stop. Do not begin N4.28, mock x402, Stage 5, production,
+real payment, later product cores or legacy mutation.

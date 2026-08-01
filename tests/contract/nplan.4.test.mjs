@@ -26,10 +26,11 @@ test('standing dispatcher keeps exact one-ticket boundaries without repeated own
   assert.equal(policy.trustedExternalAuthorityEnforcement.workspaceManifestAloneAuthorizesExternalAction, false);
   assert.equal(Object.keys(state.completionGateEvidence).length, 8);
   assert.ok(Object.values(state.completionGateEvidence).every(({ passed }) => passed === false));
-  assert.equal(state.activeTicket.id, 'NPLAN.4');
-  assert.equal(state.activeTicket.state, 'completed');
+  assert.equal(state.activeTicket.id, 'N4.27T');
+  assert.equal(state.activeTicket.state, 'blocked_owner');
   assert.equal(state.nextTicket.id, 'N4.27T');
-  assert.equal(state.nextTicket.localAdmission, 'ready_fresh_dispatch_cycle');
+  assert.equal(state.nextTicket.localAdmission, 'blocked_owner');
+  assert.equal(state.nextTicket.cloudAdmission, 'blocked_owner_input_and_authority');
   assert.equal(state.currentTruth.realPaymentAuthorized, false);
   assert.equal(state.currentTruth.stage5Authorized, false);
   assert.equal(state.currentTruth.firstRevenueReleaseReady, false);
@@ -324,6 +325,7 @@ test('dispatch state validates future transitions generically and rejects dishon
   assert.throws(() => validateDispatchState(forgedPaymentAuthority, policy));
 
   const staleCloseout = clone(state);
+  staleCloseout.activeTicket.state = 'completed';
   staleCloseout.nextTicket.localAdmission = 'candidate';
   assert.throws(() => validateDispatchState(staleCloseout, policy));
 });

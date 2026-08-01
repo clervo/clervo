@@ -175,9 +175,9 @@ investment return.
 
 ## Current dispatch
 
-NPLAN.4 is complete at its governance boundary. N4.27T is ready for admission
-in a fresh cycle for its repository-local phase under the owner's existing
-explicit authorization. Its N4.27S evidence remains read-only. Cloud creation
-is separately blocked until the exact cloud identity/resource/cost/cleanup
-input package is complete and separately explicitly authorized. Unattended
-external admission also needs the owner trust root. Payment is outside N4.27T.
+NPLAN.4 is complete at its governance boundary. N4.27T repository-local repair
+preparation is complete and its new validation split remains unexecuted.
+N4.27T isolated cloud qualification is `blocked_owner` until the exact cloud
+identity/resource/cost/cleanup input package and separate explicit authority
+exist. Unattended external admission also needs the owner trust root. Payment,
+N4.28 and Stage 5 remain outside N4.27T.

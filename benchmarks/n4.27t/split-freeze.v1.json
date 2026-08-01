@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "clervo.n4.27t.split-freeze.v1",
+  "ticket": "N4.27T",
+  "frozenAt": "2026-08-01T19:11:00.000Z",
+  "sequence": "split_and_hash_before_repair_implementation",
+  "n427sFinalMaterialUsed": false,
+  "development": {
+    "developerTasks": 12,
+    "javascriptFixtures": 4,
+    "hostileFixtures": 2
+  },
+  "validation": {
+    "developerTasks": 10,
+    "javascriptFixtures": 12,
+    "hostileFixtures": 8,
+    "maximumExecutions": 1,
+    "executed": false
+  },
+  "leakageRules": [
+    "implementation_and_focused_tests_may_read_development_artifacts_only",
+    "validation_artifacts_are_reserved_for_a_later_isolated_once_only_qualification",
+    "no_query_identity_url_marker_or_label_may_move_between_splits",
+    "n4.27s_final_corpus_labels_raw_results_evaluator_and_scorecard_are_excluded"
+  ],
+  "artifactSha256": {
+    "development-corpus.v1.json": "sha256:2f33d2d176747bc518fbf2647f5f698bf16cfc81416368d5255651d3795e5f4d",
+    "development-labels.v1.json": "sha256:d24541cd81078c6897e8fa102dd98f0399bbfe6a242ef1fd8554a0573263dd1d",
+    "validation-corpus.v1.json": "sha256:ff6084ca501644d6b1ffacfa0aca400c86bf7b2e474545b8be6d4dc945d9a109",
+    "validation-labels.v1.json": "sha256:57b6e54e4643a0f862883155213a1f4e8ba0d410c26015f34aefe74ccbfa8a86"
+  }
+}

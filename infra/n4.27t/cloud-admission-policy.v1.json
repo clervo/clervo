@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "clervo.n4.27t.cloud-admission-policy.v1",
+  "ticket": "N4.27T",
+  "status": "blocked_owner_input_and_authority",
+  "workspaceFileAuthorizesCloudAction": false,
+  "ownerInputId": "cloud_project_identity_and_budget_envelope",
+  "separateExplicitOwnerActionRequired": true,
+  "trustedSignedManifestEnforcementAvailable": false,
+  "inventoryMaximumAgeSeconds": 120,
+  "dailyExposureCeilingUsd": 5,
+  "deleteCommandMayUseAsync": false,
+  "createMayBeginBeforeZeroInventory": false,
+  "zeroResourceVerificationRequired": true,
+  "pendingDeletionBlocksCreate": true,
+  "unknownResourceOrOperationStateAction": "stop_reconcile_and_do_not_create",
+  "candidateRequirements": [
+    "exact_project_environment_region_and_resource_names",
+    "ticket_and_environment_labels",
+    "exact_runtime_identity_and_allowed_operations",
+    "gross_daily_monthly_and_residual_cost_ceilings",
+    "billing_alert_and_stop_before_ceiling",
+    "synchronous_cleanup_and_fresh_zero_resource_inventory",
+    "expiry_and_unknown_outcome_procedure"
+  ]
+}

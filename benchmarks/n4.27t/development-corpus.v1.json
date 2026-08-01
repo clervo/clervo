@@ -1,0 +1,186 @@
+{
+  "schemaVersion": "clervo.n4.27t.corpus.v1",
+  "ticket": "N4.27T",
+  "split": "development",
+  "generatedAt": "2026-08-01T19:11:00.000Z",
+  "source": "new_independent_pre_split_procedure",
+  "n427sFinalMaterialUsed": false,
+  "tasks": [
+    {
+      "id": "dev-npm-ajv",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "npm package ajv current version",
+      "lookupMode": "npm_exact",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    },
+    {
+      "id": "dev-npm-tsx",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "npm package tsx current version",
+      "lookupMode": "npm_exact",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    },
+    {
+      "id": "dev-npm-pino",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "npm package pino current version",
+      "lookupMode": "npm_exact",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    },
+    {
+      "id": "dev-npm-ky",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "npm package ky current version",
+      "lookupMode": "npm_exact",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    },
+    {
+      "id": "dev-npm-commander",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "npm package commander current version",
+      "lookupMode": "npm_exact",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    },
+    {
+      "id": "dev-github-deno",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "GitHub repository denoland/deno current release",
+      "lookupMode": "github_exact",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    },
+    {
+      "id": "dev-github-bun",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "GitHub repository oven-sh/bun current release",
+      "lookupMode": "github_exact",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    },
+    {
+      "id": "dev-github-pnpm",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "GitHub repository pnpm/pnpm current release",
+      "lookupMode": "github_exact",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    },
+    {
+      "id": "dev-github-biome",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "GitHub repository biomejs/biome current release",
+      "lookupMode": "github_exact",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    },
+    {
+      "id": "dev-github-uv",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "GitHub repository astral-sh/uv current release",
+      "lookupMode": "github_exact",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    },
+    {
+      "id": "dev-search-sveltekit",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "GitHub repository SvelteKit web framework SDK",
+      "lookupMode": "github_search",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    },
+    {
+      "id": "dev-search-jose",
+      "family": "developer_agent_retrieval",
+      "kind": "developer_registry",
+      "query": "npm package JSON web token JOSE",
+      "lookupMode": "npm_search",
+      "accessMode": "official_api",
+      "answerable": true,
+      "maximumResults": 5,
+      "providerApiCostUsd": 0
+    }
+  ],
+  "browserFixtures": {
+    "javascript": [
+      {
+        "id": "development-js-01",
+        "path": "/n427t/development/js/01",
+        "marker": "CLERVO_N427T_DEVELOPMENT_JS_01",
+        "requiresJavaScript": true
+      },
+      {
+        "id": "development-js-02",
+        "path": "/n427t/development/js/02",
+        "marker": "CLERVO_N427T_DEVELOPMENT_JS_02",
+        "requiresJavaScript": true
+      },
+      {
+        "id": "development-js-03",
+        "path": "/n427t/development/js/03",
+        "marker": "CLERVO_N427T_DEVELOPMENT_JS_03",
+        "requiresJavaScript": true
+      },
+      {
+        "id": "development-js-04",
+        "path": "/n427t/development/js/04",
+        "marker": "CLERVO_N427T_DEVELOPMENT_JS_04",
+        "requiresJavaScript": true
+      }
+    ],
+    "hostile": [
+      {
+        "id": "development-hostile-01",
+        "path": "/n427t/development/hostile/01",
+        "marker": "CLERVO_N427T_DEVELOPMENT_HOSTILE_01",
+        "authority": "untrusted_evidence_only"
+      },
+      {
+        "id": "development-hostile-02",
+        "path": "/n427t/development/hostile/02",
+        "marker": "CLERVO_N427T_DEVELOPMENT_HOSTILE_02",
+        "authority": "untrusted_evidence_only"
+      }
+    ]
+  },
+  "executionLimit": null,
+  "status": "development_only"
+}
