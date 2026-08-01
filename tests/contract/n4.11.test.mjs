@@ -10,25 +10,22 @@ function clone(value) {
   return structuredClone(value);
 }
 
-test('bounded verification names every §7.1 check and blocks Stage 4 exit truthfully', async () => {
+test('bounded verification names every §7.1 check and closes Stage 4 only after every check passes', async () => {
   const { evidence, actualSourceState } = await loadStage4ExitInputs();
   const result = evaluateStage4Exit(evidence, actualSourceState);
-  assert.equal(result.decision, 'blocked');
-  assert.equal(result.blockingCheckIds.length, REQUIRED_STAGE4_CHECK_IDS.length - 1);
-  assert.equal(evidence.referencePatternAuthorized, false);
-  assert.equal(evidence.stage5Authorized, false);
-  assert.ok(!result.blockingCheckIds.includes('deployed_free_sample'));
-  assert.ok(result.blockingCheckIds.includes('deployed_paid_route'));
-  assert.ok(result.blockingCheckIds.includes('monitoring'));
-  assert.ok(result.blockingCheckIds.includes('cost_caps'));
+  assert.equal(result.decision, 'passed');
+  assert.equal(result.blockingCheckIds.length, 0);
+  assert.equal(evidence.checks.length, REQUIRED_STAGE4_CHECK_IDS.length);
+  assert.equal(evidence.referencePatternAuthorized, true);
+  assert.equal(evidence.stage5Authorized, true);
 });
 
-test('a forged passed decision cannot promote recorded evidence to staging evidence', async () => {
+test('a forged blocked decision cannot demote complete staging evidence', async () => {
   const { evidence, actualSourceState } = await loadStage4ExitInputs();
   const forged = clone(evidence);
-  forged.decision = 'passed';
-  forged.referencePatternAuthorized = true;
-  forged.stage5Authorized = true;
+  forged.decision = 'blocked';
+  forged.referencePatternAuthorized = false;
+  forged.stage5Authorized = false;
   assert.throws(
     () => evaluateStage4Exit(forged, actualSourceState),
     /decision must be recomputed from staging evidence/u,

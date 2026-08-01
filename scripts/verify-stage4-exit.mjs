@@ -144,6 +144,31 @@ export async function validateStage4SourceBindings(root, evidence) {
     assert.equal(sha256(bytes), artifact.sha256, `${name}: bound artifact digest mismatch`);
   }
 
+  const finalSource = evidence.sourceBindings?.stage4Final;
+  assert.ok(finalSource, 'Stage 4 final qualification binding is required');
+  assert.equal(finalSource.path, 'docs/evidence/stage4/final-cloud-qualification.v1.json', 'Stage 4 final binding path drift');
+  assert.equal(finalSource.schemaVersion, 'clervo.stage4.final-cloud-qualification.v1', 'Stage 4 final binding schema drift');
+  const finalBinding = JSON.parse(await readFile(path.join(root, finalSource.path), 'utf8'));
+  assert.equal(finalBinding.schemaVersion, finalSource.schemaVersion, 'Stage 4 final bound document schema mismatch');
+  assert.equal(finalBinding.decision, 'passed', 'Stage 4 final qualification must pass');
+  assert.equal(finalBinding.executionFreeze.workloadExecutionCount, 1, 'Stage 4 final workload must execute exactly once');
+  assert.equal(finalBinding.execution.rerun, false, 'Stage 4 final qualification must not rerun');
+  assert.equal(finalBinding.execution.candidateRebuiltOrTunedAfterStart, false, 'Stage 4 candidate must remain frozen after execution starts');
+  assert.deepEqual([finalBinding.browser.javascriptRuns, finalBinding.browser.hostileRuns, finalBinding.browser.passed, finalBinding.browser.failed], [20, 8, 28, 0], 'Stage 4 browser acceptance drift');
+  assert.equal(finalBinding.commerce.paymentMode, 'private_mock_only', 'Stage 4 commerce must remain private mock only');
+  assert.equal(finalBinding.commerce.challengeAuthorizationReceiptPassed, true, 'Stage 4 mock commerce flow must pass');
+  assert.equal(finalBinding.commerce.replayWithoutSecondExecutionPassed, true, 'Stage 4 replay protection must pass');
+  assert.equal(finalBinding.commerce.realPayment, false, 'Stage 4 final qualification cannot make a real payment');
+  assert.equal(finalBinding.commerce.usdcSpent, 0, 'Stage 4 final qualification must spend no USDC');
+  assert.deepEqual(finalBinding.cloud.postCleanupInventory, { instances: 0, disks: 0, firewalls: 0, addresses: 0, pendingOperations: 0 }, 'Stage 4 cloud cleanup must be complete');
+  assert.equal(finalBinding.cloud.residualConfiguredExposureUsdPerDay, 0, 'Stage 4 residual exposure must be zero');
+  assert.ok(finalBinding.cost.maximumConfiguredExposureUsdPerDay <= finalBinding.cost.authorizedConfiguredExposureUsdPerDay, 'Stage 4 configured exposure exceeded its authority');
+  assert.ok(finalBinding.cost.conservativeGrossUpperBoundUsd <= finalBinding.cost.authorizedGrossMaximumUsd, 'Stage 4 gross cost exceeded its authority');
+  for (const artifact of [finalBinding.executionFreeze, finalBinding.browser, finalBinding.commerce]) {
+    const bytes = await readFile(path.join(root, artifact.path ?? artifact.artifact));
+    assert.equal(sha256(bytes), artifact.sha256, 'Stage 4 final artifact digest mismatch');
+  }
+
   return Object.freeze({
     binding,
     artifactCount: Object.keys(binding.artifactBindings).length,
@@ -151,6 +176,7 @@ export async function validateStage4SourceBindings(root, evidence) {
     latestArtifactCount: Object.keys(n427Binding.artifactBindings).length,
     currentBinding: n427sBinding,
     currentArtifactCount: Object.keys(n427sBinding.artifactBindings).length,
+    finalBinding,
   });
 }
 

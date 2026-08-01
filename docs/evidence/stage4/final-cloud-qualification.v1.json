@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "clervo.stage4.final-cloud-qualification.v1",
+  "decision": "passed",
+  "candidateCommit": "ff491e6f85e82d6767afa4db34064132d7e80478",
+  "executionFreeze": {
+    "path": "infra/stage4/final-qualification-freeze.v2.json",
+    "sha256": "sha256:699823df98fc68613d5a67b05c294315f85e8f59b5f3c5092e716f42e8906a86",
+    "workloadExecutionCount": 1
+  },
+  "execution": {
+    "startedAt": "2026-08-01T21:23:22Z",
+    "finishedAt": "2026-08-01T21:24:02Z",
+    "browserStatus": 0,
+    "commerceStatus": 0,
+    "containerOrphansAfter": 0,
+    "candidateRebuiltOrTunedAfterStart": false,
+    "rerun": false
+  },
+  "browser": {
+    "artifact": "docs/evidence/stage4/final-browser-result.v1.json",
+    "sha256": "sha256:477c998b1c7f6145deb89bfd89ece7e614ecbd5eec2316a917b87b59d81682cb",
+    "transferredRawSha256": "sha256:f5eef72680cb4363fea457efd327c21c270babaa901108d986504d7b3e1a0a69",
+    "javascriptRuns": 20,
+    "hostileRuns": 8,
+    "passed": 28,
+    "failed": 0,
+    "runAsNonRootUid": 65534,
+    "gatewayOnly": true,
+    "tlsPinned": true,
+    "persistentState": false,
+    "outputReturned": false,
+    "minimumDurationMs": 1230.26,
+    "maximumDurationMs": 1263.962,
+    "averageDurationMs": 1248.04075
+  },
+  "commerce": {
+    "artifact": "docs/evidence/stage4/final-commerce-result.v1.json",
+    "sha256": "sha256:2cf16e3001e772c1beb7c37c862fc2e6ac71e7a7919a049cb7f75368b2df3809",
+    "transferredRawSha256": "sha256:6446aa0e8aa3ff97f41565096c37c194049f8ad533d0d7ba090e635b71900264",
+    "paymentMode": "private_mock_only",
+    "rawProduct": { "productId": "search.web", "amountAtomic": "1000", "priceVersion": "search-web-mock-1" },
+    "synthesisProduct": { "productId": "search.answer", "amountAtomic": "2500", "priceVersion": "search-answer-mock-1" },
+    "challengeAuthorizationReceiptPassed": true,
+    "replayWithoutSecondExecutionPassed": true,
+    "realPayment": false,
+    "usdcSpent": 0
+  },
+  "cloud": {
+    "project": "bloxsniper-prod",
+    "zone": "us-central1-a",
+    "vm": {
+      "name": "clervo-stage4-qualification",
+      "machineType": "e2-standard-2",
+      "externalIp": false,
+      "serviceAccountAttached": false,
+      "createdAt": "2026-08-01T21:18:29.653Z",
+      "deletedAt": "2026-08-01T21:24:38.406Z",
+      "lifetimeSeconds": 368.753,
+      "deleted": true
+    },
+    "disk": { "name": "clervo-stage4-qualification", "sizeGb": 20, "type": "pd-standard", "autoDelete": true, "deleted": true },
+    "firewall": {
+      "name": "clervo-stage4-iap-ssh",
+      "sourceRange": "35.235.240.0/20",
+      "allowed": "tcp:22",
+      "targetTag": "clervo-stage4-iap",
+      "publicIngress": false,
+      "deleted": true
+    },
+    "postCleanupInventory": { "instances": 0, "disks": 0, "firewalls": 0, "addresses": 0, "pendingOperations": 0 },
+    "residualConfiguredExposureUsdPerDay": 0
+  },
+  "cost": {
+    "currency": "USD",
+    "method": "Conservative upper bound using the existing N4.27T one-node e2-standard-2 GKE model, which is no cheaper than this standalone VM and disk; invoice reporting may lag.",
+    "maximumConfiguredExposureUsdPerDay": 4.05784,
+    "authorizedConfiguredExposureUsdPerDay": 5,
+    "conservativeGrossUpperBoundUsd": 0.03,
+    "authorizedGrossMaximumUsd": 2,
+    "externalProviderApiCashUsd": 0,
+    "usdcSpent": 0
+  },
+  "forbiddenEffectsObserved": {
+    "iamChanges": 0,
+    "billingChanges": 0,
+    "secretChanges": 0,
+    "productionChanges": 0,
+    "realPayments": 0,
+    "walletActions": 0,
+    "usdcActions": 0,
+    "publicIngress": 0,
+    "legacyActions": 0
+  }
+}

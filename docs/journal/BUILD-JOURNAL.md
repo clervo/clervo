@@ -1339,3 +1339,43 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   cloud authority and may not open, reuse, rerun or tune against N4.27T final
   evidence. Final closeout commit is the commit containing this entry; after
   post-commit verification, stop this worker before N4.27U implementation.
+
+## 2026-08-01 — Stage 4 final campaign qualification passed
+
+- Under the owner's Stage Campaign and exact cloud authority, repaired the
+  proven Chromium launch/diagnostic boundary with a bounded outer seccomp
+  profile and repaired quote persistence so a 402 challenge remains bound when
+  the clock advances. Frozen product candidate:
+  `ff491e6f85e82d6767afa4db34064132d7e80478`.
+- Preserved ordinary failures: default container seccomp killed Chromium; one
+  local candidate proxy emitted an unhandled reset before bounded error handling
+  was added; the first cloud admission preflight stopped before any workload
+  because COS exposed config digests instead of local manifest-list IDs. Archive
+  hashes matched, execution count remained zero, and the product images and
+  acceptance thresholds were not rebuilt or tuned.
+- The independently frozen cloud workload then executed exactly once on the
+  exact private VM. Browser qualification passed 20/20 JavaScript plus 8/8
+  hostile runs as non-root UID 65534 with TLS pinning, gateway-only access,
+  removed state and zero orphans. Private mock x402 passed distinct raw and
+  synthesis prices, challenge, authorization, receipt and idempotent replay.
+- Stage 4 final validation passed `test:n4.11` 4/4,
+  `test:stage4:campaign` 6/6 plus TypeScript build, secret scan, clean-room
+  boundary and diff integrity. The evidence-bound exit decision is `passed`
+  with zero blockers; Search is the private reference pattern and Stage 5 is
+  authorized. No external commercial-provider parity claim is made.
+- Only VM `clervo-stage4-qualification`, its 20 GiB auto-delete disk and
+  firewall `clervo-stage4-iap-ssh` were created in
+  `bloxsniper-prod/us-central1-a`; there was no external IP, service account or
+  public ingress. They were synchronously deleted after 368.753 seconds. Direct
+  inventory proved zero residual resources and USD 0/day exposure.
+- Conservative gross cost is at most USD 0.03 under USD 2; maximum configured
+  exposure was USD 4.05784/day under USD 5/day. Provider API cash and USDC spend
+  were USD 0. No IAM, billing, secret, production, wallet, real-payment, public,
+  customer or legacy action ran.
+- Search remains `preview` because the proof is private, not production or
+  customer evidence. AI, Sandbox, RPC, Prediction and Crypto Intelligence remain
+  unavailable; the First Revenue Release and revenue remain unproven.
+- Final closeout commit is the commit containing this append-only entry. N5.1,
+  Live Intelligence canonical registry foundation, is ready for a fresh local
+  dispatcher cycle; it has no cloud, production, payment, shared-public-site,
+  SDK, MCP or final-discovery authority.

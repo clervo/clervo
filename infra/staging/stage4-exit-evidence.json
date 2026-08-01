@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "stage": 4,
-  "evaluatedAt": "2026-08-01T00:36:02.000Z",
+  "evaluatedAt": "2026-08-01T21:25:10.000Z",
   "scope": "bounded_repository_and_staging_exit_verification",
   "sourceState": {
     "stagingReleaseStatus": "verified-private-recorded-only",
@@ -28,6 +28,10 @@
       "path": "docs/evidence/n4.27s/stage4-binding.v1.json",
       "schemaVersion": "clervo.n4.27s.stage4-binding.v1",
       "startingBlockerCount": 10
+    },
+    "stage4Final": {
+      "path": "docs/evidence/stage4/final-cloud-qualification.v1.json",
+      "schemaVersion": "clervo.stage4.final-cloud-qualification.v1"
     }
   },
   "checks": [
@@ -63,9 +67,9 @@
     },
     {
       "id": "isolated_javascript_retrieval",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.27S deployed the digest-pinned gateway-only non-root Chromium worker privately and completed 20 clean teardown checks with zero final retained state or orphans, but only 4 of 20 startup/JavaScript attempts succeeded. The 20% success rate fails both the 95% JavaScript gate and the required 20 consecutive successful startups."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "The frozen Stage 4 final cloud qualification completed 20 of 20 consecutive JavaScript retrievals with Chromium 151 under the bounded custom outer seccomp profile. Every receipt proves non-root UID 65534, TLS pinning, gateway-only retrieval, no returned page output, removed state and zero browser orphans; the once-only artifact is docs/evidence/stage4/final-browser-result.v1.json."
     },
     {
       "id": "retrieval_safety_controls",
@@ -75,9 +79,9 @@
     },
     {
       "id": "prompt_injection_boundaries",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.27S preserved the immutable no-authority boundary and logged no secret or payload, but all eight controlled hostile-page browser executions failed before evidence extraction. Zero completed hostile runs cannot establish the required 100% staging prompt-injection boundary."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "The same frozen cloud execution completed 8 of 8 controlled hostile-page retrievals. Every receipt classified the page as untrusted evidence only, returned no page output, allowed no caller script or authority, logged no payload, removed all state and left zero orphans."
     },
     {
       "id": "evidence_tied_citations",
@@ -99,9 +103,9 @@
     },
     {
       "id": "separate_raw_and_synthesis_prices",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.16 repository contracts preserve distinct mock-USDC prices and version binding. N4.27 explicitly gated mock x402 on all benchmark, browser, security, cache, locale and cost prerequisites; those failed, so challenge, authorization, verification, mock settlement, receipt and replay were correctly never started."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "The private loopback-only final qualification exercised distinct frozen prices end to end: search.web used 1000 mock atomic units at search-web-mock-1 and search.answer used 2500 at search-answer-mock-1. Each completed challenge, authorization, mock verification, receipt and idempotent replay without a second execution; no real payment or USDC action occurred."
     },
     {
       "id": "quality_latency_and_cost_benchmarks",
@@ -147,9 +151,9 @@
     },
     {
       "id": "deployed_paid_route",
-      "status": "contradicted",
-      "stagingVerified": false,
-      "evidence": "N4.27 prerequisite gates failed before the gated mock x402 step, so no challenge, authorization, verification, mock settlement, receipt or replay ran. N4.18's endpoint remains explicitly non-payable; no real payment or USDC action occurred."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "The frozen commerce image was deployed on the authorized private qualification VM with the paid route bound only to loopback. Both raw and synthesis operations returned 402 challenges, accepted exact mock authorizations, executed once, returned receipts and replayed idempotently. This proves private mock staging behavior only; it does not claim public, production or real-payment availability."
     },
     {
       "id": "monitoring",
@@ -159,13 +163,13 @@
     },
     {
       "id": "cost_caps",
-      "status": "repository_verified",
-      "stagingVerified": false,
-      "evidence": "N4.27S passed operation, quota, route/source concurrency, circuit-open/half-open restoration, timeout-storm, all-routes-down, global-stop and unbounded-cost drills and removed every ticket-owned resource for USD 0/day. However, the replacement VM overlapped the rejected one-node GKE cluster for about 15 minutes, yielding an estimated USD 5.69248/day configured exposure above the USD 5 ceiling; the gate remains open."
+      "status": "staging_verified",
+      "stagingVerified": true,
+      "evidence": "The final qualification used only one e2-standard-2 VM with a 20 GiB auto-delete disk plus the exact IAP firewall. Conservative configured exposure was USD 4.05784/day below the USD 5/day ceiling, lifetime was 368.753 seconds below two hours, and conservative gross cost was at most USD 0.03 below USD 2. Direct post-delete inventory proves zero VM, disk, firewall, address, pending operation and USD 0/day residual exposure."
     }
   ],
-  "decision": "blocked",
-  "referencePatternAuthorized": false,
-  "stage5Authorized": false,
-  "nextAction": "Authorize N4.27T only if desired: use the N4.27S final evidence read-only, repair developer retrieval, browser/hostile reliability and resource-overlap enforcement on a new pre-split corpus, and keep mock x402, N4.28 and Stage 5 unauthorized."
+  "decision": "passed",
+  "referencePatternAuthorized": true,
+  "stage5Authorized": true,
+  "nextAction": "Close Stage 4 as the verified private reference pattern, preserve all failed historical qualifications, and admit the smallest exact Stage 5 ticket under the autonomous completion dispatcher."
 }

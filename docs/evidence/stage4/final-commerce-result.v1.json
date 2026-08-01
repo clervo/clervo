@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "clervo.stage4.commerce-smoke.v1",
+  "paymentMode": "private_mock_only",
+  "realPayment": false,
+  "usdcSpent": 0,
+  "passed": true,
+  "results": [
+    {
+      "productId": "search.web",
+      "amountAtomic": "1000",
+      "priceVersion": "search-web-mock-1",
+      "challengeStatus": 402,
+      "completionStatus": 200,
+      "replayWithoutSecondExecution": true,
+      "receiptHash": "sha256:4e790733707d2417db5c916efc30f6e71dc71455427945d4779e455e7375e938"
+    },
+    {
+      "productId": "search.answer",
+      "amountAtomic": "2500",
+      "priceVersion": "search-answer-mock-1",
+      "challengeStatus": 402,
+      "completionStatus": 200,
+      "replayWithoutSecondExecution": true,
+      "receiptHash": "sha256:ca4b915c444d185dba4f779d7377dc82638234a2ec4ef9898933a45644738e54"
+    }
+  ]
+}

@@ -1,63 +1,44 @@
 # Active ticket state
 
-**Ticket:** N4.27T — frozen-result failure remediation
+**Completed ticket:** N4.27U — Stage 4 final campaign repair and qualification
 
-**Ticket result:** completed with one failed isolated qualification preserved;
+**Ticket result:** Stage 4 passed; private Search reference pattern authorized;
 cleanup complete
 
-**Starting commit:**
-`8af7b665531fff75f021603f68cd335f8b4ba8af`
+**Frozen product candidate:**
+`ff491e6f85e82d6767afa4db34064132d7e80478`
 
-**Frozen implementation commit:**
-`c54db9e7923e26ad414cec5a061d139a2d51ab78`
+## Proven result
 
-## Authority and result
+The frozen final qualification ran its product workload exactly once. The
+non-root isolated Chromium worker passed 20/20 JavaScript and 8/8 hostile-page
+runs with TLS pinning, gateway-only retrieval, untrusted-evidence isolation,
+ephemeral state removal and zero orphans. Private loopback mock x402 passed for
+both `search.web` at 1000 mock atomic units and `search.answer` at 2500,
+including challenge, authorization, receipt and replay without a second
+execution.
 
-The owner explicitly authorized the exact N4.27T cloud plan after granting the
-configured deployer access. The one-run Job executed once on the exact
-digest-pinned image. Infrastructure execution succeeded with zero container
-restarts, but the mandatory qualification gate failed: developer registry
-retrieval passed 10/10 and browser execution passed 0/20. All 12 JavaScript and
-eight hostile fixtures returned `browser_process_failed:`. The result is
-immutable and no rerun is authorized.
-
-The final result is hash-bound in
-`docs/evidence/n4.27t/qualification-closeout.v1.json`. N4.27S final evidence and
-every earlier sealed artifact remain immutable.
+The Stage 4 exit verifier reports `passed`, zero blockers, Search reference
+pattern authorization true and Stage 5 authorization true. Search remains
+`preview`: this is private qualification, not public production, real-payment,
+commercial-parity, customer-demand or revenue evidence.
 
 ## Cost, cleanup and payment truth
 
-- The Kubernetes namespace, GKE cluster, Artifact Registry repository and
-  image were synchronously deleted. Fresh exact-prefix inventory found no
-  residual instance, disk, address, firewall, cluster, repository, alert or
-  pending operation.
-- Active incremental exposure is USD 0/day. The cluster existed for about
-  1,033 seconds; estimated gross ticket cost is USD 0.04854 (reported as USD
-  0.05) against the USD 5 ceiling. Actual provider billing could not be
-  inspected because the execution environment blocks that command.
-- Provider API cash cost was USD 0. No wallet, payment, mock x402 or USDC action
-  ran; the 0.03 USDC reserve remains untouched.
-- No IAM, billing, secret, production, customer, public-ingress, legacy or
-  unrelated-resource mutation ran.
-
-## Product truth
-
-- Search remains `preview`; AI, Sandbox, RPC, Prediction and Crypto
-  Intelligence remain `unavailable`.
-- Five Stage 4 blockers remain. Search is not commercially competitive,
-  production-qualified or the reference pattern.
-- N4.28 and Stage 5 remain unauthorized.
+- The exact VM `clervo-stage4-qualification`, its 20 GiB auto-delete disk and
+  firewall `clervo-stage4-iap-ssh` were synchronously deleted. Direct inventory
+  found zero instance, disk, firewall, address or pending operation.
+- Conservative configured exposure was USD 4.05784/day under USD 5/day; the VM
+  lifetime was 368.753 seconds; conservative gross cost was at most USD 0.03
+  under the USD 2 ceiling; residual exposure is USD 0/day.
+- External provider API cash cost and USDC spend were USD 0. No IAM, billing,
+  secret, production, real-payment, wallet, public-ingress or legacy action ran.
 
 ## Exact next dispatch
 
-N4.27U — isolated Chromium process-launch failure repair — is the smallest
-bounded repair created by the failed qualification. A fresh local dispatch may
-use synthetic development-only fixtures to reproduce and diagnose the nonroot
-Chromium launch failure, repair only the proven launcher or diagnostic
-boundary, freeze a new independent pre-split requalification procedure,
-validate locally, commit and stop.
-
-N4.27U must not open, reuse, rerun or tune against the N4.27T corpus, labels,
-evaluator, result or once-only execution. It has no cloud authority. Do not
-begin N4.28, mock x402, Stage 5, production, real payment, later product cores
-or legacy mutation.
+N5.1 — Live Intelligence canonical registry foundation — is ready for a fresh
+repository-local dispatch cycle under NPLAN.4 and Stage Campaign Mode. It must
+settle the shared pillar/capability/operation/product/SKU ontology, canonical
+registry boundary and schema-visibility policy above the proven Stage 4
+contracts. It has no cloud, production, payment, shared public site, SDK, MCP or
+final-discovery authority.

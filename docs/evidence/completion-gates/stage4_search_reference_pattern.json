@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "clervo.completion-gate-evidence.v1",
+  "gateId": "stage4_search_reference_pattern",
+  "verifierId": "stage4-exit",
+  "result": "passed",
+  "subjectCommit": "ff491e6f85e82d6767afa4db34064132d7e80478",
+  "verifiedAt": "2026-08-01T21:29:05Z",
+  "stageExitEvidence": {
+    "path": "infra/staging/stage4-exit-evidence.json",
+    "sha256": "sha256:5fec5c131dac7b9928964a3c614bf7478d8c1af309a717c80e4f875c16e5496d",
+    "decision": "passed",
+    "blockingCheckCount": 0
+  },
+  "finalQualificationEvidence": {
+    "path": "docs/evidence/stage4/final-cloud-qualification.v1.json",
+    "sha256": "sha256:d01b915822ac5f831f35e4290c5104cc84de25e7ce5468b1bf783e59114ae72b",
+    "workloadExecutionCount": 1,
+    "browserPassed": "28/28",
+    "privateMockCommercePassed": true,
+    "residualConfiguredExposureUsdPerDay": 0,
+    "usdcSpent": 0
+  },
+  "claimBoundary": "Stage 4 is the verified private Search reference pattern. This evidence does not claim public production availability, real-payment availability, external-user demand, revenue, or superiority to an external commercial search provider."
+}

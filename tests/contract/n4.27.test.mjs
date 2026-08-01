@@ -104,7 +104,7 @@ test('browser, commerce and claim evidence fail closed after prerequisite failur
   assert.equal(claim.referencePatternAuthorized, false);
 });
 
-test('N4.27 closure hash-binds the blocked result without promoting a Stage 4 check', async () => {
+test('N4.27 closure remains hash-bound while later independent evidence closes Stage 4', async () => {
   const inputs = await loadStage4ExitInputs(new URL('../..', import.meta.url).pathname);
   assert.equal(inputs.sourceBinding.latestArtifactCount, 23);
   assert.equal(inputs.sourceBinding.latestBinding.remainingBlockers.length, 10);
@@ -112,7 +112,7 @@ test('N4.27 closure hash-binds the blocked result without promoting a Stage 4 ch
   assert.equal(inputs.sourceBinding.latestBinding.mockX402Executed, false);
   assert.equal(inputs.sourceBinding.latestBinding.activeComputeUsdPerDay, 0);
   assert.equal(inputs.sourceBinding.latestBinding.usdcSpent, 0);
-  assert.equal(inputs.evidence.decision, 'blocked');
-  assert.equal(inputs.evidence.referencePatternAuthorized, false);
-  assert.equal(inputs.evidence.stage5Authorized, false);
+  assert.equal(inputs.evidence.decision, 'passed');
+  assert.equal(inputs.evidence.referencePatternAuthorized, true);
+  assert.equal(inputs.evidence.stage5Authorized, true);
 });
