@@ -1,0 +1,20 @@
+{
+  "schema": "live-intelligence-monitor-definition",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "schemaVersion": "live-intelligence-monitor-definition.v1",
+    "monitorId": "mon_01K0MONITOR000000000001",
+    "revision": 1,
+    "query": {
+      "text": "clervo product changes",
+      "language": "en",
+      "region": "US",
+      "identityHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    "schedule": { "anchorAt": "2026-08-01T12:00:00.000Z", "intervalSeconds": 3600 },
+    "retention": { "maximumSnapshots": 168, "maximumAgeSeconds": 604800 },
+    "createdAt": "2026-08-01T11:00:00.000Z",
+    "definitionHash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+  }
+}

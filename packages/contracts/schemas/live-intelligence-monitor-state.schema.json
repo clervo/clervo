@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-monitor-state.schema.json",
+  "title": "Clervo Live Intelligence monitor state",
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "nullableHash": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/hash" }] },
+    "nullableTimestamp": { "oneOf": [{ "type": "null" }, { "type": "string", "format": "date-time" }] }
+  },
+  "type": "object",
+  "required": ["contractVersion", "schemaVersion", "monitorId", "definitionRevision", "definitionHash", "stateRevision", "status", "nextRunAt", "lastAttemptAt", "lastSuccessAt", "lastSnapshotId", "lastSnapshotHash", "snapshotCount", "consecutiveFailures", "updatedAt", "stateHash"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "schemaVersion": { "const": "live-intelligence-monitor-state.v1" },
+    "monitorId": { "type": "string", "pattern": "^mon_[A-Za-z0-9]{20,64}$" },
+    "definitionRevision": { "type": "integer", "minimum": 1 },
+    "definitionHash": { "$ref": "#/$defs/hash" },
+    "stateRevision": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["active", "paused", "archived"] },
+    "nextRunAt": { "$ref": "#/$defs/nullableTimestamp" },
+    "lastAttemptAt": { "$ref": "#/$defs/nullableTimestamp" },
+    "lastSuccessAt": { "$ref": "#/$defs/nullableTimestamp" },
+    "lastSnapshotId": { "oneOf": [{ "type": "null" }, { "type": "string", "pattern": "^snap_[A-Za-z0-9]{32}$" }] },
+    "lastSnapshotHash": { "$ref": "#/$defs/nullableHash" },
+    "snapshotCount": { "type": "integer", "minimum": 0 },
+    "consecutiveFailures": { "type": "integer", "minimum": 0 },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "stateHash": { "$ref": "#/$defs/hash" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "active" } }, "required": ["status"] },
+      "then": { "properties": { "nextRunAt": { "type": "string", "format": "date-time" } } },
+      "else": { "properties": { "nextRunAt": { "type": "null" } } }
+    },
+    {
+      "if": { "properties": { "snapshotCount": { "const": 0 } }, "required": ["snapshotCount"] },
+      "then": {
+        "properties": {
+          "lastSuccessAt": { "type": "null" },
+          "lastSnapshotId": { "type": "null" },
+          "lastSnapshotHash": { "type": "null" }
+        }
+      },
+      "else": {
+        "properties": {
+          "lastSuccessAt": { "type": "string", "format": "date-time" },
+          "lastSnapshotId": { "type": "string", "pattern": "^snap_[A-Za-z0-9]{32}$" },
+          "lastSnapshotHash": { "$ref": "#/$defs/hash" }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

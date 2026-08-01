@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-monitor-snapshot.schema.json",
+  "title": "Clervo Live Intelligence monitor snapshot lineage record",
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "nullableHash": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/hash" }] }
+  },
+  "type": "object",
+  "required": ["contractVersion", "schemaVersion", "monitorId", "definitionRevision", "definitionHash", "snapshotId", "sequence", "capturedAt", "searchOperationId", "searchGeneratedAt", "queryIdentityHash", "evidenceSetHash", "previousSnapshotId", "previousSnapshotHash", "searchResponse", "snapshotHash"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "schemaVersion": { "const": "live-intelligence-monitor-snapshot.v1" },
+    "monitorId": { "type": "string", "pattern": "^mon_[A-Za-z0-9]{20,64}$" },
+    "definitionRevision": { "type": "integer", "minimum": 1 },
+    "definitionHash": { "$ref": "#/$defs/hash" },
+    "snapshotId": { "type": "string", "pattern": "^snap_[A-Za-z0-9]{32}$" },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "capturedAt": { "type": "string", "format": "date-time" },
+    "searchOperationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "searchGeneratedAt": { "type": "string", "format": "date-time" },
+    "queryIdentityHash": { "$ref": "#/$defs/hash" },
+    "evidenceSetHash": { "$ref": "#/$defs/hash" },
+    "previousSnapshotId": { "oneOf": [{ "type": "null" }, { "type": "string", "pattern": "^snap_[A-Za-z0-9]{32}$" }] },
+    "previousSnapshotHash": { "$ref": "#/$defs/nullableHash" },
+    "searchResponse": { "$ref": "search-response.schema.json" },
+    "snapshotHash": { "$ref": "#/$defs/hash" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "sequence": { "const": 1 } }, "required": ["sequence"] },
+      "then": {
+        "properties": {
+          "previousSnapshotId": { "type": "null" },
+          "previousSnapshotHash": { "type": "null" }
+        }
+      },
+      "else": {
+        "properties": {
+          "previousSnapshotId": { "type": "string", "pattern": "^snap_[A-Za-z0-9]{32}$" },
+          "previousSnapshotHash": { "$ref": "#/$defs/hash" }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

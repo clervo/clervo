@@ -114,7 +114,7 @@ function evidenceFingerprint(result: SearchResult): string {
   return hashJson(comparableResult(result));
 }
 
-function validateSearchSnapshot(response: SearchResponse, name: 'baseline' | 'current'): Map<string, SearchResult> {
+function validateSearchSnapshot(response: SearchResponse, name: string): Map<string, SearchResult> {
   if (response.contractVersion !== CONTRACT_VERSION) throw new TypeError(`${name}_contract_version_invalid`);
   if (!/^op_[A-Za-z0-9]{20,64}$/u.test(response.operationId)) throw new TypeError(`${name}_operation_id_invalid`);
   if (response.query.length === 0 || response.query.length > 2_000) throw new TypeError(`${name}_query_invalid`);
@@ -154,6 +154,16 @@ function evidenceSetHash(response: SearchResponse): string {
       .sort((left, right) => compareCodePoints(left.canonicalUrl, right.canonicalUrl))
       .map(comparableResult),
   });
+}
+
+export function liveIntelligenceQueryIdentityHash(response: SearchResponse): string {
+  validateSearchSnapshot(response, 'snapshot');
+  return hashJson({ language: response.language, region: response.region, text: response.query });
+}
+
+export function liveIntelligenceEvidenceSetHash(response: SearchResponse): string {
+  validateSearchSnapshot(response, 'snapshot');
+  return evidenceSetHash(response);
 }
 
 function changedFields(baseline: SearchResult, current: SearchResult): ComparisonChangedField[] {

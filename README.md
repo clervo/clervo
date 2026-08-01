@@ -8,11 +8,13 @@ The First Revenue Release is the all-six **Clervo Platform**: Live Intelligence/
 
 Stage 4 passed its evidence-bound exit. Stage 5 work N5.1 established the
 unfrozen six-pillar registry and explicit schema-visibility boundary; N5.2 added
-deterministic hash-bound evidence comparison and typed change detection. Search
-remains `preview`; AI, Sandbox, RPC, Prediction, and Crypto Intelligence remain
-`unavailable`. Monitoring execution and delivery, the other five product cores,
-cross-pillar freeze, shared access/distribution, production deployment, real
-settlement, and external paid demand remain unimplemented or unverified.
+deterministic hash-bound evidence comparison and typed change detection; N5.3
+adds versioned monitor definitions, anchored schedule/state invariants, and
+hash-linked durable snapshot payloads. Search remains `preview`; AI, Sandbox,
+RPC, Prediction, and Crypto Intelligence remain `unavailable`. Monitoring
+execution and delivery, the other five product cores, cross-pillar freeze,
+shared access/distribution, production deployment, real settlement, and external
+paid demand remain unimplemented or unverified.
 
 The selected foundation is TypeScript on Node.js 24 LTS, PostgreSQL 18, and
 pg-boss 12 backed by the same PostgreSQL cluster. npm manages the workspace.

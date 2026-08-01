@@ -1,0 +1,22 @@
+{
+  "schema": "live-intelligence-monitor-state",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "schemaVersion": "live-intelligence-monitor-state.v1",
+    "monitorId": "mon_01K0MONITOR000000000001",
+    "definitionRevision": 1,
+    "definitionHash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "stateRevision": 2,
+    "status": "active",
+    "nextRunAt": "2026-08-01T13:00:00.000Z",
+    "lastAttemptAt": "2026-08-01T12:00:00.000Z",
+    "lastSuccessAt": "2026-08-01T12:00:00.000Z",
+    "lastSnapshotId": "snap_11111111111111111111111111111111",
+    "lastSnapshotHash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+    "snapshotCount": 1,
+    "consecutiveFailures": 0,
+    "updatedAt": "2026-08-01T12:00:01.000Z",
+    "stateHash": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+  }
+}
