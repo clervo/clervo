@@ -73,8 +73,11 @@ starts with the Codex alternate screen disabled and raw scrollback enabled, so
 terminal history remains directly selectable and copyable. The installer also
 copies `docs/operations/codex/tmux.conf` to the current devbox user's
 `.tmux.conf`; tmux mouse scrolling is enabled with a 200,000-line pane history.
-Hold Shift while selecting if the terminal emulator needs to bypass tmux mouse
-handling for native clipboard selection.
+Normal mouse drag uses tmux copy mode and attempts a terminal clipboard copy on
+release. If the browser terminal does not accept that clipboard transfer, press
+Ctrl+B, release both keys, then press `y` to turn tmux mouse capture off. Drag to
+highlight normally and press Ctrl+Shift+C (or Cmd+C on macOS), then press
+Ctrl+B followed by `y` again to restore wheel scrolling.
 
 See the adjacent candidate evaluation, inventories, and matrices for MCP,
 skill, tool, permission, authentication, upgrade, rejection, and recovery

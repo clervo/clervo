@@ -13,7 +13,8 @@
     "codexAlternateScreen": "never",
     "codexRawOutputMode": true,
     "tmuxMouse": true,
-    "tmuxHistoryLimit": 200000
+    "tmuxHistoryLimit": 200000,
+    "tmuxNativeSelectionToggle": "prefix+y"
   },
   "hostTools": {
     "codex": "0.146.0",

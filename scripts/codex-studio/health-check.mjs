@@ -62,10 +62,26 @@ const tmuxSocket = `clervo-codex-health-${process.pid}`;
 const tmuxStart = run("tmux:start", "tmux", ["-L", tmuxSocket, "-f", tmuxInstalledPath, "new-session", "-d", "-s", "health"]);
 const tmuxMouse = run("tmux:mouse", "tmux", ["-L", tmuxSocket, "show-options", "-g", "mouse"]);
 const tmuxHistory = run("tmux:history", "tmux", ["-L", tmuxSocket, "show-options", "-g", "history-limit"]);
+const tmuxBinding = run("tmux:selection-toggle-binding", "tmux", ["-L", tmuxSocket, "list-keys", "-T", "prefix", "y"]);
+const tmuxToggleOff = run("tmux:toggle-off", "tmux", ["-L", tmuxSocket, "set-option", "-g", "mouse"]);
+const tmuxMouseOff = run("tmux:mouse-off", "tmux", ["-L", tmuxSocket, "show-options", "-g", "mouse"]);
+const tmuxToggleOn = run("tmux:toggle-on", "tmux", ["-L", tmuxSocket, "set-option", "-g", "mouse"]);
+const tmuxMouseOn = run("tmux:mouse-on", "tmux", ["-L", tmuxSocket, "show-options", "-g", "mouse"]);
 const tmuxStop = run("tmux:stop", "tmux", ["-L", tmuxSocket, "kill-server"]);
-record("tmux:runtime", tmuxStart.exitCode === 0 && tmuxMouse.stdout.trim() === "mouse on" && tmuxHistory.stdout.trim() === "history-limit 200000" && tmuxStop.exitCode === 0, {
+record("tmux:runtime", tmuxStart.exitCode === 0
+  && tmuxMouse.stdout.trim() === "mouse on"
+  && tmuxHistory.stdout.trim() === "history-limit 200000"
+  && tmuxBinding.stdout.includes("set-option -g mouse")
+  && tmuxToggleOff.exitCode === 0
+  && tmuxMouseOff.stdout.trim() === "mouse off"
+  && tmuxToggleOn.exitCode === 0
+  && tmuxMouseOn.stdout.trim() === "mouse on"
+  && tmuxStop.exitCode === 0, {
   mouse: tmuxMouse.stdout.trim(),
   historyLimit: tmuxHistory.stdout.trim(),
+  nativeSelectionToggle: "prefix+y",
+  toggleOffResult: tmuxMouseOff.stdout.trim(),
+  toggleOnResult: tmuxMouseOn.stdout.trim(),
   startExitCode: tmuxStart.exitCode,
   stopExitCode: tmuxStop.exitCode,
 });
