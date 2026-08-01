@@ -6,8 +6,9 @@ The First Revenue Release is the all-six **Clervo Platform**: Live Intelligence/
 
 ## Current state
 
-Stage 4 passed its evidence-bound exit. Stage 5 work N5.1 established the
-unfrozen six-pillar registry and explicit schema-visibility boundary; N5.2 added
+Stage 4 passed its evidence-bound exit and Stage 5 passed private Live
+Intelligence qualification. N5.1 established the unfrozen six-pillar registry
+and explicit schema-visibility boundary; N5.2 added
 deterministic hash-bound evidence comparison and typed change detection; N5.3
 adds versioned monitor definitions, anchored schedule/state invariants, and
 hash-linked durable snapshot payloads. The internal runner now performs
@@ -15,9 +16,9 @@ compare-and-swap state commits, comparisons, retention cutoffs, and deterministi
 record-only change alerts above a PostgreSQL storage contract. Five internal
 solution packs now turn cited search evidence into deterministic normalized
 records for commerce, property, company, research, and developer use cases.
-Search remains
-`preview`; AI, Sandbox, RPC, Prediction, and Crypto Intelligence remain
-`unavailable`. External scheduling and alert delivery, the other five product cores, cross-pillar freeze,
+Search is privately core-qualified but remains `preview`; AI, Sandbox, RPC,
+Prediction, and Crypto Intelligence remain `unavailable`. External scheduling
+and alert delivery, the other five product cores, cross-pillar freeze,
 shared access/distribution, production deployment, real settlement, and external
 paid demand remain unimplemented or unverified.
 

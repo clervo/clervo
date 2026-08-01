@@ -23,7 +23,7 @@ const stableCapabilityIds = {
   crypto_intelligence: ['crypto.wallet', 'crypto.token', 'crypto.transaction', 'crypto.protocol', 'crypto.report'],
 };
 
-test('Clervo Platform scope requires all six stable unqualified product cores', () => {
+test('Clervo Platform scope preserves the privately qualified Search core and five pending cores', () => {
   const scope = createProductScopeDocument();
   assert.equal(scope.scopeVersion, '2026-08-01.3');
   assert.equal(scope.firstRevenueRelease.productId, 'clervo.platform');
@@ -31,7 +31,8 @@ test('Clervo Platform scope requires all six stable unqualified product cores', 
   assert.deepEqual([...scope.firstRevenueRelease.requiredPillars], [...pillarIds]);
   assert.deepEqual([...scope.productCore.requiredPillars], [...pillarIds]);
   assert.deepEqual(scope.pillars.map(({ lifecycle }) => lifecycle), ['preview', 'unavailable', 'unavailable', 'unavailable', 'unavailable', 'unavailable']);
-  assert.ok(scope.pillars.every(({ release, coreQualified }) => release === 'first_revenue_release' && coreQualified === false));
+  assert.ok(scope.pillars.every(({ release }) => release === 'first_revenue_release'));
+  assert.deepEqual(scope.pillars.map(({ coreQualified }) => coreQualified), [true, false, false, false, false, false]);
   assert.deepEqual(Object.fromEntries(scope.pillars.map(({ pillarId, capabilityIds }) => [pillarId, capabilityIds])), stableCapabilityIds);
   assert.equal(scope.productCore.ready, false);
   assert.equal(scope.firstRevenueRelease.ready, false);

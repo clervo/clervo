@@ -4,7 +4,7 @@
   "info": {
     "title": "Clervo Platform search contract",
     "version": "2026-07-29.1",
-    "description": "Generated repository-local contract for separately priced raw retrieval and synthesized-answer products on the bounded search.query HTTP slice. This Search preview is one unqualified pillar of the future six-pillar Clervo Platform First Revenue Release. Deployment is not verified and public payment is not implemented."
+    "description": "Generated repository-local contract for separately priced raw retrieval and synthesized-answer products on the bounded search.query HTTP slice. This privately qualified Search core remains a preview within the future six-pillar Clervo Platform First Revenue Release. Deployment is not verified and public payment is not implemented."
   },
   "paths": {
     "/v1/search/free": {

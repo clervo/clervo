@@ -34,9 +34,9 @@ Until comparative proof passes, public copy says **Clervo-owned live Web
 retrieval**. Afterwards, **Advanced live intelligence for agents** is allowed.
 All specific superiority claims require exact published evidence.
 
-Stage 4 passed its evidence-bound exit. N5.1 established the unfrozen registry
-and N5.2 added deterministic comparison and typed change detection. Search
-remains `preview`; comparative proof and the advanced claim remain incomplete.
+Stage 5 passed private Live Intelligence qualification above the Stage 4 Search
+reference pattern. Search is privately core-qualified and remains `preview`;
+broad public superiority claims remain unproven.
 
 ## Motion narrative
 

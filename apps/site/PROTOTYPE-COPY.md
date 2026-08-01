@@ -49,9 +49,11 @@ and repeatable real demonstration pass.
   access/design/discovery/distribution pass, production deployment, bounded
   settlement, and external useful paid proof remain incomplete.
 
-N5.1 established the unfrozen six-pillar registry and N5.2 added deterministic
-evidence comparison and typed change detection. This does not make monitoring,
-any unavailable product core, shared distribution, production, or payment ready.
+Stage 5 passed private Live Intelligence qualification above the Stage 4 Search
+reference pattern, including comparison, monitoring, recorded alerts, and five
+cited solution packs. Search remains a preview; this does not make external
+alert delivery, any unavailable product core, shared distribution, production,
+or payment ready.
 
 Shared API, MCP, SDK, onboarding, design, documentation, discovery, JSON-LD,
 sitemap, SEO, and distribution work begins once, after the Stage 12 core and

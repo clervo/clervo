@@ -27,7 +27,7 @@ test('canonical foundation binds all six pillars and every adopted capability wi
   assert.equal(registry.state, 'foundation_unfrozen');
   assert.deepEqual(registry.pillars.map(({ pillarId }) => pillarId), ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence']);
   assert.deepEqual(registry.pillars.map(({ lifecycle }) => lifecycle), ['preview', 'unavailable', 'unavailable', 'unavailable', 'unavailable', 'unavailable']);
-  assert.ok(registry.pillars.every(({ coreQualified }) => coreQualified === false));
+  assert.deepEqual(registry.pillars.map(({ coreQualified }) => coreQualified), [true, false, false, false, false, false]);
 
   const scope = createProductScopeDocument();
   for (const pillar of scope.pillars) {

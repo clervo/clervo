@@ -39,10 +39,11 @@ permitted. Any superiority claim names the exact workflow, comparison, corpus,
 date, environment, and metric.
 
 Search is currently `preview`; AI, Sandbox, RPC, Prediction, and Crypto
-Intelligence are `unavailable`. Stage 4 passed its evidence-bound exit. N5.1
-established the unfrozen six-pillar registry and N5.2 implemented deterministic
-evidence comparison and typed changes. Monitoring execution and delivery,
-alerts, all shared Stage 13 access and distribution surfaces, production
+Intelligence are `unavailable`. Stage 5 passed private Live Intelligence
+qualification above the Stage 4 Search reference pattern, including comparison,
+monitoring, recorded change alerts, and five cited solution packs. Search is
+privately core-qualified but not publicly available. External scheduling and
+alert delivery, all shared Stage 13 access and distribution surfaces, production
 deployment, payable settlement, and external demand remain unproven.
 
 Never invent prices, providers, commands, screenshots, customers, agents,

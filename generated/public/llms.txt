@@ -1,6 +1,6 @@
 # Clervo
 
-> Clervo is outcome infrastructure for agents. The planned First Revenue Release is the all-six Clervo Platform; only a repository-local Search slice is currently implemented, and it remains an unqualified preview.
+> Clervo is outcome infrastructure for agents. The planned First Revenue Release is the all-six Clervo Platform; Search is privately core-qualified but remains a preview, and the other five product cores are not yet implemented.
 
 Important status:
 
@@ -8,7 +8,7 @@ Important status:
 - First Revenue Release: Clervo Platform
 - Required pillars: Search, AI, Secure Sandbox, RPC, Prediction, Crypto Intelligence
 - Permanent narrative: Find, Understand, Act
-- Search release lifecycle: preview; product core qualified: false
+- Search release lifecycle: preview; product core qualified: true (private qualification only)
 - AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence release lifecycle: unavailable; product core qualified: false
 - Product core ready: false
 - Callable products: search.web, search.answer

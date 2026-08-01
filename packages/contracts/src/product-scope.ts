@@ -74,7 +74,7 @@ export interface ProductScopeDocument {
 }
 
 const currentPillars = [
-  { pillarId: 'search', release: 'first_revenue_release', lifecycle: 'preview', coreQualified: false, capabilityIds: ['search.web', 'search.answer', 'web.fetch', 'web.extract', 'research.report'] },
+  { pillarId: 'search', release: 'first_revenue_release', lifecycle: 'preview', coreQualified: true, capabilityIds: ['search.web', 'search.answer', 'web.fetch', 'web.extract', 'research.report'] },
   { pillarId: 'ai', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: false, capabilityIds: ['ai.chat', 'ai.embed', 'ai.image', 'ai.speech'] },
   { pillarId: 'sandbox', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: false, capabilityIds: ['sandbox.run', 'sandbox.session.create', 'sandbox.session.exec', 'sandbox.artifact.get', 'sandbox.session.destroy'] },
   { pillarId: 'rpc', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: false, capabilityIds: ['rpc.call', 'rpc.batch', 'rpc.health', 'rpc.archive', 'rpc.broadcast'] },

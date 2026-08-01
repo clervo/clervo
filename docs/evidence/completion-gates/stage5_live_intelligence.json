@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "clervo.completion-gate-evidence.v1",
+  "gateId": "stage5_live_intelligence",
+  "verifierId": "stage5-exit",
+  "result": "passed",
+  "subjectCommit": "2ef5996ee81a9f1c05968037f743b237d03a1758",
+  "verifiedAt": "2026-08-01T23:29:32Z",
+  "components": {
+    "registryFoundation": "73bf2c0",
+    "evidenceComparison": "30159e5",
+    "monitorLineage": "07172c2",
+    "monitorRunnerAndAlerts": "e7f54e6",
+    "solutionPacks": "2ef5996"
+  },
+  "stage4ReferenceGate": {
+    "path": "docs/evidence/completion-gates/stage4_search_reference_pattern.json",
+    "result": "passed",
+    "blockingCheckCount": 0
+  },
+  "qualification": {
+    "scope": "private_repository_and_recorded_runtime",
+    "registryStable": true,
+    "schemaVisibilityDefaultDeny": true,
+    "comparisonPassed": true,
+    "monitoringPassed": true,
+    "recordedAlertsPassed": true,
+    "solutionPackCount": 5,
+    "publicSharedSurfaceBegun": false
+  },
+  "externalEffects": {
+    "providerCalls": 0,
+    "messagesDelivered": 0,
+    "infrastructureSpendUsd": 0,
+    "usdcSpent": 0
+  },
+  "claimBoundary": "Search and Live Intelligence are privately core-qualified and remain preview. External scheduling and delivery, public availability, production, real payment, demand, revenue, and superiority claims remain unproven."
+}

@@ -4,7 +4,7 @@
   "state": "foundation_unfrozen",
   "schemaVisibilityPolicyVersion": "2026-08-01.1",
   "pillars": [
-    { "pillarId": "search", "lifecycle": "preview", "coreQualified": false },
+    { "pillarId": "search", "lifecycle": "preview", "coreQualified": true },
     { "pillarId": "ai", "lifecycle": "unavailable", "coreQualified": false },
     { "pillarId": "sandbox", "lifecycle": "unavailable", "coreQualified": false },
     { "pillarId": "rpc", "lifecycle": "unavailable", "coreQualified": false },

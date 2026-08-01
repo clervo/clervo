@@ -31,17 +31,11 @@
     "surfaces": ["api", "mcp", "sdk", "onboarding", "design", "documentation", "discovery", "json_ld", "sitemap", "seo", "distribution"]
   },
   "currentTruth": {
-    "latestCompletedTicket": "N4.27S",
-    "stage": 4,
-    "stage4BlockersRemaining": 5,
-    "searchReferencePattern": false,
-    "stage5Authorized": false,
-    "n4_27t": {
-      "ownerAuthorized": true,
-      "implementationStarted": false,
-      "status": "paused_before_implementation",
-      "authorityBoundary": "recorded_scope_and_stop_conditions"
-    }
+    "latestCompletedStage": 5,
+    "stage4BlockersRemaining": 0,
+    "searchReferencePattern": true,
+    "liveIntelligencePrivateQualification": true,
+    "searchCoreQualified": true
   },
   "productionWebsite": false
 }

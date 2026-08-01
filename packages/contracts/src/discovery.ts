@@ -64,7 +64,7 @@ export function createOpenApiDocument(schemas: Record<string, Record<string, unk
   return {
     openapi: '3.1.1',
     jsonSchemaDialect: 'https://json-schema.org/draft/2020-12/schema',
-    info: { title: 'Clervo Platform search contract', version: CONTRACT_VERSION, description: 'Generated repository-local contract for separately priced raw retrieval and synthesized-answer products on the bounded search.query HTTP slice. This Search preview is one unqualified pillar of the future six-pillar Clervo Platform First Revenue Release. Deployment is not verified and public payment is not implemented.' },
+    info: { title: 'Clervo Platform search contract', version: CONTRACT_VERSION, description: 'Generated repository-local contract for separately priced raw retrieval and synthesized-answer products on the bounded search.query HTTP slice. This privately qualified Search core remains a preview within the future six-pillar Clervo Platform First Revenue Release. Deployment is not verified and public payment is not implemented.' },
     paths: {
       [SEARCH_FREE_PATH]: { post: operation('Execute free search sample', 'Bounded, idempotent free-sample route with an in-memory quota reference implementation.', { 200: { description: 'Search completed', content: { 'application/json': { schema: { $ref: '#/components/schemas/SearchHttpResult' } } } }, 400: { description: 'Invalid request' }, 409: { description: 'Idempotency conflict' }, 429: { description: 'Free quota exceeded' }, 502: { description: 'Search executor failed closed' } }) },
       [SEARCH_PAID_PATH]: { post: operation('Request paid search', 'Returns an explicitly non-payable mock x402 challenge by default. Mock-paid execution exists only through test dependency injection.', { 200: { description: 'Mock-paid test execution completed', content: { 'application/json': { schema: { $ref: '#/components/schemas/SearchHttpResult' } } } }, 400: { description: 'Invalid request' }, 402: { description: 'Non-payable mock payment challenge', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } } }, content: { 'application/json': { schema: { $ref: '#/components/schemas/MockPaymentRequired' } } } }, 409: { description: 'Idempotency conflict' }, 502: { description: 'Mock-paid execution failed closed' } }) },
@@ -91,7 +91,7 @@ export function createDiscoveryDocument(): DiscoveryDocument {
     discoveryVersion: DISCOVERY_VERSION,
     contractVersion: CONTRACT_VERSION,
     name: 'Clervo',
-    description: 'Machine-readable preview of the implemented repository-local search.query HTTP slice for the future six-pillar Clervo Platform First Revenue Release. No pillar is core-qualified, the product-core gate is not ready, and public deployment and real payment are not verified.',
+    description: 'Machine-readable preview of the implemented repository-local search.query HTTP slice for the future six-pillar Clervo Platform First Revenue Release. Search is privately core-qualified; the other five pillars and the overall product-core gate are not ready, and public deployment and real payment are not verified.',
     lifecycle: 'implemented_unverified',
     callable: true,
     payment: { protocol: 'x402', implemented: false, settlementVerified: false },
@@ -114,7 +114,7 @@ export function createLlmsText(): string {
   return [
     '# Clervo',
     '',
-    '> Clervo is outcome infrastructure for agents. The planned First Revenue Release is the all-six Clervo Platform; only a repository-local Search slice is currently implemented, and it remains an unqualified preview.',
+    '> Clervo is outcome infrastructure for agents. The planned First Revenue Release is the all-six Clervo Platform; Search is privately core-qualified but remains a preview, and the other five product cores are not yet implemented.',
     '',
     'Important status:',
     '',
@@ -122,7 +122,7 @@ export function createLlmsText(): string {
     '- First Revenue Release: Clervo Platform',
     '- Required pillars: Search, AI, Secure Sandbox, RPC, Prediction, Crypto Intelligence',
     '- Permanent narrative: Find, Understand, Act',
-    '- Search release lifecycle: preview; product core qualified: false',
+    '- Search release lifecycle: preview; product core qualified: true (private qualification only)',
     '- AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence release lifecycle: unavailable; product core qualified: false',
     '- Product core ready: false',
     '- Callable products: search.web, search.answer',

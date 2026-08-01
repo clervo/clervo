@@ -81,7 +81,7 @@
         "pillarId": "search",
         "release": "first_revenue_release",
         "lifecycle": "preview",
-        "coreQualified": false,
+        "coreQualified": true,
         "capabilityIds": [
           "search.web",
           "search.answer",

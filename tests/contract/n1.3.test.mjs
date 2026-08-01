@@ -76,7 +76,8 @@ test('discovery publishes the implemented search product without payment or depl
     ready: false,
   });
   assert.deepEqual(discovery.releaseScope.pillars.map(({ lifecycle }) => lifecycle), ['preview', 'unavailable', 'unavailable', 'unavailable', 'unavailable', 'unavailable']);
-  assert.ok(discovery.releaseScope.pillars.every(({ coreQualified, release }) => coreQualified === false && release === 'first_revenue_release'));
+  assert.deepEqual(discovery.releaseScope.pillars.map(({ coreQualified }) => coreQualified), [true, false, false, false, false, false]);
+  assert.ok(discovery.releaseScope.pillars.every(({ release }) => release === 'first_revenue_release'));
 });
 
 test('llms.txt publishes separately priced search products and states payment/deployment limitations', async () => {

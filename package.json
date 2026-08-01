@@ -77,6 +77,7 @@
     "test:n5.3": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n5.3.test.mjs",
     "test:n5.4": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n5.4.test.mjs",
     "test:n5.5": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n5.5.test.mjs",
+    "test:stage5": "node ./scripts/verify-runtime.mjs && npm run generate:discovery && node --test ./tests/contract/n4.11.test.mjs ./tests/contract/n5.1.test.mjs ./tests/contract/n5.2.test.mjs ./tests/contract/n5.3.test.mjs ./tests/contract/n5.4.test.mjs ./tests/contract/n5.5.test.mjs && node ./scripts/verify-stage5-exit.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
     "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",
     "staging:gcp": "./scripts/gcp-staging.sh",

@@ -62,10 +62,10 @@ strategy.
 - **Shared-surface candidate:** API, SDK, design, discovery, documentation,
   SEO, onboarding, or distribution work held until the Stage 12 freeze.
 
-Stage 4 passed its evidence-bound exit. N5.1 established the unfrozen registry
-and N5.2 added deterministic comparison and typed change detection. Search
-remains `preview`; later cores, shared surfaces, payment, production, and launch
-claims remain incomplete.
+Stage 5 passed private Live Intelligence qualification above the Stage 4 Search
+reference pattern. Search is privately core-qualified and remains `preview`;
+later cores, shared surfaces, payment, production, and launch claims remain
+incomplete.
 
 No placeholder may contain invented prices, providers, commands, transactions,
 customers, logos, testimonials, revenue, usage, accuracy, screenshots,
