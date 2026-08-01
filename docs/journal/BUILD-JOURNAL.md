@@ -891,3 +891,54 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   current handoff, and obtain explicit owner authorization for N4.27T if that is
   still the desired next product ticket. N4.27T remains proposed and
   unauthorized; stop without beginning it, N4.28 or Stage 5.
+
+## 2026-08-01 — Permanent Codex scrollback and tmux defaults
+
+- Classified the work as exact owner-authorized repository-control-plane and
+  devbox maintenance. Scope was limited to terminal/Codex/tmux configuration,
+  installer/health regression coverage, operational documentation and evidence.
+  No product ticket, product code, lifecycle state, stage gate, payment state or
+  public product claim changed.
+- Added `[tui]` defaults to all five repository profile templates and installed
+  copies: `alternate_screen = "never"` and `raw_output_mode = true`. The
+  installed `engineering`, `studio-maintenance`, `design`, `browser-debug` and
+  `visual-qa` files under `/workspace/codex-home` are byte-identical to their
+  repository templates.
+- Added `docs/operations/codex/tmux.conf`, configured `mouse on` and
+  `history-limit 200000`, taught the reproducible installer to place and compare
+  the current devbox user's `.tmux.conf`, and reloaded the existing `clervo`
+  tmux server. Live global options reported `mouse on` and
+  `history-limit 200000`.
+- Updated the studio health check to enforce the five TUI defaults, exact tmux
+  installed-copy equality, isolated tmux runtime behavior and tmux tool
+  availability. The first full run exposed only a stale permission-rendering
+  assertion in `codex debug`; its failed report is preserved at
+  `docs/evidence/codex-studio/raw/terminal-scrollback-health.json`. The repaired
+  rerun passed and is preserved at
+  `docs/evidence/codex-studio/raw/terminal-scrollback-health-final.json`.
+- Validation passed: five TOML parses; five short-lived Codex 0.146.0
+  `--strict-config` TUI startups; installer and source/installed comparisons;
+  studio health; isolated and live tmux option checks; ShellCheck; Node syntax;
+  JSON parsing; TypeScript typecheck; lint across 256 source/contract files;
+  repository and installed-studio npm audits with zero vulnerabilities; secret
+  scan across working tree/history with zero values printed; clean-room boundary
+  with zero legacy dependencies, network calls or USDC; scope and diff-integrity
+  checks. Canonical product tests and the protected Stage 4 verifier did not run.
+- External activity was limited to fetching the current official Codex manual
+  for the supported TUI key contract and routine npm install/audit metadata.
+  There was no product-provider call, cloud resource, deployment, IAM/billing or
+  secret change, production effect, wallet/payment action or USDC spend. Direct
+  material cost was USD 0.000000 and USDC spent was 0.
+- The isolated health-check tmux server and strict-startup TUI probes were
+  terminated. No task container or residual billable resource remains. The
+  existing `clervo` tmux session remains attached with the new options active;
+  installed profile and tmux copies remain intentionally for future launches.
+- Current lifecycle truth is unchanged: Search is not commercially competitive
+  or the reference pattern, the First Revenue Release is not ready, and Stage 5
+  remains unauthorized.
+- Implementation commit:
+  `70f10f80b50c137826cc27e33355f6f8ece0e170` (`chore(codex): preserve
+  terminal scrollback`).
+- Exact next proposed product task remains N4.27T under separate owner
+  authority. N4.27T, N4.28, mock x402, Stage 5, AI, Sandbox, production release,
+  real payment and all later stages remain unauthorized. Stop here.
