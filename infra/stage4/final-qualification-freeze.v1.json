@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "clervo.stage4.final-qualification-freeze.v1",
+  "frozenAt": "2026-08-01T21:15:18Z",
+  "sourceParentCommit": "cac926cb08aa27bcc690963edb352679448d7e1a",
+  "executionCountAtFreeze": 0,
+  "maximumExecutionCount": 1,
+  "inputs": {
+    "apps/api/src/search-server.mjs": "sha256:134079a13e23cefb55bb4af54972599ecc45408b60a4fe6de8ff22bbfb0af41c",
+    "apps/api/src/staging-search-main.mjs": "sha256:bfdcea45b8d9be840229a9c06de53961a7be4439a62878ca1321628383e61099",
+    "infra/stage4/browser-policy.mjs": "sha256:fd0bd60ab23c98ce52ec66e4c1043fd199c6b8039412df182819780c40d59bc4",
+    "infra/stage4/browser-worker.mjs": "sha256:d4ff52dd850184738501adcc8455762fac8b873bb3eac73fd2f9d3192b6e13f4",
+    "infra/stage4/synthetic-browser-smoke.mjs": "sha256:c36dfbeb84224314e14349e9112c6b38592ff122f2a476ab99059e712848225c",
+    "infra/stage4/browser.Dockerfile": "sha256:ca7ccdfbc55a4a12cc7ebe08d327d674e1fb506edabc5f6f532d5bd47a2dc3b9",
+    "infra/stage4/chromium-seccomp.json": "sha256:5904e58b66dec91ff6f6edcf6dc2e04e566009cb8b2d41b9e8cd0bb9729a1f96",
+    "infra/stage4/commerce-smoke.mjs": "sha256:3f92d074631e5490e2bc5ba22aa4cab51373b4aeb53f40966a5e090a555af8bc",
+    "infra/stage4/commerce.Dockerfile": "sha256:52271573a6f80c4e4d42e5357c8b8a1494ecd3c428a5aa8b9c9a2ae2f2076305",
+    "infra/stage4/run-final-qualification.sh": "sha256:512349c484f57b07a2dc513d37ac7fd0b66908f1eb775a7d05d0b8e1799d6aca",
+    "infra/stage4/cloud-final-qualification-plan.v1.json": "sha256:61b3644947753c709a9861521de09e8e4e04d5d95e77caac52e9c42d111d2d4a",
+    "scripts/verify-stage4-exit.mjs": "sha256:54d4799261a5770053fd9292bfdcc2cdb58d8b0f30cb7f867333e7ecb72d3c7d"
+  },
+  "images": {
+    "browser": {
+      "reference": "clervo-stage4-browser:dev",
+      "imageId": "sha256:552de4dc382af6e73acd746cdb76cc17771e7cd7eb10532df25dc7f5b7e27fa0",
+      "contentBytes": 345408121
+    },
+    "commerce": {
+      "reference": "clervo-stage4-commerce:dev",
+      "imageId": "sha256:d4ed7e42f56509dcefa69dd2c4539996574cc1a0677fbf5e9ea27648d0309400",
+      "contentBytes": 80492804
+    }
+  },
+  "acceptance": {
+    "browserJavascriptRunsRequired": 20,
+    "browserHostileRunsRequired": 8,
+    "allBrowserRunsMustPass": true,
+    "privateMockRawAndSynthesisCommerceMustPass": true,
+    "replayMustNotExecuteTwice": true,
+    "finalContainerOrphansRequired": 0,
+    "realPayment": false,
+    "usdcMaximum": 0
+  },
+  "failurePolicy": {
+    "failClosed": true,
+    "preserveFailure": true,
+    "rerunForbidden": true,
+    "postResultTuningForbidden": true
+  },
+  "resultPath": "docs/evidence/stage4/final-cloud-qualification.v1.json"
+}

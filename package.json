@@ -64,6 +64,7 @@
     "test:n4.27s": "node ./scripts/verify-runtime.mjs && npm run build && node --check ./infra/n4.27s/qualify-browser.mjs && node --check ./infra/n4.27s/browser-worker.mjs && node --check ./infra/n4.27s/retrieval-gateway.mjs && node --test ./tests/contract/n4.27s.test.mjs",
     "test:n4.27t": "node ./scripts/verify-runtime.mjs && npm run build && node --check ./infra/n4.27t/browser-worker.mjs && node --check ./infra/n4.27t/qualify-development.mjs && node --test ./tests/contract/n4.27t.test.mjs",
     "test:n4.27t:cloud": "node ./scripts/verify-runtime.mjs && node --check ./infra/n4.27t/validation-browser-worker.mjs && node --check ./infra/n4.27t/qualify-validation.mjs && node --test ./tests/contract/n4.27t-cloud.test.mjs",
+    "test:stage4:campaign": "node ./scripts/verify-runtime.mjs && npm run build && node --check ./infra/stage4/browser-worker.mjs && node --check ./infra/stage4/synthetic-browser-smoke.mjs && node --test ./tests/contract/stage4-campaign.test.mjs",
     "benchmark:n4.23a": "node ./scripts/verify-runtime.mjs && node ./scripts/benchmarks/n4.23a/benchmark-n4.23a.mjs",
     "benchmark:n4.26": "node ./scripts/verify-runtime.mjs && node ./scripts/benchmarks/n4.26/evaluate-n4.26.mjs",
     "benchmark:n4.26:searxng": "node ./scripts/verify-runtime.mjs && node ./scripts/benchmarks/n4.26/evaluate-searxng.mjs",

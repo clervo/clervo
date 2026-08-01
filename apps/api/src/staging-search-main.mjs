@@ -9,9 +9,13 @@ const releaseId = process.env.CLERVO_RELEASE_ID;
 const host = process.env.CLERVO_HTTP_HOST ?? '0.0.0.0';
 const port = Number(process.env.PORT ?? process.env.CLERVO_HTTP_PORT ?? '8080');
 const publicOrigin = process.env.CLERVO_PUBLIC_ORIGIN ?? 'https://unverified.invalid';
+const privateMockCommerceEnabled = process.env.CLERVO_STAGE4_PRIVATE_MOCK_COMMERCE === 'enabled';
 
 if (!releaseId) throw new Error('CLERVO_RELEASE_ID is required');
 if (!Number.isSafeInteger(port) || port < 1 || port > 65_535) throw new Error('invalid HTTP port');
+if (privateMockCommerceEnabled && (environment !== 'stage4-private-qualification' || !['127.0.0.1', 'localhost'].includes(new URL(publicOrigin).hostname))) {
+  throw new Error('private_mock_commerce_boundary_invalid');
+}
 
 const monitor = createSearchMonitor({
   export(snapshot) {
@@ -24,7 +28,7 @@ const server = createSearchServer({
   environment,
   releaseId,
   publicOrigin,
-  allowMockPaidExecution: false,
+  allowMockPaidExecution: privateMockCommerceEnabled,
 });
 
 const exportTimer = setInterval(() => {
@@ -51,7 +55,7 @@ server.listen(port, host, () => {
     releaseId,
     host,
     port,
-    paidExecutionEnabled: false,
+    paidExecutionEnabled: privateMockCommerceEnabled,
     retrievalMode: 'recorded',
   }));
 });

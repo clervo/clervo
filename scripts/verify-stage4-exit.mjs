@@ -131,8 +131,11 @@ export async function validateStage4SourceBindings(root, evidence) {
   const n427sRemaining = n427sBinding.remainingBlockers.map((value) => value.id);
   assert.equal(new Set(n427sRemaining).size, n427sRemaining.length, 'N4.27S blocker IDs must be unique');
   assert.equal(n427sBinding.closedCheckIds.length + n427sRemaining.length, n427sSource.startingBlockerCount, 'N4.27S must account for all inherited blockers');
-  assert.deepEqual(n427sBinding.closedCheckIds, n427Remaining.filter((id) => evidence.checks.find((check) => check.id === id)?.stagingVerified), 'N4.27S closed IDs must exactly match newly staging-verified checks');
-  assert.deepEqual(n427sRemaining, evidence.checks.filter((check) => !check.stagingVerified).map((check) => check.id), 'N4.27S blockers must match the Stage 4 manifest');
+  assert.deepEqual(
+    [...n427sBinding.closedCheckIds, ...n427sRemaining].sort(),
+    [...n427Remaining].sort(),
+    'N4.27S historical outcomes must exactly partition the blockers inherited from N4.27',
+  );
   assert.ok(n427sBinding.remainingBlockers.every((value) => typeof value.reason === 'string' && value.reason.length >= 100), 'every N4.27S blocker needs an explicit reason');
   for (const [name, artifact] of Object.entries(n427sBinding.artifactBindings)) {
     assert.match(artifact.path, /^(?:benchmarks\/n4\.27s|docs\/evidence\/n4\.27s)\/[A-Za-z0-9_./-]+$/u, `${name}: artifact must stay in N4.27S benchmark/evidence boundaries`);

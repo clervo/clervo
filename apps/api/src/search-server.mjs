@@ -138,7 +138,7 @@ export function createSearchServer({
         return;
       }
       operationId = stored?.operationId ?? identifier('op', `${keyHeader}:${requestHash}`);
-      idempotency.set(keyHeader, { operationId, requestHash });
+      idempotency.set(keyHeader, { ...stored, operationId, requestHash });
       const fundingMode = url.pathname === SEARCH_FREE_PATH ? 'free' : 'paid';
       productId = searchProductId(normalized);
       const executionInput = Object.freeze({ ...normalized, operationId, productId, requestHash, fundingMode });
@@ -170,7 +170,7 @@ export function createSearchServer({
       const issuedAt = now();
       const expiresAt = new Date(Date.parse(issuedAt) + 300_000).toISOString();
       const pricing = searchProductPricing(productId);
-      const quote = sealQuote({
+      const quote = stored?.quote ?? sealQuote({
         contractVersion: CONTRACT_VERSION,
         quoteId: identifier('quote', `${operationId}:${requestHash}`),
         operationId,
@@ -181,10 +181,11 @@ export function createSearchServer({
         issuedAt,
         expiresAt,
       });
+      idempotency.set(keyHeader, { operationId, requestHash, quote });
       const challenge = createMockChallengeResponse({ quote, resourceUrl: `${publicOrigin}${SEARCH_PAID_PATH}`, description: `Non-payable mock challenge for ${productId}`, network: 'mock:local', asset: 'mock:usdc', payTo: 'mock:nonpayable-search', maxTimeoutSeconds: 60, now: issuedAt });
       const payment = parseMockPayment(request.headers[MOCK_PAYMENT_HEADER]);
       if (!allowMockPaidExecution || payment === undefined) {
-        idempotency.delete(keyHeader);
+        if (!allowMockPaidExecution) idempotency.delete(keyHeader);
         record({ timestamp: now(), productId, outcome: 'payment_challenge', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
         send(response, challenge.status, { ...challenge.body, quote }, { [PAYMENT_REQUIRED_HEADER]: challenge.headers[PAYMENT_REQUIRED_HEADER] });
         return;
