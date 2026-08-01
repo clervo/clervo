@@ -80,7 +80,7 @@ test('scope validation rejects a live pillar without core qualification and dish
 });
 
 test('repository authority contains the exact canonical Stage 5–16 titles', async () => {
-  const authority = await readFile(path.join(root, 'docs/product/CLERVO-LIVE-INTELLIGENCE-LAUNCH-AUTHORITY.md'), 'utf8');
+  const authority = await readFile(path.join(root, 'docs/archive/product-authorities/CLERVO-LIVE-INTELLIGENCE-LAUNCH-AUTHORITY.md'), 'utf8');
   const stageTitles = [...authority.matchAll(/^### Stage (\d+) — (.+)$/gmu)].map(([, stage, title]) => [Number(stage), title]);
   assert.deepEqual(stageTitles, [
     [5, 'Live Intelligence productization and platform-registry foundation'],

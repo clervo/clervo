@@ -19,12 +19,12 @@ function commandReason(command) {
     [/(^|[\s/])\.env(?!\.example\b)/u, "Secret-bearing environment files must not be read or modified."],
     [/(^|[\s/])(auth\.json|\.ssh|\.gnupg)([\s/]|$)/u, "Authentication and private-key stores are outside autonomous tool access."],
     [/\b(printenv|env)\b/u, "Environment-value enumeration is blocked; use the redacted inventory."],
-    [/\b(rm\s+-[^\n]*r[^\n]*f|git\s+(reset|clean|restore|checkout\s+--)|git\s+push[^\n]*--force)\b/u, "Destructive filesystem or Git operations require separate authority."],
+    [/\b(rm\s+-[^\n]*r[^\n]*f|git\s+(reset|clean|restore|checkout\s+--)|git\s+push[^\n]*--force)\b/u, "Destructive filesystem or Git operations require explicit approval and exact target verification."],
     [/\b(sudo|su\s+-|chmod\s+777|chown\s+-r)\b/u, "Privilege or broad ownership changes are outside the studio boundary."],
     [/\b(docker\s+system\s+prune|docker\s+volume\s+rm|docker\s+network\s+rm)\b/u, "Global Docker deletion could affect unrelated workloads."],
-    [/\b(gcloud[^\n]*(billing|iam|secrets)|gcloud[^\n]*(deploy|services\s+(enable|disable)|projects\s+(create|delete)))\b/u, "Cloud billing, IAM, secret, API, project, or deployment mutation needs separate authority."],
-    [/\b(kubectl\s+(apply|delete|replace|patch)|helm\s+(install|upgrade|uninstall)|terraform\s+(apply|destroy)|tofu\s+(apply|destroy))\b/u, "Cluster or infrastructure mutation needs a separately authorized ticket."],
-    [/\b(cast\s+send|solana\s+transfer|wallet\s+(send|transfer)|usdc\s+(send|transfer|approve))\b/u, "Wallet, payment, and USDC actions are not authorized."],
+    [/\b(gcloud[^\n]*(billing|iam|secrets)|gcloud[^\n]*(deploy|services\s+(enable|disable)|projects\s+(create|delete)))\b/u, "Cloud billing, IAM, secret, API, project, or deployment mutation requires approval when it creates cost or irreversible production effects."],
+    [/\b(kubectl\s+(apply|delete|replace|patch)|helm\s+(install|upgrade|uninstall)|terraform\s+(apply|destroy)|tofu\s+(apply|destroy))\b/u, "Cluster or infrastructure mutation requires approval when it creates cost or irreversible production effects."],
+    [/\b(cast\s+send|solana\s+transfer|wallet\s+(send|transfer)|usdc\s+(send|transfer|approve))\b/u, "Wallet, payment, and USDC actions require explicit owner approval."],
     [/\b(curl|wget)\b[^\n]*(authorization:|x-api-key|private[_-]?key|bearer\s+\$)/u, "Commands must not transmit credential material."],
   ];
 
@@ -34,7 +34,7 @@ function commandReason(command) {
 
   const mutating = /\b(delete|deploy|apply|destroy|transfer|settle|pay|push|publish)\b/u.test(value);
   if (mutating && /\b(prod|production|billing|iam|wallet|payment|mainnet)\b/u.test(value)) {
-    return "Production, billing, IAM, wallet, and payment mutations require separate exact authority.";
+    return "Production, billing, IAM, wallet, and payment mutations require the applicable explicit owner approval.";
   }
   return null;
 }
@@ -58,7 +58,7 @@ function mcpReason(toolName, toolInput) {
     return "Figma write tools remain disabled until explicit OAuth and file authority.";
   }
   if (/(github|gitlab|cloud|stripe|wallet|payment)/u.test(name) && /(create|delete|update|merge|push|send|pay|write)/u.test(name)) {
-    return "External write-capable MCP tools require separate exact authority.";
+    return "External write-capable MCP tools require explicit approval when they affect third parties, production, money, or irreversible state.";
   }
   if (/chrome_devtools/u.test(name)) {
     const serialized = JSON.stringify(toolInput).toLowerCase();

@@ -12,22 +12,22 @@
 | broad filesystem/shell/memory/cloud/database MCPs | rejected | duplicate transparent CLIs or create excessive write/auth/data exposure. |
 | Obsidian | deferred | Git-controlled docs already provide authority, review and recovery; no unique current value. |
 
-## Deferred until exact need
+## Deferred until needed
 
 | Candidate | Trigger |
 | --- | --- |
-| Figma MCP | owner OAuth plus exact file authority; endpoint is prepared disabled |
-| shadcn CLI/MCP/skill 4.16.1 | authorized real frontend ticket that needs component generation; review registry writes first |
-| Storybook and Storybook MCP | compatible real Storybook project exists under an authorized ticket |
-| Impeccable | design ticket proves its reviewed patterns outperform the compact Clervo design skill without catalog overhead |
-| GitHub CLI/MCP | exact remote workflow and human authentication are required; prefer CLI |
-| Google Cloud CLI repair | exact cloud task exists; install supported user-local archive or repair confinement without weakening AppArmor |
-| kubectl, Helm, OpenTofu/Terraform | an authorized infrastructure ticket names cluster/state/provider boundaries |
-| PostgreSQL client | an authorized database diagnostic requires it and credentials can remain safe |
+| Figma MCP | owner OAuth plus file access; endpoint is prepared disabled |
+| shadcn CLI/MCP/skill 4.16.1 | real frontend work needs component generation; review registry writes first |
+| Storybook and Storybook MCP | compatible real Storybook project exists |
+| Impeccable | measured design work shows value beyond the compact Clervo design skill |
+| GitHub CLI/MCP | a remote workflow and human authentication are required; prefer CLI |
+| Google Cloud CLI repair | cloud work needs it; install a supported user-local archive or repair confinement without weakening AppArmor |
+| kubectl, Helm, OpenTofu/Terraform | infrastructure work names cluster/state/provider boundaries and any real cost is approved |
+| PostgreSQL client | a database diagnostic requires it and credentials can remain safe |
 | yq | structured YAML edits exceed existing deterministic Node/Python capabilities |
-| Trivy/Semgrep or other scanners | an authorized container/IaC/source gate demonstrates coverage beyond npm, compiler/lint, secret and boundary checks |
-| Next.js, React, TypeScript additions, Tailwind, Storybook, Vitest, RTL, axe | future product ticket; do not add globally or to this repository preemptively |
-| Sharp, FFmpeg, GSAP/Motion, Three.js/R3F, Lottie, Rive, Spline | future media/design ticket selects one justified stack and performance budget; avoid duplicate animation systems |
+| Trivy/Semgrep or other scanners | a container/IaC/source gate demonstrates coverage beyond npm, compiler/lint, secret and boundary checks |
+| Next.js, React, TypeScript additions, Tailwind, Storybook, Vitest, RTL, axe | add when the relevant frontend work needs them; do not add globally or preemptively |
+| Sharp, FFmpeg, GSAP/Motion, Three.js/R3F, Lottie, Rive, Spline | media/design work selects one justified stack and performance budget; avoid duplicate animation systems |
 
 Removal proof is the committed lock/profile inventory: rejected packages are
 absent, Figma is disabled, and visual QA contains no MCP table. Restore any

@@ -46,11 +46,8 @@
     "figma": { "transport": "remote", "url": "https://mcp.figma.com/mcp", "enabled": false, "authentication": "owner_oauth_required" }
   },
   "skills": [
-    "clervo-engineering-stage",
     "clervo-cloud-cleanup",
-    "clervo-benchmark-freeze",
     "clervo-x402-proof",
-    "clervo-release-handoff",
     "clervo-design-studio"
   ],
   "safeguards": {

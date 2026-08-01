@@ -1,10 +1,10 @@
 # Bounded research and provider-candidate handling
 
-Research exists to answer one ticket decision, not to expand scope.
+Research exists to answer one engineering decision, not to expand scope.
 
 - Use primary and official sources.
 - Set a time limit and candidate limit before research.
-- For ordinary adapter/provider selection: maximum 30 minutes and 5 serious candidates unless the ticket says otherwise.
+- For ordinary adapter/provider selection: maximum 30 minutes and 5 serious candidates unless the task needs more.
 - Record the decision and rejected alternatives briefly.
 - Do not install or combine all trending repositories.
 - A repository may be:

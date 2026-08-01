@@ -1,4 +1,4 @@
 interface:
   display_name: "Clervo Design Studio"
   short_description: "Design truthful premium Clervo UI"
-  default_prompt: "Use $clervo-design-studio to prepare or implement authorized Clervo UI with brand, evidence, accessibility, and performance controls."
+  default_prompt: "Use $clervo-design-studio to prepare or implement Clervo UI with brand, evidence, accessibility, and performance controls."

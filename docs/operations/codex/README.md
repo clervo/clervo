@@ -1,7 +1,8 @@
 # Clervo autonomous Codex studio
 
-This is a persistent, reproducible control-plane studio. It does not authorize
-any product ticket. The master plan and current handoff remain authoritative.
+This is a persistent, reproducible engineering studio. The master plan defines
+product scope and roadmap order; root `AGENTS.md` defines continuous execution
+and permanent safety boundaries.
 
 ## Install and launch
 
@@ -19,13 +20,12 @@ bash scripts/codex-studio/launch.sh visual-qa
 Noninteractive commands may follow the profile name, for example:
 
 ```bash
-bash scripts/codex-studio/launch.sh engineering exec "Run the authorized checks and report."
+bash scripts/codex-studio/launch.sh engineering exec "Run the relevant checks and report."
 bash scripts/codex-studio/launch.sh browser-debug debug prompt-input "Profile probe."
 ```
 
-Use `engineering` by default. Use `studio-maintenance` only for the exact
-owner-authorized machine/control-plane task. Use `design` only for design work
-within existing authority. `browser-debug` creates a fresh credential-free
+Use `engineering` by default. Use `studio-maintenance` for machine/control-plane
+work and `design` for design work. `browser-debug` creates a fresh credential-free
 Chromium container on `127.0.0.1:9223`, attaches Chrome DevTools MCP, and removes
 the container on exit. `visual-qa` has no browser MCP; use the deterministic
 runner:
@@ -45,10 +45,11 @@ bash scripts/codex-studio/run-visual-qa.sh
 | visual-qa | danger-full-access + guards | never | none | fresh container per run |
 
 The host-capable profiles are necessary for Docker and machine repair. They do
-not grant roadmap, payment, provider, production, IAM, billing, destructive
-Git, secret, or unrelated-project authority. The hook and global rules deny
-those command classes, while credentials are filtered from inherited process
-environments. AppArmor is left enabled and the devbox has no supported `sudo`.
+not permit payment, production/customer/unrelated-infrastructure destruction,
+IAM/billing changes, destructive Git, or secret exposure without the required
+owner action. The hook and global rules deny those command classes, while
+credentials are filtered from inherited process environments. AppArmor is left
+enabled and the devbox has no supported `sudo`.
 
 ## Health and evidence
 

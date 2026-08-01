@@ -29,7 +29,6 @@ try {
     'apps/site/PROTOTYPE-COPY.md',
     'docs/brand/FOCUSED-LAUNCH-SCOPE-v1.md',
     'docs/marketing/INITIAL-COMMERCIAL-RELEASE.md',
-    'docs/product/CLERVO-LIVE-INTELLIGENCE-LAUNCH-AUTHORITY.md',
   ].map(async (relative) => [relative, await readFile(path.join(root, relative), 'utf8')]));
 
   for (const [relative, source] of sources) {

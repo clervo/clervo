@@ -13,9 +13,8 @@ When a loop is detected:
 
 1. Stop all broad inspection.
 2. Run only `git status --short` and a bounded `git diff --stat`.
-3. Create or update `docs/journal/ACTIVE-TICKET-STATE.md`.
-4. State the exact next file and edit.
-5. Perform that edit or declare one concrete blocker.
-6. If the task still repeats, stop and request a new focused task. Do not continue consuming context.
+3. State the exact next file and edit.
+4. Perform that edit or report one genuine owner-only blocker.
+5. If the task still repeats, continue from the current diff rather than restarting discovery.
 
-Planning is limited to one concise plan per task.
+Keep planning concise and implementation-oriented.

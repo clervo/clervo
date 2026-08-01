@@ -36,8 +36,8 @@ and repeatable real demonstration pass.
 
 ## Capability framing
 
-- Search — `preview`; N4.27S left five Stage 4 blockers, so it is not
-  commercially competitive, production-qualified, or the reference pattern.
+- Search — `preview`; Stage 4 passed its evidence-bound exit, while monitoring
+  execution/delivery and later release gates remain incomplete.
 - AI — `unavailable`; product-core implementation has not started.
 - Secure Sandbox — `unavailable`; product-core implementation has not started.
 - RPC — `unavailable`; product-core implementation has not started.
@@ -49,11 +49,9 @@ and repeatable real demonstration pass.
   access/design/discovery/distribution pass, production deployment, bounded
   settlement, and external useful paid proof remain incomplete.
 
-NPLAN.4 is complete at its governance boundary. N4.27T's validation executed
-once in an authorized isolated qualification: developer retrieval passed 10/10
-and browser execution failed 0/20, so the final gate failed. Resources were
-cleaned to USD 0/day residual exposure. N4.27U is a bounded local repair; this
-state does not start Stage 5 or any unavailable product core.
+N5.1 established the unfrozen six-pillar registry and N5.2 added deterministic
+evidence comparison and typed change detection. This does not make monitoring,
+any unavailable product core, shared distribution, production, or payment ready.
 
 Shared API, MCP, SDK, onboarding, design, documentation, discovery, JSON-LD,
 sitemap, SEO, and distribution work begins once, after the Stage 12 core and

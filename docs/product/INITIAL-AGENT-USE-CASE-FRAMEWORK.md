@@ -1,9 +1,8 @@
 # Clervo Platform solution-pack and use-case framework
 
-This is a ranked product backlog, not implemented inventory. It is subordinate
-to the canonical product launch authority and authorizes no runtime, AI,
-Sandbox, RPC, Prediction, Crypto Intelligence, connector, shared-surface,
-deployment, or payment implementation.
+This is a ranked product backlog, not implemented inventory. The master plan
+defines product scope and ordering; this file does not claim that backlog items
+are implemented or ready.
 
 ## Revenue model
 
@@ -107,21 +106,20 @@ The permanent narrative is **Find → Understand → Act**:
 - unavailable RPC, Prediction, and Crypto Intelligence cores.
 
 All six are First Revenue Release prerequisites. Build and stabilize their
-product cores privately in the authorized order without altering stable
+product cores privately in roadmap order without altering stable
 capability identifiers. After the Stage 12 core and cross-pillar contract
 freeze, Stage 13 performs one shared API, MCP, SDK, onboarding, design,
 documentation, discovery, JSON-LD, sitemap, SEO, and distribution pass.
 
 Only Search is currently a `preview`; the other five cores are `unavailable`
-and have not started implementation. N4.27S left five Stage 4 blockers.
-NPLAN.4 is complete at its governance boundary. N4.27T's once-only isolated
-qualification passed developer retrieval 10/10 but failed browser execution
-0/20; the result is final and cleanup is complete. N4.27U is the next bounded
-local repair and does not authorize a later roadmap stage or new cloud action.
+and have not started implementation. Stage 4 passed its evidence-bound exit.
+N5.1 established the unfrozen six-pillar registry and N5.2 implemented
+deterministic evidence comparison and typed changes. Monitoring execution,
+delivery, and alerts remain unproven.
 
 ## Promotion rule
 
-A use case becomes sellable only after a separate ticket proves its lawful
-source access, stable useful-result contract, controlled fixtures, commercial
+A use case becomes sellable only after its qualification proves lawful source
+access, a stable useful-result contract, controlled fixtures, commercial
 benchmark, bounded x402 behavior, production operations, monitoring, recovery,
 real demonstration, and external paid value. Missing proof remains visible.

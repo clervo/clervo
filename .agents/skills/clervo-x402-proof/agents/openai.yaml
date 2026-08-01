@@ -1,4 +1,4 @@
 interface:
   display_name: "Clervo x402 Proof"
   short_description: "Prove bounded x402 settlement safely"
-  default_prompt: "Use $clervo-x402-proof to preflight and execute only an explicitly authorized bounded x402 proof."
+  default_prompt: "Use $clervo-x402-proof to preflight an explicitly owner-approved bounded x402 settlement safely."

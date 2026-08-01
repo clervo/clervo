@@ -1,7 +1,7 @@
 # Clervo Platform brand and motion scope v3
 
-This editable addendum is subordinate to the canonical product launch
-authority. No binary brand or motion asset was found or overwritten.
+This editable addendum follows the master-plan product scope. No binary brand
+or motion asset was found or overwritten.
 
 ## Permanent system
 
@@ -25,7 +25,7 @@ authority. No binary brand or motion asset was found or overwritten.
    Structure → Verify → Monitor**.
 3. AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are
    `unavailable`; their product-core implementation has not started.
-4. Build and stabilize each product core privately in its authorized order.
+4. Build and stabilize each product core privately in roadmap order.
 5. Freeze cross-pillar contracts after the cores, then perform one shared API,
    MCP, SDK, onboarding, design, documentation, discovery, JSON-LD, sitemap,
    SEO, and distribution pass.
@@ -34,11 +34,9 @@ Until comparative proof passes, public copy says **Clervo-owned live Web
 retrieval**. Afterwards, **Advanced live intelligence for agents** is allowed.
 All specific superiority claims require exact published evidence.
 
-N4.27S left five Stage 4 blockers and did not prove Search commercially
-competitive, production-qualified, or the reference pattern. The comparative
-gate remains open and the advanced claim remains unauthorized. N4.27T is
-owner-authorized under its recorded scope and stop conditions but paused
-before implementation.
+Stage 4 passed its evidence-bound exit. N5.1 established the unfrozen registry
+and N5.2 added deterministic comparison and typed change detection. Search
+remains `preview`; comparative proof and the advanced claim remain incomplete.
 
 ## Motion narrative
 

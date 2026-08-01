@@ -12,7 +12,7 @@ const codexHome = process.env.CODEX_HOME ?? "/workspace/codex-home";
 const studioHome = path.join(codexHome, "studio");
 const outputPath = path.resolve(process.argv[2] ?? "docs/evidence/codex-studio/raw/health-check.json");
 const profiles = ["engineering", "studio-maintenance", "design", "browser-debug", "visual-qa"];
-const skills = ["clervo-engineering-stage", "clervo-cloud-cleanup", "clervo-benchmark-freeze", "clervo-x402-proof", "clervo-release-handoff", "clervo-design-studio"];
+const skills = ["clervo-cloud-cleanup", "clervo-x402-proof", "clervo-design-studio"];
 const checks = [];
 
 function run(name, command, args, options = {}) {

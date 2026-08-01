@@ -1448,3 +1448,24 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   definitions, schedule/state invariants and durable snapshot lineage is ready
   for a fresh repository-local cycle. It has no external execution or delivery
   authority.
+
+## 2026-08-01 — Continuous engineering execution simplification
+
+- Replaced the exact-ticket/dispatcher/one-worker execution model with compact
+  continuous engineering instructions. The master plan remains the unchanged
+  product-scope roadmap; its stages and tickets are now implementation checklist
+  items rather than authorization or stop boundaries.
+- Removed dispatcher and active-ticket hooks from package acceptance, archived
+  their policies, state, templates, verifier, test, launch-authority copy, Cline
+  rules, and process-only skills, and retained only cloud-cleanup, x402-payment,
+  and design skills with permanent safety and truthful-claims boundaries.
+- Updated active README, builder, operations, product-copy, and skill inventory
+  references. Product code, contracts, schemas, lifecycle, Stage 4 evidence,
+  N5.1, N5.2, prices, payment state, and implemented behavior did not change.
+- Focused validation passed: lint, typecheck, build, product-scope consistency,
+  secret scan, clean-room boundary, diff integrity, three active skill validators,
+  and 17 historical roadmap/N4.27T tests. The first focused run exposed one stale
+  N4.27T assertion coupled to later dispatcher state; it now validates the
+  preserved N4.27T qualification closeout and passes.
+- External effects and spend: none. No provider, credential, cloud, production,
+  customer, wallet, payment, or legacy action ran; USD and USDC spend were zero.

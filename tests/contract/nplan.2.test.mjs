@@ -17,7 +17,7 @@ test('NPLAN.2 Live Intelligence decision and evidence remain historical truth', 
 });
 
 test('NPLAN.3 supersedes NPLAN.2 only for forward release and stage authority', async () => {
-  const authority = await readFile(path.join(root, 'docs/product/CLERVO-LIVE-INTELLIGENCE-LAUNCH-AUTHORITY.md'), 'utf8');
+  const authority = await readFile(path.join(root, 'docs/archive/product-authorities/CLERVO-LIVE-INTELLIGENCE-LAUNCH-AUTHORITY.md'), 'utf8');
   assert.match(authority, /Decision ticket:\*\* NPLAN\.3/);
   assert.match(authority, /NPLAN\.3 supersedes NPLAN\.2 only for forward release and stage authority/);
   assert.match(authority, /NPLAN\.1, NPLAN\.2, completed Stages 0–4, prior ticket outcomes, sealed evidence/);

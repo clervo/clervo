@@ -13,7 +13,7 @@ Human-only actions remain intentionally unresolved:
   browser/device authentication if needed. Production, IAM and billing changes
   require separate explicit authorization.
 - Any provider, production, wallet or payment system: unavailable by design;
-  exact ticket, environment, amount/cost ceiling, recipient, secret handling,
+  task, environment, amount/cost ceiling, recipient, secret handling,
   evidence, reconciliation and stop authority are prerequisites.
 
 Never paste tokens into chat, committed files, shell history, logs, screenshots,

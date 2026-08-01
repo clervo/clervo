@@ -1,9 +1,8 @@
 # Clervo builder authority
 
-This file guides future site, documentation, agent, motion, and product-copy
-work. It does not authorize implementation or make a production-readiness
-claim. The canonical product authority is
-`docs/product/CLERVO-LIVE-INTELLIGENCE-LAUNCH-AUTHORITY.md`.
+This file guides site, documentation, agent, motion, and product-copy work. The
+master plan defines product scope; this guide makes no production-readiness
+claim.
 
 ## Product story
 
@@ -23,7 +22,7 @@ product cores are:
 
 Search is the only current `preview`. The other five product cores are
 `unavailable`, and their implementation has not started. Build and stabilize
-the cores privately in their authorized order. After the Stage 12 core and
+the cores privately in roadmap order. After the Stage 12 core and
 cross-pillar contract freeze, Stage 13 creates one shared API, MCP, SDK,
 onboarding, design, documentation, discovery, JSON-LD, sitemap, SEO, and
 distribution layer. Preserve stable capability identifiers and interfaces
@@ -40,18 +39,11 @@ permitted. Any superiority claim names the exact workflow, comparison, corpus,
 date, environment, and metric.
 
 Search is currently `preview`; AI, Sandbox, RPC, Prediction, and Crypto
-Intelligence are `unavailable`. None of those five implementations has
-started. N4.27S left five truthful Stage 4 blockers, so Search is not
-commercially competitive, production-qualified, or the reference pattern.
-NPLAN.4 is complete at its governance boundary. N4.27T's once-only isolated
-qualification passed developer retrieval 10/10 but failed browser execution
-0/20; its final gate failed, the evidence is immutable, and all cloud resources
-were removed. N4.27U is the next bounded local browser-launch repair. Compare, customer
-monitoring, changes,
-alerts,
-all shared Stage 13 access and distribution surfaces, production deployment,
-payable settlement, and external demand remain unproven until their separate
-gates pass.
+Intelligence are `unavailable`. Stage 4 passed its evidence-bound exit. N5.1
+established the unfrozen six-pillar registry and N5.2 implemented deterministic
+evidence comparison and typed changes. Monitoring execution and delivery,
+alerts, all shared Stage 13 access and distribution surfaces, production
+deployment, payable settlement, and external demand remain unproven.
 
 Never invent prices, providers, commands, screenshots, customers, agents,
 testimonials, metrics, transactions, revenue, accuracy, or results. Never
@@ -75,7 +67,7 @@ Generated atmosphere remains visibly distinct from real product evidence.
 3. Real executable guides and request/result demonstrations only when proven.
 4. Pricing, receipts, provenance, citations, safety, status, and recovery.
 5. The Stage 12 freeze and subsequent single shared-surface pass, clearly
-   labeled as unavailable until authorized and proven.
+   labeled as unavailable until proven.
 
 The five packs are Commerce and Marketplace Intelligence; Property and
 Local-Market Intelligence; Company and Competitive Intelligence; Research and

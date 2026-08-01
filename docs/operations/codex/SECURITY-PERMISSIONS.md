@@ -2,8 +2,8 @@
 
 | Boundary | Engineering/design | Studio maintenance | Browser debug | Visual QA |
 | --- | --- | --- | --- | --- |
-| Filesystem | repository write only; no `/tmp` write | host access, exact maintenance scope | host agent; browser has no host mount | host agent; browser gets repository + studio mounts for test only |
-| Shell network | denied | available when exact maintenance needs it | disabled Web search; local DevTools target | browser container `--network=none` |
+| Filesystem | repository write only; no `/tmp` write | host access for maintenance | host agent; browser has no host mount | host agent; browser gets repository + studio mounts for test only |
+| Shell network | denied | available for maintenance | disabled Web search; local DevTools target | browser container `--network=none` |
 | Approval policy | never | never | never | never |
 | Inherited secrets | filtered by name | filtered more broadly | filtered more broadly | filtered more broadly |
 | Command hook | restrictive sandbox is primary | mandatory reviewed hook | mandatory reviewed hook | mandatory reviewed hook |
@@ -19,12 +19,12 @@ and external browser navigation. The rules and hook complement rather than
 replace OS/cloud controls.
 
 Known limitation: a host-capable process is not an OS security boundary against
-every possible program encoding. Therefore those profiles remain limited to an
-exact owner-authorized maintenance or isolated browser task, inherit no common
+every possible program encoding. Therefore those profiles remain limited to
+maintenance or isolated browser work, inherit no common
 credential variables, run without supported sudo, and must not have production,
 wallet, IAM, or billing credentials placed on the VM. Critical cloud safeguards
 must also be enforced by project separation, least-privilege identities,
-budgets, provider policy, and absent secrets when later authorized.
+budgets, provider policy, and absent secrets.
 
 Figma is disabled. No personal browser profile is mounted. No legacy directory,
 unrelated project, production endpoint, wallet, payment rail, or cloud resource

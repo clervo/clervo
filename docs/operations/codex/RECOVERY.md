@@ -12,7 +12,7 @@
 
 ## Restore
 
-1. Verify the repository commit and clean-room authority files.
+1. Verify the repository commit and clean-room boundary files.
 2. Run `bash scripts/codex-studio/install.sh`. This copies five profile
    templates, the reviewed hook/rules, and performs `npm ci --ignore-scripts`
    from the committed lockfile with Playwright browser download disabled.
@@ -23,7 +23,7 @@
    with the recorded environment; investigate drift rather than relabeling it.
 
 No secret is restored from Git. Figma/GitHub/cloud authentication remains a
-separate human action only when exact authority exists.
+human action when login, MFA, OAuth, or missing credentials require it.
 
 ## Rollback or uninstall
 
@@ -31,8 +31,8 @@ Profiles are recovered by checking out the desired committed templates and
 rerunning the installer. To disable the studio without destroying evidence,
 stop task-owned browser containers, move the five installed profile files and
 `$CODEX_HOME/studio` to a dated quarantine directory outside Git, and retain
-the repository sources. Delete only after verifying recovery and exact owner
-authority. Do not remove the base Codex home, other profiles, Docker globally,
+the repository sources. Delete only after verifying recovery and explicit owner
+approval for destructive unrelated or externally billable effects. Do not remove the base Codex home, other profiles, Docker globally,
 or unrelated project data.
 
 Individual MCP and tool rollback procedures are in their inventories. A failed
@@ -48,7 +48,7 @@ snapshot contract.
 
 This proves snapshot readiness only. No billable VM snapshot, image, backup,
 cloud resource, IAM binding, or billing change was created during this
-maintenance. If a future snapshot is explicitly authorized, first stop all
+maintenance. If a future snapshot is approved because it creates cost, first stop all
 containers, confirm a clean repository, exclude authentication/browser state,
 record size/cost/retention/encryption, create exactly one named artifact, and
 test restoration independently.

@@ -1,12 +1,10 @@
 # Clervo cloud-devbox runbook
 
-## Purpose and authority
+## Purpose
 
 This runbook restores and operates the Clervo Codex studio on the dedicated
-development VM. It is control-plane guidance only. Before work, read the
-external master plan, its current handoff and stop condition, repository
-`AGENTS.md`, `.codex-autonomy-policy.md`, and the live-intelligence launch
-authority. A proposed product ticket is not authorization.
+development VM. Follow repository `AGENTS.md` and read only the roadmap sections
+relevant to the current work.
 
 ## Routine start
 
@@ -20,12 +18,12 @@ authority. A proposed product ticket is not authorization.
 3. Run `node scripts/codex-studio/health-check.mjs`.
 4. Launch the least-privileged matching profile using the commands in
    `docs/operations/codex/README.md`.
-5. Read the authority sources and invoke `$clervo-engineering-stage` before any
-   repository mutation.
+5. Follow root `AGENTS.md`; require explicit owner approval before spending,
+   payment, or irreversible production/customer/unrelated-infrastructure work.
 
 Routine engineering should not prompt. A denied command is a boundary result,
 not a reason to weaken AppArmor, change permissions broadly, copy a secret, or
-switch profiles without the exact maintenance authority.
+switch profiles without understanding and preserving the safety boundary.
 
 ## Browser operation
 
