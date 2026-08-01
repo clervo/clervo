@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-route-decision.schema.json",
+  "title": "Clervo AI route decision",
+  "$defs": {
+    "amount": {
+      "type": "object",
+      "required": ["asset", "amountAtomic", "decimals"],
+      "properties": {
+        "asset": { "const": "USD" },
+        "amountAtomic": { "type": "string", "pattern": "^(?:0|[1-9][0-9]{0,77})$" },
+        "decimals": { "const": 6 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "schemaVersion", "operationId", "productId", "requestedModel", "selectionKind", "outcome", "rejectionCodes", "decidedAt", "decisionHash"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "schemaVersion": { "const": "ai-route-decision.v1" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "productId": { "enum": ["ai.chat", "ai.embed", "ai.image", "ai.speech"] },
+    "requestedModel": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "selectionKind": { "enum": ["exact", "alias"] },
+    "outcome": { "enum": ["selected", "rejected"] },
+    "selectedRouteId": { "type": "string", "pattern": "^ai\\.route\\.[a-z0-9_]+$" },
+    "selectedProviderId": { "type": "string", "pattern": "^provider\\.[a-z0-9_]+$" },
+    "selectedExactModelId": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "maximumSupplierCost": { "$ref": "#/$defs/amount" },
+    "rejectionCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" } },
+    "decidedAt": { "type": "string", "format": "date-time" },
+    "decisionHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  },
+  "additionalProperties": false
+}

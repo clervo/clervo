@@ -133,7 +133,10 @@ function validateQualification(value: AiRouteQualification, capabilities?: reado
   if (!['approved', 'restricted', 'blocked', 'unreviewed'].includes(value.termsStatus)) throw new TypeError('ai_terms_status_invalid');
   if (value.observed.modelIdentity !== undefined && value.observed.modelIdentity.length > 160) throw new TypeError('ai_observed_identity_invalid');
   if (value.observed.latencyMsP95 !== undefined && (!Number.isFinite(value.observed.latencyMsP95) || value.observed.latencyMsP95 < 0)) throw new TypeError('ai_latency_invalid');
-  if (value.observed.maximumSupplierCost !== undefined) assertAmount(value.observed.maximumSupplierCost);
+  if (value.observed.maximumSupplierCost !== undefined) {
+    assertAmount(value.observed.maximumSupplierCost);
+    if (value.observed.maximumSupplierCost.asset !== 'USD' || value.observed.maximumSupplierCost.decimals !== 6) throw new TypeError('ai_cost_normalization_invalid');
+  }
   const allPassed = value.checks.length >= aiQualificationCheckNames.length && value.checks.every(({ status }) => status === 'passed');
   const expectedStatus = value.checks.some(({ status }) => status === 'failed') || value.termsStatus === 'blocked' || (value.observed.modelIdentity !== undefined && value.observed.modelIdentity !== value.exactModelId)
     ? 'failed'
