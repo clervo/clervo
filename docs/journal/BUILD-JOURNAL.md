@@ -974,3 +974,62 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
 - Product truth and authorization are unchanged. N4.27T remains the exact next
   proposed product ticket under separate authority; N4.27T, N4.28, mock x402,
   Stage 5 and later work remain unauthorized. Stop here.
+
+## 2026-08-01 — Readable Codex transcript default
+
+- Classified the work as exact owner-authorized Codex control-plane and devbox
+  maintenance. Scope was limited to restoring readable chat formatting in the
+  five Codex profiles, installing the corrected copies, updating health
+  enforcement, inventory and operator documentation, and preserving evidence.
+  No product ticket, product behavior, lifecycle state, stage gate, payment
+  state or public claim changed.
+- Diagnosed the white, weakly differentiated transcript as
+  `raw_output_mode = true`, introduced by the earlier scrollback maintenance.
+  The live browser terminal, tmux and Codex process retained 256-color support,
+  emitted ANSI color and did not inherit `NO_COLOR`; the terminal color path
+  was not the failure. Official Codex documentation also confirmed that
+  `tui.theme` affects fenced code and diffs rather than general chat prose.
+- Changed all five version-controlled and installed profiles to explicit
+  `raw_output_mode = false` while retaining `alternate_screen = "never"`.
+  This restores rich transcript formatting without removing the existing tmux
+  mouse behavior, native-selection fallback or 200,000-line history. The
+  installer restored byte-identical profile copies under
+  `/workspace/codex-home`; the effective global model remained
+  `gpt-5.6-sol`.
+- Updated `scripts/codex-studio/health-check.mjs`, the machine-readable studio
+  inventory, the Codex operations guide and cloud-devbox runbook. Final raw
+  proof at
+  `docs/evidence/codex-studio/raw/terminal-readability-health.json` passed all
+  five source/installed profile comparisons, formatted-mode assertions and
+  profile-start probes, plus the existing tmux copy/runtime, package, guard,
+  rule, browser-image and tool checks.
+- Exact validation passed: `bash scripts/codex-studio/install.sh` with 235
+  pinned studio packages installed and zero reported vulnerabilities;
+  `node scripts/codex-studio/health-check.mjs`; Node syntax; JSON parsing;
+  `npm run lint` across 256 source/contract files; `npm run typecheck`;
+  `npm run verify:boundary` with zero legacy dependencies, network calls or
+  USDC; `npm run scan:secrets` across the worktree and history with zero secret
+  values printed; and Git diff integrity. Canonical product tests and the
+  protected Stage 4 verifier did not run.
+- External effects were limited to read-only current Codex documentation
+  inspection and routine npm install/audit metadata or cache access. There was
+  no product-provider or model inference call for verification, cloud resource,
+  deployment, IAM/billing or secret change, production effect, wallet/payment
+  action or USDC spend. Direct material cost was USD 0.000000 and USDC spent
+  was 0.
+- The health check terminated its isolated tmux server; no task container or
+  residual billable resource remains. The intended installed profile/package
+  cache and the existing attached `clervo` session remain. Because that session
+  loaded the old value at startup, it needs one explicit `/raw off` command or
+  Alt+R press by the owner; no keys were injected into the active composer.
+  All future profile launches start formatted automatically.
+- Current lifecycle truth is unchanged: Search is not commercially competitive
+  or the reference pattern, the First Revenue Release is not ready, and Stage 5
+  remains unauthorized.
+- Implementation commit:
+  `d912849fc5fce6a3f5d0adc014c6254033e6816c` (`fix(codex): restore
+  readable transcript formatting`).
+- Exact next proposed product task remains N4.27T under separate owner
+  authority. N4.27T, N4.28, mock x402, Stage 5, AI, Sandbox, production release,
+  real payment and all later stages remain unauthorized. Commit this evidence,
+  report and stop.
