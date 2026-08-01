@@ -10,9 +10,11 @@ Stage 4 passed its evidence-bound exit. Stage 5 work N5.1 established the
 unfrozen six-pillar registry and explicit schema-visibility boundary; N5.2 added
 deterministic hash-bound evidence comparison and typed change detection; N5.3
 adds versioned monitor definitions, anchored schedule/state invariants, and
-hash-linked durable snapshot payloads. Search remains `preview`; AI, Sandbox,
-RPC, Prediction, and Crypto Intelligence remain `unavailable`. Monitoring
-execution and delivery, the other five product cores, cross-pillar freeze,
+hash-linked durable snapshot payloads. The internal runner now performs
+compare-and-swap state commits, comparisons, retention cutoffs, and deterministic
+record-only change alerts above a PostgreSQL storage contract. Search remains
+`preview`; AI, Sandbox, RPC, Prediction, and Crypto Intelligence remain
+`unavailable`. External scheduling and alert delivery, the other five product cores, cross-pillar freeze,
 shared access/distribution, production deployment, real settlement, and external
 paid demand remain unimplemented or unverified.
 

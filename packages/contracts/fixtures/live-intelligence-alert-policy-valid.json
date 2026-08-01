@@ -1,0 +1,17 @@
+{
+  "schema": "live-intelligence-alert-policy",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "schemaVersion": "live-intelligence-alert-policy.v1",
+    "policyId": "alpol_01K0ALERTPOLICY00000001",
+    "monitorId": "mon_01K0MONITOR000000000001",
+    "eventTypes": ["added", "modified"],
+    "changedFields": ["presence", "title"],
+    "minimumMatchingEvents": 1,
+    "severity": "warning",
+    "deliveryMode": "record_only",
+    "createdAt": "2026-08-01T11:00:00.000Z",
+    "policyHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  }
+}

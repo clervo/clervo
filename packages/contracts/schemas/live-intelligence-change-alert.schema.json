@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-change-alert.schema.json",
+  "title": "Clervo Live Intelligence deterministic change alert",
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  },
+  "type": "object",
+  "required": ["contractVersion", "schemaVersion", "alertId", "policyId", "policyHash", "monitorId", "comparisonId", "comparisonHash", "baselineSnapshotId", "currentSnapshotId", "triggeredAt", "severity", "matchingChangeIds", "deliveryState", "alertHash"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "schemaVersion": { "const": "live-intelligence-change-alert.v1" },
+    "alertId": { "type": "string", "pattern": "^lialert_[A-Za-z0-9]{32}$" },
+    "policyId": { "type": "string", "pattern": "^alpol_[A-Za-z0-9]{20,64}$" },
+    "policyHash": { "$ref": "#/$defs/hash" },
+    "monitorId": { "type": "string", "pattern": "^mon_[A-Za-z0-9]{20,64}$" },
+    "comparisonId": { "type": "string", "pattern": "^cmp_[A-Za-z0-9]{32}$" },
+    "comparisonHash": { "$ref": "#/$defs/hash" },
+    "baselineSnapshotId": { "type": "string", "pattern": "^snap_[A-Za-z0-9]{32}$" },
+    "currentSnapshotId": { "type": "string", "pattern": "^snap_[A-Za-z0-9]{32}$" },
+    "triggeredAt": { "type": "string", "format": "date-time" },
+    "severity": { "enum": ["info", "warning", "critical"] },
+    "matchingChangeIds": { "type": "array", "minItems": 1, "maxItems": 100, "uniqueItems": true, "items": { "type": "string", "pattern": "^chg_[A-Za-z0-9]{32}$" } },
+    "deliveryState": { "const": "not_delivered" },
+    "alertHash": { "$ref": "#/$defs/hash" }
+  },
+  "additionalProperties": false
+}

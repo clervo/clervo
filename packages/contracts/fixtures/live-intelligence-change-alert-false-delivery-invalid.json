@@ -1,0 +1,21 @@
+{
+  "schema": "live-intelligence-change-alert",
+  "valid": false,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "schemaVersion": "live-intelligence-change-alert.v1",
+    "alertId": "lialert_11111111111111111111111111111111",
+    "policyId": "alpol_01K0ALERTPOLICY00000001",
+    "policyHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "monitorId": "mon_01K0MONITOR000000000001",
+    "comparisonId": "cmp_11111111111111111111111111111111",
+    "comparisonHash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "baselineSnapshotId": "snap_11111111111111111111111111111111",
+    "currentSnapshotId": "snap_22222222222222222222222222222222",
+    "triggeredAt": "2026-08-01T13:00:01.000Z",
+    "severity": "warning",
+    "matchingChangeIds": ["chg_11111111111111111111111111111111"],
+    "deliveryState": "delivered",
+    "alertHash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+  }
+}
