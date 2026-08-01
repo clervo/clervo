@@ -1109,3 +1109,22 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   authorization and existing scope/stop conditions. Stop after the NPLAN.3
   commit; do not begin N4.27T implementation, N4.28, mock x402, Stage 5, any
   later pillar, cloud/deployment, payment, production or legacy work here.
+
+## 2026-08-01 — NPLAN.3R acceptance-handoff repair
+
+- An independent read-only closeout review found one control-plane
+  contradiction after NPLAN.3 commit
+  `3760493d9c2f55e92472e14b38629c47d6db13be`: the repository evidence
+  preserved an accidental canonical acceptance invocation that failed at
+  typecheck, while the external master-plan handoff said canonical acceptance
+  did not run.
+- Corrected only the external handoff. It now states that the run occurred once
+  during incomplete concurrent edits, failed at typecheck with exit 1, and was
+  not rerun; the Stage 4 verifier did not run.
+- Historical NPLAN.3 evidence and its original external-master hash remain
+  unchanged. No product, runtime, lifecycle, stage, benchmark result, provider,
+  cloud, payment, production or legacy state changed. Cost was USD 0.000000 and
+  USDC spend was 0.
+- Final repair validation and the new external-master hash are recorded in
+  `docs/evidence/NPLAN.3R-acceptance-handoff-repair.md`.
+- Commit this bounded repair and stop before NPLAN.4 or product work.
