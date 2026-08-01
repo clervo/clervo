@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-solution-pack-result.schema.json",
+  "title": "Clervo Live Intelligence evidence-bound solution-pack result",
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "packId": { "enum": ["search.pack.commerce_marketplace", "search.pack.property_local_market", "search.pack.company_competitive", "search.pack.research_evidence", "search.pack.developer_agent_context"] },
+    "fieldName": { "enum": ["advisory", "agency", "availability", "bathrooms", "bedrooms", "brand", "claim", "currency", "ecosystem", "effective_date", "jurisdiction", "listing_address", "locality", "observed_value", "organization", "package_name", "price", "product", "product_name", "property_type", "publication_date", "publisher", "release_date", "repository", "seller", "signal_type", "sku", "source_kind", "version"] }
+  },
+  "type": "object",
+  "required": ["contractVersion", "schemaVersion", "packId", "searchOperationId", "searchGeneratedAt", "queryIdentityHash", "evidenceSetHash", "summary", "records", "resultHash"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "schemaVersion": { "const": "live-intelligence-solution-pack-result.v1" },
+    "packId": { "$ref": "#/$defs/packId" },
+    "searchOperationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "searchGeneratedAt": { "type": "string", "format": "date-time" },
+    "queryIdentityHash": { "$ref": "#/$defs/hash" },
+    "evidenceSetHash": { "$ref": "#/$defs/hash" },
+    "summary": {
+      "type": "object",
+      "required": ["records", "fields", "citations"],
+      "properties": {
+        "records": { "type": "integer", "minimum": 1, "maximum": 100 },
+        "fields": { "type": "integer", "minimum": 1, "maximum": 2900 },
+        "citations": { "type": "integer", "minimum": 1, "maximum": 1000 }
+      },
+      "additionalProperties": false
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "required": ["recordId", "entityKey", "label", "fields"],
+        "properties": {
+          "recordId": { "type": "string", "pattern": "^lipack_[A-Za-z0-9]{32}$" },
+          "entityKey": { "$ref": "#/$defs/hash" },
+          "label": { "type": "string", "minLength": 1, "maxLength": 512 },
+          "fields": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 29,
+            "items": {
+              "type": "object",
+              "required": ["name", "value", "citationId", "resultId", "canonicalUrl", "observedAt"],
+              "properties": {
+                "name": { "$ref": "#/$defs/fieldName" },
+                "value": { "type": "string", "minLength": 1, "maxLength": 4000 },
+                "citationId": { "type": "string", "pattern": "^cite_[A-Za-z0-9]{20,64}$" },
+                "resultId": { "type": "string", "pattern": "^sr_[A-Za-z0-9]{20,64}$" },
+                "canonicalUrl": { "type": "string", "format": "uri", "pattern": "^https?://" },
+                "observedAt": { "type": "string", "format": "date-time" }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "resultHash": { "$ref": "#/$defs/hash" }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "live-intelligence-solution-pack-result",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "schemaVersion": "live-intelligence-solution-pack-result.v1",
+    "packId": "search.pack.commerce_marketplace",
+    "searchOperationId": "op_01K0PACKRESULT0000000001",
+    "searchGeneratedAt": "2026-08-01T14:00:00.000Z",
+    "queryIdentityHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "evidenceSetHash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "summary": { "records": 1, "fields": 4, "citations": 1 },
+    "records": [
+      {
+        "recordId": "lipack_11111111111111111111111111111111",
+        "entityKey": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "label": "Example Widget",
+        "fields": [
+          { "name": "availability", "value": "in stock", "citationId": "cite_01K0PACKCITATION0000001", "resultId": "sr_01K0PACKRESULT0000000001", "canonicalUrl": "https://example.com/widget", "observedAt": "2026-08-01T14:00:00.000Z" },
+          { "name": "currency", "value": "USD", "citationId": "cite_01K0PACKCITATION0000001", "resultId": "sr_01K0PACKRESULT0000000001", "canonicalUrl": "https://example.com/widget", "observedAt": "2026-08-01T14:00:00.000Z" },
+          { "name": "price", "value": "19.99", "citationId": "cite_01K0PACKCITATION0000001", "resultId": "sr_01K0PACKRESULT0000000001", "canonicalUrl": "https://example.com/widget", "observedAt": "2026-08-01T14:00:00.000Z" },
+          { "name": "product_name", "value": "Example Widget", "citationId": "cite_01K0PACKCITATION0000001", "resultId": "sr_01K0PACKRESULT0000000001", "canonicalUrl": "https://example.com/widget", "observedAt": "2026-08-01T14:00:00.000Z" }
+        ]
+      }
+    ],
+    "resultHash": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+  }
+}

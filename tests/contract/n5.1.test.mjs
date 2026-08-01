@@ -56,7 +56,7 @@ test('canonical registry and visibility manifest validate against their strict D
 
 test('only proven Stage 4 operations and mock-only SKUs are instantiated', async () => {
   const registry = await json('packages/catalog/platform-registry.v1.json');
-  assert.deepEqual(registry.operations.map(({ operationId }) => operationId), ['search.alert.evaluate', 'search.compare', 'search.monitor', 'search.web', 'search.answer', 'web.fetch', 'web.extract']);
+  assert.deepEqual(registry.operations.map(({ operationId }) => operationId), ['search.alert.evaluate', 'search.compare', 'search.monitor', 'search.solution_pack.assemble', 'search.web', 'search.answer', 'web.fetch', 'web.extract']);
   assert.ok(registry.operations.every(({ lifecycle, visibility }) => lifecycle === 'preview' && visibility === 'internal'));
   assert.deepEqual(registry.products.map(({ productId }) => productId), ['search.web', 'search.answer', 'web.fetch', 'web.extract']);
   assert.deepEqual(

@@ -12,7 +12,10 @@ deterministic hash-bound evidence comparison and typed change detection; N5.3
 adds versioned monitor definitions, anchored schedule/state invariants, and
 hash-linked durable snapshot payloads. The internal runner now performs
 compare-and-swap state commits, comparisons, retention cutoffs, and deterministic
-record-only change alerts above a PostgreSQL storage contract. Search remains
+record-only change alerts above a PostgreSQL storage contract. Five internal
+solution packs now turn cited search evidence into deterministic normalized
+records for commerce, property, company, research, and developer use cases.
+Search remains
 `preview`; AI, Sandbox, RPC, Prediction, and Crypto Intelligence remain
 `unavailable`. External scheduling and alert delivery, the other five product cores, cross-pillar freeze,
 shared access/distribution, production deployment, real settlement, and external

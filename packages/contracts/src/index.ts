@@ -13,6 +13,7 @@ export * from './javascript-retrieval.js';
 export * from './live-intelligence-comparison.js';
 export * from './live-intelligence-alert.js';
 export * from './live-intelligence-monitor.js';
+export * from './live-intelligence-solution-pack.js';
 export * from './mock-commerce.js';
 export * from './observability.js';
 export * from './platform-registry.js';

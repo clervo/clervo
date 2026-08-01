@@ -19,6 +19,13 @@
     ],
     "operations": [],
     "products": [],
+    "solutionPacks": [
+      { "packId": "search.pack.commerce_marketplace", "pillarId": "search", "capabilityIds": ["search.web"], "lifecycle": "preview", "visibility": "internal", "accessModes": ["open_web"], "requiredFields": ["product_name"], "optionalFields": [] },
+      { "packId": "search.pack.property_local_market", "pillarId": "search", "capabilityIds": ["search.web"], "lifecycle": "preview", "visibility": "internal", "accessModes": ["open_web"], "requiredFields": ["listing_address"], "optionalFields": [] },
+      { "packId": "search.pack.company_competitive", "pillarId": "search", "capabilityIds": ["search.web"], "lifecycle": "preview", "visibility": "internal", "accessModes": ["open_web"], "requiredFields": ["organization"], "optionalFields": [] },
+      { "packId": "search.pack.research_evidence", "pillarId": "search", "capabilityIds": ["search.web"], "lifecycle": "preview", "visibility": "internal", "accessModes": ["open_web"], "requiredFields": ["claim"], "optionalFields": [] },
+      { "packId": "search.pack.developer_agent_context", "pillarId": "search", "capabilityIds": ["search.web"], "lifecycle": "preview", "visibility": "internal", "accessModes": ["official_api"], "requiredFields": ["package_name"], "optionalFields": [] }
+    ],
     "skus": []
   }
 }

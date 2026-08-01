@@ -1,5 +1,6 @@
 import type { PillarId, ProductLifecycleState } from './product-scope.js';
 import { pillarIds } from './product-scope.js';
+import { liveIntelligenceSolutionPackIds } from './live-intelligence-solution-pack.js';
 import type { AssetAmount } from './types.js';
 import { CONTRACT_VERSION } from './types.js';
 
@@ -68,6 +69,16 @@ export interface PlatformRegistry {
     lifecycle: ProductLifecycleState;
     visibility: RegistryVisibility;
   }[];
+  solutionPacks: readonly {
+    packId: string;
+    pillarId: 'search';
+    capabilityIds: readonly string[];
+    lifecycle: 'preview';
+    visibility: 'internal';
+    accessModes: readonly ConnectorAccessMode[];
+    requiredFields: readonly string[];
+    optionalFields: readonly string[];
+  }[];
   skus: readonly {
     skuId: string;
     productId: string;
@@ -131,10 +142,12 @@ export function assertPlatformRegistry(
   const capabilities = new Map(registry.capabilities.map((value) => [value.capabilityId, value]));
   const operations = new Map(registry.operations.map((value) => [value.operationId, value]));
   const products = new Map(registry.products.map((value) => [value.productId, value]));
+  const solutionPacks = new Map(registry.solutionPacks.map((value) => [value.packId, value]));
   const skus = new Map(registry.skus.map((value) => [value.skuId, value]));
   if (capabilities.size !== registry.capabilities.length) failures.push('capability_ids_duplicate');
   if (operations.size !== registry.operations.length) failures.push('operation_ids_duplicate');
   if (products.size !== registry.products.length) failures.push('product_ids_duplicate');
+  if (solutionPacks.size !== registry.solutionPacks.length) failures.push('solution_pack_ids_duplicate');
   if (skus.size !== registry.skus.length) failures.push('sku_ids_duplicate');
 
   const schemaById = new Map(schemaManifest.schemas.map((value) => [value.schemaId, value]));
@@ -146,6 +159,13 @@ export function assertPlatformRegistry(
     if (!registryPillarIds.includes(product.pillarId)) failures.push(`product_pillar_missing:${product.productId}`);
     if (product.capabilityIds.length === 0 || product.capabilityIds.some((id) => capabilities.get(id)?.pillarId !== product.pillarId)) failures.push(`product_capability_invalid:${product.productId}`);
     if (product.visibility === 'public' && product.lifecycle === 'unavailable') failures.push(`unavailable_product_public:${product.productId}`);
+  }
+  if (registry.solutionPacks.length !== liveIntelligenceSolutionPackIds.length || liveIntelligenceSolutionPackIds.some((id) => !solutionPacks.has(id))) failures.push('solution_pack_set_incomplete');
+  for (const pack of registry.solutionPacks) {
+    if (pack.pillarId !== 'search' || pack.lifecycle !== 'preview' || pack.visibility !== 'internal') failures.push(`solution_pack_lifecycle_invalid:${pack.packId}`);
+    if (pack.capabilityIds.length === 0 || pack.capabilityIds.some((id) => capabilities.get(id)?.pillarId !== 'search')) failures.push(`solution_pack_capability_invalid:${pack.packId}`);
+    if (pack.accessModes.length === 0 || new Set(pack.accessModes).size !== pack.accessModes.length || pack.accessModes.some((mode) => !connectorAccessModes.includes(mode))) failures.push(`solution_pack_access_invalid:${pack.packId}`);
+    if (pack.requiredFields.length === 0 || new Set([...pack.requiredFields, ...pack.optionalFields]).size !== pack.requiredFields.length + pack.optionalFields.length) failures.push(`solution_pack_fields_invalid:${pack.packId}`);
   }
   for (const operation of registry.operations) {
     const capability = capabilities.get(operation.capabilityId);

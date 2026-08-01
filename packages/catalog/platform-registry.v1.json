@@ -80,6 +80,18 @@
       "visibility": "internal"
     },
     {
+      "operationId": "search.solution_pack.assemble",
+      "capabilityId": "search.web",
+      "productId": "search.web",
+      "route": null,
+      "deliveryModes": ["sync"],
+      "accessModes": ["open_web", "official_api", "bring_your_own_credentials", "user_authorized_session", "partner_access", "customer_supplied_data", "unsupported"],
+      "inputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-solution-pack-request.schema.json",
+      "outputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-solution-pack-result.schema.json",
+      "lifecycle": "preview",
+      "visibility": "internal"
+    },
+    {
       "operationId": "search.web",
       "capabilityId": "search.web",
       "productId": "search.web",
@@ -133,6 +145,58 @@
     { "productId": "search.answer", "pillarId": "search", "capabilityIds": ["search.answer"], "lifecycle": "preview", "visibility": "internal" },
     { "productId": "web.fetch", "pillarId": "search", "capabilityIds": ["web.fetch"], "lifecycle": "preview", "visibility": "internal" },
     { "productId": "web.extract", "pillarId": "search", "capabilityIds": ["web.extract"], "lifecycle": "preview", "visibility": "internal" }
+  ],
+  "solutionPacks": [
+    {
+      "packId": "search.pack.commerce_marketplace",
+      "pillarId": "search",
+      "capabilityIds": ["search.web"],
+      "lifecycle": "preview",
+      "visibility": "internal",
+      "accessModes": ["open_web", "official_api", "bring_your_own_credentials", "user_authorized_session", "partner_access", "customer_supplied_data", "unsupported"],
+      "requiredFields": ["product_name", "price", "currency", "availability"],
+      "optionalFields": ["seller", "sku", "brand"]
+    },
+    {
+      "packId": "search.pack.property_local_market",
+      "pillarId": "search",
+      "capabilityIds": ["search.web"],
+      "lifecycle": "preview",
+      "visibility": "internal",
+      "accessModes": ["open_web", "official_api", "bring_your_own_credentials", "user_authorized_session", "partner_access", "customer_supplied_data", "unsupported"],
+      "requiredFields": ["listing_address", "price", "currency", "locality"],
+      "optionalFields": ["bedrooms", "bathrooms", "property_type", "agency"]
+    },
+    {
+      "packId": "search.pack.company_competitive",
+      "pillarId": "search",
+      "capabilityIds": ["search.web"],
+      "lifecycle": "preview",
+      "visibility": "internal",
+      "accessModes": ["open_web", "official_api", "customer_supplied_data", "unsupported"],
+      "requiredFields": ["organization", "signal_type", "observed_value"],
+      "optionalFields": ["product", "effective_date"]
+    },
+    {
+      "packId": "search.pack.research_evidence",
+      "pillarId": "search",
+      "capabilityIds": ["search.web"],
+      "lifecycle": "preview",
+      "visibility": "internal",
+      "accessModes": ["open_web", "official_api", "customer_supplied_data", "unsupported"],
+      "requiredFields": ["claim", "source_kind"],
+      "optionalFields": ["publisher", "publication_date", "jurisdiction"]
+    },
+    {
+      "packId": "search.pack.developer_agent_context",
+      "pillarId": "search",
+      "capabilityIds": ["search.web"],
+      "lifecycle": "preview",
+      "visibility": "internal",
+      "accessModes": ["open_web", "official_api", "bring_your_own_credentials", "customer_supplied_data", "unsupported"],
+      "requiredFields": ["package_name", "version", "ecosystem"],
+      "optionalFields": ["release_date", "advisory", "repository"]
+    }
   ],
   "skus": [
     {
