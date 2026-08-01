@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "clervo.n4.27t.resource-admission-evidence.v1",
+  "ticket": "N4.27T",
+  "inventory": {
+    "observedAt": "2026-08-01T20:14:49.915Z",
+    "expiresAt": "2026-08-01T20:16:49.915Z",
+    "complete": true,
+    "unknownResourceCount": 0,
+    "zeroResourceVerification": {
+      "proven": true,
+      "evidenceRef": "direct-gcloud-prefix-and-pending-operation-inventory"
+    },
+    "resources": [],
+    "operations": []
+  },
+  "candidateResources": [
+    {"ticket":"N4.27T","environment":"isolated_qualification","resourceId":"artifact-repository-clervo-n427t","exactlyNamed":true,"chargeable":true,"dailyExposureUsd":0},
+    {"ticket":"N4.27T","environment":"isolated_qualification","resourceId":"gke-clervo-n427t-qualification-with-one-e2-standard-2-node","exactlyNamed":true,"chargeable":true,"dailyExposureUsd":4.05784},
+    {"ticket":"N4.27T","environment":"isolated_qualification","resourceId":"monitoring-policy-clervo-n427t-cost-runtime-stop","exactlyNamed":true,"chargeable":true,"dailyExposureUsd":0}
+  ],
+  "receipt": {
+    "schemaVersion": "clervo.n4.27t.resource-admission-receipt.v1",
+    "decision": "admitted_for_separately_authorized_external_action_only",
+    "candidateResourceCount": 3,
+    "candidateDailyExposureUsd": 4.05784,
+    "dailyExposureCeilingUsd": 5,
+    "inputSha256": "sha256:da37d21a8652b717ca7ede346391dbf46ee1193c0906978d29f45c396e9d19e9",
+    "externalActionAuthorized": false
+  },
+  "separateAuthority": {
+    "source": "owner_interactive_instruction_outside_workspace_manifest",
+    "maximumGrossCostUsd": 5,
+    "validationMaximumExecutions": 1
+  }
+}
