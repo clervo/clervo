@@ -1,0 +1,374 @@
+{
+  "schemaVersion": "clervo.codex-studio.health.v1",
+  "passed": false,
+  "checks": [
+    {
+      "name": "profile-copy:engineering",
+      "passed": true,
+      "sha256": "f54e7303f0d72046037f60599dbbdb3ecd0744edb3c9f13b9709e8bbd2c58c3b"
+    },
+    {
+      "name": "profile-terminal:engineering",
+      "passed": true,
+      "alternateScreen": "never",
+      "rawOutputMode": true
+    },
+    {
+      "name": "profile-start:engineering",
+      "passed": false,
+      "durationMs": 77.118,
+      "exitCode": 0,
+      "permissionMode": "workspace-write",
+      "stderr": ""
+    },
+    {
+      "name": "profile-copy:studio-maintenance",
+      "passed": true,
+      "sha256": "567c59ff5ebc01179206f4ef3e4ab7f0774ad3d544513b8f0529a68ed69bae1f"
+    },
+    {
+      "name": "profile-terminal:studio-maintenance",
+      "passed": true,
+      "alternateScreen": "never",
+      "rawOutputMode": true
+    },
+    {
+      "name": "profile-start:studio-maintenance",
+      "passed": false,
+      "durationMs": 58.891,
+      "exitCode": 0,
+      "permissionMode": "danger-full-access",
+      "stderr": ""
+    },
+    {
+      "name": "profile-copy:design",
+      "passed": true,
+      "sha256": "dfffceac69acffa1578776c8fcb09c1d1db142dd62134b9f4a13324d99b35085"
+    },
+    {
+      "name": "profile-terminal:design",
+      "passed": true,
+      "alternateScreen": "never",
+      "rawOutputMode": true
+    },
+    {
+      "name": "profile-start:design",
+      "passed": false,
+      "durationMs": 62.513,
+      "exitCode": 0,
+      "permissionMode": "workspace-write",
+      "stderr": ""
+    },
+    {
+      "name": "profile-copy:browser-debug",
+      "passed": true,
+      "sha256": "1627f69d81f17cb2184fd3463fdfbb208bdac33ac1f76232088b1db9c24f13bc"
+    },
+    {
+      "name": "profile-terminal:browser-debug",
+      "passed": true,
+      "alternateScreen": "never",
+      "rawOutputMode": true
+    },
+    {
+      "name": "profile-start:browser-debug",
+      "passed": false,
+      "durationMs": 56.008,
+      "exitCode": 0,
+      "permissionMode": "danger-full-access",
+      "stderr": ""
+    },
+    {
+      "name": "profile-copy:visual-qa",
+      "passed": true,
+      "sha256": "5e5710e41236be8ddf88ce62620ef82fa3278fc2c782139310e87a53b4a16df3"
+    },
+    {
+      "name": "profile-terminal:visual-qa",
+      "passed": true,
+      "alternateScreen": "never",
+      "rawOutputMode": true
+    },
+    {
+      "name": "profile-start:visual-qa",
+      "passed": false,
+      "durationMs": 59.856,
+      "exitCode": 0,
+      "permissionMode": "danger-full-access",
+      "stderr": ""
+    },
+    {
+      "name": "tmux:copy",
+      "passed": true,
+      "installedPath": "/home/support_bloxsniper_cc/.tmux.conf",
+      "sha256": "bb8656a62ae303b7efe5f70eb4b3ab2d95d2d653a96c321f5aeb9455157eaf4c"
+    },
+    {
+      "name": "tmux:runtime",
+      "passed": true,
+      "mouse": "mouse on",
+      "historyLimit": "history-limit 200000",
+      "startExitCode": 0,
+      "stopExitCode": 0
+    },
+    {
+      "name": "skill:clervo-engineering-stage",
+      "passed": true,
+      "skillSha256": "05455d1d026eac453c52c5cf3714ae96c68086962871b68fa5ebe4e5ffdcae61",
+      "metadataSha256": "31c89d17fc81a754e45e4c22870784b7f4b446c596f2d983cd2a3e53f0ef4641"
+    },
+    {
+      "name": "skill:clervo-cloud-cleanup",
+      "passed": true,
+      "skillSha256": "0a7b4bc6c58d97807c196b3ea69e049cf38a3b1b873d8bfcf6a8ee028f3530cd",
+      "metadataSha256": "373ca6b1e61261d4b06b35d0d289f475f749b87f7f0ea074279109d0c68a4a7c"
+    },
+    {
+      "name": "skill:clervo-benchmark-freeze",
+      "passed": true,
+      "skillSha256": "6a92a983b63c50f8f44caf088eda1bfee46718d0a6269683241dbe5149762dca",
+      "metadataSha256": "2999b4415d35ae0952138c44695e13092fe6de8ad34f0e3a5b11600a39406ad4"
+    },
+    {
+      "name": "skill:clervo-x402-proof",
+      "passed": true,
+      "skillSha256": "fe11ffe66a5c9d555335b053cd96a1eb4529a30ff4336732d71c18c19c30e749",
+      "metadataSha256": "09c4507520a240b9df896f8e9937f77a2dc64c0f65df520ffc964bc6713c6b8c"
+    },
+    {
+      "name": "skill:clervo-release-handoff",
+      "passed": true,
+      "skillSha256": "d0e5a22f9a660a49f28092b0391a48a4ed0d61abe859cc2ebce65acbafed4e44",
+      "metadataSha256": "4de3ad587ecdb11ece015ae4735de62cc82b213545926aec1b13d74fecc5edc6"
+    },
+    {
+      "name": "skill:clervo-design-studio",
+      "passed": true,
+      "skillSha256": "9abff2cc7e40629343fd8e2a248537f4a137b1df69c8a084024609613a8a9365",
+      "metadataSha256": "770104ce3cc587b8dd0d023c2c629fcbaac83d554a15e22799276802fcf02267"
+    },
+    {
+      "name": "package:@playwright/test",
+      "passed": true,
+      "expected": "1.62.1",
+      "actual": "1.62.1",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "package:@axe-core/playwright",
+      "passed": true,
+      "expected": "4.12.1",
+      "actual": "4.12.1",
+      "license": "MPL-2.0"
+    },
+    {
+      "name": "package:@modelcontextprotocol/sdk",
+      "passed": true,
+      "expected": "1.30.0",
+      "actual": "1.30.0",
+      "license": "MIT"
+    },
+    {
+      "name": "package:chrome-devtools-mcp",
+      "passed": true,
+      "expected": "1.6.0",
+      "actual": "1.6.0",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "package:lighthouse",
+      "passed": true,
+      "expected": "13.4.1",
+      "actual": "13.4.1",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "package:svgo",
+      "passed": true,
+      "expected": "4.0.2",
+      "actual": "4.0.2",
+      "license": "MIT"
+    },
+    {
+      "name": "packages:rejected-absent",
+      "passed": true,
+      "rejectedPackages": [
+        "@playwright/mcp",
+        "@upstash/context7-mcp",
+        "serena",
+        "rtk",
+        "caveman",
+        "shadcn",
+        "storybook"
+      ]
+    },
+    {
+      "name": "packages:frontend-deferred",
+      "passed": true,
+      "deferredFrontendPackages": [
+        "next",
+        "react",
+        "tailwindcss",
+        "storybook",
+        "motion",
+        "gsap",
+        "three",
+        "@react-three/fiber",
+        "lottie-web",
+        "@rive-app/react-canvas"
+      ]
+    },
+    {
+      "name": "mcp:figma-disabled",
+      "passed": true
+    },
+    {
+      "name": "mcp:playwright-absent",
+      "passed": true
+    },
+    {
+      "name": "hook:allows-safe",
+      "passed": true,
+      "output": ""
+    },
+    {
+      "name": "hook:blocks-destructive-git",
+      "passed": true,
+      "output": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Destructive filesystem or Git operations require separate authority.\"}}"
+    },
+    {
+      "name": "hook:blocks-external-browser",
+      "passed": true,
+      "output": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Browser-debug navigation is limited to local, credential-free targets.\"}}"
+    },
+    {
+      "name": "hook:blocks-legacy-path",
+      "passed": true,
+      "output": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Legacy and unrelated environments are read-only and outside this studio.\"}}"
+    },
+    {
+      "name": "hook:blocks-environment-enumeration",
+      "passed": true,
+      "output": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Environment-value enumeration is blocked; use the redacted inventory.\"}}"
+    },
+    {
+      "name": "hook:blocks-cloud-iam",
+      "passed": true,
+      "output": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Cloud billing, IAM, secret, API, project, or deployment mutation needs separate authority.\"}}"
+    },
+    {
+      "name": "hook:blocks-wallet-payment",
+      "passed": true,
+      "output": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Wallet, payment, and USDC actions are not authorized.\"}}"
+    },
+    {
+      "name": "hook:blocks-figma-write",
+      "passed": true,
+      "output": "{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Figma write tools remain disabled until explicit OAuth and file authority.\"}}"
+    },
+    {
+      "name": "rules:destructive-git",
+      "passed": true,
+      "durationMs": 32.081,
+      "output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"git\",\"reset\"],\"decision\":\"forbidden\",\"justification\":\"Destructive Git state rewriting is outside the studio boundary.\"}}],\"decision\":\"forbidden\"}"
+    },
+    {
+      "name": "rules:global-docker-delete",
+      "passed": true,
+      "durationMs": 31.137,
+      "output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"docker\",\"system\",\"prune\"],\"decision\":\"forbidden\",\"justification\":\"Global Docker cleanup could affect unrelated workloads.\"}}],\"decision\":\"forbidden\"}"
+    },
+    {
+      "name": "rules:cluster-mutation",
+      "passed": true,
+      "durationMs": 34.568,
+      "output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"kubectl\",\"apply\"],\"decision\":\"forbidden\",\"justification\":\"Deployment mutation requires an authorized product or maintenance ticket.\"}}],\"decision\":\"forbidden\"}"
+    },
+    {
+      "name": "rules:infrastructure-mutation",
+      "passed": true,
+      "durationMs": 32.586,
+      "output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"tofu\",\"destroy\"],\"decision\":\"forbidden\",\"justification\":\"Infrastructure mutation requires separate cloud authority.\"}}],\"decision\":\"forbidden\"}"
+    },
+    {
+      "name": "rules:wallet-payment",
+      "passed": true,
+      "durationMs": 30.989,
+      "output": "{\"matchedRules\":[{\"prefixRuleMatch\":{\"matchedPrefix\":[\"cast\",\"send\"],\"decision\":\"forbidden\",\"justification\":\"Wallet transactions and real payments are not authorized.\"}}],\"decision\":\"forbidden\"}"
+    },
+    {
+      "name": "docker-image:pinned-playwright",
+      "passed": true,
+      "imageId": "sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e",
+      "durationMs": 24.08
+    },
+    {
+      "name": "tool:codex",
+      "passed": true,
+      "durationMs": 28.992,
+      "version": "codex-cli 0.146.0"
+    },
+    {
+      "name": "tool:node",
+      "passed": true,
+      "durationMs": 2.911,
+      "version": "v24.18.1"
+    },
+    {
+      "name": "tool:npm",
+      "passed": true,
+      "durationMs": 47.368,
+      "version": "10.9.8"
+    },
+    {
+      "name": "tool:git",
+      "passed": true,
+      "durationMs": 1.442,
+      "version": "git version 2.43.0"
+    },
+    {
+      "name": "tool:docker",
+      "passed": true,
+      "durationMs": 8.764,
+      "version": "Docker version 29.7.1, build e9452d6"
+    },
+    {
+      "name": "tool:compose",
+      "passed": true,
+      "durationMs": 25.162,
+      "version": "Docker Compose version v5.3.1"
+    },
+    {
+      "name": "tool:jq",
+      "passed": true,
+      "durationMs": 1.328,
+      "version": "jq-1.7"
+    },
+    {
+      "name": "tool:shellcheck",
+      "passed": true,
+      "durationMs": 1.677,
+      "version": "ShellCheck - shell script analysis tool | version: 0.9.0"
+    },
+    {
+      "name": "tool:tmux",
+      "passed": true,
+      "durationMs": 1.698,
+      "version": "tmux 3.4"
+    }
+  ],
+  "profileStartupMs": {
+    "engineering": 77.118,
+    "studio-maintenance": 58.891,
+    "design": 62.513,
+    "browser-debug": 56.008,
+    "visual-qa": 59.856
+  },
+  "credentialVariableNamesOnly": [],
+  "snapshotReadiness": {
+    "billableSnapshotCreated": false,
+    "reproducibleInstaller": "scripts/codex-studio/install.sh",
+    "pinnedBrowserImage": "sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e",
+    "machineLocalSecretsRecorded": false
+  }
+}

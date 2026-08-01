@@ -9,6 +9,12 @@
     "browser-debug": { "sandbox": "danger-full-access", "approval": "never", "mcp": ["chrome_devtools"], "guardHook": true, "loopbackPort": 9223 },
     "visual-qa": { "sandbox": "danger-full-access", "approval": "never", "mcp": [], "guardHook": true, "containerNetwork": "none" }
   },
+  "terminal": {
+    "codexAlternateScreen": "never",
+    "codexRawOutputMode": true,
+    "tmuxMouse": true,
+    "tmuxHistoryLimit": 200000
+  },
   "hostTools": {
     "codex": "0.146.0",
     "node": "24.18.1",

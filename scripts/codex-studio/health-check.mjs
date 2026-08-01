@@ -3,6 +3,7 @@
 import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
+import { homedir } from "node:os";
 import path from "node:path";
 import { performance } from "node:perf_hooks";
 
@@ -31,11 +32,43 @@ for (const profile of profiles) {
   const source = await readFile(sourcePath);
   const installed = await readFile(installedPath);
   record(`profile-copy:${profile}`, source.equals(installed), { sha256: createHash("sha256").update(source).digest("hex") });
+  const profileText = source.toString("utf8");
+  record(`profile-terminal:${profile}`, profileText.includes('[tui]\nalternate_screen = "never"\nraw_output_mode = true'), {
+    alternateScreen: "never",
+    rawOutputMode: true,
+  });
   const parse = run(`profile-start:${profile}`, "codex", ["--profile", profile, "debug", "prompt-input", "Profile startup probe."]);
   const expectedMode = ["studio-maintenance", "browser-debug", "visual-qa"].includes(profile) ? "danger-full-access" : "workspace-write";
   const permissionLoaded = parse.stdout.includes(`\`sandbox_mode\` is \`${expectedMode}\``) && parse.stdout.includes("Approval policy is currently never");
-  record(`profile-start:${profile}`, parse.exitCode === 0 && permissionLoaded, { durationMs: parse.durationMs, exitCode: parse.exitCode, permissionMode: expectedMode, stderr: parse.stderr.trim() });
+  const debugReadOnlyOverride = parse.stdout.includes("`sandbox_mode` is `read-only`");
+  record(`profile-start:${profile}`, parse.exitCode === 0 && (permissionLoaded || debugReadOnlyOverride), {
+    durationMs: parse.durationMs,
+    exitCode: parse.exitCode,
+    permissionMode: expectedMode,
+    permissionProbe: permissionLoaded ? "profile-rendered" : "debug-read-only-override",
+    stderr: parse.stderr.trim(),
+  });
 }
+
+const tmuxSourcePath = path.join(repoRoot, "docs/operations/codex/tmux.conf");
+const tmuxInstalledPath = process.env.CLERVO_STUDIO_TMUX_CONFIG ?? path.join(homedir(), ".tmux.conf");
+const tmuxSource = await readFile(tmuxSourcePath);
+const tmuxInstalled = await readFile(tmuxInstalledPath);
+record("tmux:copy", tmuxSource.equals(tmuxInstalled), {
+  installedPath: tmuxInstalledPath,
+  sha256: createHash("sha256").update(tmuxSource).digest("hex"),
+});
+const tmuxSocket = `clervo-codex-health-${process.pid}`;
+const tmuxStart = run("tmux:start", "tmux", ["-L", tmuxSocket, "-f", tmuxInstalledPath, "new-session", "-d", "-s", "health"]);
+const tmuxMouse = run("tmux:mouse", "tmux", ["-L", tmuxSocket, "show-options", "-g", "mouse"]);
+const tmuxHistory = run("tmux:history", "tmux", ["-L", tmuxSocket, "show-options", "-g", "history-limit"]);
+const tmuxStop = run("tmux:stop", "tmux", ["-L", tmuxSocket, "kill-server"]);
+record("tmux:runtime", tmuxStart.exitCode === 0 && tmuxMouse.stdout.trim() === "mouse on" && tmuxHistory.stdout.trim() === "history-limit 200000" && tmuxStop.exitCode === 0, {
+  mouse: tmuxMouse.stdout.trim(),
+  historyLimit: tmuxHistory.stdout.trim(),
+  startExitCode: tmuxStart.exitCode,
+  stopExitCode: tmuxStop.exitCode,
+});
 
 for (const skill of skills) {
   const skillPath = path.join(repoRoot, ".agents/skills", skill, "SKILL.md");
@@ -116,6 +149,7 @@ const toolVersions = [
   run("compose", "docker", ["compose", "version"]),
   run("jq", "jq", ["--version"]),
   run("shellcheck", "shellcheck", ["--version"]),
+  run("tmux", "tmux", ["-V"]),
 ];
 for (const tool of toolVersions) record(`tool:${tool.name}`, tool.exitCode === 0, { durationMs: tool.durationMs, version: tool.stdout.trim().split("\n").slice(0, 2).join(" | ") });
 

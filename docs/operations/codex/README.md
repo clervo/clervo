@@ -68,7 +68,13 @@ once-only product qualification with these maintenance fixtures.
 The source templates are under `docs/operations/codex/profiles`; installed
 copies are `$CODEX_HOME/<profile>.config.toml`. The installer places pinned
 packages and the hook under `$CODEX_HOME/studio` and the command rules under
-`$CODEX_HOME/rules` without storing authentication material.
+`$CODEX_HOME/rules` without storing authentication material. Every profile
+starts with the Codex alternate screen disabled and raw scrollback enabled, so
+terminal history remains directly selectable and copyable. The installer also
+copies `docs/operations/codex/tmux.conf` to the current devbox user's
+`.tmux.conf`; tmux mouse scrolling is enabled with a 200,000-line pane history.
+Hold Shift while selecting if the terminal emulator needs to bypass tmux mouse
+handling for native clipboard selection.
 
 See the adjacent candidate evaluation, inventories, and matrices for MCP,
 skill, tool, permission, authentication, upgrade, rejection, and recovery

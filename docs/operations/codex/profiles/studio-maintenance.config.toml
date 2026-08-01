@@ -6,6 +6,10 @@ web_search = "cached"
 model_reasoning_effort = "xhigh"
 allow_login_shell = false
 
+[tui]
+alternate_screen = "never"
+raw_output_mode = true
+
 [shell_environment_policy]
 inherit = "core"
 ignore_default_excludes = false

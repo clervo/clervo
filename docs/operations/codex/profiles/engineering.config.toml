@@ -6,6 +6,10 @@ web_search = "cached"
 model_reasoning_effort = "high"
 allow_login_shell = false
 
+[tui]
+alternate_screen = "never"
+raw_output_mode = true
+
 [sandbox_workspace_write]
 writable_roots = ["/workspace/clervo-next"]
 network_access = false

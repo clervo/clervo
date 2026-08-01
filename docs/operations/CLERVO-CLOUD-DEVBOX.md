@@ -13,7 +13,9 @@ authority. A proposed product ticket is not authorization.
 1. Enter `/workspace/clervo-next` and confirm `git status --short` contains no
    unexplained change.
 2. Run `bash scripts/codex-studio/install.sh` after a clean-VM restore, profile
-   change, lockfile change, or Codex-home repair.
+   change, lockfile change, Codex-home repair, or terminal/tmux reset. This
+   restores raw Codex scrollback, disables the alternate screen, and installs
+   mouse-enabled tmux defaults with a 200,000-line history buffer.
 3. Run `node scripts/codex-studio/health-check.mjs`.
 4. Launch the least-privileged matching profile using the commands in
    `docs/operations/codex/README.md`.
