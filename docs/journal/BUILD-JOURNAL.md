@@ -1033,3 +1033,79 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   authority. N4.27T, N4.28, mock x402, Stage 5, AI, Sandbox, production release,
   real payment and all later stages remain unauthorized. Commit this evidence,
   report and stop.
+
+## 2026-08-01 — NPLAN.3 six-product core-first platform roadmap
+
+- The owner explicitly redirected the session from authorized N4.27T product
+  work to a full plan audit and forward roadmap amendment. N4.27T was paused
+  before implementation or cloud mutation. NPLAN.3 was classified as an exact
+  owner-authorized product/roadmap authority ticket; it did not execute or
+  broaden N4.27T.
+- Audited the controlling master plan, canonical launch authority, active
+  scope/discovery/copy sources, repository shape, generated preview, and path-
+  limited Git history. Only Search has an implementation foundation. AI,
+  Sandbox, RPC, Prediction, and Crypto service directories are empty; intended
+  shared catalog, commerce, routing, observability, worker, MCP and SDK
+  packages are empty; the site has prototype Markdown/JSON only; JSON-LD,
+  sitemap, robots/canonical and task-page SEO systems do not exist.
+- Recorded the primary rework risks: 43 separately maintained wire schemas;
+  TypeScript/schema/runtime-assertion drift; a Search-hardcoded discovery
+  generator; a generated catalog whose product records do not conform to
+  `CatalogEntry`; all schemas copied into public OpenAPI without visibility
+  classification; manually repeated lifecycle/site/prose facts; and repeated
+  ticket-specific deployment definitions. `generated/public` appeared in 22
+  prior commits, mostly as deterministic mechanical projection churn, while
+  the real site/design/SEO implementation has not begun.
+- Adopted **Clervo Platform** (`clervo.platform`) as the all-six First Revenue
+  Release. The stable pillars remain Search/Live Intelligence, AI, Secure
+  Sandbox, RPC, Prediction and Crypto Intelligence. Search remains `preview`;
+  the five unimplemented pillars remain `unavailable`; every
+  `coreQualified` flag and both readiness gates remain false.
+- Replaced the old forward `fullPlatformExpansion` scope with the versioned
+  private `productCore` gate. Stages 5–10 build the six cores; Stage 11 proves
+  combined/private stability; Stage 12 freezes the cross-pillar contracts,
+  registry, prices and lifecycle; Stage 13 builds one shared API/MCP/SDK/
+  onboarding/design/docs/discovery/JSON-LD/sitemap/SEO/distribution system;
+  Stages 14–16 harden/deploy, prove one separately authorized bounded
+  settlement and require one external useful paid result.
+- Preserved the required product discipline inside each core stage: versioned
+  contracts, catalog candidates, lawful supply, security, quality, latency,
+  degradation, infrastructure/provider cost, hard ceilings, mock commerce,
+  replay/receipts, operations, evidence and cleanup. Only public projections
+  wait for the Stage 12 freeze.
+- Synchronized active authority, policy, README/builder/prototype/brand/
+  marketing/use-case sources, product-scope schema/source/fixtures, truthful
+  discovery copy, generated artifacts, focused checks, active state, external
+  master plan and NPLAN.3 decision/ticket/evidence. NPLAN.1/NPLAN.2 and every
+  completed Stage 0–4 ticket/evidence/frozen artifact remain historical and
+  unchanged.
+- Scope/discovery version `2026-08-01.3` passed 43-schema/81-fixture validation.
+  Focused discovery passed 6/6; NPLAN.1 history passed 2/2 after repairing one
+  stale current-authority assertion; NPLAN.2 history passed 2/2; NPLAN.3 passed
+  5/5; product-scope consistency, TypeScript typecheck, lint across 257 files,
+  JSON parsing, secret scan, clean-room boundary, exact 12-stage master/repo
+  comparison, active contradiction scan, deterministic generation, and final
+  diff integrity passed.
+- Preserved a validation-process failure: an audit helper used Markdown
+  backticks in a double-quoted shell text check and unintentionally invoked
+  canonical `npm test`. It stopped at typecheck with
+  `acceptance: FAIL at typecheck (exit 1)` while concurrent NPLAN.3 edits were
+  incomplete. No later build, discovery, Stage 4 verifier, or contract-test
+  acceptance gate ran. The canonical suite was not rerun.
+- Official OpenAPI, JSON Schema, MCP, Google structured-data and sitemap
+  guidance was read for the planning preflight. No billable product-provider,
+  cloud, IAM, deployment, secret, payment, wallet, production, domain, listing
+  or legacy action occurred. Provider/infrastructure cost was USD 0.000000,
+  USDC spend was 0, the 0.03 USDC reserve remains untouched, and active
+  incremental exposure remains USD 0/day.
+- Stage 4 remains blocked on isolated JavaScript retrieval, prompt-injection
+  boundaries, separate raw/synthesis prices, deployed paid route and cost caps.
+  Search is not commercially competitive, production-qualified or the
+  reference pattern; Stage 5 remains unauthorized.
+- Starting commit:
+  `5a34e4de12aff85c9d25f49abe19084e92e82572`. Final implementation commit is
+  the commit containing this append-only entry and NPLAN.3 closeout evidence.
+- Exact next product ticket is N4.27T under the owner's already recorded
+  authorization and existing scope/stop conditions. Stop after the NPLAN.3
+  commit; do not begin N4.27T implementation, N4.28, mock x402, Stage 5, any
+  later pillar, cloud/deployment, payment, production or legacy work here.

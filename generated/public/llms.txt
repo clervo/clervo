@@ -1,17 +1,16 @@
 # Clervo
 
-> Clervo is outcome infrastructure for agents. Clervo Live Intelligence is the planned First Revenue Release; only a repository-local search slice is currently implemented, and it remains unverified.
+> Clervo is outcome infrastructure for agents. The planned First Revenue Release is the all-six Clervo Platform; only a repository-local Search slice is currently implemented, and it remains an unqualified preview.
 
 Important status:
 
 - Lifecycle: implemented_unverified
-- First Revenue Release: Clervo Live Intelligence
-- Current product path: Discover, Retrieve, Structure, Verify, Monitor
-- Permanent expansion: Find, Understand, Act
-- Search release lifecycle: preview
-- AI release lifecycle: unavailable; additive after First Revenue Release
-- Sandbox release lifecycle: unavailable; additive after AI
-- Planned later platform expansion: RPC, Prediction, Crypto intelligence
+- First Revenue Release: Clervo Platform
+- Required pillars: Search, AI, Secure Sandbox, RPC, Prediction, Crypto Intelligence
+- Permanent narrative: Find, Understand, Act
+- Search release lifecycle: preview; product core qualified: false
+- AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence release lifecycle: unavailable; product core qualified: false
+- Product core ready: false
 - Callable products: search.web, search.answer
 - Product selection: synthesize=false selects search.web; synthesize=true selects search.answer
 - Free endpoint: POST /v1/search/free

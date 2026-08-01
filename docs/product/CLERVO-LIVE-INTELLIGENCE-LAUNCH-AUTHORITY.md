@@ -1,354 +1,384 @@
-# Clervo Live Intelligence launch authority
+# Clervo six-product core-first platform launch authority
 
 **Authority status:** active repository-controlled product and launch authority
-**Decision ticket:** NPLAN.2
-**Effective date:** 2026-07-31
-**Canonical copy:** this file
 
-This authority controls future release positioning, productization, onboarding,
-distribution, brand, website, documentation, marketing, and additive platform
-expansion. Proven contracts, tests, deployed behavior, prices, and receipts
-continue to outrank plans and copy. The clean-room master plan controls ticket
-order and implementation authorization.
+**Decision ticket:** NPLAN.3
 
-The external `/workspace/docs/CLERVO-LIVE-INTELLIGENCE-LAUNCH-AUTHORITY.md`
-was the owner-supplied NPLAN.2 intake. It is not a second repository authority.
+**Effective date:** 2026-08-01
+**Canonical copy:** this file; its historical path is retained to avoid link churn
 
-## 1. Permanent identity and product hierarchy
+This authority controls future product order, release positioning, onboarding,
+distribution, brand, website, documentation, marketing, and platform launch.
+Proven contracts, tests, deployed behavior, prices, receipts, and recorded
+evidence outrank plans and copy. The clean-room master plan still controls exact
+ticket order and implementation authorization.
+
+NPLAN.3 supersedes NPLAN.2 only for forward release and stage authority.
+NPLAN.1, NPLAN.2, completed Stages 0–4, prior ticket outcomes, sealed evidence,
+and append-only journal history keep their exact historical meaning.
+
+## 1. Permanent identity and six-product launch decision
 
 - **Company:** Clervo — outcome infrastructure for agents.
 - **Company tagline:** **Buy outcomes. Not integrations.**
-- **First finished commercial product:** **Clervo Live Intelligence.**
-- **Core promise:** discover, retrieve, structure, verify, compare, and monitor
-  live information from the open Web and authorized sources.
-- **Permanent expansion narrative:** **Find → Understand → Act.**
-- **Current product:** **Discover → Retrieve → Structure → Verify → Monitor.**
-- **AI adds:** **Understand → Analyze → Score → Explain → Report.**
-- **Sandbox adds:** **Transform → Execute → Automate → Export.**
+- **First Revenue Release:** **Clervo Platform**, comprising all six product
+  pillars.
+- **Permanent narrative:** **Find → Understand → Act.**
 
-Clervo Live Intelligence is the **First Revenue Release**. It is a finished
-product, not a collection of local search endpoints. AI and Sandbox are
-additive engines that strengthen the same company and workflows; they are not
-launch prerequisites and do not cause a company rebrand. RPC, Prediction, and
-Crypto Intelligence remain later additive platform expansions.
+The six launch pillars are:
 
-## 2. First Revenue Release gate
+1. **Live Intelligence / Search** — Discover → Retrieve → Structure → Verify →
+   Monitor.
+2. **AI** — Understand → Analyze → Score → Explain → Report.
+3. **Secure Sandbox** — Transform → Execute → Automate → Export.
+4. **Universal multi-chain RPC.**
+5. **Prediction-market Intelligence.**
+6. **Crypto Intelligence.**
 
-The First Revenue Release passes only when all of the following have been
-separately implemented and proven:
+The owner has adopted all six as the active pre-launch product program. That is
+a roadmap decision, not a claim that implementation has started or that a route
+is callable. Current lifecycle truth remains: Search is `preview`; AI, Sandbox,
+RPC, Prediction, and Crypto Intelligence are `unavailable`; Clervo Platform is
+not ready.
 
-1. search;
-2. safe current-page fetch;
-3. deterministic extraction and structuring;
-4. provenance and exact citations;
-5. comparison workflows;
-6. bounded monitoring;
-7. machine-readable changes;
-8. safe alert delivery;
-9. a machine-readable HTTP API;
-10. MCP, TypeScript SDK, and Python SDK access;
-11. bounded pricing, maximum-charge quotes, and readable receipts;
-12. tested onboarding and named recovery paths;
-13. production deployment and supportable operations;
-14. public product, pricing, benchmark, status, security, legal, and
-    documentation pages;
-15. real reproducible demonstrations; and
-16. one external customer receiving a useful paid result.
+No product receives public launch, real-payment, demand, or revenue status before
+all six product cores pass independently, coexist behind stable contracts, and
+the shared release system passes its own gates.
 
-Repository-local behavior, a returned 402, an owner-funded payment, a legacy
-listing, generated media, or one successful provider response does not satisfy
-this gate. Current lifecycle truth remains: Search is `preview`; AI and
-Sandbox are `unavailable`; RPC, Prediction, and Crypto Intelligence are
-`planned_post_launch`; the First Revenue Release is not ready.
+## 2. Product-core gate and First Revenue Release gate
 
-## 3. Stable additive product contract
+### 2.1 Private six-product core freeze
 
-New engines, providers, workflows, solution packs, modalities, and connectors
-must be additive. They must not silently change:
+Before shared public access, design, documentation, discovery, or SEO is built,
+all of the following must be independently implemented and proven in private,
+bounded environments:
 
-- capability identifiers;
+1. finished Live Intelligence search/fetch/extract/evidence/compare/monitor/
+   change/alert behavior;
+2. qualified AI supply, exact model identity, accounting, routing, and evidence-
+   aware reasoning;
+3. strongly isolated Secure Sandbox execution and teardown;
+4. qualified multi-chain RPC routing, semantic conformance, stale/fork controls,
+   and replay-safe broadcasting;
+5. normalized Prediction discovery/comparison/history/signals with preserved
+   resolution evidence;
+6. normalized, cited, freshness-labelled Crypto Intelligence;
+7. representative versioned **Find → Understand → Act** compositions;
+8. cross-pillar compatibility for capability IDs, schemas, request hashes,
+   lifecycle, price/quote/receipt semantics, provider identity, failures, and
+   replay; and
+9. a frozen canonical platform registry defining pillar, capability, operation,
+   product/SKU, schemas, route, delivery mode, access mode, lifecycle,
+   qualification, public visibility, price version, and maximum charge.
+
+Each core stage includes its own versioned wire contracts, internal test
+harnesses, lawful supplier qualification, security, quality, degradation,
+latency, infrastructure/provider cost, hard ceilings, mock commerce, operations,
+and cleanup. Deferring those would create unsafe product code and later rework.
+
+The product-core gate is private stabilization, not public availability.
+
+### 2.2 Shared release gate
+
+After the product-core freeze, the First Revenue Release passes only when all
+of the following are separately implemented and proven:
+
+1. one machine-readable HTTP surface covering the frozen public operations;
+2. one MCP surface plus TypeScript and Python SDKs generated from the same
+   public wire contracts;
+3. bounded pricing, maximum-charge quotes, automated x402 handling, readable
+   receipts, and cross-client conformance;
+4. tested onboarding and every named recovery path;
+5. one unified, accessible, responsive public product/design/documentation
+   system for all six pillars;
+6. synchronized OpenAPI, catalog, x402 discovery, `llms.txt`, JSON-LD,
+   sitemaps, robots, canonical metadata, packages, examples, status, and
+   task-oriented SEO/GEO/LLM pages;
+7. supportable production deployment, security, recovery, rollback,
+   observability, and bounded post-credit economics;
+8. real reproducible demonstrations using actual product evidence;
+9. one separately authorized bounded useful real x402 settlement with
+   no-charge replay; and
+10. one external customer receiving and paying for a useful result.
+
+Every paid operation preserves `quote → 402 → authorization → verification →
+execution → settlement → receipt → idempotent replay`. Unknown payment state
+fails closed and is reconciled before any new authorization. Repository-local
+behavior, a returned 402, owner-funded payment, generated media, a legacy
+listing, or one provider response does not satisfy a launch gate.
+
+## 3. Build-once contract and projection system
+
+Clervo uses one authoritative source for each class of truth:
+
+- the master plan and this authority for ordered human product decisions;
+- versioned JSON Schemas for public wire structure;
+- the frozen platform registry for products, operations, lifecycle, public
+  visibility, schema references, prices, limits, and access modes;
+- approved public-evidence manifests referencing immutable evidence hashes;
+- a separate redacted runtime status and incident feed;
+- one semantic design-token source for visual and interaction states; and
+- hand-approved legal policy with product facts projected from the registry.
+
+The shared release build projects, rather than re-enters, common truth into:
+
+- HTTP route registration and OpenAPI;
+- catalog and `/.well-known` discovery;
+- MCP tool metadata and TypeScript/Python SDK models;
+- raw HTTP, SDK, and MCP examples;
+- site product, lifecycle, price, limit, and status blocks;
+- `llms.txt`, JSON-LD, sitemap, robots, canonical metadata, and task pages; and
+- x402 discovery and package/registry metadata.
+
+Only schemas explicitly classified as public wire or approved public evidence
+may enter OpenAPI, SDKs, MCP, or public pages. Internal qualification, sealed
+benchmark, evaluator, raw evidence, and control-plane schemas remain excluded.
+Generators never scan sealed corpora or infer product claims from filenames.
+
+Public projections may be regenerated as facts change, but they are never
+independently redesigned or hand-maintained. Narrative, evidence
+interpretation, and legal judgment remain reviewed prose.
+
+## 4. Stable product contract
+
+The six stable pillar IDs remain `search`, `ai`, `sandbox`, `rpc`,
+`prediction`, and `crypto_intelligence`. Existing capability IDs remain stable
+unless an explicit versioned migration is authorized.
+
+Products, providers, workflows, modalities, connectors, and routes must not
+silently change:
+
+- capability, operation, or product identifiers;
 - versioned request, response, evidence, change, alert, or receipt schemas;
 - endpoint behavior or failure semantics;
 - canonical request hashes and idempotency identity;
 - quote, maximum-charge, verification, settlement, and receipt semantics;
 - MCP tool names, inputs, outputs, or lifecycle metadata;
 - TypeScript or Python SDK behavior;
-- OpenAPI, catalog, agent, x402, or other discovery records; or
+- OpenAPI, catalog, x402, agent, or other discovery records; or
 - truthful lifecycle states.
 
-Any intentional incompatible change requires a new version, migration and
-deprecation plan, compatibility tests, discovery synchronization, and a
-separately authorized ticket. Named models and sources are never silently
-substituted. Provider-neutral aliases may fail over only among qualified
-equivalents while preserving the public contract. Workflows compose versioned
-primitives and never bypass price, provenance, policy, isolation, or replay.
+Any incompatible change requires a new version, migration/deprecation plan,
+compatibility tests, synchronized projections, and a separately authorized
+ticket. Named models and sources are never silently substituted. Provider-
+neutral aliases may fail over only among qualified equivalents.
 
-## 4. Solution packs above one engine
+## 5. Live Intelligence solution packs
 
-These are products built above the same stable Live Intelligence engine, not
-separate companies or claims of present availability:
+The following packs share the stable Live Intelligence engine and are not
+separate companies or present-availability claims:
 
 | Solution pack | Representative outcome |
 | --- | --- |
-| Commerce and Marketplace Intelligence | Products, prices, availability, sellers, duplicates, and listing changes from permitted sources. |
-| Property and Local-Market Intelligence | Listings, price changes, duplicates, comparable inventory, neighborhoods, agencies, and local supply. |
-| Company and Competitive Intelligence | Pricing, products, launches, jobs, partnerships, announcements, and verified company evidence. |
+| Commerce and Marketplace Intelligence | Products, prices, availability, sellers, duplicates, and permitted-source listing changes. |
+| Property and Local-Market Intelligence | Listings, changes, comparable inventory, neighborhoods, agencies, and local supply. |
+| Company and Competitive Intelligence | Pricing, products, launches, jobs, partnerships, and verified company evidence. |
 | Research and Evidence | Official-source research, public records, cited datasets, documentation, news, and evidence bundles. |
-| Developer and Agent Context | Current technical documentation, safe fetch/extract, deduplicated context, provenance, API, MCP, and SDK delivery. |
+| Developer and Agent Context | Current documentation, safe fetch/extract, deduplicated context, provenance, API, MCP, and SDK delivery. |
 
-Commerce is one solution pack, not Clervo's entire identity. A pack becomes
-sellable only after its sources, schema, evidence, useful-result contract,
-benchmark, price, failure behavior, operations, and demonstration pass.
+A pack becomes sellable only after its sources, schema, useful-result contract,
+benchmark, price, failure behavior, operations, and real demonstration pass.
 
-## 5. Connector access modes
+## 6. Connector access modes
 
 Every source or connector declares exactly one access mode:
 
 | Access mode | Meaning |
 | --- | --- |
-| `open_web` | Public HTTP(S) pages allowed by the retrieval and content-use policy. |
-| `official_api` | A documented source API used within its approved terms and scope. |
-| `bring_your_own_credentials` | The customer supplies credentials for an authorized account and accepts applicable source terms and costs. |
-| `user_authorized_session` | A user explicitly authorizes an isolated, workflow-specific session that is not reused broadly. |
+| `open_web` | Public HTTP(S) pages allowed by retrieval and content-use policy. |
+| `official_api` | A documented source API used within approved terms and scope. |
+| `bring_your_own_credentials` | The customer supplies credentials for an authorized account and accepts applicable terms and costs. |
+| `user_authorized_session` | A user explicitly authorizes an isolated workflow-specific session. |
 | `partner_access` | Clervo has an approved partner route with explicit scope and terms. |
 | `customer_supplied_data` | The customer supplies URLs, feeds, exports, files, or records it controls. |
 | `unsupported` | No stable lawful route exists; Clervo makes no coverage claim. |
 
-Facebook Marketplace, Instagram, WhatsApp, X, LinkedIn, and comparable closed
-platforms are never anonymous `open_web` promises. They require applicable
-official, BYOC, user-authorized, partner, or customer-supplied access; otherwise
-they are `unsupported`. There is no CAPTCHA bypass, access-control evasion,
-credential abuse, cookie theft, stealth/proxy circumvention, or unrestricted
-public browser action surface.
+Closed platforms are never anonymous `open_web` promises. There is no CAPTCHA
+bypass, access-control evasion, credential abuse, cookie theft, stealth/proxy
+circumvention, or unrestricted public browser action surface.
 
-## 6. Claims and benchmark authority
+## 7. Claims and benchmark authority
 
-Before comparative commercial proof, the strongest public positioning is:
+Before comparative commercial proof, the strongest Search positioning is:
 
 > **Clervo-owned live Web retrieval.**
 
-After the required benchmark gates pass, Clervo may say:
+After its exact benchmark gates pass, Search may use:
 
 > **Advanced live intelligence for agents.**
 
-Any superiority claim must name the exact workflow, comparison, corpus, date,
-environment, sample size, and metric, with published reproducible evidence.
-Clervo must never claim that it indexes the entire Web, has unrestricted
-closed-platform access, is better than Google, or offers the best Web search
-without evidence sufficient for that exact claim. Fake users, customers,
-revenue, accuracy, transactions, wallets, logos, testimonials, screenshots,
-metrics, dashboards, or results are prohibited.
+That Search-specific claim does not prove AI, Sandbox, RPC, Prediction, Crypto,
+the whole platform, deployment, or demand. Every superiority statement names
+the workflow, comparison, corpus, date, environment, sample size, metric, and
+published reproducible evidence. Clervo never invents users, customers,
+revenue, transactions, wallets, logos, testimonials, screenshots, dashboards,
+metrics, accuracy, coverage, or results.
 
-N4.26 is the completed first benchmark authority for the actual Clervo Live
-Intelligence launch product, not isolated search components. It covers representative
-tasks across:
+Frozen, final, or once-only evidence remains immutable. A later qualification
+uses a new independent corpus and procedure under exact authority.
 
-- commerce and marketplaces;
-- property and local markets;
-- companies and competitors;
-- research and evidence; and
-- developer and agent retrieval.
+## 8. Onboarding and payment experience
 
-It must measure relevant-result recall, precision, freshness,
-structured-field accuracy, exact citation validity, duplicate suppression,
-domain diversity, change-detection accuracy where implemented, latency,
-degradation, infrastructure cost, and bounded worst-case cost. Comparison
-groups include selected free/open-source component baselines and permitted
-paid benchmarks. Paid providers may be bounded comparison subjects but cannot
-be production dependencies. Missing launch-product capabilities remain failed
-or not-yet-proven gates; the benchmark does not relabel them as complete. Its
-classification is **not yet commercially competitive**. Therefore the
-strongest current positioning remains **“Clervo-owned live Web retrieval”**
-and “Advanced live intelligence for agents” is not authorized.
-
-## 7. Onboarding and payment experience
-
-The primary journey is:
+The primary journey remains:
 
 > **Install → Ask → Fund → Approve → Result → Receipt**
 
-The primary x402 path requires no traditional API key. A supported user or
-agent installs one real published client, asks one concrete task, creates a
-locally controlled wallet or connects a supported wallet, sees the exact or
-maximum charge before approval, authorizes verified terms, receives a useful
-result with evidence, and reads the receipt. SDK and MCP clients construct and
-retry payment headers safely; the user does not construct them manually.
+One supported client handles HTTP/x402 mechanics without requiring a
+traditional API key or manual payment-header construction on the primary path.
+Before approval it shows service, request identity, exact or maximum charge,
+asset, network, recipient, expiry, balance, and budget. Clervo never receives
+or retains a user's private key. Replay cannot duplicate execution or charge.
 
-The product must disclose service, request identity, amount or ceiling, asset,
-network, recipient, expiry, balance, and applicable budgets before approval.
-Clervo never receives or retains the user's private key. Replay with the same
-idempotency identity cannot create duplicate execution or charge.
-
-Every failure gives one explicit next action:
+Every failure provides one explicit next action:
 
 | Failure | Recovery |
 | --- | --- |
-| Insufficient funds | Show the required maximum, available balance, funding address, network, asset, and smallest useful amount; do not sign. |
+| Insufficient funds | Show required maximum, balance, funding address, network, asset, and smallest useful amount; do not sign. |
 | Wrong network or asset | Reject and identify the accepted network and asset. |
 | Expired quote | Obtain and re-present a new quote; never reuse stale terms. |
 | Rejected authorization | Return to approval; do not execute or settle. |
-| Timeout | Report the known operation state; retry only under the same safe idempotency/reconciliation rules. |
+| Timeout | Report known operation state; retry only under safe idempotency and reconciliation rules. |
 | Unknown settlement | Quarantine and reconcile; never issue a new authorization automatically. |
 
-Clean-environment testing covers install, sample, wallet creation/connection,
-funding, bounded approval, automated 402 handling, useful evidence, receipt,
-replay, all named recovery paths, accessibility, mobile, slow networks, and
-no private assistance.
+## 9. One shared website, design, and distribution pass
 
-## 8. Website and brand authority
+Before the Stage 12 core freeze, product work uses internal harnesses and
+evidence views; it does not create six public mini-sites or independently
+maintained SDK/discovery stacks.
 
-The visual system remains:
+Stage 13 builds one responsive and accessible design system, content model,
+site, documentation system, and discovery pipeline across the frozen six-
+product registry. The visual language remains near-black, precise white
+typography, red for request/risk/unresolved state, green only for verified
+state, yellow for degradation, and the prism/beam system. Product variants use
+tokens, layouts, and data-driven templates rather than separate redesigns.
 
-- near-black cinematic canvas;
-- precise white typography;
-- red for incoming request, risk, failure, or unresolved state;
-- green only for selected, verified, completed state;
-- yellow for degraded, stale, uncertain, or warning state; and
-- the prism and beam system for request, qualification, result, and receipt.
+Structured data describes visible page truth. Product pages contain real
+product facts, tasks, source policy, benchmark evidence, demonstrations, or
+executable examples. `llms.txt` is a documentation map, not a ranking promise;
+sitemaps help discovery but do not prove indexing or recommendation.
 
-**Buy outcomes. Not integrations.** remains the company-level tagline. The
-product category is **Live intelligence for agents** only when the accompanying
-lifecycle and evidence are truthful. Until the comparative gate passes, copy
-uses **Clervo-owned live Web retrieval** rather than “advanced.”
+Generated atmosphere remains distinct from actual sources, results, quotes,
+receipts, screenshots, and demonstrations. No fake dashboard, customer,
+transaction, metric, or generated proof exists.
 
-Generated media may establish cinematic atmosphere, explain mechanisms, or
-support accessible/multilingual content. Real product evidence—actual terminal
-output, sources, quote, result, status, receipt, screenshots, and reproducible
-demonstrations—must remain visually and semantically distinct. Planned AI,
-Sandbox, RPC, Prediction, and Crypto capabilities carry explicit truthful
-lifecycle labels and cannot appear callable before qualification.
+## 10. Legacy, security, cost, and asset boundaries
 
-## 9. Discovery, documentation, and distribution
+The legacy x402 listing, deployment, wallets, domains, DNS, provider accounts,
+and related assets remain evidence and possible migration assets, never clean-
+room dependencies or product proof. Before any deletion, redirect, wallet,
+listing, credential, domain, or infrastructure change, a separate ticket must
+perform a non-destructive metadata-only inventory and migration/sunset plan.
 
-One synchronized evidence system covers:
+Candidate cloud, AI, media, RPC, data, and alert assets are not working supply.
+Each needs current identity, terms/resale, rights, privacy, quota, region, cost,
+hard ceiling, monitoring, health, fallback, and lifecycle qualification.
+Secrets and customer payloads never enter planning or public evidence.
 
-- OpenAPI;
-- MCP tools and registry metadata;
-- TypeScript SDK;
-- Python SDK;
-- raw HTTP examples;
-- x402 discovery, Bazaar where applicable, and x402scan;
-- `llms.txt` as a concise documentation map;
-- truthful JSON-LD and structured data;
-- XML sitemaps, robots, canonical URLs, and indexable pages;
-- npm, PyPI, other applicable package registries, and GitHub;
-- task-oriented SEO, GEO, and LLM-discovery pages;
-- working examples, changelog, public status, and incident history.
+Core Search retains USD 0 mandatory third-party general-Web provider API cost.
+Infrastructure cost is real and must be measured, capped, monitored, and priced.
+Cloud/IAM/deployment mutations require an exact ticket, environment, resource
+allowlist, gross/daily ceiling, cleanup procedure, and unknown-outcome handling.
 
-All channels use the same capability identifiers, schemas, lifecycle, prices,
-limits, examples, and status. A route is registered only after its onboarding
-works. Every public page contains a real product fact, task, benchmark,
-demonstration, source policy, or executable example. `llms.txt` alone does not
-create search ranking, generative-search visibility, or AI recommendation.
+The 0.03 USDC reserve remains untouched until Stage 15. At least 0.02 USDC is
+reserved for final proof and contingency. Real settlement requires a separate
+exact authorization naming payer/receiver separation, recipient, network,
+asset, amount, facilitator, expiry, ceiling, evidence, reconciliation, and stop
+conditions. Owner-funded proof demonstrates plumbing, never demand or revenue.
 
-## 10. Legacy x402 authority
+## 11. Authoritative future stage order
 
-The active legacy x402 listing, deployment, wallets, domains, DNS, provider
-accounts, and related assets are evidence and possible migration/distribution
-assets. They are not clean-room runtime dependencies, proof that Clervo Live
-Intelligence is deployed, proof of demand, or permission to reuse the old
-database, queues, ledger, catalog, application wiring, state, or qualifications.
+Completed Stages 0–4 keep their exact historical meaning. After Stage 4 passes,
+future work proceeds only in this order:
 
-Before deletion, redirect, wallet change, listing replacement, credential
-retirement, or infrastructure shutdown, a separately authorized ticket must
-perform a non-destructive metadata-only legacy inventory and produce a
-migration/sunset plan with backup, reconciliation, rollback, ownership, and
-historical-receipt preservation. Secret values remain uninspected and
-unpublished. The clean-room product never connects to the legacy data plane.
+### Stage 5 — Live Intelligence productization and platform-registry foundation
 
-## 11. AI and media assets
+Settle the shared pillar/capability/operation/product/SKU ontology and registry
+boundary, then implement Live Intelligence compare, monitoring, changes,
+alerts, solution packs, and private product qualification.
 
-Candidate Google Cloud, Vertex, Gemini, image generation, video generation,
-text-to-speech, speech, and wider controlled AI-provider assets may later
-support AI product routes, cited analysis, original diagrams, launch videos,
-voiceovers, tutorials, accessible audio, and multilingual content.
+### Stage 6 — AI product core
 
-Before use, each asset requires current capability, model identity, region,
-quota, terms/resale, rights, privacy, cost, budget, storage, provenance,
-approval, monitoring, and lifecycle qualification. These assets do not prove
-that AI routes are available. They must not expose credentials, cause
-uncontrolled spend, fabricate product proof, or replace real screenshots and
-reproducible demonstrations. No AI or media implementation is authorized by
-this document.
+Qualify lawful supply and build exact routes, provider-neutral aliases,
+accounting, evidence-aware reasoning, modalities, health, cost, and degradation.
 
-## 12. Future stage authority
+### Stage 7 — Secure Sandbox product core
 
-Completed Stages 0–4, ticket IDs, commits, evidence, and stage records retain
-their exact historical meaning. Only the future program changes.
+Build the separately isolated execution plane, bounded sessions/artifacts,
+abuse controls, teardown/reaping, and the full escape/resource security suite.
 
-| Old future stage | New future stage | Transition |
-| --- | --- | --- |
-| Stage 5 — AI supply plane | Stage 5 — Live Intelligence productization | AI moves after the First Revenue Release; implement compare, monitoring, changes, alerts, and the finished product boundary first. |
-| Stage 6 — Secure sandbox | Stage 6 — Live Intelligence access, onboarding, and distribution | SDKs, MCP, API/docs, packages, x402 discovery, and the complete first-use journey move before launch. |
-| Stage 7 — Initial outcome workflows | Stage 7 — Live Intelligence production hardening and deployment | Harden and deploy the one launch product before payment or demand claims. |
-| Stage 8 — SDKs, MCP, onboarding, documentation, site, and distribution | Stage 8 — Bounded real x402 settlement proof | Distribution moves to Stage 6; one bounded real useful settlement proves plumbing, not demand. |
-| Stage 9 — Production hardening | Stage 9 — External paid demand and First Revenue Release | Acquire one external useful paid result and launch the finished product. |
-| Stage 10 — Bounded real x402 settlement proof | Stage 10 — AI supply and reasoning layer | AI begins only after the First Revenue Release and external paid proof. |
-| Stage 11 — External-user proof and focused Initial Commercial Release | Stage 11 — Secure Sandbox execution layer | Sandbox begins after the AI layer passes its gate. |
-| Stage 12 — RPC expansion | Stage 12 — Combined Find → Understand → Act workflows | Compose proven Live Intelligence, AI, and Sandbox without breaking primitives. |
-| Stage 13 — Prediction expansion | Stage 13 — RPC expansion | RPC remains additive and later. |
-| Stage 14 — Crypto Intelligence expansion | Stage 14 — Prediction expansion | Prediction remains additive and later. |
-| Stage 15 — Full Platform Expansion verification | Stage 15 — Crypto Intelligence expansion | Crypto Intelligence remains additive and later. |
-| — | Stage 16 — Full Platform Expansion verification | Verify all pillars and compatibility after the additive expansions. |
+### Stage 8 — Universal multi-chain RPC product core
 
-The authoritative future order is therefore:
+Build the chain/provider registry, semantic probes, health routing, stale/fork
+controls, safe caching, method policy, pricing, and replay-safe broadcasting.
 
-1. finish Stage 4 Search;
-2. productize Clervo Live Intelligence;
-3. complete access, onboarding, documentation, website, and distribution;
-4. harden and deploy the product;
-5. prove one bounded real x402 settlement;
-6. acquire a useful external paid result and launch the First Revenue Release;
-7. add the AI supply and reasoning layer;
-8. add Secure Sandbox execution;
-9. build combined **Find → Understand → Act** workflows;
-10. add RPC, Prediction, and Crypto Intelligence; and
-11. run the Full Platform Expansion compatibility gate.
+### Stage 9 — Prediction-market Intelligence product core
 
-## 13. Security, cost, and truth invariants
+Build normalized market/outcome identity, resolution evidence, freshness,
+history, comparison, probabilities, liquidity, and bounded signals.
 
-All current clean-room, security, secret, payment-budget, zero paid
-general-Web-provider, source-rights, truthful lifecycle, and Stage 4 verifier
-rules remain in force. Infrastructure is not free: compute, browser, storage,
-indexing, monitoring, and egress must be measured, capped, monitored, and
-priced. Core production search routes retain USD 0 mandatory third-party
-general-Web search-provider API cost. Paid services may be benchmarked only
-under separate permission and cannot become hidden production dependencies.
+### Stage 10 — Crypto Intelligence product core
 
-This authority does not itself authorize new cloud/IAM/deployment mutation,
-credentials, provider calls, N4.27T repair work, USDC spend, AI, Sandbox,
-later-pillar implementation, legacy mutation, runtime search changes, or the
-canonical `npm test`.
+Build normalized wallet/token/transaction/protocol evidence across the proven
+RPC and qualified sources, with conflict, spam, freshness, and risk-language
+controls.
 
-## 14. Current transition and exact next ticket
+### Stage 11 — Combined workflows and private six-product stabilization
 
-N4.27S completed its separately authorized private-staging qualification of the
-frozen N4.27R repair without modifying or rerunning either prior sealed set. A
-new 55-task corpus was frozen and executed exactly once after implementation
-and evaluator freeze. No post-run tuning occurred.
+Compose representative Find → Understand → Act workflows and prove every core
+independently under shared commerce, routing, observability, cost, and failure
+invariants.
 
-The final staging result failed. Repaired combined recall/precision were
-0.8000/0.6803, citation validity 1.0000, nDCG@10 0.8048, MRR@10 0.8000,
-success@3 0.8182, extraction 0.8727 and network-inclusive p95 1465.432 ms.
-Aggregate live routing passed, but developer registry produced no relevant
-final-corpus contribution. Browser qualification reached only 4/20 startups
-and zero of eight hostile runs, although all teardown checks were clean and
-the final orphan/state count was zero.
+### Stage 12 — Cross-pillar contract and product-core freeze
 
-Connected cache/freshness, locale disclosure, retrieval safety, SSRF controls,
-operational restoration and baseline improvement produced staging evidence.
-Five blockers closed. Five remain: `isolated_javascript_retrieval`,
+Pass compatibility, settle the canonical registry, classify public/internal/
+sealed schemas, freeze public operations, prices, lifecycle projections, and
+the exact release candidate interface. No public distribution yet.
+
+### Stage 13 — Shared access, design, onboarding, and distribution
+
+Build the API, MCP, TypeScript/Python SDKs, payment client, examples, packages,
+site/design system, docs, legal/status surfaces, OpenAPI, catalog, x402
+discovery, `llms.txt`, JSON-LD, sitemaps, and SEO/GEO/LLM pages once from the
+frozen registry and approved evidence.
+
+### Stage 14 — Full-platform production hardening and deployment
+
+Harden and deploy the exact frozen release candidate with reproducible
+infrastructure, isolation, least privilege, recovery, rollback, load, abuse,
+retention, monitoring, support, and hard cost ceilings. No real payment yet.
+
+### Stage 15 — Bounded real x402 settlement proof
+
+Under separate exact authority, execute the smallest useful settlement and
+prove result, transfer, ledger, receipt, reconciliation, and no-charge replay.
+
+### Stage 16 — External paid result and First Revenue Release
+
+Acquire one external payer, deliver one useful paid result, recheck final
+six-product compatibility and public truth, and launch Clervo Platform only if
+every gate passes.
+
+No stage begins before the prior exit is recorded, and no stage heading itself
+authorizes an implementation ticket.
+
+## 12. Current transition and exact stop
+
+N4.27S remains completed with failed private qualification. Five Stage 4
+blockers remain: `isolated_javascript_retrieval`,
 `prompt_injection_boundaries`, `separate_raw_and_synthesis_prices`,
-`deployed_paid_route`, and `cost_caps`. Cost remains open because the rejected
-one-node GKE cluster briefly overlapped the replacement VM, exceeding the USD
-5 configured daily-exposure ceiling even though gross ticket cost stayed about
-USD 0.35 and all resources were subsequently removed for USD 0/day.
+`deployed_paid_route`, and `cost_caps`. Search is not commercially competitive,
+production-qualified, or the reference pattern.
 
-No mock x402, payment or USDC action ran; the reserved 0.03 USDC remains
-untouched and provider general-Web cost is USD 0.000000. Search is not
-commercially competitive, production-qualified, the reference pattern, an Exa-
-parity result or the best Web search. N4.28 and Stage 5 remain unauthorized.
-The smallest proposed next ticket is **N4.27T — Frozen-result failure
-remediation for developer retrieval, browser/hostile reliability and cost-
-ceiling compliance** under separate authority. N4.27S final data may not be
-rerun or used as a tuning set.
+The owner explicitly authorized N4.27T under its recorded scope and stop
+conditions, then redirected this session to NPLAN.3 before N4.27T
+implementation or cloud mutation began. NPLAN.3 changes only forward product
+and release authority. It does not close a Stage 4 blocker or authorize Stage
+5, cloud/IAM/deployment mutation, provider calls, payment, wallet/USDC,
+production, legacy mutation, or any later product implementation.
+
+After NPLAN.3 is verified, recorded, and committed, stop. N4.27T remains the
+exact next product ticket under the owner's recorded authorization; its final
+corpus must be new and independent, N4.27S final evidence remains read-only,
+and any cloud action must also satisfy an exact environment/resource/cost/
+cleanup boundary.

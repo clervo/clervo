@@ -10,15 +10,24 @@ claim. The canonical product authority is
 Clervo is **outcome infrastructure for agents**. The permanent expansion
 narrative is **Find → Understand → Act**.
 
-The First Revenue Release is **Clervo Live Intelligence**. Lead with its current
-product path:
+The First Revenue Release is the all-six **Clervo Platform**. Its required
+product cores are:
 
-> **Discover → Retrieve → Structure → Verify → Monitor**
+- Live Intelligence/Search: **Discover → Retrieve → Structure → Verify →
+  Monitor**;
+- AI: **Understand → Analyze → Score → Explain → Report**;
+- Secure Sandbox: **Transform → Execute → Automate → Export**;
+- RPC;
+- Prediction; and
+- Crypto Intelligence.
 
-AI later adds **Understand → Analyze → Score → Explain → Report**. Sandbox
-later adds **Transform → Execute → Automate → Export**. They strengthen the
-same workflows without rebranding the company or changing stable interfaces.
-RPC, Prediction, and Crypto Intelligence remain later additive expansions.
+Search is the only current `preview`. The other five product cores are
+`unavailable`, and their implementation has not started. Build and stabilize
+the cores privately in their authorized order. After the Stage 12 core and
+cross-pillar contract freeze, Stage 13 creates one shared API, MCP, SDK,
+onboarding, design, documentation, discovery, JSON-LD, sitemap, SEO, and
+distribution layer. Preserve stable capability identifiers and interfaces
+throughout.
 
 The company tagline is **Buy outcomes. Not integrations.** Preserve
 **Install → Ask → Fund → Approve → Result → Receipt**.
@@ -30,11 +39,15 @@ retrieval**. After it passes, **Advanced live intelligence for agents** is
 permitted. Any superiority claim names the exact workflow, comparison, corpus,
 date, environment, and metric.
 
-Search is currently `preview`; AI and Sandbox are `unavailable`; RPC,
-Prediction, and Crypto Intelligence are `planned/post-launch`. Compare,
-customer monitoring, changes, alerts, MCP/SDK distribution, production
-deployment, payable settlement, and external demand remain unproven until
-their separate gates pass.
+Search is currently `preview`; AI, Sandbox, RPC, Prediction, and Crypto
+Intelligence are `unavailable`. None of those five implementations has
+started. N4.27S left five truthful Stage 4 blockers, so Search is not
+commercially competitive, production-qualified, or the reference pattern.
+N4.27T is owner-authorized under its recorded scope and stop conditions but is
+paused before implementation. Compare, customer monitoring, changes, alerts,
+all shared Stage 13 access and distribution surfaces, production deployment,
+payable settlement, and external demand remain unproven until their separate
+gates pass.
 
 Never invent prices, providers, commands, screenshots, customers, agents,
 testimonials, metrics, transactions, revenue, accuracy, or results. Never
@@ -51,11 +64,14 @@ Generated atmosphere remains visibly distinct from real product evidence.
 
 ## Content hierarchy
 
-1. A concrete Live Intelligence job from one of the five solution packs.
-2. Exact lifecycle, access mode, source boundary, and limitations.
-3. Real executable guides and request/result demonstrations.
+1. The all-six Clervo Platform release scope and exact lifecycle of every
+   pillar.
+2. A concrete evidence-backed job, access mode, source boundary, and
+   limitation.
+3. Real executable guides and request/result demonstrations only when proven.
 4. Pricing, receipts, provenance, citations, safety, status, and recovery.
-5. Additive AI, Sandbox, RPC, Prediction, and Crypto roadmap, clearly labeled.
+5. The Stage 12 freeze and subsequent single shared-surface pass, clearly
+   labeled as unavailable until authorized and proven.
 
 The five packs are Commerce and Marketplace Intelligence; Property and
 Local-Market Intelligence; Company and Competitive Intelligence; Research and

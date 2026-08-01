@@ -1,60 +1,44 @@
 # Active ticket state
 
-**Ticket:** N4.27S — Frozen-repair staging qualification and remaining
-non-payment Stage 4 proof
-**Stage:** 4 — Search vertical slice
-**Ticket result:** completed with failed final staging qualification
+**Ticket:** NPLAN.3 — Six-product core-first Clervo Platform roadmap amendment
+
+**Ticket result:** completed at forward authority and versioned scope boundary
+
+**Current product stage:** 4 — Search vertical slice
 **Stage result:** blocked with five truthful Stage 4 blockers remaining
 
 ## Decision
 
-- N4.27 and N4.27R sealed artifacts were hash-verified and never rerun or
-  modified.
-- A separate 55-task N4.27S corpus was labelled and validated before final
-  qualification, with 11 tasks in each family and exactly one final run.
-- Implementation and evaluator were frozen before the final run. No post-run
-  tuning occurred.
-- Combined staging quality failed mandatory gates: recall 0.8000, precision
-  0.6803, citation validity 1.0000, nDCG@10 0.8048, MRR@10 0.8000,
-  success@3 0.8182, extraction 0.8727 and p95 1465.432 ms.
-- Browser qualification failed at 4/20 startups and 0/8 hostile runs. All 20
-  teardowns were clean; final retained-state and orphan counts were zero.
+- First Revenue Release is now `clervo.platform` / **Clervo Platform** and
+  requires Live Intelligence/Search, AI, Secure Sandbox, RPC, Prediction, and
+  Crypto Intelligence.
+- Search remains `preview`; the other five pillars remain `unavailable`; no
+  later product-core implementation began.
+- Stages 5–10 build the six product cores before shared public work. Stage 11
+  proves combined/private stability, Stage 12 freezes cross-pillar contracts
+  and the canonical registry, and Stage 13 builds one shared API/MCP/SDK/
+  onboarding/design/docs/discovery/JSON-LD/sitemap/SEO/distribution system.
+- Stages 14–16 harden/deploy the frozen platform, prove one separately
+  authorized bounded settlement, and require one external useful paid result.
+- The old `fullPlatformExpansion` scope is replaced at version
+  `2026-08-01.3` by a private `productCore` gate. All six `coreQualified`
+  values and both readiness gates remain false.
 
-## Sources, cache and operations
+## Audit truth
 
-- Aggregate live federation passed its gates at 0.8400 recall, 0.6623
-  precision and 2021.578 ms p95, with relevant evidence on 84% of focused
-  misses and 41.10% largest-source share.
-- Five source classes contributed relevant evidence. Developer registry
-  contributed zero, so the every-source qualification failed.
-- Connected cache miss/fresh/stale/revalidation, route isolation, integrity,
-  eviction/removal/denylist, freshness fields and honest failure passed.
-- Locale propagation, Wikimedia language honoring and explicit unsupported
-  disclosures passed.
-- Route/source concurrency, quotas, circuit open/half-open restoration,
-  timeout storm, all-routes-down, traffic stop/restoration and unbounded-cost
-  stop passed.
-- Direct/redirect/address SSRF, DNS rebinding, robots, MIME, decompression,
-  output and gateway containment passed. Live prompt-injection proof did not.
+- Search is the only implemented product foundation. The five later product
+  service directories and intended shared catalog/commerce/routing/
+  observability/worker/MCP/SDK packages are empty.
+- There is no production site/design system, onboarding client, JSON-LD,
+  sitemap, robots/canonical system, or task-oriented SEO implementation.
+- Existing deterministic discovery generation is Search-specific; the
+  generated catalog is not a collection of conforming `CatalogEntry` values;
+  contract, site JSON, generated, and prose truth can drift.
+- Product-core contracts, supplier qualification, security, quality, costs,
+  mock commerce, operations, and evidence still belong inside each core stage.
+  Only shared public projections wait for the Stage 12 freeze.
 
-## Cost and cleanup
-
-- Estimated gross ticket and owner cash upper bound: USD 0.35, below USD 12.
-- Third-party general-Web provider cost: USD 0.000000.
-- Mock/real x402 did not run; USDC spend was zero and reserved 0.03 USDC was
-  untouched.
-- A rejected one-node GKE cluster overlapped its replacement VM for about 15
-  minutes, producing estimated configured exposure USD 5.69248/day over the
-  USD 5 ceiling. This is recorded as a control failure.
-- VM, disks, cluster, network, subnet, router/NAT, firewall, service account,
-  IAM binding, Artifact Registry images/repository, budget and exact Cloud
-  Build source objects were deleted. Active incremental exposure is USD 0/day.
-
-## Current Stage 4 blockers
-
-Five N4.27S-proven checks closed: `retrieval_safety_controls`,
-`disclosed_cache_freshness`, `language_and_region_options`,
-`ssrf_and_security_suite`, and `blockrun_compatible_baseline_improvement`.
+## Preserved Stage 4 truth
 
 The exact remaining blockers are:
 
@@ -64,20 +48,38 @@ The exact remaining blockers are:
 4. `deployed_paid_route`
 5. `cost_caps`
 
-Stage 4 remains blocked. Search is not commercially competitive, production-
-qualified, Exa-parity, best-Web-search or the reference pattern. N4.28 and
-Stage 5 remain unauthorized.
+Search is not commercially competitive, production-qualified, the reference
+pattern, an Exa-parity result, or best Web search. NPLAN.3 did not change a
+Stage 4 binding, verifier input, score, failure, cost, or sealed artifact.
 
-## Exact next action
+## Authorization and exact next action
 
-Proposed ticket **N4.27T — Frozen-result failure remediation for developer
-retrieval, browser/hostile reliability and cost-ceiling compliance**, under
-separate authority only. Treat the N4.27S final corpus as read-only and use a
-new pre-split corpus and new isolated deployment. Keep mock x402, real payment,
-N4.28 and Stage 5 out of scope.
+The owner explicitly authorized **N4.27T** under its recorded scope and stop
+conditions, then redirected the session to NPLAN.3 before N4.27T
+implementation or cloud mutation began. N4.27T remains the exact next product
+ticket and may use N4.27S final evidence only as read-only failure evidence. It
+must use a new independent pre-split corpus and isolated deployment.
+
+Before any N4.27T cloud create, the ticket still needs an exact environment,
+resource allowlist, daily/gross cost ceiling, no-IAM/billing boundary, and
+cleanup/unknown-outcome procedure; roadmap authority alone does not supply it.
+
+## Effects and validation boundary
+
+- No runtime, provider, cloud, IAM, deployment, payment, wallet, production,
+  domain, listing, or legacy action occurred; provider/infrastructure cost was
+  USD 0.000000 and USDC spend was 0.
+- The 0.03 USDC reserve remains untouched.
+- Official OpenAPI, JSON Schema, MCP, structured-data, and sitemap guidance was
+  read during the planning preflight.
+- An audit-helper shell mistake invoked canonical `npm test` once; it stopped
+  at typecheck with exit 1 before build, discovery, Stage 4 verification, or
+  contract tests. It was not rerun and is recorded in NPLAN.3 evidence.
+- Focused closeout validation is recorded in
+  `docs/evidence/NPLAN.3-six-product-core-first-roadmap-audit.md`.
 
 ## Stop condition
 
-Commit N4.27S atomically and stop. Do not begin N4.27T, N4.28, mock x402,
-payment, Stage 5, website/DNS work, production release, AI, Sandbox, legacy
-mutation or any expansion stage.
+Commit NPLAN.3 atomically and stop. Do not begin N4.27T implementation,
+N4.28, mock x402, Stage 5, any later product core, cloud/deployment, payment,
+production, or legacy work in this ticket.

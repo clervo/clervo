@@ -17,6 +17,7 @@ test('NPLAN.1 historical decision and result remain preserved', async () => {
 
 test('NPLAN.1 remains history rather than current launch authority', async () => {
   const current = await readFile(path.join(root, 'docs/product/CLERVO-LIVE-INTELLIGENCE-LAUNCH-AUTHORITY.md'), 'utf8');
-  assert.match(current, /Decision ticket:\*\* NPLAN\.2/);
-  assert.match(current, /Completed Stages 0–4, ticket IDs, commits, evidence, and stage records retain/);
+  assert.match(current, /Decision ticket:\*\* NPLAN\.3/);
+  assert.match(current, /NPLAN\.1, NPLAN\.2, completed Stages 0–4, prior ticket outcomes, sealed evidence/);
+  assert.match(current, /NPLAN\.3 supersedes NPLAN\.2 only for forward release and stage authority/);
 });

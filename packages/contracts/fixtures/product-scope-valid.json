@@ -2,40 +2,33 @@
   "schema": "product-scope",
   "valid": true,
   "value": {
-    "scopeVersion": "2026-07-31.2",
+    "scopeVersion": "2026-08-01.3",
     "company": { "name": "Clervo", "identity": "outcome infrastructure for agents", "permanentNarrative": ["find", "understand", "act"] },
     "firstRevenueRelease": {
-      "productId": "clervo.live_intelligence",
-      "productName": "Clervo Live Intelligence",
-      "requiredPillars": ["search"],
+      "productId": "clervo.platform",
+      "productName": "Clervo Platform",
+      "requiredPillars": ["search", "ai", "sandbox", "rpc", "prediction", "crypto_intelligence"],
       "requirements": [
-        { "requirementId": "search", "verified": false },
-        { "requirementId": "fetch", "verified": false },
-        { "requirementId": "extract", "verified": false },
-        { "requirementId": "provenance_exact_citations", "verified": false },
-        { "requirementId": "compare", "verified": false },
-        { "requirementId": "monitoring", "verified": false },
-        { "requirementId": "changes", "verified": false },
-        { "requirementId": "alerts", "verified": false },
         { "requirementId": "machine_readable_api", "verified": false },
         { "requirementId": "mcp_sdk_access", "verified": false },
         { "requirementId": "bounded_pricing_receipts", "verified": false },
         { "requirementId": "tested_onboarding", "verified": false },
+        { "requirementId": "unified_public_experience_distribution", "verified": false },
         { "requirementId": "production_deployment", "verified": false },
-        { "requirementId": "public_product_pages_documentation", "verified": false },
         { "requirementId": "real_demonstrations", "verified": false },
+        { "requirementId": "bounded_real_settlement", "verified": false },
         { "requirementId": "external_useful_paid_result", "verified": false }
       ],
       "ready": false
     },
-    "fullPlatformExpansion": { "requiredPillars": ["search", "ai", "sandbox", "rpc", "prediction", "crypto_intelligence"], "ready": false },
+    "productCore": { "requiredPillars": ["search", "ai", "sandbox", "rpc", "prediction", "crypto_intelligence"], "interfacesFrozen": false, "compatibilityVerified": false, "ready": false },
     "pillars": [
-      { "pillarId": "search", "release": "first_revenue_release", "lifecycle": "preview", "capabilityIds": ["search.web", "search.answer", "web.fetch", "web.extract"] },
-      { "pillarId": "ai", "release": "additive_expansion", "lifecycle": "unavailable", "capabilityIds": ["ai.chat"] },
-      { "pillarId": "sandbox", "release": "additive_expansion", "lifecycle": "unavailable", "capabilityIds": ["sandbox.run"] },
-      { "pillarId": "rpc", "release": "later_platform_expansion", "lifecycle": "planned_post_launch", "capabilityIds": ["rpc.call"] },
-      { "pillarId": "prediction", "release": "later_platform_expansion", "lifecycle": "planned_post_launch", "capabilityIds": ["prediction.markets"] },
-      { "pillarId": "crypto_intelligence", "release": "later_platform_expansion", "lifecycle": "planned_post_launch", "capabilityIds": ["crypto.wallet"] }
+      { "pillarId": "search", "release": "first_revenue_release", "lifecycle": "preview", "coreQualified": false, "capabilityIds": ["search.web", "search.answer", "web.fetch", "web.extract"] },
+      { "pillarId": "ai", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["ai.chat"] },
+      { "pillarId": "sandbox", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["sandbox.run"] },
+      { "pillarId": "rpc", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["rpc.call"] },
+      { "pillarId": "prediction", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["prediction.markets"] },
+      { "pillarId": "crypto_intelligence", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["crypto.wallet"] }
     ]
   }
 }

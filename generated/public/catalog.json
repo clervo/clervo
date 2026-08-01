@@ -1,8 +1,8 @@
 {
   "contractVersion": "2026-07-29.1",
-  "catalogVersion": "2026-07-31.2",
+  "catalogVersion": "2026-08-01.3",
   "releaseScope": {
-    "scopeVersion": "2026-07-31.2",
+    "scopeVersion": "2026-08-01.3",
     "company": {
       "name": "Clervo",
       "identity": "outcome infrastructure for agents",
@@ -12,45 +12,31 @@
         "act"
       ]
     },
-    "firstRevenueRelease": {
-      "productId": "clervo.live_intelligence",
-      "productName": "Clervo Live Intelligence",
+    "productCore": {
       "requiredPillars": [
-        "search"
+        "search",
+        "ai",
+        "sandbox",
+        "rpc",
+        "prediction",
+        "crypto_intelligence"
+      ],
+      "interfacesFrozen": false,
+      "compatibilityVerified": false,
+      "ready": false
+    },
+    "firstRevenueRelease": {
+      "productId": "clervo.platform",
+      "productName": "Clervo Platform",
+      "requiredPillars": [
+        "search",
+        "ai",
+        "sandbox",
+        "rpc",
+        "prediction",
+        "crypto_intelligence"
       ],
       "requirements": [
-        {
-          "requirementId": "search",
-          "verified": false
-        },
-        {
-          "requirementId": "fetch",
-          "verified": false
-        },
-        {
-          "requirementId": "extract",
-          "verified": false
-        },
-        {
-          "requirementId": "provenance_exact_citations",
-          "verified": false
-        },
-        {
-          "requirementId": "compare",
-          "verified": false
-        },
-        {
-          "requirementId": "monitoring",
-          "verified": false
-        },
-        {
-          "requirementId": "changes",
-          "verified": false
-        },
-        {
-          "requirementId": "alerts",
-          "verified": false
-        },
         {
           "requirementId": "machine_readable_api",
           "verified": false
@@ -68,15 +54,19 @@
           "verified": false
         },
         {
+          "requirementId": "unified_public_experience_distribution",
+          "verified": false
+        },
+        {
           "requirementId": "production_deployment",
           "verified": false
         },
         {
-          "requirementId": "public_product_pages_documentation",
+          "requirementId": "real_demonstrations",
           "verified": false
         },
         {
-          "requirementId": "real_demonstrations",
+          "requirementId": "bounded_real_settlement",
           "verified": false
         },
         {
@@ -86,22 +76,12 @@
       ],
       "ready": false
     },
-    "fullPlatformExpansion": {
-      "requiredPillars": [
-        "search",
-        "ai",
-        "sandbox",
-        "rpc",
-        "prediction",
-        "crypto_intelligence"
-      ],
-      "ready": false
-    },
     "pillars": [
       {
         "pillarId": "search",
         "release": "first_revenue_release",
         "lifecycle": "preview",
+        "coreQualified": false,
         "capabilityIds": [
           "search.web",
           "search.answer",
@@ -111,8 +91,9 @@
       },
       {
         "pillarId": "ai",
-        "release": "additive_expansion",
+        "release": "first_revenue_release",
         "lifecycle": "unavailable",
+        "coreQualified": false,
         "capabilityIds": [
           "ai.chat",
           "ai.embed",
@@ -122,8 +103,9 @@
       },
       {
         "pillarId": "sandbox",
-        "release": "additive_expansion",
+        "release": "first_revenue_release",
         "lifecycle": "unavailable",
+        "coreQualified": false,
         "capabilityIds": [
           "sandbox.run",
           "sandbox.session.create",
@@ -134,8 +116,9 @@
       },
       {
         "pillarId": "rpc",
-        "release": "later_platform_expansion",
-        "lifecycle": "planned_post_launch",
+        "release": "first_revenue_release",
+        "lifecycle": "unavailable",
+        "coreQualified": false,
         "capabilityIds": [
           "rpc.call",
           "rpc.batch",
@@ -146,8 +129,9 @@
       },
       {
         "pillarId": "prediction",
-        "release": "later_platform_expansion",
-        "lifecycle": "planned_post_launch",
+        "release": "first_revenue_release",
+        "lifecycle": "unavailable",
+        "coreQualified": false,
         "capabilityIds": [
           "prediction.markets",
           "prediction.market",
@@ -158,8 +142,9 @@
       },
       {
         "pillarId": "crypto_intelligence",
-        "release": "later_platform_expansion",
-        "lifecycle": "planned_post_launch",
+        "release": "first_revenue_release",
+        "lifecycle": "unavailable",
+        "coreQualified": false,
         "capabilityIds": [
           "crypto.wallet",
           "crypto.token",

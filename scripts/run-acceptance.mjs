@@ -21,6 +21,7 @@ const contractTests = [
   'tests/contract/n4.23b.test.mjs',
   'tests/contract/nplan.1.test.mjs',
   'tests/contract/nplan.2.test.mjs',
+  'tests/contract/nplan.3.test.mjs',
 ];
 
 const gates = [

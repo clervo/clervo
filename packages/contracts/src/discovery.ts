@@ -10,7 +10,7 @@ import type { AssetAmount } from './types.js';
 import { CONTRACT_VERSION } from './types.js';
 import { assertProductScope, createProductScopeDocument, type ProductScopeDocument } from './product-scope.js';
 
-export const DISCOVERY_VERSION = '2026-07-31.2' as const;
+export const DISCOVERY_VERSION = '2026-08-01.3' as const;
 export const PUBLIC_ORIGIN = 'https://api.clervo.dev' as const;
 
 export interface OpenApiDocument {
@@ -64,7 +64,7 @@ export function createOpenApiDocument(schemas: Record<string, Record<string, unk
   return {
     openapi: '3.1.1',
     jsonSchemaDialect: 'https://json-schema.org/draft/2020-12/schema',
-    info: { title: 'Clervo Live Intelligence search contract', version: CONTRACT_VERSION, description: 'Generated repository-local contract for separately priced raw retrieval and synthesized-answer products on the bounded search.query HTTP slice. This is not the finished First Revenue Release. Deployment is not verified and public payment is not implemented.' },
+    info: { title: 'Clervo Platform search contract', version: CONTRACT_VERSION, description: 'Generated repository-local contract for separately priced raw retrieval and synthesized-answer products on the bounded search.query HTTP slice. This Search preview is one unqualified pillar of the future six-pillar Clervo Platform First Revenue Release. Deployment is not verified and public payment is not implemented.' },
     paths: {
       [SEARCH_FREE_PATH]: { post: operation('Execute free search sample', 'Bounded, idempotent free-sample route with an in-memory quota reference implementation.', { 200: { description: 'Search completed', content: { 'application/json': { schema: { $ref: '#/components/schemas/SearchHttpResult' } } } }, 400: { description: 'Invalid request' }, 409: { description: 'Idempotency conflict' }, 429: { description: 'Free quota exceeded' }, 502: { description: 'Search executor failed closed' } }) },
       [SEARCH_PAID_PATH]: { post: operation('Request paid search', 'Returns an explicitly non-payable mock x402 challenge by default. Mock-paid execution exists only through test dependency injection.', { 200: { description: 'Mock-paid test execution completed', content: { 'application/json': { schema: { $ref: '#/components/schemas/SearchHttpResult' } } } }, 400: { description: 'Invalid request' }, 402: { description: 'Non-payable mock payment challenge', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } } }, content: { 'application/json': { schema: { $ref: '#/components/schemas/MockPaymentRequired' } } } }, 409: { description: 'Idempotency conflict' }, 502: { description: 'Mock-paid execution failed closed' } }) },
@@ -91,7 +91,7 @@ export function createDiscoveryDocument(): DiscoveryDocument {
     discoveryVersion: DISCOVERY_VERSION,
     contractVersion: CONTRACT_VERSION,
     name: 'Clervo',
-    description: 'Machine-readable preview of the implemented repository-local search.query HTTP slice for the future Clervo Live Intelligence First Revenue Release. Public deployment, the finished product gate, and real payment are not verified.',
+    description: 'Machine-readable preview of the implemented repository-local search.query HTTP slice for the future six-pillar Clervo Platform First Revenue Release. No pillar is core-qualified, the product-core gate is not ready, and public deployment and real payment are not verified.',
     lifecycle: 'implemented_unverified',
     callable: true,
     payment: { protocol: 'x402', implemented: false, settlementVerified: false },
@@ -111,7 +111,37 @@ export function createCatalogDocument(): Record<string, unknown> {
 }
 
 export function createLlmsText(): string {
-  return ['# Clervo', '', '> Clervo is outcome infrastructure for agents. Clervo Live Intelligence is the planned First Revenue Release; only a repository-local search slice is currently implemented, and it remains unverified.', '', 'Important status:', '', '- Lifecycle: implemented_unverified', '- First Revenue Release: Clervo Live Intelligence', '- Current product path: Discover, Retrieve, Structure, Verify, Monitor', '- Permanent expansion: Find, Understand, Act', '- Search release lifecycle: preview', '- AI release lifecycle: unavailable; additive after First Revenue Release', '- Sandbox release lifecycle: unavailable; additive after AI', '- Planned later platform expansion: RPC, Prediction, Crypto intelligence', '- Callable products: search.web, search.answer', '- Product selection: synthesize=false selects search.web; synthesize=true selects search.answer', '- Free endpoint: POST /v1/search/free', '- Paid endpoint: POST /v1/search/paid (non-payable mock challenge by default)', '- x402 payment implementation: not implemented', '- First Revenue Release ready: false', '- Production deployment: not verified', '- llms.txt is a documentation map, not a search or AI ranking claim', '', '## Machine-readable contracts', '', `- [OpenAPI contract](${PUBLIC_ORIGIN}/openapi.json): Search request, free-sample, and non-payable paid-challenge paths.`, `- [Catalog](${PUBLIC_ORIGIN}/catalog.json): Versioned scope plus search.web and search.answer pricing publication.`, `- [Discovery document](${PUBLIC_ORIGIN}/.well-known/clervo.json): Explicit release scope, lifecycle, implementation, and payment limitations.`, `- [JSON Schemas](${PUBLIC_ORIGIN}/schemas/${CONTRACT_VERSION}/): Draft 2020-12 contracts.`, ''].join('\n');
+  return [
+    '# Clervo',
+    '',
+    '> Clervo is outcome infrastructure for agents. The planned First Revenue Release is the all-six Clervo Platform; only a repository-local Search slice is currently implemented, and it remains an unqualified preview.',
+    '',
+    'Important status:',
+    '',
+    '- Lifecycle: implemented_unverified',
+    '- First Revenue Release: Clervo Platform',
+    '- Required pillars: Search, AI, Secure Sandbox, RPC, Prediction, Crypto Intelligence',
+    '- Permanent narrative: Find, Understand, Act',
+    '- Search release lifecycle: preview; product core qualified: false',
+    '- AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence release lifecycle: unavailable; product core qualified: false',
+    '- Product core ready: false',
+    '- Callable products: search.web, search.answer',
+    '- Product selection: synthesize=false selects search.web; synthesize=true selects search.answer',
+    '- Free endpoint: POST /v1/search/free',
+    '- Paid endpoint: POST /v1/search/paid (non-payable mock challenge by default)',
+    '- x402 payment implementation: not implemented',
+    '- First Revenue Release ready: false',
+    '- Production deployment: not verified',
+    '- llms.txt is a documentation map, not a search or AI ranking claim',
+    '',
+    '## Machine-readable contracts',
+    '',
+    `- [OpenAPI contract](${PUBLIC_ORIGIN}/openapi.json): Search request, free-sample, and non-payable paid-challenge paths.`,
+    `- [Catalog](${PUBLIC_ORIGIN}/catalog.json): Versioned scope plus search.web and search.answer pricing publication.`,
+    `- [Discovery document](${PUBLIC_ORIGIN}/.well-known/clervo.json): Explicit release scope, lifecycle, implementation, and payment limitations.`,
+    `- [JSON Schemas](${PUBLIC_ORIGIN}/schemas/${CONTRACT_VERSION}/): Draft 2020-12 contracts.`,
+    '',
+  ].join('\n');
 }
 
 export function assertPreviewArtifacts(openapi: OpenApiDocument, discovery: DiscoveryDocument, llms: string): void {
@@ -129,7 +159,7 @@ export function assertPreviewArtifacts(openapi: OpenApiDocument, discovery: Disc
   } catch {
     failures.push('discovery_product_scope_invalid');
   }
-  if (discovery.releaseScope.firstRevenueRelease.ready || discovery.releaseScope.fullPlatformExpansion.ready) failures.push('discovery_must_not_claim_release_ready');
+  if (discovery.releaseScope.firstRevenueRelease.ready || discovery.releaseScope.productCore.ready) failures.push('discovery_must_not_claim_release_ready');
   if (!llms.includes('Callable products: search.web, search.answer')) failures.push('llms_missing_callable_products');
   if (!llms.includes('x402 payment implementation: not implemented')) failures.push('llms_missing_payment_status');
   if (failures.length > 0) throw new TypeError(`unsafe discovery artifacts: ${failures.join(', ')}`);

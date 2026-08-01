@@ -1,21 +1,24 @@
-# Clervo Live Intelligence First Revenue Release marketing scope
+# Clervo Platform First Revenue Release marketing scope
 
 ## Position
 
 **Buy outcomes. Not integrations.** Clervo is outcome infrastructure for
-agents. The First Revenue Release is **Clervo Live Intelligence**, using one
-machine-discoverable API and one bounded x402 flow to discover, retrieve,
-structure, verify, compare, and monitor the open Web and authorized sources.
-The permanent expansion narrative is **Find → Understand → Act**.
+agents. The First Revenue Release is the all-six **Clervo Platform**: Live
+Intelligence/Search, AI, Secure Sandbox, RPC, Prediction, and Crypto
+Intelligence. All six cores and their cross-pillar contracts must be stable
+before one shared machine-discoverable access and distribution layer is built.
+The permanent product narrative is **Find → Understand → Act**.
 
 Before comparative commercial proof, use **Clervo-owned live Web retrieval**.
 After the benchmark gate passes, use **Advanced live intelligence for agents**.
 Never use a general superiority claim when only one named workflow comparison
 has passed.
 
-N4.26 did not pass that gate: the current classification is **not yet
-commercially competitive**. “Advanced live intelligence for agents” therefore
-remains unauthorized.
+N4.27S did not pass that gate and left five Stage 4 blockers. Search remains a
+`preview`, is not commercially competitive, production-qualified, or the
+reference pattern, and “Advanced live intelligence for agents” remains
+unauthorized. AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are
+`unavailable`, and implementation of those five cores has not started.
 
 ## Solution-pack lanes
 
@@ -35,13 +38,16 @@ receipt/provenance, and reproducible proof.
 Marketing uses real one-request demonstrations, source/result evidence,
 benchmark comparisons, failure proofs, build updates, and working templates.
 The public journey is **Install → Ask → Fund → Approve → Result → Receipt**.
-There is no traditional API key requirement for the primary x402 journey and
-no manual payment-header construction.
+The planned primary x402 journey must require neither a traditional API key nor
+manual payment-header construction.
 
-OpenAPI, MCP, TypeScript and Python SDKs, raw HTTP examples, x402 discovery and
-x402scan, `llms.txt`, JSON-LD, sitemaps, registries, GitHub, task pages, working
-examples, and status must tell the same truth. `llms.txt` alone is not a search
-or AI ranking strategy.
+After the Stage 12 core and contract freeze, Stage 13 performs one shared pass
+for the API, OpenAPI, MCP, TypeScript and Python SDKs, raw HTTP examples,
+onboarding, design, documentation, x402 discovery and x402scan, `llms.txt`,
+JSON-LD, sitemaps, SEO, registries, GitHub, task pages, working examples,
+status, and distribution. These surfaces must tell the same truth and are not
+currently launch-ready. `llms.txt` alone is not a search or AI ranking
+strategy.
 
 ## Evidence labels
 
@@ -51,8 +57,14 @@ or AI ranking strategy.
 - **Launch-ready proof:** deployed, repeatable, paid/receipt-safe behavior has
   passed its source-bound gate.
 - **Market-verified:** an external buyer received and paid for a useful result.
-- **Post-launch roadmap:** AI, Sandbox, RPC, Prediction, or Crypto work that is
-  not currently available.
+- **Unavailable product core:** a required First Revenue Release pillar whose
+  implementation or proof has not started or has not passed its gate.
+- **Shared-surface candidate:** API, SDK, design, discovery, documentation,
+  SEO, onboarding, or distribution work held until the Stage 12 freeze.
+
+N4.27T is owner-authorized under its recorded scope and stop conditions but
+paused before implementation. It does not authorize a later core, shared
+surface, release, payment, or production claim.
 
 No placeholder may contain invented prices, providers, commands, transactions,
 customers, logos, testimonials, revenue, usage, accuracy, screenshots,

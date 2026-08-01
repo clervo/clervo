@@ -6,10 +6,10 @@
 
 **Buy outcomes. Not integrations.**
 
-**Clervo Live Intelligence**
+**Clervo Platform**
 
-Clervo-owned live Web retrieval for agents: discover, retrieve, structure,
-verify, compare, and monitor the open Web and authorized sources.
+The all-six First Revenue Release: Live Intelligence/Search, AI, Secure
+Sandbox, RPC, Prediction, and Crypto Intelligence.
 
 Permanent expansion: **Find → Understand → Act**.
 
@@ -18,9 +18,10 @@ Primary journey: **Install → Ask → Fund → Approve → Result → Receipt**
 No working CTA, public product route, production deployment, payable x402
 route, package, external customer, or First Revenue Release is claimed.
 
-## Current product and solution-pack placeholders
+## Current evidence and solution-pack placeholders
 
-Current product path: **Discover → Retrieve → Structure → Verify → Monitor**.
+The only current `preview` is the Live Intelligence/Search path: **Discover →
+Retrieve → Structure → Verify → Monitor**.
 
 - Commerce and Marketplace Intelligence.
 - Property and Local-Market Intelligence.
@@ -35,16 +36,26 @@ and repeatable real demonstration pass.
 
 ## Capability framing
 
-- Search — `preview`; temporary isolated-staging behavior exists but Stage 4
-  remains blocked on 10 of the 21 starting source-bound checks.
-- Clervo Live Intelligence First Revenue Release — not ready; compare,
-  customer monitoring, changes, alerts, MCP/SDK access, production deployment,
-  public product experience, and external useful paid proof remain unproven.
-- AI — `unavailable`; additive after the First Revenue Release.
-- Sandbox — `unavailable`; additive after the AI layer.
-- RPC — `planned/post-launch`.
-- Prediction — `planned/post-launch`.
-- Crypto Intelligence — `planned/post-launch`.
+- Search — `preview`; N4.27S left five Stage 4 blockers, so it is not
+  commercially competitive, production-qualified, or the reference pattern.
+- AI — `unavailable`; product-core implementation has not started.
+- Secure Sandbox — `unavailable`; product-core implementation has not started.
+- RPC — `unavailable`; product-core implementation has not started.
+- Prediction — `unavailable`; product-core implementation has not started.
+- Crypto Intelligence — `unavailable`; product-core implementation has not
+  started.
+- Clervo Platform First Revenue Release — not ready; all six cores, combined
+  workflows, the Stage 12 cross-pillar freeze, the single Stage 13 shared
+  access/design/discovery/distribution pass, production deployment, bounded
+  settlement, and external useful paid proof remain incomplete.
+
+N4.27T is explicitly owner-authorized under its recorded scope and stop
+conditions but paused before implementation. That bounded authorization does
+not start Stage 5 or any unavailable product core.
+
+Shared API, MCP, SDK, onboarding, design, documentation, discovery, JSON-LD,
+sitemap, SEO, and distribution work begins once, after the Stage 12 core and
+contract freeze. None of those surfaces is claimed ready here.
 
 Before comparative proof, the permitted positioning is **Clervo-owned live Web
 retrieval**. “Advanced live intelligence for agents” remains gated. No price,

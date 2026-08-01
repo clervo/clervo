@@ -6,24 +6,42 @@
     "tagline": "Buy outcomes. Not integrations.",
     "permanentNarrative": ["Find", "Understand", "Act"]
   },
-  "headline": "Clervo Live Intelligence",
+  "headline": "Clervo Platform",
   "currentProductPath": ["Discover", "Retrieve", "Structure", "Verify", "Monitor"],
   "journey": ["Install", "Ask", "Fund", "Approve", "Result", "Receipt"],
   "firstRevenueRelease": {
-    "productId": "clervo.live_intelligence",
-    "productName": "Clervo Live Intelligence",
-    "requiredPillars": ["search"],
+    "productId": "clervo.platform",
+    "productName": "Clervo Platform",
+    "requiredPillars": ["search", "ai", "sandbox", "rpc", "prediction", "crypto_intelligence"],
     "ready": false,
-    "lifecycle": "preview"
+    "lifecycle": "unavailable"
   },
-  "additiveExpansion": [
+  "pillars": [
+    { "id": "search", "label": "Live Intelligence / Search", "lifecycle": "preview" },
     { "id": "ai", "label": "AI", "lifecycle": "unavailable" },
-    { "id": "sandbox", "label": "Sandbox", "lifecycle": "unavailable" }
+    { "id": "sandbox", "label": "Secure Sandbox", "lifecycle": "unavailable" },
+    { "id": "rpc", "label": "RPC", "lifecycle": "unavailable" },
+    { "id": "prediction", "label": "Prediction", "lifecycle": "unavailable" },
+    { "id": "crypto_intelligence", "label": "Crypto Intelligence", "lifecycle": "unavailable" }
   ],
-  "laterPlatformExpansion": [
-    { "id": "rpc", "label": "RPC", "lifecycle": "planned_post_launch" },
-    { "id": "prediction", "label": "Prediction", "lifecycle": "planned_post_launch" },
-    { "id": "crypto_intelligence", "label": "Crypto Intelligence", "lifecycle": "planned_post_launch" }
-  ],
+  "sharedAccessAndDistribution": {
+    "stage": 13,
+    "prerequisite": "stage_12_core_and_contract_freeze",
+    "ready": false,
+    "surfaces": ["api", "mcp", "sdk", "onboarding", "design", "documentation", "discovery", "json_ld", "sitemap", "seo", "distribution"]
+  },
+  "currentTruth": {
+    "latestCompletedTicket": "N4.27S",
+    "stage": 4,
+    "stage4BlockersRemaining": 5,
+    "searchReferencePattern": false,
+    "stage5Authorized": false,
+    "n4_27t": {
+      "ownerAuthorized": true,
+      "implementationStarted": false,
+      "status": "paused_before_implementation",
+      "authorityBoundary": "recorded_scope_and_stop_conditions"
+    }
+  },
   "productionWebsite": false
 }

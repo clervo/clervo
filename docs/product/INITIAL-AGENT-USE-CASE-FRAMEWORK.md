@@ -1,12 +1,13 @@
-# Clervo Live Intelligence solution-pack and use-case framework
+# Clervo Platform solution-pack and use-case framework
 
 This is a ranked product backlog, not implemented inventory. It is subordinate
-to the canonical Live Intelligence launch authority and authorizes no runtime,
-AI, Sandbox, connector, deployment, or payment implementation.
+to the canonical product launch authority and authorizes no runtime, AI,
+Sandbox, RPC, Prediction, Crypto Intelligence, connector, shared-surface,
+deployment, or payment implementation.
 
 ## Revenue model
 
-Clervo Live Intelligence can earn at five layers without changing stable
+The all-six Clervo Platform can earn at five layers without changing stable
 capability contracts:
 
 1. metered machine-readable API/x402 calls;
@@ -17,9 +18,12 @@ capability contracts:
 
 Every layer exposes exact capability identities, connector access modes,
 maximum charge, provenance, citations, freshness, verification, failure state,
-and receipt. The First Revenue Release additionally requires MCP, TypeScript
-SDK, Python SDK, raw HTTP, tested onboarding, production deployment, public
-pages, real demonstrations, and one useful external paid result.
+and receipt. The First Revenue Release requires stable Live
+Intelligence/Search, AI, Secure Sandbox, RPC, Prediction, and Crypto
+Intelligence cores; combined workflows; a cross-pillar contract freeze; one
+shared MCP, TypeScript SDK, Python SDK, raw HTTP, onboarding, design,
+documentation, discovery, SEO, and distribution pass; production deployment;
+real demonstrations; and one useful external paid result.
 
 ## Stable solution packs
 
@@ -91,19 +95,27 @@ Each demonstration must be real and reproducible, show actual sources and
 limitations, and include the exact result schema, quote, receipt, freshness,
 degradation, and replay behavior when those layers are proven.
 
-## Additive evolution
+## Integrated product evolution
 
 The permanent narrative is **Find → Understand → Act**:
 
-- current Live Intelligence: **Discover → Retrieve → Structure → Verify →
-  Monitor**;
-- AI later: **Understand → Analyze → Score → Explain → Report**; and
-- Sandbox later: **Transform → Execute → Automate → Export**.
+- current Live Intelligence/Search `preview`: **Discover → Retrieve →
+  Structure → Verify → Monitor**;
+- unavailable AI core: **Understand → Analyze → Score → Explain → Report**;
+- unavailable Secure Sandbox core: **Transform → Execute → Automate →
+  Export**; and
+- unavailable RPC, Prediction, and Crypto Intelligence cores.
 
-AI and Sandbox may increase the value of these same jobs only after their
-ordered gates. They do not become First Revenue Release prerequisites and must
-not alter stable Live Intelligence identifiers, schemas, endpoint behavior,
-hashes, quotes, receipts, MCP tools, SDKs, discovery, or lifecycle truth.
+All six are First Revenue Release prerequisites. Build and stabilize their
+product cores privately in the authorized order without altering stable
+capability identifiers. After the Stage 12 core and cross-pillar contract
+freeze, Stage 13 performs one shared API, MCP, SDK, onboarding, design,
+documentation, discovery, JSON-LD, sitemap, SEO, and distribution pass.
+
+Only Search is currently a `preview`; the other five cores are `unavailable`
+and have not started implementation. N4.27S left five Stage 4 blockers.
+N4.27T is owner-authorized under its recorded scope and stop conditions but
+paused before implementation, and does not authorize a later roadmap stage.
 
 ## Promotion rule
 

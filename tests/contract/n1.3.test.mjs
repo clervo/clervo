@@ -62,10 +62,19 @@ test('discovery publishes the implemented search product without payment or depl
   assert.deepEqual(discovery.products.map(({ selection, pricing }) => [selection.synthesize, pricing.displayPrice.amountAtomic]), [[false, '1000'], [true, '2500']]);
   assert.match(discovery.description, /deployment.*not verified/i);
   assert.deepEqual(await json('catalog.json'), { contractVersion: CONTRACT_VERSION, catalogVersion: discovery.discoveryVersion, releaseScope: discovery.releaseScope, products: discovery.products });
-  assert.equal(discovery.releaseScope.firstRevenueRelease.productName, 'Clervo Live Intelligence');
-  assert.deepEqual(discovery.releaseScope.firstRevenueRelease.requiredPillars, ['search']);
+  assert.equal(discovery.discoveryVersion, '2026-08-01.3');
+  assert.equal(discovery.releaseScope.scopeVersion, '2026-08-01.3');
+  assert.equal(discovery.releaseScope.firstRevenueRelease.productName, 'Clervo Platform');
+  assert.deepEqual(discovery.releaseScope.firstRevenueRelease.requiredPillars, ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence']);
   assert.equal(discovery.releaseScope.firstRevenueRelease.ready, false);
-  assert.deepEqual(discovery.releaseScope.pillars.slice(1).map(({ lifecycle }) => lifecycle), ['unavailable', 'unavailable', 'planned_post_launch', 'planned_post_launch', 'planned_post_launch']);
+  assert.deepEqual(discovery.releaseScope.productCore, {
+    requiredPillars: ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence'],
+    interfacesFrozen: false,
+    compatibilityVerified: false,
+    ready: false,
+  });
+  assert.deepEqual(discovery.releaseScope.pillars.map(({ lifecycle }) => lifecycle), ['preview', 'unavailable', 'unavailable', 'unavailable', 'unavailable', 'unavailable']);
+  assert.ok(discovery.releaseScope.pillars.every(({ coreQualified, release }) => coreQualified === false && release === 'first_revenue_release'));
 });
 
 test('llms.txt publishes separately priced search products and states payment/deployment limitations', async () => {
@@ -74,9 +83,10 @@ test('llms.txt publishes separately priced search products and states payment/de
   assert.match(llms, /^# Clervo\n\n> /);
   assert.match(llms, /Callable products: search\.web, search\.answer/);
   assert.match(llms, /x402 payment implementation: not implemented/);
-  assert.match(llms, /First Revenue Release: Clervo Live Intelligence/);
-  assert.match(llms, /AI release lifecycle: unavailable; additive after First Revenue Release/);
-  assert.match(llms, /Planned later platform expansion: RPC, Prediction, Crypto intelligence/);
+  assert.match(llms, /First Revenue Release: Clervo Platform/);
+  assert.match(llms, /Required pillars: Search, AI, Secure Sandbox, RPC, Prediction, Crypto Intelligence/);
+  assert.match(llms, /Product core ready: false/);
+  assert.doesNotMatch(llms, /additive after First Revenue Release|planned later platform expansion/i);
   assert.match(llms, /llms\.txt is a documentation map, not a search or AI ranking claim/);
   assert.doesNotMatch(llms, /live service|available now|production-ready/i);
 });
@@ -96,10 +106,10 @@ test('generation fails closed if implemented routes disappear or payment readine
     /discovery_must_not_claim_payment/,
   );
 
-  const falseExpansion = structuredClone(createDiscoveryDocument());
-  falseExpansion.releaseScope.pillars.find(({ pillarId }) => pillarId === 'rpc').lifecycle = 'available';
+  const falseQualification = structuredClone(createDiscoveryDocument());
+  falseQualification.releaseScope.pillars.find(({ pillarId }) => pillarId === 'rpc').lifecycle = 'available';
   assert.throws(
-    () => assertPreviewArtifacts(createOpenApiDocument({}), falseExpansion, createLlmsText()),
+    () => assertPreviewArtifacts(createOpenApiDocument({}), falseQualification, createLlmsText()),
     /discovery_product_scope_invalid/,
   );
 });

@@ -2,7 +2,6 @@ export const productLifecycleStates = [
   'available',
   'degraded',
   'preview',
-  'planned_post_launch',
   'unavailable',
 ] as const;
 
@@ -19,27 +18,18 @@ export const pillarIds = [
 
 export type PillarId = (typeof pillarIds)[number];
 
-export const firstRevenueReleasePillars = ['search'] as const;
-export const additiveEnginePillars = ['ai', 'sandbox'] as const;
-export const laterPlatformExpansionPillars = ['rpc', 'prediction', 'crypto_intelligence'] as const;
-export const fullPlatformExpansionPillars = pillarIds;
+export const productCorePillars = pillarIds;
+export const firstRevenueReleasePillars = pillarIds;
 
 export const firstRevenueRequirementIds = [
-  'search',
-  'fetch',
-  'extract',
-  'provenance_exact_citations',
-  'compare',
-  'monitoring',
-  'changes',
-  'alerts',
   'machine_readable_api',
   'mcp_sdk_access',
   'bounded_pricing_receipts',
   'tested_onboarding',
+  'unified_public_experience_distribution',
   'production_deployment',
-  'public_product_pages_documentation',
   'real_demonstrations',
+  'bounded_real_settlement',
   'external_useful_paid_result',
 ] as const;
 
@@ -52,79 +42,110 @@ export interface FirstRevenueRequirement {
 
 export interface PillarScope {
   pillarId: PillarId;
-  release: 'first_revenue_release' | 'additive_expansion' | 'later_platform_expansion';
+  release: 'first_revenue_release';
   lifecycle: ProductLifecycleState;
+  coreQualified: boolean;
   capabilityIds: readonly string[];
 }
 
+export interface ProductCoreGate {
+  requiredPillars: typeof productCorePillars;
+  interfacesFrozen: boolean;
+  compatibilityVerified: boolean;
+  ready: boolean;
+}
+
 export interface ProductScopeDocument {
-  scopeVersion: '2026-07-31.2';
+  scopeVersion: '2026-08-01.3';
   company: {
     name: 'Clervo';
     identity: 'outcome infrastructure for agents';
     permanentNarrative: readonly ['find', 'understand', 'act'];
   };
+  productCore: ProductCoreGate;
   firstRevenueRelease: {
-    productId: 'clervo.live_intelligence';
-    productName: 'Clervo Live Intelligence';
+    productId: 'clervo.platform';
+    productName: 'Clervo Platform';
     requiredPillars: typeof firstRevenueReleasePillars;
     requirements: readonly FirstRevenueRequirement[];
-    ready: boolean;
-  };
-  fullPlatformExpansion: {
-    requiredPillars: typeof fullPlatformExpansionPillars;
     ready: boolean;
   };
   pillars: readonly PillarScope[];
 }
 
 const currentPillars = [
-  { pillarId: 'search', release: 'first_revenue_release', lifecycle: 'preview', capabilityIds: ['search.web', 'search.answer', 'web.fetch', 'web.extract'] },
-  { pillarId: 'ai', release: 'additive_expansion', lifecycle: 'unavailable', capabilityIds: ['ai.chat', 'ai.embed', 'ai.image', 'ai.speech'] },
-  { pillarId: 'sandbox', release: 'additive_expansion', lifecycle: 'unavailable', capabilityIds: ['sandbox.run', 'sandbox.session.create', 'sandbox.session.exec', 'sandbox.artifact.get', 'sandbox.session.destroy'] },
-  { pillarId: 'rpc', release: 'later_platform_expansion', lifecycle: 'planned_post_launch', capabilityIds: ['rpc.call', 'rpc.batch', 'rpc.health', 'rpc.archive', 'rpc.broadcast'] },
-  { pillarId: 'prediction', release: 'later_platform_expansion', lifecycle: 'planned_post_launch', capabilityIds: ['prediction.markets', 'prediction.market', 'prediction.compare', 'prediction.history', 'prediction.signal'] },
-  { pillarId: 'crypto_intelligence', release: 'later_platform_expansion', lifecycle: 'planned_post_launch', capabilityIds: ['crypto.wallet', 'crypto.token', 'crypto.transaction', 'crypto.protocol', 'crypto.report'] },
+  { pillarId: 'search', release: 'first_revenue_release', lifecycle: 'preview', coreQualified: false, capabilityIds: ['search.web', 'search.answer', 'web.fetch', 'web.extract'] },
+  { pillarId: 'ai', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: false, capabilityIds: ['ai.chat', 'ai.embed', 'ai.image', 'ai.speech'] },
+  { pillarId: 'sandbox', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: false, capabilityIds: ['sandbox.run', 'sandbox.session.create', 'sandbox.session.exec', 'sandbox.artifact.get', 'sandbox.session.destroy'] },
+  { pillarId: 'rpc', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: false, capabilityIds: ['rpc.call', 'rpc.batch', 'rpc.health', 'rpc.archive', 'rpc.broadcast'] },
+  { pillarId: 'prediction', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: false, capabilityIds: ['prediction.markets', 'prediction.market', 'prediction.compare', 'prediction.history', 'prediction.signal'] },
+  { pillarId: 'crypto_intelligence', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: false, capabilityIds: ['crypto.wallet', 'crypto.token', 'crypto.transaction', 'crypto.protocol', 'crypto.report'] },
 ] as const satisfies readonly PillarScope[];
+
+function hasExactPillarIds(required: readonly PillarId[]): boolean {
+  return required.length === pillarIds.length
+    && new Set(required).size === pillarIds.length
+    && pillarIds.every((pillarId) => required.includes(pillarId));
+}
+
+function releaseRequirementsVerified(requirements: readonly FirstRevenueRequirement[]): boolean {
+  const byId = new Map(requirements.map((requirement) => [requirement.requirementId, requirement]));
+  return requirements.length === firstRevenueRequirementIds.length
+    && byId.size === firstRevenueRequirementIds.length
+    && firstRevenueRequirementIds.every((requirementId) => byId.get(requirementId)?.verified === true);
+}
 
 export function releaseGateReady(required: readonly PillarId[], pillars: readonly PillarScope[]): boolean {
   const byId = new Map(pillars.map((pillar) => [pillar.pillarId, pillar]));
   return required.every((pillarId) => byId.get(pillarId)?.lifecycle === 'available');
 }
 
-export function firstRevenueReleaseReady(
+export function productCoreReady(
   pillars: readonly PillarScope[],
-  requirements: readonly FirstRevenueRequirement[],
+  interfacesFrozen: boolean,
+  compatibilityVerified: boolean,
 ): boolean {
-  return releaseGateReady(firstRevenueReleasePillars, pillars)
-    && requirements.length === firstRevenueRequirementIds.length
-    && requirements.every(({ verified }) => verified);
+  const byId = new Map(pillars.map((pillar) => [pillar.pillarId, pillar]));
+  return interfacesFrozen
+    && compatibilityVerified
+    && productCorePillars.every((pillarId) => byId.get(pillarId)?.coreQualified === true);
 }
 
-export function fullPlatformExpansionReady(pillars: readonly PillarScope[]): boolean {
-  return releaseGateReady(fullPlatformExpansionPillars, pillars);
+export function firstRevenueReleaseReady(
+  pillars: readonly PillarScope[],
+  productCore: ProductCoreGate,
+  requirements: readonly FirstRevenueRequirement[],
+): boolean {
+  return productCore.ready
+    && productCore.ready === productCoreReady(pillars, productCore.interfacesFrozen, productCore.compatibilityVerified)
+    && releaseGateReady(firstRevenueReleasePillars, pillars)
+    && releaseRequirementsVerified(requirements);
 }
 
 export function createProductScopeDocument(): ProductScopeDocument {
   const pillars = currentPillars.map((pillar) => ({ ...pillar, capabilityIds: [...pillar.capabilityIds] }));
   const requirements = firstRevenueRequirementIds.map((requirementId) => ({ requirementId, verified: false }));
+  const productCore: ProductCoreGate = {
+    requiredPillars: productCorePillars,
+    interfacesFrozen: false,
+    compatibilityVerified: false,
+    ready: false,
+  };
+  productCore.ready = productCoreReady(pillars, productCore.interfacesFrozen, productCore.compatibilityVerified);
   return {
-    scopeVersion: '2026-07-31.2',
+    scopeVersion: '2026-08-01.3',
     company: {
       name: 'Clervo',
       identity: 'outcome infrastructure for agents',
       permanentNarrative: ['find', 'understand', 'act'],
     },
+    productCore,
     firstRevenueRelease: {
-      productId: 'clervo.live_intelligence',
-      productName: 'Clervo Live Intelligence',
+      productId: 'clervo.platform',
+      productName: 'Clervo Platform',
       requiredPillars: firstRevenueReleasePillars,
       requirements,
-      ready: firstRevenueReleaseReady(pillars, requirements),
-    },
-    fullPlatformExpansion: {
-      requiredPillars: fullPlatformExpansionPillars,
-      ready: fullPlatformExpansionReady(pillars),
+      ready: firstRevenueReleaseReady(pillars, productCore, requirements),
     },
     pillars,
   };
@@ -133,25 +154,20 @@ export function createProductScopeDocument(): ProductScopeDocument {
 export function assertProductScope(document: ProductScopeDocument): void {
   const failures: string[] = [];
   const byId = new Map(document.pillars.map((pillar) => [pillar.pillarId, pillar]));
-  if (byId.size !== pillarIds.length || pillarIds.some((pillarId) => !byId.has(pillarId))) failures.push('all_pillars_required_once');
+  if (document.pillars.length !== pillarIds.length || byId.size !== pillarIds.length || pillarIds.some((pillarId) => !byId.has(pillarId))) failures.push('all_pillars_required_once');
+  if (!hasExactPillarIds(document.productCore.requiredPillars)) failures.push('product_core_pillars_invalid');
+  if (!hasExactPillarIds(document.firstRevenueRelease.requiredPillars)) failures.push('first_revenue_release_pillars_invalid');
   for (const pillarId of firstRevenueReleasePillars) {
-    if (byId.get(pillarId)?.release !== 'first_revenue_release') failures.push(`first_revenue_release_assignment_invalid:${pillarId}`);
-  }
-  for (const pillarId of additiveEnginePillars) {
     const pillar = byId.get(pillarId);
-    if (pillar?.release !== 'additive_expansion') failures.push(`additive_expansion_assignment_invalid:${pillarId}`);
-    if (pillar?.lifecycle === 'available' || pillar?.lifecycle === 'degraded' || pillar?.lifecycle === 'preview') failures.push(`future_pillar_falsely_live:${pillarId}`);
-  }
-  for (const pillarId of laterPlatformExpansionPillars) {
-    const pillar = byId.get(pillarId);
-    if (pillar?.release !== 'later_platform_expansion') failures.push(`later_expansion_assignment_invalid:${pillarId}`);
-    if (pillar?.lifecycle === 'available' || pillar?.lifecycle === 'degraded' || pillar?.lifecycle === 'preview') failures.push(`future_pillar_falsely_live:${pillarId}`);
+    if (pillar?.release !== 'first_revenue_release') failures.push(`first_revenue_release_assignment_invalid:${pillarId}`);
+    if ((pillar?.lifecycle as string | undefined) === 'planned_post_launch') failures.push(`first_revenue_pillar_planned_post_launch:${pillarId}`);
+    if (pillar?.coreQualified !== true && (pillar?.lifecycle === 'available' || pillar?.lifecycle === 'degraded')) failures.push(`unqualified_pillar_falsely_live:${pillarId}`);
   }
   const requirementIds = document.firstRevenueRelease.requirements.map(({ requirementId }) => requirementId);
   if (requirementIds.length !== firstRevenueRequirementIds.length
     || new Set(requirementIds).size !== firstRevenueRequirementIds.length
     || firstRevenueRequirementIds.some((requirementId) => !requirementIds.includes(requirementId))) failures.push('first_revenue_requirements_incomplete');
-  if (document.firstRevenueRelease.ready !== firstRevenueReleaseReady(document.pillars, document.firstRevenueRelease.requirements)) failures.push('first_revenue_release_gate_dishonest');
-  if (document.fullPlatformExpansion.ready !== fullPlatformExpansionReady(document.pillars)) failures.push('full_platform_gate_dishonest');
+  if (document.productCore.ready !== productCoreReady(document.pillars, document.productCore.interfacesFrozen, document.productCore.compatibilityVerified)) failures.push('product_core_gate_dishonest');
+  if (document.firstRevenueRelease.ready !== firstRevenueReleaseReady(document.pillars, document.productCore, document.firstRevenueRelease.requirements)) failures.push('first_revenue_release_gate_dishonest');
   if (failures.length > 0) throw new TypeError(`invalid product scope: ${failures.join(', ')}`);
 }
