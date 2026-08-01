@@ -54,11 +54,12 @@ test('canonical registry and visibility manifest validate against their strict D
   }
 });
 
-test('only proven Stage 4 operations and mock-only SKUs are instantiated', async () => {
+test('implemented Search and private unavailable AI operations are instantiated without public claims', async () => {
   const registry = await json('packages/catalog/platform-registry.v1.json');
-  assert.deepEqual(registry.operations.map(({ operationId }) => operationId), ['search.alert.evaluate', 'search.compare', 'search.monitor', 'search.solution_pack.assemble', 'search.web', 'search.answer', 'web.fetch', 'web.extract']);
-  assert.ok(registry.operations.every(({ lifecycle, visibility }) => lifecycle === 'preview' && visibility === 'internal'));
-  assert.deepEqual(registry.products.map(({ productId }) => productId), ['search.web', 'search.answer', 'web.fetch', 'web.extract']);
+  assert.deepEqual(registry.operations.map(({ operationId }) => operationId), ['ai.chat', 'ai.embed', 'ai.image', 'ai.speech', 'search.alert.evaluate', 'search.compare', 'search.monitor', 'search.solution_pack.assemble', 'search.web', 'search.answer', 'web.fetch', 'web.extract']);
+  assert.ok(registry.operations.every(({ visibility }) => visibility === 'internal'));
+  assert.ok(registry.operations.filter(({ operationId }) => operationId.startsWith('ai.')).every(({ lifecycle, route }) => lifecycle === 'unavailable' && route === null));
+  assert.deepEqual(registry.products.map(({ productId }) => productId), ['ai.chat', 'ai.embed', 'ai.image', 'ai.speech', 'search.web', 'search.answer', 'web.fetch', 'web.extract']);
   assert.deepEqual(
     registry.skus.map(({ productId, commerceMode, maximumCharge, priceVersion }) => ({ productId, commerceMode, maximumCharge, priceVersion })),
     [

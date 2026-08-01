@@ -1,6 +1,7 @@
 export * from './adapter.js';
 export * from './ai-model.js';
 export * from './ai-routing.js';
+export * from './ai-execution.js';
 export * from './audit.js';
 export * from './canonical-request.js';
 export * from './catalog.js';

@@ -44,6 +44,54 @@
   ],
   "operations": [
     {
+      "operationId": "ai.chat",
+      "capabilityId": "ai.chat",
+      "productId": "ai.chat",
+      "route": null,
+      "deliveryModes": ["sync"],
+      "accessModes": ["official_api", "bring_your_own_credentials", "partner_access", "customer_supplied_data", "unsupported"],
+      "inputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-request.schema.json",
+      "outputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-result.schema.json",
+      "lifecycle": "unavailable",
+      "visibility": "internal"
+    },
+    {
+      "operationId": "ai.embed",
+      "capabilityId": "ai.embed",
+      "productId": "ai.embed",
+      "route": null,
+      "deliveryModes": ["sync"],
+      "accessModes": ["official_api", "bring_your_own_credentials", "partner_access", "customer_supplied_data", "unsupported"],
+      "inputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-request.schema.json",
+      "outputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-result.schema.json",
+      "lifecycle": "unavailable",
+      "visibility": "internal"
+    },
+    {
+      "operationId": "ai.image",
+      "capabilityId": "ai.image",
+      "productId": "ai.image",
+      "route": null,
+      "deliveryModes": ["sync"],
+      "accessModes": ["official_api", "bring_your_own_credentials", "partner_access", "customer_supplied_data", "unsupported"],
+      "inputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-request.schema.json",
+      "outputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-result.schema.json",
+      "lifecycle": "unavailable",
+      "visibility": "internal"
+    },
+    {
+      "operationId": "ai.speech",
+      "capabilityId": "ai.speech",
+      "productId": "ai.speech",
+      "route": null,
+      "deliveryModes": ["sync"],
+      "accessModes": ["official_api", "bring_your_own_credentials", "partner_access", "customer_supplied_data", "unsupported"],
+      "inputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-request.schema.json",
+      "outputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-result.schema.json",
+      "lifecycle": "unavailable",
+      "visibility": "internal"
+    },
+    {
       "operationId": "search.alert.evaluate",
       "capabilityId": "search.web",
       "productId": "search.web",
@@ -141,6 +189,10 @@
     }
   ],
   "products": [
+    { "productId": "ai.chat", "pillarId": "ai", "capabilityIds": ["ai.chat"], "lifecycle": "unavailable", "visibility": "internal" },
+    { "productId": "ai.embed", "pillarId": "ai", "capabilityIds": ["ai.embed"], "lifecycle": "unavailable", "visibility": "internal" },
+    { "productId": "ai.image", "pillarId": "ai", "capabilityIds": ["ai.image"], "lifecycle": "unavailable", "visibility": "internal" },
+    { "productId": "ai.speech", "pillarId": "ai", "capabilityIds": ["ai.speech"], "lifecycle": "unavailable", "visibility": "internal" },
     { "productId": "search.web", "pillarId": "search", "capabilityIds": ["search.web"], "lifecycle": "preview", "visibility": "internal" },
     { "productId": "search.answer", "pillarId": "search", "capabilityIds": ["search.answer"], "lifecycle": "preview", "visibility": "internal" },
     { "productId": "web.fetch", "pillarId": "search", "capabilityIds": ["web.fetch"], "lifecycle": "preview", "visibility": "internal" },

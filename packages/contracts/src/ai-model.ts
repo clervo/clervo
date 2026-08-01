@@ -179,6 +179,7 @@ function validateRoute(route: AiRouteDefinition, evaluatedAt: string): void {
   const prohibited = /claude|tongkhokr|mwapi/iu.test(`${route.providerId}/${route.exactModelId}`);
   if (prohibited) throw new TypeError(`ai_route_prohibited:${route.routeId}`);
   if (route.quickAiPremium && (route.providerId !== 'provider.quickai' || !/gpt/iu.test(route.exactModelId))) throw new TypeError(`ai_quickai_route_invalid:${route.routeId}`);
+  if (milliseconds(route.qualification.checkedAt, 'checked_at') > milliseconds(evaluatedAt, 'evaluated_at')) throw new TypeError(`ai_route_qualification_from_future:${route.routeId}`);
   if (route.qualification.status === 'passed' && milliseconds(route.qualification.expiresAt, 'expires_at') <= milliseconds(evaluatedAt, 'evaluated_at')) throw new TypeError(`ai_route_qualification_expired:${route.routeId}`);
 }
 

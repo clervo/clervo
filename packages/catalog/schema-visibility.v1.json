@@ -2,6 +2,8 @@
   "policyVersion": "2026-08-01.1",
   "defaultVisibility": "deny",
   "schemas": [
+    { "file": "ai-execution-request.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-request.schema.json", "visibility": "internal_control", "reason": "Internal bounded provider-neutral AI request." },
+    { "file": "ai-execution-result.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-result.schema.json", "visibility": "internal_control", "reason": "Internal exact-model AI result and accounting." },
     { "file": "ai-model-catalog.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-model-catalog.schema.json", "visibility": "internal_control", "reason": "Internal AI route inventory and qualification state." },
     { "file": "ai-route-decision.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-route-decision.schema.json", "visibility": "internal_control", "reason": "Internal exact-model and alias routing decision." },
     { "file": "ai-route-qualification.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-route-qualification.schema.json", "visibility": "internal_control", "reason": "Internal exact-model qualification evidence." },
