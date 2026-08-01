@@ -11,6 +11,7 @@ import {
   createDiscoveryDocument,
   createLlmsText,
   createOpenApiDocument,
+  publicSchemaFiles,
   SEARCH_FREE_PATH,
   SEARCH_PAID_PATH,
 } from '../../dist/packages/contracts/src/index.js';
@@ -34,7 +35,8 @@ test('generated OpenAPI is deterministic, schema-complete, and truthfully expose
     deploymentVerified: false,
   });
   const schemaFiles = (await readdir(path.join(root, 'packages/contracts/schemas'))).filter((name) => name.endsWith('.schema.json'));
-  assert.equal(Object.keys(document.components.schemas).length, schemaFiles.length);
+  const visibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
+  assert.equal(Object.keys(document.components.schemas).length, publicSchemaFiles(visibility, schemaFiles).length);
 });
 
 test('embedded and published schemas compile under Draft 2020-12 with resolved references', async () => {

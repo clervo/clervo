@@ -1,0 +1,24 @@
+{
+  "schema": "platform-registry",
+  "valid": true,
+  "value": {
+    "registryVersion": "2026-08-01.1",
+    "contractVersion": "2026-07-29.1",
+    "state": "foundation_unfrozen",
+    "schemaVisibilityPolicyVersion": "2026-08-01.1",
+    "pillars": [
+      { "pillarId": "search", "lifecycle": "preview", "coreQualified": false },
+      { "pillarId": "ai", "lifecycle": "unavailable", "coreQualified": false },
+      { "pillarId": "sandbox", "lifecycle": "unavailable", "coreQualified": false },
+      { "pillarId": "rpc", "lifecycle": "unavailable", "coreQualified": false },
+      { "pillarId": "prediction", "lifecycle": "unavailable", "coreQualified": false },
+      { "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "coreQualified": false }
+    ],
+    "capabilities": [
+      { "capabilityId": "search.web", "pillarId": "search", "lifecycle": "preview", "qualification": "stage4_private" }
+    ],
+    "operations": [],
+    "products": [],
+    "skus": []
+  }
+}

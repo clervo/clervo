@@ -1,0 +1,9 @@
+{
+  "schema": "schema-visibility",
+  "valid": false,
+  "value": {
+    "policyVersion": "2026-08-01.1",
+    "defaultVisibility": "allow",
+    "schemas": []
+  }
+}

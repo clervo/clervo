@@ -1,0 +1,15 @@
+{
+  "schema": "platform-registry",
+  "valid": false,
+  "value": {
+    "registryVersion": "2026-08-01.1",
+    "contractVersion": "2026-07-29.1",
+    "state": "frozen",
+    "schemaVisibilityPolicyVersion": "2026-08-01.1",
+    "pillars": [],
+    "capabilities": [],
+    "operations": [],
+    "products": [],
+    "skus": []
+  }
+}

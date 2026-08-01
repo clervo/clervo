@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/platform-registry.schema.json",
+  "title": "Clervo internal platform registry foundation",
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._][a-z0-9]+)+$", "maxLength": 96 },
+    "lifecycle": { "enum": ["available", "degraded", "preview", "unavailable"] },
+    "visibility": { "enum": ["public", "internal", "hidden"] },
+    "pillarId": { "enum": ["search", "ai", "sandbox", "rpc", "prediction", "crypto_intelligence"] },
+    "accessMode": { "enum": ["open_web", "official_api", "bring_your_own_credentials", "user_authorized_session", "partner_access", "customer_supplied_data", "unsupported"] },
+    "schemaId": { "type": "string", "format": "uri", "pattern": "^https://api\\.clervo\\.dev/schemas/" },
+    "amount": {
+      "type": "object",
+      "required": ["asset", "amountAtomic", "decimals"],
+      "properties": {
+        "asset": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9:._/-]{1,127}$" },
+        "amountAtomic": { "type": "string", "pattern": "^(?:0|[1-9][0-9]{0,77})$" },
+        "decimals": { "type": "integer", "minimum": 0, "maximum": 30 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["registryVersion", "contractVersion", "state", "schemaVisibilityPolicyVersion", "pillars", "capabilities", "operations", "products", "skus"],
+  "properties": {
+    "registryVersion": { "const": "2026-08-01.1" },
+    "contractVersion": { "const": "2026-07-29.1" },
+    "state": { "const": "foundation_unfrozen" },
+    "schemaVisibilityPolicyVersion": { "const": "2026-08-01.1" },
+    "pillars": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": ["pillarId", "lifecycle", "coreQualified"],
+        "properties": {
+          "pillarId": { "$ref": "#/$defs/pillarId" },
+          "lifecycle": { "$ref": "#/$defs/lifecycle" },
+          "coreQualified": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["capabilityId", "pillarId", "lifecycle", "qualification"],
+        "properties": {
+          "capabilityId": { "$ref": "#/$defs/id" },
+          "pillarId": { "$ref": "#/$defs/pillarId" },
+          "lifecycle": { "$ref": "#/$defs/lifecycle" },
+          "qualification": { "enum": ["stage4_private", "unqualified"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["operationId", "capabilityId", "productId", "route", "deliveryModes", "accessModes", "inputSchema", "outputSchema", "lifecycle", "visibility"],
+        "properties": {
+          "operationId": { "$ref": "#/$defs/id" },
+          "capabilityId": { "$ref": "#/$defs/id" },
+          "productId": { "$ref": "#/$defs/id" },
+          "route": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "type": "object",
+                "required": ["method", "path"],
+                "properties": {
+                  "method": { "const": "POST" },
+                  "path": { "type": "string", "pattern": "^/v1/[a-z0-9/.-]+$" }
+                },
+                "additionalProperties": false
+              }
+            ]
+          },
+          "deliveryModes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["sync", "async"] } },
+          "accessModes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/accessMode" } },
+          "inputSchema": { "$ref": "#/$defs/schemaId" },
+          "outputSchema": { "$ref": "#/$defs/schemaId" },
+          "lifecycle": { "$ref": "#/$defs/lifecycle" },
+          "visibility": { "$ref": "#/$defs/visibility" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["productId", "pillarId", "capabilityIds", "lifecycle", "visibility"],
+        "properties": {
+          "productId": { "$ref": "#/$defs/id" },
+          "pillarId": { "$ref": "#/$defs/pillarId" },
+          "capabilityIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/id" } },
+          "lifecycle": { "$ref": "#/$defs/lifecycle" },
+          "visibility": { "$ref": "#/$defs/visibility" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "skus": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["skuId", "productId", "operationId", "deliveryMode", "commerceMode", "priceVersion", "maximumCharge", "visibility"],
+        "properties": {
+          "skuId": { "$ref": "#/$defs/id" },
+          "productId": { "$ref": "#/$defs/id" },
+          "operationId": { "$ref": "#/$defs/id" },
+          "deliveryMode": { "enum": ["sync", "async"] },
+          "commerceMode": { "enum": ["free", "mock_only", "paid"] },
+          "priceVersion": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$" },
+          "maximumCharge": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/amount" }] },
+          "visibility": { "$ref": "#/$defs/visibility" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

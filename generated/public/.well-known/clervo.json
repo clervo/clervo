@@ -95,7 +95,8 @@
           "search.web",
           "search.answer",
           "web.fetch",
-          "web.extract"
+          "web.extract",
+          "research.report"
         ]
       },
       {

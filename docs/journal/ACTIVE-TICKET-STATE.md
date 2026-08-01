@@ -1,44 +1,42 @@
 # Active ticket state
 
-**Completed ticket:** N4.27U — Stage 4 final campaign repair and qualification
+**Completed ticket:** N5.1 — Live Intelligence canonical registry foundation
 
-**Ticket result:** Stage 4 passed; private Search reference pattern authorized;
-cleanup complete
-
-**Frozen product candidate:**
-`ff491e6f85e82d6767afa4db34064132d7e80478`
+**Ticket result:** verified repository-local; Stage 5 remains in progress
 
 ## Proven result
 
-The frozen final qualification ran its product workload exactly once. The
-non-root isolated Chromium worker passed 20/20 JavaScript and 8/8 hostile-page
-runs with TLS pinning, gateway-only retrieval, untrusted-evidence isolation,
-ephemeral state removal and zero orphans. Private loopback mock x402 passed for
-both `search.web` at 1000 mock atomic units and `search.answer` at 2500,
-including challenge, authorization, receipt and replay without a second
-execution.
+The internal `foundation_unfrozen` registry now separates pillar, capability,
+operation, product and SKU identity. It records all six adopted pillars and 29
+capability identities without inventing availability. Only the four proven
+Stage 4 Search operations/products are instantiated, and only `search.web` and
+`search.answer` have internal mock-only SKUs bound to their existing prices.
 
-The Stage 4 exit verifier reports `passed`, zero blockers, Search reference
-pattern authorization true and Stage 5 authorization true. Search remains
-`preview`: this is private qualification, not public production, real-payment,
-commercial-parity, customer-demand or revenue evidence.
+Every contract schema is explicitly classified as `public_wire`,
+`internal_control` or `sealed_evidence`. Preview generation defaults deny and
+projects 14 approved public-wire schemas; internal control contracts and the
+sealed benchmark schema cannot enter generated public artifacts.
 
-## Cost, cleanup and payment truth
+Search remains `preview`; AI, Sandbox, RPC, Prediction and Crypto Intelligence
+remain `unavailable`. The registry is not frozen, no Stage 5 exit gate has
+passed, and no production, commercial-parity, payment, demand or revenue claim
+follows.
 
-- The exact VM `clervo-stage4-qualification`, its 20 GiB auto-delete disk and
-  firewall `clervo-stage4-iap-ssh` were synchronously deleted. Direct inventory
-  found zero instance, disk, firewall, address or pending operation.
-- Conservative configured exposure was USD 4.05784/day under USD 5/day; the VM
-  lifetime was 368.753 seconds; conservative gross cost was at most USD 0.03
-  under the USD 2 ceiling; residual exposure is USD 0/day.
-- External provider API cash cost and USDC spend were USD 0. No IAM, billing,
-  secret, production, real-payment, wallet, public-ingress or legacy action ran.
+## Cost, external effects and secrets
+
+- Repository-local implementation and validation only.
+- Provider API cash USD 0, infrastructure USD 0, USDC 0.
+- No credential value was read by product code or sent externally. The separate
+  owner-authorized normalized legacy secret bundle remains mode 600 outside Git
+  and is not a registry input.
+- No cloud, IAM, billing, wallet, settlement, production, customer, public
+  deployment, or legacy-runtime action ran.
 
 ## Exact next dispatch
 
-N5.1 — Live Intelligence canonical registry foundation — is ready for a fresh
-repository-local dispatch cycle under NPLAN.4 and Stage Campaign Mode. It must
-settle the shared pillar/capability/operation/product/SKU ontology, canonical
-registry boundary and schema-visibility policy above the proven Stage 4
-contracts. It has no cloud, production, payment, shared public site, SDK, MCP or
-final-discovery authority.
+N5.2 — deterministic versioned Live Intelligence evidence comparison and change
+detection — is ready for a fresh repository-local dispatch cycle under NPLAN.4
+and Stage Campaign Mode. It may use the N5.1 registry and proven Stage 4 wire and
+evidence contracts. It has no monitoring-delivery, competitive-benchmark
+execution, provider-call, cloud, production, real-payment, shared-public-site,
+SDK, MCP, or final-discovery authority.

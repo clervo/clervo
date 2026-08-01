@@ -77,6 +77,7 @@
     "verify:external-input": "node ./scripts/verify-runtime.mjs && node ./scripts/verify-autonomous-completion.mjs --external-manifest",
     "verify:x402-input": "node ./scripts/verify-runtime.mjs && node ./scripts/verify-autonomous-completion.mjs --x402-manifest",
     "test:nplan.4": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/nplan.4.test.mjs",
+    "test:n5.1": "node ./scripts/verify-runtime.mjs && npm run generate:discovery && node --test ./tests/contract/n5.1.test.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
     "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",
     "staging:gcp": "./scripts/gcp-staging.sh",

@@ -1,0 +1,123 @@
+{
+  "registryVersion": "2026-08-01.1",
+  "contractVersion": "2026-07-29.1",
+  "state": "foundation_unfrozen",
+  "schemaVisibilityPolicyVersion": "2026-08-01.1",
+  "pillars": [
+    { "pillarId": "search", "lifecycle": "preview", "coreQualified": false },
+    { "pillarId": "ai", "lifecycle": "unavailable", "coreQualified": false },
+    { "pillarId": "sandbox", "lifecycle": "unavailable", "coreQualified": false },
+    { "pillarId": "rpc", "lifecycle": "unavailable", "coreQualified": false },
+    { "pillarId": "prediction", "lifecycle": "unavailable", "coreQualified": false },
+    { "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "coreQualified": false }
+  ],
+  "capabilities": [
+    { "capabilityId": "search.web", "pillarId": "search", "lifecycle": "preview", "qualification": "stage4_private" },
+    { "capabilityId": "search.answer", "pillarId": "search", "lifecycle": "preview", "qualification": "stage4_private" },
+    { "capabilityId": "web.fetch", "pillarId": "search", "lifecycle": "preview", "qualification": "stage4_private" },
+    { "capabilityId": "web.extract", "pillarId": "search", "lifecycle": "preview", "qualification": "stage4_private" },
+    { "capabilityId": "research.report", "pillarId": "search", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "ai.chat", "pillarId": "ai", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "ai.embed", "pillarId": "ai", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "ai.image", "pillarId": "ai", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "ai.speech", "pillarId": "ai", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "sandbox.run", "pillarId": "sandbox", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "sandbox.session.create", "pillarId": "sandbox", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "sandbox.session.exec", "pillarId": "sandbox", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "sandbox.artifact.get", "pillarId": "sandbox", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "sandbox.session.destroy", "pillarId": "sandbox", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "rpc.call", "pillarId": "rpc", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "rpc.batch", "pillarId": "rpc", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "rpc.health", "pillarId": "rpc", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "rpc.archive", "pillarId": "rpc", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "rpc.broadcast", "pillarId": "rpc", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "prediction.markets", "pillarId": "prediction", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "prediction.market", "pillarId": "prediction", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "prediction.compare", "pillarId": "prediction", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "prediction.history", "pillarId": "prediction", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "prediction.signal", "pillarId": "prediction", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "crypto.wallet", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "crypto.token", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "crypto.transaction", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "crypto.protocol", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "unqualified" },
+    { "capabilityId": "crypto.report", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "unqualified" }
+  ],
+  "operations": [
+    {
+      "operationId": "search.web",
+      "capabilityId": "search.web",
+      "productId": "search.web",
+      "route": { "method": "POST", "path": "/v1/search/paid" },
+      "deliveryModes": ["sync"],
+      "accessModes": ["open_web", "official_api", "customer_supplied_data", "unsupported"],
+      "inputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/search-http-request.schema.json",
+      "outputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/search-http-result.schema.json",
+      "lifecycle": "preview",
+      "visibility": "internal"
+    },
+    {
+      "operationId": "search.answer",
+      "capabilityId": "search.answer",
+      "productId": "search.answer",
+      "route": { "method": "POST", "path": "/v1/search/paid" },
+      "deliveryModes": ["sync"],
+      "accessModes": ["open_web", "official_api", "customer_supplied_data", "unsupported"],
+      "inputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/search-http-request.schema.json",
+      "outputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/search-http-result.schema.json",
+      "lifecycle": "preview",
+      "visibility": "internal"
+    },
+    {
+      "operationId": "web.fetch",
+      "capabilityId": "web.fetch",
+      "productId": "web.fetch",
+      "route": null,
+      "deliveryModes": ["sync"],
+      "accessModes": ["open_web", "customer_supplied_data", "unsupported"],
+      "inputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/operation-request.schema.json",
+      "outputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/retrieval-fetch-receipt.schema.json",
+      "lifecycle": "preview",
+      "visibility": "internal"
+    },
+    {
+      "operationId": "web.extract",
+      "capabilityId": "web.extract",
+      "productId": "web.extract",
+      "route": null,
+      "deliveryModes": ["sync"],
+      "accessModes": ["customer_supplied_data", "unsupported"],
+      "inputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/operation-request.schema.json",
+      "outputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/extraction-deduplication.schema.json",
+      "lifecycle": "preview",
+      "visibility": "internal"
+    }
+  ],
+  "products": [
+    { "productId": "search.web", "pillarId": "search", "capabilityIds": ["search.web"], "lifecycle": "preview", "visibility": "internal" },
+    { "productId": "search.answer", "pillarId": "search", "capabilityIds": ["search.answer"], "lifecycle": "preview", "visibility": "internal" },
+    { "productId": "web.fetch", "pillarId": "search", "capabilityIds": ["web.fetch"], "lifecycle": "preview", "visibility": "internal" },
+    { "productId": "web.extract", "pillarId": "search", "capabilityIds": ["web.extract"], "lifecycle": "preview", "visibility": "internal" }
+  ],
+  "skus": [
+    {
+      "skuId": "search.web.mock.v1",
+      "productId": "search.web",
+      "operationId": "search.web",
+      "deliveryMode": "sync",
+      "commerceMode": "mock_only",
+      "priceVersion": "search-web-mock-1",
+      "maximumCharge": { "asset": "mock:usdc", "amountAtomic": "1000", "decimals": 6 },
+      "visibility": "internal"
+    },
+    {
+      "skuId": "search.answer.mock.v1",
+      "productId": "search.answer",
+      "operationId": "search.answer",
+      "deliveryMode": "sync",
+      "commerceMode": "mock_only",
+      "priceVersion": "search-answer-mock-1",
+      "maximumCharge": { "asset": "mock:usdc", "amountAtomic": "2500", "decimals": 6 },
+      "visibility": "internal"
+    }
+  ]
+}

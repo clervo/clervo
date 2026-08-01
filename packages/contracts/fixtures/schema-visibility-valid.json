@@ -1,0 +1,16 @@
+{
+  "schema": "schema-visibility",
+  "valid": true,
+  "value": {
+    "policyVersion": "2026-08-01.1",
+    "defaultVisibility": "deny",
+    "schemas": [
+      {
+        "file": "operation-request.schema.json",
+        "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/operation-request.schema.json",
+        "visibility": "public_wire",
+        "reason": "Client request wire contract."
+      }
+    ]
+  }
+}

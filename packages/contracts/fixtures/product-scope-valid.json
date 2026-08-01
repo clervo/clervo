@@ -23,7 +23,7 @@
     },
     "productCore": { "requiredPillars": ["search", "ai", "sandbox", "rpc", "prediction", "crypto_intelligence"], "interfacesFrozen": false, "compatibilityVerified": false, "ready": false },
     "pillars": [
-      { "pillarId": "search", "release": "first_revenue_release", "lifecycle": "preview", "coreQualified": false, "capabilityIds": ["search.web", "search.answer", "web.fetch", "web.extract"] },
+      { "pillarId": "search", "release": "first_revenue_release", "lifecycle": "preview", "coreQualified": false, "capabilityIds": ["search.web", "search.answer", "web.fetch", "web.extract", "research.report"] },
       { "pillarId": "ai", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["ai.chat"] },
       { "pillarId": "sandbox", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["sandbox.run"] },
       { "pillarId": "rpc", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["rpc.call"] },

@@ -1,25 +1,25 @@
 {
   "schemaVersion": "clervo.autonomous-dispatch-state.v1",
   "policy": "infra/control-plane/autonomous-completion-policy.v1.json",
-  "evaluatedAt": "2026-08-01T21:29:05.000Z",
+  "evaluatedAt": "2026-08-01T22:16:07.000Z",
   "programStatus": "active",
   "currentStage": 5,
   "activeTicket": {
-    "id": "N4.27U",
+    "id": "N5.1",
     "state": "completed",
-    "result": "stage4_reference_pattern_passed_cleanup_complete",
+    "result": "canonical_registry_foundation_verified",
     "closeoutCommit": null,
-    "scope": "Repaired the proven Chromium launch and quote-binding defects, froze an independent final qualification, passed every remaining Stage 4 gate once, synchronously cleaned the exact resources, and closed Stage 4."
+    "scope": "Established the unfrozen six-pillar capability/operation/product/SKU registry foundation and a default-deny schema-visibility boundary without external effects or stronger lifecycle claims."
   },
   "nextTicket": {
-    "id": "N5.1",
-    "title": "Live Intelligence canonical registry foundation",
+    "id": "N5.2",
+    "title": "Live Intelligence evidence comparison and change detection",
     "scopeSource": "/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md#stage-5-live-intelligence-productization-and-platform-registry-foundation",
     "ownerAuthority": "NPLAN.4 standing ordinary repository authority plus the owner's Stage Campaign Mode",
     "localAdmission": "ready_fresh_dispatch_cycle",
     "cloudAdmission": "not_in_scope",
     "paymentAdmission": "not_in_scope",
-    "sealedBoundary": "All Stage 4 final and failed qualification artifacts are immutable. N5.1 may consume only published Stage 4 contracts and provenance boundaries; it cannot rerun or tune Stage 4 evidence or begin shared public site, SDK, MCP, final discovery, production or payment work."
+    "sealedBoundary": "All Stage 4 final and failed qualification artifacts are immutable. N5.2 may consume only the N5.1 registry and published Stage 4 contracts/provenance boundaries; it cannot execute a competitive benchmark or begin monitoring delivery, provider calls, shared public site, SDK, MCP, final discovery, cloud, production or payment work."
   },
   "immediateOwnerBlockers": [
     {

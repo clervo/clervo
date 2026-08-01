@@ -15,7 +15,7 @@ import {
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 const stableCapabilityIds = {
-  search: ['search.web', 'search.answer', 'web.fetch', 'web.extract'],
+  search: ['search.web', 'search.answer', 'web.fetch', 'web.extract', 'research.report'],
   ai: ['ai.chat', 'ai.embed', 'ai.image', 'ai.speech'],
   sandbox: ['sandbox.run', 'sandbox.session.create', 'sandbox.session.exec', 'sandbox.artifact.get', 'sandbox.session.destroy'],
   rpc: ['rpc.call', 'rpc.batch', 'rpc.health', 'rpc.archive', 'rpc.broadcast'],

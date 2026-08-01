@@ -12,6 +12,7 @@ export * from './idempotency.js';
 export * from './javascript-retrieval.js';
 export * from './mock-commerce.js';
 export * from './observability.js';
+export * from './platform-registry.js';
 export * from './problems.js';
 export * from './product-scope.js';
 export * from './query-rewrite.js';

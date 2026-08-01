@@ -1379,3 +1379,42 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   Live Intelligence canonical registry foundation, is ready for a fresh local
   dispatcher cycle; it has no cloud, production, payment, shared-public-site,
   SDK, MCP or final-discovery authority.
+
+## 2026-08-01 — N5.1 canonical registry foundation verified
+
+- Classified and completed exact repository-local ticket N5.1 under NPLAN.4
+  and Stage Campaign Mode. Stage 4 final and failed evidence remained immutable;
+  no competitive benchmark, provider, cloud, production, wallet, payment,
+  shared public site, SDK, MCP or final-discovery action ran.
+- Added one strict internal `foundation_unfrozen` registry separating pillar,
+  capability, operation, product and SKU identity. It records all six pillars
+  and 29 adopted capability identities without inventing availability; only the
+  four proven Stage 4 Search operations/products and two exact internal
+  mock-only SKUs are instantiated.
+- Added strict Draft 2020-12 registry and schema-visibility contracts,
+  TypeScript referential/lifecycle/price/projection invariants, positive and
+  adversarial fixtures, and six focused tests. `research.report` is now recorded
+  as an unavailable adopted Search capability, not a callable product.
+- Classified all 45 source schemas as `public_wire`, `internal_control`, or
+  `sealed_evidence`. The existing preview generator changed from directory-wide
+  publication to default-deny allowlisting: 14 approved public-wire schemas are
+  generated and 29 internal or sealed schemas, including benchmark evidence,
+  are excluded. This repairs projection leakage and does not begin the Stage 13
+  final discovery system.
+- Validation passed: `npm run contracts` (45 schemas, 85 fixtures),
+  `npm run test:n5.1` (6/6), `npm run test:n1.3` (6/6),
+  `npm run test:nplan.3` (5/5), typecheck, lint, full-history/working-tree secret
+  scan, clean-room boundary, and diff integrity. The full historical acceptance
+  suite remains deferred to the Stage 5 gate.
+- External effects: official standards documentation reads only. Provider API
+  cash USD 0, infrastructure USD 0, USDC 0, residual exposure USD 0/day. No
+  credential value entered product code, Git, logs, tests, or external traffic.
+- Lifecycle truth is unchanged: Search is `preview`; AI, Sandbox, RPC,
+  Prediction and Crypto Intelligence are `unavailable`; the registry is not
+  frozen; competitive parity, production, settlement, demand, revenue, and the
+  First Revenue Release remain unproven.
+- Final closeout commit is the commit containing this entry. N5.2 deterministic
+  versioned Live Intelligence evidence comparison and change detection is ready
+  for a fresh repository-local cycle. It has no competitive-benchmark execution,
+  monitoring delivery, provider-call, cloud, production, payment, shared public
+  site, SDK, MCP or final-discovery authority.

@@ -8,6 +8,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const schemaDirectory = path.join(root, 'packages/contracts/schemas');
 const outputDirectory = path.join(root, 'generated/public');
 const contractModule = await import(pathToFileURL(path.join(root, 'dist/packages/contracts/src/index.js')));
+const schemaVisibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
 
 function componentName(fileName) {
   return fileName
@@ -25,9 +26,13 @@ await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(path.join(outputDirectory, 'schemas', contractModule.CONTRACT_VERSION), { recursive: true });
 
 const schemas = {};
-for (const fileName of (await readdir(schemaDirectory)).filter((name) => name.endsWith('.schema.json')).sort()) {
+const allSchemaFiles = (await readdir(schemaDirectory)).filter((name) => name.endsWith('.schema.json')).sort();
+const projectedSchemaFiles = contractModule.publicSchemaFiles(schemaVisibility, allSchemaFiles);
+for (const fileName of projectedSchemaFiles) {
   const source = await readFile(path.join(schemaDirectory, fileName), 'utf8');
   const schema = JSON.parse(source);
+  const declaration = schemaVisibility.schemas.find(({ file }) => file === fileName);
+  if (!declaration || declaration.schemaId !== schema.$id) throw new Error(`schema visibility identity mismatch: ${fileName}`);
   schemas[componentName(fileName)] = schema;
   await writeFile(path.join(outputDirectory, 'schemas', contractModule.CONTRACT_VERSION, fileName), stableJson(schema));
 }
