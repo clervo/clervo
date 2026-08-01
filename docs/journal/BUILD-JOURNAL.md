@@ -750,3 +750,59 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   secret scanning passed.
 - Next maintenance task: commit these guardrails, restart Codex so it reloads
   them, then create the engineering profile and foundational Clervo skills.
+
+## 2026-08-01 — Codex engineering profile and authority-preflight skill
+
+- Classified this work as exact owner-authorized Codex control-plane
+  maintenance. It did not authorize or begin proposed N4.27T, N4.28, mock
+  x402, Stage 5, production, AI, Sandbox, or any later product ticket.
+- Added the version-controlled engineering profile at
+  `docs/operations/codex/profiles/engineering.config.toml` and installed an
+  identical copy at `$CODEX_HOME/engineering.config.toml`. Both have SHA-256
+  `cd7a402922d269dbaec4f7d350b8796701c9b8a6027754a714d5c2faaeb975b2`.
+  The profile sets on-request approval, workspace-write sandboxing, cached Web
+  search, high reasoning, `/workspace/clervo-next` as the only configured
+  writable root, excluded temporary writable roots, and disabled sandboxed
+  shell network access.
+- Added `.agents/skills/clervo-engineering-stage/SKILL.md` with SHA-256
+  `05455d1d026eac453c52c5cf3714ae96c68086962871b68fa5ebe4e5ffdcae61`
+  plus generated UI metadata. The skill classifies authorized product work,
+  authorized control-plane maintenance, read-only analysis, and blocked or
+  ambiguous work; treats proposed tickets as unauthorized; preserves
+  protected evidence; identifies cost/network/cloud/provider/payment/USDC and
+  verification/commit/stop boundaries; never grants authority; and requires
+  exact-scope execution, verification, journal evidence, commit, report, and
+  stop.
+- TOML parsing and exact-value assertions passed. The Codex 0.146.0 strict
+  configuration parser loaded the profile successfully from an isolated local
+  validation home; the installed named profile loaded successfully; and a
+  local prompt-render check confirmed repository skill discovery. Repository
+  and installed profile copies were byte-identical.
+- The current `skill-creator` `quick_validate.py` passed. Focused YAML,
+  front-matter-key, folder-name, UI-metadata, length, and required-boundary
+  assertions passed. The generated UI metadata remained byte-identical to the
+  reviewed scaffold output.
+- Diff integrity passed. The clean-room verifier initially rejected a literal
+  legacy path in the new skill; the rule was preserved with generic wording
+  and the rerun passed with zero legacy dependencies, network calls, or USDC.
+  The first secret-scan attempt was sandbox-blocked when its read-only Git
+  subprocess received `EPERM`; the same repository scanner reran host-side and
+  passed across the working tree and history with zero secret values printed,
+  network calls, or USDC.
+- A preliminary Codex Doctor configuration check attempted its built-in
+  control-plane connectivity diagnostics and reported provider endpoints
+  unreachable. It performed no model inference, Clervo product-provider API
+  call, billable request, or successful provider request. No other external
+  network check ran.
+- No product behavior, lifecycle state, public claim, frozen/sealed/final/
+  once-only evidence, provider integration, cloud resource, deployment, IAM,
+  secret, wallet, payment, settlement, or USDC balance was changed. Material
+  cost was USD 0.000000 and USDC spent was 0.
+- Implementation commit:
+  `fd5230ffe13fa04aa9d1e70c43f234b2547da8bf` (`chore(codex): add
+  engineering profile and stage skill`).
+- Exact remaining control-plane task: the owner may later relaunch Codex with
+  `codex --profile engineering -C /workspace/clervo-next`; restart/relaunch was
+  intentionally not performed here. Proposed N4.27T remains the smallest next
+  product ticket but remains unauthorized. Commit this evidence, report, and
+  stop.
