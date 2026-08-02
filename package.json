@@ -113,6 +113,7 @@
     "test:stage9:local": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n9.1.test.mjs ./tests/contract/n9.2.test.mjs ./tests/contract/n9.3.test.mjs ./tests/contract/n9.4.test.mjs ./tests/contract/n9.5.test.mjs && node ./scripts/validate-contracts.mjs",
     "test:n10.1": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n10.1.test.mjs",
     "test:n10.2": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n10.2.test.mjs",
+    "test:n10.3": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n10.3.test.mjs",
     "verify:stage6-exit": "node ./scripts/verify-runtime.mjs && node ./scripts/check-ai-supply-readiness.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
     "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",

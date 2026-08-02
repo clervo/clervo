@@ -210,6 +210,162 @@ export function mergeCryptoWalletEvidence(snapshots: readonly Readonly<Normalize
   });
 }
 
+export interface CryptoTokenSnapshotInput {
+  chainId: CryptoChainId;
+  assetAddress: string;
+  symbol: string | null;
+  name: string | null;
+  decimals: number;
+  totalSupplyAtomic: string | null;
+  priceMicrousd: number | null;
+  marketCapMicrousd: number | null;
+  liquidityMicrousd: number | null;
+  observedAt: string;
+  staleAfterMs: number;
+  confidenceBasisPoints: number;
+  confidenceBasis: readonly string[];
+  evidence: readonly Readonly<CryptoEvidence>[];
+  risk?: CryptoAssetInput['risk'];
+}
+
+export interface NormalizedCryptoToken {
+  assetId: string;
+  chainId: CryptoChainId;
+  protocol: CryptoProtocol;
+  assetAddress: string;
+  symbol: string | null;
+  name: string | null;
+  decimals: number;
+  totalSupplyAtomic: string | null;
+  priceMicrousd: number | null;
+  marketCapMicrousd: number | null;
+  liquidityMicrousd: number | null;
+  observedAt: string;
+  freshness: Readonly<{ staleAfterMs: number; ageMs: number; status: 'fresh' | 'stale' }>;
+  confidence: Readonly<{ scoreBasisPoints: number; basis: readonly string[] }>;
+  evidence: readonly Readonly<CryptoEvidence>[];
+  risk: NormalizedCryptoAsset['risk'];
+  conflicts: readonly Readonly<{ field: string; values: readonly string[]; evidenceRefs: readonly string[]; state: 'unresolved' }>[];
+}
+
+function nullableMicrousd(value: number | null, code: string): number | null {
+  if (value !== null && (!Number.isSafeInteger(value) || value < 0)) throw new TypeError(code);
+  return value;
+}
+
+export function normalizeCryptoToken(input: Readonly<CryptoTokenSnapshotInput>, nowMs: number): Readonly<NormalizedCryptoToken> {
+  const chainProtocol = protocol(input.chainId);
+  const address = canonicalAddress(input.assetAddress, chainProtocol);
+  const observedMs = timestamp(input.observedAt, 'crypto_observed_at_invalid');
+  if (!Number.isSafeInteger(input.decimals) || input.decimals < 0 || input.decimals > 255
+    || !Number.isSafeInteger(nowMs) || nowMs < observedMs
+    || !Number.isSafeInteger(input.staleAfterMs) || input.staleAfterMs < 1_000 || input.staleAfterMs > 86_400_000
+    || !Number.isSafeInteger(input.confidenceBasisPoints) || input.confidenceBasisPoints < 0 || input.confidenceBasisPoints > 10_000
+    || input.confidenceBasis.length < 1 || input.confidenceBasis.length > 16 || new Set(input.confidenceBasis).size !== input.confidenceBasis.length
+    || input.confidenceBasis.some((value) => !/^[a-z][a-z0-9_]{2,63}$/u.test(value))) throw new TypeError('crypto_token_invalid');
+  const normalizedEvidence = evidence(input.evidence, input.observedAt);
+  const validEvidenceRefs = new Set(normalizedEvidence.map(({ evidenceRef }) => evidenceRef));
+  const ageMs = nowMs - observedMs;
+  return Object.freeze({
+    assetId: assetId(input.chainId, address),
+    chainId: input.chainId,
+    protocol: chainProtocol,
+    assetAddress: address,
+    symbol: boundedText(input.symbol, 64),
+    name: boundedText(input.name, 200),
+    decimals: input.decimals,
+    totalSupplyAtomic: input.totalSupplyAtomic === null ? null : unsigned(input.totalSupplyAtomic, 'crypto_token_invalid'),
+    priceMicrousd: nullableMicrousd(input.priceMicrousd, 'crypto_token_invalid'),
+    marketCapMicrousd: nullableMicrousd(input.marketCapMicrousd, 'crypto_token_invalid'),
+    liquidityMicrousd: nullableMicrousd(input.liquidityMicrousd, 'crypto_token_invalid'),
+    observedAt: input.observedAt,
+    freshness: Object.freeze({ staleAfterMs: input.staleAfterMs, ageMs, status: ageMs <= input.staleAfterMs ? 'fresh' : 'stale' }),
+    confidence: Object.freeze({ scoreBasisPoints: input.confidenceBasisPoints, basis: Object.freeze([...input.confidenceBasis]) }),
+    evidence: normalizedEvidence,
+    risk: normalizeRisk(input.risk, validEvidenceRefs),
+    conflicts: Object.freeze([]),
+  });
+}
+
+export function mergeCryptoTokenEvidence(tokens: readonly Readonly<NormalizedCryptoToken>[]): Readonly<NormalizedCryptoToken> {
+  if (tokens.length < 1 || tokens.length > 16) throw new TypeError('crypto_token_merge_invalid');
+  const latest = [...tokens].sort((left, right) => Date.parse(right.observedAt) - Date.parse(left.observedAt))[0]!;
+  if (tokens.some((token) => token.assetId !== latest.assetId)) throw new TypeError('crypto_token_merge_identity_mismatch');
+  const conflicts: { field: string; values: readonly string[]; evidenceRefs: readonly string[]; state: 'unresolved' }[] = [];
+  for (const field of ['symbol', 'name', 'decimals', 'totalSupplyAtomic', 'priceMicrousd', 'marketCapMicrousd', 'liquidityMicrousd'] as const) {
+    const values = [...new Set(tokens.map((token) => String(token[field] ?? 'missing')))];
+    if (values.length > 1) conflicts.push(Object.freeze({ field, values: Object.freeze(values), evidenceRefs: Object.freeze([...new Set(tokens.flatMap(({ evidence: values }) => values.map(({ evidenceRef }) => evidenceRef)))]), state: 'unresolved' }));
+  }
+  return Object.freeze({
+    ...latest,
+    confidence: Object.freeze({ scoreBasisPoints: Math.min(...tokens.map(({ confidence }) => confidence.scoreBasisPoints)), basis: Object.freeze([...new Set(tokens.flatMap(({ confidence }) => confidence.basis))]) }),
+    evidence: Object.freeze([...new Map(tokens.flatMap(({ evidence: values }) => values).map((item) => [item.evidenceRef, item])).values()]),
+    conflicts: Object.freeze(conflicts),
+  });
+}
+
+export interface CryptoProtocolPositionInput {
+  chainId: CryptoChainId;
+  walletAddress: string;
+  protocolId: string;
+  protocolName: string;
+  category: 'dex' | 'lending' | 'staking' | 'bridge' | 'yield' | 'other';
+  positionId: string;
+  suppliedAssets: readonly Readonly<{ assetAddress: string; amountAtomic: string; decimals: number }>[];
+  borrowedAssets: readonly Readonly<{ assetAddress: string; amountAtomic: string; decimals: number }>[];
+  netValueMicrousd: number | null;
+  observedAt: string;
+  staleAfterMs: number;
+  evidence: readonly Readonly<CryptoEvidence>[];
+}
+
+export function normalizeCryptoProtocolPosition(input: Readonly<CryptoProtocolPositionInput>, nowMs: number): Readonly<{
+  positionRef: string;
+  chainId: CryptoChainId;
+  walletAddress: string;
+  protocolId: string;
+  protocolName: string;
+  category: CryptoProtocolPositionInput['category'];
+  positionId: string;
+  suppliedAssets: readonly Readonly<{ assetId: string; amountAtomic: string; decimals: number }>[];
+  borrowedAssets: readonly Readonly<{ assetId: string; amountAtomic: string; decimals: number }>[];
+  netValueMicrousd: number | null;
+  observedAt: string;
+  freshness: Readonly<{ staleAfterMs: number; ageMs: number; status: 'fresh' | 'stale' }>;
+  evidence: readonly Readonly<CryptoEvidence>[];
+}> {
+  const chainProtocol = protocol(input.chainId);
+  const walletAddress = canonicalAddress(input.walletAddress, chainProtocol);
+  const observedMs = timestamp(input.observedAt, 'crypto_observed_at_invalid');
+  if (!/^[a-z][a-z0-9._-]{2,95}$/u.test(input.protocolId) || !/^[A-Za-z0-9][A-Za-z0-9 ._()-]{1,199}$/u.test(input.protocolName)
+    || !['dex', 'lending', 'staking', 'bridge', 'yield', 'other'].includes(input.category)
+    || !/^[A-Za-z0-9][A-Za-z0-9._:-]{1,199}$/u.test(input.positionId)
+    || input.suppliedAssets.length > 1_000 || input.borrowedAssets.length > 1_000
+    || !Number.isSafeInteger(nowMs) || nowMs < observedMs
+    || !Number.isSafeInteger(input.staleAfterMs) || input.staleAfterMs < 1_000 || input.staleAfterMs > 86_400_000) throw new TypeError('crypto_protocol_position_invalid');
+  const normalizePositionAssets = (values: CryptoProtocolPositionInput['suppliedAssets']): readonly Readonly<{ assetId: string; amountAtomic: string; decimals: number }>[] => Object.freeze(values.map((value) => {
+    const address = canonicalAddress(value.assetAddress, chainProtocol);
+    if (!Number.isSafeInteger(value.decimals) || value.decimals < 0 || value.decimals > 255) throw new TypeError('crypto_protocol_position_invalid');
+    return Object.freeze({ assetId: assetId(input.chainId, address), amountAtomic: unsigned(value.amountAtomic, 'crypto_protocol_position_invalid'), decimals: value.decimals });
+  }));
+  const ageMs = nowMs - observedMs;
+  return Object.freeze({
+    positionRef: `position_${createHash('sha256').update(`${input.chainId}\0${walletAddress}\0${input.protocolId}\0${input.positionId}`).digest('hex').slice(0, 32)}`,
+    chainId: input.chainId,
+    walletAddress,
+    protocolId: input.protocolId,
+    protocolName: input.protocolName,
+    category: input.category,
+    positionId: input.positionId,
+    suppliedAssets: normalizePositionAssets(input.suppliedAssets),
+    borrowedAssets: normalizePositionAssets(input.borrowedAssets),
+    netValueMicrousd: nullableMicrousd(input.netValueMicrousd, 'crypto_protocol_position_invalid'),
+    observedAt: input.observedAt,
+    freshness: Object.freeze({ staleAfterMs: input.staleAfterMs, ageMs, status: ageMs <= input.staleAfterMs ? 'fresh' : 'stale' }),
+    evidence: evidence(input.evidence, input.observedAt),
+  });
+}
+
 export interface CryptoTransactionInput {
   chainId: CryptoChainId;
   transactionId: string;
