@@ -247,6 +247,21 @@ test('selected multichain data source is positively priced and adapter-ready wit
   assert.equal(evidence.terms.intendedProductUseAllowed, true);
 });
 
+test('funded exact music generation is priced and adapter-ready without overstating perceptual quality or public product readiness', async () => {
+  const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
+  const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.google_vertex');
+  const pricing = await json('packages/catalog/ai-credit-backed-pricing.v1.json');
+  const evidence = await json('docs/evidence/supply-foundation/vertex-lyria-qualification.v1.json');
+  assert.ok(service.products.includes('ai.music') && service.knownModelNames.includes('lyria-002'));
+  assert.deepEqual(pricing.musicRoutes, [{ modelId: 'lyria-002', listingStatus: 'qualified_adapter_ready_contract_pending', positioning: 'best_value', durationSeconds: 30, instrumentalOnly: true, customerUsdPerClip: 0.1, shadowUsdPerClip: 0.06, qualityGrade: 'unranked' }]);
+  assert.equal(pricing.creditGuard.musicAllocationUsd, 100);
+  assert.equal(evidence.externalCalls, 2);
+  assert.equal(evidence.maximumShadowCreditDebitUsd, 0.12);
+  assert.deepEqual([evidence.observation.status, evidence.observation.identityMatches, evidence.observation.wavHeaderValid, evidence.observation.passed], [200, true, true, true]);
+  assert.equal(evidence.audioRetained, false);
+  assert.equal(evidence.quality.grade, 'unranked');
+});
+
 test('owned object storage is positively priced but fails closed on the legacy endpoint and unknown overage guard', async () => {
   const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
   const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.cloudflare_r2');
@@ -350,8 +365,8 @@ test('final supply matrix covers every priced asset, preserves provider secrecy,
   assert.equal(validate(matrix), true, ajv.errorsText(validate.errors));
   assert.deepEqual(matrix.policy, { providerNamesPublic: false, exactModelSubstitutionAllowed: false, automaticPaidOverageAllowed: false, customerFreeByDefault: false, pricingIsReferencedNotDuplicated: true });
   assert.equal(matrix.catalogCoverage.length, 13);
-  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.assetCount, 0), 796);
-  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.positiveCustomerPriceCount, 0), 796);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.assetCount, 0), 797);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.positiveCustomerPriceCount, 0), 797);
   assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 22);
   assert.equal(new Set(matrix.capabilities.map(({ capabilityId }) => capabilityId)).size, matrix.capabilities.length);
   assert.ok(matrix.capabilities.every(({ publicAssets, pricingCatalogs, healthMethod, secretLocations, replacementPlan }) => publicAssets.length > 0 && pricingCatalogs.length > 0 && healthMethod.length > 0 && secretLocations.length > 0 && replacementPlan.length > 12));

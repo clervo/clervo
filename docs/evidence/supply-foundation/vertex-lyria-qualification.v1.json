@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "clervo.vertex-lyria-qualification.v1",
+  "evaluatedAt": "2026-08-02T07:59:28.668Z",
+  "serviceId": "supply.google_vertex",
+  "exactModelId": "lyria-002",
+  "productId": "ai.music",
+  "externalCalls": 2,
+  "ownerCashSpentUsd": 0,
+  "creditBacked": true,
+  "maximumShadowCreditDebitUsd": 0.12,
+  "promptOrAudioPayloadRecorded": false,
+  "audioRetained": false,
+  "attempts": [
+    { "attempt": 1, "status": 200, "latencyMs": 23523, "documentedResponseShapeMatched": false, "passed": false, "failureCode": "response_shape_mismatch" },
+    { "attempt": 2, "status": 200, "latencyMs": 23540, "documentedResponseShapeMatched": false, "currentResponseShapeRecognized": true, "passed": true, "failureCode": null }
+  ],
+  "observation": {
+    "status": 200,
+    "latencyMs": 23540,
+    "topLevelFieldNames": ["predictions"],
+    "predictionFieldNames": ["bytesBase64Encoded"],
+    "responseIdentityPresent": false,
+    "identityEvidence": "immutable_exact_publisher_endpoint",
+    "identityMatches": true,
+    "mimeTypeMatches": false,
+    "wavHeaderValid": true,
+    "audioByteLength": 6291544,
+    "audioSha256": "sha256:2260a9465993b6141a97712315204ad8f08d8a17cb142f29fda0e0cdc9cf046c",
+    "passed": true,
+    "failureCode": null
+  },
+  "constraints": {
+    "durationSeconds": 30,
+    "instrumentalOnly": true,
+    "promptLanguage": "en-US",
+    "outputFormat": "audio/wav",
+    "outputSampleRateHz": 48000,
+    "safetyFiltersAppliedBySupplier": true,
+    "synthIdWatermarkAppliedBySupplier": true
+  },
+  "supplierPricing": { "currency": "USD", "supplierPricePerThirtySecondsUsd": 0.06 },
+  "quality": { "grade": "unranked", "reason": "Exact execution and WAV integrity passed, but no independent perceptual music-quality benchmark was run." },
+  "terms": {
+    "status": "restricted",
+    "documentationUrl": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/reference/models/lyria-music-generation",
+    "pricingUrl": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+    "valueAddedCustomerApplicationUseAllowed": true
+  }
+}

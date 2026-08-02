@@ -11,8 +11,8 @@
   "catalogCoverage": [
     {
       "catalog": "packages/catalog/ai-credit-backed-pricing.v1.json",
-      "assetCount": 10,
-      "positiveCustomerPriceCount": 10,
+      "assetCount": 11,
+      "positiveCustomerPriceCount": 11,
       "sellableCount": 9
     },
     {
@@ -224,6 +224,32 @@
         "application_default:GCP_ADC"
       ],
       "replacementPlan": "Keep the preview lite route unavailable and source a second production video family only after the primary route has customer demand."
+    },
+    {
+      "capabilityId": "ai.music",
+      "publicAssets": [
+        "lyria-002"
+      ],
+      "lifecycle": "preview",
+      "routeState": "qualified_adapter_ready_contract_pending",
+      "primaryServices": [
+        "supply.google_vertex"
+      ],
+      "fallbackServices": [],
+      "pricingCatalogs": [
+        "packages/catalog/ai-credit-backed-pricing.v1.json"
+      ],
+      "quality": "unranked",
+      "termsStatus": "restricted",
+      "quotaRunway": "USD 100 shadow allocation within the reported credit, USD 0.06 supplier price per 30-second clip, and the shared USD 25 daily debit ceiling; no owner-cash overage.",
+      "healthMethod": [
+        "docs/evidence/supply-foundation/vertex-lyria-qualification.v1.json",
+        "tests/contract/vertex-lyria-adapter.test.mjs"
+      ],
+      "secretLocations": [
+        "application_default:GCP_ADC"
+      ],
+      "replacementPlan": "Add the explicit ai.music execution wire contract and a perceptual quality benchmark before public listing; retain the exact immutable endpoint and WAV integrity checks."
     },
     {
       "capabilityId": "ai.tts",

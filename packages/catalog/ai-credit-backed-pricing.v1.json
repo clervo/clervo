@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.ai-credit-backed-pricing.v1",
-  "priceVersion": "2026-08-02.1",
-  "evaluatedAt": "2026-08-02T03:18:00.000Z",
+  "priceVersion": "2026-08-02.2",
+  "evaluatedAt": "2026-08-02T07:59:28.668Z",
   "currency": "USD",
   "providerVisibility": "internal_only",
   "policy": {
@@ -18,7 +18,8 @@
     "embeddingAllocationUsd": 50,
     "imageAllocationUsd": 500,
     "videoAllocationUsd": 500,
-    "reserveUsd": 150,
+    "musicAllocationUsd": 100,
+    "reserveUsd": 50,
     "maximumDailyShadowDebitUsd": 25,
     "hardStopRemainingShadowUsd": 100,
     "applicationLedgerRequiredBeforeCustomerTraffic": true,
@@ -84,5 +85,8 @@
     { "modelId": "veo-3.1-lite-generate-001", "listingStatus": "priced_preview_unqualified", "positioning": "lowest_cost_preview", "resolution": "720p", "audioIncluded": false, "customerUsdPerSecond": 0.02, "shadowUsdPerSecond": 0.03 },
     { "modelId": "veo-3.1-fast-generate-001", "listingStatus": "sellable", "positioning": "best_value", "resolution": "720p", "audioIncluded": false, "customerUsdPerSecond": 0.04, "shadowUsdPerSecond": 0.08 },
     { "modelId": "veo-3.1-generate-001", "listingStatus": "sellable", "positioning": "best_quality", "resolution": "720p", "audioIncluded": false, "customerUsdPerSecond": 0.1, "shadowUsdPerSecond": 0.2 }
+  ],
+  "musicRoutes": [
+    { "modelId": "lyria-002", "listingStatus": "qualified_adapter_ready_contract_pending", "positioning": "best_value", "durationSeconds": 30, "instrumentalOnly": true, "customerUsdPerClip": 0.1, "shadowUsdPerClip": 0.06, "qualityGrade": "unranked" }
   ]
 }

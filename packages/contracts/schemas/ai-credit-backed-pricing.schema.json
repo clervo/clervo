@@ -3,7 +3,7 @@
   "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-credit-backed-pricing.schema.json",
   "title": "Clervo internal credit-backed multimodal AI pricing",
   "type": "object",
-  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "providerVisibility", "policy", "creditGuard", "competitorReference", "chatRoutes", "embeddingRoutes", "imageRoutes", "videoRoutes"],
+  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "providerVisibility", "policy", "creditGuard", "competitorReference", "chatRoutes", "embeddingRoutes", "imageRoutes", "videoRoutes", "musicRoutes"],
   "$defs": {
     "tokenPrice": {
       "type": "object",
@@ -19,7 +19,7 @@
   },
   "properties": {
     "schemaVersion": { "const": "clervo.ai-credit-backed-pricing.v1" },
-    "priceVersion": { "const": "2026-08-02.1" },
+    "priceVersion": { "const": "2026-08-02.2" },
     "evaluatedAt": { "type": "string", "format": "date-time" },
     "currency": { "const": "USD" },
     "providerVisibility": { "const": "internal_only" },
@@ -38,13 +38,14 @@
     },
     "creditGuard": {
       "type": "object",
-      "required": ["ownerReportedBalanceUsd", "chatAllocationUsd", "embeddingAllocationUsd", "imageAllocationUsd", "videoAllocationUsd", "reserveUsd", "maximumDailyShadowDebitUsd", "hardStopRemainingShadowUsd", "applicationLedgerRequiredBeforeCustomerTraffic", "cloudBudgetIsHardCap", "ownerCashOverageAllowed", "denyWhenUsageUnknown"],
+      "required": ["ownerReportedBalanceUsd", "chatAllocationUsd", "embeddingAllocationUsd", "imageAllocationUsd", "videoAllocationUsd", "musicAllocationUsd", "reserveUsd", "maximumDailyShadowDebitUsd", "hardStopRemainingShadowUsd", "applicationLedgerRequiredBeforeCustomerTraffic", "cloudBudgetIsHardCap", "ownerCashOverageAllowed", "denyWhenUsageUnknown"],
       "properties": {
         "ownerReportedBalanceUsd": { "const": 1700 },
         "chatAllocationUsd": { "type": "number", "minimum": 0 },
         "embeddingAllocationUsd": { "type": "number", "minimum": 0 },
         "imageAllocationUsd": { "type": "number", "minimum": 0 },
         "videoAllocationUsd": { "type": "number", "minimum": 0 },
+        "musicAllocationUsd": { "type": "number", "minimum": 0 },
         "reserveUsd": { "type": "number", "minimum": 0 },
         "maximumDailyShadowDebitUsd": { "type": "number", "exclusiveMinimum": 0, "maximum": 1700 },
         "hardStopRemainingShadowUsd": { "type": "number", "minimum": 0, "maximum": 1700 },
@@ -140,6 +141,26 @@
           "audioIncluded": { "const": false },
           "customerUsdPerSecond": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
           "shadowUsdPerSecond": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "musicRoutes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["modelId", "listingStatus", "positioning", "durationSeconds", "instrumentalOnly", "customerUsdPerClip", "shadowUsdPerClip", "qualityGrade"],
+        "properties": {
+          "modelId": { "const": "lyria-002" },
+          "listingStatus": { "const": "qualified_adapter_ready_contract_pending" },
+          "positioning": { "const": "best_value" },
+          "durationSeconds": { "const": 30 },
+          "instrumentalOnly": { "const": true },
+          "customerUsdPerClip": { "const": 0.1 },
+          "shadowUsdPerClip": { "const": 0.06 },
+          "qualityGrade": { "const": "unranked" }
         },
         "additionalProperties": false
       }

@@ -54,7 +54,11 @@ disabled without explicit owner approval.
 - `ai.clervo.dev/v1`: working; `gpt-5.6-luna`, `gpt-5.6-terra`, and
   `gpt-5.6-sol` are priced, benchmarked, qualified, and cataloged.
 - Google Vertex: reported USD 1,700 credit; qualified chat, embedding, image,
-  and video routes; speech and exact credit expiry/guard remain incomplete.
+  video, and instrumental music routes; speech and exact credit expiry/guard
+  remain incomplete. Lyria 2 returned a valid 30-second WAV from its immutable
+  endpoint in 23.5 seconds at a USD 0.06 shadow debit. The route is priced at
+  USD 0.10/clip and has a tested adapter, but stays preview/contract-pending and
+  perceptual quality remains honestly unranked.
 - Deepgram: reported USD 200 balance; qualified two TTS routes and Nova-3 STT,
   with its preserved jargon limitation.
 - Groq: 15 authenticated assets priced; GPT-OSS 20B, GPT-OSS 120B, and Qwen
@@ -169,7 +173,7 @@ disabled without explicit owner approval.
 - Current qualified internal catalog: 20 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.
 - The final provider-neutral matrix references 13 canonical price catalogs and
-  covers all 796 price rows: every row has a positive customer price and 22
+  covers all 797 price rows: every row has a positive customer price and 22
   rows are currently sellable. It records exact assets, route state, lifecycle,
   price/shadow-cost source, quality, terms, quota runway, health evidence,
   secret-name location, fallbacks, and replacement plan without secret values.

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.26",
-  "observedAt": "2026-08-02T07:55:00.000Z",
+  "inventoryVersion": "2026-08-02.27",
+  "observedAt": "2026-08-02T07:59:28.668Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -451,6 +451,7 @@
         "ai.chat",
         "ai.embed",
         "ai.image",
+        "ai.music",
         "ai.speech",
         "ai.video"
       ],
@@ -479,11 +480,13 @@
         "gemini-3.1-flash-lite-image",
         "gemini-3.1-flash-image",
         "gemini-3-pro-image",
+        "lyria-002",
         "veo-3.1-fast-generate-001",
         "veo-3.1-generate-001"
       ],
       "notes": [
-        "Chat, text embedding, 1K image, and 720p video routes passed bounded live qualification on 2026-08-02. Imagen endpoints remain unavailable to this project; speech remains unqualified. Owner reports USD 1700 credit; exact balance and expiry remain unverified, so Clervo requires its own hard shadow ledger before customer traffic."
+        "Chat, text embedding, 1K image, 30-second instrumental music, and 720p video routes passed bounded live qualification on 2026-08-02. The exact Lyria endpoint returned a 6,291,544-byte valid WAV in 23.5 seconds; the audio was hashed but not retained, and perceptual quality remains unranked.",
+        "Imagen endpoints remain unavailable to this project; speech remains unqualified. Owner reports USD 1700 credit; exact balance and expiry remain unverified, so Clervo requires its own hard shadow ledger before customer traffic."
       ]
     },
     {

@@ -19,7 +19,7 @@ const aiCatalog = await load('packages/catalog/ai-model-catalog.v1.json');
 const market = await load('docs/evidence/supply-foundation/market-sourcing-gap-evaluation.v1.json');
 
 function assets(document) {
-  return ['routes', 'assets', 'models', 'chatRoutes', 'embeddingRoutes', 'imageRoutes', 'videoRoutes', 'speechRoutes', 'transcriptionRoutes'].flatMap((key) => Array.isArray(document[key]) ? document[key] : []);
+  return ['routes', 'assets', 'models', 'chatRoutes', 'embeddingRoutes', 'imageRoutes', 'videoRoutes', 'musicRoutes', 'speechRoutes', 'transcriptionRoutes'].flatMap((key) => Array.isArray(document[key]) ? document[key] : []);
 }
 
 function positiveCustomerPrice(asset) {
@@ -72,6 +72,11 @@ const capabilities = [
     capabilityId: 'ai.video', publicAssets: priced('ai-credit-backed-pricing.v1.json', ({ listingStatus, modelId }) => modelId?.startsWith('veo-') && listingStatus === 'sellable'), lifecycle: 'production', routeState: 'qualified_single_family', primaryServices: ['supply.google_vertex'], fallbackServices: [],
     pricingCatalogs: [ref('ai-credit-backed-pricing.v1.json')], quality: 'mixed', termsStatus: 'restricted', quotaRunway: 'USD 500 shadow allocation within the reported credit and USD 25 total daily shadow debit ceiling; no owner-cash overage.',
     healthMethod: ['docs/evidence/stage6/vertex-multimodal-screen.v1.json'], secretLocations: ['application_default:GCP_ADC'], replacementPlan: 'Keep the preview lite route unavailable and source a second production video family only after the primary route has customer demand.'
+  },
+  {
+    capabilityId: 'ai.music', publicAssets: priced('ai-credit-backed-pricing.v1.json', ({ modelId }) => modelId === 'lyria-002'), lifecycle: 'preview', routeState: 'qualified_adapter_ready_contract_pending', primaryServices: ['supply.google_vertex'], fallbackServices: [],
+    pricingCatalogs: [ref('ai-credit-backed-pricing.v1.json')], quality: 'unranked', termsStatus: 'restricted', quotaRunway: 'USD 100 shadow allocation within the reported credit, USD 0.06 supplier price per 30-second clip, and the shared USD 25 daily debit ceiling; no owner-cash overage.',
+    healthMethod: [evidence('vertex-lyria-qualification.v1.json'), 'tests/contract/vertex-lyria-adapter.test.mjs'], secretLocations: ['application_default:GCP_ADC'], replacementPlan: 'Add the explicit ai.music execution wire contract and a perceptual quality benchmark before public listing; retain the exact immutable endpoint and WAV integrity checks.'
   },
   {
     capabilityId: 'ai.tts', publicAssets: qualified('ai.speech'), lifecycle: 'production', routeState: 'qualified_single_family', primaryServices: ['supply.deepgram'], fallbackServices: [],
