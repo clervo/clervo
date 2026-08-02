@@ -90,9 +90,10 @@ for (const model of models) {
     const answerMatches = observed.parsed !== undefined && JSON.stringify(canonical(observed.parsed)) === JSON.stringify(canonical(task.expected));
     const usageValid = Number.isSafeInteger(observed.usage?.prompt_tokens) && observed.usage.prompt_tokens > 0 && Number.isSafeInteger(observed.usage?.completion_tokens) && observed.usage.completion_tokens > 0;
     results.push({ taskId: task.taskId, category: task.category, passed: observed.status === 200 && identityMatches && answerMatches && usageValid, status: observed.status, latencyMs: observed.latencyMs, identityMatches, answerMatches, usageValid, failureCode: observed.failureCode });
+    if (observed.status === 402) break;
   }
   const passed = results.filter(({ passed }) => passed).length;
-  report.models.push({ model, passed, total: results.length, scoreBasisPoints: passed * 1000, latencyMsP50: percentile(results.map(({ latencyMs }) => latencyMs), 0.5), latencyMsP95: percentile(results.map(({ latencyMs }) => latencyMs), 0.95), results });
+  report.models.push({ model, passed, total: results.length, scoreBasisPoints: Math.round((passed / results.length) * 10_000), fundingBlocked: results.some(({ status }) => status === 402), latencyMsP50: percentile(results.map(({ latencyMs }) => latencyMs), 0.5), latencyMsP95: percentile(results.map(({ latencyMs }) => latencyMs), 0.95), results });
 }
 
 process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);

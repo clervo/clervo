@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-owned-source-pricing.schema.json",
+  "title": "Clervo internal owned AI source pricing",
+  "type": "object",
+  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "providerVisibility", "policy", "source", "assets"],
+  "$defs": {
+    "price": {
+      "type": "object",
+      "required": ["unit", "price"],
+      "properties": {
+        "unit": { "type": "string", "minLength": 3, "maxLength": 80 },
+        "price": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "schemaVersion": { "const": "clervo.ai-owned-source-pricing.v1" },
+    "priceVersion": { "const": "2026-08-02.1" },
+    "evaluatedAt": { "type": "string", "format": "date-time" },
+    "currency": { "const": "USD" },
+    "providerVisibility": { "const": "internal_only" },
+    "policy": {
+      "type": "object",
+      "required": ["customerFreeByDefault", "unknownSupplierCostBlocksPricing", "qualificationRequiredForSale", "termsRequiredForSale", "providerNamesPublic"],
+      "properties": {
+        "customerFreeByDefault": { "const": false },
+        "unknownSupplierCostBlocksPricing": { "const": false },
+        "qualificationRequiredForSale": { "const": true },
+        "termsRequiredForSale": { "const": true },
+        "providerNamesPublic": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": ["pricedListings", "workingServices", "excludedGatewayListings", "ownerCashSpentUsd", "supplierCostKnown"],
+      "properties": {
+        "pricedListings": { "const": 612 },
+        "workingServices": { "const": 8 },
+        "excludedGatewayListings": { "const": 21 },
+        "ownerCashSpentUsd": { "const": 0 },
+        "supplierCostKnown": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 612,
+      "maxItems": 612,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["serviceId", "modelId", "product", "listingStatus", "qualityGrade", "supplierCostKnown", "customerPrices", "pricingMethod", "termsStatus"],
+        "properties": {
+          "serviceId": { "type": "string", "pattern": "^supply\\.[a-z0-9_]+$" },
+          "modelId": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "product": { "enum": ["ai.chat", "ai.embed", "ai.rerank", "ai.image", "ai.video", "ai.speech", "ai.transcribe", "ai.ocr"] },
+          "listingStatus": { "enum": ["priced_pending_qualification", "priced_unavailable_no_balance"] },
+          "qualityGrade": { "enum": ["best", "good", "poor", "unranked"] },
+          "supplierCostKnown": { "const": false },
+          "customerPrices": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/price" } },
+          "pricingMethod": { "const": "category_introductory_price" },
+          "termsStatus": { "const": "unreviewed" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

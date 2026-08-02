@@ -1,0 +1,372 @@
+{
+  "schemaVersion": "clervo.owned-chat-quality-run.v1",
+  "evaluatedAt": "2026-08-02T04:35:03.229Z",
+  "serviceId": "supply.cerebras",
+  "fundingBasis": "recurring_free_or_promotional",
+  "corpusSha256": "sha256:63c21bd50febc2c243e42e2c7c4e557fa0b66eb6d378a3a027e0e52783558efb",
+  "ownerCashSpentUsd": 0,
+  "promptOrOutputPayloadsRecorded": false,
+  "externalCalls": 30,
+  "models": [
+    {
+      "model": "gemma-4-31b",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "latencyMsP50": 47.14,
+      "latencyMsP95": 237.08,
+      "results": [
+        {
+          "taskId": "arithmetic_integer",
+          "category": "reasoning",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 237.08,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "arithmetic_percentage",
+          "category": "reasoning",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 67.03,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "deductive_uncertainty",
+          "category": "reasoning",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 49.02,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "structured_extraction",
+          "category": "structured_output",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 40.68,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "coding_diagnosis",
+          "category": "coding",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 47.14,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "payment_idempotency",
+          "category": "commerce_safety",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 76.54,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "ssrf_metadata",
+          "category": "security",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 63.02,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "evidence_abstention",
+          "category": "grounding",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 39.61,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "multilingual_chinese",
+          "category": "multilingual",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 41.08,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "instruction_priority",
+          "category": "instruction_following",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 37.5,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        }
+      ]
+    },
+    {
+      "model": "gpt-oss-120b",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "latencyMsP50": 46.79,
+      "latencyMsP95": 52.83,
+      "results": [
+        {
+          "taskId": "arithmetic_integer",
+          "category": "reasoning",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 44.02,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "arithmetic_percentage",
+          "category": "reasoning",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 48.13,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "deductive_uncertainty",
+          "category": "reasoning",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 40.01,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "structured_extraction",
+          "category": "structured_output",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 52.83,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "coding_diagnosis",
+          "category": "coding",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 42.18,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "payment_idempotency",
+          "category": "commerce_safety",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 49.48,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "ssrf_metadata",
+          "category": "security",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 49.35,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "evidence_abstention",
+          "category": "grounding",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 46.79,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "multilingual_chinese",
+          "category": "multilingual",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 49.42,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "instruction_priority",
+          "category": "instruction_following",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 40.58,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        }
+      ]
+    },
+    {
+      "model": "zai-glm-4.7",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "latencyMsP50": 40.85,
+      "latencyMsP95": 62.52,
+      "results": [
+        {
+          "taskId": "arithmetic_integer",
+          "category": "reasoning",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 40.96,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "arithmetic_percentage",
+          "category": "reasoning",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 39.01,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "deductive_uncertainty",
+          "category": "reasoning",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 48.25,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "structured_extraction",
+          "category": "structured_output",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 40.85,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "coding_diagnosis",
+          "category": "coding",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 46.55,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "payment_idempotency",
+          "category": "commerce_safety",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 38.81,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "ssrf_metadata",
+          "category": "security",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 47.15,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "evidence_abstention",
+          "category": "grounding",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 62.52,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "multilingual_chinese",
+          "category": "multilingual",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 40.45,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        },
+        {
+          "taskId": "instruction_priority",
+          "category": "instruction_following",
+          "passed": false,
+          "status": 402,
+          "latencyMs": 36.84,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "http_402"
+        }
+      ]
+    }
+  ]
+}

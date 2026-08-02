@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.11",
-  "observedAt": "2026-08-02T04:32:34.090Z",
+  "inventoryVersion": "2026-08-02.12",
+  "observedAt": "2026-08-02T04:35:03.229Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -174,12 +174,13 @@
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "unknown",
       "connectionStatus": "observed_working",
-      "qualificationStatus": "not_run",
+      "qualificationStatus": "failed",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Authenticated model discovery returned 3 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+        "Authenticated model discovery returned 3 exact assets on 2026-08-02; every asset has a positive introductory customer price.",
+        "All thirty bounded chat attempts returned HTTP 402 with no owner cash spent. The credential is valid for discovery but has no usable inference balance, so all three routes remain unavailable."
       ],
       "knownModelNames": [
         "gemma-4-31b",

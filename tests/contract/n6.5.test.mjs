@@ -191,6 +191,26 @@ test('Chinese gateway prices every asset but fails closed on observed model subs
   assert.ok(identities.results.every(({ identityMatches }) => identityMatches === false));
 });
 
+test('every newly discovered owned-source listing is customer-priced while qualification and balance remain independent', async () => {
+  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
+  assert.equal(pricing.source.pricedListings, 612);
+  assert.equal(pricing.source.workingServices, 8);
+  assert.equal(pricing.source.excludedGatewayListings, 21);
+  assert.equal(pricing.source.ownerCashSpentUsd, 0);
+  assert.equal(pricing.assets.length, 612);
+  assert.ok(pricing.assets.every(({ supplierCostKnown, customerPrices, listingStatus, termsStatus }) => supplierCostKnown === false && customerPrices.length > 0 && customerPrices.every(({ price }) => price > 0) && listingStatus !== 'sellable' && termsStatus === 'unreviewed'));
+  assert.deepEqual([...new Set(pricing.assets.map(({ product }) => product))].sort(), ['ai.chat', 'ai.embed', 'ai.image', 'ai.ocr', 'ai.rerank', 'ai.speech', 'ai.transcribe', 'ai.video']);
+  assert.deepEqual(pricing.assets.filter(({ listingStatus }) => listingStatus === 'priced_unavailable_no_balance').map(({ serviceId, modelId }) => [serviceId, modelId]), [
+    ['supply.cerebras', 'gemma-4-31b'],
+    ['supply.cerebras', 'gpt-oss-120b'],
+    ['supply.cerebras', 'zai-glm-4.7'],
+  ]);
+  const evidence = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cerebras-chat-quality-run.v1.json'), 'utf8'));
+  assert.equal(evidence.externalCalls, 30);
+  assert.equal(evidence.ownerCashSpentUsd, 0);
+  assert.ok(evidence.models.every(({ results }) => results.length === 10 && results.every(({ status }) => status === 402)));
+});
+
 test('Clervo gateway screen preserves the bounded live result without overstating quality or cost', async () => {
   const evidence = JSON.parse(await readFile(path.join(root, 'docs/evidence/stage6/clervo-gateway-screen.v1.json'), 'utf8'));
   assert.equal(evidence.screen.externalCalls, 38);

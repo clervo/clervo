@@ -65,6 +65,9 @@ disabled without explicit owner approval.
 - Chinese gateway: all 21 discovered assets are customer-priced, but the five
   representative chat routes failed exact-identity checks despite HTTP 200.
   Only account 1 was used; the other nineteen remain untouched pending terms.
+- Every one of the 612 other newly discovered owned-source listings has an
+  introductory customer price. Cerebras discovery works, but all three models
+  returned HTTP 402 and remain unavailable without a usable balance.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three
