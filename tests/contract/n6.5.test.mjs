@@ -198,17 +198,48 @@ test('every newly discovered owned-source listing is customer-priced while quali
   assert.equal(pricing.source.excludedGatewayListings, 21);
   assert.equal(pricing.source.ownerCashSpentUsd, 0);
   assert.equal(pricing.assets.length, 612);
-  assert.ok(pricing.assets.every(({ supplierCostKnown, customerPrices, listingStatus, termsStatus }) => supplierCostKnown === false && customerPrices.length > 0 && customerPrices.every(({ price }) => price > 0) && listingStatus !== 'sellable' && ['unreviewed', 'blocked'].includes(termsStatus)));
+  assert.ok(pricing.assets.every(({ customerPrices, listingStatus, termsStatus }) => customerPrices.length > 0 && customerPrices.every(({ price }) => price > 0) && listingStatus !== 'sellable' && ['unreviewed', 'blocked'].includes(termsStatus)));
+  assert.equal(pricing.assets.filter(({ supplierCostKnown }) => supplierCostKnown).length, 6);
   assert.deepEqual([...new Set(pricing.assets.map(({ product }) => product))].sort(), ['ai.chat', 'ai.embed', 'ai.image', 'ai.ocr', 'ai.rerank', 'ai.speech', 'ai.transcribe', 'ai.video']);
   assert.deepEqual(pricing.assets.filter(({ listingStatus }) => listingStatus === 'priced_unavailable_no_balance').map(({ serviceId, modelId }) => [serviceId, modelId]), [
     ['supply.cerebras', 'gemma-4-31b'],
     ['supply.cerebras', 'gpt-oss-120b'],
     ['supply.cerebras', 'zai-glm-4.7'],
+    ['supply.sambanova', 'MiniMax-M2.7'],
   ]);
   const evidence = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cerebras-chat-quality-run.v1.json'), 'utf8'));
   assert.equal(evidence.externalCalls, 30);
   assert.equal(evidence.ownerCashSpentUsd, 0);
   assert.ok(evidence.models.every(({ results }) => results.length === 10 && results.every(({ status }) => status === 402)));
+});
+
+test('SambaNova exact models retain competitive prices and quality evidence but stay blocked by hosted resale terms', async () => {
+  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
+  const samba = pricing.assets.filter(({ serviceId }) => serviceId === 'supply.sambanova');
+  assert.equal(samba.length, 6);
+  assert.ok(samba.every(({ supplierCostKnown, supplierPrices, customerPrices, termsStatus }) => supplierCostKnown && supplierPrices.length > 0 && customerPrices.length > 0 && termsStatus === 'blocked'));
+  assert.deepEqual(samba.filter(({ qualityGrade }) => qualityGrade !== 'unranked').map(({ modelId, qualityGrade }) => [modelId, qualityGrade]), [
+    ['DeepSeek-V3.1', 'poor'],
+    ['DeepSeek-V3.2', 'poor'],
+    ['gemma-4-31B-it', 'good'],
+    ['gpt-oss-120b', 'good'],
+    ['Meta-Llama-3.3-70B-Instruct', 'poor'],
+  ]);
+  const identities = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/sambanova-chat-identity-probe.v1.json'), 'utf8'));
+  const quality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/sambanova-chat-quality-run.v1.json'), 'utf8'));
+  const terms = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/sambanova-hosted-api-terms.v1.json'), 'utf8'));
+  assert.equal(identities.externalCalls, 6);
+  assert.equal(identities.results.filter(({ status, identityMatches }) => status === 200 && identityMatches).length, 5);
+  assert.equal(quality.externalCalls, 50);
+  assert.deepEqual(quality.models.map(({ model, passed }) => [model, passed]), [
+    ['DeepSeek-V3.1', 5],
+    ['DeepSeek-V3.2', 3],
+    ['gemma-4-31B-it', 9],
+    ['gpt-oss-120b', 9],
+    ['Meta-Llama-3.3-70B-Instruct', 5],
+  ]);
+  assert.equal(terms.findings.hostedApiResaleAllowedWithoutWrittenConsent, false);
+  assert.equal(terms.decision.sellableHostedRoutes, 0);
 });
 
 test('NVIDIA trial routes retain benchmarks and prices but stay blocked from production sale by hosted-service terms', async () => {

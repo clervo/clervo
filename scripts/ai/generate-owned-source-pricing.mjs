@@ -7,8 +7,28 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const discovery = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/owned-ai-source-discovery.v1.json'), 'utf8'));
 const nvidiaQuality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/nvidia-chat-quality-run.v1.json'), 'utf8'));
+const sambanovaQuality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/sambanova-chat-quality-run.v1.json'), 'utf8'));
 const sources = discovery.sources.filter(({ status, serviceId }) => status === 'working' && serviceId !== 'supply.hcnsec_gateway');
 const nvidiaScores = new Map(nvidiaQuality.models.map((entry) => [entry.model, entry.results.filter(({ answerMatches }) => answerMatches).length]));
+const sambanovaScores = new Map(sambanovaQuality.models.map((entry) => [entry.model, entry.results.filter(({ answerMatches }) => answerMatches).length]));
+
+const sambanovaSupplierPrices = new Map([
+  ['DeepSeek-V3.1', [{ unit: 'per M input tokens', price: 3 }, { unit: 'per M output tokens', price: 4.5 }]],
+  ['DeepSeek-V3.2', [{ unit: 'per M input tokens', price: 3 }, { unit: 'per M output tokens', price: 4.5 }]],
+  ['gemma-4-31B-it', [{ unit: 'per M input tokens', price: 0.22 }, { unit: 'per M output tokens', price: 0.59 }]],
+  ['gpt-oss-120b', [{ unit: 'per M input tokens', price: 0.22 }, { unit: 'per M output tokens', price: 0.59 }]],
+  ['Meta-Llama-3.3-70B-Instruct', [{ unit: 'per M input tokens', price: 0.6 }, { unit: 'per M output tokens', price: 1.2 }]],
+  ['MiniMax-M2.7', [{ unit: 'per M cached input tokens', price: 0.06 }, { unit: 'per M input tokens', price: 0.6 }, { unit: 'per M output tokens', price: 2.4 }]],
+]);
+
+const sambanovaCustomerPrices = new Map([
+  ['DeepSeek-V3.1', [{ unit: 'per M input tokens', price: 3.15 }, { unit: 'per M output tokens', price: 4.75 }]],
+  ['DeepSeek-V3.2', [{ unit: 'per M input tokens', price: 3.15 }, { unit: 'per M output tokens', price: 4.75 }]],
+  ['gemma-4-31B-it', [{ unit: 'per M input tokens', price: 0.25 }, { unit: 'per M output tokens', price: 0.65 }]],
+  ['gpt-oss-120b', [{ unit: 'per M input tokens', price: 0.25 }, { unit: 'per M output tokens', price: 0.65 }]],
+  ['Meta-Llama-3.3-70B-Instruct', [{ unit: 'per M input tokens', price: 0.65 }, { unit: 'per M output tokens', price: 1.3 }]],
+  ['MiniMax-M2.7', [{ unit: 'per M cached input tokens', price: 0.07 }, { unit: 'per M input tokens', price: 0.65 }, { unit: 'per M output tokens', price: 2.55 }]],
+]);
 
 function grade(score) {
   if (score === 10) return 'best';
@@ -44,16 +64,19 @@ function prices(productId, modelId) {
 
 const assets = sources.flatMap((source) => source.modelIds.map((modelId) => {
   const productId = product(modelId);
+  const isSambanova = source.serviceId === 'supply.sambanova';
+  const supplierPrices = isSambanova ? sambanovaSupplierPrices.get(modelId) : undefined;
   return {
     serviceId: source.serviceId,
     modelId,
     product: productId,
-    listingStatus: source.serviceId === 'supply.cerebras' ? 'priced_unavailable_no_balance' : source.serviceId === 'supply.nvidia' ? 'priced_terms_blocked' : 'priced_pending_qualification',
-    qualityGrade: source.serviceId === 'supply.nvidia' ? grade(nvidiaScores.get(modelId)) : 'unranked',
-    supplierCostKnown: false,
-    customerPrices: prices(productId, modelId),
-    pricingMethod: 'category_introductory_price',
-    termsStatus: source.serviceId === 'supply.nvidia' ? 'blocked' : 'unreviewed',
+    listingStatus: source.serviceId === 'supply.cerebras' || (isSambanova && modelId === 'MiniMax-M2.7') ? 'priced_unavailable_no_balance' : ['supply.nvidia', 'supply.sambanova'].includes(source.serviceId) ? 'priced_terms_blocked' : 'priced_pending_qualification',
+    qualityGrade: source.serviceId === 'supply.nvidia' ? grade(nvidiaScores.get(modelId)) : isSambanova ? grade(sambanovaScores.get(modelId)) : 'unranked',
+    supplierCostKnown: supplierPrices !== undefined,
+    ...(supplierPrices === undefined ? {} : { supplierPrices }),
+    customerPrices: isSambanova ? sambanovaCustomerPrices.get(modelId) : prices(productId, modelId),
+    pricingMethod: isSambanova ? 'official_cost_competitive_markup' : 'category_introductory_price',
+    termsStatus: ['supply.nvidia', 'supply.sambanova'].includes(source.serviceId) ? 'blocked' : 'unreviewed',
   };
 })).sort((left, right) => `${left.serviceId}/${left.modelId}`.localeCompare(`${right.serviceId}/${right.modelId}`, 'en-US'));
 
@@ -65,6 +88,6 @@ process.stdout.write(`${JSON.stringify({
   currency: 'USD',
   providerVisibility: 'internal_only',
   policy: { customerFreeByDefault: false, unknownSupplierCostBlocksPricing: false, qualificationRequiredForSale: true, termsRequiredForSale: true, providerNamesPublic: false },
-  source: { pricedListings: assets.length, workingServices: sources.length, excludedGatewayListings: 21, termsBlockedListings: assets.filter(({ termsStatus }) => termsStatus === 'blocked').length, ownerCashSpentUsd: 0, supplierCostKnown: false },
+  source: { pricedListings: assets.length, workingServices: sources.length, excludedGatewayListings: 21, termsBlockedListings: assets.filter(({ termsStatus }) => termsStatus === 'blocked').length, supplierCostKnownListings: assets.filter(({ supplierCostKnown }) => supplierCostKnown).length, ownerCashSpentUsd: 0, supplierCostKnown: false },
   assets,
 }, null, 2)}\n`);

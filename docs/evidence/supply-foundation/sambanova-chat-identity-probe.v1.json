@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "clervo.owned-chat-identity-probe.v1",
+  "checkedAt": "2026-08-02T05:10:54.367Z",
+  "serviceId": "supply.sambanova",
+  "externalCalls": 6,
+  "ownerCashSpentUsd": 0,
+  "secretValuesRecorded": false,
+  "promptOrOutputPayloadsRecorded": false,
+  "results": [
+    {
+      "requestedModel": "DeepSeek-V3.1",
+      "observedModel": "DeepSeek-V3.1",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 9887.29
+    },
+    {
+      "requestedModel": "DeepSeek-V3.2",
+      "observedModel": "DeepSeek-V3.2",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 2496.44
+    },
+    {
+      "requestedModel": "gemma-4-31B-it",
+      "observedModel": "gemma-4-31B-it",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 6480.95
+    },
+    {
+      "requestedModel": "gpt-oss-120b",
+      "observedModel": "gpt-oss-120b",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 596.81
+    },
+    {
+      "requestedModel": "Meta-Llama-3.3-70B-Instruct",
+      "observedModel": "Meta-Llama-3.3-70B-Instruct",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 240.83
+    },
+    {
+      "requestedModel": "MiniMax-M2.7",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 402,
+      "usageReported": false,
+      "latencyMs": 110.99
+    }
+  ]
+}

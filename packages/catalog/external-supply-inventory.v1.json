@@ -1214,14 +1214,17 @@
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
-      "fundingClass": "recurring_free",
+      "fundingClass": "promotional_credit",
       "connectionStatus": "observed_working",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "qualificationStatus": "failed",
+      "termsStatus": "blocked",
+      "resaleStatus": "prohibited",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Authenticated model discovery returned 6 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+        "Five of six discovered chat assets passed exact-identity preflight; MiniMax-M2.7 returned HTTP 402.",
+        "Gemma 4 31B and GPT-OSS 120B each scored 9/10 on the fixed corpus; all raw results remain internal because the cloud terms restrict benchmark disclosure.",
+        "Current SambaCloud terms prohibit resale, sublicensing, and service-bureau use without prior written consent, so no hosted route is customer-sellable.",
+        "The credential still executes bounded calls, but current plans require purchased credits and the remaining legacy/promotional balance and expiry are unknown."
       ],
       "knownModelNames": [
         "DeepSeek-V3.1",

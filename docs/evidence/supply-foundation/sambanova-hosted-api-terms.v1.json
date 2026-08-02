@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "clervo.sambanova-hosted-api-terms.v1",
+  "checkedAt": "2026-08-02T05:16:19.000Z",
+  "hostedService": "SambaCloud hosted inference API",
+  "termsStatus": "blocked_for_production_resale",
+  "findings": {
+    "hostedApiResaleAllowedWithoutWrittenConsent": false,
+    "serviceBureauUseAllowedWithoutWrittenConsent": false,
+    "publicBenchmarkDisclosureAllowedWithoutWrittenConsent": false,
+    "productionModelsExist": true,
+    "previewModelsProductionAllowed": false,
+    "currentPlanRequiresPurchasedCredits": true,
+    "remainingAccountCreditKnown": false
+  },
+  "modelLifecycle": {
+    "production": ["DeepSeek-V3.1", "gpt-oss-120b", "Meta-Llama-3.3-70B-Instruct", "MiniMax-M2.7"],
+    "preview": ["DeepSeek-V3.2", "gemma-4-31B-it"]
+  },
+  "decision": {
+    "pricedListingsRetained": 6,
+    "technicallyWorkingExactRoutes": 5,
+    "sellableHostedRoutes": 0,
+    "internalEvidenceOnly": true,
+    "replacementPlan": "Use a terms-compatible production host, or obtain SambaNova's prior written resale consent before customer routing."
+  },
+  "sources": [
+    "https://sambanova.ai/cloud-end-user-license-agreement",
+    "https://docs.sambanova.ai/docs/en/models/rate-limits",
+    "https://cloud.sambanova.ai/plans",
+    "https://cloud.sambanova.ai/plans/pricing"
+  ]
+}

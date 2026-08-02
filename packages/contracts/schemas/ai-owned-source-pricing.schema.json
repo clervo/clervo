@@ -35,12 +35,13 @@
     },
     "source": {
       "type": "object",
-      "required": ["pricedListings", "workingServices", "excludedGatewayListings", "termsBlockedListings", "ownerCashSpentUsd", "supplierCostKnown"],
+      "required": ["pricedListings", "workingServices", "excludedGatewayListings", "termsBlockedListings", "supplierCostKnownListings", "ownerCashSpentUsd", "supplierCostKnown"],
       "properties": {
         "pricedListings": { "const": 612 },
         "workingServices": { "const": 8 },
         "excludedGatewayListings": { "const": 21 },
-        "termsBlockedListings": { "const": 102 },
+        "termsBlockedListings": { "const": 108 },
+        "supplierCostKnownListings": { "const": 6 },
         "ownerCashSpentUsd": { "const": 0 },
         "supplierCostKnown": { "const": false }
       },
@@ -60,9 +61,10 @@
           "product": { "enum": ["ai.chat", "ai.embed", "ai.rerank", "ai.image", "ai.video", "ai.speech", "ai.transcribe", "ai.ocr"] },
           "listingStatus": { "enum": ["priced_pending_qualification", "priced_unavailable_no_balance", "priced_terms_blocked"] },
           "qualityGrade": { "enum": ["best", "good", "poor", "unranked"] },
-          "supplierCostKnown": { "const": false },
+          "supplierCostKnown": { "type": "boolean" },
+          "supplierPrices": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/price" } },
           "customerPrices": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/price" } },
-          "pricingMethod": { "const": "category_introductory_price" },
+          "pricingMethod": { "enum": ["category_introductory_price", "official_cost_competitive_markup"] },
           "termsStatus": { "enum": ["unreviewed", "blocked"] }
         },
         "additionalProperties": false

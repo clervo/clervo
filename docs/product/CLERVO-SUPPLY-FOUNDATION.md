@@ -71,6 +71,10 @@ disabled without explicit owner approval.
 - NVIDIA's 102 hosted listings remain priced and four exact identities were
   benchmarked, but the API Catalog trial is non-production under its current
   terms. It is benchmark-only, not sale supply; self-hosted weights are separate.
+- SambaNova's six assets are priced against published supplier rates. Five
+  passed exact-identity checks; Gemma 4 31B and GPT-OSS 120B scored 9/10. The
+  sixth returned HTTP 402. Current cloud terms prohibit resale/service-bureau
+  use without written consent, so all remain internal evidence, not sale supply.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three
