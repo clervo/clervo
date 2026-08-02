@@ -63,14 +63,18 @@ export class RpcGateway {
   readonly #health: RpcHealthRouter;
   readonly #routes: ReadonlyMap<string, RpcProbeRoute>;
   readonly #cache: RpcCacheStore;
+  readonly #maximumConcurrentRequests: number;
+  #inFlight = 0;
 
-  constructor(input: Readonly<{ policy: RpcMethodPolicy; health: RpcHealthRouter; routes: readonly RpcProbeRoute[]; cache: RpcCacheStore }>) {
+  constructor(input: Readonly<{ policy: RpcMethodPolicy; health: RpcHealthRouter; routes: readonly RpcProbeRoute[]; cache: RpcCacheStore; maximumConcurrentRequests?: number }>) {
     const routes = new Map(input.routes.map((route) => [route.routeId, route]));
-    if (routes.size !== input.routes.length) throw new TypeError('rpc_gateway_config_invalid');
+    const maximumConcurrentRequests = input.maximumConcurrentRequests ?? 64;
+    if (routes.size !== input.routes.length || !Number.isSafeInteger(maximumConcurrentRequests) || maximumConcurrentRequests < 1 || maximumConcurrentRequests > 10_000) throw new TypeError('rpc_gateway_config_invalid');
     this.#policy = input.policy;
     this.#health = input.health;
     this.#routes = routes;
     this.#cache = input.cache;
+    this.#maximumConcurrentRequests = maximumConcurrentRequests;
   }
 
   health(chainId: string, nowMs: number): ReturnType<RpcHealthRouter['status']> {
@@ -78,6 +82,13 @@ export class RpcGateway {
   }
 
   async execute(input: Readonly<{ productId: RpcProductId; chainId: string; calls: RpcCall | readonly RpcCall[]; idempotencyKey?: string; quorum?: 1 | 2 | 3; nowMs: number; signal?: AbortSignal }>): Promise<Readonly<RpcGatewayResult>> {
+    if (this.#inFlight >= this.#maximumConcurrentRequests) throw new Error('rpc_concurrency_limit');
+    this.#inFlight += 1;
+    try { return await this.#execute(input); }
+    finally { this.#inFlight -= 1; }
+  }
+
+  async #execute(input: Readonly<{ productId: RpcProductId; chainId: string; calls: RpcCall | readonly RpcCall[]; idempotencyKey?: string; quorum?: 1 | 2 | 3; nowMs: number; signal?: AbortSignal }>): Promise<Readonly<RpcGatewayResult>> {
     const decision = this.#policy.authorize(input);
     if (!Number.isSafeInteger(input.nowMs) || input.nowMs < 0) throw new TypeError('rpc_gateway_time_invalid');
     if (decision.sideEffecting) throw new Error('rpc_broadcast_requires_coordinator');
@@ -88,12 +99,27 @@ export class RpcGateway {
       if (outcomes !== undefined) return Object.freeze({ requestHash: decision.requestHash, chainId: input.chainId, routeIds: Object.freeze([]), outcomes, cache: 'hit', quorum, observedAtMs: input.nowMs });
       await this.#cache.delete(decision.requestHash);
     }
-    const selected = this.#health.selectMany(input.chainId, input.nowMs, quorum);
-    const executions = await Promise.all(selected.map(async ({ routeId }) => {
-      const route = this.#routes.get(routeId);
-      if (!route || route.chainId !== input.chainId) throw new Error('rpc_route_binding_failed');
-      return route.execute(decision.calls, input.signal);
-    }));
+    const selected = quorum === 1 ? this.#health.healthy(input.chainId, input.nowMs) : this.#health.selectMany(input.chainId, input.nowMs, quorum);
+    const used = [];
+    let executions: readonly (readonly JsonRpcOutcome[])[];
+    if (quorum === 1) {
+      let outcome: readonly JsonRpcOutcome[] | undefined;
+      for (const { routeId } of selected) {
+        const route = this.#routes.get(routeId);
+        if (!route || route.chainId !== input.chainId) throw new Error('rpc_route_binding_failed');
+        try { outcome = await route.execute(decision.calls, input.signal); used.push(routeId); break; }
+        catch { /* read-only failover continues to the next semantically healthy route */ }
+      }
+      if (outcome === undefined) throw new Error('rpc_routes_failed');
+      executions = [outcome];
+    } else {
+      executions = await Promise.all(selected.map(async ({ routeId }) => {
+        const route = this.#routes.get(routeId);
+        if (!route || route.chainId !== input.chainId) throw new Error('rpc_route_binding_failed');
+        used.push(routeId);
+        return route.execute(decision.calls, input.signal);
+      }));
+    }
     if (executions.some((outcomes) => outcomes.length !== decision.calls.length) || executions.slice(1).some((outcomes) => !equivalent(executions[0]!, outcomes))) throw new Error('rpc_quorum_disagreement');
     const outcomes = Object.freeze(executions[0]!.map((outcome) => Object.freeze(structuredClone(outcome))));
     if (decision.cachePolicy !== 'never') {
@@ -101,6 +127,6 @@ export class RpcGateway {
       const record = Object.freeze({ requestHash: decision.requestHash, storedAtMs: input.nowMs, expiresAtMs: input.nowMs + ttlMs, outcomes, outcomesSha256: sha256(stable(outcomes)) });
       await this.#cache.put(record);
     }
-    return Object.freeze({ requestHash: decision.requestHash, chainId: input.chainId, routeIds: Object.freeze(selected.map(({ routeId }) => routeId)), outcomes, cache: 'miss', quorum, observedAtMs: input.nowMs });
+    return Object.freeze({ requestHash: decision.requestHash, chainId: input.chainId, routeIds: Object.freeze(used), outcomes, cache: 'miss', quorum, observedAtMs: input.nowMs });
   }
 }

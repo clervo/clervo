@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/rpc-operation-request.schema.json",
+  "$defs": {
+    "json": {
+      "anyOf": [
+        { "type": "null" },
+        { "type": "boolean" },
+        { "type": "number" },
+        { "type": "string", "maxLength": 65536 },
+        { "type": "array", "maxItems": 1024, "items": { "$ref": "#/$defs/json" } },
+        { "type": "object", "maxProperties": 1024, "additionalProperties": { "$ref": "#/$defs/json" } }
+      ]
+    },
+    "chainId": { "type": "string", "pattern": "^(?:eip155:[1-9][0-9]{0,9}|solana:[A-Za-z0-9]{8,64})$" },
+    "call": {
+      "type": "object",
+      "required": ["method", "params"],
+      "properties": {
+        "method": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{1,63}$" },
+        "params": { "$ref": "#/$defs/json" }
+      },
+      "additionalProperties": false
+    },
+    "charge": {
+      "type": "object",
+      "required": ["asset", "amountAtomic", "decimals"],
+      "properties": {
+        "asset": { "const": "USD" },
+        "amountAtomic": { "type": "string", "pattern": "^(?:0|[1-9][0-9]{0,6})$" },
+        "decimals": { "const": 6 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "schemaVersion", "operationId", "productId", "input", "maximumCharge", "deadlineAt"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "schemaVersion": { "const": "rpc-operation-request.v1" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "productId": { "enum": ["rpc.call", "rpc.batch", "rpc.health", "rpc.archive", "rpc.broadcast"] },
+    "input": {
+      "oneOf": [
+        { "type": "object", "required": ["kind", "chainId", "call"], "properties": { "kind": { "const": "call" }, "chainId": { "$ref": "#/$defs/chainId" }, "call": { "$ref": "#/$defs/call" }, "quorum": { "enum": [1, 2, 3] } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "chainId", "calls"], "properties": { "kind": { "const": "batch" }, "chainId": { "$ref": "#/$defs/chainId" }, "calls": { "type": "array", "minItems": 1, "maxItems": 100, "items": { "$ref": "#/$defs/call" } }, "quorum": { "enum": [1, 2, 3] } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "chainId"], "properties": { "kind": { "const": "health" }, "chainId": { "$ref": "#/$defs/chainId" } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "chainId", "call"], "properties": { "kind": { "const": "archive" }, "chainId": { "$ref": "#/$defs/chainId" }, "call": { "$ref": "#/$defs/call" }, "quorum": { "enum": [1, 2, 3] } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "chainId", "call", "idempotencyKey"], "properties": { "kind": { "const": "broadcast" }, "chainId": { "$ref": "#/$defs/chainId" }, "call": { "$ref": "#/$defs/call" }, "idempotencyKey": { "type": "string", "pattern": "^idem_[A-Za-z0-9]{20,64}$" } }, "additionalProperties": false }
+      ]
+    },
+    "maximumCharge": { "$ref": "#/$defs/charge" },
+    "deadlineAt": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    { "if": { "properties": { "productId": { "const": "rpc.call" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "properties": { "kind": { "const": "call" } }, "required": ["kind"] } } } },
+    { "if": { "properties": { "productId": { "const": "rpc.batch" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "properties": { "kind": { "const": "batch" } }, "required": ["kind"] } } } },
+    { "if": { "properties": { "productId": { "const": "rpc.health" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "properties": { "kind": { "const": "health" } }, "required": ["kind"] }, "maximumCharge": { "type": "object", "properties": { "amountAtomic": { "const": "0" } }, "required": ["amountAtomic"] } } } },
+    { "if": { "properties": { "productId": { "const": "rpc.archive" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "properties": { "kind": { "const": "archive" } }, "required": ["kind"] } } } },
+    { "if": { "properties": { "productId": { "const": "rpc.broadcast" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "properties": { "kind": { "const": "broadcast" } }, "required": ["kind"] } } } }
+  ],
+  "additionalProperties": false
+}

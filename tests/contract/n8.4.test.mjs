@@ -61,3 +61,30 @@ test('RPC gateway never routes broadcasts through read failover or cache', async
   const value = new RpcGateway({ policy: new RpcMethodPolicy([broadcastChain]), health, routes: [provider], cache: new InMemoryRpcCacheStore() });
   await assert.rejects(value.execute({ productId: 'rpc.broadcast', chainId: chain.chainId, calls: { method: 'eth_sendRawTransaction', params: ['0x01'] }, idempotencyKey: 'idem_0123456789ABCDEFGHIJ', nowMs: 1000 }), /requires_coordinator/u);
 });
+
+test('RPC gateway fails over only read failures and enforces a hard concurrency ceiling', async () => {
+  const primary = route('rpc.route.primary');
+  const secondary = route('rpc.route.secondary');
+  const primaryExecute = primary.execute.bind(primary);
+  primary.execute = async (calls) => {
+    if (calls[0]?.method === 'eth_getBalance') throw new Error('recorded read outage');
+    return primaryExecute(calls);
+  };
+  const value = await gateway([primary, secondary]);
+  const request = { productId: 'rpc.call', chainId: chain.chainId, calls: { method: 'eth_getBalance', params: ['0x0000000000000000000000000000000000000000', 'latest'] }, nowMs: 1000 };
+  assert.deepEqual((await value.execute(request)).routeIds, ['rpc.route.secondary']);
+
+  let release;
+  const pending = route('rpc.route.pending');
+  const pendingExecute = pending.execute.bind(pending);
+  pending.execute = async (calls) => calls[0]?.method === 'eth_getBalance'
+    ? new Promise((resolve) => { release = () => resolve([{ id: 1, ok: true, result: '0x2a' }]); })
+    : pendingExecute(calls);
+  const health = new RpcHealthRouter({ chains: [chain], routes: [pending] });
+  await health.refresh(chain.chainId, 1000);
+  const bounded = new RpcGateway({ policy: new RpcMethodPolicy([chain]), health, routes: [pending], cache: new InMemoryRpcCacheStore(), maximumConcurrentRequests: 1 });
+  const first = bounded.execute(request);
+  await assert.rejects(bounded.execute({ ...request, nowMs: 1001 }), /concurrency_limit/u);
+  release();
+  await first;
+});

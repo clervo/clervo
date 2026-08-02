@@ -32,6 +32,7 @@ export * from './retrieval-supply.js';
 export * from './retrieval-execution-proof.js';
 export * from './retrieval.js';
 export * from './routing.js';
+export * from './rpc.js';
 export * from './search.js';
 export * from './search-cache.js';
 export * from './search-benchmark.js';

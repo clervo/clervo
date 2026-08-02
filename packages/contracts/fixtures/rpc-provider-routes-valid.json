@@ -1,0 +1,28 @@
+{
+  "schema": "rpc-provider-routes",
+  "valid": true,
+  "value": {
+    "schemaVersion": "clervo.rpc-provider-routes.v1",
+    "lifecycle": "unavailable",
+    "customerRoutingEnabled": false,
+    "routes": [
+      {
+        "routeId": "rpc.route.ethereum_primary",
+        "chainId": "eip155:1",
+        "serviceId": "supply.drpc",
+        "technicalStatus": "passed",
+        "termsStatus": "restricted",
+        "resaleStatus": "restricted",
+        "customerRoutingEnabled": false,
+        "archiveQualified": false,
+        "broadcastQualified": false,
+        "semanticMethods": ["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber"]
+      }
+    ],
+    "evidence": {
+      "inventory": "packages/catalog/external-supply-inventory.v1.json",
+      "pricing": "packages/catalog/rpc-supply-pricing.v1.json",
+      "ownerBlocker": "written commercial permission"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Current engineering state
 
-Updated 2026-08-02 after Stage 7 completion. This is a compact resumable
+Updated 2026-08-02 after Stage 8 product-core completion. This is a compact resumable
 handoff, not an authorization gate. Continue automatically after reading it.
 
 ## Active work
@@ -9,8 +9,18 @@ Stage 7 secure sandbox product core is complete. The contracts, lifecycle,
 cleanup, artifact quarantine, cost controls, verified-image registry, runner,
 Agent Sandbox adapter, and red-team gate are implemented and consolidated tests
 pass. Public lifecycle remains `unavailable` because no persistent production
-execution plane is deployed. Stage 8 universal multi-chain RPC is the current
-roadmap priority; its bounded multi-chain policy is already committed.
+execution plane is deployed.
+
+Stage 8 universal multi-chain RPC product core is also complete locally. The
+eight-chain registry, strict JSON-RPC adapter, semantic identity/head/finalized
+probes, latency and height routing, stale/fork removal, read failover, optional
+quorum, safe caching, method/batch/concurrency/response limits, product
+contracts, pricing, automatic health, and replay-safe broadcasting are
+implemented. The consolidated Stage 8 suite passes 21/21. Customer lifecycle
+remains `unavailable`: every current upstream route is terms-restricted or
+prohibited for resale, and archive/broadcast supply is intentionally
+unqualified. Stage 9 Prediction-market Intelligence is the current roadmap
+priority.
 
 The production runner `sandbox.nodejs-24` is qualified at digest
 `sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e`.
@@ -37,11 +47,12 @@ confirmed absent; Artifact Registry was preserved. Evidence is in
 
 ## Next actions
 
-1. Continue Stage 8 from the next unfinished RPC registry/provider/probe work;
-   N8.1's policy and unsafe-method boundary are already committed.
-2. Build tested provider adapters, semantic health/stale/fork checks, routing,
-   caching, pricing, and replay-safe broadcasting in roadmap order without
-   stopping between internal checklist items.
+1. Continue Stage 9 with normalized prediction-market/outcome contracts,
+   source adapters, resolution provenance, freshness, matching, comparison,
+   history, probabilities, liquidity, and evidence-backed signals.
+2. Keep RPC customer routing disabled until written commercial permission or
+   replacement terms-compatible supply exists; this isolated owner blocker does
+   not pause Prediction or other local engineering.
 3. Keep Sandbox public lifecycle `unavailable` until a persistent execution
    plane is deployed and operationally qualified; delayed cloud billing
    reconciliation is non-blocking.

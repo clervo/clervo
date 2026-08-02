@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "clervo.rpc-provider-routes.v1",
+  "lifecycle": "unavailable",
+  "customerRoutingEnabled": false,
+  "routes": [
+    {
+      "routeId": "rpc.route.ethereum_primary",
+      "chainId": "eip155:1",
+      "serviceId": "supply.drpc",
+      "technicalStatus": "passed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
+      "customerRoutingEnabled": false,
+      "archiveQualified": false,
+      "broadcastQualified": false,
+      "semanticMethods": ["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber"]
+    },
+    {
+      "routeId": "rpc.route.optimism_primary",
+      "chainId": "eip155:10",
+      "serviceId": "supply.drpc",
+      "technicalStatus": "passed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
+      "customerRoutingEnabled": false,
+      "archiveQualified": false,
+      "broadcastQualified": false,
+      "semanticMethods": ["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber"]
+    },
+    {
+      "routeId": "rpc.route.bsc_primary",
+      "chainId": "eip155:56",
+      "serviceId": "supply.public_rpc_mesh",
+      "technicalStatus": "passed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
+      "customerRoutingEnabled": false,
+      "archiveQualified": false,
+      "broadcastQualified": false,
+      "semanticMethods": ["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber"]
+    },
+    {
+      "routeId": "rpc.route.polygon_primary",
+      "chainId": "eip155:137",
+      "serviceId": "supply.drpc",
+      "technicalStatus": "passed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
+      "customerRoutingEnabled": false,
+      "archiveQualified": false,
+      "broadcastQualified": false,
+      "semanticMethods": ["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber"]
+    },
+    {
+      "routeId": "rpc.route.base_primary",
+      "chainId": "eip155:8453",
+      "serviceId": "supply.drpc",
+      "technicalStatus": "passed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
+      "customerRoutingEnabled": false,
+      "archiveQualified": false,
+      "broadcastQualified": false,
+      "semanticMethods": ["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber"]
+    },
+    {
+      "routeId": "rpc.route.arbitrum_primary",
+      "chainId": "eip155:42161",
+      "serviceId": "supply.drpc",
+      "technicalStatus": "passed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
+      "customerRoutingEnabled": false,
+      "archiveQualified": false,
+      "broadcastQualified": false,
+      "semanticMethods": ["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber"]
+    },
+    {
+      "routeId": "rpc.route.avalanche_primary",
+      "chainId": "eip155:43114",
+      "serviceId": "supply.drpc",
+      "technicalStatus": "passed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
+      "customerRoutingEnabled": false,
+      "archiveQualified": false,
+      "broadcastQualified": false,
+      "semanticMethods": ["eth_chainId", "eth_blockNumber", "eth_getBlockByNumber"]
+    },
+    {
+      "routeId": "rpc.route.solana_primary",
+      "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+      "serviceId": "supply.helius_rpc",
+      "technicalStatus": "passed",
+      "termsStatus": "blocked",
+      "resaleStatus": "prohibited",
+      "customerRoutingEnabled": false,
+      "archiveQualified": false,
+      "broadcastQualified": false,
+      "semanticMethods": ["getGenesisHash", "getSlot", "getBlock"]
+    }
+  ],
+  "evidence": {
+    "inventory": "packages/catalog/external-supply-inventory.v1.json",
+    "pricing": "packages/catalog/rpc-supply-pricing.v1.json",
+    "ownerBlocker": "written commercial RPC permission or replacement terms-compatible supply"
+  }
+}
