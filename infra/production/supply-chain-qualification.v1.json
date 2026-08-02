@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "clervo.production-supply-chain-qualification-policy.v1",
+  "scanner": {
+    "name": "Trivy",
+    "version": "0.72.0",
+    "image": "ghcr.io/aquasecurity/trivy:0.72.0@sha256:cffe3f5161a47a6823fbd23d985795b3ed72a4c806da4c4df16266c02accdd6f",
+    "dockerSocketAllowed": false,
+    "scanNetwork": "none"
+  },
+  "dependencyAudit": {
+    "command": "npm audit --omit=dev --json",
+    "maximumHigh": 0,
+    "maximumCritical": 0
+  },
+  "containerVulnerabilityGate": {
+    "maximumHigh": 0,
+    "maximumCritical": 0
+  },
+  "sbomFormat": "spdx-json",
+  "productionDataAllowed": false,
+  "providerCallsAllowed": false,
+  "paymentsAllowed": false
+}

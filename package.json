@@ -149,6 +149,8 @@
     "production:retention": "node ./scripts/verify-runtime.mjs && node ./scripts/production/search-state-retention.mjs",
     "qualify:postgres-recovery": "node ./scripts/verify-runtime.mjs && node ./scripts/production/qualify-postgres-recovery.mjs",
     "test:n14.5": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/n14.5.test.mjs",
+    "qualify:supply-chain": "node ./scripts/verify-runtime.mjs && node ./scripts/production/qualify-supply-chain.mjs",
+    "test:n14.6": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/n14.6.test.mjs",
     "verify:stage6-exit": "node ./scripts/verify-runtime.mjs && node ./scripts/check-ai-supply-readiness.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
     "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",
