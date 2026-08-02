@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/supply-environment-name-audit.schema.json",
+  "title": "Clervo redacted supply environment-name audit",
+  "type": "object",
+  "required": ["schemaVersion", "auditedAt", "source", "counts", "rows"],
+  "properties": {
+    "schemaVersion": { "const": "clervo.supply-environment-name-audit.v1" },
+    "auditedAt": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "required": ["manifestCount", "lineCount", "assignmentCount", "uniqueNameCount", "valuesRecorded"],
+      "properties": {
+        "manifestCount": { "const": 2 },
+        "lineCount": { "type": "integer", "minimum": 1 },
+        "assignmentCount": { "const": 219 },
+        "uniqueNameCount": { "const": 219 },
+        "valuesRecorded": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "counts": {
+      "type": "object",
+      "required": ["active_supply", "retired_supply", "local_operation", "unmapped"],
+      "properties": {
+        "active_supply": { "type": "integer", "minimum": 1 },
+        "retired_supply": { "type": "integer", "minimum": 1 },
+        "local_operation": { "type": "integer", "minimum": 1 },
+        "unmapped": { "const": 0 }
+      },
+      "additionalProperties": false
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 219,
+      "maxItems": 219,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["environmentName", "mappingKind", "scope", "serviceId", "category", "ownerStatus", "permittedUse", "resaleStatus", "quotaStatus", "expiryStatus", "costStatus", "healthCheckStatus", "fallbackStatus", "secretStoreLocation", "lifecycleState"],
+        "properties": {
+          "environmentName": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+          "mappingKind": { "enum": ["credential", "endpoint", "configuration"] },
+          "scope": { "enum": ["active_supply", "retired_supply", "local_operation", "unmapped"] },
+          "serviceId": { "type": ["string", "null"], "pattern": "^supply\\.[a-z0-9_]+$" },
+          "category": { "type": "string", "minLength": 2, "maxLength": 64 },
+          "ownerStatus": { "type": "string", "minLength": 2, "maxLength": 64 },
+          "permittedUse": { "type": "string", "minLength": 2, "maxLength": 80 },
+          "resaleStatus": { "type": "string", "minLength": 2, "maxLength": 64 },
+          "quotaStatus": { "type": "string", "minLength": 2, "maxLength": 64 },
+          "expiryStatus": { "type": "string", "minLength": 2, "maxLength": 64 },
+          "costStatus": { "type": "string", "minLength": 2, "maxLength": 64 },
+          "healthCheckStatus": { "type": "string", "minLength": 2, "maxLength": 64 },
+          "fallbackStatus": { "type": "string", "minLength": 2, "maxLength": 64 },
+          "secretStoreLocation": { "type": "string", "minLength": 2, "maxLength": 64 },
+          "lifecycleState": { "type": "string", "minLength": 2, "maxLength": 64 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

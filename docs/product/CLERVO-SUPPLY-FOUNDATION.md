@@ -44,7 +44,12 @@ disabled without explicit owner approval.
 
 ## Preserved completed work
 
-- Redacted legacy manifest: 470 lines, 217 assignments, 167 unique source names.
+- Redacted legacy manifest: 463 lines and 217 unique assignments. The prior
+  inventory's `470`/`167` counts were stale and were repaired by the environment
+  reconciliation without reading or recording secret values.
+- The current Clervo environment contributes two additional unique names for
+  the `ai.clervo.dev` gateway, bringing the reconciled total to 219 with zero
+  unmapped names.
 - `ai.clervo.dev/v1`: working; `gpt-5.6-luna`, `gpt-5.6-terra`, and
   `gpt-5.6-sol` are priced, benchmarked, qualified, and cataloged.
 - Google Vertex: reported USD 1,700 credit; qualified chat, embedding, image,

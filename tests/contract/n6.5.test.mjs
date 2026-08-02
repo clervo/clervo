@@ -116,15 +116,29 @@ test('live Clervo, Vertex, Deepgram, and Groq exact routes form a valid qualifie
   assert.equal(freeTierPricing.policy.unknownSupplierDebitBlocksSale, false);
 });
 
-test('provider candidate schema compiles strictly and remains private', async () => {
+test('provider candidate and complete redacted supply inventories compile strictly and remain private', async () => {
   const files = (await readdir(path.join(root, 'packages/contracts/schemas'))).filter((file) => file.endsWith('.schema.json'));
   const ajv = new Ajv2020({ strict: true, allErrors: true }); addFormats(ajv);
   for (const file of files) ajv.addSchema(JSON.parse(await readFile(path.join(root, 'packages/contracts/schemas', file), 'utf8')));
   const candidates = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-provider-candidates.v1.json'), 'utf8'));
   const validate = ajv.getSchema('https://api.clervo.dev/schemas/2026-07-29.1/ai-provider-candidates.schema.json');
   assert.equal(validate(candidates), true, ajv.errorsText(validate.errors));
+  const inventory = JSON.parse(await readFile(path.join(root, 'packages/catalog/external-supply-inventory.v1.json'), 'utf8'));
+  const validateInventory = ajv.getSchema('https://api.clervo.dev/schemas/2026-07-29.1/external-supply-inventory.schema.json');
+  assert.equal(validateInventory(inventory), true, ajv.errorsText(validateInventory.errors));
+  assert.equal(inventory.source.uniqueSourceNames, 217);
+  assert.equal(inventory.services.length, 28);
+  assert.deepEqual(inventory.services.filter(({ category }) => ['storage', 'identity', 'notification', 'publishing', 'source_control'].includes(category)).map(({ serviceId }) => serviceId), ['supply.cloudflare_r2', 'supply.github_source', 'supply.gitlab_source', 'supply.devto', 'supply.hashnode', 'supply.telegram', 'supply.workos']);
+  const audit = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/environment-name-audit.v1.json'), 'utf8'));
+  const validateAudit = ajv.getSchema('https://api.clervo.dev/schemas/2026-07-29.1/supply-environment-name-audit.schema.json');
+  assert.equal(validateAudit(audit), true, ajv.errorsText(validateAudit.errors));
+  assert.deepEqual(audit.source, { manifestCount: 2, lineCount: 466, assignmentCount: 219, uniqueNameCount: 219, valuesRecorded: false });
+  assert.equal(audit.counts.unmapped, 0);
+  assert.equal(audit.rows.length, 219);
+  assert.deepEqual(audit.rows.filter(({ serviceId }) => serviceId === 'supply.clervo_ai_gateway').map(({ environmentName }) => environmentName), ['CLERVO_AI_API_KEY', 'CLERVO_AI_BASE_URL']);
   const visibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
   assert.equal(visibility.schemas.find(({ file }) => file === 'ai-provider-candidates.schema.json')?.visibility, 'internal_control');
+  assert.equal(visibility.schemas.find(({ file }) => file === 'supply-environment-name-audit.schema.json')?.visibility, 'internal_control');
 });
 
 test('Clervo gateway screen preserves the bounded live result without overstating quality or cost', async () => {
