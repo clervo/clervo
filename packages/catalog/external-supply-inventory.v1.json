@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.16",
-  "observedAt": "2026-08-02T05:45:43.058Z",
+  "inventoryVersion": "2026-08-02.17",
+  "observedAt": "2026-08-02T05:50:43.091Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -1528,13 +1528,18 @@
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
-      "fundingClass": "unknown",
-      "connectionStatus": "observed_not_tested",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "fundingClass": "recurring_free",
+      "connectionStatus": "observed_working",
+      "qualificationStatus": "failed",
+      "termsStatus": "blocked",
+      "resaleStatus": "prohibited",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": []
+      "notes": [
+        "Five paced, read-only checks passed for 65-chain discovery, token search, protocol metadata, a synthetic wallet portfolio, and provider-documentation example transactions.",
+        "No customer wallet data, raw response values, transaction submission, or signed payload was used; wallet portfolio latency was 6.1 seconds while the other checks completed within 174 ms.",
+        "The advertised Developer allowance is 2,000 requests/day at 3 RPS and is local-development-only; the key's exact account plan was not exposed by the API.",
+        "Paid plans recognize commercial customer applications, but the API license prohibits data resale, service-bureau use, and third-party benefit, so Clervo customer routes require a compatible written agreement or replacement source."
+      ]
     },
     {
       "serviceId": "supply.cdp_x402",

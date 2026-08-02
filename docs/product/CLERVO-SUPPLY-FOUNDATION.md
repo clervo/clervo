@@ -113,6 +113,11 @@ disabled without explicit owner approval.
   probes found 20 healthy routes covering 13 chains and seven chains with at
   least two working reads. Fantom has no survivor. All routes are priced while
   per-provider terms and production reliability remain under review.
+- Zerion's owned key passed paced read-only checks for 65-chain discovery,
+  tokens, protocols, wallet portfolios, and transaction history without using
+  customer data. All four products are priced, but the free key is local-only
+  and the API license prohibits data resale/service-bureau use; production sale
+  needs a compatible written agreement or a replacement data source.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three

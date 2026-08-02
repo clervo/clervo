@@ -161,3 +161,27 @@ test('public RPC mesh prices every configured route and preserves failures, iden
   assert.equal(mesh.filter(({ fallbackStatus }) => fallbackStatus === 'independent_fallback_ready').length, 20);
   assert.ok(mesh.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'failed').every(({ listingStatus, qualityGrade }) => listingStatus === 'blocked' && qualityGrade === 'rejected'));
 });
+
+test('owned blockchain data is technically complete and priced without treating a local-development key as sellable', async () => {
+  const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
+  const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.zerion');
+  const pricing = await json('packages/catalog/blockchain-data-supply-pricing.v1.json');
+  const schema = await json('packages/contracts/schemas/blockchain-data-supply-pricing.schema.json');
+  const evidence = await json('docs/evidence/supply-foundation/zerion-qualification.v1.json');
+  const ajv = new Ajv2020({ strict: true, allErrors: true });
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
+  assert.deepEqual([service.connectionStatus, service.qualificationStatus, service.termsStatus, service.resaleStatus], ['observed_working', 'failed', 'blocked', 'prohibited']);
+  assert.deepEqual(pricing.routes.map(({ productId }) => productId), ['crypto.wallet', 'crypto.token', 'crypto.transaction', 'crypto.protocol']);
+  assert.ok(pricing.routes.every(({ customerPriceMicrousd, technicalQualificationStatus, listingStatus, termsStatus }) => customerPriceMicrousd > 0 && technicalQualificationStatus === 'passed' && listingStatus === 'priced_terms_blocked' && termsStatus === 'blocked'));
+  assert.equal(evidence.externalCalls, 5);
+  assert.equal(evidence.transactionSubmissionCalls, 0);
+  assert.equal(evidence.signedPayloads, 0);
+  assert.equal(evidence.summary.technicalStatus, 'passed');
+  assert.equal(evidence.summary.productionStatus, 'blocked_free_plan_local_development_only');
+  assert.ok(evidence.observations.every(({ status, passed }) => status === 200 && passed));
+  assert.deepEqual(evidence.inputPolicy, { customerWalletDataUsed: false, syntheticPublicAddressUsed: true, providerDocumentationExampleAddressUsed: true, responsePayloadValuesRecorded: false });
+  assert.equal(evidence.terms.commercialUseOnPaidPlans, true);
+  assert.equal(evidence.terms.serviceBureauUseAllowed, false);
+});

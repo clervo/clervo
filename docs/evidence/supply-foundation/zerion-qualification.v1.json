@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "clervo.zerion-qualification.v1",
+  "evaluatedAt": "2026-08-02T05:50:43.091Z",
+  "serviceId": "supply.zerion",
+  "endpointOrigin": "https://api.zerion.io",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 5,
+  "transactionSubmissionCalls": 0,
+  "signedPayloads": 0,
+  "credentialSlotsUsed": 1,
+  "configuredCredentialSlots": 1,
+  "inputPolicy": {
+    "customerWalletDataUsed": false,
+    "syntheticPublicAddressUsed": true,
+    "providerDocumentationExampleAddressUsed": true,
+    "responsePayloadValuesRecorded": false
+  },
+  "summary": {
+    "successfulChecks": 5,
+    "latencyMsP50": 132,
+    "latencyMsP95": 6112,
+    "technicalStatus": "passed",
+    "productionStatus": "blocked_free_plan_local_development_only"
+  },
+  "observations": [
+    {
+      "checkId": "chains",
+      "status": 200,
+      "latencyMs": 132,
+      "jsonApiShapeValid": true,
+      "resultCount": 65,
+      "rateLimitHeaderPresent": true,
+      "retryAfterPresent": false,
+      "passed": true
+    },
+    {
+      "checkId": "token_search",
+      "status": 200,
+      "latencyMs": 57,
+      "jsonApiShapeValid": true,
+      "resultCount": 1,
+      "rateLimitHeaderPresent": true,
+      "retryAfterPresent": false,
+      "passed": true
+    },
+    {
+      "checkId": "protocol_directory",
+      "status": 200,
+      "latencyMs": 48,
+      "jsonApiShapeValid": true,
+      "resultCount": 1,
+      "rateLimitHeaderPresent": true,
+      "retryAfterPresent": false,
+      "passed": true
+    },
+    {
+      "checkId": "synthetic_wallet_portfolio",
+      "status": 200,
+      "latencyMs": 6112,
+      "jsonApiShapeValid": true,
+      "resultCount": 1,
+      "rateLimitHeaderPresent": true,
+      "retryAfterPresent": false,
+      "passed": true
+    },
+    {
+      "checkId": "documentation_wallet_transactions",
+      "status": 200,
+      "latencyMs": 174,
+      "jsonApiShapeValid": true,
+      "resultCount": 1,
+      "rateLimitHeaderPresent": true,
+      "retryAfterPresent": false,
+      "passed": true
+    }
+  ],
+  "allowance": {
+    "advertisedPlan": "developer",
+    "ownerPlanStatus": "inferred_from_zero_cash_legacy_key_not_account_verified",
+    "dailyRequests": 2000,
+    "requestsPerSecond": 3,
+    "automaticPaidUpgradeAllowedByClervo": false
+  },
+  "terms": {
+    "reviewedAt": "2026-08-02T05:50:43.092Z",
+    "apiLicenseUrl": "https://www.zerion.io/api-license-agreement",
+    "pricingUrl": "https://zerion.io/api/",
+    "apiLicenseUpdatedAt": "2026-06-26",
+    "customerApplicationsRecognized": true,
+    "commercialUseOnPaidPlans": true,
+    "freePlanProductionUseAllowed": false,
+    "dataResaleAllowed": false,
+    "serviceBureauUseAllowed": false,
+    "thirdPartyBenefitAllowed": false,
+    "customerMonetizationRequiresCompatiblePaidPlan": true
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "clervo.blockchain-data-supply-pricing.v1",
+  "priceVersion": "blockchain-data-supply-2026-08-02.1",
+  "effectiveAt": "2026-08-02T05:50:43.091Z",
+  "currency": "USD",
+  "policy": {
+    "customerFreeByDefault": false,
+    "automaticPaidUpgradeAllowed": false,
+    "providerNamesPublic": false,
+    "customerWalletPayloadsInEvidenceAllowed": false
+  },
+  "routes": [
+    {
+      "serviceId": "supply.zerion",
+      "productId": "crypto.wallet",
+      "publicAssetId": "multichain-wallet-portfolio",
+      "billingUnit": "request",
+      "customerPriceMicrousd": 1000,
+      "shadowSupplierPriceMicrousd": 596,
+      "supplierPriceBasis": "published_paid_tier",
+      "dailyDevelopmentAllowance": 2000,
+      "rateLimitRequestsPerSecond": 3,
+      "qualityGrade": "poor",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "priced_terms_blocked",
+      "termsStatus": "blocked",
+      "fallbackStatus": "independent_fallback_missing"
+    },
+    {
+      "serviceId": "supply.zerion",
+      "productId": "crypto.token",
+      "publicAssetId": "multichain-token-search",
+      "billingUnit": "request",
+      "customerPriceMicrousd": 1000,
+      "shadowSupplierPriceMicrousd": 596,
+      "supplierPriceBasis": "published_paid_tier",
+      "dailyDevelopmentAllowance": 2000,
+      "rateLimitRequestsPerSecond": 3,
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "priced_terms_blocked",
+      "termsStatus": "blocked",
+      "fallbackStatus": "independent_fallback_missing"
+    },
+    {
+      "serviceId": "supply.zerion",
+      "productId": "crypto.transaction",
+      "publicAssetId": "multichain-transaction-history",
+      "billingUnit": "request",
+      "customerPriceMicrousd": 1000,
+      "shadowSupplierPriceMicrousd": 596,
+      "supplierPriceBasis": "published_paid_tier",
+      "dailyDevelopmentAllowance": 2000,
+      "rateLimitRequestsPerSecond": 3,
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "priced_terms_blocked",
+      "termsStatus": "blocked",
+      "fallbackStatus": "independent_fallback_missing"
+    },
+    {
+      "serviceId": "supply.zerion",
+      "productId": "crypto.protocol",
+      "publicAssetId": "multichain-protocol-directory",
+      "billingUnit": "request",
+      "customerPriceMicrousd": 1000,
+      "shadowSupplierPriceMicrousd": 596,
+      "supplierPriceBasis": "published_paid_tier",
+      "dailyDevelopmentAllowance": 2000,
+      "rateLimitRequestsPerSecond": 3,
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "priced_terms_blocked",
+      "termsStatus": "blocked",
+      "fallbackStatus": "independent_fallback_missing"
+    }
+  ]
+}
