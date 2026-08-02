@@ -30,6 +30,28 @@ const sambanovaCustomerPrices = new Map([
   ['MiniMax-M2.7', [{ unit: 'per M cached input tokens', price: 0.07 }, { unit: 'per M input tokens', price: 0.65 }, { unit: 'per M output tokens', price: 2.55 }]],
 ]);
 
+const zaiSupplierPrices = new Map([
+  ['glm-4.5', [{ unit: 'per M cached input tokens', price: 0.11 }, { unit: 'per M input tokens', price: 0.6 }, { unit: 'per M output tokens', price: 2.2 }]],
+  ['glm-4.5-air', [{ unit: 'per M cached input tokens', price: 0.03 }, { unit: 'per M input tokens', price: 0.2 }, { unit: 'per M output tokens', price: 1.1 }]],
+  ['glm-4.6', [{ unit: 'per M cached input tokens', price: 0.11 }, { unit: 'per M input tokens', price: 0.6 }, { unit: 'per M output tokens', price: 2.2 }]],
+  ['glm-4.7', [{ unit: 'per M cached input tokens', price: 0.11 }, { unit: 'per M input tokens', price: 0.6 }, { unit: 'per M output tokens', price: 2.2 }]],
+  ['glm-5', [{ unit: 'per M cached input tokens', price: 0.2 }, { unit: 'per M input tokens', price: 1 }, { unit: 'per M output tokens', price: 3.2 }]],
+  ['glm-5-turbo', [{ unit: 'per M cached input tokens', price: 0.24 }, { unit: 'per M input tokens', price: 1.2 }, { unit: 'per M output tokens', price: 4 }]],
+  ['glm-5.1', [{ unit: 'per M cached input tokens', price: 0.26 }, { unit: 'per M input tokens', price: 1.4 }, { unit: 'per M output tokens', price: 4.4 }]],
+  ['glm-5.2', [{ unit: 'per M cached input tokens', price: 0.26 }, { unit: 'per M input tokens', price: 1.4 }, { unit: 'per M output tokens', price: 4.4 }]],
+]);
+
+const zaiCustomerPrices = new Map([
+  ['glm-4.5', [{ unit: 'per M cached input tokens', price: 0.12 }, { unit: 'per M input tokens', price: 0.65 }, { unit: 'per M output tokens', price: 2.35 }]],
+  ['glm-4.5-air', [{ unit: 'per M cached input tokens', price: 0.04 }, { unit: 'per M input tokens', price: 0.22 }, { unit: 'per M output tokens', price: 1.2 }]],
+  ['glm-4.6', [{ unit: 'per M cached input tokens', price: 0.12 }, { unit: 'per M input tokens', price: 0.65 }, { unit: 'per M output tokens', price: 2.35 }]],
+  ['glm-4.7', [{ unit: 'per M cached input tokens', price: 0.12 }, { unit: 'per M input tokens', price: 0.65 }, { unit: 'per M output tokens', price: 2.35 }]],
+  ['glm-5', [{ unit: 'per M cached input tokens', price: 0.22 }, { unit: 'per M input tokens', price: 1.1 }, { unit: 'per M output tokens', price: 3.4 }]],
+  ['glm-5-turbo', [{ unit: 'per M cached input tokens', price: 0.26 }, { unit: 'per M input tokens', price: 1.3 }, { unit: 'per M output tokens', price: 4.2 }]],
+  ['glm-5.1', [{ unit: 'per M cached input tokens', price: 0.28 }, { unit: 'per M input tokens', price: 1.5 }, { unit: 'per M output tokens', price: 4.65 }]],
+  ['glm-5.2', [{ unit: 'per M cached input tokens', price: 0.28 }, { unit: 'per M input tokens', price: 1.5 }, { unit: 'per M output tokens', price: 4.65 }]],
+]);
+
 function grade(score) {
   if (score === 10) return 'best';
   if (score >= 7) return 'good';
@@ -65,18 +87,19 @@ function prices(productId, modelId) {
 const assets = sources.flatMap((source) => source.modelIds.map((modelId) => {
   const productId = product(modelId);
   const isSambanova = source.serviceId === 'supply.sambanova';
-  const supplierPrices = isSambanova ? sambanovaSupplierPrices.get(modelId) : undefined;
+  const isZai = source.serviceId === 'supply.zai';
+  const supplierPrices = isSambanova ? sambanovaSupplierPrices.get(modelId) : isZai ? zaiSupplierPrices.get(modelId) : undefined;
   return {
     serviceId: source.serviceId,
     modelId,
     product: productId,
-    listingStatus: source.serviceId === 'supply.cerebras' || (isSambanova && modelId === 'MiniMax-M2.7') ? 'priced_unavailable_no_balance' : ['supply.nvidia', 'supply.sambanova'].includes(source.serviceId) ? 'priced_terms_blocked' : 'priced_pending_qualification',
+    listingStatus: source.serviceId === 'supply.cerebras' || isZai || (isSambanova && modelId === 'MiniMax-M2.7') ? 'priced_unavailable_no_balance' : ['supply.nvidia', 'supply.sambanova'].includes(source.serviceId) ? 'priced_terms_blocked' : 'priced_pending_qualification',
     qualityGrade: source.serviceId === 'supply.nvidia' ? grade(nvidiaScores.get(modelId)) : isSambanova ? grade(sambanovaScores.get(modelId)) : 'unranked',
     supplierCostKnown: supplierPrices !== undefined,
     ...(supplierPrices === undefined ? {} : { supplierPrices }),
-    customerPrices: isSambanova ? sambanovaCustomerPrices.get(modelId) : prices(productId, modelId),
-    pricingMethod: isSambanova ? 'official_cost_competitive_markup' : 'category_introductory_price',
-    termsStatus: ['supply.nvidia', 'supply.sambanova'].includes(source.serviceId) ? 'blocked' : 'unreviewed',
+    customerPrices: isSambanova ? sambanovaCustomerPrices.get(modelId) : isZai ? zaiCustomerPrices.get(modelId) : prices(productId, modelId),
+    pricingMethod: isSambanova || isZai ? 'official_cost_competitive_markup' : 'category_introductory_price',
+    termsStatus: ['supply.nvidia', 'supply.sambanova'].includes(source.serviceId) ? 'blocked' : isZai ? 'restricted' : 'unreviewed',
   };
 })).sort((left, right) => `${left.serviceId}/${left.modelId}`.localeCompare(`${right.serviceId}/${right.modelId}`, 'en-US'));
 

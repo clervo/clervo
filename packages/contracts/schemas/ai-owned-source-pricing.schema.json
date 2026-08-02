@@ -41,7 +41,7 @@
         "workingServices": { "const": 8 },
         "excludedGatewayListings": { "const": 21 },
         "termsBlockedListings": { "const": 108 },
-        "supplierCostKnownListings": { "const": 6 },
+        "supplierCostKnownListings": { "const": 14 },
         "ownerCashSpentUsd": { "const": 0 },
         "supplierCostKnown": { "const": false }
       },
@@ -65,7 +65,7 @@
           "supplierPrices": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/price" } },
           "customerPrices": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/price" } },
           "pricingMethod": { "enum": ["category_introductory_price", "official_cost_competitive_markup"] },
-          "termsStatus": { "enum": ["unreviewed", "blocked"] }
+          "termsStatus": { "enum": ["unreviewed", "restricted", "blocked"] }
         },
         "additionalProperties": false
       }

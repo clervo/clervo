@@ -75,6 +75,10 @@ disabled without explicit owner approval.
   passed exact-identity checks; Gemma 4 31B and GPT-OSS 120B scored 9/10. The
   sixth returned HTTP 402. Current cloud terms prohibit resale/service-bureau
   use without written consent, so all remain internal evidence, not sale supply.
+- Z.AI's eight discovered GLM chat assets are priced from current official API
+  rates and its developer terms permit downstream end-user integration. The
+  account currently returns business error 1113 for every inference request,
+  meaning no usable balance/resource package; routes remain unavailable.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three

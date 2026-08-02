@@ -1435,12 +1435,14 @@
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "owner_reported_balance",
       "connectionStatus": "observed_working",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "qualificationStatus": "failed",
+      "termsStatus": "restricted",
+      "resaleStatus": "allowed",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Authenticated model discovery returned 8 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+        "Authenticated discovery returned 8 assets, but every bounded inference preflight returned HTTP 429 with official business code 1113 (insufficient balance or resource package).",
+        "All eight models are customer-priced from published API rates and remain unavailable until funded; no owner cash was spent.",
+        "Current API terms expressly permit integration into downstream applications for end users, subject to content, safety, labeling, privacy, and regional restrictions."
       ],
       "knownModelNames": [
         "glm-4.5",

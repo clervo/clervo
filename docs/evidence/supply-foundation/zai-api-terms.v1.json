@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "clervo.zai-api-terms.v1",
+  "checkedAt": "2026-08-02T05:16:19.000Z",
+  "hostedService": "Z.AI Model API",
+  "termsStatus": "restricted_downstream_use_allowed",
+  "findings": {
+    "downstreamEndUserIntegrationAllowed": true,
+    "endUserControlsRequired": true,
+    "contentSafetyAndLabelingRequired": true,
+    "highRiskDecisionUseRestricted": true,
+    "codingPlanQuotaGeneralApiUseAllowed": false,
+    "modelApiBalanceAvailable": false,
+    "observedFailureCode": "1113"
+  },
+  "decision": {
+    "pricedListingsRetained": 8,
+    "sellableWhenFunded": true,
+    "currentlyExecutableRoutes": 0,
+    "ownerCashSpentUsd": 0,
+    "replacementPlan": "Keep as a terms-compatible paid route candidate; activate only after approved funding and successful exact-model qualification."
+  },
+  "sources": [
+    "https://docs.z.ai/legal-agreement/terms-of-use",
+    "https://chat.z.ai/legal-agreement/terms-of-service",
+    "https://docs.z.ai/api-reference/api-code",
+    "https://docs.z.ai/guides/overview/pricing"
+  ]
+}

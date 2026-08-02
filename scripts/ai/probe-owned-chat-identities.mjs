@@ -31,7 +31,10 @@ for (const requestedModel of models) {
   let body;
   try { body = JSON.parse(text); } catch { body = null; }
   const observedModel = typeof body?.model === 'string' && body.model.length <= 200 ? body.model : null;
-  results.push({ requestedModel, observedModel, identityMatches: requestedModel === observedModel, status: response.status, usageReported: Number.isSafeInteger(body?.usage?.prompt_tokens) && Number.isSafeInteger(body?.usage?.completion_tokens), latencyMs });
+  const rawFailureCode = body?.error?.code ?? body?.code;
+  const failureCode = typeof rawFailureCode === 'string' || typeof rawFailureCode === 'number' ? String(rawFailureCode).slice(0, 80).replace(/[^a-zA-Z0-9_.:-]/gu, '_') : null;
+  const retryAfter = response.headers.get('retry-after');
+  results.push({ requestedModel, observedModel, identityMatches: requestedModel === observedModel, status: response.status, usageReported: Number.isSafeInteger(body?.usage?.prompt_tokens) && Number.isSafeInteger(body?.usage?.completion_tokens), failureCode, retryAfter: retryAfter?.slice(0, 40) ?? null, latencyMs });
 }
 
 process.stdout.write(`${JSON.stringify({ schemaVersion: 'clervo.owned-chat-identity-probe.v1', checkedAt: new Date().toISOString(), serviceId: source.serviceId, externalCalls: results.length, ownerCashSpentUsd: 0, secretValuesRecorded: false, promptOrOutputPayloadsRecorded: false, results }, null, 2)}\n`);

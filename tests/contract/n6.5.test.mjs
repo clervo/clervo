@@ -198,19 +198,41 @@ test('every newly discovered owned-source listing is customer-priced while quali
   assert.equal(pricing.source.excludedGatewayListings, 21);
   assert.equal(pricing.source.ownerCashSpentUsd, 0);
   assert.equal(pricing.assets.length, 612);
-  assert.ok(pricing.assets.every(({ customerPrices, listingStatus, termsStatus }) => customerPrices.length > 0 && customerPrices.every(({ price }) => price > 0) && listingStatus !== 'sellable' && ['unreviewed', 'blocked'].includes(termsStatus)));
-  assert.equal(pricing.assets.filter(({ supplierCostKnown }) => supplierCostKnown).length, 6);
+  assert.ok(pricing.assets.every(({ customerPrices, listingStatus, termsStatus }) => customerPrices.length > 0 && customerPrices.every(({ price }) => price > 0) && listingStatus !== 'sellable' && ['unreviewed', 'restricted', 'blocked'].includes(termsStatus)));
+  assert.equal(pricing.assets.filter(({ supplierCostKnown }) => supplierCostKnown).length, 14);
   assert.deepEqual([...new Set(pricing.assets.map(({ product }) => product))].sort(), ['ai.chat', 'ai.embed', 'ai.image', 'ai.ocr', 'ai.rerank', 'ai.speech', 'ai.transcribe', 'ai.video']);
   assert.deepEqual(pricing.assets.filter(({ listingStatus }) => listingStatus === 'priced_unavailable_no_balance').map(({ serviceId, modelId }) => [serviceId, modelId]), [
     ['supply.cerebras', 'gemma-4-31b'],
     ['supply.cerebras', 'gpt-oss-120b'],
     ['supply.cerebras', 'zai-glm-4.7'],
     ['supply.sambanova', 'MiniMax-M2.7'],
+    ['supply.zai', 'glm-4.5'],
+    ['supply.zai', 'glm-4.5-air'],
+    ['supply.zai', 'glm-4.6'],
+    ['supply.zai', 'glm-4.7'],
+    ['supply.zai', 'glm-5'],
+    ['supply.zai', 'glm-5-turbo'],
+    ['supply.zai', 'glm-5.1'],
+    ['supply.zai', 'glm-5.2'],
   ]);
   const evidence = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cerebras-chat-quality-run.v1.json'), 'utf8'));
   assert.equal(evidence.externalCalls, 30);
   assert.equal(evidence.ownerCashSpentUsd, 0);
   assert.ok(evidence.models.every(({ results }) => results.length === 10 && results.every(({ status }) => status === 402)));
+});
+
+test('Z.AI keeps all GLM assets competitively priced and terms-compatible while its exhausted balance blocks execution', async () => {
+  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
+  const zai = pricing.assets.filter(({ serviceId }) => serviceId === 'supply.zai');
+  assert.equal(zai.length, 8);
+  assert.ok(zai.every(({ supplierCostKnown, supplierPrices, customerPrices, listingStatus, termsStatus }) => supplierCostKnown && supplierPrices.length > 0 && customerPrices.length > 0 && listingStatus === 'priced_unavailable_no_balance' && termsStatus === 'restricted'));
+  const identities = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/zai-chat-identity-probe.v1.json'), 'utf8'));
+  const terms = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/zai-api-terms.v1.json'), 'utf8'));
+  assert.equal(identities.externalCalls, 8);
+  assert.ok(identities.results.every(({ status, failureCode }) => status === 429 && failureCode === '1113'));
+  assert.equal(terms.findings.downstreamEndUserIntegrationAllowed, true);
+  assert.equal(terms.decision.sellableWhenFunded, true);
+  assert.equal(terms.decision.currentlyExecutableRoutes, 0);
 });
 
 test('SambaNova exact models retain competitive prices and quality evidence but stay blocked by hosted resale terms', async () => {

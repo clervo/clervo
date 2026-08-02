@@ -16,7 +16,7 @@
     "workingServices": 8,
     "excludedGatewayListings": 21,
     "termsBlockedListings": 108,
-    "supplierCostKnownListings": 6,
+    "supplierCostKnownListings": 14,
     "ownerCashSpentUsd": 0,
     "supplierCostKnown": false
   },
@@ -11877,161 +11877,305 @@
       "serviceId": "supply.zai",
       "modelId": "glm-4.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_no_balance",
       "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
+      "supplierCostKnown": true,
+      "supplierPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.11
+        },
         {
           "unit": "per M input tokens",
-          "price": 0.2
+          "price": 0.6
         },
         {
           "unit": "per M output tokens",
-          "price": 0.8
+          "price": 2.2
         }
       ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "customerPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.12
+        },
+        {
+          "unit": "per M input tokens",
+          "price": 0.65
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 2.35
+        }
+      ],
+      "pricingMethod": "official_cost_competitive_markup",
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.zai",
       "modelId": "glm-4.5-air",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_no_balance",
       "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
+      "supplierCostKnown": true,
+      "supplierPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.03
+        },
         {
           "unit": "per M input tokens",
           "price": 0.2
         },
         {
           "unit": "per M output tokens",
-          "price": 0.8
+          "price": 1.1
         }
       ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "customerPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.04
+        },
+        {
+          "unit": "per M input tokens",
+          "price": 0.22
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 1.2
+        }
+      ],
+      "pricingMethod": "official_cost_competitive_markup",
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.zai",
       "modelId": "glm-4.6",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_no_balance",
       "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
+      "supplierCostKnown": true,
+      "supplierPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.11
+        },
         {
           "unit": "per M input tokens",
-          "price": 0.2
+          "price": 0.6
         },
         {
           "unit": "per M output tokens",
-          "price": 0.8
+          "price": 2.2
         }
       ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "customerPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.12
+        },
+        {
+          "unit": "per M input tokens",
+          "price": 0.65
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 2.35
+        }
+      ],
+      "pricingMethod": "official_cost_competitive_markup",
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.zai",
       "modelId": "glm-4.7",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_no_balance",
       "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
+      "supplierCostKnown": true,
+      "supplierPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.11
+        },
         {
           "unit": "per M input tokens",
-          "price": 0.2
+          "price": 0.6
         },
         {
           "unit": "per M output tokens",
-          "price": 0.8
+          "price": 2.2
         }
       ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "customerPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.12
+        },
+        {
+          "unit": "per M input tokens",
+          "price": 0.65
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 2.35
+        }
+      ],
+      "pricingMethod": "official_cost_competitive_markup",
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.zai",
       "modelId": "glm-5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_no_balance",
       "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
+      "supplierCostKnown": true,
+      "supplierPrices": [
         {
-          "unit": "per M input tokens",
+          "unit": "per M cached input tokens",
           "price": 0.2
         },
         {
+          "unit": "per M input tokens",
+          "price": 1
+        },
+        {
           "unit": "per M output tokens",
-          "price": 0.8
+          "price": 3.2
         }
       ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "customerPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.22
+        },
+        {
+          "unit": "per M input tokens",
+          "price": 1.1
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 3.4
+        }
+      ],
+      "pricingMethod": "official_cost_competitive_markup",
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.zai",
       "modelId": "glm-5-turbo",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_no_balance",
       "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
+      "supplierCostKnown": true,
+      "supplierPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.24
+        },
         {
           "unit": "per M input tokens",
-          "price": 0.2
+          "price": 1.2
         },
         {
           "unit": "per M output tokens",
-          "price": 0.8
+          "price": 4
         }
       ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "customerPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.26
+        },
+        {
+          "unit": "per M input tokens",
+          "price": 1.3
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 4.2
+        }
+      ],
+      "pricingMethod": "official_cost_competitive_markup",
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.zai",
       "modelId": "glm-5.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_no_balance",
       "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
+      "supplierCostKnown": true,
+      "supplierPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.26
+        },
         {
           "unit": "per M input tokens",
-          "price": 0.2
+          "price": 1.4
         },
         {
           "unit": "per M output tokens",
-          "price": 0.8
+          "price": 4.4
         }
       ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "customerPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.28
+        },
+        {
+          "unit": "per M input tokens",
+          "price": 1.5
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 4.65
+        }
+      ],
+      "pricingMethod": "official_cost_competitive_markup",
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.zai",
       "modelId": "glm-5.2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_no_balance",
       "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
+      "supplierCostKnown": true,
+      "supplierPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.26
+        },
         {
           "unit": "per M input tokens",
-          "price": 0.2
+          "price": 1.4
         },
         {
           "unit": "per M output tokens",
-          "price": 0.8
+          "price": 4.4
         }
       ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "customerPrices": [
+        {
+          "unit": "per M cached input tokens",
+          "price": 0.28
+        },
+        {
+          "unit": "per M input tokens",
+          "price": 1.5
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 4.65
+        }
+      ],
+      "pricingMethod": "official_cost_competitive_markup",
+      "termsStatus": "restricted"
     }
   ]
 }

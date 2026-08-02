@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "clervo.owned-chat-identity-probe.v1",
+  "checkedAt": "2026-08-02T05:19:37.194Z",
+  "serviceId": "supply.zai",
+  "externalCalls": 8,
+  "ownerCashSpentUsd": 0,
+  "secretValuesRecorded": false,
+  "promptOrOutputPayloadsRecorded": false,
+  "results": [
+    {
+      "requestedModel": "glm-4.5",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "1113",
+      "retryAfter": null,
+      "latencyMs": 572.55
+    },
+    {
+      "requestedModel": "glm-4.5-air",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "1113",
+      "retryAfter": null,
+      "latencyMs": 478.16
+    },
+    {
+      "requestedModel": "glm-4.6",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "1113",
+      "retryAfter": null,
+      "latencyMs": 381.09
+    },
+    {
+      "requestedModel": "glm-4.7",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "1113",
+      "retryAfter": null,
+      "latencyMs": 388.26
+    },
+    {
+      "requestedModel": "glm-5",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "1113",
+      "retryAfter": null,
+      "latencyMs": 403.42
+    },
+    {
+      "requestedModel": "glm-5-turbo",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "1113",
+      "retryAfter": null,
+      "latencyMs": 402.41
+    },
+    {
+      "requestedModel": "glm-5.1",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "1113",
+      "retryAfter": null,
+      "latencyMs": 392.84
+    },
+    {
+      "requestedModel": "glm-5.2",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "1113",
+      "retryAfter": null,
+      "latencyMs": 400.07
+    }
+  ]
+}
