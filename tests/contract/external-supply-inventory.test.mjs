@@ -127,9 +127,9 @@ test('owned Solana RPC is technically healthy and priced while third-party use r
   const validate = ajv.compile(schema);
   assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
   assert.deepEqual([service.connectionStatus, service.qualificationStatus, service.termsStatus, service.resaleStatus], ['observed_working', 'failed', 'blocked', 'prohibited']);
-  assert.equal(pricing.routes.length, 1);
-  assert.ok(pricing.routes[0].customerPriceMicrousd > 0);
-  assert.deepEqual([pricing.routes[0].technicalQualificationStatus, pricing.routes[0].listingStatus, pricing.routes[0].broadcastStatus], ['passed', 'priced_terms_blocked', 'read_only_route']);
+  const route = pricing.routes.find(({ serviceId }) => serviceId === 'supply.helius_rpc');
+  assert.ok(route.customerPriceMicrousd > 0);
+  assert.deepEqual([route.technicalQualificationStatus, route.listingStatus, route.broadcastStatus], ['passed', 'priced_terms_blocked', 'read_only_route']);
   assert.equal(evidence.externalCalls, 4);
   assert.equal(evidence.transactionCalls, 0);
   assert.equal(evidence.signedPayloads, 0);
@@ -138,4 +138,26 @@ test('owned Solana RPC is technically healthy and priced while third-party use r
   assert.ok(evidence.observations.every(({ status, passed }) => status === 200 && passed));
   assert.equal(evidence.terms.resaleAllowed, false);
   assert.equal(evidence.terms.thirdPartyBenefitAllowed, false);
+});
+
+test('public RPC mesh prices every configured route and preserves failures, identity, and safety boundaries', async () => {
+  const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
+  const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.public_rpc_mesh');
+  const pricing = await json('packages/catalog/rpc-supply-pricing.v1.json');
+  const evidence = await json('docs/evidence/supply-foundation/public-rpc-mesh-qualification.v1.json');
+  const mesh = pricing.routes.filter(({ serviceId }) => serviceId === 'supply.public_rpc_mesh');
+  assert.deepEqual([service.connectionStatus, service.qualificationStatus, service.termsStatus], ['observed_working', 'in_progress', 'review_required']);
+  assert.equal(evidence.configuredChains, 14);
+  assert.equal(evidence.configuredRoutes, 32);
+  assert.equal(evidence.externalCalls, 27);
+  assert.equal(evidence.transactionCalls, 0);
+  assert.equal(evidence.signedPayloads, 0);
+  assert.deepEqual(evidence.summary, { passedRoutes: 20, passedChains: 13, exactIdentityRoutes: 17, endpointOnlyIdentityRoutes: 3, batchCapableRoutes: 15 });
+  assert.deepEqual(evidence.safety, { httpsOnly: true, credentialsInUrlsAllowed: false, queryStringsAllowed: false, hostAllowlistRequired: true, publicDnsRequired: true, redirectsAllowed: false });
+  assert.equal(mesh.length, 32);
+  assert.ok(mesh.every(({ customerPriceMicrousd, termsStatus, broadcastStatus }) => customerPriceMicrousd > 0 && termsStatus === 'unreviewed' && broadcastStatus === 'read_only_route'));
+  assert.equal(mesh.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'passed').length, 20);
+  assert.equal(new Set(mesh.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'passed').map(({ network }) => network)).size, 13);
+  assert.equal(mesh.filter(({ fallbackStatus }) => fallbackStatus === 'independent_fallback_ready').length, 20);
+  assert.ok(mesh.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'failed').every(({ listingStatus, qualityGrade }) => listingStatus === 'blocked' && qualityGrade === 'rejected'));
 });

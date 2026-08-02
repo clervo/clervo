@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.15",
-  "observedAt": "2026-08-02T05:41:46.439Z",
+  "inventoryVersion": "2026-08-02.16",
+  "observedAt": "2026-08-02T05:45:43.058Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -1497,13 +1497,16 @@
       "alternateCredentialSlots": 0,
       "credentialDeployment": "not_required",
       "fundingClass": "recurring_free",
-      "connectionStatus": "observed_not_tested",
-      "qualificationStatus": "not_run",
+      "connectionStatus": "observed_working",
+      "qualificationStatus": "in_progress",
       "termsStatus": "review_required",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Fourteen chain-specific public RPC variables are present; several contain multiple fallback URLs and require per-origin terms, method, freshness, fork, and reliability qualification."
+        "Fourteen chain variables contain 32 allowlisted HTTPS routes; 27 resolved to public addresses and received a bounded read-only request.",
+        "Twenty routes passed identity-or-mainnet-endpoint and current-height checks across 13 chains; Fantom has no currently working route.",
+        "Seven chains currently have at least two technically independent working reads; dead DNS, HTTP 401/521, or invalid responses remain explicit failures rather than fallbacks.",
+        "Every route is customer-priced at USD 0.000001/request, but provider-family terms, quotas, archival behavior, and production reliability are still under review; no transaction was submitted or signed."
       ]
     },
     {
