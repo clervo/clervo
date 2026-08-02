@@ -8,7 +8,7 @@ const execute = promisify(execFile);
 
 test('production cloud contract is bounded, recoverable, and leaves the protected gateway outside scope', async () => {
   const policy = JSON.parse(await readFile('infra/production/gcp/deployment.v1.json', 'utf8'));
-  assert.equal(policy.state, 'repository_ready_cloud_unapplied');
+  assert.equal(policy.state, 'infrastructure_bootstrap_partial');
   assert.equal(policy.project, 'bloxsniper-prod');
   assert.equal(policy.region, 'us-central1');
   assert.equal(policy.database.engine, 'POSTGRES_18');
@@ -29,7 +29,22 @@ test('production cloud contract is bounded, recoverable, and leaves the protecte
   assert.equal(policy.rollout.previousVerifiedRevisionRequired, true);
   assert.equal(policy.rollout.previousVerifiedImageDigestRequired, true);
   assert.equal(policy.rollout.ownerConfirmationRequiredForMutation, true);
-  assert.equal(policy.externalEffectsPerformed, false);
+  assert.deepEqual(policy.observedBootstrap, {
+    observedAt: '2026-08-02T20:40:40.000Z',
+    artifactRepositoryCreated: true,
+    artifactScanningActive: true,
+    databaseInstanceCreated: true,
+    databaseCreated: true,
+    databaseSecretVersion: 1,
+    secretContainersCreated: true,
+    runtimeServiceAccountCreated: false,
+    buildServiceAccountCreated: false,
+    monitoringSecretVersionsCreated: false,
+    cloudRunServiceCreated: false,
+    trafficChanged: false,
+    paidExecutionEnabled: false,
+  });
+  assert.equal(policy.externalEffectsPerformed, true);
   assert.ok(policy.protectedResources.includes('ai.clervo.dev'));
   assert.ok(policy.leastPrivilege.runtimeForbiddenRoles.includes('roles/owner'));
   assert.ok(policy.leastPrivilege.runtimeForbiddenRoles.includes('roles/editor'));
@@ -63,7 +78,7 @@ test('release control is inspectable without credentials and mutations fail befo
     env: { PATH: process.env.PATH },
   });
   const plan = JSON.parse(stdout);
-  assert.equal(plan.state, 'repository_ready_cloud_unapplied');
+  assert.equal(plan.state, 'infrastructure_bootstrap_partial');
   assert.equal(plan.candidateReceivesTrafficOnDeploy, false);
   assert.equal(plan.paymentEnabled, false);
   assert.equal(plan.ownerConfirmationRequired, true);

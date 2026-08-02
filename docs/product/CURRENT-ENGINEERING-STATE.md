@@ -225,14 +225,25 @@ by a fresh queue process, the retry completed, a terminal failure reached its
 dead-letter queue, and both completed/dead-letter state survived backup and
 isolated restore. This proves the portable local recovery
 path, not managed production backup scheduling or point-in-time recovery.
-The immutable remote registry digest, signed Cloud Build provenance, managed
-backup/recovery observation, acknowledged production monitoring destination,
-zero-traffic Cloud Run candidate, and remote rollback remain unapplied. A
-read-only inventory on 2026-08-02 confirmed that `clervo-production`,
-`clervo-api-production`, `clervo-production-postgres`, and the three named
-production secrets do not yet exist; the Cloud SQL Admin API is disabled. Their
-creation is a real billable infrastructure and IAM operation requiring exact
-owner authorization. No cloud resource was changed by the inventory.
+The owner approved the exact Stage 14 Google Cloud bootstrap on 2026-08-02.
+Required APIs are enabled. The immutable `clervo-production` Artifact Registry
+repository exists with scanning active. The deletion-protected regional
+PostgreSQL 18 instance `clervo-production-postgres` is runnable with 2 vCPU,
+7.5 GiB memory, 20 GiB SSD, storage auto-growth, 14 retained backups, and
+seven-day point-in-time recovery. Database `clervo`, its non-root application
+user, all three production secret containers, and database URL secret version
+1 exist; credential material was generated directly into Secret Manager and
+was not printed or committed. No public service, traffic, or payment was
+enabled, and `ai.clervo.dev` was untouched.
+
+The remaining cloud bootstrap is isolated to the two least-privilege service
+accounts and IAM grants, two monitoring secret versions, signed Cloud Build,
+the immutable remote image digest, a private zero-traffic Cloud Run candidate,
+managed recovery observation, authenticated smoke, acknowledged alert
+delivery, and remote rollback. The execution safety layer requires a separate
+owner authority event for IAM changes. The existing Sentry organization and
+project names plus interactive authorization are still required for the
+production monitoring destination.
 
 The Google Cloud production path is now repository-defined without applying
 cloud state. It fixes the target to the existing `bloxsniper-prod/us-central1`

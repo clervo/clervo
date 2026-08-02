@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.production-gcp-deployment.v1",
-  "state": "repository_ready_cloud_unapplied",
+  "state": "infrastructure_bootstrap_partial",
   "project": "bloxsniper-prod",
   "region": "us-central1",
   "protectedResources": [
@@ -116,5 +116,20 @@
     "previousVerifiedImageDigestRequired": true,
     "ownerConfirmationRequiredForMutation": true
   },
-  "externalEffectsPerformed": false
+  "observedBootstrap": {
+    "observedAt": "2026-08-02T20:40:40.000Z",
+    "artifactRepositoryCreated": true,
+    "artifactScanningActive": true,
+    "databaseInstanceCreated": true,
+    "databaseCreated": true,
+    "databaseSecretVersion": 1,
+    "secretContainersCreated": true,
+    "runtimeServiceAccountCreated": false,
+    "buildServiceAccountCreated": false,
+    "monitoringSecretVersionsCreated": false,
+    "cloudRunServiceCreated": false,
+    "trafficChanged": false,
+    "paidExecutionEnabled": false
+  },
+  "externalEffectsPerformed": true
 }
