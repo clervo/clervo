@@ -1,0 +1,11 @@
+{
+  "schema": "release-candidate-freeze",
+  "valid": false,
+  "value": {
+    "schemaVersion": "clervo.release-candidate-freeze.v1",
+    "releaseCandidateId": "clervo-private-core-2026-08-02.1",
+    "frozenAt": "2026-08-02T13:15:00.000Z",
+    "state": "publicly_distributed",
+    "noPublicDistribution": false
+  }
+}

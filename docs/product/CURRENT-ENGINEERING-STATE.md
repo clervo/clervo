@@ -1,6 +1,6 @@
 # Current engineering state
 
-Updated 2026-08-02 after Stage 11 private-stability completion. This is a compact resumable
+Updated 2026-08-02 after Stage 12 product-core freeze completion. This is a compact resumable
 handoff, not an authorization gate. Continue automatically after reading it.
 
 ## Active work
@@ -55,8 +55,17 @@ eight-drill campaign passed outage isolation, 1,000-attempt replay, unknown
 settlement quarantine, cost cutoff, sandbox orphan cleanup, telemetry secret
 redaction, dependency recovery, and contract-tamper rejection. The consolidated
 Stage 11 suite passes 12/12 with 93 schemas and 128 fixtures validated. These
-are private qualifications; public lifecycle did not change. Stage 12
-cross-pillar compatibility and product-core freeze is the current priority.
+are private qualifications; public lifecycle did not change.
+
+Stage 12 cross-pillar compatibility and product-core freeze is complete. The
+release-candidate manifest binds the canonical registry, private workflow
+qualifications, exact 32-operation split, six price sources, lifecycle
+projection, schema visibility, 94 schemas, and 130 examples with independently
+recomputed hashes. The only frozen external operations are `search.web` and
+`search.answer`; their registry entries remain internal preview surfaces and
+the manifest explicitly makes no public-distribution claim. The consolidated
+Stage 12 suite passes 5/5 plus complete contract validation. Stage 13 shared
+access, design, onboarding, and distribution is next.
 
 The production runner `sandbox.nodejs-24` is qualified at digest
 `sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e`.
@@ -83,9 +92,10 @@ confirmed absent; Artifact Registry was preserved. Evidence is in
 
 ## Next actions
 
-1. Continue Stage 12 by verifying and freezing the canonical registry,
-   operation set, schemas, visibility, prices, lifecycle projections, examples,
-   and release-candidate interfaces without exposing internal or sealed data.
+1. Before Stage 13 implementation, ingest the owner's website handoff and
+   inventory the existing npm, MCP, package-registry, publishing, and related
+   account assets. Reuse qualified assets and guide any required secure login;
+   do not create duplicate accounts or request secret values in chat.
 2. Keep Crypto Intelligence customer routing disabled until written commercial
    permission or replacement terms-compatible EVM, Solana, and protocol supply
    exists; this isolated owner blocker does not pause combined local work.
