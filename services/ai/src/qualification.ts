@@ -70,13 +70,13 @@ export async function qualifyAiChatRoute(input: {
   const results = new Map<string, ReturnType<typeof check>>();
   const observations: AiChatQualificationProbeResult[] = [];
   try {
-    const first = await input.probe.complete({ prompt: 'Return exactly CLERVO-QUAL-A.', stream: false, responseFormat: 'text' });
-    const second = await input.probe.complete({ prompt: 'Return exactly CLERVO-QUAL-B.', stream: false, responseFormat: 'text' });
+    const first = await input.probe.complete({ prompt: 'Return exactly CLERVO-QUAL-A', stream: false, responseFormat: 'text' });
+    const second = await input.probe.complete({ prompt: 'Return exactly CLERVO-QUAL-B', stream: false, responseFormat: 'text' });
     observations.push(first, second);
     results.set('authentication', check('authentication', 'passed', 'credential_accepted', { completed: 2 }));
     const identityPassed = observations.every(({ modelIdentity }) => modelIdentity === input.exactModelId);
     results.set('exact_identity', check('exact_identity', identityPassed ? 'passed' : 'failed', identityPassed ? 'exact_identity_observed' : 'model_identity_mismatch', { identities: observations.map(({ modelIdentity }) => modelIdentity) }));
-    const dependencePassed = first.outputText.trim() === 'CLERVO-QUAL-A.' && second.outputText.trim() === 'CLERVO-QUAL-B.';
+    const dependencePassed = first.outputText.trim() === 'CLERVO-QUAL-A' && second.outputText.trim() === 'CLERVO-QUAL-B';
     results.set('input_dependence', check('input_dependence', dependencePassed ? 'passed' : 'failed', dependencePassed ? 'input_dependence_observed' : 'input_dependence_failed', { first: first.outputText.trim() === 'CLERVO-QUAL-A.', second: second.outputText.trim() === 'CLERVO-QUAL-B.' }));
     results.set('output_shape', check('output_shape', dependencePassed ? 'passed' : 'failed', dependencePassed ? 'bounded_text_valid' : 'bounded_text_invalid'));
     const usagePassed = observations.every(({ usage }) => usage.inputTokens > 0 && usage.outputTokens > 0 && Object.values(usage).every((value) => Number.isSafeInteger(value) && value >= 0));
@@ -97,8 +97,8 @@ export async function qualifyAiChatRoute(input: {
 
     if (input.capabilities.includes('streaming')) {
       let stream: AiChatQualificationProbeResult | undefined;
-      try { stream = await input.probe.complete({ prompt: 'Return exactly CLERVO-STREAM.', stream: true, responseFormat: 'text' }); observations.push(stream); } catch { stream = undefined; }
-      const passed = stream?.modelIdentity === input.exactModelId && stream.outputText.trim() === 'CLERVO-STREAM.' && stream.usage.outputTokens > 0;
+      try { stream = await input.probe.complete({ prompt: 'Return exactly CLERVO-STREAM', stream: true, responseFormat: 'text' }); observations.push(stream); } catch { stream = undefined; }
+      const passed = stream?.modelIdentity === input.exactModelId && stream.outputText.trim() === 'CLERVO-STREAM' && stream.usage.outputTokens > 0;
       results.set('streaming', check('streaming', passed ? 'passed' : 'failed', passed ? 'stream_terminal_usage_valid' : 'streaming_failed'));
     }
     if (input.capabilities.includes('structured_output')) {

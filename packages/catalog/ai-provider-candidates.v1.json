@@ -1,7 +1,61 @@
 {
-  "catalogVersion": "2026-08-02.2",
-  "researchedAt": "2026-08-01T23:45:00.000Z",
+  "catalogVersion": "2026-08-02.3",
+  "researchedAt": "2026-08-02T02:16:26.054Z",
   "targets": [
+    {
+      "providerId": "provider.clervo_ai_gateway",
+      "supplyFamilyId": "supply.clervo_ai_gateway",
+      "exactModelId": "gpt-5.6-luna",
+      "baseUrlPattern": "https://ai.clervo.dev/v1/",
+      "allowedHosts": ["ai.clervo.dev"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": ["CLERVO_AI_BASE_URL"],
+      "requiredSecretNames": ["CLERVO_AI_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "blocked",
+      "blockerCodes": ["supplier_cost_unknown", "deep_benchmark_not_run"],
+      "documentation": [
+        { "title": "Clervo gateway authenticated model catalog", "url": "https://ai.clervo.dev/v1/models", "checkedAt": "2026-08-02T02:16:26.054Z" }
+      ]
+    },
+    {
+      "providerId": "provider.clervo_ai_gateway",
+      "supplyFamilyId": "supply.clervo_ai_gateway",
+      "exactModelId": "gpt-5.6-terra",
+      "baseUrlPattern": "https://ai.clervo.dev/v1/",
+      "allowedHosts": ["ai.clervo.dev"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": ["CLERVO_AI_BASE_URL"],
+      "requiredSecretNames": ["CLERVO_AI_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "blocked",
+      "blockerCodes": ["supplier_cost_unknown", "deep_benchmark_not_run"],
+      "documentation": [
+        { "title": "Clervo gateway authenticated model catalog", "url": "https://ai.clervo.dev/v1/models", "checkedAt": "2026-08-02T02:16:26.054Z" }
+      ]
+    },
+    {
+      "providerId": "provider.clervo_ai_gateway",
+      "supplyFamilyId": "supply.clervo_ai_gateway",
+      "exactModelId": "gpt-5.6-sol",
+      "baseUrlPattern": "https://ai.clervo.dev/v1/",
+      "allowedHosts": ["ai.clervo.dev"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": ["CLERVO_AI_BASE_URL"],
+      "requiredSecretNames": ["CLERVO_AI_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "blocked",
+      "blockerCodes": ["supplier_cost_unknown", "deep_benchmark_not_run"],
+      "documentation": [
+        { "title": "Clervo gateway authenticated model catalog", "url": "https://ai.clervo.dev/v1/models", "checkedAt": "2026-08-02T02:16:26.054Z" }
+      ]
+    },
     {
       "providerId": "provider.google_gemini",
       "supplyFamilyId": "supply.google_hyperscale",

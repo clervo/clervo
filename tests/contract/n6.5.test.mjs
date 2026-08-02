@@ -20,7 +20,7 @@ function input(overrides = {}) {
     maximumSupplierCost: { asset: 'USD', amountAtomic: '1000', decimals: 6 }, pricing,
     probe: {
       async complete({ prompt, stream, responseFormat }) {
-        const outputText = prompt.includes('CLERVO-QUAL-A') ? 'CLERVO-QUAL-A.' : prompt.includes('CLERVO-QUAL-B') ? 'CLERVO-QUAL-B.' : stream ? 'CLERVO-STREAM.' : responseFormat === 'json_object' ? '{"nonce":"CLERVO-JSON"}' : 'unexpected';
+        const outputText = prompt.includes('CLERVO-QUAL-A') ? 'CLERVO-QUAL-A' : prompt.includes('CLERVO-QUAL-B') ? 'CLERVO-QUAL-B' : stream ? 'CLERVO-STREAM' : responseFormat === 'json_object' ? '{"nonce":"CLERVO-JSON"}' : 'unexpected';
         return { modelIdentity: 'example-chat-v1', outputText, usage, latencyMs: stream ? 25 : 20 };
       },
       async invalidModelFailsSafely() { return true; },
@@ -60,13 +60,17 @@ test('identity substitution, latency breach, unsafe failures, and unresolved res
   assert.equal(unsafe.checks.find(({ name }) => name === 'terms').status, 'not_run');
 });
 
-test('three independent current targets remain honestly blocked on credentials, live checks, and resale terms', async () => {
+test('screened Clervo routes and three independent candidates preserve honest qualification blockers', async () => {
   const candidates = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-provider-candidates.v1.json'), 'utf8'));
-  assert.deepEqual(candidates.targets.map(({ providerId }) => providerId), ['provider.google_gemini', 'provider.groq', 'provider.cloudflare_workers_ai']);
-  assert.equal(new Set(candidates.targets.map(({ supplyFamilyId }) => supplyFamilyId)).size, 3);
-  assert.deepEqual(candidates.targets.map(({ exactModelId }) => exactModelId), ['gemini-3.6-flash', 'openai/gpt-oss-120b', '@cf/openai/gpt-oss-120b']);
-  assert.ok(candidates.targets.every(({ selectedForQualification, termsStatus, resaleAllowed, qualificationStatus, blockerCodes, requiredSecretNames }) => selectedForQualification && termsStatus === 'unreviewed' && resaleAllowed === false && qualificationStatus === 'blocked' && blockerCodes.includes('credential_missing') && blockerCodes.includes('live_checks_not_run') && requiredSecretNames.length > 0));
-  assert.ok(candidates.targets.flatMap(({ documentation }) => documentation).every(({ url }) => /^https:\/(?:\/ai\.google\.dev|\/console\.groq\.com|\/developers\.cloudflare\.com)/u.test(url)));
+  const clervo = candidates.targets.filter(({ providerId }) => providerId === 'provider.clervo_ai_gateway');
+  const independent = candidates.targets.filter(({ providerId }) => providerId !== 'provider.clervo_ai_gateway');
+  assert.deepEqual(clervo.map(({ exactModelId }) => exactModelId), ['gpt-5.6-luna', 'gpt-5.6-terra', 'gpt-5.6-sol']);
+  assert.ok(clervo.every(({ requiredConfigurationNames, requiredSecretNames, termsStatus, resaleAllowed, qualificationStatus, blockerCodes }) => requiredConfigurationNames.includes('CLERVO_AI_BASE_URL') && requiredSecretNames.includes('CLERVO_AI_API_KEY') && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'blocked' && blockerCodes.includes('supplier_cost_unknown') && blockerCodes.includes('deep_benchmark_not_run')));
+  assert.deepEqual(independent.map(({ providerId }) => providerId), ['provider.google_gemini', 'provider.groq', 'provider.cloudflare_workers_ai']);
+  assert.equal(new Set(independent.map(({ supplyFamilyId }) => supplyFamilyId)).size, 3);
+  assert.deepEqual(independent.map(({ exactModelId }) => exactModelId), ['gemini-3.6-flash', 'openai/gpt-oss-120b', '@cf/openai/gpt-oss-120b']);
+  assert.ok(independent.every(({ selectedForQualification, termsStatus, resaleAllowed, qualificationStatus, blockerCodes, requiredSecretNames }) => selectedForQualification && termsStatus === 'unreviewed' && resaleAllowed === false && qualificationStatus === 'blocked' && blockerCodes.includes('credential_missing') && blockerCodes.includes('live_checks_not_run') && requiredSecretNames.length > 0));
+  assert.ok(independent.flatMap(({ documentation }) => documentation).every(({ url }) => /^https:\/(?:\/ai\.google\.dev|\/console\.groq\.com|\/developers\.cloudflare\.com)/u.test(url)));
   assert.deepEqual(candidates.modalTargets.map(({ products }) => products), [['ai.embed'], ['ai.image'], ['ai.speech']]);
   assert.deepEqual(candidates.modalTargets.map(({ exactModelId }) => exactModelId), ['text-embedding-3-large', 'gpt-image-2', 'tts-1']);
   assert.ok(candidates.modalTargets.every(({ providerId, supplyFamilyId, requiredSecretNames, qualificationStatus }) => providerId === 'provider.openai' && supplyFamilyId === 'supply.openai_api' && requiredSecretNames.includes('OPENAI_API_KEY') && qualificationStatus === 'blocked'));
@@ -84,6 +88,21 @@ test('provider candidate schema compiles strictly and remains private', async ()
   assert.equal(validate(candidates), true, ajv.errorsText(validate.errors));
   const visibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
   assert.equal(visibility.schemas.find(({ file }) => file === 'ai-provider-candidates.schema.json')?.visibility, 'internal_control');
+});
+
+test('Clervo gateway screen preserves the bounded live result without overstating quality or cost', async () => {
+  const evidence = JSON.parse(await readFile(path.join(root, 'docs/evidence/stage6/clervo-gateway-screen.v1.json'), 'utf8'));
+  assert.equal(evidence.screen.externalCalls, 38);
+  assert.equal(evidence.screen.ownerCashSpentUsd, 0);
+  assert.equal(evidence.screen.supplierBalanceDebitKnown, false);
+  assert.equal(evidence.screen.secretValuesRecorded, false);
+  assert.equal(evidence.screen.promptOrOutputPayloadsRecorded, false);
+  assert.ok(evidence.screen.models.every(({ authentication, responseLabelMatchesRequestedModel, inputDependence, usageReporting, structuredOutput, streaming }) => authentication && responseLabelMatchesRequestedModel && inputDependence && usageReporting && structuredOutput && streaming));
+  assert.deepEqual(evidence.screen.aliasResolution, { 'clervo/fast': 'gpt-5.6-luna', 'clervo/smart': 'gpt-5.6-terra', 'clervo/code': 'gpt-5.6-sol', 'clervo/deep': 'gpt-5.6-sol' });
+  assert.equal(evidence.screen.invalidModel.rejectedSafely, true);
+  assert.equal(evidence.limits.qualityBenchmark, 'not_run');
+  assert.equal(evidence.limits.supplierCost, 'unknown');
+  assert.equal(evidence.decision, 'screen_passed_deep_benchmark_and_supplier_cost_pending');
 });
 
 test('AI outage monitoring emits bounded provider alerts without prompt or credential payloads', () => {

@@ -21,7 +21,7 @@
         "termsStatus": { "enum": ["approved", "restricted", "blocked", "unreviewed"] },
         "resaleAllowed": { "type": "boolean" },
         "qualificationStatus": { "enum": ["passed", "failed", "blocked"] },
-        "blockerCodes": { "type": "array", "uniqueItems": true, "items": { "enum": ["credential_missing", "configuration_missing", "resale_terms_unresolved", "live_checks_not_run"] } },
+        "blockerCodes": { "type": "array", "uniqueItems": true, "items": { "enum": ["credential_missing", "configuration_missing", "resale_terms_unresolved", "live_checks_not_run", "supplier_cost_unknown", "deep_benchmark_not_run"] } },
         "documentation": {
           "type": "array",
           "minItems": 1,
@@ -41,7 +41,7 @@
     }
   },
   "properties": {
-    "catalogVersion": { "const": "2026-08-02.2" },
+    "catalogVersion": { "const": "2026-08-02.3" },
     "researchedAt": { "type": "string", "format": "date-time" },
     "targets": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/target" } },
     "modalTargets": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/target" } },

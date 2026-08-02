@@ -28,7 +28,8 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
 
   const clervo = inventory.services.find(({ serviceId }) => serviceId === 'supply.clervo_ai_gateway');
   assert.equal(clervo.connectionStatus, 'owner_reported_working');
-  assert.equal(clervo.credentialDeployment, 'missing');
+  assert.equal(clervo.credentialDeployment, 'current_environment');
+  assert.equal(clervo.configuredCredentialSlots, 1);
   assert.deepEqual(clervo.knownModelNames, ['gpt-5.6-sol', 'gpt-5.6-terra', 'gpt-5.6-luna']);
 
   const gateway = inventory.services.find(({ serviceId }) => serviceId === 'supply.hcnsec_gateway');

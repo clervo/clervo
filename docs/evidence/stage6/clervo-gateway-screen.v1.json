@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "clervo.stage6.gateway-screen.v1",
+  "checkedAt": "2026-08-02T02:16:26.054Z",
+  "endpointOrigin": "https://ai.clervo.dev",
+  "catalog": {
+    "recordCount": 7,
+    "exactModels": ["gpt-5.6-luna", "gpt-5.6-terra", "gpt-5.6-sol"],
+    "aliases": ["clervo/fast", "clervo/smart", "clervo/code", "clervo/deep"]
+  },
+  "screen": {
+    "externalCalls": 38,
+    "ownerCashSpentUsd": 0,
+    "supplierBalanceDebitKnown": false,
+    "secretValuesRecorded": false,
+    "promptOrOutputPayloadsRecorded": false,
+    "models": [
+      {
+        "model": "gpt-5.6-luna",
+        "authentication": true,
+        "responseLabelMatchesRequestedModel": true,
+        "inputDependence": true,
+        "usageReporting": true,
+        "structuredOutput": true,
+        "streaming": true,
+        "latencyMsSamples": [1648.68, 972.41, 891.99, 768.84]
+      },
+      {
+        "model": "gpt-5.6-terra",
+        "authentication": true,
+        "responseLabelMatchesRequestedModel": true,
+        "inputDependence": true,
+        "usageReporting": true,
+        "structuredOutput": true,
+        "streaming": true,
+        "latencyMsSamples": [1037.9, 1062.69, 971.8, 980.94]
+      },
+      {
+        "model": "gpt-5.6-sol",
+        "authentication": true,
+        "responseLabelMatchesRequestedModel": true,
+        "inputDependence": true,
+        "usageReporting": true,
+        "structuredOutput": true,
+        "streaming": true,
+        "latencyMsSamples": [1595.61, 4625.78, 1985.87, 1972.03]
+      }
+    ],
+    "aliasResolution": {
+      "clervo/fast": "gpt-5.6-luna",
+      "clervo/smart": "gpt-5.6-terra",
+      "clervo/code": "gpt-5.6-sol",
+      "clervo/deep": "gpt-5.6-sol"
+    },
+    "invalidModel": {
+      "rejectedSafely": true,
+      "httpStatus": 400
+    }
+  },
+  "calibration": {
+    "initialStrictProbeResult": "failed_on_terminal_period_only",
+    "diagnosis": "The routes returned the requested nonce while omitting the terminal period.",
+    "correction": "Use punctuation-free nonce probes so the screen measures input dependence rather than punctuation preservation.",
+    "finalProbeResult": "passed"
+  },
+  "limits": {
+    "identityClaim": "The response model label matched the requested exact model; upstream provenance is not cryptographically proven by this screen.",
+    "qualityBenchmark": "not_run",
+    "supplierCost": "unknown",
+    "productionAvailability": "not_claimed"
+  },
+  "decision": "screen_passed_deep_benchmark_and_supplier_cost_pending"
+}

@@ -57,9 +57,9 @@
       "products": ["ai.chat"],
       "endpointOrigins": ["https://ai.clervo.dev"],
       "credentialNames": ["CLERVO_AI_API_KEY"],
-      "configuredCredentialSlots": 0,
+      "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
-      "credentialDeployment": "missing",
+      "credentialDeployment": "current_environment",
       "fundingClass": "owner_reported_balance",
       "connectionStatus": "owner_reported_working",
       "qualificationStatus": "not_run",
@@ -67,7 +67,7 @@
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
       "knownModelNames": ["gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna"],
-      "notes": ["Owner reports that activation is imminent; connectivity and exact identities have not yet been probed."]
+      "notes": ["Authenticated catalog discovery and bounded screening observed all three exact model labels plus four Clervo aliases on 2026-08-02; deeper quality and supplier-cost qualification remain pending."]
     },
     {
       "serviceId": "supply.hcnsec_gateway",
@@ -471,11 +471,6 @@
     }
   ],
   "ownerInputs": [
-    {
-      "inputId": "install_clervo_ai_credential",
-      "reason": "Install the ai.clervo.dev credential into the current development secret environment so the endpoint can be discovered and qualified without using the legacy import.",
-      "secretHandling": "install_outside_chat_and_git"
-    },
     {
       "inputId": "confirm_deepgram_billing_guard",
       "reason": "Confirm that automatic top-up is disabled and record the exact credit balance before speech qualification uses promotional credit.",
