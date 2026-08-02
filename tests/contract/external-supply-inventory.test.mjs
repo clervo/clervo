@@ -166,6 +166,25 @@ test('public RPC mesh prices every configured route and preserves failures, iden
   assert.ok(mesh.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'failed').every(({ listingStatus, qualityGrade }) => listingStatus === 'blocked' && qualityGrade === 'rejected'));
 });
 
+test('dedicated multi-chain RPC intake rejects the disclosed key and is ready for safe qualification', async () => {
+  const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
+  const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.drpc');
+  const qualifier = await readFile(path.join(root, 'scripts/supply/qualify-drpc.mjs'), 'utf8');
+  assert.deepEqual(
+    [service.configuredCredentialSlots, service.credentialDeployment, service.connectionStatus, service.qualificationStatus],
+    [0, 'missing', 'observed_not_tested', 'not_run'],
+  );
+  assert.equal(service.products.length, 13);
+  assert.equal(service.products.includes('rpc.solana'), false);
+  assert.deepEqual(service.credentialNames, ['DRPC_API_KEY']);
+  assert.deepEqual(service.endpointOrigins, ['https://lb.drpc.org']);
+  assert.match(qualifier, /'Drpc-Key': credential/u);
+  assert.match(qualifier, /credentialInUrl: false/u);
+  assert.match(qualifier, /transactionCalls: 0/u);
+  assert.match(qualifier, /signedPayloads: 0/u);
+  assert.doesNotMatch(qualifier, /lb\.drpc\.live\/[a-z0-9-]+\/[A-Za-z0-9_-]{20,}/u);
+});
+
 test('owned blockchain data is technically complete and priced without treating a local-development key as sellable', async () => {
   const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
   const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.zerion');

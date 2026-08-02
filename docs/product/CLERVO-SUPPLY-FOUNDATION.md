@@ -159,6 +159,11 @@ disabled without explicit owner approval.
   only three material next inputs: a dedicated recurring-free RPC key, an
   independent-index recurring-credit search key, and a least-privilege reissued
   object-storage key for the existing account.
+- The selected dRPC account exposes dedicated endpoints for all 13 required
+  non-Solana networks on one application key. Solana and its indexed Wallet API
+  require Growth and are excluded. The first key was disclosed in chat, so it is
+  rejected pending one dashboard rotation; only safe network slugs and the
+  header-authenticated, read-only qualification harness were retained.
 
 Canonical machine-readable state lives in:
 

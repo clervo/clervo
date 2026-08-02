@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.21",
-  "observedAt": "2026-08-02T06:09:15.444Z",
+  "inventoryVersion": "2026-08-02.22",
+  "observedAt": "2026-08-02T08:00:00.000Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -1449,6 +1449,47 @@
         "glm-5-turbo",
         "glm-5.1",
         "glm-5.2"
+      ]
+    },
+    {
+      "serviceId": "supply.drpc",
+      "providerId": "provider.drpc",
+      "category": "rpc",
+      "products": [
+        "rpc.arbitrum",
+        "rpc.avalanche",
+        "rpc.base",
+        "rpc.bitcoin",
+        "rpc.bsc",
+        "rpc.cosmos",
+        "rpc.ethereum",
+        "rpc.fantom",
+        "rpc.gnosis",
+        "rpc.near",
+        "rpc.optimism",
+        "rpc.polygon",
+        "rpc.tron"
+      ],
+      "endpointOrigins": [
+        "https://lb.drpc.org"
+      ],
+      "credentialNames": [
+        "DRPC_API_KEY"
+      ],
+      "configuredCredentialSlots": 0,
+      "alternateCredentialSlots": 0,
+      "credentialDeployment": "missing",
+      "fundingClass": "recurring_free",
+      "connectionStatus": "observed_not_tested",
+      "qualificationStatus": "not_run",
+      "termsStatus": "review_required",
+      "resaleStatus": "unverified",
+      "publicProviderDisclosure": "hidden_model_name_only",
+      "notes": [
+        "The owner created one application key exposing dedicated endpoints for all 13 required non-Solana networks; the credential shown in chat is treated as compromised and is not stored or tested.",
+        "The Free tier advertises a pooled 210 million compute units per 30 days over load-balanced public nodes, normally 120,000 CU per minute per IP with network-specific variation.",
+        "The bounded qualifier authenticates through the Drpc-Key header, records no credential-bearing URL or response payload, and performs identity and current-height reads only.",
+        "Solana and the Data and Wallet API require the Growth plan in this account and are excluded. Commercial downstream terms remain under review before customer routing."
       ]
     },
     {

@@ -34,6 +34,7 @@ const mappings = [
   [/^SILICONFLOW_/u, 'supply.siliconflow'],
   [/^ZAI_/u, 'supply.zai'],
   [/^(?:HELIUS_|SOLANA_RPC)/u, 'supply.helius_rpc'],
+  [/^DRPC_/u, 'supply.drpc'],
   [/^RPC_/u, 'supply.public_rpc_mesh'],
   [/^ZERION_/u, 'supply.zerion'],
   [/^(?:CDP_|X402_)/u, 'supply.cdp_x402'],
