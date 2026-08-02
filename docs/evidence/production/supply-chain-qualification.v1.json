@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "clervo.production-supply-chain-qualification.v1",
+  "qualifiedAt": "2026-08-02T16:00:51.533Z",
+  "sourceCommit": "5b7fa9158a2b",
+  "candidateImage": {
+    "localTag": "clervo-production-candidate:local-95fe9461194c",
+    "imageId": "sha256:3587133c3d7c1de057f2b8cf2f0e4e1ab2bdbff024d9333e4de9d86b7345845e",
+    "sourceCommit": "95fe9461194c"
+  },
+  "scanner": {
+    "name": "Trivy",
+    "version": "0.72.0",
+    "runtimeVersion": "Version: 0.72.0",
+    "image": "ghcr.io/aquasecurity/trivy:0.72.0@sha256:cffe3f5161a47a6823fbd23d985795b3ed72a4c806da4c4df16266c02accdd6f",
+    "dockerSocketMounted": false,
+    "scanNetwork": "none",
+    "vulnerabilityDatabaseDownloadedBeforeIsolation": true
+  },
+  "dependencyAudit": {
+    "reportHash": "sha256:b90ff86479d24206e3117e5bae89b871df1c51aef3b912c8382583f30b091fd7",
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "gatePassed": true
+  },
+  "containerScan": {
+    "reportHash": "sha256:5a0cb355c6fd2020c4eb53003fd405378d274837df48f5b44a782a2261cc2854",
+    "vulnerabilities": {
+      "medium": 5,
+      "low": 7
+    },
+    "high": 0,
+    "critical": 0,
+    "gatePassed": true
+  },
+  "sbom": {
+    "format": "spdx-json",
+    "path": "docs/evidence/production/clervo-api.sbom.spdx.json",
+    "hash": "sha256:0699aab2710bcc5d7fe5b1c0ea61e45e8cf3bd2e457f4c6d0cd6fa0888b3530b",
+    "packageCount": 44
+  },
+  "cleanup": {
+    "savedImageArchiveRemoved": true,
+    "scannerCacheRemoved": true
+  },
+  "externalEffects": {
+    "vulnerabilityDatabaseDownloads": 1,
+    "cloudResourcesChanged": false,
+    "productionDataRead": false,
+    "providerCalls": 0,
+    "payments": 0,
+    "ownerCashSpentUsd": 0
+  },
+  "productionReady": false
+}

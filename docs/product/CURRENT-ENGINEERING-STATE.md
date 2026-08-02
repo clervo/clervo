@@ -169,7 +169,13 @@ still requires owner approval. No production/customer database deletion was
 performed. The new image is qualified locally at source commit
 `95fe9461194c`. Its build remains on the exact Node 24.18.1 image, while the
 runtime is now the exact non-root Node 24 distroless image and contains no
-shell or package manager. This is not production readiness.
+shell or package manager. A digest-pinned Trivy 0.72.0 scanner downloaded its
+database before entering the offline scan boundary and never received the
+Docker socket. The exact saved candidate image passed with zero critical, zero
+high, five medium, and seven low findings; the production npm audit found zero
+vulnerabilities; and a 44-package SPDX 2.3 SBOM is hash-bound to the image.
+The saved archive and scanner cache were removed. This is not production
+readiness.
 
 The exact digest-pinned PostgreSQL 18.4 image now passes a disposable live
 recovery qualification. All three migrations applied; atomic claim, completion,
@@ -184,7 +190,7 @@ by a fresh queue process, the retry completed, a terminal failure reached its
 dead-letter queue, and both completed/dead-letter state survived backup and
 isolated restore. This proves the portable local recovery
 path, not managed production backup scheduling or point-in-time recovery.
-Registry digest, signed provenance, scans, remote rollback, full load,
+Registry digest, signed provenance, remote rollback, full load,
 monitoring delivery, managed recovery, and an owner-approved cloud release
 remain pending.
 
