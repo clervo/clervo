@@ -139,13 +139,13 @@ test('GCP operator script is pinned to the authorized target and fails closed wi
 test('container artifact pins the runtime, builds before runtime, and drops root', async () => {
   const dockerfile = await readFile(path.join(repositoryRoot, 'Dockerfile'), 'utf8');
   assert.match(dockerfile, /^FROM node:24\.18\.1-bookworm-slim@sha256:[a-f0-9]{64} AS build$/mu);
-  assert.match(dockerfile, /^FROM node:24\.18\.1-bookworm-slim@sha256:[a-f0-9]{64} AS runtime$/mu);
+  assert.match(dockerfile, /^FROM gcr\.io\/distroless\/nodejs24-debian13:nonroot@sha256:[a-f0-9]{64} AS runtime$/mu);
   assert.match(dockerfile, /COPY \.nvmrc \.node-version \.tool-versions \.\//u);
   assert.match(dockerfile, /COPY infra\/stack-versions\.env \.\/infra\/stack-versions\.env/u);
   assert.match(dockerfile, /COPY scripts\/verify-runtime\.mjs \.\/scripts\/verify-runtime\.mjs/u);
   assert.match(dockerfile, /COPY adapters \.\/adapters/u);
   assert.match(dockerfile, /RUN npm run build/u);
-  assert.match(dockerfile, /^USER 1000:1000$/mu);
+  assert.match(dockerfile, /^USER 65532:65532$/mu);
   assert.match(dockerfile, /^STOPSIGNAL SIGTERM$/mu);
   assert.match(dockerfile, /^HEALTHCHECK /mu);
   assert.match(dockerfile, /staging-search-main\.mjs/u);

@@ -10,8 +10,9 @@ test('production candidate container is immutable-base, non-root, and fail-close
   assert.equal(policy.publicDeploymentEnabled, false);
   assert.equal(policy.paymentEnabled, false);
   assert.match(policy.container.baseImage, /@sha256:[a-f0-9]{64}$/u);
-  assert.match(dockerfile, new RegExp(`^FROM ${policy.container.baseImage.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')} AS build$`, 'mu'));
-  assert.match(dockerfile, /^USER 1000:1000$/mu);
+  assert.match(dockerfile, new RegExp(`^FROM ${policy.container.buildBaseImage.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')} AS build$`, 'mu'));
+  assert.match(dockerfile, new RegExp(`^FROM ${policy.container.baseImage.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')} AS runtime$`, 'mu'));
+  assert.match(dockerfile, /^USER 65532:65532$/mu);
   assert.match(dockerfile, /^STOPSIGNAL SIGTERM$/mu);
   assert.match(dockerfile, /^HEALTHCHECK /mu);
   assert.doesNotMatch(dockerfile, /\b(?:latest|curl|wget|apt-get)\b/u);

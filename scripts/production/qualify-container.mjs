@@ -32,7 +32,7 @@ function waitForHealth(id) {
     'process.stdout.write(await response.text());',
   ].join(' ');
   for (let attempt = 0; attempt < 30; attempt += 1) {
-    const result = spawnSync('docker', ['exec', id, 'node', '-e', program], {
+    const result = spawnSync('docker', ['exec', id, '/nodejs/bin/node', '-e', program], {
       cwd: root,
       encoding: 'utf8',
       timeout: 3_000,
@@ -59,7 +59,8 @@ try {
   const imageInspect = JSON.parse(docker(['image', 'inspect', image]))[0];
   assert.match(imageInspect.Id, /^sha256:[a-f0-9]{64}$/u);
   assert.equal(imageInspect.Config.User, policy.container.user);
-  assert.deepEqual(imageInspect.Config.Cmd, ['node', './apps/api/src/staging-search-main.mjs']);
+  assert.deepEqual(imageInspect.Config.Entrypoint, ['/nodejs/bin/node']);
+  assert.deepEqual(imageInspect.Config.Cmd, ['./apps/api/src/staging-search-main.mjs']);
   assert.equal(imageInspect.Config.WorkingDir, '/app');
   assert.ok(imageInspect.Config.Healthcheck?.Test.includes('CMD'));
   assert.equal(imageInspect.Config.StopSignal, policy.container.stopSignal);
@@ -99,12 +100,12 @@ try {
   assert.equal(health.releaseId, shortCommit);
   assert.equal(health.paidExecutionEnabled, false);
 
-  const uid = docker(['exec', containerId, 'node', '-p', '`${process.getuid()}:${process.getgid()}`']);
+  const uid = docker(['exec', containerId, '/nodejs/bin/node', '-p', '`${process.getuid()}:${process.getgid()}`']);
   assert.equal(uid, policy.container.user);
   const rootWrite = docker([
     'exec',
     containerId,
-    'node',
+    '/nodejs/bin/node',
     '-e',
     "import fs from 'node:fs'; try { fs.writeFileSync('/clervo-write-probe', 'x'); process.exit(1); } catch { process.stdout.write('denied'); }",
   ]);
@@ -112,7 +113,7 @@ try {
   const network = docker([
     'exec',
     containerId,
-    'node',
+    '/nodejs/bin/node',
     '-e',
     "try { await fetch('https://example.com', { signal: AbortSignal.timeout(2000) }); process.exit(1); } catch { process.stdout.write('denied'); }",
   ]);
