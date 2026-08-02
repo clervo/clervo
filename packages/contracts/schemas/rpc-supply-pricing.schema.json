@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/rpc-supply-pricing.schema.json",
+  "title": "Clervo internal RPC supply pricing",
+  "type": "object",
+  "required": ["schemaVersion", "priceVersion", "effectiveAt", "currency", "policy", "routes"],
+  "properties": {
+    "schemaVersion": { "const": "clervo.rpc-supply-pricing.v1" },
+    "priceVersion": { "type": "string", "pattern": "^rpc-supply-[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$" },
+    "effectiveAt": { "type": "string", "format": "date-time" },
+    "currency": { "const": "USD" },
+    "policy": {
+      "type": "object",
+      "required": ["customerFreeByDefault", "automaticPaidTopUpAllowed", "providerNamesPublic", "transactionBroadcastRequiresSeparateQualification"],
+      "properties": {
+        "customerFreeByDefault": { "const": false },
+        "automaticPaidTopUpAllowed": { "const": false },
+        "providerNamesPublic": { "const": false },
+        "transactionBroadcastRequiresSeparateQualification": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["serviceId", "productId", "publicAssetId", "network", "billingUnit", "customerPriceMicrousd", "supplierPriceMicrousd", "supplierPriceBasis", "monthlyAllowance", "qualityGrade", "technicalQualificationStatus", "listingStatus", "termsStatus", "broadcastStatus", "fallbackStatus"],
+        "properties": {
+          "serviceId": { "type": "string", "pattern": "^supply\\.[a-z0-9_]+$" },
+          "productId": { "type": "string", "pattern": "^rpc\\.[a-z0-9_.-]+$" },
+          "publicAssetId": { "type": "string", "pattern": "^[a-z][a-z0-9_.-]{2,63}$" },
+          "network": { "type": "string", "pattern": "^[a-z][a-z0-9_.-]{2,63}$" },
+          "billingUnit": { "const": "request" },
+          "customerPriceMicrousd": { "type": "integer", "minimum": 1 },
+          "supplierPriceMicrousd": { "type": ["integer", "null"], "minimum": 0 },
+          "supplierPriceBasis": { "enum": ["included_monthly_allocation", "public_endpoint_unknown", "published_paid_tier", "unknown"] },
+          "monthlyAllowance": { "type": ["integer", "null"], "minimum": 0 },
+          "qualityGrade": { "enum": ["best", "good", "poor", "rejected"] },
+          "technicalQualificationStatus": { "enum": ["passed", "failed", "not_run"] },
+          "listingStatus": { "enum": ["qualified_not_integrated", "priced_terms_blocked", "sellable_preview", "blocked"] },
+          "termsStatus": { "enum": ["approved", "restricted", "blocked", "unreviewed"] },
+          "broadcastStatus": { "enum": ["not_tested", "read_only_route", "qualified"] },
+          "fallbackStatus": { "enum": ["independent_fallback_missing", "independent_fallback_ready"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "clervo.rpc-supply-pricing.v1",
+  "priceVersion": "rpc-supply-2026-08-02.1",
+  "effectiveAt": "2026-08-02T05:41:46.439Z",
+  "currency": "USD",
+  "policy": {
+    "customerFreeByDefault": false,
+    "automaticPaidTopUpAllowed": false,
+    "providerNamesPublic": false,
+    "transactionBroadcastRequiresSeparateQualification": true
+  },
+  "routes": [
+    {
+      "serviceId": "supply.helius_rpc",
+      "productId": "rpc.solana",
+      "publicAssetId": "solana-mainnet-read",
+      "network": "solana-mainnet",
+      "billingUnit": "request",
+      "customerPriceMicrousd": 1,
+      "supplierPriceMicrousd": 0,
+      "supplierPriceBasis": "included_monthly_allocation",
+      "monthlyAllowance": 1000000,
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "priced_terms_blocked",
+      "termsStatus": "blocked",
+      "broadcastStatus": "read_only_route",
+      "fallbackStatus": "independent_fallback_missing"
+    }
+  ]
+}

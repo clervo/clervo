@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "clervo.helius-qualification.v1",
+  "evaluatedAt": "2026-08-02T05:41:46.439Z",
+  "serviceId": "supply.helius_rpc",
+  "endpointOrigin": "https://mainnet.helius-rpc.com",
+  "network": "solana-mainnet",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 4,
+  "transactionCalls": 0,
+  "signedPayloads": 0,
+  "credentialSlotsUsed": 1,
+  "configuredCredentialSlots": 1,
+  "summary": {
+    "successfulChecks": 4,
+    "latencyMsP50": 44,
+    "latencyMsP95": 171,
+    "technicalStatus": "passed",
+    "commercialStatus": "blocked"
+  },
+  "observations": [
+    {
+      "checkId": "health",
+      "status": 200,
+      "latencyMs": 171,
+      "jsonRpcEnvelopeValid": true,
+      "passed": true,
+      "safeErrorCode": null
+    },
+    {
+      "checkId": "version",
+      "status": 200,
+      "latencyMs": 44,
+      "jsonRpcEnvelopeValid": true,
+      "passed": true,
+      "safeErrorCode": null
+    },
+    {
+      "checkId": "slot",
+      "status": 200,
+      "latencyMs": 44,
+      "jsonRpcEnvelopeValid": true,
+      "passed": true,
+      "safeErrorCode": null
+    },
+    {
+      "checkId": "safe_failure",
+      "status": 200,
+      "latencyMs": 65,
+      "jsonRpcEnvelopeValid": false,
+      "passed": true,
+      "safeErrorCode": -32601
+    }
+  ],
+  "allowance": {
+    "advertisedPlan": "free",
+    "monthlyCredits": 1000000,
+    "standardRpcCreditsPerCall": 1,
+    "resetsMonthly": true,
+    "automaticPaidTopUpAllowedByClervo": false,
+    "currentOwnedRemainingCredits": null,
+    "currentOwnedRemainingStatus": "project_id_not_available_in_redacted_environment"
+  },
+  "terms": {
+    "reviewedAt": "2026-08-02T05:41:46.440Z",
+    "termsUrl": "https://www.helius.dev/terms",
+    "termsUpdatedAt": "2026-04-24",
+    "oneAccountPerBusiness": true,
+    "resaleAllowed": false,
+    "thirdPartyBenefitAllowed": false,
+    "customerHostedRpcAllowed": false,
+    "writtenPermissionRequiredForClervoUse": true
+  }
+}

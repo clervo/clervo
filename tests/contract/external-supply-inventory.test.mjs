@@ -115,3 +115,27 @@ test('owned search supply is measured, customer-priced, and single-account bound
   assert.equal(evidence.terms.valueAddedApplicationAllowed, true);
   assert.equal(evidence.terms.multipleAccountsAllowed, false);
 });
+
+test('owned Solana RPC is technically healthy and priced while third-party use remains terms-blocked', async () => {
+  const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
+  const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.helius_rpc');
+  const pricing = await json('packages/catalog/rpc-supply-pricing.v1.json');
+  const schema = await json('packages/contracts/schemas/rpc-supply-pricing.schema.json');
+  const evidence = await json('docs/evidence/supply-foundation/helius-qualification.v1.json');
+  const ajv = new Ajv2020({ strict: true, allErrors: true });
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
+  assert.deepEqual([service.connectionStatus, service.qualificationStatus, service.termsStatus, service.resaleStatus], ['observed_working', 'failed', 'blocked', 'prohibited']);
+  assert.equal(pricing.routes.length, 1);
+  assert.ok(pricing.routes[0].customerPriceMicrousd > 0);
+  assert.deepEqual([pricing.routes[0].technicalQualificationStatus, pricing.routes[0].listingStatus, pricing.routes[0].broadcastStatus], ['passed', 'priced_terms_blocked', 'read_only_route']);
+  assert.equal(evidence.externalCalls, 4);
+  assert.equal(evidence.transactionCalls, 0);
+  assert.equal(evidence.signedPayloads, 0);
+  assert.equal(evidence.summary.technicalStatus, 'passed');
+  assert.equal(evidence.summary.commercialStatus, 'blocked');
+  assert.ok(evidence.observations.every(({ status, passed }) => status === 200 && passed));
+  assert.equal(evidence.terms.resaleAllowed, false);
+  assert.equal(evidence.terms.thirdPartyBenefitAllowed, false);
+});

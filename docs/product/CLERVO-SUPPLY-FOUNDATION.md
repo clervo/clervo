@@ -103,6 +103,11 @@ disabled without explicit owner approval.
   p95 latency. Its single-account B2B terms allow a value-added product, the
   route is customer-priced at USD 0.001/request, and its current remaining
   starter balance is unknown because the API exposes no allowance header.
+- Helius Solana RPC is technically healthy across bounded health, version,
+  finalized-slot, and safe-failure checks, with no transaction activity. Its
+  one-million-credit Free allocation is useful only for internal evaluation:
+  current terms prohibit resale and third-party benefit, so the competitively
+  priced route remains terms-blocked pending permission or replacement supply.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three
