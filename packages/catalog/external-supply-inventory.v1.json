@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.12",
-  "observedAt": "2026-08-02T04:35:03.229Z",
+  "inventoryVersion": "2026-08-02.13",
+  "observedAt": "2026-08-02T05:08:44.432Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -719,12 +719,14 @@
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "recurring_free",
       "connectionStatus": "observed_working",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "qualificationStatus": "failed",
+      "termsStatus": "blocked",
+      "resaleStatus": "prohibited",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Authenticated model discovery returned 102 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+        "Authenticated model discovery returned 102 exact assets on 2026-08-02; every listing retains a positive introductory customer price.",
+        "Four representative chat identities passed exact-label preflight. Fixed-corpus content scores were 8/10 for GPT-OSS 120B, 7/10 for Nemotron Nano, 6/10 for Nemotron Super, and 4/10 for DeepSeek V4 Pro.",
+        "The hosted API Catalog trial terms prohibit production use without a separate production subscription. All hosted routes are benchmark-only and terms-blocked; commercially licensed self-hosted weights are a distinct future option."
       ],
       "knownModelNames": [
         "01-ai/yi-large",

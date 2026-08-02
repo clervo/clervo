@@ -198,7 +198,7 @@ test('every newly discovered owned-source listing is customer-priced while quali
   assert.equal(pricing.source.excludedGatewayListings, 21);
   assert.equal(pricing.source.ownerCashSpentUsd, 0);
   assert.equal(pricing.assets.length, 612);
-  assert.ok(pricing.assets.every(({ supplierCostKnown, customerPrices, listingStatus, termsStatus }) => supplierCostKnown === false && customerPrices.length > 0 && customerPrices.every(({ price }) => price > 0) && listingStatus !== 'sellable' && termsStatus === 'unreviewed'));
+  assert.ok(pricing.assets.every(({ supplierCostKnown, customerPrices, listingStatus, termsStatus }) => supplierCostKnown === false && customerPrices.length > 0 && customerPrices.every(({ price }) => price > 0) && listingStatus !== 'sellable' && ['unreviewed', 'blocked'].includes(termsStatus)));
   assert.deepEqual([...new Set(pricing.assets.map(({ product }) => product))].sort(), ['ai.chat', 'ai.embed', 'ai.image', 'ai.ocr', 'ai.rerank', 'ai.speech', 'ai.transcribe', 'ai.video']);
   assert.deepEqual(pricing.assets.filter(({ listingStatus }) => listingStatus === 'priced_unavailable_no_balance').map(({ serviceId, modelId }) => [serviceId, modelId]), [
     ['supply.cerebras', 'gemma-4-31b'],
@@ -209,6 +209,33 @@ test('every newly discovered owned-source listing is customer-priced while quali
   assert.equal(evidence.externalCalls, 30);
   assert.equal(evidence.ownerCashSpentUsd, 0);
   assert.ok(evidence.models.every(({ results }) => results.length === 10 && results.every(({ status }) => status === 402)));
+});
+
+test('NVIDIA trial routes retain benchmarks and prices but stay blocked from production sale by hosted-service terms', async () => {
+  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
+  const nvidia = pricing.assets.filter(({ serviceId }) => serviceId === 'supply.nvidia');
+  assert.equal(nvidia.length, 102);
+  assert.ok(nvidia.every(({ listingStatus, termsStatus }) => listingStatus === 'priced_terms_blocked' && termsStatus === 'blocked'));
+  assert.deepEqual(nvidia.filter(({ qualityGrade }) => qualityGrade !== 'unranked').map(({ modelId, qualityGrade }) => [modelId, qualityGrade]), [
+    ['deepseek-ai/deepseek-v4-pro', 'poor'],
+    ['nvidia/nemotron-3-nano-30b-a3b', 'good'],
+    ['nvidia/nemotron-3-super-120b-a12b', 'poor'],
+    ['openai/gpt-oss-120b', 'good'],
+  ]);
+  const identities = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/nvidia-chat-identity-probe.v1.json'), 'utf8'));
+  const quality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/nvidia-chat-quality-run.v1.json'), 'utf8'));
+  const terms = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/nvidia-hosted-api-terms.v1.json'), 'utf8'));
+  assert.equal(identities.externalCalls, 4);
+  assert.ok(identities.results.every(({ status, identityMatches, usageReported }) => status === 200 && identityMatches && usageReported));
+  assert.equal(quality.externalCalls, 40);
+  assert.deepEqual(quality.models.map(({ model, passed }) => [model, passed]), [
+    ['nvidia/nemotron-3-super-120b-a12b', 6],
+    ['nvidia/nemotron-3-nano-30b-a3b', 7],
+    ['deepseek-ai/deepseek-v4-pro', 4],
+    ['openai/gpt-oss-120b', 8],
+  ]);
+  assert.equal(terms.findings.trialHostedApiProductionAllowed, false);
+  assert.equal(terms.decision.sellableHostedRoutes, 0);
 });
 
 test('Clervo gateway screen preserves the bounded live result without overstating quality or cost', async () => {

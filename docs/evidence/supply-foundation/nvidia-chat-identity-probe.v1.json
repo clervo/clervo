@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "clervo.owned-chat-identity-probe.v1",
+  "checkedAt": "2026-08-02T05:03:04.584Z",
+  "serviceId": "supply.nvidia",
+  "externalCalls": 4,
+  "ownerCashSpentUsd": 0,
+  "secretValuesRecorded": false,
+  "promptOrOutputPayloadsRecorded": false,
+  "results": [
+    {
+      "requestedModel": "nvidia/nemotron-3-super-120b-a12b",
+      "observedModel": "nvidia/nemotron-3-super-120b-a12b",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 426.25
+    },
+    {
+      "requestedModel": "nvidia/nemotron-3-nano-30b-a3b",
+      "observedModel": "nvidia/nemotron-3-nano-30b-a3b",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 2861.48
+    },
+    {
+      "requestedModel": "deepseek-ai/deepseek-v4-pro",
+      "observedModel": "deepseek-ai/deepseek-v4-pro",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 10660.61
+    },
+    {
+      "requestedModel": "openai/gpt-oss-120b",
+      "observedModel": "openai/gpt-oss-120b",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 863.18
+    }
+  ]
+}

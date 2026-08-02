@@ -66,6 +66,10 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
     ['supply.zai', 'observed_working', 8],
   ]);
   assert.equal(inventory.services.find(({ serviceId }) => serviceId === 'supply.cerebras').qualificationStatus, 'failed');
+  const nvidia = inventory.services.find(({ serviceId }) => serviceId === 'supply.nvidia');
+  assert.equal(nvidia.qualificationStatus, 'failed');
+  assert.equal(nvidia.termsStatus, 'blocked');
+  assert.equal(nvidia.resaleStatus, 'prohibited');
   assert.deepEqual(inventory.services.filter(({ serviceId }) => ['supply.google_gemini', 'supply.github_models'].includes(serviceId)).map(({ serviceId, connectionStatus }) => [serviceId, connectionStatus]), [
     ['supply.google_gemini', 'observed_failed'],
     ['supply.github_models', 'observed_failed'],

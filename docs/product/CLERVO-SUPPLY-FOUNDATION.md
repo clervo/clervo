@@ -68,6 +68,9 @@ disabled without explicit owner approval.
 - Every one of the 612 other newly discovered owned-source listings has an
   introductory customer price. Cerebras discovery works, but all three models
   returned HTTP 402 and remain unavailable without a usable balance.
+- NVIDIA's 102 hosted listings remain priced and four exact identities were
+  benchmarked, but the API Catalog trial is non-production under its current
+  terms. It is benchmark-only, not sale supply; self-hosted weights are separate.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three

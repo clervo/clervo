@@ -15,6 +15,7 @@
     "pricedListings": 612,
     "workingServices": 8,
     "excludedGatewayListings": 21,
+    "termsBlockedListings": 102,
     "ownerCashSpentUsd": 0,
     "supplierCostKnown": false
   },
@@ -1631,7 +1632,7 @@
       "serviceId": "supply.nvidia",
       "modelId": "01-ai/yi-large",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1645,13 +1646,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "adept/fuyu-8b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1665,13 +1666,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "ai21labs/jamba-1.5-large-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1685,13 +1686,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "aisingapore/sea-lion-7b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1705,13 +1706,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "baai/bge-m3",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1721,13 +1722,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "bigcode/starcoder2-15b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1741,13 +1742,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "databricks/dbrx-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1761,13 +1762,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "deepseek-ai/deepseek-coder-6.7b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1781,13 +1782,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "deepseek-ai/deepseek-v4-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1801,14 +1802,14 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "deepseek-ai/deepseek-v4-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_terms_blocked",
+      "qualityGrade": "poor",
       "supplierCostKnown": false,
       "customerPrices": [
         {
@@ -1821,13 +1822,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "google/codegemma-1.1-7b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1841,13 +1842,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "google/codegemma-7b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1861,13 +1862,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "google/deplot",
       "product": "ai.ocr",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1877,13 +1878,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "google/diffusiongemma-26b-a4b-it",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1893,13 +1894,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "google/gemma-2b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1913,13 +1914,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "google/gemma-3-12b-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1933,13 +1934,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "google/gemma-3-4b-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1953,13 +1954,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "google/gemma-4-31b-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1973,13 +1974,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "google/recurrentgemma-2b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1993,13 +1994,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "ibm/granite-3.0-3b-a800m-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2013,13 +2014,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "ibm/granite-3.0-8b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2033,13 +2034,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "ibm/granite-34b-code-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2053,13 +2054,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "ibm/granite-8b-code-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2073,13 +2074,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "meta/codellama-70b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2093,13 +2094,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "meta/llama-3.1-70b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2113,13 +2114,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "meta/llama-3.1-8b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2133,13 +2134,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "meta/llama-3.2-11b-vision-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2153,13 +2154,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "meta/llama-3.2-1b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2173,13 +2174,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "meta/llama-3.2-3b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2193,13 +2194,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "meta/llama-3.2-90b-vision-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2213,13 +2214,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "meta/llama-3.3-70b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2233,13 +2234,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "meta/llama-guard-4-12b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2253,13 +2254,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "meta/llama2-70b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2273,13 +2274,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "microsoft/kosmos-2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2293,13 +2294,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "microsoft/phi-3-vision-128k-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2313,13 +2314,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "microsoft/phi-3.5-moe-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2333,13 +2334,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "minimaxai/minimax-m3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2353,13 +2354,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "mistralai/codestral-22b-instruct-v0.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2373,13 +2374,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "mistralai/mistral-7b-instruct-v0.3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2393,13 +2394,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "mistralai/mistral-large",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2413,13 +2414,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "mistralai/mistral-large-2-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2433,13 +2434,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "mistralai/mistral-medium-3.5-128b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2453,13 +2454,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "mistralai/mistral-nemotron",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2473,13 +2474,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "mistralai/mixtral-8x22b-v0.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2493,13 +2494,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "moonshotai/kimi-k2.6",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2513,13 +2514,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nv-mistralai/mistral-nemo-12b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2533,13 +2534,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/ai-synthetic-video-detector",
       "product": "ai.video",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2549,13 +2550,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/cosmos-reason2-8b",
       "product": "ai.video",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2565,13 +2566,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/embed-qa-4",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2581,13 +2582,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/ising-calibration-1.5-31b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2601,13 +2602,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.1-nemoguard-8b-content-safety",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2621,13 +2622,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.1-nemoguard-8b-topic-control",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2641,13 +2642,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.1-nemotron-51b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2661,13 +2662,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.1-nemotron-70b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2681,13 +2682,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.1-nemotron-nano-8b-v1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2701,13 +2702,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.1-nemotron-nano-vl-8b-v1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2721,13 +2722,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.1-nemotron-safety-guard-8b-v3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2741,13 +2742,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.1-nemotron-ultra-253b-v1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2761,13 +2762,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.2-nemoretriever-1b-vlm-embed-v1",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2777,13 +2778,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.2-nv-embedqa-1b-v1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2797,13 +2798,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.3-nemotron-super-49b-v1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2817,13 +2818,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-3.3-nemotron-super-49b-v1.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2837,13 +2838,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-nemotron-embed-1b-v2",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2853,13 +2854,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama-nemotron-embed-vl-1b-v2",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2869,13 +2870,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/llama3-chatqa-1.5-70b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2889,13 +2890,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/mistral-nemo-minitron-8b-8k-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2909,13 +2910,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemoretriever-parse",
       "product": "ai.ocr",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2925,13 +2926,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-3-embed-1b",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2941,14 +2942,14 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-3-nano-30b-a3b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_terms_blocked",
+      "qualityGrade": "good",
       "supplierCostKnown": false,
       "customerPrices": [
         {
@@ -2961,13 +2962,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -2981,14 +2982,14 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-3-super-120b-a12b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_terms_blocked",
+      "qualityGrade": "poor",
       "supplierCostKnown": false,
       "customerPrices": [
         {
@@ -3001,13 +3002,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-3-ultra-550b-a55b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3021,13 +3022,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-3.5-content-safety",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3041,13 +3042,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-4-340b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3061,13 +3062,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-4-340b-reward",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3081,13 +3082,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-mini-4b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3101,13 +3102,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-nano-12b-v2-vl",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3121,13 +3122,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-nano-3-30b-a3b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3141,13 +3142,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nemotron-parse",
       "product": "ai.ocr",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3157,13 +3158,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/neva-22b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3177,13 +3178,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nv-embed-v1",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3193,13 +3194,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nv-embedcode-7b-v1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3213,13 +3214,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nv-embedqa-e5-v5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3233,13 +3234,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nv-embedqa-mistral-7b-v2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3253,13 +3254,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nvclip",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3269,13 +3270,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/nvidia-nemotron-nano-9b-v2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3289,13 +3290,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/riva-translate-4b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3309,13 +3310,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/riva-translate-4b-instruct-v1.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3329,13 +3330,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/riva-translate-4b-instruct-v2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3349,13 +3350,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "nvidia/vila",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3369,14 +3370,14 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "openai/gpt-oss-120b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_terms_blocked",
+      "qualityGrade": "good",
       "supplierCostKnown": false,
       "customerPrices": [
         {
@@ -3389,13 +3390,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "openai/gpt-oss-20b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3409,13 +3410,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "poolside/laguna-xs-2.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3429,13 +3430,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "snowflake/arctic-embed-l",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3445,13 +3446,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "stepfun-ai/step-3.7-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3465,13 +3466,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "thinkingmachines/inkling",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3485,13 +3486,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "writer/palmyra-creative-122b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3505,13 +3506,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "writer/palmyra-fin-70b-32k",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3525,13 +3526,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "writer/palmyra-med-70b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3545,13 +3546,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "writer/palmyra-med-70b-32k",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3565,13 +3566,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "z-ai/glm-5.2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3585,13 +3586,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.nvidia",
       "modelId": "zyphra/zamba2-7b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3605,7 +3606,7 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",

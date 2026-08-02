@@ -6,7 +6,16 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const discovery = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/owned-ai-source-discovery.v1.json'), 'utf8'));
+const nvidiaQuality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/nvidia-chat-quality-run.v1.json'), 'utf8'));
 const sources = discovery.sources.filter(({ status, serviceId }) => status === 'working' && serviceId !== 'supply.hcnsec_gateway');
+const nvidiaScores = new Map(nvidiaQuality.models.map((entry) => [entry.model, entry.results.filter(({ answerMatches }) => answerMatches).length]));
+
+function grade(score) {
+  if (score === 10) return 'best';
+  if (score >= 7) return 'good';
+  if (score >= 1) return 'poor';
+  return 'unranked';
+}
 
 function product(modelId) {
   const value = modelId.toLowerCase();
@@ -39,12 +48,12 @@ const assets = sources.flatMap((source) => source.modelIds.map((modelId) => {
     serviceId: source.serviceId,
     modelId,
     product: productId,
-    listingStatus: source.serviceId === 'supply.cerebras' ? 'priced_unavailable_no_balance' : 'priced_pending_qualification',
-    qualityGrade: 'unranked',
+    listingStatus: source.serviceId === 'supply.cerebras' ? 'priced_unavailable_no_balance' : source.serviceId === 'supply.nvidia' ? 'priced_terms_blocked' : 'priced_pending_qualification',
+    qualityGrade: source.serviceId === 'supply.nvidia' ? grade(nvidiaScores.get(modelId)) : 'unranked',
     supplierCostKnown: false,
     customerPrices: prices(productId, modelId),
     pricingMethod: 'category_introductory_price',
-    termsStatus: 'unreviewed',
+    termsStatus: source.serviceId === 'supply.nvidia' ? 'blocked' : 'unreviewed',
   };
 })).sort((left, right) => `${left.serviceId}/${left.modelId}`.localeCompare(`${right.serviceId}/${right.modelId}`, 'en-US'));
 
@@ -56,6 +65,6 @@ process.stdout.write(`${JSON.stringify({
   currency: 'USD',
   providerVisibility: 'internal_only',
   policy: { customerFreeByDefault: false, unknownSupplierCostBlocksPricing: false, qualificationRequiredForSale: true, termsRequiredForSale: true, providerNamesPublic: false },
-  source: { pricedListings: assets.length, workingServices: sources.length, excludedGatewayListings: 21, ownerCashSpentUsd: 0, supplierCostKnown: false },
+  source: { pricedListings: assets.length, workingServices: sources.length, excludedGatewayListings: 21, termsBlockedListings: assets.filter(({ termsStatus }) => termsStatus === 'blocked').length, ownerCashSpentUsd: 0, supplierCostKnown: false },
   assets,
 }, null, 2)}\n`);

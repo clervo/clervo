@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "clervo.nvidia-hosted-api-terms.v1",
+  "checkedAt": "2026-08-02T05:08:44.432Z",
+  "hostedService": "NVIDIA API Catalog trial endpoints",
+  "termsStatus": "blocked_for_production_resale",
+  "findings": {
+    "trialHostedApiProductionAllowed": false,
+    "trialGeneratedContentProductionAllowed": false,
+    "separateProductionSubscriptionRequired": true,
+    "openModelWeightsMayBeCommerciallyUsableUnderTheirOwnLicenses": true,
+    "hostedTrialPermissionExtendsToModelWeightLicense": false
+  },
+  "decision": {
+    "pricedListingsRetained": 102,
+    "sellableHostedRoutes": 0,
+    "benchmarkUseOnly": true,
+    "replacementPlan": "Use a production-licensed hosted provider or self-host commercially permitted model weights when sustainable."
+  },
+  "sources": [
+    "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf",
+    "https://docs.api.nvidia.com/nim/docs/product",
+    "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-agreement/"
+  ]
+}
