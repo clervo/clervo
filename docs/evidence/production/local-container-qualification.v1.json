@@ -1,12 +1,12 @@
 {
   "schemaVersion": "clervo.production-local-container-qualification.v1",
-  "qualifiedAt": "2026-08-02T16:08:31.191Z",
-  "sourceCommit": "3037a9e6def4",
-  "releaseCandidateId": "clervo-private-core-2026-08-02.1",
-  "interfaceHash": "sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768",
+  "qualifiedAt": "2026-08-02T20:13:29.609Z",
+  "sourceCommit": "18d9d31562a6",
+  "releaseCandidateId": "clervo-private-core-2026-08-02.2",
+  "interfaceHash": "sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622",
   "image": {
-    "localTag": "clervo-production-candidate:local-3037a9e6def4",
-    "imageId": "sha256:912eac2543d17f0a14bba37159b49bd8eca47cd8a530e02269fba10d2e4f8b44",
+    "localTag": "clervo-production-candidate:local-18d9d31562a6",
+    "imageId": "sha256:3f412bbd86d405e0da35923691a7abcf390f09b118078203f85ccb3e112f1e27",
     "baseImage": "gcr.io/distroless/nodejs24-debian13:nonroot@sha256:af85d11ce7ef10172855a6e3649e3e8125b1b9e3ca41849ec2918036f05cb212",
     "registryDigest": null,
     "signedBuildProvenance": false,
