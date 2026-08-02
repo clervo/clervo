@@ -188,6 +188,24 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
     ['@cf/zai-org/glm-5.2', 'priced_requires_paid_plan'],
   ]);
   assert.ok(pricing.assets.filter(({ accessStatus }) => accessStatus === 'free_allocation_available').every(({ listingStatus }) => listingStatus === 'priced_pending_qualification'));
+  assert.deepEqual(pricing.assets.filter(({ qualityGrade }) => qualityGrade !== 'unranked').map(({ modelId, qualityGrade }) => [modelId, qualityGrade]), [
+    ['@cf/google/gemma-4-26b-a4b-it', 'good'],
+    ['@cf/ibm-granite/granite-4.0-h-micro', 'poor'],
+    ['@cf/qwen/qwen3-30b-a3b-fp8', 'good'],
+    ['@cf/zai-org/glm-4.7-flash', 'poor'],
+  ]);
+  const quality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-chat-quality-screen.v1.json'), 'utf8'));
+  assert.equal(quality.execution.externalCalls, 40);
+  assert.equal(quality.execution.ownerCashSpentUsd, 0);
+  assert.equal(quality.execution.secretValuesRecorded, false);
+  assert.equal(quality.execution.promptOrOutputPayloadsRecorded, false);
+  assert.equal(quality.execution.httpSuccesses, 40);
+  assert.deepEqual(quality.models.map(({ modelId, passed, qualityGrade }) => [modelId, passed, qualityGrade]), [
+    ['@cf/qwen/qwen3-30b-a3b-fp8', 8, 'good'],
+    ['@cf/google/gemma-4-26b-a4b-it', 7, 'good'],
+    ['@cf/zai-org/glm-4.7-flash', 4, 'poor'],
+    ['@cf/ibm-granite/granite-4.0-h-micro', 3, 'poor'],
+  ]);
 });
 
 test('AI outage monitoring emits bounded provider alerts without prompt or credential payloads', () => {

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "clervo.supply.cloudflare-chat-quality-screen.v1",
+  "evaluatedAt": "2026-08-02T03:58:43.467Z",
+  "corpus": {
+    "tasks": 10,
+    "sharedWithClervoAndGroq": true
+  },
+  "execution": {
+    "externalCalls": 40,
+    "ownerCashSpentUsd": 0,
+    "freeAllocationBacked": true,
+    "secretValuesRecorded": false,
+    "promptOrOutputPayloadsRecorded": false,
+    "httpSuccesses": 40,
+    "httpFailures": 0
+  },
+  "models": [
+    {
+      "modelId": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "passed": 8,
+      "total": 10,
+      "qualityGrade": "good",
+      "latencyMsP50": 3757.92,
+      "latencyMsP95": 8602.88,
+      "failureKinds": { "wrongAnswer": 2, "invalidJson": 0 },
+      "decision": "retain_for_route_qualification"
+    },
+    {
+      "modelId": "@cf/google/gemma-4-26b-a4b-it",
+      "passed": 7,
+      "total": 10,
+      "qualityGrade": "good",
+      "latencyMsP50": 3376.03,
+      "latencyMsP95": 8262.13,
+      "failureKinds": { "wrongAnswer": 2, "invalidJson": 1 },
+      "decision": "retain_for_vision_and_route_qualification"
+    },
+    {
+      "modelId": "@cf/zai-org/glm-4.7-flash",
+      "passed": 4,
+      "total": 10,
+      "qualityGrade": "poor",
+      "latencyMsP50": 10713.23,
+      "latencyMsP95": 14578.63,
+      "failureKinds": { "wrongAnswer": 6, "invalidJson": 0 },
+      "decision": "do_not_use_for_general_routing"
+    },
+    {
+      "modelId": "@cf/ibm-granite/granite-4.0-h-micro",
+      "passed": 3,
+      "total": 10,
+      "qualityGrade": "poor",
+      "latencyMsP50": 319.3,
+      "latencyMsP95": 1869.04,
+      "failureKinds": { "wrongAnswer": 2, "invalidJson": 5 },
+      "decision": "retain_only_for_future_bounded_low_risk_screen"
+    }
+  ],
+  "limitations": [
+    "This is a quality screen, not route qualification or production readiness.",
+    "Vision, tool calling, streaming, invalid-model failure, and modality behavior were not tested.",
+    "No prompt or output content was retained, so wrong-answer categories cannot be retuned from this artifact."
+  ]
+}
