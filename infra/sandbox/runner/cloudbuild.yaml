@@ -1,0 +1,13 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --pull=false
+      - --tag=us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/runner:verified-20260802
+      - .
+images:
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/runner:verified-20260802
+options:
+  requestedVerifyOption: VERIFIED
+  logging: CLOUD_LOGGING_ONLY
+timeout: 900s
