@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { Pool } from 'pg';
 import { PgBoss } from 'pg-boss';
 import { PostgresSearchStateStore } from '../../apps/api/src/search-state-store.mjs';
+import { ReceiverAccountingJournal } from '../../dist/packages/contracts/src/index.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const policy = JSON.parse(await readFile(path.join(root, 'infra/production/postgres-qualification.v1.json'), 'utf8'));
@@ -31,6 +32,16 @@ const operation = {
 };
 const now = '2026-08-02T10:00:00.000Z';
 const response = Object.freeze({ operationId: operation.operationId, state: 'RECEIPTED', replayed: false });
+const receiverAccountingInput = Object.freeze({
+  settlementId: 'settle_postgres_recovery_001',
+  operationId: 'op_postgres_receiver_accounting_001',
+  authorizationId: 'auth_postgres_receiver_accounting_001',
+  receiptHash: `sha256:${'a'.repeat(64)}`,
+  settlementReferenceHash: `sha256:${'b'.repeat(64)}`,
+  customerCharge: Object.freeze({ asset: 'mock:usdc', amountAtomic: '2500', decimals: 6 }),
+  supplierCost: Object.freeze({ asset: 'mock:usd', amountAtomic: '400', decimals: 6 }),
+  occurredAt: now,
+});
 
 function docker(args, options = {}) {
   return execFileSync('docker', args, {
@@ -163,7 +174,71 @@ async function proveState(pool) {
   const quota = [];
   for (let index = 0; index < 4; index += 1) quota.push(await store.consumeFreeQuota('198.51.100.10', now));
   assert.deepEqual(quota.map(({ allowed }) => allowed), [true, true, true, false]);
-  return { replay: replay.response, quota };
+  const receiverJournal = new ReceiverAccountingJournal();
+  const receiverEntry = receiverJournal.record(receiverAccountingInput).entry;
+  await pool.query(
+    `INSERT INTO clervo_receiver_accounting_entries (
+      environment_namespace, entry_id, settlement_id, operation_id, authorization_id,
+      receipt_hash, settlement_reference_hash, input_hash, entry_hash,
+      previous_entry_hash, entry_json, occurred_at
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::jsonb, $12)`,
+    [
+      policy.environmentNamespace,
+      receiverEntry.entryId,
+      receiverEntry.settlementId,
+      receiverEntry.operationId,
+      receiverEntry.authorizationId,
+      receiverEntry.receiptHash,
+      receiverEntry.settlementReferenceHash,
+      receiverEntry.inputHash,
+      receiverEntry.entryHash,
+      receiverEntry.previousEntryHash ?? null,
+      JSON.stringify(receiverEntry),
+      receiverEntry.occurredAt,
+    ],
+  );
+  await assert.rejects(
+    pool.query(
+      `INSERT INTO clervo_receiver_accounting_entries (
+        environment_namespace, entry_id, settlement_id, operation_id, authorization_id,
+        receipt_hash, settlement_reference_hash, input_hash, entry_hash,
+        previous_entry_hash, entry_json, occurred_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::jsonb, $12)`,
+      [
+        policy.environmentNamespace,
+        `acct_${'f'.repeat(40)}`,
+        receiverEntry.settlementId,
+        'op_postgres_receiver_accounting_002',
+        receiverEntry.authorizationId,
+        `sha256:${'e'.repeat(64)}`,
+        receiverEntry.settlementReferenceHash,
+        receiverEntry.inputHash,
+        `sha256:${'f'.repeat(64)}`,
+        receiverEntry.entryHash,
+        JSON.stringify({
+          ...receiverEntry,
+          entryId: `acct_${'f'.repeat(40)}`,
+          operationId: 'op_postgres_receiver_accounting_002',
+          receiptHash: `sha256:${'e'.repeat(64)}`,
+          entryHash: `sha256:${'f'.repeat(64)}`,
+        }),
+        receiverEntry.occurredAt,
+      ],
+    ),
+    /duplicate key/u,
+  );
+  return { replay: replay.response, quota, receiverEntry };
+}
+
+async function receiverEntryFromDatabase(pool) {
+  const result = await pool.query(
+    `SELECT entry_json
+       FROM clervo_receiver_accounting_entries
+      WHERE environment_namespace = $1 AND settlement_id = $2`,
+    [policy.environmentNamespace, receiverAccountingInput.settlementId],
+  );
+  assert.equal(result.rowCount, 1);
+  return result.rows[0].entry_json;
 }
 
 async function proveRetention(pool) {
@@ -282,6 +357,8 @@ try {
   const restartedStore = new PostgresSearchStateStore(sourcePool, { environmentNamespace: policy.environmentNamespace });
   const restartReplay = await restartedStore.begin({ ...operation, now });
   assert.equal(restartReplay.kind, 'replay');
+  const restartedReceiverEntry = await receiverEntryFromDatabase(sourcePool);
+  assert.deepEqual(restartedReceiverEntry, initial.receiverEntry);
   await sourcePool.end();
   sourcePool = undefined;
 
@@ -329,9 +406,21 @@ try {
   const restoredReplay = await restoredStore.begin({ ...operation, now });
   assert.equal(restoredReplay.kind, 'replay');
   assert.deepEqual(restoredReplay.response, initial.replay);
+  const restoredReceiverEntry = await receiverEntryFromDatabase(restorePool);
+  assert.deepEqual(restoredReceiverEntry, initial.receiverEntry);
   const restoredQueue = await proveRestoredQueue(restoreName, policy.restoreDatabase, queue);
   const retention = await proveRetention(restorePool);
-  outcome = { migrations, initial, restartReplay, archiveHash, retention, queue, restoredQueue };
+  outcome = {
+    migrations,
+    initial,
+    restartReplay,
+    restartedReceiverEntry,
+    restoredReceiverEntry,
+    archiveHash,
+    retention,
+    queue,
+    restoredQueue,
+  };
 } finally {
   await sourcePool?.end().catch(() => {});
   await restorePool?.end().catch(() => {});
@@ -377,6 +466,10 @@ const report = {
     queueRetryCompleted: true,
     queueDeadLettered: true,
     queueStateRestoredFromBackup: outcome.restoredQueue,
+    receiverAccountingInserted: true,
+    receiverAccountingDuplicateSettlementRejected: true,
+    receiverAccountingSurvivedRestart: outcome.restartedReceiverEntry.entryHash === outcome.initial.receiverEntry.entryHash,
+    receiverAccountingRestoredFromBackup: outcome.restoredReceiverEntry.entryHash === outcome.initial.receiverEntry.entryHash,
   },
   cleanup: {
     sourceContainerRemoved: true,
