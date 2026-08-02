@@ -40,7 +40,7 @@
         "pricedListings": { "const": 612 },
         "workingServices": { "const": 8 },
         "excludedGatewayListings": { "const": 21 },
-        "termsBlockedListings": { "const": 181 },
+        "termsBlockedListings": { "const": 518 },
         "supplierCostKnownListings": { "const": 14 },
         "ownerCashSpentUsd": { "const": 0 },
         "supplierCostKnown": { "const": false }

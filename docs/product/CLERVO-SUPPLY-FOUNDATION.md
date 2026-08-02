@@ -91,6 +91,10 @@ disabled without explicit owner approval.
   seven exact chat identities, Medium 2604 at 8/10, valid text/code embeddings,
   working OCR, and a TTS-to-STT loop recovering 9/9 words. Commercial Customer
   Offerings are permitted, but production needs owner-approved Scale billing.
+- OpenRouter's 337 listings, including 14 free variants, remain priced for
+  comparison. The key is free-tier with zero credits. Current terms prohibit
+  reselling model API access or a competing service, so no inference was run and
+  every listing is excluded from Clervo customer routing.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three

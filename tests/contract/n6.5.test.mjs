@@ -292,6 +292,20 @@ test('Mistral free mode proves exact chat and unique modalities while production
   assert.equal(terms.findings.freeModeProductionAllowed, false);
 });
 
+test('OpenRouter inventory remains priced but makes no inference calls after its anti-resale restriction is confirmed', async () => {
+  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
+  const openrouter = pricing.assets.filter(({ serviceId }) => serviceId === 'supply.openrouter');
+  const evidence = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/openrouter-account-and-terms.v1.json'), 'utf8'));
+  assert.equal(openrouter.length, 337);
+  assert.ok(openrouter.every(({ listingStatus, termsStatus, customerPrices }) => listingStatus === 'priced_terms_blocked' && termsStatus === 'blocked' && customerPrices.every(({ price }) => price > 0)));
+  assert.equal(evidence.account.isFreeTier, true);
+  assert.equal(evidence.account.totalCreditsUsd, 0);
+  assert.equal(evidence.catalog.freeExactVariants, 14);
+  assert.equal(evidence.terms.apiAccessResaleAllowed, false);
+  assert.equal(evidence.decision.inferenceCallsMade, 0);
+  assert.equal(evidence.decision.sellableRoutes, 0);
+});
+
 test('SambaNova exact models retain competitive prices and quality evidence but stay blocked by hosted resale terms', async () => {
   const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
   const samba = pricing.assets.filter(({ serviceId }) => serviceId === 'supply.sambanova');

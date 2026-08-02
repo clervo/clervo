@@ -854,14 +854,16 @@
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
-      "fundingClass": "unknown",
+      "fundingClass": "recurring_free",
       "connectionStatus": "observed_working",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "qualificationStatus": "failed",
+      "termsStatus": "blocked",
+      "resaleStatus": "prohibited",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Authenticated model discovery returned 337 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+        "Authenticated discovery returned 337 priced listings, including 14 exact free variants.",
+        "Non-billable account checks found a free-tier key, zero purchased credits, and historical usage; no inference call was made.",
+        "Current terms prohibit reselling API access to models or developing a competing service, so OpenRouter cannot back Clervo customer traffic."
       ],
       "knownModelNames": [
         "~anthropic/claude-fable-latest",

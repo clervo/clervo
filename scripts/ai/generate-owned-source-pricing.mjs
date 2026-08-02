@@ -99,13 +99,13 @@ const assets = sources.flatMap((source) => source.modelIds.map((modelId) => {
     serviceId: source.serviceId,
     modelId,
     product: productId,
-    listingStatus: source.serviceId === 'supply.mistral' ? 'priced_evaluation_only' : source.serviceId === 'supply.cohere' ? 'priced_unavailable_trial_limit' : source.serviceId === 'supply.cerebras' || isZai || (isSambanova && modelId === 'MiniMax-M2.7') ? 'priced_unavailable_no_balance' : ['supply.nvidia', 'supply.sambanova', 'supply.siliconflow'].includes(source.serviceId) ? 'priced_terms_blocked' : 'priced_pending_qualification',
+    listingStatus: source.serviceId === 'supply.mistral' ? 'priced_evaluation_only' : source.serviceId === 'supply.cohere' ? 'priced_unavailable_trial_limit' : source.serviceId === 'supply.cerebras' || isZai || (isSambanova && modelId === 'MiniMax-M2.7') ? 'priced_unavailable_no_balance' : ['supply.nvidia', 'supply.openrouter', 'supply.sambanova', 'supply.siliconflow'].includes(source.serviceId) ? 'priced_terms_blocked' : 'priced_pending_qualification',
     qualityGrade: source.serviceId === 'supply.nvidia' ? grade(nvidiaScores.get(modelId)) : isSambanova ? grade(sambanovaScores.get(modelId)) : source.serviceId === 'supply.mistral' ? grade(mistralScores.get(modelId)) : 'unranked',
     supplierCostKnown: supplierPrices !== undefined,
     ...(supplierPrices === undefined ? {} : { supplierPrices }),
     customerPrices: isSambanova ? sambanovaCustomerPrices.get(modelId) : isZai ? zaiCustomerPrices.get(modelId) : prices(productId, modelId),
     pricingMethod: isSambanova || isZai ? 'official_cost_competitive_markup' : 'category_introductory_price',
-    termsStatus: ['supply.nvidia', 'supply.sambanova', 'supply.siliconflow'].includes(source.serviceId) ? 'blocked' : isZai || ['supply.cohere', 'supply.mistral'].includes(source.serviceId) ? 'restricted' : 'unreviewed',
+    termsStatus: ['supply.nvidia', 'supply.openrouter', 'supply.sambanova', 'supply.siliconflow'].includes(source.serviceId) ? 'blocked' : isZai || ['supply.cohere', 'supply.mistral'].includes(source.serviceId) ? 'restricted' : 'unreviewed',
   };
 })).sort((left, right) => `${left.serviceId}/${left.modelId}`.localeCompare(`${right.serviceId}/${right.modelId}`, 'en-US'));
 

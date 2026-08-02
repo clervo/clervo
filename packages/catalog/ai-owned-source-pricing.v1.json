@@ -15,7 +15,7 @@
     "pricedListings": 612,
     "workingServices": 8,
     "excludedGatewayListings": 21,
-    "termsBlockedListings": 181,
+    "termsBlockedListings": 518,
     "supplierCostKnownListings": 14,
     "ownerCashSpentUsd": 0,
     "supplierCostKnown": false
@@ -3597,7 +3597,7 @@
       "serviceId": "supply.openrouter",
       "modelId": "~anthropic/claude-fable-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3611,13 +3611,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "~anthropic/claude-haiku-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3631,13 +3631,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "~anthropic/claude-opus-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3651,13 +3651,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "~anthropic/claude-sonnet-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3671,13 +3671,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "~deepseek/deepseek-v4-flash-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3691,13 +3691,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "~google/gemini-flash-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3711,13 +3711,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "~google/gemini-pro-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3731,13 +3731,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "~moonshotai/kimi-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3751,13 +3751,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "~openai/gpt-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3771,13 +3771,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "~openai/gpt-mini-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3791,13 +3791,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "~x-ai/grok-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3811,13 +3811,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "ai21/jamba-large-1.7",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3831,13 +3831,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "aion-labs/aion-2.0",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3851,13 +3851,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "aion-labs/aion-3.0",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3871,13 +3871,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "aion-labs/aion-3.0-mini",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3891,13 +3891,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "aion-labs/aion-rp-llama-3.1-8b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3911,13 +3911,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "allenai/olmo-3-32b-think",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3931,13 +3931,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "amazon/nova-2-lite-v1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3951,13 +3951,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "amazon/nova-lite-v1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3971,13 +3971,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "amazon/nova-micro-v1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -3991,13 +3991,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "amazon/nova-premier-v1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4011,13 +4011,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "amazon/nova-pro-v1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4031,13 +4031,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthracite-org/magnum-v4-72b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4051,13 +4051,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-3-haiku",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4071,13 +4071,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-fable-5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4091,13 +4091,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-haiku-4.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4111,13 +4111,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-opus-4",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4131,13 +4131,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-opus-4.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4151,13 +4151,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-opus-4.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4171,13 +4171,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-opus-4.6",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4191,13 +4191,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-opus-4.7",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4211,13 +4211,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-opus-4.7-fast",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4231,13 +4231,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-opus-4.8",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4251,13 +4251,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-opus-4.8-fast",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4271,13 +4271,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-opus-5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4291,13 +4291,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-opus-5-fast",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4311,13 +4311,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-sonnet-4",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4331,13 +4331,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-sonnet-4.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4351,13 +4351,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-sonnet-4.6",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4371,13 +4371,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "anthropic/claude-sonnet-5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4391,13 +4391,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "arcee-ai/trinity-large-thinking",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4411,13 +4411,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "arcee-ai/virtuoso-large",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4431,13 +4431,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "baidu/ernie-4.5-vl-424b-a47b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4451,13 +4451,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "bytedance-seed/seed-1.6",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4471,13 +4471,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "bytedance-seed/seed-1.6-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4491,13 +4491,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "bytedance-seed/seed-2.0-lite",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4511,13 +4511,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "bytedance-seed/seed-2.0-mini",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4531,13 +4531,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "bytedance/ui-tars-1.5-7b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4551,13 +4551,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "cognitivecomputations/dolphin-mistral-24b-venice-edition",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4571,13 +4571,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "cohere/command-a",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4591,13 +4591,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "cohere/command-r-08-2024",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4611,13 +4611,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "cohere/command-r-plus-08-2024",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4631,13 +4631,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "cohere/command-r7b-12-2024",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4651,13 +4651,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "cohere/north-mini-code:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4671,13 +4671,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepcogito/cogito-v2.1-671b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4691,13 +4691,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-chat",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4711,13 +4711,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-chat-v3-0324",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4731,13 +4731,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-chat-v3.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4751,13 +4751,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-r1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4771,13 +4771,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-r1-0528",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4791,13 +4791,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-r1-distill-llama-70b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4811,13 +4811,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-v3.1-terminus",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4831,13 +4831,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-v3.2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4851,13 +4851,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-v3.2-exp",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4871,13 +4871,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-v4-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4891,13 +4891,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-v4-flash-0731",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4911,13 +4911,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "deepseek/deepseek-v4-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4931,13 +4931,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-2.5-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4951,13 +4951,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-2.5-flash-image",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4967,13 +4967,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-2.5-flash-lite",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -4987,13 +4987,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-2.5-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5007,13 +5007,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-2.5-pro-preview",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5027,13 +5027,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-2.5-pro-preview-05-06",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5047,13 +5047,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3-flash-preview",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5067,13 +5067,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3-pro-image",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5083,13 +5083,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3-pro-image-preview",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5099,13 +5099,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3.1-flash-image",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5115,13 +5115,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3.1-flash-image-preview",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5131,13 +5131,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3.1-flash-lite",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5151,13 +5151,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3.1-flash-lite-image",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5167,13 +5167,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3.1-flash-lite-preview",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5187,13 +5187,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3.1-pro-preview",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5207,13 +5207,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3.1-pro-preview-customtools",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5227,13 +5227,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3.5-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5247,13 +5247,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3.5-flash-lite",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5267,13 +5267,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemini-3.6-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5287,13 +5287,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemma-2-27b-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5307,13 +5307,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemma-3-12b-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5327,13 +5327,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemma-3-27b-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5347,13 +5347,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemma-3-4b-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5367,13 +5367,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemma-3n-e4b-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5387,13 +5387,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemma-4-26b-a4b-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5407,13 +5407,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemma-4-26b-a4b-it:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5427,13 +5427,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemma-4-31b-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5447,13 +5447,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/gemma-4-31b-it:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5467,13 +5467,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/lyria-3-clip-preview",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5487,13 +5487,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "google/lyria-3-pro-preview",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5507,13 +5507,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "gryphe/mythomax-l2-13b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5527,13 +5527,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "ibm-granite/granite-4.0-h-micro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5547,13 +5547,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "ibm-granite/granite-4.1-8b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5567,13 +5567,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "inception/mercury-2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5587,13 +5587,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "inclusionai/ling-2.6-1t",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5607,13 +5607,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "inclusionai/ling-2.6-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5627,13 +5627,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "inclusionai/ling-3.0-flash:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5647,13 +5647,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "inclusionai/ring-2.6-1t",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5667,13 +5667,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "kwaipilot/kat-coder-air-v2.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5687,13 +5687,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "kwaipilot/kat-coder-pro-v2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5707,13 +5707,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "kwaipilot/kat-coder-pro-v2.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5727,13 +5727,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mancer/weaver",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5747,13 +5747,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "meituan/longcat-2.0",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5767,13 +5767,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "meta-llama/llama-3.1-70b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5787,13 +5787,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "meta-llama/llama-3.1-8b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5807,13 +5807,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "meta-llama/llama-3.2-1b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5827,13 +5827,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "meta-llama/llama-3.2-3b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5847,13 +5847,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "meta-llama/llama-3.3-70b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5867,13 +5867,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "meta-llama/llama-4-maverick",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5887,13 +5887,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "meta-llama/llama-4-scout",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5907,13 +5907,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "meta-llama/llama-guard-4-12b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5927,13 +5927,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "meta/muse-spark-1.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5947,13 +5947,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "microsoft/phi-4",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5967,13 +5967,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "microsoft/wizardlm-2-8x22b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -5987,13 +5987,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "minimax/minimax-01",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6007,13 +6007,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "minimax/minimax-m1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6027,13 +6027,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "minimax/minimax-m2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6047,13 +6047,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "minimax/minimax-m2-her",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6067,13 +6067,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "minimax/minimax-m2.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6087,13 +6087,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "minimax/minimax-m2.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6107,13 +6107,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "minimax/minimax-m2.7",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6127,13 +6127,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "minimax/minimax-m3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6147,13 +6147,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/codestral-2508",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6167,13 +6167,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/ministral-14b-2512",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6187,13 +6187,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/ministral-3b-2512",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6207,13 +6207,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/ministral-8b-2512",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6227,13 +6227,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-large",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6247,13 +6247,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-large-2407",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6267,13 +6267,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-large-2512",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6287,13 +6287,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-medium-3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6307,13 +6307,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-medium-3-5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6327,13 +6327,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-medium-3.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6347,13 +6347,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-nemo",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6367,13 +6367,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-saba",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6387,13 +6387,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-small-24b-instruct-2501",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6407,13 +6407,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-small-2603",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6427,13 +6427,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-small-3.1-24b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6447,13 +6447,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mistral-small-3.2-24b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6467,13 +6467,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/mixtral-8x22b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6487,13 +6487,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "mistralai/voxtral-small-24b-2507",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6507,13 +6507,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "moonshotai/kimi-k2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6527,13 +6527,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "moonshotai/kimi-k2-0905",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6547,13 +6547,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "moonshotai/kimi-k2-thinking",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6567,13 +6567,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "moonshotai/kimi-k2.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6587,13 +6587,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "moonshotai/kimi-k2.6",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6607,13 +6607,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "moonshotai/kimi-k2.7-code",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6627,13 +6627,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "moonshotai/kimi-k3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6647,13 +6647,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "morph/morph-v3-fast",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6667,13 +6667,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "morph/morph-v3-large",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6687,13 +6687,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nex-agi/nex-n2-mini",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6707,13 +6707,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nex-agi/nex-n2-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6727,13 +6727,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nousresearch/hermes-3-llama-3.1-405b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6747,13 +6747,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nousresearch/hermes-3-llama-3.1-70b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6767,13 +6767,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nousresearch/hermes-4-405b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6787,13 +6787,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nousresearch/hermes-4-70b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6807,13 +6807,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nvidia/nemotron-3-nano-30b-a3b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6827,13 +6827,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nvidia/nemotron-3-nano-30b-a3b:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6847,13 +6847,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6867,13 +6867,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nvidia/nemotron-3-super-120b-a12b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6887,13 +6887,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nvidia/nemotron-3-super-120b-a12b:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6907,13 +6907,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nvidia/nemotron-3-ultra-550b-a55b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6927,13 +6927,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nvidia/nemotron-3-ultra-550b-a55b:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6947,13 +6947,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nvidia/nemotron-3.5-content-safety:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6967,13 +6967,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nvidia/nemotron-nano-12b-v2-vl:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -6987,13 +6987,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "nvidia/nemotron-nano-9b-v2:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7007,13 +7007,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-3.5-turbo",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7027,13 +7027,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-3.5-turbo-0613",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7047,13 +7047,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-3.5-turbo-16k",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7067,13 +7067,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-3.5-turbo-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7087,13 +7087,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7107,13 +7107,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4-turbo",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7127,13 +7127,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4-turbo-preview",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7147,13 +7147,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7167,13 +7167,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4.1-mini",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7187,13 +7187,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4.1-nano",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7207,13 +7207,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4o",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7227,13 +7227,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4o-2024-05-13",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7247,13 +7247,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4o-2024-08-06",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7267,13 +7267,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4o-2024-11-20",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7287,13 +7287,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4o-mini",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7307,13 +7307,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-4o-mini-2024-07-18",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7327,13 +7327,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7347,13 +7347,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5-image",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7363,13 +7363,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5-image-mini",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7379,13 +7379,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5-mini",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7399,13 +7399,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5-nano",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7419,13 +7419,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7439,13 +7439,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7459,13 +7459,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.1-codex",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7479,13 +7479,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.1-codex-max",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7499,13 +7499,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.1-codex-mini",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7519,13 +7519,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7539,13 +7539,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.2-chat",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7559,13 +7559,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.2-codex",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7579,13 +7579,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.2-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7599,13 +7599,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.3-chat",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7619,13 +7619,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.3-codex",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7639,13 +7639,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.4",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7659,13 +7659,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.4-image-2",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7675,13 +7675,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.4-mini",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7695,13 +7695,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.4-nano",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7715,13 +7715,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.4-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7735,13 +7735,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7755,13 +7755,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.5-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7775,13 +7775,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.6-luna",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7795,13 +7795,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.6-luna-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7815,13 +7815,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.6-sol",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7835,13 +7835,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.6-sol-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7855,13 +7855,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.6-terra",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7875,13 +7875,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-5.6-terra-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7895,13 +7895,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-audio",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7915,13 +7915,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-audio-mini",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7935,13 +7935,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-chat-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7955,13 +7955,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-oss-120b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7975,13 +7975,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-oss-20b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -7995,13 +7995,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-oss-20b:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8015,13 +8015,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/gpt-oss-safeguard-20b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8035,13 +8035,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/o1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8055,13 +8055,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/o1-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8075,13 +8075,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/o3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8095,13 +8095,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/o3-mini",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8115,13 +8115,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/o3-mini-high",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8135,13 +8135,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/o3-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8155,13 +8155,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/o4-mini",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8175,13 +8175,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openai/o4-mini-high",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8195,13 +8195,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openrouter/auto",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8215,13 +8215,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openrouter/auto-beta",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8235,13 +8235,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openrouter/bodybuilder",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8255,13 +8255,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openrouter/free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8275,13 +8275,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openrouter/fusion",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8295,13 +8295,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "openrouter/pareto-code",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8315,13 +8315,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "perceptron/perceptron-mk1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8335,13 +8335,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "perplexity/sonar",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8355,13 +8355,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "perplexity/sonar-deep-research",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8375,13 +8375,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "perplexity/sonar-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8395,13 +8395,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "perplexity/sonar-pro-search",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8415,13 +8415,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "perplexity/sonar-reasoning-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8435,13 +8435,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "poolside/laguna-s-2.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8455,13 +8455,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "poolside/laguna-s-2.1:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8475,13 +8475,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "poolside/laguna-xs-2.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8495,13 +8495,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "poolside/laguna-xs-2.1:free",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8515,13 +8515,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen-2.5-72b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8535,13 +8535,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen-2.5-7b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8555,13 +8555,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen-2.5-coder-32b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8575,13 +8575,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen-plus",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8595,13 +8595,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen-plus-2025-07-28",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8615,13 +8615,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen-plus-2025-07-28:thinking",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8635,13 +8635,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen2.5-vl-72b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8655,13 +8655,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-14b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8675,13 +8675,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-235b-a22b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8695,13 +8695,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-235b-a22b-2507",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8715,13 +8715,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-235b-a22b-thinking-2507",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8735,13 +8735,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-30b-a3b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8755,13 +8755,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-30b-a3b-instruct-2507",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8775,13 +8775,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-30b-a3b-thinking-2507",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8795,13 +8795,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-32b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8815,13 +8815,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-8b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8835,13 +8835,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-coder",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8855,13 +8855,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-coder-30b-a3b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8875,13 +8875,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-coder-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8895,13 +8895,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-coder-next",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8915,13 +8915,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-coder-plus",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8935,13 +8935,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-max",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8955,13 +8955,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-max-thinking",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8975,13 +8975,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-next-80b-a3b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -8995,13 +8995,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-next-80b-a3b-thinking",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9015,13 +9015,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-vl-235b-a22b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9035,13 +9035,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-vl-235b-a22b-thinking",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9055,13 +9055,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-vl-30b-a3b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9075,13 +9075,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-vl-30b-a3b-thinking",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9095,13 +9095,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-vl-32b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9115,13 +9115,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-vl-8b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9135,13 +9135,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3-vl-8b-thinking",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9155,13 +9155,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.5-122b-a10b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9175,13 +9175,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.5-27b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9195,13 +9195,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.5-35b-a3b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9215,13 +9215,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.5-397b-a17b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9235,13 +9235,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.5-9b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9255,13 +9255,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.5-flash-02-23",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9275,13 +9275,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.5-plus-02-15",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9295,13 +9295,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.5-plus-20260420",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9315,13 +9315,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.6-27b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9335,13 +9335,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.6-35b-a3b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9355,13 +9355,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.6-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9375,13 +9375,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.6-max-preview",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9395,13 +9395,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.6-plus",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9415,13 +9415,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.7-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9435,13 +9435,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.7-max",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9455,13 +9455,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "qwen/qwen3.7-plus",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9475,13 +9475,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "rekaai/reka-edge",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9495,13 +9495,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "rekaai/reka-flash-3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9515,13 +9515,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "relace/relace-apply-3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9535,13 +9535,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "relace/relace-search",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9555,13 +9555,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "sakana/fugu-ultra",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9575,13 +9575,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "sao10k/l3-lunaris-8b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9595,13 +9595,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "sao10k/l3.1-euryale-70b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9615,13 +9615,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "sao10k/l3.3-euryale-70b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9635,13 +9635,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "stepfun/step-3.5-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9655,13 +9655,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "stepfun/step-3.7-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9675,13 +9675,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "tencent/hunyuan-a13b-instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9695,13 +9695,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "tencent/hy3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9715,13 +9715,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "tencent/hy3-preview",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9735,13 +9735,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "thedrummer/cydonia-24b-v4.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9755,13 +9755,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "thedrummer/rocinante-12b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9775,13 +9775,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "thedrummer/skyfall-36b-v2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9795,13 +9795,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "thedrummer/unslopnemo-12b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9815,13 +9815,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "thinkingmachines/inkling",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9835,13 +9835,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "thinkingmachines/inkling-small",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9855,13 +9855,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "undi95/remm-slerp-l2-13b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9875,13 +9875,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "upstage/solar-pro-3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9895,13 +9895,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "writer/palmyra-x5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9915,13 +9915,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "x-ai/grok-4.20",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9935,13 +9935,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "x-ai/grok-4.20-multi-agent",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9955,13 +9955,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "x-ai/grok-4.3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9975,13 +9975,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "x-ai/grok-4.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -9995,13 +9995,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "x-ai/grok-build-0.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10015,13 +10015,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "xiaomi/mimo-v2.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10035,13 +10035,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "xiaomi/mimo-v2.5-pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10055,13 +10055,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-4.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10075,13 +10075,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-4.5-air",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10095,13 +10095,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-4.5v",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10115,13 +10115,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-4.6",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10135,13 +10135,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-4.6v",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10155,13 +10155,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-4.7",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10175,13 +10175,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-4.7-flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10195,13 +10195,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10215,13 +10215,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-5-turbo",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10235,13 +10235,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-5.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10255,13 +10255,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-5.2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10275,13 +10275,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.openrouter",
       "modelId": "z-ai/glm-5v-turbo",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10295,7 +10295,7 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.sambanova",

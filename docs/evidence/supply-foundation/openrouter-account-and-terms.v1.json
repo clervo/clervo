@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "clervo.openrouter-account-and-terms.v1",
+  "checkedAt": "2026-08-02T05:29:10.249Z",
+  "serviceId": "supply.openrouter",
+  "account": {
+    "nonBillableAccountQueries": 2,
+    "creditsEndpointStatus": 200,
+    "keyEndpointStatus": 200,
+    "isFreeTier": true,
+    "totalCreditsUsd": 0,
+    "historicalUsageUsd": 0.204809385,
+    "ownerCashSpentUsd": 0
+  },
+  "catalog": {
+    "pricedListings": 337,
+    "freeExactVariants": 14,
+    "freeModelDailyRequestLimitWithoutCreditPurchase": 50
+  },
+  "terms": {
+    "commercialUseRecognized": true,
+    "incorporationIntoOwnProductsRecognized": true,
+    "apiAccessResaleAllowed": false,
+    "competingServiceAllowed": false,
+    "perModelTermsAlsoApply": true,
+    "providerDataPoliciesVary": true
+  },
+  "decision": {
+    "inferenceCallsMade": 0,
+    "sellableRoutes": 0,
+    "replacementPlan": "Use direct terms-compatible providers; reconsider only if OpenRouter grants written reseller authorization."
+  },
+  "sources": [
+    "https://openrouter.ai/terms",
+    "https://openrouter.ai/docs/faq",
+    "https://openrouter.ai/docs/guides/routing/model-variants/free",
+    "https://openrouter.ai/docs/guides/privacy/provider-logging/"
+  ]
+}
