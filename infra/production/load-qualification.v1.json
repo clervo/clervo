@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "clervo.production-load-qualification-policy.v1",
+  "burstRequests": 1000,
+  "maximumConcurrentExecutions": 16,
+  "steadyRequests": 256,
+  "steadyClientConcurrency": 8,
+  "maximumSteadyP95Ms": 250,
+  "maximumRssGrowthBytes": 67108864,
+  "expectedBurstStatuses": [200, 503],
+  "providerCallsAllowed": false,
+  "cloudResourcesAllowed": false,
+  "paymentsAllowed": false
+}
