@@ -29,10 +29,15 @@ test('generated OpenAPI is deterministic, schema-complete, and truthfully expose
   assert.equal(document.jsonSchemaDialect, 'https://json-schema.org/draft/2020-12/schema');
   assert.deepEqual(Object.keys(document.paths).sort(), [SEARCH_FREE_PATH, SEARCH_PAID_PATH].sort());
   assert.deepEqual(document['x-clervo-status'], {
-    lifecycle: 'implemented_unverified',
-    callable: true,
+    lifecycle: 'preview',
+    distribution: 'candidate',
+    noPublicDistribution: true,
+    publicCallable: false,
     paymentImplemented: false,
     deploymentVerified: false,
+    releaseCandidateId: 'clervo-private-core-2026-08-02.1',
+    interfaceHash: 'sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768',
+    operationIds: ['search.web', 'search.answer'],
   });
   const schemaFiles = (await readdir(path.join(root, 'packages/contracts/schemas'))).filter((name) => name.endsWith('.schema.json'));
   const visibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
@@ -53,48 +58,63 @@ test('embedded and published schemas compile under Draft 2020-12 with resolved r
   }
 });
 
-test('discovery publishes the implemented search product without payment or deployment readiness', async () => {
+test('discovery is bound to the frozen private core without claiming public distribution', async () => {
   const discovery = await json('.well-known/clervo.json');
   assert.deepEqual(discovery, createDiscoveryDocument());
-  assert.equal(discovery.callable, true);
+  assert.deepEqual(discovery.distribution, {
+    state: 'candidate',
+    publicAvailable: false,
+    callable: false,
+    noPublicDistribution: true,
+    releaseCandidateId: 'clervo-private-core-2026-08-02.1',
+    interfaceHash: 'sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768',
+  });
   assert.equal(discovery.payment.implemented, false);
   assert.equal(discovery.products.length, 2);
   assert.deepEqual(discovery.products.map(({ productId }) => productId), ['search.web', 'search.answer']);
-  assert.ok(discovery.products.every((product) => product.payment.payable === false));
+  assert.ok(discovery.products.every((product) =>
+    product.publicAvailable === false
+    && product.payment.payable === false
+    && product.pricing.model === 'non_payable_mock_fixture'));
   assert.deepEqual(discovery.products.map(({ selection, pricing }) => [selection.synthesize, pricing.displayPrice.amountAtomic]), [[false, '1000'], [true, '2500']]);
-  assert.match(discovery.description, /deployment.*not verified/i);
-  assert.deepEqual(await json('catalog.json'), { contractVersion: CONTRACT_VERSION, catalogVersion: discovery.discoveryVersion, releaseScope: discovery.releaseScope, products: discovery.products });
-  assert.equal(discovery.discoveryVersion, '2026-08-01.3');
+  assert.match(discovery.description, /no public deployment or real payment/i);
+  assert.deepEqual(await json('catalog.json'), {
+    contractVersion: CONTRACT_VERSION,
+    catalogVersion: discovery.discoveryVersion,
+    distribution: discovery.distribution,
+    releaseScope: discovery.releaseScope,
+    products: discovery.products,
+  });
+  assert.equal(discovery.discoveryVersion, '2026-08-02.1');
   assert.equal(discovery.releaseScope.scopeVersion, '2026-08-01.3');
   assert.equal(discovery.releaseScope.firstRevenueRelease.productName, 'Clervo Platform');
   assert.deepEqual(discovery.releaseScope.firstRevenueRelease.requiredPillars, ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence']);
   assert.equal(discovery.releaseScope.firstRevenueRelease.ready, false);
   assert.deepEqual(discovery.releaseScope.productCore, {
     requiredPillars: ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence'],
-    interfacesFrozen: false,
-    compatibilityVerified: false,
-    ready: false,
+    interfacesFrozen: true,
+    compatibilityVerified: true,
+    ready: true,
   });
   assert.deepEqual(discovery.releaseScope.pillars.map(({ lifecycle }) => lifecycle), ['preview', 'unavailable', 'unavailable', 'unavailable', 'unavailable', 'unavailable']);
-  assert.deepEqual(discovery.releaseScope.pillars.map(({ coreQualified }) => coreQualified), [true, false, false, false, false, false]);
+  assert.deepEqual(discovery.releaseScope.pillars.map(({ coreQualified }) => coreQualified), [true, true, true, true, true, true]);
   assert.ok(discovery.releaseScope.pillars.every(({ release }) => release === 'first_revenue_release'));
 });
 
-test('llms.txt publishes separately priced search products and states payment/deployment limitations', async () => {
+test('llms.txt publishes the candidate operation set and explicit distribution limitations', async () => {
   const llms = await readFile(path.join(generated, 'llms.txt'), 'utf8');
   assert.equal(llms, createLlmsText());
   assert.match(llms, /^# Clervo\n\n> /);
-  assert.match(llms, /Callable products: search\.web, search\.answer/);
+  assert.match(llms, /Projected operation IDs: search\.web, search\.answer/);
+  assert.match(llms, /Public API callable: no/);
   assert.match(llms, /x402 payment implementation: not implemented/);
-  assert.match(llms, /First Revenue Release: Clervo Platform/);
-  assert.match(llms, /Required pillars: Search, AI, Secure Sandbox, RPC, Prediction, Crypto Intelligence/);
-  assert.match(llms, /Product core ready: false/);
-  assert.doesNotMatch(llms, /additive after First Revenue Release|planned later platform expansion/i);
+  assert.match(llms, /Six product cores: privately qualified and compatibility-frozen/);
+  assert.match(llms, /First Revenue Release ready: no/);
   assert.match(llms, /llms\.txt is a documentation map, not a search or AI ranking claim/);
   assert.doesNotMatch(llms, /live service|available now|production-ready/i);
 });
 
-test('generation fails closed if implemented routes disappear or payment readiness is injected', () => {
+test('generation fails closed if routes disappear or public availability is injected', () => {
   const unsafeOpenApi = structuredClone(createOpenApiDocument({}));
   delete unsafeOpenApi.paths[SEARCH_FREE_PATH];
   assert.throws(
@@ -103,14 +123,14 @@ test('generation fails closed if implemented routes disappear or payment readine
   );
 
   const unsafeDiscovery = structuredClone(createDiscoveryDocument());
-  unsafeDiscovery.payment.implemented = true;
+  unsafeDiscovery.distribution.callable = true;
   assert.throws(
     () => assertPreviewArtifacts(createOpenApiDocument({}), unsafeDiscovery, createLlmsText()),
-    /discovery_must_not_claim_payment/,
+    /discovery_distribution_claim_unsafe/,
   );
 
   const falseQualification = structuredClone(createDiscoveryDocument());
-  falseQualification.releaseScope.pillars.find(({ pillarId }) => pillarId === 'rpc').lifecycle = 'available';
+  falseQualification.releaseScope.productCore.interfacesFrozen = false;
   assert.throws(
     () => assertPreviewArtifacts(createOpenApiDocument({}), falseQualification, createLlmsText()),
     /discovery_product_scope_invalid/,

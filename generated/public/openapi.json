@@ -2,16 +2,16 @@
   "openapi": "3.1.1",
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
-    "title": "Clervo Platform search contract",
+    "title": "Clervo search distribution candidate",
     "version": "2026-07-29.1",
-    "description": "Generated repository-local contract for separately priced raw retrieval and synthesized-answer products on the bounded search.query HTTP slice. This privately qualified Search core remains a preview within the future six-pillar Clervo Platform First Revenue Release. Deployment is not verified and public payment is not implemented."
+    "description": "Generated contract candidate for the repository-local search preview. It does not claim a public deployment, public callable service, or payable x402 settlement."
   },
   "paths": {
     "/v1/search/free": {
       "post": {
-        "summary": "Execute free search sample",
-        "description": "Bounded, idempotent free-sample route with an in-memory quota reference implementation.",
-        "operationId": "execute_free_search_sample",
+        "summary": "Execute a bounded search preview",
+        "description": "Repository-local idempotent sample route. It is not a public availability claim.",
+        "operationId": "searchPreview",
         "parameters": [
           {
             "name": "Idempotency-Key",
@@ -36,7 +36,7 @@
         },
         "responses": {
           "200": {
-            "description": "Search completed",
+            "description": "Preview completed",
             "content": {
               "application/json": {
                 "schema": {
@@ -46,25 +46,53 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Invalid request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
           },
           "409": {
-            "description": "Idempotency conflict"
+            "description": "Idempotency conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
           },
           "429": {
-            "description": "Free quota exceeded"
+            "description": "Preview quota exceeded",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
           },
           "502": {
-            "description": "Search executor failed closed"
+            "description": "Executor failed closed",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
           }
         }
       }
     },
     "/v1/search/paid": {
       "post": {
-        "summary": "Request paid search",
-        "description": "Returns an explicitly non-payable mock x402 challenge by default. Mock-paid execution exists only through test dependency injection.",
-        "operationId": "request_paid_search",
+        "summary": "Request a non-payable search challenge",
+        "description": "Returns an explicitly non-payable mock x402 challenge. Execution exists only through test dependency injection.",
+        "operationId": "searchPaymentChallenge",
         "parameters": [
           {
             "name": "Idempotency-Key",
@@ -89,7 +117,7 @@
         },
         "responses": {
           "200": {
-            "description": "Mock-paid test execution completed",
+            "description": "Injected mock test execution completed",
             "content": {
               "application/json": {
                 "schema": {
@@ -99,7 +127,14 @@
             }
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Invalid request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
           },
           "402": {
             "description": "Non-payable mock payment challenge",
@@ -120,10 +155,24 @@
             }
           },
           "409": {
-            "description": "Idempotency conflict"
+            "description": "Idempotency conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
           },
           "502": {
-            "description": "Mock-paid execution failed closed"
+            "description": "Mock test execution failed closed",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
           }
         }
       }
@@ -2588,9 +2637,17 @@
     }
   },
   "x-clervo-status": {
-    "lifecycle": "implemented_unverified",
-    "callable": true,
+    "lifecycle": "preview",
+    "distribution": "candidate",
+    "noPublicDistribution": true,
+    "publicCallable": false,
     "paymentImplemented": false,
-    "deploymentVerified": false
+    "deploymentVerified": false,
+    "releaseCandidateId": "clervo-private-core-2026-08-02.1",
+    "interfaceHash": "sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768",
+    "operationIds": [
+      "search.web",
+      "search.answer"
+    ]
   }
 }

@@ -23,7 +23,7 @@ const stableCapabilityIds = {
   crypto_intelligence: ['crypto.wallet', 'crypto.token', 'crypto.transaction', 'crypto.protocol', 'crypto.report'],
 };
 
-test('Clervo Platform scope preserves the privately qualified Search core and five pending cores', () => {
+test('Clervo Platform scope preserves all six frozen private cores without changing public lifecycle', () => {
   const scope = createProductScopeDocument();
   assert.equal(scope.scopeVersion, '2026-08-01.3');
   assert.equal(scope.firstRevenueRelease.productId, 'clervo.platform');
@@ -32,9 +32,14 @@ test('Clervo Platform scope preserves the privately qualified Search core and fi
   assert.deepEqual([...scope.productCore.requiredPillars], [...pillarIds]);
   assert.deepEqual(scope.pillars.map(({ lifecycle }) => lifecycle), ['preview', 'unavailable', 'unavailable', 'unavailable', 'unavailable', 'unavailable']);
   assert.ok(scope.pillars.every(({ release }) => release === 'first_revenue_release'));
-  assert.deepEqual(scope.pillars.map(({ coreQualified }) => coreQualified), [true, false, false, false, false, false]);
+  assert.deepEqual(scope.pillars.map(({ coreQualified }) => coreQualified), [true, true, true, true, true, true]);
   assert.deepEqual(Object.fromEntries(scope.pillars.map(({ pillarId, capabilityIds }) => [pillarId, capabilityIds])), stableCapabilityIds);
-  assert.equal(scope.productCore.ready, false);
+  assert.deepEqual(scope.productCore, {
+    requiredPillars: ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence'],
+    interfacesFrozen: true,
+    compatibilityVerified: true,
+    ready: true,
+  });
   assert.equal(scope.firstRevenueRelease.ready, false);
   assert.deepEqual(scope.firstRevenueRelease.requirements.map(({ requirementId }) => requirementId), [...firstRevenueRequirementIds]);
 });
@@ -68,11 +73,12 @@ test('First Revenue Release additionally requires all-six availability and every
 
 test('scope validation rejects a live pillar without core qualification and dishonest gates', () => {
   const falseLive = createProductScopeDocument();
+  falseLive.pillars.find(({ pillarId }) => pillarId === 'rpc').coreQualified = false;
   falseLive.pillars.find(({ pillarId }) => pillarId === 'rpc').lifecycle = 'available';
   assert.throws(() => assertProductScope(falseLive), /unqualified_pillar_falsely_live:rpc/);
 
   const dishonestCore = createProductScopeDocument();
-  dishonestCore.productCore.ready = true;
+  dishonestCore.productCore.ready = false;
   assert.throws(() => assertProductScope(dishonestCore), /product_core_gate_dishonest/);
 
   const falsePostLaunch = createProductScopeDocument();

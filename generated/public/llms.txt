@@ -1,28 +1,25 @@
 # Clervo
 
-> Clervo is outcome infrastructure for agents. The planned First Revenue Release is the all-six Clervo Platform; Search is privately core-qualified but remains a preview, and the other five product cores are not yet implemented.
+> Clervo is outcome infrastructure for agents: Find, Understand, Act.
 
-Important status:
+Current verified status:
 
-- Lifecycle: implemented_unverified
-- First Revenue Release: Clervo Platform
-- Required pillars: Search, AI, Secure Sandbox, RPC, Prediction, Crypto Intelligence
-- Permanent narrative: Find, Understand, Act
-- Search release lifecycle: preview; product core qualified: true (private qualification only)
-- AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence release lifecycle: unavailable; product core qualified: false
-- Product core ready: false
-- Callable products: search.web, search.answer
-- Product selection: synthesize=false selects search.web; synthesize=true selects search.answer
-- Free endpoint: POST /v1/search/free
-- Paid endpoint: POST /v1/search/paid (non-payable mock challenge by default)
+- Distribution state: repository-generated candidate; not publicly distributed
+- Frozen release candidate: clervo-private-core-2026-08-02.1
+- Frozen interface hash: sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768
+- Six product cores: privately qualified and compatibility-frozen
+- Public lifecycle: Search preview; AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence unavailable
+- Projected operation IDs: search.web, search.answer
+- Public API callable: no
 - x402 payment implementation: not implemented
-- First Revenue Release ready: false
 - Production deployment: not verified
+- Prices in this candidate: non-payable mock fixtures only
+- First Revenue Release ready: no
 - llms.txt is a documentation map, not a search or AI ranking claim
 
-## Machine-readable contracts
+## Repository-generated contracts
 
-- [OpenAPI contract](https://api.clervo.dev/openapi.json): Search request, free-sample, and non-payable paid-challenge paths.
-- [Catalog](https://api.clervo.dev/catalog.json): Versioned scope plus search.web and search.answer pricing publication.
-- [Discovery document](https://api.clervo.dev/.well-known/clervo.json): Explicit release scope, lifecycle, implementation, and payment limitations.
-- [JSON Schemas](https://api.clervo.dev/schemas/2026-07-29.1/): Draft 2020-12 contracts.
+- [OpenAPI contract](/openapi.json): repository-local preview and non-payable challenge routes.
+- [Catalog](/catalog.json): exact projected operations and lifecycle limitations.
+- [Discovery document](/.well-known/clervo.json): release-candidate binding and distribution status.
+- [JSON Schemas](/schemas/2026-07-29.1/): projected public-wire contracts.

@@ -9,6 +9,8 @@ const schemaDirectory = path.join(root, 'packages/contracts/schemas');
 const outputDirectory = path.join(root, 'generated/public');
 const contractModule = await import(pathToFileURL(path.join(root, 'dist/packages/contracts/src/index.js')));
 const schemaVisibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
+const releaseCandidate = JSON.parse(await readFile(path.join(root, 'packages/catalog/release-candidate-freeze.v1.json'), 'utf8'));
+const registry = JSON.parse(await readFile(path.join(root, releaseCandidate.baseRegistry.file), 'utf8'));
 
 function componentName(fileName) {
   return fileName
@@ -21,6 +23,44 @@ function componentName(fileName) {
 function stableJson(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
+
+const { interfaceHash, ...unsignedReleaseCandidate } = releaseCandidate;
+if (
+  releaseCandidate.state !== 'private_core_frozen'
+  || releaseCandidate.noPublicDistribution !== true
+  || interfaceHash !== contractModule.hashJson(unsignedReleaseCandidate)
+) throw new Error('distribution_release_candidate_invalid');
+if (
+  releaseCandidate.coreQualifications.length !== 6
+  || releaseCandidate.coreQualifications.some(({ privateCoreQualified }) => privateCoreQualified !== true)
+) throw new Error('distribution_private_core_qualification_incomplete');
+if (
+  releaseCandidate.operationSet.publicOperationIds.join(',') !== 'search.web,search.answer'
+  || releaseCandidate.operationSet.publicOperationIds.some((operationId) => {
+    const operation = registry.operations.find((candidate) => candidate.operationId === operationId);
+    const inputVisibility = schemaVisibility.schemas.find(({ schemaId }) => schemaId === operation?.inputSchema)?.visibility;
+    const outputVisibility = schemaVisibility.schemas.find(({ schemaId }) => schemaId === operation?.outputSchema)?.visibility;
+    return operation?.lifecycle !== 'preview'
+      || operation.visibility !== 'internal'
+      || operation.route === null
+      || inputVisibility !== 'public_wire'
+      || outputVisibility !== 'public_wire';
+  })
+) throw new Error('distribution_operation_projection_invalid');
+if (
+  releaseCandidate.lifecycleProjection.length !== registry.pillars.length
+  || releaseCandidate.lifecycleProjection.some(({ pillarId, lifecycle }) => {
+    const pillar = registry.pillars.find((candidate) => candidate.pillarId === pillarId);
+    return pillar?.lifecycle !== lifecycle;
+  })
+) throw new Error('distribution_lifecycle_projection_invalid');
+
+const projection = Object.freeze({
+  releaseCandidateId: releaseCandidate.releaseCandidateId,
+  interfaceHash,
+  noPublicDistribution: true,
+  publicOperationIds: Object.freeze([...releaseCandidate.operationSet.publicOperationIds]),
+});
 
 await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(path.join(outputDirectory, 'schemas', contractModule.CONTRACT_VERSION), { recursive: true });
@@ -37,15 +77,15 @@ for (const fileName of projectedSchemaFiles) {
   await writeFile(path.join(outputDirectory, 'schemas', contractModule.CONTRACT_VERSION, fileName), stableJson(schema));
 }
 
-const openapi = contractModule.createOpenApiDocument(schemas);
-const discovery = contractModule.createDiscoveryDocument();
-const llms = contractModule.createLlmsText();
-const catalog = contractModule.createCatalogDocument();
-contractModule.assertPreviewArtifacts(openapi, discovery, llms);
+const openapi = contractModule.createOpenApiDocument(schemas, projection);
+const discovery = contractModule.createDiscoveryDocument(projection);
+const llms = contractModule.createLlmsText(projection);
+const catalog = contractModule.createCatalogDocument(projection);
+contractModule.assertPreviewArtifacts(openapi, discovery, llms, projection);
 await writeFile(path.join(outputDirectory, 'openapi.json'), stableJson(openapi));
 await writeFile(path.join(outputDirectory, 'catalog.json'), stableJson(catalog));
 await mkdir(path.join(outputDirectory, '.well-known'), { recursive: true });
 await writeFile(path.join(outputDirectory, '.well-known', 'clervo.json'), stableJson(discovery));
 await writeFile(path.join(outputDirectory, 'llms.txt'), llms);
 
-console.log(`discovery generation: PASS (${Object.keys(schemas).length} schemas)`);
+console.log(`distribution discovery generation: PASS (${projection.publicOperationIds.length} operations, ${Object.keys(schemas).length} schemas)`);

@@ -1,10 +1,17 @@
 {
-  "discoveryVersion": "2026-08-01.3",
+  "discoveryVersion": "2026-08-02.1",
   "contractVersion": "2026-07-29.1",
   "name": "Clervo",
-  "description": "Machine-readable preview of the implemented repository-local search.query HTTP slice for the future six-pillar Clervo Platform First Revenue Release. Search is privately core-qualified; the other five pillars and the overall product-core gate are not ready, and public deployment and real payment are not verified.",
-  "lifecycle": "implemented_unverified",
-  "callable": true,
+  "description": "Machine-readable distribution candidate derived from the frozen private product core. All six cores are privately qualified; Search remains a repository-local preview, the other five public lifecycles remain unavailable, and no public deployment or real payment is claimed.",
+  "lifecycle": "preview",
+  "distribution": {
+    "state": "candidate",
+    "publicAvailable": false,
+    "callable": false,
+    "noPublicDistribution": true,
+    "releaseCandidateId": "clervo-private-core-2026-08-02.1",
+    "interfaceHash": "sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768"
+  },
   "payment": {
     "protocol": "x402",
     "implemented": false,
@@ -30,9 +37,9 @@
         "prediction",
         "crypto_intelligence"
       ],
-      "interfacesFrozen": false,
-      "compatibilityVerified": false,
-      "ready": false
+      "interfacesFrozen": true,
+      "compatibilityVerified": true,
+      "ready": true
     },
     "firstRevenueRelease": {
       "productId": "clervo.platform",
@@ -103,7 +110,7 @@
         "pillarId": "ai",
         "release": "first_revenue_release",
         "lifecycle": "unavailable",
-        "coreQualified": false,
+        "coreQualified": true,
         "capabilityIds": [
           "ai.chat",
           "ai.embed",
@@ -115,7 +122,7 @@
         "pillarId": "sandbox",
         "release": "first_revenue_release",
         "lifecycle": "unavailable",
-        "coreQualified": false,
+        "coreQualified": true,
         "capabilityIds": [
           "sandbox.run",
           "sandbox.session.create",
@@ -128,7 +135,7 @@
         "pillarId": "rpc",
         "release": "first_revenue_release",
         "lifecycle": "unavailable",
-        "coreQualified": false,
+        "coreQualified": true,
         "capabilityIds": [
           "rpc.call",
           "rpc.batch",
@@ -141,7 +148,7 @@
         "pillarId": "prediction",
         "release": "first_revenue_release",
         "lifecycle": "unavailable",
-        "coreQualified": false,
+        "coreQualified": true,
         "capabilityIds": [
           "prediction.markets",
           "prediction.market",
@@ -154,7 +161,7 @@
         "pillarId": "crypto_intelligence",
         "release": "first_revenue_release",
         "lifecycle": "unavailable",
-        "coreQualified": false,
+        "coreQualified": true,
         "capabilityIds": [
           "crypto.wallet",
           "crypto.token",
@@ -166,17 +173,19 @@
     ]
   },
   "artifacts": {
-    "openapi": "https://api.clervo.dev/openapi.json",
-    "catalog": "https://api.clervo.dev/catalog.json",
-    "llms": "https://api.clervo.dev/llms.txt",
-    "schemas": "https://api.clervo.dev/schemas/2026-07-29.1/"
+    "openapi": "/openapi.json",
+    "catalog": "/catalog.json",
+    "llms": "/llms.txt",
+    "schemas": "/schemas/2026-07-29.1/"
   },
   "products": [
     {
       "productId": "search.web",
+      "operationId": "search.web",
       "title": "Web search evidence",
       "summary": "Normalized ranked retrieval evidence without synthesized prose.",
-      "status": "implemented_unverified",
+      "lifecycle": "preview",
+      "publicAvailable": false,
       "deliveryModes": [
         "sync"
       ],
@@ -184,7 +193,7 @@
         "synthesize": false
       },
       "pricing": {
-        "model": "fixed",
+        "model": "non_payable_mock_fixture",
         "displayPrice": {
           "asset": "mock:usdc",
           "amountAtomic": "1000",
@@ -193,8 +202,10 @@
         "maximumChargeRequired": true,
         "priceVersion": "search-web-mock-1"
       },
-      "freeEndpoint": "https://api.clervo.dev/v1/search/free",
-      "paidEndpoint": "https://api.clervo.dev/v1/search/paid",
+      "routes": {
+        "freeSample": "/v1/search/free",
+        "paidChallenge": "/v1/search/paid"
+      },
       "payment": {
         "challengeImplemented": true,
         "payable": false,
@@ -203,9 +214,11 @@
     },
     {
       "productId": "search.answer",
+      "operationId": "search.answer",
       "title": "Search answer",
       "summary": "Evidence-grounded synthesized answer with citations.",
-      "status": "implemented_unverified",
+      "lifecycle": "preview",
+      "publicAvailable": false,
       "deliveryModes": [
         "sync"
       ],
@@ -213,7 +226,7 @@
         "synthesize": true
       },
       "pricing": {
-        "model": "fixed",
+        "model": "non_payable_mock_fixture",
         "displayPrice": {
           "asset": "mock:usdc",
           "amountAtomic": "2500",
@@ -222,8 +235,10 @@
         "maximumChargeRequired": true,
         "priceVersion": "search-answer-mock-1"
       },
-      "freeEndpoint": "https://api.clervo.dev/v1/search/free",
-      "paidEndpoint": "https://api.clervo.dev/v1/search/paid",
+      "routes": {
+        "freeSample": "/v1/search/free",
+        "paidChallenge": "/v1/search/paid"
+      },
       "payment": {
         "challengeImplemented": true,
         "payable": false,
@@ -232,9 +247,11 @@
     }
   ],
   "limitations": [
-    "Public deployment is not verified.",
+    "Public distribution and deployment are not verified.",
     "Real x402 verification, facilitator authorization, and settlement are not implemented.",
-    "The default paid route is explicitly non-payable and does not execute.",
-    "The reference free quota is process-local and must be replaced by a durable limiter before production."
+    "Published prices in this candidate are explicitly non-payable mock fixtures.",
+    "The default paid route does not execute.",
+    "The reference free quota is process-local and must be replaced before production.",
+    "AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain publicly unavailable."
   ]
 }
