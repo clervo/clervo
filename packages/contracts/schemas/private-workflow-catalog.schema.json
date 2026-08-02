@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/private-workflow-catalog.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "lifecycle", "publicAvailable", "workflows", "coreQualifications", "stability"],
+  "properties": {
+    "schemaVersion": { "const": "clervo.private-workflow-catalog.v1" },
+    "lifecycle": { "const": "private_qualified" },
+    "publicAvailable": { "const": false },
+    "workflows": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "required": ["workflowId", "version", "pillars", "products", "replaySafe", "maximumSupplierCostMicrousd", "publicAvailable"],
+        "properties": {
+          "workflowId": { "type": "string", "pattern": "^workflow\\.[a-z0-9][a-z0-9._-]{2,95}$" },
+          "version": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$" },
+          "pillars": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "enum": ["search", "ai", "sandbox", "rpc", "prediction", "crypto"] } },
+          "products": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._][a-z0-9]+)+$" } },
+          "replaySafe": { "const": true },
+          "maximumSupplierCostMicrousd": { "type": "integer", "minimum": 0, "maximum": 1000000000 },
+          "publicAvailable": { "const": false }
+        },
+        "additionalProperties": false
+      }
+    },
+    "coreQualifications": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": ["pillar", "privateCoreQualified", "publicLifecycle", "consolidatedTest"],
+        "properties": {
+          "pillar": { "enum": ["search", "ai", "sandbox", "rpc", "prediction", "crypto"] },
+          "privateCoreQualified": { "const": true },
+          "publicLifecycle": { "enum": ["preview", "unavailable"] },
+          "consolidatedTest": { "type": "string", "pattern": "^test:stage[0-9]+(?::[a-z]+)?$" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "stability": {
+      "type": "object",
+      "required": ["requiredDrills", "passedDrills", "failedDrills", "realPaymentUsed", "productionMutationUsed"],
+      "properties": {
+        "requiredDrills": { "const": 8 },
+        "passedDrills": { "const": 8 },
+        "failedDrills": { "const": 0 },
+        "realPaymentUsed": { "const": false },
+        "productionMutationUsed": { "const": false }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

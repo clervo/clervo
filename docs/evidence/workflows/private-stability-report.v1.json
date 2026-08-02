@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "clervo.private-stability-report.v1",
+  "evaluatedAt": "2026-08-02T12:55:34.874Z",
+  "passed": true,
+  "realPaymentUsed": false,
+  "productionMutationUsed": false,
+  "results": [
+    { "drillId": "pillar_outage_isolation", "passed": true, "failureCodes": [] },
+    { "drillId": "idempotency_replay_storm", "passed": true, "failureCodes": [] },
+    { "drillId": "settlement_unknown_quarantine", "passed": true, "failureCodes": [] },
+    { "drillId": "cost_ceiling_enforcement", "passed": true, "failureCodes": [] },
+    { "drillId": "sandbox_orphan_cleanup", "passed": true, "failureCodes": [] },
+    { "drillId": "telemetry_secret_redaction", "passed": true, "failureCodes": [] },
+    { "drillId": "dependency_recovery", "passed": true, "failureCodes": [] },
+    { "drillId": "contract_tamper_rejection", "passed": true, "failureCodes": [] }
+  ]
+}

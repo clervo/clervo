@@ -1,6 +1,6 @@
 # Current engineering state
 
-Updated 2026-08-02 after Stage 10 product-core completion. This is a compact resumable
+Updated 2026-08-02 after Stage 11 private-stability completion. This is a compact resumable
 handoff, not an authorization gate. Continue automatically after reading it.
 
 ## Active work
@@ -43,8 +43,20 @@ the gateway has no custody, signing, transaction submission, or trading
 surface. Existing technically tested EVM, Solana, and multichain assets are
 retained, but every route remains customer-disabled because commercial terms
 are restricted or prohibited. The consolidated Stage 10 suite passes 20/20
-with 92 schemas and 126 fixtures validated. Stage 11 combined workflows and
-private six-product stabilization are the current roadmap priority.
+with 92 schemas and 126 fixtures validated.
+
+Stage 11 combined workflows and private six-product stabilization are complete.
+Three replay-safe Find → Understand → Act compositions cover all six pillars
+while preserving search citations, exact AI identity and evidence grounding,
+sandbox image/isolation/cleanup controls, read-only RPC policy, prediction
+resolution provenance/freshness, crypto coverage/conflicts, quotes, receipts,
+step and total supplier-cost ceilings, and degradation. The executable
+eight-drill campaign passed outage isolation, 1,000-attempt replay, unknown
+settlement quarantine, cost cutoff, sandbox orphan cleanup, telemetry secret
+redaction, dependency recovery, and contract-tamper rejection. The consolidated
+Stage 11 suite passes 12/12 with 93 schemas and 128 fixtures validated. These
+are private qualifications; public lifecycle did not change. Stage 12
+cross-pillar compatibility and product-core freeze is the current priority.
 
 The production runner `sandbox.nodejs-24` is qualified at digest
 `sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e`.
@@ -71,10 +83,9 @@ confirmed absent; Artifact Registry was preserved. Evidence is in
 
 ## Next actions
 
-1. Continue Stage 11 with representative Find → Understand → Act compositions
-   and shared commerce, routing, observability, cost, replay, degradation, and
-   disaster drills across all six product cores without bypassing their
-   underlying contracts.
+1. Continue Stage 12 by verifying and freezing the canonical registry,
+   operation set, schemas, visibility, prices, lifecycle projections, examples,
+   and release-candidate interfaces without exposing internal or sealed data.
 2. Keep Crypto Intelligence customer routing disabled until written commercial
    permission or replacement terms-compatible EVM, Solana, and protocol supply
    exists; this isolated owner blocker does not pause combined local work.
