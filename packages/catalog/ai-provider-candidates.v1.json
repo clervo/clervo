@@ -1,0 +1,68 @@
+{
+  "catalogVersion": "2026-08-02.1",
+  "researchedAt": "2026-08-01T23:45:00.000Z",
+  "targets": [
+    {
+      "providerId": "provider.google_gemini",
+      "supplyFamilyId": "supply.google_hyperscale",
+      "exactModelId": "gemini-3.6-flash",
+      "baseUrlPattern": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "allowedHosts": ["generativelanguage.googleapis.com"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": [],
+      "requiredSecretNames": ["GEMINI_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "unreviewed",
+      "resaleAllowed": false,
+      "qualificationStatus": "blocked",
+      "blockerCodes": ["credential_missing", "resale_terms_unresolved", "live_checks_not_run"],
+      "documentation": [
+        { "title": "Gemini OpenAI compatibility", "url": "https://ai.google.dev/gemini-api/docs/openai", "checkedAt": "2026-08-01T23:45:00.000Z" },
+        { "title": "Gemini current models", "url": "https://ai.google.dev/gemini-api/docs/latest-model", "checkedAt": "2026-08-01T23:45:00.000Z" }
+      ]
+    },
+    {
+      "providerId": "provider.groq",
+      "supplyFamilyId": "supply.groq_inference",
+      "exactModelId": "openai/gpt-oss-120b",
+      "baseUrlPattern": "https://api.groq.com/openai/v1/",
+      "allowedHosts": ["api.groq.com"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": [],
+      "requiredSecretNames": ["GROQ_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "unreviewed",
+      "resaleAllowed": false,
+      "qualificationStatus": "blocked",
+      "blockerCodes": ["credential_missing", "resale_terms_unresolved", "live_checks_not_run"],
+      "documentation": [
+        { "title": "Groq supported production models", "url": "https://console.groq.com/docs/models", "checkedAt": "2026-08-01T23:45:00.000Z" },
+        { "title": "Groq OpenAI-compatible API reference", "url": "https://console.groq.com/docs/api-reference", "checkedAt": "2026-08-01T23:45:00.000Z" }
+      ]
+    },
+    {
+      "providerId": "provider.cloudflare_workers_ai",
+      "supplyFamilyId": "supply.cloudflare_edge",
+      "exactModelId": "@cf/openai/gpt-oss-120b",
+      "baseUrlPattern": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/",
+      "allowedHosts": ["api.cloudflare.com"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": ["CLOUDFLARE_ACCOUNT_ID"],
+      "requiredSecretNames": ["CLOUDFLARE_API_TOKEN"],
+      "selectedForQualification": true,
+      "termsStatus": "unreviewed",
+      "resaleAllowed": false,
+      "qualificationStatus": "blocked",
+      "blockerCodes": ["credential_missing", "configuration_missing", "resale_terms_unresolved", "live_checks_not_run"],
+      "documentation": [
+        { "title": "Cloudflare Workers AI OpenAI-compatible endpoints", "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/", "checkedAt": "2026-08-01T23:45:00.000Z" }
+      ]
+    }
+  ],
+  "quickAi": {
+    "status": "disabled",
+    "allowedIdentityPattern": "GPT-labelled routes only after individual qualification",
+    "prohibitedIdentities": ["Claude-labelled routes", "TongKhokr", "MWAPI"],
+    "reason": "No QuickAI route has exact identity, input dependence, streaming, usage, latency, failure, cost, and resale evidence, so the optional supplier remains disabled."
+  }
+}
