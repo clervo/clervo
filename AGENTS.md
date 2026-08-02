@@ -8,6 +8,8 @@
   blockers explicit without pausing unrelated engineering.
 - `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md` defines product scope,
   roadmap order, correctness, security, truthful claims, and launch gates.
+- `docs/product/CURRENT-ENGINEERING-STATE.md` is the compact resumable handoff;
+  read it before selecting the next unfinished roadmap work.
 - The roadmap's stages and ticket labels are an implementation checklist, not
   authorization boundaries. Read the current status and relevant sections;
   do not reread the complete roadmap or historical evidence for ordinary work.

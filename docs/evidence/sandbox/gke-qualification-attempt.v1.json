@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "clervo.sandbox-gke-qualification-attempt.v1",
+  "evaluatedAt": "2026-08-02T10:43:00.000Z",
+  "status": "failed",
+  "productAvailability": "unavailable",
+  "platform": {
+    "clusterType": "gke-standard-zonal-ephemeral",
+    "kubernetesVersion": "1.36.2-gke.2281000",
+    "agentSandboxEnabled": true,
+    "runtimeClass": "gvisor",
+    "dedicatedExecutionNode": true
+  },
+  "runnerImageDigest": "sha256:0cfdf789b798d623cee9ec071c32e584443f9331c73fc7be9bd20f7ae1c243af",
+  "controlsObserved": {
+    "runAsUser": 65532,
+    "runAsGroup": 65532,
+    "effectiveCapabilities": "0000000000000000",
+    "serviceAccountTokenVolumeMounted": false,
+    "hostSocketsPresent": false,
+    "sensitiveEnvironmentKeysPresent": false,
+    "internalNetworkReachable": false,
+    "externalNetworkReachable": false
+  },
+  "blockingFailure": {
+    "control": "metadata_denied",
+    "metadataEndpointReachable": true,
+    "flavoredMetadataStatus": 200,
+    "workloadTokenStatus": 200,
+    "tokenValueRecorded": false,
+    "defaultDenyNetworkPolicyEffective": false,
+    "calicoMetadataDenyEffective": false,
+    "decision": "reject_runtime_configuration"
+  },
+  "remainingRedTeamSuiteRun": false,
+  "nextSafeAction": "Test the Agent Sandbox Sandbox custom resource boundary; if metadata remains reachable, move execution to dedicated gVisor hosts with a host-enforced metadata firewall and no workload identity.",
+  "resourceCleanup": "verified_cluster_absent_2026-08-02T10:48:13.477584720Z",
+  "billingReconciliation": "pending"
+}
