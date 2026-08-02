@@ -157,8 +157,12 @@ false. Free-search idempotency and quota now have an environment-isolated
 PostgreSQL implementation with atomic claim, replay, conflict, lease recovery,
 completion, quota consumption, and hashed quota subjects. Completed requests
 replay across a fresh server instance, readiness checks the required tables,
-and an exact production process refuses memory-only state. The new image is
-qualified locally at source commit `42e0aa1e48e2`. This is not production
+and an exact production process refuses memory-only state. The HTTP runtime now
+caps active executions, request/header duration, keep-alive reuse, and requests
+per socket. A bounded overload drill admitted exactly two useful executions,
+rejected eight excess requests with explicit retry guidance, recovered, and
+replayed without duplicate execution. The new image is qualified locally at
+source commit `fad4d2df54f5`. This is not production
 readiness: the PostgreSQL migration still needs a live restore-backed
 qualification, and registry digest, signed provenance, scans, rollback, load,
 monitoring delivery, retention, and an owner-approved cloud release remain
