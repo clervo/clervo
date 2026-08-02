@@ -10,9 +10,8 @@ stop boundaries.
 Local engineering and sourcing evaluation are complete. The consolidated local
 check passes, and the installed development environments report four qualified
 chat supply families, 21 ready exact routes, and coverage of all four roadmap AI
-products. Two genuine owner inputs remain before the supply foundation can be
-closed: commercial RPC permission or replacement and a least-privilege isolated
-object-storage key.
+products. One genuine owner input remains before the supply foundation can be
+closed: commercial RPC permission or an expressly compatible replacement.
 
 The master plan remains product-scope authority. Its asset-inventory workflow
 requires a redacted row for every credential, account, token, provider, and
@@ -149,16 +148,18 @@ disabled without explicit owner approval.
   Raw API, RPC, and credential resale are not selected.
 - Cloudflare R2 has current positive customer prices for storage, reads, writes,
   and egress against its published recurring free tier and Standard rates. The
-  legacy endpoint failed TLS; the derived account-scoped endpoint reached the
-  service but rejected signed ListBuckets with HTTP 403. No object content or
-  mutation was attempted. Replacement permission/credentials, isolation,
-  lifecycle, and a hard overage guard remain required.
+  original legacy endpoint/credential failures remain preserved as historical
+  evidence and are not production fallbacks.
 - The current/old Cloudflare API tokens were also checked against every known
   account identifier; all six read-only R2 control-plane combinations returned
   HTTP 403. Local integration is no longer a gap: the signed object adapter now
   enforces tenant-scoped content addresses, digest verification, fixed hosts,
   bounded bodies, provider-neutral URIs, and storage/read/write/delete ceilings.
-  Only a least-privilege bucket credential and bounded lifecycle proof remain.
+  A replacement single-bucket credential is now installed. Its four-call
+  lifecycle proof wrote, integrity-checked, deleted, and confirmed absence of a
+  55-byte synthetic object with no retained data or owner-cash spend. Preview
+  operation is bounded locally; horizontal production still needs a durable
+  global usage ledger.
 - Read-only integration probes authenticated GitHub, DEV, Hashnode's current
   beta API, Telegram, and WorkOS without reading repositories, publishing, or
   messaging; the GitLab token returned HTTP 401. Every integration is priced,
@@ -201,7 +202,7 @@ disabled without explicit owner approval.
 - Current qualified internal catalog: 21 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.
 - The final provider-neutral matrix references 13 canonical price catalogs and
-  covers all 797 price rows: every row has a positive customer price and 26
+  covers all 797 price rows: every row has a positive customer price and 30
   rows are currently sellable. It records exact assets, route state, lifecycle,
   price/shadow-cost source, quality, terms, quota runway, health evidence,
   secret-name location, fallbacks, and replacement plan without secret values.
@@ -257,7 +258,7 @@ Canonical machine-readable state lives in:
    more only when it closes a material capability, quality, regional,
    availability, rate-limit, or runway gap. Record why each source is added or
    rejected.
-7. **Two owner inputs pending; consolidated local test completed.** Obtain and
+7. **One owner input pending; consolidated local test completed.** Obtain and
    qualify the remaining selected owner-blocked inputs, rerun only their affected
    checks, commit the final routing state, and resume the master roadmap.
 

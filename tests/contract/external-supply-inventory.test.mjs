@@ -27,7 +27,7 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(inventory.commercialPolicy.providerNamesPublic, false);
   assert.equal(inventory.commercialPolicy.silentQualityDowngradeAllowed, false);
   assert.equal(new Set(inventory.services.map(({ serviceId }) => serviceId)).size, inventory.services.length);
-  assert.deepEqual(inventory.services.filter(({ qualificationStatus }) => qualificationStatus === 'passed').map(({ serviceId }) => serviceId), ['supply.clervo_ai_gateway', 'supply.deepgram', 'supply.google_vertex', 'supply.groq', 'supply.brave_search', 'supply.serper', 'supply.blockscout_pro']);
+  assert.deepEqual(inventory.services.filter(({ qualificationStatus }) => qualificationStatus === 'passed').map(({ serviceId }) => serviceId), ['supply.clervo_ai_gateway', 'supply.cloudflare_r2', 'supply.deepgram', 'supply.google_vertex', 'supply.groq', 'supply.brave_search', 'supply.serper', 'supply.blockscout_pro']);
 
   const clervo = inventory.services.find(({ serviceId }) => serviceId === 'supply.clervo_ai_gateway');
   assert.equal(clervo.connectionStatus, 'observed_working');
@@ -265,20 +265,21 @@ test('funded exact music generation is priced and adapter-ready without overstat
   assert.equal(evidence.quality.grade, 'unranked');
 });
 
-test('owned object storage is positively priced but fails closed on the legacy endpoint and unknown overage guard', async () => {
+test('owned object storage passes a bounded isolated lifecycle without overstating horizontal cost control', async () => {
   const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
   const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.cloudflare_r2');
   const pricing = await json('packages/catalog/storage-supply-pricing.v1.json');
   const schema = await json('packages/contracts/schemas/storage-supply-pricing.schema.json');
   const evidence = await json('docs/evidence/supply-foundation/cloudflare-r2-qualification.v1.json');
   const controlPlane = await json('docs/evidence/supply-foundation/r2-control-plane-diagnostic.v1.json');
+  const lifecycle = await json('docs/evidence/supply-foundation/r2-lifecycle-qualification.v1.json');
   const ajv = new Ajv2020({ strict: true, allErrors: true });
   addFormats(ajv);
   const validate = ajv.compile(schema);
   assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
-  assert.deepEqual([service.connectionStatus, service.qualificationStatus, service.termsStatus, service.resaleStatus], ['observed_failed', 'failed', 'restricted', 'restricted']);
+  assert.deepEqual([service.connectionStatus, service.qualificationStatus, service.termsStatus, service.resaleStatus], ['observed_working', 'passed', 'restricted', 'restricted']);
   assert.deepEqual(pricing.assets.map(({ publicAssetId }) => publicAssetId), ['object-storage-standard', 'object-storage-write', 'object-storage-read', 'object-storage-egress']);
-  assert.ok(pricing.assets.every(({ customerPriceMicrousd, listingStatus, costGuardStatus }) => customerPriceMicrousd > 0 && listingStatus === 'blocked' && costGuardStatus === 'unverified'));
+  assert.ok(pricing.assets.every(({ customerPriceMicrousd, qualityGrade, technicalQualificationStatus, listingStatus, costGuardStatus }) => customerPriceMicrousd > 0 && qualityGrade === 'good' && technicalQualificationStatus === 'passed' && listingStatus === 'sellable_preview' && costGuardStatus === 'enforced'));
   assert.equal(pricing.policy.customerFreeByDefault, false);
   assert.equal(pricing.policy.automaticPaidOverageAllowed, false);
   assert.equal(evidence.externalCalls, 1);
@@ -294,6 +295,10 @@ test('owned object storage is positively priced but fails closed on the legacy e
   assert.equal(controlPlane.externalCalls, 6);
   assert.deepEqual([controlPlane.objectReadCalls, controlPlane.objectWriteCalls, controlPlane.mutationCalls], [0, 0, 0]);
   assert.ok(controlPlane.observations.every(({ status, outcome }) => status === 403 && outcome === 'rejected'));
+  assert.deepEqual([lifecycle.ownerCashSpentUsd, lifecycle.externalCalls, lifecycle.objectWriteCalls, lifecycle.objectReadCalls, lifecycle.deleteCalls], [0, 4, 1, 2, 1]);
+  assert.deepEqual(lifecycle.inputPolicy, { customerObjectDataUsed: false, deterministicSyntheticPayloadUsed: true, objectKeyRecorded: false, responsePayloadValuesRecorded: false });
+  assert.deepEqual(lifecycle.objectPolicy, { syntheticObjectBytes: 55, objectRetained: false, publicAccessEnabled: false });
+  assert.deepEqual([lifecycle.summary.writePassed, lifecycle.summary.integrityPassed, lifecycle.summary.deletePassed, lifecycle.summary.absentAfterDelete, lifecycle.summary.technicalStatus, lifecycle.summary.productionStatus], [true, true, true, true, 'passed', 'qualified_bounded_adapter']);
 });
 
 test('platform integrations are priced and authenticated without pooling accounts or causing external mutations', async () => {
@@ -370,14 +375,14 @@ test('final supply matrix covers every priced asset, preserves provider secrecy,
   assert.equal(matrix.catalogCoverage.length, 13);
   assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.assetCount, 0), 797);
   assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.positiveCustomerPriceCount, 0), 797);
-  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 26);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 30);
   assert.equal(new Set(matrix.capabilities.map(({ capabilityId }) => capabilityId)).size, matrix.capabilities.length);
   assert.ok(matrix.capabilities.every(({ publicAssets, pricingCatalogs, healthMethod, secretLocations, replacementPlan }) => publicAssets.length > 0 && pricingCatalogs.length > 0 && healthMethod.length > 0 && secretLocations.length > 0 && replacementPlan.length > 12));
   assert.ok(matrix.capabilities.every(({ publicAssets }) => publicAssets.every((asset) => !asset.startsWith('@cf/') && !/^(?:openai|qwen)\//u.test(asset))));
-  assert.deepEqual(matrix.ownerBlockers.map(({ blockerId, spendingAuthorized }) => [blockerId, spendingAuthorized]), [['owner.rpc_commercial_permission', false], ['owner.r2_key_reissue', false]]);
+  assert.deepEqual(matrix.ownerBlockers.map(({ blockerId, spendingAuthorized }) => [blockerId, spendingAuthorized]), [['owner.rpc_commercial_permission', false]]);
   assert.equal(market.competitorObservation.observedLiveModels, 83);
   assert.equal(market.clervoObservation.qualifiedExactAiRoutes, 21);
-  assert.deepEqual(market.finalDecision, { coverageSufficientWithoutOwnerAction: false, newAccountsSelected: 1, existingCredentialsNeedingReplacement: 1, selectedOwnerActions: ['written commercial RPC gateway permission or expressly compatible replacement', 'least-privilege R2 bucket key and bucket name'], allOtherResearchedSources: 'rejected or deferred until revenue, written commercial permission, compatible terms, or a material failure justifies them' });
+  assert.deepEqual(market.finalDecision, { coverageSufficientWithoutOwnerAction: false, newAccountsSelected: 1, existingCredentialsNeedingReplacement: 0, selectedOwnerActions: ['written commercial RPC gateway permission or expressly compatible replacement'], allOtherResearchedSources: 'rejected or deferred until revenue, written commercial permission, compatible terms, or a material failure justifies them' });
   const serialized = JSON.stringify(matrix);
   assert.equal(/(?:sk-|ghp_|AIza|Bearer\s|-----BEGIN|api[_-]?key["']?\s*:\s*["'][^"']+)/iu.test(serialized), false);
 });

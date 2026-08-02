@@ -40,7 +40,7 @@
           "allowanceUnit": { "enum": ["gb_month", "request", "unmetered"] },
           "qualityGrade": { "enum": ["best", "good", "poor", "rejected", "not_run"] },
           "technicalQualificationStatus": { "enum": ["passed", "partial", "failed", "not_run"] },
-          "listingStatus": { "enum": ["qualified_not_integrated", "blocked"] },
+          "listingStatus": { "enum": ["qualified_not_integrated", "sellable_preview", "blocked"] },
           "termsStatus": { "enum": ["approved", "restricted", "blocked", "unreviewed"] },
           "costGuardStatus": { "enum": ["enforced", "unverified"] },
           "fallbackStatus": { "enum": ["independent_fallback_missing", "independent_fallback_ready"] }

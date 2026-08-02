@@ -85,7 +85,7 @@
       "catalog": "packages/catalog/storage-supply-pricing.v1.json",
       "assetCount": 4,
       "positiveCustomerPriceCount": 4,
-      "sellableCount": 0
+      "sellableCount": 4
     }
   ],
   "capabilities": [
@@ -472,25 +472,28 @@
         "object-storage-read",
         "object-storage-egress"
       ],
-      "lifecycle": "production",
-      "routeState": "adapter_ready_blocked_owner_credential",
-      "primaryServices": [],
+      "lifecycle": "preview",
+      "routeState": "qualified_bounded_adapter",
+      "primaryServices": [
+        "supply.cloudflare_r2"
+      ],
       "fallbackServices": [],
       "pricingCatalogs": [
         "packages/catalog/storage-supply-pricing.v1.json"
       ],
-      "quality": "unranked",
+      "quality": "good",
       "termsStatus": "restricted",
-      "quotaRunway": "Published recurring free allowance and local operation ceilings are known, but account usage and automatic overage state are not exposed by S3.",
+      "quotaRunway": "Published recurring free allowance and strict per-process storage/read/write/delete ceilings are known; account usage and automatic overage state are not exposed by S3, so horizontally scaled production remains blocked on a durable global ledger.",
       "healthMethod": [
         "docs/evidence/supply-foundation/cloudflare-r2-qualification.v1.json",
         "docs/evidence/supply-foundation/r2-control-plane-diagnostic.v1.json",
+        "docs/evidence/supply-foundation/r2-lifecycle-qualification.v1.json",
         "tests/contract/object-storage-adapter.test.mjs"
       ],
       "secretLocations": [
-        "legacy_import:R2_ACCESS_KEY_ID,R2_SECRET_ACCESS_KEY"
+        "runtime:R2_ACCESS_KEY_ID,R2_SECRET_ACCESS_KEY,R2_S3_ENDPOINT"
       ],
-      "replacementPlan": "Install one least-privilege key for a dedicated bucket, then run the prepared synthetic lifecycle qualifier; the tenant-isolated signed adapter and hard per-process ceilings are already complete."
+      "replacementPlan": "Add a durable global usage ledger before horizontal production scaling, keep the bucket private and credential single-bucket scoped, and source an independent storage family after revenue if availability requires it."
     },
     {
       "capabilityId": "payment.x402",
@@ -562,14 +565,6 @@
       "requiredAction": "Obtain written permission for paid customer-facing RPC gateway use or approve an expressly compatible replacement after the remaining zero-cash market check.",
       "unblocks": [
         "rpc.multichain"
-      ],
-      "spendingAuthorized": false
-    },
-    {
-      "blockerId": "owner.r2_key_reissue",
-      "requiredAction": "Create a least-privilege object-storage key for one dedicated Clervo bucket and provide the bucket name through the secret channel.",
-      "unblocks": [
-        "storage.object"
       ],
       "spendingAuthorized": false
     }

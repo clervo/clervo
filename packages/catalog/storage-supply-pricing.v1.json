@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.storage-supply-pricing.v1",
-  "priceVersion": "storage-supply-2026-08-02.1",
-  "effectiveAt": "2026-08-02T05:55:26.918Z",
+  "priceVersion": "storage-supply-2026-08-02.2",
+  "effectiveAt": "2026-08-02T09:35:27.210Z",
   "currency": "USD",
   "policy": {
     "customerFreeByDefault": false,
@@ -21,11 +21,11 @@
       "supplierPriceBasis": "published_standard_tier",
       "monthlyFreeAllowance": 10,
       "allowanceUnit": "gb_month",
-      "qualityGrade": "not_run",
-      "technicalQualificationStatus": "failed",
-      "listingStatus": "blocked",
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "sellable_preview",
       "termsStatus": "restricted",
-      "costGuardStatus": "unverified",
+      "costGuardStatus": "enforced",
       "fallbackStatus": "independent_fallback_missing"
     },
     {
@@ -38,11 +38,11 @@
       "supplierPriceBasis": "published_standard_tier",
       "monthlyFreeAllowance": 1000000,
       "allowanceUnit": "request",
-      "qualityGrade": "rejected",
-      "technicalQualificationStatus": "not_run",
-      "listingStatus": "blocked",
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "sellable_preview",
       "termsStatus": "restricted",
-      "costGuardStatus": "unverified",
+      "costGuardStatus": "enforced",
       "fallbackStatus": "independent_fallback_missing"
     },
     {
@@ -55,11 +55,11 @@
       "supplierPriceBasis": "published_standard_tier",
       "monthlyFreeAllowance": 10000000,
       "allowanceUnit": "request",
-      "qualityGrade": "rejected",
-      "technicalQualificationStatus": "not_run",
-      "listingStatus": "blocked",
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "sellable_preview",
       "termsStatus": "restricted",
-      "costGuardStatus": "unverified",
+      "costGuardStatus": "enforced",
       "fallbackStatus": "independent_fallback_missing"
     },
     {
@@ -72,11 +72,11 @@
       "supplierPriceBasis": "published_standard_tier",
       "monthlyFreeAllowance": 0,
       "allowanceUnit": "unmetered",
-      "qualityGrade": "not_run",
-      "technicalQualificationStatus": "not_run",
-      "listingStatus": "blocked",
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "sellable_preview",
       "termsStatus": "restricted",
-      "costGuardStatus": "unverified",
+      "costGuardStatus": "enforced",
       "fallbackStatus": "independent_fallback_missing"
     }
   ]

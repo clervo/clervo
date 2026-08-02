@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "clervo.r2-lifecycle-qualification.v1",
+  "evaluatedAt": "2026-08-02T09:35:27.210Z",
+  "serviceId": "supply.cloudflare_r2",
+  "endpointClass": "account_scoped_r2_https",
+  "bucketClass": "dedicated_clervo_bucket",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 4,
+  "objectWriteCalls": 1,
+  "objectReadCalls": 2,
+  "deleteCalls": 1,
+  "credentialSlotsUsed": 1,
+  "credentialScope": "object_read_write_single_bucket",
+  "inputPolicy": {
+    "customerObjectDataUsed": false,
+    "deterministicSyntheticPayloadUsed": true,
+    "objectKeyRecorded": false,
+    "responsePayloadValuesRecorded": false
+  },
+  "objectPolicy": {
+    "syntheticObjectBytes": 55,
+    "objectRetained": false,
+    "publicAccessEnabled": false
+  },
+  "operationBudget": {
+    "maximumObjectBytes": 1024,
+    "maximumStoredBytesPerProcess": 1024,
+    "maximumWritesPerProcess": 1,
+    "maximumReadsPerProcess": 2,
+    "maximumDeletesPerProcess": 1,
+    "observed": {
+      "storedBytes": 55,
+      "writes": 1,
+      "reads": 2,
+      "deletes": 1
+    }
+  },
+  "summary": {
+    "writePassed": true,
+    "integrityPassed": true,
+    "deletePassed": true,
+    "absentAfterDelete": true,
+    "cleanupRequired": false,
+    "cleanupPassed": false,
+    "latencyMsP50": 93,
+    "latencyMsP95": 277,
+    "technicalStatus": "passed",
+    "productionStatus": "qualified_bounded_adapter"
+  },
+  "observations": [
+    {
+      "operation": "write",
+      "method": "PUT",
+      "status": 200,
+      "latencyMs": 277,
+      "requestBytes": 55,
+      "responseBytes": 0
+    },
+    {
+      "operation": "read",
+      "method": "GET",
+      "status": 200,
+      "latencyMs": 201,
+      "requestBytes": 0,
+      "responseBytes": 55
+    },
+    {
+      "operation": "delete",
+      "method": "DELETE",
+      "status": 204,
+      "latencyMs": 93,
+      "requestBytes": 0,
+      "responseBytes": 0
+    },
+    {
+      "operation": "read",
+      "method": "GET",
+      "status": 404,
+      "latencyMs": 62,
+      "requestBytes": 0,
+      "responseBytes": 127
+    }
+  ]
+}

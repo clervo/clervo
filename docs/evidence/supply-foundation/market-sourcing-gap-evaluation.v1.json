@@ -45,7 +45,6 @@
     "materialInfrastructureGaps": [
       "production composition of the qualified provider-neutral web-search router",
       "dedicated production multi-chain RPC",
-      "working isolated object storage",
       "production x402 proof and fallback"
     ]
   },
@@ -79,13 +78,13 @@
     {
       "candidateId": "source.cloudflare_r2_reissue",
       "capability": "storage.object",
-      "decision": "qualified_adapter_ready",
+      "decision": "qualified_bounded_preview",
       "starterBasis": "existing account; 10 GB storage, 1 million Class A, 10 million Class B monthly free allocation, zero egress charge",
       "evidence": [
         "https://developers.cloudflare.com/r2/pricing/"
       ],
-      "reason": "Reissuing a least-privilege key is simpler and more coherent than introducing a second storage operator; the correct account endpoint currently returns HTTP 403.",
-      "ownerAction": "Create a least-privilege R2 key for a dedicated Clervo bucket and provide the bucket name and key through the secret channel."
+      "reason": "The dedicated private bucket and single-bucket credential passed write, integrity-checked read, delete, and absence verification. The bounded adapter is ready for preview; a durable global usage ledger remains required before horizontal production scaling.",
+      "ownerAction": null
     },
     {
       "candidateId": "source.validation_cloud",
@@ -243,10 +242,9 @@
   "finalDecision": {
     "coverageSufficientWithoutOwnerAction": false,
     "newAccountsSelected": 1,
-    "existingCredentialsNeedingReplacement": 1,
+    "existingCredentialsNeedingReplacement": 0,
     "selectedOwnerActions": [
-      "written commercial RPC gateway permission or expressly compatible replacement",
-      "least-privilege R2 bucket key and bucket name"
+      "written commercial RPC gateway permission or expressly compatible replacement"
     ],
     "allOtherResearchedSources": "rejected or deferred until revenue, written commercial permission, compatible terms, or a material failure justifies them"
   }
