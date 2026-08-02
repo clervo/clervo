@@ -8,6 +8,7 @@ import {
   createPostgresSearchStateStoreFromEnvironment,
 } from './search-state-store.mjs';
 import { createHttpMonitoringExporter } from './monitoring-exporter.mjs';
+import { createTrafficControl } from './traffic-control.mjs';
 
 const environment = process.env.CLERVO_ENV ?? 'staging';
 const releaseId = process.env.CLERVO_RELEASE_ID;
@@ -18,6 +19,7 @@ const privateMockCommerceEnabled = process.env.CLERVO_STAGE4_PRIVATE_MOCK_COMMER
 const stateBackend = process.env.CLERVO_STATE_BACKEND ?? 'memory';
 const maxConcurrentExecutions = Number(process.env.CLERVO_MAX_CONCURRENT_EXECUTIONS ?? '16');
 const monitoringEndpoint = process.env.CLERVO_MONITORING_ENDPOINT;
+const trafficControl = createTrafficControl(process.env.CLERVO_TRAFFIC_MODE ?? 'open');
 
 if (!releaseId) throw new Error('CLERVO_RELEASE_ID is required');
 if (!Number.isSafeInteger(port) || port < 1 || port > 65_535) throw new Error('invalid HTTP port');
@@ -51,6 +53,7 @@ const server = createSearchServer({
   allowMockPaidExecution: privateMockCommerceEnabled,
   stateStore,
   maxConcurrentExecutions,
+  trafficControl,
 });
 
 const exportTimer = setInterval(() => {
@@ -88,6 +91,7 @@ server.listen(port, host, () => {
     durableState: stateStore.durable,
     maxConcurrentExecutions,
     monitoringDelivery: monitoringEndpoint ? 'https' : 'stdout',
+    trafficMode: trafficControl.snapshot().mode,
     retrievalMode: 'recorded',
   }));
 });

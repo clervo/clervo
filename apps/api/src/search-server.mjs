@@ -87,10 +87,12 @@ export function createSearchServer({
   environment,
   releaseId,
   maxConcurrentExecutions = 16,
+  trafficControl,
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
   if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
   if (!Number.isInteger(maxConcurrentExecutions) || maxConcurrentExecutions < 1 || maxConcurrentExecutions > 256) throw new TypeError('invalid max concurrent executions');
+  if (trafficControl !== undefined && typeof trafficControl.snapshot !== 'function') throw new TypeError('invalid traffic control');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
   if (
     typeof searchState.begin !== 'function'
@@ -127,17 +129,20 @@ export function createSearchServer({
         paidExecutionEnabled: allowMockPaidExecution,
         stateBackend: searchState.kind ?? 'unknown',
         durableState: searchState.durable === true,
+        trafficMode: trafficControl?.snapshot().mode ?? 'open',
       });
       return;
     }
     if (request.method === 'GET' && url.pathname === '/readyz' && url.search === '') {
       try {
-        const ready = typeof searchState.ready === 'function' && await searchState.ready();
+        const trafficOpen = (trafficControl?.snapshot().mode ?? 'open') === 'open';
+        const ready = trafficOpen && typeof searchState.ready === 'function' && await searchState.ready();
         send(response, ready ? 200 : 503, {
           status: ready ? 'ready' : 'unavailable',
           service: 'clervo-search-api',
           stateBackend: searchState.kind ?? 'unknown',
           durableState: searchState.durable === true,
+          trafficMode: trafficControl?.snapshot().mode ?? 'open',
         });
       } catch {
         send(response, 503, {
@@ -145,12 +150,17 @@ export function createSearchServer({
           service: 'clervo-search-api',
           stateBackend: searchState.kind ?? 'unknown',
           durableState: searchState.durable === true,
+          trafficMode: trafficControl?.snapshot().mode ?? 'open',
         });
       }
       return;
     }
     if (request.method !== 'POST' || ![SEARCH_FREE_PATH, SEARCH_PAID_PATH].includes(url.pathname)) {
       send(response, 404, problem(404, 'not_found', 'Not found', 'No route matches this request.', url.pathname), {}, PROBLEM_TYPE);
+      return;
+    }
+    if (trafficControl?.snapshot().mode === 'stopped') {
+      send(response, 503, problem(503, 'traffic_stopped', 'Traffic temporarily stopped', 'New execution is disabled by the independent traffic safety control.', url.pathname), { 'retry-after': '30' }, PROBLEM_TYPE);
       return;
     }
     if (url.search !== '') {

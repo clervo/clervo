@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "clervo.production-rollback-policy.v1",
+  "trafficStopEnvironment": "CLERVO_TRAFFIC_MODE=stopped",
+  "trafficRestoreRequires": [
+    "database_readiness",
+    "monitoring_delivery",
+    "nonpayable_useful_smoke"
+  ],
+  "rollbackTarget": "previous_verified_immutable_registry_digest",
+  "rollbackFailsClosedWithoutTarget": true,
+  "paymentExecutionDuringStage14": false,
+  "automaticRollbackSignals": [
+    "readiness_unavailable",
+    "repeated_execution_failure",
+    "unknown_settlement",
+    "monitoring_delivery_unavailable"
+  ],
+  "productionMutationRequiresOwnerApproval": true
+}
