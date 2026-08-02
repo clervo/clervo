@@ -1,5 +1,5 @@
 {
-  "catalogVersion": "2026-08-02.1",
+  "catalogVersion": "2026-08-02.2",
   "researchedAt": "2026-08-01T23:45:00.000Z",
   "targets": [
     {
@@ -56,6 +56,62 @@
       "blockerCodes": ["credential_missing", "configuration_missing", "resale_terms_unresolved", "live_checks_not_run"],
       "documentation": [
         { "title": "Cloudflare Workers AI OpenAI-compatible endpoints", "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/", "checkedAt": "2026-08-01T23:45:00.000Z" }
+      ]
+    }
+  ],
+  "modalTargets": [
+    {
+      "providerId": "provider.openai",
+      "supplyFamilyId": "supply.openai_api",
+      "exactModelId": "text-embedding-3-large",
+      "baseUrlPattern": "https://api.openai.com/v1/",
+      "allowedHosts": ["api.openai.com"],
+      "products": ["ai.embed"],
+      "requiredConfigurationNames": [],
+      "requiredSecretNames": ["OPENAI_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "unreviewed",
+      "resaleAllowed": false,
+      "qualificationStatus": "blocked",
+      "blockerCodes": ["credential_missing", "resale_terms_unresolved", "live_checks_not_run"],
+      "documentation": [
+        { "title": "OpenAI text-embedding-3-large model", "url": "https://developers.openai.com/api/docs/models/text-embedding-3-large", "checkedAt": "2026-08-01T23:45:00.000Z" }
+      ]
+    },
+    {
+      "providerId": "provider.openai",
+      "supplyFamilyId": "supply.openai_api",
+      "exactModelId": "gpt-image-2",
+      "baseUrlPattern": "https://api.openai.com/v1/",
+      "allowedHosts": ["api.openai.com"],
+      "products": ["ai.image"],
+      "requiredConfigurationNames": [],
+      "requiredSecretNames": ["OPENAI_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "unreviewed",
+      "resaleAllowed": false,
+      "qualificationStatus": "blocked",
+      "blockerCodes": ["credential_missing", "resale_terms_unresolved", "live_checks_not_run"],
+      "documentation": [
+        { "title": "OpenAI GPT Image 2 model", "url": "https://developers.openai.com/api/docs/models/gpt-image-2", "checkedAt": "2026-08-01T23:45:00.000Z" }
+      ]
+    },
+    {
+      "providerId": "provider.openai",
+      "supplyFamilyId": "supply.openai_api",
+      "exactModelId": "tts-1",
+      "baseUrlPattern": "https://api.openai.com/v1/",
+      "allowedHosts": ["api.openai.com"],
+      "products": ["ai.speech"],
+      "requiredConfigurationNames": [],
+      "requiredSecretNames": ["OPENAI_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "unreviewed",
+      "resaleAllowed": false,
+      "qualificationStatus": "blocked",
+      "blockerCodes": ["credential_missing", "resale_terms_unresolved", "live_checks_not_run"],
+      "documentation": [
+        { "title": "OpenAI TTS-1 model", "url": "https://developers.openai.com/api/docs/models/tts-1", "checkedAt": "2026-08-01T23:45:00.000Z" }
       ]
     }
   ],

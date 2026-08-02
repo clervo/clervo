@@ -3,37 +3,57 @@
   "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-provider-candidates.schema.json",
   "title": "Clervo AI provider qualification candidates",
   "type": "object",
-  "required": ["catalogVersion", "researchedAt", "targets", "quickAi"],
+  "required": ["catalogVersion", "researchedAt", "targets", "modalTargets", "quickAi"],
+  "$defs": {
+    "target": {
+      "type": "object",
+      "required": ["providerId", "supplyFamilyId", "exactModelId", "baseUrlPattern", "allowedHosts", "products", "requiredConfigurationNames", "requiredSecretNames", "selectedForQualification", "termsStatus", "resaleAllowed", "qualificationStatus", "blockerCodes", "documentation"],
+      "properties": {
+        "providerId": { "type": "string", "pattern": "^provider\\.[a-z0-9_]+$" },
+        "supplyFamilyId": { "type": "string", "pattern": "^supply\\.[a-z0-9_]+$" },
+        "exactModelId": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "baseUrlPattern": { "type": "string", "pattern": "^https://" },
+        "allowedHosts": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "format": "hostname" } },
+        "products": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["ai.chat", "ai.embed", "ai.image", "ai.speech"] } },
+        "requiredConfigurationNames": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" } },
+        "requiredSecretNames": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" } },
+        "selectedForQualification": { "type": "boolean" },
+        "termsStatus": { "enum": ["approved", "restricted", "blocked", "unreviewed"] },
+        "resaleAllowed": { "type": "boolean" },
+        "qualificationStatus": { "enum": ["passed", "failed", "blocked"] },
+        "blockerCodes": { "type": "array", "uniqueItems": true, "items": { "enum": ["credential_missing", "configuration_missing", "resale_terms_unresolved", "live_checks_not_run"] } },
+        "documentation": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["title", "url", "checkedAt"],
+            "properties": {
+              "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+              "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+              "checkedAt": { "type": "string", "format": "date-time" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
   "properties": {
-    "catalogVersion": { "const": "2026-08-02.1" },
+    "catalogVersion": { "const": "2026-08-02.2" },
     "researchedAt": { "type": "string", "format": "date-time" },
-    "targets": {
-      "type": "array", "minItems": 3, "uniqueItems": true,
-      "items": {
-        "type": "object",
-        "required": ["providerId", "supplyFamilyId", "exactModelId", "baseUrlPattern", "allowedHosts", "products", "requiredConfigurationNames", "requiredSecretNames", "selectedForQualification", "termsStatus", "resaleAllowed", "qualificationStatus", "blockerCodes", "documentation"],
-        "properties": {
-          "providerId": { "type": "string", "pattern": "^provider\\.[a-z0-9_]+$" },
-          "supplyFamilyId": { "type": "string", "pattern": "^supply\\.[a-z0-9_]+$" },
-          "exactModelId": { "type": "string", "minLength": 1, "maxLength": 160 },
-          "baseUrlPattern": { "type": "string", "pattern": "^https://" },
-          "allowedHosts": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "format": "hostname" } },
-          "products": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["ai.chat", "ai.embed", "ai.image", "ai.speech"] } },
-          "requiredConfigurationNames": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" } },
-          "requiredSecretNames": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" } },
-          "selectedForQualification": { "type": "boolean" },
-          "termsStatus": { "enum": ["approved", "restricted", "blocked", "unreviewed"] },
-          "resaleAllowed": { "type": "boolean" },
-          "qualificationStatus": { "enum": ["passed", "failed", "blocked"] },
-          "blockerCodes": { "type": "array", "uniqueItems": true, "items": { "enum": ["credential_missing", "configuration_missing", "resale_terms_unresolved", "live_checks_not_run"] } },
-          "documentation": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["title", "url", "checkedAt"], "properties": { "title": { "type": "string", "minLength": 1, "maxLength": 160 }, "url": { "type": "string", "format": "uri", "pattern": "^https://" }, "checkedAt": { "type": "string", "format": "date-time" } }, "additionalProperties": false } }
-        },
-        "additionalProperties": false
-      }
-    },
+    "targets": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/target" } },
+    "modalTargets": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/target" } },
     "quickAi": {
-      "type": "object", "required": ["status", "allowedIdentityPattern", "prohibitedIdentities", "reason"],
-      "properties": { "status": { "const": "disabled" }, "allowedIdentityPattern": { "const": "GPT-labelled routes only after individual qualification" }, "prohibitedIdentities": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "type": "string" } }, "reason": { "type": "string", "minLength": 20, "maxLength": 500 } },
+      "type": "object",
+      "required": ["status", "allowedIdentityPattern", "prohibitedIdentities", "reason"],
+      "properties": {
+        "status": { "const": "disabled" },
+        "allowedIdentityPattern": { "const": "GPT-labelled routes only after individual qualification" },
+        "prohibitedIdentities": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "type": "string" } },
+        "reason": { "type": "string", "minLength": 20, "maxLength": 500 }
+      },
       "additionalProperties": false
     }
   },

@@ -2,7 +2,7 @@
 
 Clean-room repository for **Clervo — outcome infrastructure for agents.** The permanent product narrative is **Find → Understand → Act**.
 
-The First Revenue Release is the all-six **Clervo Platform**: Live Intelligence/Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence. It is not ready. Search is the only current `preview`; the other five pillars are `unavailable`, and implementation of those five product cores has not started. The product cores must be built and stabilized privately before a cross-pillar contract freeze. Only after that freeze does one shared API, MCP, SDK, onboarding, design, documentation, discovery, JSON-LD, sitemap, SEO, and distribution pass begin. This order does not rebrand Clervo or silently change stable capability identifiers, schemas, endpoints, request hashes, commerce semantics, tools, or lifecycle truth.
+The First Revenue Release is the all-six **Clervo Platform**: Live Intelligence/Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence. It is not ready. Search is the only current `preview`; the other five pillars are `unavailable`. The AI core is implemented privately but has not passed live supplier and resale qualification; the remaining four product cores have not started. All cores must be built and stabilized privately before a cross-pillar contract freeze. Only after that freeze does one shared API, MCP, SDK, onboarding, design, documentation, discovery, JSON-LD, sitemap, SEO, and distribution pass begin. This order does not rebrand Clervo or silently change stable capability identifiers, schemas, endpoints, request hashes, commerce semantics, tools, or lifecycle truth.
 
 ## Current state
 
@@ -18,9 +18,18 @@ solution packs now turn cited search evidence into deterministic normalized
 records for commerce, property, company, research, and developer use cases.
 Search is privately core-qualified but remains `preview`; AI, Sandbox, RPC,
 Prediction, and Crypto Intelligence remain `unavailable`. External scheduling
-and alert delivery, the other five product cores, cross-pillar freeze,
+and alert delivery, AI live supplier/resale qualification, the other four
+product cores, cross-pillar freeze,
 shared access/distribution, production deployment, real settlement, and external
 paid demand remain unimplemented or unverified.
+
+The private AI implementation includes exact-model qualification contracts,
+deterministic alias routing and failover, reconciled supplier-cost accounting,
+bounded chat/embedding/image/speech execution, evidence-aware claims, an
+OpenAI-compatible adapter, and redacted outage monitoring. Current qualification
+targets are three independent chat supply families plus exact OpenAI embedding,
+image, and speech routes. They remain disabled because credentials are absent,
+resale terms are unconfirmed, and no live provider checks or spend were run.
 
 The selected foundation is TypeScript on Node.js 24 LTS, PostgreSQL 18, and
 pg-boss 12 backed by the same PostgreSQL cluster. npm manages the workspace.

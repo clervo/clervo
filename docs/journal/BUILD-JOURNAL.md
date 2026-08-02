@@ -1486,3 +1486,20 @@ Do not edit or delete completed entries. Add a new dated entry for each ticket.
   superiority remain unavailable or unproven.
 - External effects: none. Provider calls, delivered messages, infrastructure
   spend, and USDC spend were zero. Continue directly with the Stage 6 AI core.
+
+## 2026-08-01 — Stage 6 private implementation reached external qualification boundary
+
+- Implemented exact-model AI qualification, deterministic aliases and failover,
+  usage/cost reconciliation, bounded chat/embedding/image/speech execution,
+  evidence-aware claims, a bounded OpenAI-compatible adapter, and redacted
+  outage monitoring. QuickAI remains disabled and prohibited identities remain
+  rejected.
+- Selected three independent current chat candidates and exact embedding, image,
+  and speech candidates from official provider documentation. The readiness
+  check exposes only missing configuration names and lifecycle state.
+- Local Stage 6 behavior and contracts pass, but the Stage 6 exit remains
+  blocked: no selected provider credential is installed, resale/API terms are
+  unconfirmed, and no live qualification ran. AI therefore remains private,
+  `unavailable`, and not core-qualified.
+- External effects: provider calls and infrastructure changes were zero; USD and
+  USDC spend were zero.
