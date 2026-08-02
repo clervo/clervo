@@ -2,8 +2,24 @@
   "name": "@clervo/sdk",
   "version": "0.3.0",
   "description": "Typed Clervo client generated from the frozen distribution candidate.",
+  "license": "UNLICENSED",
   "type": "module",
   "sideEffects": false,
+  "keywords": [
+    "clervo",
+    "agent",
+    "search",
+    "sdk"
+  ],
+  "homepage": "https://clervo.dev/docs/typescript",
+  "bugs": {
+    "url": "https://github.com/clervo/clervo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clervo/clervo.git",
+    "directory": "packages/sdk-typescript"
+  },
   "engines": {
     "node": ">=20"
   },
@@ -22,5 +38,9 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "prepack": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

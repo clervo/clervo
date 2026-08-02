@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "repository": {
+    "owner": "clervo",
+    "name": "clervo",
+    "url": "https://github.com/clervo/clervo"
+  },
+  "workflow": {
+    "filename": "publish-packages.yml",
+    "environment": "package-release"
+  },
+  "tooling": {
+    "buildNpmVersion": "10.9.8",
+    "publishNpmVersion": "11.18.0",
+    "pythonBuildVersion": "1.5.0"
+  },
+  "packages": [
+    {
+      "registry": "npm",
+      "name": "@clervo/sdk",
+      "version": "0.3.0",
+      "path": "packages/sdk-typescript"
+    },
+    {
+      "registry": "npm",
+      "name": "@clervo/mcp",
+      "version": "0.3.0",
+      "path": "packages/mcp"
+    },
+    {
+      "registry": "pypi",
+      "name": "clervo-sdk",
+      "version": "0.2.0",
+      "path": "packages/sdk-python"
+    }
+  ]
+}

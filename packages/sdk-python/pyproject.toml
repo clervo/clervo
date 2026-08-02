@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=75", "wheel"]
+requires = ["setuptools==83.0.0", "wheel==0.47.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -9,6 +9,7 @@ description = "Typed Clervo client generated from the frozen distribution candid
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Clervo" }]
+keywords = ["clervo", "agent", "search", "sdk"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
@@ -16,6 +17,12 @@ classifiers = [
   "Programming Language :: Python :: 3 :: Only",
   "Typing :: Typed",
 ]
+
+[project.urls]
+Homepage = "https://clervo.dev/docs/python"
+Documentation = "https://clervo.dev/docs/python"
+Issues = "https://github.com/clervo/clervo/issues"
+Repository = "https://github.com/clervo/clervo"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -1,74 +1,60 @@
-# Clervo Next
+# Clervo
 
-Clean-room repository for **Clervo — outcome infrastructure for agents.** The permanent product narrative is **Find → Understand → Act**.
+Clervo is outcome infrastructure for agents: **Find → Understand → Act**.
 
-The First Revenue Release is the all-six **Clervo Platform**: Live Intelligence/Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence. It is not ready. Search is the only current `preview`; the other five pillars are `unavailable`. The AI core is implemented privately but has not passed live supplier and resale qualification; the remaining four product cores have not started. All cores must be built and stabilized privately before a cross-pillar contract freeze. Only after that freeze does one shared API, MCP, SDK, onboarding, design, documentation, discovery, JSON-LD, sitemap, SEO, and distribution pass begin. This order does not rebrand Clervo or silently change stable capability identifiers, schemas, endpoints, request hashes, commerce semantics, tools, or lifecycle truth.
+This repository contains the clean-room Clervo platform, frozen distribution
+candidate, TypeScript and Python clients, MCP server, and the repository-local
+V6 product experience.
 
-## Current state
+## Current public boundary
 
-Stage 4 passed its evidence-bound exit and Stage 5 passed private Live
-Intelligence qualification. N5.1 established the unfrozen six-pillar registry
-and explicit schema-visibility boundary; N5.2 added
-deterministic hash-bound evidence comparison and typed change detection; N5.3
-adds versioned monitor definitions, anchored schedule/state invariants, and
-hash-linked durable snapshot payloads. The internal runner now performs
-compare-and-swap state commits, comparisons, retention cutoffs, and deterministic
-record-only change alerts above a PostgreSQL storage contract. Five internal
-solution packs now turn cited search evidence into deterministic normalized
-records for commerce, property, company, research, and developer use cases.
-Search is privately core-qualified but remains `preview`; AI, Sandbox, RPC,
-Prediction, and Crypto Intelligence remain `unavailable`. External scheduling
-and alert delivery, AI live supplier/resale qualification, the other four
-product cores, cross-pillar freeze,
-shared access/distribution, production deployment, real settlement, and external
-paid demand remain unimplemented or unverified.
+The distribution candidate exposes two frozen operations:
 
-The private AI implementation includes exact-model qualification contracts,
-deterministic alias routing and failover, reconciled supplier-cost accounting,
-bounded chat/embedding/image/speech execution, evidence-aware claims, an
-OpenAI-compatible adapter, and redacted outage monitoring. Current qualification
-targets are three independent chat supply families plus exact OpenAI embedding,
-image, and speech routes. They remain disabled because credentials are absent,
-resale terms are unconfirmed, and no live provider checks or spend were run.
+- `search.web`
+- `search.answer`
 
-The selected foundation is TypeScript on Node.js 24 LTS, PostgreSQL 18, and
-pg-boss 12 backed by the same PostgreSQL cluster. npm manages the workspace.
-`packages/contracts` remains the source of truth for versioned contracts and
-lifecycle.
+They are repository-local preview surfaces. No public callable deployment or
+payable route is currently verified. The SDKs require an explicit base URL, and
+they never sign, pay, or retry a payment automatically.
 
-## Roadmap and workflow
+The other Clervo product cores and combined workflows are implemented and
+qualified privately. Their customer lifecycle and public availability remain
+controlled by the canonical registry and current evidence; source code or a
+package archive does not make a capability production-ready.
 
-The product-scope roadmap is:
+## Packages
 
-`/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md`
+- [`@clervo/sdk`](packages/sdk-typescript) — typed TypeScript client
+- [`clervo-sdk`](packages/sdk-python) — dependency-free Python client
+- [`@clervo/mcp`](packages/mcp) — stdio MCP server backed by the TypeScript SDK
 
-Its stages and ticket identifiers are an ordered implementation checklist, not
-task authorization boundaries. Continuous engineering rules are in `AGENTS.md`;
-genuine owner-only prerequisites are in
-`docs/operations/OWNER-ONLY-PREREQUISITES.md`. Retired process history is under
-`docs/archive/process-control/`.
+Published registry versions may predate this clean-room candidate. Package
+metadata and documentation describe the source version being inspected, not a
+claim that it has been published.
 
-## Runtime setup
+## Local verification
 
-Repository execution is pinned exactly to Node.js `24.18.1` and npm `10.9.8`. Select the committed version before installing or running commands: `nvm install && nvm use`, `asdf install`, or `mise install`. The same pin is recorded in `.nvmrc`, `.node-version`, `.tool-versions`, `package.json`, `package-lock.json`, and `infra/stack-versions.env`; `npm install` and every npm script fail immediately if the active Node.js process differs. Run `npm run verify:runtime` to diagnose the active process and `npm test` for canonical acceptance.
-
-The absolute path above is documentation for operators, not a runtime dependency. Product code must not import, mount, execute, or otherwise depend on the legacy `/workspace/x402-platform` repository or its state.
-
-## Repository boundary
-
-- This directory is its own Git repository.
-- Legacy code, databases, queues, catalogs, ledgers, generated artifacts, and deployment state are evidence only.
-- No symlink, submodule, gitlink, local package dependency, or runtime path may escape this repository.
-- Small proven concepts may be reimplemented inside the clean-room boundary.
-
-## Validation
-
-Run:
+The repository is pinned to Node.js `24.18.1` and npm `10.9.8`.
 
 ```sh
-npm run verify:runtime
-npm test
-npm run staging:smoke
+npm ci --ignore-scripts
+npm run test:stage13:clients
+npm run test:stage13:site
 ```
 
-The repository requires exactly Node.js 24.18.1. `.nvmrc`, `.node-version`, and `.tool-versions` select that runtime in common version managers; npm uses strict engine enforcement; install and acceptance fail closed if the executing Node.js version differs. The commands use local POSIX tools, Git, and Node.js. Acceptance performs no external network access, provider calls, cloud changes, or payments; staging smoke uses loopback HTTP only. The checks do not connect to PostgreSQL, start pg-boss, or prove remote GitHub Actions/environment protection or live hosting.
+The site can then be previewed locally:
+
+```sh
+npm run site:preview
+```
+
+## Security and product truth
+
+Product contracts and lifecycle records are the source of truth. Never place
+credentials, wallet material, customer payloads, or authentication files in
+issues or commits. Security concerns can be reported through the repository's
+private security-reporting channel once the canonical GitHub repository is
+public.
+
+This source is currently unlicensed (`UNLICENSED`). No permission to copy,
+modify, or redistribute is granted unless Clervo publishes separate terms.

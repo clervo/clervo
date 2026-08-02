@@ -2,7 +2,23 @@
   "name": "@clervo/mcp",
   "version": "0.3.0",
   "description": "Clervo MCP server generated from the frozen two-operation distribution candidate.",
+  "license": "UNLICENSED",
   "type": "module",
+  "keywords": [
+    "clervo",
+    "mcp",
+    "model-context-protocol",
+    "search"
+  ],
+  "homepage": "https://clervo.dev/docs/mcp",
+  "bugs": {
+    "url": "https://github.com/clervo/clervo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clervo/clervo.git",
+    "directory": "packages/mcp"
+  },
   "engines": {
     "node": ">=20"
   },
@@ -27,5 +43,9 @@
     "@clervo/sdk": "0.3.0",
     "@modelcontextprotocol/sdk": "1.30.0",
     "zod": "4.4.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

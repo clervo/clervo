@@ -1,0 +1,91 @@
+name: Publish verified packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_commit:
+        description: Exact 40-character commit SHA from main to publish
+        required: true
+        type: string
+      confirmation:
+        description: Type the exact three-package release confirmation
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: package-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Verify once and publish through OIDC
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: package-release
+      url: https://github.com/clervo/clervo/actions
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      RELEASE_COMMIT: ${{ inputs.release_commit }}
+      RELEASE_CONFIRMATION: ${{ inputs.confirmation }}
+      EXPECTED_CONFIRMATION: publish @clervo/sdk@0.3.0 @clervo/mcp@0.3.0 clervo-sdk@0.2.0
+    steps:
+      - name: Check out the exact requested commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.release_commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Fail closed unless commit and confirmation are exact
+        run: |
+          test "${#RELEASE_COMMIT}" -eq 40
+          test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT"
+          git merge-base --is-ancestor "$RELEASE_COMMIT" origin/main
+          test "$RELEASE_CONFIRMATION" = "$EXPECTED_CONFIRMATION"
+      - name: Use pinned Node.js build runtime
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - name: Use supported Python runtime
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.0.0
+        with:
+          python-version: "3.12"
+          cache: false
+      - name: Install locked workspace dependencies
+        run: npm ci --ignore-scripts
+      - name: Verify source, package contracts, and unpublished versions
+        run: |
+          npm run test:stage13:clients
+          npm run verify:distribution-release:registry
+          npm run prove:distribution-onboarding
+      - name: Build immutable package archives
+        run: |
+          mkdir -p release-artifacts/npm release-artifacts/pypi
+          npm run build --workspace @clervo/sdk
+          npm run build --workspace @clervo/mcp
+          npm pack ./packages/sdk-typescript --ignore-scripts --pack-destination release-artifacts/npm
+          npm pack ./packages/mcp --ignore-scripts --pack-destination release-artifacts/npm
+          python -m venv "$RUNNER_TEMP/clervo-release-builder"
+          "$RUNNER_TEMP/clervo-release-builder/bin/python" -m pip install --disable-pip-version-check build==1.5.0
+          "$RUNNER_TEMP/clervo-release-builder/bin/python" -m build --sdist --wheel --outdir release-artifacts/pypi packages/sdk-python
+          sha256sum release-artifacts/npm/* release-artifacts/pypi/* > release-artifacts/SHA256SUMS
+      - name: Select the OIDC-capable npm release client
+        run: |
+          npm install --global npm@11.18.0
+          test "$(npm --version)" = "11.18.0"
+      - name: Publish TypeScript SDK with provenance
+        run: npm publish release-artifacts/npm/clervo-sdk-0.3.0.tgz --access public
+      - name: Publish MCP after its exact SDK dependency
+        run: npm publish release-artifacts/npm/clervo-mcp-0.3.0.tgz --access public
+      - name: Publish Python distributions with provenance
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+        with:
+          packages-dir: release-artifacts/pypi
+          skip-existing: false

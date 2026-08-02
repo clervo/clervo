@@ -98,6 +98,18 @@ console or request failures. Fresh desktop and mobile Lighthouse runs score
 with zero blocking time and layout shift. This proves the local candidate, not
 public deployment or customer availability.
 
+Stage 13 package preparation is complete locally. The planned canonical public
+source repository is `clervo/clervo`; it has not been created or connected.
+`@clervo/sdk@0.3.0`, `@clervo/mcp@0.3.0`, and `clervo-sdk@0.2.0` now carry
+truthful source metadata and advance the observed registry versions while
+remaining unpublished. Actual npm archives, a Python wheel, and a Python source
+distribution install and import successfully in isolated temporary consumers.
+The manual publish workflow is exact-commit-bound, protected by the
+`package-release` environment, uses short-lived npm/PyPI OIDC identities, pins
+its actions and release tooling, and fails closed before publishing if any
+candidate version already exists. No registry credential, repository creation,
+remote push, package publication, or account mutation occurred.
+
 The owner's V6 handoff passed its 145-file checksum manifest and verifier. It is
 the visual and experiential north star for art, 3D, cinematography, motion,
 layout, responsive composition, and interaction quality. It is not copy or
@@ -131,11 +143,12 @@ confirmed absent; Artifact Registry was preserved. Evidence is in
 
 ## Next actions
 
-1. Finish the remaining Stage 13 public-package metadata, clean-environment
-   onboarding proof, registry/GitHub publication preparation, and shared
-   access boundary without changing the frozen interface. Guide secure logins
-   only when the exact external verification or publish step is locally ready;
-   do not claim public distribution before it is observed.
+1. Finish the remaining Stage 13 shared HTTP/raw example, bounded payment,
+   recovery, discovery, and complete clean onboarding boundary without changing
+   the frozen interface. Then create/connect the canonical GitHub repository
+   and guide npm/PyPI trusted-publisher setup only when the exact external
+   verification or publish step is ready. Do not claim public distribution
+   before it is observed.
 2. Keep Crypto Intelligence customer routing disabled until written commercial
    permission or replacement terms-compatible EVM, Solana, and protocol supply
    exists; this isolated owner blocker does not pause combined local work.

@@ -8,7 +8,7 @@ data are prohibited.
 
 | Surface | Existing identity | Observed state | Next action |
 | --- | --- | --- | --- |
-| GitHub | Organization `clervo`; owner context `moalmohtasib` | Public organization exists with `clervo-waitlist`; this repository has no remote | Reuse the organization, choose/create the canonical repository, then configure protected CI publishing |
+| GitHub | Organization `clervo`; planned repository `clervo/clervo` | Public organization exists with `clervo-waitlist`; the canonical repository name is available but has not been created and this workspace has no remote | Create `clervo/clervo` only after local publication safeguards pass, then configure protected OIDC publishing |
 | npm account | `clervo` | This workspace is not authenticated | Use interactive login only when package verification/publishing requires it |
 | npm package | `clervo@0.0.0` | Name reserved with obsolete wallet-simulation copy | Preserve the name; do not publish new behavior until its CLI/product purpose is explicit |
 | npm package | `@clervo/sdk@0.2.0` | Published legacy JavaScript SDK | Rebuild from frozen contracts while retaining sensible compatibility aliases |
@@ -27,7 +27,7 @@ data are prohibited.
 | Business email | Google Workspace is configured for the domain | Record active public aliases without exposing administrator identity |
 | Transactional email | Owner reports Resend is configured | Record sending domain/project and verify sender/authentication status |
 | Monitoring | Owner reports approximately USD 5,000 in Sentry credit | Record organization/project slugs, eligible products, and credit expiry |
-| Website | New owner handoff is pending | Treat the new handoff as the sole design authority |
+| Website | V6 repository-local candidate is complete | The owner handoff controls visual/art/3D experience only; proven contracts and evidence control public claims |
 
 ## Legacy-package findings
 
@@ -44,15 +44,14 @@ data are prohibited.
 
 ## Website handoff rule
 
-When the new owner handoff arrives, it becomes the canonical site and design
-direction. Retire or archive superseded design-only handoffs, mockups, copy, and
-site setup. Preserve unrelated product contracts, security controls, working
-code, factual catalog data, domain/email infrastructure, and evidence required
-for truthful claims.
+The V6 owner handoff is the canonical visual, art, motion, 3D, layout, and
+interaction direction. It is not product-copy authority. Retire or archive
+superseded design-only handoffs, mockups, copy, and site setup. Preserve product
+contracts, security controls, working code, factual catalog data, domain/email
+infrastructure, and evidence required for truthful claims.
 
 ## Pending owner identifiers
 
-- Canonical GitHub repository name.
 - Cloudflare Pages/Workers project names, if already created.
 - Sentry organization slug, project names, and credit expiry.
 - Resend sending domain/project and intended public sender addresses.

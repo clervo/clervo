@@ -1,0 +1,56 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import test from 'node:test';
+
+const targets = JSON.parse(await readFile('packages/distribution/release-targets.v1.json', 'utf8'));
+const sdk = JSON.parse(await readFile('packages/sdk-typescript/package.json', 'utf8'));
+const mcp = JSON.parse(await readFile('packages/mcp/package.json', 'utf8'));
+const pythonProject = await readFile('packages/sdk-python/pyproject.toml', 'utf8');
+const verifyWorkflow = await readFile('.github/workflows/verify-distribution.yml', 'utf8');
+const publishWorkflow = await readFile('.github/workflows/publish-packages.yml', 'utf8');
+
+test('release targets bind the planned canonical repository and exact package versions', () => {
+  assert.deepEqual(targets.repository, {
+    owner: 'clervo',
+    name: 'clervo',
+    url: 'https://github.com/clervo/clervo',
+  });
+  assert.deepEqual(
+    targets.packages.map(({ registry, name, version }) => ({ registry, name, version })),
+    [
+      { registry: 'npm', name: '@clervo/sdk', version: '0.3.0' },
+      { registry: 'npm', name: '@clervo/mcp', version: '0.3.0' },
+      { registry: 'pypi', name: 'clervo-sdk', version: '0.2.0' },
+    ],
+  );
+  assert.equal(sdk.repository.url, 'git+https://github.com/clervo/clervo.git');
+  assert.equal(mcp.repository.url, 'git+https://github.com/clervo/clervo.git');
+  assert.equal(mcp.dependencies['@clervo/sdk'], sdk.version);
+  assert.match(pythonProject, /^Repository = "https:\/\/github\.com\/clervo\/clervo"$/mu);
+});
+
+test('ordinary distribution CI is read-only and proves clean onboarding', () => {
+  assert.match(verifyWorkflow, /^permissions:\n  contents: read$/mu);
+  assert.doesNotMatch(verifyWorkflow, /id-token: write/u);
+  assert.doesNotMatch(verifyWorkflow, /npm publish|gh-action-pypi-publish/u);
+  assert.match(verifyWorkflow, /npm run prove:distribution-onboarding/u);
+});
+
+test('package publishing is manual, commit-bound, environment-protected, and tokenless', () => {
+  assert.match(publishWorkflow, /^  workflow_dispatch:$/mu);
+  assert.doesNotMatch(publishWorkflow, /^  (?:push|pull_request):$/mu);
+  assert.match(publishWorkflow, /name: package-release/u);
+  assert.match(publishWorkflow, /id-token: write/u);
+  assert.match(publishWorkflow, /git merge-base --is-ancestor/u);
+  assert.match(publishWorkflow, /verify:distribution-release:registry/u);
+  assert.doesNotMatch(publishWorkflow, /secrets\.|NODE_AUTH_TOKEN|API_TOKEN/u);
+
+  for (const reference of publishWorkflow.matchAll(/uses: [^@\n]+@([^\s#]+)/gu)) {
+    assert.match(reference[1], /^[a-f0-9]{40}$/u);
+  }
+
+  const sdkPublish = publishWorkflow.indexOf('npm publish release-artifacts/npm/clervo-sdk-0.3.0.tgz');
+  const mcpPublish = publishWorkflow.indexOf('npm publish release-artifacts/npm/clervo-mcp-0.3.0.tgz');
+  const pythonPublish = publishWorkflow.indexOf('pypa/gh-action-pypi-publish@');
+  assert.ok(sdkPublish > 0 && mcpPublish > sdkPublish && pythonPublish > mcpPublish);
+});
