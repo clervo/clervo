@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "clervo.rpc-chain-registry.v1", "lifecycle": "unavailable",
+  "chains": [
+    { "chainId": "eip155:1", "name": "Ethereum", "protocol": "evm", "enabled": true, "finalityDepth": 64, "maximumReorgDepth": 32, "staleAfterMs": 15000, "maximumBatchSize": 20, "maximumResponseBytes": 10485760, "archiveQualified": false, "broadcastQualified": false },
+    { "chainId": "eip155:10", "name": "Optimism", "protocol": "evm", "enabled": true, "finalityDepth": 100, "maximumReorgDepth": 50, "staleAfterMs": 10000, "maximumBatchSize": 20, "maximumResponseBytes": 10485760, "archiveQualified": false, "broadcastQualified": false },
+    { "chainId": "eip155:56", "name": "BNB Smart Chain", "protocol": "evm", "enabled": true, "finalityDepth": 30, "maximumReorgDepth": 15, "staleAfterMs": 10000, "maximumBatchSize": 20, "maximumResponseBytes": 10485760, "archiveQualified": false, "broadcastQualified": false },
+    { "chainId": "eip155:137", "name": "Polygon", "protocol": "evm", "enabled": true, "finalityDepth": 256, "maximumReorgDepth": 128, "staleAfterMs": 10000, "maximumBatchSize": 20, "maximumResponseBytes": 10485760, "archiveQualified": false, "broadcastQualified": false },
+    { "chainId": "eip155:8453", "name": "Base", "protocol": "evm", "enabled": true, "finalityDepth": 100, "maximumReorgDepth": 50, "staleAfterMs": 10000, "maximumBatchSize": 20, "maximumResponseBytes": 10485760, "archiveQualified": false, "broadcastQualified": false },
+    { "chainId": "eip155:42161", "name": "Arbitrum One", "protocol": "evm", "enabled": true, "finalityDepth": 100, "maximumReorgDepth": 50, "staleAfterMs": 10000, "maximumBatchSize": 20, "maximumResponseBytes": 10485760, "archiveQualified": false, "broadcastQualified": false },
+    { "chainId": "eip155:43114", "name": "Avalanche C-Chain", "protocol": "evm", "enabled": true, "finalityDepth": 20, "maximumReorgDepth": 10, "staleAfterMs": 10000, "maximumBatchSize": 20, "maximumResponseBytes": 10485760, "archiveQualified": false, "broadcastQualified": false },
+    { "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp", "name": "Solana", "protocol": "solana", "enabled": true, "finalityDepth": 32, "maximumReorgDepth": 16, "staleAfterMs": 10000, "maximumBatchSize": 20, "maximumResponseBytes": 10485760, "archiveQualified": false, "broadcastQualified": false }
+  ]
+}
