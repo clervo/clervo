@@ -121,7 +121,10 @@ map to one identical bounded recovery action in both SDKs and MCP. Timeout and
 unknown settlement prohibit retry until reconciliation. The site prerenders 14
 routes, including raw HTTP docs, and the updated Build/recovery experience
 passes 13-route accessibility, mobile/landscape/zoom reflow, progressive WebGL,
-static-HTML, console, and request-failure checks.
+static-HTML, console, and request-failure checks. The single consolidated local
+Stage 13 check passes clients, package archives, discovery, onboarding,
+prerendering, contract tests, accessibility, responsive modes, and runtime
+delivery.
 
 The owner's V6 handoff passed its 145-file checksum manifest and verifier. It is
 the visual and experiential north star for art, 3D, cinematography, motion,

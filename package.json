@@ -140,6 +140,7 @@
     "site:media:verify": "node ./scripts/site/validate-canonical-media.mjs",
     "test:stage13:site": "npm run site:build && node --test ./tests/contract/n13.3.test.mjs",
     "test:stage13:access": "npm run generate:discovery && npm run test:stage13:clients && npm run site:build && node --test ./tests/contract/n13.3.test.mjs ./tests/contract/n13.5.test.mjs",
+    "test:stage13:local": "npm run test:stage13:clients && npm run verify:distribution-release && npm run prove:distribution-onboarding && npm run site:build && node --test ./tests/contract/n13.3.test.mjs ./tests/contract/n13.4.test.mjs ./tests/contract/n13.5.test.mjs && node ./tools/codex-studio/scripts/audit-site.mjs",
     "verify:stage6-exit": "node ./scripts/verify-runtime.mjs && node ./scripts/check-ai-supply-readiness.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
     "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",
