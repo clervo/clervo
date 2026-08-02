@@ -85,7 +85,7 @@
       "serviceId": "supply.cohere",
       "modelId": "c4ai-aya-expanse-32b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -99,13 +99,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "c4ai-aya-vision-32b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -119,13 +119,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "cohere-transcribe-03-2026",
       "product": "ai.transcribe",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -135,13 +135,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "command-a-03-2025",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -155,13 +155,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "command-a-plus-05-2026",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -175,13 +175,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "command-a-reasoning-08-2025",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -195,13 +195,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "command-a-translate-08-2025",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -215,13 +215,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "command-a-vision-07-2025",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -235,13 +235,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "command-r-08-2024",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -255,13 +255,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "command-r-plus-08-2024",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -275,13 +275,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "command-r7b-12-2024",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -295,13 +295,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "command-r7b-arabic-02-2025",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -315,13 +315,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "embed-english-light-v3.0",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -331,13 +331,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "embed-english-light-v3.0-image",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -347,13 +347,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "embed-english-v3.0",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -363,13 +363,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "embed-english-v3.0-image",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -379,13 +379,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "embed-multilingual-light-v3.0",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -395,13 +395,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "embed-multilingual-light-v3.0-image",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -411,13 +411,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "embed-multilingual-v3.0",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -427,13 +427,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "embed-multilingual-v3.0-image",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -443,13 +443,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "embed-v4.0",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -459,13 +459,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "north-mini-code-1-0",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -479,13 +479,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "rerank-english-v3.0",
       "product": "ai.rerank",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -495,13 +495,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "rerank-multilingual-v3.0",
       "product": "ai.rerank",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -511,13 +511,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "rerank-v3.5",
       "product": "ai.rerank",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -527,13 +527,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "rerank-v4.0-fast",
       "product": "ai.rerank",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -543,13 +543,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "rerank-v4.0-pro",
       "product": "ai.rerank",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -559,13 +559,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "tiny-aya-earth",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -579,13 +579,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "tiny-aya-fire",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -599,13 +599,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "tiny-aya-global",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -619,13 +619,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.cohere",
       "modelId": "tiny-aya-water",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_unavailable_trial_limit",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -639,7 +639,7 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",

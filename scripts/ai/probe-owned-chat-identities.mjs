@@ -3,6 +3,7 @@
 const sources = {
   hcnsec_gateway: { serviceId: 'supply.hcnsec_gateway', baseUrl: 'https://api.hcnsec.cn/v1/', secrets: ['AI_GATEWAY_KEY'] },
   cerebras: { serviceId: 'supply.cerebras', baseUrl: 'https://api.cerebras.ai/v1/', secrets: ['CEREBRAS_API_KEY'] },
+  cohere: { serviceId: 'supply.cohere', baseUrl: 'https://api.cohere.ai/compatibility/v1/', secrets: ['COHERE_API_KEY'] },
   nvidia: { serviceId: 'supply.nvidia', baseUrl: 'https://integrate.api.nvidia.com/v1/', secrets: ['NVIDIA_API_KEY'] },
   sambanova: { serviceId: 'supply.sambanova', baseUrl: 'https://api.sambanova.ai/v1/', secrets: ['SAMBANOVA_API_KEY'] },
   siliconflow: { serviceId: 'supply.siliconflow', baseUrl: 'https://api.siliconflow.com/v1/', secrets: ['SILICONFLOW_API_KEY'] },
@@ -32,7 +33,13 @@ for (const requestedModel of models) {
   try { body = JSON.parse(text); } catch { body = null; }
   const observedModel = typeof body?.model === 'string' && body.model.length <= 200 ? body.model : null;
   const rawFailureCode = body?.error?.code ?? body?.code;
-  const failureCode = typeof rawFailureCode === 'string' || typeof rawFailureCode === 'number' ? String(rawFailureCode).slice(0, 80).replace(/[^a-zA-Z0-9_.:-]/gu, '_') : null;
+  const failureMessage = typeof body?.message === 'string' ? body.message.toLowerCase() : typeof body?.error?.message === 'string' ? body.error.message.toLowerCase() : '';
+  const failureCode = typeof rawFailureCode === 'string' || typeof rawFailureCode === 'number'
+    ? String(rawFailureCode).slice(0, 80).replace(/[^a-zA-Z0-9_.:-]/gu, '_')
+    : failureMessage.includes('trial') && failureMessage.includes('limit') ? 'trial_limit_exhausted'
+      : failureMessage.includes('rate limit') ? 'rate_limited'
+        : failureMessage.includes('billing') || failureMessage.includes('payment') ? 'billing_required'
+          : response.ok ? null : `http_${response.status}`;
   const retryAfter = response.headers.get('retry-after');
   results.push({ requestedModel, observedModel, identityMatches: requestedModel === observedModel, status: response.status, usageReported: Number.isSafeInteger(body?.usage?.prompt_tokens) && Number.isSafeInteger(body?.usage?.completion_tokens), failureCode, retryAfter: retryAfter?.slice(0, 40) ?? null, latencyMs });
 }

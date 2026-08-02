@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "clervo.cohere-api-terms.v1",
+  "checkedAt": "2026-08-02T05:16:19.000Z",
+  "hostedService": "Cohere SaaS API",
+  "termsStatus": "trial_blocked_production_route_available",
+  "findings": {
+    "trialKeyProductionAllowed": false,
+    "trialKeyMonthlyCalls": 1000,
+    "productionKeyPublicApplicationAllowed": true,
+    "productionKeyMetered": true,
+    "productionOnboardingRequired": true,
+    "trialLimitCurrentlyExhausted": true
+  },
+  "decision": {
+    "pricedListingsRetained": 31,
+    "currentlyExecutableRoutes": 0,
+    "sellableWithProductionKeyAndQualification": true,
+    "ownerCashSpentUsd": 0,
+    "replacementPlan": "Retain as an independent production candidate; enable only after owner-approved billing, spend caps, and capability qualification."
+  },
+  "sources": [
+    "https://docs.cohere.com/v2/docs/rate-limits",
+    "https://docs.cohere.com/v1/docs/going-live",
+    "https://docs.cohere.com/docs/how-does-cohere-pricing-work",
+    "https://cohere.com/pricing"
+  ]
+}

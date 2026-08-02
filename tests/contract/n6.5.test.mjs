@@ -247,6 +247,21 @@ test('SiliconFlow discovery is retained and priced without violating its commerc
   assert.equal(terms.decision.sellableHostedRoutes, 0);
 });
 
+test('Cohere multimodal supply stays priced but unavailable after its evaluation allocation is exhausted', async () => {
+  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
+  const cohere = pricing.assets.filter(({ serviceId }) => serviceId === 'supply.cohere');
+  const identities = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cohere-chat-identity-probe.v1.json'), 'utf8'));
+  const terms = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cohere-api-terms.v1.json'), 'utf8'));
+  assert.equal(cohere.length, 31);
+  assert.deepEqual([...new Set(cohere.map(({ product }) => product))].sort(), ['ai.chat', 'ai.embed', 'ai.rerank', 'ai.transcribe']);
+  assert.ok(cohere.every(({ listingStatus, termsStatus, customerPrices }) => listingStatus === 'priced_unavailable_trial_limit' && termsStatus === 'restricted' && customerPrices.every(({ price }) => price > 0)));
+  assert.equal(identities.externalCalls, 8);
+  assert.ok(identities.results.every(({ status, failureCode }) => status === 429 && failureCode === 'trial_limit_exhausted'));
+  assert.equal(terms.findings.trialKeyProductionAllowed, false);
+  assert.equal(terms.findings.productionKeyPublicApplicationAllowed, true);
+  assert.equal(terms.decision.currentlyExecutableRoutes, 0);
+});
+
 test('SambaNova exact models retain competitive prices and quality evidence but stay blocked by hosted resale terms', async () => {
   const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
   const samba = pricing.assets.filter(({ serviceId }) => serviceId === 'supply.sambanova');

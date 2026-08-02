@@ -83,6 +83,10 @@ disabled without explicit owner approval.
   current terms prohibit commercial use, third-party benefit, resale/service
   bureau use, competitive products, and benchmarking. No inference balance was
   spent; every route is excluded from customer supply.
+- Cohere's 31 chat, vision, embedding, reranking, and transcription assets are
+  priced. Eight chat preflights all hit the exhausted monthly trial limit before
+  inference. Trial use is evaluation-only; a production key is suitable for a
+  public application but needs later billing approval and qualification.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three

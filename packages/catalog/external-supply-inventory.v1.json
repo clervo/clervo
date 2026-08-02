@@ -332,14 +332,16 @@
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
-      "fundingClass": "unknown",
+      "fundingClass": "promotional_credit",
       "connectionStatus": "observed_working",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "qualificationStatus": "failed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Authenticated model discovery returned 31 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+        "Authenticated discovery returned 31 priced assets, including chat, vision, embedding, reranking, and transcription capabilities.",
+        "Eight representative chat preflights returned HTTP 429 trial_limit_exhausted before inference; no quality rank is claimed.",
+        "Trial keys are evaluation-only. Production keys are intended for public-facing applications but require production onboarding, metered billing, and a hard owner-approved spend guard."
       ],
       "knownModelNames": [
         "c4ai-aya-expanse-32b",

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "clervo.owned-chat-identity-probe.v1",
+  "checkedAt": "2026-08-02T05:23:37.785Z",
+  "serviceId": "supply.cohere",
+  "externalCalls": 8,
+  "ownerCashSpentUsd": 0,
+  "secretValuesRecorded": false,
+  "promptOrOutputPayloadsRecorded": false,
+  "results": [
+    {
+      "requestedModel": "c4ai-aya-expanse-32b",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "trial_limit_exhausted",
+      "retryAfter": null,
+      "latencyMs": 61.07
+    },
+    {
+      "requestedModel": "command-a-03-2025",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "trial_limit_exhausted",
+      "retryAfter": null,
+      "latencyMs": 20.38
+    },
+    {
+      "requestedModel": "command-a-plus-05-2026",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "trial_limit_exhausted",
+      "retryAfter": null,
+      "latencyMs": 19.93
+    },
+    {
+      "requestedModel": "command-a-reasoning-08-2025",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "trial_limit_exhausted",
+      "retryAfter": null,
+      "latencyMs": 19.07
+    },
+    {
+      "requestedModel": "command-r-plus-08-2024",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "trial_limit_exhausted",
+      "retryAfter": null,
+      "latencyMs": 18.13
+    },
+    {
+      "requestedModel": "command-r7b-12-2024",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "trial_limit_exhausted",
+      "retryAfter": null,
+      "latencyMs": 18.21
+    },
+    {
+      "requestedModel": "north-mini-code-1-0",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "trial_limit_exhausted",
+      "retryAfter": null,
+      "latencyMs": 16.34
+    },
+    {
+      "requestedModel": "tiny-aya-global",
+      "observedModel": null,
+      "identityMatches": false,
+      "status": 429,
+      "usageReported": false,
+      "failureCode": "trial_limit_exhausted",
+      "retryAfter": null,
+      "latencyMs": 18.3
+    }
+  ]
+}
