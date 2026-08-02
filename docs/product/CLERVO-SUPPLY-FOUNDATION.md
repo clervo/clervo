@@ -170,10 +170,10 @@ disabled without explicit owner approval.
   Five embedding/image/speech assets passed bounded execution with integration
   gaps recorded. Three paid-plan assets remain unavailable under the guard.
 - QuickAI and TongKhokr are retired and must not return to active supply.
-- Current qualified internal catalog: 20 exact routes across Clervo gateway,
+- Current qualified internal catalog: 21 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.
 - The final provider-neutral matrix references 13 canonical price catalogs and
-  covers all 797 price rows: every row has a positive customer price and 22
+  covers all 797 price rows: every row has a positive customer price and 23
   rows are currently sellable. It records exact assets, route state, lifecycle,
   price/shadow-cost source, quality, terms, quota runway, health evidence,
   secret-name location, fallbacks, and replacement plan without secret values.

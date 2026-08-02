@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "clervo.cloudflare-aura-quality.v1",
+  "evaluatedAt": "2026-08-02T08:07:20.497Z",
+  "serviceId": "supply.cloudflare_workers_ai",
+  "exactModelId": "@cf/deepgram/aura-2-en",
+  "exactIdentityBasis": "immutable_exact_model_endpoint_response_unlabeled",
+  "speaker": "thalia",
+  "format": "mp3",
+  "independentEvaluator": {
+    "serviceId": "supply.groq",
+    "exactModelId": "whisper-large-v3-turbo"
+  },
+  "ownerCashSpentUsd": 0,
+  "fundingBasis": "recurring_free_allocations",
+  "externalCalls": 10,
+  "credentialSlotsUsed": {
+    "synthesis": 1,
+    "transcription": 1
+  },
+  "customerDataUsed": false,
+  "syntheticTextOnly": true,
+  "rawAudioRecorded": false,
+  "phraseValuesRecorded": false,
+  "transcriptValuesRecorded": false,
+  "results": [
+    {
+      "caseId": "aura_quality_01",
+      "status": 200,
+      "speechLatencyMs": 2415,
+      "outputBytes": 24336,
+      "outputHash": "sha256:533eff72635a42ca4636fe2b973c6339d0a6ffdc724367d6d4695a6988dcb323",
+      "transcriptionStatus": 200,
+      "transcriptionLatencyMs": 187,
+      "expectedWordCount": 9,
+      "expectedWordsMatched": 8,
+      "matchBasisPoints": 8889,
+      "transcriptionUsageReported": true,
+      "passed": true
+    },
+    {
+      "caseId": "aura_quality_02",
+      "status": 200,
+      "speechLatencyMs": 1561,
+      "outputBytes": 22464,
+      "outputHash": "sha256:1f53342f339259b89887ac9ea29734e33259e22d3a4d8ed8462af7a977b92adf",
+      "transcriptionStatus": 200,
+      "transcriptionLatencyMs": 226,
+      "expectedWordCount": 9,
+      "expectedWordsMatched": 8,
+      "matchBasisPoints": 8889,
+      "transcriptionUsageReported": true,
+      "passed": true
+    },
+    {
+      "caseId": "aura_quality_03",
+      "status": 200,
+      "speechLatencyMs": 1488,
+      "outputBytes": 22176,
+      "outputHash": "sha256:f3d2980ef64af1199730ee9e983f7aec9efba8018f8bf2701a441adb8066ebf3",
+      "transcriptionStatus": 200,
+      "transcriptionLatencyMs": 143,
+      "expectedWordCount": 9,
+      "expectedWordsMatched": 9,
+      "matchBasisPoints": 10000,
+      "transcriptionUsageReported": true,
+      "passed": true
+    },
+    {
+      "caseId": "aura_quality_04",
+      "status": 200,
+      "speechLatencyMs": 1515,
+      "outputBytes": 22608,
+      "outputHash": "sha256:65753bc309581098580c9a329324e459208aca54bf70d5ec0cd46f2d72bb8f91",
+      "transcriptionStatus": 200,
+      "transcriptionLatencyMs": 525,
+      "expectedWordCount": 9,
+      "expectedWordsMatched": 8,
+      "matchBasisPoints": 8889,
+      "transcriptionUsageReported": true,
+      "passed": true
+    },
+    {
+      "caseId": "aura_quality_05",
+      "status": 200,
+      "speechLatencyMs": 1798,
+      "outputBytes": 27216,
+      "outputHash": "sha256:1a9e3be38d22d6f253182191378b5ef1d127c7bc38c07d5f6ba133481c8743fd",
+      "transcriptionStatus": 200,
+      "transcriptionLatencyMs": 144,
+      "expectedWordCount": 9,
+      "expectedWordsMatched": 9,
+      "matchBasisPoints": 10000,
+      "transcriptionUsageReported": true,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 5,
+    "aggregateMatchBasisPoints": 9333,
+    "speechLatencyMsP95": 2415,
+    "transcriptionLatencyMsP95": 525,
+    "qualityGrade": "good"
+  },
+  "limits": {
+    "maximumInputCharacters": 2000,
+    "customerPricePerThousandCharactersUsd": 0.012,
+    "shadowSupplierPricePerThousandCharactersUsd": 0.03,
+    "automaticPaidOverageAllowedByClervo": false
+  }
+}

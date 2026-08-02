@@ -367,12 +367,12 @@ test('final supply matrix covers every priced asset, preserves provider secrecy,
   assert.equal(matrix.catalogCoverage.length, 13);
   assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.assetCount, 0), 797);
   assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.positiveCustomerPriceCount, 0), 797);
-  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 22);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 23);
   assert.equal(new Set(matrix.capabilities.map(({ capabilityId }) => capabilityId)).size, matrix.capabilities.length);
   assert.ok(matrix.capabilities.every(({ publicAssets, pricingCatalogs, healthMethod, secretLocations, replacementPlan }) => publicAssets.length > 0 && pricingCatalogs.length > 0 && healthMethod.length > 0 && secretLocations.length > 0 && replacementPlan.length > 12));
   assert.deepEqual(matrix.ownerBlockers.map(({ blockerId, spendingAuthorized }) => [blockerId, spendingAuthorized]), [['owner.rpc_commercial_permission', false], ['owner.blockscout_account', false], ['owner.r2_key_reissue', false]]);
   assert.equal(market.competitorObservation.observedLiveModels, 83);
-  assert.equal(market.clervoObservation.qualifiedExactAiRoutes, 20);
+  assert.equal(market.clervoObservation.qualifiedExactAiRoutes, 21);
   assert.deepEqual(market.finalDecision, { coverageSufficientWithoutOwnerAction: false, newAccountsSelected: 1, existingCredentialsNeedingReplacement: 1, selectedOwnerActions: ['written commercial RPC gateway permission or expressly compatible replacement', 'Blockscout Pro no-card API key', 'least-privilege R2 bucket key and bucket name'], allOtherResearchedSources: 'rejected or deferred until revenue, written commercial permission, compatible terms, or a material failure justifies them' });
   const serialized = JSON.stringify(matrix);
   assert.equal(/(?:sk-|ghp_|AIza|Bearer\s|-----BEGIN|api[_-]?key["']?\s*:\s*["'][^"']+)/iu.test(serialized), false);

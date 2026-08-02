@@ -596,6 +596,46 @@
       ]
     },
     {
+      "providerId": "provider.cloudflare_workers_ai",
+      "supplyFamilyId": "supply.cloudflare_workers_ai",
+      "exactModelId": "@cf/deepgram/aura-2-en",
+      "baseUrlPattern": "https://api.cloudflare.com/client/v4/accounts/{account}/ai/run/@cf/deepgram/aura-2-en",
+      "allowedHosts": [
+        "api.cloudflare.com"
+      ],
+      "products": [
+        "ai.speech"
+      ],
+      "requiredConfigurationNames": [
+        "CLOUDFLARE_ACCOUNT_ID"
+      ],
+      "requiredSecretNames": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        {
+          "title": "Cloudflare Workers AI model catalog",
+          "url": "https://developers.cloudflare.com/workers-ai/models/",
+          "checkedAt": "2026-08-02T08:07:20.497Z"
+        },
+        {
+          "title": "Cloudflare Workers AI pricing and free allocation",
+          "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+          "checkedAt": "2026-08-02T08:07:20.497Z"
+        },
+        {
+          "title": "Cloudflare Developer Platform service-specific terms",
+          "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/",
+          "checkedAt": "2026-08-02T08:07:20.497Z"
+        }
+      ]
+    },
+    {
       "providerId": "provider.google_vertex",
       "supplyFamilyId": "supply.google_vertex",
       "exactModelId": "gemini-3.1-flash-lite-image",

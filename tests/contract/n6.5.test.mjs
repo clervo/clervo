@@ -83,6 +83,7 @@ test('screened Clervo, Vertex, Deepgram, Groq, and Cloudflare routes preserve qu
   const vertexImages = candidates.modalTargets.filter(({ providerId, products }) => providerId === 'provider.google_vertex' && products.includes('ai.image'));
   const vertexEmbedding = candidates.modalTargets.filter(({ providerId, products }) => providerId === 'provider.google_vertex' && products.includes('ai.embed'));
   const deepgramSpeech = candidates.modalTargets.filter(({ providerId }) => providerId === 'provider.deepgram');
+  const cloudflareSpeech = candidates.modalTargets.filter(({ providerId, products }) => providerId === 'provider.cloudflare_workers_ai' && products.includes('ai.speech'));
   const blockedModal = candidates.modalTargets.filter(({ providerId }) => providerId === 'provider.openai');
   assert.deepEqual(vertexImages.map(({ exactModelId }) => exactModelId), ['gemini-3.1-flash-lite-image', 'gemini-3.1-flash-image', 'gemini-3-pro-image']);
   assert.ok(vertexImages.every(({ products, requiredSecretNames, qualificationStatus, blockerCodes }) => products[0] === 'ai.image' && requiredSecretNames.length === 0 && qualificationStatus === 'passed' && blockerCodes.length === 0));
@@ -90,6 +91,8 @@ test('screened Clervo, Vertex, Deepgram, Groq, and Cloudflare routes preserve qu
   assert.ok(vertexEmbedding.every(({ requiredConfigurationNames, requiredSecretNames, qualificationStatus, blockerCodes }) => requiredConfigurationNames.includes('GCP_PROJECT') && requiredSecretNames.length === 0 && qualificationStatus === 'passed' && blockerCodes.length === 0));
   assert.deepEqual(deepgramSpeech.map(({ exactModelId }) => exactModelId), ['aura-2-thalia-en', 'aura-2-arcas-en']);
   assert.ok(deepgramSpeech.every(({ products, requiredSecretNames, termsStatus, resaleAllowed, qualificationStatus, blockerCodes }) => products[0] === 'ai.speech' && requiredSecretNames.includes('DEEPGRAM_API_KEY') && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'passed' && blockerCodes.length === 0));
+  assert.deepEqual(cloudflareSpeech.map(({ exactModelId }) => exactModelId), ['@cf/deepgram/aura-2-en']);
+  assert.ok(cloudflareSpeech.every(({ requiredConfigurationNames, requiredSecretNames, termsStatus, resaleAllowed, qualificationStatus, blockerCodes }) => requiredConfigurationNames.includes('CLOUDFLARE_ACCOUNT_ID') && requiredSecretNames.includes('CLOUDFLARE_API_TOKEN') && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'passed' && blockerCodes.length === 0));
   assert.deepEqual(blockedModal.map(({ products }) => products), [['ai.embed'], ['ai.image'], ['ai.speech']]);
   assert.deepEqual(blockedModal.map(({ exactModelId }) => exactModelId), ['text-embedding-3-large', 'gpt-image-2', 'tts-1']);
   assert.ok(blockedModal.every(({ providerId, supplyFamilyId, requiredSecretNames, qualificationStatus }) => providerId === 'provider.openai' && supplyFamilyId === 'supply.openai_api' && requiredSecretNames.includes('OPENAI_API_KEY') && qualificationStatus === 'blocked'));
@@ -101,7 +104,7 @@ test('screened Clervo, Vertex, Deepgram, Groq, and Cloudflare routes preserve qu
 test('live exact routes form a valid qualified and sellable internal model catalog', async () => {
   const catalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
   assert.equal(verifyAiModelCatalog(catalog), true);
-  assert.equal(catalog.routes.length, 20);
+  assert.equal(catalog.routes.length, 21);
   assert.ok(catalog.routes.every(({ qualification }) => qualification.status === 'passed'));
   assert.deepEqual(catalog.qualifiedSupplyFamilies, ['supply.clervo_ai_gateway', 'supply.cloudflare_workers_ai', 'supply.deepgram', 'supply.google_vertex', 'supply.groq']);
   const gatewayPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-launch-pricing.v1.json'), 'utf8'));
@@ -428,7 +431,7 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
     ['@cf/moonshotai/kimi-k2.7-code', 'priced_requires_paid_plan'],
     ['@cf/zai-org/glm-5.2', 'priced_requires_paid_plan'],
   ]);
-  assert.equal(pricing.assets.filter(({ accessStatus, listingStatus }) => accessStatus === 'free_allocation_available' && listingStatus === 'sellable').length, 5);
+  assert.equal(pricing.assets.filter(({ accessStatus, listingStatus }) => accessStatus === 'free_allocation_available' && listingStatus === 'sellable').length, 6);
   assert.deepEqual(Object.fromEntries(Object.entries(Object.groupBy(pricing.assets, ({ qualityGrade }) => qualityGrade)).map(([grade, rows]) => [grade, rows.length])), { best: 3, good: 8, poor: 4, rejected: 8, unranked: 38 });
   assert.deepEqual(Object.fromEntries(Object.entries(Object.groupBy(pricing.assets.filter(({ task }) => task === 'Text Generation'), ({ listingStatus }) => listingStatus)).map(([status, rows]) => [status, rows.length])), { priced_pending_qualification: 8, priced_quality_rejected: 8, priced_qualification_failed: 2, priced_requires_paid_plan: 3, sellable: 5 });
   const expandedQuality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-production-chat-quality.v1.json'), 'utf8'));
@@ -470,6 +473,12 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
     ['@cf/deepgram/nova-3', 5],
   ]);
   assert.equal(modalities.decision.sellableRoutesAdded, 0);
+  const aura = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-aura-quality.v1.json'), 'utf8'));
+  assert.equal(aura.externalCalls, 10);
+  assert.equal(aura.ownerCashSpentUsd, 0);
+  assert.equal(aura.exactIdentityBasis, 'immutable_exact_model_endpoint_response_unlabeled');
+  assert.deepEqual(aura.summary, { passed: 5, total: 5, aggregateMatchBasisPoints: 9333, speechLatencyMsP95: 2415, transcriptionLatencyMsP95: 525, qualityGrade: 'good' });
+  assert.ok(aura.results.every(({ status, transcriptionStatus, passed }) => status === 200 && transcriptionStatus === 200 && passed));
 });
 
 test('AI outage monitoring emits bounded provider alerts without prompt or credential payloads', () => {

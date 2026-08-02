@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.ai-edge-free-pricing.v1",
-  "priceVersion": "2026-08-02.2",
-  "evaluatedAt": "2026-08-02T06:29:49.120Z",
+  "priceVersion": "2026-08-02.3",
+  "evaluatedAt": "2026-08-02T08:07:20.497Z",
   "currency": "USD",
   "providerVisibility": "internal_only",
   "policy": {
@@ -344,7 +344,7 @@
       "task": "Text-to-Speech",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "sellable",
       "qualityGrade": "good",
       "supplierPriceKnown": true,
       "supplierPrices": [

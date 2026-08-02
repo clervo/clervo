@@ -27,7 +27,7 @@
   },
   "clervoObservation": {
     "ownedAiListingsPriced": 633,
-    "qualifiedExactAiRoutes": 20,
+    "qualifiedExactAiRoutes": 21,
     "qualifiedAiProducts": [
       "ai.chat",
       "ai.embed",

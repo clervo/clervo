@@ -1,8 +1,8 @@
 {
   "contractVersion": "2026-07-29.1",
   "schemaVersion": "ai-model-catalog.v1",
-  "catalogId": "aicat_01K0CLERVOFREETIER01",
-  "evaluatedAt": "2026-08-02T06:29:49.120Z",
+  "catalogId": "aicat_01K0CLERVOAURAFALLBACK1",
+  "evaluatedAt": "2026-08-02T08:07:20.497Z",
   "routes": [
     {
       "routeId": "ai.route.aura_2_arcas_en",
@@ -747,6 +747,106 @@
         },
         "status": "passed",
         "qualificationHash": "sha256:eb335eba5569729f0f90ba66d65573bfbd5f0bac0453d317411cc0e3c9a21bcd"
+      }
+    },
+    {
+      "routeId": "ai.route.cloudflare_aura_2_en",
+      "providerId": "provider.cloudflare_workers_ai",
+      "supplyFamilyId": "supply.cloudflare_workers_ai",
+      "exactModelId": "@cf/deepgram/aura-2-en",
+      "productIds": [
+        "ai.speech"
+      ],
+      "capabilities": [
+        "text_input",
+        "audio_output"
+      ],
+      "requiredSecretNames": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0CFAURA2EN00000000001",
+        "routeId": "ai.route.cloudflare_aura_2_en",
+        "providerId": "provider.cloudflare_workers_ai",
+        "supplyFamilyId": "supply.cloudflare_workers_ai",
+        "exactModelId": "@cf/deepgram/aura-2-en",
+        "productIds": [
+          "ai.speech"
+        ],
+        "checkedAt": "2026-08-02T08:07:20.497Z",
+        "expiresAt": "2026-08-09T08:07:20.497Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "immutable_exact_model_endpoint_response_unlabeled",
+            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "independent_synthetic_roundtrip_passed",
+            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_mp3_valid",
+            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "deterministic_character_accounting",
+            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "adapter_fail_closed_contract_passed",
+            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "free_allocation_hard_stop_and_shadow_cost_ceiling",
+            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "value_added_use_restricted",
+            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "@cf/deepgram/aura-2-en",
+          "latencyMsP95": 2415,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "60000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:705ce297ca157f247f5484edad23333f12018df4ba73bddf38ff93f13cd8dbe2"
       }
     },
     {
@@ -2136,5 +2236,5 @@
     "supply.google_vertex",
     "supply.groq"
   ],
-  "catalogHash": "sha256:39d37382a851312ad2e0bd57023870a28f5cce9a319a324ed46f2002fbbdde0e"
+  "catalogHash": "sha256:7c255949407fa99f89969ce09741216404c8425a119d941a54a67f6605027588"
 }

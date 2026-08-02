@@ -282,7 +282,7 @@
         "The authenticated non-experimental catalog exposed 61 exact assets on 2026-08-02. All are customer-priced; fifteen use category introductory prices because supplier pricing is absent or zero.",
         "All nineteen production free-allocation chat models completed a 190-call exact-identity quality screen without a quota or payment failure. Five passed all eleven live route checks and are sellable: Llama 4 Scout, Nemotron 3 120B, GPT-OSS 120B, GPT-OSS 20B, and Qwen3 30B.",
         "Eight chat models were rejected by the fixed general-quality screen, two more failed full qualification, eight remain honestly pending because a poor general score may still suit a bounded specialty, and three require a paid plan.",
-        "BGE-M3 embeddings, FLUX Schnell image generation, Aura-2 English TTS, Whisper Large v3 Turbo STT, and Nova-3 STT passed bounded live execution on 2026-08-02. Their adapter, accounting, image-size, quality, or transcription-contract gaps remain explicit and block sellable-route admission.",
+        "Aura-2 English TTS passed a five-sample independent transcription quality run, now has a fail-closed production adapter and deterministic character accounting, and is a sellable independent fallback. BGE-M3 embeddings, FLUX Schnell image generation, Whisper Large v3 Turbo STT, and Nova-3 STT passed bounded live execution but retain explicit adapter, accounting, image-size, or transcription-contract gaps.",
         "Three catalog assets explicitly require a paid Workers plan and remain unavailable under the zero-owner-cash guard.",
         "Value-added use for End Users is restricted by Cloudflare and each model licensor's terms; never expose upstream credentials or raw account access."
       ]
