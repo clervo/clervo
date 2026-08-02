@@ -134,7 +134,12 @@ function bossFor(name, database, options = {}) {
 }
 
 async function migrate(pool) {
-  const names = ['0001-retrieval-cache.sql', '0002-live-intelligence-monitoring.sql', '0003-search-http-state.sql'];
+  const names = [
+    '0001-retrieval-cache.sql',
+    '0002-live-intelligence-monitoring.sql',
+    '0003-search-http-state.sql',
+    '0004-receiver-accounting.sql',
+  ];
   for (const name of names) {
     await pool.query(await readFile(path.join(root, 'infra/storage/postgres', name), 'utf8'));
   }

@@ -24,6 +24,7 @@ export * from './problems.js';
 export * from './product-scope.js';
 export * from './query-rewrite.js';
 export * from './receipt.js';
+export * from './receiver-accounting.js';
 export * from './retrieval-fetch.js';
 export * from './retrieval-assembly.js';
 export * from './retrieval-federation.js';

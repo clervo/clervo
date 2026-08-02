@@ -17,7 +17,8 @@ steps:
           tests/contract/n14.7.test.mjs \
           tests/contract/n14.8.test.mjs \
           tests/contract/n14.9.test.mjs \
-          tests/contract/n14.10.test.mjs
+          tests/contract/n14.10.test.mjs \
+          tests/contract/n14.11.test.mjs
         npm audit --omit=dev --audit-level=high
         npm run lint
         npm run scan:secrets

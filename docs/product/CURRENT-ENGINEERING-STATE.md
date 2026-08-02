@@ -235,6 +235,18 @@ promotion, rollback, public access, database creation, IAM changes, and spend
 remain unapplied owner-approved external effects. The guarded release control
 also rejects `ai.clervo.dev` as an origin before any cloud command.
 
+Receiver accounting is now a separate append-only, hash-linked journal rather
+than an inference from customer receipts. Each settlement and operation can be
+recorded once; an exact replay returns the existing entry, while settlement
+conflicts and a second charge for one operation fail closed. Customer charge
+and supplier cost remain separate balanced postings by exact asset and
+decimals, and reconciliation verifies the full chain and totals. The PostgreSQL
+migration enforces unique settlement, operation, and receipt identities,
+hash-bound JSON, four balanced-contract postings, and rejects sensitive wallet,
+key, secret, credential, and authorization fields. This is local mock-accounting
+proof only; no real receiver, wallet, settlement, or production database was
+used.
+
 ## Live qualification result
 
 GKE Calico failed closed because metadata remained reachable, including through

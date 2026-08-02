@@ -27,6 +27,7 @@ test('live local evidence proves restart, backup, isolated restore, replay, rete
     '0001-retrieval-cache.sql',
     '0002-live-intelligence-monitoring.sql',
     '0003-search-http-state.sql',
+    '0004-receiver-accounting.sql',
   ]);
   assert.equal(evidence.checks.exactImageDigest, true);
   assert.equal(evidence.checks.migrationsApplied, true);
