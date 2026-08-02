@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/prediction-operation-result.schema.json",
+  "$defs": {
+    "market": { "$ref": "https://api.clervo.dev/schemas/2026-07-29.1/prediction-market.schema.json" },
+    "marketRef": { "type": "string", "pattern": "^pmkt_[a-f0-9]{32}$" },
+    "hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "charge": {
+      "type": "object",
+      "required": ["asset", "amountAtomic", "decimals"],
+      "properties": { "asset": { "const": "USD" }, "amountAtomic": { "type": "string", "pattern": "^(?:0|[1-9][0-9]{0,6})$" }, "decimals": { "const": 6 } },
+      "additionalProperties": false
+    },
+    "venues": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["venueId", "state", "marketCount", "failureCode"],
+        "properties": {
+          "venueId": { "enum": ["polymarket", "kalshi"] },
+          "state": { "enum": ["available", "unavailable"] },
+          "marketCount": { "type": "integer", "minimum": 0, "maximum": 10000 },
+          "failureCode": { "type": ["string", "null"], "pattern": "^[a-z][a-z0-9_]{2,63}$" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "signal": {
+      "oneOf": [
+        { "type": "object", "required": ["kind", "outcomeId", "label", "changeBps", "previousProbabilityBps", "currentProbabilityBps"], "properties": { "kind": { "const": "probability_movement" }, "outcomeId": { "type": "string", "pattern": "^pout_[a-f0-9]{32}$" }, "label": { "type": "string", "minLength": 1, "maxLength": 200 }, "changeBps": { "type": "integer", "minimum": -10000, "maximum": 10000 }, "previousProbabilityBps": { "type": "integer", "minimum": 0, "maximum": 10000 }, "currentProbabilityBps": { "type": "integer", "minimum": 0, "maximum": 10000 } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "changeMicrousd", "previousLiquidityMicrousd", "currentLiquidityMicrousd"], "properties": { "kind": { "const": "liquidity_change" }, "changeMicrousd": { "type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991 }, "previousLiquidityMicrousd": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 }, "currentLiquidityMicrousd": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "label", "disagreementBps", "leftProbabilityBps", "rightProbabilityBps"], "properties": { "kind": { "const": "venue_disagreement" }, "label": { "type": "string", "minLength": 1, "maxLength": 200 }, "disagreementBps": { "type": "integer", "minimum": 1, "maximum": 10000 }, "leftProbabilityBps": { "type": "integer", "minimum": 0, "maximum": 10000 }, "rightProbabilityBps": { "type": "integer", "minimum": 0, "maximum": 10000 } }, "additionalProperties": false }
+      ]
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "schemaVersion", "operationId", "productId", "completedAt", "meteredCharge", "output", "resultHash"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "schemaVersion": { "const": "prediction-operation-result.v1" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "productId": { "enum": ["prediction.markets", "prediction.market", "prediction.compare", "prediction.history", "prediction.signal"] },
+    "completedAt": { "type": "string", "format": "date-time" },
+    "meteredCharge": { "$ref": "#/$defs/charge" },
+    "output": {
+      "oneOf": [
+        { "type": "object", "required": ["kind", "state", "markets", "venues", "nextCursor"], "properties": { "kind": { "const": "markets" }, "state": { "enum": ["available", "degraded", "unavailable"] }, "markets": { "type": "array", "maxItems": 100, "items": { "$ref": "#/$defs/market" } }, "venues": { "$ref": "#/$defs/venues" }, "nextCursor": { "type": ["string", "null"], "maxLength": 512 } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "market"], "properties": { "kind": { "const": "market" }, "market": { "$ref": "#/$defs/market" } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "marketRefs", "stale", "matchScoreBasisPoints", "outcomes"], "properties": { "kind": { "const": "compare" }, "marketRefs": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/marketRef" } }, "stale": { "type": "boolean" }, "matchScoreBasisPoints": { "type": "integer", "minimum": 0, "maximum": 10000 }, "outcomes": { "type": "array", "minItems": 2, "maxItems": 100, "items": { "type": "object", "required": ["label", "leftProbabilityBps", "rightProbabilityBps", "disagreementBps"], "properties": { "label": { "type": "string", "minLength": 1, "maxLength": 200 }, "leftProbabilityBps": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000 }, "rightProbabilityBps": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000 }, "disagreementBps": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000 } }, "additionalProperties": false } } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "marketRef", "records"], "properties": { "kind": { "const": "history" }, "marketRef": { "$ref": "#/$defs/marketRef" }, "records": { "type": "array", "maxItems": 100, "items": { "type": "object", "required": ["sequence", "observedAt", "previousHash", "payloadHash", "recordHash", "snapshot"], "properties": { "sequence": { "type": "integer", "minimum": 1 }, "observedAt": { "type": "string", "format": "date-time" }, "previousHash": { "anyOf": [{ "$ref": "#/$defs/hash" }, { "type": "null" }] }, "payloadHash": { "$ref": "#/$defs/hash" }, "recordHash": { "$ref": "#/$defs/hash" }, "snapshot": { "$ref": "#/$defs/market" } }, "additionalProperties": false } } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "usable", "reason", "observedAt", "signals"], "properties": { "kind": { "const": "signal" }, "usable": { "type": "boolean" }, "reason": { "enum": ["ok", "stale", "identity_mismatch", "insufficient_evidence"] }, "observedAt": { "type": "string", "format": "date-time" }, "signals": { "type": "array", "maxItems": 201, "items": { "$ref": "#/$defs/signal" } } }, "additionalProperties": false }
+      ]
+    },
+    "resultHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  },
+  "additionalProperties": false
+}

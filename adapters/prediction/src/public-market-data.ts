@@ -168,7 +168,7 @@ function polymarketResolution(value: Record<string, unknown>, outcomes: readonly
 
 export function parsePolymarketGammaMarket(raw: unknown, context: Readonly<{ sourceUrl: string; observedAt: string; staleAfterMs: number }>): Readonly<VenueMarketSnapshot> {
   const value = object(raw);
-  publicUrl(context.sourceUrl);
+  const sourceUrl = publicUrl(context.sourceUrl);
   const labels = jsonStringArray(value.outcomes);
   const prices = jsonStringArray(value.outcomePrices);
   if (labels.length !== prices.length) throw new Error('prediction_source_response_invalid');
@@ -179,20 +179,32 @@ export function parsePolymarketGammaMarket(raw: unknown, context: Readonly<{ sou
   })));
   const resolution = polymarketResolution(value, outcomes);
   const id = requiredString(value.id, 160);
-  const slug = requiredString(value.slug, 300);
-  const resolutionSourceUrl = publicUrl(requiredString(value.resolutionSource, 2_048));
+  const event = Array.isArray(value.events) && value.events.length > 0 ? object(value.events[0]) : null;
+  const slug = optionalString(event?.slug, 300) ?? requiredString(value.slug, 300);
+  const resolutionSource = optionalString(value.resolutionSource, 2_048) ?? optionalString(event?.resolutionSource, 2_048);
+  let resolutionSourceUrl = sourceUrl;
+  if (resolutionSource !== null) {
+    try {
+      resolutionSourceUrl = publicUrl(resolutionSource);
+    } catch {
+      // Gamma often publishes the resolution authority as text rather than a URL.
+      // The exact API resource remains the source link and the text is retained in rules.
+    }
+  }
+  const description = requiredString(value.description, 20_000);
+  const resolutionRules = resolutionSource !== null && resolutionSourceUrl === sourceUrl ? `${description} Resolution source: ${resolutionSource}` : description;
   return Object.freeze({
     venueId: 'polymarket',
     venueMarketId: id,
     question: requiredString(value.question, 500),
-    description: requiredString(value.description, 20_000),
-    category: requiredString(value.category, 100),
+    description,
+    category: optionalString(value.category, 100) ?? 'Uncategorized',
     status: resolution.status,
     openedAt: isoTimestamp(value.startDate, false),
     closesAt: isoTimestamp(value.endDate)!,
     resolvedAt: resolution.resolvedAt,
     resolvedOutcomeId: resolution.resolvedOutcomeId,
-    resolutionRules: requiredString(value.description, 20_000),
+    resolutionRules,
     resolutionSourceUrl,
     marketUrl: publicUrl(`https://polymarket.com/event/${encodeURIComponent(slug)}`),
     outcomes,
@@ -233,18 +245,20 @@ export function parseKalshiMarket(raw: unknown, context: Readonly<{ sourceUrl: s
   const sourceUrl = publicUrl(context.sourceUrl);
   const yes = kalshiPrice(value);
   const state = kalshiState(value);
+  const rules = [optionalString(value.rules_primary, 50_000), optionalString(value.rules_secondary, 50_000)].filter((item): item is string => item !== null);
+  if (rules.length === 0) throw new Error('prediction_source_response_invalid');
   return Object.freeze({
     venueId: 'kalshi',
     venueMarketId: id,
     question: requiredString(value.title, 500),
-    description: optionalString(value.subtitle, 20_000) ?? requiredString(value.rules_primary, 20_000),
+    description: optionalString(value.subtitle, 20_000) ?? optionalString(value.rules_primary, 20_000) ?? requiredString(value.rules_secondary, 20_000),
     category: optionalString(value.category, 100) ?? 'Uncategorized',
     status: state.status,
     openedAt: isoTimestamp(value.open_time, false),
     closesAt: isoTimestamp(value.close_time)!,
     resolvedAt: state.resolvedAt,
     resolvedOutcomeId: state.resolvedOutcomeId,
-    resolutionRules: [requiredString(value.rules_primary, 50_000), optionalString(value.rules_secondary, 50_000)].filter((item): item is string => item !== null).join(' '),
+    resolutionRules: rules.join(' '),
     resolutionSourceUrl: sourceUrl,
     marketUrl: sourceUrl,
     outcomes: Object.freeze([

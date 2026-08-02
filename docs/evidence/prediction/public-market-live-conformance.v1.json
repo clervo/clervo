@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "clervo.prediction-live-conformance.v1",
+  "evaluatedAt": "2026-08-02T12:31:15.821Z",
+  "externalCalls": 2,
+  "ownerCashSpentUsd": 0,
+  "sources": [
+    {
+      "venueId": "polymarket",
+      "technicalStatus": "passed",
+      "marketStatus": "open",
+      "outcomeCount": 2,
+      "quotedOutcomeCount": 2,
+      "freshness": "fresh",
+      "resolutionRulesPresent": true,
+      "resolutionLinkPresent": true,
+      "liquidityBasis": "usd"
+    },
+    {
+      "venueId": "kalshi",
+      "technicalStatus": "passed",
+      "marketStatus": "open",
+      "outcomeCount": 2,
+      "quotedOutcomeCount": 2,
+      "freshness": "fresh",
+      "resolutionRulesPresent": true,
+      "resolutionLinkPresent": true,
+      "liquidityBasis": "unavailable"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "prediction-source-routes",
+  "valid": true,
+  "value": {
+    "schemaVersion": "clervo.prediction-source-routes.v1",
+    "lifecycle": "unavailable",
+    "customerRoutingEnabled": false,
+    "sources": [
+      { "sourceId": "prediction.source.polymarket_gamma", "venueId": "polymarket", "accessMode": "public_api", "technicalStatus": "recorded_fixture_passed", "termsStatus": "unreviewed", "resaleStatus": "unreviewed", "historyStatus": "unreviewed", "quoteStatus": "recorded_only", "orderBookStatus": "unqualified", "onChainVerified": false, "customerRoutingEnabled": false, "evidenceUrls": ["https://docs.polymarket.com/api-reference/introduction"] },
+      { "sourceId": "prediction.source.kalshi_market_data", "venueId": "kalshi", "accessMode": "public_api", "technicalStatus": "recorded_fixture_passed", "termsStatus": "unreviewed", "resaleStatus": "unreviewed", "historyStatus": "unreviewed", "quoteStatus": "recorded_only", "orderBookStatus": "recorded_only", "onChainVerified": false, "customerRoutingEnabled": false, "evidenceUrls": ["https://docs.kalshi.com/getting_started/quick_start_market_data"] }
+    ],
+    "ownerBlocker": "Written commercial qualification is required."
+  }
+}

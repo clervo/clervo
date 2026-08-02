@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "clervo.prediction-source-routes.v1",
+  "lifecycle": "unavailable",
+  "customerRoutingEnabled": false,
+  "sources": [
+    {
+      "sourceId": "prediction.source.polymarket_gamma",
+      "venueId": "polymarket",
+      "accessMode": "public_api",
+      "technicalStatus": "live_passed",
+      "termsStatus": "unreviewed",
+      "resaleStatus": "unreviewed",
+      "historyStatus": "unreviewed",
+      "quoteStatus": "live_qualified",
+      "orderBookStatus": "unqualified",
+      "onChainVerified": false,
+      "customerRoutingEnabled": false,
+      "evidenceUrls": [
+        "https://docs.polymarket.com/api-reference/introduction",
+        "https://docs.polymarket.com/market-data/overview",
+        "https://docs.polymarket.com/concepts/resolution"
+      ]
+    },
+    {
+      "sourceId": "prediction.source.kalshi_market_data",
+      "venueId": "kalshi",
+      "accessMode": "public_api",
+      "technicalStatus": "live_passed",
+      "termsStatus": "unreviewed",
+      "resaleStatus": "unreviewed",
+      "historyStatus": "unreviewed",
+      "quoteStatus": "live_qualified",
+      "orderBookStatus": "recorded_only",
+      "onChainVerified": false,
+      "customerRoutingEnabled": false,
+      "evidenceUrls": [
+        "https://docs.kalshi.com/getting_started/quick_start_market_data",
+        "https://docs.kalshi.com/api-reference/market/get-markets",
+        "https://docs.kalshi.com/getting_started/orderbook_responses"
+      ]
+    }
+  ],
+  "ownerBlocker": "Commercial reuse, resale, and retained-history rights require written qualification before customer routing or history storage."
+}

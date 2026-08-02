@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/prediction-operation-request.schema.json",
+  "$defs": {
+    "marketRef": { "type": "string", "pattern": "^pmkt_[a-f0-9]{32}$" },
+    "charge": {
+      "type": "object",
+      "required": ["asset", "amountAtomic", "decimals"],
+      "properties": {
+        "asset": { "const": "USD" },
+        "amountAtomic": { "type": "string", "pattern": "^(?:0|[1-9][0-9]{0,6})$" },
+        "decimals": { "const": 6 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["contractVersion", "schemaVersion", "operationId", "productId", "input", "maximumCharge", "deadlineAt"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "schemaVersion": { "const": "prediction-operation-request.v1" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "productId": { "enum": ["prediction.markets", "prediction.market", "prediction.compare", "prediction.history", "prediction.signal"] },
+    "input": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "limit"],
+          "properties": {
+            "kind": { "const": "markets" },
+            "query": { "type": "string", "minLength": 1, "maxLength": 500 },
+            "category": { "type": "string", "minLength": 1, "maxLength": 100 },
+            "status": { "enum": ["open", "closed", "resolved", "cancelled"] },
+            "venues": { "type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": true, "items": { "enum": ["polymarket", "kalshi"] } },
+            "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
+            "cursor": { "type": "string", "minLength": 1, "maxLength": 512 }
+          },
+          "additionalProperties": false
+        },
+        { "type": "object", "required": ["kind", "marketRef"], "properties": { "kind": { "const": "market" }, "marketRef": { "$ref": "#/$defs/marketRef" } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "marketRefs"], "properties": { "kind": { "const": "compare" }, "marketRefs": { "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/marketRef" } } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "marketRef", "limit"], "properties": { "kind": { "const": "history" }, "marketRef": { "$ref": "#/$defs/marketRef" }, "afterSequence": { "type": "integer", "minimum": 0 }, "limit": { "type": "integer", "minimum": 1, "maximum": 100 } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "marketRef"], "properties": { "kind": { "const": "signal" }, "marketRef": { "$ref": "#/$defs/marketRef" }, "compareMarketRef": { "$ref": "#/$defs/marketRef" } }, "additionalProperties": false }
+      ]
+    },
+    "maximumCharge": { "$ref": "#/$defs/charge" },
+    "deadlineAt": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    { "if": { "properties": { "productId": { "const": "prediction.markets" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "markets" } } } } } },
+    { "if": { "properties": { "productId": { "const": "prediction.market" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "market" } } } } } },
+    { "if": { "properties": { "productId": { "const": "prediction.compare" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "compare" } } } } } },
+    { "if": { "properties": { "productId": { "const": "prediction.history" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "history" } } } } } },
+    { "if": { "properties": { "productId": { "const": "prediction.signal" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "signal" } } } } } }
+  ],
+  "additionalProperties": false
+}

@@ -1,6 +1,6 @@
 # Current engineering state
 
-Updated 2026-08-02 after Stage 8 product-core completion. This is a compact resumable
+Updated 2026-08-02 after Stage 9 product-core completion. This is a compact resumable
 handoff, not an authorization gate. Continue automatically after reading it.
 
 ## Active work
@@ -19,8 +19,20 @@ contracts, pricing, automatic health, and replay-safe broadcasting are
 implemented. The consolidated Stage 8 suite passes 21/21. Customer lifecycle
 remains `unavailable`: every current upstream route is terms-restricted or
 prohibited for resale, and archive/broadcast supply is intentionally
-unqualified. Stage 9 Prediction-market Intelligence is the current roadmap
-priority.
+unqualified.
+
+Stage 9 Prediction-market Intelligence product core is complete locally. Both
+public source adapters passed current live read-only payload conformance with
+fresh binary quotes, explicit resolution rules/source links, and zero owner
+cash spend. The normalized schema, visible-price probability method, freshness,
+provenance, confidence-scored matching, false-merge rejection, comparison,
+append-only hash-linked history, movement/liquidity/disagreement signals,
+independent venue degradation, five operation contracts, gateway, internal
+pricing, and unavailable registry projection pass the consolidated 18-test
+suite. Kalshi's deprecated liquidity field and contract-count volume are not
+represented as USD. Customer lifecycle and retained history remain
+`unavailable` until commercial reuse, resale, and history rights are qualified.
+Stage 10 Crypto Intelligence is the current roadmap priority.
 
 The production runner `sandbox.nodejs-24` is qualified at digest
 `sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e`.
@@ -47,13 +59,16 @@ confirmed absent; Artifact Registry was preserved. Evidence is in
 
 ## Next actions
 
-1. Continue Stage 9 with normalized prediction-market/outcome contracts,
-   source adapters, resolution provenance, freshness, matching, comparison,
-   history, probabilities, liquidity, and evidence-backed signals.
-2. Keep RPC customer routing disabled until written commercial permission or
+1. Continue Stage 10 with qualified RPC, wallet/token/transaction/protocol
+   normalization, freshness/provenance/conflict/spam controls, and
+   intelligence-only risk language; introduce no custody, signing, or trading.
+2. Keep Prediction customer routing and retained history disabled until
+   commercial reuse, resale, and history rights are qualified; this isolated
+   owner blocker does not pause Crypto Intelligence or other local engineering.
+3. Keep RPC customer routing disabled until written commercial permission or
    replacement terms-compatible supply exists; this isolated owner blocker does
-   not pause Prediction or other local engineering.
-3. Keep Sandbox public lifecycle `unavailable` until a persistent execution
+   not pause Crypto Intelligence or other local engineering.
+4. Keep Sandbox public lifecycle `unavailable` until a persistent execution
    plane is deployed and operationally qualified; delayed cloud billing
    reconciliation is non-blocking.
 

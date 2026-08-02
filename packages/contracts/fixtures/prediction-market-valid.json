@@ -1,0 +1,33 @@
+{
+  "schema": "prediction-market",
+  "valid": true,
+  "value": {
+    "marketRef": "pmkt_0123456789abcdef0123456789abcdef",
+    "venueId": "polymarket",
+    "venueMarketId": "market-123",
+    "question": "Will the example event happen?",
+    "description": "A recorded contract fixture.",
+    "category": "Technology",
+    "status": "open",
+    "openedAt": "2026-01-01T00:00:00.000Z",
+    "closesAt": "2026-12-31T23:59:59.000Z",
+    "resolvedAt": null,
+    "resolvedOutcomeId": null,
+    "resolution": { "rules": "Resolves Yes if the named event happens.", "sourceUrl": "https://official.example/rules/123" },
+    "marketUrl": "https://markets.example/market-123",
+    "outcomes": [
+      { "outcomeId": "pout_0123456789abcdef0123456789abcdef", "venueOutcomeId": "yes", "label": "Yes", "rawPriceMicrousd": 550000, "normalizedProbabilityBps": 5500 },
+      { "outcomeId": "pout_fedcba9876543210fedcba9876543210", "venueOutcomeId": "no", "label": "No", "rawPriceMicrousd": 450000, "normalizedProbabilityBps": 4500 }
+    ],
+    "probability": { "method": "normalized_visible_prices_largest_remainder", "quotedOutcomeCount": 2, "rawTotalMicrousd": 1000000, "overroundMicrousd": 0 },
+    "liquidityMicrousd": 100000000,
+    "volumeMicrousd": 500000000,
+    "feeBps": 20,
+    "observedAt": "2026-08-02T12:00:00.000Z",
+    "freshness": { "staleAfterMs": 60000, "ageMs": 30000, "status": "fresh" },
+    "provenance": [
+      { "fieldGroup": "identity_and_rules", "sourceUrl": "https://official.example/rules/123", "observedAt": "2026-08-02T12:00:00.000Z" },
+      { "fieldGroup": "market_state_prices_liquidity", "sourceUrl": "https://markets.example/market-123", "observedAt": "2026-08-02T12:00:00.000Z" }
+    ]
+  }
+}

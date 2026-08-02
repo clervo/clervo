@@ -1,0 +1,22 @@
+{
+  "schema": "prediction-operation-result",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "schemaVersion": "prediction-operation-result.v1",
+    "operationId": "op_0123456789ABCDEFGHIJ",
+    "productId": "prediction.signal",
+    "completedAt": "2026-08-02T12:00:30.000Z",
+    "meteredCharge": { "asset": "USD", "amountAtomic": "5", "decimals": 6 },
+    "output": {
+      "kind": "signal",
+      "usable": true,
+      "reason": "ok",
+      "observedAt": "2026-08-02T12:00:30.000Z",
+      "signals": [
+        { "kind": "venue_disagreement", "label": "Yes", "disagreementBps": 500, "leftProbabilityBps": 5500, "rightProbabilityBps": 6000 }
+      ]
+    },
+    "resultHash": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  }
+}

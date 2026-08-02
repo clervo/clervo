@@ -1,0 +1,19 @@
+{
+  "schema": "prediction-product-pricing",
+  "valid": true,
+  "value": {
+    "schemaVersion": "clervo.prediction-product-pricing.v1",
+    "priceVersion": "prediction-product-2026-08-02.1",
+    "effectiveAt": "2026-08-02T12:30:00.000Z",
+    "currency": "USD",
+    "lifecycle": "unavailable",
+    "providerNamesPublic": false,
+    "products": [
+      { "productId": "prediction.markets", "billingUnit": "request", "customerPriceMicrousd": 10, "listingStatus": "terms_blocked", "maximumItems": 100, "maximumResponseBytes": 10485760 },
+      { "productId": "prediction.market", "billingUnit": "request", "customerPriceMicrousd": 2, "listingStatus": "terms_blocked", "maximumItems": 1, "maximumResponseBytes": 1048576 },
+      { "productId": "prediction.compare", "billingUnit": "request", "customerPriceMicrousd": 5, "listingStatus": "terms_blocked", "maximumItems": 100, "maximumResponseBytes": 1048576 },
+      { "productId": "prediction.history", "billingUnit": "request", "customerPriceMicrousd": 5, "listingStatus": "terms_blocked", "maximumItems": 100, "maximumResponseBytes": 10485760 },
+      { "productId": "prediction.signal", "billingUnit": "request", "customerPriceMicrousd": 5, "listingStatus": "terms_blocked", "maximumItems": 201, "maximumResponseBytes": 1048576 }
+    ]
+  }
+}

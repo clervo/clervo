@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/prediction-market.schema.json",
+  "$defs": {
+    "timestampOrNull": { "type": ["string", "null"], "format": "date-time" },
+    "microusdOrNull": { "type": ["integer", "null"], "minimum": 0, "maximum": 9007199254740991 },
+    "probabilityOrNull": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000 }
+  },
+  "type": "object",
+  "required": ["marketRef", "venueId", "venueMarketId", "question", "description", "category", "status", "openedAt", "closesAt", "resolvedAt", "resolvedOutcomeId", "resolution", "marketUrl", "outcomes", "probability", "liquidityMicrousd", "volumeMicrousd", "feeBps", "observedAt", "freshness", "provenance"],
+  "properties": {
+    "marketRef": { "type": "string", "pattern": "^pmkt_[a-f0-9]{32}$" },
+    "venueId": { "enum": ["polymarket", "kalshi"] },
+    "venueMarketId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{1,159}$" },
+    "question": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "description": { "type": "string", "minLength": 1, "maxLength": 20000 },
+    "category": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "status": { "enum": ["open", "closed", "resolved", "cancelled"] },
+    "openedAt": { "$ref": "#/$defs/timestampOrNull" },
+    "closesAt": { "type": "string", "format": "date-time" },
+    "resolvedAt": { "$ref": "#/$defs/timestampOrNull" },
+    "resolvedOutcomeId": { "type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$" },
+    "resolution": {
+      "type": "object",
+      "required": ["rules", "sourceUrl"],
+      "properties": {
+        "rules": { "type": "string", "minLength": 1, "maxLength": 50000 },
+        "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https://" }
+      },
+      "additionalProperties": false
+    },
+    "marketUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "outcomes": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "required": ["outcomeId", "venueOutcomeId", "label", "rawPriceMicrousd", "normalizedProbabilityBps"],
+        "properties": {
+          "outcomeId": { "type": "string", "pattern": "^pout_[a-f0-9]{32}$" },
+          "venueOutcomeId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$" },
+          "label": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "rawPriceMicrousd": { "$ref": "#/$defs/microusdOrNull" },
+          "normalizedProbabilityBps": { "$ref": "#/$defs/probabilityOrNull" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "probability": {
+      "type": "object",
+      "required": ["method", "quotedOutcomeCount", "rawTotalMicrousd", "overroundMicrousd"],
+      "properties": {
+        "method": { "const": "normalized_visible_prices_largest_remainder" },
+        "quotedOutcomeCount": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "rawTotalMicrousd": { "$ref": "#/$defs/microusdOrNull" },
+        "overroundMicrousd": { "type": ["integer", "null"], "minimum": -1000000, "maximum": 99000000 }
+      },
+      "additionalProperties": false
+    },
+    "liquidityMicrousd": { "$ref": "#/$defs/microusdOrNull" },
+    "volumeMicrousd": { "$ref": "#/$defs/microusdOrNull" },
+    "feeBps": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000 },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "freshness": {
+      "type": "object",
+      "required": ["staleAfterMs", "ageMs", "status"],
+      "properties": {
+        "staleAfterMs": { "type": "integer", "minimum": 1000, "maximum": 86400000 },
+        "ageMs": { "type": "integer", "minimum": 0 },
+        "status": { "enum": ["fresh", "stale"] }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "required": ["fieldGroup", "sourceUrl", "observedAt"],
+        "properties": {
+          "fieldGroup": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" },
+          "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+          "observedAt": { "type": "string", "format": "date-time" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
