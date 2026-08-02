@@ -66,18 +66,20 @@ test('screened Clervo, Vertex, Deepgram, and Groq routes preserve qualified supp
   const clervo = candidates.targets.filter(({ providerId }) => providerId === 'provider.clervo_ai_gateway');
   const vertex = candidates.targets.filter(({ providerId }) => providerId === 'provider.google_vertex');
   const groq = candidates.targets.filter(({ providerId }) => providerId === 'provider.groq');
-  const independentBlocked = candidates.targets.filter(({ providerId }) => ['provider.google_gemini', 'provider.cloudflare_workers_ai'].includes(providerId));
+  const independentBlocked = candidates.targets.filter(({ providerId }) => providerId === 'provider.google_gemini');
+  const cloudflare = candidates.targets.filter(({ providerId }) => providerId === 'provider.cloudflare_workers_ai');
   assert.deepEqual(clervo.map(({ exactModelId }) => exactModelId), ['gpt-5.6-luna', 'gpt-5.6-terra', 'gpt-5.6-sol']);
   assert.ok(clervo.every(({ requiredConfigurationNames, requiredSecretNames, termsStatus, resaleAllowed, qualificationStatus, blockerCodes }) => requiredConfigurationNames.includes('CLERVO_AI_BASE_URL') && requiredSecretNames.includes('CLERVO_AI_API_KEY') && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'passed' && blockerCodes.length === 0));
   assert.deepEqual(vertex.map(({ exactModelId }) => exactModelId), ['gemini-3.5-flash-lite', 'gemini-3.6-flash', 'gemini-3.5-flash']);
   assert.ok(vertex.every(({ requiredConfigurationNames, requiredSecretNames, termsStatus, resaleAllowed, qualificationStatus, blockerCodes }) => requiredConfigurationNames.includes('GCP_PROJECT') && requiredSecretNames.length === 0 && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'passed' && blockerCodes.length === 0));
   assert.deepEqual(groq.map(({ exactModelId }) => exactModelId), ['openai/gpt-oss-20b', 'openai/gpt-oss-120b', 'qwen/qwen3.6-27b']);
   assert.ok(groq.every(({ supplyFamilyId, selectedForQualification, termsStatus, resaleAllowed, qualificationStatus, blockerCodes, requiredSecretNames }) => supplyFamilyId === 'supply.groq' && selectedForQualification && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'passed' && blockerCodes.length === 0 && requiredSecretNames.includes('GROQ_API_KEY')));
-  assert.deepEqual(independentBlocked.map(({ providerId }) => providerId), ['provider.google_gemini', 'provider.cloudflare_workers_ai']);
-  assert.equal(new Set(independentBlocked.map(({ supplyFamilyId }) => supplyFamilyId)).size, 2);
-  assert.deepEqual(independentBlocked.map(({ exactModelId }) => exactModelId), ['gemini-3.6-flash', '@cf/openai/gpt-oss-120b']);
+  assert.deepEqual(independentBlocked.map(({ providerId }) => providerId), ['provider.google_gemini']);
+  assert.deepEqual(independentBlocked.map(({ exactModelId }) => exactModelId), ['gemini-3.6-flash']);
   assert.ok(independentBlocked.every(({ selectedForQualification, termsStatus, resaleAllowed, qualificationStatus, blockerCodes, requiredSecretNames }) => selectedForQualification && termsStatus === 'unreviewed' && resaleAllowed === false && qualificationStatus === 'blocked' && blockerCodes.includes('credential_missing') && blockerCodes.includes('live_checks_not_run') && requiredSecretNames.length > 0));
-  assert.ok([...groq, ...independentBlocked].flatMap(({ documentation }) => documentation).every(({ url }) => /^https:\/(?:\/ai\.google\.dev|\/console\.groq\.com|\/developers\.cloudflare\.com)/u.test(url)));
+  assert.deepEqual(cloudflare.map(({ exactModelId }) => exactModelId), ['@cf/openai/gpt-oss-120b']);
+  assert.ok(cloudflare.every(({ supplyFamilyId, selectedForQualification, termsStatus, resaleAllowed, qualificationStatus, blockerCodes, requiredSecretNames }) => supplyFamilyId === 'supply.cloudflare_workers_ai' && selectedForQualification && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'blocked' && blockerCodes.length === 1 && blockerCodes.includes('live_checks_not_run') && requiredSecretNames.includes('CLOUDFLARE_API_TOKEN')));
+  assert.ok([...groq, ...independentBlocked, ...cloudflare].flatMap(({ documentation }) => documentation).every(({ url }) => /^https:\/(?:\/ai\.google\.dev|\/console\.groq\.com|\/developers\.cloudflare\.com|\/www\.cloudflare\.com)/u.test(url)));
   const vertexImages = candidates.modalTargets.filter(({ providerId, products }) => providerId === 'provider.google_vertex' && products.includes('ai.image'));
   const vertexEmbedding = candidates.modalTargets.filter(({ providerId, products }) => providerId === 'provider.google_vertex' && products.includes('ai.embed'));
   const deepgramSpeech = candidates.modalTargets.filter(({ providerId }) => providerId === 'provider.deepgram');
@@ -154,6 +156,24 @@ test('Groq screen preserves all discovered priced assets, repaired benchmarks, t
   assert.equal(evidence.terms.multiAccountLimitBypassAllowed, false);
   assert.equal(evidence.commercialDecision.allDiscoveredAssetsPriced, true);
   assert.equal(evidence.commercialDecision.unknownSupplierDebitBlocksPricing, false);
+});
+
+test('edge free-allocation catalog prices every authenticated asset and blocks paid-plan entries without owner cash', async () => {
+  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-edge-free-pricing.v1.json'), 'utf8'));
+  assert.equal(pricing.discovery.modelCount, 61);
+  assert.equal(pricing.discovery.externalCalls, 2);
+  assert.equal(pricing.discovery.ownerCashSpentUsd, 0);
+  assert.equal(pricing.freeGuard.dailyNeurons, 10_000);
+  assert.equal(pricing.freeGuard.automaticPaidOverageAllowed, false);
+  assert.equal(pricing.assets.length, 61);
+  assert.ok(pricing.assets.every(({ customerPrices }) => customerPrices.length > 0 && customerPrices.every(({ price }) => price > 0)));
+  assert.equal(pricing.assets.filter(({ supplierPriceKnown }) => !supplierPriceKnown).length, 15);
+  assert.deepEqual(pricing.assets.filter(({ accessStatus }) => accessStatus === 'requires_paid_plan').map(({ modelId, listingStatus }) => [modelId, listingStatus]), [
+    ['@cf/moonshotai/kimi-k2.6', 'priced_requires_paid_plan'],
+    ['@cf/moonshotai/kimi-k2.7-code', 'priced_requires_paid_plan'],
+    ['@cf/zai-org/glm-5.2', 'priced_requires_paid_plan'],
+  ]);
+  assert.ok(pricing.assets.filter(({ accessStatus }) => accessStatus === 'free_allocation_available').every(({ listingStatus }) => listingStatus === 'priced_pending_qualification'));
 });
 
 test('AI outage monitoring emits bounded provider alerts without prompt or credential payloads', () => {

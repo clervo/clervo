@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-edge-free-pricing.schema.json",
+  "title": "Clervo internal edge free-allocation AI pricing",
+  "type": "object",
+  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "providerVisibility", "policy", "freeGuard", "discovery", "assets"],
+  "$defs": {
+    "price": {
+      "type": "object",
+      "required": ["unit", "price"],
+      "properties": {
+        "unit": { "type": "string", "minLength": 3, "maxLength": 80 },
+        "price": { "type": "number", "minimum": 0, "maximum": 100 }
+      },
+      "additionalProperties": false
+    },
+    "asset": {
+      "type": "object",
+      "required": ["modelId", "task", "lifecycle", "accessStatus", "listingStatus", "qualityGrade", "supplierPriceKnown", "supplierPrices", "customerPrices", "pricingMethod", "termsUrl"],
+      "properties": {
+        "modelId": { "type": "string", "pattern": "^@cf/[A-Za-z0-9_.@/-]+$", "maxLength": 160 },
+        "task": { "type": "string", "minLength": 3, "maxLength": 80 },
+        "lifecycle": { "enum": ["production", "beta"] },
+        "accessStatus": { "enum": ["free_allocation_available", "requires_paid_plan"] },
+        "listingStatus": { "enum": ["priced_pending_qualification", "priced_requires_paid_plan"] },
+        "qualityGrade": { "const": "unranked" },
+        "supplierPriceKnown": { "type": "boolean" },
+        "supplierPrices": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/price" } },
+        "customerPrices": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/price" } },
+        "pricingMethod": { "enum": ["introductory_40_percent_shadow", "category_introductory_price"] },
+        "termsUrl": { "type": ["string", "null"], "format": "uri", "pattern": "^https://" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "schemaVersion": { "const": "clervo.ai-edge-free-pricing.v1" },
+    "priceVersion": { "const": "2026-08-02.1" },
+    "evaluatedAt": { "type": "string", "format": "date-time" },
+    "currency": { "const": "USD" },
+    "providerVisibility": { "const": "internal_only" },
+    "policy": {
+      "type": "object",
+      "required": ["customerFreeByDefault", "positiveMarginRequiredAtLaunch", "unknownSupplierDebitBlocksPricing", "qualifiedRoutesAreSellable", "paidPlanAssetsSellable", "providerPassThroughAllowed", "thirdPartyModelTermsRequired"],
+      "properties": {
+        "customerFreeByDefault": { "const": false },
+        "positiveMarginRequiredAtLaunch": { "const": false },
+        "unknownSupplierDebitBlocksPricing": { "const": false },
+        "qualifiedRoutesAreSellable": { "const": true },
+        "paidPlanAssetsSellable": { "const": false },
+        "providerPassThroughAllowed": { "const": false },
+        "thirdPartyModelTermsRequired": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "freeGuard": {
+      "type": "object",
+      "required": ["dailyNeurons", "resetTimeUtc", "automaticPaidUpgradeAllowed", "automaticPaidOverageAllowed", "hardStopRequired", "applicationUsageLedgerRequired"],
+      "properties": {
+        "dailyNeurons": { "const": 10000 },
+        "resetTimeUtc": { "const": "00:00" },
+        "automaticPaidUpgradeAllowed": { "const": false },
+        "automaticPaidOverageAllowed": { "const": false },
+        "hardStopRequired": { "const": true },
+        "applicationUsageLedgerRequired": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "discovery": {
+      "type": "object",
+      "required": ["authenticated", "hideExperimental", "includeDeprecated", "modelCount", "externalCalls", "ownerCashSpentUsd", "secretValuesRecorded"],
+      "properties": {
+        "authenticated": { "const": true },
+        "hideExperimental": { "const": true },
+        "includeDeprecated": { "const": false },
+        "modelCount": { "const": 61 },
+        "externalCalls": { "const": 2 },
+        "ownerCashSpentUsd": { "const": 0 },
+        "secretValuesRecorded": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "assets": { "type": "array", "minItems": 61, "maxItems": 61, "uniqueItems": true, "items": { "$ref": "#/$defs/asset" } }
+  },
+  "additionalProperties": false
+}
