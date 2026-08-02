@@ -17,8 +17,9 @@ test('sandbox control plane accepts only attested bounded execution and replays 
   const runtime = executor(); const plane = new SandboxControlPlane(runtime, () => 1000);
   await plane.create({ sessionId, tenantId, imageDigest, limits, ttlMs: 5000 });
   const first = await plane.execute({ sessionId, executionId, tenantId, command: ['node', 'main.js'], stdin: new Uint8Array() });
-  const replay = await plane.execute({ sessionId, executionId, tenantId, command: ['ignored'], stdin: new Uint8Array() });
+  const replay = await plane.execute({ sessionId, executionId, tenantId, command: ['node', 'main.js'], stdin: new Uint8Array() });
   assert.deepEqual(first, replay); assert.equal(runtime.calls.filter(([name]) => name === 'execute').length, 1); assert.equal(first.maximumChargeMicrousd, 1000);
+  await assert.rejects(plane.execute({ sessionId, executionId, tenantId, command: ['substituted'], stdin: new Uint8Array() }), /idempotency_conflict/u);
   await plane.destroy(sessionId, tenantId); await plane.destroy(sessionId, tenantId); assert.equal(runtime.calls.filter(([name]) => name === 'destroy').length, 1);
 });
 

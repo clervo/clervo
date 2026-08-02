@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+
 export interface SandboxLimits {
   cpuMillis: number;
   memoryBytes: number;
@@ -35,7 +37,7 @@ interface Session {
   createdAtMs: number;
   expiresAtMs: number;
   state: 'ready' | 'executing' | 'destroyed' | 'quarantined';
-  executions: Map<string, Readonly<SandboxExecutionResult>>;
+  executions: Map<string, Readonly<{ requestHash: string; result: Readonly<SandboxExecutionResult> }>>;
 }
 
 export interface SandboxExecutionResult {
@@ -64,6 +66,15 @@ function validAttestation(value: SandboxAttestation, imageDigest: string): boole
   return value.runtimeClass === 'gvisor' && value.dedicatedExecutionNodes === true && value.controlPlaneSeparated === true && value.networkDefaultDeny === true && value.serviceAccountTokenMounted === false && value.executionNodeSecrets === false && value.readOnlyRootFilesystem === true && value.imageDigest === imageDigest && /^sha256:[a-f0-9]{64}$/u.test(value.imageDigest);
 }
 
+function executionRequestHash(command: readonly string[], stdin: Uint8Array): string {
+  const hash = createHash('sha256');
+  for (const part of command) {
+    const bytes = Buffer.from(part, 'utf8');
+    const length = Buffer.allocUnsafe(4); length.writeUInt32BE(bytes.byteLength); hash.update(length); hash.update(bytes);
+  }
+  return hash.update(stdin).digest('hex');
+}
+
 export class SandboxControlPlane {
   private readonly sessions = new Map<string, Session>();
 
@@ -83,14 +94,19 @@ export class SandboxControlPlane {
     identity(input.sessionId, 'sbx'); identity(input.executionId, 'exec'); identity(input.tenantId, 'tenant');
     const session = this.sessions.get(input.sessionId);
     if (!session || session.tenantId !== input.tenantId || session.state === 'destroyed' || session.state === 'quarantined') throw new Error('sandbox_session_unavailable');
-    const replay = session.executions.get(input.executionId); if (replay) return replay;
     if (session.state !== 'ready' || this.now() >= session.expiresAtMs || input.command.length < 1 || input.command.length > 32 || input.command.some((part) => part.length < 1 || part.length > 4096) || input.stdin.byteLength > 1_048_576) throw new Error('sandbox_execution_rejected');
+    const requestHash = executionRequestHash(input.command, input.stdin);
+    const replay = session.executions.get(input.executionId);
+    if (replay) {
+      if (replay.requestHash !== requestHash) throw new Error('sandbox_idempotency_conflict');
+      return replay.result;
+    }
     session.state = 'executing';
     try {
       const observed = await this.executor.execute({ sessionId: session.sessionId, executionId: input.executionId, command: input.command, stdin: input.stdin, limits: session.limits });
-      if (!Number.isSafeInteger(observed.exitCode) || observed.exitCode < 0 || observed.exitCode > 255 || observed.stdout.byteLength + observed.stderr.byteLength > session.limits.outputBytes || observed.cpuMillis > session.limits.cpuMillis || observed.durationMs > session.limits.wallTimeMs) throw new Error('sandbox_executor_limit_breach');
-      const result = Object.freeze({ sessionId: session.sessionId, executionId: input.executionId, ...observed, maximumChargeMicrousd: session.limits.maximumChargeMicrousd });
-      session.executions.set(input.executionId, result); session.state = 'ready'; return result;
+      if (!Number.isSafeInteger(observed.exitCode) || observed.exitCode < 0 || observed.exitCode > 255 || !Number.isSafeInteger(observed.cpuMillis) || observed.cpuMillis < 0 || !Number.isSafeInteger(observed.durationMs) || observed.durationMs < 0 || observed.stdout.byteLength + observed.stderr.byteLength > session.limits.outputBytes || observed.cpuMillis > session.limits.cpuMillis || observed.durationMs > session.limits.wallTimeMs) throw new Error('sandbox_executor_limit_breach');
+      const result = Object.freeze({ sessionId: session.sessionId, executionId: input.executionId, exitCode: observed.exitCode, stdout: new Uint8Array(observed.stdout), stderr: new Uint8Array(observed.stderr), cpuMillis: observed.cpuMillis, durationMs: observed.durationMs, maximumChargeMicrousd: session.limits.maximumChargeMicrousd });
+      session.executions.set(input.executionId, Object.freeze({ requestHash, result })); session.state = 'ready'; return result;
     } catch (error) {
       session.state = 'quarantined';
       try { await this.executor.destroy(session.sessionId); session.state = 'destroyed'; } catch { /* unknown cleanup remains quarantined */ }
