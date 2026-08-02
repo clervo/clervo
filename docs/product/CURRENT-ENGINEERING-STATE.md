@@ -187,6 +187,15 @@ authorization material. The incident runbook covers execution failure,
 readiness, overload, unknown settlement, delivery failure, kill switch, and
 rollback. This proves local receiver delivery, not an external paging vendor.
 
+The bounded load qualification also passes. A synchronized 1,000-request burst
+admitted exactly the 16 configured execution slots, rejected the other 984
+with the explicit overload contract inside the two-second p95 gate, then
+replayed all admitted requests without another execution. A subsequent 256
+requests at client concurrency eight all succeeded with roughly 10 ms p95 in
+the recorded local harness. Active work never exceeded 16, useful traffic
+recovered immediately, and combined client/server RSS growth stayed below the
+192 MiB harness ceiling. No provider, cloud, or payment call occurred.
+
 The exact digest-pinned PostgreSQL 18.4 image now passes a disposable live
 recovery qualification. All three migrations applied; atomic claim, completion,
 replay, conflict, and quota behavior passed; completed state survived a

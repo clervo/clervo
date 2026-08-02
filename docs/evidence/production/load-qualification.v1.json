@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "clervo.production-load-qualification.v1",
+  "qualifiedAt": "2026-08-02T16:06:52.688Z",
+  "sourceCommit": "0bf60abc8938",
+  "burst": {
+    "requests": 1000,
+    "admitted": 16,
+    "overloaded": 984,
+    "unexpectedStatuses": 0,
+    "overloadP95Ms": 1230.232886,
+    "replayedWithoutExecution": 16
+  },
+  "steady": {
+    "requests": 256,
+    "clientConcurrency": 8,
+    "succeeded": 256,
+    "p50Ms": 5.605276999999887,
+    "p95Ms": 8.21566400000006
+  },
+  "runtime": {
+    "maximumActiveExecutions": 16,
+    "executionCeiling": 16,
+    "totalExecutorCalls": 272,
+    "rssGrowthBytes": 134840320,
+    "requestTimeoutMs": 15000,
+    "headersTimeoutMs": 5000,
+    "maximumRequestsPerSocket": 100
+  },
+  "recovery": {
+    "usefulTrafficAfterBurst": true,
+    "replayCausedDuplicateExecution": false
+  },
+  "externalEffects": {
+    "cloudResourcesChanged": false,
+    "providerCalls": 0,
+    "payments": 0,
+    "ownerCashSpentUsd": 0
+  },
+  "productionReady": false
+}
