@@ -56,6 +56,10 @@ Continue independent local work when only a later external step is blocked.
   new authorization or retry.
 - Never destructively modify unrelated infrastructure, production/customer
   data, legacy projects, backups, IAM, billing, domains, or registries.
+- `ai.clervo.dev` and its model gateway run on the Clervo VM. Treat that runtime,
+  process, configuration, data, and network binding as protected infrastructure:
+  never stop, delete, replace, reconfigure, or include it in cleanup without
+  explicit owner authorization for that exact action.
 - Treat `/workspace/x402-platform`, older Clervo runtimes, and legacy state as
   read-only evidence. Never import, execute, mount, link, or connect them.
 - Preserve `docs/decisions/ADR-0001-clean-room-repository-boundary.md` and run
