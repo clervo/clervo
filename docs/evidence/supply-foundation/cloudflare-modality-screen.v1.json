@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "clervo.cloudflare-modality-screen.v1",
+  "checkedAt": "2026-08-02T04:21:06.292Z",
+  "execution": {
+    "externalCalls": 6,
+    "ownerCashSpentUsd": 0,
+    "freeAllocationBacked": true,
+    "secretValuesRecorded": false,
+    "promptOrOutputPayloadsRecorded": false
+  },
+  "embeddings": {
+    "modelId": "@cf/baai/bge-m3",
+    "status": "working_integration_pending",
+    "dimensions": 1024,
+    "vectorCount": 2,
+    "finiteValues": true,
+    "distinctInputsDiffer": true,
+    "exactIdentity": true,
+    "usageReported": false,
+    "latencyMs": 283.38,
+    "listingBlockers": ["native_usage_missing", "adapter_integration_pending"]
+  },
+  "images": {
+    "modelId": "@cf/black-forest-labs/flux-1-schnell",
+    "status": "working_integration_pending",
+    "outputs": 2,
+    "jpegValidated": true,
+    "distinctPromptsDiffer": true,
+    "outputBytes": [41262, 164077],
+    "latencyMs": [1185.35, 1671.42],
+    "listingBlockers": ["required_size_contract_not_proven", "visual_quality_not_benchmarked", "adapter_integration_pending"]
+  },
+  "textToSpeech": {
+    "modelId": "@cf/deepgram/aura-2-en",
+    "speaker": "thalia",
+    "status": "working_integration_pending",
+    "audioMediaValidated": true,
+    "outputBytes": 18864,
+    "latencyMs": 1663.43,
+    "listingBlockers": ["adapter_integration_pending", "multi_sample_quality_not_benchmarked"]
+  },
+  "speechToText": [
+    {
+      "modelId": "@cf/openai/whisper-large-v3-turbo",
+      "status": "working_contract_pending",
+      "expectedWordsMatched": 4,
+      "expectedWordsTotal": 5,
+      "latencyMs": 1187.69
+    },
+    {
+      "modelId": "@cf/deepgram/nova-3",
+      "status": "working_contract_pending",
+      "expectedWordsMatched": 5,
+      "expectedWordsTotal": 5,
+      "latencyMs": 262.52,
+      "modelImprovementOptOut": true
+    }
+  ],
+  "decision": {
+    "workingAssetsRetained": true,
+    "sellableRoutesAdded": 0,
+    "reason": "Execution is proven, but Clervo adapter, accounting, required image-size, or transcription-contract work remains before route admission.",
+    "providerIdentityPublic": false
+  },
+  "documentation": [
+    "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/",
+    "https://developers.cloudflare.com/workers-ai/models/flux-1-schnell/",
+    "https://developers.cloudflare.com/workers-ai/models/whisper-large-v3-turbo/",
+    "https://developers.cloudflare.com/workers-ai/models/aura-2-en/",
+    "https://developers.cloudflare.com/workers-ai/models/nova-3/",
+    "https://developers.cloudflare.com/workers-ai/platform/pricing/"
+  ]
+}

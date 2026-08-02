@@ -58,12 +58,13 @@ disabled without explicit owner approval.
   with its preserved jargon limitation.
 - Groq: 15 authenticated assets priced; GPT-OSS 20B, GPT-OSS 120B, and Qwen
   3.6 27B qualified; remaining modalities/assets still need qualification.
-- Cloudflare: 61 authenticated non-experimental assets priced; 58 fit the free
-  allocation and await qualification; three paid-plan assets are priced but
-  unavailable under the zero-cash guard.
+- Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
+  routes are fully qualified, and five embedding/image/speech assets passed
+  bounded execution with their remaining integration gaps recorded. Three
+  paid-plan assets remain unavailable under the zero-cash guard.
 - QuickAI and TongKhokr are retired and must not return to active supply.
-- Current qualified internal catalog: 15 exact routes across Clervo gateway,
-  Google Vertex, Deepgram, and Groq.
+- Current qualified internal catalog: 17 exact routes across Clervo gateway,
+  Google Vertex, Deepgram, Groq, and Cloudflare.
 
 Canonical machine-readable state lives in:
 

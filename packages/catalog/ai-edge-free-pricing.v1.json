@@ -145,7 +145,7 @@
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
       "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "qualityGrade": "good",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -345,7 +345,7 @@
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
       "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "qualityGrade": "good",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -414,7 +414,7 @@
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
       "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "qualityGrade": "best",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -1319,7 +1319,7 @@
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
       "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "qualityGrade": "good",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {

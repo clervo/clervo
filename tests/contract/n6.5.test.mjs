@@ -191,10 +191,14 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
   assert.equal(pricing.assets.filter(({ accessStatus, listingStatus }) => accessStatus === 'free_allocation_available' && listingStatus === 'sellable').length, 2);
   assert.ok(pricing.assets.filter(({ accessStatus, listingStatus }) => accessStatus === 'free_allocation_available' && listingStatus !== 'sellable').every(({ listingStatus }) => listingStatus === 'priced_pending_qualification'));
   assert.deepEqual(pricing.assets.filter(({ qualityGrade }) => qualityGrade !== 'unranked').map(({ modelId, qualityGrade }) => [modelId, qualityGrade]), [
+    ['@cf/baai/bge-m3', 'good'],
+    ['@cf/deepgram/aura-2-en', 'good'],
+    ['@cf/deepgram/nova-3', 'best'],
     ['@cf/google/gemma-4-26b-a4b-it', 'good'],
     ['@cf/ibm-granite/granite-4.0-h-micro', 'poor'],
     ['@cf/openai/gpt-oss-120b', 'best'],
     ['@cf/openai/gpt-oss-20b', 'best'],
+    ['@cf/openai/whisper-large-v3-turbo', 'good'],
     ['@cf/qwen/qwen3-30b-a3b-fp8', 'good'],
     ['@cf/zai-org/glm-4.7-flash', 'poor'],
   ]);
@@ -218,6 +222,17 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
     ['@cf/openai/gpt-oss-20b', 'best', 10, 'passed', 11],
     ['@cf/openai/gpt-oss-120b', 'best', 10, 'passed', 11],
   ]);
+  const modalities = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-modality-screen.v1.json'), 'utf8'));
+  assert.equal(modalities.execution.externalCalls, 6);
+  assert.equal(modalities.execution.ownerCashSpentUsd, 0);
+  assert.equal(modalities.embeddings.dimensions, 1024);
+  assert.equal(modalities.embeddings.usageReported, false);
+  assert.equal(modalities.images.jpegValidated, true);
+  assert.deepEqual(modalities.speechToText.map(({ modelId, expectedWordsMatched }) => [modelId, expectedWordsMatched]), [
+    ['@cf/openai/whisper-large-v3-turbo', 4],
+    ['@cf/deepgram/nova-3', 5],
+  ]);
+  assert.equal(modalities.decision.sellableRoutesAdded, 0);
 });
 
 test('AI outage monitoring emits bounded provider alerts without prompt or credential payloads', () => {
