@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "clervo.cloudflare-bge-retrieval.v1",
+  "evaluatedAt": "2026-08-02T08:27:35.385Z",
+  "serviceId": "supply.cloudflare_workers_ai",
+  "exactModelId": "@cf/baai/bge-m3",
+  "exactIdentityBasis": "immutable_exact_model_endpoint_response_unlabeled",
+  "ownerCashSpentUsd": 0,
+  "fundingBasis": "recurring_free_allocation",
+  "externalCalls": 1,
+  "credentialSlotsUsed": 1,
+  "customerDataUsed": false,
+  "syntheticInputsOnly": true,
+  "inputValuesRecorded": false,
+  "vectorValuesRecorded": false,
+  "inputCorpusHash": "sha256:01db02301b27cb3121187e3e0d3258f4077581ab7771f01d7c2af23458cf3884",
+  "observation": {
+    "status": 200,
+    "latencyMs": 288,
+    "vectorCount": 24,
+    "dimensions": 1024,
+    "pooling": "cls",
+    "responseShape": [
+      24,
+      1024
+    ],
+    "promptTokens": null,
+    "usageReported": false
+  },
+  "cases": [
+    {
+      "caseId": "embedding_retrieval_01",
+      "relevantRank": 1,
+      "relevantCosine": 0.652109,
+      "strongestWrongCosine": 0.487791,
+      "margin": 0.164319,
+      "passed": true
+    },
+    {
+      "caseId": "embedding_retrieval_02",
+      "relevantRank": 1,
+      "relevantCosine": 0.55136,
+      "strongestWrongCosine": 0.517099,
+      "margin": 0.034261,
+      "passed": true
+    },
+    {
+      "caseId": "embedding_retrieval_03",
+      "relevantRank": 1,
+      "relevantCosine": 0.54578,
+      "strongestWrongCosine": 0.504158,
+      "margin": 0.041622,
+      "passed": true
+    },
+    {
+      "caseId": "embedding_retrieval_04",
+      "relevantRank": 1,
+      "relevantCosine": 0.488621,
+      "strongestWrongCosine": 0.487122,
+      "margin": 0.001498,
+      "passed": true
+    },
+    {
+      "caseId": "embedding_retrieval_05",
+      "relevantRank": 3,
+      "relevantCosine": 0.423583,
+      "strongestWrongCosine": 0.455821,
+      "margin": -0.032238,
+      "passed": false
+    },
+    {
+      "caseId": "embedding_retrieval_06",
+      "relevantRank": 1,
+      "relevantCosine": 0.639257,
+      "strongestWrongCosine": 0.416225,
+      "margin": 0.223032,
+      "passed": true
+    },
+    {
+      "caseId": "embedding_retrieval_07",
+      "relevantRank": 1,
+      "relevantCosine": 0.593371,
+      "strongestWrongCosine": 0.522889,
+      "margin": 0.070482,
+      "passed": true
+    },
+    {
+      "caseId": "embedding_retrieval_08",
+      "relevantRank": 1,
+      "relevantCosine": 0.497598,
+      "strongestWrongCosine": 0.493029,
+      "margin": 0.004569,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 8,
+    "topOneAccuracyBasisPoints": 8750,
+    "minimumMargin": -0.032238,
+    "qualityGrade": "acceptable"
+  },
+  "decision": {
+    "adapterStatus": "blocked_missing_usage",
+    "automaticPaidOverageAllowedByClervo": false
+  }
+}

@@ -158,16 +158,17 @@
       ],
       "quality": "best",
       "termsStatus": "restricted",
-      "quotaRunway": "Allocated from the reported Vertex credit with deny-on-unknown usage; the edge BGE-M3 candidate lacks final accounting and adapter qualification.",
+      "quotaRunway": "Allocated from the reported Vertex credit with deny-on-unknown usage. The recurring-free BGE-M3 candidate passed 7/8 retrieval cases but its synchronous responses omit token usage, so it cannot enter customer accounting.",
       "healthMethod": [
         "docs/evidence/supply-foundation/cloudflare-modality-screen.v1.json",
+        "docs/evidence/supply-foundation/cloudflare-bge-retrieval.v1.json",
         "docs/evidence/stage6/vertex-embedding-screen.v1.json"
       ],
       "secretLocations": [
         "application_default:GCP_ADC",
         "legacy_import:CLOUDFLARE_API_TOKEN"
       ],
-      "replacementPlan": "Finish BGE-M3 accounting and adapter qualification as the independent embedding fallback."
+      "replacementPlan": "Keep BGE-M3 blocked unless the synchronous API reports exact token usage or an exact compatible tokenizer is integrated; do not estimate metered usage. Source another independent embedding family only if funded Vertex runway becomes insufficient."
     },
     {
       "capabilityId": "ai.image",

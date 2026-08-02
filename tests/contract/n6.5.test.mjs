@@ -489,6 +489,12 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
   assert.deepEqual([fluxFinal.externalCalls, fluxFinal.summary.passed, fluxFinal.summary.safetyRejected, fluxFinal.summary.qualityGrade], [9, 1, 1, 'rejected']);
   assert.equal(fluxFinal.summary.outputDimensions[0], '1024x1024');
   assert.equal(pricing.assets.find(({ modelId }) => modelId === '@cf/black-forest-labs/flux-1-schnell').listingStatus, 'priced_quality_rejected');
+  const bge = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-bge-retrieval.v1.json'), 'utf8'));
+  assert.deepEqual([bge.externalCalls, bge.ownerCashSpentUsd, bge.observation.status, bge.observation.vectorCount, bge.observation.dimensions], [1, 0, 200, 24, 1024]);
+  assert.deepEqual(bge.summary, { passed: 7, total: 8, topOneAccuracyBasisPoints: 8750, minimumMargin: -0.032238, qualityGrade: 'acceptable' });
+  assert.deepEqual(bge.decision, { adapterStatus: 'blocked_missing_usage', automaticPaidOverageAllowedByClervo: false });
+  assert.equal(bge.observation.usageReported, false);
+  assert.equal(pricing.assets.find(({ modelId }) => modelId === '@cf/baai/bge-m3').listingStatus, 'priced_accounting_blocked');
 });
 
 test('transcription supply is ranked across three independent families while the missing product contract fails closed', async () => {

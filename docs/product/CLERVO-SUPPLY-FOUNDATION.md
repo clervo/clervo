@@ -179,6 +179,10 @@ disabled without explicit owner approval.
   elements, and rejected a benign prompt under its safety filter. Earlier
   evaluator-shape failures remain separate evidence rather than being rewritten
   as model failures. Vertex remains the only qualified image supply family.
+- Embedding fallback: BGE-M3 achieved 7/8 top-one retrieval matches in a
+  24-vector synthetic screen, but its synchronous responses omitted token usage
+  through both tested API forms. It remains positively priced and accounting-
+  blocked; Clervo will not invent token usage to make it sellable.
 - QuickAI and TongKhokr are retired and must not return to active supply.
 - Current qualified internal catalog: 21 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.
