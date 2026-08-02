@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/sandbox-approved-images.schema.json",
+  "type": "object", "required": ["schemaVersion", "lifecycle", "images"],
+  "properties": {
+    "schemaVersion": { "const": "clervo.sandbox-approved-images.v1" }, "lifecycle": { "const": "unavailable" },
+    "images": { "type": "array", "maxItems": 32, "items": {
+      "type": "object", "required": ["imageId", "digest", "lifecycle", "signatureVerified", "provenanceVerified", "vulnerabilityScan", "malwareScan", "sbomSha256"],
+      "properties": {
+        "imageId": { "type": "string", "pattern": "^sandbox\\.[a-z0-9][a-z0-9._-]{2,63}$" }, "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "lifecycle": { "enum": ["qualified", "blocked"] }, "signatureVerified": { "type": "boolean" }, "provenanceVerified": { "type": "boolean" },
+        "vulnerabilityScan": { "enum": ["passed", "failed"] }, "malwareScan": { "enum": ["passed", "failed"] }, "sbomSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "allOf": [{ "if": { "properties": { "lifecycle": { "const": "qualified" } }, "required": ["lifecycle"] }, "then": { "properties": { "signatureVerified": { "const": true }, "provenanceVerified": { "const": true }, "vulnerabilityScan": { "const": "passed" }, "malwareScan": { "const": "passed" } } } }],
+      "additionalProperties": false
+    } }
+  }, "additionalProperties": false
+}

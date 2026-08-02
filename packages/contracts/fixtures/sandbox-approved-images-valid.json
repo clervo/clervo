@@ -1,0 +1,4 @@
+{
+  "schema": "sandbox-approved-images", "valid": true,
+  "value": { "schemaVersion": "clervo.sandbox-approved-images.v1", "lifecycle": "unavailable", "images": [] }
+}

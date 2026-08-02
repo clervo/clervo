@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import type { SandboxImagePolicy } from './image-registry.js';
 
 export interface SandboxLimits {
   cpuMillis: number;
@@ -79,11 +80,12 @@ function executionRequestHash(command: readonly string[], stdin: Uint8Array): st
 export class SandboxControlPlane {
   private readonly sessions = new Map<string, Session>();
 
-  constructor(private readonly executor: SandboxExecutor, private readonly now: () => number = Date.now) {}
+  constructor(private readonly executor: SandboxExecutor, private readonly now: () => number, private readonly images: SandboxImagePolicy) {}
 
   async create(input: Readonly<{ sessionId: string; tenantId: string; imageDigest: string; limits: SandboxLimits; ttlMs: number }>): Promise<void> {
     identity(input.sessionId, 'sbx'); identity(input.tenantId, 'tenant'); limits(input.limits);
     if (!Number.isSafeInteger(input.ttlMs) || input.ttlMs < 1_000 || input.ttlMs > 900_000 || this.sessions.has(input.sessionId)) throw new TypeError('sandbox_create_invalid');
+    if (!this.images.allows(input.imageDigest)) throw new Error('sandbox_image_unavailable');
     const attestation = await this.executor.attest();
     if (!validAttestation(attestation, input.imageDigest)) throw new Error('sandbox_runtime_unavailable');
     await this.executor.create({ sessionId: input.sessionId, tenantId: input.tenantId, imageDigest: input.imageDigest, limits: input.limits });

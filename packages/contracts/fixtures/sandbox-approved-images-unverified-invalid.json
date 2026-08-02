@@ -1,0 +1,4 @@
+{
+  "schema": "sandbox-approved-images", "valid": false,
+  "value": { "schemaVersion": "clervo.sandbox-approved-images.v1", "lifecycle": "unavailable", "images": [{ "imageId": "sandbox.nodejs-24", "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "lifecycle": "qualified", "signatureVerified": false, "provenanceVerified": true, "vulnerabilityScan": "passed", "malwareScan": "passed", "sbomSha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" }] }
+}
