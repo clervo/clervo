@@ -1,23 +1,35 @@
 {
-  "catalogVersion": "2026-08-02.9",
-  "researchedAt": "2026-08-02T04:15:00.210Z",
+  "catalogVersion": "2026-08-02.10",
+  "researchedAt": "2026-08-02T06:29:49.120Z",
   "targets": [
     {
       "providerId": "provider.clervo_ai_gateway",
       "supplyFamilyId": "supply.clervo_ai_gateway",
       "exactModelId": "gpt-5.6-luna",
       "baseUrlPattern": "https://ai.clervo.dev/v1/",
-      "allowedHosts": ["ai.clervo.dev"],
-      "products": ["ai.chat"],
-      "requiredConfigurationNames": ["CLERVO_AI_BASE_URL"],
-      "requiredSecretNames": ["CLERVO_AI_API_KEY"],
+      "allowedHosts": [
+        "ai.clervo.dev"
+      ],
+      "products": [
+        "ai.chat"
+      ],
+      "requiredConfigurationNames": [
+        "CLERVO_AI_BASE_URL"
+      ],
+      "requiredSecretNames": [
+        "CLERVO_AI_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Clervo gateway authenticated model catalog", "url": "https://ai.clervo.dev/v1/models", "checkedAt": "2026-08-02T02:16:26.054Z" }
+        {
+          "title": "Clervo gateway authenticated model catalog",
+          "url": "https://ai.clervo.dev/v1/models",
+          "checkedAt": "2026-08-02T02:16:26.054Z"
+        }
       ]
     },
     {
@@ -25,17 +37,29 @@
       "supplyFamilyId": "supply.clervo_ai_gateway",
       "exactModelId": "gpt-5.6-terra",
       "baseUrlPattern": "https://ai.clervo.dev/v1/",
-      "allowedHosts": ["ai.clervo.dev"],
-      "products": ["ai.chat"],
-      "requiredConfigurationNames": ["CLERVO_AI_BASE_URL"],
-      "requiredSecretNames": ["CLERVO_AI_API_KEY"],
+      "allowedHosts": [
+        "ai.clervo.dev"
+      ],
+      "products": [
+        "ai.chat"
+      ],
+      "requiredConfigurationNames": [
+        "CLERVO_AI_BASE_URL"
+      ],
+      "requiredSecretNames": [
+        "CLERVO_AI_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Clervo gateway authenticated model catalog", "url": "https://ai.clervo.dev/v1/models", "checkedAt": "2026-08-02T02:16:26.054Z" }
+        {
+          "title": "Clervo gateway authenticated model catalog",
+          "url": "https://ai.clervo.dev/v1/models",
+          "checkedAt": "2026-08-02T02:16:26.054Z"
+        }
       ]
     },
     {
@@ -43,17 +67,29 @@
       "supplyFamilyId": "supply.clervo_ai_gateway",
       "exactModelId": "gpt-5.6-sol",
       "baseUrlPattern": "https://ai.clervo.dev/v1/",
-      "allowedHosts": ["ai.clervo.dev"],
-      "products": ["ai.chat"],
-      "requiredConfigurationNames": ["CLERVO_AI_BASE_URL"],
-      "requiredSecretNames": ["CLERVO_AI_API_KEY"],
+      "allowedHosts": [
+        "ai.clervo.dev"
+      ],
+      "products": [
+        "ai.chat"
+      ],
+      "requiredConfigurationNames": [
+        "CLERVO_AI_BASE_URL"
+      ],
+      "requiredSecretNames": [
+        "CLERVO_AI_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Clervo gateway authenticated model catalog", "url": "https://ai.clervo.dev/v1/models", "checkedAt": "2026-08-02T02:16:26.054Z" }
+        {
+          "title": "Clervo gateway authenticated model catalog",
+          "url": "https://ai.clervo.dev/v1/models",
+          "checkedAt": "2026-08-02T02:16:26.054Z"
+        }
       ]
     },
     {
@@ -61,9 +97,15 @@
       "supplyFamilyId": "supply.google_vertex",
       "exactModelId": "gemini-3.5-flash-lite",
       "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
-      "allowedHosts": ["aiplatform.googleapis.com"],
-      "products": ["ai.chat"],
-      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "allowedHosts": [
+        "aiplatform.googleapis.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
+      "requiredConfigurationNames": [
+        "GCP_PROJECT"
+      ],
       "requiredSecretNames": [],
       "selectedForQualification": true,
       "termsStatus": "restricted",
@@ -71,8 +113,16 @@
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Current Gemini lifecycle", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions", "checkedAt": "2026-08-02T02:54:31.000Z" },
-        { "title": "Current Gemini pricing", "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing", "checkedAt": "2026-08-02T02:54:31.000Z" }
+        {
+          "title": "Current Gemini lifecycle",
+          "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions",
+          "checkedAt": "2026-08-02T02:54:31.000Z"
+        },
+        {
+          "title": "Current Gemini pricing",
+          "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+          "checkedAt": "2026-08-02T02:54:31.000Z"
+        }
       ]
     },
     {
@@ -80,9 +130,15 @@
       "supplyFamilyId": "supply.google_vertex",
       "exactModelId": "gemini-3.6-flash",
       "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
-      "allowedHosts": ["aiplatform.googleapis.com"],
-      "products": ["ai.chat"],
-      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "allowedHosts": [
+        "aiplatform.googleapis.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
+      "requiredConfigurationNames": [
+        "GCP_PROJECT"
+      ],
       "requiredSecretNames": [],
       "selectedForQualification": true,
       "termsStatus": "restricted",
@@ -90,8 +146,16 @@
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Current Gemini lifecycle", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions", "checkedAt": "2026-08-02T02:54:31.000Z" },
-        { "title": "Current Gemini pricing", "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing", "checkedAt": "2026-08-02T02:54:31.000Z" }
+        {
+          "title": "Current Gemini lifecycle",
+          "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions",
+          "checkedAt": "2026-08-02T02:54:31.000Z"
+        },
+        {
+          "title": "Current Gemini pricing",
+          "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+          "checkedAt": "2026-08-02T02:54:31.000Z"
+        }
       ]
     },
     {
@@ -99,9 +163,15 @@
       "supplyFamilyId": "supply.google_vertex",
       "exactModelId": "gemini-3.5-flash",
       "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
-      "allowedHosts": ["aiplatform.googleapis.com"],
-      "products": ["ai.chat"],
-      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "allowedHosts": [
+        "aiplatform.googleapis.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
+      "requiredConfigurationNames": [
+        "GCP_PROJECT"
+      ],
       "requiredSecretNames": [],
       "selectedForQualification": true,
       "termsStatus": "restricted",
@@ -109,8 +179,16 @@
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Current Gemini lifecycle", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions", "checkedAt": "2026-08-02T02:54:31.000Z" },
-        { "title": "Current Gemini pricing", "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing", "checkedAt": "2026-08-02T02:54:31.000Z" }
+        {
+          "title": "Current Gemini lifecycle",
+          "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions",
+          "checkedAt": "2026-08-02T02:54:31.000Z"
+        },
+        {
+          "title": "Current Gemini pricing",
+          "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+          "checkedAt": "2026-08-02T02:54:31.000Z"
+        }
       ]
     },
     {
@@ -118,18 +196,36 @@
       "supplyFamilyId": "supply.google_hyperscale",
       "exactModelId": "gemini-3.6-flash",
       "baseUrlPattern": "https://generativelanguage.googleapis.com/v1beta/openai/",
-      "allowedHosts": ["generativelanguage.googleapis.com"],
-      "products": ["ai.chat"],
+      "allowedHosts": [
+        "generativelanguage.googleapis.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
       "requiredConfigurationNames": [],
-      "requiredSecretNames": ["GEMINI_API_KEY"],
+      "requiredSecretNames": [
+        "GEMINI_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "unreviewed",
       "resaleAllowed": false,
       "qualificationStatus": "blocked",
-      "blockerCodes": ["credential_missing", "resale_terms_unresolved", "live_checks_not_run"],
+      "blockerCodes": [
+        "credential_missing",
+        "resale_terms_unresolved",
+        "live_checks_not_run"
+      ],
       "documentation": [
-        { "title": "Gemini OpenAI compatibility", "url": "https://ai.google.dev/gemini-api/docs/openai", "checkedAt": "2026-08-01T23:45:00.000Z" },
-        { "title": "Gemini current models", "url": "https://ai.google.dev/gemini-api/docs/latest-model", "checkedAt": "2026-08-01T23:45:00.000Z" }
+        {
+          "title": "Gemini OpenAI compatibility",
+          "url": "https://ai.google.dev/gemini-api/docs/openai",
+          "checkedAt": "2026-08-01T23:45:00.000Z"
+        },
+        {
+          "title": "Gemini current models",
+          "url": "https://ai.google.dev/gemini-api/docs/latest-model",
+          "checkedAt": "2026-08-01T23:45:00.000Z"
+        }
       ]
     },
     {
@@ -137,18 +233,32 @@
       "supplyFamilyId": "supply.groq",
       "exactModelId": "openai/gpt-oss-20b",
       "baseUrlPattern": "https://api.groq.com/openai/v1/",
-      "allowedHosts": ["api.groq.com"],
-      "products": ["ai.chat"],
+      "allowedHosts": [
+        "api.groq.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
       "requiredConfigurationNames": [],
-      "requiredSecretNames": ["GROQ_API_KEY"],
+      "requiredSecretNames": [
+        "GROQ_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Groq supported models", "url": "https://console.groq.com/docs/models", "checkedAt": "2026-08-02T03:29:20.759Z" },
-        { "title": "Groq Services Agreement", "url": "https://console.groq.com/docs/legal/services-agreement", "checkedAt": "2026-08-02T03:29:20.759Z" }
+        {
+          "title": "Groq supported models",
+          "url": "https://console.groq.com/docs/models",
+          "checkedAt": "2026-08-02T03:29:20.759Z"
+        },
+        {
+          "title": "Groq Services Agreement",
+          "url": "https://console.groq.com/docs/legal/services-agreement",
+          "checkedAt": "2026-08-02T03:29:20.759Z"
+        }
       ]
     },
     {
@@ -156,18 +266,32 @@
       "supplyFamilyId": "supply.groq",
       "exactModelId": "openai/gpt-oss-120b",
       "baseUrlPattern": "https://api.groq.com/openai/v1/",
-      "allowedHosts": ["api.groq.com"],
-      "products": ["ai.chat"],
+      "allowedHosts": [
+        "api.groq.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
       "requiredConfigurationNames": [],
-      "requiredSecretNames": ["GROQ_API_KEY"],
+      "requiredSecretNames": [
+        "GROQ_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Groq supported models", "url": "https://console.groq.com/docs/models", "checkedAt": "2026-08-02T03:29:20.759Z" },
-        { "title": "Groq Services Agreement", "url": "https://console.groq.com/docs/legal/services-agreement", "checkedAt": "2026-08-02T03:29:20.759Z" }
+        {
+          "title": "Groq supported models",
+          "url": "https://console.groq.com/docs/models",
+          "checkedAt": "2026-08-02T03:29:20.759Z"
+        },
+        {
+          "title": "Groq Services Agreement",
+          "url": "https://console.groq.com/docs/legal/services-agreement",
+          "checkedAt": "2026-08-02T03:29:20.759Z"
+        }
       ]
     },
     {
@@ -175,38 +299,112 @@
       "supplyFamilyId": "supply.groq",
       "exactModelId": "qwen/qwen3.6-27b",
       "baseUrlPattern": "https://api.groq.com/openai/v1/",
-      "allowedHosts": ["api.groq.com"],
-      "products": ["ai.chat"],
+      "allowedHosts": [
+        "api.groq.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
       "requiredConfigurationNames": [],
-      "requiredSecretNames": ["GROQ_API_KEY"],
+      "requiredSecretNames": [
+        "GROQ_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Groq supported models", "url": "https://console.groq.com/docs/models", "checkedAt": "2026-08-02T03:29:20.759Z" },
-        { "title": "Groq Services Agreement", "url": "https://console.groq.com/docs/legal/services-agreement", "checkedAt": "2026-08-02T03:29:20.759Z" }
+        {
+          "title": "Groq supported models",
+          "url": "https://console.groq.com/docs/models",
+          "checkedAt": "2026-08-02T03:29:20.759Z"
+        },
+        {
+          "title": "Groq Services Agreement",
+          "url": "https://console.groq.com/docs/legal/services-agreement",
+          "checkedAt": "2026-08-02T03:29:20.759Z"
+        }
       ]
     },
     {
       "providerId": "provider.cloudflare_workers_ai",
       "supplyFamilyId": "supply.cloudflare_workers_ai",
-      "exactModelId": "@cf/openai/gpt-oss-20b",
+      "exactModelId": "@cf/meta/llama-4-scout-17b-16e-instruct",
       "baseUrlPattern": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/",
-      "allowedHosts": ["api.cloudflare.com"],
-      "products": ["ai.chat"],
-      "requiredConfigurationNames": ["CLOUDFLARE_ACCOUNT_ID"],
-      "requiredSecretNames": ["CLOUDFLARE_API_TOKEN"],
+      "allowedHosts": [
+        "api.cloudflare.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
+      "requiredConfigurationNames": [
+        "CLOUDFLARE_ACCOUNT_ID"
+      ],
+      "requiredSecretNames": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Cloudflare Workers AI OpenAI-compatible endpoints", "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/", "checkedAt": "2026-08-02T04:15:00.210Z" },
-        { "title": "Cloudflare Workers AI pricing and free allocation", "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/", "checkedAt": "2026-08-02T04:15:00.210Z" },
-        { "title": "Cloudflare Developer Platform service-specific terms", "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/", "checkedAt": "2026-08-02T04:15:00.210Z" }
+        {
+          "title": "Cloudflare Workers AI OpenAI-compatible endpoints",
+          "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        },
+        {
+          "title": "Cloudflare Workers AI pricing and free allocation",
+          "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        },
+        {
+          "title": "Cloudflare Developer Platform service-specific terms",
+          "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        }
+      ]
+    },
+    {
+      "providerId": "provider.cloudflare_workers_ai",
+      "supplyFamilyId": "supply.cloudflare_workers_ai",
+      "exactModelId": "@cf/nvidia/nemotron-3-120b-a12b",
+      "baseUrlPattern": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/",
+      "allowedHosts": [
+        "api.cloudflare.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
+      "requiredConfigurationNames": [
+        "CLOUDFLARE_ACCOUNT_ID"
+      ],
+      "requiredSecretNames": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        {
+          "title": "Cloudflare Workers AI OpenAI-compatible endpoints",
+          "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        },
+        {
+          "title": "Cloudflare Workers AI pricing and free allocation",
+          "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        },
+        {
+          "title": "Cloudflare Developer Platform service-specific terms",
+          "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        }
       ]
     },
     {
@@ -214,19 +412,119 @@
       "supplyFamilyId": "supply.cloudflare_workers_ai",
       "exactModelId": "@cf/openai/gpt-oss-120b",
       "baseUrlPattern": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/",
-      "allowedHosts": ["api.cloudflare.com"],
-      "products": ["ai.chat"],
-      "requiredConfigurationNames": ["CLOUDFLARE_ACCOUNT_ID"],
-      "requiredSecretNames": ["CLOUDFLARE_API_TOKEN"],
+      "allowedHosts": [
+        "api.cloudflare.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
+      "requiredConfigurationNames": [
+        "CLOUDFLARE_ACCOUNT_ID"
+      ],
+      "requiredSecretNames": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Cloudflare Workers AI OpenAI-compatible endpoints", "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/", "checkedAt": "2026-08-02T04:15:00.210Z" },
-        { "title": "Cloudflare Workers AI pricing and free allocation", "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/", "checkedAt": "2026-08-02T04:15:00.210Z" },
-        { "title": "Cloudflare Developer Platform service-specific terms", "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/", "checkedAt": "2026-08-02T04:15:00.210Z" }
+        {
+          "title": "Cloudflare Workers AI OpenAI-compatible endpoints",
+          "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        },
+        {
+          "title": "Cloudflare Workers AI pricing and free allocation",
+          "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        },
+        {
+          "title": "Cloudflare Developer Platform service-specific terms",
+          "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        }
+      ]
+    },
+    {
+      "providerId": "provider.cloudflare_workers_ai",
+      "supplyFamilyId": "supply.cloudflare_workers_ai",
+      "exactModelId": "@cf/openai/gpt-oss-20b",
+      "baseUrlPattern": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/",
+      "allowedHosts": [
+        "api.cloudflare.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
+      "requiredConfigurationNames": [
+        "CLOUDFLARE_ACCOUNT_ID"
+      ],
+      "requiredSecretNames": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        {
+          "title": "Cloudflare Workers AI OpenAI-compatible endpoints",
+          "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        },
+        {
+          "title": "Cloudflare Workers AI pricing and free allocation",
+          "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        },
+        {
+          "title": "Cloudflare Developer Platform service-specific terms",
+          "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        }
+      ]
+    },
+    {
+      "providerId": "provider.cloudflare_workers_ai",
+      "supplyFamilyId": "supply.cloudflare_workers_ai",
+      "exactModelId": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "baseUrlPattern": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/",
+      "allowedHosts": [
+        "api.cloudflare.com"
+      ],
+      "products": [
+        "ai.chat"
+      ],
+      "requiredConfigurationNames": [
+        "CLOUDFLARE_ACCOUNT_ID"
+      ],
+      "requiredSecretNames": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        {
+          "title": "Cloudflare Workers AI OpenAI-compatible endpoints",
+          "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        },
+        {
+          "title": "Cloudflare Workers AI pricing and free allocation",
+          "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        },
+        {
+          "title": "Cloudflare Developer Platform service-specific terms",
+          "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/",
+          "checkedAt": "2026-08-02T06:29:49.120Z"
+        }
       ]
     }
   ],
@@ -236,18 +534,32 @@
       "supplyFamilyId": "supply.deepgram",
       "exactModelId": "aura-2-thalia-en",
       "baseUrlPattern": "https://api.deepgram.com/v1/speak?model={model}",
-      "allowedHosts": ["api.deepgram.com"],
-      "products": ["ai.speech"],
+      "allowedHosts": [
+        "api.deepgram.com"
+      ],
+      "products": [
+        "ai.speech"
+      ],
       "requiredConfigurationNames": [],
-      "requiredSecretNames": ["DEEPGRAM_API_KEY"],
+      "requiredSecretNames": [
+        "DEEPGRAM_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Aura text-to-speech REST API", "url": "https://developers.deepgram.com/docs/text-to-speech", "checkedAt": "2026-08-02T03:08:58.000Z" },
-        { "title": "Aura voices and languages", "url": "https://developers.deepgram.com/docs/tts-models", "checkedAt": "2026-08-02T03:08:58.000Z" }
+        {
+          "title": "Aura text-to-speech REST API",
+          "url": "https://developers.deepgram.com/docs/text-to-speech",
+          "checkedAt": "2026-08-02T03:08:58.000Z"
+        },
+        {
+          "title": "Aura voices and languages",
+          "url": "https://developers.deepgram.com/docs/tts-models",
+          "checkedAt": "2026-08-02T03:08:58.000Z"
+        }
       ]
     },
     {
@@ -255,18 +567,32 @@
       "supplyFamilyId": "supply.deepgram",
       "exactModelId": "aura-2-arcas-en",
       "baseUrlPattern": "https://api.deepgram.com/v1/speak?model={model}",
-      "allowedHosts": ["api.deepgram.com"],
-      "products": ["ai.speech"],
+      "allowedHosts": [
+        "api.deepgram.com"
+      ],
+      "products": [
+        "ai.speech"
+      ],
       "requiredConfigurationNames": [],
-      "requiredSecretNames": ["DEEPGRAM_API_KEY"],
+      "requiredSecretNames": [
+        "DEEPGRAM_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Aura text-to-speech REST API", "url": "https://developers.deepgram.com/docs/text-to-speech", "checkedAt": "2026-08-02T03:08:58.000Z" },
-        { "title": "Aura voices and languages", "url": "https://developers.deepgram.com/docs/tts-models", "checkedAt": "2026-08-02T03:08:58.000Z" }
+        {
+          "title": "Aura text-to-speech REST API",
+          "url": "https://developers.deepgram.com/docs/text-to-speech",
+          "checkedAt": "2026-08-02T03:08:58.000Z"
+        },
+        {
+          "title": "Aura voices and languages",
+          "url": "https://developers.deepgram.com/docs/tts-models",
+          "checkedAt": "2026-08-02T03:08:58.000Z"
+        }
       ]
     },
     {
@@ -274,9 +600,15 @@
       "supplyFamilyId": "supply.google_vertex",
       "exactModelId": "gemini-3.1-flash-lite-image",
       "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
-      "allowedHosts": ["aiplatform.googleapis.com"],
-      "products": ["ai.image"],
-      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "allowedHosts": [
+        "aiplatform.googleapis.com"
+      ],
+      "products": [
+        "ai.image"
+      ],
+      "requiredConfigurationNames": [
+        "GCP_PROJECT"
+      ],
       "requiredSecretNames": [],
       "selectedForQualification": true,
       "termsStatus": "restricted",
@@ -284,7 +616,11 @@
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Gemini image generation", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/image-generation", "checkedAt": "2026-08-02T02:54:31.000Z" }
+        {
+          "title": "Gemini image generation",
+          "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/image-generation",
+          "checkedAt": "2026-08-02T02:54:31.000Z"
+        }
       ]
     },
     {
@@ -292,9 +628,15 @@
       "supplyFamilyId": "supply.google_vertex",
       "exactModelId": "gemini-3.1-flash-image",
       "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
-      "allowedHosts": ["aiplatform.googleapis.com"],
-      "products": ["ai.image"],
-      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "allowedHosts": [
+        "aiplatform.googleapis.com"
+      ],
+      "products": [
+        "ai.image"
+      ],
+      "requiredConfigurationNames": [
+        "GCP_PROJECT"
+      ],
       "requiredSecretNames": [],
       "selectedForQualification": true,
       "termsStatus": "restricted",
@@ -302,7 +644,11 @@
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Gemini image generation", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/image-generation", "checkedAt": "2026-08-02T02:54:31.000Z" }
+        {
+          "title": "Gemini image generation",
+          "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/image-generation",
+          "checkedAt": "2026-08-02T02:54:31.000Z"
+        }
       ]
     },
     {
@@ -310,9 +656,15 @@
       "supplyFamilyId": "supply.google_vertex",
       "exactModelId": "gemini-3-pro-image",
       "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
-      "allowedHosts": ["aiplatform.googleapis.com"],
-      "products": ["ai.image"],
-      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "allowedHosts": [
+        "aiplatform.googleapis.com"
+      ],
+      "products": [
+        "ai.image"
+      ],
+      "requiredConfigurationNames": [
+        "GCP_PROJECT"
+      ],
       "requiredSecretNames": [],
       "selectedForQualification": true,
       "termsStatus": "restricted",
@@ -320,7 +672,11 @@
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Gemini image generation", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/image-generation", "checkedAt": "2026-08-02T02:54:31.000Z" }
+        {
+          "title": "Gemini image generation",
+          "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/image-generation",
+          "checkedAt": "2026-08-02T02:54:31.000Z"
+        }
       ]
     },
     {
@@ -328,9 +684,15 @@
       "supplyFamilyId": "supply.google_vertex",
       "exactModelId": "gemini-embedding-001",
       "baseUrlPattern": "https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/us-central1/publishers/google/models/{model}:predict",
-      "allowedHosts": ["us-central1-aiplatform.googleapis.com"],
-      "products": ["ai.embed"],
-      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "allowedHosts": [
+        "us-central1-aiplatform.googleapis.com"
+      ],
+      "products": [
+        "ai.embed"
+      ],
+      "requiredConfigurationNames": [
+        "GCP_PROJECT"
+      ],
       "requiredSecretNames": [],
       "selectedForQualification": true,
       "termsStatus": "restricted",
@@ -338,8 +700,16 @@
       "qualificationStatus": "passed",
       "blockerCodes": [],
       "documentation": [
-        { "title": "Get text embeddings", "url": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-text-embeddings", "checkedAt": "2026-08-02T03:18:00.000Z" },
-        { "title": "Vertex AI generative pricing", "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing", "checkedAt": "2026-08-02T03:18:00.000Z" }
+        {
+          "title": "Get text embeddings",
+          "url": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-text-embeddings",
+          "checkedAt": "2026-08-02T03:18:00.000Z"
+        },
+        {
+          "title": "Vertex AI generative pricing",
+          "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+          "checkedAt": "2026-08-02T03:18:00.000Z"
+        }
       ]
     },
     {
@@ -347,17 +717,31 @@
       "supplyFamilyId": "supply.openai_api",
       "exactModelId": "text-embedding-3-large",
       "baseUrlPattern": "https://api.openai.com/v1/",
-      "allowedHosts": ["api.openai.com"],
-      "products": ["ai.embed"],
+      "allowedHosts": [
+        "api.openai.com"
+      ],
+      "products": [
+        "ai.embed"
+      ],
       "requiredConfigurationNames": [],
-      "requiredSecretNames": ["OPENAI_API_KEY"],
+      "requiredSecretNames": [
+        "OPENAI_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "unreviewed",
       "resaleAllowed": false,
       "qualificationStatus": "blocked",
-      "blockerCodes": ["credential_missing", "resale_terms_unresolved", "live_checks_not_run"],
+      "blockerCodes": [
+        "credential_missing",
+        "resale_terms_unresolved",
+        "live_checks_not_run"
+      ],
       "documentation": [
-        { "title": "OpenAI text-embedding-3-large model", "url": "https://developers.openai.com/api/docs/models/text-embedding-3-large", "checkedAt": "2026-08-01T23:45:00.000Z" }
+        {
+          "title": "OpenAI text-embedding-3-large model",
+          "url": "https://developers.openai.com/api/docs/models/text-embedding-3-large",
+          "checkedAt": "2026-08-01T23:45:00.000Z"
+        }
       ]
     },
     {
@@ -365,17 +749,31 @@
       "supplyFamilyId": "supply.openai_api",
       "exactModelId": "gpt-image-2",
       "baseUrlPattern": "https://api.openai.com/v1/",
-      "allowedHosts": ["api.openai.com"],
-      "products": ["ai.image"],
+      "allowedHosts": [
+        "api.openai.com"
+      ],
+      "products": [
+        "ai.image"
+      ],
       "requiredConfigurationNames": [],
-      "requiredSecretNames": ["OPENAI_API_KEY"],
+      "requiredSecretNames": [
+        "OPENAI_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "unreviewed",
       "resaleAllowed": false,
       "qualificationStatus": "blocked",
-      "blockerCodes": ["credential_missing", "resale_terms_unresolved", "live_checks_not_run"],
+      "blockerCodes": [
+        "credential_missing",
+        "resale_terms_unresolved",
+        "live_checks_not_run"
+      ],
       "documentation": [
-        { "title": "OpenAI GPT Image 2 model", "url": "https://developers.openai.com/api/docs/models/gpt-image-2", "checkedAt": "2026-08-01T23:45:00.000Z" }
+        {
+          "title": "OpenAI GPT Image 2 model",
+          "url": "https://developers.openai.com/api/docs/models/gpt-image-2",
+          "checkedAt": "2026-08-01T23:45:00.000Z"
+        }
       ]
     },
     {
@@ -383,24 +781,42 @@
       "supplyFamilyId": "supply.openai_api",
       "exactModelId": "tts-1",
       "baseUrlPattern": "https://api.openai.com/v1/",
-      "allowedHosts": ["api.openai.com"],
-      "products": ["ai.speech"],
+      "allowedHosts": [
+        "api.openai.com"
+      ],
+      "products": [
+        "ai.speech"
+      ],
       "requiredConfigurationNames": [],
-      "requiredSecretNames": ["OPENAI_API_KEY"],
+      "requiredSecretNames": [
+        "OPENAI_API_KEY"
+      ],
       "selectedForQualification": true,
       "termsStatus": "unreviewed",
       "resaleAllowed": false,
       "qualificationStatus": "blocked",
-      "blockerCodes": ["credential_missing", "resale_terms_unresolved", "live_checks_not_run"],
+      "blockerCodes": [
+        "credential_missing",
+        "resale_terms_unresolved",
+        "live_checks_not_run"
+      ],
       "documentation": [
-        { "title": "OpenAI TTS-1 model", "url": "https://developers.openai.com/api/docs/models/tts-1", "checkedAt": "2026-08-01T23:45:00.000Z" }
+        {
+          "title": "OpenAI TTS-1 model",
+          "url": "https://developers.openai.com/api/docs/models/tts-1",
+          "checkedAt": "2026-08-01T23:45:00.000Z"
+        }
       ]
     }
   ],
   "quickAi": {
     "status": "disabled",
     "allowedIdentityPattern": "GPT-labelled routes only after individual qualification",
-    "prohibitedIdentities": ["Claude-labelled routes", "TongKhokr", "MWAPI"],
+    "prohibitedIdentities": [
+      "Claude-labelled routes",
+      "TongKhokr",
+      "MWAPI"
+    ],
     "reason": "No QuickAI route has exact identity, input dependence, streaming, usage, latency, failure, cost, and resale evidence, so the optional supplier remains disabled."
   }
 }

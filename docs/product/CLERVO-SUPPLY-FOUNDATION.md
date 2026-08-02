@@ -139,12 +139,14 @@ disabled without explicit owner approval.
   verification and settlement are positively priced; production remains
   blocked on a hard billing guard and an explicitly owner-approved payment
   proof, while the public facilitator is development-only, never failover.
-- Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
-  routes are fully qualified, and five embedding/image/speech assets passed
-  bounded execution with their remaining integration gaps recorded. Three
-  paid-plan assets remain unavailable under the zero-cash guard.
+- Cloudflare: 61 authenticated non-experimental assets priced. All nineteen
+  production free-allocation chat routes received the same ten-task screen;
+  five passed all eleven live route checks, eight were quality-rejected, two
+  failed full qualification, and eight poor/specialty routes remain pending.
+  Five embedding/image/speech assets passed bounded execution with integration
+  gaps recorded. Three paid-plan assets remain unavailable under the guard.
 - QuickAI and TongKhokr are retired and must not return to active supply.
-- Current qualified internal catalog: 17 exact routes across Clervo gateway,
+- Current qualified internal catalog: 20 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.
 
 Canonical machine-readable state lives in:

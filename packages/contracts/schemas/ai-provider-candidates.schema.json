@@ -41,7 +41,7 @@
     }
   },
   "properties": {
-    "catalogVersion": { "const": "2026-08-02.9" },
+    "catalogVersion": { "const": "2026-08-02.10" },
     "researchedAt": { "type": "string", "format": "date-time" },
     "targets": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/target" } },
     "modalTargets": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/target" } },

@@ -2,7 +2,7 @@
   "contractVersion": "2026-07-29.1",
   "schemaVersion": "ai-model-catalog.v1",
   "catalogId": "aicat_01K0CLERVOFREETIER01",
-  "evaluatedAt": "2026-08-02T04:15:00.210Z",
+  "evaluatedAt": "2026-08-02T06:29:49.120Z",
   "routes": [
     {
       "routeId": "ai.route.aura_2_arcas_en",
@@ -205,7 +205,225 @@
       }
     },
     {
-      "routeId": "ai.route.cf_gpt_oss_120b",
+      "routeId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
+      "providerId": "provider.cloudflare_workers_ai",
+      "supplyFamilyId": "supply.cloudflare_workers_ai",
+      "exactModelId": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "productIds": [
+        "ai.chat"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "streaming",
+        "structured_output",
+        "reasoning"
+      ],
+      "requiredSecretNames": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0CF60073877D4A630A1282C",
+        "routeId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
+        "providerId": "provider.cloudflare_workers_ai",
+        "supplyFamilyId": "supply.cloudflare_workers_ai",
+        "exactModelId": "@cf/meta/llama-4-scout-17b-16e-instruct",
+        "productIds": [
+          "ai.chat"
+        ],
+        "checkedAt": "2026-08-02T06:29:49.120Z",
+        "expiresAt": "2026-08-09T06:29:49.120Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:be3fa2a5e7fa53cf8dffd7bb75ea468c69455b9309f4ae873425d45a2c1a3330"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_text_valid"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:eab4bb6d2c2f506ce4d400a2aaefa24b89452e1fff01e17e8721d1e099da480f"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:6976d17e189472767c8f85db58fa13945c36d9bda204797bbfe8bbbd1cfd8eaf"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed"
+          },
+          {
+            "name": "streaming",
+            "status": "passed",
+            "code": "stream_terminal_usage_valid"
+          },
+          {
+            "name": "structured_output",
+            "status": "passed",
+            "code": "structured_output_valid"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "@cf/meta/llama-4-scout-17b-16e-instruct",
+          "latencyMsP95": 347.92,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "10000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:09fc1647229ff27d70704a9248f6894fe3c56a2066083d230f91767c2bb1cb89"
+      }
+    },
+    {
+      "routeId": "ai.route.cf_nvidia_nemotron_3_120b_a12b",
+      "providerId": "provider.cloudflare_workers_ai",
+      "supplyFamilyId": "supply.cloudflare_workers_ai",
+      "exactModelId": "@cf/nvidia/nemotron-3-120b-a12b",
+      "productIds": [
+        "ai.chat"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "streaming",
+        "structured_output",
+        "reasoning"
+      ],
+      "requiredSecretNames": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0CF34F868EC07DE874D04A1",
+        "routeId": "ai.route.cf_nvidia_nemotron_3_120b_a12b",
+        "providerId": "provider.cloudflare_workers_ai",
+        "supplyFamilyId": "supply.cloudflare_workers_ai",
+        "exactModelId": "@cf/nvidia/nemotron-3-120b-a12b",
+        "productIds": [
+          "ai.chat"
+        ],
+        "checkedAt": "2026-08-02T06:29:49.120Z",
+        "expiresAt": "2026-08-09T06:29:49.120Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:495ea80e17e7cf93925bda2924df2e2f622fe7d0e8a735c41c2e81501873e1a5"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_text_valid"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:e93e8afc3a91ec67ca53eda8f19b6c8b442fe2aa1380ab1fdf6dc7921f051376"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:fd9d2b0e205a7cdbcabe6a0a83eed31a841ce3c12670576c5f9fe0602c00b851"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed"
+          },
+          {
+            "name": "streaming",
+            "status": "passed",
+            "code": "stream_terminal_usage_valid"
+          },
+          {
+            "name": "structured_output",
+            "status": "passed",
+            "code": "structured_output_valid"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "@cf/nvidia/nemotron-3-120b-a12b",
+          "latencyMsP95": 6970.98,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "10000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:bca7d0af31b652992284268e96fd3bf2cfb3cab6946f8e7dec06e0d4f99e04ec"
+      }
+    },
+    {
+      "routeId": "ai.route.cf_openai_gpt_oss_120b",
       "providerId": "provider.cloudflare_workers_ai",
       "supplyFamilyId": "supply.cloudflare_workers_ai",
       "exactModelId": "@cf/openai/gpt-oss-120b",
@@ -226,16 +444,16 @@
       "qualification": {
         "contractVersion": "2026-07-29.1",
         "schemaVersion": "ai-route-qualification.v1",
-        "qualificationId": "aiqual_01K0CFGPTOSS120B00001",
-        "routeId": "ai.route.cf_gpt_oss_120b",
+        "qualificationId": "aiqual_01K0CFAB91939595AC9978C5DA",
+        "routeId": "ai.route.cf_openai_gpt_oss_120b",
         "providerId": "provider.cloudflare_workers_ai",
         "supplyFamilyId": "supply.cloudflare_workers_ai",
         "exactModelId": "@cf/openai/gpt-oss-120b",
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T04:15:00.210Z",
-        "expiresAt": "2026-08-09T04:15:00.210Z",
+        "checkedAt": "2026-08-02T06:29:49.120Z",
+        "expiresAt": "2026-08-09T06:29:49.120Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -243,72 +461,66 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "evidenceHash": "sha256:97d99b18e327c2a19ad3b25983226e7bda2df51de706fc19c995fd99361fcb40"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_text_valid",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "bounded_text_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "evidenceHash": "sha256:180c0ec8681d570fcdaac22d1b9116b84c87729c812bdf0a5ec494668364f752"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "evidenceHash": "sha256:de3cc06284a2dfbf6ce4ba7904950c042dcecc6f70a0a50d3accefdf22b44b98"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "value_added_use_restricted",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "resale_terms_confirmed"
           },
           {
             "name": "streaming",
             "status": "passed",
-            "code": "stream_terminal_usage_valid",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "stream_terminal_usage_valid"
           },
           {
             "name": "structured_output",
             "status": "passed",
-            "code": "structured_output_valid",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "structured_output_valid"
           }
         ],
         "observed": {
           "modelIdentity": "@cf/openai/gpt-oss-120b",
-          "latencyMsP95": 586.27,
+          "latencyMsP95": 730.42,
           "maximumSupplierCost": {
             "asset": "USD",
             "amountAtomic": "10000",
@@ -316,11 +528,11 @@
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:ddb3f7f3f967fa9fdf0f2a21f3254d690c7d6d07361c3cf7e647e15b8fa80ab4"
+        "qualificationHash": "sha256:d9400999ee64ed4f513863ab48d1a537d93db46777785072fc3936d875d6f5ee"
       }
     },
     {
-      "routeId": "ai.route.cf_gpt_oss_20b",
+      "routeId": "ai.route.cf_openai_gpt_oss_20b",
       "providerId": "provider.cloudflare_workers_ai",
       "supplyFamilyId": "supply.cloudflare_workers_ai",
       "exactModelId": "@cf/openai/gpt-oss-20b",
@@ -341,16 +553,16 @@
       "qualification": {
         "contractVersion": "2026-07-29.1",
         "schemaVersion": "ai-route-qualification.v1",
-        "qualificationId": "aiqual_01K0CFGPTOSS20B000001",
-        "routeId": "ai.route.cf_gpt_oss_20b",
+        "qualificationId": "aiqual_01K0CF004F665C1833C11324F4",
+        "routeId": "ai.route.cf_openai_gpt_oss_20b",
         "providerId": "provider.cloudflare_workers_ai",
         "supplyFamilyId": "supply.cloudflare_workers_ai",
         "exactModelId": "@cf/openai/gpt-oss-20b",
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T04:15:00.210Z",
-        "expiresAt": "2026-08-09T04:15:00.210Z",
+        "checkedAt": "2026-08-02T06:29:49.120Z",
+        "expiresAt": "2026-08-09T06:29:49.120Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -358,72 +570,66 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "evidenceHash": "sha256:17f1189df78a4b8d24f9ca0611d6594f33bfa22c5bb3e5ece48f5d8359232a26"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_text_valid",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "bounded_text_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "evidenceHash": "sha256:0f0820e5b01618d1038d69c9b71723114333976cf5367aec989cefc17e6aeec7"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "evidenceHash": "sha256:8c4cd3d17ac5996ce4dc4ee50dd451d51b7c5649eaeb847da9f20f6823f2b653"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "value_added_use_restricted",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "resale_terms_confirmed"
           },
           {
             "name": "streaming",
             "status": "passed",
-            "code": "stream_terminal_usage_valid",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "stream_terminal_usage_valid"
           },
           {
             "name": "structured_output",
             "status": "passed",
-            "code": "structured_output_valid",
-            "evidenceHash": "sha256:8dcdd0f8e461b7748702534089a45efaf93160d0a0e0a469bec6880ba87afc31"
+            "code": "structured_output_valid"
           }
         ],
         "observed": {
           "modelIdentity": "@cf/openai/gpt-oss-20b",
-          "latencyMsP95": 904.1,
+          "latencyMsP95": 1044.7,
           "maximumSupplierCost": {
             "asset": "USD",
             "amountAtomic": "10000",
@@ -431,7 +637,116 @@
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:041b3e274ab1ddd94704912ee3de1192ebd9e26aaadd2502cda13d5dec847612"
+        "qualificationHash": "sha256:b2837af103add84948a09f009eb00bd703210ebcb5824cefa0d0c771024d4967"
+      }
+    },
+    {
+      "routeId": "ai.route.cf_qwen_qwen3_30b_a3b_fp8",
+      "providerId": "provider.cloudflare_workers_ai",
+      "supplyFamilyId": "supply.cloudflare_workers_ai",
+      "exactModelId": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "productIds": [
+        "ai.chat"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "streaming",
+        "structured_output",
+        "reasoning"
+      ],
+      "requiredSecretNames": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0CF68EC4DEDB371F6A5ADEA",
+        "routeId": "ai.route.cf_qwen_qwen3_30b_a3b_fp8",
+        "providerId": "provider.cloudflare_workers_ai",
+        "supplyFamilyId": "supply.cloudflare_workers_ai",
+        "exactModelId": "@cf/qwen/qwen3-30b-a3b-fp8",
+        "productIds": [
+          "ai.chat"
+        ],
+        "checkedAt": "2026-08-02T06:29:49.120Z",
+        "expiresAt": "2026-08-09T06:29:49.120Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:54ffb1c16d7d7770e16d676bc9a8d8847552958e6e6f581514a6fb391c27abdc"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_text_valid"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:2b92c225939b1dd0a56f877341425b38f5d7d27e1e9e3662e3acc9c7436e1fa9"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:295795c4d6d3df10c79e4d7730010fc91d0d44dca145272f8b8c22dbdbfe41b4"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed"
+          },
+          {
+            "name": "streaming",
+            "status": "passed",
+            "code": "stream_terminal_usage_valid"
+          },
+          {
+            "name": "structured_output",
+            "status": "passed",
+            "code": "structured_output_valid"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "@cf/qwen/qwen3-30b-a3b-fp8",
+          "latencyMsP95": 3535.8,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "10000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:eb335eba5569729f0f90ba66d65573bfbd5f0bac0453d317411cc0e3c9a21bcd"
       }
     },
     {
@@ -1821,5 +2136,5 @@
     "supply.google_vertex",
     "supply.groq"
   ],
-  "catalogHash": "sha256:8ce6e9d6a005a26ecad4d4d89e98b9f90090cf33ee5cc3a5e5bb0f1a59360269"
+  "catalogHash": "sha256:39d37382a851312ad2e0bd57023870a28f5cce9a319a324ed46f2002fbbdde0e"
 }

@@ -77,7 +77,7 @@ test('screened Clervo, Vertex, Deepgram, Groq, and Cloudflare routes preserve qu
   assert.deepEqual(independentBlocked.map(({ providerId }) => providerId), ['provider.google_gemini']);
   assert.deepEqual(independentBlocked.map(({ exactModelId }) => exactModelId), ['gemini-3.6-flash']);
   assert.ok(independentBlocked.every(({ selectedForQualification, termsStatus, resaleAllowed, qualificationStatus, blockerCodes, requiredSecretNames }) => selectedForQualification && termsStatus === 'unreviewed' && resaleAllowed === false && qualificationStatus === 'blocked' && blockerCodes.includes('credential_missing') && blockerCodes.includes('live_checks_not_run') && requiredSecretNames.length > 0));
-  assert.deepEqual(cloudflare.map(({ exactModelId }) => exactModelId), ['@cf/openai/gpt-oss-20b', '@cf/openai/gpt-oss-120b']);
+  assert.deepEqual(cloudflare.map(({ exactModelId }) => exactModelId), ['@cf/meta/llama-4-scout-17b-16e-instruct', '@cf/nvidia/nemotron-3-120b-a12b', '@cf/openai/gpt-oss-120b', '@cf/openai/gpt-oss-20b', '@cf/qwen/qwen3-30b-a3b-fp8']);
   assert.ok(cloudflare.every(({ supplyFamilyId, selectedForQualification, termsStatus, resaleAllowed, qualificationStatus, blockerCodes, requiredSecretNames }) => supplyFamilyId === 'supply.cloudflare_workers_ai' && selectedForQualification && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'passed' && blockerCodes.length === 0 && requiredSecretNames.includes('CLOUDFLARE_API_TOKEN')));
   assert.ok([...groq, ...independentBlocked, ...cloudflare].flatMap(({ documentation }) => documentation).every(({ url }) => /^https:\/(?:\/ai\.google\.dev|\/console\.groq\.com|\/developers\.cloudflare\.com|\/www\.cloudflare\.com)/u.test(url)));
   const vertexImages = candidates.modalTargets.filter(({ providerId, products }) => providerId === 'provider.google_vertex' && products.includes('ai.image'));
@@ -101,7 +101,7 @@ test('screened Clervo, Vertex, Deepgram, Groq, and Cloudflare routes preserve qu
 test('live exact routes form a valid qualified and sellable internal model catalog', async () => {
   const catalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
   assert.equal(verifyAiModelCatalog(catalog), true);
-  assert.equal(catalog.routes.length, 17);
+  assert.equal(catalog.routes.length, 20);
   assert.ok(catalog.routes.every(({ qualification }) => qualification.status === 'passed'));
   assert.deepEqual(catalog.qualifiedSupplyFamilies, ['supply.clervo_ai_gateway', 'supply.cloudflare_workers_ai', 'supply.deepgram', 'supply.google_vertex', 'supply.groq']);
   const gatewayPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-launch-pricing.v1.json'), 'utf8'));
@@ -428,20 +428,17 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
     ['@cf/moonshotai/kimi-k2.7-code', 'priced_requires_paid_plan'],
     ['@cf/zai-org/glm-5.2', 'priced_requires_paid_plan'],
   ]);
-  assert.equal(pricing.assets.filter(({ accessStatus, listingStatus }) => accessStatus === 'free_allocation_available' && listingStatus === 'sellable').length, 2);
-  assert.ok(pricing.assets.filter(({ accessStatus, listingStatus }) => accessStatus === 'free_allocation_available' && listingStatus !== 'sellable').every(({ listingStatus }) => listingStatus === 'priced_pending_qualification'));
-  assert.deepEqual(pricing.assets.filter(({ qualityGrade }) => qualityGrade !== 'unranked').map(({ modelId, qualityGrade }) => [modelId, qualityGrade]), [
-    ['@cf/baai/bge-m3', 'good'],
-    ['@cf/deepgram/aura-2-en', 'good'],
-    ['@cf/deepgram/nova-3', 'best'],
-    ['@cf/google/gemma-4-26b-a4b-it', 'good'],
-    ['@cf/ibm-granite/granite-4.0-h-micro', 'poor'],
-    ['@cf/openai/gpt-oss-120b', 'best'],
-    ['@cf/openai/gpt-oss-20b', 'best'],
-    ['@cf/openai/whisper-large-v3-turbo', 'good'],
-    ['@cf/qwen/qwen3-30b-a3b-fp8', 'good'],
-    ['@cf/zai-org/glm-4.7-flash', 'poor'],
-  ]);
+  assert.equal(pricing.assets.filter(({ accessStatus, listingStatus }) => accessStatus === 'free_allocation_available' && listingStatus === 'sellable').length, 5);
+  assert.deepEqual(Object.fromEntries(Object.entries(Object.groupBy(pricing.assets, ({ qualityGrade }) => qualityGrade)).map(([grade, rows]) => [grade, rows.length])), { best: 3, good: 8, poor: 4, rejected: 8, unranked: 38 });
+  assert.deepEqual(Object.fromEntries(Object.entries(Object.groupBy(pricing.assets.filter(({ task }) => task === 'Text Generation'), ({ listingStatus }) => listingStatus)).map(([status, rows]) => [status, rows.length])), { priced_pending_qualification: 8, priced_quality_rejected: 8, priced_qualification_failed: 2, priced_requires_paid_plan: 3, sellable: 5 });
+  const expandedQuality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-production-chat-quality.v1.json'), 'utf8'));
+  assert.equal(expandedQuality.externalCalls, 190);
+  assert.equal(expandedQuality.models.length, 19);
+  assert.ok(expandedQuality.models.every(({ total, fundingBlocked, quotaBlocked }) => total === 10 && fundingBlocked === false && quotaBlocked === false));
+  const expandedQualification = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-expanded-chat-qualification.v1.json'), 'utf8'));
+  assert.equal(expandedQualification.externalCalls, 35);
+  assert.equal(expandedQualification.ownerCashSpentUsd, 0);
+  assert.deepEqual(expandedQualification.qualifications.filter(({ status }) => status === 'passed').map(({ exactModelId }) => exactModelId), ['@cf/meta/llama-4-scout-17b-16e-instruct', '@cf/nvidia/nemotron-3-120b-a12b', '@cf/openai/gpt-oss-120b', '@cf/openai/gpt-oss-20b', '@cf/qwen/qwen3-30b-a3b-fp8']);
   const quality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-chat-quality-screen.v1.json'), 'utf8'));
   assert.equal(quality.execution.externalCalls, 40);
   assert.equal(quality.execution.ownerCashSpentUsd, 0);

@@ -1,0 +1,525 @@
+{
+  "schemaVersion": "clervo.cloudflare-chat-quality-run.v1",
+  "evaluatedAt": "2026-08-02T06:19:28.501Z",
+  "corpusSha256": "sha256:63c21bd50febc2c243e42e2c7c4e557fa0b66eb6d378a3a027e0e52783558efb",
+  "ownerCashSpentUsd": 0,
+  "freeAllocationBacked": true,
+  "promptOrOutputPayloadsRecorded": false,
+  "externalCalls": 190,
+  "models": [
+    {
+      "model": "@cf/aisingapore/gemma-sea-lion-v4-27b-it",
+      "passed": 7,
+      "total": 10,
+      "scoreBasisPoints": 7000,
+      "qualityGrade": "good",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 320.1,
+      "latencyMsP95": 794.99,
+      "httpStatusCounts": {
+        "200": 9,
+        "400": 1
+      },
+      "identityMatches": 8,
+      "answerMatches": 7,
+      "usageValid": 8,
+      "categoryPasses": {
+        "reasoning": 2,
+        "structured_output": 1,
+        "coding": 1,
+        "commerce_safety": 1,
+        "security": 0,
+        "grounding": 1,
+        "multilingual": 1,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "qualityGrade": "rejected",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 9825.84,
+      "latencyMsP95": 25407.41,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 0,
+      "answerMatches": 0,
+      "usageValid": 0,
+      "categoryPasses": {
+        "reasoning": 0,
+        "structured_output": 0,
+        "coding": 0,
+        "commerce_safety": 0,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 0,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/google/gemma-4-26b-a4b-it",
+      "passed": 6,
+      "total": 10,
+      "scoreBasisPoints": 6000,
+      "qualityGrade": "poor",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 3385.09,
+      "latencyMsP95": 5342.58,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 8,
+      "answerMatches": 6,
+      "usageValid": 8,
+      "categoryPasses": {
+        "reasoning": 3,
+        "structured_output": 1,
+        "coding": 0,
+        "commerce_safety": 0,
+        "security": 0,
+        "grounding": 1,
+        "multilingual": 1,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/ibm-granite/granite-4.0-h-micro",
+      "passed": 3,
+      "total": 10,
+      "scoreBasisPoints": 3000,
+      "qualityGrade": "rejected",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 394.03,
+      "latencyMsP95": 1984.99,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 5,
+      "answerMatches": 3,
+      "usageValid": 5,
+      "categoryPasses": {
+        "reasoning": 0,
+        "structured_output": 1,
+        "coding": 0,
+        "commerce_safety": 1,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 1,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/meta/llama-3.1-8b-instruct-fp8",
+      "passed": 4,
+      "total": 10,
+      "scoreBasisPoints": 4000,
+      "qualityGrade": "poor",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 416.74,
+      "latencyMsP95": 2154.8,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 8,
+      "answerMatches": 4,
+      "usageValid": 8,
+      "categoryPasses": {
+        "reasoning": 1,
+        "structured_output": 1,
+        "coding": 0,
+        "commerce_safety": 1,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 1,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/meta/llama-3.2-11b-vision-instruct",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "qualityGrade": "rejected",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 55.46,
+      "latencyMsP95": 138.65,
+      "httpStatusCounts": {
+        "403": 10
+      },
+      "identityMatches": 0,
+      "answerMatches": 0,
+      "usageValid": 0,
+      "categoryPasses": {
+        "reasoning": 0,
+        "structured_output": 0,
+        "coding": 0,
+        "commerce_safety": 0,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 0,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/meta/llama-3.2-1b-instruct",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "qualityGrade": "rejected",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 394.01,
+      "latencyMsP95": 1711,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 2,
+      "answerMatches": 0,
+      "usageValid": 2,
+      "categoryPasses": {
+        "reasoning": 0,
+        "structured_output": 0,
+        "coding": 0,
+        "commerce_safety": 0,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 0,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/meta/llama-3.2-3b-instruct",
+      "passed": 5,
+      "total": 10,
+      "scoreBasisPoints": 5000,
+      "qualityGrade": "poor",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 249.15,
+      "latencyMsP95": 364.9,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 10,
+      "answerMatches": 5,
+      "usageValid": 10,
+      "categoryPasses": {
+        "reasoning": 1,
+        "structured_output": 1,
+        "coding": 1,
+        "commerce_safety": 1,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 1,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+      "passed": 5,
+      "total": 10,
+      "scoreBasisPoints": 5000,
+      "qualityGrade": "poor",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 405.79,
+      "latencyMsP95": 2191.58,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 7,
+      "answerMatches": 5,
+      "usageValid": 7,
+      "categoryPasses": {
+        "reasoning": 0,
+        "structured_output": 1,
+        "coding": 0,
+        "commerce_safety": 1,
+        "security": 1,
+        "grounding": 1,
+        "multilingual": 1,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "passed": 8,
+      "total": 10,
+      "scoreBasisPoints": 8000,
+      "qualityGrade": "good",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 334.87,
+      "latencyMsP95": 942.22,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 10,
+      "answerMatches": 8,
+      "usageValid": 10,
+      "categoryPasses": {
+        "reasoning": 3,
+        "structured_output": 1,
+        "coding": 1,
+        "commerce_safety": 1,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 1,
+        "instruction_following": 1
+      }
+    },
+    {
+      "model": "@cf/meta/llama-guard-3-8b",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "qualityGrade": "rejected",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 54.62,
+      "latencyMsP95": 153.15,
+      "httpStatusCounts": {
+        "400": 10
+      },
+      "identityMatches": 0,
+      "answerMatches": 0,
+      "usageValid": 0,
+      "categoryPasses": {
+        "reasoning": 0,
+        "structured_output": 0,
+        "coding": 0,
+        "commerce_safety": 0,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 0,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/mistralai/mistral-small-3.1-24b-instruct",
+      "passed": 7,
+      "total": 10,
+      "scoreBasisPoints": 7000,
+      "qualityGrade": "good",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 317.73,
+      "latencyMsP95": 1232.15,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 10,
+      "answerMatches": 7,
+      "usageValid": 10,
+      "categoryPasses": {
+        "reasoning": 2,
+        "structured_output": 1,
+        "coding": 1,
+        "commerce_safety": 1,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 1,
+        "instruction_following": 1
+      }
+    },
+    {
+      "model": "@cf/nvidia/nemotron-3-120b-a12b",
+      "passed": 10,
+      "total": 10,
+      "scoreBasisPoints": 10000,
+      "qualityGrade": "best",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 3056.76,
+      "latencyMsP95": 12079.6,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 10,
+      "answerMatches": 10,
+      "usageValid": 10,
+      "categoryPasses": {
+        "reasoning": 3,
+        "structured_output": 1,
+        "coding": 1,
+        "commerce_safety": 1,
+        "security": 1,
+        "grounding": 1,
+        "multilingual": 1,
+        "instruction_following": 1
+      }
+    },
+    {
+      "model": "@cf/openai/gpt-oss-120b",
+      "passed": 10,
+      "total": 10,
+      "scoreBasisPoints": 10000,
+      "qualityGrade": "best",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 1432.21,
+      "latencyMsP95": 2194.96,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 10,
+      "answerMatches": 10,
+      "usageValid": 10,
+      "categoryPasses": {
+        "reasoning": 3,
+        "structured_output": 1,
+        "coding": 1,
+        "commerce_safety": 1,
+        "security": 1,
+        "grounding": 1,
+        "multilingual": 1,
+        "instruction_following": 1
+      }
+    },
+    {
+      "model": "@cf/openai/gpt-oss-20b",
+      "passed": 8,
+      "total": 10,
+      "scoreBasisPoints": 8000,
+      "qualityGrade": "good",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 1287.62,
+      "latencyMsP95": 12723.39,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 10,
+      "answerMatches": 8,
+      "usageValid": 10,
+      "categoryPasses": {
+        "reasoning": 2,
+        "structured_output": 1,
+        "coding": 1,
+        "commerce_safety": 1,
+        "security": 0,
+        "grounding": 1,
+        "multilingual": 1,
+        "instruction_following": 1
+      }
+    },
+    {
+      "model": "@cf/qwen/qwen2.5-coder-32b-instruct",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "qualityGrade": "rejected",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 367.74,
+      "latencyMsP95": 1154.68,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 7,
+      "answerMatches": 0,
+      "usageValid": 7,
+      "categoryPasses": {
+        "reasoning": 0,
+        "structured_output": 0,
+        "coding": 0,
+        "commerce_safety": 0,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 0,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "passed": 7,
+      "total": 10,
+      "scoreBasisPoints": 7000,
+      "qualityGrade": "good",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 3096.46,
+      "latencyMsP95": 8234.17,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 10,
+      "answerMatches": 7,
+      "usageValid": 10,
+      "categoryPasses": {
+        "reasoning": 3,
+        "structured_output": 0,
+        "coding": 1,
+        "commerce_safety": 1,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 1,
+        "instruction_following": 1
+      }
+    },
+    {
+      "model": "@cf/qwen/qwq-32b",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "qualityGrade": "rejected",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 11513.27,
+      "latencyMsP95": 15275.21,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 0,
+      "answerMatches": 0,
+      "usageValid": 0,
+      "categoryPasses": {
+        "reasoning": 0,
+        "structured_output": 0,
+        "coding": 0,
+        "commerce_safety": 0,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 0,
+        "instruction_following": 0
+      }
+    },
+    {
+      "model": "@cf/zai-org/glm-4.7-flash",
+      "passed": 2,
+      "total": 10,
+      "scoreBasisPoints": 2000,
+      "qualityGrade": "rejected",
+      "fundingBlocked": false,
+      "quotaBlocked": false,
+      "latencyMsP50": 13840.37,
+      "latencyMsP95": 23984.68,
+      "httpStatusCounts": {
+        "200": 10
+      },
+      "identityMatches": 10,
+      "answerMatches": 2,
+      "usageValid": 10,
+      "categoryPasses": {
+        "reasoning": 0,
+        "structured_output": 1,
+        "coding": 0,
+        "commerce_safety": 1,
+        "security": 0,
+        "grounding": 0,
+        "multilingual": 0,
+        "instruction_following": 0
+      }
+    }
+  ]
+}

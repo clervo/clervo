@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.ai-edge-free-pricing.v1",
-  "priceVersion": "2026-08-02.1",
-  "evaluatedAt": "2026-08-02T03:40:23.433Z",
+  "priceVersion": "2026-08-02.2",
+  "evaluatedAt": "2026-08-02T06:29:49.120Z",
   "currency": "USD",
   "providerVisibility": "internal_only",
   "policy": {
@@ -67,8 +67,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_qualification_failed",
+      "qualityGrade": "good",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -444,8 +444,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_quality_rejected",
+      "qualityGrade": "rejected",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -516,7 +516,7 @@
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
       "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "good",
+      "qualityGrade": "poor",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -591,8 +591,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "poor",
+      "listingStatus": "priced_quality_rejected",
+      "qualityGrade": "rejected",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -747,7 +747,7 @@
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
       "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "qualityGrade": "poor",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -777,8 +777,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_quality_rejected",
+      "qualityGrade": "rejected",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -808,8 +808,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_quality_rejected",
+      "qualityGrade": "rejected",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -840,7 +840,7 @@
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
       "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "qualityGrade": "poor",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -871,7 +871,7 @@
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
       "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "qualityGrade": "poor",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -901,8 +901,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "sellable",
+      "qualityGrade": "good",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -932,8 +932,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_quality_rejected",
+      "qualityGrade": "rejected",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -1039,8 +1039,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_qualification_failed",
+      "qualityGrade": "good",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -1202,8 +1202,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "sellable",
+      "qualityGrade": "best",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -1265,7 +1265,7 @@
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
       "listingStatus": "sellable",
-      "qualityGrade": "best",
+      "qualityGrade": "good",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -1405,8 +1405,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_quality_rejected",
+      "qualityGrade": "rejected",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -1436,7 +1436,7 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "sellable",
       "qualityGrade": "good",
       "supplierPriceKnown": true,
       "supplierPrices": [
@@ -1490,8 +1490,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_quality_rejected",
+      "qualityGrade": "rejected",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -1590,8 +1590,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "poor",
+      "listingStatus": "priced_quality_rejected",
+      "qualityGrade": "rejected",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {

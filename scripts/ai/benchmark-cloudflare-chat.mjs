@@ -7,14 +7,10 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const corpusPath = path.join(root, 'benchmarks/stage6/clervo-gateway-quality-screen.v1.json');
-const supportedModels = [
-  '@cf/openai/gpt-oss-20b',
-  '@cf/openai/gpt-oss-120b',
-  '@cf/google/gemma-4-26b-a4b-it',
-  '@cf/qwen/qwen3-30b-a3b-fp8',
-  '@cf/zai-org/glm-4.7-flash',
-  '@cf/ibm-granite/granite-4.0-h-micro',
-];
+const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-edge-free-pricing.v1.json'), 'utf8'));
+const supportedModels = pricing.assets
+  .filter(({ task, lifecycle, accessStatus }) => task === 'Text Generation' && lifecycle === 'production' && accessStatus === 'free_allocation_available')
+  .map(({ modelId }) => modelId);
 const requested = process.env.CLOUDFLARE_BENCHMARK_MODELS?.split(',').filter(Boolean);
 const models = requested ?? supportedModels;
 if (models.length === 0 || models.some((model) => !supportedModels.includes(model))) throw new TypeError('cloudflare_benchmark_model_selection_invalid');
@@ -66,8 +62,11 @@ for (const model of models) {
     const answerMatches = observed.parsed !== undefined && JSON.stringify(canonical(observed.parsed)) === JSON.stringify(canonical(task.expected));
     const usageValid = Number.isSafeInteger(observed.usage?.prompt_tokens) && observed.usage.prompt_tokens > 0 && Number.isSafeInteger(observed.usage?.completion_tokens) && observed.usage.completion_tokens > 0;
     results.push({ taskId: task.taskId, category: task.category, passed: observed.status === 200 && identityMatches && answerMatches && usageValid, status: observed.status, latencyMs: observed.latencyMs, identityMatches, answerMatches, usageValid, failureCode: observed.failureCode });
+    if (observed.status === 402 || observed.status === 429) break;
   }
   const passed = results.filter(({ passed }) => passed).length;
-  report.models.push({ model, passed, total: results.length, scoreBasisPoints: passed * 1000, latencyMsP50: percentile(results.map(({ latencyMs }) => latencyMs), 0.5), latencyMsP95: percentile(results.map(({ latencyMs }) => latencyMs), 0.95), results });
+  const scoreBasisPoints = Math.round((passed / results.length) * 10_000);
+  const qualityGrade = results.length < corpus.tasks.length ? 'unranked' : scoreBasisPoints >= 9000 ? 'best' : scoreBasisPoints >= 7000 ? 'good' : scoreBasisPoints >= 4000 ? 'poor' : 'rejected';
+  report.models.push({ model, passed, total: results.length, scoreBasisPoints, qualityGrade, fundingBlocked: results.some(({ status }) => status === 402), quotaBlocked: results.some(({ status }) => status === 429), latencyMsP50: percentile(results.map(({ latencyMs }) => latencyMs), 0.5), latencyMsP95: percentile(results.map(({ latencyMs }) => latencyMs), 0.95), results });
 }
 process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
