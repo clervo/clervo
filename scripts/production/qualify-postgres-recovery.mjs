@@ -198,17 +198,17 @@ try {
     '--no-owner',
     '--no-privileges',
     '--file',
-    '/tmp/clervo.dump',
+    '/var/lib/postgresql/clervo.dump',
   ]);
   const archivePath = path.join(backupDirectory, 'clervo.dump');
-  docker(['cp', `${sourceName}:/tmp/clervo.dump`, archivePath]);
+  docker(['cp', `${sourceName}:/var/lib/postgresql/clervo.dump`, archivePath]);
   const archiveBytes = await readFile(archivePath);
   assert.ok((await stat(archivePath)).size > 0);
   const archiveHash = `sha256:${createHash('sha256').update(archiveBytes).digest('hex')}`;
 
   startDatabase(restoreName, restoreVolume, policy.restoreDatabase);
   await waitReady(restoreName);
-  docker(['cp', archivePath, `${restoreName}:/tmp/clervo.dump`]);
+  docker(['cp', archivePath, `${restoreName}:/var/lib/postgresql/clervo.dump`]);
   docker([
     'exec',
     restoreName,
@@ -221,7 +221,7 @@ try {
     '--single-transaction',
     '--no-owner',
     '--no-privileges',
-    '/tmp/clervo.dump',
+    '/var/lib/postgresql/clervo.dump',
   ]);
   restorePool = poolFor(restoreName, policy.restoreDatabase);
   const restoredStore = new PostgresSearchStateStore(restorePool, { environmentNamespace: policy.environmentNamespace });
