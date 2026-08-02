@@ -167,7 +167,7 @@ leases, and two hours for hashed quota subjects. Planning is count-only;
 deletion requires an exact untracked confirmation and production deletion
 still requires owner approval. No production/customer database deletion was
 performed. The new image is qualified locally at source commit
-`565ea2d0e7b0`. Its build remains on the exact Node 24.18.1 image, while the
+`3037a9e6def4`. Its build remains on the exact Node 24.18.1 image, while the
 runtime is now the exact non-root Node 24 distroless image and contains no
 shell or package manager. A digest-pinned Trivy 0.72.0 scanner downloaded its
 database before entering the offline scan boundary and never received the
@@ -195,6 +195,14 @@ requests at client concurrency eight all succeeded with roughly 10 ms p95 in
 the recorded local harness. Active work never exceeded 16, useful traffic
 recovered immediately, and combined client/server RSS growth stayed below the
 192 MiB harness ceiling. No provider, cloud, or payment call occurred.
+
+An independent traffic control now stops new free and paid execution before
+body processing while leaving liveness available and readiness unavailable.
+Restoration requires an explicit successful probe; a stopped local service
+executed nothing, rejected work with retry guidance, refused an unproven
+restore, then returned useful traffic after the bounded probe. The rollback
+policy requires a preceding verified immutable registry digest and fails closed
+when none exists. No remote traffic or revision was changed.
 
 The exact digest-pinned PostgreSQL 18.4 image now passes a disposable live
 recovery qualification. All three migrations applied; atomic claim, completion,
