@@ -161,11 +161,15 @@ and an exact production process refuses memory-only state. The HTTP runtime now
 caps active executions, request/header duration, keep-alive reuse, and requests
 per socket. A bounded overload drill admitted exactly two useful executions,
 rejected eight excess requests with explicit retry guidance, recovered, and
-replayed without duplicate execution. The new image is qualified locally at
-source commit `fad4d2df54f5`. This is not production
+replayed without duplicate execution. State retention is now bounded to 24
+hours for completed free-search envelopes, one hour beyond expired execution
+leases, and two hours for hashed quota subjects. Planning is count-only;
+deletion requires an exact untracked confirmation and production deletion
+still requires owner approval. No database deletion was performed. The new
+image is qualified locally at source commit `ca09beea7aba`. This is not production
 readiness: the PostgreSQL migration still needs a live restore-backed
 qualification, and registry digest, signed provenance, scans, rollback, load,
-monitoring delivery, retention, and an owner-approved cloud release remain
+monitoring delivery, live retention deletion proof, and an owner-approved cloud release remain
 pending.
 
 ## Live qualification result
