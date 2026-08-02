@@ -121,7 +121,9 @@ test('GCP operator script is pinned to the authorized target and fails closed wi
   assert.match(source, /--max-instances 1/u);
 
   const entryPoint = spawnSync('cat', ['./apps/api/src/staging-search-main.mjs'], { cwd: repositoryRoot, encoding: 'utf8' }).stdout;
-  assert.match(entryPoint, /allowMockPaidExecution: false/u);
+  assert.match(entryPoint, /environment !== 'stage4-private-qualification'/u);
+  assert.match(entryPoint, /private_mock_commerce_boundary_invalid/u);
+  assert.match(entryPoint, /allowMockPaidExecution: privateMockCommerceEnabled/u);
 
   const result = spawnSync('/bin/bash', ['./scripts/gcp-staging.sh', 'inspect'], {
     cwd: repositoryRoot,
@@ -134,12 +136,16 @@ test('GCP operator script is pinned to the authorized target and fails closed wi
 
 test('container artifact pins the runtime, builds before runtime, and drops root', async () => {
   const dockerfile = await readFile(path.join(repositoryRoot, 'Dockerfile'), 'utf8');
-  assert.match(dockerfile, /^FROM node:24\.18\.1-bookworm-slim AS build$/mu);
+  assert.match(dockerfile, /^FROM node:24\.18\.1-bookworm-slim@sha256:[a-f0-9]{64} AS build$/mu);
+  assert.match(dockerfile, /^FROM node:24\.18\.1-bookworm-slim@sha256:[a-f0-9]{64} AS runtime$/mu);
   assert.match(dockerfile, /COPY \.nvmrc \.node-version \.tool-versions \.\//u);
   assert.match(dockerfile, /COPY infra\/stack-versions\.env \.\/infra\/stack-versions\.env/u);
   assert.match(dockerfile, /COPY scripts\/verify-runtime\.mjs \.\/scripts\/verify-runtime\.mjs/u);
+  assert.match(dockerfile, /COPY adapters \.\/adapters/u);
   assert.match(dockerfile, /RUN npm run build/u);
-  assert.match(dockerfile, /^USER node$/mu);
+  assert.match(dockerfile, /^USER 1000:1000$/mu);
+  assert.match(dockerfile, /^STOPSIGNAL SIGTERM$/mu);
+  assert.match(dockerfile, /^HEALTHCHECK /mu);
   assert.match(dockerfile, /staging-search-main\.mjs/u);
 });
 
