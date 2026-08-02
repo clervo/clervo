@@ -165,12 +165,21 @@ replayed without duplicate execution. State retention is now bounded to 24
 hours for completed free-search envelopes, one hour beyond expired execution
 leases, and two hours for hashed quota subjects. Planning is count-only;
 deletion requires an exact untracked confirmation and production deletion
-still requires owner approval. No database deletion was performed. The new
-image is qualified locally at source commit `ca09beea7aba`. This is not production
-readiness: the PostgreSQL migration still needs a live restore-backed
-qualification, and registry digest, signed provenance, scans, rollback, load,
-monitoring delivery, live retention deletion proof, and an owner-approved cloud release remain
-pending.
+still requires owner approval. No production/customer database deletion was
+performed. The new image is qualified locally at source commit
+`ca09beea7aba`. This is not production readiness.
+
+The exact digest-pinned PostgreSQL 18.4 image now passes a disposable live
+recovery qualification. All three migrations applied; atomic claim, completion,
+replay, conflict, and quota behavior passed; completed state survived a
+database process restart; a custom-format backup restored into a separate clean
+database; restored replay matched; and expired retention was applied against
+qualification-only rows. Both containers, both volumes, and the temporary
+archive were then verified absent. This proves the portable local recovery
+path, not managed production backup scheduling or point-in-time recovery.
+Registry digest, signed provenance, scans, remote rollback, full load,
+monitoring delivery, managed recovery, and an owner-approved cloud release
+remain pending.
 
 ## Live qualification result
 
