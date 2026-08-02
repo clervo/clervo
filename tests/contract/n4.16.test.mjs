@@ -45,8 +45,8 @@ test('synthesis mode selects an exact product identity with a distinct fixed pri
   const synthesis = normalizeSearchHttpRequest({ query: 'pricing evidence', synthesize: true });
   assert.equal(searchProductId(raw), 'search.web');
   assert.equal(searchProductId(synthesis), 'search.answer');
-  assert.deepEqual(SEARCH_PRODUCT_PRICING['search.web'], { priceVersion: 'search-web-mock-1', maximumCharge: { asset: 'mock:usdc', amountAtomic: '1000', decimals: 6 } });
-  assert.deepEqual(SEARCH_PRODUCT_PRICING['search.answer'], { priceVersion: 'search-answer-mock-1', maximumCharge: { asset: 'mock:usdc', amountAtomic: '2500', decimals: 6 } });
+  assert.deepEqual(SEARCH_PRODUCT_PRICING['search.web'], { priceVersion: 'search-web-candidate-2', maximumCharge: { asset: 'mock:usdc', amountAtomic: '6000', decimals: 6 } });
+  assert.deepEqual(SEARCH_PRODUCT_PRICING['search.answer'], { priceVersion: 'search-answer-candidate-2', maximumCharge: { asset: 'mock:usdc', amountAtomic: '12000', decimals: 6 } });
   assert.notEqual(searchHttpRequestHash(raw, SEARCH_PAID_PATH), searchHttpRequestHash(synthesis, SEARCH_PAID_PATH));
 });
 
@@ -58,8 +58,8 @@ test('discovery publishes raw retrieval and synthesis as separate price-bound pr
     amountAtomic: product.pricing.displayPrice.amountAtomic,
     priceVersion: product.pricing.priceVersion,
   })), [
-    { productId: 'search.web', synthesize: false, amountAtomic: '1000', priceVersion: 'search-web-mock-1' },
-    { productId: 'search.answer', synthesize: true, amountAtomic: '2500', priceVersion: 'search-answer-mock-1' },
+    { productId: 'search.web', synthesize: false, amountAtomic: '6000', priceVersion: 'search-web-candidate-2' },
+    { productId: 'search.answer', synthesize: true, amountAtomic: '12000', priceVersion: 'search-answer-candidate-2' },
   ]);
 });
 
@@ -71,19 +71,19 @@ test('paid challenges bind exact product, price version, maximum charge, and can
     assert.equal(synthesisResponse.status, 402);
     const raw = await rawResponse.json();
     const synthesis = await synthesisResponse.json();
-    assert.deepEqual([raw.quote.productId, raw.quote.priceVersion, raw.quote.maximumCharge.amountAtomic], ['search.web', 'search-web-mock-1', '1000']);
-    assert.deepEqual([synthesis.quote.productId, synthesis.quote.priceVersion, synthesis.quote.maximumCharge.amountAtomic], ['search.answer', 'search-answer-mock-1', '2500']);
+    assert.deepEqual([raw.quote.productId, raw.quote.priceVersion, raw.quote.maximumCharge.amountAtomic], ['search.web', 'search-web-candidate-2', '6000']);
+    assert.deepEqual([synthesis.quote.productId, synthesis.quote.priceVersion, synthesis.quote.maximumCharge.amountAtomic], ['search.answer', 'search-answer-candidate-2', '12000']);
     assert.notEqual(raw.quote.requestHash, synthesis.quote.requestHash);
-    assert.equal(raw.accepts[0].amount, '1000');
-    assert.equal(synthesis.accepts[0].amount, '2500');
+    assert.equal(raw.accepts[0].amount, '6000');
+    assert.equal(synthesis.accepts[0].amount, '12000');
   });
 });
 
 test('completed raw and synthesis operations receipt the exact selected catalog identity and charge', async () => {
   await withServer({ executor: createRecordedSearchExecutor(), now: () => now, allowMockPaidExecution: true }, async (origin) => {
     for (const [suffix, body, expected] of [
-      ['raw', { query: 'receipt pricing', synthesize: false }, ['search.web', '1000']],
-      ['syn', { query: 'receipt pricing', synthesize: true }, ['search.answer', '2500']],
+      ['raw', { query: 'receipt pricing', synthesize: false }, ['search.web', '6000']],
+      ['syn', { query: 'receipt pricing', synthesize: true }, ['search.answer', '12000']],
     ]) {
       const key = `idem_n416_receipt_${suffix}`;
       const challenged = await post(origin, key, body);

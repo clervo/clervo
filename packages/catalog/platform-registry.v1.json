@@ -517,8 +517,8 @@
       "operationId": "search.web",
       "deliveryMode": "sync",
       "commerceMode": "mock_only",
-      "priceVersion": "search-web-mock-1",
-      "maximumCharge": { "asset": "mock:usdc", "amountAtomic": "1000", "decimals": 6 },
+      "priceVersion": "search-web-candidate-2",
+      "maximumCharge": { "asset": "mock:usdc", "amountAtomic": "6000", "decimals": 6 },
       "visibility": "internal"
     },
     {
@@ -527,8 +527,8 @@
       "operationId": "search.answer",
       "deliveryMode": "sync",
       "commerceMode": "mock_only",
-      "priceVersion": "search-answer-mock-1",
-      "maximumCharge": { "asset": "mock:usdc", "amountAtomic": "2500", "decimals": 6 },
+      "priceVersion": "search-answer-candidate-2",
+      "maximumCharge": { "asset": "mock:usdc", "amountAtomic": "12000", "decimals": 6 },
       "visibility": "internal"
     }
   ]

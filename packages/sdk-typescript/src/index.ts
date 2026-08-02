@@ -1,6 +1,6 @@
 export const CLERVO_CONTRACT_VERSION = '2026-07-29.1' as const;
-export const CLERVO_RELEASE_CANDIDATE_ID = 'clervo-private-core-2026-08-02.1' as const;
-export const CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH = 'sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768' as const;
+export const CLERVO_RELEASE_CANDIDATE_ID = 'clervo-private-core-2026-08-02.2' as const;
+export const CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH = 'sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622' as const;
 
 export type ClervoProductId = 'search.web' | 'search.answer';
 export type ClervoExecutionMode = 'preview' | 'challenge';

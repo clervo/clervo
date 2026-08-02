@@ -43,4 +43,5 @@ export * from './search-security.js';
 export * from './sandbox.js';
 export * from './state-machine.js';
 export * from './types.js';
+export * from './unit-economics.js';
 export * from './zero-provider-search-supply.js';

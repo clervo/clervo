@@ -10,9 +10,9 @@ from urllib.parse import urlsplit, urlunsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 CLERVO_CONTRACT_VERSION = "2026-07-29.1"
-CLERVO_RELEASE_CANDIDATE_ID = "clervo-private-core-2026-08-02.1"
+CLERVO_RELEASE_CANDIDATE_ID = "clervo-private-core-2026-08-02.2"
 CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH = (
-    "sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768"
+    "sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622"
 )
 
 

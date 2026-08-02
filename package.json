@@ -158,6 +158,7 @@
     "production:gcp": "node ./scripts/verify-runtime.mjs && node ./scripts/production/gcp-release.mjs",
     "test:n14.10": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/n14.10.test.mjs",
     "test:n14.11": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n14.11.test.mjs",
+    "test:n14.12": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n14.12.test.mjs",
     "verify:stage6-exit": "node ./scripts/verify-runtime.mjs && node ./scripts/check-ai-supply-readiness.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
     "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",

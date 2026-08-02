@@ -35,8 +35,8 @@ test('generated OpenAPI is deterministic, schema-complete, and truthfully expose
     publicCallable: false,
     paymentImplemented: false,
     deploymentVerified: false,
-    releaseCandidateId: 'clervo-private-core-2026-08-02.1',
-    interfaceHash: 'sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768',
+    releaseCandidateId: 'clervo-private-core-2026-08-02.2',
+    interfaceHash: 'sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622',
     operationIds: ['search.web', 'search.answer'],
   });
   const schemaFiles = (await readdir(path.join(root, 'packages/contracts/schemas'))).filter((name) => name.endsWith('.schema.json'));
@@ -66,8 +66,8 @@ test('discovery is bound to the frozen private core without claiming public dist
     publicAvailable: false,
     callable: false,
     noPublicDistribution: true,
-    releaseCandidateId: 'clervo-private-core-2026-08-02.1',
-    interfaceHash: 'sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768',
+    releaseCandidateId: 'clervo-private-core-2026-08-02.2',
+    interfaceHash: 'sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622',
   });
   assert.equal(discovery.payment.implemented, false);
   assert.equal(discovery.products.length, 2);
@@ -76,7 +76,7 @@ test('discovery is bound to the frozen private core without claiming public dist
     product.publicAvailable === false
     && product.payment.payable === false
     && product.pricing.model === 'non_payable_mock_fixture'));
-  assert.deepEqual(discovery.products.map(({ selection, pricing }) => [selection.synthesize, pricing.displayPrice.amountAtomic]), [[false, '1000'], [true, '2500']]);
+  assert.deepEqual(discovery.products.map(({ selection, pricing }) => [selection.synthesize, pricing.displayPrice.amountAtomic]), [[false, '6000'], [true, '12000']]);
   assert.match(discovery.description, /no public deployment or real payment/i);
   assert.deepEqual(await json('catalog.json'), {
     contractVersion: CONTRACT_VERSION,
@@ -85,7 +85,7 @@ test('discovery is bound to the frozen private core without claiming public dist
     releaseScope: discovery.releaseScope,
     products: discovery.products,
   });
-  assert.equal(discovery.discoveryVersion, '2026-08-02.1');
+  assert.equal(discovery.discoveryVersion, '2026-08-02.2');
   assert.equal(discovery.releaseScope.scopeVersion, '2026-08-01.3');
   assert.equal(discovery.releaseScope.firstRevenueRelease.productName, 'Clervo Platform');
   assert.deepEqual(discovery.releaseScope.firstRevenueRelease.requiredPillars, ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence']);

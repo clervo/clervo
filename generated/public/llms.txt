@@ -5,8 +5,8 @@
 Current verified status:
 
 - Distribution state: repository-generated candidate; not publicly distributed
-- Frozen release candidate: clervo-private-core-2026-08-02.1
-- Frozen interface hash: sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768
+- Frozen release candidate: clervo-private-core-2026-08-02.2
+- Frozen interface hash: sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622
 - Six product cores: privately qualified and compatibility-frozen
 - Public lifecycle: Search preview; AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence unavailable
 - Projected operation IDs: search.web, search.answer

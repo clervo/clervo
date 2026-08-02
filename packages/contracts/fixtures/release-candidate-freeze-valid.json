@@ -3,8 +3,8 @@
   "valid": true,
   "value": {
     "schemaVersion": "clervo.release-candidate-freeze.v1",
-    "releaseCandidateId": "clervo-private-core-2026-08-02.1",
-    "frozenAt": "2026-08-02T13:15:00.000Z",
+    "releaseCandidateId": "clervo-private-core-2026-08-02.2",
+    "frozenAt": "2026-08-02T16:30:00.000Z",
     "state": "private_core_frozen",
     "noPublicDistribution": true,
     "baseRegistry": { "file": "packages/catalog/platform-registry.v1.json", "version": "2026-08-01.1", "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },

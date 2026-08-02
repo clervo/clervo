@@ -24,7 +24,7 @@ interface FixtureReceipt {
   requestHash: string;
   price: {
     asset: 'mock:usdc';
-    amountAtomic: '1000' | '2500';
+    amountAtomic: '6000' | '12000';
     decimals: 6;
     payable: false;
   };
@@ -117,7 +117,7 @@ export function ProofLab({
   const [error, setError] = useState('');
   const [shared, setShared] = useState(false);
   const phase = phaseForState(lab.state);
-  const price = lab.productId === 'search.web' ? '1000' : '2500';
+  const price = lab.productId === 'search.web' ? '6000' : '12000';
   const step = labStates.indexOf(lab.state) + 1;
   const canContinue = lab.query.trim().length > 0 && lab.query.trim().length <= 2_000;
 

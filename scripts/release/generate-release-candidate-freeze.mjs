@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { createHash } from 'node:crypto';
-import { readdir, readFile } from 'node:fs/promises';
+import { readdir, readFile, writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 
@@ -48,8 +48,8 @@ const schemaAggregateHash = hashJson(schemas);
 const fixtureAggregateHash = hashJson(fixtures);
 const unsigned = {
   schemaVersion: 'clervo.release-candidate-freeze.v1',
-  releaseCandidateId: 'clervo-private-core-2026-08-02.1',
-  frozenAt: '2026-08-02T13:15:00.000Z',
+  releaseCandidateId: 'clervo-private-core-2026-08-02.2',
+  frozenAt: '2026-08-02T16:30:00.000Z',
   state: 'private_core_frozen',
   noPublicDistribution: true,
   baseRegistry: { file: registryFile, version: registry.registryVersion, sha256: await sha256(registryFile) },
@@ -80,6 +80,9 @@ if (process.argv.includes('--check')) {
   const committed = await readFile(path.join(root, 'packages/catalog/release-candidate-freeze.v1.json'), 'utf8');
   assert.deepEqual(JSON.parse(committed), manifest, 'release_candidate_freeze_drift');
   console.log(`release-candidate freeze: PASS (${schemas.length} schemas, ${fixtures.length} examples, ${registry.operations.length} operations)`);
+} else if (process.argv.includes('--write')) {
+  await writeFile(path.join(root, 'packages/catalog/release-candidate-freeze.v1.json'), output);
+  console.log(`release-candidate freeze: WROTE (${schemas.length} schemas, ${fixtures.length} examples, ${registry.operations.length} operations)`);
 } else {
   process.stdout.write(output);
 }

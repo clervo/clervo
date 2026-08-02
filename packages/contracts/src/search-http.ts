@@ -11,12 +11,12 @@ export const SEARCH_SYNTHESIS_PRODUCT_ID = 'search.answer' as const;
 export type SearchProductId = typeof SEARCH_RAW_PRODUCT_ID | typeof SEARCH_SYNTHESIS_PRODUCT_ID;
 export const SEARCH_PRODUCT_PRICING = Object.freeze({
   [SEARCH_RAW_PRODUCT_ID]: Object.freeze({
-    priceVersion: 'search-web-mock-1',
-    maximumCharge: Object.freeze({ asset: 'mock:usdc', amountAtomic: '1000', decimals: 6 }),
+    priceVersion: 'search-web-candidate-2',
+    maximumCharge: Object.freeze({ asset: 'mock:usdc', amountAtomic: '6000', decimals: 6 }),
   }),
   [SEARCH_SYNTHESIS_PRODUCT_ID]: Object.freeze({
-    priceVersion: 'search-answer-mock-1',
-    maximumCharge: Object.freeze({ asset: 'mock:usdc', amountAtomic: '2500', decimals: 6 }),
+    priceVersion: 'search-answer-candidate-2',
+    maximumCharge: Object.freeze({ asset: 'mock:usdc', amountAtomic: '12000', decimals: 6 }),
   }),
 } as const);
 export const SEARCH_FREE_PATH = '/v1/search/free' as const;

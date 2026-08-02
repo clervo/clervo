@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "clervo.post-credit-economics.v1",
+  "currency": "USD",
+  "atomicUnit": "microusd",
+  "observedAt": "2026-08-02T16:30:00.000Z",
+  "pricingFormula": [
+    "supplier_cost_ceiling",
+    "infrastructure_cost_ceiling",
+    "failure_reserve",
+    "payment_and_reconciliation_cost_ceiling",
+    "target_contribution"
+  ],
+  "products": [
+    {
+      "productId": "search.web",
+      "priceVersion": "search-web-candidate-2",
+      "customerPriceMicrousd": 6000,
+      "supplierCostCeilingMicrousd": 5000,
+      "infrastructureCostCeilingMicrousd": 200,
+      "failureReserveMicrousd": 300,
+      "paymentReconciliationCostCeilingMicrousd": 100,
+      "targetContributionMicrousd": 400,
+      "competitiveCeilingMicrousd": 12000,
+      "supplierCostBounded": true,
+      "promotionalCreditsExcluded": true,
+      "activationConditions": [
+        "commercially_permitted_supplier_route",
+        "observed_supplier_cost_at_or_below_ceiling",
+        "monitoring_delivery_acknowledged",
+        "receiver_accounting_ready",
+        "real_payment_still_requires_stage15_owner_approval"
+      ]
+    },
+    {
+      "productId": "search.answer",
+      "priceVersion": "search-answer-candidate-2",
+      "customerPriceMicrousd": 12000,
+      "supplierCostCeilingMicrousd": 9000,
+      "infrastructureCostCeilingMicrousd": 500,
+      "failureReserveMicrousd": 800,
+      "paymentReconciliationCostCeilingMicrousd": 200,
+      "targetContributionMicrousd": 1500,
+      "competitiveCeilingMicrousd": 12000,
+      "supplierCostBounded": true,
+      "promotionalCreditsExcluded": true,
+      "activationConditions": [
+        "commercially_permitted_search_and_synthesis_routes",
+        "observed_combined_supplier_cost_at_or_below_ceiling",
+        "monitoring_delivery_acknowledged",
+        "receiver_accounting_ready",
+        "real_payment_still_requires_stage15_owner_approval"
+      ]
+    }
+  ],
+  "promotionalCredits": {
+    "unitName": "Clervo promotional API credit",
+    "withdrawable": false,
+    "equivalentToUsdOrUsdc": false,
+    "expirationRequired": true,
+    "eligibleProductsRequired": true,
+    "perAccountLimitRequired": true,
+    "paidSupplierBudgetSeparate": true
+  },
+  "competitiveReferences": [
+    {
+      "service": "BlockRun Search API",
+      "operation": "10-result default structured search",
+      "priceMicrousd": 264500,
+      "source": "https://blockrun.ai/docs/api-reference/search",
+      "use": "context_only_not_quality_equivalence"
+    },
+    {
+      "service": "BlockRun Exa Search",
+      "operation": "search",
+      "priceMicrousd": 12000,
+      "source": "https://blockrun.ai/docs/api-reference/exa-search",
+      "use": "competitive_price_ceiling"
+    },
+    {
+      "service": "BlockRun Exa Search",
+      "operation": "answer",
+      "priceMicrousd": 12000,
+      "source": "https://blockrun.ai/docs/api-reference/exa-search",
+      "use": "competitive_price_ceiling"
+    }
+  ],
+  "customerPaymentEnabled": false,
+  "ownerCashSpentUsd": 0
+}
