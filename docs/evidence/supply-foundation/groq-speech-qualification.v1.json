@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "clervo.groq-speech-qualification.v1",
+  "evaluatedAt": "2026-08-02T06:09:15.444Z",
+  "serviceId": "supply.groq",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 5,
+  "credentialSlotsUsed": 1,
+  "customerAudioUsed": false,
+  "syntheticTextOnly": true,
+  "rawAudioRecorded": false,
+  "transcriptValuesRecorded": false,
+  "phraseValuesRecorded": false,
+  "speech": [
+    { "model": "canopylabs/orpheus-v1-english", "language": "en", "status": 400, "latencyMs": 87, "waveValid": false, "outputBytes": 0, "outputHash": null, "failureCode": "model_terms_required", "responseModelLabelPresent": false, "exactIdentityStatus": "request_rejected_before_execution" },
+    { "model": "canopylabs/orpheus-arabic-saudi", "language": "ar", "status": 400, "latencyMs": 58, "waveValid": false, "outputBytes": 0, "outputHash": null, "failureCode": "model_terms_required", "responseModelLabelPresent": false, "exactIdentityStatus": "request_rejected_before_execution" }
+  ],
+  "referenceAudio": { "serviceId": "supply.cloudflare_workers_ai", "synthetic": true, "status": 200, "latencyMs": 1735, "outputBytes": 23616, "outputHash": "sha256:e08fc7ed9886923b9fe9ef013daa8072eaff7441fcb7692d7e44e6e3fa3094af" },
+  "transcription": [
+    { "model": "whisper-large-v3", "language": "en", "status": 200, "latencyMs": 178, "expectedWordCount": 9, "expectedWordsMatched": 8, "matchBasisPoints": 8889, "usageReported": true, "responseModelLabelPresent": false, "exactIdentityStatus": "request_accepted_response_unlabeled", "passed": true },
+    { "model": "whisper-large-v3-turbo", "language": "en", "status": 200, "latencyMs": 135, "expectedWordCount": 9, "expectedWordsMatched": 8, "matchBasisPoints": 8889, "usageReported": true, "responseModelLabelPresent": false, "exactIdentityStatus": "request_accepted_response_unlabeled", "passed": true }
+  ],
+  "summary": {
+    "speechModelsPassed": 0,
+    "speechModelsTermsBlocked": 2,
+    "transcriptionChecksPassed": 2,
+    "exactResponseIdentityLabels": 0,
+    "productionStatus": "transcription_quality_passed_adapter_and_exact_response_identity_pending_speech_terms_blocked"
+  },
+  "limits": {
+    "speechMaximumInputCharacters": 200,
+    "transcriptionFreeTierMaximumFileMb": 25,
+    "transcriptionMinimumBilledSeconds": 10,
+    "automaticPaidOverageAllowedByClervo": false
+  }
+}

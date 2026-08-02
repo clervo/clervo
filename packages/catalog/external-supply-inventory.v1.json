@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.20",
-  "observedAt": "2026-08-02T06:04:37.335Z",
+  "inventoryVersion": "2026-08-02.21",
+  "observedAt": "2026-08-02T06:09:15.444Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -593,7 +593,9 @@
         "whisper-large-v3-turbo"
       ],
       "notes": [
-        "All fifteen authenticated active assets are priced. GPT-OSS 20B, GPT-OSS 120B, and Qwen 3.6 27B passed live quality and route qualification; the other assets remain priced pending product-specific qualification.",
+        "All fifteen authenticated active assets are priced. GPT-OSS 20B, GPT-OSS 120B, and Qwen 3.6 27B passed live quality and route qualification.",
+        "Whisper Large v3 and Turbo each recovered 8/9 words from synthetic independent audio with usage reporting. Their responses do not label the model and Clervo adapters remain incomplete, so both stay priced pending route qualification.",
+        "Both preview Orpheus TTS models returned model_terms_required before execution. The organization admin must accept each model's terms before qualification; no workaround or alternate-account attempt is allowed.",
         "Use is restricted to value-added Clervo operations. Never expose upstream credentials or account access, resell the raw cloud service, or use multiple accounts to bypass limits."
       ]
     },

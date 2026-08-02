@@ -36,7 +36,7 @@
   },
   "properties": {
     "schemaVersion": { "const": "clervo.ai-free-tier-pricing.v1" },
-    "priceVersion": { "const": "2026-08-02.1" },
+    "priceVersion": { "const": "2026-08-02.2" },
     "evaluatedAt": { "type": "string", "format": "date-time" },
     "currency": { "const": "USD" },
     "providerVisibility": { "const": "internal_only" },

@@ -388,6 +388,7 @@ test('Clervo gateway screen preserves the bounded live result without overstatin
 
 test('Groq screen preserves all discovered priced assets, repaired benchmarks, terms restrictions, and sellable qualification truth', async () => {
   const evidence = JSON.parse(await readFile(path.join(root, 'docs/evidence/stage6/groq-supply-screen.v1.json'), 'utf8'));
+  const speech = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/groq-speech-qualification.v1.json'), 'utf8'));
   assert.equal(evidence.source.externalCalls, 182);
   assert.equal(evidence.source.ownerCashSpentUsd, 0);
   assert.equal(evidence.source.secretValuesRecorded, false);
@@ -400,6 +401,16 @@ test('Groq screen preserves all discovered priced assets, repaired benchmarks, t
   assert.equal(evidence.terms.multiAccountLimitBypassAllowed, false);
   assert.equal(evidence.commercialDecision.allDiscoveredAssetsPriced, true);
   assert.equal(evidence.commercialDecision.unknownSupplierDebitBlocksPricing, false);
+  assert.equal(speech.externalCalls, 5);
+  assert.equal(speech.ownerCashSpentUsd, 0);
+  assert.deepEqual([speech.customerAudioUsed, speech.rawAudioRecorded, speech.transcriptValuesRecorded], [false, false, false]);
+  assert.equal(speech.summary.speechModelsTermsBlocked, 2);
+  assert.equal(speech.summary.transcriptionChecksPassed, 2);
+  assert.ok(speech.speech.every(({ status, failureCode, exactIdentityStatus }) => status === 400 && failureCode === 'model_terms_required' && exactIdentityStatus === 'request_rejected_before_execution'));
+  assert.deepEqual(speech.transcription.map(({ model, status, expectedWordsMatched, passed }) => [model, status, expectedWordsMatched, passed]), [
+    ['whisper-large-v3', 200, 8, true],
+    ['whisper-large-v3-turbo', 200, 8, true],
+  ]);
 });
 
 test('edge free-allocation catalog prices every authenticated asset and blocks paid-plan entries without owner cash', async () => {

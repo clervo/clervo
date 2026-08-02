@@ -57,7 +57,9 @@ disabled without explicit owner approval.
 - Deepgram: reported USD 200 balance; qualified two TTS routes and Nova-3 STT,
   with its preserved jargon limitation.
 - Groq: 15 authenticated assets priced; GPT-OSS 20B, GPT-OSS 120B, and Qwen
-  3.6 27B qualified; remaining modalities/assets still need qualification.
+  3.6 27B qualified. Both Whisper models recovered 8/9 words from independent
+  synthetic audio, but remain adapter/response-identity pending. Both preview
+  Orpheus TTS models require organization-admin model-terms acceptance.
 - Owned-source discovery: one credential per service exposed 633 listings and
   615 unique exact IDs across the Chinese gateway, Cerebras, Cohere, Mistral,
   NVIDIA, OpenRouter, SambaNova, SiliconFlow, and Z.AI. Google direct returned
