@@ -144,12 +144,20 @@ the limit when the runtime ignores `RLIMIT_NPROC`. All three superseded digests
 are blocked. Preserve the dedicated Artifact Registry repository and immutable
 history.
 
-Stage 14 production hardening has started with the exact API container. Its
-Node.js base is digest-pinned, the clean build includes every workspace
+Stage 14 local production hardening is complete for release candidate
+`clervo-private-core-2026-08-02.2`. Its exact API container, refreshed
+supply-chain scan and SBOM, 1,000-request burst plus steady-load proof, and
+disposable PostgreSQL/queue/accounting recovery proof are bound to the current
+price and interface contracts. The consolidated Stage 14 acceptance command
+passes 33/33 contract tests, release-candidate drift, dependency audit, lint,
+secret scanning, and the clean-room boundary. Cloud Build invokes this same
+consolidated command so local and remote acceptance cannot drift.
+
+The exact API container's Node.js base is digest-pinned, the clean build includes every workspace
 manifest and adapter source it compiles, and the runtime contains only compiled
 application output, bounded server entrypoint, and the exact production
 database client dependencies. Local qualification ran
-the exact image as UID/GID 1000, read-only root, no-new-privileges, all Linux
+the exact image as UID/GID 65532, read-only root, no-new-privileges, all Linux
 capabilities dropped, bounded CPU/memory/PIDs, tmpfs-only temporary storage, and
 no network. Health passed, root writes and external network access were denied,
 SIGTERM exited cleanly with code 0, no OOM occurred, and paid execution remained
@@ -167,7 +175,7 @@ leases, and two hours for hashed quota subjects. Planning is count-only;
 deletion requires an exact untracked confirmation and production deletion
 still requires owner approval. No production/customer database deletion was
 performed. The new image is qualified locally at source commit
-`3037a9e6def4`. Its build remains on the exact Node 24.18.1 image, while the
+`18d9d31562a6`. Its build remains on the exact Node 24.18.1 image, while the
 runtime is now the exact non-root Node 24 distroless image and contains no
 shell or package manager. A digest-pinned Trivy 0.72.0 scanner downloaded its
 database before entering the offline scan boundary and never received the
@@ -205,7 +213,7 @@ policy requires a preceding verified immutable registry digest and fails closed
 when none exists. No remote traffic or revision was changed.
 
 The exact digest-pinned PostgreSQL 18.4 image now passes a disposable live
-recovery qualification. All three migrations applied; atomic claim, completion,
+recovery qualification. All four migrations applied; atomic claim, completion,
 replay, conflict, and quota behavior passed; completed state survived a
 database process restart; a custom-format backup restored into a separate clean
 database; restored replay matched; and expired retention was applied against
@@ -217,9 +225,14 @@ by a fresh queue process, the retry completed, a terminal failure reached its
 dead-letter queue, and both completed/dead-letter state survived backup and
 isolated restore. This proves the portable local recovery
 path, not managed production backup scheduling or point-in-time recovery.
-Registry digest, signed provenance, remote rollback, full load,
-monitoring delivery, managed recovery, and an owner-approved cloud release
-remain pending.
+The immutable remote registry digest, signed Cloud Build provenance, managed
+backup/recovery observation, acknowledged production monitoring destination,
+zero-traffic Cloud Run candidate, and remote rollback remain unapplied. A
+read-only inventory on 2026-08-02 confirmed that `clervo-production`,
+`clervo-api-production`, `clervo-production-postgres`, and the three named
+production secrets do not yet exist; the Cloud SQL Admin API is disabled. Their
+creation is a real billable infrastructure and IAM operation requiring exact
+owner authorization. No cloud resource was changed by the inventory.
 
 The Google Cloud production path is now repository-defined without applying
 cloud state. It fixes the target to the existing `bloxsniper-prod/us-central1`
