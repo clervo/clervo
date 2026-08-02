@@ -72,8 +72,11 @@ export function buildSandboxPod(input: Readonly<SandboxPodInput>): JsonObject {
     spec: {
       runtimeClassName: 'gvisor', restartPolicy: 'Never', activeDeadlineSeconds, terminationGracePeriodSeconds: 1,
       automountServiceAccountToken: false, enableServiceLinks: false, hostNetwork: false, hostPID: false, hostIPC: false, shareProcessNamespace: false,
-      nodeSelector: { 'clervo.dev/node-pool': 'sandbox-execution', 'clervo.dev/execution-plane': 'true' },
-      tolerations: [{ key: 'clervo.dev/sandbox-only', operator: 'Equal', value: 'true', effect: 'NoSchedule' }],
+      nodeSelector: { 'sandbox.gke.io/runtime': 'gvisor', 'clervo.dev/node-pool': 'sandbox-execution', 'clervo.dev/execution-plane': 'true' },
+      tolerations: [
+        { key: 'sandbox.gke.io/runtime', operator: 'Equal', value: 'gvisor', effect: 'NoSchedule' },
+        { key: 'clervo.dev/sandbox-only', operator: 'Equal', value: 'true', effect: 'NoSchedule' },
+      ],
       securityContext: { runAsNonRoot: true, runAsUser: 65532, runAsGroup: 65532, fsGroup: 65532, seccompProfile: { type: 'RuntimeDefault' } },
       containers: [{
         name: 'execution', image: `clervo-sandbox@${input.imageDigest}`, imagePullPolicy: 'IfNotPresent', command: [...input.command], workingDir: '/workspace',

@@ -14,7 +14,11 @@ test('sandbox pod is digest-pinned to gVisor on credential-free dedicated execut
   assert.equal(spec.runtimeClassName, 'gvisor');
   assert.equal(spec.automountServiceAccountToken, false);
   assert.deepEqual([spec.hostNetwork, spec.hostPID, spec.hostIPC, spec.shareProcessNamespace], [false, false, false, false]);
-  assert.deepEqual(spec.nodeSelector, { 'clervo.dev/node-pool': 'sandbox-execution', 'clervo.dev/execution-plane': 'true' });
+  assert.deepEqual(spec.nodeSelector, { 'sandbox.gke.io/runtime': 'gvisor', 'clervo.dev/node-pool': 'sandbox-execution', 'clervo.dev/execution-plane': 'true' });
+  assert.deepEqual(spec.tolerations, [
+    { key: 'sandbox.gke.io/runtime', operator: 'Equal', value: 'gvisor', effect: 'NoSchedule' },
+    { key: 'clervo.dev/sandbox-only', operator: 'Equal', value: 'true', effect: 'NoSchedule' },
+  ]);
   assert.equal(container.image, `clervo-sandbox@${input.imageDigest}`);
   assert.equal(container.securityContext.readOnlyRootFilesystem, true);
   assert.equal(container.securityContext.allowPrivilegeEscalation, false);

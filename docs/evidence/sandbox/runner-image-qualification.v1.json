@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "clervo.sandbox-runner-image-qualification.v1",
+  "evaluatedAt": "2026-08-02T10:30:24.000Z",
+  "imageId": "sandbox.nodejs-24",
+  "digest": "sha256:0cfdf789b798d623cee9ec071c32e584443f9331c73fc7be9bd20f7ae1c243af",
+  "build": {
+    "status": "passed",
+    "builder": "google-cloud-build",
+    "slsaBuildLevel": 3,
+    "provenanceAttestations": 2,
+    "verifiedSignatures": 3
+  },
+  "vulnerabilityScan": {
+    "status": "passed",
+    "scanner": "google-artifact-analysis",
+    "analysisStatus": "FINISHED_SUCCESS",
+    "findings": 0
+  },
+  "malwareScan": {
+    "status": "passed",
+    "scanner": "clamav",
+    "scannerVersion": "1.5.2",
+    "databaseVersion": 28080,
+    "knownSignatures": 3627986,
+    "filesScanned": 622,
+    "infectedFiles": 0,
+    "scannerImageDigest": "sha256:1b6443c4a7b456baa1abfaf9796815f8d21e2fb558dbaed5b682fd4552d8b0c3"
+  },
+  "sbom": {
+    "format": "SPDX-2.3",
+    "generator": "syft-1.44.0",
+    "generatorImageDigest": "sha256:86fde6445b483d902fe011dd9f68c4987dd94e07da1e9edc004e3c2422650de6",
+    "path": "docs/evidence/sandbox/runner-sbom.spdx.json",
+    "sha256": "sha256:5e556726522c194242b354ce33b8c60f8178742a35cd0f524a83fab8bcf7ec8a"
+  },
+  "decision": "qualified",
+  "productAvailability": "unavailable"
+}

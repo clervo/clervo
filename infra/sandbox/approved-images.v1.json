@@ -1,5 +1,16 @@
 {
   "schemaVersion": "clervo.sandbox-approved-images.v1",
   "lifecycle": "unavailable",
-  "images": []
+  "images": [
+    {
+      "imageId": "sandbox.nodejs-24",
+      "digest": "sha256:0cfdf789b798d623cee9ec071c32e584443f9331c73fc7be9bd20f7ae1c243af",
+      "lifecycle": "qualified",
+      "signatureVerified": true,
+      "provenanceVerified": true,
+      "vulnerabilityScan": "passed",
+      "malwareScan": "passed",
+      "sbomSha256": "sha256:5e556726522c194242b354ce33b8c60f8178742a35cd0f524a83fab8bcf7ec8a"
+    }
+  ]
 }
