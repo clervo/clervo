@@ -77,8 +77,8 @@
     },
     {
       "catalog": "packages/catalog/search-supply-pricing.v1.json",
-      "assetCount": 1,
-      "positiveCustomerPriceCount": 1,
+      "assetCount": 2,
+      "positiveCustomerPriceCount": 2,
       "sellableCount": 0
     },
     {
@@ -297,27 +297,32 @@
     {
       "capabilityId": "search.web",
       "publicAssets": [
-        "web-search-standard"
+        "web-search-standard",
+        "web-search-independent-index"
       ],
       "lifecycle": "production",
-      "routeState": "qualified_not_integrated_single_family",
+      "routeState": "qualified_provider_neutral_adapters_ready",
       "primaryServices": [
+        "supply.brave_search"
+      ],
+      "fallbackServices": [
         "supply.serper"
       ],
-      "fallbackServices": [],
       "pricingCatalogs": [
         "packages/catalog/search-supply-pricing.v1.json"
       ],
-      "quality": "good",
-      "termsStatus": "allowed",
-      "quotaRunway": "Starter balance is not exposed by the API; enforce the application ledger and single-account limit.",
+      "quality": "best",
+      "termsStatus": "restricted",
+      "quotaRunway": "The primary has a recurring 1,000-call monthly credit and a matching hard ceiling; the independent fallback has an unexposed starter remainder and its own ceiling. Automatic paid overage and account pooling are disabled.",
       "healthMethod": [
-        "docs/evidence/supply-foundation/serper-qualification.v1.json"
+        "docs/evidence/supply-foundation/brave-search-qualification.v1.json",
+        "docs/evidence/supply-foundation/serper-qualification.v1.json",
+        "tests/contract/search-supply-routing.test.mjs"
       ],
       "secretLocations": [
-        "legacy_import:SERPER_API_KEY"
+        "legacy_import:BRAVE_SEARCH_API_KEY,SERPER_API_KEY"
       ],
-      "replacementPlan": "Add the selected independent-index search key, benchmark the same corpus, and retain attribution and content-rights controls."
+      "replacementPlan": "Compose the ready provider-neutral router into the next production search deployment, retain transient-only processing, and move to official paid capacity after revenue."
     },
     {
       "capabilityId": "rpc.multichain",
@@ -514,14 +519,6 @@
       "requiredAction": "Obtain written permission for paid customer-facing RPC gateway use or approve an expressly compatible replacement after the remaining zero-cash market check.",
       "unblocks": [
         "rpc.multichain"
-      ],
-      "spendingAuthorized": false
-    },
-    {
-      "blockerId": "owner.brave_search_account",
-      "requiredAction": "Complete the recurring-free-credit Search subscription and card verification without approving a charge, then provide the dedicated key.",
-      "unblocks": [
-        "search.web"
       ],
       "spendingAuthorized": false
     },

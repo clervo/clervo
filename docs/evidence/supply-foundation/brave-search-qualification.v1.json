@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "clervo.brave-search-qualification.v1",
+  "evaluatedAt": "2026-08-02T07:44:21.140Z",
+  "serviceId": "supply.brave_search",
+  "endpointOrigin": "https://api.search.brave.com",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 5,
+  "credentialSlotsUsed": 1,
+  "configuredCredentialSlots": 1,
+  "responsePayloadValuesRecorded": false,
+  "corpus": { "caseCount": 5, "queryValuesIncluded": false, "expectedHostValuesIncluded": false },
+  "summary": {
+    "successfulCalls": 5,
+    "expectedHostHits": 5,
+    "expectedHostTopThreeHits": 5,
+    "latencyMsP50": 108,
+    "latencyMsP95": 189,
+    "resultCountMinimum": 7,
+    "qualityGrade": "best"
+  },
+  "observations": [
+    { "caseId": "node_fetch", "status": 200, "latencyMs": 189, "webResultCount": 10, "expectedHostPresent": true, "expectedHostRank": 1, "queryMetadataPresent": true, "failureCode": null },
+    { "caseId": "mdn_429", "status": 200, "latencyMs": 93, "webResultCount": 10, "expectedHostPresent": true, "expectedHostRank": 1, "queryMetadataPresent": true, "failureCode": null },
+    { "caseId": "rfc_9110", "status": 200, "latencyMs": 116, "webResultCount": 7, "expectedHostPresent": true, "expectedHostRank": 1, "queryMetadataPresent": true, "failureCode": null },
+    { "caseId": "cloudflare_r2", "status": 200, "latencyMs": 108, "webResultCount": 10, "expectedHostPresent": true, "expectedHostRank": 1, "queryMetadataPresent": true, "failureCode": null },
+    { "caseId": "solana_rpc", "status": 200, "latencyMs": 100, "webResultCount": 10, "expectedHostPresent": true, "expectedHostRank": 1, "queryMetadataPresent": true, "failureCode": null }
+  ],
+  "terms": {
+    "reviewedAt": "2026-08-02T07:44:21.140Z",
+    "termsUrl": "https://api-dashboard.search.brave.com/documentation/resources/terms-of-service",
+    "termsUpdatedAt": "2026-02-11",
+    "customerApplicationsAndEndUsersRecognized": true,
+    "searchResultsUsableWithCustomerApplications": true,
+    "rawApiOrSearchResultResaleAllowed": false,
+    "transientOperationalStorageOnly": true,
+    "aiTrainingOrBenchmarkUseAllowed": false,
+    "multipleAccountLimitCircumventionAllowed": false,
+    "endUserEquivalentRestrictionsRequired": true,
+    "valueAddedClervoIntegrationRequired": true
+  },
+  "supplierPricing": {
+    "currency": "USD",
+    "recurringMonthlyCreditUsd": 5,
+    "searchPricePerThousandUsd": 5,
+    "recurringMonthlyQueries": 1000,
+    "queriesPerSecond": 50,
+    "cardChargeOnFreePlan": false,
+    "currentOwnedRemainingQueries": null,
+    "currentOwnedRemainingStatus": "not_exposed_by_api_response",
+    "clervoHardMonthlyCallCeiling": 1000,
+    "automaticPaidOverageAllowedByClervo": false
+  }
+}

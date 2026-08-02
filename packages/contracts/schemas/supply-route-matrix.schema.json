@@ -65,7 +65,7 @@
     },
     "catalogCoverage": { "type": "array", "minItems": 13, "uniqueItems": true, "items": { "$ref": "#/$defs/catalogCoverage" } },
     "capabilities": { "type": "array", "minItems": 12, "uniqueItems": true, "items": { "$ref": "#/$defs/capability" } },
-    "ownerBlockers": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/ownerBlocker" } }
+    "ownerBlockers": { "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/ownerBlocker" } }
   },
   "additionalProperties": false
 }

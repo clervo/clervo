@@ -36,22 +36,25 @@
           "maximumResults": { "type": "integer", "minimum": 1, "maximum": 100 },
           "customerPriceMicrousd": { "type": "integer", "minimum": 1 },
           "supplierPriceMicrousd": { "type": "integer", "minimum": 0 },
-          "supplierPriceBasis": { "enum": ["advertised_starter_tier", "unknown"] },
+          "supplierPriceBasis": { "enum": ["advertised_starter_tier", "recurring_monthly_credit", "unknown"] },
           "allowance": {
             "type": "object",
-            "required": ["advertisedStarterQueries", "ownedRemainingQueries", "ownedRemainingStatus", "purchasedCreditExpiryMonths"],
+            "required": ["advertisedStarterQueries", "recurringMonthlyQueries", "ownedRemainingQueries", "ownedRemainingStatus", "purchasedCreditExpiryMonths", "hardCallCeiling", "automaticPaidOverageAllowed"],
             "properties": {
               "advertisedStarterQueries": { "type": "integer", "minimum": 0 },
+              "recurringMonthlyQueries": { "type": "integer", "minimum": 0 },
               "ownedRemainingQueries": { "type": ["integer", "null"], "minimum": 0 },
               "ownedRemainingStatus": { "enum": ["known", "not_exposed"] },
-              "purchasedCreditExpiryMonths": { "type": "integer", "minimum": 1 }
+              "purchasedCreditExpiryMonths": { "type": "integer", "minimum": 0 },
+              "hardCallCeiling": { "type": "integer", "minimum": 0 },
+              "automaticPaidOverageAllowed": { "const": false }
             },
             "additionalProperties": false
           },
           "rateLimitQueriesPerSecond": { "type": "integer", "minimum": 1 },
           "qualityGrade": { "enum": ["best", "good", "poor", "rejected"] },
           "qualificationStatus": { "enum": ["passed", "failed", "not_run"] },
-          "listingStatus": { "enum": ["qualified_not_integrated", "sellable_preview", "blocked"] },
+          "listingStatus": { "enum": ["qualified_not_integrated", "qualified_adapter_ready", "sellable_preview", "blocked"] },
           "termsStatus": { "enum": ["approved", "restricted", "blocked"] },
           "fallbackStatus": { "enum": ["independent_fallback_missing", "independent_fallback_ready"] }
         },

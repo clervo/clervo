@@ -48,8 +48,9 @@ disabled without explicit owner approval.
   inventory's `470`/`167` counts were stale and were repaired by the environment
   reconciliation without reading or recording secret values.
 - The current Clervo environment contributes two additional unique names for
-  the `ai.clervo.dev` gateway and the acquired dRPC credential contributes one,
-  bringing the reconciled total to 220 with zero unmapped names.
+  the `ai.clervo.dev` gateway, the acquired dRPC credential, and the dedicated
+  search credential contribute four, bringing the reconciled total to 221 with
+  zero unmapped names.
 - `ai.clervo.dev/v1`: working; `gpt-5.6-luna`, `gpt-5.6-terra`, and
   `gpt-5.6-sol` are priced, benchmarked, qualified, and cataloged.
 - Google Vertex: reported USD 1,700 credit; qualified chat, embedding, image,
@@ -105,6 +106,12 @@ disabled without explicit owner approval.
   p95 latency. Its single-account B2B terms allow a value-added product, the
   route is customer-priced at USD 0.001/request, and its current remaining
   starter balance is unknown because the API exposes no allowance header.
+- The independent-index search key passed the same five-query corpus with every
+  official host first and 189 ms p95 latency, earning the `best` primary rank.
+  Its recurring 1,000-call monthly credit is protected by a matching hard
+  ceiling; automatic paid overage and multiple-account limit evasion are
+  disabled. A provider-neutral transient-only adapter now normalizes primary
+  and fallback results without exposing upstream identities or raw APIs.
 - Helius Solana RPC is technically healthy across bounded health, version,
   finalized-slot, and safe-failure checks, with no transaction activity. Its
   one-million-credit Free allocation is useful only for internal evaluation:
@@ -150,7 +157,7 @@ disabled without explicit owner approval.
 - Current qualified internal catalog: 20 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.
 - The final provider-neutral matrix references 13 canonical price catalogs and
-  covers all 792 price rows: every row has a positive customer price and 22
+  covers all 793 price rows: every row has a positive customer price and 22
   rows are currently sellable. It records exact assets, route state, lifecycle,
   price/shadow-cost source, quality, terms, quota runway, health evidence,
   secret-name location, fallbacks, and replacement plan without secret values.

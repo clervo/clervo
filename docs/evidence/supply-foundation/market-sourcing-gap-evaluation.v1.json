@@ -42,7 +42,7 @@
       "broader proprietary frontier families"
     ],
     "materialInfrastructureGaps": [
-      "independent web-search fallback",
+      "production composition of the qualified provider-neutral web-search router",
       "dedicated production multi-chain RPC",
       "production blockchain data",
       "working isolated object storage",
@@ -67,14 +67,14 @@
     {
       "candidateId": "source.brave_search",
       "capability": "search.web_fallback",
-      "decision": "selected_owner_blocked",
+      "decision": "qualified_adapter_ready",
       "starterBasis": "USD 5 recurring monthly credit, equivalent to 1,000 Search calls at USD 5 per 1,000, with 50 QPS capacity",
       "evidence": [
         "https://brave.com/search/api/",
         "https://brave.com/blog/most-powerful-search-api-for-ai/"
       ],
-      "reason": "Independent index and clear application/agent use make this the best complement to the qualified owned search route.",
-      "ownerAction": "Subscribe to the free-credit Search plan, complete its card verification without approving a charge, and provide the dedicated API key."
+      "reason": "The dedicated key passed all five fixed-corpus checks with every official host ranked first and 189 ms p95. It is the best primary behind a provider-neutral normalized adapter, with the independently qualified existing source retained as fallback.",
+      "ownerAction": null
     },
     {
       "candidateId": "source.cloudflare_r2_reissue",
@@ -183,11 +183,10 @@
   ],
   "finalDecision": {
     "coverageSufficientWithoutOwnerAction": false,
-    "newAccountsSelected": 1,
+    "newAccountsSelected": 0,
     "existingCredentialsNeedingReplacement": 1,
     "selectedOwnerActions": [
       "written commercial RPC gateway permission or expressly compatible replacement",
-      "Brave Search free-credit key",
       "least-privilege R2 bucket key and bucket name"
     ],
     "allOtherResearchedSources": "rejected or deferred until revenue, written commercial permission, compatible terms, or a material failure justifies them"

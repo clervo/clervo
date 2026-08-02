@@ -30,6 +30,7 @@ const mappings = [
   [/^NVIDIA_/u, 'supply.nvidia'],
   [/^OPENROUTER_/u, 'supply.openrouter'],
   [/^SAMBANOVA_/u, 'supply.sambanova'],
+  [/^BRAVE_SEARCH_/u, 'supply.brave_search'],
   [/^SERPER_/u, 'supply.serper'],
   [/^SILICONFLOW_/u, 'supply.siliconflow'],
   [/^ZAI_/u, 'supply.zai'],

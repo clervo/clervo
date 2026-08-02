@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.search-supply-pricing.v1",
-  "priceVersion": "search-supply-2026-08-02.1",
-  "effectiveAt": "2026-08-02T05:38:17.519Z",
+  "priceVersion": "search-supply-2026-08-02.2",
+  "effectiveAt": "2026-08-02T07:44:21.140Z",
   "currency": "USD",
   "policy": {
     "customerFreeByDefault": false,
@@ -22,16 +22,44 @@
       "supplierPriceBasis": "advertised_starter_tier",
       "allowance": {
         "advertisedStarterQueries": 2500,
+        "recurringMonthlyQueries": 0,
         "ownedRemainingQueries": null,
         "ownedRemainingStatus": "not_exposed",
-        "purchasedCreditExpiryMonths": 6
+        "purchasedCreditExpiryMonths": 6,
+        "hardCallCeiling": 2500,
+        "automaticPaidOverageAllowed": false
       },
       "rateLimitQueriesPerSecond": 50,
       "qualityGrade": "good",
       "qualificationStatus": "passed",
-      "listingStatus": "qualified_not_integrated",
+      "listingStatus": "qualified_adapter_ready",
       "termsStatus": "restricted",
-      "fallbackStatus": "independent_fallback_missing"
+      "fallbackStatus": "independent_fallback_ready"
+    },
+    {
+      "serviceId": "supply.brave_search",
+      "productId": "search.web",
+      "publicAssetId": "web-search-independent-index",
+      "billingUnit": "request",
+      "maximumResults": 10,
+      "customerPriceMicrousd": 1000,
+      "supplierPriceMicrousd": 5000,
+      "supplierPriceBasis": "recurring_monthly_credit",
+      "allowance": {
+        "advertisedStarterQueries": 0,
+        "recurringMonthlyQueries": 1000,
+        "ownedRemainingQueries": null,
+        "ownedRemainingStatus": "not_exposed",
+        "purchasedCreditExpiryMonths": 0,
+        "hardCallCeiling": 1000,
+        "automaticPaidOverageAllowed": false
+      },
+      "rateLimitQueriesPerSecond": 50,
+      "qualityGrade": "best",
+      "qualificationStatus": "passed",
+      "listingStatus": "qualified_adapter_ready",
+      "termsStatus": "restricted",
+      "fallbackStatus": "independent_fallback_ready"
     }
   ]
 }

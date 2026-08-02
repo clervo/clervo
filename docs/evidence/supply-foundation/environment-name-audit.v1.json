@@ -1,15 +1,15 @@
 {
   "schemaVersion": "clervo.supply-environment-name-audit.v1",
-  "auditedAt": "2026-08-02T07:11:04.789Z",
+  "auditedAt": "2026-08-02T07:46:26.430Z",
   "source": {
     "manifestCount": 2,
-    "lineCount": 467,
-    "assignmentCount": 220,
-    "uniqueNameCount": 220,
+    "lineCount": 469,
+    "assignmentCount": 221,
+    "uniqueNameCount": 221,
     "valuesRecorded": false
   },
   "counts": {
-    "active_supply": 198,
+    "active_supply": 199,
     "retired_supply": 12,
     "local_operation": 10,
     "unmapped": 0
@@ -1153,6 +1153,23 @@
       "fallbackStatus": "not_applicable",
       "secretStoreLocation": "legacy_import_read_only",
       "lifecycleState": "recorded_non_supply"
+    },
+    {
+      "environmentName": "BRAVE_SEARCH_API_KEY",
+      "mappingKind": "credential",
+      "scope": "active_supply",
+      "serviceId": "supply.brave_search",
+      "category": "search",
+      "ownerStatus": "owner_unverified",
+      "permittedUse": "qualification_only_until_route_ready",
+      "resaleStatus": "allowed",
+      "quotaStatus": "requires_reconciliation",
+      "expiryStatus": "requires_reconciliation",
+      "costStatus": "recurring_free",
+      "healthCheckStatus": "observed_working",
+      "fallbackStatus": "requires_selection",
+      "secretStoreLocation": "legacy_import_read_only",
+      "lifecycleState": "passed"
     },
     {
       "environmentName": "CDP_API_KEY_ID",
