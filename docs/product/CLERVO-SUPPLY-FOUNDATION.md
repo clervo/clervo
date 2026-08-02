@@ -62,6 +62,9 @@ disabled without explicit owner approval.
   615 unique exact IDs across the Chinese gateway, Cerebras, Cohere, Mistral,
   NVIDIA, OpenRouter, SambaNova, SiliconFlow, and Z.AI. Google direct returned
   HTTP 400 and GitHub Models HTTP 410; both failures remain explicit.
+- Chinese gateway: all 21 discovered assets are customer-priced, but the five
+  representative chat routes failed exact-identity checks despite HTTP 200.
+  Only account 1 was used; the other nineteen remain untouched pending terms.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three

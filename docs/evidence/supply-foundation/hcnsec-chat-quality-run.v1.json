@@ -1,0 +1,612 @@
+{
+  "schemaVersion": "clervo.owned-chat-quality-run.v1",
+  "evaluatedAt": "2026-08-02T04:27:41.517Z",
+  "serviceId": "supply.hcnsec_gateway",
+  "fundingBasis": "owner_reported_balance",
+  "corpusSha256": "sha256:63c21bd50febc2c243e42e2c7c4e557fa0b66eb6d378a3a027e0e52783558efb",
+  "ownerCashSpentUsd": 0,
+  "promptOrOutputPayloadsRecorded": false,
+  "externalCalls": 50,
+  "models": [
+    {
+      "model": "DeepSeek-V4-Pro",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "latencyMsP50": 4695.71,
+      "latencyMsP95": 11044.23,
+      "results": [
+        {
+          "taskId": "arithmetic_integer",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 4143.28,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "arithmetic_percentage",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 4865.19,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "deductive_uncertainty",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 9347.99,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "structured_extraction",
+          "category": "structured_output",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 6483.64,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "coding_diagnosis",
+          "category": "coding",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 11044.23,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "invalid_json"
+        },
+        {
+          "taskId": "payment_idempotency",
+          "category": "commerce_safety",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 4597.3,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "ssrf_metadata",
+          "category": "security",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 4695.71,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "invalid_json"
+        },
+        {
+          "taskId": "evidence_abstention",
+          "category": "grounding",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 6920.72,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "multilingual_chinese",
+          "category": "multilingual",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 3679.28,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "instruction_priority",
+          "category": "instruction_following",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 3346.64,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        }
+      ]
+    },
+    {
+      "model": "Qwen3.5-397B-A17B",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "latencyMsP50": 1137.2,
+      "latencyMsP95": 2241.62,
+      "results": [
+        {
+          "taskId": "arithmetic_integer",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 1864.03,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "arithmetic_percentage",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 1561.33,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "deductive_uncertainty",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 856.62,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "structured_extraction",
+          "category": "structured_output",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 1496.68,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "coding_diagnosis",
+          "category": "coding",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 791.25,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "payment_idempotency",
+          "category": "commerce_safety",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 1137.2,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "ssrf_metadata",
+          "category": "security",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 1704.57,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "evidence_abstention",
+          "category": "grounding",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 835.07,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "multilingual_chinese",
+          "category": "multilingual",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 2241.62,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "instruction_priority",
+          "category": "instruction_following",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 1061.6,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        }
+      ]
+    },
+    {
+      "model": "Qwen3.6-35B-A3B",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "latencyMsP50": 1185,
+      "latencyMsP95": 2039.67,
+      "results": [
+        {
+          "taskId": "arithmetic_integer",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 1756.34,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "arithmetic_percentage",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 1185,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "deductive_uncertainty",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 1658.1,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "structured_extraction",
+          "category": "structured_output",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 1856.68,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "coding_diagnosis",
+          "category": "coding",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 801.67,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "payment_idempotency",
+          "category": "commerce_safety",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 1409.77,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "ssrf_metadata",
+          "category": "security",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 758.9,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "evidence_abstention",
+          "category": "grounding",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 912.63,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "multilingual_chinese",
+          "category": "multilingual",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 2039.67,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "instruction_priority",
+          "category": "instruction_following",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 821.93,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        }
+      ]
+    },
+    {
+      "model": "step-3.7-flash",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "latencyMsP50": 6806.85,
+      "latencyMsP95": 41474.36,
+      "results": [
+        {
+          "taskId": "arithmetic_integer",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 3825.59,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "arithmetic_percentage",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 4000.83,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "deductive_uncertainty",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 7964.62,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "structured_extraction",
+          "category": "structured_output",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 6806.85,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "coding_diagnosis",
+          "category": "coding",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 24287.33,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "payment_idempotency",
+          "category": "commerce_safety",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 41474.36,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "ssrf_metadata",
+          "category": "security",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 9045.29,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "evidence_abstention",
+          "category": "grounding",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 3925.91,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "multilingual_chinese",
+          "category": "multilingual",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 2906.03,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "instruction_priority",
+          "category": "instruction_following",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 18194.21,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": false,
+          "failureCode": "invalid_json"
+        }
+      ]
+    },
+    {
+      "model": "Kimi-K2.6",
+      "passed": 0,
+      "total": 10,
+      "scoreBasisPoints": 0,
+      "latencyMsP50": 2595.73,
+      "latencyMsP95": 3928.68,
+      "results": [
+        {
+          "taskId": "arithmetic_integer",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 3644.06,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "arithmetic_percentage",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 2595.73,
+          "identityMatches": false,
+          "answerMatches": false,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "deductive_uncertainty",
+          "category": "reasoning",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 3743.87,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "structured_extraction",
+          "category": "structured_output",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 3928.68,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "coding_diagnosis",
+          "category": "coding",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 2129.01,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "payment_idempotency",
+          "category": "commerce_safety",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 2493.49,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "ssrf_metadata",
+          "category": "security",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 2855.78,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "evidence_abstention",
+          "category": "grounding",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 2859.13,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "multilingual_chinese",
+          "category": "multilingual",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 2194.73,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        },
+        {
+          "taskId": "instruction_priority",
+          "category": "instruction_following",
+          "passed": false,
+          "status": 200,
+          "latencyMs": 2126.02,
+          "identityMatches": false,
+          "answerMatches": true,
+          "usageValid": true,
+          "failureCode": null
+        }
+      ]
+    }
+  ]
+}

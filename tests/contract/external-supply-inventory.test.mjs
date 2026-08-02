@@ -52,6 +52,7 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(gateway.alternateCredentialSlots, 20);
   assert.equal(gateway.credentialDeployment, 'legacy_import_read_only');
   assert.equal(gateway.connectionStatus, 'observed_working');
+  assert.equal(gateway.qualificationStatus, 'failed');
   assert.equal(gateway.knownModelNames.length, 21);
 
   assert.deepEqual(inventory.services.filter(({ serviceId }) => ['supply.cerebras', 'supply.cohere', 'supply.mistral', 'supply.nvidia', 'supply.openrouter', 'supply.sambanova', 'supply.siliconflow', 'supply.zai'].includes(serviceId)).map(({ serviceId, connectionStatus, knownModelNames }) => [serviceId, connectionStatus, knownModelNames.length]), [

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "clervo.owned-chat-identity-probe.v1",
+  "checkedAt": "2026-08-02T04:32:34.090Z",
+  "serviceId": "supply.hcnsec_gateway",
+  "externalCalls": 5,
+  "ownerCashSpentUsd": 0,
+  "secretValuesRecorded": false,
+  "promptOrOutputPayloadsRecorded": false,
+  "results": [
+    {
+      "requestedModel": "DeepSeek-V4-Pro",
+      "observedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+      "identityMatches": false,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 1151.86
+    },
+    {
+      "requestedModel": "Qwen3.5-397B-A17B",
+      "observedModel": "xopqwen36v35b",
+      "identityMatches": false,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 870.87
+    },
+    {
+      "requestedModel": "Qwen3.6-35B-A3B",
+      "observedModel": "xopqwen36v35b",
+      "identityMatches": false,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 1561.53
+    },
+    {
+      "requestedModel": "step-3.7-flash",
+      "observedModel": "stepfun-ai/step-3.7-flash",
+      "identityMatches": false,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 4007.71
+    },
+    {
+      "requestedModel": "Kimi-K2.6",
+      "observedModel": "thinkingmachines/inkling",
+      "identityMatches": false,
+      "status": 200,
+      "usageReported": true,
+      "latencyMs": 2187.25
+    }
+  ]
+}

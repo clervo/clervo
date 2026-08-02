@@ -1,0 +1,449 @@
+{
+  "schemaVersion": "clervo.ai-gateway-pricing.v1",
+  "priceVersion": "2026-08-02.1",
+  "evaluatedAt": "2026-08-02T04:32:34.090Z",
+  "currency": "USD",
+  "providerVisibility": "internal_only",
+  "policy": {
+    "customerFreeByDefault": false,
+    "unknownSupplierCostBlocksPricing": false,
+    "identityFailureBlocksSale": true,
+    "termsReviewBlocksSale": true,
+    "accountPoolingAllowed": false
+  },
+  "source": {
+    "discoveredAssets": 21,
+    "credentialSlotsUsed": 1,
+    "configuredCredentialSlots": 20,
+    "externalCalls": 55,
+    "ownerCashSpentUsd": 0,
+    "supplierCostKnown": false
+  },
+  "assets": [
+    {
+      "modelId": "auto",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.05
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.2
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "DeepSeek-V4-Flash",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.05
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.2
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "DeepSeek-V4-Pro",
+      "product": "ai.chat",
+      "listingStatus": "priced_identity_failed",
+      "qualityGrade": "good",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.2
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.8
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "substitution_observed",
+      "observedModelId": "nvidia/nemotron-3-ultra-550b-a55b",
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "glm-5.1",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.2
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.8
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "glm-5.2",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.2
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.8
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "kat-coder-pro-v2.5",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.2
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.8
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "Kimi-K2.6",
+      "product": "ai.chat",
+      "listingStatus": "priced_identity_failed",
+      "qualityGrade": "good",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.2
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.8
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "substitution_observed",
+      "observedModelId": "thinkingmachines/inkling",
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "MiniMax-M3",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.2
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.8
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "Qwen3.5-397B-A17B",
+      "product": "ai.chat",
+      "listingStatus": "priced_identity_failed",
+      "qualityGrade": "best",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.2
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.8
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "substitution_observed",
+      "observedModelId": "xopqwen36v35b",
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "Qwen3.6-35B-A3B",
+      "product": "ai.chat",
+      "listingStatus": "priced_identity_failed",
+      "qualityGrade": "best",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.2
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.8
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "substitution_observed",
+      "observedModelId": "xopqwen36v35b",
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "sensenova-6.7-flash-lite",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.05
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.2
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "sensenova-u1-fast",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.05
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.2
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "step-3.5-flash",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.05
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.2
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "step-3.5-flash-2603",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.05
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.2
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "step-3.7-flash",
+      "product": "ai.chat",
+      "listingStatus": "priced_identity_failed",
+      "qualityGrade": "poor",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.05
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.2
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "substitution_observed",
+      "observedModelId": "stepfun-ai/step-3.7-flash",
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "step-image-edit-2",
+      "product": "ai.image_edit",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per edited image",
+          "price": 0.005
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "step-router-v1",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.05
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.2
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "stepaudio-2.5-asr",
+      "product": "ai.transcribe",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per audio minute",
+          "price": 0.002
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "stepaudio-2.5-chat",
+      "product": "ai.chat",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per M input tokens",
+          "price": 0.2
+        },
+        {
+          "unit": "per M output tokens",
+          "price": 0.8
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "stepaudio-2.5-realtime",
+      "product": "ai.speech_realtime",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per audio minute",
+          "price": 0.004
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    },
+    {
+      "modelId": "stepaudio-2.5-tts",
+      "product": "ai.speech",
+      "listingStatus": "priced_pending_qualification",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per 1k characters",
+          "price": 0.01
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "identityStatus": "not_run",
+      "observedModelId": null,
+      "termsStatus": "review_required"
+    }
+  ]
+}

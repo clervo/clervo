@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.10",
-  "observedAt": "2026-08-02T04:25:02.083Z",
+  "inventoryVersion": "2026-08-02.11",
+  "observedAt": "2026-08-02T04:32:34.090Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -121,7 +121,7 @@
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "owner_reported_balance",
       "connectionStatus": "observed_working",
-      "qualificationStatus": "not_run",
+      "qualificationStatus": "failed",
       "termsStatus": "review_required",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
@@ -151,7 +151,9 @@
       "notes": [
         "Twenty primary slots are mirrored by AI_KEY_1 through AI_KEY_20; twenty distinct legacy alternate values also exist but are not counted as active accounts.",
         "Account pooling requires provider permission and must never bypass a per-customer or per-project limit.",
-        "Authenticated model discovery returned 21 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+        "Authenticated model discovery returned 21 exact assets on 2026-08-02; every asset has a positive introductory customer price while supplier cost remains unknown.",
+        "Five representative chat models returned HTTP 200, but every requested identity mismatched the response label. DeepSeek V4 Pro resolved to Nemotron Ultra, Qwen 397B and Qwen 35B shared one opaque label, Kimi K2.6 resolved to Inkling, and Step used a normalized label. Exact-route qualification therefore failed.",
+        "Only account 1 was used for 55 bounded calls. The other nineteen accounts remain untouched until account-structure and limit terms are verified."
       ]
     },
     {

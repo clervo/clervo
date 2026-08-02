@@ -166,6 +166,31 @@ test('owned AI discovery records every catalog response without pooling gateway 
   ]);
 });
 
+test('Chinese gateway prices every asset but fails closed on observed model substitution', async () => {
+  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-gateway-pricing.v1.json'), 'utf8'));
+  assert.equal(pricing.assets.length, 21);
+  assert.equal(pricing.source.externalCalls, 55);
+  assert.equal(pricing.source.ownerCashSpentUsd, 0);
+  assert.equal(pricing.source.credentialSlotsUsed, 1);
+  assert.equal(pricing.source.configuredCredentialSlots, 20);
+  assert.equal(pricing.policy.accountPoolingAllowed, false);
+  assert.ok(pricing.assets.every(({ customerPrices }) => customerPrices.length > 0 && customerPrices.every(({ price }) => price > 0)));
+  assert.deepEqual(pricing.assets.filter(({ identityStatus }) => identityStatus === 'substitution_observed').map(({ modelId, qualityGrade, observedModelId }) => [modelId, qualityGrade, observedModelId]), [
+    ['DeepSeek-V4-Pro', 'good', 'nvidia/nemotron-3-ultra-550b-a55b'],
+    ['Kimi-K2.6', 'good', 'thinkingmachines/inkling'],
+    ['Qwen3.5-397B-A17B', 'best', 'xopqwen36v35b'],
+    ['Qwen3.6-35B-A3B', 'best', 'xopqwen36v35b'],
+    ['step-3.7-flash', 'poor', 'stepfun-ai/step-3.7-flash'],
+  ]);
+  assert.ok(pricing.assets.every(({ listingStatus, termsStatus }) => listingStatus !== 'sellable' && termsStatus === 'review_required'));
+  const quality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/hcnsec-chat-quality-run.v1.json'), 'utf8'));
+  const identities = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/hcnsec-chat-identity-probe.v1.json'), 'utf8'));
+  assert.equal(quality.externalCalls, 50);
+  assert.ok(quality.models.every(({ results }) => results.every(({ status }) => status === 200)));
+  assert.equal(identities.externalCalls, 5);
+  assert.ok(identities.results.every(({ identityMatches }) => identityMatches === false));
+});
+
 test('Clervo gateway screen preserves the bounded live result without overstating quality or cost', async () => {
   const evidence = JSON.parse(await readFile(path.join(root, 'docs/evidence/stage6/clervo-gateway-screen.v1.json'), 'utf8'));
   assert.equal(evidence.screen.externalCalls, 38);

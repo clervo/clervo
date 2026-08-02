@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-gateway-pricing.schema.json",
+  "title": "Clervo internal Chinese gateway pricing and identity state",
+  "type": "object",
+  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "providerVisibility", "policy", "source", "assets"],
+  "$defs": {
+    "price": {
+      "type": "object",
+      "required": ["unit", "price"],
+      "properties": {
+        "unit": { "type": "string", "minLength": 3, "maxLength": 80 },
+        "price": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "schemaVersion": { "const": "clervo.ai-gateway-pricing.v1" },
+    "priceVersion": { "const": "2026-08-02.1" },
+    "evaluatedAt": { "type": "string", "format": "date-time" },
+    "currency": { "const": "USD" },
+    "providerVisibility": { "const": "internal_only" },
+    "policy": {
+      "type": "object",
+      "required": ["customerFreeByDefault", "unknownSupplierCostBlocksPricing", "identityFailureBlocksSale", "termsReviewBlocksSale", "accountPoolingAllowed"],
+      "properties": {
+        "customerFreeByDefault": { "const": false },
+        "unknownSupplierCostBlocksPricing": { "const": false },
+        "identityFailureBlocksSale": { "const": true },
+        "termsReviewBlocksSale": { "const": true },
+        "accountPoolingAllowed": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": ["discoveredAssets", "credentialSlotsUsed", "configuredCredentialSlots", "externalCalls", "ownerCashSpentUsd", "supplierCostKnown"],
+      "properties": {
+        "discoveredAssets": { "const": 21 },
+        "credentialSlotsUsed": { "const": 1 },
+        "configuredCredentialSlots": { "const": 20 },
+        "externalCalls": { "const": 55 },
+        "ownerCashSpentUsd": { "const": 0 },
+        "supplierCostKnown": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 21,
+      "maxItems": 21,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["modelId", "product", "listingStatus", "qualityGrade", "supplierCostKnown", "customerPrices", "pricingMethod", "identityStatus", "observedModelId", "termsStatus"],
+        "properties": {
+          "modelId": { "type": "string", "minLength": 1, "maxLength": 160 },
+          "product": { "enum": ["ai.chat", "ai.image_edit", "ai.speech", "ai.speech_realtime", "ai.transcribe"] },
+          "listingStatus": { "enum": ["priced_pending_qualification", "priced_identity_failed"] },
+          "qualityGrade": { "enum": ["best", "good", "poor", "unranked"] },
+          "supplierCostKnown": { "const": false },
+          "customerPrices": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/price" } },
+          "pricingMethod": { "const": "category_introductory_price" },
+          "identityStatus": { "enum": ["not_run", "substitution_observed"] },
+          "observedModelId": { "anyOf": [{ "type": "string", "minLength": 1, "maxLength": 160 }, { "type": "null" }] },
+          "termsStatus": { "const": "review_required" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
