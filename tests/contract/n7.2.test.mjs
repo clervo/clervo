@@ -6,7 +6,7 @@ const sessionId = 'sbx_0123456789ABCDEFGHIJ';
 const tenantId = 'tenant_0123456789ABCDEFGHIJ';
 const executionId = 'exec_0123456789ABCDEFGHIJ';
 const imageDigest = `sha256:${'a'.repeat(64)}`;
-const limits = { cpuMillis: 1000, memoryBytes: 134217728, processes: 16, diskBytes: 10485760, outputBytes: 1024, wallTimeMs: 2000, maximumChargeMicrousd: 1000 };
+const limits = { cpuMillis: 1000, memoryBytes: 134217728, processes: 16, diskBytes: 10485760, outputBytes: 1024, artifactBytes: 4096, wallTimeMs: 2000, maximumChargeMicrousd: 1000 };
 
 function executor(overrides = {}) {
   const calls = [];

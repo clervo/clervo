@@ -5,7 +5,7 @@ import { buildSandboxPod, sandboxBoundaryManifests, sandboxExecutionNamespace } 
 
 const input = {
   sessionId: 'sbx_0123456789ABCDEFGHIJ', tenantId: 'tenant_0123456789ABCDEFGHIJ', imageDigest: `sha256:${'a'.repeat(64)}`, command: ['node', '/opt/clervo/runner.js'],
-  limits: { cpuMillis: 1000, memoryBytes: 134217728, processes: 16, diskBytes: 10485760, outputBytes: 1024, wallTimeMs: 2000, maximumChargeMicrousd: 1000 },
+  limits: { cpuMillis: 1000, memoryBytes: 134217728, processes: 16, diskBytes: 10485760, outputBytes: 1024, artifactBytes: 4096, wallTimeMs: 2000, maximumChargeMicrousd: 1000 },
 };
 
 test('sandbox pod is digest-pinned to gVisor on credential-free dedicated execution nodes', () => {

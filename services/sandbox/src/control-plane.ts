@@ -6,6 +6,7 @@ export interface SandboxLimits {
   processes: number;
   diskBytes: number;
   outputBytes: number;
+  artifactBytes: number;
   wallTimeMs: number;
   maximumChargeMicrousd: number;
 }
@@ -51,7 +52,7 @@ export interface SandboxExecutionResult {
   maximumChargeMicrousd: number;
 }
 
-const maximums: SandboxLimits = { cpuMillis: 300_000, memoryBytes: 8_589_934_592, processes: 256, diskBytes: 10_737_418_240, outputBytes: 10_485_760, wallTimeMs: 300_000, maximumChargeMicrousd: 1_000_000 };
+const maximums: SandboxLimits = { cpuMillis: 300_000, memoryBytes: 8_589_934_592, processes: 256, diskBytes: 10_737_418_240, outputBytes: 10_485_760, artifactBytes: 104_857_600, wallTimeMs: 300_000, maximumChargeMicrousd: 1_000_000 };
 
 function identity(value: string, prefix: string): void {
   if (!new RegExp(`^${prefix}_[A-Za-z0-9]{20,64}$`, 'u').test(value)) throw new TypeError('sandbox_identity_invalid');

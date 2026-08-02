@@ -33,7 +33,7 @@ function requireCommand(value: readonly string[]): void {
 function requireLimits(value: SandboxLimits): void {
   const bounds: Readonly<Record<keyof SandboxLimits, readonly [number, number]>> = {
     cpuMillis: [1, 300_000], memoryBytes: [16_777_216, 8_589_934_592], processes: [1, 256], diskBytes: [1_048_576, 10_737_418_240],
-    outputBytes: [1, 10_485_760], wallTimeMs: [100, 300_000], maximumChargeMicrousd: [1, 1_000_000],
+    outputBytes: [1, 10_485_760], artifactBytes: [1, 104_857_600], wallTimeMs: [100, 300_000], maximumChargeMicrousd: [1, 1_000_000],
   };
   for (const key of Object.keys(bounds) as (keyof SandboxLimits)[]) {
     const [minimum, maximum] = bounds[key];
@@ -63,6 +63,7 @@ export function buildSandboxPod(input: Readonly<SandboxPodInput>): JsonObject {
     'clervo.dev/cpu-budget-millis': String(input.limits.cpuMillis),
     'clervo.dev/process-limit': String(input.limits.processes),
     'clervo.dev/output-limit-bytes': String(input.limits.outputBytes),
+    'clervo.dev/artifact-limit-bytes': String(input.limits.artifactBytes),
     'clervo.dev/maximum-charge-microusd': String(input.limits.maximumChargeMicrousd),
   };
   return Object.freeze({
