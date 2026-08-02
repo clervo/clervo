@@ -144,6 +144,18 @@ the limit when the runtime ignores `RLIMIT_NPROC`. All three superseded digests
 are blocked. Preserve the dedicated Artifact Registry repository and immutable
 history.
 
+Stage 14 production hardening has started with the exact API container. Its
+Node.js base is digest-pinned, the clean build includes every workspace
+manifest and adapter source it compiles, and the runtime contains only compiled
+application output plus the bounded server entrypoint. Local qualification ran
+the exact image as UID/GID 1000, read-only root, no-new-privileges, all Linux
+capabilities dropped, bounded CPU/memory/PIDs, tmpfs-only temporary storage, and
+no network. Health passed, root writes and external network access were denied,
+SIGTERM exited cleanly with code 0, no OOM occurred, and paid execution remained
+false. This is not production readiness: registry digest, signed provenance,
+scans, durable state, restore/rollback, load, monitoring delivery, retention,
+and an owner-approved cloud release remain pending.
+
 ## Live qualification result
 
 GKE Calico failed closed because metadata remained reachable, including through

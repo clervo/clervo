@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "clervo.production-local-container-qualification.v1",
+  "qualifiedAt": "2026-08-02T15:30:00.553Z",
+  "sourceCommit": "f2f0410b4a7c",
+  "releaseCandidateId": "clervo-private-core-2026-08-02.1",
+  "interfaceHash": "sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768",
+  "image": {
+    "localTag": "clervo-production-candidate:local-f2f0410b4a7c",
+    "imageId": "sha256:8fee2d356c00f84da81ef0e45b0ce4a8c24ebe2feeeffb688fae5749d6cc3d11",
+    "baseImage": "node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9b581ef1dd7d96ced463b8e7",
+    "registryDigest": null,
+    "signedBuildProvenance": false,
+    "vulnerabilityScan": "not_run"
+  },
+  "checks": {
+    "exactNonRootUser": true,
+    "readOnlyRootDeniedWrite": true,
+    "noNewPrivileges": true,
+    "allCapabilitiesDropped": true,
+    "boundedCpuMemoryAndPids": true,
+    "runtimeNetworkDenied": true,
+    "secretLikeRuntimeEnvironmentEntries": 0,
+    "healthPassed": true,
+    "paidExecutionEnabled": false,
+    "gracefulSigtermExitCode": 0,
+    "oomKilled": false
+  },
+  "externalEffects": {
+    "publicDeploymentChanged": false,
+    "cloudResourcesChanged": false,
+    "providerCalls": 0,
+    "payments": 0,
+    "ownerCashSpentUsd": 0
+  },
+  "productionReady": false,
+  "remainingPrerequisites": [
+    "immutable_registry_digest",
+    "signed_build_provenance",
+    "dependency_and_container_scans",
+    "staging_restore_and_rollback",
+    "durable_idempotency_and_quota",
+    "backup_restore_recovery",
+    "load_and_overload_proof",
+    "monitoring_and_incident_delivery",
+    "retention_deletion_proof",
+    "owner_approved_cloud_release"
+  ]
+}
