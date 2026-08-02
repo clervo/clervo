@@ -432,7 +432,7 @@
         "object-storage-egress"
       ],
       "lifecycle": "production",
-      "routeState": "blocked_owner_credential",
+      "routeState": "adapter_ready_blocked_owner_credential",
       "primaryServices": [],
       "fallbackServices": [],
       "pricingCatalogs": [
@@ -440,14 +440,16 @@
       ],
       "quality": "unranked",
       "termsStatus": "restricted",
-      "quotaRunway": "Published recurring free allowance is known, but account usage and automatic overage state are not exposed by S3.",
+      "quotaRunway": "Published recurring free allowance and local operation ceilings are known, but account usage and automatic overage state are not exposed by S3.",
       "healthMethod": [
-        "docs/evidence/supply-foundation/cloudflare-r2-qualification.v1.json"
+        "docs/evidence/supply-foundation/cloudflare-r2-qualification.v1.json",
+        "docs/evidence/supply-foundation/r2-control-plane-diagnostic.v1.json",
+        "tests/contract/object-storage-adapter.test.mjs"
       ],
       "secretLocations": [
         "legacy_import:R2_ACCESS_KEY_ID,R2_SECRET_ACCESS_KEY"
       ],
-      "replacementPlan": "Replace the rejected key with least privilege to one dedicated bucket, prove isolation and lifecycle, and fail closed before any billable overage."
+      "replacementPlan": "Install one least-privilege key for a dedicated bucket, then run the prepared synthetic lifecycle qualifier; the tenant-isolated signed adapter and hard per-process ceilings are already complete."
     },
     {
       "capabilityId": "payment.x402",

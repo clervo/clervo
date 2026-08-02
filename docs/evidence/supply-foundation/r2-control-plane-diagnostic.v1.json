@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "clervo.r2-control-plane-diagnostic.v1",
+  "evaluatedAt": "2026-08-02T07:50:22.067Z",
+  "serviceId": "supply.cloudflare_r2",
+  "externalCalls": 6,
+  "objectReadCalls": 0,
+  "objectWriteCalls": 0,
+  "mutationCalls": 0,
+  "ownerCashSpentUsd": 0,
+  "responsePayloadValuesRecorded": false,
+  "credentialValuesRecorded": false,
+  "observations": [
+    { "accountName": "CLOUDFLARE_ACCOUNT_ID", "tokenName": "CLOUDFLARE_API_TOKEN", "status": 403, "outcome": "rejected", "errorCodes": [10000], "bucketCount": null },
+    { "accountName": "CLOUDFLARE_ACCOUNT_ID", "tokenName": "CLOUDFLARE_API_TOKEN_OLD", "status": 403, "outcome": "rejected", "errorCodes": [10000], "bucketCount": null },
+    { "accountName": "CLOUDFLARE_ACCOUNT_ID_OLD", "tokenName": "CLOUDFLARE_API_TOKEN", "status": 403, "outcome": "rejected", "errorCodes": [10000], "bucketCount": null },
+    { "accountName": "CLOUDFLARE_ACCOUNT_ID_OLD", "tokenName": "CLOUDFLARE_API_TOKEN_OLD", "status": 403, "outcome": "rejected", "errorCodes": [10000], "bucketCount": null },
+    { "accountName": "CLOUDFLARE_ACCOUNT_ID__LEGACY_ALT_01", "tokenName": "CLOUDFLARE_API_TOKEN", "status": 403, "outcome": "rejected", "errorCodes": [10042], "bucketCount": null },
+    { "accountName": "CLOUDFLARE_ACCOUNT_ID__LEGACY_ALT_01", "tokenName": "CLOUDFLARE_API_TOKEN_OLD", "status": 403, "outcome": "rejected", "errorCodes": [10000], "bucketCount": null }
+  ],
+  "summary": { "passedCombinations": 0, "replacementCredentialStillRequired": true }
+}

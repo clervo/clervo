@@ -135,6 +135,12 @@ disabled without explicit owner approval.
   service but rejected signed ListBuckets with HTTP 403. No object content or
   mutation was attempted. Replacement permission/credentials, isolation,
   lifecycle, and a hard overage guard remain required.
+- The current/old Cloudflare API tokens were also checked against every known
+  account identifier; all six read-only R2 control-plane combinations returned
+  HTTP 403. Local integration is no longer a gap: the signed object adapter now
+  enforces tenant-scoped content addresses, digest verification, fixed hosts,
+  bounded bodies, provider-neutral URIs, and storage/read/write/delete ceilings.
+  Only a least-privilege bucket credential and bounded lifecycle proof remain.
 - Read-only integration probes authenticated GitHub, DEV, Hashnode's current
   beta API, Telegram, and WorkOS without reading repositories, publishing, or
   messaging; the GitLab token returned HTTP 401. Every integration is priced,

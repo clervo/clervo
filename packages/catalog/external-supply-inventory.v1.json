@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.24",
-  "observedAt": "2026-08-02T07:44:21.140Z",
+  "inventoryVersion": "2026-08-02.25",
+  "observedAt": "2026-08-02T07:50:22.067Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -313,7 +313,9 @@
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
         "The legacy endpoint failed TLS. A retry against the deterministic account-scoped hostname reached the service but returned HTTP 403 to signed ListBuckets; the credentials lack the required permission or are no longer valid. No object data was read, written, or deleted.",
+        "All six combinations of the current/old API tokens and current/old/alternate account identifiers also returned HTTP 403 on the read-only R2 bucket control-plane endpoint. No bucket names, object values, or mutations were recorded.",
         "All storage dimensions have positive customer prices against current published Standard rates and the recurring free tier, but listing remains blocked pending replacement permission or credentials, customer-object isolation, lifecycle qualification, and a verified hard overage guard.",
+        "The local adapter is complete and tested for tenant-scoped content addressing, integrity verification, fixed-host signing, bounded response bodies, provider-neutral artifact URIs, and per-process storage/read/write/delete ceilings.",
         "R2 is documented for application and customer-content storage. Clervo may provide value-added storage but never resell raw credentials or supplier account access."
       ]
     },

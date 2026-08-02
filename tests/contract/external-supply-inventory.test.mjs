@@ -237,6 +237,7 @@ test('owned object storage is positively priced but fails closed on the legacy e
   const pricing = await json('packages/catalog/storage-supply-pricing.v1.json');
   const schema = await json('packages/contracts/schemas/storage-supply-pricing.schema.json');
   const evidence = await json('docs/evidence/supply-foundation/cloudflare-r2-qualification.v1.json');
+  const controlPlane = await json('docs/evidence/supply-foundation/r2-control-plane-diagnostic.v1.json');
   const ajv = new Ajv2020({ strict: true, allErrors: true });
   addFormats(ajv);
   const validate = ajv.compile(schema);
@@ -255,6 +256,10 @@ test('owned object storage is positively priced but fails closed on the legacy e
   assert.equal(evidence.summary.productionStatus, 'blocked_credential_or_permission_failure');
   assert.equal(evidence.allowance.automaticPaidUpgradeAllowedByClervo, false);
   assert.equal(evidence.terms.rawCredentialOrAccountResaleAllowed, false);
+  assert.deepEqual(controlPlane.summary, { passedCombinations: 0, replacementCredentialStillRequired: true });
+  assert.equal(controlPlane.externalCalls, 6);
+  assert.deepEqual([controlPlane.objectReadCalls, controlPlane.objectWriteCalls, controlPlane.mutationCalls], [0, 0, 0]);
+  assert.ok(controlPlane.observations.every(({ status, outcome }) => status === 403 && outcome === 'rejected'));
 });
 
 test('platform integrations are priced and authenticated without pooling accounts or causing external mutations', async () => {
