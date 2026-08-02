@@ -370,6 +370,7 @@ test('final supply matrix covers every priced asset, preserves provider secrecy,
   assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 23);
   assert.equal(new Set(matrix.capabilities.map(({ capabilityId }) => capabilityId)).size, matrix.capabilities.length);
   assert.ok(matrix.capabilities.every(({ publicAssets, pricingCatalogs, healthMethod, secretLocations, replacementPlan }) => publicAssets.length > 0 && pricingCatalogs.length > 0 && healthMethod.length > 0 && secretLocations.length > 0 && replacementPlan.length > 12));
+  assert.ok(matrix.capabilities.every(({ publicAssets }) => publicAssets.every((asset) => !asset.startsWith('@cf/') && !/^(?:openai|qwen)\//u.test(asset))));
   assert.deepEqual(matrix.ownerBlockers.map(({ blockerId, spendingAuthorized }) => [blockerId, spendingAuthorized]), [['owner.rpc_commercial_permission', false], ['owner.blockscout_account', false], ['owner.r2_key_reissue', false]]);
   assert.equal(market.competitorObservation.observedLiveModels, 83);
   assert.equal(market.clervoObservation.qualifiedExactAiRoutes, 21);

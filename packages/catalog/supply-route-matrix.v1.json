@@ -92,20 +92,18 @@
     {
       "capabilityId": "ai.chat",
       "publicAssets": [
-        "@cf/meta/llama-4-scout-17b-16e-instruct",
-        "@cf/nvidia/nemotron-3-120b-a12b",
-        "@cf/openai/gpt-oss-120b",
-        "@cf/openai/gpt-oss-20b",
-        "@cf/qwen/qwen3-30b-a3b-fp8",
         "gemini-3.5-flash",
         "gemini-3.5-flash-lite",
         "gemini-3.6-flash",
         "gpt-5.6-luna",
         "gpt-5.6-sol",
         "gpt-5.6-terra",
-        "openai/gpt-oss-120b",
-        "openai/gpt-oss-20b",
-        "qwen/qwen3.6-27b"
+        "gpt-oss-120b",
+        "gpt-oss-20b",
+        "llama-4-scout-17b-16e-instruct",
+        "nemotron-3-120b-a12b",
+        "qwen3-30b-a3b-fp8",
+        "qwen3.6-27b"
       ],
       "lifecycle": "mixed",
       "routeState": "qualified_portfolio_exact_fallback_partial",
@@ -173,9 +171,9 @@
     {
       "capabilityId": "ai.image",
       "publicAssets": [
+        "gemini-3-pro-image",
         "gemini-3.1-flash-image",
-        "gemini-3.1-flash-lite-image",
-        "gemini-3-pro-image"
+        "gemini-3.1-flash-lite-image"
       ],
       "lifecycle": "production",
       "routeState": "qualified_single_family",
@@ -258,8 +256,8 @@
     {
       "capabilityId": "ai.tts",
       "publicAssets": [
-        "aura-2-en",
         "aura-2-arcas-en",
+        "aura-2-en",
         "aura-2-thalia-en"
       ],
       "lifecycle": "production",
@@ -292,8 +290,8 @@
     {
       "capabilityId": "ai.stt",
       "publicAssets": [
-        "nova-3",
         "flux",
+        "nova-3",
         "whisper",
         "whisper-large-v3",
         "whisper-large-v3-turbo",

@@ -45,7 +45,14 @@ const catalogCoverage = catalogFiles.map((file) => {
 });
 if (catalogCoverage.some(({ assetCount, positiveCustomerPriceCount }) => assetCount !== positiveCustomerPriceCount)) throw new TypeError('supply_matrix_nonpositive_customer_price');
 
-const qualified = (product) => aiCatalog.routes.filter(({ productIds }) => productIds.includes(product)).map(({ exactModelId }) => exactModelId);
+function publicModelId(modelId) {
+  if (modelId.startsWith('@cf/')) return modelId.split('/').at(-1);
+  if (/^[a-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(modelId)) return modelId.split('/')[1];
+  return modelId;
+}
+
+const publicModels = (modelIds) => [...new Set(modelIds.map(publicModelId))].sort();
+const qualified = (product) => publicModels(aiCatalog.routes.filter(({ productIds }) => productIds.includes(product)).map(({ exactModelId }) => exactModelId));
 const priced = (file, predicate = () => true) => assets(catalogs.get(file)).filter(predicate).map((asset) => asset.modelId ?? asset.publicAssetId ?? asset.productId);
 const evidence = (name) => `docs/evidence/supply-foundation/${name}`;
 const capabilities = [
@@ -60,8 +67,8 @@ const capabilities = [
   },
   {
     capabilityId: 'ai.embed', publicAssets: qualified('ai.embed'), lifecycle: 'production', routeState: 'qualified_single_family', primaryServices: ['supply.google_vertex'], fallbackServices: [],
-    pricingCatalogs: [ref('ai-credit-backed-pricing.v1.json'), ref('ai-edge-free-pricing.v1.json')], quality: 'best', termsStatus: 'restricted', quotaRunway: 'Allocated from the reported Vertex credit with deny-on-unknown usage; the edge BGE-M3 candidate lacks final accounting and adapter qualification.',
-    healthMethod: [evidence('cloudflare-modality-screen.v1.json'), 'docs/evidence/stage6/vertex-embedding-screen.v1.json'], secretLocations: ['application_default:GCP_ADC', 'legacy_import:CLOUDFLARE_API_TOKEN'], replacementPlan: 'Finish BGE-M3 accounting and adapter qualification as the independent embedding fallback.'
+    pricingCatalogs: [ref('ai-credit-backed-pricing.v1.json'), ref('ai-edge-free-pricing.v1.json')], quality: 'best', termsStatus: 'restricted', quotaRunway: 'Allocated from the reported Vertex credit with deny-on-unknown usage. The recurring-free BGE-M3 candidate passed 7/8 retrieval cases but its synchronous responses omit token usage, so it cannot enter customer accounting.',
+    healthMethod: [evidence('cloudflare-modality-screen.v1.json'), evidence('cloudflare-bge-retrieval.v1.json'), 'docs/evidence/stage6/vertex-embedding-screen.v1.json'], secretLocations: ['application_default:GCP_ADC', 'legacy_import:CLOUDFLARE_API_TOKEN'], replacementPlan: 'Keep BGE-M3 blocked unless the synchronous API reports exact token usage or an exact compatible tokenizer is integrated; do not estimate metered usage. Source another independent embedding family only if funded Vertex runway becomes insufficient.'
   },
   {
     capabilityId: 'ai.image', publicAssets: qualified('ai.image'), lifecycle: 'production', routeState: 'qualified_single_family', primaryServices: ['supply.google_vertex'], fallbackServices: [],
@@ -79,14 +86,14 @@ const capabilities = [
     healthMethod: [evidence('vertex-lyria-qualification.v1.json'), 'tests/contract/vertex-lyria-adapter.test.mjs'], secretLocations: ['application_default:GCP_ADC'], replacementPlan: 'Add the explicit ai.music execution wire contract and a perceptual quality benchmark before public listing; retain the exact immutable endpoint and WAV integrity checks.'
   },
   {
-    capabilityId: 'ai.tts', publicAssets: qualified('ai.speech'), lifecycle: 'production', routeState: 'qualified_single_family', primaryServices: ['supply.deepgram'], fallbackServices: [],
-    pricingCatalogs: [ref('ai-speech-pricing.v1.json'), ref('ai-edge-free-pricing.v1.json'), ref('ai-free-tier-pricing.v1.json')], quality: 'good', termsStatus: 'restricted', quotaRunway: 'USD 160 shadow allocation from the reported balance with USD 5 daily debit and USD 20 remaining-balance hard stop.',
-    healthMethod: ['docs/evidence/stage6/deepgram-speech-screen.v1.json', evidence('cloudflare-modality-screen.v1.json'), evidence('groq-speech-qualification.v1.json')], secretLocations: ['legacy_import:DEEPGRAM_API_KEY,CLOUDFLARE_API_TOKEN,GROQ_API_KEY'], replacementPlan: 'Qualify the edge Aura route after accounting integration; preview Orpheus routes remain blocked on organization terms acceptance.'
+    capabilityId: 'ai.tts', publicAssets: qualified('ai.speech'), lifecycle: 'production', routeState: 'qualified_resilient', primaryServices: ['supply.deepgram'], fallbackServices: ['supply.cloudflare_workers_ai'],
+    pricingCatalogs: [ref('ai-speech-pricing.v1.json'), ref('ai-edge-free-pricing.v1.json'), ref('ai-free-tier-pricing.v1.json')], quality: 'good', termsStatus: 'restricted', quotaRunway: 'USD 160 primary shadow allocation with USD 5 daily debit and USD 20 remaining-balance hard stop; fallback uses recurring free neurons with an application ledger, hard stop, and no paid overage.',
+    healthMethod: ['docs/evidence/stage6/deepgram-speech-screen.v1.json', evidence('cloudflare-modality-screen.v1.json'), evidence('cloudflare-aura-quality.v1.json'), evidence('groq-speech-qualification.v1.json')], secretLocations: ['legacy_import:DEEPGRAM_API_KEY,CLOUDFLARE_API_TOKEN,GROQ_API_KEY'], replacementPlan: 'Keep the two independently operated Aura routes health-scored and fail over only on transient failures; preview Orpheus routes remain blocked on organization terms acceptance.'
   },
   {
-    capabilityId: 'ai.stt', publicAssets: [...new Set([...priced('ai-speech-pricing.v1.json', ({ modelId }) => modelId === 'nova-3'), ...priced('ai-free-tier-pricing.v1.json', ({ assetType }) => assetType === 'transcription'), ...priced('ai-edge-free-pricing.v1.json', ({ task }) => task === 'Automatic Speech Recognition')])], lifecycle: 'mixed', routeState: 'qualified_integration_pending', primaryServices: ['supply.deepgram'], fallbackServices: ['supply.groq', 'supply.cloudflare_workers_ai'],
-    pricingCatalogs: [ref('ai-speech-pricing.v1.json'), ref('ai-free-tier-pricing.v1.json'), ref('ai-edge-free-pricing.v1.json')], quality: 'mixed', termsStatus: 'restricted', quotaRunway: 'The funded primary and two recurring-free families were bounded live; customer accounting and response contracts still block production listing.',
-    healthMethod: [evidence('groq-speech-qualification.v1.json'), evidence('cloudflare-modality-screen.v1.json'), 'docs/evidence/stage6/deepgram-speech-screen.v1.json'], secretLocations: ['legacy_import:DEEPGRAM_API_KEY,GROQ_API_KEY,CLOUDFLARE_API_TOKEN'], replacementPlan: 'Implement the normalized transcription adapter and usage ledger, then route exact identities without transcription-model substitution.'
+    capabilityId: 'ai.stt', publicAssets: publicModels([...priced('ai-speech-pricing.v1.json', ({ modelId }) => modelId === 'nova-3'), ...priced('ai-free-tier-pricing.v1.json', ({ assetType }) => assetType === 'transcription'), ...priced('ai-edge-free-pricing.v1.json', ({ task }) => task === 'Automatic Speech Recognition')]), lifecycle: 'mixed', routeState: 'qualified_adapter_ready_contract_pending', primaryServices: ['supply.deepgram'], fallbackServices: ['supply.groq', 'supply.cloudflare_workers_ai'],
+    pricingCatalogs: [ref('ai-speech-pricing.v1.json'), ref('ai-free-tier-pricing.v1.json'), ref('ai-edge-free-pricing.v1.json')], quality: 'best', termsStatus: 'restricted', quotaRunway: 'The funded primary has a USD 30 allocation and USD 5 shared daily debit ceiling; two recurring-free fallbacks have hard free-allocation stops and no paid overage. All five clean-English routes passed 5/5 cases.',
+    healthMethod: [evidence('groq-speech-qualification.v1.json'), evidence('cloudflare-modality-screen.v1.json'), evidence('transcription-source-benchmark.v1.json'), 'tests/contract/deepgram-transcription-adapter.test.mjs', 'docs/evidence/stage6/deepgram-speech-screen.v1.json'], secretLocations: ['legacy_import:DEEPGRAM_API_KEY,GROQ_API_KEY,CLOUDFLARE_API_TOKEN'], replacementPlan: 'Add the explicit ai.transcribe wire contract required to expose the completed primary adapter, then implement the two qualified fallback adapters and route exact identities without model substitution.'
   },
   {
     capabilityId: 'search.web', publicAssets: priced('search-supply-pricing.v1.json'), lifecycle: 'production', routeState: 'qualified_provider_neutral_adapters_ready', primaryServices: ['supply.brave_search'], fallbackServices: ['supply.serper'], pricingCatalogs: [ref('search-supply-pricing.v1.json')], quality: 'best', termsStatus: 'restricted', quotaRunway: 'The primary has a recurring 1,000-call monthly credit and a matching hard ceiling; the independent fallback has an unexposed starter remainder and its own ceiling. Automatic paid overage and account pooling are disabled.', healthMethod: [evidence('brave-search-qualification.v1.json'), evidence('serper-qualification.v1.json'), 'tests/contract/search-supply-routing.test.mjs'], secretLocations: ['legacy_import:BRAVE_SEARCH_API_KEY,SERPER_API_KEY'], replacementPlan: 'Compose the ready provider-neutral router into the next production search deployment, retain transient-only processing, and move to official paid capacity after revenue.'
