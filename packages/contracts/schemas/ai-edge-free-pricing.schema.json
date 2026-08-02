@@ -22,7 +22,7 @@
         "task": { "type": "string", "minLength": 3, "maxLength": 80 },
         "lifecycle": { "enum": ["production", "beta"] },
         "accessStatus": { "enum": ["free_allocation_available", "requires_paid_plan"] },
-        "listingStatus": { "enum": ["sellable", "priced_pending_qualification", "priced_qualification_failed", "priced_quality_rejected", "priced_accounting_blocked", "priced_terms_blocked", "priced_requires_paid_plan"] },
+        "listingStatus": { "enum": ["sellable", "priced_pending_qualification", "priced_qualification_failed", "priced_quality_rejected", "priced_accounting_blocked", "priced_qualified_integration_pending", "priced_terms_blocked", "priced_requires_paid_plan"] },
         "qualityGrade": { "enum": ["best", "good", "poor", "rejected", "unranked"] },
         "supplierPriceKnown": { "type": "boolean" },
         "supplierPrices": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/price" } },

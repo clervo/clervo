@@ -418,6 +418,10 @@ test('Groq screen preserves all discovered priced assets, repaired benchmarks, t
 
 test('edge free-allocation catalog prices every authenticated asset and blocks paid-plan entries without owner cash', async () => {
   const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-edge-free-pricing.v1.json'), 'utf8'));
+  const schema = JSON.parse(await readFile(path.join(root, 'packages/contracts/schemas/ai-edge-free-pricing.schema.json'), 'utf8'));
+  const ajv = new Ajv2020({ strict: true, allErrors: true }); addFormats(ajv);
+  const validate = ajv.compile(schema);
+  assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
   assert.equal(pricing.discovery.modelCount, 61);
   assert.equal(pricing.discovery.externalCalls, 2);
   assert.equal(pricing.discovery.ownerCashSpentUsd, 0);
