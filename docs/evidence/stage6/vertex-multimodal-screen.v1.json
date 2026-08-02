@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "clervo.stage6.vertex-multimodal-screen.v1",
+  "evaluatedAt": "2026-08-02T02:54:31.000Z",
+  "ownerCashSpentUsd": 0,
+  "ownerReportedCreditBalanceUsd": 1700,
+  "maximumShadowCreditDebitUsd": 1.65,
+  "promptOrOutputPayloadsRecorded": false,
+  "credentialsOrProjectIdentityRecorded": false,
+  "sources": {
+    "officialPricing": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+    "officialLifecycle": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions",
+    "officialImageGeneration": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/image-generation",
+    "officialVeo31": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/veo/3-1-generate",
+    "competitorCatalog": "https://blockrun.ai/api/v1/models"
+  },
+  "accountBoundary": {
+    "vertexApiEnabled": true,
+    "authenticationAccepted": true,
+    "geminiAccess": "working",
+    "imagenAccess": "blocked_model_not_found_or_project_access",
+    "imagenHttpStatuses": [404, 404, 404],
+    "failedRequestsCharged": false,
+    "veoFixedQuotaAccess": "working"
+  },
+  "textBenchmark": {
+    "corpusSha256": "sha256:63c21bd50febc2c243e42e2c7c4e557fa0b66eb6d378a3a027e0e52783558efb",
+    "externalCalls": 30,
+    "shadowCreditDebitMicros": 46053,
+    "models": [
+      { "modelId": "gemini-3.5-flash-lite", "passed": 10, "total": 10, "latencyMsP50": 469.99, "latencyMsP95": 852.01, "shadowCreditDebitMicros": 631 },
+      { "modelId": "gemini-3.6-flash", "passed": 10, "total": 10, "latencyMsP50": 1480.88, "latencyMsP95": 2265.68, "shadowCreditDebitMicros": 16903 },
+      { "modelId": "gemini-3.5-flash", "passed": 10, "total": 10, "latencyMsP50": 2642.58, "latencyMsP95": 3151.89, "shadowCreditDebitMicros": 28519 }
+    ]
+  },
+  "imageScreen": {
+    "resolution": "1K",
+    "aspectRatio": "1:1",
+    "promptsPerModel": 2,
+    "invalidModelFailedSafely": true,
+    "visualReview": "all_three_prompt_faithful_and_commercially_usable",
+    "models": [
+      {
+        "modelId": "gemini-3.1-flash-lite-image",
+        "identityMatched": true,
+        "inputDependenceObserved": true,
+        "outputMimeTypes": ["image/jpeg", "image/jpeg"],
+        "outputSha256": ["sha256:41580bef628511443ce58a42acfe923dff26832fb65bc17e402cf3fc3e9a74c3", "sha256:e70cc0e8f1fcbab0c5042704ad0914a1e394105e5b6a645a675fc047d4106b24"],
+        "latencyMs": [2751.83, 2227.26],
+        "shadowCreditDebitUsd": 0.068
+      },
+      {
+        "modelId": "gemini-3.1-flash-image",
+        "identityMatched": true,
+        "inputDependenceObserved": true,
+        "outputMimeTypes": ["image/png", "image/png"],
+        "outputSha256": ["sha256:325b76ceb5c985d784023b717daf3c283275c44c8203493f5d90a77526e16dc4", "sha256:9b54f12fbbef0668245f3733cf3357e3614f75eec53e16a652517883c72dd027"],
+        "latencyMs": [9245.2, 8930.91],
+        "shadowCreditDebitUsd": 0.134
+      },
+      {
+        "modelId": "gemini-3-pro-image",
+        "identityMatched": true,
+        "inputDependenceObserved": true,
+        "outputMimeTypes": ["image/png", "image/png"],
+        "outputSha256": ["sha256:cfd1c88b619f88f89e2d74a20537af5cdd39128e8237539a78597612bfca2af4", "sha256:669d293cde1e2f75a0bf2f28d0fbaadf5c4b1de5ea2e118a00dee76ba0c84ce0"],
+        "latencyMs": [17615.65, 14736.02],
+        "shadowCreditDebitUsd": 0.268
+      }
+    ]
+  },
+  "videoScreen": {
+    "durationSeconds": 4,
+    "resolution": "1280x720",
+    "audioRequested": false,
+    "audioTrackObserved": false,
+    "models": [
+      { "modelId": "veo-3.1-fast-generate-001", "accepted": true, "mimeType": "video/mp4", "bytes": 1671779, "sha256": "sha256:22ab613c4a8d3f26d3538fe72210a9af27da83e816319a1a828df105c91fcba3", "shadowCreditDebitUsd": 0.32 },
+      { "modelId": "veo-3.1-generate-001", "accepted": true, "mimeType": "video/mp4", "bytes": 2609543, "sha256": "sha256:53e4647f70678f5230f98bffe01151c9325ef9b8b6372884d234c5aabf7be511", "shadowCreditDebitUsd": 0.8 }
+    ]
+  }
+}

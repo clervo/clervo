@@ -27,13 +27,18 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(inventory.commercialPolicy.providerNamesPublic, false);
   assert.equal(inventory.commercialPolicy.silentQualityDowngradeAllowed, false);
   assert.equal(new Set(inventory.services.map(({ serviceId }) => serviceId)).size, inventory.services.length);
-  assert.ok(inventory.services.every(({ qualificationStatus }) => qualificationStatus === 'not_run'));
+  assert.deepEqual(inventory.services.filter(({ qualificationStatus }) => qualificationStatus === 'passed').map(({ serviceId }) => serviceId), ['supply.clervo_ai_gateway', 'supply.google_vertex']);
 
   const clervo = inventory.services.find(({ serviceId }) => serviceId === 'supply.clervo_ai_gateway');
-  assert.equal(clervo.connectionStatus, 'owner_reported_working');
+  assert.equal(clervo.connectionStatus, 'observed_working');
   assert.equal(clervo.credentialDeployment, 'current_environment');
   assert.equal(clervo.configuredCredentialSlots, 1);
   assert.deepEqual(clervo.knownModelNames, ['gpt-5.6-sol', 'gpt-5.6-terra', 'gpt-5.6-luna']);
+
+  const vertex = inventory.services.find(({ serviceId }) => serviceId === 'supply.google_vertex');
+  assert.equal(vertex.connectionStatus, 'observed_working');
+  assert.equal(vertex.qualificationStatus, 'passed');
+  assert.ok(vertex.knownModelNames.includes('gemini-3.6-flash') && vertex.knownModelNames.includes('veo-3.1-fast-generate-001'));
 
   const gateway = inventory.services.find(({ serviceId }) => serviceId === 'supply.hcnsec_gateway');
   assert.equal(gateway.configuredCredentialSlots, 20);

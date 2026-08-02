@@ -1,17 +1,638 @@
 {
   "contractVersion": "2026-07-29.1",
   "schemaVersion": "ai-model-catalog.v1",
-  "catalogId": "aicat_01K0CLERVOGATEWAYCAT01",
-  "evaluatedAt": "2026-08-02T02:33:32.996Z",
+  "catalogId": "aicat_01K0CLERVOMULTIMODAL01",
+  "evaluatedAt": "2026-08-02T02:55:00.000Z",
   "routes": [
+    {
+      "routeId": "ai.route.gemini_3_1_flash_image",
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3.1-flash-image",
+      "productIds": [
+        "ai.image"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_output"
+      ],
+      "requiredSecretNames": [],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0VERTEXGEMINI31IMAGE1",
+        "routeId": "ai.route.gemini_3_1_flash_image",
+        "providerId": "provider.google_vertex",
+        "supplyFamilyId": "supply.google_vertex",
+        "exactModelId": "gemini-3.1-flash-image",
+        "productIds": [
+          "ai.image"
+        ],
+        "checkedAt": "2026-08-02T02:54:31.000Z",
+        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_image_valid",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "gemini-3.1-flash-image",
+          "latencyMsP95": 9245.2,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "400000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:306a85215c5402cd09d670b724735af26cec2835bdedd5dfb5c2415654afdbde"
+      }
+    },
+    {
+      "routeId": "ai.route.gemini_3_1_flash_lite_image",
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3.1-flash-lite-image",
+      "productIds": [
+        "ai.image"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_output"
+      ],
+      "requiredSecretNames": [],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0VERTEXGEMINI31LIMAGE",
+        "routeId": "ai.route.gemini_3_1_flash_lite_image",
+        "providerId": "provider.google_vertex",
+        "supplyFamilyId": "supply.google_vertex",
+        "exactModelId": "gemini-3.1-flash-lite-image",
+        "productIds": [
+          "ai.image"
+        ],
+        "checkedAt": "2026-08-02T02:54:31.000Z",
+        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_image_valid",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "gemini-3.1-flash-lite-image",
+          "latencyMsP95": 2751.83,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "200000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:278761af3c872dff68484dc2d4d7e5959b343801240768322f8553fefe75ead1"
+      }
+    },
+    {
+      "routeId": "ai.route.gemini_3_5_flash",
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3.5-flash",
+      "productIds": [
+        "ai.chat"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "structured_output",
+        "reasoning"
+      ],
+      "requiredSecretNames": [],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0VERTEXGEMINI35FLASH1",
+        "routeId": "ai.route.gemini_3_5_flash",
+        "providerId": "provider.google_vertex",
+        "supplyFamilyId": "supply.google_vertex",
+        "exactModelId": "gemini-3.5-flash",
+        "productIds": [
+          "ai.chat"
+        ],
+        "checkedAt": "2026-08-02T02:54:31.000Z",
+        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_text_valid",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "structured_output",
+            "status": "passed",
+            "code": "structured_output_valid",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "gemini-3.5-flash",
+          "latencyMsP95": 3151.89,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "1000000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:4fa324f5504e866332243846d27f131905ae497b0b5c70a968b6274a622ff7a2"
+      }
+    },
+    {
+      "routeId": "ai.route.gemini_3_5_flash_lite",
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3.5-flash-lite",
+      "productIds": [
+        "ai.chat"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "structured_output",
+        "reasoning"
+      ],
+      "requiredSecretNames": [],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0VERTEXGEMINI35LITE1",
+        "routeId": "ai.route.gemini_3_5_flash_lite",
+        "providerId": "provider.google_vertex",
+        "supplyFamilyId": "supply.google_vertex",
+        "exactModelId": "gemini-3.5-flash-lite",
+        "productIds": [
+          "ai.chat"
+        ],
+        "checkedAt": "2026-08-02T02:54:31.000Z",
+        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_text_valid",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "structured_output",
+            "status": "passed",
+            "code": "structured_output_valid",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "gemini-3.5-flash-lite",
+          "latencyMsP95": 852.01,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "1000000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:1b2af35e68221e51d2108908aea5c21f19fc8b9c13f6d050970e210db1f507d3"
+      }
+    },
+    {
+      "routeId": "ai.route.gemini_3_6_flash",
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3.6-flash",
+      "productIds": [
+        "ai.chat"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "structured_output",
+        "reasoning"
+      ],
+      "requiredSecretNames": [],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0VERTEXGEMINI36FLASH1",
+        "routeId": "ai.route.gemini_3_6_flash",
+        "providerId": "provider.google_vertex",
+        "supplyFamilyId": "supply.google_vertex",
+        "exactModelId": "gemini-3.6-flash",
+        "productIds": [
+          "ai.chat"
+        ],
+        "checkedAt": "2026-08-02T02:54:31.000Z",
+        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_text_valid",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "structured_output",
+            "status": "passed",
+            "code": "structured_output_valid",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "gemini-3.6-flash",
+          "latencyMsP95": 2265.68,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "1000000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:ae7085509de9116ae7e41c482376d0302fef5b16b53f9302a9aeaef247290362"
+      }
+    },
+    {
+      "routeId": "ai.route.gemini_3_pro_image",
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3-pro-image",
+      "productIds": [
+        "ai.image"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_output"
+      ],
+      "requiredSecretNames": [],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0VERTEXGEMINI3PROIMAGE",
+        "routeId": "ai.route.gemini_3_pro_image",
+        "providerId": "provider.google_vertex",
+        "supplyFamilyId": "supply.google_vertex",
+        "exactModelId": "gemini-3-pro-image",
+        "productIds": [
+          "ai.image"
+        ],
+        "checkedAt": "2026-08-02T02:54:31.000Z",
+        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_image_valid",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed",
+            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "gemini-3-pro-image",
+          "latencyMsP95": 17615.65,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "800000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:9e3e03b98d07042cf3f4319a4445d535870eb125923ec696c64de393aad7bbd0"
+      }
+    },
     {
       "routeId": "ai.route.gpt_5_6_luna",
       "providerId": "provider.clervo_ai_gateway",
       "supplyFamilyId": "supply.clervo_ai_gateway",
       "exactModelId": "gpt-5.6-luna",
-      "productIds": ["ai.chat"],
-      "capabilities": ["text_input", "text_output", "streaming", "structured_output"],
-      "requiredSecretNames": ["CLERVO_AI_API_KEY"],
+      "productIds": [
+        "ai.chat"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "streaming",
+        "structured_output"
+      ],
+      "requiredSecretNames": [
+        "CLERVO_AI_API_KEY"
+      ],
       "quickAiPremium": false,
       "qualification": {
         "contractVersion": "2026-07-29.1",
@@ -21,28 +642,83 @@
         "providerId": "provider.clervo_ai_gateway",
         "supplyFamilyId": "supply.clervo_ai_gateway",
         "exactModelId": "gpt-5.6-luna",
-        "productIds": ["ai.chat"],
+        "productIds": [
+          "ai.chat"
+        ],
         "checkedAt": "2026-08-02T02:33:13.833Z",
         "expiresAt": "2026-08-09T02:33:13.833Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
-          { "name": "authentication", "status": "passed", "code": "credential_accepted", "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34" },
-          { "name": "exact_identity", "status": "passed", "code": "exact_identity_observed", "evidenceHash": "sha256:be4ba951c41ad80f50966931323ebad48296d1ce9a261632f4010725d334d3a8" },
-          { "name": "input_dependence", "status": "passed", "code": "input_dependence_observed", "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1" },
-          { "name": "output_shape", "status": "passed", "code": "bounded_text_valid" },
-          { "name": "usage_reporting", "status": "passed", "code": "usage_reported" },
-          { "name": "latency", "status": "passed", "code": "latency_within_ceiling", "evidenceHash": "sha256:4c15dd675588b88659d533997dd2e2ec1ba74f2c6e749277c5ee7e6e78d19aa3" },
-          { "name": "failure_handling", "status": "passed", "code": "invalid_model_failed_safely" },
-          { "name": "cost_ceiling", "status": "passed", "code": "cost_within_ceiling", "evidenceHash": "sha256:fd834a0f98ecdb69bff5f2f53bbe9eb9c8945f4bd488e66333a9771dd24e89cc" },
-          { "name": "terms", "status": "passed", "code": "resale_terms_confirmed" },
-          { "name": "streaming", "status": "passed", "code": "stream_terminal_usage_valid" },
-          { "name": "structured_output", "status": "passed", "code": "structured_output_valid" }
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:be4ba951c41ad80f50966931323ebad48296d1ce9a261632f4010725d334d3a8"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_text_valid"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:4c15dd675588b88659d533997dd2e2ec1ba74f2c6e749277c5ee7e6e78d19aa3"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:fd834a0f98ecdb69bff5f2f53bbe9eb9c8945f4bd488e66333a9771dd24e89cc"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed"
+          },
+          {
+            "name": "streaming",
+            "status": "passed",
+            "code": "stream_terminal_usage_valid"
+          },
+          {
+            "name": "structured_output",
+            "status": "passed",
+            "code": "structured_output_valid"
+          }
         ],
         "observed": {
           "modelIdentity": "gpt-5.6-luna",
           "latencyMsP95": 1173.83,
-          "maximumSupplierCost": { "asset": "USD", "amountAtomic": "100000", "decimals": 6 }
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "100000",
+            "decimals": 6
+          }
         },
         "status": "passed",
         "qualificationHash": "sha256:d62cf13d0fbe4190da40da73b9f639f88fbc1eba464f26674f2efd4a09f2af74"
@@ -53,9 +729,18 @@
       "providerId": "provider.clervo_ai_gateway",
       "supplyFamilyId": "supply.clervo_ai_gateway",
       "exactModelId": "gpt-5.6-sol",
-      "productIds": ["ai.chat"],
-      "capabilities": ["text_input", "text_output", "streaming", "structured_output"],
-      "requiredSecretNames": ["CLERVO_AI_API_KEY"],
+      "productIds": [
+        "ai.chat"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "streaming",
+        "structured_output"
+      ],
+      "requiredSecretNames": [
+        "CLERVO_AI_API_KEY"
+      ],
       "quickAiPremium": false,
       "qualification": {
         "contractVersion": "2026-07-29.1",
@@ -65,28 +750,83 @@
         "providerId": "provider.clervo_ai_gateway",
         "supplyFamilyId": "supply.clervo_ai_gateway",
         "exactModelId": "gpt-5.6-sol",
-        "productIds": ["ai.chat"],
+        "productIds": [
+          "ai.chat"
+        ],
         "checkedAt": "2026-08-02T02:33:13.833Z",
         "expiresAt": "2026-08-09T02:33:13.833Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
-          { "name": "authentication", "status": "passed", "code": "credential_accepted", "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34" },
-          { "name": "exact_identity", "status": "passed", "code": "exact_identity_observed", "evidenceHash": "sha256:800b04786bdba8f3dd044c4f89c04ac530b36d8b1a24640727f9568812bd1066" },
-          { "name": "input_dependence", "status": "passed", "code": "input_dependence_observed", "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1" },
-          { "name": "output_shape", "status": "passed", "code": "bounded_text_valid" },
-          { "name": "usage_reporting", "status": "passed", "code": "usage_reported" },
-          { "name": "latency", "status": "passed", "code": "latency_within_ceiling", "evidenceHash": "sha256:395735d8621d350334df390734134c8d4d02422404586d941dc67efecf9978be" },
-          { "name": "failure_handling", "status": "passed", "code": "invalid_model_failed_safely" },
-          { "name": "cost_ceiling", "status": "passed", "code": "cost_within_ceiling", "evidenceHash": "sha256:07c391861124d43cf9fd944286c48247e9700ac7ee129e8d8b3295ddd3048b4b" },
-          { "name": "terms", "status": "passed", "code": "resale_terms_confirmed" },
-          { "name": "streaming", "status": "passed", "code": "stream_terminal_usage_valid" },
-          { "name": "structured_output", "status": "passed", "code": "structured_output_valid" }
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:800b04786bdba8f3dd044c4f89c04ac530b36d8b1a24640727f9568812bd1066"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_text_valid"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:395735d8621d350334df390734134c8d4d02422404586d941dc67efecf9978be"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:07c391861124d43cf9fd944286c48247e9700ac7ee129e8d8b3295ddd3048b4b"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed"
+          },
+          {
+            "name": "streaming",
+            "status": "passed",
+            "code": "stream_terminal_usage_valid"
+          },
+          {
+            "name": "structured_output",
+            "status": "passed",
+            "code": "structured_output_valid"
+          }
         ],
         "observed": {
           "modelIdentity": "gpt-5.6-sol",
           "latencyMsP95": 4808.97,
-          "maximumSupplierCost": { "asset": "USD", "amountAtomic": "100000", "decimals": 6 }
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "100000",
+            "decimals": 6
+          }
         },
         "status": "passed",
         "qualificationHash": "sha256:e8ff08472b7b253e08a056019a15607928f5da63c49cdbc0356fd9b3ccb288c5"
@@ -97,9 +837,18 @@
       "providerId": "provider.clervo_ai_gateway",
       "supplyFamilyId": "supply.clervo_ai_gateway",
       "exactModelId": "gpt-5.6-terra",
-      "productIds": ["ai.chat"],
-      "capabilities": ["text_input", "text_output", "streaming", "structured_output"],
-      "requiredSecretNames": ["CLERVO_AI_API_KEY"],
+      "productIds": [
+        "ai.chat"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "streaming",
+        "structured_output"
+      ],
+      "requiredSecretNames": [
+        "CLERVO_AI_API_KEY"
+      ],
       "quickAiPremium": false,
       "qualification": {
         "contractVersion": "2026-07-29.1",
@@ -109,34 +858,92 @@
         "providerId": "provider.clervo_ai_gateway",
         "supplyFamilyId": "supply.clervo_ai_gateway",
         "exactModelId": "gpt-5.6-terra",
-        "productIds": ["ai.chat"],
+        "productIds": [
+          "ai.chat"
+        ],
         "checkedAt": "2026-08-02T02:33:13.833Z",
         "expiresAt": "2026-08-09T02:33:13.833Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
-          { "name": "authentication", "status": "passed", "code": "credential_accepted", "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34" },
-          { "name": "exact_identity", "status": "passed", "code": "exact_identity_observed", "evidenceHash": "sha256:68dc6418fb354f11f4d3d721f1a89a3364e211e4f772b3de9f992b244900e30c" },
-          { "name": "input_dependence", "status": "passed", "code": "input_dependence_observed", "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1" },
-          { "name": "output_shape", "status": "passed", "code": "bounded_text_valid" },
-          { "name": "usage_reporting", "status": "passed", "code": "usage_reported" },
-          { "name": "latency", "status": "passed", "code": "latency_within_ceiling", "evidenceHash": "sha256:a57f424408b2538696fd6345ab6732f50ded939465d3ecb6875641b8a403d490" },
-          { "name": "failure_handling", "status": "passed", "code": "invalid_model_failed_safely" },
-          { "name": "cost_ceiling", "status": "passed", "code": "cost_within_ceiling", "evidenceHash": "sha256:7d5a204c92a101e2a9c5c14fc8a4ee18944ed5159b2e30d427c1cf72e770f635" },
-          { "name": "terms", "status": "passed", "code": "resale_terms_confirmed" },
-          { "name": "streaming", "status": "passed", "code": "stream_terminal_usage_valid" },
-          { "name": "structured_output", "status": "passed", "code": "structured_output_valid" }
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:68dc6418fb354f11f4d3d721f1a89a3364e211e4f772b3de9f992b244900e30c"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_text_valid"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:a57f424408b2538696fd6345ab6732f50ded939465d3ecb6875641b8a403d490"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:7d5a204c92a101e2a9c5c14fc8a4ee18944ed5159b2e30d427c1cf72e770f635"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed"
+          },
+          {
+            "name": "streaming",
+            "status": "passed",
+            "code": "stream_terminal_usage_valid"
+          },
+          {
+            "name": "structured_output",
+            "status": "passed",
+            "code": "structured_output_valid"
+          }
         ],
         "observed": {
           "modelIdentity": "gpt-5.6-terra",
           "latencyMsP95": 1501.4,
-          "maximumSupplierCost": { "asset": "USD", "amountAtomic": "100000", "decimals": 6 }
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "100000",
+            "decimals": 6
+          }
         },
         "status": "passed",
         "qualificationHash": "sha256:917657d2abd59f30b6e607e6834fb1c3382508f3920deb4dd75ef65d61606ce8"
       }
     }
   ],
-  "qualifiedSupplyFamilies": ["supply.clervo_ai_gateway"],
-  "catalogHash": "sha256:32e4730ea91d3c01413bf50233a8e129f62d2e503c2a9cd98a5cc3a0a6bbe782"
+  "qualifiedSupplyFamilies": [
+    "supply.clervo_ai_gateway",
+    "supply.google_vertex"
+  ],
+  "catalogHash": "sha256:926407c4669fea592e06d1ee17d7071620d168a3f7ddcbf46eb3076634504a0f"
 }

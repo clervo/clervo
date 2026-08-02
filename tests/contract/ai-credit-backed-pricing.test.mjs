@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import test from 'node:test';
+import { fileURLToPath } from 'node:url';
+import Ajv2020 from 'ajv/dist/2020.js';
+import addFormats from 'ajv-formats';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const json = async (relative) => JSON.parse(await readFile(path.join(root, relative), 'utf8'));
+
+test('credit-backed multimodal prices are paid, competitive, bounded, and honest about preview supply', async () => {
+  const pricing = await json('packages/catalog/ai-credit-backed-pricing.v1.json');
+  const schema = await json('packages/contracts/schemas/ai-credit-backed-pricing.schema.json');
+  const ajv = new Ajv2020({ strict: true, allErrors: true }); addFormats(ajv);
+  const validate = ajv.compile(schema);
+  assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
+  const guard = pricing.creditGuard;
+  assert.equal(guard.chatAllocationUsd + guard.imageAllocationUsd + guard.videoAllocationUsd + guard.reserveUsd, guard.ownerReportedBalanceUsd);
+  assert.equal(pricing.policy.customerFreeByDefault, false);
+  assert.ok(pricing.chatRoutes.every(({ listingStatus }) => listingStatus === 'sellable'));
+  assert.ok(pricing.imageRoutes.every(({ listingStatus }) => listingStatus === 'sellable'));
+  assert.equal(pricing.videoRoutes.find(({ modelId }) => modelId.includes('lite'))?.listingStatus, 'priced_preview_unqualified');
+  assert.ok(pricing.imageRoutes.every((route) => route.customerUsdPerImage < route.shadowUsdPerImage));
+  assert.ok(pricing.videoRoutes.every((route) => route.customerUsdPerSecond < route.shadowUsdPerSecond));
+  assert.ok(pricing.imageRoutes[0].customerUsdPerImage <= pricing.competitorReference.imagePriceRangeUsd[0]);
+  assert.ok(pricing.videoRoutes.find(({ listingStatus }) => listingStatus === 'sellable').customerUsdPerSecond < pricing.competitorReference.videoPriceRangeUsdPerSecond[0]);
+});

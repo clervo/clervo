@@ -61,36 +61,42 @@ test('identity substitution, latency breach, unsafe failures, and unresolved res
   assert.equal(unsafe.checks.find(({ name }) => name === 'terms').status, 'not_run');
 });
 
-test('screened Clervo routes and three independent candidates preserve honest qualification blockers', async () => {
+test('screened Clervo and Vertex routes preserve qualified supply and honest remaining blockers', async () => {
   const candidates = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-provider-candidates.v1.json'), 'utf8'));
   const clervo = candidates.targets.filter(({ providerId }) => providerId === 'provider.clervo_ai_gateway');
-  const independent = candidates.targets.filter(({ providerId }) => providerId !== 'provider.clervo_ai_gateway');
+  const vertex = candidates.targets.filter(({ providerId }) => providerId === 'provider.google_vertex');
+  const independent = candidates.targets.filter(({ providerId }) => !['provider.clervo_ai_gateway', 'provider.google_vertex'].includes(providerId));
   assert.deepEqual(clervo.map(({ exactModelId }) => exactModelId), ['gpt-5.6-luna', 'gpt-5.6-terra', 'gpt-5.6-sol']);
   assert.ok(clervo.every(({ requiredConfigurationNames, requiredSecretNames, termsStatus, resaleAllowed, qualificationStatus, blockerCodes }) => requiredConfigurationNames.includes('CLERVO_AI_BASE_URL') && requiredSecretNames.includes('CLERVO_AI_API_KEY') && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'passed' && blockerCodes.length === 0));
+  assert.deepEqual(vertex.map(({ exactModelId }) => exactModelId), ['gemini-3.5-flash-lite', 'gemini-3.6-flash', 'gemini-3.5-flash']);
+  assert.ok(vertex.every(({ requiredConfigurationNames, requiredSecretNames, termsStatus, resaleAllowed, qualificationStatus, blockerCodes }) => requiredConfigurationNames.includes('GCP_PROJECT') && requiredSecretNames.length === 0 && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'passed' && blockerCodes.length === 0));
   assert.deepEqual(independent.map(({ providerId }) => providerId), ['provider.google_gemini', 'provider.groq', 'provider.cloudflare_workers_ai']);
   assert.equal(new Set(independent.map(({ supplyFamilyId }) => supplyFamilyId)).size, 3);
   assert.deepEqual(independent.map(({ exactModelId }) => exactModelId), ['gemini-3.6-flash', 'openai/gpt-oss-120b', '@cf/openai/gpt-oss-120b']);
   assert.ok(independent.every(({ selectedForQualification, termsStatus, resaleAllowed, qualificationStatus, blockerCodes, requiredSecretNames }) => selectedForQualification && termsStatus === 'unreviewed' && resaleAllowed === false && qualificationStatus === 'blocked' && blockerCodes.includes('credential_missing') && blockerCodes.includes('live_checks_not_run') && requiredSecretNames.length > 0));
   assert.ok(independent.flatMap(({ documentation }) => documentation).every(({ url }) => /^https:\/(?:\/ai\.google\.dev|\/console\.groq\.com|\/developers\.cloudflare\.com)/u.test(url)));
-  assert.deepEqual(candidates.modalTargets.map(({ products }) => products), [['ai.embed'], ['ai.image'], ['ai.speech']]);
-  assert.deepEqual(candidates.modalTargets.map(({ exactModelId }) => exactModelId), ['text-embedding-3-large', 'gpt-image-2', 'tts-1']);
-  assert.ok(candidates.modalTargets.every(({ providerId, supplyFamilyId, requiredSecretNames, qualificationStatus }) => providerId === 'provider.openai' && supplyFamilyId === 'supply.openai_api' && requiredSecretNames.includes('OPENAI_API_KEY') && qualificationStatus === 'blocked'));
-  assert.ok(candidates.modalTargets.flatMap(({ documentation }) => documentation).every(({ url }) => /^https:\/\/developers\.openai\.com\/api\/docs\/models\//u.test(url)));
+  const vertexImages = candidates.modalTargets.filter(({ providerId }) => providerId === 'provider.google_vertex');
+  const blockedModal = candidates.modalTargets.filter(({ providerId }) => providerId !== 'provider.google_vertex');
+  assert.deepEqual(vertexImages.map(({ exactModelId }) => exactModelId), ['gemini-3.1-flash-lite-image', 'gemini-3.1-flash-image', 'gemini-3-pro-image']);
+  assert.ok(vertexImages.every(({ products, requiredSecretNames, qualificationStatus, blockerCodes }) => products[0] === 'ai.image' && requiredSecretNames.length === 0 && qualificationStatus === 'passed' && blockerCodes.length === 0));
+  assert.deepEqual(blockedModal.map(({ products }) => products), [['ai.embed'], ['ai.image'], ['ai.speech']]);
+  assert.deepEqual(blockedModal.map(({ exactModelId }) => exactModelId), ['text-embedding-3-large', 'gpt-image-2', 'tts-1']);
+  assert.ok(blockedModal.every(({ providerId, supplyFamilyId, requiredSecretNames, qualificationStatus }) => providerId === 'provider.openai' && supplyFamilyId === 'supply.openai_api' && requiredSecretNames.includes('OPENAI_API_KEY') && qualificationStatus === 'blocked'));
+  assert.ok(blockedModal.flatMap(({ documentation }) => documentation).every(({ url }) => /^https:\/\/developers\.openai\.com\/api\/docs\/models\//u.test(url)));
   assert.equal(candidates.quickAi.status, 'disabled');
   assert.deepEqual(candidates.quickAi.prohibitedIdentities, ['Claude-labelled routes', 'TongKhokr', 'MWAPI']);
 });
 
-test('live Clervo exact routes form a valid qualified and sellable internal model catalog', async () => {
+test('live Clervo and Vertex exact routes form a valid qualified and sellable internal model catalog', async () => {
   const catalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
   assert.equal(verifyAiModelCatalog(catalog), true);
-  assert.deepEqual(catalog.routes.map(({ exactModelId, qualification }) => [exactModelId, qualification.status]), [
-    ['gpt-5.6-luna', 'passed'],
-    ['gpt-5.6-sol', 'passed'],
-    ['gpt-5.6-terra', 'passed'],
-  ]);
-  assert.deepEqual(catalog.qualifiedSupplyFamilies, ['supply.clervo_ai_gateway']);
-  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-launch-pricing.v1.json'), 'utf8'));
-  assert.ok(catalog.routes.every(({ exactModelId }) => pricing.routes.find(({ modelId, listingStatus }) => modelId === exactModelId && listingStatus === 'sellable')));
+  assert.equal(catalog.routes.length, 9);
+  assert.ok(catalog.routes.every(({ qualification }) => qualification.status === 'passed'));
+  assert.deepEqual(catalog.qualifiedSupplyFamilies, ['supply.clervo_ai_gateway', 'supply.google_vertex']);
+  const gatewayPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-launch-pricing.v1.json'), 'utf8'));
+  const fundedPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-credit-backed-pricing.v1.json'), 'utf8'));
+  const sellable = new Set([...gatewayPricing.routes, ...fundedPricing.chatRoutes, ...fundedPricing.imageRoutes].filter(({ listingStatus }) => listingStatus === 'sellable').map(({ modelId }) => modelId));
+  assert.ok(catalog.routes.every(({ exactModelId }) => sellable.has(exactModelId)));
 });
 
 test('provider candidate schema compiles strictly and remains private', async () => {

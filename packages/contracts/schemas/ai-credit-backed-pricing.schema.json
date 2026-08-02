@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-credit-backed-pricing.schema.json",
+  "title": "Clervo internal credit-backed multimodal AI pricing",
+  "type": "object",
+  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "providerVisibility", "policy", "creditGuard", "competitorReference", "chatRoutes", "imageRoutes", "videoRoutes"],
+  "$defs": {
+    "tokenPrice": {
+      "type": "object",
+      "required": ["input", "cachedInput", "output", "reasoning"],
+      "properties": {
+        "input": { "type": "number", "minimum": 0, "maximum": 1000 },
+        "cachedInput": { "type": "number", "minimum": 0, "maximum": 1000 },
+        "output": { "type": "number", "minimum": 0, "maximum": 1000 },
+        "reasoning": { "type": "number", "minimum": 0, "maximum": 1000 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "schemaVersion": { "const": "clervo.ai-credit-backed-pricing.v1" },
+    "priceVersion": { "const": "2026-08-02.1" },
+    "evaluatedAt": { "type": "string", "format": "date-time" },
+    "currency": { "const": "USD" },
+    "providerVisibility": { "const": "internal_only" },
+    "policy": {
+      "type": "object",
+      "required": ["customerFreeByDefault", "positiveMarginRequiredAtLaunch", "unknownSupplierDebitBlocksSale", "qualifiedRoutesAreSellable", "exactRouteSubstitution", "previewMustBeDisclosed"],
+      "properties": {
+        "customerFreeByDefault": { "const": false },
+        "positiveMarginRequiredAtLaunch": { "const": false },
+        "unknownSupplierDebitBlocksSale": { "const": false },
+        "qualifiedRoutesAreSellable": { "const": true },
+        "exactRouteSubstitution": { "const": "prohibited" },
+        "previewMustBeDisclosed": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "creditGuard": {
+      "type": "object",
+      "required": ["ownerReportedBalanceUsd", "chatAllocationUsd", "imageAllocationUsd", "videoAllocationUsd", "reserveUsd", "maximumDailyShadowDebitUsd", "hardStopRemainingShadowUsd", "applicationLedgerRequiredBeforeCustomerTraffic", "cloudBudgetIsHardCap", "ownerCashOverageAllowed", "denyWhenUsageUnknown"],
+      "properties": {
+        "ownerReportedBalanceUsd": { "const": 1700 },
+        "chatAllocationUsd": { "type": "number", "minimum": 0 },
+        "imageAllocationUsd": { "type": "number", "minimum": 0 },
+        "videoAllocationUsd": { "type": "number", "minimum": 0 },
+        "reserveUsd": { "type": "number", "minimum": 0 },
+        "maximumDailyShadowDebitUsd": { "type": "number", "exclusiveMinimum": 0, "maximum": 1700 },
+        "hardStopRemainingShadowUsd": { "type": "number", "minimum": 0, "maximum": 1700 },
+        "applicationLedgerRequiredBeforeCustomerTraffic": { "const": true },
+        "cloudBudgetIsHardCap": { "const": false },
+        "ownerCashOverageAllowed": { "const": false },
+        "denyWhenUsageUnknown": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "competitorReference": {
+      "type": "object",
+      "required": ["sourceUrl", "checkedAt", "catalogRecords", "imagePriceRangeUsd", "videoPriceRangeUsdPerSecond"],
+      "properties": {
+        "sourceUrl": { "const": "https://blockrun.ai/api/v1/models" },
+        "checkedAt": { "type": "string", "format": "date-time" },
+        "catalogRecords": { "const": 83 },
+        "imagePriceRangeUsd": { "type": "array", "minItems": 2, "maxItems": 2, "prefixItems": [{ "const": 0.015 }, { "const": 0.1 }], "items": false },
+        "videoPriceRangeUsdPerSecond": { "type": "array", "minItems": 2, "maxItems": 2, "prefixItems": [{ "const": 0.05 }, { "const": 0.319 }], "items": false }
+      },
+      "additionalProperties": false
+    },
+    "chatRoutes": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["modelId", "listingStatus", "positioning", "customerPriceUsdPerMillion", "shadowPriceUsdPerMillion", "contextTokens", "maximumOutputTokens"],
+        "properties": {
+          "modelId": { "enum": ["gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.5-flash"] },
+          "listingStatus": { "const": "sellable" },
+          "positioning": { "enum": ["best_value", "best_overall", "fallback"] },
+          "customerPriceUsdPerMillion": { "$ref": "#/$defs/tokenPrice" },
+          "shadowPriceUsdPerMillion": { "$ref": "#/$defs/tokenPrice" },
+          "contextTokens": { "const": 1048576 },
+          "maximumOutputTokens": { "const": 65536 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "imageRoutes": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["modelId", "listingStatus", "positioning", "resolution", "customerUsdPerImage", "shadowUsdPerImage"],
+        "properties": {
+          "modelId": { "enum": ["gemini-3.1-flash-lite-image", "gemini-3.1-flash-image", "gemini-3-pro-image"] },
+          "listingStatus": { "const": "sellable" },
+          "positioning": { "enum": ["fastest_value", "balanced", "best_quality"] },
+          "resolution": { "const": "1K" },
+          "customerUsdPerImage": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+          "shadowUsdPerImage": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "videoRoutes": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["modelId", "listingStatus", "positioning", "resolution", "audioIncluded", "customerUsdPerSecond", "shadowUsdPerSecond"],
+        "properties": {
+          "modelId": { "enum": ["veo-3.1-lite-generate-001", "veo-3.1-fast-generate-001", "veo-3.1-generate-001"] },
+          "listingStatus": { "enum": ["sellable", "priced_preview_unqualified"] },
+          "positioning": { "enum": ["lowest_cost_preview", "best_value", "best_quality"] },
+          "resolution": { "const": "720p" },
+          "audioIncluded": { "const": false },
+          "customerUsdPerSecond": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
+          "shadowUsdPerSecond": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -20,7 +20,7 @@
         "alternateCredentialSlots": { "type": "integer", "minimum": 0, "maximum": 100 },
         "credentialDeployment": { "enum": ["legacy_import_read_only", "current_environment", "gcloud_active_account", "missing", "not_required"] },
         "fundingClass": { "enum": ["owner_reported_balance", "promotional_credit", "recurring_free", "unknown", "future_paid"] },
-        "connectionStatus": { "enum": ["owner_reported_working", "observed_not_tested", "not_observed", "retired"] },
+        "connectionStatus": { "enum": ["owner_reported_working", "observed_working", "observed_not_tested", "not_observed", "retired"] },
         "qualificationStatus": { "enum": ["not_run", "in_progress", "passed", "failed"] },
         "termsStatus": { "enum": ["unreviewed", "review_required", "approved", "restricted", "blocked"] },
         "resaleStatus": { "enum": ["unverified", "allowed", "restricted", "prohibited"] },

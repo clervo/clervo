@@ -1,6 +1,6 @@
 {
-  "catalogVersion": "2026-08-02.3",
-  "researchedAt": "2026-08-02T02:16:26.054Z",
+  "catalogVersion": "2026-08-02.4",
+  "researchedAt": "2026-08-02T02:54:31.000Z",
   "targets": [
     {
       "providerId": "provider.clervo_ai_gateway",
@@ -54,6 +54,63 @@
       "blockerCodes": [],
       "documentation": [
         { "title": "Clervo gateway authenticated model catalog", "url": "https://ai.clervo.dev/v1/models", "checkedAt": "2026-08-02T02:16:26.054Z" }
+      ]
+    },
+    {
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3.5-flash-lite",
+      "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
+      "allowedHosts": ["aiplatform.googleapis.com"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "requiredSecretNames": [],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Current Gemini lifecycle", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions", "checkedAt": "2026-08-02T02:54:31.000Z" },
+        { "title": "Current Gemini pricing", "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing", "checkedAt": "2026-08-02T02:54:31.000Z" }
+      ]
+    },
+    {
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3.6-flash",
+      "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
+      "allowedHosts": ["aiplatform.googleapis.com"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "requiredSecretNames": [],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Current Gemini lifecycle", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions", "checkedAt": "2026-08-02T02:54:31.000Z" },
+        { "title": "Current Gemini pricing", "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing", "checkedAt": "2026-08-02T02:54:31.000Z" }
+      ]
+    },
+    {
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3.5-flash",
+      "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
+      "allowedHosts": ["aiplatform.googleapis.com"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "requiredSecretNames": [],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Current Gemini lifecycle", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions", "checkedAt": "2026-08-02T02:54:31.000Z" },
+        { "title": "Current Gemini pricing", "url": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing", "checkedAt": "2026-08-02T02:54:31.000Z" }
       ]
     },
     {
@@ -114,6 +171,60 @@
     }
   ],
   "modalTargets": [
+    {
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3.1-flash-lite-image",
+      "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
+      "allowedHosts": ["aiplatform.googleapis.com"],
+      "products": ["ai.image"],
+      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "requiredSecretNames": [],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Gemini image generation", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/image-generation", "checkedAt": "2026-08-02T02:54:31.000Z" }
+      ]
+    },
+    {
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3.1-flash-image",
+      "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
+      "allowedHosts": ["aiplatform.googleapis.com"],
+      "products": ["ai.image"],
+      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "requiredSecretNames": [],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Gemini image generation", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/image-generation", "checkedAt": "2026-08-02T02:54:31.000Z" }
+      ]
+    },
+    {
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-3-pro-image",
+      "baseUrlPattern": "https://aiplatform.googleapis.com/v1/projects/{project}/locations/global/publishers/google/models/{model}:generateContent",
+      "allowedHosts": ["aiplatform.googleapis.com"],
+      "products": ["ai.image"],
+      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "requiredSecretNames": [],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Gemini image generation", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/image-generation", "checkedAt": "2026-08-02T02:54:31.000Z" }
+      ]
+    },
     {
       "providerId": "provider.openai",
       "supplyFamilyId": "supply.openai_api",
