@@ -176,11 +176,22 @@ export class RpcHealthRouter {
   }
 
   select(chainId: string, nowMs: number): Readonly<RpcRouteHealth> {
+    return this.selectMany(chainId, nowMs, 1)[0]!;
+  }
+
+  selectMany(chainId: string, nowMs: number, count: number): readonly Readonly<RpcRouteHealth>[] {
+    const chain = this.#chains.get(chainId);
+    const snapshot = this.#health.get(chainId);
+    if (!chain || !snapshot || !Number.isSafeInteger(nowMs) || nowMs < snapshot.observedAtMs || nowMs - snapshot.observedAtMs > chain.staleAfterMs || !Number.isSafeInteger(count) || count < 1 || count > 3) throw new Error('rpc_chain_health_unavailable');
+    const selected = snapshot.routes.filter(({ status }) => status === 'healthy').sort((left, right) => (right.height ?? -1) - (left.height ?? -1) || (left.latencyMs ?? Number.MAX_SAFE_INTEGER) - (right.latencyMs ?? Number.MAX_SAFE_INTEGER) || left.routeId.localeCompare(right.routeId)).slice(0, count);
+    if (selected.length < count) throw new Error('rpc_route_unavailable');
+    return Object.freeze(selected);
+  }
+
+  status(chainId: string, nowMs: number): Readonly<RpcChainHealth> {
     const chain = this.#chains.get(chainId);
     const snapshot = this.#health.get(chainId);
     if (!chain || !snapshot || !Number.isSafeInteger(nowMs) || nowMs < snapshot.observedAtMs || nowMs - snapshot.observedAtMs > chain.staleAfterMs) throw new Error('rpc_chain_health_unavailable');
-    const selected = snapshot.routes.filter(({ status }) => status === 'healthy').sort((left, right) => (right.height ?? -1) - (left.height ?? -1) || (left.latencyMs ?? Number.MAX_SAFE_INTEGER) - (right.latencyMs ?? Number.MAX_SAFE_INTEGER) || left.routeId.localeCompare(right.routeId))[0];
-    if (!selected) throw new Error('rpc_route_unavailable');
-    return selected;
+    return snapshot;
   }
 }
