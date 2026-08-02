@@ -3,14 +3,44 @@
   "lifecycle": "unavailable",
   "images": [
     {
-      "imageId": "sandbox.nodejs-24",
+      "imageId": "sandbox.nodejs-24.previous",
       "digest": "sha256:0cfdf789b798d623cee9ec071c32e584443f9331c73fc7be9bd20f7ae1c243af",
-      "lifecycle": "qualified",
+      "lifecycle": "blocked",
       "signatureVerified": true,
       "provenanceVerified": true,
       "vulnerabilityScan": "passed",
       "malwareScan": "passed",
       "sbomSha256": "sha256:5e556726522c194242b354ce33b8c60f8178742a35cd0f524a83fab8bcf7ec8a"
+    },
+    {
+      "imageId": "sandbox.nodejs-24.orphan-safe",
+      "digest": "sha256:348cdf7f7fef860680d8074208650b043822c410231bfec2dab12858bdd4c073",
+      "lifecycle": "blocked",
+      "signatureVerified": true,
+      "provenanceVerified": true,
+      "vulnerabilityScan": "passed",
+      "malwareScan": "passed",
+      "sbomSha256": "sha256:6d8f1aef0dc42272aa7e75647cd929359e37bcdd73821c59cb28fa1e7d80e7e9"
+    },
+    {
+      "imageId": "sandbox.nodejs-24.process-group",
+      "digest": "sha256:a195466506bf7cec74df6f47e2e2d7ed42f69eb7d6922b449e6c88dd8688293b",
+      "lifecycle": "blocked",
+      "signatureVerified": true,
+      "provenanceVerified": true,
+      "vulnerabilityScan": "passed",
+      "malwareScan": "passed",
+      "sbomSha256": "sha256:47e215548a0ac551f3218b388717a82865fb6ee59d0c8789a5d795a966c317f8"
+    },
+    {
+      "imageId": "sandbox.nodejs-24",
+      "digest": "sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e",
+      "lifecycle": "qualified",
+      "signatureVerified": true,
+      "provenanceVerified": true,
+      "vulnerabilityScan": "passed",
+      "malwareScan": "passed",
+      "sbomSha256": "sha256:a75b65bfafb9ef6596ec06b1048dac5072c71b5294f0267ef2aba1ba652f5c2d"
     }
   ]
 }

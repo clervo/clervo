@@ -1,16 +1,22 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { buildSandboxPod, sandboxBoundaryManifests, sandboxExecutionNamespace } from '../../dist/services/sandbox/src/kubernetes-manifest.js';
+import { buildAgentSandboxResources, sandboxBoundaryManifests, sandboxExecutionNamespace } from '../../dist/services/sandbox/src/kubernetes-manifest.js';
 
 const input = {
-  sessionId: 'sbx_0123456789ABCDEFGHIJ', tenantId: 'tenant_0123456789ABCDEFGHIJ', imageDigest: `sha256:${'a'.repeat(64)}`, command: ['node', '/opt/clervo/runner.js'],
+  sessionId: 'sbx_0123456789ABCDEFGHIJ', tenantId: 'tenant_0123456789ABCDEFGHIJ', imageRepository: 'us-central1-docker.pkg.dev/example/clervo-sandbox/runner', imageDigest: `sha256:${'a'.repeat(64)}`,
   limits: { cpuMillis: 1000, memoryBytes: 134217728, processes: 16, diskBytes: 10485760, outputBytes: 1024, artifactBytes: 4096, wallTimeMs: 2000, maximumChargeMicrousd: 1000 },
 };
 
-test('sandbox pod is digest-pinned to gVisor on credential-free dedicated execution nodes', () => {
-  const pod = buildSandboxPod(input); const spec = pod.spec; const container = spec.containers[0];
-  assert.equal(pod.metadata.namespace, sandboxExecutionNamespace);
+test('sandbox uses a managed air-gapped Agent Sandbox template and claim instead of a plain Pod', () => {
+  const [template, claim] = buildAgentSandboxResources(input); const spec = template.spec.podTemplate.spec; const container = spec.containers[0];
+  assert.equal(template.kind, 'SandboxTemplate');
+  assert.equal(template.metadata.namespace, sandboxExecutionNamespace);
+  assert.equal(template.spec.networkPolicyManagement, 'Managed');
+  assert.deepEqual(template.spec.networkPolicy, { ingress: [], egress: [] });
+  assert.equal(claim.kind, 'SandboxClaim');
+  assert.equal(claim.spec.sandboxTemplateRef.name, template.metadata.name);
+  assert.equal(claim.spec.lifecycle.shutdownPolicy, 'DeleteForeground');
   assert.equal(spec.runtimeClassName, 'gvisor');
   assert.equal(spec.automountServiceAccountToken, false);
   assert.deepEqual([spec.hostNetwork, spec.hostPID, spec.hostIPC, spec.shareProcessNamespace], [false, false, false, false]);
@@ -19,7 +25,7 @@ test('sandbox pod is digest-pinned to gVisor on credential-free dedicated execut
     { key: 'sandbox.gke.io/runtime', operator: 'Equal', value: 'gvisor', effect: 'NoSchedule' },
     { key: 'clervo.dev/sandbox-only', operator: 'Equal', value: 'true', effect: 'NoSchedule' },
   ]);
-  assert.equal(container.image, `clervo-sandbox@${input.imageDigest}`);
+  assert.equal(container.image, `${input.imageRepository}@${input.imageDigest}`);
   assert.equal(container.securityContext.readOnlyRootFilesystem, true);
   assert.equal(container.securityContext.allowPrivilegeEscalation, false);
   assert.equal(container.securityContext.privileged, false);
@@ -29,15 +35,16 @@ test('sandbox pod is digest-pinned to gVisor on credential-free dedicated execut
   assert.equal(spec.activeDeadlineSeconds, 2);
 });
 
-test('sandbox execution namespace enforces restricted pods and deny-all network policy', () => {
-  const [namespace, policy] = sandboxBoundaryManifests();
+test('sandbox execution namespace requires restricted pods and the qualified Dataplane V2 boundary', () => {
+  const [namespace] = sandboxBoundaryManifests();
   assert.equal(namespace.metadata.labels['pod-security.kubernetes.io/enforce'], 'restricted');
-  assert.equal(policy.metadata.namespace, sandboxExecutionNamespace);
-  assert.deepEqual(policy.spec, { podSelector: {}, policyTypes: ['Ingress', 'Egress'], ingress: [], egress: [] });
+  assert.equal(namespace.metadata.labels['clervo.dev/network-data-plane'], 'gke-dataplane-v2');
+  assert.equal(sandboxBoundaryManifests().some(({ kind }) => kind === 'Pod'), false);
+  assert.equal(sandboxBoundaryManifests().some(({ kind }) => kind === 'NetworkPolicy'), false);
 });
 
 test('sandbox manifest rejects mutable images, excessive limits, and malformed commands', () => {
-  assert.throws(() => buildSandboxPod({ ...input, imageDigest: 'latest' }), /digest_invalid/u);
-  assert.throws(() => buildSandboxPod({ ...input, command: ['node\0--escape'] }), /command_invalid/u);
-  assert.throws(() => buildSandboxPod({ ...input, limits: { ...input.limits, processes: 257 } }), /limit_invalid:processes/u);
+  assert.throws(() => buildAgentSandboxResources({ ...input, imageDigest: 'latest' }), /digest_invalid/u);
+  assert.throws(() => buildAgentSandboxResources({ ...input, imageRepository: 'registry.example/runner:latest' }), /repository_invalid/u);
+  assert.throws(() => buildAgentSandboxResources({ ...input, limits: { ...input.limits, processes: 257 } }), /limit_invalid:processes/u);
 });

@@ -1,16 +1,17 @@
 {
   "schemaVersion": "clervo.sandbox-gke-qualification-attempt.v1",
-  "evaluatedAt": "2026-08-02T10:43:00.000Z",
-  "status": "failed",
+  "evaluatedAt": "2026-08-02T11:56:43.540Z",
+  "status": "passed",
   "productAvailability": "unavailable",
   "platform": {
     "clusterType": "gke-standard-zonal-ephemeral",
     "kubernetesVersion": "1.36.2-gke.2281000",
     "agentSandboxEnabled": true,
     "runtimeClass": "gvisor",
-    "dedicatedExecutionNode": true
+    "dedicatedExecutionNode": true,
+    "dataPlane": "gke-dataplane-v2"
   },
-  "runnerImageDigest": "sha256:0cfdf789b798d623cee9ec071c32e584443f9331c73fc7be9bd20f7ae1c243af",
+  "runnerImageDigest": "sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e",
   "controlsObserved": {
     "runAsUser": 65532,
     "runAsGroup": 65532,
@@ -21,7 +22,7 @@
     "internalNetworkReachable": false,
     "externalNetworkReachable": false
   },
-  "blockingFailure": {
+  "initialBlockingFailure": {
     "control": "metadata_denied",
     "metadataEndpointReachable": true,
     "flavoredMetadataStatus": 200,
@@ -31,8 +32,47 @@
     "calicoMetadataDenyEffective": false,
     "decision": "reject_runtime_configuration"
   },
-  "remainingRedTeamSuiteRun": false,
-  "nextSafeAction": "Test the Agent Sandbox Sandbox custom resource boundary; if metadata remains reachable, move execution to dedicated gVisor hosts with a host-enforced metadata firewall and no workload identity.",
-  "resourceCleanup": "verified_cluster_absent_2026-08-02T10:48:13.477584720Z",
+  "agentSandboxTemplateFollowup": {
+    "evaluatedAt": "2026-08-02T11:04:30.000Z",
+    "status": "failed",
+    "boundary": "managed_airgapped_sandbox_template_and_claim",
+    "generatedNetworkPolicy": true,
+    "generatedNetworkPolicyIngressRules": 0,
+    "generatedNetworkPolicyEgressRules": 0,
+    "runtimeClass": "gvisor",
+    "metadataEndpointReachable": true,
+    "workloadTokenStatus": 200,
+    "tokenValueRecorded": false,
+    "decision": "reject_calico_data_plane"
+  },
+  "dataplaneV2Followup": {
+    "evaluatedAt": "2026-08-02T11:23:58.737Z",
+    "status": "passed",
+    "boundary": "managed_airgapped_sandbox_template_and_claim",
+    "runtimeClass": "gvisor",
+    "metadataDenied": true,
+    "internalNetworkDenied": true,
+    "externalNetworkDenied": true,
+    "identitySafe": true,
+    "manifestSafe": true,
+    "cleanupVerified": true
+  },
+  "fullRedTeamFollowup": {
+    "evaluatedAt": "2026-08-02T11:42:13.990Z",
+    "status": "passed",
+    "probeCount": 10,
+    "cleanupVerified": true,
+    "report": "docs/evidence/sandbox/gvisor-red-team-report.v1.json",
+    "reportSha256": "sha256:0a091a4698c109e9fd34699393ae5ca986ef813bd983f5879c7252e32b81657c"
+  },
+  "remainingRedTeamSuiteRun": true,
+  "nextSafeAction": "Use only the qualified Agent Sandbox template/claim path on GKE Dataplane V2 with the exact approved image digest.",
+  "resourceCleanup": {
+    "cluster": "clervo-sandbox-dpv2-qual-20260802",
+    "zone": "us-central1-a",
+    "deleteOperationStatus": "DONE",
+    "verifiedAbsentAt": "2026-08-02T11:56:43.540Z",
+    "artifactRegistryPreserved": true
+  },
   "billingReconciliation": "pending"
 }

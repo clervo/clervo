@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { spawn } from 'node:child_process';
+import { readdirSync, readFileSync } from 'node:fs';
 
 const chunks = []; let requestBytes = 0;
 for await (const chunk of process.stdin) { requestBytes += chunk.length; if (requestBytes > 1_500_000) throw new Error('sandbox_request_too_large'); chunks.push(chunk); }
@@ -14,13 +15,39 @@ const child = spawn('/opt/clervo/sandbox-init', request.command, {
   cwd: '/workspace', detached: true, env: { PATH: '/usr/local/bin:/usr/bin:/bin', HOME: '/workspace', LANG: 'C.UTF-8', CLERVO_PROCESSES: String(limits.processes), CLERVO_CPU_MILLIS: String(limits.cpuMillis), CLERVO_FILE_BYTES: String(limits.diskBytes) },
   stdio: ['pipe', 'pipe', 'pipe', 'pipe'],
 });
-const stop = (reason) => { if (limitFailure === null) limitFailure = reason; try { process.kill(-child.pid, 'SIGKILL'); } catch {} };
+const killProcessGroup = () => { try { process.kill(-child.pid, 'SIGKILL'); } catch {} };
+const stop = (reason) => { if (limitFailure === null) limitFailure = reason; killProcessGroup(); };
+let maximumProcessesObserved = 0;
+const processTreeSize = () => {
+  const parents = new Map();
+  for (const entry of readdirSync('/proc')) {
+    if (!/^\d+$/u.test(entry)) continue;
+    try {
+      const stat = readFileSync(`/proc/${entry}/stat`, 'utf8');
+      const fields = stat.slice(stat.lastIndexOf(') ') + 2).split(' ');
+      parents.set(Number(entry), Number(fields[1]));
+    } catch {}
+  }
+  const descendants = new Set([child.pid]);
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const [pid, parent] of parents) if (!descendants.has(pid) && descendants.has(parent)) {
+      descendants.add(pid); changed = true;
+    }
+  }
+  return descendants.size;
+};
 const capture = (target) => (chunk) => { outputBytes += chunk.length; if (outputBytes > limits.outputBytes) stop('output_limit'); else target.push(chunk); };
 child.stdout.on('data', capture(stdout)); child.stderr.on('data', capture(stderr));
 const usage = []; child.stdio[3].on('data', (chunk) => usage.push(chunk));
 child.stdin.end(stdin);
 const timer = setTimeout(() => stop('wall_time_limit'), limits.wallTimeMs);
-const result = await new Promise((resolve, reject) => { child.once('error', reject); child.once('close', (code, signal) => resolve({ code, signal })); }); clearTimeout(timer);
+const processTimer = setInterval(() => {
+  const observed = processTreeSize(); maximumProcessesObserved = Math.max(maximumProcessesObserved, observed);
+  if (observed > limits.processes) stop('process_limit');
+}, 10);
+const result = await new Promise((resolve, reject) => { child.once('error', reject); child.once('close', (code, signal) => resolve({ code, signal })); }); clearTimeout(timer); clearInterval(processTimer); killProcessGroup();
 let cpuMillis = 0; try { cpuMillis = JSON.parse(Buffer.concat(usage).toString('utf8')).cpuMillis; } catch {}
 if (cpuMillis > limits.cpuMillis && limitFailure === null) limitFailure = 'cpu_limit';
-process.stdout.write(`${JSON.stringify({ exitCode: Number.isInteger(result.code) ? result.code : 128, stdoutBase64: Buffer.concat(stdout).toString('base64'), stderrBase64: Buffer.concat(stderr).toString('base64'), cpuMillis, durationMs: Math.ceil(performance.now() - startedAt), limitFailure })}\n`);
+process.stdout.write(`${JSON.stringify({ exitCode: Number.isInteger(result.code) ? result.code : 128, stdoutBase64: Buffer.concat(stdout).toString('base64'), stderrBase64: Buffer.concat(stderr).toString('base64'), cpuMillis, durationMs: Math.ceil(performance.now() - startedAt), maximumProcessesObserved, limitFailure })}\n`);

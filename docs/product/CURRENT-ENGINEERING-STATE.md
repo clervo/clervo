@@ -1,51 +1,50 @@
 # Current engineering state
 
-Updated 2026-08-02 at the account-switch boundary. This is a compact resumable
+Updated 2026-08-02 after Stage 7 completion. This is a compact resumable
 handoff, not an authorization gate. Continue automatically after reading it.
 
 ## Active work
 
-Stage 7 secure sandbox is the current roadmap priority. The local product core,
-contracts, lifecycle, cleanup, artifact quarantine, cost controls, verified-image
-registry, runner, and synthetic red-team gate are implemented. Stage 8 N8.1's
-bounded multi-chain policy is also already committed, but finish Stage 7 before
-continuing Stage 8.
+Stage 7 secure sandbox product core is complete. The contracts, lifecycle,
+cleanup, artifact quarantine, cost controls, verified-image registry, runner,
+Agent Sandbox adapter, and red-team gate are implemented and consolidated tests
+pass. Public lifecycle remains `unavailable` because no persistent production
+execution plane is deployed. Stage 8 universal multi-chain RPC is the current
+roadmap priority; its bounded multi-chain policy is already committed.
 
 The production runner `sandbox.nodejs-24` is qualified at digest
-`sha256:0cfdf789b798d623cee9ec071c32e584443f9331c73fc7be9bd20f7ae1c243af`.
+`sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e`.
 Google Cloud Build provenance is signed at SLSA build level 3, Google Artifact
 Analysis found zero vulnerabilities, a fresh ClamAV scan found zero infections,
-and the SPDX SBOM is hash-bound in the approved-image registry. Preserve the
-dedicated Artifact Registry repository and its immutable history.
+and the SPDX SBOM is hash-bound in the approved-image registry. Normal command
+completion kills descendants, and an independent process-tree monitor enforces
+the limit when the runtime ignores `RLIMIT_NPROC`. All three superseded digests
+are blocked. Preserve the dedicated Artifact Registry repository and immutable
+history.
 
 ## Live qualification result
 
-The first ephemeral GKE Standard qualification cluster ran Kubernetes
-`1.36.2-gke.2281000`, enabled Agent Sandbox, and used a separate tainted gVisor
-node. The runner was non-root with zero effective capabilities, no mounted
-service-account token, no sensitive environment keys, no host sockets, and
-blocked internal and public egress.
-
-The configuration failed closed because the GKE metadata endpoint still issued
-a workload token. Kubernetes default-deny and a trial Calico metadata deny did
-not block GKE's metadata interception. No token value was logged or retained.
-The rest of the live red-team suite was deliberately not run after this gate
-failed. Product/runtime lifecycle remains `unavailable`; do not claim otherwise.
-The concise evidence is in
-`docs/evidence/sandbox/gke-qualification-attempt.v1.json`.
+GKE Calico failed closed because metadata remained reachable, including through
+the managed Agent Sandbox air-gap. GKE Dataplane V2 passed the managed
+air-gapped `SandboxTemplate`/`SandboxClaim` boundary. The final exact runner
+image then passed all ten live containment probes: gVisor isolation, process,
+disk, output, and time limits, metadata/internal/external network denial, secret
+absence, host denial, descendant cleanup, and namespace cleanup. No token value
+was logged or retained. The exact temporary cluster was deleted and independently
+confirmed absent; Artifact Registry was preserved. Evidence is in
+`docs/evidence/sandbox/gke-qualification-attempt.v1.json` and
+`docs/evidence/sandbox/gvisor-red-team-report.v1.json`.
 
 ## Next actions
 
-1. **Completed:** the named ephemeral qualification cluster was deleted and
-   independently confirmed absent. Billing reconciliation remains pending
-   because Google cost reporting is delayed.
-2. Test the `agents.x-k8s.io/v1alpha1` `Sandbox` custom resource boundary on a
-   new bounded qualification cluster. Do not assume it differs from a gVisor Pod.
-3. If metadata remains reachable, qualify dedicated gVisor execution hosts with
-   host-enforced metadata firewalling and no workload identity available to jobs.
-4. Only after metadata denial passes, run all ten live containment probes,
-   cleanup/orphan checks, and cost reconciliation; then synchronize runtime
-   lifecycle truth and continue through Stage 8 onward without stopping.
+1. Continue Stage 8 from the next unfinished RPC registry/provider/probe work;
+   N8.1's policy and unsafe-method boundary are already committed.
+2. Build tested provider adapters, semantic health/stale/fork checks, routing,
+   caching, pricing, and replay-safe broadcasting in roadmap order without
+   stopping between internal checklist items.
+3. Keep Sandbox public lifecycle `unavailable` until a persistent execution
+   plane is deployed and operationally qualified; delayed cloud billing
+   reconciliation is non-blocking.
 
 ## Preserved boundaries
 

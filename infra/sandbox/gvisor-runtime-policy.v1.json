@@ -1,11 +1,11 @@
 {
   "schemaVersion": "clervo.sandbox-runtime-policy.v1",
   "lifecycle": "unavailable",
-  "runtime": { "class": "gvisor", "runtimeClassName": "gvisor", "plainContainerAllowed": false, "dedicatedExecutionNodes": true, "controlPlaneSeparated": true },
+  "runtime": { "class": "gvisor", "runtimeClassName": "gvisor", "orchestrator": "agent-sandbox", "resourceModel": "template-claim", "dataPlane": "gke-dataplane-v2", "plainContainerAllowed": false, "dedicatedExecutionNodes": true, "controlPlaneSeparated": true },
   "identity": { "runAsNonRoot": true, "allowPrivilegeEscalation": false, "capabilitiesDropped": "ALL", "serviceAccountTokenMounted": false, "executionNodeSecrets": false },
   "filesystem": { "imageDigestRequired": true, "readOnlyRootFilesystem": true, "ephemeralWritesOnly": true, "hostPathsAllowed": false },
-  "network": { "defaultEgress": "deny", "defaultIngress": "deny", "metadataAllowed": false, "internalNetworksAllowed": false, "modelGatewayAllowed": false },
+  "network": { "management": "Managed", "defaultEgress": "deny", "defaultIngress": "deny", "metadataAllowed": false, "internalNetworksAllowed": false, "modelGatewayAllowed": false },
   "limits": { "cpuMillis": 30000, "memoryBytes": 536870912, "processes": 64, "diskBytes": 1073741824, "outputBytes": 1048576, "artifactBytes": 10485760, "wallTimeMs": 60000, "maximumChargeMicrousd": 100000 },
   "forbidden": ["hostNetwork", "hostPID", "hostIPC", "privileged", "hostPath", "hostPort", "customSysctls", "addedCapabilities", "projectedCredentials", "hostSockets", "devices", "commerceSecrets", "providerSecrets", "walletMaterial"],
-  "qualification": { "runtimeAttested": false, "redTeamStatus": "not_run", "cleanupStatus": "not_run", "costStatus": "not_run" }
+  "qualification": { "runtimeAttested": true, "redTeamStatus": "passed", "cleanupStatus": "passed", "costStatus": "bounded" }
 }

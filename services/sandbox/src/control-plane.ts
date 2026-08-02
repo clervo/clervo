@@ -13,19 +13,18 @@ export interface SandboxLimits {
 }
 
 export interface SandboxAttestation {
-  runtimeClass: 'gvisor';
-  dedicatedExecutionNodes: true;
-  controlPlaneSeparated: true;
-  networkDefaultDeny: true;
-  serviceAccountTokenMounted: false;
-  executionNodeSecrets: false;
+  runtimeClass: string;
+  dedicatedExecutionNodes: boolean;
+  controlPlaneSeparated: boolean;
+  networkDefaultDeny: boolean;
+  serviceAccountTokenMounted: boolean;
+  executionNodeSecrets: boolean;
   imageDigest: string;
-  readOnlyRootFilesystem: true;
+  readOnlyRootFilesystem: boolean;
 }
 
 export interface SandboxExecutor {
-  attest(): Promise<Readonly<SandboxAttestation>>;
-  create(input: Readonly<{ sessionId: string; tenantId: string; imageDigest: string; limits: SandboxLimits }>): Promise<void>;
+  create(input: Readonly<{ sessionId: string; tenantId: string; imageDigest: string; limits: SandboxLimits }>): Promise<Readonly<SandboxAttestation>>;
   execute(input: Readonly<{ sessionId: string; executionId: string; command: readonly string[]; stdin: Uint8Array; limits: SandboxLimits }>): Promise<Readonly<{ exitCode: number; stdout: Uint8Array; stderr: Uint8Array; cpuMillis: number; durationMs: number }>>;
   destroy(sessionId: string): Promise<void>;
   list(): Promise<readonly string[]>;
@@ -86,9 +85,11 @@ export class SandboxControlPlane {
     identity(input.sessionId, 'sbx'); identity(input.tenantId, 'tenant'); limits(input.limits);
     if (!Number.isSafeInteger(input.ttlMs) || input.ttlMs < 1_000 || input.ttlMs > 900_000 || this.sessions.has(input.sessionId)) throw new TypeError('sandbox_create_invalid');
     if (!this.images.allows(input.imageDigest)) throw new Error('sandbox_image_unavailable');
-    const attestation = await this.executor.attest();
-    if (!validAttestation(attestation, input.imageDigest)) throw new Error('sandbox_runtime_unavailable');
-    await this.executor.create({ sessionId: input.sessionId, tenantId: input.tenantId, imageDigest: input.imageDigest, limits: input.limits });
+    const attestation = await this.executor.create({ sessionId: input.sessionId, tenantId: input.tenantId, imageDigest: input.imageDigest, limits: input.limits });
+    if (!validAttestation(attestation, input.imageDigest)) {
+      try { await this.executor.destroy(input.sessionId); } catch { throw new Error('sandbox_cleanup_unknown'); }
+      throw new Error('sandbox_runtime_unavailable');
+    }
     const createdAtMs = this.now();
     this.sessions.set(input.sessionId, { ...input, createdAtMs, expiresAtMs: createdAtMs + input.ttlMs, state: 'ready', executions: new Map() });
   }

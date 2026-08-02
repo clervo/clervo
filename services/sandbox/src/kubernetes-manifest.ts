@@ -2,11 +2,11 @@ import { createHash } from 'node:crypto';
 
 import type { SandboxLimits } from './control-plane.js';
 
-export interface SandboxPodInput {
+export interface AgentSandboxResourceInput {
   sessionId: string;
   tenantId: string;
+  imageRepository: string;
   imageDigest: string;
-  command: readonly string[];
   limits: SandboxLimits;
 }
 
@@ -26,8 +26,8 @@ function requireDigest(value: string): void {
   if (!/^sha256:[a-f0-9]{64}$/u.test(value)) throw new TypeError('sandbox_manifest_digest_invalid');
 }
 
-function requireCommand(value: readonly string[]): void {
-  if (value.length < 1 || value.length > 32 || value.some((part) => part.length < 1 || part.length > 4096 || part.includes('\0'))) throw new TypeError('sandbox_manifest_command_invalid');
+function requireRepository(value: string): void {
+  if (!/^[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?(?::[0-9]{1,5})?\/[a-z0-9][a-z0-9._/-]{2,255}$/u.test(value) || value.includes('@') || value.endsWith('/')) throw new TypeError('sandbox_manifest_repository_invalid');
 }
 
 function requireLimits(value: SandboxLimits): void {
@@ -41,22 +41,34 @@ function requireLimits(value: SandboxLimits): void {
   }
 }
 
+export function agentSandboxResourceName(sessionId: string): string {
+  requireIdentity(sessionId, 'sbx');
+  return `sbx-${hash(sessionId)}`;
+}
+
 export function sandboxBoundaryManifests(): readonly JsonObject[] {
   return Object.freeze([
     Object.freeze({
-      apiVersion: 'v1', kind: 'Namespace', metadata: { name: executionNamespace, labels: { 'clervo.dev/plane': 'sandbox-execution', 'pod-security.kubernetes.io/enforce': 'restricted', 'pod-security.kubernetes.io/enforce-version': 'latest' } },
-    }),
-    Object.freeze({
-      apiVersion: 'networking.k8s.io/v1', kind: 'NetworkPolicy', metadata: { name: 'default-deny-all', namespace: executionNamespace },
-      spec: { podSelector: {}, policyTypes: ['Ingress', 'Egress'], ingress: [], egress: [] },
+      apiVersion: 'v1',
+      kind: 'Namespace',
+      metadata: {
+        name: executionNamespace,
+        labels: {
+          'clervo.dev/plane': 'sandbox-execution',
+          'clervo.dev/network-data-plane': 'gke-dataplane-v2',
+          'pod-security.kubernetes.io/enforce': 'restricted',
+          'pod-security.kubernetes.io/enforce-version': 'latest',
+        },
+      },
     }),
   ]);
 }
 
-export function buildSandboxPod(input: Readonly<SandboxPodInput>): JsonObject {
-  requireIdentity(input.sessionId, 'sbx'); requireIdentity(input.tenantId, 'tenant'); requireDigest(input.imageDigest); requireCommand(input.command); requireLimits(input.limits);
+export function buildAgentSandboxResources(input: Readonly<AgentSandboxResourceInput>): readonly JsonObject[] {
+  requireIdentity(input.sessionId, 'sbx'); requireIdentity(input.tenantId, 'tenant'); requireRepository(input.imageRepository); requireDigest(input.imageDigest); requireLimits(input.limits);
   const sessionHash = hash(input.sessionId); const tenantHash = hash(input.tenantId);
   const activeDeadlineSeconds = Math.max(1, Math.ceil(input.limits.wallTimeMs / 1000));
+  const resourceName = agentSandboxResourceName(input.sessionId);
   const annotations = {
     'clervo.dev/session-id': input.sessionId,
     'clervo.dev/image-digest': input.imageDigest,
@@ -66,27 +78,43 @@ export function buildSandboxPod(input: Readonly<SandboxPodInput>): JsonObject {
     'clervo.dev/artifact-limit-bytes': String(input.limits.artifactBytes),
     'clervo.dev/maximum-charge-microusd': String(input.limits.maximumChargeMicrousd),
   };
-  return Object.freeze({
-    apiVersion: 'v1', kind: 'Pod',
-    metadata: { name: `sbx-${sessionHash}`, namespace: executionNamespace, labels: { 'app.kubernetes.io/name': 'clervo-sandbox', 'clervo.dev/owner': 'sandbox-control-plane', 'clervo.dev/session-hash': sessionHash, 'clervo.dev/tenant-hash': tenantHash }, annotations },
+  const labels = { 'app.kubernetes.io/name': 'clervo-sandbox', 'clervo.dev/owner': 'sandbox-control-plane', 'clervo.dev/session-hash': sessionHash, 'clervo.dev/tenant-hash': tenantHash };
+  const template = Object.freeze({
+    apiVersion: 'extensions.agents.x-k8s.io/v1alpha1',
+    kind: 'SandboxTemplate',
+    metadata: { name: resourceName, namespace: executionNamespace, labels, annotations },
     spec: {
-      runtimeClassName: 'gvisor', restartPolicy: 'Never', activeDeadlineSeconds, terminationGracePeriodSeconds: 1,
-      automountServiceAccountToken: false, enableServiceLinks: false, hostNetwork: false, hostPID: false, hostIPC: false, shareProcessNamespace: false,
-      nodeSelector: { 'sandbox.gke.io/runtime': 'gvisor', 'clervo.dev/node-pool': 'sandbox-execution', 'clervo.dev/execution-plane': 'true' },
-      tolerations: [
-        { key: 'sandbox.gke.io/runtime', operator: 'Equal', value: 'gvisor', effect: 'NoSchedule' },
-        { key: 'clervo.dev/sandbox-only', operator: 'Equal', value: 'true', effect: 'NoSchedule' },
-      ],
-      securityContext: { runAsNonRoot: true, runAsUser: 65532, runAsGroup: 65532, fsGroup: 65532, seccompProfile: { type: 'RuntimeDefault' } },
-      containers: [{
-        name: 'execution', image: `clervo-sandbox@${input.imageDigest}`, imagePullPolicy: 'IfNotPresent', command: [...input.command], workingDir: '/workspace',
-        securityContext: { allowPrivilegeEscalation: false, privileged: false, readOnlyRootFilesystem: true, capabilities: { drop: ['ALL'] } },
-        resources: { requests: { cpu: '10m', memory: String(input.limits.memoryBytes), 'ephemeral-storage': String(input.limits.diskBytes) }, limits: { cpu: '1000m', memory: String(input.limits.memoryBytes), 'ephemeral-storage': String(input.limits.diskBytes) } },
-        volumeMounts: [{ name: 'workspace', mountPath: '/workspace' }, { name: 'tmp', mountPath: '/tmp' }],
-      }],
-      volumes: [{ name: 'workspace', emptyDir: { sizeLimit: String(input.limits.diskBytes) } }, { name: 'tmp', emptyDir: { medium: 'Memory', sizeLimit: '16777216' } }],
+      networkPolicyManagement: 'Managed',
+      networkPolicy: { ingress: [], egress: [] },
+      podTemplate: {
+        metadata: { labels, annotations },
+        spec: {
+          runtimeClassName: 'gvisor', restartPolicy: 'Always', activeDeadlineSeconds, terminationGracePeriodSeconds: 1,
+          automountServiceAccountToken: false, enableServiceLinks: false, hostNetwork: false, hostPID: false, hostIPC: false, shareProcessNamespace: false,
+          nodeSelector: { 'sandbox.gke.io/runtime': 'gvisor', 'clervo.dev/node-pool': 'sandbox-execution', 'clervo.dev/execution-plane': 'true' },
+          tolerations: [
+            { key: 'sandbox.gke.io/runtime', operator: 'Equal', value: 'gvisor', effect: 'NoSchedule' },
+            { key: 'clervo.dev/sandbox-only', operator: 'Equal', value: 'true', effect: 'NoSchedule' },
+          ],
+          securityContext: { runAsNonRoot: true, runAsUser: 65532, runAsGroup: 65532, fsGroup: 65532, seccompProfile: { type: 'RuntimeDefault' } },
+          containers: [{
+            name: 'runtime', image: `${input.imageRepository}@${input.imageDigest}`, imagePullPolicy: 'IfNotPresent', workingDir: '/workspace',
+            securityContext: { allowPrivilegeEscalation: false, privileged: false, readOnlyRootFilesystem: true, capabilities: { drop: ['ALL'] } },
+            resources: { requests: { cpu: '10m', memory: String(input.limits.memoryBytes), 'ephemeral-storage': String(input.limits.diskBytes) }, limits: { cpu: '1000m', memory: String(input.limits.memoryBytes), 'ephemeral-storage': String(input.limits.diskBytes) } },
+            volumeMounts: [{ name: 'workspace', mountPath: '/workspace' }, { name: 'tmp', mountPath: '/tmp' }],
+          }],
+          volumes: [{ name: 'workspace', emptyDir: { sizeLimit: String(input.limits.diskBytes) } }, { name: 'tmp', emptyDir: { medium: 'Memory', sizeLimit: '16777216' } }],
+        },
+      },
     },
   });
+  const claim = Object.freeze({
+    apiVersion: 'extensions.agents.x-k8s.io/v1alpha1',
+    kind: 'SandboxClaim',
+    metadata: { name: resourceName, namespace: executionNamespace, labels },
+    spec: { sandboxTemplateRef: { name: resourceName }, lifecycle: { shutdownPolicy: 'DeleteForeground', ttlSecondsAfterFinished: 60 } },
+  });
+  return Object.freeze([template, claim]);
 }
 
 export const sandboxExecutionNamespace = executionNamespace;

@@ -11,7 +11,7 @@ const images = { allows: (value) => value === imageDigest };
 
 function executor(overrides = {}) {
   const calls = [];
-  return { calls, async attest() { return { runtimeClass: 'gvisor', dedicatedExecutionNodes: true, controlPlaneSeparated: true, networkDefaultDeny: true, serviceAccountTokenMounted: false, executionNodeSecrets: false, imageDigest, readOnlyRootFilesystem: true }; }, async create(input) { calls.push(['create', input.sessionId]); }, async execute(input) { calls.push(['execute', input.executionId]); return { exitCode: 0, stdout: new TextEncoder().encode('ok'), stderr: new Uint8Array(), cpuMillis: 10, durationMs: 20 }; }, async destroy(id) { calls.push(['destroy', id]); }, async list() { return []; }, ...overrides };
+  return { calls, async create(input) { calls.push(['create', input.sessionId]); return { runtimeClass: 'gvisor', dedicatedExecutionNodes: true, controlPlaneSeparated: true, networkDefaultDeny: true, serviceAccountTokenMounted: false, executionNodeSecrets: false, imageDigest, readOnlyRootFilesystem: true }; }, async execute(input) { calls.push(['execute', input.executionId]); return { exitCode: 0, stdout: new TextEncoder().encode('ok'), stderr: new Uint8Array(), cpuMillis: 10, durationMs: 20 }; }, async destroy(id) { calls.push(['destroy', id]); }, async list() { return []; }, ...overrides };
 }
 
 test('sandbox control plane accepts only attested bounded execution and replays without rerunning', async () => {
@@ -25,8 +25,9 @@ test('sandbox control plane accepts only attested bounded execution and replays 
 });
 
 test('sandbox rejects weak attestation and destroys a limit-breaching runtime', async () => {
-  const weak = executor({ async attest() { return { runtimeClass: 'gvisor', dedicatedExecutionNodes: true, controlPlaneSeparated: true, networkDefaultDeny: false, serviceAccountTokenMounted: false, executionNodeSecrets: false, imageDigest, readOnlyRootFilesystem: true }; } });
+  const weak = executor({ async create(input) { this.calls.push(['create', input.sessionId]); return { runtimeClass: 'gvisor', dedicatedExecutionNodes: true, controlPlaneSeparated: true, networkDefaultDeny: false, serviceAccountTokenMounted: false, executionNodeSecrets: false, imageDigest, readOnlyRootFilesystem: true }; } });
   await assert.rejects(new SandboxControlPlane(weak, Date.now, images).create({ sessionId, tenantId, imageDigest, limits, ttlMs: 5000 }), /runtime_unavailable/u);
+  assert.equal(weak.calls.some(([name]) => name === 'destroy'), true);
   const flooding = executor({ async execute() { return { exitCode: 0, stdout: new Uint8Array(2048), stderr: new Uint8Array(), cpuMillis: 10, durationMs: 20 }; } });
   const plane = new SandboxControlPlane(flooding, Date.now, images); await plane.create({ sessionId, tenantId, imageDigest, limits, ttlMs: 5000 });
   await assert.rejects(plane.execute({ sessionId, executionId, tenantId, command: ['node'], stdin: new Uint8Array() }), /limit_breach/u);

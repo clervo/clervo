@@ -1,8 +1,8 @@
 {
   "schemaVersion": "clervo.sandbox-runner-image-qualification.v1",
-  "evaluatedAt": "2026-08-02T10:30:24.000Z",
-  "imageId": "sandbox.nodejs-24",
-  "digest": "sha256:0cfdf789b798d623cee9ec071c32e584443f9331c73fc7be9bd20f7ae1c243af",
+  "evaluatedAt": "2026-08-02T11:28:12.000Z",
+  "imageId": "sandbox.nodejs-24.orphan-safe",
+  "digest": "sha256:348cdf7f7fef860680d8074208650b043822c410231bfec2dab12858bdd4c073",
   "build": {
     "status": "passed",
     "builder": "google-cloud-build",
@@ -30,11 +30,15 @@
     "format": "SPDX-2.3",
     "generator": "syft-1.44.0",
     "generatorImageDigest": "sha256:86fde6445b483d902fe011dd9f68c4987dd94e07da1e9edc004e3c2422650de6",
-    "path": "docs/evidence/sandbox/runner-sbom.v1.spdx.json",
-    "sha256": "sha256:5e556726522c194242b354ce33b8c60f8178742a35cd0f524a83fab8bcf7ec8a"
+    "path": "docs/evidence/sandbox/runner-sbom.v2.spdx.json",
+    "sha256": "sha256:6d8f1aef0dc42272aa7e75647cd929359e37bcdd73821c59cb28fa1e7d80e7e9"
+  },
+  "runtimeChecks": {
+    "normalCompletionKillsDescendants": true,
+    "orphanProcessesObserved": 0
   },
   "decision": "superseded_blocked",
-  "blockingReason": "normal command completion did not guarantee descendant process-group cleanup",
+  "blockingReason": "live gVisor qualification showed RLIMIT_NPROC was not enforced and the runner lacked an independent process-tree limit",
   "supersededByDigest": "sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e",
   "productAvailability": "unavailable"
 }
