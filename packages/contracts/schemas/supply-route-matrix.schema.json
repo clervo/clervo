@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/supply-route-matrix.schema.json",
+  "title": "Clervo provider-neutral supply route matrix",
+  "type": "object",
+  "required": ["schemaVersion", "evaluatedAt", "policy", "catalogCoverage", "capabilities", "ownerBlockers"],
+  "$defs": {
+    "catalogCoverage": {
+      "type": "object",
+      "required": ["catalog", "assetCount", "positiveCustomerPriceCount", "sellableCount"],
+      "properties": {
+        "catalog": { "type": "string", "pattern": "^packages/catalog/[a-z0-9.-]+\\.json$" },
+        "assetCount": { "type": "integer", "minimum": 1 },
+        "positiveCustomerPriceCount": { "type": "integer", "minimum": 1 },
+        "sellableCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "capability": {
+      "type": "object",
+      "required": ["capabilityId", "publicAssets", "lifecycle", "routeState", "primaryServices", "fallbackServices", "pricingCatalogs", "quality", "termsStatus", "quotaRunway", "healthMethod", "secretLocations", "replacementPlan"],
+      "properties": {
+        "capabilityId": { "type": "string", "pattern": "^[a-z][a-z0-9._-]{2,79}$" },
+        "publicAssets": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1, "maxLength": 180 } },
+        "lifecycle": { "enum": ["production", "preview", "mixed", "internal_only"] },
+        "routeState": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,79}$" },
+        "primaryServices": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^supply\\.[a-z0-9_]+$" } },
+        "fallbackServices": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^supply\\.[a-z0-9_]+$" } },
+        "pricingCatalogs": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^packages/catalog/[a-z0-9.-]+\\.json$" } },
+        "quality": { "enum": ["best", "good", "poor", "rejected", "mixed", "unranked"] },
+        "termsStatus": { "enum": ["allowed", "restricted", "blocked", "mixed", "review_required"] },
+        "quotaRunway": { "type": "string", "minLength": 12, "maxLength": 500 },
+        "healthMethod": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 5, "maxLength": 220 } },
+        "secretLocations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^(runtime|legacy_import|application_default|none):[A-Z0-9_,.-]+$" } },
+        "replacementPlan": { "type": "string", "minLength": 12, "maxLength": 800 }
+      },
+      "additionalProperties": false
+    },
+    "ownerBlocker": {
+      "type": "object",
+      "required": ["blockerId", "requiredAction", "unblocks", "spendingAuthorized"],
+      "properties": {
+        "blockerId": { "type": "string", "pattern": "^[a-z][a-z0-9._-]{2,79}$" },
+        "requiredAction": { "type": "string", "minLength": 12, "maxLength": 500 },
+        "unblocks": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z][a-z0-9._-]{2,79}$" } },
+        "spendingAuthorized": { "const": false }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "schemaVersion": { "const": "clervo.supply-route-matrix.v1" },
+    "evaluatedAt": { "type": "string", "format": "date-time" },
+    "policy": {
+      "type": "object",
+      "required": ["providerNamesPublic", "exactModelSubstitutionAllowed", "automaticPaidOverageAllowed", "customerFreeByDefault", "pricingIsReferencedNotDuplicated"],
+      "properties": {
+        "providerNamesPublic": { "const": false },
+        "exactModelSubstitutionAllowed": { "const": false },
+        "automaticPaidOverageAllowed": { "const": false },
+        "customerFreeByDefault": { "const": false },
+        "pricingIsReferencedNotDuplicated": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "catalogCoverage": { "type": "array", "minItems": 13, "uniqueItems": true, "items": { "$ref": "#/$defs/catalogCoverage" } },
+    "capabilities": { "type": "array", "minItems": 12, "uniqueItems": true, "items": { "$ref": "#/$defs/capability" } },
+    "ownerBlockers": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/ownerBlocker" } }
+  },
+  "additionalProperties": false
+}

@@ -277,3 +277,26 @@ test('x402 facilitators expose supported capabilities without running a payment 
   ]);
   assert.equal(evidence.allowance.automaticPaidOverageAllowedByClervo, false);
 });
+
+test('final supply matrix covers every priced asset, preserves provider secrecy, and names only genuine owner blockers', async () => {
+  const matrix = await json('packages/catalog/supply-route-matrix.v1.json');
+  const schema = await json('packages/contracts/schemas/supply-route-matrix.schema.json');
+  const market = await json('docs/evidence/supply-foundation/market-sourcing-gap-evaluation.v1.json');
+  const ajv = new Ajv2020({ strict: true, allErrors: true });
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  assert.equal(validate(matrix), true, ajv.errorsText(validate.errors));
+  assert.deepEqual(matrix.policy, { providerNamesPublic: false, exactModelSubstitutionAllowed: false, automaticPaidOverageAllowed: false, customerFreeByDefault: false, pricingIsReferencedNotDuplicated: true });
+  assert.equal(matrix.catalogCoverage.length, 13);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.assetCount, 0), 779);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.positiveCustomerPriceCount, 0), 779);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 22);
+  assert.equal(new Set(matrix.capabilities.map(({ capabilityId }) => capabilityId)).size, matrix.capabilities.length);
+  assert.ok(matrix.capabilities.every(({ publicAssets, pricingCatalogs, healthMethod, secretLocations, replacementPlan }) => publicAssets.length > 0 && pricingCatalogs.length > 0 && healthMethod.length > 0 && secretLocations.length > 0 && replacementPlan.length > 12));
+  assert.deepEqual(matrix.ownerBlockers.map(({ blockerId, spendingAuthorized }) => [blockerId, spendingAuthorized]), [['owner.drpc_account', false], ['owner.brave_search_account', false], ['owner.r2_key_reissue', false]]);
+  assert.equal(market.competitorObservation.observedLiveModels, 83);
+  assert.equal(market.clervoObservation.qualifiedExactAiRoutes, 20);
+  assert.deepEqual(market.finalDecision, { coverageSufficientWithoutOwnerAction: false, newAccountsSelected: 2, existingCredentialsNeedingReplacement: 1, selectedOwnerActions: ['dRPC dedicated free-tier key', 'Brave Search free-credit key', 'least-privilege R2 bucket key and bucket name'], allOtherResearchedSources: 'rejected or deferred until revenue, compatible terms, or a material failure justifies them' });
+  const serialized = JSON.stringify(matrix);
+  assert.equal(/(?:sk-|ghp_|AIza|Bearer\s|-----BEGIN|api[_-]?key["']?\s*:\s*["'][^"']+)/iu.test(serialized), false);
+});

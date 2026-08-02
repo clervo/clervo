@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "clervo.market-sourcing-gap-evaluation.v1",
+  "evaluatedAt": "2026-08-02T06:40:00.000Z",
+  "policy": {
+    "ownerCashAvailableNowUsd": 0,
+    "existingCreditsMayBackPaidCustomerTraffic": true,
+    "customerFreeByDefault": false,
+    "exactModelSubstitutionAllowed": false,
+    "providerNamesPublic": false,
+    "automaticPaidOverageAllowed": false
+  },
+  "competitorObservation": {
+    "catalogUrl": "https://blockrun.ai/api/v1/models",
+    "documentationUrl": "https://blockrun.ai/docs/api-reference/models",
+    "externalCalls": 1,
+    "observedLiveModels": 83,
+    "observedAvailableModels": 83,
+    "documentedPortfolio": {
+      "chat": 59,
+      "image": 8,
+      "video": 5,
+      "music": 1,
+      "textToSpeech": 5,
+      "soundEffects": 1
+    },
+    "conclusion": "Catalog count alone is not parity. Clervo must preserve exact identity, qualify every listed route, expose positive customer prices, and add production supply for search, RPC, data, storage, and payments rather than publish unavailable models."
+  },
+  "clervoObservation": {
+    "ownedAiListingsPriced": 633,
+    "qualifiedExactAiRoutes": 20,
+    "qualifiedAiProducts": [
+      "ai.chat",
+      "ai.embed",
+      "ai.image",
+      "ai.speech"
+    ],
+    "materialAiGaps": [
+      "independent exact-model fallback for most model identities",
+      "production STT integration",
+      "music generation",
+      "sound-effect generation",
+      "broader proprietary frontier families"
+    ],
+    "materialInfrastructureGaps": [
+      "independent web-search fallback",
+      "dedicated production multi-chain RPC",
+      "production blockchain data",
+      "working isolated object storage",
+      "production x402 proof and fallback"
+    ]
+  },
+  "candidates": [
+    {
+      "candidateId": "source.drpc_dedicated",
+      "capability": "rpc.multichain",
+      "decision": "selected_owner_blocked",
+      "starterBasis": "210 million compute units per 30 days on the authenticated free tier; public endpoints are less reliable",
+      "evidence": [
+        "https://drpc.org/docs/pricing/requests",
+        "https://drpc.org/docs/howitworks/ratelimiting",
+        "https://drpc.org/docs/gettingstarted/createaccount"
+      ],
+      "reason": "The strongest current zero-cash multi-chain RPC candidate, with key-level limits and broad coverage. Commercial downstream terms still require review after account creation.",
+      "ownerAction": "Complete the dRPC login/account flow and provide a dedicated key without enabling paid deposits or overage."
+    },
+    {
+      "candidateId": "source.brave_search",
+      "capability": "search.web_fallback",
+      "decision": "selected_owner_blocked",
+      "starterBasis": "USD 5 recurring monthly credit, equivalent to 1,000 Search calls at USD 5 per 1,000, with 50 QPS capacity",
+      "evidence": [
+        "https://brave.com/search/api/",
+        "https://brave.com/blog/most-powerful-search-api-for-ai/"
+      ],
+      "reason": "Independent index and clear application/agent use make this the best complement to the qualified owned search route.",
+      "ownerAction": "Subscribe to the free-credit Search plan, complete its card verification without approving a charge, and provide the dedicated API key."
+    },
+    {
+      "candidateId": "source.cloudflare_r2_reissue",
+      "capability": "storage.object",
+      "decision": "selected_owner_blocked",
+      "starterBasis": "existing account; 10 GB storage, 1 million Class A, 10 million Class B monthly free allocation, zero egress charge",
+      "evidence": [
+        "https://developers.cloudflare.com/r2/pricing/"
+      ],
+      "reason": "Reissuing a least-privilege key is simpler and more coherent than introducing a second storage operator; the correct account endpoint currently returns HTTP 403.",
+      "ownerAction": "Create a least-privilege R2 key for a dedicated Clervo bucket and provide the bucket name and key through the secret channel."
+    },
+    {
+      "candidateId": "source.validation_cloud",
+      "capability": "rpc.multichain_backup",
+      "decision": "reserve_if_selected_rpc_terms_fail",
+      "starterBasis": "advertised 50 million compute units monthly free tier",
+      "evidence": [
+        "https://www.validationcloud.io/post/node-api-updated-pricing-compute-unit-pricing-for-limitless-scalability"
+      ],
+      "reason": "Credible alternative, but lower documented allowance and unresolved downstream commercial terms do not justify another account before the selected RPC source is tested.",
+      "ownerAction": null
+    },
+    {
+      "candidateId": "source.backblaze_b2",
+      "capability": "storage.object_backup",
+      "decision": "reserve_if_existing_storage_reissue_fails",
+      "starterBasis": "first 10 GB free; S3-compatible API",
+      "evidence": [
+        "https://www.backblaze.com/cloud-storage/transaction-pricing",
+        "https://postman.backblaze.com/"
+      ],
+      "reason": "Useful fallback but unnecessary account and adapter complexity while the existing object-storage account can be repaired.",
+      "ownerAction": null
+    },
+    {
+      "candidateId": "source.goldrush",
+      "capability": "blockchain_data",
+      "decision": "rejected_for_launch",
+      "starterBasis": "14-day, 25,000-credit trial",
+      "evidence": [
+        "https://goldrush.dev/pricing/"
+      ],
+      "reason": "The trial explicitly excludes production and the first commercial production plan is not compatible with zero owner cash."
+    },
+    {
+      "candidateId": "source.cdp_node",
+      "capability": "rpc.evm",
+      "decision": "deferred_existing_account",
+      "starterBasis": "10 million billing units recurring monthly, but a payment method is required and overage is billable",
+      "evidence": [
+        "https://docs.cdp.coinbase.com/data/node/pricing"
+      ],
+      "reason": "The existing account is valuable later, but Node traffic remains disabled until a hard application guard and verified billing cap prevent owner-cash overage."
+    },
+    {
+      "candidateId": "source.blockrun_free_upstream",
+      "capability": "ai.chat",
+      "decision": "rejected",
+      "starterBasis": "documented no-charge open-weight tier",
+      "evidence": [
+        "https://blockrun.ai/docs/api-reference/models"
+      ],
+      "reason": "The free tier explicitly auto-routes around unavailable models, which cannot satisfy Clervo exact-model identity, and depending on the direct competitor is not an independent supply foundation."
+    },
+    {
+      "candidateId": "source.blazeapi",
+      "capability": "ai.multimodel",
+      "decision": "rejected",
+      "starterBasis": "advertised 300 requests per day",
+      "evidence": [
+        "https://free.blazeapi.org/"
+      ],
+      "reason": "No sufficiently clear primary commercial terms, supplier provenance, exact-identity guarantee, or production SLA was proven."
+    },
+    {
+      "candidateId": "source.omni_2b",
+      "capability": "ai.ambiguous_owner_reference",
+      "decision": "no_qualifying_source_identified",
+      "starterBasis": null,
+      "evidence": [
+        "https://huggingface.co/nvidia/omni-dreams-models/blob/main/README.md",
+        "https://tokenator.cloud/",
+        "https://magichour.ai/api/google-omni"
+      ],
+      "reason": "The phrase did not resolve to one verifiable zero-cash production API: Omni-Dreams is a 2B-parameter research model, Tokenator advertises a paid 2B-token bundle with opaque upstreams, and the Google Omni aggregator requires a paid plan. None improves the launch supply safely."
+    }
+  ],
+  "finalDecision": {
+    "coverageSufficientWithoutOwnerAction": false,
+    "newAccountsSelected": 2,
+    "existingCredentialsNeedingReplacement": 1,
+    "selectedOwnerActions": [
+      "dRPC dedicated free-tier key",
+      "Brave Search free-credit key",
+      "least-privilege R2 bucket key and bucket name"
+    ],
+    "allOtherResearchedSources": "rejected or deferred until revenue, compatible terms, or a material failure justifies them"
+  }
+}

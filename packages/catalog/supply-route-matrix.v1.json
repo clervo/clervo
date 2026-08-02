@@ -1,0 +1,521 @@
+{
+  "schemaVersion": "clervo.supply-route-matrix.v1",
+  "evaluatedAt": "2026-08-02T06:40:00.000Z",
+  "policy": {
+    "providerNamesPublic": false,
+    "exactModelSubstitutionAllowed": false,
+    "automaticPaidOverageAllowed": false,
+    "customerFreeByDefault": false,
+    "pricingIsReferencedNotDuplicated": true
+  },
+  "catalogCoverage": [
+    {
+      "catalog": "packages/catalog/ai-credit-backed-pricing.v1.json",
+      "assetCount": 10,
+      "positiveCustomerPriceCount": 10,
+      "sellableCount": 9
+    },
+    {
+      "catalog": "packages/catalog/ai-edge-free-pricing.v1.json",
+      "assetCount": 61,
+      "positiveCustomerPriceCount": 61,
+      "sellableCount": 5
+    },
+    {
+      "catalog": "packages/catalog/ai-free-tier-pricing.v1.json",
+      "assetCount": 15,
+      "positiveCustomerPriceCount": 15,
+      "sellableCount": 3
+    },
+    {
+      "catalog": "packages/catalog/ai-gateway-pricing.v1.json",
+      "assetCount": 21,
+      "positiveCustomerPriceCount": 21,
+      "sellableCount": 0
+    },
+    {
+      "catalog": "packages/catalog/ai-launch-pricing.v1.json",
+      "assetCount": 3,
+      "positiveCustomerPriceCount": 3,
+      "sellableCount": 3
+    },
+    {
+      "catalog": "packages/catalog/ai-owned-source-pricing.v1.json",
+      "assetCount": 612,
+      "positiveCustomerPriceCount": 612,
+      "sellableCount": 0
+    },
+    {
+      "catalog": "packages/catalog/ai-speech-pricing.v1.json",
+      "assetCount": 3,
+      "positiveCustomerPriceCount": 3,
+      "sellableCount": 2
+    },
+    {
+      "catalog": "packages/catalog/blockchain-data-supply-pricing.v1.json",
+      "assetCount": 4,
+      "positiveCustomerPriceCount": 4,
+      "sellableCount": 0
+    },
+    {
+      "catalog": "packages/catalog/payment-supply-pricing.v1.json",
+      "assetCount": 4,
+      "positiveCustomerPriceCount": 4,
+      "sellableCount": 0
+    },
+    {
+      "catalog": "packages/catalog/platform-integration-supply-pricing.v1.json",
+      "assetCount": 8,
+      "positiveCustomerPriceCount": 8,
+      "sellableCount": 0
+    },
+    {
+      "catalog": "packages/catalog/rpc-supply-pricing.v1.json",
+      "assetCount": 33,
+      "positiveCustomerPriceCount": 33,
+      "sellableCount": 0
+    },
+    {
+      "catalog": "packages/catalog/search-supply-pricing.v1.json",
+      "assetCount": 1,
+      "positiveCustomerPriceCount": 1,
+      "sellableCount": 0
+    },
+    {
+      "catalog": "packages/catalog/storage-supply-pricing.v1.json",
+      "assetCount": 4,
+      "positiveCustomerPriceCount": 4,
+      "sellableCount": 0
+    }
+  ],
+  "capabilities": [
+    {
+      "capabilityId": "ai.chat",
+      "publicAssets": [
+        "@cf/meta/llama-4-scout-17b-16e-instruct",
+        "@cf/nvidia/nemotron-3-120b-a12b",
+        "@cf/openai/gpt-oss-120b",
+        "@cf/openai/gpt-oss-20b",
+        "@cf/qwen/qwen3-30b-a3b-fp8",
+        "gemini-3.5-flash",
+        "gemini-3.5-flash-lite",
+        "gemini-3.6-flash",
+        "gpt-5.6-luna",
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "qwen/qwen3.6-27b"
+      ],
+      "lifecycle": "mixed",
+      "routeState": "qualified_portfolio_exact_fallback_partial",
+      "primaryServices": [
+        "supply.clervo_ai_gateway",
+        "supply.google_vertex",
+        "supply.groq",
+        "supply.cloudflare_workers_ai"
+      ],
+      "fallbackServices": [
+        "supply.groq",
+        "supply.cloudflare_workers_ai"
+      ],
+      "pricingCatalogs": [
+        "packages/catalog/ai-launch-pricing.v1.json",
+        "packages/catalog/ai-credit-backed-pricing.v1.json",
+        "packages/catalog/ai-free-tier-pricing.v1.json",
+        "packages/catalog/ai-edge-free-pricing.v1.json"
+      ],
+      "quality": "mixed",
+      "termsStatus": "restricted",
+      "quotaRunway": "Existing gateway budget, reported Vertex credit, recurring free allocations, and hard deny-on-unknown usage guards; exact expiry and remaining balances are not fully observable.",
+      "healthMethod": [
+        "docs/evidence/supply-foundation/cloudflare-production-chat-quality.v1.json",
+        "docs/evidence/supply-foundation/cloudflare-expanded-chat-qualification.v1.json",
+        "docs/evidence/stage6/groq-supply-screen.v1.json",
+        "docs/evidence/stage6/vertex-multimodal-screen.v1.json"
+      ],
+      "secretLocations": [
+        "runtime:CLERVO_AI_API_KEY",
+        "application_default:GCP_ADC",
+        "legacy_import:GROQ_API_KEY,CLOUDFLARE_API_TOKEN"
+      ],
+      "replacementPlan": "Retain only exact qualified identities. Add official paid supplier accounts after revenue, prioritizing missing proprietary families; never use opaque or silently substituting aggregators."
+    },
+    {
+      "capabilityId": "ai.embed",
+      "publicAssets": [
+        "gemini-embedding-001"
+      ],
+      "lifecycle": "production",
+      "routeState": "qualified_single_family",
+      "primaryServices": [
+        "supply.google_vertex"
+      ],
+      "fallbackServices": [],
+      "pricingCatalogs": [
+        "packages/catalog/ai-credit-backed-pricing.v1.json",
+        "packages/catalog/ai-edge-free-pricing.v1.json"
+      ],
+      "quality": "best",
+      "termsStatus": "restricted",
+      "quotaRunway": "Allocated from the reported Vertex credit with deny-on-unknown usage; the edge BGE-M3 candidate lacks final accounting and adapter qualification.",
+      "healthMethod": [
+        "docs/evidence/supply-foundation/cloudflare-modality-screen.v1.json",
+        "docs/evidence/stage6/vertex-embedding-screen.v1.json"
+      ],
+      "secretLocations": [
+        "application_default:GCP_ADC",
+        "legacy_import:CLOUDFLARE_API_TOKEN"
+      ],
+      "replacementPlan": "Finish BGE-M3 accounting and adapter qualification as the independent embedding fallback."
+    },
+    {
+      "capabilityId": "ai.image",
+      "publicAssets": [
+        "gemini-3.1-flash-image",
+        "gemini-3.1-flash-lite-image",
+        "gemini-3-pro-image"
+      ],
+      "lifecycle": "production",
+      "routeState": "qualified_single_family",
+      "primaryServices": [
+        "supply.google_vertex"
+      ],
+      "fallbackServices": [],
+      "pricingCatalogs": [
+        "packages/catalog/ai-credit-backed-pricing.v1.json",
+        "packages/catalog/ai-edge-free-pricing.v1.json"
+      ],
+      "quality": "mixed",
+      "termsStatus": "restricted",
+      "quotaRunway": "Allocated from the reported Vertex credit; generated-image size and ledger ceilings remain mandatory.",
+      "healthMethod": [
+        "docs/evidence/supply-foundation/cloudflare-modality-screen.v1.json",
+        "docs/evidence/stage6/vertex-multimodal-screen.v1.json"
+      ],
+      "secretLocations": [
+        "application_default:GCP_ADC",
+        "legacy_import:CLOUDFLARE_API_TOKEN"
+      ],
+      "replacementPlan": "Finish FLUX image-size, quality, accounting, and adapter checks before enabling it as an independent fallback."
+    },
+    {
+      "capabilityId": "ai.video",
+      "publicAssets": [
+        "veo-3.1-fast-generate-001",
+        "veo-3.1-generate-001"
+      ],
+      "lifecycle": "production",
+      "routeState": "qualified_single_family",
+      "primaryServices": [
+        "supply.google_vertex"
+      ],
+      "fallbackServices": [],
+      "pricingCatalogs": [
+        "packages/catalog/ai-credit-backed-pricing.v1.json"
+      ],
+      "quality": "mixed",
+      "termsStatus": "restricted",
+      "quotaRunway": "USD 500 shadow allocation within the reported credit and USD 25 total daily shadow debit ceiling; no owner-cash overage.",
+      "healthMethod": [
+        "docs/evidence/stage6/vertex-multimodal-screen.v1.json"
+      ],
+      "secretLocations": [
+        "application_default:GCP_ADC"
+      ],
+      "replacementPlan": "Keep the preview lite route unavailable and source a second production video family only after the primary route has customer demand."
+    },
+    {
+      "capabilityId": "ai.tts",
+      "publicAssets": [
+        "aura-2-arcas-en",
+        "aura-2-thalia-en"
+      ],
+      "lifecycle": "production",
+      "routeState": "qualified_single_family",
+      "primaryServices": [
+        "supply.deepgram"
+      ],
+      "fallbackServices": [],
+      "pricingCatalogs": [
+        "packages/catalog/ai-speech-pricing.v1.json",
+        "packages/catalog/ai-edge-free-pricing.v1.json",
+        "packages/catalog/ai-free-tier-pricing.v1.json"
+      ],
+      "quality": "good",
+      "termsStatus": "restricted",
+      "quotaRunway": "USD 160 shadow allocation from the reported balance with USD 5 daily debit and USD 20 remaining-balance hard stop.",
+      "healthMethod": [
+        "docs/evidence/stage6/deepgram-speech-screen.v1.json",
+        "docs/evidence/supply-foundation/cloudflare-modality-screen.v1.json",
+        "docs/evidence/supply-foundation/groq-speech-qualification.v1.json"
+      ],
+      "secretLocations": [
+        "legacy_import:DEEPGRAM_API_KEY,CLOUDFLARE_API_TOKEN,GROQ_API_KEY"
+      ],
+      "replacementPlan": "Qualify the edge Aura route after accounting integration; preview Orpheus routes remain blocked on organization terms acceptance."
+    },
+    {
+      "capabilityId": "ai.stt",
+      "publicAssets": [
+        "nova-3",
+        "whisper-large-v3",
+        "whisper-large-v3-turbo",
+        "@cf/deepgram/flux",
+        "@cf/deepgram/nova-3",
+        "@cf/openai/whisper",
+        "@cf/openai/whisper-large-v3-turbo",
+        "@cf/openai/whisper-tiny-en"
+      ],
+      "lifecycle": "mixed",
+      "routeState": "qualified_integration_pending",
+      "primaryServices": [
+        "supply.deepgram"
+      ],
+      "fallbackServices": [
+        "supply.groq",
+        "supply.cloudflare_workers_ai"
+      ],
+      "pricingCatalogs": [
+        "packages/catalog/ai-speech-pricing.v1.json",
+        "packages/catalog/ai-free-tier-pricing.v1.json",
+        "packages/catalog/ai-edge-free-pricing.v1.json"
+      ],
+      "quality": "mixed",
+      "termsStatus": "restricted",
+      "quotaRunway": "The funded primary and two recurring-free families were bounded live; customer accounting and response contracts still block production listing.",
+      "healthMethod": [
+        "docs/evidence/supply-foundation/groq-speech-qualification.v1.json",
+        "docs/evidence/supply-foundation/cloudflare-modality-screen.v1.json",
+        "docs/evidence/stage6/deepgram-speech-screen.v1.json"
+      ],
+      "secretLocations": [
+        "legacy_import:DEEPGRAM_API_KEY,GROQ_API_KEY,CLOUDFLARE_API_TOKEN"
+      ],
+      "replacementPlan": "Implement the normalized transcription adapter and usage ledger, then route exact identities without transcription-model substitution."
+    },
+    {
+      "capabilityId": "search.web",
+      "publicAssets": [
+        "web-search-standard"
+      ],
+      "lifecycle": "production",
+      "routeState": "qualified_not_integrated_single_family",
+      "primaryServices": [
+        "supply.serper"
+      ],
+      "fallbackServices": [],
+      "pricingCatalogs": [
+        "packages/catalog/search-supply-pricing.v1.json"
+      ],
+      "quality": "good",
+      "termsStatus": "allowed",
+      "quotaRunway": "Starter balance is not exposed by the API; enforce the application ledger and single-account limit.",
+      "healthMethod": [
+        "docs/evidence/supply-foundation/serper-qualification.v1.json"
+      ],
+      "secretLocations": [
+        "legacy_import:SERPER_API_KEY"
+      ],
+      "replacementPlan": "Add the selected independent-index search key, benchmark the same corpus, and retain attribution and content-rights controls."
+    },
+    {
+      "capabilityId": "rpc.multichain",
+      "publicAssets": [
+        "solana-mainnet-read",
+        "arbitrum-mainnet-read-1",
+        "arbitrum-mainnet-read-2",
+        "arbitrum-mainnet-read-3",
+        "avalanche-mainnet-read-1",
+        "avalanche-mainnet-read-2",
+        "base-mainnet-read-1",
+        "base-mainnet-read-2",
+        "base-mainnet-read-3",
+        "bitcoin-mainnet-read-1",
+        "bitcoin-mainnet-read-2",
+        "bsc-mainnet-read-1",
+        "bsc-mainnet-read-2",
+        "bsc-mainnet-read-3",
+        "cosmos-mainnet-read-1",
+        "ethereum-mainnet-read-1",
+        "ethereum-mainnet-read-2",
+        "ethereum-mainnet-read-3",
+        "ethereum-mainnet-read-4",
+        "fantom-mainnet-read-1",
+        "fantom-mainnet-read-2",
+        "gnosis-mainnet-read-1",
+        "gnosis-mainnet-read-2",
+        "near-mainnet-read-1",
+        "optimism-mainnet-read-1",
+        "optimism-mainnet-read-2",
+        "optimism-mainnet-read-3",
+        "polygon-mainnet-read-1",
+        "polygon-mainnet-read-2",
+        "polygon-mainnet-read-3",
+        "solana-mainnet-read-1",
+        "solana-mainnet-read-2",
+        "tron-mainnet-read-1"
+      ],
+      "lifecycle": "internal_only",
+      "routeState": "blocked_production_terms",
+      "primaryServices": [],
+      "fallbackServices": [],
+      "pricingCatalogs": [
+        "packages/catalog/rpc-supply-pricing.v1.json"
+      ],
+      "quality": "mixed",
+      "termsStatus": "blocked",
+      "quotaRunway": "Twenty no-key reads are technically healthy but lack production rights, dedicated quotas, or SLA; the owned Solana allocation prohibits third-party benefit.",
+      "healthMethod": [
+        "docs/evidence/supply-foundation/public-rpc-mesh-qualification.v1.json",
+        "docs/evidence/supply-foundation/public-rpc-terms-review.v1.json",
+        "docs/evidence/supply-foundation/helius-qualification.v1.json"
+      ],
+      "secretLocations": [
+        "none:NO_CUSTOMER_ROUTE"
+      ],
+      "replacementPlan": "Qualify the selected dedicated free-tier multi-chain account with per-key hard limits, then add an independent family for critical networks."
+    },
+    {
+      "capabilityId": "blockchain.data",
+      "publicAssets": [
+        "multichain-wallet-portfolio",
+        "multichain-token-search",
+        "multichain-transaction-history",
+        "multichain-protocol-directory"
+      ],
+      "lifecycle": "internal_only",
+      "routeState": "blocked_terms",
+      "primaryServices": [],
+      "fallbackServices": [],
+      "pricingCatalogs": [
+        "packages/catalog/blockchain-data-supply-pricing.v1.json"
+      ],
+      "quality": "good",
+      "termsStatus": "blocked",
+      "quotaRunway": "The local-development key works at 5 RPS and 100 requests per day but prohibits production resale or service-bureau use.",
+      "healthMethod": [
+        "docs/evidence/supply-foundation/zerion-qualification.v1.json"
+      ],
+      "secretLocations": [
+        "legacy_import:ZERION_API_KEY"
+      ],
+      "replacementPlan": "Keep the technically complete adapter internal and source a production commercial agreement only when revenue can support it."
+    },
+    {
+      "capabilityId": "storage.object",
+      "publicAssets": [
+        "object-storage-standard",
+        "object-storage-write",
+        "object-storage-read",
+        "object-storage-egress"
+      ],
+      "lifecycle": "production",
+      "routeState": "blocked_owner_credential",
+      "primaryServices": [],
+      "fallbackServices": [],
+      "pricingCatalogs": [
+        "packages/catalog/storage-supply-pricing.v1.json"
+      ],
+      "quality": "unranked",
+      "termsStatus": "restricted",
+      "quotaRunway": "Published recurring free allowance is known, but account usage and automatic overage state are not exposed by S3.",
+      "healthMethod": [
+        "docs/evidence/supply-foundation/cloudflare-r2-qualification.v1.json"
+      ],
+      "secretLocations": [
+        "legacy_import:R2_ACCESS_KEY_ID,R2_SECRET_ACCESS_KEY"
+      ],
+      "replacementPlan": "Replace the rejected key with least privilege to one dedicated bucket, prove isolation and lifecycle, and fail closed before any billable overage."
+    },
+    {
+      "capabilityId": "payment.x402",
+      "publicAssets": [
+        "payment-verification",
+        "payment-settlement",
+        "testnet-payment-verification",
+        "testnet-payment-settlement"
+      ],
+      "lifecycle": "mixed",
+      "routeState": "blocked_payment_proof_and_fallback",
+      "primaryServices": [
+        "supply.cdp_x402"
+      ],
+      "fallbackServices": [],
+      "pricingCatalogs": [
+        "packages/catalog/payment-supply-pricing.v1.json"
+      ],
+      "quality": "good",
+      "termsStatus": "restricted",
+      "quotaRunway": "Discovery is free; production verification and settlement require a hard billing guard. The public testnet facilitator is never a production fallback.",
+      "healthMethod": [
+        "docs/evidence/supply-foundation/x402-facilitator-qualification.v1.json"
+      ],
+      "secretLocations": [
+        "legacy_import:CDP_API_KEY_ID,CDP_API_KEY_SECRET"
+      ],
+      "replacementPlan": "After explicit owner approval, run one bounded settlement proof with idempotency, replay, reconciliation, and cost controls; source a separate production fallback later."
+    },
+    {
+      "capabilityId": "platform.integrations",
+      "publicAssets": [
+        "connected-repository-read",
+        "connected-repository-automation",
+        "connected-repository-read-secondary",
+        "developer-article-publish",
+        "developer-article-publish-secondary",
+        "operations-notification",
+        "security-notification",
+        "application-authentication"
+      ],
+      "lifecycle": "mixed",
+      "routeState": "qualified_auth_mutations_pending",
+      "primaryServices": [
+        "supply.github_source",
+        "supply.devto",
+        "supply.hashnode",
+        "supply.telegram"
+      ],
+      "fallbackServices": [],
+      "pricingCatalogs": [
+        "packages/catalog/platform-integration-supply-pricing.v1.json"
+      ],
+      "quality": "mixed",
+      "termsStatus": "mixed",
+      "quotaRunway": "Authentication probes were read-only; owner credentials are internal and never delegated. Publishing and messaging quotas remain unmeasured until bounded mutations are approved by product work.",
+      "healthMethod": [
+        "docs/evidence/supply-foundation/platform-integration-qualification.v1.json"
+      ],
+      "secretLocations": [
+        "legacy_import:GITHUB_TOKEN,DEVTO_API_KEY,HASHNODE_API_KEY,TELEGRAM_BOT_TOKEN"
+      ],
+      "replacementPlan": "Use customer OAuth or app-scoped credentials for delegated features; retain internal identity infrastructure only for Clervo authentication."
+    }
+  ],
+  "ownerBlockers": [
+    {
+      "blockerId": "owner.drpc_account",
+      "requiredAction": "Complete the selected multi-chain RPC account login and provide a dedicated free-tier key with paid deposits and overage disabled.",
+      "unblocks": [
+        "rpc.multichain"
+      ],
+      "spendingAuthorized": false
+    },
+    {
+      "blockerId": "owner.brave_search_account",
+      "requiredAction": "Complete the recurring-free-credit Search subscription and card verification without approving a charge, then provide the dedicated key.",
+      "unblocks": [
+        "search.web"
+      ],
+      "spendingAuthorized": false
+    },
+    {
+      "blockerId": "owner.r2_key_reissue",
+      "requiredAction": "Create a least-privilege object-storage key for one dedicated Clervo bucket and provide the bucket name through the secret channel.",
+      "unblocks": [
+        "storage.object"
+      ],
+      "spendingAuthorized": false
+    }
+  ]
+}

@@ -149,12 +149,24 @@ disabled without explicit owner approval.
 - QuickAI and TongKhokr are retired and must not return to active supply.
 - Current qualified internal catalog: 20 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.
+- The final provider-neutral matrix references 13 canonical price catalogs and
+  covers all 779 price rows: every row has a positive customer price and 22
+  rows are currently sellable. It records exact assets, route state, lifecycle,
+  price/shadow-cost source, quality, terms, quota runway, health evidence,
+  secret-name location, fallbacks, and replacement plan without secret values.
+- The final market check observed 83 live competitor models and rejected opaque,
+  auto-substituting, evaluation-only, or paid Omni/2B interpretations. It chose
+  only three material next inputs: a dedicated recurring-free RPC key, an
+  independent-index recurring-credit search key, and a least-privilege reissued
+  object-storage key for the existing account.
 
 Canonical machine-readable state lives in:
 
 - `packages/catalog/external-supply-inventory.v1.json`
 - `packages/catalog/ai-model-catalog.v1.json`
 - `packages/catalog/ai-*-pricing.v1.json`
+- `packages/catalog/supply-route-matrix.v1.json`
+- `docs/evidence/supply-foundation/market-sourcing-gap-evaluation.v1.json`
 - `docs/evidence/stage6/`
 
 ## Remaining execution order
@@ -170,17 +182,18 @@ Canonical machine-readable state lives in:
 4. Qualify non-AI supply: owned Search plus Serper, Helius and every RPC chain,
    Zerion, R2/storage, identity, notifications, CDP/x402/facilitator, and every
    remaining product dependency. Never perform a real settlement in this work.
-5. Produce the final provider-neutral supply matrix: exact public asset,
+5. **Completed.** Produce the final provider-neutral supply matrix: exact public asset,
    lifecycle, customer price, shadow cost, quota/runway, quality rank, primary,
    fallbacks, health method, terms, secret location, and replacement plan.
-6. Perform a final market gap evaluation before resuming the roadmap. Research
+6. **Completed, with owner inputs selected.** Perform a final market gap evaluation before resuming the roadmap. Research
    BlockRun's current coverage and additional easy-setup, generous-credit or
    recurring-free APIs—including the owner-mentioned Omni/2B source. Source
    more only when it closes a material capability, quality, regional,
    availability, rate-limit, or runway gap. Record why each source is added or
    rejected.
-7. Run one consolidated supply-foundation test, resolve meaningful failures,
-   commit the final matrix/routing state, and resume the master roadmap.
+7. Obtain and qualify the three selected owner-blocked credentials, run one
+   consolidated supply-foundation test, resolve meaningful failures, commit the
+   final routing state, and resume the master roadmap.
 
 ## Completion criteria
 
