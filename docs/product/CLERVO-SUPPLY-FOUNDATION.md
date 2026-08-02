@@ -1,17 +1,17 @@
-# Clervo supply foundation — active project
+# Clervo supply foundation — completed
 
 ## Status and priority
 
-This is Clervo's active engineering priority. The product roadmap is paused
-until this one-time supply foundation is complete. Continue automatically
-through this project; its rows and phases are a checklist, not authorization or
-stop boundaries.
+This one-time program completed on 2026-08-02 and the product roadmap resumed.
+Its rows and phases remain historical implementation context, not authorization
+or stop boundaries.
 
-Local engineering and sourcing evaluation are complete. The consolidated local
-check passes, and the installed development environments report four qualified
-chat supply families, 21 ready exact routes, and coverage of all four roadmap AI
-products. One genuine owner input remains before the supply foundation can be
-closed: commercial RPC permission or an expressly compatible replacement.
+The consolidated local check passes 44 Stage 6 tests, 76 schemas, and 101
+fixtures. Installed development environments report four qualified chat supply
+families, 21 ready exact routes, and coverage of all four roadmap AI products.
+The sole remaining external owner action—commercial RPC gateway permission or
+an expressly compatible replacement—is isolated and explicitly blocked; raw
+customer RPC routing stays disabled while unrelated roadmap work continues.
 
 The master plan remains product-scope authority. Its asset-inventory workflow
 requires a redacted row for every credential, account, token, provider, and
@@ -258,9 +258,10 @@ Canonical machine-readable state lives in:
    more only when it closes a material capability, quality, regional,
    availability, rate-limit, or runway gap. Record why each source is added or
    rejected.
-7. **One owner input pending; consolidated local test completed.** Obtain and
-   qualify the remaining selected owner-blocked inputs, rerun only their affected
-   checks, commit the final routing state, and resume the master roadmap.
+7. **Completed with one isolated owner blocker.** Blockscout and R2 were
+   installed and qualified, the consolidated local check passed, and the master
+   roadmap resumed. Written commercial RPC permission remains an external owner
+   action; the route fails closed until resolved.
 
 ## Completion criteria
 
@@ -269,3 +270,7 @@ every usable asset is priced, important routes have honest benchmark and terms
 states, all required product capabilities have resilient bounded supply, and
 the final sourcing-gap evaluation concludes either that coverage is sufficient
 or that every material missing source has been added or explicitly owner-blocked.
+
+That condition was satisfied on 2026-08-02: unresolved RPC resale permission is
+explicitly owner-blocked, and every other material sourcing decision is
+qualified, rejected, deferred with a recorded reason, or bounded as preview.
