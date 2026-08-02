@@ -179,6 +179,12 @@ disabled without explicit owner approval.
   elements, and rejected a benign prompt under its safety filter. Earlier
   evaluator-shape failures remain separate evidence rather than being rewritten
   as model failures. Vertex remains the only qualified image supply family.
+- The owned open-license DreamShaper image route also remains rejected. Its
+  model-card configuration improved the independently judged result from 0/5 to
+  only 1/5, still missing exact composition requirements. The newer BFL routes
+  were not wastefully benchmarked for sale because their current API terms
+  expressly prohibit exposing the models behind a third-party integration API;
+  their current supplier rates and positive Clervo prices remain recorded.
 - Embedding fallback: BGE-M3 achieved 7/8 top-one retrieval matches in a
   24-vector synthetic screen, but its synchronous responses omitted token usage
   through both tested API forms. It remains positively priced and accounting-

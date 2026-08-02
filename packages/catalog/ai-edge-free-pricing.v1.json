@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.ai-edge-free-pricing.v1",
-  "priceVersion": "2026-08-02.6",
-  "evaluatedAt": "2026-08-02T08:27:35.385Z",
+  "priceVersion": "2026-08-02.7",
+  "evaluatedAt": "2026-08-02T08:37:20.822Z",
   "currency": "USD",
   "providerVisibility": "internal_only",
   "policy": {
@@ -244,10 +244,19 @@
       "task": "Text-to-Image",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
-      "supplierPriceKnown": false,
-      "supplierPrices": [],
+      "supplierPriceKnown": true,
+      "supplierPrices": [
+        {
+          "unit": "per input 512 by 512 tile per step",
+          "price": 0.00021
+        },
+        {
+          "unit": "per output 512 by 512 tile per step",
+          "price": 0.00041
+        }
+      ],
       "customerPrices": [
         {
           "unit": "per generated image",
@@ -255,17 +264,26 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsUrl": "https://bfl.ai/legal/terms-of-service"
+      "termsUrl": "https://bfl.ai/legal/flux-api-service-terms"
     },
     {
       "modelId": "@cf/black-forest-labs/flux-2-klein-4b",
       "task": "Text-to-Image",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
-      "supplierPriceKnown": false,
-      "supplierPrices": [],
+      "supplierPriceKnown": true,
+      "supplierPrices": [
+        {
+          "unit": "per input 512 by 512 tile",
+          "price": 0.000059
+        },
+        {
+          "unit": "per output 512 by 512 tile",
+          "price": 0.000287
+        }
+      ],
       "customerPrices": [
         {
           "unit": "per generated image",
@@ -273,17 +291,30 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsUrl": "https://bfl.ai/legal/terms-of-service"
+      "termsUrl": "https://bfl.ai/legal/flux-api-service-terms"
     },
     {
       "modelId": "@cf/black-forest-labs/flux-2-klein-9b",
       "task": "Text-to-Image",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
-      "supplierPriceKnown": false,
-      "supplierPrices": [],
+      "supplierPriceKnown": true,
+      "supplierPrices": [
+        {
+          "unit": "per first output megapixel",
+          "price": 0.015
+        },
+        {
+          "unit": "per subsequent output megapixel",
+          "price": 0.002
+        },
+        {
+          "unit": "per input image megapixel",
+          "price": 0.002
+        }
+      ],
       "customerPrices": [
         {
           "unit": "per generated image",
@@ -291,7 +322,7 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsUrl": "https://bfl.ai/legal/terms-of-service"
+      "termsUrl": "https://bfl.ai/legal/flux-api-service-terms"
     },
     {
       "modelId": "@cf/bytedance/stable-diffusion-xl-lightning",
@@ -706,8 +737,8 @@
       "task": "Text-to-Image",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_quality_rejected",
+      "qualityGrade": "rejected",
       "supplierPriceKnown": false,
       "supplierPrices": [],
       "customerPrices": [
@@ -717,7 +748,7 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsUrl": null
+      "termsUrl": "https://huggingface.co/spaces/CompVis/stable-diffusion-license/blob/main/license.txt"
     },
     {
       "modelId": "@cf/meta-llama/llama-2-7b-chat-hf-lora",

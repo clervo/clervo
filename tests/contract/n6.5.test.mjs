@@ -425,14 +425,14 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
   assert.equal(pricing.freeGuard.automaticPaidOverageAllowed, false);
   assert.equal(pricing.assets.length, 61);
   assert.ok(pricing.assets.every(({ customerPrices }) => customerPrices.length > 0 && customerPrices.every(({ price }) => price > 0)));
-  assert.equal(pricing.assets.filter(({ supplierPriceKnown }) => !supplierPriceKnown).length, 15);
+  assert.equal(pricing.assets.filter(({ supplierPriceKnown }) => !supplierPriceKnown).length, 12);
   assert.deepEqual(pricing.assets.filter(({ accessStatus }) => accessStatus === 'requires_paid_plan').map(({ modelId, listingStatus }) => [modelId, listingStatus]), [
     ['@cf/moonshotai/kimi-k2.6', 'priced_requires_paid_plan'],
     ['@cf/moonshotai/kimi-k2.7-code', 'priced_requires_paid_plan'],
     ['@cf/zai-org/glm-5.2', 'priced_requires_paid_plan'],
   ]);
   assert.equal(pricing.assets.filter(({ accessStatus, listingStatus }) => accessStatus === 'free_allocation_available' && listingStatus === 'sellable').length, 6);
-  assert.deepEqual(Object.fromEntries(Object.entries(Object.groupBy(pricing.assets, ({ qualityGrade }) => qualityGrade)).map(([grade, rows]) => [grade, rows.length])), { best: 3, good: 8, poor: 4, rejected: 9, unranked: 37 });
+  assert.deepEqual(Object.fromEntries(Object.entries(Object.groupBy(pricing.assets, ({ qualityGrade }) => qualityGrade)).map(([grade, rows]) => [grade, rows.length])), { best: 3, good: 8, poor: 4, rejected: 10, unranked: 36 });
   assert.deepEqual(Object.fromEntries(Object.entries(Object.groupBy(pricing.assets.filter(({ task }) => task === 'Text Generation'), ({ listingStatus }) => listingStatus)).map(([status, rows]) => [status, rows.length])), { priced_pending_qualification: 8, priced_quality_rejected: 8, priced_qualification_failed: 2, priced_requires_paid_plan: 3, sellable: 5 });
   const expandedQuality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-production-chat-quality.v1.json'), 'utf8'));
   assert.equal(expandedQuality.externalCalls, 190);
@@ -489,6 +489,13 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
   assert.deepEqual([fluxFinal.externalCalls, fluxFinal.summary.passed, fluxFinal.summary.safetyRejected, fluxFinal.summary.qualityGrade], [9, 1, 1, 'rejected']);
   assert.equal(fluxFinal.summary.outputDimensions[0], '1024x1024');
   assert.equal(pricing.assets.find(({ modelId }) => modelId === '@cf/black-forest-labs/flux-1-schnell').listingStatus, 'priced_quality_rejected');
+  const dreamshaperInitial = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-dreamshaper-quality-initial.v1.json'), 'utf8'));
+  const dreamshaperFinal = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-dreamshaper-quality-final.v1.json'), 'utf8'));
+  assert.deepEqual([dreamshaperInitial.externalCalls, dreamshaperInitial.summary.passed, dreamshaperInitial.summary.qualityGrade], [10, 0, 'rejected']);
+  assert.deepEqual([dreamshaperFinal.externalCalls, dreamshaperFinal.priorNonqualifyingCalls, dreamshaperFinal.totalCallsIncludingPriorRuns], [10, 11, 21]);
+  assert.deepEqual([dreamshaperFinal.summary.passed, dreamshaperFinal.summary.qualityGrade, dreamshaperFinal.summary.outputDimensions[0]], [1, 'rejected', '1024x1024']);
+  assert.equal(pricing.assets.find(({ modelId }) => modelId === '@cf/lykon/dreamshaper-8-lcm').listingStatus, 'priced_quality_rejected');
+  assert.ok(pricing.assets.filter(({ modelId }) => modelId.startsWith('@cf/black-forest-labs/flux-2')).every(({ listingStatus, supplierPriceKnown, termsUrl }) => listingStatus === 'priced_terms_blocked' && supplierPriceKnown && termsUrl.endsWith('/flux-api-service-terms')));
   const bge = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-bge-retrieval.v1.json'), 'utf8'));
   assert.deepEqual([bge.externalCalls, bge.ownerCashSpentUsd, bge.observation.status, bge.observation.vectorCount, bge.observation.dimensions], [1, 0, 200, 24, 1024]);
   assert.deepEqual(bge.summary, { passed: 7, total: 8, topOneAccuracyBasisPoints: 8750, minimumMargin: -0.032238, qualityGrade: 'acceptable' });
