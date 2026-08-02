@@ -1,7 +1,8 @@
 # Current engineering state
 
-Updated 2026-08-02 after Stage 12 product-core freeze completion. This is a compact resumable
-handoff, not an authorization gate. Continue automatically after reading it.
+Updated 2026-08-02 after Stage 12 product-core freeze completion and V6 visual
+handoff verification. This is a compact resumable handoff, not an authorization
+gate. Continue automatically after reading it.
 
 ## Active work
 
@@ -72,9 +73,15 @@ Stage 13 distribution discovery has started. The existing `clervo` npm account,
 the `clervo-sdk` PyPI project, and the `clervo` GitHub organization are retained.
 Published legacy packages are read-only compatibility evidence and contain
 stale claims that must not be copied. The redacted resumable inventory is
-`docs/product/DISTRIBUTION-ASSET-INVENTORY.md`. The owner's incoming website
-handoff will supersede design-only site direction while preserving unrelated
-contracts, security, working code, and truthful product facts.
+`docs/product/DISTRIBUTION-ASSET-INVENTORY.md`.
+
+The owner's V6 handoff passed its 145-file checksum manifest and verifier. It is
+the visual and experiential north star for art, 3D, cinematography, motion,
+layout, responsive composition, and interaction quality. It is not copy or
+product-state authority. Current repository contracts and evidence control all
+claims, prices, providers, lifecycle labels, commands, and visible actions. The
+durable precedence record is
+`docs/product/CLERVO-V6-VISUAL-AUTHORITY.md`.
 
 The production runner `sandbox.nodejs-24` is qualified at digest
 `sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e`.
@@ -101,10 +108,12 @@ confirmed absent; Artifact Registry was preserved. Evidence is in
 
 ## Next actions
 
-1. Ingest the owner's website handoff as the sole design authority, then build
-   the shared HTTP/OpenAPI, SDK, MCP, onboarding, and site surfaces using the
-   retained distribution identities. Guide required secure logins only when
-   local preparation reaches the relevant external verification or publish step.
+1. Build a truthful generated distribution projection from the frozen Stage 12
+   release candidate, then the shared HTTP/OpenAPI surface, TypeScript SDK,
+   Python SDK, MCP server, and cross-client conformance. After that, implement
+   onboarding and the functional site using V6 only as visual/experience
+   authority. Guide required secure logins only when local preparation reaches
+   the relevant external verification or publish step.
 2. Keep Crypto Intelligence customer routing disabled until written commercial
    permission or replacement terms-compatible EVM, Solana, and protocol supply
    exists; this isolated owner blocker does not pause combined local work.

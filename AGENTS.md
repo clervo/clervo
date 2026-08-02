@@ -19,6 +19,24 @@
 - Proven contracts, tests, deployed behavior, prices, receipts, and observed
   results outrank plans, copy, assumptions, and memory.
 
+## V6 experience direction
+
+- The verified V6 handoff is the visual and experiential north star only:
+  physical art direction, the persistent 3D instrument, cinematography, motion,
+  layout quality, responsive composition, navigation feel, and proof UX.
+- V6 reference copy and its historical product snapshot are not product
+  authority. Do not copy their claims, catalog counts, lifecycle labels,
+  prices, providers, commands, availability, or launch status.
+- Current repository contracts and evidence control what the experience says
+  and what every visible action may do. Generated art and rendered media never
+  establish product truth.
+- Preserve semantic HTML and deterministic behavior beneath the cinematic
+  layer. Proof, quotes, approval, evidence, receipts, errors, and recovery stay
+  DOM-owned and usable without WebGL or motion.
+- Use the V6 visual system without turning it into a static mockup, generic AI
+  landing page, ornamental dashboard, or prerendered-video substitute for the
+  functional product.
+
 ## Engineering workflow
 
 - Inspect Git state before editing and preserve unrelated work.
