@@ -56,7 +56,7 @@ function scanArguments(format) {
     '--tmpfs',
     '/tmp:rw,noexec,nosuid,nodev,size=32m',
     '--volume',
-    `${cacheDirectory}:/root/.cache/trivy`,
+    `${cacheDirectory}:/cache`,
     '--volume',
     `${imageArchive}:/scan/candidate.tar:ro`,
     policy.scanner.image,
@@ -64,7 +64,7 @@ function scanArguments(format) {
     '--input',
     '/scan/candidate.tar',
     '--cache-dir',
-    '/root/.cache/trivy',
+    '/cache',
     '--skip-db-update',
     '--scanners',
     'vuln',
@@ -100,12 +100,12 @@ try {
     '--user',
     scannerUser,
     '--volume',
-    `${cacheDirectory}:/root/.cache/trivy`,
+    `${cacheDirectory}:/cache`,
     policy.scanner.image,
     'image',
     '--download-db-only',
     '--cache-dir',
-    '/root/.cache/trivy',
+    '/cache',
   ]);
   const scannerVersion = docker(['run', '--rm', '--user', scannerUser, '--network', 'none', policy.scanner.image, '--version']).split('\n')[0];
   assert.match(scannerVersion, new RegExp(`Version: ${policy.scanner.version.replaceAll('.', '\\.')}$`, 'u'));
