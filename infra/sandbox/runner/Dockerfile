@@ -6,6 +6,7 @@ RUN gcc -O2 -Wall -Wextra -Werror -o /sandbox-init sandbox-init.c && strip /sand
 
 FROM node@sha256:c2cc26d8f991c2db236ad51a61efee843c482372d6d22570787309d511694110
 LABEL org.opencontainers.image.title="Clervo sandbox runner" org.opencontainers.image.source="https://clervo.dev" org.opencontainers.image.licenses="UNLICENSED"
+RUN rm -rf /usr/local/lib/node_modules/npm && rm -f /usr/local/bin/npm /usr/local/bin/npx
 COPY --from=native --chown=65532:65532 /sandbox-init /opt/clervo/sandbox-init
 COPY --chown=65532:65532 runner.mjs session.mjs /opt/clervo/
 USER 65532:65532
