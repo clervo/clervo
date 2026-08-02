@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.9",
-  "observedAt": "2026-08-02T04:21:06.292Z",
+  "inventoryVersion": "2026-08-02.10",
+  "observedAt": "2026-08-02T04:25:02.083Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -57,9 +57,15 @@
       "serviceId": "supply.clervo_ai_gateway",
       "providerId": "provider.clervo_ai_gateway",
       "category": "ai_inference",
-      "products": ["ai.chat"],
-      "endpointOrigins": ["https://ai.clervo.dev"],
-      "credentialNames": ["CLERVO_AI_API_KEY"],
+      "products": [
+        "ai.chat"
+      ],
+      "endpointOrigins": [
+        "https://ai.clervo.dev"
+      ],
+      "credentialNames": [
+        "CLERVO_AI_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "current_environment",
@@ -69,53 +75,134 @@
       "termsStatus": "restricted",
       "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "knownModelNames": ["gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna"],
-      "notes": ["Three exact chat routes passed authenticated execution, input-dependence, structured-output, streaming, usage, failure, cost-ceiling, and fixed-corpus quality checks on 2026-08-02."]
+      "knownModelNames": [
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-5.6-luna"
+      ],
+      "notes": [
+        "Three exact chat routes passed authenticated execution, input-dependence, structured-output, streaming, usage, failure, cost-ceiling, and fixed-corpus quality checks on 2026-08-02."
+      ]
     },
     {
       "serviceId": "supply.hcnsec_gateway",
       "providerId": "provider.hcnsec_gateway",
       "category": "ai_inference",
-      "products": ["ai.chat"],
-      "endpointOrigins": ["https://api.hcnsec.cn"],
-      "credentialNames": ["AI_GATEWAY_KEY", "AI_GATEWAY_KEY_2", "AI_GATEWAY_KEY_3", "AI_GATEWAY_KEY_4", "AI_GATEWAY_KEY_5", "AI_GATEWAY_KEY_6", "AI_GATEWAY_KEY_7", "AI_GATEWAY_KEY_8", "AI_GATEWAY_KEY_9", "AI_GATEWAY_KEY_10", "AI_GATEWAY_KEY_11", "AI_GATEWAY_KEY_12", "AI_GATEWAY_KEY_13", "AI_GATEWAY_KEY_14", "AI_GATEWAY_KEY_15", "AI_GATEWAY_KEY_16", "AI_GATEWAY_KEY_17", "AI_GATEWAY_KEY_18", "AI_GATEWAY_KEY_19", "AI_GATEWAY_KEY_20"],
+      "products": [
+        "ai.chat"
+      ],
+      "endpointOrigins": [
+        "https://api.hcnsec.cn"
+      ],
+      "credentialNames": [
+        "AI_GATEWAY_KEY",
+        "AI_GATEWAY_KEY_2",
+        "AI_GATEWAY_KEY_3",
+        "AI_GATEWAY_KEY_4",
+        "AI_GATEWAY_KEY_5",
+        "AI_GATEWAY_KEY_6",
+        "AI_GATEWAY_KEY_7",
+        "AI_GATEWAY_KEY_8",
+        "AI_GATEWAY_KEY_9",
+        "AI_GATEWAY_KEY_10",
+        "AI_GATEWAY_KEY_11",
+        "AI_GATEWAY_KEY_12",
+        "AI_GATEWAY_KEY_13",
+        "AI_GATEWAY_KEY_14",
+        "AI_GATEWAY_KEY_15",
+        "AI_GATEWAY_KEY_16",
+        "AI_GATEWAY_KEY_17",
+        "AI_GATEWAY_KEY_18",
+        "AI_GATEWAY_KEY_19",
+        "AI_GATEWAY_KEY_20"
+      ],
       "configuredCredentialSlots": 20,
       "alternateCredentialSlots": 20,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "owner_reported_balance",
-      "connectionStatus": "observed_not_tested",
+      "connectionStatus": "observed_working",
       "qualificationStatus": "not_run",
       "termsStatus": "review_required",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "knownModelNames": ["step-3.7-flash", "Qwen3-Coder-Next-FP8", "DeepSeek-V4-Pro", "kat-coder-pro-v2"],
-      "notes": ["Twenty primary slots are mirrored by AI_KEY_1 through AI_KEY_20; twenty distinct legacy alternate values also exist but are not counted as active accounts.", "Account pooling requires provider permission and must never bypass a per-customer or per-project limit."]
+      "knownModelNames": [
+        "auto",
+        "DeepSeek-V4-Flash",
+        "DeepSeek-V4-Pro",
+        "glm-5.1",
+        "glm-5.2",
+        "kat-coder-pro-v2.5",
+        "Kimi-K2.6",
+        "MiniMax-M3",
+        "Qwen3.5-397B-A17B",
+        "Qwen3.6-35B-A3B",
+        "sensenova-6.7-flash-lite",
+        "sensenova-u1-fast",
+        "step-3.5-flash",
+        "step-3.5-flash-2603",
+        "step-3.7-flash",
+        "step-image-edit-2",
+        "step-router-v1",
+        "stepaudio-2.5-asr",
+        "stepaudio-2.5-chat",
+        "stepaudio-2.5-realtime",
+        "stepaudio-2.5-tts"
+      ],
+      "notes": [
+        "Twenty primary slots are mirrored by AI_KEY_1 through AI_KEY_20; twenty distinct legacy alternate values also exist but are not counted as active accounts.",
+        "Account pooling requires provider permission and must never bypass a per-customer or per-project limit.",
+        "Authenticated model discovery returned 21 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+      ]
     },
     {
       "serviceId": "supply.cerebras",
       "providerId": "provider.cerebras",
       "category": "ai_inference",
-      "products": ["ai.chat"],
-      "endpointOrigins": ["https://api.cerebras.ai"],
-      "credentialNames": ["CEREBRAS_API_KEY"],
+      "products": [
+        "ai.chat"
+      ],
+      "endpointOrigins": [
+        "https://api.cerebras.ai"
+      ],
+      "credentialNames": [
+        "CEREBRAS_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "unknown",
-      "connectionStatus": "observed_not_tested",
+      "connectionStatus": "observed_working",
       "qualificationStatus": "not_run",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": []
+      "notes": [
+        "Authenticated model discovery returned 3 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+      ],
+      "knownModelNames": [
+        "gemma-4-31b",
+        "gpt-oss-120b",
+        "zai-glm-4.7"
+      ]
     },
     {
       "serviceId": "supply.cloudflare_workers_ai",
       "providerId": "provider.cloudflare_workers_ai",
       "category": "ai_inference",
-      "products": ["ai.chat", "ai.embed", "ai.image", "ai.speech"],
-      "endpointOrigins": ["https://api.cloudflare.com"],
-      "credentialNames": ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_AI_TOKEN", "CLOUDFLARE_API_TOKEN"],
+      "products": [
+        "ai.chat",
+        "ai.embed",
+        "ai.image",
+        "ai.speech"
+      ],
+      "endpointOrigins": [
+        "https://api.cloudflare.com"
+      ],
+      "credentialNames": [
+        "CLOUDFLARE_ACCOUNT_ID",
+        "CLOUDFLARE_AI_TOKEN",
+        "CLOUDFLARE_API_TOKEN"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
@@ -125,16 +212,92 @@
       "termsStatus": "restricted",
       "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "knownModelNames": ["@cf/ai4bharat/indictrans2-en-indic-1B", "@cf/aisingapore/gemma-sea-lion-v4-27b-it", "@cf/baai/bge-base-en-v1.5", "@cf/baai/bge-large-en-v1.5", "@cf/baai/bge-m3", "@cf/baai/bge-reranker-base", "@cf/baai/bge-small-en-v1.5", "@cf/black-forest-labs/flux-1-schnell", "@cf/black-forest-labs/flux-2-dev", "@cf/black-forest-labs/flux-2-klein-4b", "@cf/black-forest-labs/flux-2-klein-9b", "@cf/bytedance/stable-diffusion-xl-lightning", "@cf/deepgram/aura-1", "@cf/deepgram/aura-2-en", "@cf/deepgram/aura-2-es", "@cf/deepgram/flux", "@cf/deepgram/nova-3", "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b", "@cf/google/embeddinggemma-300m", "@cf/google/gemma-2b-it-lora", "@cf/google/gemma-4-26b-a4b-it", "@cf/google/gemma-7b-it-lora", "@cf/huggingface/distilbert-sst-2-int8", "@cf/ibm-granite/granite-4.0-h-micro", "@cf/leonardo/lucid-origin", "@cf/leonardo/phoenix-1.0", "@cf/llava-hf/llava-1.5-7b-hf", "@cf/lykon/dreamshaper-8-lcm", "@cf/meta-llama/llama-2-7b-chat-hf-lora", "@cf/meta/llama-3.1-8b-instruct-fp8", "@cf/meta/llama-3.2-11b-vision-instruct", "@cf/meta/llama-3.2-1b-instruct", "@cf/meta/llama-3.2-3b-instruct", "@cf/meta/llama-3.3-70b-instruct-fp8-fast", "@cf/meta/llama-4-scout-17b-16e-instruct", "@cf/meta/llama-guard-3-8b", "@cf/meta/m2m100-1.2b", "@cf/microsoft/resnet-50", "@cf/mistral/mistral-7b-instruct-v0.2-lora", "@cf/mistralai/mistral-small-3.1-24b-instruct", "@cf/moondream/moondream3.1-9B-A2B", "@cf/moonshotai/kimi-k2.6", "@cf/moonshotai/kimi-k2.7-code", "@cf/myshell-ai/melotts", "@cf/nvidia/nemotron-3-120b-a12b", "@cf/openai/gpt-oss-120b", "@cf/openai/gpt-oss-20b", "@cf/openai/whisper", "@cf/openai/whisper-large-v3-turbo", "@cf/openai/whisper-tiny-en", "@cf/pfnet/plamo-embedding-1b", "@cf/pipecat-ai/smart-turn-v2", "@cf/qwen/qwen2.5-coder-32b-instruct", "@cf/qwen/qwen3-30b-a3b-fp8", "@cf/qwen/qwen3-embedding-0.6b", "@cf/qwen/qwq-32b", "@cf/runwayml/stable-diffusion-v1-5-img2img", "@cf/runwayml/stable-diffusion-v1-5-inpainting", "@cf/stabilityai/stable-diffusion-xl-base-1.0", "@cf/zai-org/glm-4.7-flash", "@cf/zai-org/glm-5.2"],
-      "notes": ["The authenticated non-experimental catalog exposed 61 exact assets on 2026-08-02. All are customer-priced; fifteen use category introductory prices because supplier pricing is absent or zero.", "GPT-OSS 20B and 120B each passed a 10-task quality screen and all eleven live qualification checks; 56 free-allocation assets remain pending full qualification.", "BGE-M3 embeddings, FLUX Schnell image generation, Aura-2 English TTS, Whisper Large v3 Turbo STT, and Nova-3 STT passed bounded live execution on 2026-08-02. Their adapter, accounting, image-size, quality, or transcription-contract gaps remain explicit and block sellable-route admission.", "Three catalog assets explicitly require a paid Workers plan and remain unavailable under the zero-owner-cash guard.", "Value-added use for End Users is restricted by Cloudflare and each model licensor's terms; never expose upstream credentials or raw account access."]
+      "knownModelNames": [
+        "@cf/ai4bharat/indictrans2-en-indic-1B",
+        "@cf/aisingapore/gemma-sea-lion-v4-27b-it",
+        "@cf/baai/bge-base-en-v1.5",
+        "@cf/baai/bge-large-en-v1.5",
+        "@cf/baai/bge-m3",
+        "@cf/baai/bge-reranker-base",
+        "@cf/baai/bge-small-en-v1.5",
+        "@cf/black-forest-labs/flux-1-schnell",
+        "@cf/black-forest-labs/flux-2-dev",
+        "@cf/black-forest-labs/flux-2-klein-4b",
+        "@cf/black-forest-labs/flux-2-klein-9b",
+        "@cf/bytedance/stable-diffusion-xl-lightning",
+        "@cf/deepgram/aura-1",
+        "@cf/deepgram/aura-2-en",
+        "@cf/deepgram/aura-2-es",
+        "@cf/deepgram/flux",
+        "@cf/deepgram/nova-3",
+        "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b",
+        "@cf/google/embeddinggemma-300m",
+        "@cf/google/gemma-2b-it-lora",
+        "@cf/google/gemma-4-26b-a4b-it",
+        "@cf/google/gemma-7b-it-lora",
+        "@cf/huggingface/distilbert-sst-2-int8",
+        "@cf/ibm-granite/granite-4.0-h-micro",
+        "@cf/leonardo/lucid-origin",
+        "@cf/leonardo/phoenix-1.0",
+        "@cf/llava-hf/llava-1.5-7b-hf",
+        "@cf/lykon/dreamshaper-8-lcm",
+        "@cf/meta-llama/llama-2-7b-chat-hf-lora",
+        "@cf/meta/llama-3.1-8b-instruct-fp8",
+        "@cf/meta/llama-3.2-11b-vision-instruct",
+        "@cf/meta/llama-3.2-1b-instruct",
+        "@cf/meta/llama-3.2-3b-instruct",
+        "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+        "@cf/meta/llama-4-scout-17b-16e-instruct",
+        "@cf/meta/llama-guard-3-8b",
+        "@cf/meta/m2m100-1.2b",
+        "@cf/microsoft/resnet-50",
+        "@cf/mistral/mistral-7b-instruct-v0.2-lora",
+        "@cf/mistralai/mistral-small-3.1-24b-instruct",
+        "@cf/moondream/moondream3.1-9B-A2B",
+        "@cf/moonshotai/kimi-k2.6",
+        "@cf/moonshotai/kimi-k2.7-code",
+        "@cf/myshell-ai/melotts",
+        "@cf/nvidia/nemotron-3-120b-a12b",
+        "@cf/openai/gpt-oss-120b",
+        "@cf/openai/gpt-oss-20b",
+        "@cf/openai/whisper",
+        "@cf/openai/whisper-large-v3-turbo",
+        "@cf/openai/whisper-tiny-en",
+        "@cf/pfnet/plamo-embedding-1b",
+        "@cf/pipecat-ai/smart-turn-v2",
+        "@cf/qwen/qwen2.5-coder-32b-instruct",
+        "@cf/qwen/qwen3-30b-a3b-fp8",
+        "@cf/qwen/qwen3-embedding-0.6b",
+        "@cf/qwen/qwq-32b",
+        "@cf/runwayml/stable-diffusion-v1-5-img2img",
+        "@cf/runwayml/stable-diffusion-v1-5-inpainting",
+        "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+        "@cf/zai-org/glm-4.7-flash",
+        "@cf/zai-org/glm-5.2"
+      ],
+      "notes": [
+        "The authenticated non-experimental catalog exposed 61 exact assets on 2026-08-02. All are customer-priced; fifteen use category introductory prices because supplier pricing is absent or zero.",
+        "GPT-OSS 20B and 120B each passed a 10-task quality screen and all eleven live qualification checks; 56 free-allocation assets remain pending full qualification.",
+        "BGE-M3 embeddings, FLUX Schnell image generation, Aura-2 English TTS, Whisper Large v3 Turbo STT, and Nova-3 STT passed bounded live execution on 2026-08-02. Their adapter, accounting, image-size, quality, or transcription-contract gaps remain explicit and block sellable-route admission.",
+        "Three catalog assets explicitly require a paid Workers plan and remain unavailable under the zero-owner-cash guard.",
+        "Value-added use for End Users is restricted by Cloudflare and each model licensor's terms; never expose upstream credentials or raw account access."
+      ]
     },
     {
       "serviceId": "supply.cloudflare_r2",
       "providerId": "provider.cloudflare_r2",
       "category": "storage",
-      "products": ["storage.object"],
-      "endpointOrigins": ["https://r2.cloudflarestorage.com"],
-      "credentialNames": ["R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_S3_ENDPOINT"],
+      "products": [
+        "storage.object"
+      ],
+      "endpointOrigins": [
+        "https://r2.cloudflarestorage.com"
+      ],
+      "credentialNames": [
+        "R2_ACCESS_KEY_ID",
+        "R2_SECRET_ACCESS_KEY",
+        "R2_S3_ENDPOINT"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
@@ -144,33 +307,85 @@
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["The account-specific endpoint host is intentionally not recorded. Qualification must verify bucket ownership, quota, egress, lifecycle, and customer-object isolation without exposing account identifiers."]
+      "notes": [
+        "The account-specific endpoint host is intentionally not recorded. Qualification must verify bucket ownership, quota, egress, lifecycle, and customer-object isolation without exposing account identifiers."
+      ]
     },
     {
       "serviceId": "supply.cohere",
       "providerId": "provider.cohere",
       "category": "ai_inference",
-      "products": ["ai.chat", "ai.embed"],
-      "endpointOrigins": ["https://api.cohere.ai", "https://api.cohere.com"],
-      "credentialNames": ["COHERE_API_KEY"],
+      "products": [
+        "ai.chat",
+        "ai.embed"
+      ],
+      "endpointOrigins": [
+        "https://api.cohere.ai",
+        "https://api.cohere.com"
+      ],
+      "credentialNames": [
+        "COHERE_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "unknown",
-      "connectionStatus": "observed_not_tested",
+      "connectionStatus": "observed_working",
       "qualificationStatus": "not_run",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": []
+      "notes": [
+        "Authenticated model discovery returned 31 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+      ],
+      "knownModelNames": [
+        "c4ai-aya-expanse-32b",
+        "c4ai-aya-vision-32b",
+        "cohere-transcribe-03-2026",
+        "command-a-03-2025",
+        "command-a-plus-05-2026",
+        "command-a-reasoning-08-2025",
+        "command-a-translate-08-2025",
+        "command-a-vision-07-2025",
+        "command-r-08-2024",
+        "command-r-plus-08-2024",
+        "command-r7b-12-2024",
+        "command-r7b-arabic-02-2025",
+        "embed-english-light-v3.0",
+        "embed-english-light-v3.0-image",
+        "embed-english-v3.0",
+        "embed-english-v3.0-image",
+        "embed-multilingual-light-v3.0",
+        "embed-multilingual-light-v3.0-image",
+        "embed-multilingual-v3.0",
+        "embed-multilingual-v3.0-image",
+        "embed-v4.0",
+        "north-mini-code-1-0",
+        "rerank-english-v3.0",
+        "rerank-multilingual-v3.0",
+        "rerank-v3.5",
+        "rerank-v4.0-fast",
+        "rerank-v4.0-pro",
+        "tiny-aya-earth",
+        "tiny-aya-fire",
+        "tiny-aya-global",
+        "tiny-aya-water"
+      ]
     },
     {
       "serviceId": "supply.deepgram",
       "providerId": "provider.deepgram",
       "category": "ai_media",
-      "products": ["ai.speech", "ai.transcription"],
-      "endpointOrigins": ["https://api.deepgram.com"],
-      "credentialNames": ["DEEPGRAM_API_KEY"],
+      "products": [
+        "ai.speech",
+        "ai.transcription"
+      ],
+      "endpointOrigins": [
+        "https://api.deepgram.com"
+      ],
+      "credentialNames": [
+        "DEEPGRAM_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
@@ -180,34 +395,62 @@
       "termsStatus": "restricted",
       "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "knownModelNames": ["aura-2-thalia-en", "aura-2-arcas-en", "nova-3"],
-      "notes": ["Two exact Aura-2 speech routes and Nova-3 transcription passed bounded authenticated technical checks on 2026-08-02. The Nova-3 jargon miss is preserved in evidence.", "Use is restricted to value-added Clervo operations; never distribute upstream credentials or sell pass-through account access. The exact remaining balance still requires the application shadow ledger before customer traffic."]
+      "knownModelNames": [
+        "aura-2-thalia-en",
+        "aura-2-arcas-en",
+        "nova-3"
+      ],
+      "notes": [
+        "Two exact Aura-2 speech routes and Nova-3 transcription passed bounded authenticated technical checks on 2026-08-02. The Nova-3 jargon miss is preserved in evidence.",
+        "Use is restricted to value-added Clervo operations; never distribute upstream credentials or sell pass-through account access. The exact remaining balance still requires the application shadow ledger before customer traffic."
+      ]
     },
     {
       "serviceId": "supply.google_gemini",
       "providerId": "provider.google_gemini",
       "category": "ai_inference",
-      "products": ["ai.chat", "ai.embed"],
-      "endpointOrigins": ["https://generativelanguage.googleapis.com"],
-      "credentialNames": ["GEMINI_API_KEY"],
+      "products": [
+        "ai.chat",
+        "ai.embed"
+      ],
+      "endpointOrigins": [
+        "https://generativelanguage.googleapis.com"
+      ],
+      "credentialNames": [
+        "GEMINI_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "unknown",
-      "connectionStatus": "observed_not_tested",
+      "connectionStatus": "observed_failed",
       "qualificationStatus": "not_run",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": []
+      "notes": [
+        "Authenticated model discovery returned HTTP 400 on 2026-08-02; the failure is preserved and no working claim is made."
+      ]
     },
     {
       "serviceId": "supply.google_vertex",
       "providerId": "provider.google_vertex",
       "category": "ai_media",
-      "products": ["ai.chat", "ai.embed", "ai.image", "ai.speech", "ai.video"],
-      "endpointOrigins": ["https://aiplatform.googleapis.com", "https://us-central1-aiplatform.googleapis.com"],
-      "credentialNames": ["GCP_PROJECT", "GCP_REGION"],
+      "products": [
+        "ai.chat",
+        "ai.embed",
+        "ai.image",
+        "ai.speech",
+        "ai.video"
+      ],
+      "endpointOrigins": [
+        "https://aiplatform.googleapis.com",
+        "https://us-central1-aiplatform.googleapis.com"
+      ],
+      "credentialNames": [
+        "GCP_PROJECT",
+        "GCP_REGION"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "gcloud_active_account",
@@ -217,34 +460,78 @@
       "termsStatus": "restricted",
       "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "knownModelNames": ["gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-embedding-001", "gemini-3.1-flash-lite-image", "gemini-3.1-flash-image", "gemini-3-pro-image", "veo-3.1-fast-generate-001", "veo-3.1-generate-001"],
-      "notes": ["Chat, text embedding, 1K image, and 720p video routes passed bounded live qualification on 2026-08-02. Imagen endpoints remain unavailable to this project; speech remains unqualified. Owner reports USD 1700 credit; exact balance and expiry remain unverified, so Clervo requires its own hard shadow ledger before customer traffic."]
+      "knownModelNames": [
+        "gemini-3.5-flash-lite",
+        "gemini-3.6-flash",
+        "gemini-3.5-flash",
+        "gemini-embedding-001",
+        "gemini-3.1-flash-lite-image",
+        "gemini-3.1-flash-image",
+        "gemini-3-pro-image",
+        "veo-3.1-fast-generate-001",
+        "veo-3.1-generate-001"
+      ],
+      "notes": [
+        "Chat, text embedding, 1K image, and 720p video routes passed bounded live qualification on 2026-08-02. Imagen endpoints remain unavailable to this project; speech remains unqualified. Owner reports USD 1700 credit; exact balance and expiry remain unverified, so Clervo requires its own hard shadow ledger before customer traffic."
+      ]
     },
     {
       "serviceId": "supply.github_models",
       "providerId": "provider.github_models",
       "category": "ai_inference",
-      "products": ["ai.chat", "ai.embed"],
-      "endpointOrigins": ["https://models.github.ai", "https://models.inference.ai.azure.com"],
-      "credentialNames": ["GITHUB_MODELS_PAT", "GITHUB_MODELS_TOKEN"],
+      "products": [
+        "ai.chat",
+        "ai.embed"
+      ],
+      "endpointOrigins": [
+        "https://models.github.ai",
+        "https://models.inference.ai.azure.com"
+      ],
+      "credentialNames": [
+        "GITHUB_MODELS_PAT",
+        "GITHUB_MODELS_TOKEN"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "recurring_free",
-      "connectionStatus": "observed_not_tested",
+      "connectionStatus": "observed_failed",
       "qualificationStatus": "not_run",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["The Azure inference origin is legacy; qualification should prefer the current models.github.ai origin."]
+      "notes": [
+        "The Azure inference origin is legacy; qualification should prefer the current models.github.ai origin.",
+        "Authenticated model discovery returned HTTP 410 on 2026-08-02; the failure is preserved and no working claim is made."
+      ]
     },
     {
       "serviceId": "supply.github_source",
       "providerId": "provider.github",
       "category": "source_control",
-      "products": ["source.repository", "source.automation"],
-      "endpointOrigins": ["https://api.github.com"],
-      "credentialNames": ["GH_TOKENS", "GH_TOKEN_1", "GH_TOKEN_2", "GH_TOKEN_3", "GH_TOKEN_4", "GH_TOKEN_5", "GH_TOKEN_6", "GH_TOKEN_7", "GH_TOKEN_8", "GH_TOKEN_9", "GH_TOKEN_10", "GH_TOKEN_11", "GITHUB_APP_ID", "GITHUB_INSTALLATION_ID"],
+      "products": [
+        "source.repository",
+        "source.automation"
+      ],
+      "endpointOrigins": [
+        "https://api.github.com"
+      ],
+      "credentialNames": [
+        "GH_TOKENS",
+        "GH_TOKEN_1",
+        "GH_TOKEN_2",
+        "GH_TOKEN_3",
+        "GH_TOKEN_4",
+        "GH_TOKEN_5",
+        "GH_TOKEN_6",
+        "GH_TOKEN_7",
+        "GH_TOKEN_8",
+        "GH_TOKEN_9",
+        "GH_TOKEN_10",
+        "GH_TOKEN_11",
+        "GITHUB_APP_ID",
+        "GITHUB_INSTALLATION_ID"
+      ],
       "configuredCredentialSlots": 12,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
@@ -254,15 +541,23 @@
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["Twelve distinct token-bearing assignments were observed. Do not pool identities or bypass per-user, per-app, or abuse limits; qualify ownership, scopes, intended repositories, and terms before use."]
+      "notes": [
+        "Twelve distinct token-bearing assignments were observed. Do not pool identities or bypass per-user, per-app, or abuse limits; qualify ownership, scopes, intended repositories, and terms before use."
+      ]
     },
     {
       "serviceId": "supply.gitlab_source",
       "providerId": "provider.gitlab",
       "category": "source_control",
-      "products": ["source.repository"],
-      "endpointOrigins": ["https://gitlab.com"],
-      "credentialNames": ["GITLAB_TOKEN"],
+      "products": [
+        "source.repository"
+      ],
+      "endpointOrigins": [
+        "https://gitlab.com"
+      ],
+      "credentialNames": [
+        "GITLAB_TOKEN"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
@@ -278,9 +573,17 @@
       "serviceId": "supply.groq",
       "providerId": "provider.groq",
       "category": "ai_inference",
-      "products": ["ai.chat", "ai.speech", "ai.transcription"],
-      "endpointOrigins": ["https://api.groq.com"],
-      "credentialNames": ["GROQ_API_KEY"],
+      "products": [
+        "ai.chat",
+        "ai.speech",
+        "ai.transcription"
+      ],
+      "endpointOrigins": [
+        "https://api.groq.com"
+      ],
+      "credentialNames": [
+        "GROQ_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
@@ -290,88 +593,653 @@
       "termsStatus": "restricted",
       "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "knownModelNames": ["allam-2-7b", "canopylabs/orpheus-arabic-saudi", "canopylabs/orpheus-v1-english", "groq/compound", "groq/compound-mini", "llama-3.1-8b-instant", "llama-3.3-70b-versatile", "meta-llama/llama-prompt-guard-2-22m", "meta-llama/llama-prompt-guard-2-86m", "openai/gpt-oss-120b", "openai/gpt-oss-20b", "openai/gpt-oss-safeguard-20b", "qwen/qwen3.6-27b", "whisper-large-v3", "whisper-large-v3-turbo"],
-      "notes": ["All fifteen authenticated active assets are priced. GPT-OSS 20B, GPT-OSS 120B, and Qwen 3.6 27B passed live quality and route qualification; the other assets remain priced pending product-specific qualification.", "Use is restricted to value-added Clervo operations. Never expose upstream credentials or account access, resell the raw cloud service, or use multiple accounts to bypass limits."]
+      "knownModelNames": [
+        "allam-2-7b",
+        "canopylabs/orpheus-arabic-saudi",
+        "canopylabs/orpheus-v1-english",
+        "groq/compound",
+        "groq/compound-mini",
+        "llama-3.1-8b-instant",
+        "llama-3.3-70b-versatile",
+        "meta-llama/llama-prompt-guard-2-22m",
+        "meta-llama/llama-prompt-guard-2-86m",
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "openai/gpt-oss-safeguard-20b",
+        "qwen/qwen3.6-27b",
+        "whisper-large-v3",
+        "whisper-large-v3-turbo"
+      ],
+      "notes": [
+        "All fifteen authenticated active assets are priced. GPT-OSS 20B, GPT-OSS 120B, and Qwen 3.6 27B passed live quality and route qualification; the other assets remain priced pending product-specific qualification.",
+        "Use is restricted to value-added Clervo operations. Never expose upstream credentials or account access, resell the raw cloud service, or use multiple accounts to bypass limits."
+      ]
     },
     {
       "serviceId": "supply.mistral",
       "providerId": "provider.mistral",
       "category": "ai_inference",
-      "products": ["ai.chat", "ai.embed"],
-      "endpointOrigins": ["https://api.mistral.ai"],
-      "credentialNames": ["MISTRAL_API_KEY"],
+      "products": [
+        "ai.chat",
+        "ai.embed"
+      ],
+      "endpointOrigins": [
+        "https://api.mistral.ai"
+      ],
+      "credentialNames": [
+        "MISTRAL_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "unknown",
-      "connectionStatus": "observed_not_tested",
+      "connectionStatus": "observed_working",
       "qualificationStatus": "not_run",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": []
+      "notes": [
+        "Authenticated model discovery returned 52 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+      ],
+      "knownModelNames": [
+        "codestral-2508",
+        "codestral-embed",
+        "codestral-embed-2505",
+        "codestral-latest",
+        "devstral-2512",
+        "devstral-latest",
+        "devstral-medium-latest",
+        "labs-leanstral-1-5",
+        "labs-leanstral-1-5-1",
+        "magistral-small-latest",
+        "ministral-14b-2512",
+        "ministral-14b-latest",
+        "ministral-3b-2512",
+        "ministral-3b-latest",
+        "ministral-8b-2512",
+        "ministral-8b-latest",
+        "mistral-code-agent-latest",
+        "mistral-code-fim-latest",
+        "mistral-code-latest",
+        "mistral-embed",
+        "mistral-embed-2312",
+        "mistral-large-2512",
+        "mistral-large-latest",
+        "mistral-medium",
+        "mistral-medium-2505",
+        "mistral-medium-2508",
+        "mistral-medium-2604",
+        "mistral-medium-3",
+        "mistral-medium-3-5",
+        "mistral-medium-3.5",
+        "mistral-medium-latest",
+        "mistral-moderation-2603",
+        "mistral-ocr-2512",
+        "mistral-ocr-3",
+        "mistral-ocr-3-0",
+        "mistral-ocr-4",
+        "mistral-ocr-4-0",
+        "mistral-ocr-latest",
+        "mistral-small-2603",
+        "mistral-small-latest",
+        "mistral-vibe-cli-fast",
+        "mistral-vibe-cli-latest",
+        "mistral-vibe-cli-with-tools",
+        "voxtral-mini-2602",
+        "voxtral-mini-latest",
+        "voxtral-mini-realtime-2602",
+        "voxtral-mini-realtime-latest",
+        "voxtral-mini-transcribe-realtime-2602",
+        "voxtral-mini-tts-2603",
+        "voxtral-mini-tts-latest",
+        "voxtral-small-2507",
+        "voxtral-small-latest"
+      ]
     },
     {
       "serviceId": "supply.nvidia",
       "providerId": "provider.nvidia",
       "category": "ai_inference",
-      "products": ["ai.chat", "ai.embed", "ai.image"],
-      "endpointOrigins": ["https://integrate.api.nvidia.com"],
-      "credentialNames": ["NVIDIA_API_KEY"],
+      "products": [
+        "ai.chat",
+        "ai.embed",
+        "ai.image"
+      ],
+      "endpointOrigins": [
+        "https://integrate.api.nvidia.com"
+      ],
+      "credentialNames": [
+        "NVIDIA_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "recurring_free",
-      "connectionStatus": "observed_not_tested",
+      "connectionStatus": "observed_working",
       "qualificationStatus": "not_run",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": []
+      "notes": [
+        "Authenticated model discovery returned 102 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+      ],
+      "knownModelNames": [
+        "01-ai/yi-large",
+        "adept/fuyu-8b",
+        "ai21labs/jamba-1.5-large-instruct",
+        "aisingapore/sea-lion-7b-instruct",
+        "baai/bge-m3",
+        "bigcode/starcoder2-15b",
+        "databricks/dbrx-instruct",
+        "deepseek-ai/deepseek-coder-6.7b-instruct",
+        "deepseek-ai/deepseek-v4-flash",
+        "deepseek-ai/deepseek-v4-pro",
+        "google/codegemma-1.1-7b",
+        "google/codegemma-7b",
+        "google/deplot",
+        "google/diffusiongemma-26b-a4b-it",
+        "google/gemma-2b",
+        "google/gemma-3-12b-it",
+        "google/gemma-3-4b-it",
+        "google/gemma-4-31b-it",
+        "google/recurrentgemma-2b",
+        "ibm/granite-3.0-3b-a800m-instruct",
+        "ibm/granite-3.0-8b-instruct",
+        "ibm/granite-34b-code-instruct",
+        "ibm/granite-8b-code-instruct",
+        "meta/codellama-70b",
+        "meta/llama-3.1-70b-instruct",
+        "meta/llama-3.1-8b-instruct",
+        "meta/llama-3.2-11b-vision-instruct",
+        "meta/llama-3.2-1b-instruct",
+        "meta/llama-3.2-3b-instruct",
+        "meta/llama-3.2-90b-vision-instruct",
+        "meta/llama-3.3-70b-instruct",
+        "meta/llama-guard-4-12b",
+        "meta/llama2-70b",
+        "microsoft/kosmos-2",
+        "microsoft/phi-3-vision-128k-instruct",
+        "microsoft/phi-3.5-moe-instruct",
+        "minimaxai/minimax-m3",
+        "mistralai/codestral-22b-instruct-v0.1",
+        "mistralai/mistral-7b-instruct-v0.3",
+        "mistralai/mistral-large",
+        "mistralai/mistral-large-2-instruct",
+        "mistralai/mistral-medium-3.5-128b",
+        "mistralai/mistral-nemotron",
+        "mistralai/mixtral-8x22b-v0.1",
+        "moonshotai/kimi-k2.6",
+        "nv-mistralai/mistral-nemo-12b-instruct",
+        "nvidia/ai-synthetic-video-detector",
+        "nvidia/cosmos-reason2-8b",
+        "nvidia/embed-qa-4",
+        "nvidia/ising-calibration-1.5-31b",
+        "nvidia/llama-3.1-nemoguard-8b-content-safety",
+        "nvidia/llama-3.1-nemoguard-8b-topic-control",
+        "nvidia/llama-3.1-nemotron-51b-instruct",
+        "nvidia/llama-3.1-nemotron-70b-instruct",
+        "nvidia/llama-3.1-nemotron-nano-8b-v1",
+        "nvidia/llama-3.1-nemotron-nano-vl-8b-v1",
+        "nvidia/llama-3.1-nemotron-safety-guard-8b-v3",
+        "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+        "nvidia/llama-3.2-nemoretriever-1b-vlm-embed-v1",
+        "nvidia/llama-3.2-nv-embedqa-1b-v1",
+        "nvidia/llama-3.3-nemotron-super-49b-v1",
+        "nvidia/llama-3.3-nemotron-super-49b-v1.5",
+        "nvidia/llama-nemotron-embed-1b-v2",
+        "nvidia/llama-nemotron-embed-vl-1b-v2",
+        "nvidia/llama3-chatqa-1.5-70b",
+        "nvidia/mistral-nemo-minitron-8b-8k-instruct",
+        "nvidia/nemoretriever-parse",
+        "nvidia/nemotron-3-embed-1b",
+        "nvidia/nemotron-3-nano-30b-a3b",
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "nvidia/nemotron-3-super-120b-a12b",
+        "nvidia/nemotron-3-ultra-550b-a55b",
+        "nvidia/nemotron-3.5-content-safety",
+        "nvidia/nemotron-4-340b-instruct",
+        "nvidia/nemotron-4-340b-reward",
+        "nvidia/nemotron-mini-4b-instruct",
+        "nvidia/nemotron-nano-12b-v2-vl",
+        "nvidia/nemotron-nano-3-30b-a3b",
+        "nvidia/nemotron-parse",
+        "nvidia/neva-22b",
+        "nvidia/nv-embed-v1",
+        "nvidia/nv-embedcode-7b-v1",
+        "nvidia/nv-embedqa-e5-v5",
+        "nvidia/nv-embedqa-mistral-7b-v2",
+        "nvidia/nvclip",
+        "nvidia/nvidia-nemotron-nano-9b-v2",
+        "nvidia/riva-translate-4b-instruct",
+        "nvidia/riva-translate-4b-instruct-v1.1",
+        "nvidia/riva-translate-4b-instruct-v2",
+        "nvidia/vila",
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "poolside/laguna-xs-2.1",
+        "snowflake/arctic-embed-l",
+        "stepfun-ai/step-3.7-flash",
+        "thinkingmachines/inkling",
+        "writer/palmyra-creative-122b",
+        "writer/palmyra-fin-70b-32k",
+        "writer/palmyra-med-70b",
+        "writer/palmyra-med-70b-32k",
+        "z-ai/glm-5.2",
+        "zyphra/zamba2-7b-instruct"
+      ]
     },
     {
       "serviceId": "supply.openrouter",
       "providerId": "provider.openrouter",
       "category": "ai_inference",
-      "products": ["ai.chat"],
-      "endpointOrigins": ["https://openrouter.ai"],
-      "credentialNames": ["OPENROUTER_API_KEY"],
+      "products": [
+        "ai.chat"
+      ],
+      "endpointOrigins": [
+        "https://openrouter.ai"
+      ],
+      "credentialNames": [
+        "OPENROUTER_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "unknown",
-      "connectionStatus": "observed_not_tested",
+      "connectionStatus": "observed_working",
       "qualificationStatus": "not_run",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": []
+      "notes": [
+        "Authenticated model discovery returned 337 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+      ],
+      "knownModelNames": [
+        "~anthropic/claude-fable-latest",
+        "~anthropic/claude-haiku-latest",
+        "~anthropic/claude-opus-latest",
+        "~anthropic/claude-sonnet-latest",
+        "~deepseek/deepseek-v4-flash-latest",
+        "~google/gemini-flash-latest",
+        "~google/gemini-pro-latest",
+        "~moonshotai/kimi-latest",
+        "~openai/gpt-latest",
+        "~openai/gpt-mini-latest",
+        "~x-ai/grok-latest",
+        "ai21/jamba-large-1.7",
+        "aion-labs/aion-2.0",
+        "aion-labs/aion-3.0",
+        "aion-labs/aion-3.0-mini",
+        "aion-labs/aion-rp-llama-3.1-8b",
+        "allenai/olmo-3-32b-think",
+        "amazon/nova-2-lite-v1",
+        "amazon/nova-lite-v1",
+        "amazon/nova-micro-v1",
+        "amazon/nova-premier-v1",
+        "amazon/nova-pro-v1",
+        "anthracite-org/magnum-v4-72b",
+        "anthropic/claude-3-haiku",
+        "anthropic/claude-fable-5",
+        "anthropic/claude-haiku-4.5",
+        "anthropic/claude-opus-4",
+        "anthropic/claude-opus-4.1",
+        "anthropic/claude-opus-4.5",
+        "anthropic/claude-opus-4.6",
+        "anthropic/claude-opus-4.7",
+        "anthropic/claude-opus-4.7-fast",
+        "anthropic/claude-opus-4.8",
+        "anthropic/claude-opus-4.8-fast",
+        "anthropic/claude-opus-5",
+        "anthropic/claude-opus-5-fast",
+        "anthropic/claude-sonnet-4",
+        "anthropic/claude-sonnet-4.5",
+        "anthropic/claude-sonnet-4.6",
+        "anthropic/claude-sonnet-5",
+        "arcee-ai/trinity-large-thinking",
+        "arcee-ai/virtuoso-large",
+        "baidu/ernie-4.5-vl-424b-a47b",
+        "bytedance-seed/seed-1.6",
+        "bytedance-seed/seed-1.6-flash",
+        "bytedance-seed/seed-2.0-lite",
+        "bytedance-seed/seed-2.0-mini",
+        "bytedance/ui-tars-1.5-7b",
+        "cognitivecomputations/dolphin-mistral-24b-venice-edition",
+        "cohere/command-a",
+        "cohere/command-r-08-2024",
+        "cohere/command-r-plus-08-2024",
+        "cohere/command-r7b-12-2024",
+        "cohere/north-mini-code:free",
+        "deepcogito/cogito-v2.1-671b",
+        "deepseek/deepseek-chat",
+        "deepseek/deepseek-chat-v3-0324",
+        "deepseek/deepseek-chat-v3.1",
+        "deepseek/deepseek-r1",
+        "deepseek/deepseek-r1-0528",
+        "deepseek/deepseek-r1-distill-llama-70b",
+        "deepseek/deepseek-v3.1-terminus",
+        "deepseek/deepseek-v3.2",
+        "deepseek/deepseek-v3.2-exp",
+        "deepseek/deepseek-v4-flash",
+        "deepseek/deepseek-v4-flash-0731",
+        "deepseek/deepseek-v4-pro",
+        "google/gemini-2.5-flash",
+        "google/gemini-2.5-flash-image",
+        "google/gemini-2.5-flash-lite",
+        "google/gemini-2.5-pro",
+        "google/gemini-2.5-pro-preview",
+        "google/gemini-2.5-pro-preview-05-06",
+        "google/gemini-3-flash-preview",
+        "google/gemini-3-pro-image",
+        "google/gemini-3-pro-image-preview",
+        "google/gemini-3.1-flash-image",
+        "google/gemini-3.1-flash-image-preview",
+        "google/gemini-3.1-flash-lite",
+        "google/gemini-3.1-flash-lite-image",
+        "google/gemini-3.1-flash-lite-preview",
+        "google/gemini-3.1-pro-preview",
+        "google/gemini-3.1-pro-preview-customtools",
+        "google/gemini-3.5-flash",
+        "google/gemini-3.5-flash-lite",
+        "google/gemini-3.6-flash",
+        "google/gemma-2-27b-it",
+        "google/gemma-3-12b-it",
+        "google/gemma-3-27b-it",
+        "google/gemma-3-4b-it",
+        "google/gemma-3n-e4b-it",
+        "google/gemma-4-26b-a4b-it",
+        "google/gemma-4-26b-a4b-it:free",
+        "google/gemma-4-31b-it",
+        "google/gemma-4-31b-it:free",
+        "google/lyria-3-clip-preview",
+        "google/lyria-3-pro-preview",
+        "gryphe/mythomax-l2-13b",
+        "ibm-granite/granite-4.0-h-micro",
+        "ibm-granite/granite-4.1-8b",
+        "inception/mercury-2",
+        "inclusionai/ling-2.6-1t",
+        "inclusionai/ling-2.6-flash",
+        "inclusionai/ling-3.0-flash:free",
+        "inclusionai/ring-2.6-1t",
+        "kwaipilot/kat-coder-air-v2.5",
+        "kwaipilot/kat-coder-pro-v2",
+        "kwaipilot/kat-coder-pro-v2.5",
+        "mancer/weaver",
+        "meituan/longcat-2.0",
+        "meta-llama/llama-3.1-70b-instruct",
+        "meta-llama/llama-3.1-8b-instruct",
+        "meta-llama/llama-3.2-1b-instruct",
+        "meta-llama/llama-3.2-3b-instruct",
+        "meta-llama/llama-3.3-70b-instruct",
+        "meta-llama/llama-4-maverick",
+        "meta-llama/llama-4-scout",
+        "meta-llama/llama-guard-4-12b",
+        "meta/muse-spark-1.1",
+        "microsoft/phi-4",
+        "microsoft/wizardlm-2-8x22b",
+        "minimax/minimax-01",
+        "minimax/minimax-m1",
+        "minimax/minimax-m2",
+        "minimax/minimax-m2-her",
+        "minimax/minimax-m2.1",
+        "minimax/minimax-m2.5",
+        "minimax/minimax-m2.7",
+        "minimax/minimax-m3",
+        "mistralai/codestral-2508",
+        "mistralai/ministral-14b-2512",
+        "mistralai/ministral-3b-2512",
+        "mistralai/ministral-8b-2512",
+        "mistralai/mistral-large",
+        "mistralai/mistral-large-2407",
+        "mistralai/mistral-large-2512",
+        "mistralai/mistral-medium-3",
+        "mistralai/mistral-medium-3-5",
+        "mistralai/mistral-medium-3.1",
+        "mistralai/mistral-nemo",
+        "mistralai/mistral-saba",
+        "mistralai/mistral-small-24b-instruct-2501",
+        "mistralai/mistral-small-2603",
+        "mistralai/mistral-small-3.1-24b-instruct",
+        "mistralai/mistral-small-3.2-24b-instruct",
+        "mistralai/mixtral-8x22b-instruct",
+        "mistralai/voxtral-small-24b-2507",
+        "moonshotai/kimi-k2",
+        "moonshotai/kimi-k2-0905",
+        "moonshotai/kimi-k2-thinking",
+        "moonshotai/kimi-k2.5",
+        "moonshotai/kimi-k2.6",
+        "moonshotai/kimi-k2.7-code",
+        "moonshotai/kimi-k3",
+        "morph/morph-v3-fast",
+        "morph/morph-v3-large",
+        "nex-agi/nex-n2-mini",
+        "nex-agi/nex-n2-pro",
+        "nousresearch/hermes-3-llama-3.1-405b",
+        "nousresearch/hermes-3-llama-3.1-70b",
+        "nousresearch/hermes-4-405b",
+        "nousresearch/hermes-4-70b",
+        "nvidia/nemotron-3-nano-30b-a3b",
+        "nvidia/nemotron-3-nano-30b-a3b:free",
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+        "nvidia/nemotron-3-super-120b-a12b",
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "nvidia/nemotron-3-ultra-550b-a55b",
+        "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "nvidia/nemotron-3.5-content-safety:free",
+        "nvidia/nemotron-nano-12b-v2-vl:free",
+        "nvidia/nemotron-nano-9b-v2:free",
+        "openai/gpt-3.5-turbo",
+        "openai/gpt-3.5-turbo-0613",
+        "openai/gpt-3.5-turbo-16k",
+        "openai/gpt-3.5-turbo-instruct",
+        "openai/gpt-4",
+        "openai/gpt-4-turbo",
+        "openai/gpt-4-turbo-preview",
+        "openai/gpt-4.1",
+        "openai/gpt-4.1-mini",
+        "openai/gpt-4.1-nano",
+        "openai/gpt-4o",
+        "openai/gpt-4o-2024-05-13",
+        "openai/gpt-4o-2024-08-06",
+        "openai/gpt-4o-2024-11-20",
+        "openai/gpt-4o-mini",
+        "openai/gpt-4o-mini-2024-07-18",
+        "openai/gpt-5",
+        "openai/gpt-5-image",
+        "openai/gpt-5-image-mini",
+        "openai/gpt-5-mini",
+        "openai/gpt-5-nano",
+        "openai/gpt-5-pro",
+        "openai/gpt-5.1",
+        "openai/gpt-5.1-codex",
+        "openai/gpt-5.1-codex-max",
+        "openai/gpt-5.1-codex-mini",
+        "openai/gpt-5.2",
+        "openai/gpt-5.2-chat",
+        "openai/gpt-5.2-codex",
+        "openai/gpt-5.2-pro",
+        "openai/gpt-5.3-chat",
+        "openai/gpt-5.3-codex",
+        "openai/gpt-5.4",
+        "openai/gpt-5.4-image-2",
+        "openai/gpt-5.4-mini",
+        "openai/gpt-5.4-nano",
+        "openai/gpt-5.4-pro",
+        "openai/gpt-5.5",
+        "openai/gpt-5.5-pro",
+        "openai/gpt-5.6-luna",
+        "openai/gpt-5.6-luna-pro",
+        "openai/gpt-5.6-sol",
+        "openai/gpt-5.6-sol-pro",
+        "openai/gpt-5.6-terra",
+        "openai/gpt-5.6-terra-pro",
+        "openai/gpt-audio",
+        "openai/gpt-audio-mini",
+        "openai/gpt-chat-latest",
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "openai/gpt-oss-20b:free",
+        "openai/gpt-oss-safeguard-20b",
+        "openai/o1",
+        "openai/o1-pro",
+        "openai/o3",
+        "openai/o3-mini",
+        "openai/o3-mini-high",
+        "openai/o3-pro",
+        "openai/o4-mini",
+        "openai/o4-mini-high",
+        "openrouter/auto",
+        "openrouter/auto-beta",
+        "openrouter/bodybuilder",
+        "openrouter/free",
+        "openrouter/fusion",
+        "openrouter/pareto-code",
+        "perceptron/perceptron-mk1",
+        "perplexity/sonar",
+        "perplexity/sonar-deep-research",
+        "perplexity/sonar-pro",
+        "perplexity/sonar-pro-search",
+        "perplexity/sonar-reasoning-pro",
+        "poolside/laguna-s-2.1",
+        "poolside/laguna-s-2.1:free",
+        "poolside/laguna-xs-2.1",
+        "poolside/laguna-xs-2.1:free",
+        "qwen/qwen-2.5-72b-instruct",
+        "qwen/qwen-2.5-7b-instruct",
+        "qwen/qwen-2.5-coder-32b-instruct",
+        "qwen/qwen-plus",
+        "qwen/qwen-plus-2025-07-28",
+        "qwen/qwen-plus-2025-07-28:thinking",
+        "qwen/qwen2.5-vl-72b-instruct",
+        "qwen/qwen3-14b",
+        "qwen/qwen3-235b-a22b",
+        "qwen/qwen3-235b-a22b-2507",
+        "qwen/qwen3-235b-a22b-thinking-2507",
+        "qwen/qwen3-30b-a3b",
+        "qwen/qwen3-30b-a3b-instruct-2507",
+        "qwen/qwen3-30b-a3b-thinking-2507",
+        "qwen/qwen3-32b",
+        "qwen/qwen3-8b",
+        "qwen/qwen3-coder",
+        "qwen/qwen3-coder-30b-a3b-instruct",
+        "qwen/qwen3-coder-flash",
+        "qwen/qwen3-coder-next",
+        "qwen/qwen3-coder-plus",
+        "qwen/qwen3-max",
+        "qwen/qwen3-max-thinking",
+        "qwen/qwen3-next-80b-a3b-instruct",
+        "qwen/qwen3-next-80b-a3b-thinking",
+        "qwen/qwen3-vl-235b-a22b-instruct",
+        "qwen/qwen3-vl-235b-a22b-thinking",
+        "qwen/qwen3-vl-30b-a3b-instruct",
+        "qwen/qwen3-vl-30b-a3b-thinking",
+        "qwen/qwen3-vl-32b-instruct",
+        "qwen/qwen3-vl-8b-instruct",
+        "qwen/qwen3-vl-8b-thinking",
+        "qwen/qwen3.5-122b-a10b",
+        "qwen/qwen3.5-27b",
+        "qwen/qwen3.5-35b-a3b",
+        "qwen/qwen3.5-397b-a17b",
+        "qwen/qwen3.5-9b",
+        "qwen/qwen3.5-flash-02-23",
+        "qwen/qwen3.5-plus-02-15",
+        "qwen/qwen3.5-plus-20260420",
+        "qwen/qwen3.6-27b",
+        "qwen/qwen3.6-35b-a3b",
+        "qwen/qwen3.6-flash",
+        "qwen/qwen3.6-max-preview",
+        "qwen/qwen3.6-plus",
+        "qwen/qwen3.7-flash",
+        "qwen/qwen3.7-max",
+        "qwen/qwen3.7-plus",
+        "rekaai/reka-edge",
+        "rekaai/reka-flash-3",
+        "relace/relace-apply-3",
+        "relace/relace-search",
+        "sakana/fugu-ultra",
+        "sao10k/l3-lunaris-8b",
+        "sao10k/l3.1-euryale-70b",
+        "sao10k/l3.3-euryale-70b",
+        "stepfun/step-3.5-flash",
+        "stepfun/step-3.7-flash",
+        "tencent/hunyuan-a13b-instruct",
+        "tencent/hy3",
+        "tencent/hy3-preview",
+        "thedrummer/cydonia-24b-v4.1",
+        "thedrummer/rocinante-12b",
+        "thedrummer/skyfall-36b-v2",
+        "thedrummer/unslopnemo-12b",
+        "thinkingmachines/inkling",
+        "thinkingmachines/inkling-small",
+        "undi95/remm-slerp-l2-13b",
+        "upstage/solar-pro-3",
+        "writer/palmyra-x5",
+        "x-ai/grok-4.20",
+        "x-ai/grok-4.20-multi-agent",
+        "x-ai/grok-4.3",
+        "x-ai/grok-4.5",
+        "x-ai/grok-build-0.1",
+        "xiaomi/mimo-v2.5",
+        "xiaomi/mimo-v2.5-pro",
+        "z-ai/glm-4.5",
+        "z-ai/glm-4.5-air",
+        "z-ai/glm-4.5v",
+        "z-ai/glm-4.6",
+        "z-ai/glm-4.6v",
+        "z-ai/glm-4.7",
+        "z-ai/glm-4.7-flash",
+        "z-ai/glm-5",
+        "z-ai/glm-5-turbo",
+        "z-ai/glm-5.1",
+        "z-ai/glm-5.2",
+        "z-ai/glm-5v-turbo"
+      ]
     },
     {
       "serviceId": "supply.sambanova",
       "providerId": "provider.sambanova",
       "category": "ai_inference",
-      "products": ["ai.chat"],
-      "endpointOrigins": ["https://api.sambanova.ai"],
-      "credentialNames": ["SAMBANOVA_API_KEY"],
+      "products": [
+        "ai.chat"
+      ],
+      "endpointOrigins": [
+        "https://api.sambanova.ai"
+      ],
+      "credentialNames": [
+        "SAMBANOVA_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "recurring_free",
-      "connectionStatus": "observed_not_tested",
+      "connectionStatus": "observed_working",
       "qualificationStatus": "not_run",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": []
+      "notes": [
+        "Authenticated model discovery returned 6 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+      ],
+      "knownModelNames": [
+        "DeepSeek-V3.1",
+        "DeepSeek-V3.2",
+        "gemma-4-31B-it",
+        "gpt-oss-120b",
+        "Meta-Llama-3.3-70B-Instruct",
+        "MiniMax-M2.7"
+      ]
     },
     {
       "serviceId": "supply.serper",
       "providerId": "provider.serper",
       "category": "search",
-      "products": ["search.web"],
-      "endpointOrigins": ["https://google.serper.dev"],
-      "credentialNames": ["SERPER_API_KEY"],
+      "products": [
+        "search.web"
+      ],
+      "endpointOrigins": [
+        "https://google.serper.dev"
+      ],
+      "credentialNames": [
+        "SERPER_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
@@ -387,9 +1255,15 @@
       "serviceId": "supply.devto",
       "providerId": "provider.devto",
       "category": "publishing",
-      "products": ["publish.article"],
-      "endpointOrigins": ["https://dev.to"],
-      "credentialNames": ["DEVTO_API_KEY"],
+      "products": [
+        "publish.article"
+      ],
+      "endpointOrigins": [
+        "https://dev.to"
+      ],
+      "credentialNames": [
+        "DEVTO_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
@@ -399,15 +1273,23 @@
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["Inventory does not authorize publishing or messaging an external audience."]
+      "notes": [
+        "Inventory does not authorize publishing or messaging an external audience."
+      ]
     },
     {
       "serviceId": "supply.hashnode",
       "providerId": "provider.hashnode",
       "category": "publishing",
-      "products": ["publish.article"],
-      "endpointOrigins": ["https://gql.hashnode.com"],
-      "credentialNames": ["HASHNODE_API_KEY"],
+      "products": [
+        "publish.article"
+      ],
+      "endpointOrigins": [
+        "https://gql.hashnode.com"
+      ],
+      "credentialNames": [
+        "HASHNODE_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
@@ -417,51 +1299,167 @@
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["Inventory does not authorize publishing or messaging an external audience."]
+      "notes": [
+        "Inventory does not authorize publishing or messaging an external audience."
+      ]
     },
     {
       "serviceId": "supply.siliconflow",
       "providerId": "provider.siliconflow",
       "category": "ai_inference",
-      "products": ["ai.chat", "ai.embed", "ai.image", "ai.speech"],
-      "endpointOrigins": ["https://api.siliconflow.cn"],
-      "credentialNames": ["SILICONFLOW_API_KEY"],
+      "products": [
+        "ai.chat",
+        "ai.embed",
+        "ai.image",
+        "ai.speech"
+      ],
+      "endpointOrigins": [
+        "https://api.siliconflow.com",
+        "https://api.siliconflow.cn"
+      ],
+      "credentialNames": [
+        "SILICONFLOW_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "owner_reported_balance",
-      "connectionStatus": "observed_not_tested",
+      "connectionStatus": "observed_working",
       "qualificationStatus": "not_run",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": []
+      "notes": [
+        "Authenticated model discovery returned 73 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+      ],
+      "knownModelNames": [
+        "black-forest-labs/FLUX-1.1-pro",
+        "black-forest-labs/FLUX-1.1-pro-Ultra",
+        "black-forest-labs/FLUX.1-dev",
+        "black-forest-labs/FLUX.1-Kontext-dev",
+        "black-forest-labs/FLUX.1-Kontext-max",
+        "black-forest-labs/FLUX.1-Kontext-pro",
+        "black-forest-labs/FLUX.1-schnell",
+        "black-forest-labs/FLUX.2-flex",
+        "black-forest-labs/FLUX.2-pro",
+        "ByteDance-Seed/Seed-OSS-36B-Instruct",
+        "deepseek-ai/DeepSeek-R1",
+        "deepseek-ai/DeepSeek-V3",
+        "deepseek-ai/DeepSeek-V3.1",
+        "deepseek-ai/DeepSeek-V3.1-Terminus",
+        "deepseek-ai/DeepSeek-V3.2",
+        "deepseek-ai/DeepSeek-V3.2-Exp",
+        "deepseek-ai/DeepSeek-V4-Flash",
+        "deepseek-ai/DeepSeek-V4-Flash-0731",
+        "deepseek-ai/DeepSeek-V4-Pro",
+        "fishaudio/fish-speech-1.5",
+        "FunAudioLLM/CosyVoice2-0.5B",
+        "google/gemma-4-12B-it",
+        "google/gemma-4-26B-A4B-it",
+        "google/gemma-4-31B-it",
+        "inclusionAI/Ling-flash-2.0",
+        "IndexTeam/IndexTTS-2",
+        "meituan-longcat/LongCat-2.0",
+        "MiniMaxAI/MiniMax-M2.5",
+        "MiniMaxAI/MiniMax-M3",
+        "moonshotai/Kimi-K2.5",
+        "moonshotai/Kimi-K2.6",
+        "moonshotai/Kimi-K2.7-Code",
+        "moonshotai/Kimi-K3",
+        "nex-agi/Nex-N2-Pro",
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "Qwen/Qwen-Image",
+        "Qwen/Qwen-Image-Edit",
+        "Qwen/Qwen2.5-72B-Instruct",
+        "Qwen/Qwen2.5-7B-Instruct",
+        "Qwen/Qwen3-14B",
+        "Qwen/Qwen3-30B-A3B-Instruct-2507",
+        "Qwen/Qwen3-32B",
+        "Qwen/Qwen3-8B",
+        "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+        "Qwen/Qwen3-Embedding-0.6B",
+        "Qwen/Qwen3-Embedding-4B",
+        "Qwen/Qwen3-Embedding-8B",
+        "Qwen/Qwen3-Reranker-0.6B",
+        "Qwen/Qwen3-Reranker-8B",
+        "Qwen/Qwen3-VL-30B-A3B-Instruct",
+        "Qwen/Qwen3-VL-30B-A3B-Thinking",
+        "Qwen/Qwen3-VL-32B-Instruct",
+        "Qwen/Qwen3-VL-32B-Thinking",
+        "Qwen/Qwen3-VL-8B-Instruct",
+        "Qwen/Qwen3.5-122B-A10B",
+        "Qwen/Qwen3.5-27B",
+        "Qwen/Qwen3.5-35B-A3B",
+        "Qwen/Qwen3.5-397B-A17B",
+        "Qwen/Qwen3.5-9B",
+        "Qwen/Qwen3.6-27B",
+        "Qwen/Qwen3.6-35B-A3B",
+        "stepfun-ai/Step-3.5-Flash",
+        "tencent/Hunyuan-A13B-Instruct",
+        "tencent/Hy3",
+        "Tongyi-MAI/Z-Image-Turbo",
+        "Wan-AI/Wan2.2-I2V-A14B",
+        "Wan-AI/Wan2.2-T2V-A14B",
+        "zai-org/GLM-4.5-Air",
+        "zai-org/GLM-5",
+        "zai-org/GLM-5.1",
+        "zai-org/GLM-5.2",
+        "zai-org/GLM-5V-Turbo"
+      ]
     },
     {
       "serviceId": "supply.zai",
       "providerId": "provider.zai",
       "category": "ai_inference",
-      "products": ["ai.chat"],
-      "endpointOrigins": ["https://open.bigmodel.cn", "https://api.z.ai"],
-      "credentialNames": ["ZAI_API_KEY"],
+      "products": [
+        "ai.chat"
+      ],
+      "endpointOrigins": [
+        "https://open.bigmodel.cn",
+        "https://api.z.ai"
+      ],
+      "credentialNames": [
+        "ZAI_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "owner_reported_balance",
-      "connectionStatus": "observed_not_tested",
+      "connectionStatus": "observed_working",
       "qualificationStatus": "not_run",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": []
+      "notes": [
+        "Authenticated model discovery returned 8 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+      ],
+      "knownModelNames": [
+        "glm-4.5",
+        "glm-4.5-air",
+        "glm-4.6",
+        "glm-4.7",
+        "glm-5",
+        "glm-5-turbo",
+        "glm-5.1",
+        "glm-5.2"
+      ]
     },
     {
       "serviceId": "supply.helius_rpc",
       "providerId": "provider.helius",
       "category": "rpc",
-      "products": ["rpc.solana", "crypto.wallet", "crypto.transaction"],
-      "endpointOrigins": ["https://mainnet.helius-rpc.com"],
-      "credentialNames": ["HELIUS_API_KEY"],
+      "products": [
+        "rpc.solana",
+        "crypto.wallet",
+        "crypto.transaction"
+      ],
+      "endpointOrigins": [
+        "https://mainnet.helius-rpc.com"
+      ],
+      "credentialNames": [
+        "HELIUS_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
@@ -471,13 +1469,30 @@
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["The endpoint credential is intentionally omitted from the inventory."]
+      "notes": [
+        "The endpoint credential is intentionally omitted from the inventory."
+      ]
     },
     {
       "serviceId": "supply.public_rpc_mesh",
       "providerId": "provider.public_rpc_mesh",
       "category": "rpc",
-      "products": ["rpc.arbitrum", "rpc.avalanche", "rpc.base", "rpc.bitcoin", "rpc.bsc", "rpc.cosmos", "rpc.ethereum", "rpc.fantom", "rpc.gnosis", "rpc.near", "rpc.optimism", "rpc.polygon", "rpc.solana", "rpc.tron"],
+      "products": [
+        "rpc.arbitrum",
+        "rpc.avalanche",
+        "rpc.base",
+        "rpc.bitcoin",
+        "rpc.bsc",
+        "rpc.cosmos",
+        "rpc.ethereum",
+        "rpc.fantom",
+        "rpc.gnosis",
+        "rpc.near",
+        "rpc.optimism",
+        "rpc.polygon",
+        "rpc.solana",
+        "rpc.tron"
+      ],
       "endpointOrigins": [],
       "credentialNames": [],
       "configuredCredentialSlots": 14,
@@ -489,15 +1504,26 @@
       "termsStatus": "review_required",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["Fourteen chain-specific public RPC variables are present; several contain multiple fallback URLs and require per-origin terms, method, freshness, fork, and reliability qualification."]
+      "notes": [
+        "Fourteen chain-specific public RPC variables are present; several contain multiple fallback URLs and require per-origin terms, method, freshness, fork, and reliability qualification."
+      ]
     },
     {
       "serviceId": "supply.zerion",
       "providerId": "provider.zerion",
       "category": "blockchain_data",
-      "products": ["crypto.wallet", "crypto.token", "crypto.transaction", "crypto.protocol"],
-      "endpointOrigins": ["https://api.zerion.io"],
-      "credentialNames": ["ZERION_API_KEY"],
+      "products": [
+        "crypto.wallet",
+        "crypto.token",
+        "crypto.transaction",
+        "crypto.protocol"
+      ],
+      "endpointOrigins": [
+        "https://api.zerion.io"
+      ],
+      "credentialNames": [
+        "ZERION_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
@@ -513,9 +1539,17 @@
       "serviceId": "supply.cdp_x402",
       "providerId": "provider.coinbase_cdp",
       "category": "payment",
-      "products": ["commerce.x402.verify", "commerce.x402.settle"],
-      "endpointOrigins": ["https://api.cdp.coinbase.com"],
-      "credentialNames": ["CDP_API_KEY_ID", "CDP_API_KEY_SECRET"],
+      "products": [
+        "commerce.x402.verify",
+        "commerce.x402.settle"
+      ],
+      "endpointOrigins": [
+        "https://api.cdp.coinbase.com"
+      ],
+      "credentialNames": [
+        "CDP_API_KEY_ID",
+        "CDP_API_KEY_SECRET"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
@@ -525,15 +1559,28 @@
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["Inventory does not authorize a mainnet payment, wallet signature, settlement, or gas spend."]
+      "notes": [
+        "Inventory does not authorize a mainnet payment, wallet signature, settlement, or gas spend."
+      ]
     },
     {
       "serviceId": "supply.telegram",
       "providerId": "provider.telegram",
       "category": "notification",
-      "products": ["notify.operations", "notify.security"],
-      "endpointOrigins": ["https://api.telegram.org"],
-      "credentialNames": ["TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID", "TELEGRAM_CHAT_OPS", "TELEGRAM_CHAT_CRITICAL", "TELEGRAM_CHAT_SECURITY"],
+      "products": [
+        "notify.operations",
+        "notify.security"
+      ],
+      "endpointOrigins": [
+        "https://api.telegram.org"
+      ],
+      "credentialNames": [
+        "TELEGRAM_BOT_TOKEN",
+        "TELEGRAM_CHAT_ID",
+        "TELEGRAM_CHAT_OPS",
+        "TELEGRAM_CHAT_CRITICAL",
+        "TELEGRAM_CHAT_SECURITY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
@@ -543,15 +1590,25 @@
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["Inventory does not authorize sending a real external message. The alternate bot token is a separate observed value and requires ownership and purpose reconciliation."]
+      "notes": [
+        "Inventory does not authorize sending a real external message. The alternate bot token is a separate observed value and requires ownership and purpose reconciliation."
+      ]
     },
     {
       "serviceId": "supply.workos",
       "providerId": "provider.workos",
       "category": "identity",
-      "products": ["identity.authentication"],
-      "endpointOrigins": ["https://api.workos.com"],
-      "credentialNames": ["WORKOS_API_KEY", "WORKOS_CLIENT_ID", "WORKOS_REDIRECT_URI"],
+      "products": [
+        "identity.authentication"
+      ],
+      "endpointOrigins": [
+        "https://api.workos.com"
+      ],
+      "credentialNames": [
+        "WORKOS_API_KEY",
+        "WORKOS_CLIENT_ID",
+        "WORKOS_REDIRECT_URI"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
@@ -561,7 +1618,9 @@
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["The application cookie password remains local operational configuration and is not an upstream WorkOS credential."]
+      "notes": [
+        "The application cookie password remains local operational configuration and is not an upstream WorkOS credential."
+      ]
     }
   ],
   "retiredServices": [
@@ -569,9 +1628,15 @@
       "serviceId": "supply.quickai",
       "providerId": "provider.quickai",
       "category": "ai_inference",
-      "products": ["ai.chat"],
-      "endpointOrigins": ["https://api.quickaitool.com"],
-      "credentialNames": ["QUICKAI_API_KEY"],
+      "products": [
+        "ai.chat"
+      ],
+      "endpointOrigins": [
+        "https://api.quickaitool.com"
+      ],
+      "credentialNames": [
+        "QUICKAI_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
@@ -581,15 +1646,23 @@
       "termsStatus": "blocked",
       "resaleStatus": "prohibited",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["Retired by owner decision on 2026-08-02; historical credentials remain untouched in the read-only import."]
+      "notes": [
+        "Retired by owner decision on 2026-08-02; historical credentials remain untouched in the read-only import."
+      ]
     },
     {
       "serviceId": "supply.tongkhokr",
       "providerId": "provider.tongkhokr",
       "category": "ai_inference",
-      "products": ["ai.chat"],
-      "endpointOrigins": ["https://api.tongkhokr.com"],
-      "credentialNames": ["ROUTER_API_KEY"],
+      "products": [
+        "ai.chat"
+      ],
+      "endpointOrigins": [
+        "https://api.tongkhokr.com"
+      ],
+      "credentialNames": [
+        "ROUTER_API_KEY"
+      ],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
@@ -599,8 +1672,12 @@
       "termsStatus": "blocked",
       "resaleStatus": "prohibited",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "knownModelNames": ["claude-opus-4-8"],
-      "notes": ["Retired by owner decision on 2026-08-02; historical credentials remain untouched in the read-only import."]
+      "knownModelNames": [
+        "claude-opus-4-8"
+      ],
+      "notes": [
+        "Retired by owner decision on 2026-08-02; historical credentials remain untouched in the read-only import."
+      ]
     }
   ],
   "ownerInputs": [

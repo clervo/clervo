@@ -142,6 +142,30 @@ test('provider candidate and complete redacted supply inventories compile strict
   assert.equal(visibility.schemas.find(({ file }) => file === 'supply-environment-name-audit.schema.json')?.visibility, 'internal_control');
 });
 
+test('owned AI discovery records every catalog response without pooling gateway accounts or leaking credentials', async () => {
+  const discovery = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/owned-ai-source-discovery.v1.json'), 'utf8'));
+  assert.equal(discovery.externalCalls, 32);
+  assert.equal(discovery.ownerCashSpentUsd, 0);
+  assert.equal(discovery.secretValuesRecorded, false);
+  assert.equal(discovery.hcnsecCredentialSlotsUsed, 1);
+  assert.equal(discovery.hcnsecAccountPoolingAttempted, false);
+  assert.equal(discovery.listedAssetsAcrossWorkingSources, 633);
+  assert.equal(discovery.uniqueExactModelIdsAcrossWorkingSources, 615);
+  assert.deepEqual(discovery.sources.map(({ serviceId, status, httpStatus, modelCount }) => [serviceId, status, httpStatus, modelCount]), [
+    ['supply.hcnsec_gateway', 'working', 200, 21],
+    ['supply.cerebras', 'working', 200, 3],
+    ['supply.cohere', 'working', 200, 31],
+    ['supply.google_gemini', 'http_failed', 400, 0],
+    ['supply.github_models', 'http_failed', 410, 0],
+    ['supply.mistral', 'working', 200, 52],
+    ['supply.nvidia', 'working', 200, 102],
+    ['supply.openrouter', 'working', 200, 337],
+    ['supply.sambanova', 'working', 200, 6],
+    ['supply.siliconflow', 'working', 200, 73],
+    ['supply.zai', 'working', 200, 8],
+  ]);
+});
+
 test('Clervo gateway screen preserves the bounded live result without overstating quality or cost', async () => {
   const evidence = JSON.parse(await readFile(path.join(root, 'docs/evidence/stage6/clervo-gateway-screen.v1.json'), 'utf8'));
   assert.equal(evidence.screen.externalCalls, 38);

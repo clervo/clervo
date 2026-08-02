@@ -51,6 +51,23 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(gateway.configuredCredentialSlots, 20);
   assert.equal(gateway.alternateCredentialSlots, 20);
   assert.equal(gateway.credentialDeployment, 'legacy_import_read_only');
+  assert.equal(gateway.connectionStatus, 'observed_working');
+  assert.equal(gateway.knownModelNames.length, 21);
+
+  assert.deepEqual(inventory.services.filter(({ serviceId }) => ['supply.cerebras', 'supply.cohere', 'supply.mistral', 'supply.nvidia', 'supply.openrouter', 'supply.sambanova', 'supply.siliconflow', 'supply.zai'].includes(serviceId)).map(({ serviceId, connectionStatus, knownModelNames }) => [serviceId, connectionStatus, knownModelNames.length]), [
+    ['supply.cerebras', 'observed_working', 3],
+    ['supply.cohere', 'observed_working', 31],
+    ['supply.mistral', 'observed_working', 52],
+    ['supply.nvidia', 'observed_working', 102],
+    ['supply.openrouter', 'observed_working', 337],
+    ['supply.sambanova', 'observed_working', 6],
+    ['supply.siliconflow', 'observed_working', 73],
+    ['supply.zai', 'observed_working', 8],
+  ]);
+  assert.deepEqual(inventory.services.filter(({ serviceId }) => ['supply.google_gemini', 'supply.github_models'].includes(serviceId)).map(({ serviceId, connectionStatus }) => [serviceId, connectionStatus]), [
+    ['supply.google_gemini', 'observed_failed'],
+    ['supply.github_models', 'observed_failed'],
+  ]);
 
   assert.deepEqual(inventory.retiredServices.map(({ serviceId }) => serviceId), ['supply.quickai', 'supply.tongkhokr']);
   assert.ok(inventory.retiredServices.every(({ connectionStatus, resaleStatus }) => connectionStatus === 'retired' && resaleStatus === 'prohibited'));

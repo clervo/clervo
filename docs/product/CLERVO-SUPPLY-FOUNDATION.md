@@ -58,6 +58,10 @@ disabled without explicit owner approval.
   with its preserved jargon limitation.
 - Groq: 15 authenticated assets priced; GPT-OSS 20B, GPT-OSS 120B, and Qwen
   3.6 27B qualified; remaining modalities/assets still need qualification.
+- Owned-source discovery: one credential per service exposed 633 listings and
+  615 unique exact IDs across the Chinese gateway, Cerebras, Cohere, Mistral,
+  NVIDIA, OpenRouter, SambaNova, SiliconFlow, and Z.AI. Google direct returned
+  HTTP 400 and GitHub Models HTTP 410; both failures remain explicit.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three
