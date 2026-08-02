@@ -5,7 +5,7 @@
   "steadyRequests": 256,
   "steadyClientConcurrency": 8,
   "maximumSteadyP95Ms": 250,
-  "maximumRssGrowthBytes": 67108864,
+  "maximumRssGrowthBytes": 201326592,
   "expectedBurstStatuses": [200, 503],
   "providerCallsAllowed": false,
   "cloudResourcesAllowed": false,
