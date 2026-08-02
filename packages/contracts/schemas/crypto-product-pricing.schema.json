@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/crypto-product-pricing.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "priceVersion", "effectiveAt", "currency", "lifecycle", "providerNamesPublic", "products"],
+  "properties": {
+    "schemaVersion": { "const": "clervo.crypto-product-pricing.v1" },
+    "priceVersion": { "type": "string", "pattern": "^crypto-product-[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$" },
+    "effectiveAt": { "type": "string", "format": "date-time" },
+    "currency": { "const": "USD" },
+    "lifecycle": { "const": "unavailable" },
+    "providerNamesPublic": { "const": false },
+    "products": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["productId", "billingUnit", "customerPriceMicrousd", "listingStatus", "maximumItems", "maximumResponseBytes"],
+        "properties": {
+          "productId": { "enum": ["crypto.wallet", "crypto.token", "crypto.transaction", "crypto.protocol", "crypto.report"] },
+          "billingUnit": { "const": "request" },
+          "customerPriceMicrousd": { "type": "integer", "minimum": 1, "maximum": 1000000 },
+          "listingStatus": { "const": "terms_blocked" },
+          "maximumItems": { "type": "integer", "minimum": 1, "maximum": 10000 },
+          "maximumResponseBytes": { "type": "integer", "minimum": 1024, "maximum": 10485760 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

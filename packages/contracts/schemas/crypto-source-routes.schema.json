@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/crypto-source-routes.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "lifecycle", "customerRoutingEnabled", "sources", "ownerBlocker"],
+  "properties": {
+    "schemaVersion": { "const": "clervo.crypto-source-routes.v1" },
+    "lifecycle": { "const": "unavailable" },
+    "customerRoutingEnabled": { "const": false },
+    "sources": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "required": ["sourceId", "chainCoverage", "products", "technicalStatus", "termsStatus", "resaleStatus", "customerRoutingEnabled", "fallbackStatus"],
+        "properties": {
+          "sourceId": { "type": "string", "pattern": "^crypto\\.source\\.[a-z0-9_]+$" },
+          "chainCoverage": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["evm", "solana", "multichain"] } },
+          "products": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["crypto.wallet", "crypto.token", "crypto.transaction", "crypto.protocol", "crypto.report"] } },
+          "technicalStatus": { "enum": ["passed", "failed", "not_run"] },
+          "termsStatus": { "enum": ["approved", "restricted", "blocked", "unreviewed"] },
+          "resaleStatus": { "enum": ["approved", "restricted", "prohibited", "unreviewed"] },
+          "customerRoutingEnabled": { "type": "boolean" },
+          "fallbackStatus": { "enum": ["independent_fallback_ready", "independent_fallback_missing"] }
+        },
+        "allOf": [
+          { "if": { "anyOf": [{ "properties": { "technicalStatus": { "enum": ["failed", "not_run"] } }, "required": ["technicalStatus"] }, { "properties": { "termsStatus": { "enum": ["restricted", "blocked", "unreviewed"] } }, "required": ["termsStatus"] }, { "properties": { "resaleStatus": { "enum": ["restricted", "prohibited", "unreviewed"] } }, "required": ["resaleStatus"] }] }, "then": { "properties": { "customerRoutingEnabled": { "const": false } } } }
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ownerBlocker": { "type": "string", "minLength": 1, "maxLength": 300 }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "clervo.crypto-source-routes.v1",
+  "lifecycle": "unavailable",
+  "customerRoutingEnabled": false,
+  "sources": [
+    { "sourceId": "crypto.source.blockscout", "chainCoverage": ["evm"], "products": ["crypto.wallet", "crypto.token", "crypto.transaction"], "technicalStatus": "passed", "termsStatus": "restricted", "resaleStatus": "restricted", "customerRoutingEnabled": false, "fallbackStatus": "independent_fallback_missing" },
+    { "sourceId": "crypto.source.helius_rpc", "chainCoverage": ["solana"], "products": ["crypto.wallet", "crypto.transaction"], "technicalStatus": "passed", "termsStatus": "blocked", "resaleStatus": "prohibited", "customerRoutingEnabled": false, "fallbackStatus": "independent_fallback_missing" },
+    { "sourceId": "crypto.source.zerion", "chainCoverage": ["multichain"], "products": ["crypto.wallet", "crypto.token", "crypto.transaction", "crypto.protocol"], "technicalStatus": "passed", "termsStatus": "blocked", "resaleStatus": "prohibited", "customerRoutingEnabled": false, "fallbackStatus": "independent_fallback_missing" }
+  ],
+  "ownerBlocker": "Written commercial permission or replacement terms-compatible EVM, Solana, and protocol supply is required before customer routing."
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "crypto-source-routes",
+  "valid": false,
+  "value": {
+    "schemaVersion": "clervo.crypto-source-routes.v1",
+    "lifecycle": "unavailable",
+    "customerRoutingEnabled": false,
+    "sources": [
+      { "sourceId": "crypto.source.blockscout", "chainCoverage": ["evm"], "products": ["crypto.wallet"], "technicalStatus": "passed", "termsStatus": "restricted", "resaleStatus": "restricted", "customerRoutingEnabled": true, "fallbackStatus": "independent_fallback_missing" },
+      { "sourceId": "crypto.source.helius_rpc", "chainCoverage": ["solana"], "products": ["crypto.wallet"], "technicalStatus": "passed", "termsStatus": "blocked", "resaleStatus": "prohibited", "customerRoutingEnabled": false, "fallbackStatus": "independent_fallback_missing" }
+    ],
+    "ownerBlocker": "Written commercial permission or replacement supply is required."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "clervo.crypto-product-pricing.v1",
+  "priceVersion": "crypto-product-2026-08-02.1",
+  "effectiveAt": "2026-08-02T13:00:00.000Z",
+  "currency": "USD",
+  "lifecycle": "unavailable",
+  "providerNamesPublic": false,
+  "products": [
+    { "productId": "crypto.wallet", "billingUnit": "request", "customerPriceMicrousd": 500, "listingStatus": "terms_blocked", "maximumItems": 10000, "maximumResponseBytes": 10485760 },
+    { "productId": "crypto.token", "billingUnit": "request", "customerPriceMicrousd": 250, "listingStatus": "terms_blocked", "maximumItems": 1, "maximumResponseBytes": 1048576 },
+    { "productId": "crypto.transaction", "billingUnit": "request", "customerPriceMicrousd": 500, "listingStatus": "terms_blocked", "maximumItems": 100, "maximumResponseBytes": 10485760 },
+    { "productId": "crypto.protocol", "billingUnit": "request", "customerPriceMicrousd": 750, "listingStatus": "terms_blocked", "maximumItems": 1000, "maximumResponseBytes": 10485760 },
+    { "productId": "crypto.report", "billingUnit": "request", "customerPriceMicrousd": 1000, "listingStatus": "terms_blocked", "maximumItems": 10000, "maximumResponseBytes": 10485760 }
+  ]
+}

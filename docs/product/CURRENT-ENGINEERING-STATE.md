@@ -1,6 +1,6 @@
 # Current engineering state
 
-Updated 2026-08-02 after Stage 9 product-core completion. This is a compact resumable
+Updated 2026-08-02 after Stage 10 product-core completion. This is a compact resumable
 handoff, not an authorization gate. Continue automatically after reading it.
 
 ## Active work
@@ -32,7 +32,19 @@ pricing, and unavailable registry projection pass the consolidated 18-test
 suite. Kalshi's deprecated liquidity field and contract-count volume are not
 represented as USD. Customer lifecycle and retained history remain
 `unavailable` until commercial reuse, resale, and history rights are qualified.
-Stage 10 Crypto Intelligence is the current roadmap priority.
+
+Stage 10 Crypto Intelligence product core is complete locally. Canonical EVM
+and Solana wallets, assets, exact atomic amounts, decimals, tokens,
+transactions, protocol positions, timestamps, freshness, coverage, confidence,
+field evidence, source conflicts, and deterministic reports are implemented.
+Missing values remain null, source disagreements remain unresolved and visible,
+malicious claims require attributable evidence, risk language is cautious, and
+the gateway has no custody, signing, transaction submission, or trading
+surface. Existing technically tested EVM, Solana, and multichain assets are
+retained, but every route remains customer-disabled because commercial terms
+are restricted or prohibited. The consolidated Stage 10 suite passes 20/20
+with 92 schemas and 126 fixtures validated. Stage 11 combined workflows and
+private six-product stabilization are the current roadmap priority.
 
 The production runner `sandbox.nodejs-24` is qualified at digest
 `sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e`.
@@ -59,16 +71,20 @@ confirmed absent; Artifact Registry was preserved. Evidence is in
 
 ## Next actions
 
-1. Continue Stage 10 with qualified RPC, wallet/token/transaction/protocol
-   normalization, freshness/provenance/conflict/spam controls, and
-   intelligence-only risk language; introduce no custody, signing, or trading.
-2. Keep Prediction customer routing and retained history disabled until
+1. Continue Stage 11 with representative Find → Understand → Act compositions
+   and shared commerce, routing, observability, cost, replay, degradation, and
+   disaster drills across all six product cores without bypassing their
+   underlying contracts.
+2. Keep Crypto Intelligence customer routing disabled until written commercial
+   permission or replacement terms-compatible EVM, Solana, and protocol supply
+   exists; this isolated owner blocker does not pause combined local work.
+3. Keep Prediction customer routing and retained history disabled until
    commercial reuse, resale, and history rights are qualified; this isolated
-   owner blocker does not pause Crypto Intelligence or other local engineering.
-3. Keep RPC customer routing disabled until written commercial permission or
+   owner blocker does not pause combined workflows or other local engineering.
+4. Keep RPC customer routing disabled until written commercial permission or
    replacement terms-compatible supply exists; this isolated owner blocker does
-   not pause Crypto Intelligence or other local engineering.
-4. Keep Sandbox public lifecycle `unavailable` until a persistent execution
+   not pause combined workflows or other local engineering.
+5. Keep Sandbox public lifecycle `unavailable` until a persistent execution
    plane is deployed and operationally qualified; delayed cloud billing
    reconciliation is non-blocking.
 

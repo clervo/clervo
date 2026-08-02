@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/crypto-operation-request.schema.json",
+  "$defs": {
+    "chainId": { "type": "string", "pattern": "^(?:eip155:[1-9][0-9]{0,9}|solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp)$" },
+    "address": { "type": "string", "pattern": "^(?:0x[a-fA-F0-9]{40}|[1-9A-HJ-NP-Za-km-z]{32,44})$" },
+    "charge": { "type": "object", "required": ["asset", "amountAtomic", "decimals"], "properties": { "asset": { "const": "USD" }, "amountAtomic": { "type": "string", "pattern": "^(?:0|[1-9][0-9]{0,6})$" }, "decimals": { "const": 6 } }, "additionalProperties": false }
+  },
+  "type": "object",
+  "required": ["contractVersion", "schemaVersion", "operationId", "productId", "input", "maximumCharge", "deadlineAt"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "schemaVersion": { "const": "crypto-operation-request.v1" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "productId": { "enum": ["crypto.wallet", "crypto.token", "crypto.transaction", "crypto.protocol", "crypto.report"] },
+    "input": {
+      "oneOf": [
+        { "type": "object", "required": ["kind", "chainId", "address"], "properties": { "kind": { "const": "wallet" }, "chainId": { "$ref": "#/$defs/chainId" }, "address": { "$ref": "#/$defs/address" } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "chainId", "assetAddress"], "properties": { "kind": { "const": "token" }, "chainId": { "$ref": "#/$defs/chainId" }, "assetAddress": { "$ref": "#/$defs/address" } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "chainId", "address", "limit"], "properties": { "kind": { "const": "transaction" }, "chainId": { "$ref": "#/$defs/chainId" }, "address": { "$ref": "#/$defs/address" }, "transactionId": { "type": "string", "pattern": "^(?:0x[a-fA-F0-9]{64}|[1-9A-HJ-NP-Za-km-z]{64,128})$" }, "limit": { "type": "integer", "minimum": 1, "maximum": 100 } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "chainId", "address"], "properties": { "kind": { "const": "protocol" }, "chainId": { "$ref": "#/$defs/chainId" }, "address": { "$ref": "#/$defs/address" } }, "additionalProperties": false },
+        { "type": "object", "required": ["kind", "chainId", "address"], "properties": { "kind": { "const": "report" }, "chainId": { "$ref": "#/$defs/chainId" }, "address": { "$ref": "#/$defs/address" } }, "additionalProperties": false }
+      ]
+    },
+    "maximumCharge": { "$ref": "#/$defs/charge" },
+    "deadlineAt": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    { "if": { "properties": { "productId": { "const": "crypto.wallet" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "wallet" } } } } } },
+    { "if": { "properties": { "productId": { "const": "crypto.token" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "token" } } } } } },
+    { "if": { "properties": { "productId": { "const": "crypto.transaction" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "transaction" } } } } } },
+    { "if": { "properties": { "productId": { "const": "crypto.protocol" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "protocol" } } } } } },
+    { "if": { "properties": { "productId": { "const": "crypto.report" } }, "required": ["productId"] }, "then": { "properties": { "input": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "report" } } } } } }
+  ],
+  "additionalProperties": false
+}

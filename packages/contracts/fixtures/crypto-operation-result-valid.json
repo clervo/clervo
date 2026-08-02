@@ -1,0 +1,24 @@
+{
+  "schema": "crypto-operation-result",
+  "valid": true,
+  "value": {
+    "contractVersion": "2026-07-29.1",
+    "schemaVersion": "crypto-operation-result.v1",
+    "operationId": "op_0123456789ABCDEFGHIJ",
+    "productId": "crypto.wallet",
+    "completedAt": "2026-08-02T13:00:01.000Z",
+    "meteredCharge": { "asset": "USD", "amountAtomic": "500", "decimals": 6 },
+    "output": {
+      "kind": "wallet",
+      "state": "degraded",
+      "chainId": "eip155:1",
+      "observedAt": "2026-08-02T13:00:00.000Z",
+      "freshness": "fresh",
+      "coverage": ["native_balance", "token_balances"],
+      "conflictCount": 0,
+      "evidenceRefs": ["evidence_0123456789abcdef0123456789abcdef"],
+      "data": { "nativeBalanceAtomic": "100", "missing": ["prices"] }
+    },
+    "resultHash": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  }
+}

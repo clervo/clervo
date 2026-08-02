@@ -375,7 +375,7 @@ export interface CryptoTransactionInput {
   from: string;
   to: string | null;
   nativeValueAtomic: string | null;
-  tokenTransfers: readonly Readonly<{ assetAddress: string; from: string; to: string; amountAtomic: string; decimals: number }>[]; 
+  tokenTransfers: readonly Readonly<{ assetAddress: string; from: string; to: string; amountAtomic: string; decimals: number }>[];
   programOrContract: string | null;
   observedAt: string;
   evidence: readonly Readonly<CryptoEvidence>[];

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/crypto-operation-result.schema.json",
+  "$defs": {
+    "json": {
+      "anyOf": [
+        { "type": "null" },
+        { "type": "boolean" },
+        { "type": "number" },
+        { "type": "string", "maxLength": 65536 },
+        { "type": "array", "maxItems": 10000, "items": { "$ref": "#/$defs/json" } },
+        { "type": "object", "maxProperties": 1000, "additionalProperties": { "$ref": "#/$defs/json" } }
+      ]
+    },
+    "chainId": { "type": "string", "pattern": "^(?:eip155:[1-9][0-9]{0,9}|solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp)$" },
+    "charge": { "type": "object", "required": ["asset", "amountAtomic", "decimals"], "properties": { "asset": { "const": "USD" }, "amountAtomic": { "type": "string", "pattern": "^(?:0|[1-9][0-9]{0,6})$" }, "decimals": { "const": 6 } }, "additionalProperties": false }
+  },
+  "type": "object",
+  "required": ["contractVersion", "schemaVersion", "operationId", "productId", "completedAt", "meteredCharge", "output", "resultHash"],
+  "properties": {
+    "contractVersion": { "const": "2026-07-29.1" },
+    "schemaVersion": { "const": "crypto-operation-result.v1" },
+    "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
+    "productId": { "enum": ["crypto.wallet", "crypto.token", "crypto.transaction", "crypto.protocol", "crypto.report"] },
+    "completedAt": { "type": "string", "format": "date-time" },
+    "meteredCharge": { "$ref": "#/$defs/charge" },
+    "output": {
+      "type": "object",
+      "required": ["kind", "state", "chainId", "observedAt", "freshness", "coverage", "conflictCount", "evidenceRefs", "data"],
+      "properties": {
+        "kind": { "enum": ["wallet", "token", "transaction", "protocol", "report"] },
+        "state": { "enum": ["available", "degraded", "unavailable"] },
+        "chainId": { "$ref": "#/$defs/chainId" },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "freshness": { "enum": ["fresh", "stale", "mixed", "unavailable"] },
+        "coverage": { "type": "array", "uniqueItems": true, "items": { "enum": ["native_balance", "token_balances", "token_metadata", "transactions", "protocol_positions", "prices"] } },
+        "conflictCount": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "evidenceRefs": { "type": "array", "maxItems": 10000, "uniqueItems": true, "items": { "type": "string", "pattern": "^evidence_[a-f0-9]{32}$" } },
+        "data": { "$ref": "#/$defs/json" }
+      },
+      "additionalProperties": false
+    },
+    "resultHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+  },
+  "allOf": [
+    { "if": { "properties": { "productId": { "const": "crypto.wallet" } }, "required": ["productId"] }, "then": { "properties": { "output": { "type": "object", "properties": { "kind": { "const": "wallet" } } } } } },
+    { "if": { "properties": { "productId": { "const": "crypto.token" } }, "required": ["productId"] }, "then": { "properties": { "output": { "type": "object", "properties": { "kind": { "const": "token" } } } } } },
+    { "if": { "properties": { "productId": { "const": "crypto.transaction" } }, "required": ["productId"] }, "then": { "properties": { "output": { "type": "object", "properties": { "kind": { "const": "transaction" } } } } } },
+    { "if": { "properties": { "productId": { "const": "crypto.protocol" } }, "required": ["productId"] }, "then": { "properties": { "output": { "type": "object", "properties": { "kind": { "const": "protocol" } } } } } },
+    { "if": { "properties": { "productId": { "const": "crypto.report" } }, "required": ["productId"] }, "then": { "properties": { "output": { "type": "object", "properties": { "kind": { "const": "report" } } } } } }
+  ],
+  "additionalProperties": false
+}
