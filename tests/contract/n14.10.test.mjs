@@ -37,12 +37,18 @@ test('production cloud contract is bounded, recoverable, and leaves the protecte
 
 test('Cloud Build is immutable, acceptance-gated, and requests verified provenance without an explicit push', async () => {
   const build = await readFile('infra/production/gcp/cloudbuild.yaml', 'utf8');
+  const rootPackage = JSON.parse(await readFile('package.json', 'utf8'));
   assert.match(build, /node:24\.18\.1-bookworm-slim@sha256:[a-f0-9]{64}/u);
   assert.match(build, /gcr\.io\/cloud-builders\/docker@sha256:[a-f0-9]{64}/u);
   assert.match(build, /requestedVerifyOption: VERIFIED/u);
   assert.match(build, /images:\n  - us-central1-docker\.pkg\.dev\/\$PROJECT_ID\/clervo-production\/clervo-api:\$COMMIT_SHA/u);
-  assert.match(build, /tests\/contract\/n14\.10\.test\.mjs/u);
-  assert.match(build, /npm audit --omit=dev --audit-level=high/u);
+  assert.match(build, /npm run test:stage14/u);
+  for (let index = 1; index <= 12; index += 1) {
+    assert.match(rootPackage.scripts['test:stage14'], new RegExp(`tests/contract/n14\\.${index}\\.test\\.mjs`, 'u'));
+  }
+  assert.match(rootPackage.scripts['test:stage14'], /npm audit --omit=dev --audit-level=high/u);
+  assert.match(rootPackage.scripts['test:stage14'], /npm run scan:secrets/u);
+  assert.match(rootPackage.scripts['test:stage14'], /verify-clean-room-boundary/u);
   assert.doesNotMatch(build, /docker push/u);
   assert.doesNotMatch(build, /:latest/u);
   const release = await readFile('scripts/production/gcp-release.mjs', 'utf8');

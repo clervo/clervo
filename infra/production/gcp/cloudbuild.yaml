@@ -6,24 +6,7 @@ steps:
       - -ceu
       - |
         npm ci
-        npm run build
-        node --test \
-          tests/contract/n14.1.test.mjs \
-          tests/contract/n14.2.test.mjs \
-          tests/contract/n14.3.test.mjs \
-          tests/contract/n14.4.test.mjs \
-          tests/contract/n14.5.test.mjs \
-          tests/contract/n14.6.test.mjs \
-          tests/contract/n14.7.test.mjs \
-          tests/contract/n14.8.test.mjs \
-          tests/contract/n14.9.test.mjs \
-          tests/contract/n14.10.test.mjs \
-          tests/contract/n14.11.test.mjs \
-          tests/contract/n14.12.test.mjs
-        npm audit --omit=dev --audit-level=high
-        npm run lint
-        npm run scan:secrets
-        ./scripts/verify-clean-room-boundary.sh
+        npm run test:stage14
   - id: image
     name: gcr.io/cloud-builders/docker@sha256:f8b08c609fdc392ee6827ff3e1725e4980f7d96bde9f76f4695086405c96c147
     args:

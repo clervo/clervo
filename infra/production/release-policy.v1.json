@@ -2,7 +2,7 @@
   "schemaVersion": "clervo.production-release-policy.v1",
   "releaseCandidateId": "clervo-private-core-2026-08-02.2",
   "interfaceHash": "sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622",
-  "state": "local_hardening",
+  "state": "local_qualified_cloud_unapplied",
   "publicDeploymentEnabled": false,
   "paymentEnabled": false,
   "container": {
