@@ -167,7 +167,9 @@ leases, and two hours for hashed quota subjects. Planning is count-only;
 deletion requires an exact untracked confirmation and production deletion
 still requires owner approval. No production/customer database deletion was
 performed. The new image is qualified locally at source commit
-`ca09beea7aba`. This is not production readiness.
+`95fe9461194c`. Its build remains on the exact Node 24.18.1 image, while the
+runtime is now the exact non-root Node 24 distroless image and contains no
+shell or package manager. This is not production readiness.
 
 The exact digest-pinned PostgreSQL 18.4 image now passes a disposable live
 recovery qualification. All three migrations applied; atomic claim, completion,
