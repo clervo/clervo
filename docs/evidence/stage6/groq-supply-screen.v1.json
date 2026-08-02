@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "clervo.stage6.groq-supply-screen.v1",
+  "evaluatedAt": "2026-08-02T03:29:20.759Z",
+  "source": {
+    "authenticatedModelCatalog": true,
+    "secretValuesRecorded": false,
+    "promptOrOutputPayloadsRecorded": false,
+    "ownerCashSpentUsd": 0,
+    "freeTierBacked": true,
+    "externalCalls": 182
+  },
+  "terms": {
+    "status": "restricted",
+    "valueAddedCustomerApplicationAllowed": true,
+    "rawCloudServiceResaleAllowed": false,
+    "customerCredentialOrAccountPassThroughAllowed": false,
+    "multiAccountLimitBypassAllowed": false,
+    "documents": [
+      "https://console.groq.com/docs/legal/services-agreement",
+      "https://console.groq.com/docs/legal/ai-policy"
+    ]
+  },
+  "discovery": {
+    "activeModelCount": 15,
+    "models": [
+      "allam-2-7b",
+      "canopylabs/orpheus-arabic-saudi",
+      "canopylabs/orpheus-v1-english",
+      "groq/compound",
+      "groq/compound-mini",
+      "llama-3.1-8b-instant",
+      "llama-3.3-70b-versatile",
+      "meta-llama/llama-prompt-guard-2-22m",
+      "meta-llama/llama-prompt-guard-2-86m",
+      "openai/gpt-oss-120b",
+      "openai/gpt-oss-20b",
+      "openai/gpt-oss-safeguard-20b",
+      "qwen/qwen3.6-27b",
+      "whisper-large-v3",
+      "whisper-large-v3-turbo"
+    ]
+  },
+  "benchmark": {
+    "corpusTasks": 10,
+    "calls": 150,
+    "initialRun": {
+      "calls": 70,
+      "preservedAs": "rate_limit_and_configuration_failure_evidence",
+      "limitations": ["free_tier_tpm_exhausted", "reasoning_token_budget_invalid_for_some_models"]
+    },
+    "repairedRun": {
+      "calls": 50,
+      "preservedAs": "partial_rate_limit_repair_evidence",
+      "limitations": ["reasoning_configuration_still_invalid_for_qwen"]
+    },
+    "reasoningAwareRun": {
+      "calls": 30,
+      "models": [
+        { "modelId": "openai/gpt-oss-20b", "passed": 10, "total": 10, "latencyMsP50": 173.93, "latencyMsP95": 353.55, "rank": "best_value" },
+        { "modelId": "openai/gpt-oss-120b", "passed": 10, "total": 10, "latencyMsP50": 286.97, "latencyMsP95": 447.52, "rank": "premium" },
+        { "modelId": "qwen/qwen3.6-27b", "passed": 10, "total": 10, "latencyMsP50": 82.61, "latencyMsP95": 431.31, "rank": "fastest_preview" }
+      ]
+    },
+    "additionalRankings": [
+      { "modelId": "llama-3.3-70b-versatile", "passed": 8, "total": 10, "grade": "good", "listingStatus": "priced_pending_qualification" },
+      { "modelId": "llama-3.1-8b-instant", "passed": 3, "total": 10, "grade": "poor", "listingStatus": "priced_pending_qualification" }
+    ]
+  },
+  "qualification": {
+    "calls": 30,
+    "diagnosticCalls": 1,
+    "initialStreamingFailurePreserved": true,
+    "repair": "accept_valid_empty_stream_content_deltas_and_require_terminal_usage",
+    "models": [
+      { "modelId": "openai/gpt-oss-20b", "status": "passed", "latencyMsP95": 257.58, "checksPassed": 11, "checksTotal": 11 },
+      { "modelId": "openai/gpt-oss-120b", "status": "passed", "latencyMsP95": 274.16, "checksPassed": 11, "checksTotal": 11 },
+      { "modelId": "qwen/qwen3.6-27b", "status": "passed", "latencyMsP95": 847.17, "checksPassed": 11, "checksTotal": 11 }
+    ]
+  },
+  "commercialDecision": {
+    "allDiscoveredAssetsPriced": true,
+    "unknownSupplierDebitBlocksPricing": false,
+    "qualifiedRoutesSellable": ["openai/gpt-oss-20b", "openai/gpt-oss-120b", "qwen/qwen3.6-27b"],
+    "previewDisclosureRequired": ["qwen/qwen3.6-27b"],
+    "remainingAssets": "priced_with_non_sellable_qualification_state"
+  }
+}

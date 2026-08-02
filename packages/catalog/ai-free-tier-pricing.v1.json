@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "clervo.ai-free-tier-pricing.v1",
+  "priceVersion": "2026-08-02.1",
+  "evaluatedAt": "2026-08-02T03:29:20.759Z",
+  "currency": "USD",
+  "providerVisibility": "internal_only",
+  "policy": {
+    "customerFreeByDefault": false,
+    "positiveMarginRequiredAtLaunch": false,
+    "unknownSupplierDebitBlocksPricing": false,
+    "unknownSupplierDebitBlocksSale": false,
+    "qualifiedRoutesAreSellable": true,
+    "providerPassThroughAllowed": false,
+    "multiAccountLimitBypassAllowed": false,
+    "previewMustBeDisclosed": true
+  },
+  "rateGuard": {
+    "freeTierHardCap": true,
+    "automaticPaidOverageAllowed": false,
+    "perModelLimitsRequired": true,
+    "queueAndBackpressureRequired": true,
+    "customerAllowanceMustFitSupplierLimit": true
+  },
+  "assets": [
+    { "modelId": "allam-2-7b", "assetType": "chat", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "unranked", "positioning": "arabic_value", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.02, "output": 0.08 }, "shadowPrice": { "input": null, "output": null }, "supplierPriceKnown": false },
+    { "modelId": "canopylabs/orpheus-arabic-saudi", "assetType": "speech", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "unranked", "positioning": "arabic_voice", "customerUnit": "USD_per_thousand_characters", "customerPrice": { "input": 0.02, "output": 0.02 }, "shadowPrice": { "input": 0.04, "output": 0.04 }, "supplierPriceKnown": true },
+    { "modelId": "canopylabs/orpheus-v1-english", "assetType": "speech", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "unranked", "positioning": "english_voice", "customerUnit": "USD_per_thousand_characters", "customerPrice": { "input": 0.01, "output": 0.01 }, "shadowPrice": { "input": 0.022, "output": 0.022 }, "supplierPriceKnown": true },
+    { "modelId": "groq/compound", "assetType": "chat", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "unranked", "positioning": "agentic_premium", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.2, "output": 0.8 }, "shadowPrice": { "input": null, "output": null }, "supplierPriceKnown": false },
+    { "modelId": "groq/compound-mini", "assetType": "chat", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "unranked", "positioning": "agentic_value", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.1, "output": 0.4 }, "shadowPrice": { "input": null, "output": null }, "supplierPriceKnown": false },
+    { "modelId": "llama-3.1-8b-instant", "assetType": "chat", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "poor", "positioning": "low_risk_speed", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.02, "output": 0.04 }, "shadowPrice": { "input": 0.05, "output": 0.08 }, "supplierPriceKnown": true },
+    { "modelId": "llama-3.3-70b-versatile", "assetType": "chat", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "good", "positioning": "general_fallback", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.25, "output": 0.35 }, "shadowPrice": { "input": 0.59, "output": 0.79 }, "supplierPriceKnown": true },
+    { "modelId": "meta-llama/llama-prompt-guard-2-22m", "assetType": "moderation", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "unranked", "positioning": "guard_fastest", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.015, "output": 0.015 }, "shadowPrice": { "input": 0.03, "output": 0.03 }, "supplierPriceKnown": true },
+    { "modelId": "meta-llama/llama-prompt-guard-2-86m", "assetType": "moderation", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "unranked", "positioning": "guard_balanced", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.02, "output": 0.02 }, "shadowPrice": { "input": 0.04, "output": 0.04 }, "supplierPriceKnown": true },
+    { "modelId": "openai/gpt-oss-120b", "assetType": "chat", "lifecycle": "production", "listingStatus": "sellable", "qualityGrade": "best", "positioning": "premium", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.06, "output": 0.24 }, "shadowPrice": { "input": 0.15, "output": 0.6 }, "supplierPriceKnown": true },
+    { "modelId": "openai/gpt-oss-20b", "assetType": "chat", "lifecycle": "production", "listingStatus": "sellable", "qualityGrade": "best", "positioning": "best_value", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.03, "output": 0.12 }, "shadowPrice": { "input": 0.075, "output": 0.3 }, "supplierPriceKnown": true },
+    { "modelId": "openai/gpt-oss-safeguard-20b", "assetType": "moderation", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "unranked", "positioning": "reasoning_guard", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.03, "output": 0.12 }, "shadowPrice": { "input": 0.075, "output": 0.3 }, "supplierPriceKnown": true },
+    { "modelId": "qwen/qwen3.6-27b", "assetType": "chat", "lifecycle": "preview", "listingStatus": "sellable_preview", "qualityGrade": "best", "positioning": "fastest_preview", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.25, "output": 1.25 }, "shadowPrice": { "input": 0.6, "output": 3 }, "supplierPriceKnown": true },
+    { "modelId": "whisper-large-v3", "assetType": "transcription", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "unranked", "positioning": "accuracy", "customerUnit": "USD_per_minute", "customerPrice": { "input": 0.001, "output": 0.001 }, "shadowPrice": { "input": 0.00185, "output": 0.00185 }, "supplierPriceKnown": true },
+    { "modelId": "whisper-large-v3-turbo", "assetType": "transcription", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "unranked", "positioning": "fastest_value", "customerUnit": "USD_per_minute", "customerPrice": { "input": 0.0004, "output": 0.0004 }, "shadowPrice": { "input": 0.000667, "output": 0.000667 }, "supplierPriceKnown": true }
+  ]
+}

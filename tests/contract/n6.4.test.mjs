@@ -44,14 +44,31 @@ test('OpenAI-compatible chat binds endpoint, credential, exact model, usage, and
   const result = await value.execute({ request: req, exactModelId: 'chat-v1', signal: new AbortController().signal });
   assert.equal(capture.value.url, 'https://api.example.test/openai/v1/chat/completions');
   assert.equal(capture.value.headers.authorization, 'Bearer opaque-test-credential');
-  assert.deepEqual(JSON.parse(new TextDecoder().decode(capture.value.body)), { model: 'chat-v1', messages: req.input.messages, stream: false });
+  assert.deepEqual(JSON.parse(new TextDecoder().decode(capture.value.body)), { model: 'chat-v1', messages: req.input.messages, stream: false, max_completion_tokens: 600 });
   assert.deepEqual(result.usage, { inputTokens: 10, cachedInputTokens: 1, outputTokens: 2, reasoningTokens: 0, images: 0, audioCharacters: 0 });
   assert.deepEqual(result.output, { kind: 'chat', content: 'Hello.', finishReason: 'stop' });
   assert.equal(JSON.stringify(result).includes('opaque-test-credential'), false);
 });
 
+test('OpenAI-compatible chat applies bounded provider reasoning controls without exposing them to non-chat products', async () => {
+  const capture = {};
+  const value = new OpenAiCompatibleAdapter({
+    config: { ...config('ai.chat', 'CHAT'), reasoningEffort: 'low', reasoningFormat: 'hidden' },
+    transport: transport(response({ model: 'chat-v1', choices: [{ message: { role: 'assistant', content: '{}' }, finish_reason: 'stop' }], usage: { prompt_tokens: 1, completion_tokens: 1 } }), capture),
+    secret: async () => 'opaque-test-credential',
+  });
+  const req = request('ai.chat', { kind: 'chat', messages: [{ role: 'user', content: 'Return JSON.' }], responseFormat: 'json_object', stream: false }, 'CHAT');
+  await value.execute({ request: req, exactModelId: 'chat-v1', signal: new AbortController().signal });
+  const payload = JSON.parse(new TextDecoder().decode(capture.value.body));
+  assert.equal(payload.reasoning_effort, 'low');
+  assert.equal(payload.reasoning_format, 'hidden');
+  assert.equal(payload.max_completion_tokens, 600);
+  assert.throws(() => new OpenAiCompatibleAdapter({ config: { ...config('ai.embed', 'EMBED'), reasoningEffort: 'low' }, transport: transport(response({})), secret: async () => 'credential' }), /config_invalid/u);
+});
+
 test('streaming chat is aggregated only with terminal usage and completion evidence', async () => {
   const stream = [
+    'data: {"model":"chat-v1","choices":[{"delta":{"content":""},"finish_reason":null}]}',
     'data: {"model":"chat-v1","choices":[{"delta":{"content":"Hel"},"finish_reason":null}]}',
     'data: {"model":"chat-v1","choices":[{"delta":{"content":"lo"},"finish_reason":"stop"}]}',
     'data: {"model":"chat-v1","choices":[],"usage":{"prompt_tokens":4,"completion_tokens":2}}',

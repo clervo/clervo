@@ -80,6 +80,8 @@ export interface OpenAiCompatibleAdapterConfig {
   exactModelId: string;
   productId: 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech';
   maximumResponseBytes: number;
+  reasoningEffort?: 'none' | 'low' | 'medium' | 'high';
+  reasoningFormat?: 'hidden';
 }
 
 function record(value: unknown): Record<string, unknown> {
@@ -161,7 +163,10 @@ function parseChatStream(bytes: Uint8Array, request: AiExecutionRequest): { mode
       const choice = record(event.choices[0]);
       if (choice.delta !== undefined) {
         const delta = record(choice.delta);
-        if (delta.content !== undefined) content += string(delta.content, 'chat_delta');
+        if (delta.content !== undefined) {
+          if (typeof delta.content !== 'string' || delta.content.length > 1_000_000) throw new TypeError('ai_provider_chat_delta_invalid');
+          content += delta.content;
+        }
       }
       if (choice.finish_reason !== undefined && choice.finish_reason !== null) reason = finishReason(choice.finish_reason);
     }
@@ -179,11 +184,15 @@ function endpoint(config: OpenAiCompatibleAdapterConfig): URL {
   return new URL(suffix, base.href.endsWith('/') ? base : `${base.href}/`);
 }
 
-function requestPayload(request: AiExecutionRequest, model: string): Record<string, JsonValue> {
+function requestPayload(request: AiExecutionRequest, config: Readonly<OpenAiCompatibleAdapterConfig>): Record<string, JsonValue> {
+  const model = config.exactModelId;
   if (request.input.kind === 'chat') return {
     model,
     messages: request.input.messages as unknown as JsonValue,
     stream: request.input.stream,
+    max_completion_tokens: request.usageBounds.outputTokens + request.usageBounds.reasoningTokens,
+    ...(config.reasoningEffort === undefined ? {} : { reasoning_effort: config.reasoningEffort }),
+    ...(config.reasoningFormat === undefined ? {} : { reasoning_format: config.reasoningFormat }),
     ...(request.input.stream ? { stream_options: { include_usage: true } } : {}),
     ...(request.input.responseFormat === 'json_object' || request.input.evidence !== undefined ? { response_format: { type: 'json_object' } } : {}),
   };
@@ -210,7 +219,7 @@ export class OpenAiCompatibleAdapter implements AiExecutionAdapter {
     artifacts?: AiArtifactStore;
     clock?: () => string;
   }) {
-    if (!/^ai\.route\.[a-z0-9_]+$/u.test(input.config.routeId) || !/^[A-Z][A-Z0-9_]{2,63}$/u.test(input.config.secretName) || input.config.exactModelId.length === 0 || !Number.isInteger(input.config.maximumResponseBytes) || input.config.maximumResponseBytes < 1 || input.config.maximumResponseBytes > 20_000_000) throw new TypeError('ai_provider_config_invalid');
+    if (!/^ai\.route\.[a-z0-9_]+$/u.test(input.config.routeId) || !/^[A-Z][A-Z0-9_]{2,63}$/u.test(input.config.secretName) || input.config.exactModelId.length === 0 || !Number.isInteger(input.config.maximumResponseBytes) || input.config.maximumResponseBytes < 1 || input.config.maximumResponseBytes > 20_000_000 || ((input.config.reasoningEffort !== undefined || input.config.reasoningFormat !== undefined) && input.config.productId !== 'ai.chat')) throw new TypeError('ai_provider_config_invalid');
     this.#endpoint = endpoint(input.config);
     this.routeId = input.config.routeId;
     this.#config = Object.freeze({ ...input.config, allowedHosts: Object.freeze([...input.config.allowedHosts]) });
@@ -226,7 +235,7 @@ export class OpenAiCompatibleAdapter implements AiExecutionAdapter {
     try { credential = await this.#secret(this.#config.secretName); }
     catch { throw new TypeError('ai_provider_credential_unavailable'); }
     if (credential.length < 8 || credential.length > 8_192 || /[\r\n]/u.test(credential)) throw new TypeError('ai_provider_credential_invalid');
-    const body = new TextEncoder().encode(JSON.stringify(requestPayload(input.request, input.exactModelId)));
+    const body = new TextEncoder().encode(JSON.stringify(requestPayload(input.request, this.#config)));
     let response: Readonly<AiHttpResponse>;
     try {
       response = await this.#transport.request({

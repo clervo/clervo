@@ -1,6 +1,6 @@
 {
-  "catalogVersion": "2026-08-02.6",
-  "researchedAt": "2026-08-02T03:18:00.000Z",
+  "catalogVersion": "2026-08-02.7",
+  "researchedAt": "2026-08-02T03:29:20.759Z",
   "targets": [
     {
       "providerId": "provider.clervo_ai_gateway",
@@ -134,7 +134,26 @@
     },
     {
       "providerId": "provider.groq",
-      "supplyFamilyId": "supply.groq_inference",
+      "supplyFamilyId": "supply.groq",
+      "exactModelId": "openai/gpt-oss-20b",
+      "baseUrlPattern": "https://api.groq.com/openai/v1/",
+      "allowedHosts": ["api.groq.com"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": [],
+      "requiredSecretNames": ["GROQ_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Groq supported models", "url": "https://console.groq.com/docs/models", "checkedAt": "2026-08-02T03:29:20.759Z" },
+        { "title": "Groq Services Agreement", "url": "https://console.groq.com/docs/legal/services-agreement", "checkedAt": "2026-08-02T03:29:20.759Z" }
+      ]
+    },
+    {
+      "providerId": "provider.groq",
+      "supplyFamilyId": "supply.groq",
       "exactModelId": "openai/gpt-oss-120b",
       "baseUrlPattern": "https://api.groq.com/openai/v1/",
       "allowedHosts": ["api.groq.com"],
@@ -142,13 +161,32 @@
       "requiredConfigurationNames": [],
       "requiredSecretNames": ["GROQ_API_KEY"],
       "selectedForQualification": true,
-      "termsStatus": "unreviewed",
-      "resaleAllowed": false,
-      "qualificationStatus": "blocked",
-      "blockerCodes": ["credential_missing", "resale_terms_unresolved", "live_checks_not_run"],
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
       "documentation": [
-        { "title": "Groq supported production models", "url": "https://console.groq.com/docs/models", "checkedAt": "2026-08-01T23:45:00.000Z" },
-        { "title": "Groq OpenAI-compatible API reference", "url": "https://console.groq.com/docs/api-reference", "checkedAt": "2026-08-01T23:45:00.000Z" }
+        { "title": "Groq supported models", "url": "https://console.groq.com/docs/models", "checkedAt": "2026-08-02T03:29:20.759Z" },
+        { "title": "Groq Services Agreement", "url": "https://console.groq.com/docs/legal/services-agreement", "checkedAt": "2026-08-02T03:29:20.759Z" }
+      ]
+    },
+    {
+      "providerId": "provider.groq",
+      "supplyFamilyId": "supply.groq",
+      "exactModelId": "qwen/qwen3.6-27b",
+      "baseUrlPattern": "https://api.groq.com/openai/v1/",
+      "allowedHosts": ["api.groq.com"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": [],
+      "requiredSecretNames": ["GROQ_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Groq supported models", "url": "https://console.groq.com/docs/models", "checkedAt": "2026-08-02T03:29:20.759Z" },
+        { "title": "Groq Services Agreement", "url": "https://console.groq.com/docs/legal/services-agreement", "checkedAt": "2026-08-02T03:29:20.759Z" }
       ]
     },
     {
