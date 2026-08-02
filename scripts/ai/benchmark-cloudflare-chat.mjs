@@ -8,6 +8,8 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const corpusPath = path.join(root, 'benchmarks/stage6/clervo-gateway-quality-screen.v1.json');
 const supportedModels = [
+  '@cf/openai/gpt-oss-20b',
+  '@cf/openai/gpt-oss-120b',
   '@cf/google/gemma-4-26b-a4b-it',
   '@cf/qwen/qwen3-30b-a3b-fp8',
   '@cf/zai-org/glm-4.7-flash',

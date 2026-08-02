@@ -27,7 +27,7 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(inventory.commercialPolicy.providerNamesPublic, false);
   assert.equal(inventory.commercialPolicy.silentQualityDowngradeAllowed, false);
   assert.equal(new Set(inventory.services.map(({ serviceId }) => serviceId)).size, inventory.services.length);
-  assert.deepEqual(inventory.services.filter(({ qualificationStatus }) => qualificationStatus === 'passed').map(({ serviceId }) => serviceId), ['supply.clervo_ai_gateway', 'supply.deepgram', 'supply.google_vertex']);
+  assert.deepEqual(inventory.services.filter(({ qualificationStatus }) => qualificationStatus === 'passed').map(({ serviceId }) => serviceId), ['supply.clervo_ai_gateway', 'supply.deepgram', 'supply.google_vertex', 'supply.groq']);
 
   const clervo = inventory.services.find(({ serviceId }) => serviceId === 'supply.clervo_ai_gateway');
   assert.equal(clervo.connectionStatus, 'observed_working');

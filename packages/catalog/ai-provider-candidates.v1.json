@@ -1,6 +1,6 @@
 {
-  "catalogVersion": "2026-08-02.8",
-  "researchedAt": "2026-08-02T03:40:23.433Z",
+  "catalogVersion": "2026-08-02.9",
+  "researchedAt": "2026-08-02T04:15:00.210Z",
   "targets": [
     {
       "providerId": "provider.clervo_ai_gateway",
@@ -192,6 +192,26 @@
     {
       "providerId": "provider.cloudflare_workers_ai",
       "supplyFamilyId": "supply.cloudflare_workers_ai",
+      "exactModelId": "@cf/openai/gpt-oss-20b",
+      "baseUrlPattern": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/",
+      "allowedHosts": ["api.cloudflare.com"],
+      "products": ["ai.chat"],
+      "requiredConfigurationNames": ["CLOUDFLARE_ACCOUNT_ID"],
+      "requiredSecretNames": ["CLOUDFLARE_API_TOKEN"],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Cloudflare Workers AI OpenAI-compatible endpoints", "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/", "checkedAt": "2026-08-02T04:15:00.210Z" },
+        { "title": "Cloudflare Workers AI pricing and free allocation", "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/", "checkedAt": "2026-08-02T04:15:00.210Z" },
+        { "title": "Cloudflare Developer Platform service-specific terms", "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/", "checkedAt": "2026-08-02T04:15:00.210Z" }
+      ]
+    },
+    {
+      "providerId": "provider.cloudflare_workers_ai",
+      "supplyFamilyId": "supply.cloudflare_workers_ai",
       "exactModelId": "@cf/openai/gpt-oss-120b",
       "baseUrlPattern": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/",
       "allowedHosts": ["api.cloudflare.com"],
@@ -201,12 +221,12 @@
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
-      "qualificationStatus": "blocked",
-      "blockerCodes": ["live_checks_not_run"],
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
       "documentation": [
-        { "title": "Cloudflare Workers AI OpenAI-compatible endpoints", "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/", "checkedAt": "2026-08-02T03:40:23.433Z" },
-        { "title": "Cloudflare Workers AI pricing and free allocation", "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/", "checkedAt": "2026-08-02T03:40:23.433Z" },
-        { "title": "Cloudflare Developer Platform service-specific terms", "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/", "checkedAt": "2026-08-02T03:40:23.433Z" }
+        { "title": "Cloudflare Workers AI OpenAI-compatible endpoints", "url": "https://developers.cloudflare.com/workers-ai/configuration/open-ai-compatibility/", "checkedAt": "2026-08-02T04:15:00.210Z" },
+        { "title": "Cloudflare Workers AI pricing and free allocation", "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/", "checkedAt": "2026-08-02T04:15:00.210Z" },
+        { "title": "Cloudflare Developer Platform service-specific terms", "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/", "checkedAt": "2026-08-02T04:15:00.210Z" }
       ]
     }
   ],

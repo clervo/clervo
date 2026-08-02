@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "clervo.cloudflare-gpt-oss-screen.v1",
+  "evaluatedAt": "2026-08-02T04:15:00.210Z",
+  "execution": {
+    "externalCalls": 30,
+    "ownerCashSpentUsd": 0,
+    "freeAllocationBacked": true,
+    "secretValuesRecorded": false,
+    "promptOrOutputPayloadsRecorded": false
+  },
+  "models": [
+    {
+      "modelId": "@cf/openai/gpt-oss-20b",
+      "qualityGrade": "best",
+      "benchmark": { "passed": 10, "total": 10, "latencyMsP50": 1436.84, "latencyMsP95": 3276.47 },
+      "qualification": { "status": "passed", "checksPassed": 11, "checksTotal": 11, "latencyMsP95": 904.1 }
+    },
+    {
+      "modelId": "@cf/openai/gpt-oss-120b",
+      "qualityGrade": "best",
+      "benchmark": { "passed": 10, "total": 10, "latencyMsP50": 996.06, "latencyMsP95": 2804.01 },
+      "qualification": { "status": "passed", "checksPassed": 11, "checksTotal": 11, "latencyMsP95": 586.27 }
+    }
+  ],
+  "checks": [
+    "authentication",
+    "exact_identity",
+    "input_dependence",
+    "output_shape",
+    "usage_reporting",
+    "latency",
+    "failure_handling",
+    "cost_ceiling",
+    "terms",
+    "streaming",
+    "structured_output"
+  ],
+  "decision": {
+    "listingStatus": "sellable",
+    "publicIdentityPolicy": "publish_model_identity_only",
+    "upstreamProviderIdentityPublic": false,
+    "dailyNeuronHardStopRequired": true,
+    "silentSubstitutionAllowed": false
+  }
+}

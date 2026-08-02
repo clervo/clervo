@@ -1233,8 +1233,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "sellable",
+      "qualityGrade": "best",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
@@ -1264,8 +1264,8 @@
       "task": "Text Generation",
       "lifecycle": "production",
       "accessStatus": "free_allocation_available",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "sellable",
+      "qualityGrade": "best",
       "supplierPriceKnown": true,
       "supplierPrices": [
         {
