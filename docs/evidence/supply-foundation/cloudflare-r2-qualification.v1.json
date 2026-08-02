@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "clervo.cloudflare-r2-qualification.v1",
+  "evaluatedAt": "2026-08-02T05:55:26.918Z",
+  "serviceId": "supply.cloudflare_r2",
+  "endpointOrigin": "https://r2.cloudflarestorage.com",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 1,
+  "credentialSlotsUsed": 1,
+  "operation": "ListBuckets",
+  "operationClass": "class_a",
+  "objectReadCalls": 0,
+  "objectWriteCalls": 0,
+  "deleteCalls": 0,
+  "customerObjectDataUsed": false,
+  "responsePayloadValuesRecorded": false,
+  "observation": {
+    "status": null,
+    "latencyMs": 57,
+    "transportFailureCode": "tls_handshake_failure",
+    "s3ListShapeValid": false,
+    "bucketCount": null,
+    "ownerMetadataPresent": false,
+    "passed": false
+  },
+  "summary": {
+    "authenticationAndAccountListingStatus": "failed",
+    "objectLifecycleStatus": "not_run",
+    "customerObjectIsolationStatus": "not_run",
+    "productionStatus": "blocked_credential_or_permission_failure"
+  },
+  "allowance": {
+    "advertisedMonthlyStandardStorageGb": 10,
+    "advertisedMonthlyClassAOperations": 1000000,
+    "advertisedMonthlyClassBOperations": 10000000,
+    "advertisedEgressPriceUsdPerGb": 0,
+    "ownerUsageAndBalanceStatus": "not_exposed_by_s3_api",
+    "automaticPaidOverageStatus": "unknown",
+    "automaticPaidUpgradeAllowedByClervo": false
+  },
+  "terms": {
+    "reviewedAt": "2026-08-02T05:55:26.918Z",
+    "pricingUrl": "https://developers.cloudflare.com/r2/pricing/",
+    "productUrl": "https://developers.cloudflare.com/r2/",
+    "customerApplicationUseDocumented": true,
+    "customerContentUseDocumented": true,
+    "rawCredentialOrAccountResaleAllowed": false,
+    "valueAddedStorageServiceStatus": "compatible_subject_to_customer_isolation_and_subscription_terms"
+  }
+}

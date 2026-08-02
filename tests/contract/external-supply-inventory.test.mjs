@@ -185,3 +185,28 @@ test('owned blockchain data is technically complete and priced without treating 
   assert.equal(evidence.terms.commercialUseOnPaidPlans, true);
   assert.equal(evidence.terms.serviceBureauUseAllowed, false);
 });
+
+test('owned object storage is positively priced but fails closed on the legacy endpoint and unknown overage guard', async () => {
+  const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
+  const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.cloudflare_r2');
+  const pricing = await json('packages/catalog/storage-supply-pricing.v1.json');
+  const schema = await json('packages/contracts/schemas/storage-supply-pricing.schema.json');
+  const evidence = await json('docs/evidence/supply-foundation/cloudflare-r2-qualification.v1.json');
+  const ajv = new Ajv2020({ strict: true, allErrors: true });
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
+  assert.deepEqual([service.connectionStatus, service.qualificationStatus, service.termsStatus, service.resaleStatus], ['observed_failed', 'failed', 'restricted', 'restricted']);
+  assert.deepEqual(pricing.assets.map(({ publicAssetId }) => publicAssetId), ['object-storage-standard', 'object-storage-write', 'object-storage-read', 'object-storage-egress']);
+  assert.ok(pricing.assets.every(({ customerPriceMicrousd, listingStatus, costGuardStatus }) => customerPriceMicrousd > 0 && listingStatus === 'blocked' && costGuardStatus === 'unverified'));
+  assert.equal(pricing.policy.customerFreeByDefault, false);
+  assert.equal(pricing.policy.automaticPaidOverageAllowed, false);
+  assert.equal(evidence.externalCalls, 1);
+  assert.equal(evidence.ownerCashSpentUsd, 0);
+  assert.deepEqual([evidence.objectReadCalls, evidence.objectWriteCalls, evidence.deleteCalls], [0, 0, 0]);
+  assert.equal(evidence.customerObjectDataUsed, false);
+  assert.equal(evidence.observation.transportFailureCode, 'tls_handshake_failure');
+  assert.equal(evidence.summary.productionStatus, 'blocked_credential_or_permission_failure');
+  assert.equal(evidence.allowance.automaticPaidUpgradeAllowedByClervo, false);
+  assert.equal(evidence.terms.rawCredentialOrAccountResaleAllowed, false);
+});

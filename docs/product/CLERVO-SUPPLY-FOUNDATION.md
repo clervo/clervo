@@ -118,6 +118,11 @@ disabled without explicit owner approval.
   customer data. All four products are priced, but the free key is local-only
   and the API license prohibits data resale/service-bureau use; production sale
   needs a compatible written agreement or a replacement data source.
+- Cloudflare R2 has current positive customer prices for storage, reads, writes,
+  and egress against its published recurring free tier and Standard rates. The
+  legacy account endpoint failed TLS before authentication during one signed
+  ListBuckets probe; no object content or mutation was attempted. It remains
+  blocked until the endpoint, isolation, lifecycle, and hard overage guard work.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three

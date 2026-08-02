@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/storage-supply-pricing.schema.json",
+  "title": "Clervo internal storage supply pricing",
+  "type": "object",
+  "required": ["schemaVersion", "priceVersion", "effectiveAt", "currency", "policy", "assets"],
+  "properties": {
+    "schemaVersion": { "const": "clervo.storage-supply-pricing.v1" },
+    "priceVersion": { "type": "string", "pattern": "^storage-supply-[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$" },
+    "effectiveAt": { "type": "string", "format": "date-time" },
+    "currency": { "const": "USD" },
+    "policy": {
+      "type": "object",
+      "required": ["customerFreeByDefault", "automaticPaidOverageAllowed", "providerNamesPublic", "customerObjectDataInEvidenceAllowed", "rawSupplierAccountResaleAllowed"],
+      "properties": {
+        "customerFreeByDefault": { "const": false },
+        "automaticPaidOverageAllowed": { "const": false },
+        "providerNamesPublic": { "const": false },
+        "customerObjectDataInEvidenceAllowed": { "const": false },
+        "rawSupplierAccountResaleAllowed": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["serviceId", "productId", "publicAssetId", "billingUnit", "customerPriceMicrousd", "shadowSupplierPriceMicrousd", "supplierPriceBasis", "monthlyFreeAllowance", "allowanceUnit", "qualityGrade", "technicalQualificationStatus", "listingStatus", "termsStatus", "costGuardStatus", "fallbackStatus"],
+        "properties": {
+          "serviceId": { "const": "supply.cloudflare_r2" },
+          "productId": { "const": "storage.object" },
+          "publicAssetId": { "type": "string", "pattern": "^[a-z][a-z0-9_.-]{2,63}$" },
+          "billingUnit": { "enum": ["gb_month", "request", "gb_egress"] },
+          "customerPriceMicrousd": { "type": "integer", "minimum": 1 },
+          "shadowSupplierPriceMicrousd": { "type": "number", "minimum": 0 },
+          "supplierPriceBasis": { "const": "published_standard_tier" },
+          "monthlyFreeAllowance": { "type": "number", "minimum": 0 },
+          "allowanceUnit": { "enum": ["gb_month", "request", "unmetered"] },
+          "qualityGrade": { "enum": ["best", "good", "poor", "rejected", "not_run"] },
+          "technicalQualificationStatus": { "enum": ["passed", "partial", "failed", "not_run"] },
+          "listingStatus": { "enum": ["qualified_not_integrated", "blocked"] },
+          "termsStatus": { "enum": ["approved", "restricted", "blocked", "unreviewed"] },
+          "costGuardStatus": { "enum": ["enforced", "unverified"] },
+          "fallbackStatus": { "enum": ["independent_fallback_missing", "independent_fallback_ready"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

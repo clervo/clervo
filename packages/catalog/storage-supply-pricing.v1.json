@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "clervo.storage-supply-pricing.v1",
+  "priceVersion": "storage-supply-2026-08-02.1",
+  "effectiveAt": "2026-08-02T05:55:26.918Z",
+  "currency": "USD",
+  "policy": {
+    "customerFreeByDefault": false,
+    "automaticPaidOverageAllowed": false,
+    "providerNamesPublic": false,
+    "customerObjectDataInEvidenceAllowed": false,
+    "rawSupplierAccountResaleAllowed": false
+  },
+  "assets": [
+    {
+      "serviceId": "supply.cloudflare_r2",
+      "productId": "storage.object",
+      "publicAssetId": "object-storage-standard",
+      "billingUnit": "gb_month",
+      "customerPriceMicrousd": 15000,
+      "shadowSupplierPriceMicrousd": 15000,
+      "supplierPriceBasis": "published_standard_tier",
+      "monthlyFreeAllowance": 10,
+      "allowanceUnit": "gb_month",
+      "qualityGrade": "not_run",
+      "technicalQualificationStatus": "failed",
+      "listingStatus": "blocked",
+      "termsStatus": "restricted",
+      "costGuardStatus": "unverified",
+      "fallbackStatus": "independent_fallback_missing"
+    },
+    {
+      "serviceId": "supply.cloudflare_r2",
+      "productId": "storage.object",
+      "publicAssetId": "object-storage-write",
+      "billingUnit": "request",
+      "customerPriceMicrousd": 5,
+      "shadowSupplierPriceMicrousd": 4.5,
+      "supplierPriceBasis": "published_standard_tier",
+      "monthlyFreeAllowance": 1000000,
+      "allowanceUnit": "request",
+      "qualityGrade": "rejected",
+      "technicalQualificationStatus": "not_run",
+      "listingStatus": "blocked",
+      "termsStatus": "restricted",
+      "costGuardStatus": "unverified",
+      "fallbackStatus": "independent_fallback_missing"
+    },
+    {
+      "serviceId": "supply.cloudflare_r2",
+      "productId": "storage.object",
+      "publicAssetId": "object-storage-read",
+      "billingUnit": "request",
+      "customerPriceMicrousd": 1,
+      "shadowSupplierPriceMicrousd": 0.36,
+      "supplierPriceBasis": "published_standard_tier",
+      "monthlyFreeAllowance": 10000000,
+      "allowanceUnit": "request",
+      "qualityGrade": "rejected",
+      "technicalQualificationStatus": "not_run",
+      "listingStatus": "blocked",
+      "termsStatus": "restricted",
+      "costGuardStatus": "unverified",
+      "fallbackStatus": "independent_fallback_missing"
+    },
+    {
+      "serviceId": "supply.cloudflare_r2",
+      "productId": "storage.object",
+      "publicAssetId": "object-storage-egress",
+      "billingUnit": "gb_egress",
+      "customerPriceMicrousd": 5000,
+      "shadowSupplierPriceMicrousd": 0,
+      "supplierPriceBasis": "published_standard_tier",
+      "monthlyFreeAllowance": 0,
+      "allowanceUnit": "unmetered",
+      "qualityGrade": "not_run",
+      "technicalQualificationStatus": "not_run",
+      "listingStatus": "blocked",
+      "termsStatus": "restricted",
+      "costGuardStatus": "unverified",
+      "fallbackStatus": "independent_fallback_missing"
+    }
+  ]
+}

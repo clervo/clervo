@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.17",
-  "observedAt": "2026-08-02T05:50:43.091Z",
+  "inventoryVersion": "2026-08-02.18",
+  "observedAt": "2026-08-02T05:55:26.918Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -304,14 +304,16 @@
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
-      "fundingClass": "unknown",
-      "connectionStatus": "observed_not_tested",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "fundingClass": "recurring_free",
+      "connectionStatus": "observed_failed",
+      "qualificationStatus": "failed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "The account-specific endpoint host is intentionally not recorded. Qualification must verify bucket ownership, quota, egress, lifecycle, and customer-object isolation without exposing account identifiers."
+        "The account-specific endpoint host is intentionally not recorded. A signed ListBuckets request reached a TLS handshake failure before authentication on 2026-08-02; no object data was read, written, or deleted.",
+        "All storage dimensions have positive customer prices against current published Standard rates and the recurring free tier, but listing remains blocked pending a working endpoint, customer-object isolation, lifecycle qualification, and a verified hard overage guard.",
+        "R2 is documented for application and customer-content storage. Clervo may provide value-added storage but never resell raw credentials or supplier account access."
       ]
     },
     {
