@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/payment-supply-pricing.schema.json",
+  "title": "Clervo internal payment supply pricing",
+  "type": "object",
+  "required": ["schemaVersion", "priceVersion", "effectiveAt", "currency", "policy", "routes"],
+  "properties": {
+    "schemaVersion": { "const": "clervo.payment-supply-pricing.v1" },
+    "priceVersion": { "type": "string", "pattern": "^payment-supply-[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$" },
+    "effectiveAt": { "type": "string", "format": "date-time" },
+    "currency": { "const": "USD" },
+    "policy": {
+      "type": "object",
+      "required": ["customerFreeByDefault", "providerNamesPublic", "automaticPaidOverageAllowed", "realPaymentRequiresOwnerApproval", "testnetIsProductionFallback"],
+      "properties": {
+        "customerFreeByDefault": { "const": false },
+        "providerNamesPublic": { "const": false },
+        "automaticPaidOverageAllowed": { "const": false },
+        "realPaymentRequiresOwnerApproval": { "const": true },
+        "testnetIsProductionFallback": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["serviceId", "productId", "publicAssetId", "environment", "billingUnit", "customerPriceMicrousd", "shadowSupplierPriceMicrousd", "supplierPriceBasis", "monthlyFreeTransactions", "qualityGrade", "technicalQualificationStatus", "listingStatus", "termsStatus", "costGuardStatus", "fallbackStatus"],
+        "properties": {
+          "serviceId": { "enum": ["supply.cdp_x402", "supply.x402_testnet"] },
+          "productId": { "enum": ["commerce.x402.verify", "commerce.x402.settle"] },
+          "publicAssetId": { "type": "string", "pattern": "^[a-z][a-z0-9_.-]{2,63}$" },
+          "environment": { "enum": ["production_capable", "testnet_development_only"] },
+          "billingUnit": { "const": "transaction" },
+          "customerPriceMicrousd": { "type": "integer", "minimum": 1 },
+          "shadowSupplierPriceMicrousd": { "type": "integer", "minimum": 0 },
+          "supplierPriceBasis": { "enum": ["published_usage_tier", "recurring_testnet_free"] },
+          "monthlyFreeTransactions": { "type": ["integer", "null"], "minimum": 0 },
+          "qualityGrade": { "enum": ["good", "poor", "rejected", "not_run"] },
+          "technicalQualificationStatus": { "enum": ["partial", "failed", "not_run"] },
+          "listingStatus": { "enum": ["blocked_payment_path_not_run", "development_only"] },
+          "termsStatus": { "enum": ["approved", "restricted", "blocked", "unreviewed"] },
+          "costGuardStatus": { "enum": ["enforced", "unverified", "not_applicable_testnet"] },
+          "fallbackStatus": { "enum": ["production_fallback_missing", "not_a_production_fallback"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

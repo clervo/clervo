@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "clervo.payment-supply-pricing.v1",
+  "priceVersion": "payment-supply-2026-08-02.1",
+  "effectiveAt": "2026-08-02T06:04:37.335Z",
+  "currency": "USD",
+  "policy": {
+    "customerFreeByDefault": false,
+    "providerNamesPublic": false,
+    "automaticPaidOverageAllowed": false,
+    "realPaymentRequiresOwnerApproval": true,
+    "testnetIsProductionFallback": false
+  },
+  "routes": [
+    {
+      "serviceId": "supply.cdp_x402",
+      "productId": "commerce.x402.verify",
+      "publicAssetId": "payment-verification",
+      "environment": "production_capable",
+      "billingUnit": "transaction",
+      "customerPriceMicrousd": 1000,
+      "shadowSupplierPriceMicrousd": 1000,
+      "supplierPriceBasis": "published_usage_tier",
+      "monthlyFreeTransactions": 1000,
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "partial",
+      "listingStatus": "blocked_payment_path_not_run",
+      "termsStatus": "restricted",
+      "costGuardStatus": "unverified",
+      "fallbackStatus": "production_fallback_missing"
+    },
+    {
+      "serviceId": "supply.cdp_x402",
+      "productId": "commerce.x402.settle",
+      "publicAssetId": "payment-settlement",
+      "environment": "production_capable",
+      "billingUnit": "transaction",
+      "customerPriceMicrousd": 2000,
+      "shadowSupplierPriceMicrousd": 1000,
+      "supplierPriceBasis": "published_usage_tier",
+      "monthlyFreeTransactions": 1000,
+      "qualityGrade": "not_run",
+      "technicalQualificationStatus": "not_run",
+      "listingStatus": "blocked_payment_path_not_run",
+      "termsStatus": "restricted",
+      "costGuardStatus": "unverified",
+      "fallbackStatus": "production_fallback_missing"
+    },
+    {
+      "serviceId": "supply.x402_testnet",
+      "productId": "commerce.x402.verify",
+      "publicAssetId": "testnet-payment-verification",
+      "environment": "testnet_development_only",
+      "billingUnit": "transaction",
+      "customerPriceMicrousd": 1000,
+      "shadowSupplierPriceMicrousd": 0,
+      "supplierPriceBasis": "recurring_testnet_free",
+      "monthlyFreeTransactions": null,
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "partial",
+      "listingStatus": "development_only",
+      "termsStatus": "restricted",
+      "costGuardStatus": "not_applicable_testnet",
+      "fallbackStatus": "not_a_production_fallback"
+    },
+    {
+      "serviceId": "supply.x402_testnet",
+      "productId": "commerce.x402.settle",
+      "publicAssetId": "testnet-payment-settlement",
+      "environment": "testnet_development_only",
+      "billingUnit": "transaction",
+      "customerPriceMicrousd": 2000,
+      "shadowSupplierPriceMicrousd": 0,
+      "supplierPriceBasis": "recurring_testnet_free",
+      "monthlyFreeTransactions": null,
+      "qualityGrade": "not_run",
+      "technicalQualificationStatus": "not_run",
+      "listingStatus": "development_only",
+      "termsStatus": "restricted",
+      "costGuardStatus": "not_applicable_testnet",
+      "fallbackStatus": "not_a_production_fallback"
+    }
+  ]
+}

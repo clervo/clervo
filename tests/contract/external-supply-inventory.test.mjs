@@ -243,3 +243,32 @@ test('platform integrations are priced and authenticated without pooling account
     ['supply.workos', 200, true],
   ]);
 });
+
+test('x402 facilitators expose supported capabilities without running a payment path', async () => {
+  const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
+  const pricing = await json('packages/catalog/payment-supply-pricing.v1.json');
+  const schema = await json('packages/contracts/schemas/payment-supply-pricing.schema.json');
+  const evidence = await json('docs/evidence/supply-foundation/x402-facilitator-qualification.v1.json');
+  const ajv = new Ajv2020({ strict: true, allErrors: true });
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
+  assert.equal(pricing.routes.length, 4);
+  assert.ok(pricing.routes.every(({ customerPriceMicrousd }) => customerPriceMicrousd > 0));
+  assert.equal(pricing.policy.automaticPaidOverageAllowed, false);
+  assert.equal(pricing.policy.realPaymentRequiresOwnerApproval, true);
+  assert.equal(pricing.policy.testnetIsProductionFallback, false);
+  assert.equal(pricing.routes.filter(({ serviceId }) => serviceId === 'supply.x402_testnet').every(({ listingStatus, fallbackStatus }) => listingStatus === 'development_only' && fallbackStatus === 'not_a_production_fallback'), true);
+  assert.deepEqual(inventory.services.filter(({ serviceId }) => ['supply.cdp_x402', 'supply.x402_testnet'].includes(serviceId)).map(({ connectionStatus, qualificationStatus }) => [connectionStatus, qualificationStatus]), [['observed_working', 'in_progress'], ['observed_working', 'in_progress']]);
+  assert.equal(evidence.externalCalls, 2);
+  assert.equal(evidence.summary.passedFacilitators, 2);
+  assert.deepEqual([evidence.verificationCalls, evidence.settlementCalls, evidence.walletSignatureCalls, evidence.paymentAuthorizationCalls, evidence.transactionSubmissionCalls], [0, 0, 0, 0, 0]);
+  assert.deepEqual([evidence.gasSpent, evidence.usdcSpent, evidence.ownerCashSpentUsd], [0, 0, 0]);
+  assert.equal(evidence.credentialPolicy.secretValuesRecorded, false);
+  assert.equal(evidence.credentialPolicy.signerAddressesRecorded, false);
+  assert.deepEqual(evidence.observations.map(({ serviceId, status, supportedKindCount, passed }) => [serviceId, status, supportedKindCount, passed]), [
+    ['supply.cdp_x402', 200, 24, true],
+    ['supply.x402_testnet', 200, 11, true],
+  ]);
+  assert.equal(evidence.allowance.automaticPaidOverageAllowedByClervo, false);
+});

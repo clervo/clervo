@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "clervo.x402-facilitator-qualification.v1",
+  "evaluatedAt": "2026-08-02T06:04:37.335Z",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 2,
+  "supportedDiscoveryCalls": 2,
+  "verificationCalls": 0,
+  "settlementCalls": 0,
+  "walletSignatureCalls": 0,
+  "paymentAuthorizationCalls": 0,
+  "transactionSubmissionCalls": 0,
+  "gasSpent": 0,
+  "usdcSpent": 0,
+  "credentialPolicy": {
+    "cdpCredentialSlotsUsed": 1,
+    "jwtLifetimeSeconds": 120,
+    "secretValuesRecorded": false,
+    "signerAddressesRecorded": false
+  },
+  "summary": {
+    "passedFacilitators": 2,
+    "productionFacilitatorStatus": "discovery_passed_payment_paths_not_run",
+    "testnetFacilitatorStatus": "discovery_passed_development_only"
+  },
+  "observations": [
+    {
+      "serviceId": "supply.cdp_x402",
+      "status": 200,
+      "latencyMs": 170,
+      "responseShapeValid": true,
+      "supportedKindCount": 24,
+      "protocolVersions": [1, 2],
+      "schemes": ["batch-settlement", "exact", "upto"],
+      "networks": ["base", "base-sepolia", "eip155:137", "eip155:42161", "eip155:480", "eip155:4801", "eip155:8453", "eip155:84532", "solana", "solana-devnet", "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp", "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1"],
+      "extensionNames": ["bazaar", "builder-code", "eip2612GasSponsoring"],
+      "signerPatternCount": 2,
+      "signerValuesRecorded": false,
+      "passed": true
+    },
+    {
+      "serviceId": "supply.x402_testnet",
+      "status": 200,
+      "latencyMs": 232,
+      "responseShapeValid": true,
+      "supportedKindCount": 11,
+      "protocolVersions": [1, 2],
+      "schemes": ["batch-settlement", "exact", "upto"],
+      "networks": ["algorand:SGO1GKSzyE7IEPItTxCByw9x8FmnrCDe", "aptos:2", "base-sepolia", "eip155:84532", "hedera:testnet", "solana-devnet", "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1", "stellar:testnet", "xrpl:1"],
+      "extensionNames": ["builder-code", "eip2612GasSponsoring", "erc20ApprovalGasSponsoring"],
+      "signerPatternCount": 7,
+      "signerValuesRecorded": false,
+      "passed": true
+    }
+  ],
+  "allowance": {
+    "cdpAdvertisedMonthlyTransactions": 1000,
+    "cdpPaidPriceUsdPerTransaction": 0.001,
+    "automaticPaidOverageStatus": "unknown",
+    "automaticPaidOverageAllowedByClervo": false,
+    "testnetFacilitatorPriceUsd": 0
+  }
+}

@@ -129,6 +129,12 @@ disabled without explicit owner approval.
   but owner credentials are never delegated to customers. Publishing and
   notification mutations remain untested, while WorkOS is limited to Clervo's
   own authentication dependency under its current anti-service-bureau terms.
+- Authenticated production and no-key testnet x402 facilitator discovery both
+  passed, exposing 24 and 11 supported network/scheme combinations respectively.
+  No verify, settle, wallet, transaction, gas, or USDC action occurred. Both
+  verification and settlement are positively priced; production remains
+  blocked on a hard billing guard and an explicitly owner-approved payment
+  proof, while the public facilitator is development-only, never failover.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three
