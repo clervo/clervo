@@ -1,0 +1,26 @@
+{
+  "name": "@clervo/sdk",
+  "version": "0.3.0",
+  "description": "Typed Clervo client generated from the frozen distribution candidate.",
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "prepack": "npm run build"
+  }
+}
