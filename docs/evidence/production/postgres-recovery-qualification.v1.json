@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.postgres-recovery-qualification.v1",
-  "qualifiedAt": "2026-08-02T16:21:06.092Z",
-  "sourceCommit": "a23e98571a04",
+  "qualifiedAt": "2026-08-02T16:22:13.354Z",
+  "sourceCommit": "7378d0106e18",
   "postgresVersion": "18.4",
   "image": "postgres:18.4-bookworm@sha256:1961f96e6029a02c3812d7cb329a3b03a3ac2bb067058dec17b0f5596aca9296",
   "environmentNamespace": "qualification",
@@ -24,7 +24,7 @@
     ],
     "processRestartReplay": true,
     "backupArchiveNonEmpty": true,
-    "backupArchiveHash": "sha256:0a082c2f38f930cd1de76840af827c93bb2b8aceb0e138e33b9b86367907ed20",
+    "backupArchiveHash": "sha256:0ff4be0e150f5ae33cca0fc8001ea4072b8b64b6b2dbdb7144ef3b1c9bd4c62b",
     "isolatedRestoreReady": true,
     "restoredReplayMatched": true,
     "retentionPlanCountOnly": true,
@@ -33,7 +33,11 @@
     "queueActiveJobRecoveredAfterWorkerLoss": true,
     "queueRetryCompleted": true,
     "queueDeadLettered": true,
-    "queueStateRestoredFromBackup": true
+    "queueStateRestoredFromBackup": true,
+    "receiverAccountingInserted": true,
+    "receiverAccountingDuplicateSettlementRejected": true,
+    "receiverAccountingSurvivedRestart": true,
+    "receiverAccountingRestoredFromBackup": true
   },
   "cleanup": {
     "sourceContainerRemoved": true,
