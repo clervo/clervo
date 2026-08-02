@@ -175,7 +175,12 @@ replay, conflict, and quota behavior passed; completed state survived a
 database process restart; a custom-format backup restored into a separate clean
 database; restored replay matched; and expired retention was applied against
 qualification-only rows. Both containers, both volumes, and the temporary
-archive were then verified absent. This proves the portable local recovery
+archive were then verified absent. The same qualification now proves the
+pg-boss 12.26.3 recovery contract: duplicate job identity was rejected, an
+active job abandoned by its first worker expired and was recovered exactly once
+by a fresh queue process, the retry completed, a terminal failure reached its
+dead-letter queue, and both completed/dead-letter state survived backup and
+isolated restore. This proves the portable local recovery
 path, not managed production backup scheduling or point-in-time recovery.
 Registry digest, signed provenance, scans, remote rollback, full load,
 monitoring delivery, managed recovery, and an owner-approved cloud release
