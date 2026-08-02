@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.18",
-  "observedAt": "2026-08-02T05:55:26.918Z",
+  "inventoryVersion": "2026-08-02.19",
+  "observedAt": "2026-08-02T05:59:30.309Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -514,13 +514,14 @@
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "recurring_free",
-      "connectionStatus": "observed_not_tested",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "connectionStatus": "observed_working",
+      "qualificationStatus": "in_progress",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Twelve distinct token-bearing assignments were observed. Do not pool identities or bypass per-user, per-app, or abuse limits; qualify ownership, scopes, intended repositories, and terms before use."
+        "Twelve distinct token-bearing assignments were observed. One token passed an authenticated identity probe; the other eleven were not used and must never be pooled to bypass per-user, per-app, or abuse limits.",
+        "The authenticated REST allowance is 5,000 requests/hour, but no repository content or automation mutation was accessed. Customer repositories require a customer-authorized OAuth or installation credential, never delegation of the owner token."
       ]
     },
     {
@@ -540,12 +541,15 @@
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "recurring_free",
-      "connectionStatus": "observed_not_tested",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "connectionStatus": "observed_failed",
+      "qualificationStatus": "failed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": []
+      "notes": [
+        "The owned token returned HTTP 401 on an authenticated identity probe and is unusable until replaced. No repository content was accessed.",
+        "Any future customer connection requires customer-delegated authorization; an owner token is not customer supply."
+      ]
     },
     {
       "serviceId": "supply.groq",
@@ -1261,13 +1265,14 @@
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "recurring_free",
-      "connectionStatus": "observed_not_tested",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "connectionStatus": "observed_working",
+      "qualificationStatus": "in_progress",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Inventory does not authorize publishing or messaging an external audience."
+        "The credential passed the read-only current-user endpoint. No article was created, edited, or published.",
+        "The publishing API is limited to ten requests per 30 seconds. The owned author account is an owner-managed channel, not a credential that can be delegated to customers."
       ]
     },
     {
@@ -1278,7 +1283,7 @@
         "publish.article"
       ],
       "endpointOrigins": [
-        "https://gql.hashnode.com"
+        "https://gql-beta.hashnode.com"
       ],
       "credentialNames": [
         "HASHNODE_API_KEY"
@@ -1287,13 +1292,14 @@
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "recurring_free",
-      "connectionStatus": "observed_not_tested",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "connectionStatus": "observed_working",
+      "qualificationStatus": "in_progress",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Inventory does not authorize publishing or messaging an external audience."
+        "The credential passed a read-only current-user query on the current beta endpoint. No article was created, edited, or published.",
+        "Hashnode now requires an active Pro publication for write operations and publication-scoped reads; exact owned plan and seat price remain unknown. The author account is an owner-managed channel, not customer supply."
       ]
     },
     {
@@ -1593,13 +1599,14 @@
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "recurring_free",
-      "connectionStatus": "observed_not_tested",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "connectionStatus": "observed_working",
+      "qualificationStatus": "in_progress",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Inventory does not authorize sending a real external message. The alternate bot token is a separate observed value and requires ownership and purpose reconciliation."
+        "The primary bot token passed getMe without sending a message. The alternate bot token was not used and remains ownership/purpose-unreconciled.",
+        "Free broadcasts are limited to about 30 messages/second, one message/second per chat, and 20 messages/minute per group. Paid broadcasts are disabled; recipients require consent and retry-after handling."
       ]
     },
     {
@@ -1620,14 +1627,16 @@
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
-      "fundingClass": "unknown",
-      "connectionStatus": "observed_not_tested",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "fundingClass": "recurring_free",
+      "connectionStatus": "observed_working",
+      "qualificationStatus": "in_progress",
+      "termsStatus": "blocked",
+      "resaleStatus": "prohibited",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "The application cookie password remains local operational configuration and is not an upstream WorkOS credential."
+        "The application cookie password remains local operational configuration and is not an upstream WorkOS credential.",
+        "The key passed a read-only organization-list shape check without recording organization data. Authentication redirects, callbacks, sessions, and lifecycle remain unqualified.",
+        "User Management advertises one million monthly active users free, but current terms prohibit making the service available to third parties or operating it as a service bureau. Use is limited to Clervo's own authentication dependency, not a standalone customer identity API."
       ]
     }
   ],

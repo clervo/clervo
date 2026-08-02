@@ -210,3 +210,36 @@ test('owned object storage is positively priced but fails closed on the legacy e
   assert.equal(evidence.allowance.automaticPaidUpgradeAllowedByClervo, false);
   assert.equal(evidence.terms.rawCredentialOrAccountResaleAllowed, false);
 });
+
+test('platform integrations are priced and authenticated without pooling accounts or causing external mutations', async () => {
+  const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
+  const pricing = await json('packages/catalog/platform-integration-supply-pricing.v1.json');
+  const schema = await json('packages/contracts/schemas/platform-integration-supply-pricing.schema.json');
+  const evidence = await json('docs/evidence/supply-foundation/platform-integration-qualification.v1.json');
+  const ajv = new Ajv2020({ strict: true, allErrors: true });
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
+  assert.equal(pricing.assets.length, 8);
+  assert.ok(pricing.assets.every(({ customerPriceMicrousd }) => customerPriceMicrousd > 0));
+  assert.equal(pricing.policy.ownerCredentialDelegationAllowed, false);
+  assert.equal(pricing.policy.accountPoolingAllowed, false);
+  assert.equal(pricing.assets.find(({ serviceId }) => serviceId === 'supply.gitlab_source').technicalQualificationStatus, 'failed');
+  assert.equal(pricing.assets.find(({ serviceId }) => serviceId === 'supply.workos').listingStatus, 'internal_dependency_only');
+  assert.deepEqual(inventory.services.filter(({ serviceId }) => ['supply.github_source', 'supply.devto', 'supply.hashnode', 'supply.telegram', 'supply.workos'].includes(serviceId)).map(({ connectionStatus }) => connectionStatus), Array(5).fill('observed_working'));
+  assert.equal(inventory.services.find(({ serviceId }) => serviceId === 'supply.gitlab_source').connectionStatus, 'observed_failed');
+  assert.equal(evidence.externalCalls, 6);
+  assert.equal(evidence.ownerCashSpentUsd, 0);
+  assert.deepEqual([evidence.mutationCalls, evidence.publishedArticles, evidence.sentMessages, evidence.repositoriesRead], [0, 0, 0, 0]);
+  assert.equal(evidence.credentialPolicy.githubCredentialSlotsUsed, 1);
+  assert.equal(evidence.credentialPolicy.githubAccountPoolingAttempted, false);
+  assert.equal(evidence.credentialPolicy.telegramAlternateCredentialUsed, false);
+  assert.deepEqual(evidence.observations.map(({ serviceId, status, passed }) => [serviceId, status, passed]), [
+    ['supply.github_source', 200, true],
+    ['supply.gitlab_source', 401, false],
+    ['supply.devto', 200, true],
+    ['supply.hashnode', 200, true],
+    ['supply.telegram', 200, true],
+    ['supply.workos', 200, true],
+  ]);
+});

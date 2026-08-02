@@ -123,6 +123,12 @@ disabled without explicit owner approval.
   legacy account endpoint failed TLS before authentication during one signed
   ListBuckets probe; no object content or mutation was attempted. It remains
   blocked until the endpoint, isolation, lifecycle, and hard overage guard work.
+- Read-only integration probes authenticated GitHub, DEV, Hashnode's current
+  beta API, Telegram, and WorkOS without reading repositories, publishing, or
+  messaging; the GitLab token returned HTTP 401. Every integration is priced,
+  but owner credentials are never delegated to customers. Publishing and
+  notification mutations remain untested, while WorkOS is limited to Clervo's
+  own authentication dependency under its current anti-service-bureau terms.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three

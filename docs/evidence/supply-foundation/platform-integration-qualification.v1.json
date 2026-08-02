@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "clervo.platform-integration-qualification.v1",
+  "evaluatedAt": "2026-08-02T05:59:30.309Z",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 6,
+  "mutationCalls": 0,
+  "publishedArticles": 0,
+  "sentMessages": 0,
+  "repositoriesRead": 0,
+  "customerIdentityDataUsed": false,
+  "responsePayloadValuesRecorded": false,
+  "credentialPolicy": {
+    "githubConfiguredTokenAssignments": 12,
+    "githubCredentialSlotsUsed": 1,
+    "githubAccountPoolingAttempted": false,
+    "telegramAlternateCredentialUsed": false
+  },
+  "summary": {
+    "passedServices": 5,
+    "failedServices": 1,
+    "latencyMsP50": 167,
+    "latencyMsP95": 345
+  },
+  "observations": [
+    { "serviceId": "supply.github_source", "status": 200, "latencyMs": 230, "responseShapeValid": true, "rateLimitHeaderPresent": true, "passed": true, "authenticatedIdentityPresent": true, "grantedScopesHeaderPresent": false },
+    { "serviceId": "supply.gitlab_source", "status": 401, "latencyMs": 128, "responseShapeValid": false, "rateLimitHeaderPresent": true, "passed": false, "authenticatedIdentityPresent": false },
+    { "serviceId": "supply.devto", "status": 200, "latencyMs": 167, "responseShapeValid": true, "rateLimitHeaderPresent": false, "passed": true, "authenticatedIdentityPresent": true },
+    { "serviceId": "supply.hashnode", "status": 200, "latencyMs": 225, "responseShapeValid": true, "rateLimitHeaderPresent": false, "passed": true, "authenticatedIdentityPresent": true, "graphqlErrorsPresent": false },
+    { "serviceId": "supply.telegram", "status": 200, "latencyMs": 345, "responseShapeValid": true, "rateLimitHeaderPresent": false, "passed": true, "authenticatedBotPresent": true },
+    { "serviceId": "supply.workos", "status": 200, "latencyMs": 96, "responseShapeValid": true, "rateLimitHeaderPresent": false, "passed": true, "organizationListShapePresent": true, "organizationCountReturned": 1 }
+  ]
+}

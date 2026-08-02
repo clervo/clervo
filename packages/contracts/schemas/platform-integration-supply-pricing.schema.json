@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/platform-integration-supply-pricing.schema.json",
+  "title": "Clervo internal platform-integration supply pricing",
+  "type": "object",
+  "required": ["schemaVersion", "priceVersion", "effectiveAt", "currency", "policy", "assets"],
+  "properties": {
+    "schemaVersion": { "const": "clervo.platform-integration-supply-pricing.v1" },
+    "priceVersion": { "type": "string", "pattern": "^platform-integration-supply-[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$" },
+    "effectiveAt": { "type": "string", "format": "date-time" },
+    "currency": { "const": "USD" },
+    "policy": {
+      "type": "object",
+      "required": ["customerFreeByDefault", "providerNamesPublic", "ownerCredentialDelegationAllowed", "externalMutationsRequireExplicitProductAction", "accountPoolingAllowed"],
+      "properties": {
+        "customerFreeByDefault": { "const": false },
+        "providerNamesPublic": { "const": false },
+        "ownerCredentialDelegationAllowed": { "const": false },
+        "externalMutationsRequireExplicitProductAction": { "const": true },
+        "accountPoolingAllowed": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["serviceId", "productId", "publicAssetId", "supplyRole", "billingUnit", "customerPriceMicrousd", "shadowSupplierPriceMicrousd", "supplierPriceBasis", "allowance", "qualityGrade", "technicalQualificationStatus", "listingStatus", "termsStatus", "credentialUseMode", "fallbackStatus"],
+        "properties": {
+          "serviceId": { "type": "string", "pattern": "^supply\\.[a-z0-9_]+$" },
+          "productId": { "type": "string", "pattern": "^(?:source|publish|notify|identity)\\.[a-z0-9_.-]+$" },
+          "publicAssetId": { "type": "string", "pattern": "^[a-z][a-z0-9_.-]{2,63}$" },
+          "supplyRole": { "enum": ["customer_delegated_integration", "owner_managed_channel", "internal_identity_dependency"] },
+          "billingUnit": { "enum": ["request", "article", "message", "monthly_active_user"] },
+          "customerPriceMicrousd": { "type": "integer", "minimum": 1 },
+          "shadowSupplierPriceMicrousd": { "type": ["number", "null"], "minimum": 0 },
+          "supplierPriceBasis": { "enum": ["recurring_free", "published_free_allowance", "paid_plan_unknown", "unknown"] },
+          "allowance": {
+            "type": "object",
+            "required": ["quantity", "unit", "period"],
+            "properties": {
+              "quantity": { "type": ["number", "null"], "minimum": 0 },
+              "unit": { "enum": ["request", "message", "monthly_active_user", "unknown"] },
+              "period": { "enum": ["second", "30_seconds", "hour", "month", "unknown"] }
+            },
+            "additionalProperties": false
+          },
+          "qualityGrade": { "enum": ["good", "poor", "rejected", "not_run"] },
+          "technicalQualificationStatus": { "enum": ["passed", "partial", "failed", "not_run"] },
+          "listingStatus": { "enum": ["qualified_not_integrated", "internal_dependency_only", "blocked"] },
+          "termsStatus": { "enum": ["restricted", "blocked", "unreviewed"] },
+          "credentialUseMode": { "enum": ["customer_oauth_or_installation_required", "owner_account_only", "clervo_application_only"] },
+          "fallbackStatus": { "enum": ["independent_fallback_missing", "independent_fallback_ready", "not_applicable_internal"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
