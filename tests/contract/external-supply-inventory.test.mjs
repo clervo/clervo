@@ -166,18 +166,33 @@ test('public RPC mesh prices every configured route and preserves failures, iden
   assert.ok(mesh.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'failed').every(({ listingStatus, qualityGrade }) => listingStatus === 'blocked' && qualityGrade === 'rejected'));
 });
 
-test('dedicated multi-chain RPC intake rejects the disclosed key and is ready for safe qualification', async () => {
+test('dedicated multi-chain RPC is measured and priced without overstating rate limits or resale rights', async () => {
   const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
   const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.drpc');
+  const pricing = await json('packages/catalog/rpc-supply-pricing.v1.json');
+  const stability = await json('docs/evidence/supply-foundation/drpc-stability-qualification.v1.json');
+  const recovery = await json('docs/evidence/supply-foundation/drpc-recovery-qualification.v1.json');
+  const terms = await json('docs/evidence/supply-foundation/drpc-terms-review.v1.json');
   const qualifier = await readFile(path.join(root, 'scripts/supply/qualify-drpc.mjs'), 'utf8');
   assert.deepEqual(
     [service.configuredCredentialSlots, service.credentialDeployment, service.connectionStatus, service.qualificationStatus],
-    [0, 'missing', 'observed_not_tested', 'not_run'],
+    [1, 'legacy_import_read_only', 'observed_working', 'failed'],
   );
   assert.equal(service.products.length, 13);
   assert.equal(service.products.includes('rpc.solana'), false);
   assert.deepEqual(service.credentialNames, ['DRPC_API_KEY']);
   assert.deepEqual(service.endpointOrigins, ['https://lb.drpc.org']);
+  assert.deepEqual([service.termsStatus, service.resaleStatus], ['restricted', 'restricted']);
+  const routes = pricing.routes.filter(({ serviceId }) => serviceId === 'supply.drpc');
+  assert.equal(routes.length, 13);
+  assert.ok(routes.every(({ customerPriceMicrousd, termsStatus, broadcastStatus }) => customerPriceMicrousd > 0 && termsStatus === 'restricted' && broadcastStatus === 'read_only_route'));
+  assert.equal(routes.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'passed').length, 12);
+  assert.deepEqual(routes.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'failed').map(({ network, qualityGrade, listingStatus }) => [network, qualityGrade, listingStatus]), [['bsc-mainnet', 'poor', 'blocked']]);
+  assert.deepEqual(stability.summary, { configuredChains: 13, samplesPerChain: 5, passedChains: 10, exactIdentityChains: 9 });
+  assert.deepEqual(recovery.summary, { configuredChains: 13, samplesPerChain: 1, passedChains: 12, exactIdentityChains: 11 });
+  assert.deepEqual([stability.externalCalls, stability.transactionCalls, stability.signedPayloads, stability.credentialRecorded], [65, 0, 0, false]);
+  assert.deepEqual(recovery.observations.filter(({ passed }) => !passed).map(({ chain, status, failureCode }) => [chain, status, failureCode]), [['bsc', 429, 'http_429']]);
+  assert.deepEqual([terms.decision.termsStatus, terms.decision.resaleStatus, terms.decision.customerRoutingAllowed], ['restricted', 'restricted', false]);
   assert.match(qualifier, /'Drpc-Key': credential/u);
   assert.match(qualifier, /credentialInUrl: false/u);
   assert.match(qualifier, /transactionCalls: 0/u);
@@ -307,15 +322,15 @@ test('final supply matrix covers every priced asset, preserves provider secrecy,
   assert.equal(validate(matrix), true, ajv.errorsText(validate.errors));
   assert.deepEqual(matrix.policy, { providerNamesPublic: false, exactModelSubstitutionAllowed: false, automaticPaidOverageAllowed: false, customerFreeByDefault: false, pricingIsReferencedNotDuplicated: true });
   assert.equal(matrix.catalogCoverage.length, 13);
-  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.assetCount, 0), 779);
-  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.positiveCustomerPriceCount, 0), 779);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.assetCount, 0), 792);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.positiveCustomerPriceCount, 0), 792);
   assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 22);
   assert.equal(new Set(matrix.capabilities.map(({ capabilityId }) => capabilityId)).size, matrix.capabilities.length);
   assert.ok(matrix.capabilities.every(({ publicAssets, pricingCatalogs, healthMethod, secretLocations, replacementPlan }) => publicAssets.length > 0 && pricingCatalogs.length > 0 && healthMethod.length > 0 && secretLocations.length > 0 && replacementPlan.length > 12));
-  assert.deepEqual(matrix.ownerBlockers.map(({ blockerId, spendingAuthorized }) => [blockerId, spendingAuthorized]), [['owner.drpc_account', false], ['owner.brave_search_account', false], ['owner.r2_key_reissue', false]]);
+  assert.deepEqual(matrix.ownerBlockers.map(({ blockerId, spendingAuthorized }) => [blockerId, spendingAuthorized]), [['owner.rpc_commercial_permission', false], ['owner.brave_search_account', false], ['owner.r2_key_reissue', false]]);
   assert.equal(market.competitorObservation.observedLiveModels, 83);
   assert.equal(market.clervoObservation.qualifiedExactAiRoutes, 20);
-  assert.deepEqual(market.finalDecision, { coverageSufficientWithoutOwnerAction: false, newAccountsSelected: 2, existingCredentialsNeedingReplacement: 1, selectedOwnerActions: ['dRPC dedicated free-tier key', 'Brave Search free-credit key', 'least-privilege R2 bucket key and bucket name'], allOtherResearchedSources: 'rejected or deferred until revenue, compatible terms, or a material failure justifies them' });
+  assert.deepEqual(market.finalDecision, { coverageSufficientWithoutOwnerAction: false, newAccountsSelected: 1, existingCredentialsNeedingReplacement: 1, selectedOwnerActions: ['written commercial RPC gateway permission or expressly compatible replacement', 'Brave Search free-credit key', 'least-privilege R2 bucket key and bucket name'], allOtherResearchedSources: 'rejected or deferred until revenue, written commercial permission, compatible terms, or a material failure justifies them' });
   const serialized = JSON.stringify(matrix);
   assert.equal(/(?:sk-|ghp_|AIza|Bearer\s|-----BEGIN|api[_-]?key["']?\s*:\s*["'][^"']+)/iu.test(serialized), false);
 });

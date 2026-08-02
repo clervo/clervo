@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.market-sourcing-gap-evaluation.v1",
-  "evaluatedAt": "2026-08-02T06:40:00.000Z",
+  "evaluatedAt": "2026-08-02T07:08:25.825Z",
   "policy": {
     "ownerCashAvailableNowUsd": 0,
     "existingCreditsMayBackPaidCustomerTraffic": true,
@@ -53,15 +53,16 @@
     {
       "candidateId": "source.drpc_dedicated",
       "capability": "rpc.multichain",
-      "decision": "selected_owner_blocked",
+      "decision": "qualified_technical_terms_blocked",
       "starterBasis": "210 million compute units per 30 days on the authenticated free tier; public endpoints are less reliable",
       "evidence": [
         "https://drpc.org/docs/pricing/requests",
         "https://drpc.org/docs/howitworks/ratelimiting",
-        "https://drpc.org/docs/gettingstarted/createaccount"
+        "https://drpc.org/docs/gettingstarted/createaccount",
+        "https://drpc.org/terms-of-use"
       ],
-      "reason": "The strongest current zero-cash multi-chain RPC candidate, with key-level limits and broad coverage. Commercial downstream terms still require review after account creation.",
-      "ownerAction": "Complete the dRPC login/account flow and provide a dedicated key without enabling paid deposits or overage."
+      "reason": "The rotated key works across all 13 selected networks and closes the Fantom technical gap, but observed custom limits affected Base, BSC, and Optimism. The general license is non-transferable and non-sublicensable and does not expressly permit selling raw RPC access.",
+      "ownerAction": "Obtain written permission for Clervo's paid customer-facing RPC gateway or use an expressly compatible replacement."
     },
     {
       "candidateId": "source.brave_search",
@@ -89,12 +90,30 @@
     {
       "candidateId": "source.validation_cloud",
       "capability": "rpc.multichain_backup",
-      "decision": "reserve_if_selected_rpc_terms_fail",
+      "decision": "rejected_terms",
       "starterBasis": "advertised 50 million compute units monthly free tier",
       "evidence": [
-        "https://www.validationcloud.io/post/node-api-updated-pricing-compute-unit-pricing-for-limitless-scalability"
+        "https://www.validationcloud.io/node",
+        "https://docs.validationcloud.io/v1/about/billing",
+        "https://www.validationcloud.io/terms"
       ],
-      "reason": "Credible alternative, but lower documented allowance and unresolved downstream commercial terms do not justify another account before the selected RPC source is tested.",
+      "reason": "The 50 million CU free tier is technically attractive, but the current general terms limit Website and API use to personal non-commercial use and do not grant raw RPC resale rights, so another account would not close the customer-supply gap.",
+      "ownerAction": null
+    },
+    {
+      "candidateId": "source.rpc_major_free_tiers",
+      "capability": "rpc.multichain_backup",
+      "decision": "rejected_terms",
+      "starterBasis": "Alchemy 30M CU/month; Quicknode 10M credits/month; Chainstack 3M requests/month; Infura 3M credits/day; Ankr 200M credits/month; GetBlock self-serve access",
+      "evidence": [
+        "https://legal.alchemy.com/",
+        "https://www.quicknode.com/terms",
+        "https://chainstack.com/zh/tos/",
+        "https://consensys.io/terms-of-use",
+        "https://www.ankr.com/terms/",
+        "https://getblock.io/terms-of-service/"
+      ],
+      "reason": "Every reviewed current agreement prohibits resale, sublicensing, third-party-benefit access, competitive gateway use, or commercial exploitation without written permission. Opening six more free accounts would add credentials but no launch-safe customer supply.",
       "ownerAction": null
     },
     {
@@ -164,13 +183,13 @@
   ],
   "finalDecision": {
     "coverageSufficientWithoutOwnerAction": false,
-    "newAccountsSelected": 2,
+    "newAccountsSelected": 1,
     "existingCredentialsNeedingReplacement": 1,
     "selectedOwnerActions": [
-      "dRPC dedicated free-tier key",
+      "written commercial RPC gateway permission or expressly compatible replacement",
       "Brave Search free-credit key",
       "least-privilege R2 bucket key and bucket name"
     ],
-    "allOtherResearchedSources": "rejected or deferred until revenue, compatible terms, or a material failure justifies them"
+    "allOtherResearchedSources": "rejected or deferred until revenue, written commercial permission, compatible terms, or a material failure justifies them"
   }
 }

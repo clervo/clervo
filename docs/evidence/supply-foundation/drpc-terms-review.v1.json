@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "clervo.drpc-terms-review.v1",
+  "reviewedAt": "2026-08-02T07:08:25.825Z",
+  "serviceId": "supply.drpc",
+  "officialSources": [
+    "https://drpc.org/terms-of-use",
+    "https://drpc.org/docs/pricing/requests",
+    "https://drpc.org/docs/howitworks/ratelimiting",
+    "https://drpc.org/docs/gettingstarted/firstrequest"
+  ],
+  "observations": {
+    "applicationApiUseDocumented": true,
+    "entityAccountUseRecognized": true,
+    "rawRpcResaleExpresslyAllowed": false,
+    "licenseTransferable": false,
+    "licenseSublicensable": false,
+    "saleOrTransferWithoutWrittenPermissionRestricted": true,
+    "freeTierUsesPublicNodes": true,
+    "freeTierPerformanceGuaranteed": false
+  },
+  "decision": {
+    "termsStatus": "restricted",
+    "resaleStatus": "restricted",
+    "customerRoutingAllowed": false,
+    "internalQualificationAllowed": true,
+    "requiredResolution": "Obtain written permission for a paid customer-facing RPC gateway or replace this route with supply whose terms expressly allow the Clervo product."
+  },
+  "safety": {
+    "externalMutationCalls": 0,
+    "transactionCalls": 0,
+    "signedPayloads": 0,
+    "ownerCashSpentUsd": 0,
+    "legalAdviceClaimed": false
+  }
+}

@@ -6,6 +6,8 @@ import { performance } from 'node:perf_hooks';
 
 const credential = process.env.DRPC_API_KEY;
 if (!credential) throw new TypeError('DRPC_API_KEY is required');
+const sampleCount = Number.parseInt(process.env.DRPC_QUALIFICATION_SAMPLES ?? '5', 10);
+if (!Number.isInteger(sampleCount) || sampleCount < 1 || sampleCount > 10) throw new TypeError('DRPC_QUALIFICATION_SAMPLES must be between 1 and 10');
 
 const sources = [
   { chain: 'arbitrum', network: 'arbitrum', protocol: 'evm', expectedChainId: '0xa4b1' },
@@ -92,43 +94,64 @@ function evaluate(source, payload) {
 }
 
 const observations = [];
-for (const source of sources) {
-  const target = new URL(endpoint);
-  target.searchParams.set('network', source.network);
-  const started = performance.now();
-  let status = 0;
-  let payload = null;
-  let failureCode = null;
-  try {
-    const response = await fetch(target, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'Drpc-Key': credential },
-      body: JSON.stringify(requestsFor(source)),
-      redirect: 'error',
-      signal: AbortSignal.timeout(8_000),
+for (let sample = 1; sample <= sampleCount; sample += 1) {
+  for (const source of sources) {
+    const target = new URL(endpoint);
+    target.searchParams.set('network', source.network);
+    const started = performance.now();
+    let status = 0;
+    let payload = null;
+    let failureCode = null;
+    try {
+      const response = await fetch(target, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'Drpc-Key': credential },
+        body: JSON.stringify(requestsFor(source)),
+        redirect: 'error',
+        signal: AbortSignal.timeout(8_000),
+      });
+      status = response.status;
+      const text = await response.text();
+      try { payload = JSON.parse(text); } catch { failureCode = 'invalid_json'; }
+    } catch (error) {
+      failureCode = error?.name === 'TimeoutError' ? 'timeout' : 'network_failure';
+    }
+    const result = evaluate(source, payload);
+    const rpcError = (Array.isArray(payload) ? payload : [payload]).find((row) => Number.isInteger(row?.error?.code))?.error?.code;
+    const passed = status === 200 && result.identityMatches !== false && result.heightValid;
+    observations.push({
+      chain: source.chain,
+      network: source.network,
+      protocol: source.protocol,
+      sample,
+      status,
+      latencyMs: Math.round(performance.now() - started),
+      identityStatus: result.identityMatches === true ? 'exact' : result.identityMatches === null ? 'endpoint_only' : 'failed',
+      heightValid: result.heightValid,
+      batchSupported: result.batchSupported,
+      failureCode: failureCode ?? (status !== 200 ? `http_${status}` : Number.isInteger(rpcError) ? `json_rpc_${rpcError}` : null),
+      passed,
     });
-    status = response.status;
-    const text = await response.text();
-    try { payload = JSON.parse(text); } catch { failureCode = 'invalid_json'; }
-  } catch (error) {
-    failureCode = error?.name === 'TimeoutError' ? 'timeout' : 'network_failure';
   }
-  const result = evaluate(source, payload);
-  const rpcError = (Array.isArray(payload) ? payload : [payload]).find((row) => Number.isInteger(row?.error?.code))?.error?.code;
-  const passed = status === 200 && result.identityMatches !== false && result.heightValid;
-  observations.push({
-    chain: source.chain,
-    network: source.network,
-    protocol: source.protocol,
-    status,
-    latencyMs: Math.round(performance.now() - started),
-    identityStatus: result.identityMatches === true ? 'exact' : result.identityMatches === null ? 'endpoint_only' : 'failed',
-    heightValid: result.heightValid,
-    batchSupported: result.batchSupported,
-    failureCode: failureCode ?? (status !== 200 ? `http_${status}` : Number.isInteger(rpcError) ? `json_rpc_${rpcError}` : null),
-    passed,
-  });
+  if (sample < sampleCount) await new Promise((resolve) => setTimeout(resolve, 1_100));
 }
+
+function percentile(values, ratio) {
+  const sorted = [...values].sort((left, right) => left - right);
+  return sorted[Math.min(sorted.length - 1, Math.ceil(sorted.length * ratio) - 1)];
+}
+
+const chainSummary = sources.map(({ chain }) => {
+  const rows = observations.filter((observation) => observation.chain === chain);
+  return {
+    chain,
+    calls: rows.length,
+    passedCalls: rows.filter(({ passed }) => passed).length,
+    latencyMsP50: percentile(rows.map(({ latencyMs }) => latencyMs), 0.5),
+    latencyMsP95: percentile(rows.map(({ latencyMs }) => latencyMs), 0.95),
+    passed: rows.length === sampleCount && rows.every(({ passed }) => passed),
+  };
+});
 
 const report = {
   schemaVersion: 'clervo.drpc-qualification.v1',
@@ -145,8 +168,8 @@ const report = {
     computeUnitsPer30Days: 210_000_000,
     usualComputeUnitsPerMinutePerIp: 120_000,
     minimumComputeUnitsPerMinutePerIp: 50_400,
-    paidDepositEnabled: false,
-    automaticPaidOverageAllowed: false,
+    paidDepositStatus: 'owner_reported_disabled_unverified',
+    automaticPaidOverageStatus: 'owner_reported_disabled_unverified',
   },
   safety: {
     httpsOnly: true,
@@ -159,9 +182,11 @@ const report = {
   },
   summary: {
     configuredChains: sources.length,
-    passedChains: observations.filter(({ passed }) => passed).length,
-    exactIdentityChains: observations.filter(({ identityStatus }) => identityStatus === 'exact').length,
+    samplesPerChain: sampleCount,
+    passedChains: chainSummary.filter(({ passed }) => passed).length,
+    exactIdentityChains: sources.filter(({ chain }) => observations.filter((row) => row.chain === chain).every(({ identityStatus }) => identityStatus === 'exact')).length,
   },
+  chainSummary,
   observations,
 };
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.supply-route-matrix.v1",
-  "evaluatedAt": "2026-08-02T06:40:00.000Z",
+  "evaluatedAt": "2026-08-02T07:08:25.825Z",
   "policy": {
     "providerNamesPublic": false,
     "exactModelSubstitutionAllowed": false,
@@ -71,8 +71,8 @@
     },
     {
       "catalog": "packages/catalog/rpc-supply-pricing.v1.json",
-      "assetCount": 33,
-      "positiveCustomerPriceCount": 33,
+      "assetCount": 46,
+      "positiveCustomerPriceCount": 46,
       "sellableCount": 0
     },
     {
@@ -354,10 +354,23 @@
         "polygon-mainnet-read-3",
         "solana-mainnet-read-1",
         "solana-mainnet-read-2",
-        "tron-mainnet-read-1"
+        "tron-mainnet-read-1",
+        "arbitrum-mainnet-read-dedicated",
+        "avalanche-mainnet-read-dedicated",
+        "base-mainnet-read-dedicated",
+        "bitcoin-mainnet-read-dedicated",
+        "bsc-mainnet-read-dedicated",
+        "cosmos-mainnet-read-dedicated",
+        "ethereum-mainnet-read-dedicated",
+        "fantom-mainnet-read-dedicated",
+        "gnosis-mainnet-read-dedicated",
+        "near-mainnet-read-dedicated",
+        "optimism-mainnet-read-dedicated",
+        "polygon-mainnet-read-dedicated",
+        "tron-mainnet-read-dedicated"
       ],
       "lifecycle": "internal_only",
-      "routeState": "blocked_production_terms",
+      "routeState": "dedicated_technical_routes_terms_blocked",
       "primaryServices": [],
       "fallbackServices": [],
       "pricingCatalogs": [
@@ -365,16 +378,19 @@
       ],
       "quality": "mixed",
       "termsStatus": "blocked",
-      "quotaRunway": "Twenty no-key reads are technically healthy but lack production rights, dedicated quotas, or SLA; the owned Solana allocation prohibits third-party benefit.",
+      "quotaRunway": "The dedicated key has a pooled 210 million CU allowance per 30 days. Ten networks passed all five stability samples, Base and Optimism recovered after cooldown, and BSC remained custom-rate-limited; none may serve customers without compatible downstream terms.",
       "healthMethod": [
+        "docs/evidence/supply-foundation/drpc-stability-qualification.v1.json",
+        "docs/evidence/supply-foundation/drpc-recovery-qualification.v1.json",
+        "docs/evidence/supply-foundation/drpc-terms-review.v1.json",
         "docs/evidence/supply-foundation/public-rpc-mesh-qualification.v1.json",
-        "docs/evidence/supply-foundation/public-rpc-terms-review.v1.json",
         "docs/evidence/supply-foundation/helius-qualification.v1.json"
       ],
       "secretLocations": [
+        "legacy_import:DRPC_API_KEY",
         "none:NO_CUSTOMER_ROUTE"
       ],
-      "replacementPlan": "Qualify the selected dedicated free-tier multi-chain account with per-key hard limits, then add an independent family for critical networks."
+      "replacementPlan": "Obtain written raw-RPC gateway permission or source an expressly resale-compatible provider; retain the dedicated and public routes for qualification and emergency internal reads only."
     },
     {
       "capabilityId": "blockchain.data",
@@ -494,8 +510,8 @@
   ],
   "ownerBlockers": [
     {
-      "blockerId": "owner.drpc_account",
-      "requiredAction": "Complete the selected multi-chain RPC account login and provide a dedicated free-tier key with paid deposits and overage disabled.",
+      "blockerId": "owner.rpc_commercial_permission",
+      "requiredAction": "Obtain written permission for paid customer-facing RPC gateway use or approve an expressly compatible replacement after the remaining zero-cash market check.",
       "unblocks": [
         "rpc.multichain"
       ],

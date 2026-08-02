@@ -13,8 +13,8 @@
       "properties": {
         "manifestCount": { "const": 2 },
         "lineCount": { "type": "integer", "minimum": 1 },
-        "assignmentCount": { "const": 219 },
-        "uniqueNameCount": { "const": 219 },
+        "assignmentCount": { "const": 220 },
+        "uniqueNameCount": { "const": 220 },
         "valuesRecorded": { "const": false }
       },
       "additionalProperties": false
@@ -32,8 +32,8 @@
     },
     "rows": {
       "type": "array",
-      "minItems": 219,
-      "maxItems": 219,
+      "minItems": 220,
+      "maxItems": 220,
       "uniqueItems": true,
       "items": {
         "type": "object",

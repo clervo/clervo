@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "clervo.drpc-qualification.v1",
+  "evaluatedAt": "2026-08-02T07:08:25.825Z",
+  "serviceId": "supply.drpc",
+  "plan": "free",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 13,
+  "transactionCalls": 0,
+  "signedPayloads": 0,
+  "credentialRecorded": false,
+  "endpointAuthentication": "Drpc-Key_header",
+  "allowance": {
+    "computeUnitsPer30Days": 210000000,
+    "usualComputeUnitsPerMinutePerIp": 120000,
+    "minimumComputeUnitsPerMinutePerIp": 50400,
+    "paidDepositStatus": "owner_reported_disabled_unverified",
+    "automaticPaidOverageStatus": "owner_reported_disabled_unverified"
+  },
+  "safety": {
+    "httpsOnly": true,
+    "credentialInUrl": false,
+    "fixedOrigin": "https://lb.drpc.org",
+    "networkAllowlist": [
+      "arbitrum",
+      "avalanche",
+      "base",
+      "bitcoin",
+      "bsc",
+      "cosmos-hub",
+      "ethereum",
+      "fantom",
+      "gnosis",
+      "near",
+      "optimism",
+      "polygon",
+      "tron"
+    ],
+    "publicDnsRequired": true,
+    "redirectsAllowed": false,
+    "readOnlyMethodsOnly": true
+  },
+  "summary": {
+    "configuredChains": 13,
+    "samplesPerChain": 1,
+    "passedChains": 12,
+    "exactIdentityChains": 11
+  },
+  "chainSummary": [
+    {
+      "chain": "arbitrum",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 79,
+      "latencyMsP95": 79,
+      "passed": true
+    },
+    {
+      "chain": "avalanche",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 24,
+      "latencyMsP95": 24,
+      "passed": true
+    },
+    {
+      "chain": "base",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 20,
+      "latencyMsP95": 20,
+      "passed": true
+    },
+    {
+      "chain": "bitcoin",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 135,
+      "latencyMsP95": 135,
+      "passed": true
+    },
+    {
+      "chain": "bsc",
+      "calls": 1,
+      "passedCalls": 0,
+      "latencyMsP50": 21,
+      "latencyMsP95": 21,
+      "passed": false
+    },
+    {
+      "chain": "cosmos",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 151,
+      "latencyMsP95": 151,
+      "passed": true
+    },
+    {
+      "chain": "ethereum",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 21,
+      "latencyMsP95": 21,
+      "passed": true
+    },
+    {
+      "chain": "fantom",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 20,
+      "latencyMsP95": 20,
+      "passed": true
+    },
+    {
+      "chain": "gnosis",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 20,
+      "latencyMsP95": 20,
+      "passed": true
+    },
+    {
+      "chain": "near",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 100,
+      "latencyMsP95": 100,
+      "passed": true
+    },
+    {
+      "chain": "optimism",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 21,
+      "latencyMsP95": 21,
+      "passed": true
+    },
+    {
+      "chain": "polygon",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 21,
+      "latencyMsP95": 21,
+      "passed": true
+    },
+    {
+      "chain": "tron",
+      "calls": 1,
+      "passedCalls": 1,
+      "latencyMsP50": 20,
+      "latencyMsP95": 20,
+      "passed": true
+    }
+  ],
+  "observations": [
+    {
+      "chain": "arbitrum",
+      "network": "arbitrum",
+      "protocol": "evm",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 79,
+      "identityStatus": "exact",
+      "heightValid": true,
+      "batchSupported": true,
+      "failureCode": null,
+      "passed": true
+    },
+    {
+      "chain": "avalanche",
+      "network": "avalanche",
+      "protocol": "evm",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 24,
+      "identityStatus": "exact",
+      "heightValid": true,
+      "batchSupported": true,
+      "failureCode": null,
+      "passed": true
+    },
+    {
+      "chain": "base",
+      "network": "base",
+      "protocol": "evm",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 20,
+      "identityStatus": "exact",
+      "heightValid": true,
+      "batchSupported": true,
+      "failureCode": null,
+      "passed": true
+    },
+    {
+      "chain": "bitcoin",
+      "network": "bitcoin",
+      "protocol": "bitcoin",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 135,
+      "identityStatus": "endpoint_only",
+      "heightValid": true,
+      "batchSupported": false,
+      "failureCode": null,
+      "passed": true
+    },
+    {
+      "chain": "bsc",
+      "network": "bsc",
+      "protocol": "evm",
+      "sample": 1,
+      "status": 429,
+      "latencyMs": 21,
+      "identityStatus": "failed",
+      "heightValid": false,
+      "batchSupported": true,
+      "failureCode": "http_429",
+      "passed": false
+    },
+    {
+      "chain": "cosmos",
+      "network": "cosmos-hub",
+      "protocol": "cosmos",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 151,
+      "identityStatus": "exact",
+      "heightValid": true,
+      "batchSupported": false,
+      "failureCode": null,
+      "passed": true
+    },
+    {
+      "chain": "ethereum",
+      "network": "ethereum",
+      "protocol": "evm",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 21,
+      "identityStatus": "exact",
+      "heightValid": true,
+      "batchSupported": true,
+      "failureCode": null,
+      "passed": true
+    },
+    {
+      "chain": "fantom",
+      "network": "fantom",
+      "protocol": "evm",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 20,
+      "identityStatus": "exact",
+      "heightValid": true,
+      "batchSupported": true,
+      "failureCode": null,
+      "passed": true
+    },
+    {
+      "chain": "gnosis",
+      "network": "gnosis",
+      "protocol": "evm",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 20,
+      "identityStatus": "exact",
+      "heightValid": true,
+      "batchSupported": true,
+      "failureCode": null,
+      "passed": true
+    },
+    {
+      "chain": "near",
+      "network": "near",
+      "protocol": "near",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 100,
+      "identityStatus": "exact",
+      "heightValid": true,
+      "batchSupported": false,
+      "failureCode": null,
+      "passed": true
+    },
+    {
+      "chain": "optimism",
+      "network": "optimism",
+      "protocol": "evm",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 21,
+      "identityStatus": "exact",
+      "heightValid": true,
+      "batchSupported": true,
+      "failureCode": null,
+      "passed": true
+    },
+    {
+      "chain": "polygon",
+      "network": "polygon",
+      "protocol": "evm",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 21,
+      "identityStatus": "exact",
+      "heightValid": true,
+      "batchSupported": true,
+      "failureCode": null,
+      "passed": true
+    },
+    {
+      "chain": "tron",
+      "network": "tron",
+      "protocol": "evm",
+      "sample": 1,
+      "status": 200,
+      "latencyMs": 20,
+      "identityStatus": "exact",
+      "heightValid": true,
+      "batchSupported": true,
+      "failureCode": null,
+      "passed": true
+    }
+  ]
+}

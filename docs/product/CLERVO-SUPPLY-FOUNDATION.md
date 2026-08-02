@@ -48,8 +48,8 @@ disabled without explicit owner approval.
   inventory's `470`/`167` counts were stale and were repaired by the environment
   reconciliation without reading or recording secret values.
 - The current Clervo environment contributes two additional unique names for
-  the `ai.clervo.dev` gateway, bringing the reconciled total to 219 with zero
-  unmapped names.
+  the `ai.clervo.dev` gateway and the acquired dRPC credential contributes one,
+  bringing the reconciled total to 220 with zero unmapped names.
 - `ai.clervo.dev/v1`: working; `gpt-5.6-luna`, `gpt-5.6-terra`, and
   `gpt-5.6-sol` are priced, benchmarked, qualified, and cataloged.
 - Google Vertex: reported USD 1,700 credit; qualified chat, embedding, image,
@@ -150,7 +150,7 @@ disabled without explicit owner approval.
 - Current qualified internal catalog: 20 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.
 - The final provider-neutral matrix references 13 canonical price catalogs and
-  covers all 779 price rows: every row has a positive customer price and 22
+  covers all 792 price rows: every row has a positive customer price and 22
   rows are currently sellable. It records exact assets, route state, lifecycle,
   price/shadow-cost source, quality, terms, quota runway, health evidence,
   secret-name location, fallbacks, and replacement plan without secret values.
@@ -164,6 +164,11 @@ disabled without explicit owner approval.
   require Growth and are excluded. The first key was disclosed in chat, so it is
   rejected pending one dashboard rotation; only safe network slugs and the
   header-authenticated, read-only qualification harness were retained.
+- The rotated dRPC key then passed a one-shot read on all 13 networks. A
+  five-sample screen left ten networks fully healthy; Base and Optimism
+  recovered after cooldown, while BSC remained custom-rate-limited. All 13
+  routes are positively priced, but current general terms do not expressly
+  permit selling raw RPC access, so customer routing remains blocked.
 
 Canonical machine-readable state lives in:
 

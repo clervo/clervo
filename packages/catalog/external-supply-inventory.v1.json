@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.22",
-  "observedAt": "2026-08-02T08:00:00.000Z",
+  "inventoryVersion": "2026-08-02.23",
+  "observedAt": "2026-08-02T07:08:25.825Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -1476,20 +1476,20 @@
       "credentialNames": [
         "DRPC_API_KEY"
       ],
-      "configuredCredentialSlots": 0,
+      "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
-      "credentialDeployment": "missing",
+      "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "recurring_free",
-      "connectionStatus": "observed_not_tested",
-      "qualificationStatus": "not_run",
-      "termsStatus": "review_required",
-      "resaleStatus": "unverified",
+      "connectionStatus": "observed_working",
+      "qualificationStatus": "failed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "The owner created one application key exposing dedicated endpoints for all 13 required non-Solana networks; the credential shown in chat is treated as compromised and is not stored or tested.",
+        "The owner rotated the disclosed credential and installed one replacement application key outside chat and Git; no credential value or credential-bearing URL was recorded.",
         "The Free tier advertises a pooled 210 million compute units per 30 days over load-balanced public nodes, normally 120,000 CU per minute per IP with network-specific variation.",
-        "The bounded qualifier authenticates through the Drpc-Key header, records no credential-bearing URL or response payload, and performs identity and current-height reads only.",
-        "Solana and the Data and Wallet API require the Growth plan in this account and are excluded. Commercial downstream terms remain under review before customer routing."
+        "A five-sample read-only screen made 65 calls: ten networks passed every sample, while Base, BSC, and Optimism exposed custom HTTP 429 limits. After a 50-second cooldown Base and Optimism recovered; BSC remained rate-limited.",
+        "Solana and the Data and Wallet API require the Growth plan in this account and are excluded. Current general terms do not expressly permit raw RPC resale and grant a non-transferable, non-sublicensable license, so all customer routes remain blocked pending written permission or replacement supply."
       ]
     },
     {
