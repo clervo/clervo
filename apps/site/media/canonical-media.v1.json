@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "clervo.canonical-media.v1",
+  "canonicalObject": "CLERVO_PRISM_MASTER",
+  "blenderVersion": "5.2.0 LTS",
+  "source": "apps/site/media/blender/clervo-prism-v1.blend",
+  "generator": "apps/site/media/blender/build_clervo_prism.py",
+  "runtimeAsset": "apps/site/public-assets/clervo-prism.glb",
+  "cameras": [
+    "Camera_Desktop_Canonical",
+    "Camera_Portrait_Canonical"
+  ],
+  "actions": [
+    "CLERVO_Verification_Aperture",
+    "CLERVO_Receipt_Ejection"
+  ],
+  "states": [
+    "idle",
+    "risk",
+    "qualified",
+    "approval",
+    "verified",
+    "receipt"
+  ],
+  "semanticColorOrder": [
+    "risk",
+    "qualified",
+    "approval",
+    "verified",
+    "receipt"
+  ],
+  "generatedMediaUsedAsProductProof": false,
+  "artifacts": [
+    {
+      "path": "apps/site/media/blender/clervo-prism-v1.blend",
+      "sizeBytes": 107574,
+      "sha256": "e16eaf459c117c4e713f01d69bf104371afaaadb9741ca5bf4c60b245d00c0ea"
+    },
+    {
+      "path": "apps/site/public-assets/clervo-prism.glb",
+      "sizeBytes": 154188,
+      "sha256": "f9e0c348f6a176d9ad790bd390ebd67e704134e914ec203cd1a3bf2389a7149e"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-desktop-approval.png",
+      "sizeBytes": 648179,
+      "sha256": "52d6837fb6c7efff98d00ab247f71f257eb000c52a92fa922bca247e45d72cd0"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-desktop-idle.png",
+      "sizeBytes": 600619,
+      "sha256": "d08e5e085df05b20a995bcad3fe5b172834411ae257210741fbe3d64a815ba8b"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-desktop-qualified.png",
+      "sizeBytes": 642933,
+      "sha256": "4c0a3cee96b2d5ae3782ea52f13f2640f3e753d28fa164b137512bee2f546972"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-desktop-receipt.png",
+      "sizeBytes": 651496,
+      "sha256": "e8d2eb47bb127a4bdbb02f3bac8e40a008e976eb36ce341154ac6f6d138e098c"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-desktop-risk.png",
+      "sizeBytes": 630752,
+      "sha256": "e9a42cf6a5c87f82a5e87cdfde20aa6598c0e63c4558eedbc6aae168566b6d9f"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-desktop-verified.png",
+      "sizeBytes": 620536,
+      "sha256": "9eb9d877def88f68c8987e8c9940f481bfbb33cf2e121e6ff35fd0cb4d2a2fd0"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-portrait-approval.png",
+      "sizeBytes": 643676,
+      "sha256": "b022a987bd1c1c11818ccaf596c1770bc260e85858368115358d87e18516fd87"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-portrait-idle.png",
+      "sizeBytes": 590791,
+      "sha256": "7679bd3d616479220ae43c37ba25c462e65c6f995de50df5ade96e6954ad8885"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-portrait-qualified.png",
+      "sizeBytes": 638469,
+      "sha256": "25b866c30543d9a68fbecde169b6e89a3afce091d7abb70beb63e2a1f0f34a10"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-portrait-receipt.png",
+      "sizeBytes": 640982,
+      "sha256": "c6358e40a57aa66c4ae8af710d2c58631e1eddab56ed30aee770f077de9ff01e"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-portrait-risk.png",
+      "sizeBytes": 620608,
+      "sha256": "9a9be482ef143baab6fb6aa451cddf053f8298d7aa707b7471f5e3f90fcc0652"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-prism-portrait-verified.png",
+      "sizeBytes": 605313,
+      "sha256": "85d7314c970ce6145dd90eac12f1e6fca53ddc17d4e0e9c3407e2158785973ab"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-desktop-approval.webp",
+      "sizeBytes": 17162,
+      "sha256": "0ef016ad35e291fa145a3067e2570e889e079e2c97e5c516bceb0147154dc489"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-desktop-idle.webp",
+      "sizeBytes": 10934,
+      "sha256": "416807338ba7c5190986877af118366f0cc89aebc57564c0c07c38862aa0b336"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-desktop-qualified.webp",
+      "sizeBytes": 16436,
+      "sha256": "d51ea6753f74f69341bd12d9849b34f341e6a8bfe7e10ca541d39af9f609cd0b"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-desktop-receipt.webp",
+      "sizeBytes": 15746,
+      "sha256": "3a8397f97e9a50a306004512642c8abd4f8138f6e3b6b0e43afff3926d9cbce9"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-desktop-risk.webp",
+      "sizeBytes": 16806,
+      "sha256": "82ed3d3f78df9f32c6e93592c5b58d8520d24cd5050bba712f3e8a9e942821d4"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-desktop-verified.webp",
+      "sizeBytes": 13122,
+      "sha256": "1fff75a3392a30270721b137602e70fc4ecd35e3ca76001da09c6f7267831d58"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-portrait-approval.webp",
+      "sizeBytes": 15322,
+      "sha256": "6e16440373f71bd7846bc8592b7c369821271b1959554b9055fdd623b6829838"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-portrait-idle.webp",
+      "sizeBytes": 10564,
+      "sha256": "f2bdebebccc206220577357e09b01f01d7e2828d1d115330781bb50d3157425e"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-portrait-qualified.webp",
+      "sizeBytes": 16524,
+      "sha256": "f364ecfcd38d832af558f5ac48ec7de16c02dfe61aeb6385e0fbebd033695a8f"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-portrait-receipt.webp",
+      "sizeBytes": 14806,
+      "sha256": "6cc1b789526ab79b454b869da09fe56cd9b1cead7bb01ba7826aee69472a5a27"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-portrait-risk.webp",
+      "sizeBytes": 15640,
+      "sha256": "eefbcb9ea9f12f945433a9278697cae47c3fffa4c5648dc1786e84a1083b66a6"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-prism-portrait-verified.webp",
+      "sizeBytes": 13242,
+      "sha256": "6af03e5e1d07ac95d53f55e5e5e0e52694666ea8379efb3f1089d3b66d30bb27"
+    }
+  ]
+}

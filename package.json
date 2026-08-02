@@ -10,6 +10,7 @@
   },
   "packageManager": "npm@10.9.8",
   "workspaces": [
+    "apps/site",
     "packages/sdk-typescript",
     "packages/mcp"
   ],
@@ -129,6 +130,11 @@
     "test:n12.1": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n12.1.test.mjs",
     "test:stage12:local": "node ./scripts/verify-runtime.mjs && npm run build && node ./scripts/release/generate-release-candidate-freeze.mjs --check && node --test ./tests/contract/n12.1.test.mjs && node ./scripts/validate-contracts.mjs",
     "test:stage13:clients": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n13.1.test.mjs ./tests/contract/n13.2.test.mjs && PYTHONPATH=packages/sdk-python/src python3 -m unittest discover -s packages/sdk-python/tests -v",
+    "site:dev": "npm --workspace @clervo/site run dev",
+    "site:build": "npm --workspace @clervo/site run build",
+    "site:preview": "npm --workspace @clervo/site run preview",
+    "site:media:verify": "node ./scripts/site/validate-canonical-media.mjs",
+    "test:stage13:site": "npm run site:build && node --test ./tests/contract/n13.3.test.mjs",
     "verify:stage6-exit": "node ./scripts/verify-runtime.mjs && node ./scripts/check-ai-supply-readiness.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
     "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",

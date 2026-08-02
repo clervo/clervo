@@ -1,0 +1,79 @@
+{
+  "origin": "http://127.0.0.1:4173",
+  "consoleErrors": [],
+  "requestFailures": [],
+  "captures": [
+    {
+      "name": "desktop-home",
+      "route": "/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Outcome infrastructure for agents — Clervo"
+    },
+    {
+      "name": "desktop-proof-receipt",
+      "route": "/proof-lab",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Proof Lab — Clervo"
+    },
+    {
+      "name": "desktop-docs",
+      "route": "/docs/typescript",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Developer docs — Clervo"
+    },
+    {
+      "name": "desktop-product",
+      "route": "/product",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Product and capabilities — Clervo"
+    },
+    {
+      "name": "desktop-security",
+      "route": "/security",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "security — Clervo"
+    },
+    {
+      "name": "mobile-home",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Outcome infrastructure for agents — Clervo"
+    },
+    {
+      "name": "mobile-proof",
+      "route": "/proof-lab",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Proof Lab — Clervo"
+    },
+    {
+      "name": "mobile-home-reduced-motion",
+      "route": "/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "reducedMotion": true
+    }
+  ]
+}

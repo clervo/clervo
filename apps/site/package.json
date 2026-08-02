@@ -1,0 +1,26 @@
+{
+  "name": "@clervo/site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "npm --prefix ../.. run generate:discovery && node ../../scripts/site/validate-canonical-media.mjs && node ../../scripts/site/prepare-public.mjs",
+    "dev": "vite",
+    "prebuild": "npm --prefix ../.. run generate:discovery && node ../../scripts/site/validate-canonical-media.mjs && node ../../scripts/site/prepare-public.mjs",
+    "build": "tsc --project tsconfig.json --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist-server && node ../../scripts/site/prerender.mjs && node ../../scripts/site/validate-prerender.mjs",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-three/fiber": "9.7.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "three": "0.185.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@types/three": "0.185.0",
+    "@vitejs/plugin-react": "6.0.5",
+    "vite": "8.2.0"
+  }
+}

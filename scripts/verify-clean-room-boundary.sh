@@ -40,7 +40,7 @@ printf '%s\n' "$required_directories" | while IFS= read -r directory; do
 done
 
 symlinks=$(find "$repo_root" \
-  \( -path "$repo_root/.git" -o -path "$repo_root/node_modules" \) -prune \
+  \( -path "$repo_root/.git" -o \( -type d -name node_modules \) \) -prune \
   -o -type l -print)
 [ -z "$symlinks" ] || fail "symlinks are forbidden:\n$symlinks"
 
@@ -54,7 +54,7 @@ legacy_absolute=/workspace/$legacy_name
 legacy_relative=../$legacy_name
 
 legacy_matches=$(find "$repo_root" \
-  \( -path "$repo_root/.git" -o -path "$repo_root/node_modules" \) -prune \
+  \( -path "$repo_root/.git" -o \( -type d -name node_modules \) \) -prune \
   -o -type f -print0 \
   | xargs -0 grep -Il -e "$legacy_absolute" -e "$legacy_relative" 2>/dev/null || true)
 
@@ -73,7 +73,7 @@ fi
 manifest_names='package.json pyproject.toml requirements.txt Cargo.toml go.mod pom.xml build.gradle build.gradle.kts composer.json Gemfile'
 for manifest_name in $manifest_names; do
   escaping_dependencies=$(find "$repo_root" \
-    \( -path "$repo_root/.git" -o -path "$repo_root/node_modules" \) -prune \
+    \( -path "$repo_root/.git" -o \( -type d -name node_modules \) \) -prune \
     -o -name "$manifest_name" -type f -print0 \
     | xargs -0 -r grep -InE '(file:|path[[:space:]]*=|replace[[:space:]]+)[^#\n]*(\.\./|/workspace/)' \
     || true)

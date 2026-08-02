@@ -1,0 +1,151 @@
+{
+  "origin": "http://127.0.0.1:4173",
+  "routes": [
+    {
+      "route": "/",
+      "title": "Outcome infrastructure for agents — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/product",
+      "title": "Product and capabilities — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/build",
+      "title": "Build with Clervo — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/proof-lab",
+      "title": "Proof Lab — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/docs/typescript",
+      "title": "Developer docs — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/docs/python",
+      "title": "Developer docs — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/docs/mcp",
+      "title": "Developer docs — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/pricing",
+      "title": "pricing — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/benchmarks",
+      "title": "benchmarks — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/security",
+      "title": "security — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/legal",
+      "title": "legal — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/status",
+      "title": "Product status — Clervo",
+      "violations": 0
+    }
+  ],
+  "navigation": {
+    "forward": "/proof-lab",
+    "back": "/",
+    "forwardAgain": "/proof-lab",
+    "commandOpened": true,
+    "commandDestination": "/security",
+    "firstTabTarget": "01\nRISK"
+  },
+  "responsive": [
+    {
+      "viewport": {
+        "width": 320,
+        "height": 700
+      },
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "overflow": false
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 780
+      },
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false
+    },
+    {
+      "viewport": {
+        "width": 430,
+        "height": 932
+      },
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "overflow": false
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "clientWidth": 844,
+      "scrollWidth": 844,
+      "overflow": false
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "textZoom": "200%",
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false
+    }
+  ],
+  "runtimeDelivery": {
+    "mobileLoadedWebGL": false,
+    "mobileLoadedCanonicalStill": true,
+    "desktopLoadedWebGLBeforeInteraction": false,
+    "desktopLoadedWebGLAfterInteraction": true
+  },
+  "staticHtml": {
+    "docsTitle": "TypeScript developer docs — Clervo",
+    "docsHeading": "TypeScript client",
+    "hasCanonical": true
+  },
+  "violations": []
+}

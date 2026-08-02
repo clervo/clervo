@@ -15,6 +15,9 @@ coverage/
 __pycache__/
 *.pyc
 *.egg-info/
+*.blend1
+apps/site/public/
+apps/site/dist-server/
 
 # Runtime state
 data/

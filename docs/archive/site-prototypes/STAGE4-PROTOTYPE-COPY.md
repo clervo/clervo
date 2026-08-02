@@ -1,4 +1,7 @@
-# Clervo site prototype copy
+# Archived Stage 4 Clervo site prototype copy
+
+This historical copy is retained as evidence only. It is not current product or
+visual authority and must not be loaded by the production site.
 
 **Prototype only — not a production website or availability claim.**
 

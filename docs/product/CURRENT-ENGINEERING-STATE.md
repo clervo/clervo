@@ -75,6 +75,29 @@ Published legacy packages are read-only compatibility evidence and contain
 stale claims that must not be copied. The redacted resumable inventory is
 `docs/product/DISTRIBUTION-ASSET-INVENTORY.md`.
 
+The Stage 13 local distribution candidate now includes a frozen-registry
+projection, TypeScript and Python SDKs, an official-SDK MCP server, and one
+cross-client golden transcript. Package archives and isolated installs pass;
+none is claimed as the current public registry release.
+
+The functional V6 product experience is also complete as a repository-local
+candidate. Thirteen routes are prerendered and hydrate into product,
+activation, nine-step deterministic Proof Lab, docs, pricing truth, benchmark
+truth, security, legal-boundary, and status surfaces. The canonical physical
+prism is generated in Blender 5.2.0 LTS, preserved as `.blend`, exported as a
+named animated GLB, rendered across six lifecycle states in desktop and
+portrait formats, and hash-validated. Desktop WebGL is progressive after user
+interaction; mobile and reduced-motion paths use 12 optimized canonical
+renders and never load Three.js or the GLB.
+
+The consolidated site check passes 12 routes with zero axe findings, keyboard
+search and browser history, no-JavaScript docs, 320/360/390/430/tablet/
+landscape reflow, 200% text zoom, mobile reduced motion, and zero browser
+console or request failures. Fresh desktop and mobile Lighthouse runs score
+100 in performance, accessibility, best practices, SEO, and agentic browsing,
+with zero blocking time and layout shift. This proves the local candidate, not
+public deployment or customer availability.
+
 The owner's V6 handoff passed its 145-file checksum manifest and verifier. It is
 the visual and experiential north star for art, 3D, cinematography, motion,
 layout, responsive composition, and interaction quality. It is not copy or
@@ -108,12 +131,11 @@ confirmed absent; Artifact Registry was preserved. Evidence is in
 
 ## Next actions
 
-1. Build a truthful generated distribution projection from the frozen Stage 12
-   release candidate, then the shared HTTP/OpenAPI surface, TypeScript SDK,
-   Python SDK, MCP server, and cross-client conformance. After that, implement
-   onboarding and the functional site using V6 only as visual/experience
-   authority. Guide required secure logins only when local preparation reaches
-   the relevant external verification or publish step.
+1. Finish the remaining Stage 13 public-package metadata, clean-environment
+   onboarding proof, registry/GitHub publication preparation, and shared
+   access boundary without changing the frozen interface. Guide secure logins
+   only when the exact external verification or publish step is locally ready;
+   do not claim public distribution before it is observed.
 2. Keep Crypto Intelligence customer routing disabled until written commercial
    permission or replacement terms-compatible EVM, Solana, and protocol supply
    exists; this isolated owner blocker does not pause combined local work.
