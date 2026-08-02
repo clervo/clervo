@@ -95,6 +95,9 @@ disabled without explicit owner approval.
   comparison. The key is free-tier with zero credits. Current terms prohibit
   reselling model API access or a competing service, so no inference was run and
   every listing is excluded from Clervo customer routing.
+- GitHub Models was globally retired on 2026-07-30 and is now archived supply;
+  its HTTP 410 is definitive, not a token defect. The direct Gemini credential
+  returns API_KEY_INVALID, while qualified Vertex preserves Google coverage.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three

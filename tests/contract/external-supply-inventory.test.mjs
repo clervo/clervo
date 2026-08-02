@@ -72,10 +72,9 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(nvidia.resaleStatus, 'prohibited');
   assert.deepEqual(inventory.services.filter(({ serviceId }) => ['supply.google_gemini', 'supply.github_models'].includes(serviceId)).map(({ serviceId, connectionStatus }) => [serviceId, connectionStatus]), [
     ['supply.google_gemini', 'observed_failed'],
-    ['supply.github_models', 'observed_failed'],
   ]);
 
-  assert.deepEqual(inventory.retiredServices.map(({ serviceId }) => serviceId), ['supply.quickai', 'supply.tongkhokr']);
+  assert.deepEqual(inventory.retiredServices.map(({ serviceId }) => serviceId), ['supply.quickai', 'supply.tongkhokr', 'supply.github_models']);
   assert.ok(inventory.retiredServices.every(({ connectionStatus, resaleStatus }) => connectionStatus === 'retired' && resaleStatus === 'prohibited'));
   assert.deepEqual(inventory.creditPools.map(({ serviceId, reportedAmount }) => [serviceId, reportedAmount]), [
     ['supply.google_vertex', 1700],

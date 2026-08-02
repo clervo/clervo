@@ -429,12 +429,13 @@
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "unknown",
       "connectionStatus": "observed_failed",
-      "qualificationStatus": "not_run",
+      "qualificationStatus": "failed",
       "termsStatus": "unreviewed",
       "resaleStatus": "unverified",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Authenticated model discovery returned HTTP 400 on 2026-08-02; the failure is preserved and no working claim is made."
+        "Current official catalog requests returned HTTP 400 with reason API_KEY_INVALID; the direct key is unusable and no inference call was made.",
+        "Google Vertex remains independently qualified for Clervo's Google-backed chat, embedding, image, and video supply, so this credential failure creates no current capability gap."
       ]
     },
     {
@@ -478,36 +479,6 @@
       ],
       "notes": [
         "Chat, text embedding, 1K image, and 720p video routes passed bounded live qualification on 2026-08-02. Imagen endpoints remain unavailable to this project; speech remains unqualified. Owner reports USD 1700 credit; exact balance and expiry remain unverified, so Clervo requires its own hard shadow ledger before customer traffic."
-      ]
-    },
-    {
-      "serviceId": "supply.github_models",
-      "providerId": "provider.github_models",
-      "category": "ai_inference",
-      "products": [
-        "ai.chat",
-        "ai.embed"
-      ],
-      "endpointOrigins": [
-        "https://models.github.ai",
-        "https://models.inference.ai.azure.com"
-      ],
-      "credentialNames": [
-        "GITHUB_MODELS_PAT",
-        "GITHUB_MODELS_TOKEN"
-      ],
-      "configuredCredentialSlots": 1,
-      "alternateCredentialSlots": 0,
-      "credentialDeployment": "legacy_import_read_only",
-      "fundingClass": "recurring_free",
-      "connectionStatus": "observed_failed",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
-      "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": [
-        "The Azure inference origin is legacy; qualification should prefer the current models.github.ai origin.",
-        "Authenticated model discovery returned HTTP 410 on 2026-08-02; the failure is preserved and no working claim is made."
       ]
     },
     {
@@ -1696,6 +1667,37 @@
       ],
       "notes": [
         "Retired by owner decision on 2026-08-02; historical credentials remain untouched in the read-only import."
+      ]
+    },
+    {
+      "serviceId": "supply.github_models",
+      "providerId": "provider.github_models",
+      "category": "ai_inference",
+      "products": [
+        "ai.chat",
+        "ai.embed"
+      ],
+      "endpointOrigins": [
+        "https://models.github.ai",
+        "https://models.inference.ai.azure.com"
+      ],
+      "credentialNames": [
+        "GITHUB_MODELS_PAT",
+        "GITHUB_MODELS_TOKEN"
+      ],
+      "configuredCredentialSlots": 1,
+      "alternateCredentialSlots": 0,
+      "credentialDeployment": "legacy_import_read_only",
+      "fundingClass": "recurring_free",
+      "connectionStatus": "retired",
+      "qualificationStatus": "failed",
+      "termsStatus": "blocked",
+      "resaleStatus": "prohibited",
+      "publicProviderDisclosure": "hidden_model_name_only",
+      "notes": [
+        "GitHub retired the complete Models product, including catalog, inference, playground, and BYOK, for every customer on 2026-07-30.",
+        "Both current and compatibility-version catalog requests returned HTTP 410 with github_models_retirement_brownout on 2026-08-02; no inference call was made.",
+        "The legacy Azure inference origin was removed earlier and is not a fallback."
       ]
     }
   ],

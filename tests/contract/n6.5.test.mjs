@@ -128,7 +128,7 @@ test('provider candidate and complete redacted supply inventories compile strict
   const validateInventory = ajv.getSchema('https://api.clervo.dev/schemas/2026-07-29.1/external-supply-inventory.schema.json');
   assert.equal(validateInventory(inventory), true, ajv.errorsText(validateInventory.errors));
   assert.equal(inventory.source.uniqueSourceNames, 217);
-  assert.equal(inventory.services.length, 28);
+  assert.equal(inventory.services.length, 27);
   assert.deepEqual(inventory.services.filter(({ category }) => ['storage', 'identity', 'notification', 'publishing', 'source_control'].includes(category)).map(({ serviceId }) => serviceId), ['supply.cloudflare_r2', 'supply.github_source', 'supply.gitlab_source', 'supply.devto', 'supply.hashnode', 'supply.telegram', 'supply.workos']);
   const audit = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/environment-name-audit.v1.json'), 'utf8'));
   const validateAudit = ajv.getSchema('https://api.clervo.dev/schemas/2026-07-29.1/supply-environment-name-audit.schema.json');
@@ -164,6 +164,15 @@ test('owned AI discovery records every catalog response without pooling gateway 
     ['supply.siliconflow', 'working', 200, 73],
     ['supply.zai', 'working', 200, 8],
   ]);
+});
+
+test('direct Gemini is an invalid credential while the globally retired GitHub Models service is archived', async () => {
+  const evidence = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/direct-ai-credential-diagnostics.v1.json'), 'utf8'));
+  assert.equal(evidence.externalCatalogCalls, 5);
+  assert.equal(evidence.inferenceCalls, 0);
+  assert.equal(evidence.googleGemini.reason, 'API_KEY_INVALID');
+  assert.equal(evidence.githubModels.reason, 'github_models_retirement_brownout');
+  assert.equal(evidence.githubModels.globalRetirementDate, '2026-07-30');
 });
 
 test('Chinese gateway prices every asset but fails closed on observed model substitution', async () => {
