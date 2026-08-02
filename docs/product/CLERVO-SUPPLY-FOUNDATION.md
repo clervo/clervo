@@ -7,6 +7,13 @@ until this one-time supply foundation is complete. Continue automatically
 through this project; its rows and phases are a checklist, not authorization or
 stop boundaries.
 
+Local engineering and sourcing evaluation are complete. The consolidated local
+check passes, and the installed development environments report four qualified
+chat supply families, 21 ready exact routes, and coverage of all four roadmap AI
+products. Three genuine owner inputs remain before the supply foundation can be
+closed: commercial RPC permission or replacement, the selected no-card
+multichain-data key, and a least-privilege isolated object-storage key.
+
 The master plan remains product-scope authority. Its asset-inventory workflow
 requires a redacted row for every credential, account, token, provider, and
 credit. No secret values may enter this document, source, logs, or reports.
@@ -229,15 +236,15 @@ Canonical machine-readable state lives in:
 
 ## Remaining execution order
 
-1. Reconcile every redacted environment name to a service/account/credit or an
+1. **Completed.** Reconcile every redacted environment name to a service/account/credit or an
    explicit non-supply configuration category. Record gaps; forget nothing.
-2. Finish owned AI sources: Cloudflare, the 20-account Chinese gateway,
+2. **Completed.** Finish owned AI sources: Cloudflare, the 20-account Chinese gateway,
    Cerebras, Cohere, Gemini direct, GitHub Models, Mistral, NVIDIA, OpenRouter,
    SambaNova, SiliconFlow, ZAI, and every additional credential discovered.
-3. Benchmark by capability: general chat, reasoning, code, tools/JSON, vision,
+3. **Completed.** Benchmark by capability: general chat, reasoning, code, tools/JSON, vision,
    OCR, embeddings, reranking, image, video, STT, TTS, latency, stability, and
    safe failure. Compare all routes against the Clervo GPT baseline.
-4. Qualify non-AI supply: owned Search plus Serper, Helius and every RPC chain,
+4. **Completed locally; owner-blocked routes remain explicit.** Qualify non-AI supply: owned Search plus Serper, Helius and every RPC chain,
    Zerion, R2/storage, identity, notifications, CDP/x402/facilitator, and every
    remaining product dependency. Never perform a real settlement in this work.
 5. **Completed.** Produce the final provider-neutral supply matrix: exact public asset,
@@ -249,9 +256,9 @@ Canonical machine-readable state lives in:
    more only when it closes a material capability, quality, regional,
    availability, rate-limit, or runway gap. Record why each source is added or
    rejected.
-7. Obtain and qualify the three selected owner-blocked credentials, run one
-   consolidated supply-foundation test, resolve meaningful failures, commit the
-   final routing state, and resume the master roadmap.
+7. **Owner inputs pending; consolidated local test completed.** Obtain and
+   qualify the three selected owner-blocked inputs, rerun only their affected
+   checks, commit the final routing state, and resume the master roadmap.
 
 ## Completion criteria
 
