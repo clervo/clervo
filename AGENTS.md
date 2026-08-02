@@ -2,13 +2,18 @@
 
 ## Product direction
 
+- The current active priority is the one-time supply-foundation program in
+  `docs/product/CLERVO-SUPPLY-FOUNDATION.md`. Keep the product roadmap paused
+  until that document's completion criteria and final sourcing-gap evaluation
+  are satisfied. This is a continuous engineering project, not a ticket gate.
 - `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md` defines product scope,
   roadmap order, correctness, security, truthful claims, and launch gates.
 - The roadmap's stages and ticket labels are an implementation checklist, not
   authorization boundaries. Read the current status and relevant sections;
   do not reread the complete roadmap or historical evidence for ordinary work.
-- Continue through the next unfinished roadmap work automatically. Completing a
-  task, ticket, stage, test run, journal entry, or commit is not a stop point.
+- Continue through the next unfinished active-priority work automatically.
+  Completing a task, ticket, stage, test run, journal entry, or commit is not a
+  stop point.
 - Proven contracts, tests, deployed behavior, prices, receipts, and observed
   results outrank plans, copy, assumptions, and memory.
 
