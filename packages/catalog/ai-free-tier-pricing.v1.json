@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.ai-free-tier-pricing.v1",
-  "priceVersion": "2026-08-02.2",
-  "evaluatedAt": "2026-08-02T06:09:15.444Z",
+  "priceVersion": "2026-08-02.3",
+  "evaluatedAt": "2026-08-02T08:13:37.260Z",
   "currency": "USD",
   "providerVisibility": "internal_only",
   "policy": {
@@ -35,7 +35,7 @@
     { "modelId": "openai/gpt-oss-20b", "assetType": "chat", "lifecycle": "production", "listingStatus": "sellable", "qualityGrade": "best", "positioning": "best_value", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.03, "output": 0.12 }, "shadowPrice": { "input": 0.075, "output": 0.3 }, "supplierPriceKnown": true },
     { "modelId": "openai/gpt-oss-safeguard-20b", "assetType": "moderation", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "unranked", "positioning": "reasoning_guard", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.03, "output": 0.12 }, "shadowPrice": { "input": 0.075, "output": 0.3 }, "supplierPriceKnown": true },
     { "modelId": "qwen/qwen3.6-27b", "assetType": "chat", "lifecycle": "preview", "listingStatus": "sellable_preview", "qualityGrade": "best", "positioning": "fastest_preview", "customerUnit": "USD_per_million_tokens", "customerPrice": { "input": 0.25, "output": 1.25 }, "shadowPrice": { "input": 0.6, "output": 3 }, "supplierPriceKnown": true },
-    { "modelId": "whisper-large-v3", "assetType": "transcription", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "best", "positioning": "accuracy", "customerUnit": "USD_per_minute", "customerPrice": { "input": 0.001, "output": 0.001 }, "shadowPrice": { "input": 0.00185, "output": 0.00185 }, "supplierPriceKnown": true },
-    { "modelId": "whisper-large-v3-turbo", "assetType": "transcription", "lifecycle": "production", "listingStatus": "priced_pending_qualification", "qualityGrade": "good", "positioning": "fastest_value", "customerUnit": "USD_per_minute", "customerPrice": { "input": 0.0004, "output": 0.0004 }, "shadowPrice": { "input": 0.000667, "output": 0.000667 }, "supplierPriceKnown": true }
+    { "modelId": "whisper-large-v3", "assetType": "transcription", "lifecycle": "production", "listingStatus": "priced_qualified_integration_pending", "qualityGrade": "best", "positioning": "accuracy", "customerUnit": "USD_per_minute", "customerPrice": { "input": 0.001, "output": 0.001 }, "shadowPrice": { "input": 0.00185, "output": 0.00185 }, "supplierPriceKnown": true },
+    { "modelId": "whisper-large-v3-turbo", "assetType": "transcription", "lifecycle": "production", "listingStatus": "priced_qualified_integration_pending", "qualityGrade": "good", "positioning": "fastest_value", "customerUnit": "USD_per_minute", "customerPrice": { "input": 0.0004, "output": 0.0004 }, "shadowPrice": { "input": 0.000667, "output": 0.000667 }, "supplierPriceKnown": true }
   ]
 }

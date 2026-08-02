@@ -1,0 +1,427 @@
+{
+  "schemaVersion": "clervo.transcription-source-benchmark.v1",
+  "evaluatedAt": "2026-08-02T08:13:37.260Z",
+  "ownerCashSpentUsd": 0,
+  "maximumEstimatedPromotionalCreditDebitUsd": 0.01,
+  "fundingBasis": "funded_primary_and_recurring_free_fallbacks",
+  "externalCalls": 30,
+  "credentialSlotsUsed": 3,
+  "customerDataUsed": false,
+  "syntheticAudioOnly": true,
+  "phraseValuesRecorded": false,
+  "transcriptValuesRecorded": false,
+  "rawAudioRecorded": false,
+  "sources": [
+    {
+      "sourceId": "deepgram_nova_3",
+      "serviceId": "supply.deepgram",
+      "modelId": "nova-3",
+      "identityBasis": "exact_request_and_response_model_family"
+    },
+    {
+      "sourceId": "groq_whisper_large_v3",
+      "serviceId": "supply.groq",
+      "modelId": "whisper-large-v3",
+      "identityBasis": "exact_request_endpoint_response_unlabeled"
+    },
+    {
+      "sourceId": "groq_whisper_large_v3_turbo",
+      "serviceId": "supply.groq",
+      "modelId": "whisper-large-v3-turbo",
+      "identityBasis": "exact_request_endpoint_response_unlabeled"
+    },
+    {
+      "sourceId": "cloudflare_nova_3",
+      "serviceId": "supply.cloudflare_workers_ai",
+      "modelId": "@cf/deepgram/nova-3",
+      "identityBasis": "immutable_exact_model_endpoint_response_unlabeled"
+    },
+    {
+      "sourceId": "cloudflare_whisper_large_v3_turbo",
+      "serviceId": "supply.cloudflare_workers_ai",
+      "modelId": "@cf/openai/whisper-large-v3-turbo",
+      "identityBasis": "immutable_exact_model_endpoint_response_unlabeled"
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "transcription_quality_01",
+      "audioBytes": 28944,
+      "audioHash": "sha256:7917f041d2c72f9b0d5a19849f9e1054d16d3978d789e605b83b1ac945163d37",
+      "outputs": [
+        {
+          "sourceId": "deepgram_nova_3",
+          "status": 200,
+          "latencyMs": 538,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 8,
+          "matchBasisPoints": 8889,
+          "passed": true,
+          "durationSeconds": 4.8239374,
+          "responseModelFamily": true
+        },
+        {
+          "sourceId": "groq_whisper_large_v3",
+          "status": 200,
+          "latencyMs": 218,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 8,
+          "matchBasisPoints": 8889,
+          "passed": true,
+          "durationSeconds": 4.824,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "groq_whisper_large_v3_turbo",
+          "status": 200,
+          "latencyMs": 224,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 8,
+          "matchBasisPoints": 8889,
+          "passed": true,
+          "durationSeconds": 4.824,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "cloudflare_nova_3",
+          "status": 200,
+          "latencyMs": 358,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 8,
+          "matchBasisPoints": 8889,
+          "passed": true,
+          "durationSeconds": null,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "cloudflare_whisper_large_v3_turbo",
+          "status": 200,
+          "latencyMs": 1017,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 8,
+          "matchBasisPoints": 8889,
+          "passed": true,
+          "durationSeconds": null,
+          "responseModelLabelPresent": false
+        }
+      ]
+    },
+    {
+      "caseId": "transcription_quality_02",
+      "audioBytes": 22464,
+      "audioHash": "sha256:a08c96ca188eddf4a5eb8f344b23cb158cbbd6a600a9e6f056a2637f6708ea8c",
+      "outputs": [
+        {
+          "sourceId": "deepgram_nova_3",
+          "status": 200,
+          "latencyMs": 279,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 9,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": 3.7439375,
+          "responseModelFamily": true
+        },
+        {
+          "sourceId": "groq_whisper_large_v3",
+          "status": 200,
+          "latencyMs": 186,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 9,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": 3.7439999999999998,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "groq_whisper_large_v3_turbo",
+          "status": 200,
+          "latencyMs": 127,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 9,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": 3.7439999999999998,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "cloudflare_nova_3",
+          "status": 200,
+          "latencyMs": 212,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 9,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": null,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "cloudflare_whisper_large_v3_turbo",
+          "status": 200,
+          "latencyMs": 584,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 9,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": null,
+          "responseModelLabelPresent": false
+        }
+      ]
+    },
+    {
+      "caseId": "transcription_quality_03",
+      "audioBytes": 24048,
+      "audioHash": "sha256:b10a23d7e672ef84c6259a6dd43369acd3299a62d6742c8ad8e947fdf64fd018",
+      "outputs": [
+        {
+          "sourceId": "deepgram_nova_3",
+          "status": 200,
+          "latencyMs": 153,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 8,
+          "matchBasisPoints": 8889,
+          "passed": true,
+          "durationSeconds": 4.0079374,
+          "responseModelFamily": true
+        },
+        {
+          "sourceId": "groq_whisper_large_v3",
+          "status": 200,
+          "latencyMs": 161,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 8,
+          "matchBasisPoints": 8889,
+          "passed": true,
+          "durationSeconds": 4.008,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "groq_whisper_large_v3_turbo",
+          "status": 200,
+          "latencyMs": 228,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 8,
+          "matchBasisPoints": 8889,
+          "passed": true,
+          "durationSeconds": 4.008,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "cloudflare_nova_3",
+          "status": 200,
+          "latencyMs": 198,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 9,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": null,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "cloudflare_whisper_large_v3_turbo",
+          "status": 200,
+          "latencyMs": 587,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 8,
+          "matchBasisPoints": 8889,
+          "passed": true,
+          "durationSeconds": null,
+          "responseModelLabelPresent": false
+        }
+      ]
+    },
+    {
+      "caseId": "transcription_quality_04",
+      "audioBytes": 27504,
+      "audioHash": "sha256:4ad90d1db2608fb026eb0d25e513136e26ea9cafc9f96b0e2a84bc62b78c34b9",
+      "outputs": [
+        {
+          "sourceId": "deepgram_nova_3",
+          "status": 200,
+          "latencyMs": 199,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 9,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": 4.5839376,
+          "responseModelFamily": true
+        },
+        {
+          "sourceId": "groq_whisper_large_v3",
+          "status": 200,
+          "latencyMs": 173,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 9,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": 4.584,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "groq_whisper_large_v3_turbo",
+          "status": 200,
+          "latencyMs": 136,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 9,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": 4.584,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "cloudflare_nova_3",
+          "status": 200,
+          "latencyMs": 170,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 9,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": null,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "cloudflare_whisper_large_v3_turbo",
+          "status": 200,
+          "latencyMs": 716,
+          "expectedWordCount": 9,
+          "expectedWordsMatched": 9,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": null,
+          "responseModelLabelPresent": false
+        }
+      ]
+    },
+    {
+      "caseId": "transcription_quality_05",
+      "audioBytes": 24336,
+      "audioHash": "sha256:654537d2e5b9ef43235e480a3ad9975a172eca3e9da978f516671839b161fabf",
+      "outputs": [
+        {
+          "sourceId": "deepgram_nova_3",
+          "status": 200,
+          "latencyMs": 488,
+          "expectedWordCount": 12,
+          "expectedWordsMatched": 12,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": 4.0559373,
+          "responseModelFamily": true
+        },
+        {
+          "sourceId": "groq_whisper_large_v3",
+          "status": 200,
+          "latencyMs": 176,
+          "expectedWordCount": 12,
+          "expectedWordsMatched": 12,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": 4.056000256,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "groq_whisper_large_v3_turbo",
+          "status": 200,
+          "latencyMs": 128,
+          "expectedWordCount": 12,
+          "expectedWordsMatched": 10,
+          "matchBasisPoints": 8333,
+          "passed": true,
+          "durationSeconds": 4.056000256,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "cloudflare_nova_3",
+          "status": 200,
+          "latencyMs": 187,
+          "expectedWordCount": 12,
+          "expectedWordsMatched": 12,
+          "matchBasisPoints": 10000,
+          "passed": true,
+          "durationSeconds": null,
+          "responseModelLabelPresent": false
+        },
+        {
+          "sourceId": "cloudflare_whisper_large_v3_turbo",
+          "status": 200,
+          "latencyMs": 3980,
+          "expectedWordCount": 12,
+          "expectedWordsMatched": 10,
+          "matchBasisPoints": 8333,
+          "passed": true,
+          "durationSeconds": null,
+          "responseModelLabelPresent": false
+        }
+      ]
+    }
+  ],
+  "rankings": [
+    {
+      "sourceId": "cloudflare_nova_3",
+      "serviceId": "supply.cloudflare_workers_ai",
+      "modelId": "@cf/deepgram/nova-3",
+      "identityBasis": "immutable_exact_model_endpoint_response_unlabeled",
+      "passed": 5,
+      "total": 5,
+      "aggregateMatchBasisPoints": 9792,
+      "latencyMsP50": 198,
+      "latencyMsP95": 358,
+      "qualityGrade": "best"
+    },
+    {
+      "sourceId": "groq_whisper_large_v3",
+      "serviceId": "supply.groq",
+      "modelId": "whisper-large-v3",
+      "identityBasis": "exact_request_endpoint_response_unlabeled",
+      "passed": 5,
+      "total": 5,
+      "aggregateMatchBasisPoints": 9583,
+      "latencyMsP50": 176,
+      "latencyMsP95": 218,
+      "qualityGrade": "best"
+    },
+    {
+      "sourceId": "deepgram_nova_3",
+      "serviceId": "supply.deepgram",
+      "modelId": "nova-3",
+      "identityBasis": "exact_request_and_response_model_family",
+      "passed": 5,
+      "total": 5,
+      "aggregateMatchBasisPoints": 9583,
+      "latencyMsP50": 279,
+      "latencyMsP95": 538,
+      "qualityGrade": "best"
+    },
+    {
+      "sourceId": "groq_whisper_large_v3_turbo",
+      "serviceId": "supply.groq",
+      "modelId": "whisper-large-v3-turbo",
+      "identityBasis": "exact_request_endpoint_response_unlabeled",
+      "passed": 5,
+      "total": 5,
+      "aggregateMatchBasisPoints": 9167,
+      "latencyMsP50": 136,
+      "latencyMsP95": 228,
+      "qualityGrade": "good"
+    },
+    {
+      "sourceId": "cloudflare_whisper_large_v3_turbo",
+      "serviceId": "supply.cloudflare_workers_ai",
+      "modelId": "@cf/openai/whisper-large-v3-turbo",
+      "identityBasis": "immutable_exact_model_endpoint_response_unlabeled",
+      "passed": 5,
+      "total": 5,
+      "aggregateMatchBasisPoints": 9167,
+      "latencyMsP50": 716,
+      "latencyMsP95": 3980,
+      "qualityGrade": "good"
+    }
+  ],
+  "decision": {
+    "minimumPerCaseMatchBasisPoints": 7500,
+    "primarySourceId": "cloudflare_nova_3",
+    "independentSupplyFamilies": 3,
+    "productionContractStatus": "integration_pending",
+    "automaticPaidOverageAllowedByClervo": false
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.ai-speech-pricing.v1",
-  "priceVersion": "2026-08-02.1",
-  "evaluatedAt": "2026-08-02T03:08:58.000Z",
+  "priceVersion": "2026-08-02.2",
+  "evaluatedAt": "2026-08-02T08:13:37.260Z",
   "currency": "USD",
   "providerVisibility": "internal_only",
   "policy": {
@@ -53,8 +53,8 @@
   "transcriptionRoutes": [
     {
       "modelId": "nova-3",
-      "listingStatus": "priced_qualified_integration_pending",
-      "positioning": "best_general_english",
+      "listingStatus": "priced_qualified_adapter_ready_contract_pending",
+      "positioning": "best_funded_general_english",
       "customerUsdPerMinute": { "streaming": 0.003, "prerecorded": 0.004 },
       "shadowUsdPerMinute": { "streaming": 0.0048, "prerecorded": 0.0077 },
       "keytermCustomerUsdPerMinute": 0.0007,

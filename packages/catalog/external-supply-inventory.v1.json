@@ -282,7 +282,7 @@
         "The authenticated non-experimental catalog exposed 61 exact assets on 2026-08-02. All are customer-priced; fifteen use category introductory prices because supplier pricing is absent or zero.",
         "All nineteen production free-allocation chat models completed a 190-call exact-identity quality screen without a quota or payment failure. Five passed all eleven live route checks and are sellable: Llama 4 Scout, Nemotron 3 120B, GPT-OSS 120B, GPT-OSS 20B, and Qwen3 30B.",
         "Eight chat models were rejected by the fixed general-quality screen, two more failed full qualification, eight remain honestly pending because a poor general score may still suit a bounded specialty, and three require a paid plan.",
-        "Aura-2 English TTS passed a five-sample independent transcription quality run, now has a fail-closed production adapter and deterministic character accounting, and is a sellable independent fallback. BGE-M3 embeddings, FLUX Schnell image generation, Whisper Large v3 Turbo STT, and Nova-3 STT passed bounded live execution but retain explicit adapter, accounting, image-size, or transcription-contract gaps.",
+        "Aura-2 English TTS passed a five-sample independent transcription quality run, now has a fail-closed production adapter and deterministic character accounting, and is a sellable independent fallback. Edge Nova-3 and Whisper Large v3 Turbo STT each passed 5/5 clean-English cases; fallback adapters and the missing public transcription contract still block sale. BGE-M3 embeddings and FLUX Schnell image generation retain explicit adapter, accounting, or image-size gaps.",
         "Three catalog assets explicitly require a paid Workers plan and remain unavailable under the zero-owner-cash guard.",
         "Value-added use for End Users is restricted by Cloudflare and each model licensor's terms; never expose upstream credentials or raw account access."
       ]
@@ -411,7 +411,7 @@
         "nova-3"
       ],
       "notes": [
-        "Two exact Aura-2 speech routes and Nova-3 transcription passed bounded authenticated technical checks on 2026-08-02. The Nova-3 jargon miss is preserved in evidence.",
+        "Two exact Aura-2 speech routes are qualified and sellable. Nova-3 transcription passed 5/5 clean-English comparative cases and now has a fail-closed adapter with response-family, duration, audio-integrity, and model-improvement opt-out enforcement; its public wire contract remains absent.",
         "Use is restricted to value-added Clervo operations; never distribute upstream credentials or sell pass-through account access. The exact remaining balance still requires the application shadow ledger before customer traffic."
       ]
     },
@@ -600,7 +600,7 @@
       ],
       "notes": [
         "All fifteen authenticated active assets are priced. GPT-OSS 20B, GPT-OSS 120B, and Qwen 3.6 27B passed live quality and route qualification.",
-        "Whisper Large v3 and Turbo each recovered 8/9 words from synthetic independent audio with usage reporting. Their responses do not label the model and Clervo adapters remain incomplete, so both stay priced pending route qualification.",
+        "Whisper Large v3 and Turbo each passed 5/5 clean-English comparative cases across independent synthetic audio. Their responses do not label the model and Clervo fallback adapters remain incomplete, so both stay priced as technically qualified but integration-pending.",
         "Both preview Orpheus TTS models returned model_terms_required before execution. The organization admin must accept each model's terms before qualification; no workaround or alternate-account attempt is allowed.",
         "Use is restricted to value-added Clervo operations. Never expose upstream credentials or account access, resell the raw cloud service, or use multiple accounts to bypass limits."
       ]

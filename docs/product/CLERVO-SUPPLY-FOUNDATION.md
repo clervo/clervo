@@ -169,6 +169,11 @@ disabled without explicit owner approval.
   failed full qualification, and eight poor/specialty routes remain pending.
   Five embedding/image/speech assets passed bounded execution with integration
   gaps recorded. Three paid-plan assets remain unavailable under the guard.
+- Transcription: a 30-call clean-English comparison gave every one of five
+  exact routes a 5/5 pass across three independent supply families. Nova-3 on
+  the edge led quality and latency; the funded Nova-3 primary now has a bounded,
+  identity-checking adapter. Public sale remains blocked by the roadmap's lack
+  of an `ai.transcribe` wire contract, not by missing or untested supply.
 - QuickAI and TongKhokr are retired and must not return to active supply.
 - Current qualified internal catalog: 21 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.

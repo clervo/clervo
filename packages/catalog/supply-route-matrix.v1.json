@@ -289,16 +289,14 @@
       "capabilityId": "ai.stt",
       "publicAssets": [
         "nova-3",
+        "flux",
+        "whisper",
         "whisper-large-v3",
         "whisper-large-v3-turbo",
-        "@cf/deepgram/flux",
-        "@cf/deepgram/nova-3",
-        "@cf/openai/whisper",
-        "@cf/openai/whisper-large-v3-turbo",
-        "@cf/openai/whisper-tiny-en"
+        "whisper-tiny-en"
       ],
       "lifecycle": "mixed",
-      "routeState": "qualified_integration_pending",
+      "routeState": "qualified_adapter_ready_contract_pending",
       "primaryServices": [
         "supply.deepgram"
       ],
@@ -311,18 +309,20 @@
         "packages/catalog/ai-free-tier-pricing.v1.json",
         "packages/catalog/ai-edge-free-pricing.v1.json"
       ],
-      "quality": "mixed",
+      "quality": "best",
       "termsStatus": "restricted",
-      "quotaRunway": "The funded primary and two recurring-free families were bounded live; customer accounting and response contracts still block production listing.",
+      "quotaRunway": "The funded primary has a USD 30 allocation and USD 5 shared daily debit ceiling; two recurring-free fallbacks have hard free-allocation stops and no paid overage. All five clean-English routes passed 5/5 cases.",
       "healthMethod": [
         "docs/evidence/supply-foundation/groq-speech-qualification.v1.json",
         "docs/evidence/supply-foundation/cloudflare-modality-screen.v1.json",
+        "docs/evidence/supply-foundation/transcription-source-benchmark.v1.json",
+        "tests/contract/deepgram-transcription-adapter.test.mjs",
         "docs/evidence/stage6/deepgram-speech-screen.v1.json"
       ],
       "secretLocations": [
         "legacy_import:DEEPGRAM_API_KEY,GROQ_API_KEY,CLOUDFLARE_API_TOKEN"
       ],
-      "replacementPlan": "Implement the normalized transcription adapter and usage ledger, then route exact identities without transcription-model substitution."
+      "replacementPlan": "Add the explicit ai.transcribe wire contract required to expose the completed primary adapter, then implement the two qualified fallback adapters and route exact identities without model substitution."
     },
     {
       "capabilityId": "search.web",

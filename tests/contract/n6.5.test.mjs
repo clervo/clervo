@@ -481,6 +481,28 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
   assert.ok(aura.results.every(({ status, transcriptionStatus, passed }) => status === 200 && transcriptionStatus === 200 && passed));
 });
 
+test('transcription supply is ranked across three independent families while the missing product contract fails closed', async () => {
+  const benchmark = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/transcription-source-benchmark.v1.json'), 'utf8'));
+  const speechPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-speech-pricing.v1.json'), 'utf8'));
+  const freePricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-free-tier-pricing.v1.json'), 'utf8'));
+  const edgePricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-edge-free-pricing.v1.json'), 'utf8'));
+  assert.equal(benchmark.externalCalls, 30);
+  assert.equal(benchmark.ownerCashSpentUsd, 0);
+  assert.deepEqual([benchmark.customerDataUsed, benchmark.phraseValuesRecorded, benchmark.transcriptValuesRecorded, benchmark.rawAudioRecorded], [false, false, false, false]);
+  assert.ok(benchmark.cases.every(({ outputs }) => outputs.length === 5 && outputs.every(({ status, passed }) => status === 200 && passed)));
+  assert.deepEqual(benchmark.rankings.map(({ sourceId, passed, aggregateMatchBasisPoints, qualityGrade }) => [sourceId, passed, aggregateMatchBasisPoints, qualityGrade]), [
+    ['cloudflare_nova_3', 5, 9792, 'best'],
+    ['groq_whisper_large_v3', 5, 9583, 'best'],
+    ['deepgram_nova_3', 5, 9583, 'best'],
+    ['groq_whisper_large_v3_turbo', 5, 9167, 'good'],
+    ['cloudflare_whisper_large_v3_turbo', 5, 9167, 'good'],
+  ]);
+  assert.deepEqual(benchmark.decision, { minimumPerCaseMatchBasisPoints: 7500, primarySourceId: 'cloudflare_nova_3', independentSupplyFamilies: 3, productionContractStatus: 'integration_pending', automaticPaidOverageAllowedByClervo: false });
+  assert.equal(speechPricing.transcriptionRoutes[0].listingStatus, 'priced_qualified_adapter_ready_contract_pending');
+  assert.ok(freePricing.assets.filter(({ assetType }) => assetType === 'transcription').every(({ listingStatus }) => listingStatus === 'priced_qualified_integration_pending'));
+  assert.ok(edgePricing.assets.filter(({ modelId }) => ['@cf/deepgram/nova-3', '@cf/openai/whisper-large-v3-turbo'].includes(modelId)).every(({ listingStatus }) => listingStatus === 'priced_qualified_integration_pending'));
+});
+
 test('AI outage monitoring emits bounded provider alerts without prompt or credential payloads', () => {
   const monitor = createAiExecutionMonitor();
   monitor.record({ occurredAt: '2026-08-02T00:00:00.000Z', operationId: 'op_01K0AIOUTAGEMONITOR0001', productId: 'ai.chat', outcome: 'routing_rejected', rejectionCodes: ['route_unhealthy', 'circuit_open'] });
