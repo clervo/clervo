@@ -28,7 +28,16 @@
         "width": 1440,
         "height": 1000
       },
-      "title": "Developer docs — Clervo"
+      "title": "TypeScript developer docs — Clervo"
+    },
+    {
+      "name": "desktop-build",
+      "route": "/build",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Build with Clervo — Clervo"
     },
     {
       "name": "desktop-product",
@@ -46,7 +55,7 @@
         "width": 1440,
         "height": 1000
       },
-      "title": "security — Clervo"
+      "title": "Security controls — Clervo"
     },
     {
       "name": "mobile-home",
@@ -65,6 +74,15 @@
         "height": 844
       },
       "title": "Proof Lab — Clervo"
+    },
+    {
+      "name": "mobile-build",
+      "route": "/build",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Build with Clervo — Clervo"
     },
     {
       "name": "mobile-home-reduced-motion",

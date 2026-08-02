@@ -9,6 +9,7 @@ import { Link } from '../router';
 type ClientId = keyof typeof installExamples;
 
 const clients: Array<{ id: ClientId; label: string; packageName: string; version: string }> = [
+  { id: 'http', label: 'Raw HTTP', packageName: 'OpenAPI 3.1.1', version: 'frozen candidate' },
   { id: 'typescript', label: 'TypeScript', packageName: '@clervo/sdk', version: '0.3.0 candidate' },
   { id: 'python', label: 'Python', packageName: 'clervo-sdk', version: '0.2.0 candidate' },
   { id: 'mcp', label: 'MCP', packageName: '@clervo/mcp', version: '0.3.0 candidate' },
@@ -25,7 +26,7 @@ export function Docs({
   updateActivation(next: Partial<ActivationState>): void;
   onPhase(phase: ExperiencePhase): void;
 }) {
-  const validClient = ['typescript', 'python', 'mcp'].includes(client);
+  const validClient = ['http', 'typescript', 'python', 'mcp'].includes(client);
   const clientId = (validClient ? client : 'typescript') as ClientId;
   const selected = clients.find(({ id }) => id === clientId) ?? clients[0];
   useEffect(() => {

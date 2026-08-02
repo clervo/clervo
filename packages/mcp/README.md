@@ -27,3 +27,8 @@ convert a non-payable `402` challenge into success.
 
 The package writes protocol messages to stdout and operational failures to
 stderr only.
+
+Known future payment failures include the same single recovery action as both
+SDKs. The server never performs that action, signs, pays, or retries on the
+agent's behalf. Unknown settlement and payment timeouts remain blocked until
+the original idempotency key is reconciled.

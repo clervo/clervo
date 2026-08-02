@@ -10,6 +10,7 @@ const expectations = [
   ['product/index.html', 'One platform.'],
   ['build/index.html', 'Prove the path.'],
   ['proof-lab/index.html', 'Inspect the mechanism.'],
+  ['docs/http/index.html', 'Raw HTTP client'],
   ['docs/typescript/index.html', 'TypeScript client'],
   ['docs/python/index.html', 'Python client'],
   ['docs/mcp/index.html', 'MCP client'],

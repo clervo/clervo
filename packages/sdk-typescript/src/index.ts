@@ -52,6 +52,69 @@ export interface ClervoClientOptions {
   maxResponseBytes?: number;
 }
 
+export type ClervoRecoveryCode =
+  | 'insufficient_funds'
+  | 'wrong_network_or_asset'
+  | 'expired_quote'
+  | 'rejected'
+  | 'timeout'
+  | 'unknown_settlement';
+
+export interface ClervoRecoveryAction {
+  code: ClervoRecoveryCode;
+  action: string;
+  retry: 'after_action' | 'prohibited_until_reconciled';
+}
+
+const recoveryActions = Object.freeze([
+  Object.freeze({
+    code: 'insufficient_funds',
+    problemCodes: Object.freeze(['insufficient_funds']),
+    action: 'Add enough of the quoted asset on the quoted network, then request a fresh quote.',
+    retry: 'after_action',
+  }),
+  Object.freeze({
+    code: 'wrong_network_or_asset',
+    problemCodes: Object.freeze(['wrong_network', 'wrong_asset', 'unsupported_network', 'unsupported_asset']),
+    action: "Switch to the quote's exact network and asset, then request a fresh quote.",
+    retry: 'after_action',
+  }),
+  Object.freeze({
+    code: 'expired_quote',
+    problemCodes: Object.freeze(['quote_expired', 'expired_quote']),
+    action: 'Request a fresh quote and never reuse the expired authorization.',
+    retry: 'after_action',
+  }),
+  Object.freeze({
+    code: 'rejected',
+    problemCodes: Object.freeze(['authorization_rejected', 'payment_rejected', 'user_rejected']),
+    action: 'Review the maximum charge and approve again only if you still intend to pay.',
+    retry: 'after_action',
+  }),
+  Object.freeze({
+    code: 'timeout',
+    problemCodes: Object.freeze(['authorization_timeout', 'payment_timeout']),
+    action: 'Reconcile the existing idempotency key before deciding whether to retry.',
+    retry: 'prohibited_until_reconciled',
+  }),
+  Object.freeze({
+    code: 'unknown_settlement',
+    problemCodes: Object.freeze(['settlement_unknown', 'unknown_settlement']),
+    action: 'Reconcile the existing operation and do not authorize or retry until settlement is definitive.',
+    retry: 'prohibited_until_reconciled',
+  }),
+] satisfies ReadonlyArray<ClervoRecoveryAction & { problemCodes: readonly string[] }>);
+
+export function recoveryActionFor(value: unknown): Readonly<ClervoRecoveryAction> | undefined {
+  const problemCode = value instanceof ClervoProblemError && typeof value.problem.code === 'string'
+    ? value.problem.code
+    : typeof value === 'string' ? value : undefined;
+  if (problemCode === undefined) return undefined;
+  const recovery = recoveryActions.find(({ problemCodes }) => problemCodes.includes(problemCode));
+  if (recovery === undefined) return undefined;
+  return Object.freeze({ code: recovery.code, action: recovery.action, retry: recovery.retry });
+}
+
 function assertBaseUrl(value: string): string {
   let parsed: URL;
   try {

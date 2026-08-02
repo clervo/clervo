@@ -21,5 +21,6 @@ Current verified status:
 
 - [OpenAPI contract](/openapi.json): repository-local preview and non-payable challenge routes.
 - [Catalog](/catalog.json): exact projected operations and lifecycle limitations.
+- [Onboarding and recovery](/onboarding.json): exact candidate journey state and six bounded recovery actions.
 - [Discovery document](/.well-known/clervo.json): release-candidate binding and distribution status.
 - [JSON Schemas](/schemas/2026-07-29.1/): projected public-wire contracts.

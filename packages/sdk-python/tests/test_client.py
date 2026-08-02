@@ -11,6 +11,7 @@ from clervo import (
     ClervoProblemError,
     ClervoProtocolError,
     HttpResponse,
+    recovery_action_for,
 )
 
 TRANSCRIPT = json.loads(
@@ -20,6 +21,14 @@ TRANSCRIPT = json.loads(
         / "distribution"
         / "fixtures"
         / "search-client-transcript.v1.json"
+    ).read_text(encoding="utf-8")
+)
+ONBOARDING = json.loads(
+    (
+        Path(__file__).resolve().parents[3]
+        / "packages"
+        / "distribution"
+        / "onboarding.v1.json"
     ).read_text(encoding="utf-8")
 )
 
@@ -144,6 +153,27 @@ class ClientTests(unittest.TestCase):
         )
         with self.assertRaises(ClervoProtocolError):
             client.search.web(query="evidence")
+
+    def test_recovery_actions_match_all_six_shared_classes(self) -> None:
+        for expected in ONBOARDING["recovery"]:
+            for problem_code in expected["problemCodes"]:
+                action = recovery_action_for(
+                    ClervoProblemError(402, {"code": problem_code})
+                )
+                self.assertIsNotNone(action)
+                self.assertEqual(
+                    {
+                        "code": action.code,
+                        "action": action.action,
+                        "retry": action.retry,
+                    },
+                    {
+                        "code": expected["code"],
+                        "action": expected["action"],
+                        "retry": expected["retry"],
+                    },
+                )
+        self.assertIsNone(recovery_action_for("unrelated_failure"))
 
 
 if __name__ == "__main__":

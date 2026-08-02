@@ -47,10 +47,12 @@ await capture('desktop-proof-receipt', '/proof-lab', { width: 1440, height: 1000
   await page.getByText('Inspect fixture receipt').click();
 });
 await capture('desktop-docs', '/docs/typescript', { width: 1440, height: 1000 });
+await capture('desktop-build', '/build', { width: 1440, height: 1000 });
 await capture('desktop-product', '/product', { width: 1440, height: 1000 });
 await capture('desktop-security', '/security', { width: 1440, height: 1000 });
 await capture('mobile-home', '/', { width: 390, height: 844 });
 await capture('mobile-proof', '/proof-lab', { width: 390, height: 844 });
+await capture('mobile-build', '/build', { width: 390, height: 844 });
 
 const reducedContext = await context({ width: 390, height: 844 }, 'reduce');
 const reducedPage = await reducedContext.newPage();

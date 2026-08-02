@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "clervo.distribution-onboarding.v1",
+  "releaseCandidateId": "clervo-private-core-2026-08-02.1",
+  "interfaceHash": "sha256:3a230339f444960f70c69e67c0b32dc600e7af8d7ae6c61101ee82226e536768",
+  "publicCallable": false,
+  "paymentImplemented": false,
+  "journey": [
+    {
+      "step": "install",
+      "state": "candidate_verified",
+      "action": "Install a locally verified package archive or use raw HTTP."
+    },
+    {
+      "step": "ask",
+      "state": "fixture_verified",
+      "action": "Submit one bounded request with an idempotency key."
+    },
+    {
+      "step": "fund",
+      "state": "unavailable",
+      "action": "Wait for a verified payable deployment before funding."
+    },
+    {
+      "step": "approve",
+      "state": "fixture_only",
+      "action": "Inspect and approve only the explicitly non-payable fixture."
+    },
+    {
+      "step": "result",
+      "state": "fixture_verified",
+      "action": "Verify the fixture result against its contract evidence."
+    },
+    {
+      "step": "receipt",
+      "state": "fixture_verified",
+      "action": "Inspect the request hash and replay-safe fixture receipt."
+    }
+  ],
+  "recovery": [
+    {
+      "code": "insufficient_funds",
+      "problemCodes": [
+        "insufficient_funds"
+      ],
+      "action": "Add enough of the quoted asset on the quoted network, then request a fresh quote.",
+      "retry": "after_action"
+    },
+    {
+      "code": "wrong_network_or_asset",
+      "problemCodes": [
+        "wrong_network",
+        "wrong_asset",
+        "unsupported_network",
+        "unsupported_asset"
+      ],
+      "action": "Switch to the quote's exact network and asset, then request a fresh quote.",
+      "retry": "after_action"
+    },
+    {
+      "code": "expired_quote",
+      "problemCodes": [
+        "quote_expired",
+        "expired_quote"
+      ],
+      "action": "Request a fresh quote and never reuse the expired authorization.",
+      "retry": "after_action"
+    },
+    {
+      "code": "rejected",
+      "problemCodes": [
+        "authorization_rejected",
+        "payment_rejected",
+        "user_rejected"
+      ],
+      "action": "Review the maximum charge and approve again only if you still intend to pay.",
+      "retry": "after_action"
+    },
+    {
+      "code": "timeout",
+      "problemCodes": [
+        "authorization_timeout",
+        "payment_timeout"
+      ],
+      "action": "Reconcile the existing idempotency key before deciding whether to retry.",
+      "retry": "prohibited_until_reconciled"
+    },
+    {
+      "code": "unknown_settlement",
+      "problemCodes": [
+        "settlement_unknown",
+        "unknown_settlement"
+      ],
+      "action": "Reconcile the existing operation and do not authorize or retry until settlement is definitive.",
+      "retry": "prohibited_until_reconciled"
+    }
+  ]
+}

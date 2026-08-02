@@ -1,4 +1,5 @@
 import discoverySource from '../../../generated/public/.well-known/clervo.json';
+import onboardingSource from '../../../generated/public/onboarding.json';
 
 export type ExperiencePhase = 'risk' | 'qualified' | 'approval' | 'verified' | 'receipt';
 export type PillarLifecycle = 'preview' | 'unavailable';
@@ -63,6 +64,28 @@ interface Discovery {
 
 export const discovery = discoverySource as unknown as Discovery;
 
+export interface OnboardingRecovery {
+  code: 'insufficient_funds' | 'wrong_network_or_asset' | 'expired_quote' | 'rejected' | 'timeout' | 'unknown_settlement';
+  problemCodes: string[];
+  action: string;
+  retry: 'after_action' | 'prohibited_until_reconciled';
+}
+
+interface Onboarding {
+  releaseCandidateId: string;
+  interfaceHash: string;
+  publicCallable: false;
+  paymentImplemented: false;
+  journey: Array<{
+    step: 'install' | 'ask' | 'fund' | 'approve' | 'result' | 'receipt';
+    state: 'candidate_verified' | 'fixture_verified' | 'fixture_only' | 'unavailable';
+    action: string;
+  }>;
+  recovery: OnboardingRecovery[];
+}
+
+export const onboarding = onboardingSource as unknown as Onboarding;
+
 export const pillarLabels: Record<DiscoveryPillar['pillarId'], string> = {
   search: 'Search',
   ai: 'AI',
@@ -111,6 +134,19 @@ export const phases: Array<{
 ];
 
 export const installExamples = {
+  http: `export CLERVO_BASE_URL=http://127.0.0.1:8080
+
+curl --fail-with-body \\
+  --request POST "$CLERVO_BASE_URL/v1/search/free" \\
+  --header "content-type: application/json" \\
+  --header "idempotency-key: clervo_example_0001" \\
+  --data '{
+    "query": "payment idempotency",
+    "maxResults": 5,
+    "synthesize": false,
+    "language": "en",
+    "region": "US"
+  }'`,
   typescript: `npm install @clervo/sdk
 
 import { ClervoClient } from '@clervo/sdk';

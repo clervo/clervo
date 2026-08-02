@@ -22,3 +22,15 @@ const result = await clervo.search.web({ query: 'payment idempotency' });
 
 `search.answer` sets synthesis explicitly. Callers cannot silently change the
 product identity through the request body.
+
+Known future payment failures can be reduced to one bounded next action without
+triggering a payment or retry:
+
+```ts
+import { recoveryActionFor } from '@clervo/sdk';
+
+const recovery = recoveryActionFor(error);
+```
+
+Unknown settlement and payment-timeout actions prohibit retry until the
+existing idempotency key is reconciled.

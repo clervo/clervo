@@ -48,6 +48,7 @@ export function App() {
       '/build': 'Build with Clervo',
       '/proof-lab': 'Proof Lab',
       '/docs': 'Developer docs',
+      '/docs/http': 'Raw HTTP developer docs',
       '/docs/typescript': 'TypeScript developer docs',
       '/docs/python': 'Python developer docs',
       '/docs/mcp': 'MCP developer docs',
@@ -93,7 +94,7 @@ export function App() {
       );
     }
     const docsMatch = location.pathname.match(/^\/docs\/([^/]+)\/?$/u);
-    if (docsMatch?.[1] !== undefined && ['typescript', 'python', 'mcp'].includes(docsMatch[1])) {
+    if (docsMatch?.[1] !== undefined && ['http', 'typescript', 'python', 'mcp'].includes(docsMatch[1])) {
       return (
         <Docs
           client={docsMatch[1]}

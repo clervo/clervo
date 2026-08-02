@@ -38,6 +38,7 @@ await writeFile(path.join(target, 'sitemap.xml'), [
     '/product',
     '/build',
     '/proof-lab',
+    '/docs/http',
     '/docs/typescript',
     '/docs/python',
     '/docs/mcp',

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
 import type { ActivationState } from '../experience';
-import { type ExperiencePhase } from '../product';
+import { onboarding, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 interface BrowserCheck {
@@ -43,6 +43,24 @@ export function Build({
     activation.receiptInspected,
     onPhase,
   ]);
+  const completed = {
+    install: activation.selectedClient !== null,
+    ask: activation.proofCompleted,
+    fund: false,
+    approve: activation.proofCompleted,
+    result: activation.proofCompleted,
+    receipt: activation.receiptInspected,
+  } as const;
+  const current = activation.selectedClient === null
+    ? 'install'
+    : !activation.proofCompleted ? 'ask'
+      : !activation.receiptInspected ? 'receipt'
+        : null;
+  const journeyLink = (step: keyof typeof completed) => {
+    if (step === 'install') return { to: '/docs/http', label: activation.selectedClient ? 'Review client choices' : 'Choose an access path' };
+    if (step === 'fund') return { to: '/status', label: 'Read the payment boundary' };
+    return { to: '/proof-lab', label: activation.proofCompleted ? 'Review fixture evidence' : 'Start Proof Lab' };
+  };
   return (
     <section className="build-page">
       <header className="page-intro">
@@ -57,43 +75,48 @@ export function Build({
       </header>
 
       <ol className="activation-journey">
-        <li className={activation.proofCompleted ? 'is-complete' : 'is-current'}>
-          <span>01</span>
-          <div>
-            <h2>Run a bounded request</h2>
-            <p>Complete the local Proof Lab fixture with zero provider and wallet calls.</p>
-            <Link to="/proof-lab">{activation.proofCompleted ? 'Review completed fixture' : 'Start Proof Lab'}</Link>
-          </div>
-          <b>{activation.proofCompleted ? 'proven locally' : 'next action'}</b>
-        </li>
-        <li className={activation.receiptInspected ? 'is-complete' : activation.proofCompleted ? 'is-current' : ''}>
-          <span>02</span>
-          <div>
-            <h2>Inspect the receipt</h2>
-            <p>Confirm request identity, non-payable price, evidence links, and replay boundary.</p>
-            <Link to="/proof-lab">Open fixture state</Link>
-          </div>
-          <b>{activation.receiptInspected ? 'proven locally' : 'pending evidence'}</b>
-        </li>
-        <li className={activation.selectedClient ? 'is-complete' : activation.receiptInspected ? 'is-current' : ''}>
-          <span>03</span>
-          <div>
-            <h2>Choose a client candidate</h2>
-            <p>TypeScript, Python, and MCP share the same frozen transcript and explicit endpoint rule.</p>
-            <Link to="/docs">{activation.selectedClient ? `Review ${activation.selectedClient}` : 'Choose a client'}</Link>
-          </div>
-          <b>{activation.selectedClient ? 'snippet copied' : 'pending evidence'}</b>
-        </li>
-        <li>
-          <span>04</span>
-          <div>
-            <h2>Connect after deployment proof</h2>
-            <p>Public API deployment and real payment remain later gates. No connection action is enabled now.</p>
-            <Link to="/status">Read current status</Link>
-          </div>
-          <b>externally blocked</b>
-        </li>
+        {onboarding.journey.map((item, index) => {
+          const link = journeyLink(item.step);
+          const isComplete = completed[item.step];
+          return (
+            <li
+              key={item.step}
+              className={isComplete ? 'is-complete' : current === item.step ? 'is-current' : item.state === 'unavailable' ? 'is-blocked' : ''}
+            >
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h2>{item.step}</h2>
+                <p>{item.action}</p>
+                <Link to={link.to}>{link.label}</Link>
+              </div>
+              <b>{isComplete ? 'proven locally' : item.state.replaceAll('_', ' ')}</b>
+            </li>
+          );
+        })}
       </ol>
+
+      <section className="recovery-contract">
+        <header>
+          <div>
+            <p className="eyebrow">One failure / one next action</p>
+            <h2>Recovery never guesses.</h2>
+          </div>
+          <p>
+            These actions are prepared for the future payable path. They do not
+            imply that funding, signing, or settlement is available today.
+          </p>
+        </header>
+        <div>
+          {onboarding.recovery.map((item, index) => (
+            <article key={item.code}>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <h3>{item.code.replaceAll('_', ' ')}</h3>
+              <p>{item.action}</p>
+              <b>{item.retry.replaceAll('_', ' ')}</b>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="browser-preflight">
         <div>

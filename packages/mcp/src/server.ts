@@ -1,4 +1,10 @@
-import { ClervoClient, ClervoPaymentRequiredError, ClervoProblemError, type ClervoSearchRequest } from '@clervo/sdk';
+import {
+  ClervoClient,
+  ClervoPaymentRequiredError,
+  ClervoProblemError,
+  recoveryActionFor,
+  type ClervoSearchRequest,
+} from '@clervo/sdk';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 
@@ -34,6 +40,7 @@ function text(value: unknown): ToolResult {
 }
 
 function failure(error: unknown): ToolResult {
+  const recovery = recoveryActionFor(error);
   if (error instanceof ClervoPaymentRequiredError) {
     return {
       content: [{
@@ -43,6 +50,7 @@ function failure(error: unknown): ToolResult {
           status: 402,
           payable: false,
           problem: error.problem,
+          ...(recovery === undefined ? {} : { recovery }),
         }),
       }],
       isError: true,
@@ -52,7 +60,12 @@ function failure(error: unknown): ToolResult {
     return {
       content: [{
         type: 'text',
-        text: JSON.stringify({ error: 'clervo_problem', status: error.status, problem: error.problem }),
+        text: JSON.stringify({
+          error: 'clervo_problem',
+          status: error.status,
+          problem: error.problem,
+          ...(recovery === undefined ? {} : { recovery }),
+        }),
       }],
       isError: true,
     };

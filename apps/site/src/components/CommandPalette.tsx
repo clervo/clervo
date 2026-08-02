@@ -6,6 +6,7 @@ const destinations = [
   { title: 'Product and capabilities', path: '/product', terms: 'catalog search ai sandbox rpc prediction crypto lifecycle' },
   { title: 'Build and get started', path: '/build', terms: 'install onboarding activate setup environment' },
   { title: 'Proof Lab', path: '/proof-lab', terms: 'fixture request quote approve verify receipt replay recover' },
+  { title: 'Raw HTTP docs', path: '/docs/http', terms: 'curl openapi http rest request idempotency' },
   { title: 'TypeScript docs', path: '/docs/typescript', terms: 'sdk npm javascript client' },
   { title: 'Python docs', path: '/docs/python', terms: 'sdk pip python client' },
   { title: 'MCP docs', path: '/docs/mcp', terms: 'mcp server tool model context protocol' },

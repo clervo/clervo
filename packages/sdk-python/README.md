@@ -16,3 +16,15 @@ result = client.search.web(query="payment idempotency")
 
 `search.answer` fixes synthesis to the answer product. The caller cannot change
 that product identity through arbitrary request fields.
+
+Known future payment failures can be reduced to one bounded next action without
+triggering a payment or retry:
+
+```python
+from clervo import recovery_action_for
+
+recovery = recovery_action_for(error)
+```
+
+Unknown settlement and payment-timeout actions prohibit retry until the
+existing idempotency key is reconciled.

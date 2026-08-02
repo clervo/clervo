@@ -110,6 +110,19 @@ its actions and release tooling, and fails closed before publishing if any
 candidate version already exists. No registry credential, repository creation,
 remote push, package publication, or account mutation occurred.
 
+The remaining repository-local Stage 13 access and onboarding work is also
+complete. Generated discovery now publishes a freeze-bound onboarding document
+and raw HTTP is a fourth tested access path beside TypeScript, Python, and MCP.
+Install → Ask → Fund → Approve → Result → Receipt is explicit: install/request/
+fixture-result/fixture-receipt are locally proven, while funding remains
+unavailable and real approval is not simulated. Insufficient funds, wrong
+network/asset, expired quote, rejection, timeout, and unknown settlement each
+map to one identical bounded recovery action in both SDKs and MCP. Timeout and
+unknown settlement prohibit retry until reconciliation. The site prerenders 14
+routes, including raw HTTP docs, and the updated Build/recovery experience
+passes 13-route accessibility, mobile/landscape/zoom reflow, progressive WebGL,
+static-HTML, console, and request-failure checks.
+
 The owner's V6 handoff passed its 145-file checksum manifest and verifier. It is
 the visual and experiential north star for art, 3D, cinematography, motion,
 layout, responsive composition, and interaction quality. It is not copy or
@@ -143,12 +156,11 @@ confirmed absent; Artifact Registry was preserved. Evidence is in
 
 ## Next actions
 
-1. Finish the remaining Stage 13 shared HTTP/raw example, bounded payment,
-   recovery, discovery, and complete clean onboarding boundary without changing
-   the frozen interface. Then create/connect the canonical GitHub repository
-   and guide npm/PyPI trusted-publisher setup only when the exact external
-   verification or publish step is ready. Do not claim public distribution
-   before it is observed.
+1. Stage 13 is complete locally but not externally distributed. Create/connect
+   the canonical GitHub repository and guide npm/PyPI trusted-publisher setup
+   when the owner is available for the exact interactive steps. Continue
+   independent Stage 14 production hardening in the meantime. Do not claim
+   public distribution before it is observed.
 2. Keep Crypto Intelligence customer routing disabled until written commercial
    permission or replacement terms-compatible EVM, Solana, and protocol supply
    exists; this isolated owner blocker does not pause combined local work.

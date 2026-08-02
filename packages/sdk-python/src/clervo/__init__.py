@@ -7,8 +7,10 @@ from .client import (
     ClervoPaymentRequiredError,
     ClervoProblemError,
     ClervoProtocolError,
+    ClervoRecoveryAction,
     ClervoTransportError,
     HttpResponse,
+    recovery_action_for,
 )
 
 __all__ = [
@@ -20,6 +22,8 @@ __all__ = [
     "ClervoPaymentRequiredError",
     "ClervoProblemError",
     "ClervoProtocolError",
+    "ClervoRecoveryAction",
     "ClervoTransportError",
     "HttpResponse",
+    "recovery_action_for",
 ]

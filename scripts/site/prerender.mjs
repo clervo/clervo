@@ -15,6 +15,7 @@ const routes = [
   ['/build', 'Build with Clervo'],
   ['/proof-lab', 'Proof Lab'],
   ['/docs', 'Developer docs'],
+  ['/docs/http', 'Raw HTTP developer docs'],
   ['/docs/typescript', 'TypeScript developer docs'],
   ['/docs/python', 'Python developer docs'],
   ['/docs/mcp', 'MCP developer docs'],

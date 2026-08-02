@@ -47,6 +47,70 @@ class ClervoPaymentRequiredError(ClervoProblemError):
 
 
 @dataclass(frozen=True)
+class ClervoRecoveryAction:
+    code: str
+    action: str
+    retry: str
+
+
+_RECOVERY_ACTIONS = (
+    (
+        "insufficient_funds",
+        {"insufficient_funds"},
+        "Add enough of the quoted asset on the quoted network, then request a fresh quote.",
+        "after_action",
+    ),
+    (
+        "wrong_network_or_asset",
+        {"wrong_network", "wrong_asset", "unsupported_network", "unsupported_asset"},
+        "Switch to the quote's exact network and asset, then request a fresh quote.",
+        "after_action",
+    ),
+    (
+        "expired_quote",
+        {"quote_expired", "expired_quote"},
+        "Request a fresh quote and never reuse the expired authorization.",
+        "after_action",
+    ),
+    (
+        "rejected",
+        {"authorization_rejected", "payment_rejected", "user_rejected"},
+        "Review the maximum charge and approve again only if you still intend to pay.",
+        "after_action",
+    ),
+    (
+        "timeout",
+        {"authorization_timeout", "payment_timeout"},
+        "Reconcile the existing idempotency key before deciding whether to retry.",
+        "prohibited_until_reconciled",
+    ),
+    (
+        "unknown_settlement",
+        {"settlement_unknown", "unknown_settlement"},
+        "Reconcile the existing operation and do not authorize or retry until settlement is definitive.",
+        "prohibited_until_reconciled",
+    ),
+)
+
+
+def recovery_action_for(value: ClervoProblemError | str) -> ClervoRecoveryAction | None:
+    problem_code: str | None
+    if isinstance(value, ClervoProblemError):
+        code = value.problem.get("code")
+        problem_code = code if isinstance(code, str) else None
+    elif isinstance(value, str):
+        problem_code = value
+    else:
+        problem_code = None
+    if problem_code is None:
+        return None
+    for code, problem_codes, action, retry in _RECOVERY_ACTIONS:
+        if problem_code in problem_codes:
+            return ClervoRecoveryAction(code=code, action=action, retry=retry)
+    return None
+
+
+@dataclass(frozen=True)
 class HttpResponse:
     status: int
     headers: Mapping[str, str]

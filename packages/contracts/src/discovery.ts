@@ -82,7 +82,7 @@ export interface DiscoveryDocument {
   };
   payment: { protocol: 'x402'; implemented: false; settlementVerified: false };
   releaseScope: ProductScopeDocument;
-  artifacts: { openapi: string; catalog: string; llms: string; schemas: string };
+  artifacts: { openapi: string; catalog: string; onboarding: string; llms: string; schemas: string };
   products: readonly [DiscoveryProduct, DiscoveryProduct];
   limitations: string[];
 }
@@ -217,6 +217,7 @@ export function createDiscoveryDocument(
     artifacts: {
       openapi: '/openapi.json',
       catalog: '/catalog.json',
+      onboarding: '/onboarding.json',
       llms: '/llms.txt',
       schemas: `/schemas/${CONTRACT_VERSION}/`,
     },
@@ -275,6 +276,7 @@ export function createLlmsText(
     '',
     '- [OpenAPI contract](/openapi.json): repository-local preview and non-payable challenge routes.',
     '- [Catalog](/catalog.json): exact projected operations and lifecycle limitations.',
+    '- [Onboarding and recovery](/onboarding.json): exact candidate journey state and six bounded recovery actions.',
     '- [Discovery document](/.well-known/clervo.json): release-candidate binding and distribution status.',
     `- [JSON Schemas](/schemas/${CONTRACT_VERSION}/): projected public-wire contracts.`,
     '',

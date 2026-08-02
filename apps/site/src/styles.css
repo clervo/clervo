@@ -1631,6 +1631,73 @@ fieldset label small {
   color: var(--receipt);
 }
 
+.activation-journey li.is-blocked > span,
+.activation-journey li.is-blocked > b {
+  color: var(--risk);
+}
+
+.recovery-contract {
+  padding: 8rem 0 2rem;
+}
+
+.recovery-contract > header {
+  display: grid;
+  grid-template-columns: 1fr minmax(18rem, 0.7fr);
+  align-items: end;
+  gap: 4rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.recovery-contract h2 {
+  margin: 0;
+  font-size: clamp(2.6rem, 5vw, 5rem);
+  font-weight: 540;
+  letter-spacing: -0.055em;
+}
+
+.recovery-contract > header > p,
+.recovery-contract article p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.recovery-contract > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.recovery-contract article {
+  min-height: 18rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.recovery-contract article:nth-child(3n) {
+  border-right: 0;
+}
+
+.recovery-contract article > span,
+.recovery-contract article > b {
+  color: var(--approval);
+  font: 0.63rem monospace;
+  text-transform: uppercase;
+}
+
+.recovery-contract article h3 {
+  margin: 3rem 0 0.8rem;
+  font-size: 1.25rem;
+  font-weight: 550;
+  text-transform: capitalize;
+}
+
+.recovery-contract article > b {
+  margin-top: auto;
+}
+
 .browser-preflight {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
@@ -2132,6 +2199,21 @@ fieldset label small {
 
   .activation-journey li > b {
     grid-column: 2;
+  }
+
+  .recovery-contract > header {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .recovery-contract > div {
+    grid-template-columns: 1fr;
+  }
+
+  .recovery-contract article,
+  .recovery-contract article:nth-child(3n) {
+    min-height: 14rem;
+    border-right: 0;
   }
 
   .browser-preflight {

@@ -36,7 +36,7 @@
     }
   },
   "scripts": {
-    "build": "tsc --project tsconfig.json",
+    "build": "npm run build --workspace @clervo/sdk && tsc --project tsconfig.json",
     "prepack": "npm run build"
   },
   "dependencies": {

@@ -10,10 +10,12 @@ import {
   ClervoPaymentRequiredError,
   ClervoProblemError,
   ClervoProtocolError,
+  recoveryActionFor,
 } from '../../dist/packages/sdk-typescript/src/index.js';
 
 const transcript = JSON.parse(await readFile('packages/distribution/fixtures/search-client-transcript.v1.json', 'utf8'));
 const freeze = JSON.parse(await readFile('packages/catalog/release-candidate-freeze.v1.json', 'utf8'));
+const onboarding = JSON.parse(await readFile('packages/distribution/onboarding.v1.json', 'utf8'));
 
 function result(productId, fundingMode = 'free') {
   return {
@@ -121,4 +123,16 @@ test('TypeScript client fails closed on problems, contract mismatch, unsafe orig
     fetch: async () => new Response('x'.repeat(1_025)),
   });
   await assert.rejects(oversized.search.web({ query: 'evidence' }), /clervo_response_too_large/u);
+});
+
+test('TypeScript recovery actions match all six shared onboarding classes', () => {
+  for (const expected of onboarding.recovery) {
+    for (const problemCode of expected.problemCodes) {
+      assert.deepEqual(
+        recoveryActionFor(new ClervoProblemError(402, { code: problemCode })),
+        { code: expected.code, action: expected.action, retry: expected.retry },
+      );
+    }
+  }
+  assert.equal(recoveryActionFor('unrelated_failure'), undefined);
 });

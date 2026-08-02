@@ -175,6 +175,7 @@
   "artifacts": {
     "openapi": "/openapi.json",
     "catalog": "/catalog.json",
+    "onboarding": "/onboarding.json",
     "llms": "/llms.txt",
     "schemas": "/schemas/2026-07-29.1/"
   },

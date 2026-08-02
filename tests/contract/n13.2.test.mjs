@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-import { ClervoPaymentRequiredError } from '@clervo/sdk';
+import { ClervoPaymentRequiredError, ClervoProblemError } from '@clervo/sdk';
 import {
   CLERVO_MCP_TOOLS,
   createToolHandlers,
@@ -64,6 +64,26 @@ test('MCP never converts a non-payable challenge into success', async () => {
     status: 402,
     payable: false,
     problem: { code: 'mock_payment_required', payable: false },
+  });
+});
+
+test('MCP preserves the one-action recovery contract for known failures', async () => {
+  const handlers = createToolHandlers({
+    search: {
+      web: async () => {
+        throw new ClervoProblemError(402, { code: 'wrong_network' });
+      },
+      answer: async () => {
+        throw new Error('not_called');
+      },
+    },
+  });
+  const response = await handlers.search_web({ query: 'evidence' });
+  assert.equal(response.isError, true);
+  assert.deepEqual(JSON.parse(response.content[0].text).recovery, {
+    code: 'wrong_network_or_asset',
+    action: "Switch to the quote's exact network and asset, then request a fresh quote.",
+    retry: 'after_action',
   });
 });
 

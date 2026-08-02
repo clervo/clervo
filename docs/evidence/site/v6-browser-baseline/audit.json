@@ -22,38 +22,43 @@
       "violations": 0
     },
     {
+      "route": "/docs/http",
+      "title": "Raw HTTP developer docs — Clervo",
+      "violations": 0
+    },
+    {
       "route": "/docs/typescript",
-      "title": "Developer docs — Clervo",
+      "title": "TypeScript developer docs — Clervo",
       "violations": 0
     },
     {
       "route": "/docs/python",
-      "title": "Developer docs — Clervo",
+      "title": "Python developer docs — Clervo",
       "violations": 0
     },
     {
       "route": "/docs/mcp",
-      "title": "Developer docs — Clervo",
+      "title": "MCP developer docs — Clervo",
       "violations": 0
     },
     {
       "route": "/pricing",
-      "title": "pricing — Clervo",
+      "title": "Pricing truth — Clervo",
       "violations": 0
     },
     {
       "route": "/benchmarks",
-      "title": "benchmarks — Clervo",
+      "title": "Benchmark truth — Clervo",
       "violations": 0
     },
     {
       "route": "/security",
-      "title": "security — Clervo",
+      "title": "Security controls — Clervo",
       "violations": 0
     },
     {
       "route": "/legal",
-      "title": "legal — Clervo",
+      "title": "Legal boundaries — Clervo",
       "violations": 0
     },
     {
@@ -72,6 +77,7 @@
   },
   "responsive": [
     {
+      "route": "/proof-lab",
       "viewport": {
         "width": 320,
         "height": 700
@@ -81,6 +87,7 @@
       "overflow": false
     },
     {
+      "route": "/proof-lab",
       "viewport": {
         "width": 360,
         "height": 780
@@ -90,6 +97,7 @@
       "overflow": false
     },
     {
+      "route": "/proof-lab",
       "viewport": {
         "width": 390,
         "height": 844
@@ -99,6 +107,7 @@
       "overflow": false
     },
     {
+      "route": "/proof-lab",
       "viewport": {
         "width": 430,
         "height": 932
@@ -108,6 +117,7 @@
       "overflow": false
     },
     {
+      "route": "/proof-lab",
       "viewport": {
         "width": 768,
         "height": 1024
@@ -117,6 +127,67 @@
       "overflow": false
     },
     {
+      "route": "/proof-lab",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "clientWidth": 844,
+      "scrollWidth": 844,
+      "overflow": false
+    },
+    {
+      "route": "/build",
+      "viewport": {
+        "width": 320,
+        "height": 700
+      },
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "overflow": false
+    },
+    {
+      "route": "/build",
+      "viewport": {
+        "width": 360,
+        "height": 780
+      },
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false
+    },
+    {
+      "route": "/build",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false
+    },
+    {
+      "route": "/build",
+      "viewport": {
+        "width": 430,
+        "height": 932
+      },
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "overflow": false
+    },
+    {
+      "route": "/build",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false
+    },
+    {
+      "route": "/build",
       "viewport": {
         "width": 844,
         "height": 390

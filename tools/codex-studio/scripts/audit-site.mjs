@@ -13,6 +13,7 @@ const routes = [
   '/product',
   '/build',
   '/proof-lab',
+  '/docs/http',
   '/docs/typescript',
   '/docs/python',
   '/docs/mcp',
@@ -65,23 +66,25 @@ report.violations.push(...mobileResults.violations.map((violation) => ({
 })));
 await mobileContext.close();
 
-for (const viewport of [
-  { width: 320, height: 700 },
-  { width: 360, height: 780 },
-  { width: 390, height: 844 },
-  { width: 430, height: 932 },
-  { width: 768, height: 1024 },
-  { width: 844, height: 390 },
-]) {
-  const responsiveContext = await browser.newContext({ viewport });
-  const responsivePage = await responsiveContext.newPage();
-  await responsivePage.goto(`${origin}/proof-lab`, { waitUntil: 'networkidle' });
-  const dimensions = await responsivePage.evaluate(() => ({
-    clientWidth: document.documentElement.clientWidth,
-    scrollWidth: document.documentElement.scrollWidth,
-  }));
-  report.responsive.push({ viewport, ...dimensions, overflow: dimensions.scrollWidth > dimensions.clientWidth });
-  await responsiveContext.close();
+for (const route of ['/proof-lab', '/build']) {
+  for (const viewport of [
+    { width: 320, height: 700 },
+    { width: 360, height: 780 },
+    { width: 390, height: 844 },
+    { width: 430, height: 932 },
+    { width: 768, height: 1024 },
+    { width: 844, height: 390 },
+  ]) {
+    const responsiveContext = await browser.newContext({ viewport });
+    const responsivePage = await responsiveContext.newPage();
+    await responsivePage.goto(`${origin}${route}`, { waitUntil: 'networkidle' });
+    const dimensions = await responsivePage.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+    report.responsive.push({ route, viewport, ...dimensions, overflow: dimensions.scrollWidth > dimensions.clientWidth });
+    await responsiveContext.close();
+  }
 }
 
 const zoomContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
