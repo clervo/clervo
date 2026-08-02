@@ -15,6 +15,7 @@ const port = Number(process.env.PORT ?? process.env.CLERVO_HTTP_PORT ?? '8080');
 const publicOrigin = process.env.CLERVO_PUBLIC_ORIGIN ?? 'https://unverified.invalid';
 const privateMockCommerceEnabled = process.env.CLERVO_STAGE4_PRIVATE_MOCK_COMMERCE === 'enabled';
 const stateBackend = process.env.CLERVO_STATE_BACKEND ?? 'memory';
+const maxConcurrentExecutions = Number(process.env.CLERVO_MAX_CONCURRENT_EXECUTIONS ?? '16');
 
 if (!releaseId) throw new Error('CLERVO_RELEASE_ID is required');
 if (!Number.isSafeInteger(port) || port < 1 || port > 65_535) throw new Error('invalid HTTP port');
@@ -40,6 +41,7 @@ const server = createSearchServer({
   publicOrigin,
   allowMockPaidExecution: privateMockCommerceEnabled,
   stateStore,
+  maxConcurrentExecutions,
 });
 
 const exportTimer = setInterval(() => {
@@ -75,6 +77,7 @@ server.listen(port, host, () => {
     paidExecutionEnabled: privateMockCommerceEnabled,
     stateBackend: stateStore.kind,
     durableState: stateStore.durable,
+    maxConcurrentExecutions,
     retrievalMode: 'recorded',
   }));
 });

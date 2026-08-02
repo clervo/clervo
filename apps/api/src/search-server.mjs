@@ -86,9 +86,11 @@ export function createSearchServer({
   publicOrigin = 'https://api.clervo.dev',
   environment,
   releaseId,
+  maxConcurrentExecutions = 16,
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
   if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
+  if (!Number.isInteger(maxConcurrentExecutions) || maxConcurrentExecutions < 1 || maxConcurrentExecutions > 256) throw new TypeError('invalid max concurrent executions');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
   if (
     typeof searchState.begin !== 'function'
@@ -97,12 +99,24 @@ export function createSearchServer({
     || typeof searchState.consumeFreeQuota !== 'function'
   ) throw new TypeError('invalid search state store');
   const idempotency = new Map();
+  let activeExecutions = 0;
+
+  const acquireExecution = () => {
+    if (activeExecutions >= maxConcurrentExecutions) return undefined;
+    activeExecutions += 1;
+    let released = false;
+    return () => {
+      if (released) return;
+      released = true;
+      activeExecutions -= 1;
+    };
+  };
 
   const record = (input) => {
     try { monitor?.record(input); } catch { /* Monitoring must never alter customer response behavior. */ }
   };
 
-  return http.createServer(async (request, response) => {
+  const server = http.createServer(async (request, response) => {
     const url = new URL(request.url ?? '/', 'http://loopback.invalid');
     if (request.method === 'GET' && ['/healthz', '/v1/health'].includes(url.pathname) && url.search === '') {
       send(response, 200, {
@@ -212,8 +226,17 @@ export function createSearchServer({
           send(response, 429, problem(429, 'free_quota_exceeded', 'Free search quota exceeded', 'The bounded free sample quota is exhausted.', url.pathname, operationId), { ...quotaHeaders, 'retry-after': String(Math.max(1, Math.ceil((Date.parse(quota.resetAt) - Date.parse(now())) / 1_000))) }, PROBLEM_TYPE);
           return;
         }
-        const pending = Promise.resolve(executor.execute(executionInput))
-          .then((output) => createSearchHttpResult(executionInput, output, false));
+        const releaseExecution = acquireExecution();
+        if (releaseExecution === undefined) {
+          idempotency.delete(keyHeader);
+          if (stateClaim?.kind === 'claimed') await searchState.abandon({ idempotencyKey: keyHeader, requestHash, operationId, leaseId: stateClaim.leaseId });
+          send(response, 503, problem(503, 'search_overloaded', 'Search temporarily overloaded', 'The bounded execution pool is full. Retry this request with the same idempotency key.', url.pathname, operationId), { 'retry-after': '1' }, PROBLEM_TYPE);
+          return;
+        }
+        const pending = Promise.resolve()
+          .then(() => executor.execute(executionInput))
+          .then((output) => createSearchHttpResult(executionInput, output, false))
+          .finally(releaseExecution);
         idempotency.set(keyHeader, { operationId, requestHash, pending });
         const result = await pending;
         if (stateClaim?.kind === 'claimed') {
@@ -262,9 +285,15 @@ export function createSearchServer({
         ledgerTransactionId: identifier('ledger', operationId),
         receiptId: identifier('rcpt', operationId),
         execute: async () => {
-          executionOutput = await executor.execute(executionInput);
-          assertSearchExecutionOutput(executionOutput, executionInput);
-          return { output: executionOutput, supplierCost: { asset: 'mock:usd', amountAtomic: '400', decimals: 6 }, provenance: [{ adapterId: 'adapter_mock.search', qualificationId: identifier('qual', operationId), providerReferenceHash: requestHash }] };
+          const releaseExecution = acquireExecution();
+          if (releaseExecution === undefined) throw Object.assign(new Error('search_overloaded'), { status: 503 });
+          try {
+            executionOutput = await executor.execute(executionInput);
+            assertSearchExecutionOutput(executionOutput, executionInput);
+            return { output: executionOutput, supplierCost: { asset: 'mock:usd', amountAtomic: '400', decimals: 6 }, provenance: [{ adapterId: 'adapter_mock.search', qualificationId: identifier('qual', operationId), providerReferenceHash: requestHash }] };
+          } finally {
+            releaseExecution();
+          }
         },
         settle: () => ({ settlementId: identifier('settle', operationId), outcome: 'settled', referenceHash: requestHash, observedAt: issuedAt }),
       }).then((paid) => {
@@ -295,4 +324,9 @@ export function createSearchServer({
       send(response, status, problem(status, code, status === 502 ? 'Search execution failed' : 'Invalid search request', status === 502 ? 'The bounded search executor failed closed.' : 'The request did not satisfy the search HTTP contract.', url.pathname, operationId), {}, PROBLEM_TYPE);
     }
   });
+  server.requestTimeout = 15_000;
+  server.headersTimeout = 5_000;
+  server.keepAliveTimeout = 5_000;
+  server.maxRequestsPerSocket = 100;
+  return server;
 }

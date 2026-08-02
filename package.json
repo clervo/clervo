@@ -143,6 +143,8 @@
     "test:stage13:local": "npm run test:stage13:clients && npm run verify:distribution-release && npm run prove:distribution-onboarding && npm run site:build && node --test ./tests/contract/n13.3.test.mjs ./tests/contract/n13.4.test.mjs ./tests/contract/n13.5.test.mjs && node ./tools/codex-studio/scripts/audit-site.mjs",
     "qualify:production-container": "node ./scripts/verify-runtime.mjs && node ./scripts/production/qualify-container.mjs",
     "test:n14.1": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/n14.1.test.mjs",
+    "test:n14.2": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n14.2.test.mjs",
+    "test:n14.3": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n14.3.test.mjs",
     "verify:stage6-exit": "node ./scripts/verify-runtime.mjs && node ./scripts/check-ai-supply-readiness.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
     "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",

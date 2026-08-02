@@ -15,6 +15,10 @@
     "healthPath": "/v1/health",
     "readinessPath": "/readyz",
     "productionStateBackend": "postgres",
+    "maximumConcurrentExecutions": 16,
+    "requestTimeoutMs": 15000,
+    "headersTimeoutMs": 5000,
+    "maximumRequestsPerSocket": 100,
     "stopSignal": "SIGTERM"
   },
   "localQualification": {
