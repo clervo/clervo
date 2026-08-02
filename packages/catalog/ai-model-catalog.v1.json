@@ -1,8 +1,8 @@
 {
   "contractVersion": "2026-07-29.1",
   "schemaVersion": "ai-model-catalog.v1",
-  "catalogId": "aicat_01K0CLERVOSPEECHCAT01",
-  "evaluatedAt": "2026-08-02T03:10:00.000Z",
+  "catalogId": "aicat_01K0CLERVOMULTIMODAL01",
+  "evaluatedAt": "2026-08-02T03:19:00.000Z",
   "routes": [
     {
       "routeId": "ai.route.aura_2_arcas_en",
@@ -817,6 +817,104 @@
       }
     },
     {
+      "routeId": "ai.route.gemini_embedding_001",
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-embedding-001",
+      "productIds": [
+        "ai.embed"
+      ],
+      "capabilities": [
+        "text_input",
+        "embedding_output"
+      ],
+      "requiredSecretNames": [],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0VERTEXGEMINIEMBED01",
+        "routeId": "ai.route.gemini_embedding_001",
+        "providerId": "provider.google_vertex",
+        "supplyFamilyId": "supply.google_vertex",
+        "exactModelId": "gemini-embedding-001",
+        "productIds": [
+          "ai.embed"
+        ],
+        "checkedAt": "2026-08-02T03:18:00.000Z",
+        "expiresAt": "2026-08-09T03:18:00.000Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_embedding_valid",
+            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "usage_reported",
+            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely",
+            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "resale_terms_confirmed",
+            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "gemini-embedding-001",
+          "latencyMsP95": 1089.9,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "100000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:f0f672ac01ea24dd9b8061d285fb0c706b05dbdf8931aad14a8e1ab755de025a"
+      }
+    },
+    {
       "routeId": "ai.route.gpt_5_6_luna",
       "providerId": "provider.clervo_ai_gateway",
       "supplyFamilyId": "supply.clervo_ai_gateway",
@@ -1146,5 +1244,5 @@
     "supply.deepgram",
     "supply.google_vertex"
   ],
-  "catalogHash": "sha256:3fda53b3cba013b6ae5cae5b693182dc26c02b6e5e616a178baef9f491c5c53c"
+  "catalogHash": "sha256:213fe4795d9de347f8773b9c19414da18c55d15284552604239b4d57f8d9a066"
 }

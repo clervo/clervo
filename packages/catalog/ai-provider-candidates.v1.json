@@ -1,6 +1,6 @@
 {
-  "catalogVersion": "2026-08-02.5",
-  "researchedAt": "2026-08-02T03:08:58.000Z",
+  "catalogVersion": "2026-08-02.6",
+  "researchedAt": "2026-08-02T03:18:00.000Z",
   "targets": [
     {
       "providerId": "provider.clervo_ai_gateway",
@@ -261,6 +261,25 @@
       "blockerCodes": [],
       "documentation": [
         { "title": "Gemini image generation", "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/image-generation", "checkedAt": "2026-08-02T02:54:31.000Z" }
+      ]
+    },
+    {
+      "providerId": "provider.google_vertex",
+      "supplyFamilyId": "supply.google_vertex",
+      "exactModelId": "gemini-embedding-001",
+      "baseUrlPattern": "https://us-central1-aiplatform.googleapis.com/v1/projects/{project}/locations/us-central1/publishers/google/models/{model}:predict",
+      "allowedHosts": ["us-central1-aiplatform.googleapis.com"],
+      "products": ["ai.embed"],
+      "requiredConfigurationNames": ["GCP_PROJECT"],
+      "requiredSecretNames": [],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Get text embeddings", "url": "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-text-embeddings", "checkedAt": "2026-08-02T03:18:00.000Z" },
+        { "title": "Vertex AI generative pricing", "url": "https://cloud.google.com/vertex-ai/generative-ai/pricing", "checkedAt": "2026-08-02T03:18:00.000Z" }
       ]
     },
     {

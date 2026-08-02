@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.3",
-  "observedAt": "2026-08-02T03:08:58.000Z",
+  "inventoryVersion": "2026-08-02.4",
+  "observedAt": "2026-08-02T03:18:00.000Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -187,7 +187,7 @@
       "providerId": "provider.google_vertex",
       "category": "ai_media",
       "products": ["ai.chat", "ai.embed", "ai.image", "ai.speech", "ai.video"],
-      "endpointOrigins": ["https://aiplatform.googleapis.com"],
+      "endpointOrigins": ["https://aiplatform.googleapis.com", "https://us-central1-aiplatform.googleapis.com"],
       "credentialNames": ["GCP_PROJECT", "GCP_REGION"],
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
@@ -198,8 +198,8 @@
       "termsStatus": "restricted",
       "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "knownModelNames": ["gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.1-flash-lite-image", "gemini-3.1-flash-image", "gemini-3-pro-image", "veo-3.1-fast-generate-001", "veo-3.1-generate-001"],
-      "notes": ["Chat, 1K image, and 720p video routes passed bounded live qualification on 2026-08-02. Imagen endpoints remain unavailable to this project; embedding and speech remain unqualified. Owner reports USD 1700 credit; exact balance and expiry remain unverified, so Clervo requires its own hard shadow ledger before customer traffic."]
+      "knownModelNames": ["gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-embedding-001", "gemini-3.1-flash-lite-image", "gemini-3.1-flash-image", "gemini-3-pro-image", "veo-3.1-fast-generate-001", "veo-3.1-generate-001"],
+      "notes": ["Chat, text embedding, 1K image, and 720p video routes passed bounded live qualification on 2026-08-02. Imagen endpoints remain unavailable to this project; speech remains unqualified. Owner reports USD 1700 credit; exact balance and expiry remain unverified, so Clervo requires its own hard shadow ledger before customer traffic."]
     },
     {
       "serviceId": "supply.github_models",

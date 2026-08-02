@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.ai-credit-backed-pricing.v1",
   "priceVersion": "2026-08-02.1",
-  "evaluatedAt": "2026-08-02T02:54:31.000Z",
+  "evaluatedAt": "2026-08-02T03:18:00.000Z",
   "currency": "USD",
   "providerVisibility": "internal_only",
   "policy": {
@@ -15,9 +15,10 @@
   "creditGuard": {
     "ownerReportedBalanceUsd": 1700,
     "chatAllocationUsd": 500,
+    "embeddingAllocationUsd": 50,
     "imageAllocationUsd": 500,
     "videoAllocationUsd": 500,
-    "reserveUsd": 200,
+    "reserveUsd": 150,
     "maximumDailyShadowDebitUsd": 25,
     "hardStopRemainingShadowUsd": 100,
     "applicationLedgerRequiredBeforeCustomerTraffic": true,
@@ -30,7 +31,8 @@
     "checkedAt": "2026-08-02T02:40:00.000Z",
     "catalogRecords": 83,
     "imagePriceRangeUsd": [0.015, 0.1],
-    "videoPriceRangeUsdPerSecond": [0.05, 0.319]
+    "videoPriceRangeUsdPerSecond": [0.05, 0.319],
+    "embeddingRoutesObserved": 0
   },
   "chatRoutes": [
     {
@@ -59,6 +61,18 @@
       "shadowPriceUsdPerMillion": { "input": 1.5, "cachedInput": 0.15, "output": 9, "reasoning": 9 },
       "contextTokens": 1048576,
       "maximumOutputTokens": 65536
+    }
+  ],
+  "embeddingRoutes": [
+    {
+      "modelId": "gemini-embedding-001",
+      "listingStatus": "sellable",
+      "positioning": "best_overall",
+      "customerUsdPerMillionInputTokens": 0.05,
+      "shadowUsdPerMillionInputTokens": 0.15,
+      "defaultDimensions": 3072,
+      "maximumDimensions": 3072,
+      "maximumInputsPerOperation": 250
     }
   ],
   "imageRoutes": [

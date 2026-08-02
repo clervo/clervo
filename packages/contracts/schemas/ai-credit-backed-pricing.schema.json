@@ -3,7 +3,7 @@
   "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-credit-backed-pricing.schema.json",
   "title": "Clervo internal credit-backed multimodal AI pricing",
   "type": "object",
-  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "providerVisibility", "policy", "creditGuard", "competitorReference", "chatRoutes", "imageRoutes", "videoRoutes"],
+  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "providerVisibility", "policy", "creditGuard", "competitorReference", "chatRoutes", "embeddingRoutes", "imageRoutes", "videoRoutes"],
   "$defs": {
     "tokenPrice": {
       "type": "object",
@@ -38,10 +38,11 @@
     },
     "creditGuard": {
       "type": "object",
-      "required": ["ownerReportedBalanceUsd", "chatAllocationUsd", "imageAllocationUsd", "videoAllocationUsd", "reserveUsd", "maximumDailyShadowDebitUsd", "hardStopRemainingShadowUsd", "applicationLedgerRequiredBeforeCustomerTraffic", "cloudBudgetIsHardCap", "ownerCashOverageAllowed", "denyWhenUsageUnknown"],
+      "required": ["ownerReportedBalanceUsd", "chatAllocationUsd", "embeddingAllocationUsd", "imageAllocationUsd", "videoAllocationUsd", "reserveUsd", "maximumDailyShadowDebitUsd", "hardStopRemainingShadowUsd", "applicationLedgerRequiredBeforeCustomerTraffic", "cloudBudgetIsHardCap", "ownerCashOverageAllowed", "denyWhenUsageUnknown"],
       "properties": {
         "ownerReportedBalanceUsd": { "const": 1700 },
         "chatAllocationUsd": { "type": "number", "minimum": 0 },
+        "embeddingAllocationUsd": { "type": "number", "minimum": 0 },
         "imageAllocationUsd": { "type": "number", "minimum": 0 },
         "videoAllocationUsd": { "type": "number", "minimum": 0 },
         "reserveUsd": { "type": "number", "minimum": 0 },
@@ -56,13 +57,14 @@
     },
     "competitorReference": {
       "type": "object",
-      "required": ["sourceUrl", "checkedAt", "catalogRecords", "imagePriceRangeUsd", "videoPriceRangeUsdPerSecond"],
+      "required": ["sourceUrl", "checkedAt", "catalogRecords", "imagePriceRangeUsd", "videoPriceRangeUsdPerSecond", "embeddingRoutesObserved"],
       "properties": {
         "sourceUrl": { "const": "https://blockrun.ai/api/v1/models" },
         "checkedAt": { "type": "string", "format": "date-time" },
         "catalogRecords": { "const": 83 },
         "imagePriceRangeUsd": { "type": "array", "minItems": 2, "maxItems": 2, "prefixItems": [{ "const": 0.015 }, { "const": 0.1 }], "items": false },
-        "videoPriceRangeUsdPerSecond": { "type": "array", "minItems": 2, "maxItems": 2, "prefixItems": [{ "const": 0.05 }, { "const": 0.319 }], "items": false }
+        "videoPriceRangeUsdPerSecond": { "type": "array", "minItems": 2, "maxItems": 2, "prefixItems": [{ "const": 0.05 }, { "const": 0.319 }], "items": false },
+        "embeddingRoutesObserved": { "const": 0 }
       },
       "additionalProperties": false
     },
@@ -81,6 +83,26 @@
           "shadowPriceUsdPerMillion": { "$ref": "#/$defs/tokenPrice" },
           "contextTokens": { "const": 1048576 },
           "maximumOutputTokens": { "const": 65536 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "embeddingRoutes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["modelId", "listingStatus", "positioning", "customerUsdPerMillionInputTokens", "shadowUsdPerMillionInputTokens", "defaultDimensions", "maximumDimensions", "maximumInputsPerOperation"],
+        "properties": {
+          "modelId": { "const": "gemini-embedding-001" },
+          "listingStatus": { "const": "sellable" },
+          "positioning": { "const": "best_overall" },
+          "customerUsdPerMillionInputTokens": { "const": 0.05 },
+          "shadowUsdPerMillionInputTokens": { "const": 0.15 },
+          "defaultDimensions": { "const": 3072 },
+          "maximumDimensions": { "const": 3072 },
+          "maximumInputsPerOperation": { "const": 250 }
         },
         "additionalProperties": false
       }

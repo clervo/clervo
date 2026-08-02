@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "clervo.vertex-embedding-screen.v1",
+  "screenedAt": "2026-08-02T03:18:00.000Z",
+  "method": "Bounded synthetic semantic-ordering screen through an authenticated fixed Vertex publisher-model endpoint. No customer or secret payload was used or retained.",
+  "model": {
+    "requestedModel": "gemini-embedding-001",
+    "identityBinding": "fixed_vertex_publisher_model_predict_endpoint",
+    "authentication": true,
+    "dimensionsObserved": [768, 3072],
+    "vectorsFinite": true,
+    "truncationObserved": false,
+    "nativeTokenUsageReported": true
+  },
+  "semanticScreen": {
+    "inputs": 3,
+    "relatedCosine": 0.842853,
+    "unrelatedCosine": 0.432809,
+    "orderingPassed": true,
+    "latenciesMs": [182.1, 1089.9, 101.32],
+    "latencyMsP95": 1089.9,
+    "vectorHashes": [
+      "sha256:c74acb25b775f58dbe5375ee69f5b4633d2c59f275d1c0ac8f5a14c354637bea",
+      "sha256:b3758a66c201b328aabdc4ed98a38230dc875f6b28437f1866e10b542c932baf",
+      "sha256:4f62e3a7f9080fc11da9b091bc702bd2d91d7cd39afa82d8b846e408b4710314"
+    ]
+  },
+  "failureHandling": {
+    "invalidModelHttpStatus": 404,
+    "rejectedSafely": true,
+    "boundedError": true,
+    "credentialReflected": false
+  },
+  "commercial": {
+    "officialOnlineUsdPerMillionInputTokens": 0.15,
+    "customerUsdPerMillionInputTokens": 0.05,
+    "competitorCatalogRecords": 83,
+    "competitorEmbeddingRoutesObserved": 0,
+    "providerCalls": 5,
+    "maximumEstimatedCreditDebitUsd": 0.00002,
+    "ownerCashSpentUsd": 0,
+    "decision": "Qualified and sellable as the initial Clervo embedding route."
+  },
+  "limits": {
+    "large_retrieval_corpus": "not_run",
+    "multilingual_corpus": "not_run",
+    "maximum_batch": "not_run"
+  }
+}

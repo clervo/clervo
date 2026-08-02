@@ -75,11 +75,14 @@ test('screened Clervo, Vertex, and Deepgram routes preserve qualified supply and
   assert.deepEqual(independent.map(({ exactModelId }) => exactModelId), ['gemini-3.6-flash', 'openai/gpt-oss-120b', '@cf/openai/gpt-oss-120b']);
   assert.ok(independent.every(({ selectedForQualification, termsStatus, resaleAllowed, qualificationStatus, blockerCodes, requiredSecretNames }) => selectedForQualification && termsStatus === 'unreviewed' && resaleAllowed === false && qualificationStatus === 'blocked' && blockerCodes.includes('credential_missing') && blockerCodes.includes('live_checks_not_run') && requiredSecretNames.length > 0));
   assert.ok(independent.flatMap(({ documentation }) => documentation).every(({ url }) => /^https:\/(?:\/ai\.google\.dev|\/console\.groq\.com|\/developers\.cloudflare\.com)/u.test(url)));
-  const vertexImages = candidates.modalTargets.filter(({ providerId }) => providerId === 'provider.google_vertex');
+  const vertexImages = candidates.modalTargets.filter(({ providerId, products }) => providerId === 'provider.google_vertex' && products.includes('ai.image'));
+  const vertexEmbedding = candidates.modalTargets.filter(({ providerId, products }) => providerId === 'provider.google_vertex' && products.includes('ai.embed'));
   const deepgramSpeech = candidates.modalTargets.filter(({ providerId }) => providerId === 'provider.deepgram');
   const blockedModal = candidates.modalTargets.filter(({ providerId }) => providerId === 'provider.openai');
   assert.deepEqual(vertexImages.map(({ exactModelId }) => exactModelId), ['gemini-3.1-flash-lite-image', 'gemini-3.1-flash-image', 'gemini-3-pro-image']);
   assert.ok(vertexImages.every(({ products, requiredSecretNames, qualificationStatus, blockerCodes }) => products[0] === 'ai.image' && requiredSecretNames.length === 0 && qualificationStatus === 'passed' && blockerCodes.length === 0));
+  assert.deepEqual(vertexEmbedding.map(({ exactModelId }) => exactModelId), ['gemini-embedding-001']);
+  assert.ok(vertexEmbedding.every(({ requiredConfigurationNames, requiredSecretNames, qualificationStatus, blockerCodes }) => requiredConfigurationNames.includes('GCP_PROJECT') && requiredSecretNames.length === 0 && qualificationStatus === 'passed' && blockerCodes.length === 0));
   assert.deepEqual(deepgramSpeech.map(({ exactModelId }) => exactModelId), ['aura-2-thalia-en', 'aura-2-arcas-en']);
   assert.ok(deepgramSpeech.every(({ products, requiredSecretNames, termsStatus, resaleAllowed, qualificationStatus, blockerCodes }) => products[0] === 'ai.speech' && requiredSecretNames.includes('DEEPGRAM_API_KEY') && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'passed' && blockerCodes.length === 0));
   assert.deepEqual(blockedModal.map(({ products }) => products), [['ai.embed'], ['ai.image'], ['ai.speech']]);
@@ -93,13 +96,13 @@ test('screened Clervo, Vertex, and Deepgram routes preserve qualified supply and
 test('live Clervo, Vertex, and Deepgram exact routes form a valid qualified and sellable internal model catalog', async () => {
   const catalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
   assert.equal(verifyAiModelCatalog(catalog), true);
-  assert.equal(catalog.routes.length, 11);
+  assert.equal(catalog.routes.length, 12);
   assert.ok(catalog.routes.every(({ qualification }) => qualification.status === 'passed'));
   assert.deepEqual(catalog.qualifiedSupplyFamilies, ['supply.clervo_ai_gateway', 'supply.deepgram', 'supply.google_vertex']);
   const gatewayPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-launch-pricing.v1.json'), 'utf8'));
   const fundedPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-credit-backed-pricing.v1.json'), 'utf8'));
   const speechPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-speech-pricing.v1.json'), 'utf8'));
-  const sellable = new Set([...gatewayPricing.routes, ...fundedPricing.chatRoutes, ...fundedPricing.imageRoutes, ...speechPricing.speechRoutes].filter(({ listingStatus }) => listingStatus === 'sellable').map(({ modelId }) => modelId));
+  const sellable = new Set([...gatewayPricing.routes, ...fundedPricing.chatRoutes, ...fundedPricing.embeddingRoutes, ...fundedPricing.imageRoutes, ...speechPricing.speechRoutes].filter(({ listingStatus }) => listingStatus === 'sellable').map(({ modelId }) => modelId));
   assert.ok(catalog.routes.every(({ exactModelId }) => sellable.has(exactModelId)));
 });
 
