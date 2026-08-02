@@ -142,6 +142,8 @@ try {
     (_, index) => post(index + policy.maximumConcurrentExecutions + 1, 'burst'),
   ));
   assert.ok(overflow.every(({ status, body }) => status === 503 && body.code === 'search_overloaded'));
+  const overloadP95Ms = percentile(overflow.map(({ latencyMs }) => latencyMs), 0.95);
+  assert.ok(overloadP95Ms <= policy.maximumOverloadP95Ms);
   releaseBurst();
   const admitted = await Promise.all(admittedPromises);
   assert.ok(admitted.every(({ status }) => status === 200));
@@ -169,7 +171,7 @@ try {
       admitted: admitted.length,
       overloaded: overflow.length,
       unexpectedStatuses: 0,
-      overloadP95Ms: percentile(overflow.map(({ latencyMs }) => latencyMs), 0.95),
+      overloadP95Ms,
       replayedWithoutExecution: replayed.length,
     },
     steady: {

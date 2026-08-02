@@ -4,6 +4,7 @@
   "maximumConcurrentExecutions": 16,
   "steadyRequests": 256,
   "steadyClientConcurrency": 8,
+  "maximumOverloadP95Ms": 2000,
   "maximumSteadyP95Ms": 250,
   "maximumRssGrowthBytes": 201326592,
   "expectedBurstStatuses": [200, 503],

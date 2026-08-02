@@ -23,6 +23,7 @@ test('burst shedding, steady traffic, replay, recovery, latency, and memory pass
   assert.equal(evidence.burst.admitted, policy.maximumConcurrentExecutions);
   assert.equal(evidence.burst.overloaded, policy.burstRequests - policy.maximumConcurrentExecutions);
   assert.equal(evidence.burst.unexpectedStatuses, 0);
+  assert.ok(evidence.burst.overloadP95Ms <= policy.maximumOverloadP95Ms);
   assert.equal(evidence.burst.replayedWithoutExecution, policy.maximumConcurrentExecutions);
   assert.equal(evidence.steady.requests, policy.steadyRequests);
   assert.equal(evidence.steady.succeeded, policy.steadyRequests);
