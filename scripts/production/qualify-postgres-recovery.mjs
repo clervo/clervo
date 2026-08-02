@@ -8,6 +8,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Pool } from 'pg';
+import { PgBoss } from 'pg-boss';
 import { PostgresSearchStateStore } from '../../apps/api/src/search-state-store.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -113,6 +114,25 @@ function poolFor(name, database) {
   });
 }
 
+function bossFor(name, database, options = {}) {
+  const errors = [];
+  const boss = new PgBoss({
+    host: '127.0.0.1',
+    port: port(name),
+    user: 'clervo',
+    password,
+    database,
+    schema: 'clervo_queue_qualification',
+    max: 2,
+    connectionTimeoutMillis: 3_000,
+    schedule: false,
+    supervise: false,
+    ...options,
+  });
+  boss.on('error', (error) => errors.push(error instanceof Error ? error.message : 'queue_error'));
+  return { boss, errors };
+}
+
 async function migrate(pool) {
   const names = ['0001-retrieval-cache.sql', '0002-live-intelligence-monitoring.sql', '0003-search-http-state.sql'];
   for (const name of names) {
@@ -160,6 +180,80 @@ async function proveRetention(pool) {
   return { plan, applied };
 }
 
+async function proveQueueRecovery(name, database) {
+  const queueName = 'clervo-qualification';
+  const deadLetterName = 'clervo-qualification-dead-letter';
+  const recoverableId = '11111111-1111-4111-8111-111111111111';
+  const deadLetterId = '22222222-2222-4222-8222-222222222222';
+  let first;
+  let second;
+  let firstErrors = [];
+  try {
+    first = bossFor(name, database);
+    await first.boss.start();
+    await first.boss.createQueue(deadLetterName, {
+      retryLimit: 0,
+      deleteAfterSeconds: 86_400,
+      retentionSeconds: 86_400,
+    });
+    await first.boss.createQueue(queueName, {
+      retryLimit: 1,
+      retryDelay: 0,
+      expireInSeconds: 1,
+      deleteAfterSeconds: 86_400,
+      retentionSeconds: 86_400,
+      deadLetter: deadLetterName,
+    });
+    assert.equal(await first.boss.send(queueName, { operationId: operation.operationId }, { id: recoverableId }), recoverableId);
+    assert.equal(await first.boss.send(queueName, { operationId: operation.operationId }, { id: recoverableId }), null);
+    const active = await first.boss.fetch(queueName, { includeMetadata: true });
+    assert.equal(active.length, 1);
+    assert.equal(active[0].id, recoverableId);
+    assert.equal(active[0].state, 'active');
+    await first.boss.stop({ close: true, graceful: false, timeout: 1_000 });
+    firstErrors = first.errors;
+    first = undefined;
+
+    await new Promise((resolve) => setTimeout(resolve, 1_250));
+    second = bossFor(name, database, { migrate: false, createSchema: false });
+    await second.boss.start();
+    await second.boss.supervise(queueName);
+    const recovered = await second.boss.fetch(queueName, { includeMetadata: true });
+    assert.equal(recovered.length, 1);
+    assert.equal(recovered[0].id, recoverableId);
+    assert.equal(recovered[0].retryCount, 1);
+    assert.equal((await second.boss.complete(queueName, recoverableId, { outcome: 'qualified' })).affected, 1);
+    assert.equal((await second.boss.findJobs(queueName, { id: recoverableId }))[0]?.state, 'completed');
+
+    assert.equal(await second.boss.send(queueName, { operationId: 'op_dead_letter' }, { id: deadLetterId, retryLimit: 0, deadLetter: deadLetterName }), deadLetterId);
+    assert.equal((await second.boss.fetch(queueName))[0]?.id, deadLetterId);
+    assert.equal((await second.boss.fail(queueName, deadLetterId, { code: 'qualification_failure' })).affected, 1);
+    const deadLetters = await second.boss.findJobs(deadLetterName);
+    assert.ok(deadLetters.some(({ sourceId, sourceName }) => sourceId === deadLetterId && sourceName === queueName));
+    assert.deepEqual(firstErrors, []);
+    assert.deepEqual(second.errors, []);
+    return { queueName, deadLetterName, recoverableId, deadLetterId };
+  } finally {
+    await first?.boss.stop({ close: true, graceful: false, timeout: 1_000 }).catch(() => {});
+    await second?.boss.stop({ close: true, graceful: true, timeout: 1_000 }).catch(() => {});
+  }
+}
+
+async function proveRestoredQueue(name, database, queue) {
+  const value = bossFor(name, database, { migrate: false, createSchema: false });
+  try {
+    await value.boss.start();
+    const completed = await value.boss.findJobs(queue.queueName, { id: queue.recoverableId });
+    const deadLetters = await value.boss.findJobs(queue.deadLetterName);
+    assert.equal(completed[0]?.state, 'completed');
+    assert.ok(deadLetters.some(({ sourceId }) => sourceId === queue.deadLetterId));
+    assert.deepEqual(value.errors, []);
+    return true;
+  } finally {
+    await value.boss.stop({ close: true, graceful: true, timeout: 1_000 }).catch(() => {});
+  }
+}
+
 let sourcePool;
 let restorePool;
 let outcome;
@@ -172,6 +266,7 @@ try {
   sourcePool = poolFor(sourceName, policy.database);
   const migrations = await migrate(sourcePool);
   const initial = await proveState(sourcePool);
+  const queue = await proveQueueRecovery(sourceName, policy.database);
   await sourcePool.end();
   sourcePool = undefined;
 
@@ -229,8 +324,9 @@ try {
   const restoredReplay = await restoredStore.begin({ ...operation, now });
   assert.equal(restoredReplay.kind, 'replay');
   assert.deepEqual(restoredReplay.response, initial.replay);
+  const restoredQueue = await proveRestoredQueue(restoreName, policy.restoreDatabase, queue);
   const retention = await proveRetention(restorePool);
-  outcome = { migrations, initial, restartReplay, archiveHash, retention };
+  outcome = { migrations, initial, restartReplay, archiveHash, retention, queue, restoredQueue };
 } finally {
   await sourcePool?.end().catch(() => {});
   await restorePool?.end().catch(() => {});
@@ -271,6 +367,11 @@ const report = {
     restoredReplayMatched: true,
     retentionPlanCountOnly: true,
     expiredRetentionApplied: outcome.retention.applied.completedOperations >= 1,
+    queueDuplicateIdRejected: true,
+    queueActiveJobRecoveredAfterWorkerLoss: true,
+    queueRetryCompleted: true,
+    queueDeadLettered: true,
+    queueStateRestoredFromBackup: outcome.restoredQueue,
   },
   cleanup: {
     sourceContainerRemoved: true,

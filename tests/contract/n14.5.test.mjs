@@ -40,6 +40,11 @@ test('live local evidence proves restart, backup, isolated restore, replay, rete
   assert.equal(evidence.checks.restoredReplayMatched, true);
   assert.equal(evidence.checks.retentionPlanCountOnly, true);
   assert.equal(evidence.checks.expiredRetentionApplied, true);
+  assert.equal(evidence.checks.queueDuplicateIdRejected, true);
+  assert.equal(evidence.checks.queueActiveJobRecoveredAfterWorkerLoss, true);
+  assert.equal(evidence.checks.queueRetryCompleted, true);
+  assert.equal(evidence.checks.queueDeadLettered, true);
+  assert.equal(evidence.checks.queueStateRestoredFromBackup, true);
   assert.deepEqual(evidence.cleanup, {
     sourceContainerRemoved: true,
     restoreContainerRemoved: true,
