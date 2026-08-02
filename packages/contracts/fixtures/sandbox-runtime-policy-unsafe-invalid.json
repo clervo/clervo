@@ -1,0 +1,1 @@
+{ "schema": "sandbox-runtime-policy", "valid": false, "value": { "schemaVersion": "clervo.sandbox-runtime-policy.v1", "lifecycle": "unavailable", "runtime": { "class": "gvisor", "runtimeClassName": "gvisor", "plainContainerAllowed": true, "dedicatedExecutionNodes": true, "controlPlaneSeparated": true } } }
