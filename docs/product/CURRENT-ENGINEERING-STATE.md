@@ -167,7 +167,7 @@ leases, and two hours for hashed quota subjects. Planning is count-only;
 deletion requires an exact untracked confirmation and production deletion
 still requires owner approval. No production/customer database deletion was
 performed. The new image is qualified locally at source commit
-`95fe9461194c`. Its build remains on the exact Node 24.18.1 image, while the
+`565ea2d0e7b0`. Its build remains on the exact Node 24.18.1 image, while the
 runtime is now the exact non-root Node 24 distroless image and contains no
 shell or package manager. A digest-pinned Trivy 0.72.0 scanner downloaded its
 database before entering the offline scan boundary and never received the
@@ -176,6 +176,16 @@ high, five medium, and seven low findings; the production npm audit found zero
 vulnerabilities; and a 44-package SPDX 2.3 SBOM is hash-bound to the image.
 The saved archive and scanner cache were removed. This is not production
 readiness.
+
+Monitoring delivery now has a bounded HTTPS exporter with a 256 KiB payload
+ceiling, five-second timeout, redirect denial, deterministic delivery
+idempotency, and optional runtime-only authorization. Production startup
+requires a delivery endpoint. An isolated receiver acknowledged the same
+failure snapshot twice under one delivery identity and confirmed that the
+payload excluded queries, request hashes, wallets, credentials, and
+authorization material. The incident runbook covers execution failure,
+readiness, overload, unknown settlement, delivery failure, kill switch, and
+rollback. This proves local receiver delivery, not an external paging vendor.
 
 The exact digest-pinned PostgreSQL 18.4 image now passes a disposable live
 recovery qualification. All three migrations applied; atomic claim, completion,
