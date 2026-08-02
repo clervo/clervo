@@ -3,6 +3,7 @@
   "defaultVisibility": "deny",
   "schemas": [
     { "file": "ai-credit-backed-pricing.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-credit-backed-pricing.schema.json", "visibility": "internal_control", "reason": "Internal funded-supply pricing, allocation, and no-owner-cash hard-stop policy." },
+    { "file": "ai-speech-pricing.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-speech-pricing.schema.json", "visibility": "internal_control", "reason": "Internal funded speech/transcription pricing, qualification state, and no-owner-cash guard." },
     { "file": "ai-execution-request.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-request.schema.json", "visibility": "internal_control", "reason": "Internal bounded provider-neutral AI request." },
     { "file": "ai-execution-result.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-execution-result.schema.json", "visibility": "internal_control", "reason": "Internal exact-model AI result and accounting." },
     { "file": "ai-launch-pricing.schema.json", "schemaId": "https://api.clervo.dev/schemas/2026-07-29.1/ai-launch-pricing.schema.json", "visibility": "internal_control", "reason": "Internal credit-backed AI launch pricing, shadow budget valuation, and provisional gateway capacity." },

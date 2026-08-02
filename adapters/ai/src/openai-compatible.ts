@@ -14,6 +14,7 @@ export interface AiHttpResponse {
   status: number;
   contentType: string;
   body: Uint8Array;
+  responseHeaders?: Readonly<Record<string, string>>;
 }
 
 export interface AiHttpTransport {
@@ -57,7 +58,12 @@ export function createBoundedAiHttpTransport(fetcher: typeof globalThis.fetch = 
       const body = new Uint8Array(total);
       let offset = 0;
       for (const chunk of chunks) { body.set(chunk, offset); offset += chunk.byteLength; }
-      return Object.freeze({ status: response.status, contentType: response.headers.get('content-type') ?? '', body });
+      const responseHeaders = Object.freeze(Object.fromEntries(
+        ['dg-char-count', 'dg-model-name', 'dg-model-uuid', 'dg-request-id']
+          .map((name) => [name, response.headers.get(name)] as const)
+          .filter((entry): entry is readonly [string, string] => entry[1] !== null),
+      ));
+      return Object.freeze({ status: response.status, contentType: response.headers.get('content-type') ?? '', body, responseHeaders });
     },
   });
 }

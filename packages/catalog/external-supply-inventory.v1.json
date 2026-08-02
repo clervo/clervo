@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.2",
-  "observedAt": "2026-08-02T02:54:31.000Z",
+  "inventoryVersion": "2026-08-02.3",
+  "observedAt": "2026-08-02T03:08:58.000Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -38,8 +38,8 @@
       "currency": "USD",
       "reportedAmount": 200,
       "evidenceStatus": "owner_reported_unverified",
-      "expirationStatus": "unknown",
-      "automaticTopUpStatus": "unknown",
+      "expirationStatus": "reported_no_expiration",
+      "automaticTopUpStatus": "disabled",
       "usagePolicy": "hard_cap_no_owner_cash_overage"
     },
     {
@@ -156,12 +156,13 @@
       "alternateCredentialSlots": 0,
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "promotional_credit",
-      "connectionStatus": "observed_not_tested",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "connectionStatus": "observed_working",
+      "qualificationStatus": "passed",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
-      "notes": ["Owner reports USD 200 credit; automatic top-up and exact balance must be verified before any live qualification."]
+      "knownModelNames": ["aura-2-thalia-en", "aura-2-arcas-en", "nova-3"],
+      "notes": ["Two exact Aura-2 speech routes and Nova-3 transcription passed bounded authenticated technical checks on 2026-08-02. The Nova-3 jargon miss is preserved in evidence.", "Use is restricted to value-added Clervo operations; never distribute upstream credentials or sell pass-through account access. The exact remaining balance still requires the application shadow ledger before customer traffic."]
     },
     {
       "serviceId": "supply.google_gemini",
@@ -475,11 +476,6 @@
     }
   ],
   "ownerInputs": [
-    {
-      "inputId": "confirm_deepgram_billing_guard",
-      "reason": "Confirm that automatic top-up is disabled and record the exact credit balance before speech qualification uses promotional credit.",
-      "secretHandling": "not_secret"
-    },
     {
       "inputId": "confirm_vertex_credit_guard",
       "reason": "Confirm the Google Cloud project holding the reported USD 1700 credit, its expiry, and billing controls that prevent owner-cash overage.",

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "clervo.ai-speech-pricing.v1",
+  "priceVersion": "2026-08-02.1",
+  "evaluatedAt": "2026-08-02T03:08:58.000Z",
+  "currency": "USD",
+  "providerVisibility": "internal_only",
+  "policy": {
+    "customerFreeByDefault": false,
+    "positiveMarginRequiredAtLaunch": false,
+    "unknownSupplierDebitBlocksSale": false,
+    "providerPassThroughAccessAllowed": false,
+    "exactModelSubstitution": "prohibited"
+  },
+  "creditGuard": {
+    "ownerReportedBalanceUsd": 200,
+    "speechAllocationUsd": 160,
+    "transcriptionAllocationUsd": 30,
+    "reserveUsd": 10,
+    "maximumDailyShadowDebitUsd": 5,
+    "hardStopRemainingShadowUsd": 20,
+    "applicationLedgerRequiredBeforeCustomerTraffic": true,
+    "automaticTopUpStatus": "owner_confirmed_disabled",
+    "ownerCashOverageAllowed": false,
+    "denyWhenUsageUnknown": true
+  },
+  "competitorReference": {
+    "sourceUrl": "https://blockrun.ai/api/v1/models",
+    "checkedAt": "2026-08-02T03:04:00.000Z",
+    "catalogRecords": 83,
+    "speechPriceRangeUsdPerThousandCharacters": [0.05, 0.3],
+    "transcriptionRoutesObserved": 0
+  },
+  "speechRoutes": [
+    {
+      "modelId": "aura-2-thalia-en",
+      "listingStatus": "sellable",
+      "positioning": "best_overall_clear_english",
+      "customerUsdPerThousandCharacters": 0.015,
+      "shadowUsdPerThousandCharacters": 0.03,
+      "maximumInputCharacters": 2000,
+      "outputFormats": ["mp3", "opus", "aac", "flac", "wav", "pcm"]
+    },
+    {
+      "modelId": "aura-2-arcas-en",
+      "listingStatus": "sellable",
+      "positioning": "best_overall_natural_english",
+      "customerUsdPerThousandCharacters": 0.015,
+      "shadowUsdPerThousandCharacters": 0.03,
+      "maximumInputCharacters": 2000,
+      "outputFormats": ["mp3", "opus", "aac", "flac", "wav", "pcm"]
+    }
+  ],
+  "transcriptionRoutes": [
+    {
+      "modelId": "nova-3",
+      "listingStatus": "priced_qualified_integration_pending",
+      "positioning": "best_general_english",
+      "customerUsdPerMinute": { "streaming": 0.003, "prerecorded": 0.004 },
+      "shadowUsdPerMinute": { "streaming": 0.0048, "prerecorded": 0.0077 },
+      "keytermCustomerUsdPerMinute": 0.0007,
+      "keytermShadowUsdPerMinute": 0.0013,
+      "knownLimitation": "The bounded synthetic round-trip transcribed four of five target terms; idempotency remained misrecognized even with keyterm prompting."
+    }
+  ]
+}

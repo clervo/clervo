@@ -27,7 +27,7 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(inventory.commercialPolicy.providerNamesPublic, false);
   assert.equal(inventory.commercialPolicy.silentQualityDowngradeAllowed, false);
   assert.equal(new Set(inventory.services.map(({ serviceId }) => serviceId)).size, inventory.services.length);
-  assert.deepEqual(inventory.services.filter(({ qualificationStatus }) => qualificationStatus === 'passed').map(({ serviceId }) => serviceId), ['supply.clervo_ai_gateway', 'supply.google_vertex']);
+  assert.deepEqual(inventory.services.filter(({ qualificationStatus }) => qualificationStatus === 'passed').map(({ serviceId }) => serviceId), ['supply.clervo_ai_gateway', 'supply.deepgram', 'supply.google_vertex']);
 
   const clervo = inventory.services.find(({ serviceId }) => serviceId === 'supply.clervo_ai_gateway');
   assert.equal(clervo.connectionStatus, 'observed_working');
@@ -39,6 +39,13 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(vertex.connectionStatus, 'observed_working');
   assert.equal(vertex.qualificationStatus, 'passed');
   assert.ok(vertex.knownModelNames.includes('gemini-3.6-flash') && vertex.knownModelNames.includes('veo-3.1-fast-generate-001'));
+
+  const deepgram = inventory.services.find(({ serviceId }) => serviceId === 'supply.deepgram');
+  assert.equal(deepgram.connectionStatus, 'observed_working');
+  assert.equal(deepgram.qualificationStatus, 'passed');
+  assert.deepEqual(deepgram.knownModelNames, ['aura-2-thalia-en', 'aura-2-arcas-en', 'nova-3']);
+  assert.equal(inventory.creditPools.find(({ serviceId }) => serviceId === 'supply.deepgram').automaticTopUpStatus, 'disabled');
+  assert.equal(inventory.ownerInputs.some(({ inputId }) => inputId === 'confirm_deepgram_billing_guard'), false);
 
   const gateway = inventory.services.find(({ serviceId }) => serviceId === 'supply.hcnsec_gateway');
   assert.equal(gateway.configuredCredentialSlots, 20);

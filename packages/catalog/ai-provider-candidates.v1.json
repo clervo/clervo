@@ -1,6 +1,6 @@
 {
-  "catalogVersion": "2026-08-02.4",
-  "researchedAt": "2026-08-02T02:54:31.000Z",
+  "catalogVersion": "2026-08-02.5",
+  "researchedAt": "2026-08-02T03:08:58.000Z",
   "targets": [
     {
       "providerId": "provider.clervo_ai_gateway",
@@ -171,6 +171,44 @@
     }
   ],
   "modalTargets": [
+    {
+      "providerId": "provider.deepgram",
+      "supplyFamilyId": "supply.deepgram",
+      "exactModelId": "aura-2-thalia-en",
+      "baseUrlPattern": "https://api.deepgram.com/v1/speak?model={model}",
+      "allowedHosts": ["api.deepgram.com"],
+      "products": ["ai.speech"],
+      "requiredConfigurationNames": [],
+      "requiredSecretNames": ["DEEPGRAM_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Aura text-to-speech REST API", "url": "https://developers.deepgram.com/docs/text-to-speech", "checkedAt": "2026-08-02T03:08:58.000Z" },
+        { "title": "Aura voices and languages", "url": "https://developers.deepgram.com/docs/tts-models", "checkedAt": "2026-08-02T03:08:58.000Z" }
+      ]
+    },
+    {
+      "providerId": "provider.deepgram",
+      "supplyFamilyId": "supply.deepgram",
+      "exactModelId": "aura-2-arcas-en",
+      "baseUrlPattern": "https://api.deepgram.com/v1/speak?model={model}",
+      "allowedHosts": ["api.deepgram.com"],
+      "products": ["ai.speech"],
+      "requiredConfigurationNames": [],
+      "requiredSecretNames": ["DEEPGRAM_API_KEY"],
+      "selectedForQualification": true,
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
+      "documentation": [
+        { "title": "Aura text-to-speech REST API", "url": "https://developers.deepgram.com/docs/text-to-speech", "checkedAt": "2026-08-02T03:08:58.000Z" },
+        { "title": "Aura voices and languages", "url": "https://developers.deepgram.com/docs/tts-models", "checkedAt": "2026-08-02T03:08:58.000Z" }
+      ]
+    },
     {
       "providerId": "provider.google_vertex",
       "supplyFamilyId": "supply.google_vertex",

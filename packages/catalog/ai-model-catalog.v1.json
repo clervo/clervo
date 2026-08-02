@@ -1,9 +1,209 @@
 {
   "contractVersion": "2026-07-29.1",
   "schemaVersion": "ai-model-catalog.v1",
-  "catalogId": "aicat_01K0CLERVOMULTIMODAL01",
-  "evaluatedAt": "2026-08-02T02:55:00.000Z",
+  "catalogId": "aicat_01K0CLERVOSPEECHCAT01",
+  "evaluatedAt": "2026-08-02T03:10:00.000Z",
   "routes": [
+    {
+      "routeId": "ai.route.aura_2_arcas_en",
+      "providerId": "provider.deepgram",
+      "supplyFamilyId": "supply.deepgram",
+      "exactModelId": "aura-2-arcas-en",
+      "productIds": [
+        "ai.speech"
+      ],
+      "capabilities": [
+        "text_input",
+        "audio_output"
+      ],
+      "requiredSecretNames": [
+        "DEEPGRAM_API_KEY"
+      ],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0DEEPGRAMAURA2ARCAS01",
+        "routeId": "ai.route.aura_2_arcas_en",
+        "providerId": "provider.deepgram",
+        "supplyFamilyId": "supply.deepgram",
+        "exactModelId": "aura-2-arcas-en",
+        "productIds": [
+          "ai.speech"
+        ],
+        "checkedAt": "2026-08-02T03:08:58.000Z",
+        "expiresAt": "2026-08-09T03:08:58.000Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "synthetic_roundtrip_dependence",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_audio_valid",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "character_usage_reported",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "value_added_use_restricted",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "aura-2-arcas-en",
+          "latencyMsP95": 1787.38,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "60000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:5a330f5b4f9b6be2c53567a9d1f4dba38c32cf89ab40d31b4566734cd0080b71"
+      }
+    },
+    {
+      "routeId": "ai.route.aura_2_thalia_en",
+      "providerId": "provider.deepgram",
+      "supplyFamilyId": "supply.deepgram",
+      "exactModelId": "aura-2-thalia-en",
+      "productIds": [
+        "ai.speech"
+      ],
+      "capabilities": [
+        "text_input",
+        "audio_output"
+      ],
+      "requiredSecretNames": [
+        "DEEPGRAM_API_KEY"
+      ],
+      "quickAiPremium": false,
+      "qualification": {
+        "contractVersion": "2026-07-29.1",
+        "schemaVersion": "ai-route-qualification.v1",
+        "qualificationId": "aiqual_01K0DEEPGRAMAURA2THALIA1",
+        "routeId": "ai.route.aura_2_thalia_en",
+        "providerId": "provider.deepgram",
+        "supplyFamilyId": "supply.deepgram",
+        "exactModelId": "aura-2-thalia-en",
+        "productIds": [
+          "ai.speech"
+        ],
+        "checkedAt": "2026-08-02T03:08:58.000Z",
+        "expiresAt": "2026-08-09T03:08:58.000Z",
+        "termsStatus": "restricted",
+        "resaleAllowed": true,
+        "checks": [
+          {
+            "name": "authentication",
+            "status": "passed",
+            "code": "credential_accepted",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "exact_identity",
+            "status": "passed",
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "input_dependence",
+            "status": "passed",
+            "code": "synthetic_roundtrip_dependence",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "output_shape",
+            "status": "passed",
+            "code": "bounded_audio_valid",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "usage_reporting",
+            "status": "passed",
+            "code": "character_usage_reported",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "latency",
+            "status": "passed",
+            "code": "latency_within_ceiling",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "failure_handling",
+            "status": "passed",
+            "code": "invalid_model_failed_safely",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "cost_ceiling",
+            "status": "passed",
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          },
+          {
+            "name": "terms",
+            "status": "passed",
+            "code": "value_added_use_restricted",
+            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+          }
+        ],
+        "observed": {
+          "modelIdentity": "aura-2-thalia-en",
+          "latencyMsP95": 1684.72,
+          "maximumSupplierCost": {
+            "asset": "USD",
+            "amountAtomic": "60000",
+            "decimals": 6
+          }
+        },
+        "status": "passed",
+        "qualificationHash": "sha256:bc5ce1fad144075e5b350f5ee78750d5acf919acd832c26519251009e356b309"
+      }
+    },
     {
       "routeId": "ai.route.gemini_3_1_flash_image",
       "providerId": "provider.google_vertex",
@@ -943,7 +1143,8 @@
   ],
   "qualifiedSupplyFamilies": [
     "supply.clervo_ai_gateway",
+    "supply.deepgram",
     "supply.google_vertex"
   ],
-  "catalogHash": "sha256:926407c4669fea592e06d1ee17d7071620d168a3f7ddcbf46eb3076634504a0f"
+  "catalogHash": "sha256:3fda53b3cba013b6ae5cae5b693182dc26c02b6e5e616a178baef9f491c5c53c"
 }

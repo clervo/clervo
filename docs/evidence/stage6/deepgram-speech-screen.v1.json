@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "clervo.deepgram-speech-screen.v1",
+  "screenedAt": "2026-08-02T03:08:58.000Z",
+  "method": "Bounded synthetic text-to-speech and speech-to-text round-trip using a credential held outside Git. No customer or secret payload was used or retained.",
+  "providerCalls": {
+    "textToSpeech": 3,
+    "speechToText": 3,
+    "invalidModel": 1,
+    "total": 7,
+    "ownerCashSpentUsd": 0,
+    "maximumEstimatedPromotionalCreditDebitUsd": 0.008,
+    "secretValuesRecorded": false,
+    "customerPayloadsRecorded": false
+  },
+  "textToSpeech": [
+    {
+      "requestedModel": "aura-2-thalia-en",
+      "observedModel": "aura-2-thalia-en",
+      "contentType": "audio/wav",
+      "characters": 53,
+      "audioBytes": 149804,
+      "latencyMs": 1684.72,
+      "containerSignatureValid": true,
+      "inputDependence": "Round-trip transcript matched four of five expected semantic terms."
+    },
+    {
+      "requestedModel": "aura-2-arcas-en",
+      "observedModel": "aura-2-arcas-en",
+      "contentType": "audio/wav",
+      "characters": 53,
+      "audioBytes": 176684,
+      "latencyMs": 1787.38,
+      "containerSignatureValid": true,
+      "inputDependence": "Round-trip transcript matched four of five expected semantic terms."
+    }
+  ],
+  "speechToText": {
+    "requestedModel": "nova-3",
+    "observedModel": "general-nova-3",
+    "observedVersion": "2025-07-31.0",
+    "durationsSeconds": [3.1199374, 3.6799376, 3.6799376],
+    "latenciesMs": [465.57, 184.79, 386.39],
+    "confidenceRange": [0.9902344, 0.9980469],
+    "baselineTermsPassed": 4,
+    "baselineTermsTotal": 5,
+    "keytermTermsPassed": 4,
+    "keytermTermsTotal": 5,
+    "knownFailure": "The synthetic phrase term idempotency was transcribed as item potency for both voices and remained incorrect with explicit keyterm prompting.",
+    "modelImprovementOptOutVerifiedOnFinalProbe": true
+  },
+  "failureHandling": {
+    "invalidModelHttpStatus": 400,
+    "rejectedSafely": true,
+    "boundedJsonError": true,
+    "credentialReflected": false
+  },
+  "commercial": {
+    "ownerReportedCreditUsd": 200,
+    "currentOfficialAura2UsdPerThousandCharacters": 0.03,
+    "currentOfficialNova3PrerecordedUsdPerMinute": 0.0077,
+    "currentOfficialNova3StreamingUsdPerMinute": 0.0048,
+    "competitorCatalogRecords": 83,
+    "competitorTtsPriceRangeUsdPerThousandCharacters": [0.05, 0.3],
+    "decision": "Two exact Aura-2 routes are technically qualified and priced sellable. Nova-3 is priced and technically qualified with the preserved jargon limitation; its Clervo transcription operation remains to be integrated."
+  },
+  "limits": {
+    "voiceQualityListeningPanel": "not_run",
+    "noisyHumanSpeechCorpus": "not_run",
+    "multilingualSpeech": "not_run",
+    "exactConsoleBalance": "owner_reported_unverified"
+  }
+}
