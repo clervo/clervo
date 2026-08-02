@@ -15,6 +15,15 @@ COPY services ./services
 COPY adapters ./adapters
 RUN npm run build
 
+FROM node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9b581ef1dd7d96ced463b8e7 AS runtime-dependencies
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY apps/site/package.json ./apps/site/package.json
+COPY packages/mcp/package.json ./packages/mcp/package.json
+COPY packages/sdk-typescript/package.json ./packages/sdk-typescript/package.json
+RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund --workspaces=false
+
 FROM node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9b581ef1dd7d96ced463b8e7 AS runtime
 
 LABEL org.opencontainers.image.title="Clervo API distribution candidate"
@@ -26,8 +35,9 @@ ENV PORT=8080
 WORKDIR /app
 
 COPY --chown=1000:1000 --from=build /app/package.json ./package.json
+COPY --chown=1000:1000 --from=runtime-dependencies /app/node_modules ./node_modules
 COPY --chown=1000:1000 --from=build /app/dist ./dist
-COPY --chown=1000:1000 apps/api/src/search-server.mjs apps/api/src/staging-search-main.mjs ./apps/api/src/
+COPY --chown=1000:1000 apps/api/src/search-server.mjs apps/api/src/search-state-store.mjs apps/api/src/staging-search-main.mjs ./apps/api/src/
 
 USER 1000:1000
 EXPOSE 8080

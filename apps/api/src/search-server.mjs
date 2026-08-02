@@ -20,6 +20,7 @@ import {
   searchProductPricing,
   validateIdempotencyKey,
 } from '../../../dist/packages/contracts/src/index.js';
+import { InMemorySearchStateStore } from './search-state-store.mjs';
 
 const JSON_TYPE = 'application/json; charset=utf-8';
 const PROBLEM_TYPE = 'application/problem+json; charset=utf-8';
@@ -78,6 +79,7 @@ export function createSearchServer({
   now = () => new Date().toISOString(),
   monotonicNow = () => performance.now(),
   freeQuota = new InMemoryFreeSearchQuota(),
+  stateStore,
   commerce = new MockCommerceKernel(),
   monitor,
   allowMockPaidExecution = false,
@@ -87,6 +89,13 @@ export function createSearchServer({
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
   if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
+  const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
+  if (
+    typeof searchState.begin !== 'function'
+    || typeof searchState.complete !== 'function'
+    || typeof searchState.abandon !== 'function'
+    || typeof searchState.consumeFreeQuota !== 'function'
+  ) throw new TypeError('invalid search state store');
   const idempotency = new Map();
 
   const record = (input) => {
@@ -102,7 +111,28 @@ export function createSearchServer({
         environment: environment ?? 'unknown',
         releaseId: releaseId ?? 'unknown',
         paidExecutionEnabled: allowMockPaidExecution,
+        stateBackend: searchState.kind ?? 'unknown',
+        durableState: searchState.durable === true,
       });
+      return;
+    }
+    if (request.method === 'GET' && url.pathname === '/readyz' && url.search === '') {
+      try {
+        const ready = typeof searchState.ready === 'function' && await searchState.ready();
+        send(response, ready ? 200 : 503, {
+          status: ready ? 'ready' : 'unavailable',
+          service: 'clervo-search-api',
+          stateBackend: searchState.kind ?? 'unknown',
+          durableState: searchState.durable === true,
+        });
+      } catch {
+        send(response, 503, {
+          status: 'unavailable',
+          service: 'clervo-search-api',
+          stateBackend: searchState.kind ?? 'unknown',
+          durableState: searchState.durable === true,
+        });
+      }
       return;
     }
     if (request.method !== 'POST' || ![SEARCH_FREE_PATH, SEARCH_PAID_PATH].includes(url.pathname)) {
@@ -116,6 +146,8 @@ export function createSearchServer({
 
     let operationId;
     let productId;
+    let stateClaim;
+    let stateCompletionAttempted = false;
     const startedAt = monotonicNow();
     try {
       const keyHeader = request.headers['idempotency-key'];
@@ -123,7 +155,7 @@ export function createSearchServer({
       validateIdempotencyKey(keyHeader);
       const normalized = normalizeSearchHttpRequest(await readJson(request));
       const requestHash = searchHttpRequestHash(normalized, url.pathname);
-      const stored = idempotency.get(keyHeader);
+      let stored = idempotency.get(keyHeader);
       if (stored && stored.requestHash !== requestHash) {
         send(response, 409, problem(409, 'idempotency_conflict', 'Idempotency key conflict', 'The key is already bound to a different canonical request.', url.pathname, stored.operationId), {}, PROBLEM_TYPE);
         return;
@@ -137,7 +169,29 @@ export function createSearchServer({
         send(response, 200, { ...pendingResult, replayed: true }, { 'idempotency-replayed': 'true' });
         return;
       }
-      operationId = stored?.operationId ?? identifier('op', `${keyHeader}:${requestHash}`);
+      if (url.pathname === SEARCH_FREE_PATH && stored === undefined) {
+        const proposedOperationId = identifier('op', `${keyHeader}:${requestHash}`);
+        stateClaim = await searchState.begin({ idempotencyKey: keyHeader, requestHash, operationId: proposedOperationId, now: now() });
+        if (stateClaim.kind === 'conflict') {
+          send(response, 409, problem(409, 'idempotency_conflict', 'Idempotency key conflict', 'The key is already bound to a different canonical request.', url.pathname, stateClaim.operationId), {}, PROBLEM_TYPE);
+          return;
+        }
+        if (stateClaim.kind === 'replay') {
+          send(response, 200, { ...stateClaim.response, replayed: true }, { 'idempotency-replayed': 'true' });
+          return;
+        }
+        if (stateClaim.kind === 'in_progress') {
+          stored = idempotency.get(keyHeader);
+          if (stored?.pending) {
+            const pendingResult = await stored.pending;
+            send(response, 200, { ...pendingResult, replayed: true }, { 'idempotency-replayed': 'true' });
+          } else {
+            send(response, 409, problem(409, 'idempotency_in_progress', 'Request in progress', 'The matching request is still in progress. Retry with the same key after reconciliation.', url.pathname, stateClaim.operationId), { 'retry-after': '1' }, PROBLEM_TYPE);
+          }
+          return;
+        }
+      }
+      operationId = stateClaim?.operationId ?? stored?.operationId ?? identifier('op', `${keyHeader}:${requestHash}`);
       idempotency.set(keyHeader, { ...stored, operationId, requestHash });
       const fundingMode = url.pathname === SEARCH_FREE_PATH ? 'free' : 'paid';
       productId = searchProductId(normalized);
@@ -145,7 +199,7 @@ export function createSearchServer({
 
       if (fundingMode === 'free') {
         const subject = request.socket.remoteAddress ?? 'loopback-unknown';
-        const quota = freeQuota.consume(subject, now());
+        const quota = await searchState.consumeFreeQuota(subject, now());
         const quotaHeaders = {
           'ratelimit-limit': String(quota.limit),
           'ratelimit-remaining': String(quota.remaining),
@@ -153,6 +207,7 @@ export function createSearchServer({
         };
         if (!quota.allowed) {
           idempotency.delete(keyHeader);
+          if (stateClaim?.kind === 'claimed') await searchState.abandon({ idempotencyKey: keyHeader, requestHash, operationId, leaseId: stateClaim.leaseId });
           record({ timestamp: now(), productId, outcome: 'quota_rejected', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
           send(response, 429, problem(429, 'free_quota_exceeded', 'Free search quota exceeded', 'The bounded free sample quota is exhausted.', url.pathname, operationId), { ...quotaHeaders, 'retry-after': String(Math.max(1, Math.ceil((Date.parse(quota.resetAt) - Date.parse(now())) / 1_000))) }, PROBLEM_TYPE);
           return;
@@ -161,6 +216,10 @@ export function createSearchServer({
           .then((output) => createSearchHttpResult(executionInput, output, false));
         idempotency.set(keyHeader, { operationId, requestHash, pending });
         const result = await pending;
+        if (stateClaim?.kind === 'claimed') {
+          stateCompletionAttempted = true;
+          await searchState.complete({ idempotencyKey: keyHeader, requestHash, operationId, leaseId: stateClaim.leaseId, response: result, now: now() });
+        }
         idempotency.set(keyHeader, { operationId, requestHash, response: result });
         record({ timestamp: now(), productId, outcome: 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
         send(response, 200, result, quotaHeaders);
@@ -225,6 +284,11 @@ export function createSearchServer({
         const keyHeader = request.headers['idempotency-key'];
         const stored = typeof keyHeader === 'string' ? idempotency.get(keyHeader) : undefined;
         if (stored?.response === undefined) idempotency.delete(keyHeader);
+        if (typeof keyHeader === 'string' && stateClaim?.kind === 'claimed' && !stateCompletionAttempted) {
+          try {
+            await searchState.abandon({ idempotencyKey: keyHeader, requestHash: stored?.requestHash, operationId, leaseId: stateClaim.leaseId });
+          } catch { /* The original failure remains the customer-visible result. */ }
+        }
       }
       const status = Number.isInteger(error?.status) ? error.status : code === 'idempotency_conflict' ? 409 : !executorFailure && (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 502;
       if (executorFailure && productId !== undefined) record({ timestamp: now(), productId, outcome: 'execution_failure', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });

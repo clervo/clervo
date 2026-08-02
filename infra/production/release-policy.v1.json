@@ -13,6 +13,8 @@
     "noNewPrivilegesRequired": true,
     "allCapabilitiesDropped": true,
     "healthPath": "/v1/health",
+    "readinessPath": "/readyz",
+    "productionStateBackend": "postgres",
     "stopSignal": "SIGTERM"
   },
   "localQualification": {

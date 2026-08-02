@@ -151,6 +151,7 @@
     "test:contracts": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/*.test.mjs"
   },
   "dependencies": {
+    "pg": "8.22.0",
     "pg-boss": "12.26.3"
   },
   "devDependencies": {

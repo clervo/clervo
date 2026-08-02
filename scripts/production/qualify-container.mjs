@@ -9,6 +9,8 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const policy = JSON.parse(await readFile(path.join(root, 'infra/production/release-policy.v1.json'), 'utf8'));
 const output = path.join(root, 'docs/evidence/production/local-container-qualification.v1.json');
+const worktreeStatus = execFileSync('git', ['status', '--porcelain=v1', '--untracked-files=all'], { cwd: root, encoding: 'utf8' }).trim();
+assert.equal(worktreeStatus, '', 'production_container_qualification_requires_clean_worktree');
 const shortCommit = execFileSync('git', ['rev-parse', '--short=12', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
 const image = `clervo-production-candidate:local-${shortCommit}`;
 let containerId;

@@ -68,6 +68,8 @@ test('deployable staging entry point exposes release health and keeps mock-paid 
       environment: 'staging',
       releaseId,
       paidExecutionEnabled: false,
+      stateBackend: 'memory',
+      durableState: false,
     });
 
     const paidResponse = await fetch(`${origin}/v1/search/paid`, {
