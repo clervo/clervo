@@ -191,13 +191,15 @@
       "quotaRunway": "Allocated from the reported Vertex credit; generated-image size and ledger ceilings remain mandatory.",
       "healthMethod": [
         "docs/evidence/supply-foundation/cloudflare-modality-screen.v1.json",
+        "docs/evidence/supply-foundation/cloudflare-flux-safety-probe.v1.json",
+        "docs/evidence/supply-foundation/cloudflare-flux-quality-final.v1.json",
         "docs/evidence/stage6/vertex-multimodal-screen.v1.json"
       ],
       "secretLocations": [
         "application_default:GCP_ADC",
         "legacy_import:CLOUDFLARE_API_TOKEN"
       ],
-      "replacementPlan": "Finish FLUX image-size, quality, accounting, and adapter checks before enabling it as an independent fallback."
+      "replacementPlan": "Keep FLUX Schnell rejected after the independent 1/5 prompt-adherence result and repeated benign safety false positives; source a different zero-owner-cash image family only if the funded primary runway becomes insufficient."
     },
     {
       "capabilityId": "ai.video",

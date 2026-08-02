@@ -174,6 +174,11 @@ disabled without explicit owner approval.
   the edge led quality and latency; the funded Nova-3 primary now has a bounded,
   identity-checking adapter. Public sale remains blocked by the roadmap's lack
   of an `ai.transcribe` wire contract, not by missing or untested supply.
+- Image fallback: FLUX Schnell was not promoted. Across the final five-case
+  independent visual evaluation it passed only one prompt, missed basic requested
+  elements, and rejected a benign prompt under its safety filter. Earlier
+  evaluator-shape failures remain separate evidence rather than being rewritten
+  as model failures. Vertex remains the only qualified image supply family.
 - QuickAI and TongKhokr are retired and must not return to active supply.
 - Current qualified internal catalog: 21 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.

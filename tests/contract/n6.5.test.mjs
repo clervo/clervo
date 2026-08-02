@@ -432,7 +432,7 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
     ['@cf/zai-org/glm-5.2', 'priced_requires_paid_plan'],
   ]);
   assert.equal(pricing.assets.filter(({ accessStatus, listingStatus }) => accessStatus === 'free_allocation_available' && listingStatus === 'sellable').length, 6);
-  assert.deepEqual(Object.fromEntries(Object.entries(Object.groupBy(pricing.assets, ({ qualityGrade }) => qualityGrade)).map(([grade, rows]) => [grade, rows.length])), { best: 3, good: 8, poor: 4, rejected: 8, unranked: 38 });
+  assert.deepEqual(Object.fromEntries(Object.entries(Object.groupBy(pricing.assets, ({ qualityGrade }) => qualityGrade)).map(([grade, rows]) => [grade, rows.length])), { best: 3, good: 8, poor: 4, rejected: 9, unranked: 37 });
   assert.deepEqual(Object.fromEntries(Object.entries(Object.groupBy(pricing.assets.filter(({ task }) => task === 'Text Generation'), ({ listingStatus }) => listingStatus)).map(([status, rows]) => [status, rows.length])), { priced_pending_qualification: 8, priced_quality_rejected: 8, priced_qualification_failed: 2, priced_requires_paid_plan: 3, sellable: 5 });
   const expandedQuality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-production-chat-quality.v1.json'), 'utf8'));
   assert.equal(expandedQuality.externalCalls, 190);
@@ -479,6 +479,16 @@ test('edge free-allocation catalog prices every authenticated asset and blocks p
   assert.equal(aura.exactIdentityBasis, 'immutable_exact_model_endpoint_response_unlabeled');
   assert.deepEqual(aura.summary, { passed: 5, total: 5, aggregateMatchBasisPoints: 9333, speechLatencyMsP95: 2415, transcriptionLatencyMsP95: 525, qualityGrade: 'good' });
   assert.ok(aura.results.every(({ status, transcriptionStatus, passed }) => status === 200 && transcriptionStatus === 200 && passed));
+  const fluxSafety = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-flux-safety-probe.v1.json'), 'utf8'));
+  const fluxInitial = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-flux-quality-initial.v1.json'), 'utf8'));
+  const fluxSchemaRun = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-flux-quality-schema-run.v1.json'), 'utf8'));
+  const fluxFinal = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/cloudflare-flux-quality-final.v1.json'), 'utf8'));
+  assert.deepEqual([fluxSafety.externalCallsMinimum, fluxSafety.externalCallsMaximum, fluxSafety.observations[0].confirmedFailedAttempts], [5, 7, 5]);
+  assert.deepEqual([fluxInitial.externalCalls, fluxInitial.summary.passed, fluxInitial.summary.qualityGrade], [9, 0, 'rejected']);
+  assert.deepEqual([fluxSchemaRun.externalCalls, fluxSchemaRun.summary.passed, fluxSchemaRun.summary.qualityGrade], [9, 0, 'rejected']);
+  assert.deepEqual([fluxFinal.externalCalls, fluxFinal.summary.passed, fluxFinal.summary.safetyRejected, fluxFinal.summary.qualityGrade], [9, 1, 1, 'rejected']);
+  assert.equal(fluxFinal.summary.outputDimensions[0], '1024x1024');
+  assert.equal(pricing.assets.find(({ modelId }) => modelId === '@cf/black-forest-labs/flux-1-schnell').listingStatus, 'priced_quality_rejected');
 });
 
 test('transcription supply is ranked across three independent families while the missing product contract fails closed', async () => {
