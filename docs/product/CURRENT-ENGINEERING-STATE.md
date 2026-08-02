@@ -147,14 +147,22 @@ history.
 Stage 14 production hardening has started with the exact API container. Its
 Node.js base is digest-pinned, the clean build includes every workspace
 manifest and adapter source it compiles, and the runtime contains only compiled
-application output plus the bounded server entrypoint. Local qualification ran
+application output, bounded server entrypoint, and the exact production
+database client dependencies. Local qualification ran
 the exact image as UID/GID 1000, read-only root, no-new-privileges, all Linux
 capabilities dropped, bounded CPU/memory/PIDs, tmpfs-only temporary storage, and
 no network. Health passed, root writes and external network access were denied,
 SIGTERM exited cleanly with code 0, no OOM occurred, and paid execution remained
-false. This is not production readiness: registry digest, signed provenance,
-scans, durable state, restore/rollback, load, monitoring delivery, retention,
-and an owner-approved cloud release remain pending.
+false. Free-search idempotency and quota now have an environment-isolated
+PostgreSQL implementation with atomic claim, replay, conflict, lease recovery,
+completion, quota consumption, and hashed quota subjects. Completed requests
+replay across a fresh server instance, readiness checks the required tables,
+and an exact production process refuses memory-only state. The new image is
+qualified locally at source commit `42e0aa1e48e2`. This is not production
+readiness: the PostgreSQL migration still needs a live restore-backed
+qualification, and registry digest, signed provenance, scans, rollback, load,
+monitoring delivery, retention, and an owner-approved cloud release remain
+pending.
 
 ## Live qualification result
 
