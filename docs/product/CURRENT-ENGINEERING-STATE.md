@@ -67,6 +67,15 @@ the manifest explicitly makes no public-distribution claim. The consolidated
 Stage 12 suite passes 5/5 plus complete contract validation. Stage 13 shared
 access, design, onboarding, and distribution is next.
 
+Stage 13 distribution discovery has started. The existing `clervo` npm account,
+`clervo`, `@clervo/sdk`, `@clervo/mcp`, and `@clervo/beacon` package identities,
+the `clervo-sdk` PyPI project, and the `clervo` GitHub organization are retained.
+Published legacy packages are read-only compatibility evidence and contain
+stale claims that must not be copied. The redacted resumable inventory is
+`docs/product/DISTRIBUTION-ASSET-INVENTORY.md`. The owner's incoming website
+handoff will supersede design-only site direction while preserving unrelated
+contracts, security, working code, and truthful product facts.
+
 The production runner `sandbox.nodejs-24` is qualified at digest
 `sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e`.
 Google Cloud Build provenance is signed at SLSA build level 3, Google Artifact
@@ -92,10 +101,10 @@ confirmed absent; Artifact Registry was preserved. Evidence is in
 
 ## Next actions
 
-1. Before Stage 13 implementation, ingest the owner's website handoff and
-   inventory the existing npm, MCP, package-registry, publishing, and related
-   account assets. Reuse qualified assets and guide any required secure login;
-   do not create duplicate accounts or request secret values in chat.
+1. Ingest the owner's website handoff as the sole design authority, then build
+   the shared HTTP/OpenAPI, SDK, MCP, onboarding, and site surfaces using the
+   retained distribution identities. Guide required secure logins only when
+   local preparation reaches the relevant external verification or publish step.
 2. Keep Crypto Intelligence customer routing disabled until written commercial
    permission or replacement terms-compatible EVM, Solana, and protocol supply
    exists; this isolated owner blocker does not pause combined local work.
