@@ -87,6 +87,10 @@ disabled without explicit owner approval.
   priced. Eight chat preflights all hit the exhausted monthly trial limit before
   inference. Trial use is evaluation-only; a production key is suitable for a
   public application but needs later billing approval and qualification.
+- Mistral's 52 assets are priced and its Free-mode evaluation path is healthy:
+  seven exact chat identities, Medium 2604 at 8/10, valid text/code embeddings,
+  working OCR, and a TTS-to-STT loop recovering 9/9 words. Commercial Customer
+  Offerings are permitted, but production needs owner-approved Scale billing.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three

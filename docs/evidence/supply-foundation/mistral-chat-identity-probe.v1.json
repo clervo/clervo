@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "clervo.owned-chat-identity-probe.v1",
+  "checkedAt": "2026-08-02T05:25:32.192Z",
+  "serviceId": "supply.mistral",
+  "externalCalls": 7,
+  "ownerCashSpentUsd": 0,
+  "secretValuesRecorded": false,
+  "promptOrOutputPayloadsRecorded": false,
+  "results": [
+    {
+      "requestedModel": "codestral-2508",
+      "observedModel": "codestral-2508",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "failureCode": null,
+      "retryAfter": null,
+      "latencyMs": 371.14
+    },
+    {
+      "requestedModel": "devstral-2512",
+      "observedModel": "devstral-2512",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "failureCode": null,
+      "retryAfter": null,
+      "latencyMs": 7377.09
+    },
+    {
+      "requestedModel": "magistral-small-latest",
+      "observedModel": "magistral-small-latest",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "failureCode": null,
+      "retryAfter": null,
+      "latencyMs": 487.69
+    },
+    {
+      "requestedModel": "ministral-14b-2512",
+      "observedModel": "ministral-14b-2512",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "failureCode": null,
+      "retryAfter": null,
+      "latencyMs": 314.2
+    },
+    {
+      "requestedModel": "mistral-large-2512",
+      "observedModel": "mistral-large-2512",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "failureCode": null,
+      "retryAfter": null,
+      "latencyMs": 429.46
+    },
+    {
+      "requestedModel": "mistral-medium-2604",
+      "observedModel": "mistral-medium-2604",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "failureCode": null,
+      "retryAfter": null,
+      "latencyMs": 276.89
+    },
+    {
+      "requestedModel": "mistral-small-2603",
+      "observedModel": "mistral-small-2603",
+      "identityMatches": true,
+      "status": 200,
+      "usageReported": true,
+      "failureCode": null,
+      "retryAfter": null,
+      "latencyMs": 326.45
+    }
+  ]
+}

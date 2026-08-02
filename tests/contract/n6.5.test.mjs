@@ -262,6 +262,36 @@ test('Cohere multimodal supply stays priced but unavailable after its evaluation
   assert.equal(terms.decision.currentlyExecutableRoutes, 0);
 });
 
+test('Mistral free mode proves exact chat and unique modalities while production remains billing-gated', async () => {
+  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
+  const mistral = pricing.assets.filter(({ serviceId }) => serviceId === 'supply.mistral');
+  assert.equal(mistral.length, 52);
+  assert.ok(mistral.every(({ listingStatus, termsStatus, customerPrices }) => listingStatus === 'priced_evaluation_only' && termsStatus === 'restricted' && customerPrices.every(({ price }) => price > 0)));
+  assert.deepEqual(mistral.filter(({ qualityGrade }) => qualityGrade !== 'unranked').map(({ modelId, qualityGrade }) => [modelId, qualityGrade]), [
+    ['codestral-2508', 'poor'],
+    ['devstral-2512', 'rejected'],
+    ['magistral-small-latest', 'poor'],
+    ['ministral-14b-2512', 'poor'],
+    ['mistral-large-2512', 'good'],
+    ['mistral-medium-2604', 'good'],
+    ['mistral-small-2603', 'poor'],
+  ]);
+  const identities = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/mistral-chat-identity-probe.v1.json'), 'utf8'));
+  const quality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/mistral-chat-quality-run.v1.json'), 'utf8'));
+  const modal = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/mistral-modal-qualification.v1.json'), 'utf8'));
+  const terms = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/mistral-api-terms.v1.json'), 'utf8'));
+  assert.equal(identities.externalCalls, 7);
+  assert.ok(identities.results.every(({ status, identityMatches, usageReported }) => status === 200 && identityMatches && usageReported));
+  assert.equal(quality.externalCalls, 70);
+  assert.equal(modal.externalCalls, 6);
+  assert.deepEqual(modal.embeddings.map(({ status, finite, dimension }) => [status, finite, dimension]), [[200, true, 1024], [200, true, 1536]]);
+  assert.equal(modal.speech.tts.waveValid, true);
+  assert.equal(modal.speech.transcription.transcriptTokenMatches, 9);
+  assert.equal(modal.ocr.status, 200);
+  assert.equal(terms.findings.commercialCustomerOfferingsAllowed, true);
+  assert.equal(terms.findings.freeModeProductionAllowed, false);
+});
+
 test('SambaNova exact models retain competitive prices and quality evidence but stay blocked by hosted resale terms', async () => {
   const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
   const samba = pricing.assets.filter(({ serviceId }) => serviceId === 'supply.sambanova');

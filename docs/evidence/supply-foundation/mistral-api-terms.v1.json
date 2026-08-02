@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "clervo.mistral-api-terms.v1",
+  "checkedAt": "2026-08-02T05:29:10.249Z",
+  "hostedService": "Mistral AI Studio API",
+  "termsStatus": "free_mode_evaluation_production_scale_required",
+  "findings": {
+    "commercialCustomerOfferingsAllowed": true,
+    "endUserSublicenseAllowed": true,
+    "freeModeProductionAllowed": false,
+    "scalePlanMetered": true,
+    "betaProductsProductionAllowed": false,
+    "endUserEquivalentRestrictionsRequired": true,
+    "customerOfferingControlsRequired": true
+  },
+  "decision": {
+    "pricedListingsRetained": 52,
+    "evaluationCapabilitiesWorking": ["chat", "code", "embedding", "ocr", "tts", "transcription"],
+    "currentlySellableRoutes": 0,
+    "sellableAfterScaleAndQualification": true,
+    "ownerCashSpentUsd": 0,
+    "replacementPlan": "Activate selected exact models only after owner-approved Scale billing, hard spend caps, and consolidated production qualification."
+  },
+  "sources": [
+    "https://help.mistral.ai/en/articles/698531-why-am-i-hitting-api-rate-limits-and-how-do-i-increase-them",
+    "https://legal.mistral.ai/terms/commercial-terms-of-service",
+    "https://legal.mistral.ai/terms/additional-terms",
+    "https://docs.mistral.ai/admin/billing-usage/billing"
+  ]
+}

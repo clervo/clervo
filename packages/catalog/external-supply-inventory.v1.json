@@ -637,14 +637,17 @@
       "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 1,
       "credentialDeployment": "legacy_import_read_only",
-      "fundingClass": "unknown",
+      "fundingClass": "recurring_free",
       "connectionStatus": "observed_working",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "qualificationStatus": "in_progress",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Authenticated model discovery returned 52 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+        "Authenticated discovery returned 52 priced chat, code, embedding, OCR, moderation, TTS, and STT assets.",
+        "Seven representative chat identities were exact; Mistral Medium 2604 scored 8/10 while Devstral scored 0/10 on the fixed JSON-answer corpus.",
+        "Text and code embeddings returned valid 1024/1536-dimensional vectors; a bounded TTS-to-STT loop recovered all 9 expected words; OCR returned one text-bearing page.",
+        "Free mode is evaluation/prototyping only. Commercial terms permit Customer Offerings for end users, but production customer traffic requires owner-approved Scale billing and hard spend controls."
       ],
       "knownModelNames": [
         "codestral-2508",

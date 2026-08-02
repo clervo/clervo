@@ -9,7 +9,7 @@ const sources = {
   hcnsec_gateway: { serviceId: 'supply.hcnsec_gateway', baseUrl: 'https://api.hcnsec.cn/v1/', secrets: ['AI_GATEWAY_KEY'], fundingBasis: 'owner_reported_balance' },
   cerebras: { serviceId: 'supply.cerebras', baseUrl: 'https://api.cerebras.ai/v1/', secrets: ['CEREBRAS_API_KEY'], fundingBasis: 'recurring_free_or_promotional' },
   cohere: { serviceId: 'supply.cohere', baseUrl: 'https://api.cohere.ai/compatibility/v1/', secrets: ['COHERE_API_KEY'], fundingBasis: 'trial_evaluation_only' },
-  mistral: { serviceId: 'supply.mistral', baseUrl: 'https://api.mistral.ai/v1/', secrets: ['MISTRAL_API_KEY'], fundingBasis: 'unknown' },
+  mistral: { serviceId: 'supply.mistral', baseUrl: 'https://api.mistral.ai/v1/', secrets: ['MISTRAL_API_KEY'], fundingBasis: 'free_mode_evaluation_only' },
   nvidia: { serviceId: 'supply.nvidia', baseUrl: 'https://integrate.api.nvidia.com/v1/', secrets: ['NVIDIA_API_KEY'], fundingBasis: 'recurring_free_or_promotional' },
   openrouter: { serviceId: 'supply.openrouter', baseUrl: 'https://openrouter.ai/api/v1/', secrets: ['OPENROUTER_API_KEY'], fundingBasis: 'unknown' },
   sambanova: { serviceId: 'supply.sambanova', baseUrl: 'https://api.sambanova.ai/v1/', secrets: ['SAMBANOVA_API_KEY'], fundingBasis: 'recurring_free_or_promotional' },

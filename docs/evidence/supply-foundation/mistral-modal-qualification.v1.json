@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "clervo.mistral-modal-qualification.v1",
+  "evaluatedAt": "2026-08-02T05:29:32.550Z",
+  "serviceId": "supply.mistral",
+  "fundingBasis": "free_mode_evaluation_only",
+  "externalCalls": 6,
+  "ownerCashSpentUsd": 0,
+  "secretValuesRecorded": false,
+  "promptOrOutputPayloadsRecorded": false,
+  "embeddings": [
+    {
+      "model": "mistral-embed",
+      "status": 200,
+      "modelMatches": true,
+      "vectorCount": 2,
+      "dimension": 1024,
+      "finite": true,
+      "usageReported": true,
+      "latencyMs": 315.69
+    },
+    {
+      "model": "codestral-embed",
+      "status": 200,
+      "modelMatches": true,
+      "vectorCount": 2,
+      "dimension": 1536,
+      "finite": true,
+      "usageReported": true,
+      "latencyMs": 373.42
+    }
+  ],
+  "speech": {
+    "tts": {
+      "model": "voxtral-mini-tts-2603",
+      "status": 200,
+      "presetVoiceAvailable": true,
+      "audioBytes": 115244,
+      "waveValid": true,
+      "latencyMs": 4361.59
+    },
+    "transcription": {
+      "model": "voxtral-mini-2602",
+      "status": 200,
+      "modelMatches": true,
+      "transcriptTokenMatches": 9,
+      "usageReported": true,
+      "latencyMs": 1320.42
+    }
+  },
+  "ocr": {
+    "model": "mistral-ocr-4",
+    "status": 200,
+    "modelMatches": true,
+    "pages": 1,
+    "textCharacters": 353,
+    "clervoTextObserved": false,
+    "latencyMs": 877.88
+  }
+}

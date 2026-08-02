@@ -645,8 +645,8 @@
       "serviceId": "supply.mistral",
       "modelId": "codestral-2508",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_evaluation_only",
+      "qualityGrade": "poor",
       "supplierCostKnown": false,
       "customerPrices": [
         {
@@ -659,13 +659,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "codestral-embed",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -675,13 +675,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "codestral-embed-2505",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -691,13 +691,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "codestral-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -711,14 +711,14 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "devstral-2512",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_evaluation_only",
+      "qualityGrade": "rejected",
       "supplierCostKnown": false,
       "customerPrices": [
         {
@@ -731,13 +731,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "devstral-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -751,13 +751,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "devstral-medium-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -771,13 +771,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "labs-leanstral-1-5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -791,13 +791,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "labs-leanstral-1-5-1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -811,14 +811,14 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "magistral-small-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_evaluation_only",
+      "qualityGrade": "poor",
       "supplierCostKnown": false,
       "customerPrices": [
         {
@@ -831,14 +831,14 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "ministral-14b-2512",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_evaluation_only",
+      "qualityGrade": "poor",
       "supplierCostKnown": false,
       "customerPrices": [
         {
@@ -851,13 +851,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "ministral-14b-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -871,13 +871,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "ministral-3b-2512",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -891,13 +891,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "ministral-3b-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -911,13 +911,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "ministral-8b-2512",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -931,13 +931,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "ministral-8b-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -951,13 +951,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-code-agent-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -971,13 +971,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-code-fim-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -991,13 +991,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-code-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1011,13 +1011,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-embed",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1027,13 +1027,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-embed-2312",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1043,14 +1043,14 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-large-2512",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_evaluation_only",
+      "qualityGrade": "good",
       "supplierCostKnown": false,
       "customerPrices": [
         {
@@ -1063,13 +1063,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-large-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1083,13 +1083,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-medium",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1103,13 +1103,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-medium-2505",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1123,13 +1123,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-medium-2508",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1143,14 +1143,14 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-medium-2604",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_evaluation_only",
+      "qualityGrade": "good",
       "supplierCostKnown": false,
       "customerPrices": [
         {
@@ -1163,13 +1163,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-medium-3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1183,13 +1183,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-medium-3-5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1203,13 +1203,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-medium-3.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1223,13 +1223,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-medium-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1243,13 +1243,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-moderation-2603",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1263,13 +1263,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-ocr-2512",
       "product": "ai.ocr",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1279,13 +1279,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-ocr-3",
       "product": "ai.ocr",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1295,13 +1295,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-ocr-3-0",
       "product": "ai.ocr",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1311,13 +1311,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-ocr-4",
       "product": "ai.ocr",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1327,13 +1327,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-ocr-4-0",
       "product": "ai.ocr",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1343,13 +1343,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-ocr-latest",
       "product": "ai.ocr",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1359,14 +1359,14 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-small-2603",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
+      "listingStatus": "priced_evaluation_only",
+      "qualityGrade": "poor",
       "supplierCostKnown": false,
       "customerPrices": [
         {
@@ -1379,13 +1379,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-small-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1399,13 +1399,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-vibe-cli-fast",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1419,13 +1419,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-vibe-cli-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1439,13 +1439,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "mistral-vibe-cli-with-tools",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1459,93 +1459,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "voxtral-mini-2602",
-      "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
-        {
-          "unit": "per M input tokens",
-          "price": 0.05
-        },
-        {
-          "unit": "per M output tokens",
-          "price": 0.2
-        }
-      ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
-    },
-    {
-      "serviceId": "supply.mistral",
-      "modelId": "voxtral-mini-latest",
-      "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
-        {
-          "unit": "per M input tokens",
-          "price": 0.05
-        },
-        {
-          "unit": "per M output tokens",
-          "price": 0.2
-        }
-      ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
-    },
-    {
-      "serviceId": "supply.mistral",
-      "modelId": "voxtral-mini-realtime-2602",
-      "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
-        {
-          "unit": "per M input tokens",
-          "price": 0.05
-        },
-        {
-          "unit": "per M output tokens",
-          "price": 0.2
-        }
-      ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
-    },
-    {
-      "serviceId": "supply.mistral",
-      "modelId": "voxtral-mini-realtime-latest",
-      "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
-      "qualityGrade": "unranked",
-      "supplierCostKnown": false,
-      "customerPrices": [
-        {
-          "unit": "per M input tokens",
-          "price": 0.05
-        },
-        {
-          "unit": "per M output tokens",
-          "price": 0.2
-        }
-      ],
-      "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
-    },
-    {
-      "serviceId": "supply.mistral",
-      "modelId": "voxtral-mini-transcribe-realtime-2602",
       "product": "ai.transcribe",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1555,13 +1475,77 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
+    },
+    {
+      "serviceId": "supply.mistral",
+      "modelId": "voxtral-mini-latest",
+      "product": "ai.transcribe",
+      "listingStatus": "priced_evaluation_only",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per audio minute",
+          "price": 0.002
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "termsStatus": "restricted"
+    },
+    {
+      "serviceId": "supply.mistral",
+      "modelId": "voxtral-mini-realtime-2602",
+      "product": "ai.transcribe",
+      "listingStatus": "priced_evaluation_only",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per audio minute",
+          "price": 0.002
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "termsStatus": "restricted"
+    },
+    {
+      "serviceId": "supply.mistral",
+      "modelId": "voxtral-mini-realtime-latest",
+      "product": "ai.transcribe",
+      "listingStatus": "priced_evaluation_only",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per audio minute",
+          "price": 0.002
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "termsStatus": "restricted"
+    },
+    {
+      "serviceId": "supply.mistral",
+      "modelId": "voxtral-mini-transcribe-realtime-2602",
+      "product": "ai.transcribe",
+      "listingStatus": "priced_evaluation_only",
+      "qualityGrade": "unranked",
+      "supplierCostKnown": false,
+      "customerPrices": [
+        {
+          "unit": "per audio minute",
+          "price": 0.002
+        }
+      ],
+      "pricingMethod": "category_introductory_price",
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "voxtral-mini-tts-2603",
       "product": "ai.speech",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1571,13 +1555,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "voxtral-mini-tts-latest",
       "product": "ai.speech",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1587,13 +1571,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "voxtral-small-2507",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1607,13 +1591,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.mistral",
       "modelId": "voxtral-small-latest",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_evaluation_only",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -1627,7 +1611,7 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "restricted"
     },
     {
       "serviceId": "supply.nvidia",

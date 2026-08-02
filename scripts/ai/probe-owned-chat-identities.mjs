@@ -4,6 +4,7 @@ const sources = {
   hcnsec_gateway: { serviceId: 'supply.hcnsec_gateway', baseUrl: 'https://api.hcnsec.cn/v1/', secrets: ['AI_GATEWAY_KEY'] },
   cerebras: { serviceId: 'supply.cerebras', baseUrl: 'https://api.cerebras.ai/v1/', secrets: ['CEREBRAS_API_KEY'] },
   cohere: { serviceId: 'supply.cohere', baseUrl: 'https://api.cohere.ai/compatibility/v1/', secrets: ['COHERE_API_KEY'] },
+  mistral: { serviceId: 'supply.mistral', baseUrl: 'https://api.mistral.ai/v1/', secrets: ['MISTRAL_API_KEY'] },
   nvidia: { serviceId: 'supply.nvidia', baseUrl: 'https://integrate.api.nvidia.com/v1/', secrets: ['NVIDIA_API_KEY'] },
   sambanova: { serviceId: 'supply.sambanova', baseUrl: 'https://api.sambanova.ai/v1/', secrets: ['SAMBANOVA_API_KEY'] },
   siliconflow: { serviceId: 'supply.siliconflow', baseUrl: 'https://api.siliconflow.com/v1/', secrets: ['SILICONFLOW_API_KEY'] },

@@ -8,9 +8,14 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const discovery = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/owned-ai-source-discovery.v1.json'), 'utf8'));
 const nvidiaQuality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/nvidia-chat-quality-run.v1.json'), 'utf8'));
 const sambanovaQuality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/sambanova-chat-quality-run.v1.json'), 'utf8'));
+const mistralQuality = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/mistral-chat-quality-run.v1.json'), 'utf8'));
 const sources = discovery.sources.filter(({ status, serviceId }) => status === 'working' && serviceId !== 'supply.hcnsec_gateway');
 const nvidiaScores = new Map(nvidiaQuality.models.map((entry) => [entry.model, entry.results.filter(({ answerMatches }) => answerMatches).length]));
 const sambanovaScores = new Map(sambanovaQuality.models.map((entry) => [entry.model, entry.results.filter(({ answerMatches }) => answerMatches).length]));
+const mistralScores = new Map(mistralQuality.models.map((entry) => {
+  const successful = entry.results.filter(({ status }) => status === 200);
+  return [entry.model, successful.length === 0 ? 0 : Math.round((successful.filter(({ answerMatches }) => answerMatches).length / successful.length) * 10)];
+}));
 
 const sambanovaSupplierPrices = new Map([
   ['DeepSeek-V3.1', [{ unit: 'per M input tokens', price: 3 }, { unit: 'per M output tokens', price: 4.5 }]],
@@ -53,10 +58,11 @@ const zaiCustomerPrices = new Map([
 ]);
 
 function grade(score) {
+  if (score === undefined) return 'unranked';
   if (score === 10) return 'best';
   if (score >= 7) return 'good';
   if (score >= 1) return 'poor';
-  return 'unranked';
+  return 'rejected';
 }
 
 function product(modelId) {
@@ -66,7 +72,7 @@ function product(modelId) {
   if (/(?:image|diffusion|flux|sdxl|stable-diffusion|z-image)/u.test(value)) return 'ai.image';
   if (/(?:video|wan2|cosmos)/u.test(value)) return 'ai.video';
   if (/(?:tts|speech|cosyvoice|orpheus)/u.test(value)) return 'ai.speech';
-  if (/(?:transcri|\basr\b|whisper)/u.test(value)) return 'ai.transcribe';
+  if (/(?:transcri|\basr\b|whisper|voxtral-mini-(?!tts))/u.test(value)) return 'ai.transcribe';
   if (/(?:ocr|parse|deplot)/u.test(value)) return 'ai.ocr';
   return 'ai.chat';
 }
@@ -93,13 +99,13 @@ const assets = sources.flatMap((source) => source.modelIds.map((modelId) => {
     serviceId: source.serviceId,
     modelId,
     product: productId,
-    listingStatus: source.serviceId === 'supply.cohere' ? 'priced_unavailable_trial_limit' : source.serviceId === 'supply.cerebras' || isZai || (isSambanova && modelId === 'MiniMax-M2.7') ? 'priced_unavailable_no_balance' : ['supply.nvidia', 'supply.sambanova', 'supply.siliconflow'].includes(source.serviceId) ? 'priced_terms_blocked' : 'priced_pending_qualification',
-    qualityGrade: source.serviceId === 'supply.nvidia' ? grade(nvidiaScores.get(modelId)) : isSambanova ? grade(sambanovaScores.get(modelId)) : 'unranked',
+    listingStatus: source.serviceId === 'supply.mistral' ? 'priced_evaluation_only' : source.serviceId === 'supply.cohere' ? 'priced_unavailable_trial_limit' : source.serviceId === 'supply.cerebras' || isZai || (isSambanova && modelId === 'MiniMax-M2.7') ? 'priced_unavailable_no_balance' : ['supply.nvidia', 'supply.sambanova', 'supply.siliconflow'].includes(source.serviceId) ? 'priced_terms_blocked' : 'priced_pending_qualification',
+    qualityGrade: source.serviceId === 'supply.nvidia' ? grade(nvidiaScores.get(modelId)) : isSambanova ? grade(sambanovaScores.get(modelId)) : source.serviceId === 'supply.mistral' ? grade(mistralScores.get(modelId)) : 'unranked',
     supplierCostKnown: supplierPrices !== undefined,
     ...(supplierPrices === undefined ? {} : { supplierPrices }),
     customerPrices: isSambanova ? sambanovaCustomerPrices.get(modelId) : isZai ? zaiCustomerPrices.get(modelId) : prices(productId, modelId),
     pricingMethod: isSambanova || isZai ? 'official_cost_competitive_markup' : 'category_introductory_price',
-    termsStatus: ['supply.nvidia', 'supply.sambanova', 'supply.siliconflow'].includes(source.serviceId) ? 'blocked' : isZai || source.serviceId === 'supply.cohere' ? 'restricted' : 'unreviewed',
+    termsStatus: ['supply.nvidia', 'supply.sambanova', 'supply.siliconflow'].includes(source.serviceId) ? 'blocked' : isZai || ['supply.cohere', 'supply.mistral'].includes(source.serviceId) ? 'restricted' : 'unreviewed',
   };
 })).sort((left, right) => `${left.serviceId}/${left.modelId}`.localeCompare(`${right.serviceId}/${right.modelId}`, 'en-US'));
 
