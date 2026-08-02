@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "clervo.public-rpc-terms-review.v1",
+  "reviewedAt": "2026-08-02T06:00:00.000Z",
+  "serviceId": "supply.public_rpc_mesh",
+  "scope": "commercial production suitability of technically healthy credential-free routes",
+  "summary": {
+    "configuredRoutes": 32,
+    "technicallyHealthyRoutes": 20,
+    "productionRestrictedHealthyRoutes": 20,
+    "sellableRoutes": 0,
+    "unavailableRoutesNotMateriallyTermsReviewed": 12
+  },
+  "decision": {
+    "termsStatusForHealthyRoutes": "restricted",
+    "listingStatusForHealthyRoutes": "priced_terms_blocked",
+    "reason": "A successful unauthenticated read does not establish commercial redistribution rights, production reliability, quota ownership, support, or an SLA. Official public endpoints that were documented explicitly warn against production use, and aggregation endpoints require a dedicated account and contract review before customer routing.",
+    "permittedUse": [
+      "internal development",
+      "health comparison",
+      "bounded read-only qualification"
+    ],
+    "prohibitedUntilReplacementOrApproval": [
+      "customer production traffic",
+      "transaction broadcast",
+      "advertised availability fallback"
+    ]
+  },
+  "observedClasses": [
+    {
+      "class": "network-operated public endpoint",
+      "productionStatus": "restricted",
+      "evidence": [
+        "https://docs.base.org/base-chain/quickstart/connecting-to-base",
+        "https://docs.optimism.io/app-developers/reference/rpc-providers",
+        "https://solana.com/docs/references/clusters"
+      ],
+      "notes": "Current official documentation describes representative public endpoints as rate-limited and unsuitable or unintended for production applications."
+    },
+    {
+      "class": "unauthenticated public aggregation endpoint",
+      "productionStatus": "restricted",
+      "evidence": [
+        "https://drpc.org/docs/pricing/requests",
+        "https://drpc.org/docs/howitworks/ratelimiting"
+      ],
+      "notes": "The no-key path uses a less reliable public-node pool. A dedicated account adds quota controls but is not present and still requires commercial-terms review."
+    },
+    {
+      "class": "other credential-free endpoint",
+      "productionStatus": "restricted",
+      "evidence": [],
+      "notes": "No current account-level quota, production SLA, or customer redistribution permission was proven."
+    }
+  ],
+  "replacementRequirement": {
+    "status": "required",
+    "minimum": "At least one dedicated terms-compatible production RPC account covering required networks with enforceable per-key limits and no automatic paid overage; critical networks also require an independent provider family.",
+    "ownerAction": "Create or provide the selected provider account credential after the sourcing evaluation identifies the technical winner."
+  },
+  "safety": {
+    "externalCallsDuringTermsReview": 0,
+    "transactionCalls": 0,
+    "signedPayloads": 0,
+    "ownerCashSpentUsd": 0
+  }
+}

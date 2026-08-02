@@ -145,8 +145,9 @@ test('public RPC mesh prices every configured route and preserves failures, iden
   const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.public_rpc_mesh');
   const pricing = await json('packages/catalog/rpc-supply-pricing.v1.json');
   const evidence = await json('docs/evidence/supply-foundation/public-rpc-mesh-qualification.v1.json');
+  const terms = await json('docs/evidence/supply-foundation/public-rpc-terms-review.v1.json');
   const mesh = pricing.routes.filter(({ serviceId }) => serviceId === 'supply.public_rpc_mesh');
-  assert.deepEqual([service.connectionStatus, service.qualificationStatus, service.termsStatus], ['observed_working', 'in_progress', 'review_required']);
+  assert.deepEqual([service.connectionStatus, service.qualificationStatus, service.termsStatus, service.resaleStatus], ['observed_working', 'failed', 'restricted', 'restricted']);
   assert.equal(evidence.configuredChains, 14);
   assert.equal(evidence.configuredRoutes, 32);
   assert.equal(evidence.externalCalls, 27);
@@ -155,8 +156,11 @@ test('public RPC mesh prices every configured route and preserves failures, iden
   assert.deepEqual(evidence.summary, { passedRoutes: 20, passedChains: 13, exactIdentityRoutes: 17, endpointOnlyIdentityRoutes: 3, batchCapableRoutes: 15 });
   assert.deepEqual(evidence.safety, { httpsOnly: true, credentialsInUrlsAllowed: false, queryStringsAllowed: false, hostAllowlistRequired: true, publicDnsRequired: true, redirectsAllowed: false });
   assert.equal(mesh.length, 32);
-  assert.ok(mesh.every(({ customerPriceMicrousd, termsStatus, broadcastStatus }) => customerPriceMicrousd > 0 && termsStatus === 'unreviewed' && broadcastStatus === 'read_only_route'));
+  assert.ok(mesh.every(({ customerPriceMicrousd, broadcastStatus }) => customerPriceMicrousd > 0 && broadcastStatus === 'read_only_route'));
   assert.equal(mesh.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'passed').length, 20);
+  assert.ok(mesh.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'passed').every(({ termsStatus, listingStatus }) => termsStatus === 'restricted' && listingStatus === 'priced_terms_blocked'));
+  assert.deepEqual(terms.summary, { configuredRoutes: 32, technicallyHealthyRoutes: 20, productionRestrictedHealthyRoutes: 20, sellableRoutes: 0, unavailableRoutesNotMateriallyTermsReviewed: 12 });
+  assert.deepEqual(terms.safety, { externalCallsDuringTermsReview: 0, transactionCalls: 0, signedPayloads: 0, ownerCashSpentUsd: 0 });
   assert.equal(new Set(mesh.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'passed').map(({ network }) => network)).size, 13);
   assert.equal(mesh.filter(({ fallbackStatus }) => fallbackStatus === 'independent_fallback_ready').length, 20);
   assert.ok(mesh.filter(({ technicalQualificationStatus }) => technicalQualificationStatus === 'failed').every(({ listingStatus, qualityGrade }) => listingStatus === 'blocked' && qualityGrade === 'rejected'));

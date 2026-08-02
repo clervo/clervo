@@ -113,8 +113,10 @@ disabled without explicit owner approval.
 - The public RPC mesh contains 32 configured routes across 14 chains. Strict
   HTTPS, DNS, redirect, and host checks followed by read-only identity/height
   probes found 20 healthy routes covering 13 chains and seven chains with at
-  least two working reads. Fantom has no survivor. All routes are priced while
-  per-provider terms and production reliability remain under review.
+  least two working reads. Fantom has no survivor. All routes are priced, but
+  every healthy no-key route is internal-development only: official public
+  endpoints disclaim production suitability, while the remaining routes lack
+  proven commercial redistribution rights, dedicated quotas, and an SLA.
 - Zerion's owned key passed paced read-only checks for 65-chain discovery,
   tokens, protocols, wallet portfolios, and transaction history without using
   customer data. All four products are priced, but the free key is local-only
