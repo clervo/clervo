@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/external-supply-inventory.schema.json",
+  "title": "Clervo internal external-supply inventory",
+  "type": "object",
+  "required": ["schemaVersion", "inventoryVersion", "observedAt", "source", "commercialPolicy", "creditPools", "services", "retiredServices", "ownerInputs"],
+  "$defs": {
+    "credentialName": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$" },
+    "service": {
+      "type": "object",
+      "required": ["serviceId", "providerId", "category", "products", "endpointOrigins", "credentialNames", "configuredCredentialSlots", "alternateCredentialSlots", "credentialDeployment", "fundingClass", "connectionStatus", "qualificationStatus", "termsStatus", "resaleStatus", "publicProviderDisclosure", "notes"],
+      "properties": {
+        "serviceId": { "type": "string", "pattern": "^supply\\.[a-z0-9_]+$" },
+        "providerId": { "type": "string", "pattern": "^provider\\.[a-z0-9_]+$" },
+        "category": { "enum": ["ai_inference", "ai_media", "search", "rpc", "blockchain_data", "payment", "storage"] },
+        "products": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_.-]{1,63}$" } },
+        "endpointOrigins": { "type": "array", "uniqueItems": true, "items": { "type": "string", "format": "uri", "pattern": "^https://" } },
+        "credentialNames": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/credentialName" } },
+        "configuredCredentialSlots": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "alternateCredentialSlots": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "credentialDeployment": { "enum": ["legacy_import_read_only", "current_environment", "gcloud_active_account", "missing", "not_required"] },
+        "fundingClass": { "enum": ["owner_reported_balance", "promotional_credit", "recurring_free", "unknown", "future_paid"] },
+        "connectionStatus": { "enum": ["owner_reported_working", "observed_not_tested", "not_observed", "retired"] },
+        "qualificationStatus": { "enum": ["not_run", "in_progress", "passed", "failed"] },
+        "termsStatus": { "enum": ["unreviewed", "review_required", "approved", "restricted", "blocked"] },
+        "resaleStatus": { "enum": ["unverified", "allowed", "restricted", "prohibited"] },
+        "publicProviderDisclosure": { "const": "hidden_model_name_only" },
+        "knownModelNames": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1, "maxLength": 160 } },
+        "notes": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 500 } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "schemaVersion": { "const": "clervo.external-supply-inventory.v1" },
+    "inventoryVersion": { "type": "string", "pattern": "^2026-08-02\\.[0-9]+$" },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "required": ["kind", "valuesIncluded", "sourceLineCount", "uniqueSourceNames", "emittedAssignments"],
+      "properties": {
+        "kind": { "const": "redacted_legacy_environment_manifest" },
+        "valuesIncluded": { "const": false },
+        "sourceLineCount": { "type": "integer", "minimum": 1 },
+        "uniqueSourceNames": { "type": "integer", "minimum": 1 },
+        "emittedAssignments": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "commercialPolicy": {
+      "type": "object",
+      "required": ["ownerCashBudgetUsd", "creditBackedUsageAllowed", "customerFreeByDefault", "competitiveCustomerPricingRequired", "positiveMarginRequired", "providerNamesPublic", "modelNamesPublic", "silentQualityDowngradeAllowed", "multiAccountUse"],
+      "properties": {
+        "ownerCashBudgetUsd": { "const": 0 },
+        "creditBackedUsageAllowed": { "const": true },
+        "customerFreeByDefault": { "const": false },
+        "competitiveCustomerPricingRequired": { "const": true },
+        "positiveMarginRequired": { "const": true },
+        "providerNamesPublic": { "const": false },
+        "modelNamesPublic": { "const": true },
+        "silentQualityDowngradeAllowed": { "const": false },
+        "multiAccountUse": { "const": "only_when_provider_terms_and_account_structure_allow" }
+      },
+      "additionalProperties": false
+    },
+    "creditPools": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["serviceId", "currency", "reportedAmount", "evidenceStatus", "expirationStatus", "automaticTopUpStatus", "usagePolicy"],
+        "properties": {
+          "serviceId": { "type": "string", "pattern": "^supply\\.[a-z0-9_]+$" },
+          "currency": { "const": "USD" },
+          "reportedAmount": { "type": ["number", "null"], "minimum": 0 },
+          "evidenceStatus": { "const": "owner_reported_unverified" },
+          "expirationStatus": { "enum": ["unknown", "reported_no_expiration"] },
+          "automaticTopUpStatus": { "enum": ["unknown", "disabled", "not_applicable"] },
+          "usagePolicy": { "const": "hard_cap_no_owner_cash_overage" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "services": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/service" } },
+    "retiredServices": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/service" } },
+    "ownerInputs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["inputId", "reason", "secretHandling"],
+        "properties": {
+          "inputId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" },
+          "reason": { "type": "string", "minLength": 1, "maxLength": 500 },
+          "secretHandling": { "enum": ["not_secret", "install_outside_chat_and_git"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
