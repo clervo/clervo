@@ -235,6 +235,18 @@ test('Z.AI keeps all GLM assets competitively priced and terms-compatible while 
   assert.equal(terms.decision.currentlyExecutableRoutes, 0);
 });
 
+test('SiliconFlow discovery is retained and priced without violating its commercial-use and benchmark prohibitions', async () => {
+  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
+  const siliconflow = pricing.assets.filter(({ serviceId }) => serviceId === 'supply.siliconflow');
+  const terms = JSON.parse(await readFile(path.join(root, 'docs/evidence/supply-foundation/siliconflow-api-terms.v1.json'), 'utf8'));
+  assert.equal(siliconflow.length, 73);
+  assert.ok(siliconflow.every(({ listingStatus, termsStatus, customerPrices }) => listingStatus === 'priced_terms_blocked' && termsStatus === 'blocked' && customerPrices.every(({ price }) => price > 0)));
+  assert.equal(terms.findings.commercialUseAllowed, false);
+  assert.equal(terms.findings.serviceBenchmarkingAllowed, false);
+  assert.equal(terms.decision.inferenceCallsMadeAfterTermsReview, 0);
+  assert.equal(terms.decision.sellableHostedRoutes, 0);
+});
+
 test('SambaNova exact models retain competitive prices and quality evidence but stay blocked by hosted resale terms', async () => {
   const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-owned-source-pricing.v1.json'), 'utf8'));
   const samba = pricing.assets.filter(({ serviceId }) => serviceId === 'supply.sambanova');

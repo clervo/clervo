@@ -79,6 +79,10 @@ disabled without explicit owner approval.
   rates and its developer terms permit downstream end-user integration. The
   account currently returns business error 1113 for every inference request,
   meaning no usable balance/resource package; routes remain unavailable.
+- SiliconFlow's 73 discovered multimodal assets remain customer-priced, but its
+  current terms prohibit commercial use, third-party benefit, resale/service
+  bureau use, competitive products, and benchmarking. No inference balance was
+  spent; every route is excluded from customer supply.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three

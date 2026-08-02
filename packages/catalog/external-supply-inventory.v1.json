@@ -1333,12 +1333,14 @@
       "credentialDeployment": "legacy_import_read_only",
       "fundingClass": "owner_reported_balance",
       "connectionStatus": "observed_working",
-      "qualificationStatus": "not_run",
-      "termsStatus": "unreviewed",
-      "resaleStatus": "unverified",
+      "qualificationStatus": "failed",
+      "termsStatus": "blocked",
+      "resaleStatus": "prohibited",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "Authenticated model discovery returned 73 exact assets on 2026-08-02; pricing, terms, and representative live qualification remain independent gates."
+        "Authenticated discovery returned 73 priced assets; no inference benchmark was run after terms review.",
+        "Current terms prohibit commercial use, third-party benefit, resale/service-bureau use, competitive product development, and service benchmarking.",
+        "The owned balance is retained but cannot back Clervo customer traffic under these terms."
       ],
       "knownModelNames": [
         "black-forest-labs/FLUX-1.1-pro",

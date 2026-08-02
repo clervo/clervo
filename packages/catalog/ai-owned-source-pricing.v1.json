@@ -15,7 +15,7 @@
     "pricedListings": 612,
     "workingServices": 8,
     "excludedGatewayListings": 21,
-    "termsBlockedListings": 108,
+    "termsBlockedListings": 181,
     "supplierCostKnownListings": 14,
     "ownerCashSpentUsd": 0,
     "supplierCostKnown": false
@@ -10505,7 +10505,7 @@
       "serviceId": "supply.siliconflow",
       "modelId": "black-forest-labs/FLUX-1.1-pro",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10515,13 +10515,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "black-forest-labs/FLUX-1.1-pro-Ultra",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10531,13 +10531,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "black-forest-labs/FLUX.1-dev",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10547,13 +10547,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "black-forest-labs/FLUX.1-Kontext-dev",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10563,13 +10563,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "black-forest-labs/FLUX.1-Kontext-max",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10579,13 +10579,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "black-forest-labs/FLUX.1-Kontext-pro",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10595,13 +10595,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "black-forest-labs/FLUX.1-schnell",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10611,13 +10611,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "black-forest-labs/FLUX.2-flex",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10627,13 +10627,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "black-forest-labs/FLUX.2-pro",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10643,13 +10643,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "ByteDance-Seed/Seed-OSS-36B-Instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10663,13 +10663,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "deepseek-ai/DeepSeek-R1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10683,13 +10683,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "deepseek-ai/DeepSeek-V3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10703,13 +10703,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "deepseek-ai/DeepSeek-V3.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10723,13 +10723,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "deepseek-ai/DeepSeek-V3.1-Terminus",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10743,13 +10743,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "deepseek-ai/DeepSeek-V3.2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10763,13 +10763,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "deepseek-ai/DeepSeek-V3.2-Exp",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10783,13 +10783,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "deepseek-ai/DeepSeek-V4-Flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10803,13 +10803,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "deepseek-ai/DeepSeek-V4-Flash-0731",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10823,13 +10823,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "deepseek-ai/DeepSeek-V4-Pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10843,13 +10843,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "fishaudio/fish-speech-1.5",
       "product": "ai.speech",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10859,13 +10859,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "FunAudioLLM/CosyVoice2-0.5B",
       "product": "ai.speech",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10875,13 +10875,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "google/gemma-4-12B-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10895,13 +10895,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "google/gemma-4-26B-A4B-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10915,13 +10915,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "google/gemma-4-31B-it",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10935,13 +10935,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "inclusionAI/Ling-flash-2.0",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10955,13 +10955,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "IndexTeam/IndexTTS-2",
       "product": "ai.speech",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10971,13 +10971,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "meituan-longcat/LongCat-2.0",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -10991,13 +10991,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "MiniMaxAI/MiniMax-M2.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11011,13 +11011,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "MiniMaxAI/MiniMax-M3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11031,13 +11031,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "moonshotai/Kimi-K2.5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11051,13 +11051,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "moonshotai/Kimi-K2.6",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11071,13 +11071,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "moonshotai/Kimi-K2.7-Code",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11091,13 +11091,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "moonshotai/Kimi-K3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11111,13 +11111,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "nex-agi/Nex-N2-Pro",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11131,13 +11131,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "openai/gpt-oss-120b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11151,13 +11151,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "openai/gpt-oss-20b",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11171,13 +11171,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen-Image",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11187,13 +11187,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen-Image-Edit",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11203,13 +11203,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen2.5-72B-Instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11223,13 +11223,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen2.5-7B-Instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11243,13 +11243,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-14B",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11263,13 +11263,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-30B-A3B-Instruct-2507",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11283,13 +11283,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-32B",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11303,13 +11303,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-8B",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11323,13 +11323,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11343,13 +11343,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-Embedding-0.6B",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11359,13 +11359,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-Embedding-4B",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11375,13 +11375,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-Embedding-8B",
       "product": "ai.embed",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11391,13 +11391,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-Reranker-0.6B",
       "product": "ai.rerank",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11407,13 +11407,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-Reranker-8B",
       "product": "ai.rerank",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11423,13 +11423,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-VL-30B-A3B-Instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11443,13 +11443,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-VL-30B-A3B-Thinking",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11463,13 +11463,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-VL-32B-Instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11483,13 +11483,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-VL-32B-Thinking",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11503,13 +11503,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3-VL-8B-Instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11523,13 +11523,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3.5-122B-A10B",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11543,13 +11543,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3.5-27B",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11563,13 +11563,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3.5-35B-A3B",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11583,13 +11583,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3.5-397B-A17B",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11603,13 +11603,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3.5-9B",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11623,13 +11623,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3.6-27B",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11643,13 +11643,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Qwen/Qwen3.6-35B-A3B",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11663,13 +11663,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "stepfun-ai/Step-3.5-Flash",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11683,13 +11683,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "tencent/Hunyuan-A13B-Instruct",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11703,13 +11703,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "tencent/Hy3",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11723,13 +11723,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Tongyi-MAI/Z-Image-Turbo",
       "product": "ai.image",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11739,13 +11739,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Wan-AI/Wan2.2-I2V-A14B",
       "product": "ai.video",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11755,13 +11755,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "Wan-AI/Wan2.2-T2V-A14B",
       "product": "ai.video",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11771,13 +11771,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "zai-org/GLM-4.5-Air",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11791,13 +11791,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "zai-org/GLM-5",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11811,13 +11811,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "zai-org/GLM-5.1",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11831,13 +11831,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "zai-org/GLM-5.2",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11851,13 +11851,13 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.siliconflow",
       "modelId": "zai-org/GLM-5V-Turbo",
       "product": "ai.chat",
-      "listingStatus": "priced_pending_qualification",
+      "listingStatus": "priced_terms_blocked",
       "qualityGrade": "unranked",
       "supplierCostKnown": false,
       "customerPrices": [
@@ -11871,7 +11871,7 @@
         }
       ],
       "pricingMethod": "category_introductory_price",
-      "termsStatus": "unreviewed"
+      "termsStatus": "blocked"
     },
     {
       "serviceId": "supply.zai",

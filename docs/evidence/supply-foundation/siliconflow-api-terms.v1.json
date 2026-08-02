@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "clervo.siliconflow-api-terms.v1",
+  "checkedAt": "2026-08-02T05:16:19.000Z",
+  "hostedService": "SiliconFlow Platform and API Services",
+  "termsStatus": "blocked_for_commercial_customer_supply",
+  "findings": {
+    "commercialUseAllowed": false,
+    "thirdPartyBenefitAllowed": false,
+    "resaleOrServiceBureauAllowed": false,
+    "competitiveProductDevelopmentAllowed": false,
+    "serviceBenchmarkingAllowed": false,
+    "generatedOutputUseSubjectToModelLicenses": true
+  },
+  "decision": {
+    "pricedListingsRetained": 73,
+    "inferenceCallsMadeAfterTermsReview": 0,
+    "sellableHostedRoutes": 0,
+    "ownerCashSpentUsd": 0,
+    "replacementPlan": "Use terms-compatible official hosts or self-host commercially permitted model weights when sustainable."
+  },
+  "sources": [
+    "https://docs.siliconflow.com/en/legals/terms-of-service",
+    "https://docs.siliconflow.com/en/userguide/rate-limits/rate-limit-and-upgradation"
+  ]
+}
