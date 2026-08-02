@@ -10,9 +10,9 @@ stop boundaries.
 Local engineering and sourcing evaluation are complete. The consolidated local
 check passes, and the installed development environments report four qualified
 chat supply families, 21 ready exact routes, and coverage of all four roadmap AI
-products. Three genuine owner inputs remain before the supply foundation can be
-closed: commercial RPC permission or replacement, the selected no-card
-multichain-data key, and a least-privilege isolated object-storage key.
+products. Two genuine owner inputs remain before the supply foundation can be
+closed: commercial RPC permission or replacement and a least-privilege isolated
+object-storage key.
 
 The master plan remains product-scope authority. Its asset-inventory workflow
 requires a redacted row for every credential, account, token, provider, and
@@ -143,9 +143,10 @@ disabled without explicit owner approval.
 - The final zero-cash data search selected Blockscout Pro for normalized EVM
   wallet, token, and transaction products: current official material advertises
   100,000 credits/day, 5 RPS, all supported chains, no card, and intended use by
-  dapps, wallets, agents, and analytics. Three routes are positively priced and
-  their provider-neutral adapter is locally complete; a dedicated owner-created
-  key still blocks live qualification. Raw API and RPC resale are not selected.
+  dapps, wallets, agents, and analytics. The dedicated key passed all six
+  normalized read-only checks across Ethereum and Base, and all three positively
+  priced routes are sellable-preview behind the bounded provider-neutral adapter.
+  Raw API, RPC, and credential resale are not selected.
 - Cloudflare R2 has current positive customer prices for storage, reads, writes,
   and egress against its published recurring free tier and Standard rates. The
   legacy endpoint failed TLS; the derived account-scoped endpoint reached the
@@ -200,7 +201,7 @@ disabled without explicit owner approval.
 - Current qualified internal catalog: 21 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.
 - The final provider-neutral matrix references 13 canonical price catalogs and
-  covers all 797 price rows: every row has a positive customer price and 23
+  covers all 797 price rows: every row has a positive customer price and 26
   rows are currently sellable. It records exact assets, route state, lifecycle,
   price/shadow-cost source, quality, terms, quota runway, health evidence,
   secret-name location, fallbacks, and replacement plan without secret values.
@@ -256,8 +257,8 @@ Canonical machine-readable state lives in:
    more only when it closes a material capability, quality, regional,
    availability, rate-limit, or runway gap. Record why each source is added or
    rejected.
-7. **Owner inputs pending; consolidated local test completed.** Obtain and
-   qualify the three selected owner-blocked inputs, rerun only their affected
+7. **Two owner inputs pending; consolidated local test completed.** Obtain and
+   qualify the remaining selected owner-blocked inputs, rerun only their affected
    checks, commit the final routing state, and resume the master roadmap.
 
 ## Completion criteria

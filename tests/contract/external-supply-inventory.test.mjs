@@ -27,7 +27,7 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(inventory.commercialPolicy.providerNamesPublic, false);
   assert.equal(inventory.commercialPolicy.silentQualityDowngradeAllowed, false);
   assert.equal(new Set(inventory.services.map(({ serviceId }) => serviceId)).size, inventory.services.length);
-  assert.deepEqual(inventory.services.filter(({ qualificationStatus }) => qualificationStatus === 'passed').map(({ serviceId }) => serviceId), ['supply.clervo_ai_gateway', 'supply.deepgram', 'supply.google_vertex', 'supply.groq', 'supply.brave_search', 'supply.serper']);
+  assert.deepEqual(inventory.services.filter(({ qualificationStatus }) => qualificationStatus === 'passed').map(({ serviceId }) => serviceId), ['supply.clervo_ai_gateway', 'supply.deepgram', 'supply.google_vertex', 'supply.groq', 'supply.brave_search', 'supply.serper', 'supply.blockscout_pro']);
 
   const clervo = inventory.services.find(({ serviceId }) => serviceId === 'supply.clervo_ai_gateway');
   assert.equal(clervo.connectionStatus, 'observed_working');
@@ -232,19 +232,22 @@ test('owned blockchain data is technically complete and priced without treating 
   assert.equal(evidence.terms.serviceBureauUseAllowed, false);
 });
 
-test('selected multichain data source is positively priced and adapter-ready without pretending the missing production key was tested', async () => {
+test('selected multichain data source is qualified for bounded value-added routes without exposing its key', async () => {
   const inventory = await json('packages/catalog/external-supply-inventory.v1.json');
   const service = inventory.services.find(({ serviceId }) => serviceId === 'supply.blockscout_pro');
   const pricing = await json('packages/catalog/blockchain-data-supply-pricing.v1.json');
-  const evidence = await json('docs/evidence/supply-foundation/blockscout-market-preflight.v1.json');
+  const preflight = await json('docs/evidence/supply-foundation/blockscout-market-preflight.v1.json');
+  const evidence = await json('docs/evidence/supply-foundation/blockscout-qualification.v1.json');
   const routes = pricing.routes.filter(({ serviceId }) => serviceId === 'supply.blockscout_pro');
-  assert.deepEqual([service.credentialDeployment, service.connectionStatus, service.qualificationStatus, service.termsStatus], ['missing', 'not_observed', 'not_run', 'restricted']);
+  assert.deepEqual([service.credentialDeployment, service.connectionStatus, service.qualificationStatus, service.termsStatus], ['current_environment', 'observed_working', 'passed', 'restricted']);
   assert.equal(routes.length, 3);
-  assert.ok(routes.every(({ customerPriceMicrousd, dailyDevelopmentAllowance, rateLimitRequestsPerSecond, qualityGrade, technicalQualificationStatus, listingStatus }) => customerPriceMicrousd > 0 && dailyDevelopmentAllowance === 100000 && rateLimitRequestsPerSecond === 5 && qualityGrade === 'not_run' && technicalQualificationStatus === 'not_run' && listingStatus === 'adapter_ready_owner_credential'));
-  assert.equal(evidence.credentialAvailable, false);
-  assert.equal(evidence.decision.rawRpcCustomerRoutingSelected, false);
-  assert.equal(evidence.decision.adapterStatus, 'local_contract_tests_passed');
-  assert.equal(evidence.terms.intendedProductUseAllowed, true);
+  assert.ok(routes.every(({ customerPriceMicrousd, dailyDevelopmentAllowance, rateLimitRequestsPerSecond, qualityGrade, technicalQualificationStatus, listingStatus }) => customerPriceMicrousd > 0 && dailyDevelopmentAllowance === 100000 && rateLimitRequestsPerSecond === 5 && qualityGrade === 'good' && technicalQualificationStatus === 'passed' && listingStatus === 'sellable_preview'));
+  assert.equal(preflight.decision.rawRpcCustomerRoutingSelected, false);
+  assert.deepEqual([evidence.externalCalls, evidence.transactionSubmissionCalls, evidence.signedPayloads, evidence.ownerCashSpentUsd], [6, 0, 0, 0]);
+  assert.deepEqual([evidence.summary.successfulChecks, evidence.summary.chainsPassed, evidence.summary.technicalStatus, evidence.summary.productionStatus], [6, 2, 'passed', 'qualified_value_added_routes']);
+  assert.ok(evidence.observations.every(({ status, normalizedShapeValid, passed }) => status === 200 && normalizedShapeValid && passed));
+  assert.deepEqual(evidence.inputPolicy, { customerWalletDataUsed: false, deterministicSyntheticAddressUsed: true, syntheticAddressRecorded: false, responsePayloadValuesRecorded: false });
+  assert.equal(evidence.terms.rawApiOrCredentialResaleAllowed, false);
 });
 
 test('funded exact music generation is priced and adapter-ready without overstating perceptual quality or public product readiness', async () => {
@@ -367,14 +370,14 @@ test('final supply matrix covers every priced asset, preserves provider secrecy,
   assert.equal(matrix.catalogCoverage.length, 13);
   assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.assetCount, 0), 797);
   assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.positiveCustomerPriceCount, 0), 797);
-  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 23);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 26);
   assert.equal(new Set(matrix.capabilities.map(({ capabilityId }) => capabilityId)).size, matrix.capabilities.length);
   assert.ok(matrix.capabilities.every(({ publicAssets, pricingCatalogs, healthMethod, secretLocations, replacementPlan }) => publicAssets.length > 0 && pricingCatalogs.length > 0 && healthMethod.length > 0 && secretLocations.length > 0 && replacementPlan.length > 12));
   assert.ok(matrix.capabilities.every(({ publicAssets }) => publicAssets.every((asset) => !asset.startsWith('@cf/') && !/^(?:openai|qwen)\//u.test(asset))));
-  assert.deepEqual(matrix.ownerBlockers.map(({ blockerId, spendingAuthorized }) => [blockerId, spendingAuthorized]), [['owner.rpc_commercial_permission', false], ['owner.blockscout_account', false], ['owner.r2_key_reissue', false]]);
+  assert.deepEqual(matrix.ownerBlockers.map(({ blockerId, spendingAuthorized }) => [blockerId, spendingAuthorized]), [['owner.rpc_commercial_permission', false], ['owner.r2_key_reissue', false]]);
   assert.equal(market.competitorObservation.observedLiveModels, 83);
   assert.equal(market.clervoObservation.qualifiedExactAiRoutes, 21);
-  assert.deepEqual(market.finalDecision, { coverageSufficientWithoutOwnerAction: false, newAccountsSelected: 1, existingCredentialsNeedingReplacement: 1, selectedOwnerActions: ['written commercial RPC gateway permission or expressly compatible replacement', 'Blockscout Pro no-card API key', 'least-privilege R2 bucket key and bucket name'], allOtherResearchedSources: 'rejected or deferred until revenue, written commercial permission, compatible terms, or a material failure justifies them' });
+  assert.deepEqual(market.finalDecision, { coverageSufficientWithoutOwnerAction: false, newAccountsSelected: 1, existingCredentialsNeedingReplacement: 1, selectedOwnerActions: ['written commercial RPC gateway permission or expressly compatible replacement', 'least-privilege R2 bucket key and bucket name'], allOtherResearchedSources: 'rejected or deferred until revenue, written commercial permission, compatible terms, or a material failure justifies them' });
   const serialized = JSON.stringify(matrix);
   assert.equal(/(?:sk-|ghp_|AIza|Bearer\s|-----BEGIN|api[_-]?key["']?\s*:\s*["'][^"']+)/iu.test(serialized), false);
 });

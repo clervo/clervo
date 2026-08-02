@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.blockchain-data-supply-pricing.v1",
-  "priceVersion": "blockchain-data-supply-2026-08-02.2",
-  "effectiveAt": "2026-08-02T07:55:00.000Z",
+  "priceVersion": "blockchain-data-supply-2026-08-02.3",
+  "effectiveAt": "2026-08-02T09:04:22.177Z",
   "currency": "USD",
   "policy": {
     "customerFreeByDefault": false,
@@ -20,9 +20,9 @@
       "supplierPriceBasis": "recurring_free_tier",
       "dailyDevelopmentAllowance": 100000,
       "rateLimitRequestsPerSecond": 5,
-      "qualityGrade": "not_run",
-      "technicalQualificationStatus": "not_run",
-      "listingStatus": "adapter_ready_owner_credential",
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "sellable_preview",
       "termsStatus": "restricted",
       "fallbackStatus": "independent_fallback_missing"
     },
@@ -36,9 +36,9 @@
       "supplierPriceBasis": "recurring_free_tier",
       "dailyDevelopmentAllowance": 100000,
       "rateLimitRequestsPerSecond": 5,
-      "qualityGrade": "not_run",
-      "technicalQualificationStatus": "not_run",
-      "listingStatus": "adapter_ready_owner_credential",
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "sellable_preview",
       "termsStatus": "restricted",
       "fallbackStatus": "independent_fallback_missing"
     },
@@ -52,9 +52,9 @@
       "supplierPriceBasis": "recurring_free_tier",
       "dailyDevelopmentAllowance": 100000,
       "rateLimitRequestsPerSecond": 5,
-      "qualityGrade": "not_run",
-      "technicalQualificationStatus": "not_run",
-      "listingStatus": "adapter_ready_owner_credential",
+      "qualityGrade": "good",
+      "technicalQualificationStatus": "passed",
+      "listingStatus": "sellable_preview",
       "termsStatus": "restricted",
       "fallbackStatus": "independent_fallback_missing"
     },

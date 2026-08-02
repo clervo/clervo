@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "clervo.blockscout-qualification.v1",
+  "evaluatedAt": "2026-08-02T09:04:22.177Z",
+  "serviceId": "supply.blockscout_pro",
+  "endpointOrigin": "https://api.blockscout.com",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 6,
+  "transactionSubmissionCalls": 0,
+  "signedPayloads": 0,
+  "credentialSlotsUsed": 1,
+  "inputPolicy": {
+    "customerWalletDataUsed": false,
+    "deterministicSyntheticAddressUsed": true,
+    "syntheticAddressRecorded": false,
+    "responsePayloadValuesRecorded": false
+  },
+  "summary": {
+    "successfulChecks": 6,
+    "chainsPassed": 2,
+    "latencyMsP50": 336,
+    "latencyMsP95": 958,
+    "technicalStatus": "passed",
+    "productionStatus": "qualified_value_added_routes"
+  },
+  "observations": [
+    {
+      "chain": "ethereum",
+      "chainId": 1,
+      "operation": "wallet_overview",
+      "status": 200,
+      "latencyMs": 336,
+      "normalizedShapeValid": true,
+      "resultCount": 1,
+      "passed": true
+    },
+    {
+      "chain": "ethereum",
+      "chainId": 1,
+      "operation": "token_balances",
+      "status": 200,
+      "latencyMs": 958,
+      "normalizedShapeValid": true,
+      "resultCount": 0,
+      "passed": true
+    },
+    {
+      "chain": "ethereum",
+      "chainId": 1,
+      "operation": "transaction_history",
+      "status": 200,
+      "latencyMs": 319,
+      "normalizedShapeValid": true,
+      "resultCount": 0,
+      "passed": true
+    },
+    {
+      "chain": "base",
+      "chainId": 8453,
+      "operation": "wallet_overview",
+      "status": 200,
+      "latencyMs": 510,
+      "normalizedShapeValid": true,
+      "resultCount": 1,
+      "passed": true
+    },
+    {
+      "chain": "base",
+      "chainId": 8453,
+      "operation": "token_balances",
+      "status": 200,
+      "latencyMs": 834,
+      "normalizedShapeValid": true,
+      "resultCount": 0,
+      "passed": true
+    },
+    {
+      "chain": "base",
+      "chainId": 8453,
+      "operation": "transaction_history",
+      "status": 200,
+      "latencyMs": 234,
+      "normalizedShapeValid": true,
+      "resultCount": 0,
+      "passed": true
+    }
+  ],
+  "allowance": {
+    "advertisedDailyCredits": 100000,
+    "advertisedRequestsPerSecond": 5,
+    "hardDailyCallCeiling": 100000,
+    "automaticPaidUpgradeAllowedByClervo": false
+  },
+  "terms": {
+    "reviewedAt": "2026-08-02T09:04:22.177Z",
+    "termsUrl": "https://eaas.blockscout.com/terms-and-conditions",
+    "documentationUrl": "https://docs.blockscout.com/devs/pro-api",
+    "intendedProductUseAllowed": true,
+    "valueAddedApplicationRequired": true,
+    "rawApiOrCredentialResaleAllowed": false,
+    "selectedNormalizedProducts": [
+      "crypto.wallet",
+      "crypto.token",
+      "crypto.transaction"
+    ]
+  }
+}

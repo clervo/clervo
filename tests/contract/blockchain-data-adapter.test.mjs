@@ -32,3 +32,8 @@ test('multichain data adapter fails closed on unapproved chains and substituted 
   await assert.rejects(adapter.addressOverview(10, wallet), /chain_not_allowed/u);
   await assert.rejects(adapter.addressOverview(1, wallet), /address_response_invalid/u);
 });
+
+test('multichain data adapter normalizes an unused address null balance to zero', async () => {
+  const adapter = new BlockscoutDataAdapter({ apiKey: 'test-private-key', allowedChainIds: [1], hardDailyCallCeiling: 1 }, async () => ({ status: 200, body: { hash: wallet, coin_balance: null, is_contract: false } }));
+  assert.deepEqual(await adapter.addressOverview(1, wallet), { address: wallet, nativeBalanceAtomic: '0', isContract: false, transactionActivityPresent: false, tokenActivityPresent: false });
+});

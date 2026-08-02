@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.27",
-  "observedAt": "2026-08-02T07:59:28.668Z",
+  "inventoryVersion": "2026-08-02.28",
+  "observedAt": "2026-08-02T09:04:22.177Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -1600,20 +1600,20 @@
       "products": ["crypto.wallet", "crypto.token", "crypto.transaction"],
       "endpointOrigins": ["https://api.blockscout.com"],
       "credentialNames": ["BLOCKSCOUT_API_KEY"],
-      "configuredCredentialSlots": 0,
+      "configuredCredentialSlots": 1,
       "alternateCredentialSlots": 0,
-      "credentialDeployment": "missing",
+      "credentialDeployment": "current_environment",
       "fundingClass": "recurring_free",
-      "connectionStatus": "not_observed",
-      "qualificationStatus": "not_run",
+      "connectionStatus": "observed_working",
+      "qualificationStatus": "passed",
       "termsStatus": "restricted",
       "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
         "The current no-card free tier advertises 100,000 credits/day, 5 RPS, all supported chains, and one multichain API across more than 100 EVM networks.",
         "Official documentation identifies dapps, wallets, AI agents, analytics, and operational tooling as intended uses. Clervo selects only normalized value-added wallet, token, and transaction products; raw RPC resale is excluded.",
-        "Two of three deprecated no-key public-instance address probes returned valid shapes, but that is market preflight only and does not qualify the credentialed production route.",
-        "The provider-neutral adapter passes local contract tests with chain allowlists, response validation, fixed-host requests, safe errors, and a hard daily call ceiling. A dedicated free key is required for bounded production qualification."
+        "The dedicated key passed six normalized, read-only wallet-overview, token-balance, and transaction-history checks across Ethereum and Base using one deterministic unused address; no customer payload, transaction submission, or signed payload was used.",
+        "The provider-neutral adapter enforces chain allowlists, response validation, fixed-host requests, safe errors, bounded responses, and a hard daily call ceiling. Only normalized value-added routes are selected; raw API, RPC, and credential resale remain excluded."
       ]
     },
     {

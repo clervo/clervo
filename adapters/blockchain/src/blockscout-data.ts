@@ -96,7 +96,7 @@ export class BlockscoutDataAdapter {
     const normalized = address(walletAddress)!;
     const body = record(await this.get(chainId, `/api/v2/addresses/${normalized}`, signal), 'blockchain_data_address_response_invalid');
     if (address(body.hash)! !== normalized || typeof body.is_contract !== 'boolean') throw new Error('blockchain_data_address_response_invalid');
-    return Object.freeze({ address: normalized, nativeBalanceAtomic: unsigned(body.coin_balance, 'blockchain_data_balance_invalid'), isContract: body.is_contract, transactionActivityPresent: body.has_logs === true || body.has_validated_blocks === true, tokenActivityPresent: body.has_tokens === true || body.has_token_transfers === true });
+    return Object.freeze({ address: normalized, nativeBalanceAtomic: unsigned(body.coin_balance ?? '0', 'blockchain_data_balance_invalid'), isContract: body.is_contract, transactionActivityPresent: body.has_logs === true || body.has_validated_blocks === true, tokenActivityPresent: body.has_tokens === true || body.has_token_transfers === true });
   }
 
   async tokenBalances(chainId: number, walletAddress: string, signal?: AbortSignal): Promise<readonly Readonly<WalletTokenBalance>[]> {
