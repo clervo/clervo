@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "clervo.search-state-retention.v1",
+  "scope": "free-search-production-candidate",
+  "classification": "customer_confidential",
+  "storesRawRequestBody": false,
+  "storesRawNetworkAddress": false,
+  "completedResponseSeconds": 86400,
+  "staleInProgressSeconds": 3600,
+  "quotaRecordSeconds": 7200,
+  "operatorMode": "dry_run_first",
+  "productionDeletionRequiresExactOwnerApproval": true,
+  "deletionReport": "aggregate_counts_only"
+}

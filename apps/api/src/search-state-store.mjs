@@ -4,6 +4,11 @@ import { InMemoryFreeSearchQuota } from '../../../dist/packages/contracts/src/in
 const NAMESPACE_PATTERN = /^[a-z0-9][a-z0-9_-]{2,31}$/u;
 const HASH_PATTERN = /^sha256:[a-f0-9]{64}$/u;
 const LEASE_MS = 30_000;
+export const SEARCH_STATE_RETENTION = Object.freeze({
+  completedResponseSeconds: 86_400,
+  staleInProgressSeconds: 3_600,
+  quotaRecordSeconds: 7_200,
+});
 
 function assertNamespace(value) {
   if (!NAMESPACE_PATTERN.test(value)) throw new TypeError('invalid_search_state_namespace');
@@ -59,14 +64,14 @@ export class InMemorySearchStateStore {
     return Object.freeze({ kind: 'claimed', operationId: current?.operationId ?? operationId, leaseId: claimedLeaseId });
   }
 
-  async complete({ idempotencyKey, requestHash, operationId, leaseId: claimedLeaseId, response }) {
+  async complete({ idempotencyKey, requestHash, operationId, leaseId: claimedLeaseId, response, now }) {
     const current = this.#operations.get(idempotencyKey);
     if (
       current?.requestHash !== requestHash
       || current?.operationId !== operationId
       || current?.leaseId !== claimedLeaseId
     ) throw new Error('idempotency_completion_lost');
-    this.#operations.set(idempotencyKey, { requestHash, operationId, response });
+    this.#operations.set(idempotencyKey, { requestHash, operationId, response, completedAt: now });
   }
 
   async abandon({ idempotencyKey, requestHash, operationId, leaseId: claimedLeaseId }) {
@@ -80,6 +85,31 @@ export class InMemorySearchStateStore {
 
   async consumeFreeQuota(subject, now) {
     return this.freeQuota.consume(subject, now);
+  }
+
+  async retentionPlan(now) {
+    const completedBefore = Date.parse(now) - SEARCH_STATE_RETENTION.completedResponseSeconds * 1_000;
+    const staleBefore = Date.parse(now) - SEARCH_STATE_RETENTION.staleInProgressSeconds * 1_000;
+    let completedOperations = 0;
+    let staleInProgressOperations = 0;
+    for (const value of this.#operations.values()) {
+      if (value.response !== undefined && Date.parse(value.completedAt) < completedBefore) completedOperations += 1;
+      if (value.leaseExpiresAt !== undefined && Date.parse(value.leaseExpiresAt) < staleBefore) staleInProgressOperations += 1;
+    }
+    return Object.freeze({ completedOperations, staleInProgressOperations, quotaRecords: 0 });
+  }
+
+  async applyRetention(now) {
+    const plan = await this.retentionPlan(now);
+    const completedBefore = Date.parse(now) - SEARCH_STATE_RETENTION.completedResponseSeconds * 1_000;
+    const staleBefore = Date.parse(now) - SEARCH_STATE_RETENTION.staleInProgressSeconds * 1_000;
+    for (const [key, value] of this.#operations) {
+      if (
+        (value.response !== undefined && Date.parse(value.completedAt) < completedBefore)
+        || (value.leaseExpiresAt !== undefined && Date.parse(value.leaseExpiresAt) < staleBefore)
+      ) this.#operations.delete(key);
+    }
+    return plan;
   }
 
   async close() {}
@@ -207,6 +237,67 @@ export class PostgresSearchStateStore {
       remaining: allowed ? Math.max(0, this.freeQuotaLimit - count) : 0,
       resetAt: new Date(Date.parse(row.window_started_at) + this.freeQuotaWindowMs).toISOString(),
     });
+  }
+
+  async retentionPlan(now) {
+    const result = await this.client.query(
+      `SELECT
+         count(*) FILTER (
+           WHERE state = 'completed'
+             AND completed_at < $2::timestamptz - ($3 * interval '1 second')
+         )::integer AS completed_operations,
+         count(*) FILTER (
+           WHERE state = 'in_progress'
+             AND lease_expires_at < $2::timestamptz - ($4 * interval '1 second')
+         )::integer AS stale_in_progress_operations,
+         (
+           SELECT count(*)::integer
+             FROM clervo_search_free_quota
+            WHERE environment_namespace = $1
+              AND updated_at < $2::timestamptz - ($5 * interval '1 second')
+         ) AS quota_records
+       FROM clervo_search_http_operations
+       WHERE environment_namespace = $1`,
+      [
+        this.environmentNamespace,
+        now,
+        SEARCH_STATE_RETENTION.completedResponseSeconds,
+        SEARCH_STATE_RETENTION.staleInProgressSeconds,
+        SEARCH_STATE_RETENTION.quotaRecordSeconds,
+      ],
+    );
+    const row = result.rows[0];
+    return Object.freeze({
+      completedOperations: Number(row?.completed_operations ?? 0),
+      staleInProgressOperations: Number(row?.stale_in_progress_operations ?? 0),
+      quotaRecords: Number(row?.quota_records ?? 0),
+    });
+  }
+
+  async applyRetention(now) {
+    const plan = await this.retentionPlan(now);
+    await this.client.query(
+      `DELETE FROM clervo_search_http_operations
+        WHERE environment_namespace = $1
+          AND (
+            (state = 'completed' AND completed_at < $2::timestamptz - ($3 * interval '1 second'))
+            OR
+            (state = 'in_progress' AND lease_expires_at < $2::timestamptz - ($4 * interval '1 second'))
+          )`,
+      [
+        this.environmentNamespace,
+        now,
+        SEARCH_STATE_RETENTION.completedResponseSeconds,
+        SEARCH_STATE_RETENTION.staleInProgressSeconds,
+      ],
+    );
+    await this.client.query(
+      `DELETE FROM clervo_search_free_quota
+        WHERE environment_namespace = $1
+          AND updated_at < $2::timestamptz - ($3 * interval '1 second')`,
+      [this.environmentNamespace, now, SEARCH_STATE_RETENTION.quotaRecordSeconds],
+    );
+    return plan;
   }
 
   async close() {
