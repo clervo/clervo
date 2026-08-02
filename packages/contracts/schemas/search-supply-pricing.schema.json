@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/search-supply-pricing.schema.json",
+  "title": "Clervo internal search supply pricing",
+  "type": "object",
+  "required": ["schemaVersion", "priceVersion", "effectiveAt", "currency", "policy", "routes"],
+  "properties": {
+    "schemaVersion": { "const": "clervo.search-supply-pricing.v1" },
+    "priceVersion": { "type": "string", "pattern": "^search-supply-[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$" },
+    "effectiveAt": { "type": "string", "format": "date-time" },
+    "currency": { "const": "USD" },
+    "policy": {
+      "type": "object",
+      "required": ["customerFreeByDefault", "unknownAllowanceBlocksPricing", "automaticPaidTopUpAllowed", "providerNamesPublic", "singleAccountOnly"],
+      "properties": {
+        "customerFreeByDefault": { "const": false },
+        "unknownAllowanceBlocksPricing": { "const": false },
+        "automaticPaidTopUpAllowed": { "const": false },
+        "providerNamesPublic": { "const": false },
+        "singleAccountOnly": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["serviceId", "productId", "publicAssetId", "billingUnit", "maximumResults", "customerPriceMicrousd", "supplierPriceMicrousd", "supplierPriceBasis", "allowance", "rateLimitQueriesPerSecond", "qualityGrade", "qualificationStatus", "listingStatus", "termsStatus", "fallbackStatus"],
+        "properties": {
+          "serviceId": { "type": "string", "pattern": "^supply\\.[a-z0-9_]+$" },
+          "productId": { "const": "search.web" },
+          "publicAssetId": { "type": "string", "pattern": "^[a-z][a-z0-9_.-]{2,63}$" },
+          "billingUnit": { "const": "request" },
+          "maximumResults": { "type": "integer", "minimum": 1, "maximum": 100 },
+          "customerPriceMicrousd": { "type": "integer", "minimum": 1 },
+          "supplierPriceMicrousd": { "type": "integer", "minimum": 0 },
+          "supplierPriceBasis": { "enum": ["advertised_starter_tier", "unknown"] },
+          "allowance": {
+            "type": "object",
+            "required": ["advertisedStarterQueries", "ownedRemainingQueries", "ownedRemainingStatus", "purchasedCreditExpiryMonths"],
+            "properties": {
+              "advertisedStarterQueries": { "type": "integer", "minimum": 0 },
+              "ownedRemainingQueries": { "type": ["integer", "null"], "minimum": 0 },
+              "ownedRemainingStatus": { "enum": ["known", "not_exposed"] },
+              "purchasedCreditExpiryMonths": { "type": "integer", "minimum": 1 }
+            },
+            "additionalProperties": false
+          },
+          "rateLimitQueriesPerSecond": { "type": "integer", "minimum": 1 },
+          "qualityGrade": { "enum": ["best", "good", "poor", "rejected"] },
+          "qualificationStatus": { "enum": ["passed", "failed", "not_run"] },
+          "listingStatus": { "enum": ["qualified_not_integrated", "sellable_preview", "blocked"] },
+          "termsStatus": { "enum": ["approved", "restricted", "blocked"] },
+          "fallbackStatus": { "enum": ["independent_fallback_missing", "independent_fallback_ready"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

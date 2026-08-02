@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "clervo.search-supply-pricing.v1",
+  "priceVersion": "search-supply-2026-08-02.1",
+  "effectiveAt": "2026-08-02T05:38:17.519Z",
+  "currency": "USD",
+  "policy": {
+    "customerFreeByDefault": false,
+    "unknownAllowanceBlocksPricing": false,
+    "automaticPaidTopUpAllowed": false,
+    "providerNamesPublic": false,
+    "singleAccountOnly": true
+  },
+  "routes": [
+    {
+      "serviceId": "supply.serper",
+      "productId": "search.web",
+      "publicAssetId": "web-search-standard",
+      "billingUnit": "request",
+      "maximumResults": 10,
+      "customerPriceMicrousd": 1000,
+      "supplierPriceMicrousd": 1000,
+      "supplierPriceBasis": "advertised_starter_tier",
+      "allowance": {
+        "advertisedStarterQueries": 2500,
+        "ownedRemainingQueries": null,
+        "ownedRemainingStatus": "not_exposed",
+        "purchasedCreditExpiryMonths": 6
+      },
+      "rateLimitQueriesPerSecond": 50,
+      "qualityGrade": "good",
+      "qualificationStatus": "passed",
+      "listingStatus": "qualified_not_integrated",
+      "termsStatus": "restricted",
+      "fallbackStatus": "independent_fallback_missing"
+    }
+  ]
+}

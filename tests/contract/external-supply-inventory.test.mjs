@@ -27,7 +27,7 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(inventory.commercialPolicy.providerNamesPublic, false);
   assert.equal(inventory.commercialPolicy.silentQualityDowngradeAllowed, false);
   assert.equal(new Set(inventory.services.map(({ serviceId }) => serviceId)).size, inventory.services.length);
-  assert.deepEqual(inventory.services.filter(({ qualificationStatus }) => qualificationStatus === 'passed').map(({ serviceId }) => serviceId), ['supply.clervo_ai_gateway', 'supply.deepgram', 'supply.google_vertex', 'supply.groq']);
+  assert.deepEqual(inventory.services.filter(({ qualificationStatus }) => qualificationStatus === 'passed').map(({ serviceId }) => serviceId), ['supply.clervo_ai_gateway', 'supply.deepgram', 'supply.google_vertex', 'supply.groq', 'supply.serper']);
 
   const clervo = inventory.services.find(({ serviceId }) => serviceId === 'supply.clervo_ai_gateway');
   assert.equal(clervo.connectionStatus, 'observed_working');
@@ -84,4 +84,34 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
 
   const serialized = JSON.stringify(inventory);
   assert.equal(/(?:sk-|ghp_|AIza|Bearer\s|-----BEGIN|api[_-]?key["']?\s*:\s*["'][^"']+)/iu.test(serialized), false);
+});
+
+test('owned search supply is measured, customer-priced, and single-account bounded', async () => {
+  const pricing = await json('packages/catalog/search-supply-pricing.v1.json');
+  const schema = await json('packages/contracts/schemas/search-supply-pricing.schema.json');
+  const evidence = await json('docs/evidence/supply-foundation/serper-qualification.v1.json');
+  const ajv = new Ajv2020({ strict: true, allErrors: true });
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
+  assert.equal(pricing.routes.length, 1);
+  assert.ok(pricing.routes.every(({ customerPriceMicrousd }) => customerPriceMicrousd > 0));
+  assert.equal(pricing.routes[0].customerPriceMicrousd, 1000);
+  assert.equal(pricing.routes[0].listingStatus, 'qualified_not_integrated');
+  assert.equal(pricing.routes[0].fallbackStatus, 'independent_fallback_missing');
+  assert.equal(pricing.policy.singleAccountOnly, true);
+  assert.equal(evidence.externalCalls, 5);
+  assert.equal(evidence.ownerCashSpentUsd, 0);
+  assert.deepEqual(evidence.summary, {
+    successfulCalls: 5,
+    expectedHostHits: 5,
+    expectedHostTopThreeHits: 5,
+    latencyMsP50: 680,
+    latencyMsP95: 765,
+    resultCountMinimum: 10,
+    qualityGrade: 'good',
+  });
+  assert.ok(evidence.observations.every(({ status, expectedHostRank }) => status === 200 && expectedHostRank === 1));
+  assert.equal(evidence.terms.valueAddedApplicationAllowed, true);
+  assert.equal(evidence.terms.multipleAccountsAllowed, false);
 });

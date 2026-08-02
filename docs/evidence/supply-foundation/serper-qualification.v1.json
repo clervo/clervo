@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "clervo.serper-qualification.v1",
+  "evaluatedAt": "2026-08-02T05:38:17.519Z",
+  "serviceId": "supply.serper",
+  "endpointOrigin": "https://google.serper.dev",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 5,
+  "credentialSlotsUsed": 1,
+  "configuredCredentialSlots": 1,
+  "accountPolicy": "single_account_only_no_limit_circumvention",
+  "corpus": {
+    "caseCount": 5,
+    "queryValuesIncluded": false,
+    "expectedHostValuesIncluded": false
+  },
+  "summary": {
+    "successfulCalls": 5,
+    "expectedHostHits": 5,
+    "expectedHostTopThreeHits": 5,
+    "latencyMsP50": 680,
+    "latencyMsP95": 765,
+    "resultCountMinimum": 10,
+    "qualityGrade": "good"
+  },
+  "observations": [
+    {
+      "caseId": "node_fetch",
+      "status": 200,
+      "latencyMs": 548,
+      "organicResultCount": 10,
+      "expectedHostPresent": true,
+      "expectedHostRank": 1,
+      "hasSearchParameters": true,
+      "hasCreditsHeader": false
+    },
+    {
+      "caseId": "mdn_429",
+      "status": 200,
+      "latencyMs": 739,
+      "organicResultCount": 10,
+      "expectedHostPresent": true,
+      "expectedHostRank": 1,
+      "hasSearchParameters": true,
+      "hasCreditsHeader": false
+    },
+    {
+      "caseId": "rfc_9110",
+      "status": 200,
+      "latencyMs": 765,
+      "organicResultCount": 10,
+      "expectedHostPresent": true,
+      "expectedHostRank": 1,
+      "hasSearchParameters": true,
+      "hasCreditsHeader": false
+    },
+    {
+      "caseId": "cloudflare_r2",
+      "status": 200,
+      "latencyMs": 680,
+      "organicResultCount": 10,
+      "expectedHostPresent": true,
+      "expectedHostRank": 1,
+      "hasSearchParameters": true,
+      "hasCreditsHeader": false
+    },
+    {
+      "caseId": "solana_rpc",
+      "status": 200,
+      "latencyMs": 542,
+      "organicResultCount": 10,
+      "expectedHostPresent": true,
+      "expectedHostRank": 1,
+      "hasSearchParameters": true,
+      "hasCreditsHeader": false
+    }
+  ],
+  "terms": {
+    "reviewedAt": "2026-08-02T05:38:17.519Z",
+    "termsUrl": "https://serper.dev/terms",
+    "pricingUrl": "https://serper.dev/",
+    "termsUpdatedAt": "2024-05-29",
+    "businessToBusinessService": true,
+    "valueAddedApplicationAllowed": true,
+    "unchangedMirroringAllowed": false,
+    "multipleAccountsAllowed": false,
+    "limitCircumventionAllowed": false,
+    "dataAttributionAndRightsRemainCustomerResponsibilities": true
+  },
+  "supplierPricing": {
+    "currency": "USD",
+    "freeQueriesAdvertised": 2500,
+    "starterCredits": 50000,
+    "starterPriceUsd": 50,
+    "starterQueriesPerSecond": 50,
+    "purchasedCreditsExpireAfterMonths": 6,
+    "successfulResponsesConsumeCredits": true,
+    "currentOwnedBalance": null,
+    "currentOwnedBalanceStatus": "not_exposed_by_api_response"
+  }
+}

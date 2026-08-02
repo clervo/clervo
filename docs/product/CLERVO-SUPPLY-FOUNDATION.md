@@ -98,6 +98,11 @@ disabled without explicit owner approval.
 - GitHub Models was globally retired on 2026-07-30 and is now archived supply;
   its HTTP 410 is definitive, not a token defect. The direct Gemini credential
   returns API_KEY_INVALID, while qualified Vertex preserves Google coverage.
+- Serper search is healthy under the owned key: five fixed-corpus calls all
+  returned ten results with the expected official host ranked first and 765 ms
+  p95 latency. Its single-account B2B terms allow a value-added product, the
+  route is customer-priced at USD 0.001/request, and its current remaining
+  starter balance is unknown because the API exposes no allowance header.
 - Cloudflare: 61 authenticated non-experimental assets priced; two GPT-OSS
   routes are fully qualified, and five embedding/image/speech assets passed
   bounded execution with their remaining integration gaps recorded. Three
