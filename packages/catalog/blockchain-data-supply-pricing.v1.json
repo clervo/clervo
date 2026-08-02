@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.blockchain-data-supply-pricing.v1",
-  "priceVersion": "blockchain-data-supply-2026-08-02.1",
-  "effectiveAt": "2026-08-02T05:50:43.091Z",
+  "priceVersion": "blockchain-data-supply-2026-08-02.2",
+  "effectiveAt": "2026-08-02T07:55:00.000Z",
   "currency": "USD",
   "policy": {
     "customerFreeByDefault": false,
@@ -10,6 +10,54 @@
     "customerWalletPayloadsInEvidenceAllowed": false
   },
   "routes": [
+    {
+      "serviceId": "supply.blockscout_pro",
+      "productId": "crypto.wallet",
+      "publicAssetId": "evm-wallet-overview",
+      "billingUnit": "request",
+      "customerPriceMicrousd": 500,
+      "shadowSupplierPriceMicrousd": 0,
+      "supplierPriceBasis": "recurring_free_tier",
+      "dailyDevelopmentAllowance": 100000,
+      "rateLimitRequestsPerSecond": 5,
+      "qualityGrade": "not_run",
+      "technicalQualificationStatus": "not_run",
+      "listingStatus": "adapter_ready_owner_credential",
+      "termsStatus": "restricted",
+      "fallbackStatus": "independent_fallback_missing"
+    },
+    {
+      "serviceId": "supply.blockscout_pro",
+      "productId": "crypto.token",
+      "publicAssetId": "evm-token-balances",
+      "billingUnit": "request",
+      "customerPriceMicrousd": 500,
+      "shadowSupplierPriceMicrousd": 0,
+      "supplierPriceBasis": "recurring_free_tier",
+      "dailyDevelopmentAllowance": 100000,
+      "rateLimitRequestsPerSecond": 5,
+      "qualityGrade": "not_run",
+      "technicalQualificationStatus": "not_run",
+      "listingStatus": "adapter_ready_owner_credential",
+      "termsStatus": "restricted",
+      "fallbackStatus": "independent_fallback_missing"
+    },
+    {
+      "serviceId": "supply.blockscout_pro",
+      "productId": "crypto.transaction",
+      "publicAssetId": "evm-transaction-history",
+      "billingUnit": "request",
+      "customerPriceMicrousd": 500,
+      "shadowSupplierPriceMicrousd": 0,
+      "supplierPriceBasis": "recurring_free_tier",
+      "dailyDevelopmentAllowance": 100000,
+      "rateLimitRequestsPerSecond": 5,
+      "qualityGrade": "not_run",
+      "technicalQualificationStatus": "not_run",
+      "listingStatus": "adapter_ready_owner_credential",
+      "termsStatus": "restricted",
+      "fallbackStatus": "independent_fallback_missing"
+    },
     {
       "serviceId": "supply.zerion",
       "productId": "crypto.wallet",

@@ -53,8 +53,8 @@
     },
     {
       "catalog": "packages/catalog/blockchain-data-supply-pricing.v1.json",
-      "assetCount": 4,
-      "positiveCustomerPriceCount": 4,
+      "assetCount": 7,
+      "positiveCustomerPriceCount": 7,
       "sellableCount": 0
     },
     {
@@ -400,28 +400,34 @@
     {
       "capabilityId": "blockchain.data",
       "publicAssets": [
+        "evm-wallet-overview",
+        "evm-token-balances",
+        "evm-transaction-history",
         "multichain-wallet-portfolio",
         "multichain-token-search",
         "multichain-transaction-history",
         "multichain-protocol-directory"
       ],
-      "lifecycle": "internal_only",
-      "routeState": "blocked_terms",
+      "lifecycle": "mixed",
+      "routeState": "selected_adapter_ready_owner_credential",
       "primaryServices": [],
       "fallbackServices": [],
       "pricingCatalogs": [
         "packages/catalog/blockchain-data-supply-pricing.v1.json"
       ],
-      "quality": "good",
-      "termsStatus": "blocked",
-      "quotaRunway": "The local-development key works at 5 RPS and 100 requests per day but prohibits production resale or service-bureau use.",
+      "quality": "mixed",
+      "termsStatus": "mixed",
+      "quotaRunway": "The selected no-card multichain source advertises 100,000 daily credits and 5 RPS with a 100,000-call hard ceiling. The existing local-development source remains terms-blocked and is not a customer fallback.",
       "healthMethod": [
-        "docs/evidence/supply-foundation/zerion-qualification.v1.json"
+        "docs/evidence/supply-foundation/blockscout-market-preflight.v1.json",
+        "docs/evidence/supply-foundation/zerion-qualification.v1.json",
+        "tests/contract/blockchain-data-adapter.test.mjs"
       ],
       "secretLocations": [
+        "none:BLOCKSCOUT_API_KEY_MISSING",
         "legacy_import:ZERION_API_KEY"
       ],
-      "replacementPlan": "Keep the technically complete adapter internal and source a production commercial agreement only when revenue can support it."
+      "replacementPlan": "Create one dedicated no-card key, qualify normalized EVM wallet, token, and transaction routes, and retain raw RPC and protocol-directory gaps as separate scopes."
     },
     {
       "capabilityId": "storage.object",
@@ -521,6 +527,14 @@
       "requiredAction": "Obtain written permission for paid customer-facing RPC gateway use or approve an expressly compatible replacement after the remaining zero-cash market check.",
       "unblocks": [
         "rpc.multichain"
+      ],
+      "spendingAuthorized": false
+    },
+    {
+      "blockerId": "owner.blockscout_account",
+      "requiredAction": "Create one no-card multichain data account, generate a dedicated API key, and install it outside chat and Git as BLOCKSCOUT_API_KEY.",
+      "unblocks": [
+        "blockchain.data"
       ],
       "spendingAuthorized": false
     },

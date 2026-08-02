@@ -129,6 +129,12 @@ disabled without explicit owner approval.
   customer data. All four products are priced, but the free key is local-only
   and the API license prohibits data resale/service-bureau use; production sale
   needs a compatible written agreement or a replacement data source.
+- The final zero-cash data search selected Blockscout Pro for normalized EVM
+  wallet, token, and transaction products: current official material advertises
+  100,000 credits/day, 5 RPS, all supported chains, no card, and intended use by
+  dapps, wallets, agents, and analytics. Three routes are positively priced and
+  their provider-neutral adapter is locally complete; a dedicated owner-created
+  key still blocks live qualification. Raw API and RPC resale are not selected.
 - Cloudflare R2 has current positive customer prices for storage, reads, writes,
   and egress against its published recurring free tier and Standard rates. The
   legacy endpoint failed TLS; the derived account-scoped endpoint reached the
@@ -163,7 +169,7 @@ disabled without explicit owner approval.
 - Current qualified internal catalog: 20 exact routes across Clervo gateway,
   Google Vertex, Deepgram, Groq, and Cloudflare.
 - The final provider-neutral matrix references 13 canonical price catalogs and
-  covers all 793 price rows: every row has a positive customer price and 22
+  covers all 796 price rows: every row has a positive customer price and 22
   rows are currently sellable. It records exact assets, route state, lifecycle,
   price/shadow-cost source, quality, terms, quota runway, health evidence,
   secret-name location, fallbacks, and replacement plan without secret values.

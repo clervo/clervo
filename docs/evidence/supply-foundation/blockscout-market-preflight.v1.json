@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "clervo.blockscout-market-preflight.v1",
+  "evaluatedAt": "2026-08-02T07:55:00.000Z",
+  "serviceId": "supply.blockscout_pro",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 4,
+  "credentialAvailable": false,
+  "customerWalletDataUsed": false,
+  "documentationExampleOrProtocolAddressOnly": true,
+  "responsePayloadValuesRecorded": false,
+  "publicInstancePreflight": {
+    "productionRouteTested": false,
+    "deprecationAcknowledged": true,
+    "observations": [
+      { "chain": "ethereum", "status": 200, "latencyMs": 353, "addressShapeValid": true },
+      { "chain": "base", "status": 200, "latencyMs": 695, "addressShapeValid": true },
+      { "chain": "optimism", "status": null, "latencyMs": 346, "addressShapeValid": false, "failureCode": "transport_failure" },
+      { "chain": "optimism", "status": null, "latencyMs": 364, "addressShapeValid": false, "failureCode": "transport_failure" }
+    ]
+  },
+  "offer": {
+    "freeDailyCredits": 100000,
+    "freeRequestsPerSecond": 5,
+    "creditCardRequired": false,
+    "allSupportedChainsIncluded": true,
+    "advertisedChainCountMinimum": 100,
+    "intendedUses": ["dapps", "wallets", "ai_agents", "analytics", "operational_tooling"]
+  },
+  "terms": {
+    "termsUrl": "https://eaas.blockscout.com/terms-and-conditions",
+    "documentationUrl": "https://docs.blockscout.com/devs/pro-api",
+    "intendedProductUseAllowed": true,
+    "rawApiResaleExpresslyAllowed": false,
+    "valueAddedApplicationRequired": true,
+    "termsStatus": "restricted"
+  },
+  "decision": {
+    "status": "selected_owner_credential_required",
+    "selectedScope": ["crypto.wallet", "crypto.token", "crypto.transaction"],
+    "rawRpcCustomerRoutingSelected": false,
+    "adapterStatus": "local_contract_tests_passed",
+    "productionQualificationStatus": "not_run"
+  }
+}

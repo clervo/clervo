@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.external-supply-inventory.v1",
-  "inventoryVersion": "2026-08-02.25",
-  "observedAt": "2026-08-02T07:50:22.067Z",
+  "inventoryVersion": "2026-08-02.26",
+  "observedAt": "2026-08-02T07:55:00.000Z",
   "source": {
     "kind": "redacted_legacy_environment_manifest",
     "valuesIncluded": false,
@@ -1586,6 +1586,29 @@
         "Every route is customer-priced at USD 0.000001/request, but all 20 healthy credential-free routes are restricted to internal development because commercial redistribution rights, dedicated quotas, production reliability, and an SLA were not proven.",
         "The official Base, Optimism, and Solana public-endpoint documentation explicitly warns that representative public RPCs are rate-limited and unsuitable or unintended for production; no transaction was submitted or signed.",
         "Production customer routing requires a dedicated terms-compatible account with per-key limits and an independent provider-family fallback for critical networks."
+      ]
+    },
+    {
+      "serviceId": "supply.blockscout_pro",
+      "providerId": "provider.blockscout_pro",
+      "category": "blockchain_data",
+      "products": ["crypto.wallet", "crypto.token", "crypto.transaction"],
+      "endpointOrigins": ["https://api.blockscout.com"],
+      "credentialNames": ["BLOCKSCOUT_API_KEY"],
+      "configuredCredentialSlots": 0,
+      "alternateCredentialSlots": 0,
+      "credentialDeployment": "missing",
+      "fundingClass": "recurring_free",
+      "connectionStatus": "not_observed",
+      "qualificationStatus": "not_run",
+      "termsStatus": "restricted",
+      "resaleStatus": "restricted",
+      "publicProviderDisclosure": "hidden_model_name_only",
+      "notes": [
+        "The current no-card free tier advertises 100,000 credits/day, 5 RPS, all supported chains, and one multichain API across more than 100 EVM networks.",
+        "Official documentation identifies dapps, wallets, AI agents, analytics, and operational tooling as intended uses. Clervo selects only normalized value-added wallet, token, and transaction products; raw RPC resale is excluded.",
+        "Two of three deprecated no-key public-instance address probes returned valid shapes, but that is market preflight only and does not qualify the credentialed production route.",
+        "The provider-neutral adapter passes local contract tests with chain allowlists, response validation, fixed-host requests, safe errors, and a hard daily call ceiling. A dedicated free key is required for bounded production qualification."
       ]
     },
     {

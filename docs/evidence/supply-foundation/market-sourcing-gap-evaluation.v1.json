@@ -44,7 +44,7 @@
     "materialInfrastructureGaps": [
       "production composition of the qualified provider-neutral web-search router",
       "dedicated production multi-chain RPC",
-      "production blockchain data",
+      "credential qualification for the selected production blockchain-data route",
       "working isolated object storage",
       "production x402 proof and fallback"
     ]
@@ -117,6 +117,19 @@
       "ownerAction": null
     },
     {
+      "candidateId": "source.blockscout_pro",
+      "capability": "blockchain_data",
+      "decision": "selected_owner_blocked",
+      "starterBasis": "100,000 credits/day, 5 RPS, all supported EVM chains, and no credit card",
+      "evidence": [
+        "https://docs.blockscout.com/devs/pro-api",
+        "https://dev.blockscout.com/",
+        "https://eaas.blockscout.com/terms-and-conditions"
+      ],
+      "reason": "This is the clear zero-cash technical winner for normalized EVM wallet, token, and transaction data: one multichain key, intended dapp/wallet/agent use, large recurring allowance, and a completed local adapter. Raw API and RPC resale are excluded.",
+      "ownerAction": "Create the no-card account, generate one dedicated key, and install BLOCKSCOUT_API_KEY outside chat and Git."
+    },
+    {
       "candidateId": "source.backblaze_b2",
       "capability": "storage.object_backup",
       "decision": "reserve_if_existing_storage_reissue_fails",
@@ -183,10 +196,11 @@
   ],
   "finalDecision": {
     "coverageSufficientWithoutOwnerAction": false,
-    "newAccountsSelected": 0,
+    "newAccountsSelected": 1,
     "existingCredentialsNeedingReplacement": 1,
     "selectedOwnerActions": [
       "written commercial RPC gateway permission or expressly compatible replacement",
+      "Blockscout Pro no-card API key",
       "least-privilege R2 bucket key and bucket name"
     ],
     "allOtherResearchedSources": "rejected or deferred until revenue, written commercial permission, compatible terms, or a material failure justifies them"
