@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.supply-route-matrix.v1",
-  "evaluatedAt": "2026-08-02T07:08:25.825Z",
+  "evaluatedAt": "2026-08-02T08:43:26.583Z",
   "policy": {
     "providerNamesPublic": false,
     "exactModelSubstitutionAllowed": false,

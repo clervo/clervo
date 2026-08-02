@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.market-sourcing-gap-evaluation.v1",
-  "evaluatedAt": "2026-08-02T07:08:25.825Z",
+  "evaluatedAt": "2026-08-02T08:43:26.583Z",
   "policy": {
     "ownerCashAvailableNowUsd": 0,
     "existingCreditsMayBackPaidCustomerTraffic": true,
@@ -36,6 +36,7 @@
     ],
     "materialAiGaps": [
       "independent exact-model fallback for most model identities",
+      "independent production image fallback with enough launch runway",
       "production STT integration",
       "music execution contract and perceptual benchmark for the newly qualified funded route",
       "sound-effect generation",
@@ -160,6 +161,52 @@
         "https://docs.cdp.coinbase.com/data/node/pricing"
       ],
       "reason": "The existing account is valuable later, but Node traffic remains disabled until a hard application guard and verified billing cap prevent owner-cash overage."
+    },
+    {
+      "candidateId": "source.cloudflare_image_alternatives",
+      "capability": "ai.image_fallback",
+      "decision": "rejected_or_terms_blocked",
+      "starterBasis": "existing recurring 10,000-neuron daily allocation",
+      "evidence": [
+        "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+        "https://huggingface.co/spaces/CompVis/stable-diffusion-license/blob/main/license.txt",
+        "https://bfl.ai/legal/flux-api-service-terms"
+      ],
+      "reason": "FLUX Schnell and open-license DreamShaper each passed only 1/5 independent composition cases. The stronger newer BFL routes are positively priced but their current API terms expressly prohibit exposing the models behind a third-party integration API. No owned edge image route is an honest sale fallback."
+    },
+    {
+      "candidateId": "source.stability_image_api",
+      "capability": "ai.image_fallback",
+      "decision": "deferred_until_revenue",
+      "starterBasis": "25 one-time credits: about eight Core, six Turbo, or three Ultra successful images",
+      "evidence": [
+        "https://platform.stability.ai/pricing",
+        "https://platform.stability.ai/docs/api-reference",
+        "https://platform.stability.ai/faq",
+        "https://stability.ai/terms-of-service"
+      ],
+      "reason": "The official API permits commercial outputs and is a strong paid replacement candidate, but its one-time starter allowance cannot back meaningful launch traffic. Opening the account now would add an owner credential and benchmark-only supply, not resilient zero-owner-cash capacity."
+    },
+    {
+      "candidateId": "source.huggingface_inference",
+      "capability": "ai.multimodal_fallback",
+      "decision": "rejected_for_launch",
+      "starterBasis": "USD 0.10 recurring monthly routed-inference credit for a free user",
+      "evidence": [
+        "https://huggingface.co/docs/inference-providers/en/pricing"
+      ],
+      "reason": "The recurring credit is useful for experimentation but too small for a reliable paid customer route, and the routed multi-provider layer adds no advantage over the exact qualified suppliers already owned."
+    },
+    {
+      "candidateId": "source.nodereal_meganode",
+      "capability": "rpc.multichain_backup",
+      "decision": "reserve_terms_ambiguous",
+      "starterBasis": "no-card free plan advertising up to 100 million monthly compute units and 300 CUPS",
+      "evidence": [
+        "https://docs.nodereal.io/docs/pricing-plan",
+        "https://nodereal.io/terms"
+      ],
+      "reason": "The current terms target developer and dapp use and do not show an express resale prohibition, but they also do not expressly authorize a paid raw-RPC gateway. Coverage is narrower than the already qualified dedicated source, so a new account does not remove the written-permission blocker."
     },
     {
       "candidateId": "source.blockrun_free_upstream",

@@ -202,6 +202,11 @@ disabled without explicit owner approval.
   only three material next inputs: a dedicated recurring-free RPC key, an
   independent-index recurring-credit search key, and a least-privilege reissued
   object-storage key for the existing account.
+- A final image-supply pass rejected the remaining owned alternatives and did
+  not create a low-runway account merely to increase the supplier count. The
+  strongest official replacement offers only 25 one-time starter credits, and
+  the routed-aggregator alternative offers only USD 0.10 monthly; both remain
+  deferred until revenue because neither adds meaningful launch resilience.
 - The selected dRPC account exposes dedicated endpoints for all 13 required
   non-Solana networks on one application key. Solana and its indexed Wallet API
   require Growth and are excluded. The first key was disclosed in chat, so it is
