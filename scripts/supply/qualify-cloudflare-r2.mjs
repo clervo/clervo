@@ -3,9 +3,11 @@ import { performance } from 'node:perf_hooks';
 
 const accessIdentifier = process.env.R2_ACCESS_KEY_ID;
 const secretCredential = process.env.R2_SECRET_ACCESS_KEY;
-const configuredEndpoint = process.env.R2_S3_ENDPOINT;
+const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+const useDerivedEndpoint = process.env.R2_USE_DERIVED_ACCOUNT_ENDPOINT === 'true';
+const configuredEndpoint = useDerivedEndpoint && accountId ? `https://${accountId}.r2.cloudflarestorage.com` : process.env.R2_S3_ENDPOINT;
 if (!accessIdentifier || !secretCredential || !configuredEndpoint) {
-  throw new Error('R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, and R2_S3_ENDPOINT are required');
+  throw new Error('R2 access credentials and an account-scoped endpoint are required');
 }
 
 const endpoint = new URL(configuredEndpoint);
@@ -78,6 +80,7 @@ const report = {
   ownerCashSpentUsd: 0,
   externalCalls: 1,
   credentialSlotsUsed: 1,
+  endpointSelection: useDerivedEndpoint ? 'derived_from_account_id' : 'configured_legacy_value',
   operation: 'ListBuckets',
   operationClass: 'class_a',
   objectReadCalls: 0,

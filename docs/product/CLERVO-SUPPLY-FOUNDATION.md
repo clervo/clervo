@@ -124,9 +124,10 @@ disabled without explicit owner approval.
   needs a compatible written agreement or a replacement data source.
 - Cloudflare R2 has current positive customer prices for storage, reads, writes,
   and egress against its published recurring free tier and Standard rates. The
-  legacy account endpoint failed TLS before authentication during one signed
-  ListBuckets probe; no object content or mutation was attempted. It remains
-  blocked until the endpoint, isolation, lifecycle, and hard overage guard work.
+  legacy endpoint failed TLS; the derived account-scoped endpoint reached the
+  service but rejected signed ListBuckets with HTTP 403. No object content or
+  mutation was attempted. Replacement permission/credentials, isolation,
+  lifecycle, and a hard overage guard remain required.
 - Read-only integration probes authenticated GitHub, DEV, Hashnode's current
   beta API, Telegram, and WorkOS without reading repositories, publishing, or
   messaging; the GitLab token returned HTTP 401. Every integration is priced,

@@ -1,11 +1,12 @@
 {
   "schemaVersion": "clervo.cloudflare-r2-qualification.v1",
-  "evaluatedAt": "2026-08-02T05:55:26.918Z",
+  "evaluatedAt": "2026-08-02T06:34:58.288Z",
   "serviceId": "supply.cloudflare_r2",
   "endpointOrigin": "https://r2.cloudflarestorage.com",
   "ownerCashSpentUsd": 0,
   "externalCalls": 1,
   "credentialSlotsUsed": 1,
+  "endpointSelection": "derived_from_account_id",
   "operation": "ListBuckets",
   "operationClass": "class_a",
   "objectReadCalls": 0,
@@ -14,9 +15,9 @@
   "customerObjectDataUsed": false,
   "responsePayloadValuesRecorded": false,
   "observation": {
-    "status": null,
-    "latencyMs": 57,
-    "transportFailureCode": "tls_handshake_failure",
+    "status": 403,
+    "latencyMs": 150,
+    "transportFailureCode": null,
     "s3ListShapeValid": false,
     "bucketCount": null,
     "ownerMetadataPresent": false,
@@ -38,7 +39,7 @@
     "automaticPaidUpgradeAllowedByClervo": false
   },
   "terms": {
-    "reviewedAt": "2026-08-02T05:55:26.918Z",
+    "reviewedAt": "2026-08-02T06:34:58.288Z",
     "pricingUrl": "https://developers.cloudflare.com/r2/pricing/",
     "productUrl": "https://developers.cloudflare.com/r2/",
     "customerApplicationUseDocumented": true,

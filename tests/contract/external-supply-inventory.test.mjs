@@ -209,7 +209,8 @@ test('owned object storage is positively priced but fails closed on the legacy e
   assert.equal(evidence.ownerCashSpentUsd, 0);
   assert.deepEqual([evidence.objectReadCalls, evidence.objectWriteCalls, evidence.deleteCalls], [0, 0, 0]);
   assert.equal(evidence.customerObjectDataUsed, false);
-  assert.equal(evidence.observation.transportFailureCode, 'tls_handshake_failure');
+  assert.equal(evidence.endpointSelection, 'derived_from_account_id');
+  assert.deepEqual([evidence.observation.status, evidence.observation.transportFailureCode, evidence.observation.passed], [403, null, false]);
   assert.equal(evidence.summary.productionStatus, 'blocked_credential_or_permission_failure');
   assert.equal(evidence.allowance.automaticPaidUpgradeAllowedByClervo, false);
   assert.equal(evidence.terms.rawCredentialOrAccountResaleAllowed, false);

@@ -312,8 +312,8 @@
       "resaleStatus": "restricted",
       "publicProviderDisclosure": "hidden_model_name_only",
       "notes": [
-        "The account-specific endpoint host is intentionally not recorded. A signed ListBuckets request reached a TLS handshake failure before authentication on 2026-08-02; no object data was read, written, or deleted.",
-        "All storage dimensions have positive customer prices against current published Standard rates and the recurring free tier, but listing remains blocked pending a working endpoint, customer-object isolation, lifecycle qualification, and a verified hard overage guard.",
+        "The legacy endpoint failed TLS. A retry against the deterministic account-scoped hostname reached the service but returned HTTP 403 to signed ListBuckets; the credentials lack the required permission or are no longer valid. No object data was read, written, or deleted.",
+        "All storage dimensions have positive customer prices against current published Standard rates and the recurring free tier, but listing remains blocked pending replacement permission or credentials, customer-object isolation, lifecycle qualification, and a verified hard overage guard.",
         "R2 is documented for application and customer-content storage. Clervo may provide value-added storage but never resell raw credentials or supplier account access."
       ]
     },
