@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "clervo.production-gcp-deployment.v1",
+  "state": "repository_ready_cloud_unapplied",
+  "project": "bloxsniper-prod",
+  "region": "us-central1",
+  "protectedResources": [
+    "ai.clervo.dev",
+    "the existing Clervo VM model gateway",
+    "all unrelated and legacy cloud resources"
+  ],
+  "resources": {
+    "artifactRepository": "clervo-production",
+    "image": "clervo-api",
+    "service": "clervo-api-production",
+    "databaseInstance": "clervo-production-postgres",
+    "database": "clervo",
+    "runtimeServiceAccount": "clervo-api-production",
+    "buildServiceAccount": "clervo-production-builder"
+  },
+  "database": {
+    "engine": "POSTGRES_18",
+    "observedSupportedMinor": "18.4",
+    "edition": "ENTERPRISE",
+    "availability": "regional",
+    "cpu": 2,
+    "memory": "7680MiB",
+    "storageType": "SSD",
+    "storageGiB": 20,
+    "storageAutoIncrease": true,
+    "deletionProtection": true,
+    "automatedBackups": true,
+    "backupStartUtc": "03:00",
+    "retainedBackups": 14,
+    "pointInTimeRecovery": true,
+    "transactionLogRetentionDays": 7,
+    "retainBackupsOnDelete": true
+  },
+  "runtime": {
+    "executionEnvironment": "gen2",
+    "ingress": "all",
+    "authentication": "required_until_public_launch",
+    "cpu": 1,
+    "memory": "512Mi",
+    "containerConcurrency": 16,
+    "minimumInstances": 0,
+    "maximumInstances": 5,
+    "requestTimeoutSeconds": 20,
+    "port": 8080,
+    "cpuThrottling": false,
+    "sessionAffinity": false,
+    "automaticBaseImageUpdates": false,
+    "startupProbe": {
+      "path": "/readyz",
+      "periodSeconds": 2,
+      "timeoutSeconds": 1,
+      "failureThreshold": 30
+    },
+    "livenessProbe": {
+      "path": "/v1/health",
+      "periodSeconds": 10,
+      "timeoutSeconds": 1,
+      "failureThreshold": 3
+    },
+    "readinessProbe": {
+      "path": "/readyz",
+      "periodSeconds": 5,
+      "timeoutSeconds": 1,
+      "failureThreshold": 2,
+      "successThreshold": 1
+    },
+    "environment": {
+      "CLERVO_ENV": "production",
+      "CLERVO_STATE_BACKEND": "postgres",
+      "CLERVO_STATE_NAMESPACE": "production",
+      "CLERVO_MAX_CONCURRENT_EXECUTIONS": "16",
+      "CLERVO_TRAFFIC_MODE": "open"
+    },
+    "secretEnvironment": {
+      "CLERVO_DATABASE_URL": "clervo-production-database-url",
+      "CLERVO_MONITORING_ENDPOINT": "clervo-production-monitoring-endpoint",
+      "CLERVO_MONITORING_AUTHORIZATION": "clervo-production-monitoring-authorization"
+    },
+    "secretVersionsMustBePinned": true
+  },
+  "leastPrivilege": {
+    "runtimeProjectRoles": [
+      "roles/cloudsql.client"
+    ],
+    "runtimeSecretAccess": [
+      "clervo-production-database-url",
+      "clervo-production-monitoring-endpoint",
+      "clervo-production-monitoring-authorization"
+    ],
+    "runtimeForbiddenRoles": [
+      "roles/owner",
+      "roles/editor",
+      "roles/iam.serviceAccountAdmin",
+      "roles/resourcemanager.projectIamAdmin"
+    ]
+  },
+  "build": {
+    "config": "infra/production/gcp/cloudbuild.yaml",
+    "artifactMustBeDigestAddressed": true,
+    "cloudBuildVerifiedProvenanceRequired": true,
+    "maximumCriticalVulnerabilities": 0,
+    "maximumHighVulnerabilities": 0
+  },
+  "rollout": {
+    "candidateReceivesTrafficOnDeploy": false,
+    "candidateTagRequired": true,
+    "authenticatedSmokeRequired": true,
+    "databaseReadinessRequired": true,
+    "monitoringDeliveryRequired": true,
+    "paidExecutionEnabled": false,
+    "previousVerifiedRevisionRequired": true,
+    "previousVerifiedImageDigestRequired": true,
+    "ownerConfirmationRequiredForMutation": true
+  },
+  "externalEffectsPerformed": false
+}

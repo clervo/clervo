@@ -155,6 +155,8 @@
     "qualify:load": "node ./scripts/verify-runtime.mjs && npm run build && node ./scripts/production/qualify-load.mjs",
     "test:n14.8": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/n14.8.test.mjs",
     "test:n14.9": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n14.9.test.mjs",
+    "production:gcp": "node ./scripts/verify-runtime.mjs && node ./scripts/production/gcp-release.mjs",
+    "test:n14.10": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/n14.10.test.mjs",
     "verify:stage6-exit": "node ./scripts/verify-runtime.mjs && node ./scripts/check-ai-supply-readiness.mjs",
     "staging:smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-smoke.mjs",
     "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",

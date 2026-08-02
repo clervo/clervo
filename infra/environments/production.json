@@ -6,12 +6,13 @@
   "productionDataAllowed": true,
   "mockProvidersByDefault": false,
   "deploymentApprovalRequired": true,
-  "secretSource": "github-environment-production",
+  "secretSource": "google-secret-manager-pinned-versions",
   "databaseBoundary": "clervo-production",
   "queueBoundary": "clervo-production",
   "service": {
     "host": "127.0.0.1",
     "port": 3300,
-    "healthPath": "/healthz"
+    "healthPath": "/v1/health",
+    "readinessPath": "/readyz"
   }
 }

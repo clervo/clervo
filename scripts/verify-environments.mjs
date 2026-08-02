@@ -25,7 +25,10 @@ try {
     assert.equal(environment.productionDataAllowed, environment.name === 'production');
     assert.match(environment.databaseBoundary, new RegExp(environment.name));
     assert.match(environment.queueBoundary, new RegExp(environment.name));
-    assert.equal(environment.service.healthPath, environment.name === 'staging' ? '/v1/health' : '/healthz');
+    assert.equal(
+      environment.service.healthPath,
+      ['staging', 'production'].includes(environment.name) ? '/v1/health' : '/healthz',
+    );
   }
 
   assert.equal(new Set(environments.map((item) => item.databaseBoundary)).size, names.length);
@@ -38,6 +41,8 @@ try {
   assert.notEqual(staging.secretSource, production.secretSource);
   assert.notEqual(staging.databaseBoundary, production.databaseBoundary);
   assert.notEqual(staging.queueBoundary, production.queueBoundary);
+  assert.equal(production.service.readinessPath, '/readyz');
+  assert.equal(production.secretSource, 'google-secret-manager-pinned-versions');
 
   assert.equal(manifest.environment, 'staging');
   assert.equal(manifest.healthPath, staging.service.healthPath);

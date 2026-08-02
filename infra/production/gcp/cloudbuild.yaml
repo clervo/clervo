@@ -1,0 +1,40 @@
+steps:
+  - id: acceptance
+    name: node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9b581ef1dd7d96ced463b8e7
+    entrypoint: bash
+    args:
+      - -ceu
+      - |
+        npm ci
+        npm run build
+        node --test \
+          tests/contract/n14.1.test.mjs \
+          tests/contract/n14.2.test.mjs \
+          tests/contract/n14.3.test.mjs \
+          tests/contract/n14.4.test.mjs \
+          tests/contract/n14.5.test.mjs \
+          tests/contract/n14.6.test.mjs \
+          tests/contract/n14.7.test.mjs \
+          tests/contract/n14.8.test.mjs \
+          tests/contract/n14.9.test.mjs \
+          tests/contract/n14.10.test.mjs
+        npm audit --omit=dev --audit-level=high
+        npm run lint
+        npm run scan:secrets
+        ./scripts/verify-clean-room-boundary.sh
+  - id: image
+    name: gcr.io/cloud-builders/docker@sha256:f8b08c609fdc392ee6827ff3e1725e4980f7d96bde9f76f4695086405c96c147
+    args:
+      - build
+      - --file
+      - Dockerfile
+      - --tag
+      - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-api:$COMMIT_SHA
+      - .
+images:
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-api:$COMMIT_SHA
+options:
+  requestedVerifyOption: VERIFIED
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+  machineType: E2_HIGHCPU_8
+timeout: 1800s

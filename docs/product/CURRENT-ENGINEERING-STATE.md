@@ -221,6 +221,20 @@ Registry digest, signed provenance, remote rollback, full load,
 monitoring delivery, managed recovery, and an owner-approved cloud release
 remain pending.
 
+The Google Cloud production path is now repository-defined without applying
+cloud state. It fixes the target to the existing `bloxsniper-prod/us-central1`
+boundary while explicitly excluding `ai.clervo.dev` and all legacy resources.
+Cloud Build runs the Stage 14 acceptance boundary, publishes through its
+artifact declaration, and requests verified provenance. The Cloud Run candidate
+is private, digest-addressed, tagged, and receives zero traffic; promotion
+requires authenticated smoke and acknowledged monitoring delivery. Cloud SQL
+is specified as deletion-protected regional PostgreSQL 18 with daily backups,
+14 retained backups, and seven-day PITR. Runtime IAM is restricted to Cloud SQL
+Client and the three named secrets, whose versions must be pinned. Deployment,
+promotion, rollback, public access, database creation, IAM changes, and spend
+remain unapplied owner-approved external effects. The guarded release control
+also rejects `ai.clervo.dev` as an origin before any cloud command.
+
 ## Live qualification result
 
 GKE Calico failed closed because metadata remained reachable, including through
