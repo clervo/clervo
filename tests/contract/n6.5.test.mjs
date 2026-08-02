@@ -5,6 +5,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
+import { verifyAiModelCatalog } from '../../dist/packages/contracts/src/index.js';
 import { qualifyAiChatRoute } from '../../dist/services/ai/src/qualification.js';
 import { createAiExecutionMonitor } from '../../dist/services/ai/src/monitoring.js';
 
@@ -65,7 +66,7 @@ test('screened Clervo routes and three independent candidates preserve honest qu
   const clervo = candidates.targets.filter(({ providerId }) => providerId === 'provider.clervo_ai_gateway');
   const independent = candidates.targets.filter(({ providerId }) => providerId !== 'provider.clervo_ai_gateway');
   assert.deepEqual(clervo.map(({ exactModelId }) => exactModelId), ['gpt-5.6-luna', 'gpt-5.6-terra', 'gpt-5.6-sol']);
-  assert.ok(clervo.every(({ requiredConfigurationNames, requiredSecretNames, termsStatus, resaleAllowed, qualificationStatus, blockerCodes }) => requiredConfigurationNames.includes('CLERVO_AI_BASE_URL') && requiredSecretNames.includes('CLERVO_AI_API_KEY') && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'blocked' && blockerCodes.includes('supplier_cost_unknown') && blockerCodes.includes('deep_benchmark_not_run')));
+  assert.ok(clervo.every(({ requiredConfigurationNames, requiredSecretNames, termsStatus, resaleAllowed, qualificationStatus, blockerCodes }) => requiredConfigurationNames.includes('CLERVO_AI_BASE_URL') && requiredSecretNames.includes('CLERVO_AI_API_KEY') && termsStatus === 'restricted' && resaleAllowed && qualificationStatus === 'passed' && blockerCodes.length === 0));
   assert.deepEqual(independent.map(({ providerId }) => providerId), ['provider.google_gemini', 'provider.groq', 'provider.cloudflare_workers_ai']);
   assert.equal(new Set(independent.map(({ supplyFamilyId }) => supplyFamilyId)).size, 3);
   assert.deepEqual(independent.map(({ exactModelId }) => exactModelId), ['gemini-3.6-flash', 'openai/gpt-oss-120b', '@cf/openai/gpt-oss-120b']);
@@ -77,6 +78,19 @@ test('screened Clervo routes and three independent candidates preserve honest qu
   assert.ok(candidates.modalTargets.flatMap(({ documentation }) => documentation).every(({ url }) => /^https:\/\/developers\.openai\.com\/api\/docs\/models\//u.test(url)));
   assert.equal(candidates.quickAi.status, 'disabled');
   assert.deepEqual(candidates.quickAi.prohibitedIdentities, ['Claude-labelled routes', 'TongKhokr', 'MWAPI']);
+});
+
+test('live Clervo exact routes form a valid qualified and sellable internal model catalog', async () => {
+  const catalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
+  assert.equal(verifyAiModelCatalog(catalog), true);
+  assert.deepEqual(catalog.routes.map(({ exactModelId, qualification }) => [exactModelId, qualification.status]), [
+    ['gpt-5.6-luna', 'passed'],
+    ['gpt-5.6-sol', 'passed'],
+    ['gpt-5.6-terra', 'passed'],
+  ]);
+  assert.deepEqual(catalog.qualifiedSupplyFamilies, ['supply.clervo_ai_gateway']);
+  const pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-launch-pricing.v1.json'), 'utf8'));
+  assert.ok(catalog.routes.every(({ exactModelId }) => pricing.routes.find(({ modelId, listingStatus }) => modelId === exactModelId && listingStatus === 'sellable')));
 });
 
 test('provider candidate schema compiles strictly and remains private', async () => {

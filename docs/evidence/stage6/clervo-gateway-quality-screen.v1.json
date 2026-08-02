@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "clervo.stage6.gateway-quality-screen.v1",
+  "evaluatedAt": "2026-08-02T02:26:37.828Z",
+  "corpusSha256": "sha256:63c21bd50febc2c243e42e2c7c4e557fa0b66eb6d378a3a027e0e52783558efb",
+  "externalCallsUpperBound": 67,
+  "ownerCashSpentUsd": 0,
+  "supplierBalanceDebitKnown": false,
+  "secretValuesRecorded": false,
+  "promptOrOutputPayloadsRecorded": false,
+  "calibration": {
+    "initialScores": {
+      "gpt-5.6-luna": 9000,
+      "gpt-5.6-terra": 8000,
+      "gpt-5.6-sol": 8000
+    },
+    "issue": "Two tasks did not state the required top-level answer wrapper precisely, so valid raw objects and arrays were rejected.",
+    "correction": "The corpus was clarified before the final complete run; the initial scores remain recorded here.",
+    "finalRunComplete": true
+  },
+  "finalResults": [
+    {
+      "model": "gpt-5.6-luna",
+      "passed": 10,
+      "total": 10,
+      "scoreBasisPoints": 10000,
+      "latencyMsP50": 1985.18,
+      "latencyMsP95": 11298.03,
+      "failedTaskIds": []
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "passed": 9,
+      "total": 10,
+      "scoreBasisPoints": 9000,
+      "latencyMsP50": 1214.02,
+      "latencyMsP95": 5616.61,
+      "failedTaskIds": ["instruction_priority"]
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "passed": 10,
+      "total": 10,
+      "scoreBasisPoints": 10000,
+      "latencyMsP50": 2705.13,
+      "latencyMsP95": 6371.46,
+      "failedTaskIds": []
+    }
+  ],
+  "positioning": {
+    "gpt-5.6-luna": "best_value",
+    "gpt-5.6-terra": "balanced",
+    "gpt-5.6-sol": "best_quality"
+  },
+  "decision": "sellable_at_credit_backed_launch_prices_with_deeper_reliability_and_workload_benchmarks_pending"
+}

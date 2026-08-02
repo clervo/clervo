@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-launch-pricing.schema.json",
+  "title": "Clervo internal AI launch pricing",
+  "type": "object",
+  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "unit", "policy", "competitorReference", "gatewayLimits", "routes"],
+  "$defs": {
+    "tokenPricing": {
+      "type": "object",
+      "required": ["inputMicrosPerMillion", "cachedInputMicrosPerMillion", "outputMicrosPerMillion", "reasoningMicrosPerMillion"],
+      "properties": {
+        "inputMicrosPerMillion": { "type": "integer", "minimum": 0, "maximum": 1000000000 },
+        "cachedInputMicrosPerMillion": { "type": "integer", "minimum": 0, "maximum": 1000000000 },
+        "outputMicrosPerMillion": { "type": "integer", "minimum": 0, "maximum": 1000000000 },
+        "reasoningMicrosPerMillion": { "type": "integer", "minimum": 0, "maximum": 1000000000 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "schemaVersion": { "const": "clervo.ai-launch-pricing.v1" },
+    "priceVersion": { "const": "2026-08-02.1" },
+    "evaluatedAt": { "type": "string", "format": "date-time" },
+    "currency": { "const": "USD" },
+    "unit": { "const": "one_million_tokens" },
+    "policy": {
+      "type": "object",
+      "required": ["kind", "customerFreeByDefault", "positiveMarginRequiredAtLaunch", "unknownSupplierDebitBlocksSale", "shadowBudgetValuationRequired", "exactRouteSubstitution", "aliasBilling"],
+      "properties": {
+        "kind": { "const": "competitive_credit_backed_launch" },
+        "customerFreeByDefault": { "const": false },
+        "positiveMarginRequiredAtLaunch": { "const": false },
+        "unknownSupplierDebitBlocksSale": { "const": false },
+        "shadowBudgetValuationRequired": { "const": true },
+        "exactRouteSubstitution": { "const": "prohibited" },
+        "aliasBilling": { "const": "resolved_model_price" }
+      },
+      "additionalProperties": false
+    },
+    "competitorReference": {
+      "type": "object",
+      "required": ["sourceUrl", "checkedAt", "catalogRecords", "pricingUnit", "discountBasisPoints"],
+      "properties": {
+        "sourceUrl": { "const": "https://blockrun.ai/api/v1/models" },
+        "checkedAt": { "type": "string", "format": "date-time" },
+        "catalogRecords": { "const": 83 },
+        "pricingUnit": { "const": "USD_per_million_tokens" },
+        "discountBasisPoints": { "const": 5000 }
+      },
+      "additionalProperties": false
+    },
+    "gatewayLimits": {
+      "type": "object",
+      "required": ["declaredRequestLimitKnown", "observedRemainingMaximum", "customerRequestsPerMinute", "reservedOperationalRequestsPerMinute", "perCustomerRequestsPerMinute", "maximumConcurrentRequests", "queueDeadlineMs"],
+      "properties": {
+        "declaredRequestLimitKnown": { "const": false },
+        "observedRemainingMaximum": { "const": 29 },
+        "customerRequestsPerMinute": { "const": 20 },
+        "reservedOperationalRequestsPerMinute": { "const": 6 },
+        "perCustomerRequestsPerMinute": { "const": 5 },
+        "maximumConcurrentRequests": { "const": 4 },
+        "queueDeadlineMs": { "const": 30000 }
+      },
+      "additionalProperties": false
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": ["modelId", "aliases", "positioning", "listingStatus", "customerPrice", "shadowBudgetValuation", "customerMaximumOutputTokens"],
+        "properties": {
+          "modelId": { "enum": ["gpt-5.6-luna", "gpt-5.6-terra", "gpt-5.6-sol"] },
+          "aliases": { "type": "array", "uniqueItems": true, "items": { "enum": ["clervo/fast", "clervo/smart", "clervo/code", "clervo/deep"] } },
+          "positioning": { "enum": ["best_value", "balanced", "best_quality"] },
+          "listingStatus": { "const": "sellable" },
+          "customerPrice": { "$ref": "#/$defs/tokenPricing" },
+          "shadowBudgetValuation": { "$ref": "#/$defs/tokenPricing" },
+          "customerMaximumOutputTokens": { "type": "integer", "minimum": 1, "maximum": 128000 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

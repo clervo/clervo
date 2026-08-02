@@ -20,7 +20,10 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(inventory.source.valuesIncluded, false);
   assert.equal(inventory.commercialPolicy.ownerCashBudgetUsd, 0);
   assert.equal(inventory.commercialPolicy.customerFreeByDefault, false);
-  assert.equal(inventory.commercialPolicy.positiveMarginRequired, true);
+  assert.equal(inventory.commercialPolicy.positiveMarginRequiredAtLaunch, false);
+  assert.equal(inventory.commercialPolicy.unknownSupplierCostBlocksSale, false);
+  assert.equal(inventory.commercialPolicy.launchPricingPolicy, 'competitive_credit_backed');
+  assert.equal(inventory.commercialPolicy.budgetRunwayRequired, true);
   assert.equal(inventory.commercialPolicy.providerNamesPublic, false);
   assert.equal(inventory.commercialPolicy.silentQualityDowngradeAllowed, false);
   assert.equal(new Set(inventory.services.map(({ serviceId }) => serviceId)).size, inventory.services.length);

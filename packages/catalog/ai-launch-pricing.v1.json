@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "clervo.ai-launch-pricing.v1",
+  "priceVersion": "2026-08-02.1",
+  "evaluatedAt": "2026-08-02T02:27:00.000Z",
+  "currency": "USD",
+  "unit": "one_million_tokens",
+  "policy": {
+    "kind": "competitive_credit_backed_launch",
+    "customerFreeByDefault": false,
+    "positiveMarginRequiredAtLaunch": false,
+    "unknownSupplierDebitBlocksSale": false,
+    "shadowBudgetValuationRequired": true,
+    "exactRouteSubstitution": "prohibited",
+    "aliasBilling": "resolved_model_price"
+  },
+  "competitorReference": {
+    "sourceUrl": "https://blockrun.ai/api/v1/models",
+    "checkedAt": "2026-08-02T02:27:00.000Z",
+    "catalogRecords": 83,
+    "pricingUnit": "USD_per_million_tokens",
+    "discountBasisPoints": 5000
+  },
+  "gatewayLimits": {
+    "declaredRequestLimitKnown": false,
+    "observedRemainingMaximum": 29,
+    "customerRequestsPerMinute": 20,
+    "reservedOperationalRequestsPerMinute": 6,
+    "perCustomerRequestsPerMinute": 5,
+    "maximumConcurrentRequests": 4,
+    "queueDeadlineMs": 30000
+  },
+  "routes": [
+    {
+      "modelId": "gpt-5.6-luna",
+      "aliases": ["clervo/fast"],
+      "positioning": "best_value",
+      "listingStatus": "sellable",
+      "customerPrice": {
+        "inputMicrosPerMillion": 500000,
+        "cachedInputMicrosPerMillion": 50000,
+        "outputMicrosPerMillion": 3000000,
+        "reasoningMicrosPerMillion": 3000000
+      },
+      "shadowBudgetValuation": {
+        "inputMicrosPerMillion": 1000000,
+        "cachedInputMicrosPerMillion": 100000,
+        "outputMicrosPerMillion": 6000000,
+        "reasoningMicrosPerMillion": 6000000
+      },
+      "customerMaximumOutputTokens": 16384
+    },
+    {
+      "modelId": "gpt-5.6-terra",
+      "aliases": ["clervo/smart"],
+      "positioning": "balanced",
+      "listingStatus": "sellable",
+      "customerPrice": {
+        "inputMicrosPerMillion": 1250000,
+        "cachedInputMicrosPerMillion": 125000,
+        "outputMicrosPerMillion": 7500000,
+        "reasoningMicrosPerMillion": 7500000
+      },
+      "shadowBudgetValuation": {
+        "inputMicrosPerMillion": 2500000,
+        "cachedInputMicrosPerMillion": 250000,
+        "outputMicrosPerMillion": 15000000,
+        "reasoningMicrosPerMillion": 15000000
+      },
+      "customerMaximumOutputTokens": 32768
+    },
+    {
+      "modelId": "gpt-5.6-sol",
+      "aliases": ["clervo/code", "clervo/deep"],
+      "positioning": "best_quality",
+      "listingStatus": "sellable",
+      "customerPrice": {
+        "inputMicrosPerMillion": 2500000,
+        "cachedInputMicrosPerMillion": 250000,
+        "outputMicrosPerMillion": 15000000,
+        "reasoningMicrosPerMillion": 15000000
+      },
+      "shadowBudgetValuation": {
+        "inputMicrosPerMillion": 5000000,
+        "cachedInputMicrosPerMillion": 500000,
+        "outputMicrosPerMillion": 30000000,
+        "reasoningMicrosPerMillion": 30000000
+      },
+      "customerMaximumOutputTokens": 65536
+    }
+  ]
+}

@@ -49,13 +49,16 @@
     },
     "commercialPolicy": {
       "type": "object",
-      "required": ["ownerCashBudgetUsd", "creditBackedUsageAllowed", "customerFreeByDefault", "competitiveCustomerPricingRequired", "positiveMarginRequired", "providerNamesPublic", "modelNamesPublic", "silentQualityDowngradeAllowed", "multiAccountUse"],
+      "required": ["ownerCashBudgetUsd", "creditBackedUsageAllowed", "customerFreeByDefault", "competitiveCustomerPricingRequired", "positiveMarginRequiredAtLaunch", "unknownSupplierCostBlocksSale", "launchPricingPolicy", "budgetRunwayRequired", "providerNamesPublic", "modelNamesPublic", "silentQualityDowngradeAllowed", "multiAccountUse"],
       "properties": {
         "ownerCashBudgetUsd": { "const": 0 },
         "creditBackedUsageAllowed": { "const": true },
         "customerFreeByDefault": { "const": false },
         "competitiveCustomerPricingRequired": { "const": true },
-        "positiveMarginRequired": { "const": true },
+        "positiveMarginRequiredAtLaunch": { "const": false },
+        "unknownSupplierCostBlocksSale": { "const": false },
+        "launchPricingPolicy": { "const": "competitive_credit_backed" },
+        "budgetRunwayRequired": { "const": true },
         "providerNamesPublic": { "const": false },
         "modelNamesPublic": { "const": true },
         "silentQualityDowngradeAllowed": { "const": false },

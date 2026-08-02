@@ -14,8 +14,8 @@
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
-      "qualificationStatus": "blocked",
-      "blockerCodes": ["supplier_cost_unknown", "deep_benchmark_not_run"],
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
       "documentation": [
         { "title": "Clervo gateway authenticated model catalog", "url": "https://ai.clervo.dev/v1/models", "checkedAt": "2026-08-02T02:16:26.054Z" }
       ]
@@ -32,8 +32,8 @@
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
-      "qualificationStatus": "blocked",
-      "blockerCodes": ["supplier_cost_unknown", "deep_benchmark_not_run"],
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
       "documentation": [
         { "title": "Clervo gateway authenticated model catalog", "url": "https://ai.clervo.dev/v1/models", "checkedAt": "2026-08-02T02:16:26.054Z" }
       ]
@@ -50,8 +50,8 @@
       "selectedForQualification": true,
       "termsStatus": "restricted",
       "resaleAllowed": true,
-      "qualificationStatus": "blocked",
-      "blockerCodes": ["supplier_cost_unknown", "deep_benchmark_not_run"],
+      "qualificationStatus": "passed",
+      "blockerCodes": [],
       "documentation": [
         { "title": "Clervo gateway authenticated model catalog", "url": "https://ai.clervo.dev/v1/models", "checkedAt": "2026-08-02T02:16:26.054Z" }
       ]
