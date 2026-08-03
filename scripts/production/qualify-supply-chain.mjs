@@ -118,6 +118,16 @@ try {
     counts[severity] = (counts[severity] ?? 0) + 1;
     return counts;
   }, {});
+  const blockingVulnerabilities = vulnerabilities
+    .filter(({ Severity }) => ['HIGH', 'CRITICAL'].includes(Severity))
+    .map(({ VulnerabilityID, PkgName, InstalledVersion, FixedVersion, Severity }) => ({
+      vulnerabilityId: VulnerabilityID,
+      package: PkgName,
+      installedVersion: InstalledVersion,
+      fixedVersion: FixedVersion,
+      severity: Severity,
+    }));
+  if (blockingVulnerabilities.length > 0) process.stderr.write(`${JSON.stringify({ blockingVulnerabilities }, null, 2)}\n`);
   assert.ok((vulnerabilityCounts.high ?? 0) <= policy.containerVulnerabilityGate.maximumHigh);
   assert.ok((vulnerabilityCounts.critical ?? 0) <= policy.containerVulnerabilityGate.maximumCritical);
 
