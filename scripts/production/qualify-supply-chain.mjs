@@ -112,7 +112,9 @@ try {
 
   const vulnerabilityJson = docker(scanArguments('json'));
   const vulnerabilityReport = JSON.parse(vulnerabilityJson);
-  const vulnerabilities = vulnerabilityReport.Results?.flatMap(({ Vulnerabilities }) => Vulnerabilities ?? []) ?? [];
+  const vulnerabilities = vulnerabilityReport.Results?.flatMap(({ Target, Vulnerabilities }) => (
+    Vulnerabilities ?? []
+  ).map((item) => ({ ...item, scanTarget: Target }))) ?? [];
   const vulnerabilityCounts = vulnerabilities.reduce((counts, item) => {
     const severity = String(item.Severity ?? 'UNKNOWN').toLowerCase();
     counts[severity] = (counts[severity] ?? 0) + 1;
@@ -120,7 +122,8 @@ try {
   }, {});
   const blockingVulnerabilities = vulnerabilities
     .filter(({ Severity }) => ['HIGH', 'CRITICAL'].includes(Severity))
-    .map(({ VulnerabilityID, PkgName, InstalledVersion, FixedVersion, Severity }) => ({
+    .map(({ VulnerabilityID, PkgName, InstalledVersion, FixedVersion, Severity, scanTarget }) => ({
+      target: scanTarget,
       vulnerabilityId: VulnerabilityID,
       package: PkgName,
       installedVersion: InstalledVersion,
