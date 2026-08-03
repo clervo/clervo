@@ -58,6 +58,26 @@ test('private proof deployment is exact, zero-traffic, removable, and separate f
   assert.equal(proof.ownerPaymentApprovalRequired, true);
   assert.equal(proof.paymentAuthorized, false);
   assert.equal(proof.paymentEffects, 0);
+  assert.deepEqual(proof.observedPreflight, {
+    observedAt: '2026-08-03T22:57:00Z',
+    revision: 'clervo-api-production-00009-qay',
+    tag: 'x402-proof-92dc26cdbedf',
+    trafficPercent: 0,
+    publicInvoker: false,
+    artifactCritical: 0,
+    artifactHigh: 0,
+    healthStatus: 200,
+    challengeStatus: 402,
+    challengeStableOnRepeat: true,
+    receiverFingerprintMatched: true,
+    payerBalanceAtomic: '32000',
+    receiverBalanceAtomic: '0',
+    payerWithinApprovedCap: true,
+    separateAddresses: true,
+    paymentHeaderSent: false,
+    paymentAuthorized: false,
+    usdcSpent: '0',
+  });
   assert.match(deploy, /--no-allow-unauthenticated/u);
   assert.match(deploy, /--no-traffic/u);
   assert.match(deploy, /payer and receiver must differ/u);
