@@ -10,6 +10,7 @@ const bootstrap = await readFile('scripts/sandbox/gcp-control-service.mjs', 'utf
 test('Sandbox system capacity uses a bounded dedicated system node and keeps execution isolated', () => {
   assert.equal(policy.nodePool.name, 'sandbox-system');
   assert.equal(policy.nodePool.machineType, 'n1-standard-1');
+  assert.deepEqual(policy.nodePool.nodeLocations, ['us-central1-b']);
   assert.equal(policy.nodePool.nodes, 1);
   assert.equal(policy.controller.replicas, 1);
   assert.equal(policy.controller.minimumAvailable, 1);
@@ -35,6 +36,7 @@ test('capacity control quiesces the broken pool, creates its bounded replacement
   assert.match(capacity, /provision:sandbox-system-capacity/u);
   assert.match(capacity, /clusters', 'resize'/u);
   assert.match(capacity, /node-pools', 'create'/u);
+  assert.match(capacity, /--node-locations/u);
   assert.match(capacity, /policy\.quiescedNodePool\.desiredNodes/u);
   assert.doesNotMatch(capacity, /ai\.clervo\.dev|node-pools', 'delete'|instances', 'delete'|clusters', 'delete'/u);
   assert.match(bootstrap, /policy\.boundaries\.controllerRequests/u);

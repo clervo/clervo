@@ -35,6 +35,7 @@ function ensurePool() {
     gcloud([
       'container', 'node-pools', 'create', policy.nodePool.name, '--cluster', policy.cluster,
       '--project', policy.project, '--zone', policy.zone, '--machine-type', policy.nodePool.machineType,
+      '--node-locations', policy.nodePool.nodeLocations.join(','),
       '--num-nodes', String(policy.nodePool.nodes), '--disk-type', policy.nodePool.diskType,
       '--disk-size', String(policy.nodePool.diskSizeGb), '--image-type', policy.nodePool.imageType,
       '--max-pods-per-node', String(policy.nodePool.maximumPodsPerNode), '--service-account', policy.nodePool.serviceAccount,
@@ -45,6 +46,7 @@ function ensurePool() {
   }
   const value = JSON.parse(existing.stdout);
   assert.equal(value.config?.machineType, policy.nodePool.machineType);
+  assert.deepEqual(value.locations?.toSorted(), policy.nodePool.nodeLocations.toSorted());
   assert.equal(value.config?.serviceAccount, policy.nodePool.serviceAccount);
   assert.equal(value.config?.diskType, policy.nodePool.diskType);
   return false;
