@@ -74,7 +74,8 @@
       "CLERVO_STATE_NAMESPACE": "production",
       "CLERVO_MAX_CONCURRENT_EXECUTIONS": "16",
       "CLERVO_TRAFFIC_MODE": "open",
-      "CLERVO_MONITORING_DRIVER": "sentry"
+      "CLERVO_MONITORING_DRIVER": "sentry",
+      "CLERVO_X402_MODE": "disabled"
     },
     "secretEnvironment": {
       "CLERVO_DATABASE_URL": "clervo-production-database-url",

@@ -1,5 +1,6 @@
 import { randomBytes } from 'node:crypto';
 import { Pool } from 'pg';
+import { ReceiverAccountingJournal } from '../../../dist/packages/contracts/src/index.js';
 
 const LEASE_MS = 30_000;
 const TERMINAL_UNKNOWN = new Set(['execution_unknown', 'settlement_unknown']);
@@ -41,6 +42,7 @@ export class InMemoryX402OperationStore {
   durable = false;
   #operations = new Map();
   #fingerprints = new Map();
+  #accounting = new ReceiverAccountingJournal();
 
   constructor({ environmentNamespace = 'local' } = {}) {
     assertNamespace(environmentNamespace);
@@ -108,6 +110,15 @@ export class InMemoryX402OperationStore {
     return publicRecord(current);
   }
 
+  async markExecutionUnknown(input) {
+    const current = this.#operations.get(input.idempotencyKey);
+    if (current?.state !== 'executing' || current.leaseId !== input.leaseId) throw new Error('x402_execution_claim_lost');
+    current.state = 'execution_unknown';
+    current.leaseId = undefined;
+    current.leaseExpiresAt = undefined;
+    return publicRecord(current);
+  }
+
   async claimSettlement(input) {
     const current = this.#operations.get(input.idempotencyKey);
     if (current?.state !== 'executed' || current.paymentFingerprint !== input.paymentFingerprint) return current ? publicRecord(current) : Object.freeze({ kind: 'missing' });
@@ -121,13 +132,14 @@ export class InMemoryX402OperationStore {
   async complete(input) {
     const current = this.#operations.get(input.idempotencyKey);
     if (current?.state !== 'settling' || current.leaseId !== input.leaseId) throw new Error('x402_settlement_claim_lost');
+    const accounting = input.accountingInput === undefined ? undefined : this.#accounting.record(input.accountingInput);
     current.state = 'completed';
     current.settlement = structuredClone(input.settlement);
     current.response = structuredClone(input.response);
     current.completedAt = input.now;
     current.leaseId = undefined;
     current.leaseExpiresAt = undefined;
-    return publicRecord(current);
+    return Object.freeze({ ...publicRecord(current), ...(accounting ? { accounting } : {}) });
   }
 
   async markSettlementUnknown(input) {
@@ -227,6 +239,18 @@ export class PostgresX402OperationStore {
     });
   }
 
+  async markExecutionUnknown(input) {
+    const result = await this.client.query(
+      `UPDATE clervo_x402_operations
+          SET state = 'execution_unknown', lease_id = NULL, lease_expires_at = NULL, updated_at = $4::timestamptz
+        WHERE environment_namespace = $1 AND idempotency_key = $2 AND state = 'executing' AND lease_id = $3
+      RETURNING *`,
+      [this.environmentNamespace, input.idempotencyKey, input.leaseId, input.now],
+    );
+    if (!result.rows[0]) throw new Error('x402_execution_claim_lost');
+    return rowRecord(result.rows[0]);
+  }
+
   async claimSettlement(input) {
     const claimedLeaseId = leaseId();
     const result = await this.client.query(
@@ -242,16 +266,29 @@ export class PostgresX402OperationStore {
   }
 
   async complete(input) {
-    const result = await this.client.query(
-      `UPDATE clervo_x402_operations
-          SET state = 'completed', settlement_json = $4::jsonb, response_json = $5::jsonb,
-              lease_id = NULL, lease_expires_at = NULL, completed_at = $6::timestamptz, updated_at = $6::timestamptz
-        WHERE environment_namespace = $1 AND idempotency_key = $2 AND state = 'settling' AND lease_id = $3
-      RETURNING *`,
-      [this.environmentNamespace, input.idempotencyKey, input.leaseId, JSON.stringify(input.settlement), JSON.stringify(input.response), input.now],
-    );
-    if (!result.rows[0]) throw new Error('x402_settlement_claim_lost');
-    return rowRecord(result.rows[0]);
+    const client = typeof this.client.connect === 'function' ? await this.client.connect() : this.client;
+    const release = typeof client.release === 'function' ? () => client.release() : () => {};
+    try {
+      await client.query('BEGIN');
+      let accounting;
+      if (input.accountingInput !== undefined) accounting = await recordAccounting(client, this.environmentNamespace, input.accountingInput);
+      const result = await client.query(
+        `UPDATE clervo_x402_operations
+            SET state = 'completed', settlement_json = $4::jsonb, response_json = $5::jsonb,
+                lease_id = NULL, lease_expires_at = NULL, completed_at = $6::timestamptz, updated_at = $6::timestamptz
+          WHERE environment_namespace = $1 AND idempotency_key = $2 AND state = 'settling' AND lease_id = $3
+        RETURNING *`,
+        [this.environmentNamespace, input.idempotencyKey, input.leaseId, JSON.stringify(input.settlement), JSON.stringify(input.response), input.now],
+      );
+      if (!result.rows[0]) throw new Error('x402_settlement_claim_lost');
+      await client.query('COMMIT');
+      return Object.freeze({ ...rowRecord(result.rows[0]), ...(accounting ? { accounting } : {}) });
+    } catch (error) {
+      await client.query('ROLLBACK').catch(() => {});
+      throw error;
+    } finally {
+      release();
+    }
   }
 
   async markSettlementUnknown(input) {
@@ -277,6 +314,48 @@ export class PostgresX402OperationStore {
     if (!result.rows[0]) throw new Error(error);
     return rowRecord(result.rows[0]);
   }
+}
+
+async function recordAccounting(client, environmentNamespace, input) {
+  await client.query("SELECT pg_advisory_xact_lock(hashtext('clervo_receiver_accounting_entries:' || $1))", [environmentNamespace]);
+  const existing = await client.query(
+    `SELECT entry_json FROM clervo_receiver_accounting_entries
+      WHERE environment_namespace = $1`,
+    [environmentNamespace],
+  );
+  const journal = new ReceiverAccountingJournal();
+  const remaining = new Map(existing.rows.map(({ entry_json: entry }) => [entry.entryHash, entry]));
+  let previous;
+  while (remaining.size > 0) {
+    const entry = [...remaining.values()].find((candidate) => candidate.previousEntryHash === previous);
+    if (!entry) throw new Error('receiver_accounting_chain_failure');
+    const replayed = journal.record({
+      settlementId: entry.settlementId,
+      operationId: entry.operationId,
+      authorizationId: entry.authorizationId,
+      receiptHash: entry.receiptHash,
+      settlementReferenceHash: entry.settlementReferenceHash,
+      customerCharge: entry.postings[0].amount,
+      supplierCost: entry.postings[2].amount,
+      occurredAt: entry.occurredAt,
+    }).entry;
+    if (replayed.entryHash !== entry.entryHash) throw new Error('receiver_accounting_chain_failure');
+    remaining.delete(entry.entryHash);
+    previous = entry.entryHash;
+  }
+  const accounting = journal.record(input);
+  if (accounting.kind === 'recorded') {
+    const entry = accounting.entry;
+    await client.query(
+      `INSERT INTO clervo_receiver_accounting_entries (
+        environment_namespace, entry_id, settlement_id, operation_id, authorization_id,
+        receipt_hash, settlement_reference_hash, input_hash, entry_hash,
+        previous_entry_hash, entry_json, occurred_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::jsonb, $12::timestamptz)`,
+      [environmentNamespace, entry.entryId, entry.settlementId, entry.operationId, entry.authorizationId, entry.receiptHash, entry.settlementReferenceHash, entry.inputHash, entry.entryHash, entry.previousEntryHash ?? null, JSON.stringify(entry), entry.occurredAt],
+    );
+  }
+  return accounting;
 }
 
 function rowRecord(row) {

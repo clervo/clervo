@@ -21,6 +21,7 @@ import {
   validateIdempotencyKey,
 } from '../../../dist/packages/contracts/src/index.js';
 import { InMemorySearchStateStore } from './search-state-store.mjs';
+import { createX402PaidSearchProcessor } from './x402-paid-search.mjs';
 
 const JSON_TYPE = 'application/json; charset=utf-8';
 const PROBLEM_TYPE = 'application/problem+json; charset=utf-8';
@@ -88,11 +89,16 @@ export function createSearchServer({
   releaseId,
   maxConcurrentExecutions = 16,
   trafficControl,
+  x402Service,
+  x402StateStore,
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
   if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
   if (!Number.isInteger(maxConcurrentExecutions) || maxConcurrentExecutions < 1 || maxConcurrentExecutions > 256) throw new TypeError('invalid max concurrent executions');
   if (trafficControl !== undefined && typeof trafficControl.snapshot !== 'function') throw new TypeError('invalid traffic control');
+  if ((x402Service === undefined) !== (x402StateStore === undefined)) throw new TypeError('x402 service and state store must be configured together');
+  if (allowMockPaidExecution && x402Service !== undefined) throw new TypeError('mock and real commerce cannot be enabled together');
+  if (environment === 'production' && x402Service?.mode === 'settlement_enabled' && x402StateStore?.durable !== true) throw new TypeError('production x402 requires durable state');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
   if (
     typeof searchState.begin !== 'function'
@@ -113,6 +119,12 @@ export function createSearchServer({
       activeExecutions -= 1;
     };
   };
+  const x402PaidProcessor = x402Service === undefined ? undefined : createX402PaidSearchProcessor({
+    service: x402Service,
+    stateStore: x402StateStore,
+    executor,
+    acquireExecution,
+  });
 
   const record = (input) => {
     try { monitor?.record(input); } catch { /* Monitoring must never alter customer response behavior. */ }
@@ -126,7 +138,7 @@ export function createSearchServer({
         service: 'clervo-search-api',
         environment: environment ?? 'unknown',
         releaseId: releaseId ?? 'unknown',
-        paidExecutionEnabled: allowMockPaidExecution,
+        paidExecutionEnabled: allowMockPaidExecution || x402PaidProcessor?.mode === 'settlement_enabled',
         stateBackend: searchState.kind ?? 'unknown',
         durableState: searchState.durable === true,
         trafficMode: trafficControl?.snapshot().mode ?? 'open',
@@ -136,7 +148,10 @@ export function createSearchServer({
     if (request.method === 'GET' && url.pathname === '/readyz' && url.search === '') {
       try {
         const trafficOpen = (trafficControl?.snapshot().mode ?? 'open') === 'open';
-        const ready = trafficOpen && typeof searchState.ready === 'function' && await searchState.ready();
+        const ready = trafficOpen
+          && typeof searchState.ready === 'function'
+          && await searchState.ready()
+          && (x402StateStore === undefined || await x402StateStore.ready());
         send(response, ready ? 200 : 503, {
           status: ready ? 'ready' : 'unavailable',
           service: 'clervo-search-api',
@@ -179,19 +194,23 @@ export function createSearchServer({
       validateIdempotencyKey(keyHeader);
       const normalized = normalizeSearchHttpRequest(await readJson(request));
       const requestHash = searchHttpRequestHash(normalized, url.pathname);
-      let stored = idempotency.get(keyHeader);
-      if (stored && stored.requestHash !== requestHash) {
-        send(response, 409, problem(409, 'idempotency_conflict', 'Idempotency key conflict', 'The key is already bound to a different canonical request.', url.pathname, stored.operationId), {}, PROBLEM_TYPE);
-        return;
-      }
-      if (stored?.response) {
-        send(response, 200, { ...stored.response, replayed: true }, { 'idempotency-replayed': 'true' });
-        return;
-      }
-      if (stored?.pending) {
-        const pendingResult = await stored.pending;
-        send(response, 200, { ...pendingResult, replayed: true }, { 'idempotency-replayed': 'true' });
-        return;
+      const realPaid = url.pathname === SEARCH_PAID_PATH && x402PaidProcessor !== undefined;
+      let stored;
+      if (!realPaid) {
+        stored = idempotency.get(keyHeader);
+        if (stored && stored.requestHash !== requestHash) {
+          send(response, 409, problem(409, 'idempotency_conflict', 'Idempotency key conflict', 'The key is already bound to a different canonical request.', url.pathname, stored.operationId), {}, PROBLEM_TYPE);
+          return;
+        }
+        if (stored?.response) {
+          send(response, 200, { ...stored.response, replayed: true }, { 'idempotency-replayed': 'true' });
+          return;
+        }
+        if (stored?.pending) {
+          const pendingResult = await stored.pending;
+          send(response, 200, { ...pendingResult, replayed: true }, { 'idempotency-replayed': 'true' });
+          return;
+        }
       }
       if (url.pathname === SEARCH_FREE_PATH && stored === undefined) {
         const proposedOperationId = identifier('op', `${keyHeader}:${requestHash}`);
@@ -216,7 +235,7 @@ export function createSearchServer({
         }
       }
       operationId = stateClaim?.operationId ?? stored?.operationId ?? identifier('op', `${keyHeader}:${requestHash}`);
-      idempotency.set(keyHeader, { ...stored, operationId, requestHash });
+      if (!realPaid) idempotency.set(keyHeader, { ...stored, operationId, requestHash });
       const fundingMode = url.pathname === SEARCH_FREE_PATH ? 'free' : 'paid';
       productId = searchProductId(normalized);
       const executionInput = Object.freeze({ ...normalized, operationId, productId, requestHash, fundingMode });
@@ -256,6 +275,22 @@ export function createSearchServer({
         idempotency.set(keyHeader, { operationId, requestHash, response: result });
         record({ timestamp: now(), productId, outcome: 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
         send(response, 200, result, quotaHeaders);
+        return;
+      }
+
+      if (realPaid) {
+        const paid = await x402PaidProcessor.process({
+          idempotencyKey: keyHeader,
+          requestHash,
+          operationId,
+          productId,
+          normalized,
+          paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
+          now: now(),
+        });
+        record({ timestamp: now(), productId, outcome: paid.status === 402 ? 'payment_challenge' : 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
+        if (paid.status === 200 && paid.body.replayed !== true) record({ timestamp: now(), productId, outcome: 'paid_completion', operationId });
+        send(response, paid.status, paid.body, paid.headers);
         return;
       }
 

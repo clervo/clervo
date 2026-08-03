@@ -23,7 +23,24 @@ test('durable x402 state allows one execution and one settlement then replays', 
   await store.recordExecution({ idempotencyKey: base.idempotencyKey, leaseId: execution.leaseId, execution: { outputHash: `sha256:${'d'.repeat(64)}` }, now: base.now });
   const settlement = await store.claimSettlement({ ...base, paymentFingerprint: fingerprint });
   assert.equal(settlement.kind, 'claimed');
-  await store.complete({ idempotencyKey: base.idempotencyKey, leaseId: settlement.leaseId, settlement: { referenceHash: `sha256:${'e'.repeat(64)}` }, response: { operationId: base.operationId }, now: base.now });
+  const completed = await store.complete({
+    idempotencyKey: base.idempotencyKey,
+    leaseId: settlement.leaseId,
+    settlement: { referenceHash: `sha256:${'e'.repeat(64)}` },
+    response: { operationId: base.operationId },
+    accountingInput: {
+      settlementId: 'settle_stage15_durable_001',
+      operationId: base.operationId,
+      authorizationId: 'auth_stage15_durable_001',
+      receiptHash: `sha256:${'6'.repeat(64)}`,
+      settlementReferenceHash: `sha256:${'e'.repeat(64)}`,
+      customerCharge: { asset: 'usdc', amountAtomic: '6000', decimals: 6 },
+      supplierCost: { asset: 'usd', amountAtomic: '400', decimals: 6 },
+      occurredAt: base.now,
+    },
+    now: base.now,
+  });
+  assert.equal(completed.accounting.kind, 'recorded');
   const replay = await store.lookup(base);
   assert.equal(replay.kind, 'replay');
   assert.equal(replay.response.operationId, base.operationId);

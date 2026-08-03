@@ -165,6 +165,7 @@ function deployCandidate(input) {
       `CLERVO_MAX_CONCURRENT_EXECUTIONS=${policy.runtime.environment.CLERVO_MAX_CONCURRENT_EXECUTIONS}`,
       `CLERVO_TRAFFIC_MODE=${policy.runtime.environment.CLERVO_TRAFFIC_MODE}`,
       `CLERVO_MONITORING_DRIVER=${policy.runtime.environment.CLERVO_MONITORING_DRIVER}`,
+      `CLERVO_X402_MODE=${policy.runtime.environment.CLERVO_X402_MODE}`,
     ].join(','),
     '--set-secrets', [
       `CLERVO_DATABASE_URL=${policy.runtime.secretEnvironment.CLERVO_DATABASE_URL}:${input.databaseSecretVersion}`,

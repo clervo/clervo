@@ -24,6 +24,7 @@ test('production cloud contract is bounded, recoverable, and leaves the protecte
   assert.equal(policy.runtime.secretVersionsMustBePinned, true);
   assert.equal(policy.runtime.environment.CLERVO_STATE_BACKEND, 'postgres');
   assert.equal(policy.runtime.environment.CLERVO_TRAFFIC_MODE, 'open');
+  assert.equal(policy.runtime.environment.CLERVO_X402_MODE, 'disabled');
   assert.equal(policy.rollout.candidateReceivesTrafficOnDeploy, false);
   assert.equal(policy.rollout.paidExecutionEnabled, false);
   assert.equal(policy.rollout.previousVerifiedRevisionRequired, true);
