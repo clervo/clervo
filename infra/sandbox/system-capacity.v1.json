@@ -6,7 +6,7 @@
   "cluster": "clervo-sandbox-production",
   "nodePool": {
     "name": "sandbox-system",
-    "machineType": "n1-standard-1",
+    "machineType": "t2d-standard-1",
     "nodes": 1,
     "nodeLocations": ["us-central1-b"],
     "diskType": "pd-balanced",
@@ -33,7 +33,7 @@
     "availableBeforeRecovery": 1,
     "availableAfterRecovery": 0,
     "highAvailabilityQualified": false,
-    "recoveryStrategy": "dedicated_one_vcpu_pool_in_available_zone"
+    "recoveryStrategy": "dedicated_one_vcpu_x86_pool_in_available_zone"
   },
   "quiescedNodePool": {
     "name": "default-pool",
