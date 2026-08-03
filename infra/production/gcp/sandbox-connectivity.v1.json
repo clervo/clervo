@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "clervo.sandbox-private-connectivity.v1",
+  "state": "private_connectivity_candidate",
+  "project": "bloxsniper-prod",
+  "region": "us-central1",
+  "zone": "us-central1-a",
+  "network": "clervo-devbox-net",
+  "cluster": "clervo-sandbox-production",
+  "systemNamespace": "clervo-sandbox-system",
+  "controller": "clervo-sandbox-control",
+  "serverlessSubnet": {
+    "name": "clervo-run-sandbox-uscentral1",
+    "cidr": "10.128.41.0/26",
+    "privateGoogleAccess": true
+  },
+  "internalAddress": {
+    "name": "clervo-sandbox-control-ilb",
+    "address": "10.128.40.250",
+    "subnetwork": "clervo-devbox-uscentral1",
+    "purpose": "SHARED_LOADBALANCER_VIP"
+  },
+  "service": {
+    "name": "clervo-sandbox-control-internal",
+    "port": 8080,
+    "loadBalancerClass": "networking.gke.io/l4-regional-internal",
+    "externalTrafficPolicy": "Local",
+    "trafficDistribution": "PreferSameZone",
+    "sourceRanges": ["10.128.41.0/26"]
+  },
+  "healthCheckSourceRanges": ["35.191.0.0/16"],
+  "cloudRun": {
+    "service": "clervo-api-production",
+    "directVpcEgress": "private-ranges-only",
+    "networkTag": "clervo-sandbox-api",
+    "sandboxMode": "disabled_until_private_candidate"
+  },
+  "boundaries": {
+    "publicEndpoint": false,
+    "globalAccess": false,
+    "publicInvoker": false,
+    "paidExecution": false,
+    "controllerTokenInUrl": false,
+    "protectedGatewayTouched": false
+  },
+  "protectedResources": [
+    "ai.clervo.dev",
+    "the existing Clervo VM model gateway",
+    "all unrelated and legacy cloud resources"
+  ]
+}

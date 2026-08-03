@@ -85,7 +85,11 @@ function publicResources(token) {
       apiVersion: 'networking.k8s.io/v1', kind: 'NetworkPolicy', metadata: { name: `${policy.deployment}-boundary`, namespace: policy.systemNamespace },
       spec: {
         podSelector: { matchLabels: appLabels }, policyTypes: ['Ingress', 'Egress'],
-        ingress: [{ from: [{ podSelector: { matchLabels: { 'clervo.dev/sandbox-api': 'true' } } }], ports: [{ protocol: 'TCP', port: 8080 }] }],
+        ingress: [{ from: [
+          { podSelector: { matchLabels: { 'clervo.dev/sandbox-api': 'true' } } },
+          { ipBlock: { cidr: policy.network.serverlessSubnetCidr } },
+          ...policy.network.healthCheckSourceRanges.map((cidr) => ({ ipBlock: { cidr } })),
+        ], ports: [{ protocol: 'TCP', port: 8080 }] }],
         egress: [{ to: [{ ipBlock: { cidr: policy.network.apiServiceIp } }, { ipBlock: { cidr: policy.network.privateControlPlaneIp } }], ports: [{ protocol: 'TCP', port: 443 }] }],
       },
     },

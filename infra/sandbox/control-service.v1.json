@@ -25,7 +25,9 @@
     "public": false,
     "apiServiceIp": "34.118.224.1/32",
     "privateControlPlaneIp": "172.16.40.18/32",
-    "allowedIngressPodLabel": "clervo.dev/sandbox-api=true"
+    "allowedIngressPodLabel": "clervo.dev/sandbox-api=true",
+    "serverlessSubnetCidr": "10.128.41.0/26",
+    "healthCheckSourceRanges": ["35.191.0.0/16"]
   },
   "rbac": {
     "agentResources": ["sandboxclaims", "sandboxtemplates"],
