@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.production-x402-proof.v1",
-  "state": "corrected_image_built_no_payment",
+  "state": "settled_reconciled",
   "project": "bloxsniper-prod",
   "region": "us-central1",
   "service": "clervo-api-production",
@@ -48,8 +48,9 @@
     "same-idempotency-key no-charge replay"
   ],
   "ownerPaymentApprovalRequired": true,
-  "paymentAuthorized": false,
-  "paymentEffects": 0,
+  "ownerPaymentApprovalObserved": true,
+  "paymentAuthorized": true,
+  "paymentEffects": 1,
   "observedBuild": {
     "buildId": "aeeeee32-3c59-4f6a-bf62-99992fd95318",
     "releaseCommit": "647a9066a65f3dc7656f3f1381e388a8fd826bc8",
@@ -76,6 +77,69 @@
     "usdcSpent": "0",
     "superseded": true,
     "supersededReason": "Base USDC EIP-712 domain metadata missing from challenge"
+  },
+  "observedSettlement": {
+    "observedAt": "2026-08-03T23:19:00.114Z",
+    "revision": "clervo-api-production-00010-pid",
+    "trafficPercent": 0,
+    "publicInvoker": false,
+    "productId": "search.web",
+    "operationId": "op_66c6996482f2cc4d727d5099aff2ba36",
+    "receiptId": "rcpt_80259fefed025ebefa08049f62b0e3af",
+    "receiptHash": "sha256:93b797375434e8619a5705786fe9d6d896be4d3e86b813f4e406fb5d33573793",
+    "settlementReferenceHash": "sha256:899ced8508114b9c71f1bb09cc147151e59704d5efa47cec7367a9c06ca9ede9",
+    "transactionHash": "0xf4a2c7d5568745ad7ce11157306d5899faaf4def041519e51527c76134eca720",
+    "blockNumber": 49504898,
+    "logIndex": 56,
+    "chainStatus": "confirmed",
+    "chainConfirmationsAtObservation": 65,
+    "exactTransferCount": 1,
+    "customerChargeAtomic": "6000",
+    "supplierCostAtomic": "400",
+    "usefulResult": true,
+    "settledAuthorizationCount": 1,
+    "executionCount": 1,
+    "ownerFunded": true,
+    "revenueEvidence": false,
+    "demandEvidence": false
+  },
+  "observedReplay": {
+    "sameOperation": true,
+    "sameReceipt": true,
+    "idempotencyReplayed": true,
+    "secondAuthorization": false,
+    "secondExecution": false,
+    "secondCharge": false
+  },
+  "observedBalances": {
+    "payerBeforeAtomic": "32000",
+    "payerAfterAtomic": "26000",
+    "payerDeltaAtomic": "-6000",
+    "receiverBeforeAtomic": "0",
+    "receiverAfterAtomic": "6000",
+    "receiverDeltaAtomic": "6000"
+  },
+  "observedDurability": {
+    "execution": "clervo-x402-reconcile-kzdxt",
+    "operationState": "completed",
+    "operationRows": 1,
+    "accountingRowsForOperation": 1,
+    "receiverLedgerEntryCount": 1,
+    "receiverLedgerChainValid": true,
+    "targetEntryHash": "sha256:f73b162919ec71301d291fd681125302e72617e998a34ddd7b8cd7008f01e2c6",
+    "targetBalanced": true,
+    "credentialReadByVm": false,
+    "temporaryJobRemoved": true
+  },
+  "proofAccessCleanup": {
+    "observedAt": "2026-08-03T23:28:13Z",
+    "removedTags": [
+      "x402-proof-92dc26cdbedf",
+      "x402-proof-647a9066a65f"
+    ],
+    "servingTrafficUnchanged": true,
+    "publicInvoker": false,
+    "loopbackProxyStopped": true
   },
   "nonSettlementAttempts": [
     {

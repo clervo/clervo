@@ -1,6 +1,6 @@
 # Current engineering state
 
-Updated 2026-08-03 after persistent private Sandbox control qualification. This is a compact
+Updated 2026-08-03 after the bounded production x402 settlement proof. This is a compact
 resumable handoff, not an authorization gate. Continue automatically after
 reading it.
 
@@ -269,8 +269,8 @@ service with no public invoker binding. Revision
 `clervo-api-production-00002-seh` is tagged at zero traffic. Authenticated
 health, Postgres readiness, useful search, durable receipt replay, Sentry
 delivery, managed restore, kill switch, promotion, and rollback all passed.
-`CLERVO_X402_MODE=disabled`, no public traffic is enabled, no payment occurred,
-and `ai.clervo.dev` was untouched.
+`CLERVO_X402_MODE=disabled`, no public traffic is enabled, no payment occurred
+during Stage 14, and `ai.clervo.dev` was untouched.
 
 Stage 15 has completed its no-payment production preflight. Three version-pinned
 runtime secrets hold the facilitator identity, facilitator signing key, and
@@ -284,10 +284,25 @@ challenge. A supplied dummy payment header failed with
 `x402_settlement_disabled` before verification. No payer signer was read, no
 authorization or settlement occurred, and 0 USDC was spent.
 
-The one real bounded x402 proof still requires the separate exact payment
-approval and wallet authorization defined by the x402 safety workflow.
-Independent provider-route and public-distribution work continues without
-waiting for that payment boundary.
+Stage 15's one bounded real x402 proof is complete. The owner approved and
+signed one replacement Base USDC authorization after the earlier expired quote
+and client-side EIP-712 refusal produced no payment effects. Private revision
+`clervo-api-production-00010-pid` delivered one useful `search.web` result for
+6,000 atomic USDC. Operation `op_66c6996482f2cc4d727d5099aff2ba36`
+completed with receipt `rcpt_80259fefed025ebefa08049f62b0e3af` and one
+confirmed Base transfer. Payer and receiver balance deltas were exactly -6,000
+and +6,000 atomic units. Replaying the same idempotency key returned the same
+operation and receipt without another authorization, execution, settlement, or
+charge.
+
+The managed production database contains exactly one completed operation row
+and one balanced receiver-accounting entry for the proof. The complete
+receiver journal chain verified, the receipt and settlement hashes match the
+chain transaction, and a temporary read-only reconciliation job was removed.
+Both temporary private proof tags and the loopback proxy were also removed;
+serving traffic stayed on the existing private bootstrap revision and no public
+invoker was added. This owner-funded 0.006 USDC result proves payment plumbing,
+not customer revenue or demand. A new payment requires fresh explicit approval.
 
 Receiver accounting is now a separate append-only, hash-linked journal rather
 than an inference from customer receipts. Each settlement and operation can be
@@ -311,8 +326,9 @@ single settlement, replay without another verification/execution/settlement,
 and permanent quarantine after unknown execution or settlement. The Stage 14
 Cloud Run policy explicitly forces `CLERVO_X402_MODE=disabled`, so the private
 deployment candidate cannot accept a payment. No signer was read, no payment
-was authorized, and 0 USDC was spent; a real proof still requires the separate
-exact owner approval required by the x402 safety workflow.
+was authorized, and 0 USDC was spent during implementation preparation. The
+subsequent bounded production proof described above is the only settled real
+payment.
 
 ## Live qualification result
 
@@ -422,8 +438,10 @@ were removed; the existing private serving revision remains at 100% traffic.
 
 ## Preserved boundaries
 
-The supply-foundation program is complete. The external RPC resale-permission
+The supply-foundation program is complete. Stage 15 is complete with exactly
+one owner-funded 0.006 USDC settlement and a proven no-charge replay; it is not
+revenue or demand evidence. The external RPC resale-permission
 blocker remains isolated. `ai.clervo.dev` is live on protected Clervo VM
 infrastructure and must never be included in sandbox/cloud cleanup. Migration
-0006 was the only production data-plane mutation in this work. No real payment,
-wallet signing, public/customer traffic, or customer-data operation occurred.
+0006 remains the only managed schema mutation in this work. No public/customer
+traffic or customer-data operation occurred. `ai.clervo.dev` was untouched.

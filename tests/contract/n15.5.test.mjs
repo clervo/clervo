@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
+import { hashJson } from '../../dist/packages/contracts/src/index.js';
 
 const browser = await readFile('tools/x402-browser-proof/src/main.ts', 'utf8');
 const proxy = await readFile('scripts/production/serve-x402-browser-proof.mjs', 'utf8');
@@ -48,7 +49,7 @@ test('local proof proxy is loopback-only, exact-route, bounded, and credential-r
 });
 
 test('private proof deployment is exact, zero-traffic, removable, and separate from payment approval', () => {
-  assert.equal(proof.state, 'corrected_image_built_no_payment');
+  assert.equal(proof.state, 'settled_reconciled');
   assert.equal(proof.network, 'eip155:8453');
   assert.equal(proof.amountAtomic, '6000');
   assert.equal(proof.maximumExecutionCount, 1);
@@ -57,8 +58,9 @@ test('private proof deployment is exact, zero-traffic, removable, and separate f
   assert.equal(proof.deployment.private, true);
   assert.equal(proof.deployment.trafficPercent, 0);
   assert.equal(proof.ownerPaymentApprovalRequired, true);
-  assert.equal(proof.paymentAuthorized, false);
-  assert.equal(proof.paymentEffects, 0);
+  assert.equal(proof.ownerPaymentApprovalObserved, true);
+  assert.equal(proof.paymentAuthorized, true);
+  assert.equal(proof.paymentEffects, 1);
   assert.deepEqual(proof.observedPreflight, {
     observedAt: '2026-08-03T22:57:00Z',
     revision: 'clervo-api-production-00009-qay',
@@ -95,4 +97,45 @@ test('private proof deployment is exact, zero-traffic, removable, and separate f
   assert.match(deploy, /--remove-tags/u);
   assert.match(deploy, /paymentAuthorized: false/u);
   assert.match(deploy, /paymentEffects: 0/u);
+});
+
+test('settled proof binds one useful execution, exact chain transfer, durable accounting, and no-charge replay', () => {
+  const settlement = proof.observedSettlement;
+  assert.equal(settlement.productId, proof.productId);
+  assert.equal(settlement.customerChargeAtomic, proof.amountAtomic);
+  assert.equal(settlement.exactTransferCount, 1);
+  assert.equal(settlement.settledAuthorizationCount, 1);
+  assert.equal(settlement.executionCount, 1);
+  assert.equal(settlement.usefulResult, true);
+  assert.equal(settlement.ownerFunded, true);
+  assert.equal(settlement.revenueEvidence, false);
+  assert.equal(settlement.demandEvidence, false);
+  assert.equal(hashJson({ network: proof.network, transaction: settlement.transactionHash }), settlement.settlementReferenceHash);
+
+  assert.deepEqual(proof.observedBalances, {
+    payerBeforeAtomic: '32000',
+    payerAfterAtomic: '26000',
+    payerDeltaAtomic: '-6000',
+    receiverBeforeAtomic: '0',
+    receiverAfterAtomic: '6000',
+    receiverDeltaAtomic: '6000',
+  });
+  assert.deepEqual(proof.observedReplay, {
+    sameOperation: true,
+    sameReceipt: true,
+    idempotencyReplayed: true,
+    secondAuthorization: false,
+    secondExecution: false,
+    secondCharge: false,
+  });
+  assert.equal(proof.observedDurability.operationState, 'completed');
+  assert.equal(proof.observedDurability.operationRows, 1);
+  assert.equal(proof.observedDurability.accountingRowsForOperation, 1);
+  assert.equal(proof.observedDurability.receiverLedgerChainValid, true);
+  assert.equal(proof.observedDurability.targetBalanced, true);
+  assert.equal(proof.observedDurability.temporaryJobRemoved, true);
+  assert.equal(proof.proofAccessCleanup.removedTags.length, 2);
+  assert.equal(proof.proofAccessCleanup.servingTrafficUnchanged, true);
+  assert.equal(proof.proofAccessCleanup.publicInvoker, false);
+  assert.equal(proof.proofAccessCleanup.loopbackProxyStopped, true);
 });
