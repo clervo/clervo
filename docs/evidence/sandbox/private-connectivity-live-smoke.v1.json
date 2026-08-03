@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "clervo.sandbox-private-connectivity-live-smoke.v1",
+  "observedAt": "2026-08-03T14:25:04.877292Z",
+  "project": "bloxsniper-prod",
+  "region": "us-central1",
+  "source": {
+    "runtime": "cloud_run_job_direct_vpc_egress",
+    "subnet": "clervo-run-sandbox-uscentral1",
+    "cidr": "10.128.41.0/26",
+    "networkTag": "clervo-sandbox-api"
+  },
+  "target": {
+    "type": "gke_regional_internal_load_balancer",
+    "address": "10.128.40.250",
+    "port": 8080,
+    "loadBalancingScheme": "INTERNAL",
+    "globalAccess": false,
+    "sourceRanges": ["10.128.41.0/26"]
+  },
+  "probe": {
+    "execution": "clervo-sandbox-connectivity-probe-b5cxp",
+    "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:07473b2d698536367b196df026f47037f8da3a80910ef3080aaf99a344bd8800",
+    "status": 200,
+    "ok": true,
+    "latencyMs": 127,
+    "bodyValidated": { "status": "ok" },
+    "succeededCount": 1,
+    "jobRemoved": true
+  },
+  "artifact": {
+    "analysisStatus": "FINISHED_SUCCESS",
+    "slsaBuildLevel": 3,
+    "completedAnalysis": ["OS", "NPM", "SECRET"],
+    "effectiveCriticalVulnerabilities": 0,
+    "effectiveHighVulnerabilities": 0,
+    "effectiveLowVulnerabilities": 5,
+    "effectiveMinimalVulnerabilities": 7
+  },
+  "boundaries": {
+    "publicEndpoint": false,
+    "publicInvokerChanged": false,
+    "productionTrafficChanged": false,
+    "paymentExecuted": false,
+    "usdcSpent": 0,
+    "secretValuesRead": false,
+    "secretValuesPrinted": false,
+    "protectedGatewayTouched": false
+  },
+  "externalCalls": 1
+}

@@ -6,6 +6,7 @@ const policy = JSON.parse(await readFile('infra/production/gcp/sandbox-connectiv
 const control = JSON.parse(await readFile('infra/sandbox/control-service.v1.json', 'utf8'));
 const bootstrap = await readFile('scripts/production/gcp-sandbox-connectivity.mjs', 'utf8');
 const controlBootstrap = await readFile('scripts/sandbox/gcp-control-service.mjs', 'utf8');
+const evidence = JSON.parse(await readFile('docs/evidence/sandbox/private-connectivity-live-smoke.v1.json', 'utf8'));
 
 test('Sandbox connectivity uses a dedicated Cloud Run subnet and regional internal load balancer only', () => {
   assert.equal(policy.serverlessSubnet.cidr, '10.128.41.0/26');
@@ -40,4 +41,21 @@ test('connectivity apply is exact-project confirmation guarded and never targets
   assert.match(bootstrap, /provision:private-sandbox-connectivity/u);
   assert.doesNotMatch(bootstrap, /ai\.clervo\.dev|run services delete|instances delete/u);
   assert.ok(policy.protectedResources.includes('ai.clervo.dev'));
+});
+
+test('live Cloud Run probe proves the internal path without public traffic or payment', () => {
+  assert.equal(policy.state, 'private_connectivity_qualified');
+  assert.equal(evidence.probe.status, 200);
+  assert.equal(evidence.probe.ok, true);
+  assert.equal(evidence.probe.jobRemoved, true);
+  assert.equal(evidence.target.loadBalancingScheme, 'INTERNAL');
+  assert.equal(evidence.target.globalAccess, false);
+  assert.equal(evidence.boundaries.publicEndpoint, false);
+  assert.equal(evidence.boundaries.productionTrafficChanged, false);
+  assert.equal(evidence.boundaries.paymentExecuted, false);
+  assert.equal(evidence.boundaries.usdcSpent, 0);
+  assert.equal(evidence.boundaries.secretValuesRead, false);
+  assert.equal(evidence.boundaries.protectedGatewayTouched, false);
+  assert.equal(evidence.artifact.effectiveCriticalVulnerabilities, 0);
+  assert.equal(evidence.artifact.effectiveHighVulnerabilities, 0);
 });

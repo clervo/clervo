@@ -94,7 +94,9 @@
       "clervo-production-monitoring-endpoint",
       "clervo-production-x402-key-id",
       "clervo-production-x402-key-secret",
-      "clervo-production-x402-pay-to"
+      "clervo-production-x402-pay-to",
+      "clervo-sandbox-control-token",
+      "clervo-sandbox-api-token"
     ],
     "builderProjectRoles": [
       "roles/logging.logWriter"

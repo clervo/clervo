@@ -12,6 +12,10 @@ const x402Policy = JSON.parse(await readFile(
   new URL('../../infra/production/gcp/x402-preflight.v1.json', import.meta.url),
   'utf8',
 ));
+const sandboxPolicy = JSON.parse(await readFile(
+  new URL('../../infra/production/gcp/sandbox-connectivity.v1.json', import.meta.url),
+  'utf8',
+));
 const action = process.argv[2] ?? 'plan';
 const resources = policy.resources;
 const imagePrefix = `${policy.region}-docker.pkg.dev/${policy.project}/${resources.artifactRepository}/${resources.image}`;
@@ -136,7 +140,7 @@ function verifyArtifact(image) {
   return { provenance: 'cloud-build-observed', critical, high };
 }
 
-function deploymentArgs(input, { channel, noTraffic, tag, x402Preflight = false, x402SecretVersions } = {}) {
+function deploymentArgs(input, { channel, noTraffic, tag, x402Preflight = false, x402SecretVersions, sandboxPrivate = false, sandboxSecretVersions } = {}) {
   const x402Mode = x402Preflight ? x402Policy.paymentMode : policy.runtime.environment.CLERVO_X402_MODE;
   if (x402Preflight && (x402Mode !== 'challenge_only' || x402Policy.settlementEnabled !== false)) die('x402_preflight_must_be_challenge_only');
   const environmentVariables = [
@@ -149,6 +153,7 @@ function deploymentArgs(input, { channel, noTraffic, tag, x402Preflight = false,
     `CLERVO_TRAFFIC_MODE=${policy.runtime.environment.CLERVO_TRAFFIC_MODE}`,
     `CLERVO_MONITORING_DRIVER=${policy.runtime.environment.CLERVO_MONITORING_DRIVER}`,
     `CLERVO_X402_MODE=${x402Mode}`,
+    `CLERVO_SANDBOX_MODE=${sandboxPrivate ? 'private' : 'disabled'}`,
     `CLERVO_RELEASE_CHANNEL=${channel}`,
   ];
   const secretVariables = [
@@ -167,6 +172,13 @@ function deploymentArgs(input, { channel, noTraffic, tag, x402Preflight = false,
       `CLERVO_X402_PAY_TO=${x402Policy.secrets.payTo}:${x402SecretVersions.payTo}`,
     );
   }
+  if (sandboxPrivate) {
+    environmentVariables.push(`CLERVO_SANDBOX_CONTROL_ORIGIN=${sandboxPolicy.cloudRun.controlOrigin}`);
+    secretVariables.push(
+      `CLERVO_SANDBOX_CONTROL_TOKEN=${sandboxPolicy.cloudRun.controlTokenSecret}:${sandboxSecretVersions.control}`,
+      `CLERVO_SANDBOX_API_TOKEN=${sandboxPolicy.cloudRun.apiTokenSecret}:${sandboxSecretVersions.api}`,
+    );
+  }
   const args = [
     'run', 'deploy', resources.service,
     '--project', policy.project,
@@ -182,7 +194,7 @@ function deploymentArgs(input, { channel, noTraffic, tag, x402Preflight = false,
     '--concurrency', String(policy.runtime.containerConcurrency),
     '--min-instances', String(policy.runtime.minimumInstances),
     '--max-instances', String(policy.runtime.maximumInstances),
-    '--timeout', `${policy.runtime.requestTimeoutSeconds}s`,
+    '--timeout', `${sandboxPrivate ? sandboxPolicy.cloudRun.requestTimeoutSeconds : policy.runtime.requestTimeoutSeconds}s`,
     '--no-cpu-throttling',
     '--no-session-affinity',
     '--port', String(policy.runtime.port),
@@ -195,6 +207,14 @@ function deploymentArgs(input, { channel, noTraffic, tag, x402Preflight = false,
     '--labels', `clervo-release=${input.releaseId.slice(0, 12)},clervo-candidate=true`,
     '--quiet',
   ];
+  if (sandboxPrivate) {
+    args.push(
+      '--network', sandboxPolicy.network,
+      '--subnet', sandboxPolicy.serverlessSubnet.name,
+      '--vpc-egress', sandboxPolicy.cloudRun.directVpcEgress,
+      '--network-tags', sandboxPolicy.cloudRun.networkTag,
+    );
+  }
   if (noTraffic) args.push('--no-traffic');
   return args;
 }
@@ -243,6 +263,25 @@ function deployX402Preflight(input) {
     paymentMode: 'challenge_only',
     settlementEnabled: false,
     artifact,
+  };
+}
+
+function deploySandboxPrivate(input) {
+  const confirmation = env('CLERVO_PRODUCTION_CONFIRM');
+  if (confirmation !== `deploy-sandbox-private:${input.releaseId}`) die('owner_confirmation_mismatch');
+  if (!serviceExists()) die('sandbox_private_requires_private_service');
+  const sandboxSecretVersions = {
+    control: positiveInteger('CLERVO_SANDBOX_CONTROL_SECRET_VERSION'),
+    api: positiveInteger('CLERVO_SANDBOX_API_SECRET_VERSION'),
+  };
+  const artifact = verifyArtifact(input.image);
+  const tag = `sandbox-${input.releaseId.slice(0, 12)}`;
+  runGcloud(deploymentArgs(input, {
+    channel: 'sandbox-private', noTraffic: true, tag, sandboxPrivate: true, sandboxSecretVersions,
+  }));
+  return {
+    action: 'sandbox-private-deployed-with-zero-traffic', image: input.image, tag,
+    sandboxMode: 'private', paymentMode: 'disabled', artifact,
   };
 }
 
@@ -307,7 +346,7 @@ const safePlan = {
   project: policy.project,
   region: policy.region,
   resources,
-  mutationActions: ['bootstrap-private', 'deploy-candidate', 'deploy-x402-preflight', 'promote', 'rollback'],
+  mutationActions: ['bootstrap-private', 'deploy-candidate', 'deploy-x402-preflight', 'deploy-sandbox-private', 'promote', 'rollback'],
   candidateReceivesTrafficOnDeploy: false,
   paymentEnabled: false,
   ownerConfirmationRequired: true,
@@ -326,9 +365,10 @@ else if (action === 'validate') {
 } else if (action === 'bootstrap-private') result = bootstrapPrivate(releaseInputs());
 else if (action === 'deploy-candidate') result = deployCandidate(releaseInputs());
 else if (action === 'deploy-x402-preflight') result = deployX402Preflight(releaseInputs());
+else if (action === 'deploy-sandbox-private') result = deploySandboxPrivate(releaseInputs());
 else if (action === 'promote') result = promote(releaseInputs());
 else if (action === 'rollback') result = rollback();
-else die('usage_plan_verify_artifact_validate_bootstrap_private_deploy_candidate_deploy_x402_preflight_promote_rollback');
+else die('usage_plan_verify_artifact_validate_bootstrap_private_deploy_candidate_deploy_x402_preflight_deploy_sandbox_private_promote_rollback');
 
 assert.equal(policy.rollout.paidExecutionEnabled, false);
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);

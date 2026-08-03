@@ -95,6 +95,8 @@ test('production IAM control is exact-project, least-privilege, and confirmation
     'clervo-production-x402-key-id',
     'clervo-production-x402-key-secret',
     'clervo-production-x402-pay-to',
+    'clervo-sandbox-control-token',
+    'clervo-sandbox-api-token',
   ]);
   assert.deepEqual(plan.builder.projectRoles, ['roles/logging.logWriter']);
   assert.equal(plan.builder.repositoryRole, 'roles/artifactregistry.writer');
@@ -180,7 +182,7 @@ test('release control is inspectable without credentials and mutations fail befo
   assert.equal(plan.candidateReceivesTrafficOnDeploy, false);
   assert.equal(plan.paymentEnabled, false);
   assert.equal(plan.ownerConfirmationRequired, true);
-  assert.deepEqual(plan.mutationActions, ['bootstrap-private', 'deploy-candidate', 'deploy-x402-preflight', 'promote', 'rollback']);
+  assert.deepEqual(plan.mutationActions, ['bootstrap-private', 'deploy-candidate', 'deploy-x402-preflight', 'deploy-sandbox-private', 'promote', 'rollback']);
   assert.ok(plan.protectedResources.includes('ai.clervo.dev'));
 
   await assert.rejects(

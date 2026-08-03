@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.sandbox-private-connectivity.v1",
-  "state": "private_connectivity_candidate",
+  "state": "private_connectivity_qualified",
   "project": "bloxsniper-prod",
   "region": "us-central1",
   "zone": "us-central1-a",
@@ -32,6 +32,10 @@
     "service": "clervo-api-production",
     "directVpcEgress": "private-ranges-only",
     "networkTag": "clervo-sandbox-api",
+    "requestTimeoutSeconds": 330,
+    "controlOrigin": "http://10.128.40.250:8080",
+    "controlTokenSecret": "clervo-sandbox-control-token",
+    "apiTokenSecret": "clervo-sandbox-api-token",
     "sandboxMode": "disabled_until_private_candidate"
   },
   "boundaries": {
@@ -46,5 +50,18 @@
     "ai.clervo.dev",
     "the existing Clervo VM model gateway",
     "all unrelated and legacy cloud resources"
-  ]
+  ],
+  "observedQualification": {
+    "observedAt": "2026-08-03T14:25:04.877292Z",
+    "serverlessSubnetCreated": true,
+    "internalAddressCreated": true,
+    "loadBalancerIp": "10.128.40.250",
+    "loadBalancingScheme": "INTERNAL",
+    "globalAccess": false,
+    "sourceRanges": ["10.128.41.0/26"],
+    "cloudRunProbeStatus": 200,
+    "cloudRunProbeLatencyMs": 127,
+    "probeJobRemoved": true,
+    "publicEndpoint": false
+  }
 }
