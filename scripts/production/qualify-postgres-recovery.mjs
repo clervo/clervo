@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { Pool } from 'pg';
 import { PgBoss } from 'pg-boss';
 import { PostgresSearchStateStore } from '../../apps/api/src/search-state-store.mjs';
+import { PostgresX402OperationStore } from '../../apps/api/src/x402-operation-store.mjs';
 import { ReceiverAccountingJournal } from '../../dist/packages/contracts/src/index.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -42,6 +43,15 @@ const receiverAccountingInput = Object.freeze({
   supplierCost: Object.freeze({ asset: 'mock:usd', amountAtomic: '400', decimals: 6 }),
   occurredAt: now,
 });
+const x402Operation = Object.freeze({
+  idempotencyKey: 'idem_postgres_x402_recovery_001',
+  requestHash: `sha256:${'1'.repeat(64)}`,
+  operationId: `op_${'2'.repeat(32)}`,
+  quote: Object.freeze({ quoteId: 'quote_postgres_x402_001', maximumCharge: Object.freeze({ asset: 'USDC', amountAtomic: '6000', decimals: 6 }) }),
+  challenge: Object.freeze({ x402Version: 2, accepts: Object.freeze([{ amount: '6000' }]) }),
+  now,
+});
+const x402PaymentFingerprint = `sha256:${'3'.repeat(64)}`;
 
 function docker(args, options = {}) {
   return execFileSync('docker', args, {
@@ -150,6 +160,7 @@ async function migrate(pool) {
     '0002-live-intelligence-monitoring.sql',
     '0003-search-http-state.sql',
     '0004-receiver-accounting.sql',
+    '0005-x402-operation-state.sql',
   ];
   for (const name of names) {
     await pool.query(await readFile(path.join(root, 'infra/storage/postgres', name), 'utf8'));
@@ -227,7 +238,30 @@ async function proveState(pool) {
     ),
     /duplicate key/u,
   );
-  return { replay: replay.response, quota, receiverEntry };
+  const x402Store = new PostgresX402OperationStore(pool, { environmentNamespace: policy.environmentNamespace });
+  assert.equal(await x402Store.ready(), true);
+  assert.equal((await x402Store.challenge(x402Operation)).kind, 'challenged');
+  const x402Execution = await x402Store.claimExecution({ ...x402Operation, paymentFingerprint: x402PaymentFingerprint });
+  assert.equal(x402Execution.kind, 'claimed');
+  await x402Store.recordExecution({
+    idempotencyKey: x402Operation.idempotencyKey,
+    leaseId: x402Execution.leaseId,
+    execution: { resultHash: `sha256:${'4'.repeat(64)}` },
+    now,
+  });
+  const x402Settlement = await x402Store.claimSettlement({ ...x402Operation, paymentFingerprint: x402PaymentFingerprint });
+  assert.equal(x402Settlement.kind, 'claimed');
+  await x402Store.complete({
+    idempotencyKey: x402Operation.idempotencyKey,
+    leaseId: x402Settlement.leaseId,
+    settlement: { referenceHash: `sha256:${'5'.repeat(64)}` },
+    response: { operationId: x402Operation.operationId, state: 'RECEIPTED' },
+    now,
+  });
+  const x402Replay = await x402Store.lookup(x402Operation);
+  assert.equal(x402Replay.kind, 'replay');
+  assert.equal((await x402Store.lookup({ ...x402Operation, requestHash: `sha256:${'6'.repeat(64)}` })).kind, 'conflict');
+  return { replay: replay.response, quota, receiverEntry, x402Replay: x402Replay.response };
 }
 
 async function receiverEntryFromDatabase(pool) {
@@ -359,6 +393,8 @@ try {
   assert.equal(restartReplay.kind, 'replay');
   const restartedReceiverEntry = await receiverEntryFromDatabase(sourcePool);
   assert.deepEqual(restartedReceiverEntry, initial.receiverEntry);
+  const restartedX402 = await new PostgresX402OperationStore(sourcePool, { environmentNamespace: policy.environmentNamespace }).lookup(x402Operation);
+  assert.deepEqual(restartedX402.response, initial.x402Replay);
   await sourcePool.end();
   sourcePool = undefined;
 
@@ -408,6 +444,8 @@ try {
   assert.deepEqual(restoredReplay.response, initial.replay);
   const restoredReceiverEntry = await receiverEntryFromDatabase(restorePool);
   assert.deepEqual(restoredReceiverEntry, initial.receiverEntry);
+  const restoredX402 = await new PostgresX402OperationStore(restorePool, { environmentNamespace: policy.environmentNamespace }).lookup(x402Operation);
+  assert.deepEqual(restoredX402.response, initial.x402Replay);
   const restoredQueue = await proveRestoredQueue(restoreName, policy.restoreDatabase, queue);
   const retention = await proveRetention(restorePool);
   outcome = {
@@ -416,6 +454,8 @@ try {
     restartReplay,
     restartedReceiverEntry,
     restoredReceiverEntry,
+    restartedX402,
+    restoredX402,
     archiveHash,
     retention,
     queue,
@@ -470,6 +510,9 @@ const report = {
     receiverAccountingDuplicateSettlementRejected: true,
     receiverAccountingSurvivedRestart: outcome.restartedReceiverEntry.entryHash === outcome.initial.receiverEntry.entryHash,
     receiverAccountingRestoredFromBackup: outcome.restoredReceiverEntry.entryHash === outcome.initial.receiverEntry.entryHash,
+    x402ExactlyOnceStateInserted: outcome.initial.x402Replay.operationId === x402Operation.operationId,
+    x402StateSurvivedRestart: outcome.restartedX402.kind === 'replay',
+    x402StateRestoredFromBackup: outcome.restoredX402.kind === 'replay',
   },
   cleanup: {
     sourceContainerRemoved: true,

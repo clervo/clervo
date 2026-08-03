@@ -162,6 +162,7 @@
     "test:n14.10": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/n14.10.test.mjs",
     "test:n14.11": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n14.11.test.mjs",
     "test:n14.12": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n14.12.test.mjs",
+    "test:n15.2": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/n15.2.test.mjs",
     "test:stage14": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n14.1.test.mjs ./tests/contract/n14.2.test.mjs ./tests/contract/n14.3.test.mjs ./tests/contract/n14.4.test.mjs ./tests/contract/n14.5.test.mjs ./tests/contract/n14.6.test.mjs ./tests/contract/n14.7.test.mjs ./tests/contract/n14.8.test.mjs ./tests/contract/n14.9.test.mjs ./tests/contract/n14.10.test.mjs ./tests/contract/n14.11.test.mjs ./tests/contract/n14.12.test.mjs && node ./scripts/release/generate-release-candidate-freeze.mjs --check && npm audit --omit=dev --audit-level=high && npm run lint && npm run scan:secrets && ./scripts/verify-clean-room-boundary.sh",
     "test:n15.1": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n15.1.test.mjs",
     "verify:stage6-exit": "node ./scripts/verify-runtime.mjs && node ./scripts/check-ai-supply-readiness.mjs",
