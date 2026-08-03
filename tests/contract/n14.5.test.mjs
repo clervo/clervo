@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
+import { execFile } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
+import { promisify } from 'node:util';
 import test from 'node:test';
+
+const execute = promisify(execFile);
 
 const policy = JSON.parse(await readFile('infra/production/postgres-qualification.v1.json', 'utf8'));
 const evidence = JSON.parse(await readFile('docs/evidence/production/postgres-recovery-qualification.v1.json', 'utf8'));
@@ -66,4 +70,30 @@ test('live local evidence proves restart, backup, isolated restore, replay, rete
     ownerCashSpentUsd: 0,
   });
   assert.equal(evidence.productionReady, false);
+});
+
+test('production migration runner is ordered, checksum-bound, secret-safe, and fail-closed', async () => {
+  const { stdout } = await execute(process.execPath, ['scripts/production/apply-postgres-migrations.mjs', 'plan']);
+  const plan = JSON.parse(stdout);
+  assert.equal(plan.action, 'plan');
+  assert.equal(plan.target, 'clervo-production-postgres');
+  assert.deepEqual(plan.migrations.map(({ name }) => name), [
+    '0001-retrieval-cache.sql',
+    '0002-live-intelligence-monitoring.sql',
+    '0003-search-http-state.sql',
+    '0004-receiver-accounting.sql',
+  ]);
+  assert.ok(plan.migrations.every(({ checksum }) => /^sha256:[a-f0-9]{64}$/u.test(checksum)));
+  assert.equal(plan.credentialInput, 'environment_or_stdin');
+  await assert.rejects(
+    execute(process.execPath, ['scripts/production/apply-postgres-migrations.mjs', 'apply'], {
+      env: { PATH: process.env.PATH },
+    }),
+    /CLERVO_ENV must be production/u,
+  );
+  const source = await readFile('scripts/production/apply-postgres-migrations.mjs', 'utf8');
+  assert.match(source, /pg_advisory_xact_lock/u);
+  assert.match(source, /migration checksum changed/u);
+  assert.match(source, /--database-url-stdin/u);
+  assert.doesNotMatch(source, /console\.log\([^)]*(?:DATABASE_URL|password)/u);
 });
