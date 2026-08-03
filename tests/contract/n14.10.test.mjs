@@ -94,6 +94,7 @@ test('Cloud Build is immutable, acceptance-gated, and requests verified provenan
   assert.match(build, /images:\n  - us-central1-docker\.pkg\.dev\/\$PROJECT_ID\/clervo-production\/clervo-api:\$_RELEASE_SHA/u);
   assert.match(build, /grep -Eq '\^\[a-f0-9\]\{40\}\$'/u);
   assert.match(build, /logging: CLOUD_LOGGING_ONLY/u);
+  assert.doesNotMatch(build, /machineType: E2_HIGHCPU_8/u);
   assert.match(build, /npm run test:stage14/u);
   for (let index = 1; index <= 12; index += 1) {
     assert.match(rootPackage.scripts['test:stage14'], new RegExp(`tests/contract/n14\\.${index}\\.test\\.mjs`, 'u'));
