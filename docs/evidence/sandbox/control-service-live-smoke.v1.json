@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "clervo.sandbox-control-live-smoke.v1",
+  "evaluatedAt": "2026-08-03T13:58:06.534Z",
+  "status": "passed",
+  "controlImageDigest": "sha256:913b3127dd85d05ed3ee76d032ca3c72b475b1d7325aa773311b7221f5591df5",
+  "runnerImageDigest": "sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
+  "privateService": true,
+  "publicEndpoint": false,
+  "authenticated": true,
+  "usefulResult": true,
+  "replayWithoutExecution": true,
+  "cleanupVerified": true,
+  "chargedMicrousd": 0,
+  "infrastructure": {
+    "status": "ready",
+    "availableReplicas": 1,
+    "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-sandbox/control@sha256:913b3127dd85d05ed3ee76d032ca3c72b475b1d7325aa773311b7221f5591df5",
+    "systemNodePool": "default-pool",
+    "podReady": true,
+    "serviceType": "ClusterIP",
+    "serviceClusterIpAssigned": true,
+    "publicEndpoint": false,
+    "roleRuleCount": 4,
+    "allowed": {
+      "createSandboxClaim": true,
+      "createSandboxTemplate": true,
+      "getPod": true,
+      "execPod": true,
+      "getNetworkPolicy": true
+    },
+    "denied": {
+      "getSecret": true,
+      "createPod": true,
+      "deletePod": true,
+      "getNode": true,
+      "patchNamespace": true,
+      "createRole": true
+    },
+    "executionNamespaceSecretCount": 0,
+    "controlSecretPresent": true
+  }
+}

@@ -16,6 +16,9 @@ test('persistent sandbox plane preserves the qualified private Dataplane V2 and 
   assert.equal(policy.boundaries.publicWorkload, false);
   assert.equal(policy.executionPool.runtimeClass, 'gvisor');
   assert.equal(policy.executionPool.podPidsLimit, 1024);
+  assert.equal(policy.systemPool.machineType, 'e2-small');
+  assert.equal(policy.monitoring.managedPrometheusEnabled, false);
+  assert.deepEqual(policy.monitoring.components, ['SYSTEM_COMPONENTS']);
   assert.deepEqual(policy.executionPool.upgrade, { maximumSurge: 0, maximumUnavailable: 1 });
   assert.deepEqual(policy.executionPool.labels, {
     'clervo.dev/node-pool': 'sandbox-execution',
@@ -28,6 +31,7 @@ test('persistent sandbox plane preserves the qualified private Dataplane V2 and 
   assert.equal(policy.observed.requiredCrdsPresent, true);
   assert.equal(policy.observed.publicWorkload, false);
   assert.equal(policy.observed.failedZoneAttemptRemoved, true);
+  assert.equal(policy.observed.publicControlCapacityQualified, false);
   assert.equal(policy.observed.runnerRedTeamReportSha256, 'sha256:1b12e86151e22e09874a154abd156e5027ff7d035a5c2c4d74ed80f06ee94da4');
   assert.match(bootstrap, /--enable-dataplane-v2/u);
   assert.match(bootstrap, /--enable-private-nodes/u);

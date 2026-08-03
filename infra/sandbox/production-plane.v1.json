@@ -18,6 +18,10 @@
     "securityPosture": "standard",
     "workloadVulnerabilityScanning": "standard"
   },
+  "monitoring": {
+    "managedPrometheusEnabled": false,
+    "components": ["SYSTEM_COMPONENTS"]
+  },
   "nodeIdentity": {
     "serviceAccount": "clervo-sandbox-nodes",
     "projectRoles": [
@@ -37,7 +41,7 @@
   },
   "systemPool": {
     "name": "default-pool",
-    "machineType": "e2-medium",
+    "machineType": "e2-small",
     "nodes": 1,
     "diskType": "pd-balanced",
     "diskGiB": 30
@@ -87,7 +91,7 @@
     "all unrelated and legacy cloud resources"
   ],
   "observed": {
-    "evaluatedAt": "2026-08-03T12:25:18.821Z",
+    "evaluatedAt": "2026-08-03T13:58:06.534Z",
     "clusterStatus": "RUNNING",
     "currentMasterVersion": "1.36.2-gke.2281000",
     "currentNodeVersion": "1.36.2-gke.2281000",
@@ -96,6 +100,13 @@
     "privateEndpoint": true,
     "agentSandboxEnabled": true,
     "nodeCount": 2,
+    "systemNodeCount": 1,
+    "systemNodeMachineType": "e2-small",
+    "managedPrometheusEnabled": false,
+    "monitoringComponents": ["SYSTEM_COMPONENTS"],
+    "systemNodeRequestedMemoryPercent": 96,
+    "controlPodObservedMemoryMiB": 83,
+    "publicControlCapacityQualified": false,
     "sandboxNodeCount": 1,
     "sandboxNodesReady": true,
     "sandboxRuntimeClass": true,

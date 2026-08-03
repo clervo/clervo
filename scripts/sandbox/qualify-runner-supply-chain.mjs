@@ -9,21 +9,28 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const image = process.env.CLERVO_SANDBOX_IMAGE;
-const expected = /^us-central1-docker\.pkg\.dev\/bloxsniper-prod\/clervo-sandbox\/runner@sha256:[a-f0-9]{64}$/u;
+const component = process.env.CLERVO_SANDBOX_COMPONENT ?? 'runner';
+if (!['runner', 'control'].includes(component)) throw new Error('sandbox_component_invalid');
+const defaultPolicyPath = component === 'control'
+  ? path.join(root, 'infra/sandbox/control-service.v1.json')
+  : path.join(root, 'infra/sandbox/production-plane.v1.json');
+const defaultPolicy = JSON.parse(await readFile(defaultPolicyPath, 'utf8'));
+const defaultRepository = component === 'control' ? defaultPolicy.imageRepository : defaultPolicy.runner?.repository;
+const defaultDigest = component === 'control' ? defaultPolicy.imageDigest : defaultPolicy.runner?.imageDigest;
+const image = process.env.CLERVO_SANDBOX_IMAGE ?? `${defaultRepository}@${defaultDigest}`;
+const expected = new RegExp(`^us-central1-docker\\.pkg\\.dev/bloxsniper-prod/clervo-sandbox/${component}@sha256:[a-f0-9]{64}$`, 'u');
 if (!expected.test(image ?? '')) throw new Error('sandbox_runner_exact_image_required');
 const scannerUser = `${process.getuid()}:${process.getgid()}`;
 const syftImage = 'anchore/syft@sha256:86fde6445b483d902fe011dd9f68c4987dd94e07da1e9edc004e3c2422650de6';
 const clamImage = 'clamav/clamav@sha256:1b6443c4a7b456baa1abfaf9796815f8d21e2fb558dbaed5b682fd4552d8b0c3';
 const temporary = await mkdtemp(path.join(os.tmpdir(), 'clervo-sandbox-supply-'));
-const archive = path.join(temporary, 'runner.tar');
 const rootfsArchive = path.join(temporary, 'rootfs.tar');
 const rootfs = path.join(temporary, 'rootfs');
 const generated = path.join(temporary, 'generated');
 const clamDatabase = path.join(temporary, 'clam-database');
 const freshclamConfig = path.join(root, 'infra/sandbox/runner/freshclam-qualification.conf');
-const sbomPath = path.join(root, 'docs/evidence/sandbox/runner-sbom.spdx.json');
-const reportPath = path.join(root, 'docs/evidence/sandbox/runner-supply-chain.v5.json');
+const sbomPath = path.join(root, `docs/evidence/sandbox/${component}-sbom.spdx.json`);
+const reportPath = path.join(root, `docs/evidence/sandbox/${component}-supply-chain.v5.json`);
 let containerId;
 
 function run(command, args, options = {}) {
@@ -43,7 +50,7 @@ function isolatedScanner(imageReference, mounts, command, entrypoint) {
   return run('docker', [
     'run', '--rm', '--user', scannerUser, '--network', 'none', '--read-only',
     '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges=true', '--pids-limit', '64',
-    '--memory', '1g', '--cpus', '1', '--tmpfs', '/tmp:rw,noexec,nosuid,nodev,size=256m,mode=1777',
+    '--memory', '2g', '--cpus', '1', '--tmpfs', '/tmp:rw,noexec,nosuid,nodev,size=256m,mode=1777',
     '--env', 'SYFT_CHECK_FOR_APP_UPDATE=false', '--env', 'XDG_CACHE_HOME=/tmp',
     ...mounts.flatMap(([source, target, mode]) => ['--volume', `${source}:${target}:${mode}`]),
     ...(entrypoint ? ['--entrypoint', entrypoint] : []),
@@ -69,19 +76,17 @@ try {
   assert.equal((vulnerabilities.CRITICAL ?? []).length, 0);
   assert.equal((vulnerabilities.HIGH ?? []).length, 0);
 
-  run('docker', ['save', '--output', archive, image]);
-  isolatedScanner(syftImage, [[archive, '/scan/runner.tar', 'ro'], [generated, '/out', 'rw']], [
-    'docker-archive:/scan/runner.tar', '-o', 'spdx-json=/out/runner-sbom.spdx.json',
+  containerId = run('docker', ['create', image]);
+  run('docker', ['export', '--output', rootfsArchive, containerId]);
+  run('docker', ['rm', containerId]); containerId = undefined;
+  run('tar', ['--extract', '--file', rootfsArchive, '--directory', rootfs, '--no-same-owner', '--no-same-permissions']);
+  isolatedScanner(syftImage, [[rootfs, '/scan/rootfs', 'ro'], [generated, '/out', 'rw']], [
+    'dir:/scan/rootfs', '-o', 'spdx-json=/out/runner-sbom.spdx.json',
   ]);
   const sbomBytes = await readFile(path.join(generated, 'runner-sbom.spdx.json'));
   const sbom = JSON.parse(sbomBytes);
   assert.equal(sbom.spdxVersion, 'SPDX-2.3');
   assert.ok(sbom.packages.length > 0);
-
-  containerId = run('docker', ['create', image]);
-  run('docker', ['export', '--output', rootfsArchive, containerId]);
-  run('docker', ['rm', containerId]); containerId = undefined;
-  run('tar', ['--extract', '--file', rootfsArchive, '--directory', rootfs, '--no-same-owner', '--no-same-permissions']);
   run('docker', [
     'run', '--rm', '--user', scannerUser, '--read-only', '--cap-drop', 'ALL',
     '--security-opt', 'no-new-privileges=true', '--pids-limit', '64', '--memory', '1g', '--cpus', '1',
@@ -100,6 +105,7 @@ try {
   const finalSbom = await readFile(sbomPath);
   report = {
     schemaVersion: 'clervo.sandbox-runner-supply-chain.v1',
+    component,
     evaluatedAt: new Date().toISOString(),
     image,
     digest: image.slice(image.indexOf('@') + 1),
@@ -118,4 +124,4 @@ try {
   await rm(temporary, { recursive: true, force: true });
 }
 
-process.stdout.write(`sandbox runner supply chain: PASS (${report.sbom.packageCount} SPDX packages, ${report.malwareScan.filesScanned} files)\n`);
+process.stdout.write(`sandbox ${component} supply chain: PASS (${report.sbom.packageCount} SPDX packages, ${report.malwareScan.filesScanned} files)\n`);

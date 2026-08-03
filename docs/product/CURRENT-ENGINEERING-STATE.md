@@ -1,17 +1,20 @@
 # Current engineering state
 
-Updated 2026-08-03 after persistent private Sandbox-plane qualification. This is a compact
+Updated 2026-08-03 after persistent private Sandbox control qualification. This is a compact
 resumable handoff, not an authorization gate. Continue automatically after
 reading it.
 
 ## Active work
 
-Stage 7 secure sandbox product core and its persistent private execution plane
-are complete. The contracts, lifecycle, cleanup, artifact quarantine, cost
-controls, verified-image registry, runner, Agent Sandbox adapter, and red-team
-gate are implemented and consolidated tests pass. Public lifecycle remains
-`unavailable` until the private control service and product API route are
-deployed and operationally qualified.
+Stage 7 secure sandbox product core, persistent private execution plane, and
+authenticated private control service are complete. The contracts, lifecycle,
+cleanup, artifact quarantine, cost controls, verified-image registry, runner,
+official Kubernetes client transport, Agent Sandbox adapter, and red-team gate
+are implemented. The private controller produced useful output, replayed the
+same operation without another execution, charged zero, and left no runtime
+resources. Public lifecycle remains `unavailable` until durable cross-instance
+idempotency, the private product API route, and production capacity are
+operationally qualified.
 
 Stage 8 universal multi-chain RPC product core is also complete locally. The
 eight-chain registry, strict JSON-RPC adapter, semantic identity/head/finalized
@@ -323,6 +326,28 @@ logged or retained. Current evidence is in
 `docs/evidence/sandbox/runner-supply-chain.v5.json` and
 `docs/evidence/sandbox/gvisor-production-red-team.v1.json`.
 
+The private Sandbox controller runs in `clervo-sandbox-system` with an exact
+distroless non-root image at digest
+`sha256:913b3127dd85d05ed3ee76d032ca3c72b475b1d7325aa773311b7221f5591df5`.
+Cloud Build `8a928ad1-ced4-47b4-b526-b5e9190aa233` passed the controller contracts;
+SLSA level 3 provenance, Artifact Analysis, a 33-package SPDX SBOM, and an
+offline ClamAV scan of 27,642 files all passed with zero high/critical findings
+or infections. Namespace-scoped RBAC permits only Agent Sandbox lifecycle,
+pod observation/exec, and NetworkPolicy observation. It cannot read execution
+secrets, create/delete pods directly, inspect nodes, mutate namespaces, or
+create roles. The service is ClusterIP-only, authenticated by a dedicated
+runtime secret, and has no public route or payment path.
+
+The live control smoke passed useful gVisor execution, authenticated replay
+without re-execution, and foreground cleanup with zero charge. Its replay cache
+is intentionally process-local, so it is not yet a customer-facing durability
+claim. The system pool was recovered as one `e2-small` node after the project
+CPU quota rejected a larger replacement; managed Prometheus collection was
+disabled while GKE system metrics remain enabled. Kubernetes requests consume
+96% of allocatable system-node memory and the controller used 83 MiB live.
+This is adequate for the bounded private qualification but not approved public
+capacity. Do not move control workloads onto the untrusted execution pool.
+
 ## Next actions
 
 1. Stage 13 is complete locally but not externally distributed. Create/connect
@@ -339,10 +364,10 @@ logged or retained. Current evidence is in
 4. Keep RPC customer routing disabled until written commercial permission or
    replacement terms-compatible supply exists; this isolated owner blocker does
    not pause combined workflows or other local engineering.
-5. Keep Sandbox public lifecycle `unavailable` while deploying and qualifying
-   the private control service and product API route on the now-qualified
-   persistent execution plane; delayed cloud billing reconciliation is
-   non-blocking.
+5. Keep Sandbox public lifecycle `unavailable` while adding durable
+   cross-instance operation state, private product-API connectivity, and a
+   production-capacity system plane. The private controller and execution plane
+   are qualified; current system-node headroom is not a public capacity proof.
 
 ## Preserved boundaries
 

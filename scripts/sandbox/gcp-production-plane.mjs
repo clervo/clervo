@@ -191,6 +191,11 @@ function observe() {
     '--cluster', policy.cluster.name, '--project', policy.project, '--zone', policy.zone,
     '--format=json',
   ], { capture: true }).stdout);
+  const systemPool = JSON.parse(gcloud([
+    'container', 'node-pools', 'describe', policy.systemPool.name,
+    '--cluster', policy.cluster.name, '--project', policy.project, '--zone', policy.zone,
+    '--format=json',
+  ], { capture: true }).stdout);
   const nodes = JSON.parse(run('kubectl', ['get', 'nodes', '-o', 'json'], { capture: true }).stdout);
   const sandboxNodes = nodes.items.filter((item) => item.metadata?.labels?.['clervo.dev/node-pool'] === policy.executionPool.name);
   const crds = JSON.parse(run('kubectl', ['get', 'crd', '-o', 'json'], { capture: true }).stdout);
@@ -208,6 +213,9 @@ function observe() {
     workloadIdentityPool: cluster.workloadIdentityConfig?.workloadPool,
     nodeServiceAccount: nodeEmail,
     nodeCount: nodes.items.length,
+    systemNodeMachineType: systemPool.config?.machineType,
+    managedPrometheusEnabled: cluster.monitoringConfig?.managedPrometheusConfig?.enabled === true,
+    monitoringComponents: cluster.monitoringConfig?.componentConfig?.enableComponents ?? [],
     sandboxNodeCount: sandboxNodes.length,
     sandboxNodesReady: sandboxNodes.every((item) => item.status?.conditions?.some((condition) => condition.type === 'Ready' && condition.status === 'True')),
     sandboxRuntimeClass: run('kubectl', ['get', 'runtimeclass', policy.executionPool.runtimeClass, '-o', 'name'], { capture: true }).stdout === `runtimeclass.node.k8s.io/${policy.executionPool.runtimeClass}`,
@@ -221,6 +229,9 @@ function observe() {
   assert.equal(observation.privateEndpoint, true);
   assert.equal(observation.agentSandboxEnabled, true);
   assert.equal(observation.workloadIdentityPool, policy.cluster.workloadIdentityPool);
+  assert.equal(observation.systemNodeMachineType, policy.systemPool.machineType);
+  assert.equal(observation.managedPrometheusEnabled, policy.monitoring.managedPrometheusEnabled);
+  assert.deepEqual(observation.monitoringComponents, policy.monitoring.components);
   assert.ok(observation.sandboxNodeCount >= policy.executionPool.minimumNodes);
   assert.equal(observation.sandboxNodesReady, true);
   assert.equal(observation.sandboxRuntimeClass, true);
