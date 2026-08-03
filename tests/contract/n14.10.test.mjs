@@ -101,6 +101,7 @@ test('Cloud Build is immutable, acceptance-gated, and requests verified provenan
   }
   assert.match(rootPackage.scripts['test:stage14'], /npm audit --omit=dev --audit-level=high/u);
   assert.match(rootPackage.scripts['test:stage14'], /npm run scan:secrets/u);
+  assert.match(build, /SECRET_SCAN_SOURCE_ARCHIVE=1/u);
   assert.match(rootPackage.scripts['test:stage14'], /verify-clean-room-boundary/u);
   assert.doesNotMatch(build, /docker push/u);
   assert.doesNotMatch(build, /:latest/u);

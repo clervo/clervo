@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execFileSync, spawnSync } from 'node:child_process';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -60,6 +60,25 @@ async function scanWorkingTree() {
   return findings;
 }
 
+async function scanUploadedSource(directory = repositoryRoot, relativeDirectory = '') {
+  const findings = [];
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    if (entry.name === '.git' || entry.name === 'node_modules') continue;
+    const relativePath = path.join(relativeDirectory, entry.name);
+    const absolutePath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      findings.push(...await scanUploadedSource(absolutePath, relativePath));
+    } else if (entry.isFile()) {
+      try {
+        findings.push(...findingsFor(`uploaded-source:${relativePath}`, await readFile(absolutePath, 'utf8')));
+      } catch (error) {
+        if (error.code !== 'EISDIR' && error.code !== 'ENOENT') throw error;
+      }
+    }
+  }
+  return findings;
+}
+
 function scanHistoryRange(range) {
   if (!range) return [];
   const objects = unique(git(['rev-list', '--objects', range]));
@@ -113,9 +132,10 @@ function requestedHistoryRange() {
 }
 
 try {
+  const uploadedSourceMode = process.env.SECRET_SCAN_SOURCE_ARCHIVE === '1';
   const findings = [
-    ...(await scanWorkingTree()),
-    ...scanHistoryRange(requestedHistoryRange()),
+    ...(uploadedSourceMode ? await scanUploadedSource() : await scanWorkingTree()),
+    ...(uploadedSourceMode ? [] : scanHistoryRange(requestedHistoryRange())),
   ];
 
   if (findings.length > 0) {
@@ -124,7 +144,9 @@ try {
     process.exitCode = 1;
   } else {
     console.log('secret scan: PASS');
-    console.log(`scope: working tree${process.env.SECRET_SCAN_SKIP_HISTORY === '1' ? '' : ' plus committed history'}`);
+    console.log(uploadedSourceMode
+      ? 'scope: uploaded source tree'
+      : `scope: working tree${process.env.SECRET_SCAN_SKIP_HISTORY === '1' ? '' : ' plus committed history'}`);
     console.log('secret values printed: 0');
     console.log('network calls made: 0');
     console.log('USDC spent: 0');

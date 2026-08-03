@@ -12,6 +12,7 @@ steps:
     env:
       - CLERVO_CLOUD_ACCEPTANCE=true
       - CLERVO_EXPECTED_RELEASE_SHA=$_RELEASE_SHA
+      - SECRET_SCAN_SOURCE_ARCHIVE=1
     args:
       - -ceu
       - |
