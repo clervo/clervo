@@ -12,9 +12,11 @@ cleanup, artifact quarantine, cost controls, verified-image registry, runner,
 official Kubernetes client transport, Agent Sandbox adapter, and red-team gate
 are implemented. The private controller produced useful output, replayed the
 same operation without another execution, charged zero, and left no runtime
-resources. Public lifecycle remains `unavailable` until durable cross-instance
-idempotency, the private product API route, and production capacity are
-operationally qualified.
+resources. Durable cross-instance API state and a separately authenticated
+private product route are implemented and qualified locally but remain disabled
+in production. Public lifecycle remains `unavailable` until migration 0006 is
+applied to the managed database, private API-to-control connectivity is live,
+and production capacity is qualified.
 
 Stage 8 universal multi-chain RPC product core is also complete locally. The
 eight-chain registry, strict JSON-RPC adapter, semantic identity/head/finalized
@@ -220,7 +222,7 @@ candidate, observed database readiness, then restored the preceding verified
 bootstrap revision. The candidate is back at zero traffic.
 
 The exact digest-pinned PostgreSQL 18.4 image now passes a disposable live
-recovery qualification. All five migrations applied; atomic claim, completion,
+recovery qualification. All six migrations applied; atomic claim, completion,
 replay, conflict, and quota behavior passed; completed state survived a
 database process restart; a custom-format backup restored into a separate clean
 database; restored replay matched; and expired retention was applied against
@@ -348,6 +350,18 @@ disabled while GKE system metrics remain enabled. Kubernetes requests consume
 This is adequate for the bounded private qualification but not approved public
 capacity. Do not move control workloads onto the untrusted execution pool.
 
+The production API candidate now has a default-disabled private Sandbox route,
+an exact private-target client with redirect/SSRF refusal, separate API and
+control authentication, and a PostgreSQL operation ledger that stores only a
+tenant hash. One operation is bound to one request; completed results replay
+across processes, while a lost or expired execution becomes permanently
+`execution_unknown` and is never automatically re-executed. Disposable
+PostgreSQL qualification applied all six migrations and proved Sandbox state
+across process restart, custom-format backup, and isolated restore. All
+containers, volumes, and the temporary archive were removed. Migration 0006 is
+not yet applied to the managed production database, and `CLERVO_SANDBOX_MODE`
+remains disabled in the deployed Cloud Run revisions.
+
 ## Next actions
 
 1. Stage 13 is complete locally but not externally distributed. Create/connect
@@ -364,10 +378,11 @@ capacity. Do not move control workloads onto the untrusted execution pool.
 4. Keep RPC customer routing disabled until written commercial permission or
    replacement terms-compatible supply exists; this isolated owner blocker does
    not pause combined workflows or other local engineering.
-5. Keep Sandbox public lifecycle `unavailable` while adding durable
-   cross-instance operation state, private product-API connectivity, and a
-   production-capacity system plane. The private controller and execution plane
-   are qualified; current system-node headroom is not a public capacity proof.
+5. Keep Sandbox public lifecycle `unavailable` while applying the already
+   qualified migration 0006, wiring the default-disabled private API route to
+   the controller, and providing a production-capacity system plane. The
+   private controller, execution plane, and local durable API path are
+   qualified; current system-node headroom is not a public capacity proof.
 
 ## Preserved boundaries
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.postgres-recovery-qualification.v1",
-  "qualifiedAt": "2026-08-03T10:14:34.156Z",
-  "sourceCommit": "508c88ab4ec3",
+  "qualifiedAt": "2026-08-03T14:08:26.266Z",
+  "sourceCommit": "03279f27a314",
   "postgresVersion": "18.4",
   "image": "postgres:18.4-bookworm@sha256:1961f96e6029a02c3812d7cb329a3b03a3ac2bb067058dec17b0f5596aca9296",
   "environmentNamespace": "qualification",
@@ -10,7 +10,8 @@
     "0002-live-intelligence-monitoring.sql",
     "0003-search-http-state.sql",
     "0004-receiver-accounting.sql",
-    "0005-x402-operation-state.sql"
+    "0005-x402-operation-state.sql",
+    "0006-sandbox-operation-state.sql"
   ],
   "checks": {
     "exactImageDigest": true,
@@ -25,7 +26,7 @@
     ],
     "processRestartReplay": true,
     "backupArchiveNonEmpty": true,
-    "backupArchiveHash": "sha256:cbcbf839b0710a15fe0ca82de9a861a90c3e1a11d61d4cd90efbb07bf3d78b63",
+    "backupArchiveHash": "sha256:23186272255b98333316435a6fcdee72179e6d0913493c0b7d9f8c29bd564680",
     "isolatedRestoreReady": true,
     "restoredReplayMatched": true,
     "retentionPlanCountOnly": true,
@@ -41,7 +42,10 @@
     "receiverAccountingRestoredFromBackup": true,
     "x402ExactlyOnceStateInserted": true,
     "x402StateSurvivedRestart": true,
-    "x402StateRestoredFromBackup": true
+    "x402StateRestoredFromBackup": true,
+    "sandboxExactlyOnceStateInserted": true,
+    "sandboxStateSurvivedRestart": true,
+    "sandboxStateRestoredFromBackup": true
   },
   "cleanup": {
     "sourceContainerRemoved": true,
