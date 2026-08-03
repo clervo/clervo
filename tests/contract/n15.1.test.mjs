@@ -88,3 +88,63 @@ test('challenge service rejects the protected model gateway and non-Base configu
   await assert.rejects(createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://ai.clervo.dev/' }), /invalid x402 public origin/u);
   await assert.rejects(createX402ChallengeService({ facilitator, network: 'eip155:84532', asset, payTo, publicOrigin: 'https://api.clervo.dev/' }), /unsupported x402 production network/u);
 });
+
+test('payment processing verifies once, settles once, and quarantines unknown settlement', async () => {
+  const calls = { supported: 0, verify: 0, settle: 0 };
+  const facilitator = {
+    async getSupported() {
+      calls.supported += 1;
+      return { kinds: [{ x402Version: 2, scheme: 'exact', network }], extensions: [], signers: {} };
+    },
+    async verify(payload, requirements) {
+      calls.verify += 1;
+      assert.deepEqual(payload.accepted, requirements);
+      return { isValid: true, payer: `0x${'3'.repeat(40)}` };
+    },
+    async settle(payload, requirements) {
+      calls.settle += 1;
+      assert.deepEqual(payload.accepted, requirements);
+      return { success: true, transaction: `0x${'4'.repeat(64)}`, network, payer: `0x${'3'.repeat(40)}` };
+    },
+  };
+  const service = await createX402ChallengeService({
+    facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/', paymentMode: 'settlement_enabled',
+  });
+  const challenge = await service.challenge({ quote, description: 'Bounded search.web execution', now: issuedAt });
+  const paymentPayload = { x402Version: 2, accepted: challenge.body.accepts[0], payload: { signature: 'opaque-test-value' } };
+  const paymentHeader = Buffer.from(JSON.stringify(paymentPayload), 'utf8').toString('base64');
+  const authorization = await service.authorize({ paymentHeader, challenge });
+  assert.match(authorization.fingerprint, /^sha256:[a-f0-9]{64}$/u);
+  const settled = await service.settle(authorization);
+  assert.equal(settled.kind, 'settled');
+  assert.match(settled.headers['PAYMENT-RESPONSE'], /^[A-Za-z0-9+/]+=*$/u);
+  assert.deepEqual(calls, { supported: 1, verify: 1, settle: 1 });
+
+  const uncertain = await createX402ChallengeService({
+    facilitator: { ...facilitator, async settle() { throw new Error('timeout'); } },
+    network,
+    asset,
+    payTo,
+    publicOrigin: 'https://api.clervo.dev/',
+    paymentMode: 'settlement_enabled',
+  });
+  const uncertainChallenge = await uncertain.challenge({ quote, description: 'Bounded search.web execution', now: issuedAt });
+  const uncertainPayload = { ...paymentPayload, accepted: uncertainChallenge.body.accepts[0] };
+  const uncertainAuthorization = await uncertain.authorize({
+    paymentHeader: Buffer.from(JSON.stringify(uncertainPayload), 'utf8').toString('base64'),
+    challenge: uncertainChallenge,
+  });
+  assert.deepEqual(await uncertain.settle(uncertainAuthorization), {
+    kind: 'unknown', reason: 'settlement_transport_or_state_unknown',
+  });
+});
+
+test('challenge-only mode rejects payment headers before facilitator verification', async () => {
+  const facilitator = {
+    async getSupported() { return { kinds: [{ x402Version: 2, scheme: 'exact', network }], extensions: [], signers: {} }; },
+    async verify() { throw new Error('must_not_run'); },
+  };
+  const service = await createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/' });
+  const challenge = await service.challenge({ quote, description: 'Bounded search.web execution', now: issuedAt });
+  await assert.rejects(service.authorize({ paymentHeader: 'opaque', challenge }), /x402 settlement is disabled/u);
+});
