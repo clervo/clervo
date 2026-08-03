@@ -31,25 +31,34 @@ function pool(name, allowFailure = false) {
 
 function ensurePool() {
   const existing = pool(policy.nodePool.name, true);
-  if (!existing.ok) fail('system_pool_missing');
-  let value = JSON.parse(existing.stdout);
-  if (value.config?.machineType !== policy.nodePool.machineType) {
+  if (!existing.ok) {
     gcloud([
-      'container', 'node-pools', 'update', policy.nodePool.name, '--cluster', policy.cluster,
-      '--project', policy.project, '--zone', policy.zone, '--enable-surge-upgrade',
-      '--max-surge-upgrade', '0', '--max-unavailable-upgrade', '1', '--quiet',
+      'container', 'node-pools', 'create', policy.nodePool.name, '--cluster', policy.cluster,
+      '--project', policy.project, '--zone', policy.zone, '--machine-type', policy.nodePool.machineType,
+      '--num-nodes', String(policy.nodePool.nodes), '--disk-type', policy.nodePool.diskType,
+      '--disk-size', String(policy.nodePool.diskSizeGb), '--image-type', policy.nodePool.imageType,
+      '--max-pods-per-node', String(policy.nodePool.maximumPodsPerNode), '--service-account', policy.nodePool.serviceAccount,
+      '--workload-metadata', 'GKE_METADATA', '--metadata', 'disable-legacy-endpoints=true',
+      '--shielded-secure-boot', '--shielded-integrity-monitoring', '--enable-autorepair', '--enable-autoupgrade', '--quiet',
     ]);
-    gcloud([
-      'container', 'node-pools', 'update', policy.nodePool.name, '--cluster', policy.cluster,
-      '--project', policy.project, '--zone', policy.zone, '--machine-type', policy.nodePool.machineType, '--quiet',
-    ]);
-    value = JSON.parse(pool(policy.nodePool.name).stdout);
-    assert.equal(value.config?.machineType, policy.nodePool.machineType);
     return true;
   }
+  const value = JSON.parse(existing.stdout);
+  assert.equal(value.config?.machineType, policy.nodePool.machineType);
   assert.equal(value.config?.serviceAccount, policy.nodePool.serviceAccount);
   assert.equal(value.config?.diskType, policy.nodePool.diskType);
   return false;
+}
+
+function quiesceBrokenPool() {
+  const broken = pool(policy.quiescedNodePool.name, true);
+  if (!broken.ok) return false;
+  gcloud([
+    'container', 'clusters', 'resize', policy.cluster, '--node-pool', policy.quiescedNodePool.name,
+    '--num-nodes', String(policy.quiescedNodePool.desiredNodes), '--project', policy.project,
+    '--zone', policy.zone, '--quiet',
+  ]);
+  return true;
 }
 
 function disruptionBudget() {
@@ -103,7 +112,7 @@ function observe() {
   assert.equal(result.controllerReplicas, policy.controller.replicas);
   assert.equal(controllerPods.length, policy.controller.replicas);
   assert.ok(controllerPods.every(({ nodeName, ready, requests }) => nodeNames.has(nodeName) && ready && requests?.cpu === policy.controller.requests.cpu && requests?.memory === policy.controller.requests.memory));
-  assert.equal(new Set(controllerPods.map(({ nodeName }) => nodeName)).size, 1);
+  assert.equal(new Set(controllerPods.map(({ nodeName }) => nodeName)).size, policy.controller.replicas);
   assert.equal(result.minimumAvailable, policy.controller.minimumAvailable);
   return result;
 }
@@ -112,8 +121,9 @@ let result;
 if (action === 'plan') result = { action: 'plan', ...policy, mutation: false };
 else if (action === 'apply') {
   assert.equal(process.env.CLERVO_SANDBOX_CAPACITY_CONFIRM, `provision:sandbox-system-capacity:${policy.project}`, 'owner confirmation mismatch');
-  const nodePoolUpdated = ensurePool(); credentials(); moveController();
-  result = { action: 'system-capacity-ready', nodePoolUpdated, ...observe() };
+  const brokenPoolQuiesced = quiesceBrokenPool();
+  const nodePoolCreated = ensurePool(); credentials(); moveController();
+  result = { action: 'system-capacity-ready', brokenPoolQuiesced, nodePoolCreated, ...observe() };
 } else if (action === 'observe') result = { action: 'observed', ...observe() };
 else fail('usage_plan_apply_observe');
 

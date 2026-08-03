@@ -5,7 +5,7 @@
   "zone": "us-central1-a",
   "cluster": "clervo-sandbox-production",
   "nodePool": {
-    "name": "default-pool",
+    "name": "sandbox-system",
     "machineType": "n1-standard-1",
     "nodes": 1,
     "diskType": "pd-balanced",
@@ -29,9 +29,15 @@
   "quotaConstraint": {
     "metric": "CPUS_ALL_REGIONS",
     "limit": 12,
-    "availableAtQualification": 0,
+    "availableBeforeRecovery": 1,
+    "availableAfterRecovery": 0,
     "highAvailabilityQualified": false,
-    "upgradeStrategy": "in_place_no_surge"
+    "recoveryStrategy": "dedicated_one_vcpu_pool"
+  },
+  "quiescedNodePool": {
+    "name": "default-pool",
+    "desiredNodes": 0,
+    "reason": "failed_quota_constrained_machine_replacement"
   },
   "boundaries": {
     "executionNodePool": "sandbox-execution",

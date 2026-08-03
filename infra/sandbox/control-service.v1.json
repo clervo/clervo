@@ -41,7 +41,7 @@
     "forbiddenResources": ["secrets", "serviceaccounts", "roles", "rolebindings", "nodes", "namespaces", "persistentvolumeclaims"]
   },
   "boundaries": {
-    "systemNodePool": "default-pool",
+    "systemNodePool": "sandbox-system",
     "executionNodePool": "sandbox-execution",
     "minimumAvailableReplicas": 1,
     "controllerRequests": { "cpu": "100m", "memory": "128Mi" },
