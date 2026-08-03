@@ -6,6 +6,7 @@ import path from 'node:path';
 
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const node = process.execPath;
+const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const tsc = path.join(repositoryRoot, 'node_modules', '.bin', 'tsc');
 const contractTests = [
   'tests/contract/n1.1.test.mjs', 'tests/contract/n1.2.test.mjs', 'tests/contract/n1.3.test.mjs',
@@ -26,6 +27,7 @@ const contractTests = [
 
 const gates = [
   ['lint', node, ['scripts/lint.mjs']],
+  ['SDK build prerequisite', npm, ['run', 'build', '--workspace', '@clervo/sdk']],
   ['typecheck', tsc, ['--project', 'tsconfig.json', '--noEmit']],
   ['clean-room boundary', path.join(repositoryRoot, 'scripts', 'verify-clean-room-boundary.sh'), []],
   ['stack decision', node, ['scripts/verify-stack-decision.mjs']],

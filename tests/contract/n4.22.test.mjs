@@ -13,11 +13,11 @@ test('N4.22 historical 21-blocker snapshot is preserved while current remediatio
   const inputs = await loadStage4CampaignInputs();
   const result = validateStage4Campaign(inputs.matrix, inputs.stageResult, inputs.packageJson, inputs.tsconfig);
   assert.equal(result.startingBlockerCount, 21);
-  assert.equal(result.blockerCount, 10);
-  assert.equal(result.closedCheckIds.length, 11);
-  assert.equal(result.nextTicket, 'N4.27R');
-  assert.equal(result.nextTicketStatus, 'unauthorized');
-  assert.deepEqual(result.externalReasons, ['n427r_separate_authority_required']);
+  assert.equal(result.blockerCount, 5);
+  assert.equal(result.closedCheckIds.length, 16);
+  assert.equal(result.nextTicket, 'N4.27T');
+  assert.equal(result.nextTicketStatus, 'proposed_only');
+  assert.deepEqual(result.externalReasons, ['n427t_separate_authority_required']);
 });
 
 test('missing or substituted blocker identities fail closed', async () => {

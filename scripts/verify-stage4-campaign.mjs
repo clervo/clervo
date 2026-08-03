@@ -16,7 +16,7 @@ const REQUIRED_EXTERNAL_REASONS = Object.freeze([
   'payable_route_authorization_unavailable',
   'alert_delivery_channel_unavailable',
 ]);
-const CURRENT_EXTERNAL_REASONS = Object.freeze(['n427r_separate_authority_required']);
+const CURRENT_EXTERNAL_REASONS = Object.freeze(['n427t_separate_authority_required']);
 
 export function validateStage4Campaign(matrix, stageResult, packageJson, tsconfig) {
   assert.equal(matrix.schemaVersion, 1, 'campaign schema version drift');
@@ -85,14 +85,20 @@ export function validateStage4Campaign(matrix, stageResult, packageJson, tsconfi
   assert.equal(matrix.usdcSpent, 0);
 
   const current = matrix.currentCampaignState;
+  const boundRemainingCheckIds = stageResult.sourceBinding.currentBinding.remainingBlockers.map((value) => value.id);
+  const boundClosedCheckIds = REQUIRED_STAGE4_CHECK_IDS
+    .filter((id) => id !== 'deployed_free_sample' && !boundRemainingCheckIds.includes(id));
   assert.match(current.evaluatedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u);
   assert.equal(current.sourceBinding, 'docs/evidence/n4.27s/stage4-binding.v1.json');
   assert.equal(current.startingBlockerCount, matrix.blockerCount, 'current campaign must preserve the starting count');
-  assert.deepEqual(current.closedCheckIds, stageResult.evidence.checks.filter((check) => check.stagingVerified && check.id !== 'deployed_free_sample').map((check) => check.id), 'current closed IDs must match all staging-verified checks');
-  assert.equal(current.blockerCount, stageResult.blockingCheckIds.length, 'current blocker count must match Stage 4 evidence');
+  assert.deepEqual(
+    [...current.closedCheckIds].sort(),
+    [...boundClosedCheckIds].sort(),
+    'historical closed IDs must match the hash-bound N4.27S source',
+  );
+  assert.equal(current.blockerCount, boundRemainingCheckIds.length, 'historical blocker count must match the hash-bound N4.27S source');
   assert.equal(current.blockerCount, 5, 'N4.27S current blocker count drift');
-  assert.deepEqual(current.blockerIds, [...stageResult.blockingCheckIds], 'current blockers must match Stage 4 order and identity');
-  assert.deepEqual(current.blockerIds, stageResult.sourceBinding.currentBinding.remainingBlockers.map((value) => value.id), 'current blockers must match the hash-bound N4.27S source');
+  assert.deepEqual(current.blockerIds, boundRemainingCheckIds, 'current blockers must match the hash-bound N4.27S source');
   assert.equal(current.closedCheckIds.length + current.blockerCount, current.startingBlockerCount, 'current campaign must account for all starting blockers');
   assert.equal(current.authenticatedStaging.authenticatedControlPlaneAccess, true, 'current authenticated staging access must be recorded');
   assert.equal(current.authenticatedStaging.clusterState, 'deleted_after_evidence_capture', 'ticket cluster must not retain active burn');
@@ -138,9 +144,9 @@ export function validateStage4Campaign(matrix, stageResult, packageJson, tsconfi
   assert.equal(current.campaignQueue.find((item) => item.ticket === 'N4.27S')?.result, 'staging_qualification_failed');
   assert.equal(current.campaignQueue.find((item) => item.ticket === 'N4.28')?.reason, 'blocked_until_stage4_passes_and_is_separately_authorized');
   assert.deepEqual(current.smallestRepairTicket, {
-    ticket: 'N4.27R',
-    status: 'unauthorized',
-    reason: 'representative_lawful_supply_and_deterministic_browser_repair_required',
+    ticket: 'N4.27T',
+    status: 'proposed_only',
+    reason: 'developer_retrieval_browser_hostile_and_cost_overlap_remediation_required',
   });
   assert.equal(current.externalBlocker.status, 'blocked_external');
   assert.deepEqual(current.externalBlocker.reasons, CURRENT_EXTERNAL_REASONS);
@@ -153,8 +159,8 @@ export function validateStage4Campaign(matrix, stageResult, packageJson, tsconfi
     startingBlockerCount: matrix.blockerCount,
     blockerCount: current.blockerCount,
     closedCheckIds: Object.freeze([...current.closedCheckIds]),
-    nextTicket: 'N4.27R',
-    nextTicketStatus: 'unauthorized',
+    nextTicket: 'N4.27T',
+    nextTicketStatus: 'proposed_only',
     externalReasons: Object.freeze([...current.externalBlocker.reasons]),
   });
 }

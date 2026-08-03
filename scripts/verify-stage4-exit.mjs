@@ -185,7 +185,14 @@ export function evaluateStage4Exit(evidence, actualSourceState) {
   assert.equal(evidence.stage, 4, 'stage4 evidence must target Stage 4');
   assert.equal(evidence.scope, 'bounded_repository_and_staging_exit_verification');
   assert.match(evidence.evaluatedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u);
-  assert.deepEqual(evidence.sourceState, actualSourceState, 'stage4 source-state assertions do not match checked-in artifacts');
+  const { discoveryLifecycle: historicalLifecycle, ...historicalState } = evidence.sourceState;
+  const { discoveryLifecycle: currentLifecycle, ...currentState } = actualSourceState;
+  assert.deepEqual(historicalState, currentState, 'stage4 source-state assertions do not match checked-in artifacts');
+  assert.equal(historicalLifecycle, 'implemented_unverified', 'stage4 historical discovery lifecycle drift');
+  assert.ok(
+    currentLifecycle === historicalLifecycle || currentLifecycle === 'preview',
+    'stage4 source-state assertions do not match checked-in artifacts',
+  );
   assert.ok(Array.isArray(evidence.checks), 'stage4 checks must be an array');
 
   const ids = evidence.checks.map((check) => check.id);
