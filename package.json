@@ -145,6 +145,7 @@
     "test:stage13:clients": "node ./scripts/verify-runtime.mjs && npm run build && npm run build --workspace @clervo/mcp && node --test ./tests/contract/n13.1.test.mjs ./tests/contract/n13.2.test.mjs && PYTHONPATH=packages/sdk-python/src python3 -m unittest discover -s packages/sdk-python/tests -v",
     "verify:distribution-release": "node ./scripts/verify-runtime.mjs && node ./scripts/release/verify-distribution-release.mjs",
     "verify:distribution-release:registry": "node ./scripts/verify-runtime.mjs && node ./scripts/release/verify-distribution-release.mjs --registry",
+    "verify:distribution-release:published": "node ./scripts/verify-runtime.mjs && node ./scripts/release/verify-distribution-release.mjs --published",
     "prove:distribution-onboarding": "node ./scripts/verify-runtime.mjs && node ./scripts/release/prove-distribution-onboarding.mjs",
     "test:stage13:distribution": "npm run test:stage13:clients && npm run verify:distribution-release && node --test ./tests/contract/n13.4.test.mjs && npm run prove:distribution-onboarding",
     "site:dev": "npm --workspace @clervo/site run dev",

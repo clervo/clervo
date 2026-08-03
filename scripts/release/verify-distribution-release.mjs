@@ -7,6 +7,8 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const registryMode = process.argv.includes('--registry');
+const publishedMode = process.argv.includes('--published');
+assert.equal(registryMode && publishedMode, false, 'registry preflight and published verification are mutually exclusive');
 const targetPath = path.join(root, 'packages/distribution/release-targets.v1.json');
 const targets = JSON.parse(await readFile(targetPath, 'utf8'));
 const expectedRepository = 'https://github.com/clervo/clervo';
@@ -53,6 +55,14 @@ assert.deepEqual(targets.workflow, {
   filename: 'publish-packages.yml',
   environment: 'package-release',
 });
+if (publishedMode) {
+  assert.deepEqual(targets.publication, {
+    state: 'published_verified',
+    sourceCommit: 'd299f08ae70a0a19390050583e14a512f9751172',
+    githubRunId: 30858517518,
+    verifiedAt: '2026-08-03T22:28:10Z',
+  });
+}
 assert.equal(targets.tooling.buildNpmVersion, '10.9.8');
 assert.equal(targets.tooling.publishNpmVersion, '11.18.0');
 assert.equal(targets.tooling.pythonBuildVersion, '1.5.0');
@@ -112,24 +122,60 @@ for (const staleClaim of [
 }
 assert.match(publicPackageCopy, /no\s+public(?: API)? deployment is\s+(?:currently )?(?:verified|assumed)/iu);
 
-if (registryMode) {
+if (registryMode || publishedMode) {
   for (const target of targets.packages) {
     if (target.registry === 'npm') {
       const packument = await fetchJson(`https://registry.npmjs.org/${encodeURIComponent(target.name)}`);
       const versions = Object.keys(packument.versions ?? {});
-      assert.equal(versions.includes(target.version), false, `${target.name}@${target.version} is already published; reconcile before retrying`);
-      const latest = packument['dist-tags']?.latest;
-      assert.equal(typeof latest, 'string', `${target.name} has no latest registry version`);
-      assert.ok(compareVersions(target.version, latest) > 0, `${target.name}@${target.version} does not advance ${latest}`);
+      if (registryMode) {
+        assert.equal(versions.includes(target.version), false, `${target.name}@${target.version} is already published; reconcile before retrying`);
+        const latest = packument['dist-tags']?.latest;
+        assert.equal(typeof latest, 'string', `${target.name} has no latest registry version`);
+        assert.ok(compareVersions(target.version, latest) > 0, `${target.name}@${target.version} does not advance ${latest}`);
+      } else {
+        const published = packument.versions?.[target.version];
+        assert.ok(published, `${target.name}@${target.version} is not published`);
+        assert.equal(packument['dist-tags']?.latest, target.version, `${target.name} latest tag drift`);
+        assert.equal(published.dist?.integrity, target.integrity, `${target.name} registry integrity drift`);
+        assert.equal(published.dist?.attestations?.provenance?.predicateType, target.provenancePredicate, `${target.name} provenance drift`);
+        assert.equal(published.repository?.url, expectedGitUrl, `${target.name} registry repository drift`);
+        assert.equal(published.deprecated, undefined, `${target.name}@${target.version} must not be deprecated`);
+      }
     } else {
       const project = await fetchJson(`https://pypi.org/pypi/${encodeURIComponent(target.name)}/json`);
       const published = project.releases?.[target.version] ?? [];
-      assert.equal(published.length, 0, `${target.name}==${target.version} is already published; reconcile before retrying`);
-      const latest = project.info?.version;
-      assert.equal(typeof latest, 'string', `${target.name} has no latest registry version`);
-      assert.ok(compareVersions(target.version, latest) > 0, `${target.name}==${target.version} does not advance ${latest}`);
+      if (registryMode) {
+        assert.equal(published.length, 0, `${target.name}==${target.version} is already published; reconcile before retrying`);
+        const latest = project.info?.version;
+        assert.equal(typeof latest, 'string', `${target.name} has no latest registry version`);
+        assert.ok(compareVersions(target.version, latest) > 0, `${target.name}==${target.version} does not advance ${latest}`);
+      } else {
+        assert.equal(project.info?.version, target.version, `${target.name} latest version drift`);
+        const observedFiles = published
+          .map(({ filename, digests }) => ({ filename, sha256: digests?.sha256 }))
+          .sort((left, right) => left.filename.localeCompare(right.filename));
+        const expectedFiles = [...target.files].sort((left, right) => left.filename.localeCompare(right.filename));
+        assert.deepEqual(observedFiles, expectedFiles, `${target.name} published file digest drift`);
+      }
     }
   }
 }
 
-console.log(`distribution release preflight: PASS (${targets.packages.length} packages, registry=${registryMode ? 'checked' : 'skipped'})`);
+if (publishedMode) {
+  const legacy = await json('packages/distribution/legacy-release-policy.v1.json');
+  for (const release of legacy.npm) {
+    const packument = await fetchJson(`https://registry.npmjs.org/${encodeURIComponent(release.name)}`);
+    for (const version of release.versions) {
+      assert.equal(packument.versions?.[version]?.deprecated, release.message, `${release.name}@${version} deprecation drift`);
+    }
+  }
+  for (const release of legacy.pypi) {
+    const project = await fetchJson(`https://pypi.org/pypi/${encodeURIComponent(release.name)}/json`);
+    const files = project.releases?.[release.versions[0]] ?? [];
+    assert.ok(files.length > 0, `${release.name}==${release.versions[0]} history is missing`);
+    assert.ok(files.every(({ yanked }) => yanked === false), `${release.name}==${release.versions[0]} was unexpectedly yanked`);
+  }
+}
+
+const registryState = registryMode ? 'unpublished_checked' : publishedMode ? 'published_verified' : 'skipped';
+console.log(`distribution release verification: PASS (${targets.packages.length} packages, registry=${registryState})`);

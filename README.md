@@ -28,9 +28,10 @@ package archive does not make a capability production-ready.
 - [`clervo-sdk`](packages/sdk-python) — dependency-free Python client
 - [`@clervo/mcp`](packages/mcp) — stdio MCP server backed by the TypeScript SDK
 
-Published registry versions may predate this clean-room candidate. Package
-metadata and documentation describe the source version being inspected, not a
-claim that it has been published.
+The current versions are published with registry provenance: `@clervo/sdk` and
+`@clervo/mcp` at `0.3.0`, and `clervo-sdk` at `0.2.0`. Older registry versions
+are preserved as history and carry deprecation guidance where their claims are
+stale. Package publication does not make the API publicly callable.
 
 ## Local verification
 

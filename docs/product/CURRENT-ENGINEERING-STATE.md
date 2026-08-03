@@ -105,21 +105,20 @@ console or request failures. Fresh desktop and mobile Lighthouse runs score
 with zero blocking time and layout shift. This proves the local candidate, not
 public deployment or customer availability.
 
-Stage 13 package preparation is complete locally. The canonical public source
-repository is now `clervo/clervo`; `main` is connected and contains the exact
-clean-room history. GitHub secret scanning, push protection, Dependabot
-security updates, private vulnerability reporting, and the owner-reviewed
-`package-release` environment are enabled.
-`@clervo/sdk@0.3.0`, `@clervo/mcp@0.3.0`, and `clervo-sdk@0.2.0` now carry
-truthful source metadata and advance the observed registry versions while
-remaining unpublished. Actual npm archives, a Python wheel, and a Python source
-distribution install and import successfully in isolated temporary consumers.
-The manual publish workflow is exact-commit-bound, protected by the
-`package-release` environment, uses short-lived npm/PyPI OIDC identities, pins
-its actions and release tooling, and fails closed before publishing if any
-candidate version already exists. No registry credential was stored and no
-package publication occurred. npm and PyPI trusted publishers still require
-their one-time interactive account configuration before release.
+Stage 13 distribution is public and verified. The canonical public source
+repository is `clervo/clervo`; `main` contains the exact clean-room history.
+GitHub secret scanning, push protection, Dependabot security updates, private
+vulnerability reporting, and the owner-reviewed `package-release` environment
+are enabled. Clean-checkout acceptance and distribution workflows pass.
+GitHub run `30858517518` published `@clervo/sdk@0.3.0`,
+`@clervo/mcp@0.3.0`, and `clervo-sdk@0.2.0` from exact commit
+`d299f08ae70a0a19390050583e14a512f9751172` through short-lived npm and PyPI
+OIDC identities. Both npm packages expose SLSA provenance; the PyPI wheel and
+source distribution expose trusted-publisher attestations bound to the same
+workflow and commit. Exact registry integrities are recorded in the release
+target manifest, and clean public-registry installs and imports pass. No
+registry credential was stored. Publication changes no API lifecycle: the
+clients still require an explicit base URL and never sign or retry a payment.
 
 The remaining repository-local Stage 13 access and onboarding work is also
 complete. Generated discovery now publishes a freeze-bound onboarding document
@@ -399,11 +398,10 @@ were removed; the existing private serving revision remains at 100% traffic.
 
 ## Next actions
 
-1. Stage 13 is complete locally and its canonical GitHub source repository is
-   connected. Complete npm/PyPI trusted-publisher setup, run the exact manual
-   release, verify provenance and isolated installs from the public registries,
-   then apply the bounded legacy npm deprecation policy. Do not claim current
-   public distribution before those artifacts are observed.
+1. Stage 13 source and package distribution are complete. Preserve the
+   immutable public versions and provenance, keep stale npm previews marked
+   with the bounded legacy deprecation messages, and use new versions for any
+   future artifact changes. Package availability is not API availability.
 2. Keep Crypto Intelligence customer routing disabled until written commercial
    permission or replacement terms-compatible EVM, Solana, and protocol supply
    exists; this isolated owner blocker does not pause combined local work.

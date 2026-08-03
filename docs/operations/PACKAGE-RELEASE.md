@@ -4,6 +4,20 @@ The candidate package archives are built from the frozen Stage 12 interface.
 This procedure publishes no API deployment and does not change capability
 lifecycle.
 
+## Current release
+
+GitHub run `30858517518` published the exact source commit
+`d299f08ae70a0a19390050583e14a512f9751172` through trusted publishing:
+
+- `@clervo/sdk@0.3.0` and `@clervo/mcp@0.3.0` have npm SLSA provenance;
+- `clervo-sdk==0.2.0` has PyPI trusted-publisher attestations for its wheel and
+  source distribution; and
+- all three install and import from their public registries in clean consumers.
+
+`npm run verify:distribution-release:published` rechecks the observed immutable
+integrities in `packages/distribution/release-targets.v1.json`. Do not rerun the
+completed workflow for these versions.
+
 ## One-time account setup
 
 After the public `clervo/clervo` repository exists:

@@ -10,7 +10,7 @@ const pythonProject = await readFile('packages/sdk-python/pyproject.toml', 'utf8
 const verifyWorkflow = await readFile('.github/workflows/verify-distribution.yml', 'utf8');
 const publishWorkflow = await readFile('.github/workflows/publish-packages.yml', 'utf8');
 
-test('release targets bind the planned canonical repository and exact package versions', () => {
+test('release targets bind the canonical repository, exact public versions, and observed provenance', () => {
   assert.deepEqual(targets.repository, {
     owner: 'clervo',
     name: 'clervo',
@@ -24,6 +24,15 @@ test('release targets bind the planned canonical repository and exact package ve
       { registry: 'pypi', name: 'clervo-sdk', version: '0.2.0' },
     ],
   );
+  assert.deepEqual(targets.publication, {
+    state: 'published_verified',
+    sourceCommit: 'd299f08ae70a0a19390050583e14a512f9751172',
+    githubRunId: 30858517518,
+    verifiedAt: '2026-08-03T22:28:10Z',
+  });
+  assert.ok(targets.packages.filter(({ registry }) => registry === 'npm').every(({ integrity, provenancePredicate }) =>
+    /^sha512-/u.test(integrity) && provenancePredicate === 'https://slsa.dev/provenance/v1'));
+  assert.equal(targets.packages.find(({ registry }) => registry === 'pypi').files.length, 2);
   assert.equal(sdk.repository.url, 'git+https://github.com/clervo/clervo.git');
   assert.equal(mcp.repository.url, 'git+https://github.com/clervo/clervo.git');
   assert.equal(mcp.dependencies['@clervo/sdk'], sdk.version);
