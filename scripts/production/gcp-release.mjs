@@ -94,18 +94,6 @@ function describeImage(image) {
   return JSON.parse(raw);
 }
 
-function valuesForKey(value, key, found = []) {
-  if (Array.isArray(value)) {
-    for (const child of value) valuesForKey(child, key, found);
-  } else if (value && typeof value === 'object') {
-    for (const [candidate, child] of Object.entries(value)) {
-      if (candidate.toLowerCase() === key.toLowerCase()) found.push(child);
-      valuesForKey(child, key, found);
-    }
-  }
-  return found;
-}
-
 function verifyArtifact(image) {
   const metadata = describeImage(image);
   const serialized = JSON.stringify(metadata);
@@ -119,11 +107,11 @@ function verifyArtifact(image) {
     && ['OS', 'NPM', 'SECRET'].every((type) => entry.discovery.analysisCompleted?.analysisType?.includes(type))
   ));
   if (!finishedDiscovery) die('artifact_analysis_incomplete');
-  const severities = valuesForKey(metadata, 'severity')
-    .filter((value) => typeof value === 'string')
-    .map((value) => value.toUpperCase());
-  const critical = severities.filter((value) => value === 'CRITICAL').length;
-  const high = severities.filter((value) => value === 'HIGH').length;
+  const vulnerabilities = metadata?.package_vulnerability_summary?.vulnerabilities
+    ?? metadata?.packageVulnerabilitySummary?.vulnerabilities
+    ?? {};
+  const critical = Array.isArray(vulnerabilities.CRITICAL) ? vulnerabilities.CRITICAL.length : 0;
+  const high = Array.isArray(vulnerabilities.HIGH) ? vulnerabilities.HIGH.length : 0;
   if (critical > policy.build.maximumCriticalVulnerabilities || high > policy.build.maximumHighVulnerabilities) {
     die(`artifact_vulnerability_gate_failed_critical_${critical}_high_${high}`);
   }
@@ -250,13 +238,17 @@ const safePlan = {
 
 let result;
 if (action === 'plan') result = safePlan;
+else if (action === 'verify-artifact') {
+  const image = exactDigest('CLERVO_PRODUCTION_IMAGE');
+  result = { action: 'artifact-verified', image, artifact: verifyArtifact(image) };
+}
 else if (action === 'validate') {
   const input = releaseInputs();
   result = { action: 'validated', releaseId: input.releaseId, image: input.image, candidateTag: input.candidateTag };
 } else if (action === 'deploy-candidate') result = deployCandidate(releaseInputs());
 else if (action === 'promote') result = promote(releaseInputs());
 else if (action === 'rollback') result = rollback();
-else die('usage_plan_validate_deploy_candidate_promote_rollback');
+else die('usage_plan_verify_artifact_validate_deploy_candidate_promote_rollback');
 
 assert.equal(policy.rollout.paidExecutionEnabled, false);
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);

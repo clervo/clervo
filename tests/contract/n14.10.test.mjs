@@ -113,6 +113,10 @@ test('Cloud Build is immutable, acceptance-gated, and requests verified provenan
   assert.match(release, /analysisStatus === 'FINISHED_SUCCESS'/u);
   assert.match(release, /\['OS', 'NPM', 'SECRET'\]/u);
   assert.match(release, /artifact_analysis_incomplete/u);
+  assert.match(release, /vulnerabilities\.CRITICAL/u);
+  assert.match(release, /vulnerabilities\.HIGH/u);
+  assert.match(release, /verify-artifact/u);
+  assert.doesNotMatch(release, /valuesForKey\(metadata, 'severity'/u);
 });
 
 test('production build control binds a clean exact commit to the dedicated builder', async () => {
