@@ -5,6 +5,7 @@ import test from 'node:test';
 const policy = JSON.parse(await readFile('infra/production/release-policy.v1.json', 'utf8'));
 const report = JSON.parse(await readFile('docs/evidence/production/local-container-qualification.v1.json', 'utf8'));
 const dockerfile = await readFile('Dockerfile', 'utf8');
+const entrypoint = await readFile('apps/api/src/staging-search-main.mjs', 'utf8');
 
 test('production candidate container is immutable-base, non-root, and fail-closed', () => {
   assert.equal(policy.publicDeploymentEnabled, false);
@@ -17,6 +18,9 @@ test('production candidate container is immutable-base, non-root, and fail-close
   assert.match(dockerfile, /^HEALTHCHECK /mu);
   assert.match(dockerfile, /npm ci --omit=dev --omit=optional/u);
   assert.doesNotMatch(dockerfile, /\b(?:latest|curl|wget|apt-get)\b/u);
+  const localRuntimeImports = [...entrypoint.matchAll(/from '\.\/([^']+)'/gu)].map((match) => match[1]);
+  assert.ok(localRuntimeImports.length > 0);
+  for (const imported of localRuntimeImports) assert.match(dockerfile, new RegExp(`\\b${imported.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')}\\b`, 'u'));
 });
 
 test('exact local image passed bounded runtime qualification without external effects', () => {

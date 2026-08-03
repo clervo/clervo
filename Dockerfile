@@ -37,7 +37,7 @@ WORKDIR /app
 COPY --chown=65532:65532 --from=build /app/package.json ./package.json
 COPY --chown=65532:65532 --from=runtime-dependencies /app/node_modules ./node_modules
 COPY --chown=65532:65532 --from=build /app/dist ./dist
-COPY --chown=65532:65532 apps/api/src/monitoring-exporter.mjs apps/api/src/search-server.mjs apps/api/src/search-state-store.mjs apps/api/src/staging-search-main.mjs apps/api/src/traffic-control.mjs apps/api/src/x402-operation-store.mjs apps/api/src/x402-paid-search.mjs apps/api/src/x402-resource.mjs ./apps/api/src/
+COPY --chown=65532:65532 apps/api/src/monitoring-exporter.mjs apps/api/src/sandbox-operation-store.mjs apps/api/src/sandbox-private-gateway.mjs apps/api/src/search-server.mjs apps/api/src/search-state-store.mjs apps/api/src/staging-search-main.mjs apps/api/src/traffic-control.mjs apps/api/src/x402-operation-store.mjs apps/api/src/x402-paid-search.mjs apps/api/src/x402-resource.mjs ./apps/api/src/
 
 USER 65532:65532
 EXPOSE 8080
