@@ -1,0 +1,90 @@
+import assert from 'node:assert/strict';
+import { generateKeyPairSync } from 'node:crypto';
+import test from 'node:test';
+import { CONTRACT_VERSION, sealQuote } from '../../dist/packages/contracts/src/index.js';
+import { createCdpFacilitatorAuth, createX402ChallengeService } from '../../apps/api/src/x402-resource.mjs';
+
+const network = 'eip155:8453';
+const asset = `0x${'1'.repeat(40)}`;
+const payTo = `0x${'2'.repeat(40)}`;
+const issuedAt = '2026-08-03T12:00:00.000Z';
+const expiresAt = '2026-08-03T12:05:00.000Z';
+const quote = sealQuote({
+  contractVersion: CONTRACT_VERSION,
+  quoteId: 'quote_stage15challenge00000000000000',
+  operationId: 'op_stage15challenge000000000000000',
+  productId: 'search.web',
+  requestHash: `sha256:${'a'.repeat(64)}`,
+  priceVersion: 'search-2026-08-01.1',
+  maximumCharge: { asset: 'USDC', amountAtomic: '1000', decimals: 6 },
+  issuedAt,
+  expiresAt,
+});
+
+test('CDP facilitator auth is short-lived, path-bound, and never returns key material', async () => {
+  const { privateKey } = generateKeyPairSync('ed25519');
+  const keySecret = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
+  const createHeaders = createCdpFacilitatorAuth({
+    keyId: 'organizations/test/apiKeys/stage15',
+    keySecret,
+    url: 'https://api.cdp.coinbase.com/platform/v2/x402',
+    now: () => Date.parse(issuedAt),
+    nonce: () => '0123456789abcdef0123456789abcdef',
+  });
+  const headers = await createHeaders();
+  assert.deepEqual(Object.keys(headers).sort(), ['settle', 'supported', 'verify']);
+  for (const [path, method] of [['supported', 'GET'], ['verify', 'POST'], ['settle', 'POST']]) {
+    const token = headers[path].Authorization.slice('Bearer '.length);
+    const [, payload] = token.split('.');
+    const claims = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+    assert.equal(claims.uri, `${method} api.cdp.coinbase.com/platform/v2/x402/${path}`);
+    assert.equal(claims.exp - claims.nbf, 120);
+  }
+  assert.equal(JSON.stringify(headers).includes('PRIVATE KEY'), false);
+});
+
+test('real x402 challenge is quote-bound while verify and settle remain unavailable', async () => {
+  const calls = { supported: 0, verify: 0, settle: 0 };
+  const facilitator = {
+    async getSupported() {
+      calls.supported += 1;
+      return { kinds: [{ x402Version: 2, scheme: 'exact', network }], extensions: [], signers: {} };
+    },
+    async verify() { calls.verify += 1; throw new Error('verify_must_not_run'); },
+    async settle() { calls.settle += 1; throw new Error('settle_must_not_run'); },
+  };
+  const service = await createX402ChallengeService({
+    facilitator,
+    network,
+    asset,
+    payTo,
+    publicOrigin: 'https://api.clervo.dev/',
+  });
+  const result = await service.challenge({ quote, description: 'Bounded search.web execution', now: issuedAt });
+  assert.equal(service.mode, 'challenge_only');
+  assert.equal(result.status, 402);
+  assert.match(result.headers['PAYMENT-REQUIRED'], /^[A-Za-z0-9+/]+=*$/u);
+  assert.equal(result.body.x402Version, 2);
+  assert.equal(result.body.accepts.length, 1);
+  const requirement = result.body.accepts[0];
+  assert.equal(requirement.scheme, 'exact');
+  assert.equal(requirement.network, network);
+  assert.equal(requirement.asset, asset);
+  assert.equal(requirement.payTo, payTo);
+  assert.equal(requirement.amount, quote.maximumCharge.amountAtomic);
+  assert.deepEqual(requirement.extra.clervo, {
+    quoteId: quote.quoteId,
+    quoteHash: quote.quoteHash,
+    requestHash: quote.requestHash,
+    operationId: quote.operationId,
+    priceVersion: quote.priceVersion,
+    quoteExpiresAt: quote.expiresAt,
+  });
+  assert.deepEqual(calls, { supported: 1, verify: 0, settle: 0 });
+});
+
+test('challenge service rejects the protected model gateway and non-Base configuration', async () => {
+  const facilitator = { async getSupported() { return { kinds: [], extensions: [], signers: {} }; } };
+  await assert.rejects(createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://ai.clervo.dev/' }), /invalid x402 public origin/u);
+  await assert.rejects(createX402ChallengeService({ facilitator, network: 'eip155:84532', asset, payTo, publicOrigin: 'https://api.clervo.dev/' }), /unsupported x402 production network/u);
+});
