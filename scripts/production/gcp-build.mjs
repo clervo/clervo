@@ -9,8 +9,14 @@ const policy = JSON.parse(await readFile(
   'utf8',
 ));
 const action = process.argv[2] ?? 'plan';
-const releaseSha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-const status = execFileSync('git', ['status', '--porcelain=v1', '--untracked-files=all'], { encoding: 'utf8' }).trim();
+const cloudAcceptance = process.env.CLERVO_CLOUD_ACCEPTANCE === 'true';
+assert.ok(!cloudAcceptance || action === 'plan', 'cloud acceptance context is plan-only');
+const releaseSha = cloudAcceptance
+  ? process.env.CLERVO_EXPECTED_RELEASE_SHA ?? ''
+  : execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+const status = cloudAcceptance
+  ? ''
+  : execFileSync('git', ['status', '--porcelain=v1', '--untracked-files=all'], { encoding: 'utf8' }).trim();
 assert.match(releaseSha, /^[a-f0-9]{40}$/u, 'release commit must be exact');
 
 const serviceAccount = `projects/${policy.project}/serviceAccounts/${policy.resources.buildServiceAccount}@${policy.project}.iam.gserviceaccount.com`;

@@ -114,7 +114,13 @@ test('Cloud Build is immutable, acceptance-gated, and requests verified provenan
 
 test('production build control binds a clean exact commit to the dedicated builder', async () => {
   const { stdout } = await execute(process.execPath, ['scripts/production/gcp-build.mjs', 'plan'], {
-    env: { PATH: process.env.PATH },
+    env: {
+      PATH: process.env.PATH,
+      ...(process.env.CLERVO_CLOUD_ACCEPTANCE === 'true' ? {
+        CLERVO_CLOUD_ACCEPTANCE: 'true',
+        CLERVO_EXPECTED_RELEASE_SHA: process.env.CLERVO_EXPECTED_RELEASE_SHA,
+      } : {}),
+    },
   });
   const plan = JSON.parse(stdout);
   assert.match(plan.releaseSha, /^[a-f0-9]{40}$/u);
@@ -123,6 +129,7 @@ test('production build control binds a clean exact commit to the dedicated build
   assert.equal(plan.serviceAccount, 'projects/bloxsniper-prod/serviceAccounts/clervo-production-builder@bloxsniper-prod.iam.gserviceaccount.com');
   const source = await readFile('scripts/production/gcp-build.mjs', 'utf8');
   assert.match(source, /production build requires a clean worktree/u);
+  assert.match(source, /cloud acceptance context is plan-only/u);
   assert.match(source, /CLERVO_CLOUD_BUILD_CONFIRM/u);
   assert.match(source, /_RELEASE_SHA=/u);
 });
