@@ -54,12 +54,13 @@ function publicResources(token) {
     {
       apiVersion: 'apps/v1', kind: 'Deployment', metadata: { name: policy.deployment, namespace: policy.systemNamespace, labels: appLabels },
       spec: {
-        replicas: policy.replicas, strategy: { type: 'Recreate' }, selector: { matchLabels: appLabels },
+        replicas: policy.replicas, strategy: { type: 'RollingUpdate', rollingUpdate: { maxUnavailable: 0, maxSurge: 1 } }, selector: { matchLabels: appLabels },
         template: {
           metadata: { labels: appLabels },
           spec: {
             serviceAccountName: policy.serviceAccount, automountServiceAccountToken: true, enableServiceLinks: false,
             nodeSelector: { 'cloud.google.com/gke-nodepool': policy.boundaries.systemNodePool }, terminationGracePeriodSeconds: 10,
+            topologySpreadConstraints: [{ maxSkew: 1, topologyKey: 'kubernetes.io/hostname', whenUnsatisfiable: 'DoNotSchedule', labelSelector: { matchLabels: appLabels } }],
             securityContext: { runAsNonRoot: true, runAsUser: policy.boundaries.runAsUser, runAsGroup: policy.boundaries.runAsUser, fsGroup: policy.boundaries.runAsUser, seccompProfile: { type: 'RuntimeDefault' } },
             containers: [{
               name: 'control', image: controlImage, imagePullPolicy: 'IfNotPresent',
@@ -71,7 +72,7 @@ function publicResources(token) {
                 { name: 'CLERVO_SANDBOX_RUNNER_SBOM_SHA256', value: policy.runnerSbomSha256 },
               ],
               securityContext: { allowPrivilegeEscalation: false, privileged: false, readOnlyRootFilesystem: true, capabilities: { drop: ['ALL'] } },
-              resources: { requests: { cpu: '1m', memory: '1Mi' }, limits: { cpu: '500m', memory: '512Mi' } },
+              resources: { requests: policy.boundaries.controllerRequests, limits: policy.boundaries.controllerLimits },
               startupProbe: { httpGet: { path: '/healthz', port: 'http' }, periodSeconds: 2, timeoutSeconds: 1, failureThreshold: 30 },
               readinessProbe: { httpGet: { path: '/readyz', port: 'http' }, periodSeconds: 5, timeoutSeconds: 2, failureThreshold: 2 },
               livenessProbe: { httpGet: { path: '/healthz', port: 'http' }, periodSeconds: 10, timeoutSeconds: 1, failureThreshold: 3 },
@@ -80,6 +81,7 @@ function publicResources(token) {
         },
       },
     },
+    { apiVersion: 'policy/v1', kind: 'PodDisruptionBudget', metadata: { name: policy.deployment, namespace: policy.systemNamespace }, spec: { minAvailable: policy.boundaries.minimumAvailableReplicas, selector: { matchLabels: appLabels } } },
     { apiVersion: 'v1', kind: 'Service', metadata: { name: policy.service, namespace: policy.systemNamespace, labels: appLabels }, spec: { type: 'ClusterIP', selector: appLabels, ports: [{ name: 'http', port: 8080, targetPort: 'http', protocol: 'TCP' }] } },
     {
       apiVersion: 'networking.k8s.io/v1', kind: 'NetworkPolicy', metadata: { name: `${policy.deployment}-boundary`, namespace: policy.systemNamespace },

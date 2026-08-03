@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "clervo.sandbox-system-capacity.v1",
+  "state": "planned",
+  "project": "bloxsniper-prod",
+  "zone": "us-central1-a",
+  "cluster": "clervo-sandbox-production",
+  "nodePool": {
+    "name": "sandbox-system",
+    "machineType": "e2-standard-2",
+    "nodes": 2,
+    "diskType": "pd-balanced",
+    "diskSizeGb": 30,
+    "imageType": "COS_CONTAINERD",
+    "maximumPodsPerNode": 32,
+    "serviceAccount": "clervo-sandbox-nodes@bloxsniper-prod.iam.gserviceaccount.com",
+    "secureBoot": true,
+    "integrityMonitoring": true,
+    "autoRepair": true,
+    "autoUpgrade": true
+  },
+  "controller": {
+    "namespace": "clervo-sandbox-system",
+    "deployment": "clervo-sandbox-control",
+    "replicas": 2,
+    "minimumAvailable": 1,
+    "requests": { "cpu": "100m", "memory": "128Mi" },
+    "limits": { "cpu": "500m", "memory": "512Mi" }
+  },
+  "retiredNodePool": "default-pool",
+  "boundaries": {
+    "executionNodePool": "sandbox-execution",
+    "executionWorkloadsOnSystemPool": false,
+    "controllerOnExecutionPool": false,
+    "publicEndpoint": false,
+    "publicRoute": false,
+    "paymentEnabled": false,
+    "protectedGatewayTouched": false
+  },
+  "protectedResources": ["ai.clervo.dev", "the existing Clervo VM model gateway", "all unrelated and legacy cloud resources"]
+}
