@@ -175,6 +175,7 @@
     "production:gcp:sentry": "node ./scripts/verify-runtime.mjs && node ./scripts/production/qualify-sentry-delivery.mjs",
     "production:gcp:verify-recovery": "node ./scripts/verify-runtime.mjs && node ./scripts/production/verify-managed-recovery.mjs",
     "production:gcp:x402-bootstrap": "node ./scripts/verify-runtime.mjs && node ./scripts/production/gcp-x402-bootstrap.mjs",
+    "production:gcp:x402-receiver": "node ./scripts/verify-runtime.mjs && node ./scripts/production/gcp-x402-receiver-rotation.mjs",
     "production:gcp:sandbox-connectivity": "node ./scripts/verify-runtime.mjs && node ./scripts/production/gcp-sandbox-connectivity.mjs",
     "production:migrate": "node ./scripts/verify-runtime.mjs && node ./scripts/production/apply-postgres-migrations.mjs",
     "test:n14.10": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/n14.10.test.mjs",

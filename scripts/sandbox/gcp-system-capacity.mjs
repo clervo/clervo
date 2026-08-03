@@ -41,7 +41,7 @@ function ensurePool() {
       '--max-pods-per-node', String(policy.nodePool.maximumPodsPerNode), '--service-account', policy.nodePool.serviceAccount,
       '--workload-metadata', 'GKE_METADATA', '--metadata', 'disable-legacy-endpoints=true',
       '--shielded-secure-boot', '--shielded-integrity-monitoring', '--enable-autorepair', '--enable-autoupgrade', '--quiet',
-    ]);
+    ], { timeout: 45 * 60 * 1000 });
     return true;
   }
   const value = JSON.parse(existing.stdout);

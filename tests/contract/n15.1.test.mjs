@@ -193,3 +193,30 @@ test('production x402 secret bootstrap is challenge-only, payer-free, and confir
   assert.match(release, /x402_preflight_must_be_challenge_only/u);
   assert.match(release, /CLERVO_X402_MODE=\$\{x402Mode\}/u);
 });
+
+test('receiver rotation is versioned, rollback-safe, and cannot enable settlement or move funds', async () => {
+  const { stdout } = await execute(process.execPath, ['scripts/production/gcp-x402-receiver-rotation.mjs', 'plan'], {
+    env: { PATH: process.env.PATH },
+  });
+  const plan = JSON.parse(stdout);
+  assert.deepEqual(plan, {
+    action: 'plan',
+    project: 'bloxsniper-prod',
+    service: 'clervo-api-production',
+    secretName: 'clervo-production-x402-pay-to',
+    network: 'eip155:8453',
+    asset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+    mutation: false,
+    oldVersionRetained: true,
+    deploymentChanged: false,
+    settlementEnabled: false,
+    paymentEffects: 0,
+  });
+  const source = await readFile('scripts/production/gcp-x402-receiver-rotation.mjs', 'utf8');
+  assert.match(source, /new receiver must differ from current receiver/u);
+  assert.match(source, /oldVersionRetained: true/u);
+  assert.match(source, /deploymentChanged: false/u);
+  assert.match(source, /settlementEnabled: false/u);
+  assert.match(source, /paymentEffects: 0/u);
+  assert.doesNotMatch(source, /privateKey|seedPhrase|mnemonic/u);
+});
