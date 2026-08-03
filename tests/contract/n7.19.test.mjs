@@ -30,6 +30,7 @@ test('capacity control performs a no-surge in-place upgrade and verifies readine
   assert.match(capacity, /PodDisruptionBudget/u);
   assert.match(capacity, /new Set\(controllerPods\.map/u);
   assert.match(capacity, /provision:sandbox-system-capacity/u);
+  assert.match(capacity, /--enable-surge-upgrade/u);
   assert.match(capacity, /--max-surge-upgrade', '0'/u);
   assert.match(capacity, /--max-unavailable-upgrade', '1'/u);
   assert.doesNotMatch(capacity, /ai\.clervo\.dev|node-pools', 'delete'|instances', 'delete'|clusters', 'delete'/u);

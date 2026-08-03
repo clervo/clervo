@@ -36,8 +36,12 @@ function ensurePool() {
   if (value.config?.machineType !== policy.nodePool.machineType) {
     gcloud([
       'container', 'node-pools', 'update', policy.nodePool.name, '--cluster', policy.cluster,
-      '--project', policy.project, '--zone', policy.zone, '--machine-type', policy.nodePool.machineType,
+      '--project', policy.project, '--zone', policy.zone, '--enable-surge-upgrade',
       '--max-surge-upgrade', '0', '--max-unavailable-upgrade', '1', '--quiet',
+    ]);
+    gcloud([
+      'container', 'node-pools', 'update', policy.nodePool.name, '--cluster', policy.cluster,
+      '--project', policy.project, '--zone', policy.zone, '--machine-type', policy.nodePool.machineType, '--quiet',
     ]);
     value = JSON.parse(pool(policy.nodePool.name).stdout);
     assert.equal(value.config?.machineType, policy.nodePool.machineType);
