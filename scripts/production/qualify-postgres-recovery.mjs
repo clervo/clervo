@@ -54,8 +54,8 @@ const x402Operation = Object.freeze({
 });
 const x402PaymentFingerprint = `sha256:${'3'.repeat(64)}`;
 const sandboxOperation = Object.freeze({
-  operationId: 'op_postgres_sandbox_recovery_001',
-  tenantId: 'tenant_postgres_sandbox_recovery_001',
+  operationId: 'op_0123456789ABCDEFGHIJKLMNOPQRSTUV',
+  tenantId: 'tenant_0123456789ABCDEFGHIJKLMNOPQRSTUV',
   requestHash: `sha256:${'7'.repeat(64)}`,
   now,
 });
@@ -279,7 +279,7 @@ async function proveState(pool) {
   assert.equal(sandboxReplay.kind, 'replay');
   assert.deepEqual(sandboxReplay.result, sandboxResult);
   assert.equal((await sandboxStore.begin({ ...sandboxOperation, requestHash: `sha256:${'8'.repeat(64)}` })).kind, 'conflict');
-  const ambiguous = { ...sandboxOperation, operationId: 'op_postgres_sandbox_unknown_001', requestHash: `sha256:${'9'.repeat(64)}` };
+  const ambiguous = { ...sandboxOperation, operationId: 'op_9876543210ZYXWVUTSRQPONMLKJIHGFE', requestHash: `sha256:${'9'.repeat(64)}` };
   const ambiguousClaim = await sandboxStore.begin(ambiguous);
   await sandboxStore.markUnknown({ ...ambiguous, leaseId: ambiguousClaim.leaseId });
   assert.equal((await sandboxStore.begin(ambiguous)).kind, 'unknown');
