@@ -16,7 +16,7 @@ test('private Sandbox control is digest pinned, authenticated, non-public, and s
   assert.match(policy.runnerDigest, /^sha256:[a-f0-9]{64}$/u);
   assert.equal(policy.network.serviceType, 'ClusterIP');
   assert.equal(policy.network.public, false);
-  assert.equal(policy.boundaries.systemNodePool, 'sandbox-system');
+  assert.equal(policy.boundaries.systemNodePool, 'default-pool');
   assert.equal(policy.boundaries.executionNodePool, 'sandbox-execution');
   assert.equal(policy.boundaries.publicEndpoint, false);
   assert.equal(policy.boundaries.publicRoute, false);

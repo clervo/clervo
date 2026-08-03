@@ -5,9 +5,9 @@
   "zone": "us-central1-a",
   "cluster": "clervo-sandbox-production",
   "nodePool": {
-    "name": "sandbox-system",
+    "name": "default-pool",
     "machineType": "e2-standard-2",
-    "nodes": 2,
+    "nodes": 1,
     "diskType": "pd-balanced",
     "diskSizeGb": 30,
     "imageType": "COS_CONTAINERD",
@@ -21,12 +21,18 @@
   "controller": {
     "namespace": "clervo-sandbox-system",
     "deployment": "clervo-sandbox-control",
-    "replicas": 2,
+    "replicas": 1,
     "minimumAvailable": 1,
     "requests": { "cpu": "100m", "memory": "128Mi" },
     "limits": { "cpu": "500m", "memory": "512Mi" }
   },
-  "retiredNodePool": "default-pool",
+  "quotaConstraint": {
+    "metric": "CPUS_ALL_REGIONS",
+    "limit": 12,
+    "availableAtQualification": 0,
+    "highAvailabilityQualified": false,
+    "upgradeStrategy": "in_place_no_surge"
+  },
   "boundaries": {
     "executionNodePool": "sandbox-execution",
     "executionWorkloadsOnSystemPool": false,

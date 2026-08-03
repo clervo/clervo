@@ -9,7 +9,7 @@
   "serviceAccount": "clervo-sandbox-control",
   "deployment": "clervo-sandbox-control",
   "service": "clervo-sandbox-control",
-  "replicas": 2,
+  "replicas": 1,
   "imageRepository": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-sandbox/control",
   "imageDigest": "sha256:913b3127dd85d05ed3ee76d032ca3c72b475b1d7325aa773311b7221f5591df5",
   "runnerRepository": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-sandbox/runner",
@@ -41,7 +41,7 @@
     "forbiddenResources": ["secrets", "serviceaccounts", "roles", "rolebindings", "nodes", "namespaces", "persistentvolumeclaims"]
   },
   "boundaries": {
-    "systemNodePool": "sandbox-system",
+    "systemNodePool": "default-pool",
     "executionNodePool": "sandbox-execution",
     "minimumAvailableReplicas": 1,
     "controllerRequests": { "cpu": "100m", "memory": "128Mi" },

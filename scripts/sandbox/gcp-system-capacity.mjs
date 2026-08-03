@@ -31,20 +31,18 @@ function pool(name, allowFailure = false) {
 
 function ensurePool() {
   const existing = pool(policy.nodePool.name, true);
-  if (!existing.ok) {
+  if (!existing.ok) fail('system_pool_missing');
+  let value = JSON.parse(existing.stdout);
+  if (value.config?.machineType !== policy.nodePool.machineType) {
     gcloud([
-      'container', 'node-pools', 'create', policy.nodePool.name, '--cluster', policy.cluster,
+      'container', 'node-pools', 'update', policy.nodePool.name, '--cluster', policy.cluster,
       '--project', policy.project, '--zone', policy.zone, '--machine-type', policy.nodePool.machineType,
-      '--num-nodes', String(policy.nodePool.nodes), '--disk-type', policy.nodePool.diskType,
-      '--disk-size', String(policy.nodePool.diskSizeGb), '--image-type', policy.nodePool.imageType,
-      '--max-pods-per-node', String(policy.nodePool.maximumPodsPerNode), '--service-account', policy.nodePool.serviceAccount,
-      '--workload-metadata', 'GKE_METADATA', '--metadata', 'disable-legacy-endpoints=true',
-      '--shielded-secure-boot', '--shielded-integrity-monitoring', '--enable-autorepair', '--enable-autoupgrade', '--quiet',
+      '--max-surge-upgrade', '0', '--max-unavailable-upgrade', '1', '--quiet',
     ]);
+    value = JSON.parse(pool(policy.nodePool.name).stdout);
+    assert.equal(value.config?.machineType, policy.nodePool.machineType);
     return true;
   }
-  const value = JSON.parse(existing.stdout);
-  assert.equal(value.config?.machineType, policy.nodePool.machineType);
   assert.equal(value.config?.serviceAccount, policy.nodePool.serviceAccount);
   assert.equal(value.config?.diskType, policy.nodePool.diskType);
   return false;
@@ -101,31 +99,18 @@ function observe() {
   assert.equal(result.controllerReplicas, policy.controller.replicas);
   assert.equal(controllerPods.length, policy.controller.replicas);
   assert.ok(controllerPods.every(({ nodeName, ready, requests }) => nodeNames.has(nodeName) && ready && requests?.cpu === policy.controller.requests.cpu && requests?.memory === policy.controller.requests.memory));
-  assert.equal(new Set(controllerPods.map(({ nodeName }) => nodeName)).size, policy.controller.replicas);
+  assert.equal(new Set(controllerPods.map(({ nodeName }) => nodeName)).size, 1);
   assert.equal(result.minimumAvailable, policy.controller.minimumAvailable);
   return result;
-}
-
-function retireUndersized() {
-  observe();
-  if (pool(policy.retiredNodePool, true).ok) {
-    gcloud(['container', 'node-pools', 'delete', policy.retiredNodePool, '--cluster', policy.cluster, '--project', policy.project, '--zone', policy.zone, '--quiet']);
-  }
-  const retiredNodes = JSON.parse(kubectl(['get', 'nodes', '-l', `cloud.google.com/gke-nodepool=${policy.retiredNodePool}`, '-o', 'json']).stdout);
-  assert.equal(retiredNodes.items.length, 0);
-  return { retiredNodePool: policy.retiredNodePool, retired: true, ...observe() };
 }
 
 let result;
 if (action === 'plan') result = { action: 'plan', ...policy, mutation: false };
 else if (action === 'apply') {
   assert.equal(process.env.CLERVO_SANDBOX_CAPACITY_CONFIRM, `provision:sandbox-system-capacity:${policy.project}`, 'owner confirmation mismatch');
-  const nodePoolCreated = ensurePool(); credentials(); moveController();
-  result = { action: 'system-capacity-ready', nodePoolCreated, ...observe() };
+  const nodePoolUpdated = ensurePool(); credentials(); moveController();
+  result = { action: 'system-capacity-ready', nodePoolUpdated, ...observe() };
 } else if (action === 'observe') result = { action: 'observed', ...observe() };
-else if (action === 'retire-undersized') {
-  assert.equal(process.env.CLERVO_SANDBOX_CAPACITY_CONFIRM, `retire:${policy.retiredNodePool}:${policy.project}`, 'owner confirmation mismatch');
-  result = { action: 'undersized-pool-retired', ...retireUndersized() };
-} else fail('usage_plan_apply_observe_retire_undersized');
+else fail('usage_plan_apply_observe');
 
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
