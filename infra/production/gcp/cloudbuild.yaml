@@ -5,7 +5,6 @@ steps:
     args:
       - -ceu
       - |
-        test "${#_RELEASE_SHA}" -eq 40
         printf '%s' "$_RELEASE_SHA" | grep -Eq '^[a-f0-9]{40}$'
   - id: acceptance
     name: node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9b581ef1dd7d96ced463b8e7
