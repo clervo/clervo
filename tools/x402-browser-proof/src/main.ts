@@ -48,6 +48,7 @@ function validateChallenge(response: Response, body: any) {
   if (!sameAddress(requirement.asset, config.asset)) throw new Error('payment asset mismatch');
   if (!sameAddress(requirement.payTo, config.payTo)) throw new Error('payment receiver mismatch');
   if (requirement.amount !== config.amountAtomic) throw new Error('payment amount mismatch');
+  if (requirement.extra?.name !== 'USD Coin' || requirement.extra?.version !== '2') throw new Error('USDC EIP-712 domain mismatch');
   if (decoded.resource?.url !== config.resource) throw new Error('payment resource mismatch');
   if (body?.quote?.productId !== config.productId) throw new Error('payment product mismatch');
   if (body?.quote?.maximumCharge?.amountAtomic !== config.amountAtomic || body?.quote?.maximumCharge?.asset !== 'USDC') throw new Error('quote maximum mismatch');

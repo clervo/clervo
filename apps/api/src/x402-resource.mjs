@@ -7,6 +7,7 @@ const PAYMENT_REQUIRED_HEADER = 'PAYMENT-REQUIRED';
 const PAYMENT_RESPONSE_HEADER = 'PAYMENT-RESPONSE';
 const MAXIMUM_PAYMENT_HEADER_BYTES = 65_536;
 const pathMethods = Object.freeze({ supported: 'GET', verify: 'POST', settle: 'POST' });
+const BASE_USDC_EIP712_DOMAIN = Object.freeze({ name: 'USD Coin', version: '2' });
 
 function base64url(value) {
   return Buffer.from(typeof value === 'string' ? value : JSON.stringify(value)).toString('base64url');
@@ -125,6 +126,7 @@ export async function createX402ChallengeService({
         price: { amount: quote.maximumCharge.amountAtomic, asset },
         maxTimeoutSeconds: Math.min(60, Math.max(1, Math.floor((Date.parse(quote.expiresAt) - Date.parse(now)) / 1_000))),
         extra: {
+          ...BASE_USDC_EIP712_DOMAIN,
           clervo: {
             quoteId: quote.quoteId,
             quoteHash: quote.quoteHash,

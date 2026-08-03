@@ -4,6 +4,8 @@ import { execFile } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { promisify } from 'node:util';
 import test from 'node:test';
+import { x402Client } from '@x402/core/client';
+import { registerExactEvmScheme } from '@x402/evm/exact/client';
 import { CONTRACT_VERSION, sealQuote } from '../../dist/packages/contracts/src/index.js';
 import { createCdpFacilitatorAuth, createX402ChallengeService } from '../../apps/api/src/x402-resource.mjs';
 
@@ -76,6 +78,8 @@ test('real x402 challenge is quote-bound while verify and settle remain unavaila
   assert.equal(requirement.asset, asset);
   assert.equal(requirement.payTo, payTo);
   assert.equal(requirement.amount, quote.maximumCharge.amountAtomic);
+  assert.equal(requirement.extra.name, 'USD Coin');
+  assert.equal(requirement.extra.version, '2');
   assert.deepEqual(requirement.extra.clervo, {
     quoteId: quote.quoteId,
     quoteHash: quote.quoteHash,
@@ -84,6 +88,19 @@ test('real x402 challenge is quote-bound while verify and settle remain unavaila
     priceVersion: quote.priceVersion,
     quoteExpiresAt: quote.expiresAt,
   });
+  const signer = {
+    address: `0x${'3'.repeat(40)}`,
+    async signTypedData(message) {
+      assert.deepEqual(message.domain, { name: 'USD Coin', version: '2', chainId: 8453, verifyingContract: asset });
+      assert.equal(message.primaryType, 'TransferWithAuthorization');
+      return `0x${'4'.repeat(130)}`;
+    },
+  };
+  const buyer = new x402Client();
+  registerExactEvmScheme(buyer, { signer, networks: [network] });
+  const payment = await buyer.createPaymentPayload(result.body);
+  assert.equal(payment.accepted.amount, quote.maximumCharge.amountAtomic);
+  assert.equal(payment.payload.authorization.value, quote.maximumCharge.amountAtomic);
   assert.deepEqual(calls, { supported: 1, verify: 0, settle: 0 });
 });
 
