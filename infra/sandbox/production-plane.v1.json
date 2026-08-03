@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "clervo.sandbox-production-plane.v1",
+  "state": "private_plane_qualified",
+  "project": "bloxsniper-prod",
+  "zone": "us-central1-a",
+  "network": "clervo-devbox-net",
+  "subnetwork": "clervo-devbox-uscentral1",
+  "cluster": {
+    "name": "clervo-sandbox-production",
+    "version": "1.36.2-gke.2281000",
+    "releaseChannel": "rapid",
+    "dataPlane": "gke-dataplane-v2",
+    "agentSandboxEnabled": true,
+    "privateNodes": true,
+    "privateEndpoint": true,
+    "controlPlaneCidr": "172.16.40.16/28",
+    "workloadIdentityPool": "bloxsniper-prod.svc.id.goog",
+    "securityPosture": "standard",
+    "workloadVulnerabilityScanning": "standard"
+  },
+  "nodeIdentity": {
+    "serviceAccount": "clervo-sandbox-nodes",
+    "projectRoles": [
+      "roles/logging.logWriter",
+      "roles/monitoring.metricWriter",
+      "roles/monitoring.viewer"
+    ],
+    "repository": "clervo-sandbox",
+    "repositoryRole": "roles/artifactregistry.reader",
+    "forbiddenRoles": [
+      "roles/owner",
+      "roles/editor",
+      "roles/compute.admin",
+      "roles/container.admin",
+      "roles/iam.serviceAccountAdmin"
+    ]
+  },
+  "systemPool": {
+    "name": "default-pool",
+    "machineType": "e2-medium",
+    "nodes": 1,
+    "diskType": "pd-balanced",
+    "diskGiB": 30
+  },
+  "executionPool": {
+    "name": "sandbox-execution",
+    "machineType": "e2-standard-2",
+    "minimumNodes": 1,
+    "maximumNodes": 3,
+    "diskType": "pd-balanced",
+    "diskGiB": 30,
+    "runtimeClass": "gvisor",
+    "podPidsLimit": 1024,
+    "upgrade": {
+      "maximumSurge": 0,
+      "maximumUnavailable": 1
+    },
+    "labels": {
+      "clervo.dev/node-pool": "sandbox-execution",
+      "clervo.dev/execution-plane": "true"
+    },
+    "taints": [
+      "clervo.dev/sandbox-only=true:NoSchedule"
+    ]
+  },
+  "runner": {
+    "repository": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-sandbox/runner",
+    "imageDigest": "sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
+    "signatureVerified": true,
+    "provenanceVerified": true,
+    "vulnerabilityScan": "passed",
+    "malwareScan": "passed"
+  },
+  "boundaries": {
+    "executionNamespace": "clervo-sandbox-execution",
+    "managedNetworkPolicyRequired": true,
+    "ingressRules": 0,
+    "egressRules": 0,
+    "serviceAccountTokenMounted": false,
+    "executionNodeSecrets": false,
+    "publicEndpoint": false,
+    "publicWorkload": false
+  },
+  "protectedResources": [
+    "ai.clervo.dev",
+    "the existing Clervo VM model gateway",
+    "all unrelated and legacy cloud resources"
+  ],
+  "observed": {
+    "evaluatedAt": "2026-08-03T12:25:18.821Z",
+    "clusterStatus": "RUNNING",
+    "currentMasterVersion": "1.36.2-gke.2281000",
+    "currentNodeVersion": "1.36.2-gke.2281000",
+    "dataPlaneV2": true,
+    "privateNodes": true,
+    "privateEndpoint": true,
+    "agentSandboxEnabled": true,
+    "nodeCount": 2,
+    "sandboxNodeCount": 1,
+    "sandboxNodesReady": true,
+    "sandboxRuntimeClass": true,
+    "podPidsLimit": 1024,
+    "requiredCrdsPresent": true,
+    "publicWorkload": false,
+    "failedZoneAttemptRemoved": true,
+    "runnerBuildId": "9bec50dd-2857-4751-9bfb-1847472a312c",
+    "runnerSupplyChainReport": "docs/evidence/sandbox/runner-supply-chain.v5.json",
+    "runnerRedTeamReport": "docs/evidence/sandbox/gvisor-production-red-team.v1.json",
+    "runnerRedTeamReportSha256": "sha256:1b12e86151e22e09874a154abd156e5027ff7d035a5c2c4d74ed80f06ee94da4"
+  }
+}

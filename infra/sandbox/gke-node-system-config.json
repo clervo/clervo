@@ -1,0 +1,5 @@
+{
+  "kubeletConfig": {
+    "podPidsLimit": 1024
+  }
+}

@@ -1,16 +1,17 @@
 # Current engineering state
 
-Updated 2026-08-03 after private Stage 14 cloud qualification. This is a compact
+Updated 2026-08-03 after persistent private Sandbox-plane qualification. This is a compact
 resumable handoff, not an authorization gate. Continue automatically after
 reading it.
 
 ## Active work
 
-Stage 7 secure sandbox product core is complete. The contracts, lifecycle,
-cleanup, artifact quarantine, cost controls, verified-image registry, runner,
-Agent Sandbox adapter, and red-team gate are implemented and consolidated tests
-pass. Public lifecycle remains `unavailable` because no persistent production
-execution plane is deployed.
+Stage 7 secure sandbox product core and its persistent private execution plane
+are complete. The contracts, lifecycle, cleanup, artifact quarantine, cost
+controls, verified-image registry, runner, Agent Sandbox adapter, and red-team
+gate are implemented and consolidated tests pass. Public lifecycle remains
+`unavailable` until the private control service and product API route are
+deployed and operationally qualified.
 
 Stage 8 universal multi-chain RPC product core is also complete locally. The
 eight-chain registry, strict JSON-RPC adapter, semantic identity/head/finalized
@@ -136,13 +137,14 @@ durable precedence record is
 `docs/product/CLERVO-V6-VISUAL-AUTHORITY.md`.
 
 The production runner `sandbox.nodejs-24` is qualified at digest
-`sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e`.
+`sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38`.
 Google Cloud Build provenance is signed at SLSA build level 3, Google Artifact
-Analysis found zero vulnerabilities, a fresh ClamAV scan found zero infections,
-and the SPDX SBOM is hash-bound in the approved-image registry. Normal command
-completion kills descendants, and an independent process-tree monitor enforces
-the limit when the runtime ignores `RLIMIT_NPROC`. All three superseded digests
-are blocked. Preserve the dedicated Artifact Registry repository and immutable
+Analysis completed OS, NPM, and secret analysis with zero effective critical or
+high findings, a fresh offline ClamAV scan found zero infections across 622
+files, and the 22-package SPDX SBOM is hash-bound in the approved-image
+registry. A native traced process supervisor plus the kubelet PID ceiling
+enforce bounded descendants and cleanup. All four superseded digests are
+blocked. Preserve the dedicated Artifact Registry repository and immutable
 history.
 
 Stage 14 local production hardening is complete for release candidate
@@ -307,15 +309,19 @@ exact owner approval required by the x402 safety workflow.
 ## Live qualification result
 
 GKE Calico failed closed because metadata remained reachable, including through
-the managed Agent Sandbox air-gap. GKE Dataplane V2 passed the managed
-air-gapped `SandboxTemplate`/`SandboxClaim` boundary. The final exact runner
-image then passed all ten live containment probes: gVisor isolation, process,
-disk, output, and time limits, metadata/internal/external network denial, secret
-absence, host denial, descendant cleanup, and namespace cleanup. No token value
-was logged or retained. The exact temporary cluster was deleted and independently
-confirmed absent; Artifact Registry was preserved. Evidence is in
-`docs/evidence/sandbox/gke-qualification-attempt.v1.json` and
-`docs/evidence/sandbox/gvisor-red-team-report.v1.json`.
+the managed Agent Sandbox air-gap. The retained production plane is a private
+GKE 1.36.2 cluster in `us-central1-a` with Dataplane V2, private nodes and
+endpoint, Workload Identity, Agent Sandbox, one isolated gVisor execution pool,
+and a kubelet ceiling of 1,024 PIDs per pod. The exact final runner passed all
+ten live containment probes: gVisor isolation, process, disk, output, and time
+limits, metadata/internal/external network denial, secret absence, host denial,
+descendant cleanup, and namespace cleanup. A native shell fork storm was denied
+at 14 observed processes under the 32-process request ceiling and left no
+sleeping descendants. The failed capacity attempt in `us-central1-c` was
+deleted and only the healthy production cluster remains. No token value was
+logged or retained. Current evidence is in
+`docs/evidence/sandbox/runner-supply-chain.v5.json` and
+`docs/evidence/sandbox/gvisor-production-red-team.v1.json`.
 
 ## Next actions
 
@@ -333,9 +339,10 @@ confirmed absent; Artifact Registry was preserved. Evidence is in
 4. Keep RPC customer routing disabled until written commercial permission or
    replacement terms-compatible supply exists; this isolated owner blocker does
    not pause combined workflows or other local engineering.
-5. Keep Sandbox public lifecycle `unavailable` until a persistent execution
-   plane is deployed and operationally qualified; delayed cloud billing
-   reconciliation is non-blocking.
+5. Keep Sandbox public lifecycle `unavailable` while deploying and qualifying
+   the private control service and product API route on the now-qualified
+   persistent execution plane; delayed cloud billing reconciliation is
+   non-blocking.
 
 ## Preserved boundaries
 

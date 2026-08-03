@@ -48,6 +48,12 @@ const processTimer = setInterval(() => {
   if (observed > limits.processes) stop('process_limit');
 }, 10);
 const result = await new Promise((resolve, reject) => { child.once('error', reject); child.once('close', (code, signal) => resolve({ code, signal })); }); clearTimeout(timer); clearInterval(processTimer); killProcessGroup();
-let cpuMillis = 0; try { cpuMillis = JSON.parse(Buffer.concat(usage).toString('utf8')).cpuMillis; } catch {}
+let cpuMillis = 0;
+try {
+  const nativeUsage = JSON.parse(Buffer.concat(usage).toString('utf8'));
+  cpuMillis = nativeUsage.cpuMillis;
+  maximumProcessesObserved = Math.max(maximumProcessesObserved, nativeUsage.maximumProcessesObserved ?? 0);
+  if (nativeUsage.processLimitTriggered === true) limitFailure = 'process_limit';
+} catch {}
 if (cpuMillis > limits.cpuMillis && limitFailure === null) limitFailure = 'cpu_limit';
 process.stdout.write(`${JSON.stringify({ exitCode: Number.isInteger(result.code) ? result.code : 128, stdoutBase64: Buffer.concat(stdout).toString('base64'), stderrBase64: Buffer.concat(stderr).toString('base64'), cpuMillis, durationMs: Math.ceil(performance.now() - startedAt), maximumProcessesObserved, limitFailure })}\n`);

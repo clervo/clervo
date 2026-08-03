@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { readFile, writeFile } from 'node:fs/promises';
+
+const productionPolicy = JSON.parse(await readFile(
+  new URL('../../infra/sandbox/production-plane.v1.json', import.meta.url),
+  'utf8',
+));
 
 const kubectl = process.env.CLERVO_KUBECTL_BIN ?? 'kubectl';
 const kubeconfig = process.env.KUBECONFIG;
@@ -8,11 +14,15 @@ const expectedCluster = process.env.CLERVO_SANDBOX_QUALIFICATION_CLUSTER;
 const image = process.env.CLERVO_SANDBOX_IMAGE_REFERENCE;
 const acknowledgement = process.env.CLERVO_SANDBOX_QUALIFICATION_ACK;
 const fullSuite = process.env.CLERVO_SANDBOX_QUALIFICATION_SUITE === 'full';
+const requestedReportPath = process.env.CLERVO_SANDBOX_QUALIFICATION_REPORT_PATH;
 const namespace = 'clervo-sandbox-network-qualification';
 const templateName = 'clervo-airgapped';
 const claimName = 'clervo-airgapped-probe';
 
-if (!kubeconfig || !expectedCluster || acknowledgement !== 'ephemeral-only') throw new Error('sandbox_qualification_context_required');
+const ephemeralMode = acknowledgement === 'ephemeral-only' && expectedCluster?.includes('-qual-');
+const productionMode = acknowledgement === 'persistent-production'
+  && expectedCluster === productionPolicy.cluster.name;
+if (!kubeconfig || !expectedCluster || (!ephemeralMode && !productionMode)) throw new Error('sandbox_qualification_context_required');
 const imageMatch = image?.match(/@(?<digest>sha256:[a-f0-9]{64})$/u);
 if (!imageMatch?.groups?.digest) throw new Error('sandbox_qualification_image_digest_required');
 
@@ -30,7 +40,7 @@ function run(args, options = {}) {
 }
 
 const context = run(['config', 'current-context']).stdout;
-if (!context.includes(expectedCluster) || !expectedCluster.includes('-qual-')) throw new Error('sandbox_qualification_cluster_mismatch');
+if (!context.includes(expectedCluster)) throw new Error('sandbox_qualification_cluster_mismatch');
 
 const namespaceResource = {
   apiVersion: 'v1',
@@ -205,18 +215,16 @@ try {
       && escape.readable.length === 0 && escape.sysrqWritable === false;
 
     stage = 'probe_fork_bomb';
-    const fork = runner(['node', '-e', 'const{spawn}=require("node:child_process");let started=0,failed=0;const children=[];for(let i=0;i<96;i++){const c=spawn("/bin/sleep",["30"],{stdio:"ignore"});children.push(c);c.once("spawn",()=>started++);c.once("error",()=>failed++)}setTimeout(()=>{const alive=children.filter(c=>{try{process.kill(c.pid,0);return true}catch{return false}}).length;process.stdout.write(JSON.stringify({started,failed,alive}))},500);setInterval(()=>{},1000)'], { ...baseLimits, processes: 32, wallTimeMs: 1_500 });
+    const fork = runner(['sh', '-c', 'i=0; while [ "$i" -lt 96 ]; do /bin/sleep 30 & i=$((i+1)); done; wait'], { ...baseLimits, processes: 32, wallTimeMs: 5_000 });
     Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 300);
     const remainingSleeps = Number(run(['exec', '-n', namespace, `pod/${claimName}`, '--', 'node', '-e', `
       const fs=require("node:fs");let n=0;for(const d of fs.readdirSync("/proc")){if(!/^\\d+$/.test(d))continue;try{if(fs.readFileSync("/proc/"+d+"/cmdline","utf8").includes("/bin/sleep\\u000030"))n++}catch{}}process.stdout.write(String(n));
     `]).stdout);
-    let forkStarted = 96; let forkFailed = 0; let forkAlive = 96;
-    try {
-      const forkObservation = JSON.parse(Buffer.from(fork.stdoutBase64, 'base64').toString('utf8'));
-      ({ started: forkStarted, failed: forkFailed, alive: forkAlive } = forkObservation);
-    } catch {}
-    const processLimit = (fork.limitFailure === 'process_limit' && fork.maximumProcessesObserved > 32
-      || (fork.limitFailure === 'wall_time_limit' && forkAlive < 32 && forkFailed > 0)) && remainingSleeps === 0;
+    const forkStderr = Buffer.from(fork.stderrBase64, 'base64').toString('utf8');
+    const forkDenied = /(?:can't|cannot|failed to) fork|resource temporarily unavailable|try again/iu.test(forkStderr);
+    const processLimit = fork.maximumProcessesObserved >= 2 && fork.maximumProcessesObserved <= 32
+      && remainingSleeps === 0
+      && (fork.limitFailure === 'process_limit' || forkDenied);
 
     stage = 'probe_decompression_bomb';
     const disk = runner(['node', '-e', 'require("node:fs").writeFileSync("/workspace/clervo-disk-probe.bin",Buffer.alloc(2097152))'], baseLimits);
@@ -276,7 +284,16 @@ try {
       probeCount: observations.length,
       imageDigest: imageMatch.groups.digest,
       observations,
-      runtimeMetrics: { forkStarted, forkFailed, forkAlive, maximumProcessesObserved: fork.maximumProcessesObserved, remainingSleeps, diskBytesObserved: diskState.size },
+      runtimeMetrics: {
+        runnerExitCode: fork.exitCode,
+        runnerLimitFailure: fork.limitFailure,
+        runnerStdoutBytes: Buffer.from(fork.stdoutBase64, 'base64').byteLength,
+        runnerStderrBytes: Buffer.byteLength(forkStderr),
+        forkDenied,
+        maximumProcessesObserved: fork.maximumProcessesObserved,
+        remainingSleeps,
+        diskBytesObserved: diskState.size,
+      },
     };
   }
 } catch {
@@ -318,13 +335,29 @@ try {
   cleanupVerified = run(['get', 'namespace', namespace], { allowFailure: true }).status !== 0;
 }
 
-report = { ...report, cleanupVerified };
+report = {
+  ...report,
+  qualificationContext: {
+    mode: productionMode ? 'persistent-production' : 'ephemeral-only',
+    clusterName: expectedCluster,
+    zone: productionMode ? productionPolicy.zone : null,
+    runtimeClass: 'gvisor',
+    namespace,
+  },
+  cleanupVerified,
+};
 if (report.observations) report.observations = report.observations.map((observation) => ({ ...observation, cleanupVerified }));
 if (!cleanupVerified) report.status = 'failed';
 if (report.schemaVersion === 'clervo.sandbox-red-team-report.v1') {
   const unsigned = { ...report };
   delete unsigned.reportSha256;
   report.reportSha256 = `sha256:${createHash('sha256').update(JSON.stringify(unsigned)).digest('hex')}`;
+}
+if (requestedReportPath !== undefined) {
+  if (!productionMode || !fullSuite || requestedReportPath !== 'docs/evidence/sandbox/gvisor-production-red-team.v1.json') {
+    throw new Error('sandbox_qualification_report_path_refused');
+  }
+  await writeFile(new URL('../../docs/evidence/sandbox/gvisor-production-red-team.v1.json', import.meta.url), `${JSON.stringify(report, null, 2)}\n`);
 }
 process.stdout.write(`${JSON.stringify(report)}\n`);
 if (report.status !== 'passed') process.exitCode = 1;

@@ -1,0 +1,228 @@
+{
+  "schemaVersion": "clervo.sandbox-red-team-report.v1",
+  "evaluatedAt": "2026-08-03T12:25:18.821Z",
+  "status": "passed",
+  "probeCount": 10,
+  "imageDigest": "sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
+  "observations": [
+    {
+      "probeId": "sandbox.escape.kernel.v1",
+      "outcome": "contained",
+      "controls": {
+        "runtime_isolation": true,
+        "process_limit": true,
+        "disk_limit": true,
+        "output_limit": true,
+        "time_limit": true,
+        "metadata_denied": true,
+        "internal_network_denied": true,
+        "external_network_denied": true,
+        "secrets_absent": true,
+        "host_access_denied": true
+      },
+      "runtimeAttested": true,
+      "cleanupVerified": true,
+      "chargedMicrousd": 0,
+      "safeDetail": "contained by live gVisor qualification"
+    },
+    {
+      "probeId": "sandbox.limit.fork-bomb.v1",
+      "outcome": "contained",
+      "controls": {
+        "runtime_isolation": true,
+        "process_limit": true,
+        "disk_limit": true,
+        "output_limit": true,
+        "time_limit": true,
+        "metadata_denied": true,
+        "internal_network_denied": true,
+        "external_network_denied": true,
+        "secrets_absent": true,
+        "host_access_denied": true
+      },
+      "runtimeAttested": true,
+      "cleanupVerified": true,
+      "chargedMicrousd": 0,
+      "safeDetail": "contained by live gVisor qualification"
+    },
+    {
+      "probeId": "sandbox.limit.decompression.v1",
+      "outcome": "contained",
+      "controls": {
+        "runtime_isolation": true,
+        "process_limit": true,
+        "disk_limit": true,
+        "output_limit": true,
+        "time_limit": true,
+        "metadata_denied": true,
+        "internal_network_denied": true,
+        "external_network_denied": true,
+        "secrets_absent": true,
+        "host_access_denied": true
+      },
+      "runtimeAttested": true,
+      "cleanupVerified": true,
+      "chargedMicrousd": 0,
+      "safeDetail": "contained by live gVisor qualification"
+    },
+    {
+      "probeId": "sandbox.limit.output-flood.v1",
+      "outcome": "contained",
+      "controls": {
+        "runtime_isolation": true,
+        "process_limit": true,
+        "disk_limit": true,
+        "output_limit": true,
+        "time_limit": true,
+        "metadata_denied": true,
+        "internal_network_denied": true,
+        "external_network_denied": true,
+        "secrets_absent": true,
+        "host_access_denied": true
+      },
+      "runtimeAttested": true,
+      "cleanupVerified": true,
+      "chargedMicrousd": 0,
+      "safeDetail": "contained by live gVisor qualification"
+    },
+    {
+      "probeId": "sandbox.limit.timeout.v1",
+      "outcome": "contained",
+      "controls": {
+        "runtime_isolation": true,
+        "process_limit": true,
+        "disk_limit": true,
+        "output_limit": true,
+        "time_limit": true,
+        "metadata_denied": true,
+        "internal_network_denied": true,
+        "external_network_denied": true,
+        "secrets_absent": true,
+        "host_access_denied": true
+      },
+      "runtimeAttested": true,
+      "cleanupVerified": true,
+      "chargedMicrousd": 0,
+      "safeDetail": "contained by live gVisor qualification"
+    },
+    {
+      "probeId": "sandbox.network.metadata.v1",
+      "outcome": "contained",
+      "controls": {
+        "runtime_isolation": true,
+        "process_limit": true,
+        "disk_limit": true,
+        "output_limit": true,
+        "time_limit": true,
+        "metadata_denied": true,
+        "internal_network_denied": true,
+        "external_network_denied": true,
+        "secrets_absent": true,
+        "host_access_denied": true
+      },
+      "runtimeAttested": true,
+      "cleanupVerified": true,
+      "chargedMicrousd": 0,
+      "safeDetail": "contained by live gVisor qualification"
+    },
+    {
+      "probeId": "sandbox.network.internal-ssrf.v1",
+      "outcome": "contained",
+      "controls": {
+        "runtime_isolation": true,
+        "process_limit": true,
+        "disk_limit": true,
+        "output_limit": true,
+        "time_limit": true,
+        "metadata_denied": true,
+        "internal_network_denied": true,
+        "external_network_denied": true,
+        "secrets_absent": true,
+        "host_access_denied": true
+      },
+      "runtimeAttested": true,
+      "cleanupVerified": true,
+      "chargedMicrousd": 0,
+      "safeDetail": "contained by live gVisor qualification"
+    },
+    {
+      "probeId": "sandbox.network.external-ssrf.v1",
+      "outcome": "contained",
+      "controls": {
+        "runtime_isolation": true,
+        "process_limit": true,
+        "disk_limit": true,
+        "output_limit": true,
+        "time_limit": true,
+        "metadata_denied": true,
+        "internal_network_denied": true,
+        "external_network_denied": true,
+        "secrets_absent": true,
+        "host_access_denied": true
+      },
+      "runtimeAttested": true,
+      "cleanupVerified": true,
+      "chargedMicrousd": 0,
+      "safeDetail": "contained by live gVisor qualification"
+    },
+    {
+      "probeId": "sandbox.secret.discovery.v1",
+      "outcome": "contained",
+      "controls": {
+        "runtime_isolation": true,
+        "process_limit": true,
+        "disk_limit": true,
+        "output_limit": true,
+        "time_limit": true,
+        "metadata_denied": true,
+        "internal_network_denied": true,
+        "external_network_denied": true,
+        "secrets_absent": true,
+        "host_access_denied": true
+      },
+      "runtimeAttested": true,
+      "cleanupVerified": true,
+      "chargedMicrousd": 0,
+      "safeDetail": "contained by live gVisor qualification"
+    },
+    {
+      "probeId": "sandbox.host.socket.v1",
+      "outcome": "contained",
+      "controls": {
+        "runtime_isolation": true,
+        "process_limit": true,
+        "disk_limit": true,
+        "output_limit": true,
+        "time_limit": true,
+        "metadata_denied": true,
+        "internal_network_denied": true,
+        "external_network_denied": true,
+        "secrets_absent": true,
+        "host_access_denied": true
+      },
+      "runtimeAttested": true,
+      "cleanupVerified": true,
+      "chargedMicrousd": 0,
+      "safeDetail": "contained by live gVisor qualification"
+    }
+  ],
+  "runtimeMetrics": {
+    "runnerExitCode": 128,
+    "runnerLimitFailure": "wall_time_limit",
+    "runnerStdoutBytes": 0,
+    "runnerStderrBytes": 49,
+    "forkDenied": true,
+    "maximumProcessesObserved": 14,
+    "remainingSleeps": 0,
+    "diskBytesObserved": 1048576
+  },
+  "qualificationContext": {
+    "mode": "persistent-production",
+    "clusterName": "clervo-sandbox-production",
+    "zone": "us-central1-a",
+    "runtimeClass": "gvisor",
+    "namespace": "clervo-sandbox-network-qualification"
+  },
+  "cleanupVerified": true,
+  "reportSha256": "sha256:1b12e86151e22e09874a154abd156e5027ff7d035a5c2c4d74ed80f06ee94da4"
+}

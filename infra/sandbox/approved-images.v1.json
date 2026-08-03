@@ -33,14 +33,24 @@
       "sbomSha256": "sha256:47e215548a0ac551f3218b388717a82865fb6ee59d0c8789a5d795a966c317f8"
     },
     {
-      "imageId": "sandbox.nodejs-24",
+      "imageId": "sandbox.nodejs-24.tree-monitor",
       "digest": "sha256:9d06e5f6bc9b20f1719effa9c8cb3defea2392e31fe3aadd25eb5833b7550a7e",
-      "lifecycle": "qualified",
+      "lifecycle": "blocked",
       "signatureVerified": true,
       "provenanceVerified": true,
       "vulnerabilityScan": "passed",
       "malwareScan": "passed",
       "sbomSha256": "sha256:a75b65bfafb9ef6596ec06b1048dac5072c71b5294f0267ef2aba1ba652f5c2d"
+    },
+    {
+      "imageId": "sandbox.nodejs-24",
+      "digest": "sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
+      "lifecycle": "qualified",
+      "signatureVerified": true,
+      "provenanceVerified": true,
+      "vulnerabilityScan": "passed",
+      "malwareScan": "passed",
+      "sbomSha256": "sha256:325b8174f3d94e0f7790e09639307b513ba20180e8581368f4c41ebbd108755d"
     }
   ]
 }
