@@ -27,8 +27,18 @@ steps:
       - --tag
       - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-api:$_RELEASE_SHA
       - .
+  - id: migration-image
+    name: gcr.io/cloud-builders/docker@sha256:f8b08c609fdc392ee6827ff3e1725e4980f7d96bde9f76f4695086405c96c147
+    args:
+      - build
+      - --file
+      - infra/production/gcp/Dockerfile.migrations
+      - --tag
+      - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-migrator:$_RELEASE_SHA
+      - .
 images:
   - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-api:$_RELEASE_SHA
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-migrator:$_RELEASE_SHA
 options:
   requestedVerifyOption: VERIFIED
   logging: CLOUD_LOGGING_ONLY

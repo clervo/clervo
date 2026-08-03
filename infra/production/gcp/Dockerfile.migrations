@@ -1,0 +1,26 @@
+FROM node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9b581ef1dd7d96ced463b8e7 AS dependencies
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY apps/site/package.json ./apps/site/package.json
+COPY packages/mcp/package.json ./packages/mcp/package.json
+COPY packages/sdk-typescript/package.json ./packages/sdk-typescript/package.json
+RUN npm ci --omit=dev --omit=optional --ignore-scripts --no-audit --no-fund --workspaces=false
+
+FROM gcr.io/distroless/nodejs24-debian13:nonroot@sha256:af85d11ce7ef10172855a6e3649e3e8125b1b9e3ca41849ec2918036f05cb212
+
+LABEL org.opencontainers.image.title="Clervo production database migrator"
+LABEL org.opencontainers.image.source="https://github.com/clervo/clervo"
+LABEL org.opencontainers.image.licenses="UNLICENSED"
+
+ENV NODE_ENV=production
+ENV CLERVO_ENV=production
+WORKDIR /app
+
+COPY --chown=65532:65532 package.json ./package.json
+COPY --chown=65532:65532 --from=dependencies /app/node_modules ./node_modules
+COPY --chown=65532:65532 scripts/production/apply-postgres-migrations.mjs ./scripts/production/apply-postgres-migrations.mjs
+COPY --chown=65532:65532 infra/storage/postgres ./infra/storage/postgres
+
+USER 65532:65532
+CMD ["./scripts/production/apply-postgres-migrations.mjs", "apply"]

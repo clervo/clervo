@@ -139,7 +139,7 @@ test('Cloud Build is immutable, acceptance-gated, and requests verified provenan
   assert.match(build, /logging: CLOUD_LOGGING_ONLY/u);
   assert.doesNotMatch(build, /machineType: E2_HIGHCPU_8/u);
   assert.match(build, /npm run test:stage14/u);
-  for (let index = 1; index <= 12; index += 1) {
+  for (let index = 1; index <= 14; index += 1) {
     assert.match(rootPackage.scripts['test:stage14'], new RegExp(`tests/contract/n14\\.${index}\\.test\\.mjs`, 'u'));
   }
   assert.match(rootPackage.scripts['test:stage14'], /npm audit --omit=dev --audit-level=high/u);

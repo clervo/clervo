@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "clervo.production-migration-job.v1",
+  "state": "prepared",
+  "project": "bloxsniper-prod",
+  "region": "us-central1",
+  "job": "clervo-production-migration",
+  "imageRepository": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-migrator",
+  "serviceAccount": "clervo-api-production@bloxsniper-prod.iam.gserviceaccount.com",
+  "cloudSqlConnection": "bloxsniper-prod:us-central1:clervo-production-postgres",
+  "databaseSecret": "clervo-production-database-url",
+  "databaseSecretVersion": 2,
+  "targetMigration": "0006-sandbox-operation-state.sql",
+  "taskCount": 1,
+  "maximumRetries": 0,
+  "taskTimeoutSeconds": 300,
+  "boundaries": {
+    "credentialInjectedByPlatform": true,
+    "credentialReadByVm": false,
+    "credentialPrinted": false,
+    "publicEndpoint": false,
+    "paymentEnabled": false,
+    "customerRowsRead": false,
+    "protectedGatewayTouched": false,
+    "jobRemovedAfterExecution": true
+  },
+  "protectedResources": ["ai.clervo.dev", "the existing Clervo VM model gateway", "all unrelated and legacy cloud resources"]
+}
