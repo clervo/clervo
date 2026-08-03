@@ -239,8 +239,9 @@ expired or interrupted execution and settlement fail closed instead of
 re-executing or creating another authorization.
 Stage 14 Google Cloud production qualification is complete. The dedicated
 runtime identity has Cloud SQL Client plus accessor permission on only the
-database and Sentry secrets. The dedicated builder has only log writing,
-source-bucket reading, and write access to the Clervo artifact repository.
+database, Sentry, and three Stage 15 challenge-only x402 secrets. The dedicated
+builder has only log writing, source-bucket reading, and write access to the
+Clervo artifact repository.
 Cloud Build `45301f8c-60b9-4935-be82-e9285821d8cb` accepted exact source commit
 `cf7110271c81b337ce14943d2f570d85196b305f` and produced immutable digest
 `sha256:68d1ba96e04ac0c48c9a98f374470be67bc7f8994e90ab75a78b591de4662ba4`.
@@ -261,10 +262,22 @@ delivery, managed restore, kill switch, promotion, and rollback all passed.
 `CLERVO_X402_MODE=disabled`, no public traffic is enabled, no payment occurred,
 and `ai.clervo.dev` was untouched.
 
-Stage 15 is next. Its code and fail-closed durable state are prepared, but one
-real bounded x402 proof still requires the separate exact payment approval and
-wallet authorization. Independent provider-route and public-distribution work
-continues without waiting for that payment boundary.
+Stage 15 has completed its no-payment production preflight. Three version-pinned
+runtime secrets hold the facilitator identity, facilitator signing key, and
+public receiver address; the runtime identity can access only those plus the
+database and Sentry secrets. Private revision
+`clervo-api-production-00005-ruv` is ready at zero traffic in `challenge_only`
+mode. Its real facilitator-backed `search.web` request returned one exact Base
+USDC requirement for 6,000 atomic units, bound to the production resource,
+receiver, quote, operation, and request. Repeating the request returned the same
+challenge. A supplied dummy payment header failed with
+`x402_settlement_disabled` before verification. No payer signer was read, no
+authorization or settlement occurred, and 0 USDC was spent.
+
+The one real bounded x402 proof still requires the separate exact payment
+approval and wallet authorization defined by the x402 safety workflow.
+Independent provider-route and public-distribution work continues without
+waiting for that payment boundary.
 
 Receiver accounting is now a separate append-only, hash-linked journal rather
 than an inference from customer receipts. Each settlement and operation can be

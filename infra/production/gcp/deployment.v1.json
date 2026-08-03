@@ -91,7 +91,10 @@
     "runtimeSecretRole": "roles/secretmanager.secretAccessor",
     "runtimeSecretAccess": [
       "clervo-production-database-url",
-      "clervo-production-monitoring-endpoint"
+      "clervo-production-monitoring-endpoint",
+      "clervo-production-x402-key-id",
+      "clervo-production-x402-key-secret",
+      "clervo-production-x402-pay-to"
     ],
     "builderProjectRoles": [
       "roles/logging.logWriter"
@@ -153,6 +156,10 @@
     "servingRevision": "clervo-api-production-00001-yaf",
     "candidateRevision": "clervo-api-production-00002-seh",
     "candidateTrafficPercent": 0,
+    "x402PreflightRevision": "clervo-api-production-00005-ruv",
+    "x402PreflightTrafficPercent": 0,
+    "x402ChallengeVerified": true,
+    "x402SettlementEnabled": false,
     "trafficChanged": true,
     "publicInvokerEnabled": false,
     "publicTrafficEnabled": false,

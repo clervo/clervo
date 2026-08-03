@@ -17,7 +17,8 @@ release path.
   Cloud Build provenance and zero high or critical package vulnerabilities for
   that exact digest.
 - A dedicated Cloud Run service identity receives only Cloud SQL Client plus
-  accessor permission on the two named runtime secrets.
+  accessor permission on the database, monitoring, and three challenge-only
+  x402 runtime secrets.
 - Cloud SQL PostgreSQL 18 is regional, deletion-protected, backed up daily,
   retained for 14 backups, and configured for seven-day point-in-time recovery.
 - A first-service bootstrap revision is private and authenticated. The candidate
@@ -41,6 +42,9 @@ accepts only pinned positive integer versions—never `latest`:
 
 - `clervo-production-database-url`
 - `clervo-production-monitoring-endpoint`
+- `clervo-production-x402-key-id`
+- `clervo-production-x402-key-secret`
+- `clervo-production-x402-pay-to`
 
 Do not print their values. `CLERVO_DATABASE_URL` must use the Cloud SQL Unix
 socket made available to the Cloud Run revision. Rotation creates a new secret

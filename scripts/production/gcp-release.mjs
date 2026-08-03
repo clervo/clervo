@@ -8,6 +8,10 @@ const policy = JSON.parse(await readFile(
   new URL('../../infra/production/gcp/deployment.v1.json', import.meta.url),
   'utf8',
 ));
+const x402Policy = JSON.parse(await readFile(
+  new URL('../../infra/production/gcp/x402-preflight.v1.json', import.meta.url),
+  'utf8',
+));
 const action = process.argv[2] ?? 'plan';
 const resources = policy.resources;
 const imagePrefix = `${policy.region}-docker.pkg.dev/${policy.project}/${resources.artifactRepository}/${resources.image}`;
@@ -132,7 +136,37 @@ function verifyArtifact(image) {
   return { provenance: 'cloud-build-observed', critical, high };
 }
 
-function deploymentArgs(input, { channel, noTraffic, tag }) {
+function deploymentArgs(input, { channel, noTraffic, tag, x402Preflight = false, x402SecretVersions } = {}) {
+  const x402Mode = x402Preflight ? x402Policy.paymentMode : policy.runtime.environment.CLERVO_X402_MODE;
+  if (x402Preflight && (x402Mode !== 'challenge_only' || x402Policy.settlementEnabled !== false)) die('x402_preflight_must_be_challenge_only');
+  const environmentVariables = [
+    `CLERVO_ENV=${policy.runtime.environment.CLERVO_ENV}`,
+    `CLERVO_RELEASE_ID=${input.releaseId}`,
+    `CLERVO_PUBLIC_ORIGIN=${input.origin}`,
+    `CLERVO_STATE_BACKEND=${policy.runtime.environment.CLERVO_STATE_BACKEND}`,
+    `CLERVO_STATE_NAMESPACE=${policy.runtime.environment.CLERVO_STATE_NAMESPACE}`,
+    `CLERVO_MAX_CONCURRENT_EXECUTIONS=${policy.runtime.environment.CLERVO_MAX_CONCURRENT_EXECUTIONS}`,
+    `CLERVO_TRAFFIC_MODE=${policy.runtime.environment.CLERVO_TRAFFIC_MODE}`,
+    `CLERVO_MONITORING_DRIVER=${policy.runtime.environment.CLERVO_MONITORING_DRIVER}`,
+    `CLERVO_X402_MODE=${x402Mode}`,
+    `CLERVO_RELEASE_CHANNEL=${channel}`,
+  ];
+  const secretVariables = [
+    `CLERVO_DATABASE_URL=${policy.runtime.secretEnvironment.CLERVO_DATABASE_URL}:${input.databaseSecretVersion}`,
+    `CLERVO_SENTRY_DSN=${policy.runtime.secretEnvironment.CLERVO_SENTRY_DSN}:${input.sentryDsnSecretVersion}`,
+  ];
+  if (x402Preflight) {
+    environmentVariables.push(
+      `CLERVO_X402_FACILITATOR_URL=${x402Policy.facilitatorUrl}`,
+      `CLERVO_X402_NETWORK=${x402Policy.network}`,
+      `CLERVO_X402_ASSET=${x402Policy.asset}`,
+    );
+    secretVariables.push(
+      `CLERVO_X402_FACILITATOR_KEY_ID=${x402Policy.secrets.keyId}:${x402SecretVersions.keyId}`,
+      `CLERVO_X402_FACILITATOR_KEY_SECRET=${x402Policy.secrets.keySecret}:${x402SecretVersions.keySecret}`,
+      `CLERVO_X402_PAY_TO=${x402Policy.secrets.payTo}:${x402SecretVersions.payTo}`,
+    );
+  }
   const args = [
     'run', 'deploy', resources.service,
     '--project', policy.project,
@@ -153,22 +187,8 @@ function deploymentArgs(input, { channel, noTraffic, tag }) {
     '--no-session-affinity',
     '--port', String(policy.runtime.port),
     '--set-cloudsql-instances', input.cloudSqlConnection,
-    '--set-env-vars', [
-      `CLERVO_ENV=${policy.runtime.environment.CLERVO_ENV}`,
-      `CLERVO_RELEASE_ID=${input.releaseId}`,
-      `CLERVO_PUBLIC_ORIGIN=${input.origin}`,
-      `CLERVO_STATE_BACKEND=${policy.runtime.environment.CLERVO_STATE_BACKEND}`,
-      `CLERVO_STATE_NAMESPACE=${policy.runtime.environment.CLERVO_STATE_NAMESPACE}`,
-      `CLERVO_MAX_CONCURRENT_EXECUTIONS=${policy.runtime.environment.CLERVO_MAX_CONCURRENT_EXECUTIONS}`,
-      `CLERVO_TRAFFIC_MODE=${policy.runtime.environment.CLERVO_TRAFFIC_MODE}`,
-      `CLERVO_MONITORING_DRIVER=${policy.runtime.environment.CLERVO_MONITORING_DRIVER}`,
-      `CLERVO_X402_MODE=${policy.runtime.environment.CLERVO_X402_MODE}`,
-      `CLERVO_RELEASE_CHANNEL=${channel}`,
-    ].join(','),
-    '--set-secrets', [
-      `CLERVO_DATABASE_URL=${policy.runtime.secretEnvironment.CLERVO_DATABASE_URL}:${input.databaseSecretVersion}`,
-      `CLERVO_SENTRY_DSN=${policy.runtime.secretEnvironment.CLERVO_SENTRY_DSN}:${input.sentryDsnSecretVersion}`,
-    ].join(','),
+    '--set-env-vars', environmentVariables.join(','),
+    '--set-secrets', secretVariables.join(','),
     '--startup-probe', 'httpGet.path=/readyz,httpGet.port=8080,periodSeconds=2,timeoutSeconds=1,failureThreshold=30',
     '--liveness-probe', 'httpGet.path=/v1/health,httpGet.port=8080,periodSeconds=10,timeoutSeconds=1,failureThreshold=3',
     '--readiness-probe', 'httpGet.path=/readyz,httpGet.port=8080,periodSeconds=5,timeoutSeconds=1,failureThreshold=2,successThreshold=1',
@@ -196,6 +216,34 @@ function deployCandidate(input) {
   const artifact = verifyArtifact(input.image);
   runGcloud(deploymentArgs(input, { channel: 'candidate', noTraffic: true, tag: input.candidateTag }));
   return { action: 'candidate-deployed-with-zero-traffic', image: input.image, candidateTag: input.candidateTag, artifact };
+}
+
+function deployX402Preflight(input) {
+  const confirmation = env('CLERVO_PRODUCTION_CONFIRM');
+  if (confirmation !== `deploy-x402-preflight:${input.releaseId}`) die('owner_confirmation_mismatch');
+  if (!serviceExists()) die('x402_preflight_requires_private_service');
+  const x402SecretVersions = {
+    keyId: positiveInteger('CLERVO_X402_KEY_ID_SECRET_VERSION'),
+    keySecret: positiveInteger('CLERVO_X402_KEY_SECRET_SECRET_VERSION'),
+    payTo: positiveInteger('CLERVO_X402_PAY_TO_SECRET_VERSION'),
+  };
+  const artifact = verifyArtifact(input.image);
+  const tag = `x402-${input.releaseId.slice(0, 12)}`;
+  runGcloud(deploymentArgs(input, {
+    channel: 'x402-preflight',
+    noTraffic: true,
+    tag,
+    x402Preflight: true,
+    x402SecretVersions,
+  }));
+  return {
+    action: 'x402-preflight-deployed-with-zero-traffic',
+    image: input.image,
+    tag,
+    paymentMode: 'challenge_only',
+    settlementEnabled: false,
+    artifact,
+  };
 }
 
 function revisionDescription(revision) {
@@ -259,7 +307,7 @@ const safePlan = {
   project: policy.project,
   region: policy.region,
   resources,
-  mutationActions: ['bootstrap-private', 'deploy-candidate', 'promote', 'rollback'],
+  mutationActions: ['bootstrap-private', 'deploy-candidate', 'deploy-x402-preflight', 'promote', 'rollback'],
   candidateReceivesTrafficOnDeploy: false,
   paymentEnabled: false,
   ownerConfirmationRequired: true,
@@ -277,9 +325,10 @@ else if (action === 'validate') {
   result = { action: 'validated', releaseId: input.releaseId, image: input.image, candidateTag: input.candidateTag };
 } else if (action === 'bootstrap-private') result = bootstrapPrivate(releaseInputs());
 else if (action === 'deploy-candidate') result = deployCandidate(releaseInputs());
+else if (action === 'deploy-x402-preflight') result = deployX402Preflight(releaseInputs());
 else if (action === 'promote') result = promote(releaseInputs());
 else if (action === 'rollback') result = rollback();
-else die('usage_plan_verify_artifact_validate_bootstrap_private_deploy_candidate_promote_rollback');
+else die('usage_plan_verify_artifact_validate_bootstrap_private_deploy_candidate_deploy_x402_preflight_promote_rollback');
 
 assert.equal(policy.rollout.paidExecutionEnabled, false);
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);

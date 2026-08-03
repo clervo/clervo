@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
 import { generateKeyPairSync } from 'node:crypto';
+import { execFile } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
+import { promisify } from 'node:util';
 import test from 'node:test';
 import { CONTRACT_VERSION, sealQuote } from '../../dist/packages/contracts/src/index.js';
 import { createCdpFacilitatorAuth, createX402ChallengeService } from '../../apps/api/src/x402-resource.mjs';
@@ -9,6 +12,7 @@ const asset = `0x${'1'.repeat(40)}`;
 const payTo = `0x${'2'.repeat(40)}`;
 const issuedAt = '2026-08-03T12:00:00.000Z';
 const expiresAt = '2026-08-03T12:05:00.000Z';
+const execute = promisify(execFile);
 const quote = sealQuote({
   contractVersion: CONTRACT_VERSION,
   quoteId: 'quote_stage15challenge00000000000000',
@@ -147,4 +151,45 @@ test('challenge-only mode rejects payment headers before facilitator verificatio
   const service = await createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/' });
   const challenge = await service.challenge({ quote, description: 'Bounded search.web execution', now: issuedAt });
   await assert.rejects(service.authorize({ paymentHeader: 'opaque', challenge }), /x402 settlement is disabled/u);
+});
+
+test('production x402 secret bootstrap is challenge-only, payer-free, and confirmation guarded', async () => {
+  const { stdout } = await execute(process.execPath, ['scripts/production/gcp-x402-bootstrap.mjs', 'plan'], {
+    env: { PATH: process.env.PATH },
+  });
+  const plan = JSON.parse(stdout);
+  assert.equal(plan.project, 'bloxsniper-prod');
+  assert.equal(plan.paymentMode, 'challenge_only');
+  assert.equal(plan.settlementEnabled, false);
+  assert.equal(plan.payerSignerRequired, false);
+  assert.equal(plan.paymentEffects, 0);
+  assert.deepEqual(plan.secretNames.sort(), [
+    'clervo-production-x402-key-id',
+    'clervo-production-x402-key-secret',
+    'clervo-production-x402-pay-to',
+  ]);
+  const policy = JSON.parse(await readFile('infra/production/gcp/x402-preflight.v1.json', 'utf8'));
+  assert.equal(policy.network, 'eip155:8453');
+  assert.equal(policy.asset.toLowerCase(), '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913');
+  assert.equal(policy.settlementEnabled, false);
+  assert.deepEqual(policy.observed, {
+    observedAt: '2026-08-03T11:34:00.000Z',
+    secretVersions: { keyId: 1, keySecret: 1, payTo: 1 },
+    revision: 'clervo-api-production-00005-ruv',
+    trafficPercent: 0,
+    ready: true,
+    challengeStatus: 402,
+    productId: 'search.web',
+    amountAtomic: '6000',
+    challengeStableOnRepeat: true,
+    paymentHeaderRejectedBeforeVerification: true,
+    settlementEnabled: false,
+    payerSignerRead: false,
+    paymentAuthorized: false,
+    usdcSpent: '0',
+  });
+  const release = await readFile('scripts/production/gcp-release.mjs', 'utf8');
+  assert.match(release, /deploy-x402-preflight/u);
+  assert.match(release, /x402_preflight_must_be_challenge_only/u);
+  assert.match(release, /CLERVO_X402_MODE=\$\{x402Mode\}/u);
 });

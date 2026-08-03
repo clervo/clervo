@@ -60,6 +60,10 @@ test('production cloud contract is bounded, recoverable, and leaves the protecte
     servingRevision: 'clervo-api-production-00001-yaf',
     candidateRevision: 'clervo-api-production-00002-seh',
     candidateTrafficPercent: 0,
+    x402PreflightRevision: 'clervo-api-production-00005-ruv',
+    x402PreflightTrafficPercent: 0,
+    x402ChallengeVerified: true,
+    x402SettlementEnabled: false,
     trafficChanged: true,
     publicInvokerEnabled: false,
     publicTrafficEnabled: false,
@@ -88,6 +92,9 @@ test('production IAM control is exact-project, least-privilege, and confirmation
   assert.deepEqual(plan.runtime.secrets, [
     'clervo-production-database-url',
     'clervo-production-monitoring-endpoint',
+    'clervo-production-x402-key-id',
+    'clervo-production-x402-key-secret',
+    'clervo-production-x402-pay-to',
   ]);
   assert.deepEqual(plan.builder.projectRoles, ['roles/logging.logWriter']);
   assert.equal(plan.builder.repositoryRole, 'roles/artifactregistry.writer');
@@ -173,7 +180,7 @@ test('release control is inspectable without credentials and mutations fail befo
   assert.equal(plan.candidateReceivesTrafficOnDeploy, false);
   assert.equal(plan.paymentEnabled, false);
   assert.equal(plan.ownerConfirmationRequired, true);
-  assert.deepEqual(plan.mutationActions, ['bootstrap-private', 'deploy-candidate', 'promote', 'rollback']);
+  assert.deepEqual(plan.mutationActions, ['bootstrap-private', 'deploy-candidate', 'deploy-x402-preflight', 'promote', 'rollback']);
   assert.ok(plan.protectedResources.includes('ai.clervo.dev'));
 
   await assert.rejects(

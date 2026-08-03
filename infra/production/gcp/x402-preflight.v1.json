@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "clervo.production-x402-preflight.v1",
+  "project": "bloxsniper-prod",
+  "region": "us-central1",
+  "service": "clervo-api-production",
+  "runtimeServiceAccount": "clervo-api-production",
+  "facilitatorUrl": "https://api.cdp.coinbase.com/platform/v2/x402",
+  "network": "eip155:8453",
+  "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "publicOrigin": "https://api.clervo.dev/",
+  "paymentMode": "challenge_only",
+  "secrets": {
+    "keyId": "clervo-production-x402-key-id",
+    "keySecret": "clervo-production-x402-key-secret",
+    "payTo": "clervo-production-x402-pay-to"
+  },
+  "sourceEnvironment": {
+    "keyId": "CDP_API_KEY_ID",
+    "keySecret": "CDP_API_KEY_SECRET",
+    "facilitatorUrl": "CDP_X402_FACILITATOR_URL",
+    "network": "X402_NETWORK",
+    "asset": "X402_ASSET",
+    "payTo": "X402_PAY_TO"
+  },
+  "settlementEnabled": false,
+  "payerSignerRequired": false,
+  "paymentEffects": 0,
+  "observed": {
+    "observedAt": "2026-08-03T11:34:00.000Z",
+    "secretVersions": {
+      "keyId": 1,
+      "keySecret": 1,
+      "payTo": 1
+    },
+    "revision": "clervo-api-production-00005-ruv",
+    "trafficPercent": 0,
+    "ready": true,
+    "challengeStatus": 402,
+    "productId": "search.web",
+    "amountAtomic": "6000",
+    "challengeStableOnRepeat": true,
+    "paymentHeaderRejectedBeforeVerification": true,
+    "settlementEnabled": false,
+    "payerSignerRead": false,
+    "paymentAuthorized": false,
+    "usdcSpent": "0"
+  }
+}
