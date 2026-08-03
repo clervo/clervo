@@ -1,4 +1,12 @@
 steps:
+  - id: release-input
+    name: node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9b581ef1dd7d96ced463b8e7
+    entrypoint: bash
+    args:
+      - -ceu
+      - |
+        test "${#_RELEASE_SHA}" -eq 40
+        printf '%s' "$_RELEASE_SHA" | grep -Eq '^[a-f0-9]{40}$'
   - id: acceptance
     name: node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9b581ef1dd7d96ced463b8e7
     entrypoint: bash
@@ -14,12 +22,12 @@ steps:
       - --file
       - Dockerfile
       - --tag
-      - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-api:$COMMIT_SHA
+      - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-api:$_RELEASE_SHA
       - .
 images:
-  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-api:$COMMIT_SHA
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-api:$_RELEASE_SHA
 options:
   requestedVerifyOption: VERIFIED
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+  logging: CLOUD_LOGGING_ONLY
   machineType: E2_HIGHCPU_8
 timeout: 1800s

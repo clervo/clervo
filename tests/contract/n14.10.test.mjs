@@ -56,7 +56,9 @@ test('Cloud Build is immutable, acceptance-gated, and requests verified provenan
   assert.match(build, /node:24\.18\.1-bookworm-slim@sha256:[a-f0-9]{64}/u);
   assert.match(build, /gcr\.io\/cloud-builders\/docker@sha256:[a-f0-9]{64}/u);
   assert.match(build, /requestedVerifyOption: VERIFIED/u);
-  assert.match(build, /images:\n  - us-central1-docker\.pkg\.dev\/\$PROJECT_ID\/clervo-production\/clervo-api:\$COMMIT_SHA/u);
+  assert.match(build, /images:\n  - us-central1-docker\.pkg\.dev\/\$PROJECT_ID\/clervo-production\/clervo-api:\$_RELEASE_SHA/u);
+  assert.match(build, /grep -Eq '\^\[a-f0-9\]\{40\}\$'/u);
+  assert.match(build, /logging: CLOUD_LOGGING_ONLY/u);
   assert.match(build, /npm run test:stage14/u);
   for (let index = 1; index <= 12; index += 1) {
     assert.match(rootPackage.scripts['test:stage14'], new RegExp(`tests/contract/n14\\.${index}\\.test\\.mjs`, 'u'));
@@ -66,11 +68,27 @@ test('Cloud Build is immutable, acceptance-gated, and requests verified provenan
   assert.match(rootPackage.scripts['test:stage14'], /verify-clean-room-boundary/u);
   assert.doesNotMatch(build, /docker push/u);
   assert.doesNotMatch(build, /:latest/u);
+  assert.doesNotMatch(build, /\$COMMIT_SHA/u);
   const release = await readFile('scripts/production/gcp-release.mjs', 'utf8');
   assert.match(release, /slsa_build_level < 3/u);
   assert.match(release, /analysisStatus === 'FINISHED_SUCCESS'/u);
   assert.match(release, /\['OS', 'NPM', 'SECRET'\]/u);
   assert.match(release, /artifact_analysis_incomplete/u);
+});
+
+test('production build control binds a clean exact commit to the dedicated builder', async () => {
+  const { stdout } = await execute(process.execPath, ['scripts/production/gcp-build.mjs', 'plan'], {
+    env: { PATH: process.env.PATH },
+  });
+  const plan = JSON.parse(stdout);
+  assert.match(plan.releaseSha, /^[a-f0-9]{40}$/u);
+  assert.equal(typeof plan.cleanWorktree, 'boolean');
+  assert.equal(plan.tag.endsWith(`:${plan.releaseSha}`), true);
+  assert.equal(plan.serviceAccount, 'projects/bloxsniper-prod/serviceAccounts/clervo-production-builder@bloxsniper-prod.iam.gserviceaccount.com');
+  const source = await readFile('scripts/production/gcp-build.mjs', 'utf8');
+  assert.match(source, /production build requires a clean worktree/u);
+  assert.match(source, /CLERVO_CLOUD_BUILD_CONFIRM/u);
+  assert.match(source, /_RELEASE_SHA=/u);
 });
 
 test('release control is inspectable without credentials and mutations fail before gcloud without exact inputs', async () => {
