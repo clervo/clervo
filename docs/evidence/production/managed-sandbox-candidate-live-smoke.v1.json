@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "clervo.managed-sandbox-candidate-live-smoke.v1",
+  "observedAt": "2026-08-03T15:14:13.781Z",
+  "project": "bloxsniper-prod",
+  "managedMigration": {
+    "execution": "clervo-production-migration-85nwx",
+    "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-migrator@sha256:41c243f9574b3fd1cb73d28b1315b462fa952b2a814d29ae0227bb754e2e09aa",
+    "applied": ["0006-sandbox-operation-state.sql"],
+    "checksumVerifiedAndSkipped": [
+      "0001-retrieval-cache.sql",
+      "0002-live-intelligence-monitoring.sql",
+      "0003-search-http-state.sql",
+      "0004-receiver-accounting.sql",
+      "0005-x402-operation-state.sql"
+    ],
+    "succeededCount": 1,
+    "jobRemoved": true,
+    "credentialInjectedByPlatform": true,
+    "credentialReadByVm": false,
+    "credentialPrinted": false
+  },
+  "candidate": {
+    "cloudBuildId": "db68d6ff-8abc-4aef-9abf-de4f2f068689",
+    "releaseCommit": "92dc26cdbedfadc614d4246a9c6b30cc0e72f5f1",
+    "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:e5514004a5b6c1235ebfa9f9344ce0b9f64d6ab6de4da8c8850e8ffeb6d88248",
+    "revision": "clervo-api-production-00007-jal",
+    "tag": "sandbox-92dc26cdbedf",
+    "trafficPercent": 0,
+    "sandboxMode": "private",
+    "paymentMode": "disabled",
+    "stateBackend": "postgres",
+    "durableState": true,
+    "directVpcSubnet": "clervo-run-sandbox-uscentral1",
+    "slsaBuildLevel": 3,
+    "effectiveCriticalVulnerabilities": 0,
+    "effectiveHighVulnerabilities": 0
+  },
+  "smoke": {
+    "execution": "clervo-sandbox-api-smoke-t9dgf",
+    "firstStatus": 200,
+    "firstReplay": false,
+    "secondStatus": 200,
+    "secondReplay": true,
+    "sameResult": true,
+    "usefulOutput": "sandbox-api-live",
+    "meteredCharge": { "asset": "USD", "amountAtomic": "0", "decimals": 6 },
+    "healthStatus": "ok",
+    "readinessStatus": "ready",
+    "remainingSandboxClaims": 0,
+    "remainingExecutionPods": 0
+  },
+  "qualificationIncidents": [
+    { "code": "managed_socket_url_rejected", "productionRowsChanged": false, "resolved": true },
+    { "code": "sandbox_runtime_modules_missing", "candidateTrafficPercent": 0, "failedRevisionRemoved": true, "resolved": true },
+    { "code": "smoke_identity_audience_rejected", "sandboxExecutionStarted": false, "resolved": true },
+    { "code": "smoke_tenant_fixture_invalid", "sandboxExecutionStarted": false, "resolved": true }
+  ],
+  "cleanup": {
+    "migrationJobRemoved": true,
+    "smokeJobRemoved": true,
+    "temporaryInvokerBindingRemoved": true,
+    "failedRevisionRemoved": true
+  },
+  "boundaries": {
+    "publicInvokerEnabled": false,
+    "publicTrafficEnabled": false,
+    "productionServingRevisionChanged": false,
+    "paymentExecuted": false,
+    "usdcSpent": 0,
+    "secretValuesReadByVm": false,
+    "secretValuesPrinted": false,
+    "protectedGatewayTouched": false
+  }
+}

@@ -352,17 +352,15 @@ disabled while GKE system metrics remain enabled. Kubernetes requests consume
 This is adequate for the bounded private qualification but not approved public
 capacity. Do not move control workloads onto the untrusted execution pool.
 
-The production API candidate now has a default-disabled private Sandbox route,
-an exact private-target client with redirect/SSRF refusal, separate API and
-control authentication, and a PostgreSQL operation ledger that stores only a
-tenant hash. One operation is bound to one request; completed results replay
-across processes, while a lost or expired execution becomes permanently
+The production API has a default-disabled private Sandbox route, an exact
+private-target client with redirect/SSRF refusal, separate API and control
+authentication, and a PostgreSQL operation ledger that stores only a tenant
+hash. One operation is bound to one request; completed results replay across
+processes, while a lost or expired execution becomes permanently
 `execution_unknown` and is never automatically re-executed. Disposable
 PostgreSQL qualification applied all six migrations and proved Sandbox state
 across process restart, custom-format backup, and isolated restore. All
-containers, volumes, and the temporary archive were removed. Migration 0006 is
-not yet applied to the managed production database, and `CLERVO_SANDBOX_MODE`
-remains disabled in the deployed Cloud Run revisions.
+containers, volumes, and the temporary archive were removed.
 
 Private production connectivity is qualified. A dedicated Direct VPC egress
 subnet (`10.128.41.0/26`) is the only application source admitted by the GKE
@@ -374,13 +372,23 @@ gateway were unchanged. The Sandbox control and API token secrets each have
 one enabled version, and the production runtime has resource-level accessor
 permission without any secret value being read or printed.
 
-Cloud Build `1fe05a3a-9e4f-49a4-8a40-791d983187d7` accepted runtime commit
-`ed30dfef9dd06465a5610c256ad58585d013f53c` and produced immutable image
-`sha256:07473b2d698536367b196df026f47037f8da3a80910ef3080aaf99a344bd8800`.
+Managed migration 0006 is now applied. A one-shot distroless Cloud Run
+migrator received database credential version 2 directly from Secret Manager,
+checksum-verified migrations 0001 through 0005, applied only
+`0006-sandbox-operation-state.sql`, and was deleted. No credential value
+entered the VM or logs and no customer row was read.
+
+Cloud Build `db68d6ff-8abc-4aef-9abf-de4f2f068689` accepted runtime commit
+`92dc26cdbedfadc614d4246a9c6b30cc0e72f5f1` and produced immutable image
+`sha256:e5514004a5b6c1235ebfa9f9344ce0b9f64d6ab6de4da8c8850e8ffeb6d88248`.
 Its SLSA level 3 provenance and OS, NPM, and secret analysis completed with zero
-effective critical and zero effective high findings. The image is not yet a
-Cloud Run Sandbox candidate because managed migration 0006 still requires a
-separately authorized credential read into the migration process.
+effective critical and zero effective high findings. Private revision
+`clervo-api-production-00007-jal` is ready at zero traffic with Direct VPC
+egress, durable Postgres state, `CLERVO_SANDBOX_MODE=private`, and payment
+disabled. Authenticated live execution produced `sandbox-api-live` at zero
+charge, a second exact call replayed without re-execution, and no Sandbox claim
+or execution pod remained. The smoke job and its temporary self-invoker grant
+were removed; the existing private serving revision remains at 100% traffic.
 
 ## Next actions
 
@@ -398,16 +406,17 @@ separately authorized credential read into the migration process.
 4. Keep RPC customer routing disabled until written commercial permission or
    replacement terms-compatible supply exists; this isolated owner blocker does
    not pause combined workflows or other local engineering.
-5. Keep Sandbox public lifecycle `unavailable` while applying the already
-   qualified migration 0006, wiring the default-disabled private API route to
-   the controller, and providing a production-capacity system plane. The
-   private controller, execution plane, and local durable API path are
-   qualified; current system-node headroom is not a public capacity proof.
+5. Keep Sandbox public lifecycle `unavailable` until the system pool has proven
+   production capacity and the private candidate passes the final release
+   checks. The private controller, execution plane, managed durability,
+   private networking, zero-traffic Cloud Run candidate, useful execution,
+   replay, and cleanup are qualified; current system-node headroom is not a
+   public capacity proof.
 
 ## Preserved boundaries
 
 The supply-foundation program is complete. The external RPC resale-permission
 blocker remains isolated. `ai.clervo.dev` is live on protected Clervo VM
-infrastructure and must never be included in sandbox/cloud cleanup. No real
-payment, wallet signing, production mutation, or customer-data operation has
-been performed in this work.
+infrastructure and must never be included in sandbox/cloud cleanup. Migration
+0006 was the only production data-plane mutation in this work. No real payment,
+wallet signing, public/customer traffic, or customer-data operation occurred.

@@ -6,6 +6,7 @@ const policy = JSON.parse(await readFile('infra/production/gcp/migration-job.v1.
 const dockerfile = await readFile('infra/production/gcp/Dockerfile.migrations', 'utf8');
 const cloudbuild = await readFile('infra/production/gcp/cloudbuild.yaml', 'utf8');
 const runner = await readFile('scripts/production/gcp-migration-job.mjs', 'utf8');
+const evidence = JSON.parse(await readFile('docs/evidence/production/managed-sandbox-candidate-live-smoke.v1.json', 'utf8'));
 
 test('managed migrator is immutable, non-root, and contains only runtime dependencies plus migrations', () => {
   assert.match(dockerfile, /node:24\.18\.1-bookworm-slim@sha256:[a-f0-9]{64}/u);
@@ -16,6 +17,28 @@ test('managed migrator is immutable, non-root, and contains only runtime depende
   assert.match(dockerfile, /infra\/storage\/postgres/u);
   assert.doesNotMatch(dockerfile, /COPY \. \./u);
   assert.match(cloudbuild, /clervo-migrator:\$_RELEASE_SHA/u);
+});
+
+test('managed migration and zero-traffic Sandbox candidate passed live with durable replay and cleanup', () => {
+  assert.equal(policy.state, 'applied_and_removed');
+  assert.deepEqual(evidence.managedMigration.applied, ['0006-sandbox-operation-state.sql']);
+  assert.equal(evidence.managedMigration.checksumVerifiedAndSkipped.length, 5);
+  assert.equal(evidence.candidate.trafficPercent, 0);
+  assert.equal(evidence.candidate.sandboxMode, 'private');
+  assert.equal(evidence.candidate.paymentMode, 'disabled');
+  assert.equal(evidence.smoke.firstStatus, 200);
+  assert.equal(evidence.smoke.firstReplay, false);
+  assert.equal(evidence.smoke.secondStatus, 200);
+  assert.equal(evidence.smoke.secondReplay, true);
+  assert.equal(evidence.smoke.usefulOutput, 'sandbox-api-live');
+  assert.equal(evidence.smoke.meteredCharge.amountAtomic, '0');
+  assert.equal(evidence.smoke.remainingSandboxClaims, 0);
+  assert.equal(evidence.smoke.remainingExecutionPods, 0);
+  assert.ok(Object.values(evidence.cleanup).every(Boolean));
+  assert.equal(evidence.boundaries.publicInvokerEnabled, false);
+  assert.equal(evidence.boundaries.productionServingRevisionChanged, false);
+  assert.equal(evidence.boundaries.usdcSpent, 0);
+  assert.equal(evidence.boundaries.protectedGatewayTouched, false);
 });
 
 test('managed migration job injects its pinned secret without reading it on the VM and always cleans up', () => {

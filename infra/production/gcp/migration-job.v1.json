@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.production-migration-job.v1",
-  "state": "prepared",
+  "state": "applied_and_removed",
   "project": "bloxsniper-prod",
   "region": "us-central1",
   "job": "clervo-production-migration",
@@ -23,5 +23,13 @@
     "protectedGatewayTouched": false,
     "jobRemovedAfterExecution": true
   },
-  "protectedResources": ["ai.clervo.dev", "the existing Clervo VM model gateway", "all unrelated and legacy cloud resources"]
+  "protectedResources": ["ai.clervo.dev", "the existing Clervo VM model gateway", "all unrelated and legacy cloud resources"],
+  "observedResult": {
+    "observedAt": "2026-08-03T15:14:13.781Z",
+    "execution": "clervo-production-migration-85nwx",
+    "applied": ["0006-sandbox-operation-state.sql"],
+    "previousMigrationsChecksumVerified": 5,
+    "succeededCount": 1,
+    "jobRemoved": true
+  }
 }
