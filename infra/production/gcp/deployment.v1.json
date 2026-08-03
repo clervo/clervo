@@ -86,10 +86,15 @@
     "runtimeProjectRoles": [
       "roles/cloudsql.client"
     ],
+    "runtimeSecretRole": "roles/secretmanager.secretAccessor",
     "runtimeSecretAccess": [
       "clervo-production-database-url",
       "clervo-production-monitoring-endpoint"
     ],
+    "builderProjectRoles": [
+      "roles/logging.logWriter"
+    ],
+    "builderRepositoryRole": "roles/artifactregistry.writer",
     "runtimeForbiddenRoles": [
       "roles/owner",
       "roles/editor",

@@ -48,6 +48,36 @@ test('production cloud contract is bounded, recoverable, and leaves the protecte
   assert.ok(policy.protectedResources.includes('ai.clervo.dev'));
   assert.ok(policy.leastPrivilege.runtimeForbiddenRoles.includes('roles/owner'));
   assert.ok(policy.leastPrivilege.runtimeForbiddenRoles.includes('roles/editor'));
+  assert.deepEqual(policy.leastPrivilege.runtimeProjectRoles, ['roles/cloudsql.client']);
+  assert.equal(policy.leastPrivilege.runtimeSecretRole, 'roles/secretmanager.secretAccessor');
+  assert.deepEqual(policy.leastPrivilege.builderProjectRoles, ['roles/logging.logWriter']);
+  assert.equal(policy.leastPrivilege.builderRepositoryRole, 'roles/artifactregistry.writer');
+});
+
+test('production IAM control is exact-project, least-privilege, and confirmation guarded', async () => {
+  const { stdout } = await execute(process.execPath, ['scripts/production/gcp-iam.mjs', 'plan'], {
+    env: { PATH: process.env.PATH },
+  });
+  const plan = JSON.parse(stdout);
+  assert.equal(plan.project, 'bloxsniper-prod');
+  assert.deepEqual(plan.accounts, ['clervo-api-production', 'clervo-production-builder']);
+  assert.deepEqual(plan.runtime.projectRoles, ['roles/cloudsql.client']);
+  assert.deepEqual(plan.runtime.secrets, [
+    'clervo-production-database-url',
+    'clervo-production-monitoring-endpoint',
+  ]);
+  assert.deepEqual(plan.builder.projectRoles, ['roles/logging.logWriter']);
+  assert.equal(plan.builder.repositoryRole, 'roles/artifactregistry.writer');
+  assert.ok(plan.protectedResources.includes('ai.clervo.dev'));
+  assert.ok(!plan.runtime.projectRoles.some((role) => plan.forbiddenRoles.includes(role)));
+  assert.ok(!plan.builder.projectRoles.some((role) => plan.forbiddenRoles.includes(role)));
+
+  await assert.rejects(
+    execute(process.execPath, ['scripts/production/gcp-iam.mjs', 'apply'], {
+      env: { PATH: process.env.PATH },
+    }),
+    /production_iam_refused:owner_confirmation_mismatch/u,
+  );
 });
 
 test('Cloud Build is immutable, acceptance-gated, and requests verified provenance without an explicit push', async () => {
