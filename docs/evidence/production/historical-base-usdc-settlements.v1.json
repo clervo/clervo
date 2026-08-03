@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "clervo.historical-base-usdc-settlements.v1",
+  "observedAt": "2026-08-03T21:55:00.000Z",
+  "network": "eip155:8453",
+  "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "receiverRef": "secretmanager:clervo-production-x402-pay-to",
+  "observationMethod": "read_only_base_mainnet_transfer_log_scan",
+  "externalCallsOnly": true,
+  "paymentAuthorizedByThisObservation": false,
+  "ownerCashSpentByThisObservationUsd": "0",
+  "summary": {
+    "confirmedTransfers": 8,
+    "totalAmountAtomic": "32000",
+    "decimals": 6,
+    "singleObservedPayer": true
+  },
+  "classification": {
+    "state": "historical_chain_plumbing_only",
+    "currentReleaseProof": false,
+    "firstRevenueProof": false,
+    "reason": "The transfers predate the current release and have no retained matching product result, application receipt, receiver-ledger reconciliation, or no-charge replay evidence.",
+    "missingEvidence": [
+      "current_release_identity",
+      "quote_and_operation_binding",
+      "useful_product_result",
+      "application_receipt",
+      "receiver_ledger_reconciliation",
+      "same_idempotency_key_no_charge_replay"
+    ]
+  },
+  "transfers": [
+    { "transactionHash": "0xab0631a1c9bd861345da33579f59ed6fa0923146d0d30eb28353444af6a9c53c", "blockNumber": 49127763, "confirmedAt": "2026-07-26T05:47:53.000Z", "payer": "0x9f0fbe7fb9b0d3c0d9065e0e1f45e127576beb13", "amountAtomic": "2000", "status": "confirmed" },
+    { "transactionHash": "0x6b44d2dd233caa7fc230acbd6778a8eb57679f51553ac94c709ae3651837d20f", "blockNumber": 49127846, "confirmedAt": "2026-07-26T05:50:39.000Z", "payer": "0x9f0fbe7fb9b0d3c0d9065e0e1f45e127576beb13", "amountAtomic": "2000", "status": "confirmed" },
+    { "transactionHash": "0x7fa7259ead9a54db30e559f9896891a2fdc619271f44930af81cae1bdd614851", "blockNumber": 49127881, "confirmedAt": "2026-07-26T05:51:49.000Z", "payer": "0x9f0fbe7fb9b0d3c0d9065e0e1f45e127576beb13", "amountAtomic": "5000", "status": "confirmed" },
+    { "transactionHash": "0x027beca3c1b39f90d0775b206f68c3842e0415e886ef86ff244b76aab2cb5bec", "blockNumber": 49127890, "confirmedAt": "2026-07-26T05:52:07.000Z", "payer": "0x9f0fbe7fb9b0d3c0d9065e0e1f45e127576beb13", "amountAtomic": "2000", "status": "confirmed" },
+    { "transactionHash": "0x2e77739f7edb0d7a83db6d905b641ea7da318738c85123dece44cf60d3b13010", "blockNumber": 49127904, "confirmedAt": "2026-07-26T05:52:35.000Z", "payer": "0x9f0fbe7fb9b0d3c0d9065e0e1f45e127576beb13", "amountAtomic": "15000", "status": "confirmed" },
+    { "transactionHash": "0x043225aecd1fa358d0b38457a587fc84726a5f5802eb76b1bf41b3df1c9785e3", "blockNumber": 49128043, "confirmedAt": "2026-07-26T05:57:13.000Z", "payer": "0x9f0fbe7fb9b0d3c0d9065e0e1f45e127576beb13", "amountAtomic": "2000", "status": "confirmed" },
+    { "transactionHash": "0xd28be5741d89cccfdb09dfd815bdecd7f06602d314b842b6ffd6083e843e187d", "blockNumber": 49128096, "confirmedAt": "2026-07-26T05:58:59.000Z", "payer": "0x9f0fbe7fb9b0d3c0d9065e0e1f45e127576beb13", "amountAtomic": "2000", "status": "confirmed" },
+    { "transactionHash": "0x4800a9d0400c03a8ff36d92dd2184c78074385de886681927c803bedadcc8eae", "blockNumber": 49128229, "confirmedAt": "2026-07-26T06:03:25.000Z", "payer": "0x9f0fbe7fb9b0d3c0d9065e0e1f45e127576beb13", "amountAtomic": "2000", "status": "confirmed" }
+  ]
+}
