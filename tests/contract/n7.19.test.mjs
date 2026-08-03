@@ -9,7 +9,7 @@ const bootstrap = await readFile('scripts/sandbox/gcp-control-service.mjs', 'utf
 
 test('Sandbox system capacity upgrades the bounded regular system node and keeps execution isolated', () => {
   assert.equal(policy.nodePool.name, 'default-pool');
-  assert.equal(policy.nodePool.machineType, 'e2-medium');
+  assert.equal(policy.nodePool.machineType, 'n1-standard-1');
   assert.equal(policy.nodePool.nodes, 1);
   assert.equal(policy.controller.replicas, 1);
   assert.equal(policy.controller.minimumAvailable, 1);

@@ -6,7 +6,7 @@
   "cluster": "clervo-sandbox-production",
   "nodePool": {
     "name": "default-pool",
-    "machineType": "e2-medium",
+    "machineType": "n1-standard-1",
     "nodes": 1,
     "diskType": "pd-balanced",
     "diskSizeGb": 30,
