@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const targets = JSON.parse(await readFile('packages/distribution/release-targets.v1.json', 'utf8'));
+const legacy = JSON.parse(await readFile('packages/distribution/legacy-release-policy.v1.json', 'utf8'));
 const sdk = JSON.parse(await readFile('packages/sdk-typescript/package.json', 'utf8'));
 const mcp = JSON.parse(await readFile('packages/mcp/package.json', 'utf8'));
 const pythonProject = await readFile('packages/sdk-python/pyproject.toml', 'utf8');
@@ -53,4 +54,15 @@ test('package publishing is manual, commit-bound, environment-protected, and tok
   const mcpPublish = publishWorkflow.indexOf('npm publish release-artifacts/npm/clervo-mcp-0.3.0.tgz');
   const pythonPublish = publishWorkflow.indexOf('pypa/gh-action-pypi-publish@');
   assert.ok(sdkPublish > 0 && mcpPublish > sdkPublish && pythonPublish > mcpPublish);
+});
+
+test('legacy releases are preserved, truthfully deprecated, and superseded only after replacements exist', () => {
+  assert.equal(legacy.policy.deletePublishedHistory, false);
+  assert.equal(legacy.policy.unpublishPublishedHistory, false);
+  assert.equal(legacy.policy.applyDeprecationsAfterReplacementPublication, true);
+  assert.deepEqual(legacy.npm.map(({ name }) => name), ['clervo', '@clervo/sdk', '@clervo/mcp', '@clervo/beacon']);
+  assert.ok(legacy.npm.every(({ action, message }) => action.startsWith('deprecate_') && !/QuickAI|Tongkhokr|free models|cheapest/iu.test(message)));
+  assert.equal(legacy.pypi[0].action, 'preserve_and_supersede');
+  assert.equal(legacy.pypi[0].yank, false);
+  assert.equal(legacy.pypi[0].delete, false);
 });

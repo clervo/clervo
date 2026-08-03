@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "policy": {
+    "deletePublishedHistory": false,
+    "unpublishPublishedHistory": false,
+    "deleteOnlyForCompromiseOrMalwareWithOwnerApproval": true,
+    "applyDeprecationsAfterReplacementPublication": true
+  },
+  "npm": [
+    {
+      "name": "clervo",
+      "versions": ["0.0.0"],
+      "action": "deprecate_reserved_unsupported",
+      "replacement": null,
+      "message": "Reserved package name; there is no supported Clervo CLI release. Do not install this version."
+    },
+    {
+      "name": "@clervo/sdk",
+      "versions": ["0.1.0", "0.2.0"],
+      "action": "deprecate_after_replacement",
+      "replacement": "@clervo/sdk@0.3.0",
+      "message": "Legacy preview with stale product claims. Upgrade to @clervo/sdk@0.3.0 or later."
+    },
+    {
+      "name": "@clervo/mcp",
+      "versions": ["0.1.0", "0.2.0"],
+      "action": "deprecate_after_replacement",
+      "replacement": "@clervo/mcp@0.3.0",
+      "message": "Legacy preview with stale product claims. Upgrade to @clervo/mcp@0.3.0 or later."
+    },
+    {
+      "name": "@clervo/beacon",
+      "versions": ["0.1.0"],
+      "action": "deprecate_unsupported",
+      "replacement": null,
+      "message": "Unsupported legacy preview. No current Clervo routing release is available."
+    }
+  ],
+  "pypi": [
+    {
+      "name": "clervo-sdk",
+      "versions": ["0.1.0"],
+      "action": "preserve_and_supersede",
+      "replacement": "clervo-sdk==0.2.0",
+      "yank": false,
+      "delete": false,
+      "reason": "The historical artifact remains installable evidence; the truthful current release supersedes its metadata and documentation."
+    }
+  ]
+}

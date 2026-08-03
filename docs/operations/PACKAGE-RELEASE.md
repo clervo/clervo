@@ -42,3 +42,13 @@ fails, do not blindly rerun: registry versions are immutable and the preflight
 will fail. Inspect the published artifacts and provenance, reconcile the exact
 partial state, increment only versions that require a new artifact, and update
 the release target manifest before another approved run.
+
+## Legacy releases
+
+After all three replacement versions are observed in their registries, apply
+`packages/distribution/legacy-release-policy.v1.json`. Deprecate the stale npm
+previews with the exact bounded messages in that file. Preserve npm and PyPI
+history; do not unpublish, delete, or yank ordinary legacy releases. Deletion is
+reserved for a confirmed compromise or malicious artifact and requires owner
+approval. The unsupported `clervo@0.0.0` and `@clervo/beacon@0.1.0` releases
+receive explicit deprecation notices rather than invented replacements.
