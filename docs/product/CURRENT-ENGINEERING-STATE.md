@@ -337,8 +337,10 @@ offline ClamAV scan of 27,642 files all passed with zero high/critical findings
 or infections. Namespace-scoped RBAC permits only Agent Sandbox lifecycle,
 pod observation/exec, and NetworkPolicy observation. It cannot read execution
 secrets, create/delete pods directly, inspect nodes, mutate namespaces, or
-create roles. The service is ClusterIP-only, authenticated by a dedicated
-runtime secret, and has no public route or payment path.
+create roles. The primary service remains ClusterIP-only and is also reachable
+through a source-restricted regional internal load balancer at `10.128.40.250`.
+Authentication uses a dedicated runtime secret; there is no public route or
+payment path.
 
 The live control smoke passed useful gVisor execution, authenticated replay
 without re-execution, and foreground cleanup with zero charge. Its replay cache
@@ -361,6 +363,24 @@ across process restart, custom-format backup, and isolated restore. All
 containers, volumes, and the temporary archive were removed. Migration 0006 is
 not yet applied to the managed production database, and `CLERVO_SANDBOX_MODE`
 remains disabled in the deployed Cloud Run revisions.
+
+Private production connectivity is qualified. A dedicated Direct VPC egress
+subnet (`10.128.41.0/26`) is the only application source admitted by the GKE
+internal load balancer and controller NetworkPolicy, alongside Google health
+checks. A disposable Cloud Run job reached the controller health endpoint with
+HTTP 200 in 127 ms through that exact path, then was deleted. Global access,
+public invoker access, production traffic, payment, and the protected model
+gateway were unchanged. The Sandbox control and API token secrets each have
+one enabled version, and the production runtime has resource-level accessor
+permission without any secret value being read or printed.
+
+Cloud Build `1fe05a3a-9e4f-49a4-8a40-791d983187d7` accepted runtime commit
+`ed30dfef9dd06465a5610c256ad58585d013f53c` and produced immutable image
+`sha256:07473b2d698536367b196df026f47037f8da3a80910ef3080aaf99a344bd8800`.
+Its SLSA level 3 provenance and OS, NPM, and secret analysis completed with zero
+effective critical and zero effective high findings. The image is not yet a
+Cloud Run Sandbox candidate because managed migration 0006 still requires a
+separately authorized credential read into the migration process.
 
 ## Next actions
 
