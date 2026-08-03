@@ -1,11 +1,11 @@
 {
   "schemaVersion": "clervo.production-supply-chain-qualification.v1",
-  "qualifiedAt": "2026-08-03T10:04:22.238Z",
-  "sourceCommit": "69107a9b3d5f",
+  "qualifiedAt": "2026-08-03T10:22:38.464Z",
+  "sourceCommit": "cd8d76a7b7af",
   "candidateImage": {
-    "localTag": "clervo-production-candidate:local-9b9563b98223",
-    "imageId": "sha256:1543c4920c940691b0787cf37902eb6db8a8ed4e9465eef813f0a6929a156e74",
-    "sourceCommit": "9b9563b98223"
+    "localTag": "clervo-production-candidate:local-3cd28ad6eca7",
+    "imageId": "sha256:5614d61de621cc3a9e75afcefd554a658fc4b6cb458592eb85b38817f442d530",
+    "sourceCommit": "3cd28ad6eca7"
   },
   "scanner": {
     "name": "Trivy",
@@ -29,7 +29,7 @@
     "gatePassed": true
   },
   "containerScan": {
-    "reportHash": "sha256:b87e9023e687a77ce5de5fa9b7576dfcef61cbe9becedc6dfe1a0976926aa59b",
+    "reportHash": "sha256:129885f5522b92be1550b956be6c77c26456db57dc169a06c2e8142aa7f11f70",
     "vulnerabilities": {
       "medium": 5,
       "low": 7
@@ -41,7 +41,7 @@
   "sbom": {
     "format": "spdx-json",
     "path": "docs/evidence/production/clervo-api.sbom.spdx.json",
-    "hash": "sha256:a2144ed37f68266c1144edaff74089ffce16d95eb083dc02f64a01c2bdf58d5d",
+    "hash": "sha256:e711fa5faeacd772dc226d24f592a7c491b922bf0945d75810cbe0a5b9c416b8",
     "packageCount": 94
   },
   "cleanup": {
