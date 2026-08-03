@@ -15,6 +15,7 @@ test('production candidate container is immutable-base, non-root, and fail-close
   assert.match(dockerfile, /^USER 65532:65532$/mu);
   assert.match(dockerfile, /^STOPSIGNAL SIGTERM$/mu);
   assert.match(dockerfile, /^HEALTHCHECK /mu);
+  assert.match(dockerfile, /npm ci --omit=dev --omit=optional/u);
   assert.doesNotMatch(dockerfile, /\b(?:latest|curl|wget|apt-get)\b/u);
 });
 
