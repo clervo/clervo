@@ -6,6 +6,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Pool } from 'pg';
+import { normalizeProductionDatabaseUrl } from './postgres-connection-url.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const migrationDirectory = path.join(root, 'infra/storage/postgres');
@@ -36,29 +37,6 @@ async function readStdin() {
   return Buffer.concat(chunks).toString('utf8').trim();
 }
 
-function connectionUrl(raw) {
-  assert.ok(raw, 'database URL is required');
-  const proxyHost = process.env.CLERVO_MIGRATION_PROXY_HOST;
-  const socketForm = proxyHost
-    ? /^(postgresql:\/\/[^@]+)@\/([^?]+)(?:\?.*)?$/u.exec(raw)
-    : null;
-  let parsed;
-  try {
-    parsed = new URL(socketForm ? `${socketForm[1]}@localhost/${socketForm[2]}` : raw);
-  } catch {
-    throw new Error('database URL is invalid');
-  }
-  assert.equal(parsed.protocol, 'postgresql:', 'database URL must use postgresql');
-  assert.equal(decodeURIComponent(parsed.pathname), '/clervo', 'database name must be clervo');
-  if (proxyHost) {
-    assert.ok(['127.0.0.1', '::1', 'localhost'].includes(proxyHost), 'migration proxy must be loopback');
-    parsed.hostname = proxyHost;
-    parsed.port = process.env.CLERVO_MIGRATION_PROXY_PORT ?? '5432';
-    parsed.search = '';
-  }
-  return parsed.toString();
-}
-
 async function apply(records) {
   assert.equal(process.env.CLERVO_ENV, 'production', 'CLERVO_ENV must be production');
   assert.equal(
@@ -68,7 +46,7 @@ async function apply(records) {
   );
   const rawUrl = urlFromStdin ? await readStdin() : process.env.CLERVO_DATABASE_URL;
   const pool = new Pool({
-    connectionString: connectionUrl(rawUrl),
+    connectionString: normalizeProductionDatabaseUrl(rawUrl),
     max: 1,
     connectionTimeoutMillis: 10_000,
     idleTimeoutMillis: 1_000,

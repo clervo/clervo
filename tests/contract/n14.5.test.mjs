@@ -3,6 +3,7 @@ import { execFile, spawnSync } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { promisify } from 'node:util';
 import test from 'node:test';
+import { normalizeProductionDatabaseUrl } from '../../scripts/production/postgres-connection-url.mjs';
 
 const execute = promisify(execFile);
 
@@ -121,4 +122,21 @@ test('production migration runner is ordered, checksum-bound, secret-safe, and f
   assert.match(source, /migration checksum changed/u);
   assert.match(source, /--database-url-stdin/u);
   assert.doesNotMatch(source, /console\.log\([^)]*(?:DATABASE_URL|password)/u);
+});
+
+test('production migration URL normalizes only the exact managed Cloud SQL socket', () => {
+  const connection = 'bloxsniper-prod:us-central1:clervo-production-postgres';
+  const scheme = 'postgresql';
+  const normalized = normalizeProductionDatabaseUrl(
+    `${scheme}://clervo:fixture-only@/clervo?host=/cloudsql/${connection}`,
+    { CLERVO_CLOUD_SQL_CONNECTION: connection },
+  );
+  const parsed = new URL(normalized);
+  assert.equal(parsed.hostname, 'localhost');
+  assert.equal(parsed.pathname, '/clervo');
+  assert.equal(parsed.searchParams.get('host'), `/cloudsql/${connection}`);
+  assert.throws(() => normalizeProductionDatabaseUrl(
+    `${scheme}://clervo:fixture-only@/clervo?host=/cloudsql/other:region:database`,
+    { CLERVO_CLOUD_SQL_CONNECTION: connection },
+  ), /database URL is invalid/u);
 });

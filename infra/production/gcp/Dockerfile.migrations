@@ -20,6 +20,7 @@ WORKDIR /app
 COPY --chown=65532:65532 package.json ./package.json
 COPY --chown=65532:65532 --from=dependencies /app/node_modules ./node_modules
 COPY --chown=65532:65532 scripts/production/apply-postgres-migrations.mjs ./scripts/production/apply-postgres-migrations.mjs
+COPY --chown=65532:65532 scripts/production/postgres-connection-url.mjs ./scripts/production/postgres-connection-url.mjs
 COPY --chown=65532:65532 infra/storage/postgres ./infra/storage/postgres
 
 USER 65532:65532
