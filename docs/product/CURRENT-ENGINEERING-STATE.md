@@ -149,7 +149,7 @@ Stage 14 local production hardening is complete for release candidate
 supply-chain scan and SBOM, 1,000-request burst plus steady-load proof, and
 disposable PostgreSQL/queue/accounting recovery proof are bound to the current
 price and interface contracts. The consolidated Stage 14 acceptance command
-passes 33/33 contract tests, release-candidate drift, dependency audit, lint,
+passes 37/37 contract tests, release-candidate drift, dependency audit, lint,
 secret scanning, and the clean-room boundary. Cloud Build invokes this same
 consolidated command so local and remote acceptance cannot drift.
 
@@ -174,14 +174,14 @@ hours for completed free-search envelopes, one hour beyond expired execution
 leases, and two hours for hashed quota subjects. Planning is count-only;
 deletion requires an exact untracked confirmation and production deletion
 still requires owner approval. No production/customer database deletion was
-performed. The new image is qualified locally at source commit
-`18d9d31562a6`. Its build remains on the exact Node 24.18.1 image, while the
+performed. The current image is qualified locally at source commit
+`3cd28ad6eca7`. Its build remains on the exact Node 24.18.1 image, while the
 runtime is now the exact non-root Node 24 distroless image and contains no
 shell or package manager. A digest-pinned Trivy 0.72.0 scanner downloaded its
 database before entering the offline scan boundary and never received the
 Docker socket. The exact saved candidate image passed with zero critical, zero
 high, five medium, and seven low findings; the production npm audit found zero
-vulnerabilities; and a 44-package SPDX 2.3 SBOM is hash-bound to the image.
+vulnerabilities; and a 94-package SPDX 2.3 SBOM is hash-bound to the image.
 The saved archive and scanner cache were removed. This is not production
 readiness.
 
@@ -213,7 +213,7 @@ policy requires a preceding verified immutable registry digest and fails closed
 when none exists. No remote traffic or revision was changed.
 
 The exact digest-pinned PostgreSQL 18.4 image now passes a disposable live
-recovery qualification. All four migrations applied; atomic claim, completion,
+recovery qualification. All five migrations applied; atomic claim, completion,
 replay, conflict, and quota behavior passed; completed state survived a
 database process restart; a custom-format backup restored into a separate clean
 database; restored replay matched; and expired retention was applied against
@@ -225,6 +225,11 @@ by a fresh queue process, the retry completed, a terminal failure reached its
 dead-letter queue, and both completed/dead-letter state survived backup and
 isolated restore. This proves the portable local recovery
 path, not managed production backup scheduling or point-in-time recovery.
+The fifth migration adds durable x402 states for challenge, execution,
+settlement, quarantine, completion, and replay. One payment fingerprint cannot
+bind to two operations; completed state survived restart and isolated restore;
+expired or interrupted execution and settlement fail closed instead of
+re-executing or creating another authorization.
 The owner approved the exact Stage 14 Google Cloud bootstrap on 2026-08-02.
 Required APIs are enabled. The immutable `clervo-production` Artifact Registry
 repository exists with scanning active. The deletion-protected regional
@@ -272,6 +277,19 @@ hash-bound JSON, four balanced-contract postings, and rejects sensitive wallet,
 key, secret, credential, and authorization fields. This is local mock-accounting
 proof only; no real receiver, wallet, settlement, or production database was
 used.
+
+Stage 15 implementation preparation now includes the official x402 v2 EVM
+resource server, path-bound short-lived CDP facilitator authentication, Base
+mainnet and exact-token validation, quote-bound public challenges, standard
+`PAYMENT-SIGNATURE` and `PAYMENT-RESPONSE` handling, durable cross-instance
+idempotency, one execution and settlement claim, atomic receiver accounting,
+paid receipts, and no-charge replay. Focused tests prove a useful cited result,
+single settlement, replay without another verification/execution/settlement,
+and permanent quarantine after unknown execution or settlement. The Stage 14
+Cloud Run policy explicitly forces `CLERVO_X402_MODE=disabled`, so the private
+deployment candidate cannot accept a payment. No signer was read, no payment
+was authorized, and 0 USDC was spent; a real proof still requires the separate
+exact owner approval required by the x402 safety workflow.
 
 ## Live qualification result
 
