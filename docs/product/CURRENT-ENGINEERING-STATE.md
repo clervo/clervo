@@ -105,8 +105,11 @@ console or request failures. Fresh desktop and mobile Lighthouse runs score
 with zero blocking time and layout shift. This proves the local candidate, not
 public deployment or customer availability.
 
-Stage 13 package preparation is complete locally. The planned canonical public
-source repository is `clervo/clervo`; it has not been created or connected.
+Stage 13 package preparation is complete locally. The canonical public source
+repository is now `clervo/clervo`; `main` is connected and contains the exact
+clean-room history. GitHub secret scanning, push protection, Dependabot
+security updates, private vulnerability reporting, and the owner-reviewed
+`package-release` environment are enabled.
 `@clervo/sdk@0.3.0`, `@clervo/mcp@0.3.0`, and `clervo-sdk@0.2.0` now carry
 truthful source metadata and advance the observed registry versions while
 remaining unpublished. Actual npm archives, a Python wheel, and a Python source
@@ -114,8 +117,9 @@ distribution install and import successfully in isolated temporary consumers.
 The manual publish workflow is exact-commit-bound, protected by the
 `package-release` environment, uses short-lived npm/PyPI OIDC identities, pins
 its actions and release tooling, and fails closed before publishing if any
-candidate version already exists. No registry credential, repository creation,
-remote push, package publication, or account mutation occurred.
+candidate version already exists. No registry credential was stored and no
+package publication occurred. npm and PyPI trusted publishers still require
+their one-time interactive account configuration before release.
 
 The remaining repository-local Stage 13 access and onboarding work is also
 complete. Generated discovery now publishes a freeze-bound onboarding document
@@ -345,12 +349,15 @@ payment path.
 The live control smoke passed useful gVisor execution, authenticated replay
 without re-execution, and foreground cleanup with zero charge. Its replay cache
 is intentionally process-local, so it is not yet a customer-facing durability
-claim. The system pool was recovered as one `e2-small` node after the project
-CPU quota rejected a larger replacement; managed Prometheus collection was
-disabled while GKE system metrics remain enabled. Kubernetes requests consume
-96% of allocatable system-node memory and the controller used 83 MiB live.
-This is adequate for the bounded private qualification but not approved public
-capacity. Do not move control workloads onto the untrusted execution pool.
+claim. The undersized `e2-small` system node was quiesced during capacity
+replacement. The first dedicated N1 system-pool request failed from zonal
+stockout; a second one-node N1 request in `us-central1-b` is still retrying in
+Google's managed operation. The controller and system deployments are pending
+without a system node, while the isolated gVisor execution node remains ready.
+No public capability depends on this degraded private plane. The committed
+fallback uses the available one-vCPU T2D family after the current immutable
+operation reaches terminal state. Do not move control workloads onto the
+untrusted execution pool.
 
 The production API has a default-disabled private Sandbox route, an exact
 private-target client with redirect/SSRF refusal, separate API and control
@@ -392,11 +399,11 @@ were removed; the existing private serving revision remains at 100% traffic.
 
 ## Next actions
 
-1. Stage 13 is complete locally but not externally distributed. Create/connect
-   the canonical GitHub repository and guide npm/PyPI trusted-publisher setup
-   when the owner is available for the exact interactive steps. Continue
-   independent Stage 14 production hardening in the meantime. Do not claim
-   public distribution before it is observed.
+1. Stage 13 is complete locally and its canonical GitHub source repository is
+   connected. Complete npm/PyPI trusted-publisher setup, run the exact manual
+   release, verify provenance and isolated installs from the public registries,
+   then apply the bounded legacy npm deprecation policy. Do not claim current
+   public distribution before those artifacts are observed.
 2. Keep Crypto Intelligence customer routing disabled until written commercial
    permission or replacement terms-compatible EVM, Solana, and protocol supply
    exists; this isolated owner blocker does not pause combined local work.
@@ -406,12 +413,14 @@ were removed; the existing private serving revision remains at 100% traffic.
 4. Keep RPC customer routing disabled until written commercial permission or
    replacement terms-compatible supply exists; this isolated owner blocker does
    not pause combined workflows or other local engineering.
-5. Keep Sandbox public lifecycle `unavailable` until the system pool has proven
-   production capacity and the private candidate passes the final release
-   checks. The private controller, execution plane, managed durability,
-   private networking, zero-traffic Cloud Run candidate, useful execution,
-   replay, and cleanup are qualified; current system-node headroom is not a
-   public capacity proof.
+5. Recover the dedicated Sandbox system node after the in-flight managed GKE
+   operation reaches terminal state, then rerun private controller and product
+   smoke checks. Keep Sandbox public lifecycle `unavailable` until the system
+   pool has proven production capacity and the private candidate passes the
+   final release checks. Existing execution-plane, durability, network,
+   zero-traffic Cloud Run, replay, and cleanup proof remains valid; current
+   control-plane availability and system-node headroom are not public capacity
+   proof.
 
 ## Preserved boundaries
 
