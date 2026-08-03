@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.production-gcp-deployment.v1",
-  "state": "infrastructure_bootstrap_partial",
+  "state": "private_candidate_verified",
   "project": "bloxsniper-prod",
   "region": "us-central1",
   "protectedResources": [
@@ -124,7 +124,7 @@
     "ownerConfirmationRequiredForMutation": true
   },
   "observedBootstrap": {
-    "observedAt": "2026-08-03T10:50:35.000Z",
+    "observedAt": "2026-08-03T11:22:22.000Z",
     "artifactRepositoryCreated": true,
     "artifactScanningActive": true,
     "databaseInstanceCreated": true,
@@ -134,8 +134,28 @@
     "runtimeServiceAccountCreated": true,
     "buildServiceAccountCreated": true,
     "monitoringSecretVersionsCreated": true,
-    "cloudRunServiceCreated": false,
-    "trafficChanged": false,
+    "cloudRunServiceCreated": true,
+    "iamApplied": true,
+    "monitoringSecretVersion": 1,
+    "cloudBuildId": "45301f8c-60b9-4935-be82-e9285821d8cb",
+    "releaseCommit": "cf7110271c81b337ce14943d2f570d85196b305f",
+    "imageDigest": "sha256:68d1ba96e04ac0c48c9a98f374470be67bc7f8994e90ab75a78b591de4662ba4",
+    "slsaBuildLevel": 3,
+    "effectiveCriticalVulnerabilities": 0,
+    "effectiveHighVulnerabilities": 0,
+    "managedMigrationsApplied": 5,
+    "managedBackupId": "1785755198118",
+    "managedRecoveryVerified": true,
+    "recoveryInstanceRemoved": true,
+    "authenticatedSmokePassed": true,
+    "monitoringDeliveryAcknowledged": true,
+    "rollbackDrillPassed": true,
+    "servingRevision": "clervo-api-production-00001-yaf",
+    "candidateRevision": "clervo-api-production-00002-seh",
+    "candidateTrafficPercent": 0,
+    "trafficChanged": true,
+    "publicInvokerEnabled": false,
+    "publicTrafficEnabled": false,
     "paidExecutionEnabled": false
   },
   "externalEffectsPerformed": true

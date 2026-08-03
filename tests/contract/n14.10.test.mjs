@@ -8,7 +8,7 @@ const execute = promisify(execFile);
 
 test('production cloud contract is bounded, recoverable, and leaves the protected gateway outside scope', async () => {
   const policy = JSON.parse(await readFile('infra/production/gcp/deployment.v1.json', 'utf8'));
-  assert.equal(policy.state, 'infrastructure_bootstrap_partial');
+  assert.equal(policy.state, 'private_candidate_verified');
   assert.equal(policy.project, 'bloxsniper-prod');
   assert.equal(policy.region, 'us-central1');
   assert.equal(policy.database.engine, 'POSTGRES_18');
@@ -31,7 +31,7 @@ test('production cloud contract is bounded, recoverable, and leaves the protecte
   assert.equal(policy.rollout.previousVerifiedImageDigestRequired, true);
   assert.equal(policy.rollout.ownerConfirmationRequiredForMutation, true);
   assert.deepEqual(policy.observedBootstrap, {
-    observedAt: '2026-08-03T10:50:35.000Z',
+    observedAt: '2026-08-03T11:22:22.000Z',
     artifactRepositoryCreated: true,
     artifactScanningActive: true,
     databaseInstanceCreated: true,
@@ -41,8 +41,28 @@ test('production cloud contract is bounded, recoverable, and leaves the protecte
     runtimeServiceAccountCreated: true,
     buildServiceAccountCreated: true,
     monitoringSecretVersionsCreated: true,
-    cloudRunServiceCreated: false,
-    trafficChanged: false,
+    cloudRunServiceCreated: true,
+    iamApplied: true,
+    monitoringSecretVersion: 1,
+    cloudBuildId: '45301f8c-60b9-4935-be82-e9285821d8cb',
+    releaseCommit: 'cf7110271c81b337ce14943d2f570d85196b305f',
+    imageDigest: 'sha256:68d1ba96e04ac0c48c9a98f374470be67bc7f8994e90ab75a78b591de4662ba4',
+    slsaBuildLevel: 3,
+    effectiveCriticalVulnerabilities: 0,
+    effectiveHighVulnerabilities: 0,
+    managedMigrationsApplied: 5,
+    managedBackupId: '1785755198118',
+    managedRecoveryVerified: true,
+    recoveryInstanceRemoved: true,
+    authenticatedSmokePassed: true,
+    monitoringDeliveryAcknowledged: true,
+    rollbackDrillPassed: true,
+    servingRevision: 'clervo-api-production-00001-yaf',
+    candidateRevision: 'clervo-api-production-00002-seh',
+    candidateTrafficPercent: 0,
+    trafficChanged: true,
+    publicInvokerEnabled: false,
+    publicTrafficEnabled: false,
     paidExecutionEnabled: false,
   });
   assert.equal(policy.externalEffectsPerformed, true);
@@ -116,7 +136,10 @@ test('Cloud Build is immutable, acceptance-gated, and requests verified provenan
   assert.match(release, /vulnerabilities\.CRITICAL/u);
   assert.match(release, /vulnerabilities\.HIGH/u);
   assert.match(release, /verify-artifact/u);
+  assert.match(release, /private_bootstrap_requires_absent_service/u);
+  assert.match(release, /candidate_requires_private_bootstrap/u);
   assert.doesNotMatch(release, /valuesForKey\(metadata, 'severity'/u);
+  assert.doesNotMatch(release, /--no-automatic-updates/u);
 });
 
 test('production build control binds a clean exact commit to the dedicated builder', async () => {
@@ -146,10 +169,11 @@ test('release control is inspectable without credentials and mutations fail befo
     env: { PATH: process.env.PATH },
   });
   const plan = JSON.parse(stdout);
-  assert.equal(plan.state, 'infrastructure_bootstrap_partial');
+  assert.equal(plan.state, 'private_candidate_verified');
   assert.equal(plan.candidateReceivesTrafficOnDeploy, false);
   assert.equal(plan.paymentEnabled, false);
   assert.equal(plan.ownerConfirmationRequired, true);
+  assert.deepEqual(plan.mutationActions, ['bootstrap-private', 'deploy-candidate', 'promote', 'rollback']);
   assert.ok(plan.protectedResources.includes('ai.clervo.dev'));
 
   await assert.rejects(
@@ -177,4 +201,33 @@ test('release control rejects the protected gateway origin before any cloud comm
     }),
     /production_release_refused:protected_gateway_origin/u,
   );
+});
+
+test('production Sentry delivery control is bounded and confirmation guarded', async () => {
+  const { stdout } = await execute(process.execPath, ['scripts/production/qualify-sentry-delivery.mjs', 'plan'], {
+    env: { PATH: process.env.PATH },
+  });
+  const plan = JSON.parse(stdout);
+  assert.equal(plan.project, 'bloxsniper-prod');
+  assert.equal(plan.secret, 'clervo-production-monitoring-endpoint');
+  assert.equal(plan.customerPayloadsIncluded, false);
+  assert.equal(plan.deliveryCount, 1);
+  assert.equal(plan.paymentEffects, 0);
+  const source = await readFile('scripts/production/qualify-sentry-delivery.mjs', 'utf8');
+  assert.match(source, /deliver:sentry:/u);
+  assert.doesNotMatch(source, /console\.log\([^)]*dsn/iu);
+});
+
+test('managed recovery verifier is read-only, loopback-bound, and payload-safe', async () => {
+  const { stdout } = await execute(process.execPath, ['scripts/production/verify-managed-recovery.mjs', 'plan'], {
+    env: { PATH: process.env.PATH },
+  });
+  const plan = JSON.parse(stdout);
+  assert.equal(plan.mutation, false);
+  assert.equal(plan.customerPayloadsRead, false);
+  assert.equal(plan.credentialInput, 'stdin');
+  const source = await readFile('scripts/production/verify-managed-recovery.mjs', 'utf8');
+  assert.match(source, /recovery proxy must be loopback/u);
+  assert.match(source, /customerPayloadsPrinted: false/u);
+  assert.doesNotMatch(source, /SELECT \*/u);
 });

@@ -1,9 +1,8 @@
 # Google Cloud production release
 
-This is the reproducible, fail-closed release path for the Stage 14 Clervo API
-candidate. It is repository-ready and cloud-unapplied. Nothing in this path
-authorizes a deployment, public access, payment execution, IAM change, secret
-creation, database creation, or spend.
+This is the reproducible, fail-closed release path used for the verified private
+Stage 14 Clervo API candidate. Public access and payment execution remain
+disabled.
 
 `ai.clervo.dev` is not a deployment target. Its VM runtime, process,
 configuration, data, and network bindings remain protected and outside this
@@ -18,10 +17,11 @@ release path.
   Cloud Build provenance and zero high or critical package vulnerabilities for
   that exact digest.
 - A dedicated Cloud Run service identity receives only Cloud SQL Client plus
-  accessor permission on the three named runtime secrets.
+  accessor permission on the two named runtime secrets.
 - Cloud SQL PostgreSQL 18 is regional, deletion-protected, backed up daily,
   retained for 14 backups, and configured for seven-day point-in-time recovery.
-- A candidate revision is private, tagged, and receives zero traffic. It must
+- A first-service bootstrap revision is private and authenticated. The candidate
+  revision is separately tagged and receives zero traffic. It must
   pass authenticated database/readiness, non-payable behavior, monitoring
   delivery, and recovery smoke checks before promotion.
 - Rollback requires both the preceding verified revision and its exact verified
@@ -41,7 +41,6 @@ accepts only pinned positive integer versions—never `latest`:
 
 - `clervo-production-database-url`
 - `clervo-production-monitoring-endpoint`
-- `clervo-production-monitoring-authorization`
 
 Do not print their values. `CLERVO_DATABASE_URL` must use the Cloud SQL Unix
 socket made available to the Cloud Run revision. Rotation creates a new secret
@@ -53,12 +52,18 @@ The operator supplies an exact 40-character source commit, registry digest,
 Cloud SQL connection name, HTTPS public origin, and pinned secret versions.
 `CLERVO_PRODUCTION_ORIGIN` must never be `https://ai.clervo.dev`.
 
-First use `validate`. Deployment additionally requires the exact untracked
-confirmation:
+First use `validate`. A new Cloud Run service must first use the private
+bootstrap action because Cloud Run cannot create its first revision with zero
+traffic:
+
+`CLERVO_PRODUCTION_CONFIRM=bootstrap-private:<40-character-release-id>`
+
+The bootstrap is authenticated, x402-disabled, digest-pinned, and has no public
+invoker. Candidate deployment then requires:
 
 `CLERVO_PRODUCTION_CONFIRM=deploy-candidate:<40-character-release-id>`
 
-The command deploys a private tagged revision with `--no-traffic`. It does not
+The candidate command deploys a private tagged revision with `--no-traffic`. It does not
 make the service public and does not enable paid execution.
 
 ## Promotion and rollback
@@ -80,9 +85,11 @@ execution disabled.
 
 Before promotion, restore a fresh backup or PITR point into an isolated
 recovery instance, apply the repository verification contract, prove a stored
-idempotent response and queue terminal state, then remove only that explicitly
-named recovery instance after owner approval. A configured backup is not proof
-of recoverability.
+idempotent response, then remove only that explicitly named recovery instance.
+A configured backup is not proof of recoverability. Stage 14 used on-demand
+backup `1785755198118`, verified all five migrations and the durable smoke
+receipt in `clervo-stage14-recovery-20260803`, and then verified that temporary
+instance was absent after cleanup.
 
 Cloud resource creation, recovery-instance creation, traffic change, public IAM
 binding, and deletion are owner-approved external operations. Local validation

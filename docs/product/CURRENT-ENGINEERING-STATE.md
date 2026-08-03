@@ -1,8 +1,8 @@
 # Current engineering state
 
-Updated 2026-08-02 after Stage 12 product-core freeze completion and V6 visual
-handoff verification. This is a compact resumable handoff, not an authorization
-gate. Continue automatically after reading it.
+Updated 2026-08-03 after private Stage 14 cloud qualification. This is a compact
+resumable handoff, not an authorization gate. Continue automatically after
+reading it.
 
 ## Active work
 
@@ -66,7 +66,8 @@ recomputed hashes. The only frozen external operations are `search.web` and
 `search.answer`; their registry entries remain internal preview surfaces and
 the manifest explicitly makes no public-distribution claim. The consolidated
 Stage 12 suite passes 5/5 plus complete contract validation. Stage 13 shared
-access, design, onboarding, and distribution is next.
+access, onboarding, and package preparation are complete locally as described
+below.
 
 Stage 13 distribution discovery has started. The existing `clervo` npm account,
 `clervo`, `@clervo/sdk`, `@clervo/mcp`, and `@clervo/beacon` package identities,
@@ -188,12 +189,11 @@ readiness.
 Monitoring delivery now has a bounded HTTPS exporter with a 256 KiB payload
 ceiling, five-second timeout, redirect denial, deterministic delivery
 idempotency, and optional runtime-only authorization. Production startup
-requires a delivery endpoint. An isolated receiver acknowledged the same
-failure snapshot twice under one delivery identity and confirmed that the
-payload excluded queries, request hashes, wallets, credentials, and
-authorization material. The incident runbook covers execution failure,
-readiness, overload, unknown settlement, delivery failure, kill switch, and
-rollback. This proves local receiver delivery, not an external paging vendor.
+requires Sentry. The live Sentry project accepted one bounded synthetic alert
+for the deployed release; no query, request hash, wallet, credential,
+authorization material, or default PII was included. The incident runbook
+covers execution failure, readiness, overload, unknown settlement, delivery
+failure, kill switch, and rollback.
 
 The bounded load qualification also passes. A synchronized 1,000-request burst
 admitted exactly the 16 configured execution slots, rejected the other 984
@@ -210,7 +210,9 @@ Restoration requires an explicit successful probe; a stopped local service
 executed nothing, rejected work with retry guidance, refused an unproven
 restore, then returned useful traffic after the bounded probe. The rollback
 policy requires a preceding verified immutable registry digest and fails closed
-when none exists. No remote traffic or revision was changed.
+when none exists. The private Cloud Run drill routed traffic to the verified
+candidate, observed database readiness, then restored the preceding verified
+bootstrap revision. The candidate is back at zero traffic.
 
 The exact digest-pinned PostgreSQL 18.4 image now passes a disposable live
 recovery qualification. All five migrations applied; atomic claim, completion,
@@ -223,48 +225,46 @@ pg-boss 12.26.3 recovery contract: duplicate job identity was rejected, an
 active job abandoned by its first worker expired and was recovered exactly once
 by a fresh queue process, the retry completed, a terminal failure reached its
 dead-letter queue, and both completed/dead-letter state survived backup and
-isolated restore. This proves the portable local recovery
-path, not managed production backup scheduling or point-in-time recovery.
+isolated restore. Managed recovery is now also proven: a post-migration
+on-demand Cloud SQL backup restored into the isolated
+`clervo-stage14-recovery-20260803` instance, all five migrations and the real
+durable authenticated-smoke receipt were verified, and the required search,
+accounting, and x402 tables were present. The recovery instance was then
+deleted and verified absent while the retained backup and deletion-protected
+production instance remained intact.
 The fifth migration adds durable x402 states for challenge, execution,
 settlement, quarantine, completion, and replay. One payment fingerprint cannot
 bind to two operations; completed state survived restart and isolated restore;
 expired or interrupted execution and settlement fail closed instead of
 re-executing or creating another authorization.
-The owner approved the exact Stage 14 Google Cloud bootstrap on 2026-08-02.
-Required APIs are enabled. The immutable `clervo-production` Artifact Registry
-repository exists with scanning active. The deletion-protected regional
-PostgreSQL 18 instance `clervo-production-postgres` is runnable with 2 vCPU,
-7.5 GiB memory, 20 GiB SSD, storage auto-growth, 14 retained backups, and
-seven-day point-in-time recovery. Database `clervo`, its non-root application
-user, all three production secret containers, and database URL secret version
-1 exist; credential material was generated directly into Secret Manager and
-was not printed or committed. No public service, traffic, or payment was
-enabled, and `ai.clervo.dev` was untouched.
+Stage 14 Google Cloud production qualification is complete. The dedicated
+runtime identity has Cloud SQL Client plus accessor permission on only the
+database and Sentry secrets. The dedicated builder has only log writing,
+source-bucket reading, and write access to the Clervo artifact repository.
+Cloud Build `45301f8c-60b9-4935-be82-e9285821d8cb` accepted exact source commit
+`cf7110271c81b337ce14943d2f570d85196b305f` and produced immutable digest
+`sha256:68d1ba96e04ac0c48c9a98f374470be67bc7f8994e90ab75a78b591de4662ba4`.
+Observed provenance is SLSA level 3; Artifact Analysis completed OS, NPM, and
+secret analysis with zero effective critical and zero effective high findings.
 
-The remaining cloud bootstrap is isolated to the two least-privilege service
-accounts and IAM grants, one Sentry DSN secret version, signed Cloud Build,
-the immutable remote image digest, a private zero-traffic Cloud Run candidate,
-managed recovery observation, authenticated smoke, acknowledged alert
-delivery, and remote rollback. The execution safety layer requires a separate
-owner authority event for IAM changes. Production monitoring now uses the
-official Sentry Node SDK, sends no default PII, emits only bounded alert events,
-and uses deterministic event identities. The existing Sentry organization and
-project plus its DSN are still required through interactive secret entry; the
-DSN must never be posted in chat or committed.
+All five migrations are applied to the managed database and rerun cleanly by
+checksum. Database credential version 1 was rotated after a migration-parser
+error could include its input in an exception; version 2 is active and version
+1 is disabled. No service used version 1. The parser now normalizes Cloud SQL
+socket URLs and replaces invalid input with a credential-free error. Sentry
+secret version 1 is pinned. Production is a private authenticated Cloud Run
+service with no public invoker binding. Revision
+`clervo-api-production-00001-yaf` serves the private service; verified candidate
+`clervo-api-production-00002-seh` is tagged at zero traffic. Authenticated
+health, Postgres readiness, useful search, durable receipt replay, Sentry
+delivery, managed restore, kill switch, promotion, and rollback all passed.
+`CLERVO_X402_MODE=disabled`, no public traffic is enabled, no payment occurred,
+and `ai.clervo.dev` was untouched.
 
-The Google Cloud production path is repository-defined and partially applied.
-It fixes the target to the existing `bloxsniper-prod/us-central1`
-boundary while explicitly excluding `ai.clervo.dev` and all legacy resources.
-Cloud Build runs the Stage 14 acceptance boundary, publishes through its
-artifact declaration, and requests verified provenance. The Cloud Run candidate
-is private, digest-addressed, tagged, and receives zero traffic; promotion
-requires authenticated smoke and acknowledged monitoring delivery. Cloud SQL
-is specified as deletion-protected regional PostgreSQL 18 with daily backups,
-14 retained backups, and seven-day PITR. Runtime IAM is restricted to Cloud SQL
-Client and the two runtime secrets, whose versions must be pinned. Candidate
-deployment, promotion, rollback, public access, remaining IAM changes, and any
-payment remain unapplied. The guarded release control also rejects
-`ai.clervo.dev` as an origin before any cloud command.
+Stage 15 is next. Its code and fail-closed durable state are prepared, but one
+real bounded x402 proof still requires the separate exact payment approval and
+wallet authorization. Independent provider-route and public-distribution work
+continues without waiting for that payment boundary.
 
 Receiver accounting is now a separate append-only, hash-linked journal rather
 than an inference from customer receipts. Each settlement and operation can be

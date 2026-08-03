@@ -83,6 +83,20 @@ function runGcloud(args, { capture = false } = {}) {
   return capture ? result.stdout : undefined;
 }
 
+function serviceExists() {
+  const result = spawnSync('gcloud', [
+    'run', 'services', 'describe', resources.service,
+    '--project', policy.project,
+    '--region', policy.region,
+    '--format=value(metadata.name)',
+  ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  if (result.error) die('gcloud_unavailable');
+  if (result.status === 0) return true;
+  if (/not found|could not find|cannot find/iu.test(result.stderr)) return false;
+  if (result.stderr) process.stderr.write(result.stderr);
+  die('gcloud_failed_run_services_describe');
+}
+
 function describeImage(image) {
   const raw = runGcloud([
     'artifacts', 'docker', 'images', 'describe', image,
@@ -118,11 +132,8 @@ function verifyArtifact(image) {
   return { provenance: 'cloud-build-observed', critical, high };
 }
 
-function deployCandidate(input) {
-  const confirmation = env('CLERVO_PRODUCTION_CONFIRM');
-  if (confirmation !== `deploy-candidate:${input.releaseId}`) die('owner_confirmation_mismatch');
-  const artifact = verifyArtifact(input.image);
-  runGcloud([
+function deploymentArgs(input, { channel, noTraffic, tag }) {
+  const args = [
     'run', 'deploy', resources.service,
     '--project', policy.project,
     '--region', policy.region,
@@ -131,8 +142,7 @@ function deployCandidate(input) {
     '--execution-environment', policy.runtime.executionEnvironment,
     '--ingress', policy.runtime.ingress,
     '--no-allow-unauthenticated',
-    '--no-traffic',
-    '--tag', input.candidateTag,
+    '--tag', tag,
     '--cpu', String(policy.runtime.cpu),
     '--memory', policy.runtime.memory,
     '--concurrency', String(policy.runtime.containerConcurrency),
@@ -141,7 +151,6 @@ function deployCandidate(input) {
     '--timeout', `${policy.runtime.requestTimeoutSeconds}s`,
     '--no-cpu-throttling',
     '--no-session-affinity',
-    '--no-automatic-updates',
     '--port', String(policy.runtime.port),
     '--set-cloudsql-instances', input.cloudSqlConnection,
     '--set-env-vars', [
@@ -154,6 +163,7 @@ function deployCandidate(input) {
       `CLERVO_TRAFFIC_MODE=${policy.runtime.environment.CLERVO_TRAFFIC_MODE}`,
       `CLERVO_MONITORING_DRIVER=${policy.runtime.environment.CLERVO_MONITORING_DRIVER}`,
       `CLERVO_X402_MODE=${policy.runtime.environment.CLERVO_X402_MODE}`,
+      `CLERVO_RELEASE_CHANNEL=${channel}`,
     ].join(','),
     '--set-secrets', [
       `CLERVO_DATABASE_URL=${policy.runtime.secretEnvironment.CLERVO_DATABASE_URL}:${input.databaseSecretVersion}`,
@@ -164,7 +174,27 @@ function deployCandidate(input) {
     '--readiness-probe', 'httpGet.path=/readyz,httpGet.port=8080,periodSeconds=5,timeoutSeconds=1,failureThreshold=2,successThreshold=1',
     '--labels', `clervo-release=${input.releaseId.slice(0, 12)},clervo-candidate=true`,
     '--quiet',
-  ]);
+  ];
+  if (noTraffic) args.push('--no-traffic');
+  return args;
+}
+
+function bootstrapPrivate(input) {
+  const confirmation = env('CLERVO_PRODUCTION_CONFIRM');
+  if (confirmation !== `bootstrap-private:${input.releaseId}`) die('owner_confirmation_mismatch');
+  if (serviceExists()) die('private_bootstrap_requires_absent_service');
+  const artifact = verifyArtifact(input.image);
+  const tag = `bootstrap-${input.releaseId.slice(0, 12)}`;
+  runGcloud(deploymentArgs(input, { channel: 'bootstrap', noTraffic: false, tag }));
+  return { action: 'private-bootstrap-created', image: input.image, tag, artifact };
+}
+
+function deployCandidate(input) {
+  const confirmation = env('CLERVO_PRODUCTION_CONFIRM');
+  if (confirmation !== `deploy-candidate:${input.releaseId}`) die('owner_confirmation_mismatch');
+  if (!serviceExists()) die('candidate_requires_private_bootstrap');
+  const artifact = verifyArtifact(input.image);
+  runGcloud(deploymentArgs(input, { channel: 'candidate', noTraffic: true, tag: input.candidateTag }));
   return { action: 'candidate-deployed-with-zero-traffic', image: input.image, candidateTag: input.candidateTag, artifact };
 }
 
@@ -229,7 +259,7 @@ const safePlan = {
   project: policy.project,
   region: policy.region,
   resources,
-  mutationActions: ['deploy-candidate', 'promote', 'rollback'],
+  mutationActions: ['bootstrap-private', 'deploy-candidate', 'promote', 'rollback'],
   candidateReceivesTrafficOnDeploy: false,
   paymentEnabled: false,
   ownerConfirmationRequired: true,
@@ -245,10 +275,11 @@ else if (action === 'verify-artifact') {
 else if (action === 'validate') {
   const input = releaseInputs();
   result = { action: 'validated', releaseId: input.releaseId, image: input.image, candidateTag: input.candidateTag };
-} else if (action === 'deploy-candidate') result = deployCandidate(releaseInputs());
+} else if (action === 'bootstrap-private') result = bootstrapPrivate(releaseInputs());
+else if (action === 'deploy-candidate') result = deployCandidate(releaseInputs());
 else if (action === 'promote') result = promote(releaseInputs());
 else if (action === 'rollback') result = rollback();
-else die('usage_plan_verify_artifact_validate_deploy_candidate_promote_rollback');
+else die('usage_plan_verify_artifact_validate_bootstrap_private_deploy_candidate_promote_rollback');
 
 assert.equal(policy.rollout.paidExecutionEnabled, false);
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
