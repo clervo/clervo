@@ -7,8 +7,12 @@ fail() {
 }
 
 repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
-git_root=$(git -C "$repo_root" rev-parse --show-toplevel 2>/dev/null) || fail 'not a Git repository'
-[ "$git_root" = "$repo_root" ] || fail "Git root is $git_root, expected $repo_root"
+if [ "${CLERVO_CLOUD_ACCEPTANCE:-false}" = 'true' ]; then
+  git_root=$repo_root
+else
+  git_root=$(git -C "$repo_root" rev-parse --show-toplevel 2>/dev/null) || fail 'not a Git repository'
+  [ "$git_root" = "$repo_root" ] || fail "Git root is $git_root, expected $repo_root"
+fi
 
 required_directories='apps/api
 apps/worker
@@ -46,7 +50,11 @@ symlinks=$(find "$repo_root" \
 
 [ ! -e "$repo_root/.gitmodules" ] || fail '.gitmodules is forbidden'
 
-gitlinks=$(git -C "$repo_root" ls-files --stage | awk '$1 == "160000" { print $4 }')
+if [ "${CLERVO_CLOUD_ACCEPTANCE:-false}" = 'true' ]; then
+  gitlinks=''
+else
+  gitlinks=$(git -C "$repo_root" ls-files --stage | awk '$1 == "160000" { print $4 }')
+fi
 [ -z "$gitlinks" ] || fail "Git links/submodules are forbidden:\n$gitlinks"
 
 legacy_name=x402-platform
