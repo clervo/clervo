@@ -65,8 +65,7 @@ function releaseInputs() {
     cloudSqlConnection,
     origin: checkedOrigin(),
     databaseSecretVersion: positiveInteger('CLERVO_DATABASE_SECRET_VERSION'),
-    monitoringEndpointSecretVersion: positiveInteger('CLERVO_MONITORING_ENDPOINT_SECRET_VERSION'),
-    monitoringAuthorizationSecretVersion: positiveInteger('CLERVO_MONITORING_AUTHORIZATION_SECRET_VERSION'),
+    sentryDsnSecretVersion: positiveInteger('CLERVO_SENTRY_DSN_SECRET_VERSION'),
     candidateTag: `candidate-${releaseId.slice(0, 12)}`,
   };
 }
@@ -165,11 +164,11 @@ function deployCandidate(input) {
       `CLERVO_STATE_NAMESPACE=${policy.runtime.environment.CLERVO_STATE_NAMESPACE}`,
       `CLERVO_MAX_CONCURRENT_EXECUTIONS=${policy.runtime.environment.CLERVO_MAX_CONCURRENT_EXECUTIONS}`,
       `CLERVO_TRAFFIC_MODE=${policy.runtime.environment.CLERVO_TRAFFIC_MODE}`,
+      `CLERVO_MONITORING_DRIVER=${policy.runtime.environment.CLERVO_MONITORING_DRIVER}`,
     ].join(','),
     '--set-secrets', [
       `CLERVO_DATABASE_URL=${policy.runtime.secretEnvironment.CLERVO_DATABASE_URL}:${input.databaseSecretVersion}`,
-      `CLERVO_MONITORING_ENDPOINT=${policy.runtime.secretEnvironment.CLERVO_MONITORING_ENDPOINT}:${input.monitoringEndpointSecretVersion}`,
-      `CLERVO_MONITORING_AUTHORIZATION=${policy.runtime.secretEnvironment.CLERVO_MONITORING_AUTHORIZATION}:${input.monitoringAuthorizationSecretVersion}`,
+      `CLERVO_SENTRY_DSN=${policy.runtime.secretEnvironment.CLERVO_SENTRY_DSN}:${input.sentryDsnSecretVersion}`,
     ].join(','),
     '--startup-probe', 'httpGet.path=/readyz,httpGet.port=8080,periodSeconds=2,timeoutSeconds=1,failureThreshold=30',
     '--liveness-probe', 'httpGet.path=/v1/health,httpGet.port=8080,periodSeconds=10,timeoutSeconds=1,failureThreshold=3',

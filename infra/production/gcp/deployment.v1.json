@@ -73,12 +73,12 @@
       "CLERVO_STATE_BACKEND": "postgres",
       "CLERVO_STATE_NAMESPACE": "production",
       "CLERVO_MAX_CONCURRENT_EXECUTIONS": "16",
-      "CLERVO_TRAFFIC_MODE": "open"
+      "CLERVO_TRAFFIC_MODE": "open",
+      "CLERVO_MONITORING_DRIVER": "sentry"
     },
     "secretEnvironment": {
       "CLERVO_DATABASE_URL": "clervo-production-database-url",
-      "CLERVO_MONITORING_ENDPOINT": "clervo-production-monitoring-endpoint",
-      "CLERVO_MONITORING_AUTHORIZATION": "clervo-production-monitoring-authorization"
+      "CLERVO_SENTRY_DSN": "clervo-production-monitoring-endpoint"
     },
     "secretVersionsMustBePinned": true
   },
@@ -88,8 +88,7 @@
     ],
     "runtimeSecretAccess": [
       "clervo-production-database-url",
-      "clervo-production-monitoring-endpoint",
-      "clervo-production-monitoring-authorization"
+      "clervo-production-monitoring-endpoint"
     ],
     "runtimeForbiddenRoles": [
       "roles/owner",

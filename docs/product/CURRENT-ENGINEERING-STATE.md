@@ -237,16 +237,18 @@ was not printed or committed. No public service, traffic, or payment was
 enabled, and `ai.clervo.dev` was untouched.
 
 The remaining cloud bootstrap is isolated to the two least-privilege service
-accounts and IAM grants, two monitoring secret versions, signed Cloud Build,
+accounts and IAM grants, one Sentry DSN secret version, signed Cloud Build,
 the immutable remote image digest, a private zero-traffic Cloud Run candidate,
 managed recovery observation, authenticated smoke, acknowledged alert
 delivery, and remote rollback. The execution safety layer requires a separate
-owner authority event for IAM changes. The existing Sentry organization and
-project names plus interactive authorization are still required for the
-production monitoring destination.
+owner authority event for IAM changes. Production monitoring now uses the
+official Sentry Node SDK, sends no default PII, emits only bounded alert events,
+and uses deterministic event identities. The existing Sentry organization and
+project plus its DSN are still required through interactive secret entry; the
+DSN must never be posted in chat or committed.
 
-The Google Cloud production path is now repository-defined without applying
-cloud state. It fixes the target to the existing `bloxsniper-prod/us-central1`
+The Google Cloud production path is repository-defined and partially applied.
+It fixes the target to the existing `bloxsniper-prod/us-central1`
 boundary while explicitly excluding `ai.clervo.dev` and all legacy resources.
 Cloud Build runs the Stage 14 acceptance boundary, publishes through its
 artifact declaration, and requests verified provenance. The Cloud Run candidate
@@ -254,10 +256,10 @@ is private, digest-addressed, tagged, and receives zero traffic; promotion
 requires authenticated smoke and acknowledged monitoring delivery. Cloud SQL
 is specified as deletion-protected regional PostgreSQL 18 with daily backups,
 14 retained backups, and seven-day PITR. Runtime IAM is restricted to Cloud SQL
-Client and the three named secrets, whose versions must be pinned. Deployment,
-promotion, rollback, public access, database creation, IAM changes, and spend
-remain unapplied owner-approved external effects. The guarded release control
-also rejects `ai.clervo.dev` as an origin before any cloud command.
+Client and the two runtime secrets, whose versions must be pinned. Candidate
+deployment, promotion, rollback, public access, remaining IAM changes, and any
+payment remain unapplied. The guarded release control also rejects
+`ai.clervo.dev` as an origin before any cloud command.
 
 Receiver accounting is now a separate append-only, hash-linked journal rather
 than an inference from customer receipts. Each settlement and operation can be

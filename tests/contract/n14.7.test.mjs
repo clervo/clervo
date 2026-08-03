@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
-import { createHttpMonitoringExporter } from '../../apps/api/src/monitoring-exporter.mjs';
+import { createHttpMonitoringExporter, createSentryMonitoringExporter } from '../../apps/api/src/monitoring-exporter.mjs';
 import { createSearchMonitor } from '../../dist/services/search/src/monitoring.js';
 
 const now = '2026-08-02T11:00:00.000Z';
@@ -85,11 +85,44 @@ test('redirects, failed receivers, unsafe endpoints, and oversized configuration
   assert.throws(() => createHttpMonitoringExporter({ endpoint: 'https://example.com/ingest', authorization: 'bad\nheader' }), /invalid monitoring authorization/u);
 });
 
+test('Sentry delivery uses a deterministic event identity without default PII collection', async () => {
+  const initialized = [];
+  const events = [];
+  const client = {
+    init(options) { initialized.push(options); },
+    captureEvent(event) { events.push(event); return event.event_id; },
+    async flush() { return true; },
+  };
+  const exporter = createSentryMonitoringExporter({
+    dsn: 'https://0123456789abcdef0123456789abcdef@o1.ingest.us.sentry.io/1234567890',
+    environment: 'production',
+    release: 'a'.repeat(40),
+    sentryClient: client,
+  });
+  const snapshot = { service: 'search.api', alerts: [{ code: 'search.execution_failure' }], summary: { failedExecutions: 1 } };
+  await exporter.export(snapshot);
+  await exporter.export(snapshot);
+  await exporter.export({ service: 'search.api', alerts: [], summary: { failedExecutions: 0 } });
+  assert.equal(initialized.length, 1);
+  assert.equal(initialized[0].sendDefaultPii, false);
+  assert.equal(initialized[0].defaultIntegrations, false);
+  assert.equal(events.length, 2);
+  assert.match(events[0].event_id, /^[a-f0-9]{32}$/u);
+  assert.equal(events[0].event_id, events[1].event_id);
+  assert.equal(events[0].level, 'error');
+  assert.deepEqual(events[0].fingerprint, ['clervo-monitoring', 'search.execution_failure']);
+  assert.deepEqual(Object.keys(events[0].extra.monitoring).sort(), ['alertCodes', 'generatedAt', 'service', 'summary']);
+  assert.equal(JSON.stringify(events).includes('0123456789abcdef0123456789abcdef'), false);
+  assert.throws(() => createSentryMonitoringExporter({
+    dsn: 'https://example.com/1', environment: 'production', release: 'a'.repeat(40), sentryClient: client,
+  }), /invalid Sentry DSN/u);
+});
+
 test('production entrypoint and runbook preserve monitoring as a readiness boundary', async () => {
   const entrypoint = await readFile('apps/api/src/staging-search-main.mjs', 'utf8');
   const runbook = await readFile('docs/operations/PRODUCTION-INCIDENTS.md', 'utf8');
-  assert.match(entrypoint, /production requires CLERVO_MONITORING_ENDPOINT/u);
-  assert.match(entrypoint, /CLERVO_MONITORING_AUTHORIZATION/u);
+  assert.match(entrypoint, /production requires CLERVO_MONITORING_DRIVER=sentry/u);
+  assert.match(entrypoint, /production requires CLERVO_SENTRY_DSN/u);
   assert.match(runbook, /unknown settlement/u);
   assert.match(runbook, /do not fall back to memory state/u);
   assert.match(runbook, /preceding verified immutable image/u);

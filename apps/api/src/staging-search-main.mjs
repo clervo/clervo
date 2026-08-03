@@ -7,7 +7,7 @@ import {
   InMemorySearchStateStore,
   createPostgresSearchStateStoreFromEnvironment,
 } from './search-state-store.mjs';
-import { createHttpMonitoringExporter } from './monitoring-exporter.mjs';
+import { createHttpMonitoringExporter, createSentryMonitoringExporter } from './monitoring-exporter.mjs';
 import { createTrafficControl } from './traffic-control.mjs';
 
 const environment = process.env.CLERVO_ENV ?? 'staging';
@@ -19,13 +19,16 @@ const privateMockCommerceEnabled = process.env.CLERVO_STAGE4_PRIVATE_MOCK_COMMER
 const stateBackend = process.env.CLERVO_STATE_BACKEND ?? 'memory';
 const maxConcurrentExecutions = Number(process.env.CLERVO_MAX_CONCURRENT_EXECUTIONS ?? '16');
 const monitoringEndpoint = process.env.CLERVO_MONITORING_ENDPOINT;
+const sentryDsn = process.env.CLERVO_SENTRY_DSN;
+const monitoringDriver = process.env.CLERVO_MONITORING_DRIVER ?? 'http';
 const trafficControl = createTrafficControl(process.env.CLERVO_TRAFFIC_MODE ?? 'open');
 
 if (!releaseId) throw new Error('CLERVO_RELEASE_ID is required');
 if (!Number.isSafeInteger(port) || port < 1 || port > 65_535) throw new Error('invalid HTTP port');
 if (!['memory', 'postgres'].includes(stateBackend)) throw new Error('invalid CLERVO_STATE_BACKEND');
 if (environment === 'production' && stateBackend !== 'postgres') throw new Error('production requires CLERVO_STATE_BACKEND=postgres');
-if (environment === 'production' && !monitoringEndpoint) throw new Error('production requires CLERVO_MONITORING_ENDPOINT');
+if (environment === 'production' && monitoringDriver !== 'sentry') throw new Error('production requires CLERVO_MONITORING_DRIVER=sentry');
+if (environment === 'production' && !sentryDsn) throw new Error('production requires CLERVO_SENTRY_DSN');
 if (privateMockCommerceEnabled && (environment !== 'stage4-private-qualification' || !['127.0.0.1', 'localhost'].includes(new URL(publicOrigin).hostname))) {
   throw new Error('private_mock_commerce_boundary_invalid');
 }
@@ -33,16 +36,18 @@ const stateStore = stateBackend === 'postgres'
   ? await createPostgresSearchStateStoreFromEnvironment()
   : new InMemorySearchStateStore({ environmentNamespace: 'local' });
 
-const monitoringExporter = monitoringEndpoint
-  ? createHttpMonitoringExporter({
+const monitoringExporter = monitoringDriver === 'sentry'
+  ? createSentryMonitoringExporter({ dsn: sentryDsn, environment, release: releaseId })
+  : monitoringEndpoint
+    ? createHttpMonitoringExporter({
       endpoint: monitoringEndpoint,
       authorization: process.env.CLERVO_MONITORING_AUTHORIZATION,
-    })
-  : {
+      })
+    : {
       export(snapshot) {
         console.log(JSON.stringify({ event: 'clervo.search.monitoring_snapshot', snapshot }));
       },
-    };
+      };
 const monitor = createSearchMonitor(monitoringExporter);
 const server = createSearchServer({
   executor: createRecordedSearchExecutor(),
@@ -90,7 +95,7 @@ server.listen(port, host, () => {
     stateBackend: stateStore.kind,
     durableState: stateStore.durable,
     maxConcurrentExecutions,
-    monitoringDelivery: monitoringEndpoint ? 'https' : 'stdout',
+    monitoringDelivery: monitoringDriver === 'sentry' ? 'sentry' : monitoringEndpoint ? 'https' : 'stdout',
     trafficMode: trafficControl.snapshot().mode,
     retrievalMode: 'recorded',
   }));
