@@ -9,7 +9,10 @@ lifecycle.
 After the public `clervo/clervo` repository exists:
 
 1. Create a protected GitHub environment named `package-release` with required
-   owner review and no self-approval.
+   owner review. While the organization has only one member, self-review must
+   remain enabled or every release deadlocks; the exact commit and confirmation
+   checks remain mandatory. Disable self-review after adding another trusted
+   release reviewer.
 2. For both `@clervo/sdk` and `@clervo/mcp`, configure the npm trusted publisher
    as GitHub organization `clervo`, repository `clervo`, workflow
    `publish-packages.yml`, environment `package-release`, allowed action
