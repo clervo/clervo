@@ -11,6 +11,7 @@ import { Pool } from 'pg';
 import { PgBoss } from 'pg-boss';
 import { PostgresSearchStateStore } from '../../apps/api/src/search-state-store.mjs';
 import { PostgresX402OperationStore } from '../../apps/api/src/x402-operation-store.mjs';
+import { PostgresSandboxOperationStore } from '../../apps/api/src/sandbox-operation-store.mjs';
 import { ReceiverAccountingJournal } from '../../dist/packages/contracts/src/index.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -52,6 +53,13 @@ const x402Operation = Object.freeze({
   now,
 });
 const x402PaymentFingerprint = `sha256:${'3'.repeat(64)}`;
+const sandboxOperation = Object.freeze({
+  operationId: 'op_postgres_sandbox_recovery_001',
+  tenantId: 'tenant_postgres_sandbox_recovery_001',
+  requestHash: `sha256:${'7'.repeat(64)}`,
+  now,
+});
+const sandboxResult = Object.freeze({ operationId: sandboxOperation.operationId, productId: 'sandbox.run', state: 'destroyed' });
 
 function docker(args, options = {}) {
   return execFileSync('docker', args, {
@@ -161,6 +169,7 @@ async function migrate(pool) {
     '0003-search-http-state.sql',
     '0004-receiver-accounting.sql',
     '0005-x402-operation-state.sql',
+    '0006-sandbox-operation-state.sql',
   ];
   for (const name of names) {
     await pool.query(await readFile(path.join(root, 'infra/storage/postgres', name), 'utf8'));
@@ -261,7 +270,20 @@ async function proveState(pool) {
   const x402Replay = await x402Store.lookup(x402Operation);
   assert.equal(x402Replay.kind, 'replay');
   assert.equal((await x402Store.lookup({ ...x402Operation, requestHash: `sha256:${'6'.repeat(64)}` })).kind, 'conflict');
-  return { replay: replay.response, quota, receiverEntry, x402Replay: x402Replay.response };
+  const sandboxStore = new PostgresSandboxOperationStore(pool, { environmentNamespace: policy.environmentNamespace });
+  assert.equal(await sandboxStore.ready(), true);
+  const sandboxClaim = await sandboxStore.begin(sandboxOperation);
+  assert.equal(sandboxClaim.kind, 'claimed');
+  await sandboxStore.complete({ ...sandboxOperation, leaseId: sandboxClaim.leaseId, result: sandboxResult });
+  const sandboxReplay = await sandboxStore.begin(sandboxOperation);
+  assert.equal(sandboxReplay.kind, 'replay');
+  assert.deepEqual(sandboxReplay.result, sandboxResult);
+  assert.equal((await sandboxStore.begin({ ...sandboxOperation, requestHash: `sha256:${'8'.repeat(64)}` })).kind, 'conflict');
+  const ambiguous = { ...sandboxOperation, operationId: 'op_postgres_sandbox_unknown_001', requestHash: `sha256:${'9'.repeat(64)}` };
+  const ambiguousClaim = await sandboxStore.begin(ambiguous);
+  await sandboxStore.markUnknown({ ...ambiguous, leaseId: ambiguousClaim.leaseId });
+  assert.equal((await sandboxStore.begin(ambiguous)).kind, 'unknown');
+  return { replay: replay.response, quota, receiverEntry, x402Replay: x402Replay.response, sandboxReplay: sandboxReplay.result };
 }
 
 async function receiverEntryFromDatabase(pool) {
@@ -395,6 +417,8 @@ try {
   assert.deepEqual(restartedReceiverEntry, initial.receiverEntry);
   const restartedX402 = await new PostgresX402OperationStore(sourcePool, { environmentNamespace: policy.environmentNamespace }).lookup(x402Operation);
   assert.deepEqual(restartedX402.response, initial.x402Replay);
+  const restartedSandbox = await new PostgresSandboxOperationStore(sourcePool, { environmentNamespace: policy.environmentNamespace }).begin(sandboxOperation);
+  assert.deepEqual(restartedSandbox.result, initial.sandboxReplay);
   await sourcePool.end();
   sourcePool = undefined;
 
@@ -446,6 +470,8 @@ try {
   assert.deepEqual(restoredReceiverEntry, initial.receiverEntry);
   const restoredX402 = await new PostgresX402OperationStore(restorePool, { environmentNamespace: policy.environmentNamespace }).lookup(x402Operation);
   assert.deepEqual(restoredX402.response, initial.x402Replay);
+  const restoredSandbox = await new PostgresSandboxOperationStore(restorePool, { environmentNamespace: policy.environmentNamespace }).begin(sandboxOperation);
+  assert.deepEqual(restoredSandbox.result, initial.sandboxReplay);
   const restoredQueue = await proveRestoredQueue(restoreName, policy.restoreDatabase, queue);
   const retention = await proveRetention(restorePool);
   outcome = {
@@ -456,6 +482,8 @@ try {
     restoredReceiverEntry,
     restartedX402,
     restoredX402,
+    restartedSandbox,
+    restoredSandbox,
     archiveHash,
     retention,
     queue,
@@ -513,6 +541,9 @@ const report = {
     x402ExactlyOnceStateInserted: outcome.initial.x402Replay.operationId === x402Operation.operationId,
     x402StateSurvivedRestart: outcome.restartedX402.kind === 'replay',
     x402StateRestoredFromBackup: outcome.restoredX402.kind === 'replay',
+    sandboxExactlyOnceStateInserted: outcome.initial.sandboxReplay.operationId === sandboxOperation.operationId,
+    sandboxStateSurvivedRestart: outcome.restartedSandbox.kind === 'replay',
+    sandboxStateRestoredFromBackup: outcome.restoredSandbox.kind === 'replay',
   },
   cleanup: {
     sourceContainerRemoved: true,

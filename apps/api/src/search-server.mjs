@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import http from 'node:http';
-import { createHash } from 'node:crypto';
+import { createHash, timingSafeEqual } from 'node:crypto';
 import {
   CONTRACT_VERSION,
   InMemoryFreeSearchQuota,
@@ -26,6 +26,8 @@ import { createX402PaidSearchProcessor } from './x402-paid-search.mjs';
 const JSON_TYPE = 'application/json; charset=utf-8';
 const PROBLEM_TYPE = 'application/problem+json; charset=utf-8';
 const MOCK_PAYMENT_HEADER = 'x-clervo-mock-payment';
+const SANDBOX_PRIVATE_PATH = '/internal/v1/sandbox/run';
+const SANDBOX_MAX_BODY_BYTES = 1_500_000;
 
 function identifier(prefix, seed) {
   return `${prefix}_${createHash('sha256').update(seed).digest('hex').slice(0, 32)}`;
@@ -55,16 +57,16 @@ function send(response, status, body, headers = {}, contentType = JSON_TYPE) {
   response.end(JSON.stringify(body));
 }
 
-async function readJson(request) {
+async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES) {
   const contentType = request.headers['content-type'];
   if (typeof contentType !== 'string' || contentType.split(';', 1)[0].trim().toLowerCase() !== 'application/json') throw Object.assign(new Error('unsupported_media_type'), { status: 415 });
   const declared = Number(request.headers['content-length']);
-  if (Number.isFinite(declared) && declared > SEARCH_MAX_BODY_BYTES) throw Object.assign(new Error('request_body_too_large'), { status: 413 });
+  if (Number.isFinite(declared) && declared > maximumBytes) throw Object.assign(new Error('request_body_too_large'), { status: 413 });
   const chunks = [];
   let bytes = 0;
   for await (const chunk of request) {
     bytes += chunk.length;
-    if (bytes > SEARCH_MAX_BODY_BYTES) throw Object.assign(new Error('request_body_too_large'), { status: 413 });
+    if (bytes > maximumBytes) throw Object.assign(new Error('request_body_too_large'), { status: 413 });
     chunks.push(chunk);
   }
   try { return JSON.parse(Buffer.concat(chunks).toString('utf8')); } catch { throw Object.assign(new Error('invalid_json'), { status: 400 }); }
@@ -73,6 +75,12 @@ async function readJson(request) {
 function parseMockPayment(value) {
   if (typeof value !== 'string') return undefined;
   try { return JSON.parse(Buffer.from(value, 'base64').toString('utf8')); } catch { throw Object.assign(new Error('invalid_mock_payment'), { status: 400 }); }
+}
+
+function internalAuthorized(value, expected) {
+  if (typeof value !== 'string' || !value.startsWith('Bearer ')) return false;
+  const supplied = Buffer.from(value.slice(7)); const required = Buffer.from(expected);
+  return supplied.byteLength === required.byteLength && timingSafeEqual(supplied, required);
 }
 
 export function createSearchServer({
@@ -91,6 +99,8 @@ export function createSearchServer({
   trafficControl,
   x402Service,
   x402StateStore,
+  sandboxGateway,
+  sandboxApiToken,
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
   if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
@@ -99,6 +109,10 @@ export function createSearchServer({
   if ((x402Service === undefined) !== (x402StateStore === undefined)) throw new TypeError('x402 service and state store must be configured together');
   if (allowMockPaidExecution && x402Service !== undefined) throw new TypeError('mock and real commerce cannot be enabled together');
   if (environment === 'production' && x402Service?.mode === 'settlement_enabled' && x402StateStore?.durable !== true) throw new TypeError('production x402 requires durable state');
+  if ((sandboxGateway === undefined) !== (sandboxApiToken === undefined)) throw new TypeError('sandbox gateway and API token must be configured together');
+  if (sandboxGateway !== undefined && (typeof sandboxGateway.run !== 'function' || typeof sandboxGateway.ready !== 'function')) throw new TypeError('invalid sandbox gateway');
+  if (sandboxApiToken !== undefined && (typeof sandboxApiToken !== 'string' || sandboxApiToken.length < 32 || sandboxApiToken.length > 512)) throw new TypeError('invalid sandbox API token');
+  if (environment === 'production' && sandboxGateway !== undefined && sandboxGateway.durable !== true) throw new TypeError('production sandbox requires durable state');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
   if (
     typeof searchState.begin !== 'function'
@@ -142,6 +156,8 @@ export function createSearchServer({
         stateBackend: searchState.kind ?? 'unknown',
         durableState: searchState.durable === true,
         trafficMode: trafficControl?.snapshot().mode ?? 'open',
+        sandboxPrivateEnabled: sandboxGateway !== undefined,
+        sandboxDurableState: sandboxGateway?.durable === true,
       });
       return;
     }
@@ -151,7 +167,8 @@ export function createSearchServer({
         const ready = trafficOpen
           && typeof searchState.ready === 'function'
           && await searchState.ready()
-          && (x402StateStore === undefined || await x402StateStore.ready());
+          && (x402StateStore === undefined || await x402StateStore.ready())
+          && (sandboxGateway === undefined || await sandboxGateway.ready());
         send(response, ready ? 200 : 503, {
           status: ready ? 'ready' : 'unavailable',
           service: 'clervo-search-api',
@@ -167,6 +184,27 @@ export function createSearchServer({
           durableState: searchState.durable === true,
           trafficMode: trafficControl?.snapshot().mode ?? 'open',
         });
+      }
+      return;
+    }
+    if (request.method === 'POST' && url.pathname === SANDBOX_PRIVATE_PATH && url.search === '' && sandboxGateway !== undefined) {
+      if (!internalAuthorized(request.headers['x-clervo-internal-authorization'], sandboxApiToken)) {
+        send(response, 401, problem(401, 'sandbox_api_unauthorized', 'Unauthorized', 'Private Sandbox API authentication is required.', url.pathname), {}, PROBLEM_TYPE);
+        return;
+      }
+      if (trafficControl?.snapshot().mode === 'stopped') {
+        send(response, 503, problem(503, 'traffic_stopped', 'Traffic temporarily stopped', 'New execution is disabled by the independent traffic safety control.', url.pathname), { 'retry-after': '30' }, PROBLEM_TYPE);
+        return;
+      }
+      try {
+        const tenantId = request.headers['x-clervo-tenant-id'];
+        if (typeof tenantId !== 'string') throw Object.assign(new Error('sandbox_tenant_invalid'), { status: 400 });
+        const operation = await sandboxGateway.run({ tenantId, request: await readJson(request, SANDBOX_MAX_BODY_BYTES) });
+        send(response, 200, operation.result, { 'x-clervo-replay': String(operation.replayed) });
+      } catch (error) {
+        const code = errorCode(error);
+        const status = Number.isInteger(error?.status) ? error.status : code.includes('invalid') ? 400 : 503;
+        send(response, status, problem(status, code, status === 409 ? 'Sandbox operation conflict' : status === 400 ? 'Invalid Sandbox request' : 'Sandbox execution unavailable', 'The private Sandbox operation failed closed without a customer charge.', url.pathname), status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
       }
       return;
     }

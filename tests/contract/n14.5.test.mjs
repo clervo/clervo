@@ -33,6 +33,7 @@ test('live local evidence proves restart, backup, isolated restore, replay, rete
     '0003-search-http-state.sql',
     '0004-receiver-accounting.sql',
     '0005-x402-operation-state.sql',
+    '0006-sandbox-operation-state.sql',
   ]);
   assert.equal(evidence.checks.exactImageDigest, true);
   assert.equal(evidence.checks.migrationsApplied, true);
@@ -58,6 +59,9 @@ test('live local evidence proves restart, backup, isolated restore, replay, rete
   assert.equal(evidence.checks.x402ExactlyOnceStateInserted, true);
   assert.equal(evidence.checks.x402StateSurvivedRestart, true);
   assert.equal(evidence.checks.x402StateRestoredFromBackup, true);
+  assert.equal(evidence.checks.sandboxExactlyOnceStateInserted, true);
+  assert.equal(evidence.checks.sandboxStateSurvivedRestart, true);
+  assert.equal(evidence.checks.sandboxStateRestoredFromBackup, true);
   assert.deepEqual(evidence.cleanup, {
     sourceContainerRemoved: true,
     restoreContainerRemoved: true,
@@ -87,6 +91,7 @@ test('production migration runner is ordered, checksum-bound, secret-safe, and f
     '0003-search-http-state.sql',
     '0004-receiver-accounting.sql',
     '0005-x402-operation-state.sql',
+    '0006-sandbox-operation-state.sql',
   ]);
   assert.ok(plan.migrations.every(({ checksum }) => /^sha256:[a-f0-9]{64}$/u.test(checksum)));
   assert.equal(plan.credentialInput, 'environment_or_stdin');

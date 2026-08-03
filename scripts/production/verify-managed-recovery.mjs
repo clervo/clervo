@@ -64,6 +64,7 @@ if (action === 'plan') {
       '0003-search-http-state.sql',
       '0004-receiver-accounting.sql',
       '0005-x402-operation-state.sql',
+      '0006-sandbox-operation-state.sql',
     ]);
     const operation = await pool.query(
       `SELECT state, response_json->>'state' AS response_state
@@ -76,8 +77,8 @@ if (action === 'plan') {
     const requiredTables = await pool.query(`SELECT COUNT(*)::integer AS count
       FROM pg_catalog.pg_class
       WHERE relnamespace = 'public'::regnamespace
-        AND relname IN ('clervo_search_http_operations', 'clervo_receiver_accounting_entries', 'clervo_x402_operations')`);
-    assert.equal(requiredTables.rows[0]?.count, 3, 'recovery tables missing');
+        AND relname IN ('clervo_search_http_operations', 'clervo_receiver_accounting_entries', 'clervo_x402_operations', 'clervo_sandbox_operations')`);
+    assert.equal(requiredTables.rows[0]?.count, 4, 'recovery tables missing');
     process.stdout.write(`${JSON.stringify({
       action: 'recovery-verified',
       target,
