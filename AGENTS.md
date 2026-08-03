@@ -52,6 +52,16 @@
 - Research current primary sources when a material technical or provider choice
   depends on changing facts. Prefer a clear technical winner and keep moving.
 
+## Delegation
+
+- Keep the primary Sol agent responsible for intent, architecture, integration,
+  safety, product truth, and final acceptance.
+- Use `luna_worker` for explicit, boundary-clear exploration, repetitive edits,
+  focused implementations, test debugging, and other independently verifiable
+  work. Give it exact ownership and review its diff and verification afterward.
+- Do not delegate security, payment, cloud, provider, pricing, legal, product
+  truth, or visual-direction decisions to `luna_worker`.
+
 ## Owner-only blockers
 
 Pause only when progress genuinely requires the owner to:
