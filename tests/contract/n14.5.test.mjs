@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { execFile } from 'node:child_process';
+import { execFile, spawnSync } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { promisify } from 'node:util';
 import test from 'node:test';
@@ -96,6 +96,21 @@ test('production migration runner is ordered, checksum-bound, secret-safe, and f
     }),
     /CLERVO_ENV must be production/u,
   );
+  const sensitiveMarker = 'must-not-appear-in-errors';
+  const invalid = spawnSync(process.execPath, ['scripts/production/apply-postgres-migrations.mjs', 'apply', '--database-url-stdin'], {
+    cwd: process.cwd(),
+    encoding: 'utf8',
+    input: `not-a-url-${sensitiveMarker}`,
+    env: {
+      PATH: process.env.PATH,
+      CLERVO_ENV: 'production',
+      CLERVO_DATABASE_MIGRATION_CONFIRM: 'apply:clervo-production-postgres',
+      CLERVO_MIGRATION_PROXY_HOST: '127.0.0.1',
+    },
+  });
+  assert.notEqual(invalid.status, 0);
+  assert.match(invalid.stderr, /database URL is invalid/u);
+  assert.equal(invalid.stderr.includes(sensitiveMarker), false);
   const source = await readFile('scripts/production/apply-postgres-migrations.mjs', 'utf8');
   assert.match(source, /pg_advisory_xact_lock/u);
   assert.match(source, /migration checksum changed/u);

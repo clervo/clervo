@@ -38,10 +38,18 @@ async function readStdin() {
 
 function connectionUrl(raw) {
   assert.ok(raw, 'database URL is required');
-  const parsed = new URL(raw);
+  const proxyHost = process.env.CLERVO_MIGRATION_PROXY_HOST;
+  const socketForm = proxyHost
+    ? /^(postgresql:\/\/[^@]+)@\/([^?]+)(?:\?.*)?$/u.exec(raw)
+    : null;
+  let parsed;
+  try {
+    parsed = new URL(socketForm ? `${socketForm[1]}@localhost/${socketForm[2]}` : raw);
+  } catch {
+    throw new Error('database URL is invalid');
+  }
   assert.equal(parsed.protocol, 'postgresql:', 'database URL must use postgresql');
   assert.equal(decodeURIComponent(parsed.pathname), '/clervo', 'database name must be clervo');
-  const proxyHost = process.env.CLERVO_MIGRATION_PROXY_HOST;
   if (proxyHost) {
     assert.ok(['127.0.0.1', '::1', 'localhost'].includes(proxyHost), 'migration proxy must be loopback');
     parsed.hostname = proxyHost;

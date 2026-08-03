@@ -31,12 +31,12 @@ test('production cloud contract is bounded, recoverable, and leaves the protecte
   assert.equal(policy.rollout.previousVerifiedImageDigestRequired, true);
   assert.equal(policy.rollout.ownerConfirmationRequiredForMutation, true);
   assert.deepEqual(policy.observedBootstrap, {
-    observedAt: '2026-08-03T10:38:03.000Z',
+    observedAt: '2026-08-03T10:50:35.000Z',
     artifactRepositoryCreated: true,
     artifactScanningActive: true,
     databaseInstanceCreated: true,
     databaseCreated: true,
-    databaseSecretVersion: 1,
+    databaseSecretVersion: 2,
     secretContainersCreated: true,
     runtimeServiceAccountCreated: true,
     buildServiceAccountCreated: true,
