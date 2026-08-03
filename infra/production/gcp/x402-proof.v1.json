@@ -1,12 +1,12 @@
 {
   "schemaVersion": "clervo.production-x402-proof.v1",
-  "state": "prepared_no_payment",
+  "state": "corrected_image_built_no_payment",
   "project": "bloxsniper-prod",
   "region": "us-central1",
   "service": "clervo-api-production",
   "runtimeServiceAccount": "clervo-api-production@bloxsniper-prod.iam.gserviceaccount.com",
-  "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:e5514004a5b6c1235ebfa9f9344ce0b9f64d6ab6de4da8c8850e8ffeb6d88248",
-  "releaseCommit": "92dc26cdbedfadc614d4246a9c6b30cc0e72f5f1",
+  "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:62a4adf23fcdde2987de20ec042584d790b67de0a352d98cc052f4b3e841554a",
+  "releaseCommit": "647a9066a65f3dc7656f3f1381e388a8fd826bc8",
   "publicOrigin": "https://api.clervo.dev/",
   "productId": "search.web",
   "path": "/v1/search/paid",
@@ -30,7 +30,7 @@
     "private": true,
     "allowUnauthenticated": false,
     "trafficPercent": 0,
-    "tag": "x402-proof-92dc26cdbedf",
+    "tag": "x402-proof-647a9066a65f",
     "paymentMode": "settlement_enabled",
     "sandboxMode": "disabled"
   },
@@ -50,6 +50,11 @@
   "ownerPaymentApprovalRequired": true,
   "paymentAuthorized": false,
   "paymentEffects": 0,
+  "observedBuild": {
+    "buildId": "aeeeee32-3c59-4f6a-bf62-99992fd95318",
+    "releaseCommit": "647a9066a65f3dc7656f3f1381e388a8fd826bc8",
+    "status": "SUCCESS"
+  },
   "observedPreflight": {
     "observedAt": "2026-08-03T22:57:00Z",
     "revision": "clervo-api-production-00009-qay",
@@ -68,6 +73,22 @@
     "separateAddresses": true,
     "paymentHeaderSent": false,
     "paymentAuthorized": false,
-    "usdcSpent": "0"
-  }
+    "usdcSpent": "0",
+    "superseded": true,
+    "supersededReason": "Base USDC EIP-712 domain metadata missing from challenge"
+  },
+  "nonSettlementAttempts": [
+    {
+      "outcome": "quote_expired_before_verification",
+      "walletSignatureObserved": true,
+      "authorizationExpired": true,
+      "paymentEffects": 0
+    },
+    {
+      "outcome": "client_payload_construction_refused",
+      "walletSignatureObserved": false,
+      "reason": "missing Base USDC EIP-712 name and version",
+      "paymentEffects": 0
+    }
+  ]
 }

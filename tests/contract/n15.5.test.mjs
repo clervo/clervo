@@ -48,7 +48,7 @@ test('local proof proxy is loopback-only, exact-route, bounded, and credential-r
 });
 
 test('private proof deployment is exact, zero-traffic, removable, and separate from payment approval', () => {
-  assert.equal(proof.state, 'prepared_no_payment');
+  assert.equal(proof.state, 'corrected_image_built_no_payment');
   assert.equal(proof.network, 'eip155:8453');
   assert.equal(proof.amountAtomic, '6000');
   assert.equal(proof.maximumExecutionCount, 1);
@@ -78,7 +78,16 @@ test('private proof deployment is exact, zero-traffic, removable, and separate f
     paymentHeaderSent: false,
     paymentAuthorized: false,
     usdcSpent: '0',
+    superseded: true,
+    supersededReason: 'Base USDC EIP-712 domain metadata missing from challenge',
   });
+  assert.deepEqual(proof.observedBuild, {
+    buildId: 'aeeeee32-3c59-4f6a-bf62-99992fd95318',
+    releaseCommit: '647a9066a65f3dc7656f3f1381e388a8fd826bc8',
+    status: 'SUCCESS',
+  });
+  assert.equal(proof.nonSettlementAttempts.length, 2);
+  assert.ok(proof.nonSettlementAttempts.every(({ paymentEffects }) => paymentEffects === 0));
   assert.match(deploy, /--no-allow-unauthenticated/u);
   assert.match(deploy, /--no-traffic/u);
   assert.match(deploy, /payer and receiver must differ/u);

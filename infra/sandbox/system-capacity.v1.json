@@ -8,7 +8,7 @@
     "name": "sandbox-system",
     "machineType": "t2d-standard-1",
     "nodes": 1,
-    "nodeLocations": ["us-central1-b"],
+    "nodeLocations": ["us-central1-f"],
     "diskType": "pd-balanced",
     "diskSizeGb": 30,
     "imageType": "COS_CONTAINERD",
@@ -33,7 +33,7 @@
     "availableBeforeRecovery": 1,
     "availableAfterRecovery": 0,
     "highAvailabilityQualified": false,
-    "recoveryStrategy": "dedicated_one_vcpu_x86_pool_in_available_zone"
+    "recoveryStrategy": "dedicated_one_vcpu_x86_pool_with_zonal_stockout_fallback"
   },
   "quiescedNodePool": {
     "name": "default-pool",
