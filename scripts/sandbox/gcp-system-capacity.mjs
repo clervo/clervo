@@ -39,7 +39,7 @@ function ensurePool() {
       '--disk-size', String(policy.nodePool.diskSizeGb), '--image-type', policy.nodePool.imageType,
       '--max-pods-per-node', String(policy.nodePool.maximumPodsPerNode), '--service-account', policy.nodePool.serviceAccount,
       '--workload-metadata', 'GKE_METADATA', '--metadata', 'disable-legacy-endpoints=true',
-      '--enable-secure-boot', '--enable-integrity-monitoring', '--enable-autorepair', '--enable-autoupgrade', '--quiet',
+      '--shielded-secure-boot', '--shielded-integrity-monitoring', '--enable-autorepair', '--enable-autoupgrade', '--quiet',
     ]);
     return true;
   }
