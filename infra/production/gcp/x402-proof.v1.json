@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "clervo.production-x402-proof.v1",
+  "state": "prepared_no_payment",
+  "project": "bloxsniper-prod",
+  "region": "us-central1",
+  "service": "clervo-api-production",
+  "runtimeServiceAccount": "clervo-api-production@bloxsniper-prod.iam.gserviceaccount.com",
+  "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:e5514004a5b6c1235ebfa9f9344ce0b9f64d6ab6de4da8c8850e8ffeb6d88248",
+  "releaseCommit": "92dc26cdbedfadc614d4246a9c6b30cc0e72f5f1",
+  "publicOrigin": "https://api.clervo.dev/",
+  "productId": "search.web",
+  "path": "/v1/search/paid",
+  "network": "eip155:8453",
+  "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "amountAtomic": "6000",
+  "decimals": 6,
+  "maximumPayerBalanceAtomic": "50000",
+  "maximumExecutionCount": 1,
+  "facilitatorUrl": "https://api.cdp.coinbase.com/platform/v2/x402",
+  "secretVersions": {
+    "database": 2,
+    "sentry": 1,
+    "facilitatorKeyId": 1,
+    "facilitatorKeySecret": 1,
+    "payerSourceReceiver": 1,
+    "payTo": 2
+  },
+  "receiverFingerprint": "sha256:bfac3cf6636433f2acef19162dc8332c9f08f4602c92944bd758f541d341f4c8",
+  "deployment": {
+    "private": true,
+    "allowUnauthenticated": false,
+    "trafficPercent": 0,
+    "tag": "x402-proof-92dc26cdbedf",
+    "paymentMode": "settlement_enabled",
+    "sandboxMode": "disabled"
+  },
+  "browser": {
+    "bind": "127.0.0.1",
+    "privateKeyImported": false,
+    "walletProvider": "owner-controlled MetaMask",
+    "automaticRetry": false
+  },
+  "reconciliation": [
+    "facilitator settlement response",
+    "Base transaction receipt",
+    "durable x402 operation and receiver ledger",
+    "payer and receiver USDC balance delta",
+    "same-idempotency-key no-charge replay"
+  ],
+  "ownerPaymentApprovalRequired": true,
+  "paymentAuthorized": false,
+  "paymentEffects": 0
+}

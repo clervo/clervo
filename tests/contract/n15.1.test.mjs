@@ -188,6 +188,16 @@ test('production x402 secret bootstrap is challenge-only, payer-free, and confir
     paymentAuthorized: false,
     usdcSpent: '0',
   });
+  assert.deepEqual(policy.receiverRotation, {
+    observedAt: '2026-08-03T22:53:05Z',
+    previousVersion: 1,
+    nextVersion: 2,
+    receiverFingerprint: 'sha256:bfac3cf6636433f2acef19162dc8332c9f08f4602c92944bd758f541d341f4c8',
+    oldVersionRetained: true,
+    deploymentChanged: false,
+    settlementEnabled: false,
+    paymentEffects: 0,
+  });
   const release = await readFile('scripts/production/gcp-release.mjs', 'utf8');
   assert.match(release, /deploy-x402-preflight/u);
   assert.match(release, /x402_preflight_must_be_challenge_only/u);

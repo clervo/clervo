@@ -44,5 +44,15 @@
     "payerSignerRead": false,
     "paymentAuthorized": false,
     "usdcSpent": "0"
+  },
+  "receiverRotation": {
+    "observedAt": "2026-08-03T22:53:05Z",
+    "previousVersion": 1,
+    "nextVersion": 2,
+    "receiverFingerprint": "sha256:bfac3cf6636433f2acef19162dc8332c9f08f4602c92944bd758f541d341f4c8",
+    "oldVersionRetained": true,
+    "deploymentChanged": false,
+    "settlementEnabled": false,
+    "paymentEffects": 0
   }
 }
