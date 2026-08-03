@@ -31,16 +31,16 @@ test('production cloud contract is bounded, recoverable, and leaves the protecte
   assert.equal(policy.rollout.previousVerifiedImageDigestRequired, true);
   assert.equal(policy.rollout.ownerConfirmationRequiredForMutation, true);
   assert.deepEqual(policy.observedBootstrap, {
-    observedAt: '2026-08-02T20:40:40.000Z',
+    observedAt: '2026-08-03T10:38:03.000Z',
     artifactRepositoryCreated: true,
     artifactScanningActive: true,
     databaseInstanceCreated: true,
     databaseCreated: true,
     databaseSecretVersion: 1,
     secretContainersCreated: true,
-    runtimeServiceAccountCreated: false,
-    buildServiceAccountCreated: false,
-    monitoringSecretVersionsCreated: false,
+    runtimeServiceAccountCreated: true,
+    buildServiceAccountCreated: true,
+    monitoringSecretVersionsCreated: true,
     cloudRunServiceCreated: false,
     trafficChanged: false,
     paidExecutionEnabled: false,
@@ -53,6 +53,8 @@ test('production cloud contract is bounded, recoverable, and leaves the protecte
   assert.equal(policy.leastPrivilege.runtimeSecretRole, 'roles/secretmanager.secretAccessor');
   assert.deepEqual(policy.leastPrivilege.builderProjectRoles, ['roles/logging.logWriter']);
   assert.equal(policy.leastPrivilege.builderRepositoryRole, 'roles/artifactregistry.writer');
+  assert.equal(policy.resources.cloudBuildSourceBucket, 'bloxsniper-prod_cloudbuild');
+  assert.equal(policy.leastPrivilege.builderSourceBucketRole, 'roles/storage.objectViewer');
 });
 
 test('production IAM control is exact-project, least-privilege, and confirmation guarded', async () => {
@@ -69,6 +71,8 @@ test('production IAM control is exact-project, least-privilege, and confirmation
   ]);
   assert.deepEqual(plan.builder.projectRoles, ['roles/logging.logWriter']);
   assert.equal(plan.builder.repositoryRole, 'roles/artifactregistry.writer');
+  assert.equal(plan.builder.sourceBucket, 'bloxsniper-prod_cloudbuild');
+  assert.equal(plan.builder.sourceBucketRole, 'roles/storage.objectViewer');
   assert.ok(plan.protectedResources.includes('ai.clervo.dev'));
   assert.ok(!plan.runtime.projectRoles.some((role) => plan.forbiddenRoles.includes(role)));
   assert.ok(!plan.builder.projectRoles.some((role) => plan.forbiddenRoles.includes(role)));

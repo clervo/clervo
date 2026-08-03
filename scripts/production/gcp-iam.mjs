@@ -83,6 +83,16 @@ function addRepositoryBinding(member) {
   ]);
 }
 
+function addSourceBucketBinding(member) {
+  gcloud([
+    'storage', 'buckets', 'add-iam-policy-binding', `gs://${resources.cloudBuildSourceBucket}`,
+    '--member', member,
+    '--role', leastPrivilege.builderSourceBucketRole,
+    '--condition=None',
+    '--quiet',
+  ]);
+}
+
 const plan = {
   action: 'plan',
   project,
@@ -97,6 +107,8 @@ const plan = {
     projectRoles: leastPrivilege.builderProjectRoles,
     repositoryRole: leastPrivilege.builderRepositoryRole,
     repository: resources.artifactRepository,
+    sourceBucketRole: leastPrivilege.builderSourceBucketRole,
+    sourceBucket: resources.cloudBuildSourceBucket,
   },
   forbiddenRoles: leastPrivilege.runtimeForbiddenRoles,
   protectedResources: policy.protectedResources,
@@ -127,6 +139,7 @@ if (action === 'plan') {
   for (const secret of leastPrivilege.runtimeSecretAccess) addSecretBinding(secret, runtimeMember);
   for (const role of leastPrivilege.builderProjectRoles) addProjectBinding(builderMember, role);
   addRepositoryBinding(builderMember);
+  addSourceBucketBinding(builderMember);
 
   process.stdout.write(`${JSON.stringify({
     action: 'applied',

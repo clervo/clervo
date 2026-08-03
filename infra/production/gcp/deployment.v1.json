@@ -15,7 +15,8 @@
     "databaseInstance": "clervo-production-postgres",
     "database": "clervo",
     "runtimeServiceAccount": "clervo-api-production",
-    "buildServiceAccount": "clervo-production-builder"
+    "buildServiceAccount": "clervo-production-builder",
+    "cloudBuildSourceBucket": "bloxsniper-prod_cloudbuild"
   },
   "database": {
     "engine": "POSTGRES_18",
@@ -96,6 +97,7 @@
       "roles/logging.logWriter"
     ],
     "builderRepositoryRole": "roles/artifactregistry.writer",
+    "builderSourceBucketRole": "roles/storage.objectViewer",
     "runtimeForbiddenRoles": [
       "roles/owner",
       "roles/editor",
@@ -122,16 +124,16 @@
     "ownerConfirmationRequiredForMutation": true
   },
   "observedBootstrap": {
-    "observedAt": "2026-08-02T20:40:40.000Z",
+    "observedAt": "2026-08-03T10:38:03.000Z",
     "artifactRepositoryCreated": true,
     "artifactScanningActive": true,
     "databaseInstanceCreated": true,
     "databaseCreated": true,
     "databaseSecretVersion": 1,
     "secretContainersCreated": true,
-    "runtimeServiceAccountCreated": false,
-    "buildServiceAccountCreated": false,
-    "monitoringSecretVersionsCreated": false,
+    "runtimeServiceAccountCreated": true,
+    "buildServiceAccountCreated": true,
+    "monitoringSecretVersionsCreated": true,
     "cloudRunServiceCreated": false,
     "trafficChanged": false,
     "paidExecutionEnabled": false
