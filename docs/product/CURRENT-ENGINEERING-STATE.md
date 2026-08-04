@@ -364,15 +364,23 @@ payment path.
 The live control smoke passed useful gVisor execution, authenticated replay
 without re-execution, and foreground cleanup with zero charge. Its replay cache
 is intentionally process-local, so it is not yet a customer-facing durability
-claim. The undersized `e2-small` system node was quiesced during capacity
-replacement. The first dedicated N1 system-pool request failed from zonal
-stockout; a second one-node N1 request in `us-central1-b` is still retrying in
-Google's managed operation. The controller and system deployments are pending
-without a system node, while the isolated gVisor execution node remains ready.
-No public capability depends on this degraded private plane. The committed
-fallback uses the available one-vCPU T2D family after the current immutable
-operation reaches terminal state. Do not move control workloads onto the
-untrusted execution pool.
+claim. The undersized `e2-small` default pool remains quiesced. Dedicated
+one-vCPU N1 and T2D capacity was unavailable across all four `us-central1`
+zones; every failed pool and disposable probe was verified empty and removed.
+A bounded no-public-IP probe then qualified `e2-medium` capacity in
+`us-central1-a` and was removed before the final pool was created.
+
+The dedicated `sandbox-system` pool is now running one `e2-medium` node with
+roughly 2.7 GiB allocatable memory, auto-repair, auto-upgrade, Shielded VM
+controls, and no autoscaling. The controller is ready on that trusted system
+node with its exact requests/limits and a one-replica disruption budget; it is
+not scheduled on the isolated gVisor execution pool. Private connectivity,
+least-privilege RBAC, authenticated useful execution, no-execution replay, and
+resource cleanup all passed again. No claims, templates, execution pods, or
+capacity probes remained. The project-wide CPU quota is fully allocated at
+12/12, so this proves bounded private single-node capacity, not high
+availability or spare scale-out headroom. No public capability depends on this
+private plane.
 
 The production API has a default-disabled private Sandbox route, an exact
 private-target client with redirect/SSRF refusal, separate API and control
@@ -427,14 +435,10 @@ were removed; the existing private serving revision remains at 100% traffic.
 4. Keep RPC customer routing disabled until written commercial permission or
    replacement terms-compatible supply exists; this isolated owner blocker does
    not pause combined workflows or other local engineering.
-5. Recover the dedicated Sandbox system node after the in-flight managed GKE
-   operation reaches terminal state, then rerun private controller and product
-   smoke checks. Keep Sandbox public lifecycle `unavailable` until the system
-   pool has proven production capacity and the private candidate passes the
-   final release checks. Existing execution-plane, durability, network,
-   zero-traffic Cloud Run, replay, and cleanup proof remains valid; current
-   control-plane availability and system-node headroom are not public capacity
-   proof.
+5. Keep Sandbox public lifecycle `unavailable` until a public release candidate
+   passes the final external release checks. The private single-node system and
+   execution planes are qualified, but high availability and spare scale-out
+   headroom are not proven because the project-wide CPU quota is fully used.
 
 ## Preserved boundaries
 

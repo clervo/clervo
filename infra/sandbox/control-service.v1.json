@@ -70,7 +70,7 @@
     "supplyChainReport": "docs/evidence/sandbox/control-supply-chain.v5.json",
     "supplyChainReportSha256": "sha256:8f1b11927989139c5e1452e5eec7915fa1d5fa698af5b9132b6fb7810c22b246",
     "liveSmokeReport": "docs/evidence/sandbox/control-service-live-smoke.v1.json",
-    "liveSmokeReportSha256": "sha256:17fd7a2bfdb634a3fe9ab213eb071c694fd2efe93ba9a94781e4c4ed9e9ca470",
+    "liveSmokeReportSha256": "sha256:06d3293efed08bcd0c7174253884e25a895bd1fda547feb283fdb37aac148d28",
     "authenticatedUsefulExecution": true,
     "replayWithoutExecution": true,
     "cleanupVerified": true,

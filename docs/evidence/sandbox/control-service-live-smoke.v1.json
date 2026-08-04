@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.sandbox-control-live-smoke.v1",
-  "evaluatedAt": "2026-08-03T13:58:06.534Z",
+  "evaluatedAt": "2026-08-03T23:59:02.232Z",
   "status": "passed",
   "controlImageDigest": "sha256:913b3127dd85d05ed3ee76d032ca3c72b475b1d7325aa773311b7221f5591df5",
   "runnerImageDigest": "sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
@@ -15,7 +15,7 @@
     "status": "ready",
     "availableReplicas": 1,
     "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-sandbox/control@sha256:913b3127dd85d05ed3ee76d032ca3c72b475b1d7325aa773311b7221f5591df5",
-    "systemNodePool": "default-pool",
+    "systemNodePool": "sandbox-system",
     "podReady": true,
     "serviceType": "ClusterIP",
     "serviceClusterIpAssigned": true,

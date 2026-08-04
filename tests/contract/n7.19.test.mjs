@@ -8,9 +8,10 @@ const capacity = await readFile('scripts/sandbox/gcp-system-capacity.mjs', 'utf8
 const bootstrap = await readFile('scripts/sandbox/gcp-control-service.mjs', 'utf8');
 
 test('Sandbox system capacity uses a bounded dedicated system node and keeps execution isolated', () => {
+  assert.equal(policy.state, 'private_capacity_qualified');
   assert.equal(policy.nodePool.name, 'sandbox-system');
-  assert.equal(policy.nodePool.machineType, 't2d-standard-1');
-  assert.deepEqual(policy.nodePool.nodeLocations, ['us-central1-f']);
+  assert.equal(policy.nodePool.machineType, 'e2-medium');
+  assert.deepEqual(policy.nodePool.nodeLocations, ['us-central1-a']);
   assert.equal(policy.nodePool.nodes, 1);
   assert.equal(policy.controller.replicas, 1);
   assert.equal(policy.controller.minimumAvailable, 1);
@@ -26,6 +27,21 @@ test('Sandbox system capacity uses a bounded dedicated system node and keeps exe
   assert.equal(policy.quotaConstraint.highAvailabilityQualified, false);
   assert.equal(policy.quiescedNodePool.name, 'default-pool');
   assert.equal(policy.quiescedNodePool.desiredNodes, 0);
+  assert.equal(policy.observedResult.readyNodes, 1);
+  assert.equal(policy.observedResult.controllerReady, true);
+  assert.equal(policy.observedResult.controllerOnExecutionPool, false);
+  assert.equal(policy.observedResult.usefulPrivateSmoke, true);
+  assert.equal(policy.observedResult.replayWithoutExecution, true);
+  assert.equal(policy.observedResult.cleanupVerified, true);
+  assert.equal(policy.observedResult.capacityProbeResourcesRemaining, 0);
+  assert.equal(policy.observedResult.highAvailabilityQualified, false);
+  assert.equal(policy.observedResult.publicEndpoint, false);
+  assert.equal(policy.observedResult.paymentEnabled, false);
+  assert.deepEqual(policy.supersededCapacityAttempts.map(({ outcome }) => outcome), [
+    'zonal_stockout_no_nodes_created',
+    'zonal_stockout_no_nodes_created',
+    'capacity_probe_passed_and_removed_before_node_pool_creation',
+  ]);
 });
 
 test('capacity control quiesces the broken pool, creates its bounded replacement, and verifies readiness', () => {

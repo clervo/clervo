@@ -1,14 +1,14 @@
 {
   "schemaVersion": "clervo.sandbox-system-capacity.v1",
-  "state": "planned",
+  "state": "private_capacity_qualified",
   "project": "bloxsniper-prod",
   "zone": "us-central1-a",
   "cluster": "clervo-sandbox-production",
   "nodePool": {
     "name": "sandbox-system",
-    "machineType": "t2d-standard-1",
+    "machineType": "e2-medium",
     "nodes": 1,
-    "nodeLocations": ["us-central1-f"],
+    "nodeLocations": ["us-central1-a"],
     "diskType": "pd-balanced",
     "diskSizeGb": 30,
     "imageType": "COS_CONTAINERD",
@@ -33,7 +33,7 @@
     "availableBeforeRecovery": 1,
     "availableAfterRecovery": 0,
     "highAvailabilityQualified": false,
-    "recoveryStrategy": "dedicated_one_vcpu_x86_pool_with_zonal_stockout_fallback"
+    "recoveryStrategy": "capacity_probed_shared_core_e2_pool_after_one_vcpu_zonal_stockout"
   },
   "quiescedNodePool": {
     "name": "default-pool",
@@ -49,5 +49,44 @@
     "paymentEnabled": false,
     "protectedGatewayTouched": false
   },
+  "observedResult": {
+    "observedAt": "2026-08-03T23:59:02.232Z",
+    "nodePoolStatus": "RUNNING",
+    "readyNodes": 1,
+    "allocatableMemory": "2866820Ki",
+    "controllerReplicas": 1,
+    "controllerReady": true,
+    "controllerOnExecutionPool": false,
+    "minimumAvailable": 1,
+    "usefulPrivateSmoke": true,
+    "replayWithoutExecution": true,
+    "cleanupVerified": true,
+    "residualClaims": 0,
+    "residualTemplates": 0,
+    "residualExecutionPods": 0,
+    "capacityProbeResourcesRemaining": 0,
+    "allRegionsCpuQuotaUsed": 12,
+    "allRegionsCpuQuotaLimit": 12,
+    "highAvailabilityQualified": false,
+    "publicEndpoint": false,
+    "paymentEnabled": false
+  },
+  "supersededCapacityAttempts": [
+    {
+      "machineType": "n1-standard-1",
+      "zones": ["us-central1-a", "us-central1-b", "us-central1-c", "us-central1-f"],
+      "outcome": "zonal_stockout_no_nodes_created"
+    },
+    {
+      "machineType": "t2d-standard-1",
+      "zones": ["us-central1-a", "us-central1-b", "us-central1-c", "us-central1-f"],
+      "outcome": "zonal_stockout_no_nodes_created"
+    },
+    {
+      "machineType": "e2-medium",
+      "zones": ["us-central1-a"],
+      "outcome": "capacity_probe_passed_and_removed_before_node_pool_creation"
+    }
+  ],
   "protectedResources": ["ai.clervo.dev", "the existing Clervo VM model gateway", "all unrelated and legacy cloud resources"]
 }
