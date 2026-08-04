@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
-import { discovery, type ExperiencePhase } from '../product';
+import { discovery, launchState, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 export type TrustTopic = 'pricing' | 'benchmarks' | 'security' | 'legal';
@@ -13,8 +13,8 @@ const topicCopy: Record<TrustTopic, {
 }> = {
   pricing: {
     eyebrow: 'Pricing / candidate truth',
-    title: 'No sellable price is hidden here.',
-    intro: 'The frozen projection contains non-payable mock fixture amounts. Customer pricing and real settlement are not yet public facts.',
+    title: 'Proof amount is not public price.',
+    intro: 'The private proof settled for 0.006 USDC. No public customer offer exists, and fixture amounts remain explicitly non-payable.',
   },
   benchmarks: {
     eyebrow: 'Benchmarks / claim boundary',
@@ -45,15 +45,19 @@ export function Trust({
   return (
     <section className="trust-page">
       <header className="page-intro">
-        <ModeBadge>Repository-local release candidate</ModeBadge>
+        <ModeBadge>Current claim boundary · generated state</ModeBadge>
         <p className="eyebrow">{copy.eyebrow}</p>
         <h1>{copy.title}</h1>
         <p>{copy.intro}</p>
       </header>
 
       {topic === 'pricing' ? (
-        <section className="truth-table">
-          <header><h2>Projected fixture ledger</h2><span>Not payable · not a customer offer</span></header>
+        <><section className="private-price-proof">
+          <span>RECORDED PRIVATE PROOF AMOUNT</span>
+          <strong>{launchState.paymentProof.amountDisplay}</strong>
+          <p>Owner-funded · {launchState.paymentProof.productId} · not a public customer offer</p>
+        </section><section className="truth-table">
+          <header><h2>Non-payable fixture ledger</h2><span>Interface testing only</span></header>
           {discovery.products.map((product) => (
             <div key={product.productId}>
               <code>{product.productId}</code>
@@ -62,14 +66,14 @@ export function Trust({
               <strong>payable: false</strong>
             </div>
           ))}
-        </section>
+        </section></>
       ) : null}
 
       {topic === 'benchmarks' ? (
         <section className="truth-panels">
           <article><span>APPROVED</span><h2>Private core qualification</h2><p>Six pillars and combined workflows passed their bounded internal contract and stabilization gates.</p></article>
           <article><span>NOT APPROVED</span><h2>Public comparative claim</h2><p>No current external corpus, alternative, environment, sample size, and published metric support a superiority statement.</p></article>
-          <article><span>NEXT PROOF</span><h2>Externally useful result</h2><p>A bounded real settlement and one useful external paid outcome remain later release gates.</p></article>
+          <article><span>PROVEN PRIVATELY</span><h2>Bounded settlement mechanics</h2><p>One owner-funded useful result settled and replayed safely. An external customer outcome remains unproven.</p></article>
         </section>
       ) : null}
 

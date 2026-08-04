@@ -7,8 +7,8 @@
   "journey": [
     {
       "step": "install",
-      "state": "candidate_verified",
-      "action": "Install a locally verified package archive or use raw HTTP."
+      "state": "published_verified",
+      "action": "Install a registry-verified public package or use the published raw HTTP contract."
     },
     {
       "step": "ask",

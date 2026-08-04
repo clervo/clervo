@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "clervo.capabilities.v1",
+  "observedAt": "2026-08-03T23:28:13Z",
+  "publicCallable": false,
+  "products": [
+    {
+      "id": "search",
+      "label": "Research",
+      "operations": [
+        "search.web",
+        "search.answer"
+      ],
+      "engineeringState": "private_production_qualified",
+      "customerLifecycle": "preview_not_publicly_callable"
+    },
+    {
+      "id": "ai",
+      "label": "AI",
+      "operations": [
+        "ai.chat",
+        "ai.embed",
+        "ai.image",
+        "ai.speech"
+      ],
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable"
+    },
+    {
+      "id": "sandbox",
+      "label": "Secure Sandbox",
+      "operations": [
+        "sandbox.run",
+        "sandbox.session.create",
+        "sandbox.session.exec",
+        "sandbox.artifact.get",
+        "sandbox.session.destroy"
+      ],
+      "engineeringState": "private_production_qualified_single_node",
+      "customerLifecycle": "unavailable"
+    },
+    {
+      "id": "rpc",
+      "label": "Multi-chain RPC",
+      "operations": [
+        "rpc.call",
+        "rpc.batch",
+        "rpc.health",
+        "rpc.archive",
+        "rpc.broadcast"
+      ],
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable"
+    },
+    {
+      "id": "prediction",
+      "label": "Prediction Intelligence",
+      "operations": [
+        "prediction.markets",
+        "prediction.market",
+        "prediction.compare",
+        "prediction.history",
+        "prediction.signal"
+      ],
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable"
+    },
+    {
+      "id": "crypto_intelligence",
+      "label": "Crypto Intelligence",
+      "operations": [
+        "crypto.wallet",
+        "crypto.token",
+        "crypto.transaction",
+        "crypto.protocol",
+        "crypto.report"
+      ],
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable"
+    }
+  ]
+}

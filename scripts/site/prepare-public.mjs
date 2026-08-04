@@ -30,30 +30,72 @@ await writeFile(path.join(target, 'robots.txt'), [
   '',
 ].join('\n'));
 
+const siteRoutes = [
+  '/',
+  '/research/',
+  '/platform/',
+  '/product',
+  '/products/search/',
+  '/products/ai/',
+  '/products/sandbox/',
+  '/products/rpc/',
+  '/products/prediction/',
+  '/products/crypto/',
+  '/build',
+  '/proof/',
+  '/proof-lab',
+  '/docs/quickstart/',
+  '/docs/http',
+  '/docs/typescript',
+  '/docs/python',
+  '/docs/mcp',
+  '/docs/receipts/',
+  '/docs/replay/',
+  '/docs/failures/',
+  '/docs/x402/',
+  '/docs/catalog/',
+  '/pricing',
+  '/benchmarks',
+  '/security',
+  '/legal',
+  '/status',
+  '/changelog/',
+  '/compare/blockrun/',
+  '/trust/',
+];
+
 await writeFile(path.join(target, 'sitemap.xml'), [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...[
-    '/',
-    '/product',
-    '/build',
-    '/proof-lab',
-    '/docs/http',
-    '/docs/typescript',
-    '/docs/python',
-    '/docs/mcp',
-    '/pricing',
-    '/benchmarks',
-    '/security',
-    '/legal',
-    '/status',
-  ]
-    .map((route) => `  <url><loc>https://clervo.dev${route}</loc></url>`),
+  ...siteRoutes
+    .map((route) => {
+      const canonical = route === '/' ? '/' : `${route.replace(/\/+$/u, '')}/`;
+      return `  <url><loc>https://clervo.dev${canonical}</loc></url>`;
+    }),
   '</urlset>',
   '',
 ].join('\n'));
 
-await writeFile(path.join(target, '_redirects'), '/* /index.html 200\n');
+await writeFile(path.join(target, '_redirects'), [
+  ...siteRoutes
+    .filter((route) => route !== '/')
+    .map((route) => {
+      const canonical = `${route.replace(/\/+$/u, '')}/`;
+      return `${canonical.slice(0, -1)} ${canonical} 301`;
+    }),
+  '/* /index.html 200',
+  '',
+].join('\n'));
+await writeFile(path.join(target, 'manifest.webmanifest'), `${JSON.stringify({
+  name: 'Clervo',
+  short_name: 'Clervo',
+  description: 'Outcome infrastructure for agents.',
+  start_url: '/',
+  display: 'standalone',
+  background_color: '#050606',
+  theme_color: '#050606',
+  icons: [{ src: '/assets/favicon.svg', sizes: 'any', type: 'image/svg+xml' }],
+}, null, 2)}\n`);
 await writeFile(path.join(target, '_headers'), [
   '/*',
   '  X-Content-Type-Options: nosniff',

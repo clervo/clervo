@@ -2,7 +2,7 @@
   "discoveryVersion": "2026-08-02.2",
   "contractVersion": "2026-07-29.1",
   "name": "Clervo",
-  "description": "Machine-readable distribution candidate derived from the frozen private product core. All six cores are privately qualified; Search remains a repository-local preview, the other five public lifecycles remain unavailable, and no public deployment or real payment is claimed.",
+  "description": "Machine-readable customer-distribution candidate derived from the qualified private product core. Public SDK, MCP, and Python packages are verified; the customer API is not publicly callable. One owner-funded private x402 proof settled and replayed safely, which is not customer revenue or demand.",
   "lifecycle": "preview",
   "distribution": {
     "state": "candidate",
@@ -15,7 +15,10 @@
   "payment": {
     "protocol": "x402",
     "implemented": false,
-    "settlementVerified": false
+    "settlementVerified": false,
+    "publicAvailable": false,
+    "privateProofVerified": true,
+    "commercialProof": false
   },
   "releaseScope": {
     "scopeVersion": "2026-08-01.3",
@@ -176,6 +179,10 @@
     "openapi": "/openapi.json",
     "catalog": "/catalog.json",
     "onboarding": "/onboarding.json",
+    "claims": "/claims.json",
+    "capabilities": "/capabilities.json",
+    "pricing": "/pricing.json",
+    "status": "/status.json",
     "llms": "/llms.txt",
     "schemas": "/schemas/2026-07-29.1/"
   },
@@ -248,8 +255,8 @@
     }
   ],
   "limitations": [
-    "Public distribution and deployment are not verified.",
-    "Real x402 verification, facilitator authorization, and settlement are not implemented.",
+    "Public client packages are verified, but the customer API and public traffic are unavailable.",
+    "One owner-funded private x402 settlement is verified; no customer payment, revenue, or demand is claimed.",
     "Published prices in this candidate are explicitly non-payable mock fixtures.",
     "The default paid route does not execute.",
     "The reference free quota is process-local and must be replaced before production.",

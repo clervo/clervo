@@ -12,6 +12,7 @@ test('onboarding remains bound to the frozen candidate without implying payment'
   assert.equal(onboarding.interfaceHash, discovery.distribution.interfaceHash);
   assert.equal(onboarding.publicCallable, false);
   assert.equal(onboarding.paymentImplemented, false);
+  assert.equal(onboarding.journey.find(({ step }) => step === 'install').state, 'published_verified');
   assert.deepEqual(
     onboarding.journey.map(({ step }) => step),
     ['install', 'ask', 'fund', 'approve', 'result', 'receipt'],
@@ -44,5 +45,5 @@ test('raw HTTP onboarding is static, explicit, and non-payable', async () => {
   assert.match(product, /127\.0\.0\.1:8080/u);
   assert.match(build, /funding, signing, or settlement is available today/iu);
   assert.match(html, /Raw HTTP(?:<!-- -->)? client/u);
-  assert.match(html, /publication not verified/iu);
+  assert.match(html, /Public packages verified/iu);
 });

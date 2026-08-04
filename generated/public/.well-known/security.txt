@@ -1,0 +1,3 @@
+Canonical: https://clervo.dev/.well-known/security.txt
+Contact: https://github.com/clervo/clervo/security/advisories/new
+Policy: https://clervo.dev/security/

@@ -5,11 +5,18 @@ import { LifecycleRail, Navigation } from './components/Navigation';
 import { useActivation } from './experience';
 import { Docs } from './pages/Docs';
 import { Build } from './pages/Build';
+import { Capability } from './pages/Capability';
+import { Changelog } from './pages/Changelog';
+import { Compare } from './pages/Compare';
 import { Home } from './pages/Home';
+import { Guide, type GuideTopic } from './pages/Guide';
+import { Proof } from './pages/Proof';
 import { ProofLab } from './pages/ProofLab';
 import { Product } from './pages/Product';
+import { Research } from './pages/Research';
 import { Status } from './pages/Status';
 import { Trust, type TrustTopic } from './pages/Trust';
+import { TrustOverview } from './pages/TrustOverview';
 import type { ExperiencePhase } from './product';
 import { Link, useRouter } from './router';
 
@@ -27,27 +34,34 @@ export function App() {
   const [phase, setPhase] = useState<ExperiencePhase>('risk');
   const [activation, updateActivation] = useActivation();
   const { location } = useRouter();
+  const pathname = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/u, '');
   const updatePhase = useCallback((next: ExperiencePhase) => setPhase(next), []);
 
   useEffect(() => {
-    if (location.pathname === '/') return;
-    if (location.pathname.startsWith('/proof-lab')) return;
-    else if (location.pathname.startsWith('/docs')) setPhase(activation.receiptInspected ? 'receipt' : 'qualified');
-    else if (location.pathname.startsWith('/product')) setPhase('qualified');
-    else if (location.pathname.startsWith('/build')) setPhase('approval');
-    else if (location.pathname === '/pricing') setPhase('approval');
-    else if (location.pathname.startsWith('/status')) setPhase('verified');
-    else if (['/benchmarks', '/security', '/legal'].includes(location.pathname)) setPhase('verified');
+    if (pathname === '/') return;
+    if (pathname.startsWith('/proof-lab')) return;
+    else if (pathname === '/proof') setPhase('receipt');
+    else if (pathname.startsWith('/docs')) setPhase(activation.receiptInspected ? 'receipt' : 'qualified');
+    else if (pathname.startsWith('/products/')) setPhase(pathname === '/products/search' ? 'qualified' : 'risk');
+    else if (pathname.startsWith('/product') || pathname === '/platform') setPhase('qualified');
+    else if (pathname.startsWith('/build')) setPhase('approval');
+    else if (pathname === '/pricing') setPhase('approval');
+    else if (pathname.startsWith('/status') || pathname === '/research' || pathname === '/changelog' || pathname === '/compare/blockrun') setPhase('verified');
+    else if (['/benchmarks', '/security', '/legal'].includes(pathname)) setPhase('verified');
     window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [activation.receiptInspected, location.pathname]);
+  }, [activation.receiptInspected, pathname]);
 
   useEffect(() => {
     const exactTitles: Record<string, string> = {
       '/': 'Outcome infrastructure for agents',
+      '/research': 'Research outcome',
+      '/platform': 'Clervo Platform',
       '/product': 'Product and capabilities',
       '/build': 'Build with Clervo',
       '/proof-lab': 'Proof Lab',
+      '/proof': 'Payment and replay proof',
       '/docs': 'Developer docs',
+      '/docs/quickstart': 'Developer quickstart',
       '/docs/http': 'Raw HTTP developer docs',
       '/docs/typescript': 'TypeScript developer docs',
       '/docs/python': 'Python developer docs',
@@ -57,8 +71,22 @@ export function App() {
       '/security': 'Security controls',
       '/legal': 'Legal boundaries',
       '/status': 'Product status',
+      '/changelog': 'Changelog',
+      '/compare/blockrun': 'Clervo and BlockRun',
+      '/products/search': 'Research product core',
+      '/products/ai': 'AI product core',
+      '/products/sandbox': 'Secure Sandbox product core',
+      '/products/rpc': 'Multi-chain RPC product core',
+      '/products/prediction': 'Prediction Intelligence product core',
+      '/products/crypto': 'Crypto Intelligence product core',
+      '/docs/receipts': 'Receipt contract guide',
+      '/docs/replay': 'Replay contract guide',
+      '/docs/failures': 'Failure recovery guide',
+      '/docs/x402': 'x402 contract guide',
+      '/docs/catalog': 'Capability catalog guide',
+      '/trust': 'Trust center',
     };
-    const routeTitle = exactTitles[location.pathname] ?? 'Route not found';
+    const routeTitle = exactTitles[pathname] ?? 'Route not found';
     document.title = `${routeTitle} — Clervo`;
     let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (canonical === null) {
@@ -66,16 +94,26 @@ export function App() {
       canonical.rel = 'canonical';
       document.head.append(canonical);
     }
-    canonical.href = `https://clervo.dev${location.pathname}`;
-  }, [location.pathname]);
+    canonical.href = `https://clervo.dev${pathname === '/' ? '/' : `${pathname}/`}`;
+    const description = pathname === '/'
+      ? 'Clervo is outcome infrastructure for agents: one bounded job in, one inspectable result out.'
+      : `${routeTitle} from Clervo, with engineering state, customer lifecycle, and commercial proof kept separate.`;
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (meta !== null) meta.content = description;
+  }, [pathname]);
 
   const route = (() => {
-    if (location.pathname === '/') return <Home onPhase={updatePhase} />;
-    if (location.pathname === '/product') return <Product onPhase={updatePhase} />;
-    if (location.pathname === '/build') {
+    if (pathname === '/') return <Home onPhase={updatePhase} />;
+    if (pathname === '/research') return <Research onPhase={updatePhase} />;
+    const capabilityMatch = pathname.match(/^\/products\/([^/]+)$/u);
+    if (capabilityMatch?.[1] !== undefined && ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto'].includes(capabilityMatch[1])) {
+      return <Capability routeId={capabilityMatch[1]} onPhase={updatePhase} />;
+    }
+    if (pathname === '/product' || pathname === '/platform') return <Product onPhase={updatePhase} />;
+    if (pathname === '/build') {
       return <Build activation={activation} onPhase={updatePhase} />;
     }
-    if (location.pathname === '/proof-lab') {
+    if (pathname === '/proof-lab') {
       return (
         <ProofLab
           activation={activation}
@@ -84,7 +122,8 @@ export function App() {
         />
       );
     }
-    if (location.pathname === '/docs') {
+    if (pathname === '/proof') return <Proof onPhase={updatePhase} />;
+    if (pathname === '/docs' || pathname === '/docs/quickstart') {
       return (
         <Docs
           activation={activation}
@@ -93,7 +132,7 @@ export function App() {
         />
       );
     }
-    const docsMatch = location.pathname.match(/^\/docs\/([^/]+)\/?$/u);
+    const docsMatch = pathname.match(/^\/docs\/([^/]+)$/u);
     if (docsMatch?.[1] !== undefined && ['http', 'typescript', 'python', 'mcp'].includes(docsMatch[1])) {
       return (
         <Docs
@@ -104,8 +143,14 @@ export function App() {
         />
       );
     }
-    if (location.pathname === '/status') return <Status onPhase={updatePhase} />;
-    const trustTopic = location.pathname.slice(1) as TrustTopic;
+    if (docsMatch?.[1] !== undefined && ['receipts', 'replay', 'failures', 'x402', 'catalog'].includes(docsMatch[1])) {
+      return <Guide topic={docsMatch[1] as GuideTopic} onPhase={updatePhase} />;
+    }
+    if (pathname === '/status') return <Status onPhase={updatePhase} />;
+    if (pathname === '/changelog') return <Changelog onPhase={updatePhase} />;
+    if (pathname === '/compare/blockrun') return <Compare onPhase={updatePhase} />;
+    if (pathname === '/trust') return <TrustOverview onPhase={updatePhase} />;
+    const trustTopic = pathname.slice(1) as TrustTopic;
     if (['pricing', 'benchmarks', 'security', 'legal'].includes(trustTopic)) {
       return <Trust topic={trustTopic} onPhase={updatePhase} />;
     }
@@ -113,7 +158,7 @@ export function App() {
   })();
 
   return (
-    <div className={`app app--${phase} ${location.pathname === '/' ? 'app--home' : 'app--internal'}`}>
+    <div className={`app app--${phase} ${pathname === '/' ? 'app--home' : 'app--internal'}`}>
       <Navigation activation={activation} />
       <Instrument phase={phase} />
       <LifecycleRail phase={phase} />
@@ -121,16 +166,20 @@ export function App() {
       <footer className="site-footer">
         <span>CLERVO / FIND · UNDERSTAND · ACT</span>
         <nav aria-label="Footer">
-          <Link to="/product">Product</Link>
+          <Link to="/research">Research</Link>
+          <Link to="/platform">Platform</Link>
           <Link to="/build">Build</Link>
           <Link to="/pricing">Pricing</Link>
           <Link to="/security">Security</Link>
           <Link to="/legal">Legal</Link>
           <Link to="/status">Truth status</Link>
+          <Link to="/trust">Trust</Link>
+          <Link to="/changelog">Changelog</Link>
+          <Link to="/compare/blockrun">Compare</Link>
           <a href="/openapi.json">OpenAPI</a>
           <a href="/.well-known/clervo.json">Discovery</a>
         </nav>
-        <small>Private core frozen. Public distribution and payment are not yet verified.</small>
+        <small>Public packages verified. Private payment plumbing proven once. Public API and customer payment remain unavailable.</small>
       </footer>
     </div>
   );

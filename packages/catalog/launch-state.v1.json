@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "clervo.launch-state.v1",
+  "observedAt": "2026-08-03T23:28:13Z",
+  "sourceCommit": "c34df8b",
+  "identity": {
+    "category": "Outcome infrastructure for agents",
+    "headline": "One job in. One inspectable result out.",
+    "architectureNarrative": "Find → Understand → Act",
+    "commercialPromise": "Buy outcomes. Not integrations.",
+    "explanation": "Clervo is designed to route a bounded job across models, data, and runtime, then return the result with evidence, cost, and a receipt."
+  },
+  "repository": {
+    "state": "public_verified",
+    "url": "https://github.com/clervo/clervo"
+  },
+  "distribution": {
+    "packages": {
+      "state": "published_verified",
+      "verifiedAt": "2026-08-03T22:28:10Z",
+      "items": [
+        { "registry": "npm", "name": "@clervo/sdk", "version": "0.3.0", "url": "https://www.npmjs.com/package/@clervo/sdk" },
+        { "registry": "npm", "name": "@clervo/mcp", "version": "0.3.0", "url": "https://www.npmjs.com/package/@clervo/mcp" },
+        { "registry": "pypi", "name": "clervo-sdk", "version": "0.2.0", "url": "https://pypi.org/project/clervo-sdk/0.2.0/" }
+      ]
+    },
+    "publicApi": {
+      "state": "private_production_candidate",
+      "publicCallable": false,
+      "publicTraffic": false,
+      "customerEndpointAvailable": false
+    }
+  },
+  "paymentProof": {
+    "state": "owner_funded_private_proof",
+    "productId": "search.web",
+    "network": "Base",
+    "asset": "USDC",
+    "amountAtomic": "6000",
+    "decimals": 6,
+    "amountDisplay": "0.006 USDC",
+    "settlementConfirmed": true,
+    "usefulResult": true,
+    "replaySameReceipt": true,
+    "secondAuthorization": false,
+    "secondExecution": false,
+    "secondCharge": false,
+    "publicCustomerPaymentAvailable": false,
+    "revenueEvidence": false,
+    "demandEvidence": false,
+    "transactionUrl": "https://basescan.org/tx/0xf4a2c7d5568745ad7ce11157306d5899faaf4def041519e51527c76134eca720",
+    "evidence": [
+      "infra/production/gcp/x402-proof.v1.json",
+      "tests/contract/n15.5.test.mjs"
+    ]
+  },
+  "products": [
+    {
+      "id": "search",
+      "label": "Research",
+      "operations": ["search.web", "search.answer"],
+      "engineeringState": "private_production_qualified",
+      "customerLifecycle": "preview_not_publicly_callable",
+      "commercialProof": "owner_funded_plumbing_proof_only",
+      "paymentState": "private_settlement_and_replay_verified",
+      "supplierRights": "public_offer_not_approved",
+      "allowedClaims": [
+        "The private Search path returned one useful result after one bounded x402 settlement.",
+        "An exact replay returned the same receipt without another authorization, execution, or charge."
+      ],
+      "prohibitedClaims": [
+        "Publicly callable",
+        "Customer revenue",
+        "Market demand",
+        "Public paid release"
+      ]
+    },
+    {
+      "id": "ai",
+      "label": "AI",
+      "operations": ["ai.chat", "ai.embed", "ai.image", "ai.speech"],
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable",
+      "commercialProof": "unproven",
+      "paymentState": "unavailable",
+      "supplierRights": "public_offer_not_approved",
+      "allowedClaims": ["The AI core is privately qualified."],
+      "prohibitedClaims": ["Publicly available", "Every model", "Production-ready catalog"]
+    },
+    {
+      "id": "sandbox",
+      "label": "Secure Sandbox",
+      "operations": ["sandbox.run", "sandbox.session.create", "sandbox.session.exec", "sandbox.artifact.get", "sandbox.session.destroy"],
+      "engineeringState": "private_production_qualified_single_node",
+      "customerLifecycle": "unavailable",
+      "commercialProof": "unproven",
+      "paymentState": "unavailable",
+      "supplierRights": "not_applicable",
+      "allowedClaims": ["The private gVisor execution path passed isolation, replay, and cleanup qualification."],
+      "prohibitedClaims": ["Publicly available", "Highly available", "Unlimited scale"]
+    },
+    {
+      "id": "rpc",
+      "label": "Multi-chain RPC",
+      "operations": ["rpc.call", "rpc.batch", "rpc.health", "rpc.archive", "rpc.broadcast"],
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable",
+      "commercialProof": "unproven",
+      "paymentState": "unavailable",
+      "supplierRights": "commercial_rights_blocked",
+      "allowedClaims": ["The RPC core is privately qualified."],
+      "prohibitedClaims": ["Publicly available", "Resale rights verified", "Archive and broadcast ready"]
+    },
+    {
+      "id": "prediction",
+      "label": "Prediction Intelligence",
+      "operations": ["prediction.markets", "prediction.market", "prediction.compare", "prediction.history", "prediction.signal"],
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable",
+      "commercialProof": "unproven",
+      "paymentState": "unavailable",
+      "supplierRights": "commercial_rights_blocked",
+      "allowedClaims": ["The Prediction core is privately qualified."],
+      "prohibitedClaims": ["Publicly available", "Commercial reuse approved", "Trading advice"]
+    },
+    {
+      "id": "crypto_intelligence",
+      "label": "Crypto Intelligence",
+      "operations": ["crypto.wallet", "crypto.token", "crypto.transaction", "crypto.protocol", "crypto.report"],
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable",
+      "commercialProof": "unproven",
+      "paymentState": "unavailable",
+      "supplierRights": "commercial_rights_blocked",
+      "allowedClaims": ["The Crypto Intelligence core is privately qualified and read-only."],
+      "prohibitedClaims": ["Publicly available", "Commercial reuse approved", "Custody or transaction signing"]
+    }
+  ],
+  "competitors": {
+    "blockrun": {
+      "state": "revalidation_required",
+      "observedAt": "2026-08-04T00:00:00Z",
+      "renderVolatileClaims": false,
+      "reason": "No volatile count, price, availability, quality, or savings claim renders until its primary-source observation is current and reviewable."
+    }
+  }
+}

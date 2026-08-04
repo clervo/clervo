@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "clervo.public-status.v1",
+  "observedAt": "2026-08-03T23:28:13Z",
+  "publicApi": {
+    "state": "private_production_candidate",
+    "publicCallable": false,
+    "publicTraffic": false,
+    "customerEndpointAvailable": false
+  },
+  "packages": {
+    "state": "published_verified",
+    "verifiedAt": "2026-08-03T22:28:10Z",
+    "items": [
+      {
+        "registry": "npm",
+        "name": "@clervo/sdk",
+        "version": "0.3.0",
+        "url": "https://www.npmjs.com/package/@clervo/sdk"
+      },
+      {
+        "registry": "npm",
+        "name": "@clervo/mcp",
+        "version": "0.3.0",
+        "url": "https://www.npmjs.com/package/@clervo/mcp"
+      },
+      {
+        "registry": "pypi",
+        "name": "clervo-sdk",
+        "version": "0.2.0",
+        "url": "https://pypi.org/project/clervo-sdk/0.2.0/"
+      }
+    ]
+  },
+  "paymentProof": {
+    "state": "owner_funded_private_proof",
+    "productId": "search.web",
+    "network": "Base",
+    "asset": "USDC",
+    "amountAtomic": "6000",
+    "decimals": 6,
+    "amountDisplay": "0.006 USDC",
+    "settlementConfirmed": true,
+    "usefulResult": true,
+    "replaySameReceipt": true,
+    "secondAuthorization": false,
+    "secondExecution": false,
+    "secondCharge": false,
+    "publicCustomerPaymentAvailable": false,
+    "revenueEvidence": false,
+    "demandEvidence": false,
+    "transactionUrl": "https://basescan.org/tx/0xf4a2c7d5568745ad7ce11157306d5899faaf4def041519e51527c76134eca720",
+    "evidence": [
+      "infra/production/gcp/x402-proof.v1.json",
+      "tests/contract/n15.5.test.mjs"
+    ]
+  },
+  "products": [
+    {
+      "id": "search",
+      "engineeringState": "private_production_qualified",
+      "customerLifecycle": "preview_not_publicly_callable",
+      "commercialProof": "owner_funded_plumbing_proof_only"
+    },
+    {
+      "id": "ai",
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable",
+      "commercialProof": "unproven"
+    },
+    {
+      "id": "sandbox",
+      "engineeringState": "private_production_qualified_single_node",
+      "customerLifecycle": "unavailable",
+      "commercialProof": "unproven"
+    },
+    {
+      "id": "rpc",
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable",
+      "commercialProof": "unproven"
+    },
+    {
+      "id": "prediction",
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable",
+      "commercialProof": "unproven"
+    },
+    {
+      "id": "crypto_intelligence",
+      "engineeringState": "private_core_qualified",
+      "customerLifecycle": "unavailable",
+      "commercialProof": "unproven"
+    }
+  ]
+}

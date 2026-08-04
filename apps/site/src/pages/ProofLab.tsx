@@ -142,11 +142,12 @@ export function ProofLab({
 
   const result = useMemo(() => ({
     title: 'Distribution contract inspection',
-    summary: 'The frozen projection exposes two Search operation identities while public calling, real payment, and production deployment remain false.',
+    summary: 'The frozen public projection exposes two Search operation identities while public calling and customer payment remain unavailable.',
     observations: [
       'All six product cores are privately qualified and compatibility-frozen.',
       'Search is preview; five public product lifecycles remain unavailable.',
       'The challenge amount is a non-payable mock fixture, not a customer charge.',
+      'A separate owner-funded private proof settled once; this fixture does not replay that transaction.',
     ],
   }), []);
 
@@ -203,8 +204,9 @@ export function ProofLab({
         <p className="eyebrow">Proof Lab / request to receipt</p>
         <h1>Inspect the mechanism.<br />Not a staged success.</h1>
         <p>
-          This fixture exercises Clervo’s lifecycle and contract disclosures.
-          It never contacts a provider, signs a wallet message, or settles funds.
+          This fixture lets anyone inspect Clervo’s lifecycle and recovery
+          behavior safely. It never contacts a provider, signs a wallet
+          message, or settles funds; recorded private proof is shown separately.
         </p>
       </header>
 

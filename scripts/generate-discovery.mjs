@@ -12,6 +12,9 @@ const schemaVisibility = JSON.parse(await readFile(path.join(root, 'packages/cat
 const releaseCandidate = JSON.parse(await readFile(path.join(root, 'packages/catalog/release-candidate-freeze.v1.json'), 'utf8'));
 const registry = JSON.parse(await readFile(path.join(root, releaseCandidate.baseRegistry.file), 'utf8'));
 const onboarding = JSON.parse(await readFile(path.join(root, 'packages/distribution/onboarding.v1.json'), 'utf8'));
+const launchState = JSON.parse(await readFile(path.join(root, 'packages/catalog/launch-state.v1.json'), 'utf8'));
+const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
+const x402Proof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/x402-proof.v1.json'), 'utf8'));
 
 function componentName(fileName) {
   return fileName
@@ -79,6 +82,29 @@ if (
   )
 ) throw new Error('distribution_onboarding_invalid');
 
+if (
+  launchState.schemaVersion !== 'clervo.launch-state.v1'
+  || launchState.repository.url !== 'https://github.com/clervo/clervo'
+  || launchState.distribution.packages.state !== distributionRelease.publication.state
+  || launchState.distribution.packages.items.some((item) => !distributionRelease.packages.some((published) => (
+    published.registry === item.registry
+    && published.name === item.name
+    && published.version === item.version
+  )))
+  || launchState.distribution.publicApi.publicCallable !== false
+  || launchState.distribution.publicApi.publicTraffic !== false
+  || launchState.paymentProof.state !== 'owner_funded_private_proof'
+  || launchState.paymentProof.productId !== x402Proof.productId
+  || launchState.paymentProof.amountAtomic !== x402Proof.observedSettlement.customerChargeAtomic
+  || launchState.paymentProof.settlementConfirmed !== (x402Proof.state === 'settled_reconciled')
+  || launchState.paymentProof.replaySameReceipt !== x402Proof.observedReplay.sameReceipt
+  || launchState.paymentProof.secondCharge !== x402Proof.observedReplay.secondCharge
+  || launchState.paymentProof.revenueEvidence !== x402Proof.observedSettlement.revenueEvidence
+  || launchState.paymentProof.demandEvidence !== x402Proof.observedSettlement.demandEvidence
+  || launchState.products.length !== 6
+  || launchState.products.some(({ id }) => !registry.pillars.some(({ pillarId }) => pillarId === id))
+) throw new Error('launch_state_invalid');
+
 await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(path.join(outputDirectory, 'schemas', contractModule.CONTRACT_VERSION), { recursive: true });
 
@@ -102,8 +128,64 @@ contractModule.assertPreviewArtifacts(openapi, discovery, llms, projection);
 await writeFile(path.join(outputDirectory, 'openapi.json'), stableJson(openapi));
 await writeFile(path.join(outputDirectory, 'catalog.json'), stableJson(catalog));
 await writeFile(path.join(outputDirectory, 'onboarding.json'), stableJson(onboarding));
+await writeFile(path.join(outputDirectory, 'claims.json'), stableJson(launchState));
+await writeFile(path.join(outputDirectory, 'capabilities.json'), stableJson({
+  schemaVersion: 'clervo.capabilities.v1',
+  observedAt: launchState.observedAt,
+  publicCallable: false,
+  products: launchState.products.map(({ id, label, operations, engineeringState, customerLifecycle }) => ({
+    id,
+    label,
+    operations,
+    engineeringState,
+    customerLifecycle,
+  })),
+}));
+await writeFile(path.join(outputDirectory, 'pricing.json'), stableJson({
+  schemaVersion: 'clervo.public-pricing-state.v1',
+  observedAt: launchState.observedAt,
+  publicOfferAvailable: false,
+  publicPrice: null,
+  privateProof: {
+    productId: launchState.paymentProof.productId,
+    amountDisplay: launchState.paymentProof.amountDisplay,
+    label: 'Owner-funded private proof amount; not a public customer offer.',
+  },
+  fixturePrices: discovery.products.map(({ productId, pricing }) => ({ productId, ...pricing })),
+}));
+await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
+  schemaVersion: 'clervo.public-status.v1',
+  observedAt: launchState.observedAt,
+  publicApi: launchState.distribution.publicApi,
+  packages: launchState.distribution.packages,
+  paymentProof: launchState.paymentProof,
+  products: launchState.products.map(({ id, engineeringState, customerLifecycle, commercialProof }) => ({
+    id,
+    engineeringState,
+    customerLifecycle,
+    commercialProof,
+  })),
+}));
 await mkdir(path.join(outputDirectory, '.well-known'), { recursive: true });
 await writeFile(path.join(outputDirectory, '.well-known', 'clervo.json'), stableJson(discovery));
+await writeFile(path.join(outputDirectory, '.well-known', 'mcp.json'), stableJson({
+  schemaVersion: 'clervo.mcp-discovery.v1',
+  name: '@clervo/mcp',
+  version: launchState.distribution.packages.items.find(({ name }) => name === '@clervo/mcp').version,
+  registryUrl: launchState.distribution.packages.items.find(({ name }) => name === '@clervo/mcp').url,
+  transport: 'stdio',
+  publicApiAvailable: false,
+  configurationRequired: ['CLERVO_BASE_URL'],
+  paymentSigningImplemented: false,
+  automaticPaymentRetry: false,
+}));
+await writeFile(path.join(outputDirectory, '.well-known', 'security.txt'), [
+  'Canonical: https://clervo.dev/.well-known/security.txt',
+  'Contact: https://github.com/clervo/clervo/security/advisories/new',
+  'Policy: https://clervo.dev/security/',
+  '',
+].join('\n'));
+await writeFile(path.join(outputDirectory, 'openapi.yaml'), stableJson(openapi));
 await writeFile(path.join(outputDirectory, 'llms.txt'), llms);
 
 console.log(`distribution discovery generation: PASS (${projection.publicOperationIds.length} operations, ${Object.keys(schemas).length} schemas)`);

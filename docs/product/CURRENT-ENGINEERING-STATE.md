@@ -6,6 +6,36 @@ reading it.
 
 ## Active work
 
+The V11.1 launch-experience rebuild is complete as a local release candidate.
+Repository truth now generates a three-dimension launch registry (engineering
+state, customer lifecycle, and commercial proof), visible claims, pricing,
+status, capabilities, OpenAPI, MCP discovery, `llms.txt`, sitemap, and canonical
+route metadata. The public packages are represented as published and verified;
+the customer API, public payment, revenue, demand, and unavailable product cores
+remain explicitly unavailable. The one 0.006 USDC owner-funded private Search
+proof is presented with its no-charge replay and exact non-claims.
+
+The experience contains 32 prerendered routes: the outcome-led homepage, first
+Research path, six exact product-state pages, Install → Ask → Fund → Approve →
+Result → Receipt onboarding, deterministic non-payable Proof Lab, durable proof
+index, public package provenance, five contract guides, pricing, benchmarks,
+security, rights, trust, status, changelog, and a dated BlockRun mechanism
+comparison with volatile claims suppressed. The canonical triangular prism and
+Worlds network are authored in Blender 5.2.0 LTS, preserved as `.blend`, exported
+as GLBs, rendered as desktop/portrait fallbacks, hash-bound in two manifests,
+and never used as product evidence. Desktop WebGL is lazy and demand-rendered;
+mobile, reduced-motion, model failure, and context-loss paths retain the
+deterministic poster and semantic DOM.
+
+The consolidated local site proof passes 31 browser routes, 13 responsive/zoom
+modes, direct-load hydration, navigation/history, the complete fixture journey,
+static HTML, WebGL delivery/fallback behavior, 32 hashed media artifacts, 99
+runtime nodes, and zero axe, console, page, or request failures. Lint covers 620
+source/contract files; dependency audit, secret scan, and clean-room verification
+pass. Nothing in this rebuild is publicly deployed. Physical Mac Chrome/Safari
+and real-device certification, public API/domain release, and external-customer
+proof remain future release work and must not be inferred from this local pass.
+
 Stage 7 secure sandbox product core, persistent private execution plane, and
 authenticated private control service are complete. The contracts, lifecycle,
 cleanup, artifact quarantine, cost controls, verified-image registry, runner,

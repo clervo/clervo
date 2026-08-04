@@ -80,9 +80,26 @@ export interface DiscoveryDocument {
     releaseCandidateId: string;
     interfaceHash: `sha256:${string}`;
   };
-  payment: { protocol: 'x402'; implemented: false; settlementVerified: false };
+  payment: {
+    protocol: 'x402';
+    implemented: false;
+    settlementVerified: false;
+    publicAvailable: false;
+    privateProofVerified: true;
+    commercialProof: false;
+  };
   releaseScope: ProductScopeDocument;
-  artifacts: { openapi: string; catalog: string; onboarding: string; llms: string; schemas: string };
+  artifacts: {
+    openapi: string;
+    catalog: string;
+    onboarding: string;
+    claims: string;
+    capabilities: string;
+    pricing: string;
+    status: string;
+    llms: string;
+    schemas: string;
+  };
   products: readonly [DiscoveryProduct, DiscoveryProduct];
   limitations: string[];
 }
@@ -121,7 +138,7 @@ export function createOpenApiDocument(
     info: {
       title: 'Clervo search distribution candidate',
       version: CONTRACT_VERSION,
-      description: 'Generated contract candidate for the repository-local search preview. It does not claim a public deployment, public callable service, or payable x402 settlement.',
+      description: 'Generated contract candidate for the Search preview. It does not claim a public callable service or a publicly payable x402 route.',
     },
     paths: {
       [SEARCH_FREE_PATH]: {
@@ -202,7 +219,7 @@ export function createDiscoveryDocument(
     discoveryVersion: DISCOVERY_VERSION,
     contractVersion: CONTRACT_VERSION,
     name: 'Clervo',
-    description: 'Machine-readable distribution candidate derived from the frozen private product core. All six cores are privately qualified; Search remains a repository-local preview, the other five public lifecycles remain unavailable, and no public deployment or real payment is claimed.',
+    description: 'Machine-readable customer-distribution candidate derived from the qualified private product core. Public SDK, MCP, and Python packages are verified; the customer API is not publicly callable. One owner-funded private x402 proof settled and replayed safely, which is not customer revenue or demand.',
     lifecycle: 'preview',
     distribution: {
       state: 'candidate',
@@ -212,12 +229,23 @@ export function createDiscoveryDocument(
       releaseCandidateId: projection.releaseCandidateId,
       interfaceHash: projection.interfaceHash,
     },
-    payment: { protocol: 'x402', implemented: false, settlementVerified: false },
+    payment: {
+      protocol: 'x402',
+      implemented: false,
+      settlementVerified: false,
+      publicAvailable: false,
+      privateProofVerified: true,
+      commercialProof: false,
+    },
     releaseScope: createProductScopeDocument(),
     artifacts: {
       openapi: '/openapi.json',
       catalog: '/catalog.json',
       onboarding: '/onboarding.json',
+      claims: '/claims.json',
+      capabilities: '/capabilities.json',
+      pricing: '/pricing.json',
+      status: '/status.json',
       llms: '/llms.txt',
       schemas: `/schemas/${CONTRACT_VERSION}/`,
     },
@@ -226,8 +254,8 @@ export function createDiscoveryDocument(
       product(SEARCH_SYNTHESIS_PRODUCT_ID, 'Search answer', 'Evidence-grounded synthesized answer with citations.', true),
     ],
     limitations: [
-      'Public distribution and deployment are not verified.',
-      'Real x402 verification, facilitator authorization, and settlement are not implemented.',
+      'Public client packages are verified, but the customer API and public traffic are unavailable.',
+      'One owner-funded private x402 settlement is verified; no customer payment, revenue, or demand is claimed.',
       'Published prices in this candidate are explicitly non-payable mock fixtures.',
       'The default paid route does not execute.',
       'The reference free quota is process-local and must be replaced before production.',
@@ -259,15 +287,17 @@ export function createLlmsText(
     '',
     'Current verified status:',
     '',
-    '- Distribution state: repository-generated candidate; not publicly distributed',
+    '- Developer distribution: public TypeScript, MCP, and Python packages are registry-verified',
+    '- Customer API: private production candidate; not publicly callable and receiving no public traffic',
     `- Frozen release candidate: ${projection.releaseCandidateId}`,
     `- Frozen interface hash: ${projection.interfaceHash}`,
     '- Six product cores: privately qualified and compatibility-frozen',
     '- Public lifecycle: Search preview; AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence unavailable',
     '- Projected operation IDs: search.web, search.answer',
     '- Public API callable: no',
-    '- x402 payment implementation: not implemented',
-    '- Production deployment: not verified',
+    '- x402 public payment: unavailable',
+    '- x402 private proof: one owner-funded useful result settled and replayed without a second charge',
+    '- Commercial proof: no customer revenue or demand claimed',
     '- Prices in this candidate: non-payable mock fixtures only',
     '- First Revenue Release ready: no',
     '- llms.txt is a documentation map, not a search or AI ranking claim',
@@ -277,6 +307,10 @@ export function createLlmsText(
     '- [OpenAPI contract](/openapi.json): repository-local preview and non-payable challenge routes.',
     '- [Catalog](/catalog.json): exact projected operations and lifecycle limitations.',
     '- [Onboarding and recovery](/onboarding.json): exact candidate journey state and six bounded recovery actions.',
+    '- [Launch claims](/claims.json): separate engineering state, customer lifecycle, and commercial proof.',
+    '- [Capability state](/capabilities.json): exact lifecycle and operation identities.',
+    '- [Pricing state](/pricing.json): public-offer boundary, private proof amount, and fixture amounts.',
+    '- [Status](/status.json): current packages, API, payment proof, and product states.',
     '- [Discovery document](/.well-known/clervo.json): release-candidate binding and distribution status.',
     `- [JSON Schemas](/schemas/${CONTRACT_VERSION}/): projected public-wire contracts.`,
     '',
@@ -316,7 +350,8 @@ export function assertPreviewArtifacts(
   if (!discovery.releaseScope.productCore.ready || discovery.releaseScope.firstRevenueRelease.ready) failures.push('discovery_release_scope_invalid');
   if (!discovery.releaseScope.pillars.every(({ coreQualified }) => coreQualified)) failures.push('discovery_private_core_qualification_incomplete');
   if (!llms.includes('Public API callable: no')) failures.push('llms_missing_callable_status');
-  if (!llms.includes('x402 payment implementation: not implemented')) failures.push('llms_missing_payment_status');
+  if (!llms.includes('x402 public payment: unavailable')) failures.push('llms_missing_payment_status');
+  if (!llms.includes('no customer revenue or demand claimed')) failures.push('llms_missing_commercial_boundary');
   if (!llms.includes(projection.interfaceHash)) failures.push('llms_missing_interface_binding');
   if (/\b(?:live service|available now|production-ready)\b/iu.test(llms)) failures.push('llms_unsafe_public_claim');
   if (failures.length > 0) throw new TypeError(`unsafe discovery artifacts: ${failures.join(', ')}`);

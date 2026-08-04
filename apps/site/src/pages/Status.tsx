@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
-import { discovery, pillarLabels, type ExperiencePhase } from '../product';
+import { discovery, launchState, pillarLabels, type ExperiencePhase } from '../product';
 
 export function Status({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   useEffect(() => onPhase('verified'), [onPhase]);
@@ -10,8 +10,12 @@ export function Status({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
       <header className="page-intro">
         <ModeBadge>Evidence-backed status · not a launch claim</ModeBadge>
         <p className="eyebrow">Current engineering state</p>
-        <h1>Private core frozen.<br />Public release incomplete.</h1>
-        <p>{discovery.description}</p>
+        <h1>Built privately.<br />Not publicly callable.</h1>
+        <p>
+          Six cores are privately qualified, public clients are published, and
+          one owner-funded payment path has settled and replayed safely. Public
+          traffic, customer payment, revenue, and demand remain unproven.
+        </p>
       </header>
 
       <div className="status-summary">
@@ -26,9 +30,9 @@ export function Status({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           <p>Only search.web and search.answer enter the distribution candidate.</p>
         </article>
         <article>
-          <span>00</span>
-          <h2>Public payment proofs</h2>
-          <p>No real settlement or externally useful paid result is claimed.</p>
+          <span>01</span>
+          <h2>Private payment proof</h2>
+          <p>Owner-funded, reconciled, and replay-safe; not customer revenue.</p>
         </article>
       </div>
 
@@ -54,6 +58,9 @@ export function Status({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           <div><dt>Interface hash</dt><dd>{discovery.distribution.interfaceHash}</dd></div>
           <div><dt>Public distribution</dt><dd>false</dd></div>
           <div><dt>Public callable</dt><dd>false</dd></div>
+          <div><dt>Public packages</dt><dd>{launchState.distribution.packages.state.replaceAll('_', ' ')}</dd></div>
+          <div><dt>Private x402 proof</dt><dd>{launchState.paymentProof.amountDisplay}, settled</dd></div>
+          <div><dt>Customer revenue evidence</dt><dd>false</dd></div>
           <div><dt>First Revenue Release</dt><dd>not ready</dd></div>
         </dl>
       </section>

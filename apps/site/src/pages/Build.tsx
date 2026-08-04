@@ -64,13 +64,13 @@ export function Build({
   return (
     <section className="build-page">
       <header className="page-intro">
-        <ModeBadge>Local activation path · public endpoint not deployed</ModeBadge>
+        <ModeBadge>Published clients · public endpoint not deployed</ModeBadge>
         <p className="eyebrow">Build / evidence-backed setup</p>
         <h1>Prove the path.<br />Then connect it.</h1>
         <p>
-          Start with the deterministic lifecycle, inspect its receipt, choose a
-          tested client, then supply an explicit endpoint after deployment is
-          verified. No package or endpoint is presented here as publicly live.
+          Install a verified public client, inspect the deterministic lifecycle,
+          then supply an explicit endpoint after customer deployment is
+          verified. Package availability does not imply API availability.
         </p>
       </header>
 

@@ -4,15 +4,17 @@
 
 Current verified status:
 
-- Distribution state: repository-generated candidate; not publicly distributed
+- Developer distribution: public TypeScript, MCP, and Python packages are registry-verified
+- Customer API: private production candidate; not publicly callable and receiving no public traffic
 - Frozen release candidate: clervo-private-core-2026-08-02.2
 - Frozen interface hash: sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622
 - Six product cores: privately qualified and compatibility-frozen
 - Public lifecycle: Search preview; AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence unavailable
 - Projected operation IDs: search.web, search.answer
 - Public API callable: no
-- x402 payment implementation: not implemented
-- Production deployment: not verified
+- x402 public payment: unavailable
+- x402 private proof: one owner-funded useful result settled and replayed without a second charge
+- Commercial proof: no customer revenue or demand claimed
 - Prices in this candidate: non-payable mock fixtures only
 - First Revenue Release ready: no
 - llms.txt is a documentation map, not a search or AI ranking claim
@@ -22,5 +24,9 @@ Current verified status:
 - [OpenAPI contract](/openapi.json): repository-local preview and non-payable challenge routes.
 - [Catalog](/catalog.json): exact projected operations and lifecycle limitations.
 - [Onboarding and recovery](/onboarding.json): exact candidate journey state and six bounded recovery actions.
+- [Launch claims](/claims.json): separate engineering state, customer lifecycle, and commercial proof.
+- [Capability state](/capabilities.json): exact lifecycle and operation identities.
+- [Pricing state](/pricing.json): public-offer boundary, private proof amount, and fixture amounts.
+- [Status](/status.json): current packages, API, payment proof, and product states.
 - [Discovery document](/.well-known/clervo.json): release-candidate binding and distribution status.
 - [JSON Schemas](/schemas/2026-07-29.1/): projected public-wire contracts.

@@ -63,6 +63,7 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
               <ul>
                 {pillar.capabilityIds.map((capability) => <li key={capability}><code>{capability}</code></li>)}
               </ul>
+              <Link className="text-link" to={`/products/${pillar.pillarId === 'crypto_intelligence' ? 'crypto' : pillar.pillarId}`}>Open exact product state →</Link>
             </div>
           </details>
         ))}

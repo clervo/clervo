@@ -3,16 +3,16 @@ import { useEffect } from 'react';
 import { CodeBlock } from '../components/CodeBlock';
 import { ModeBadge } from '../components/Navigation';
 import type { ActivationState } from '../experience';
-import { discovery, installExamples, type ExperiencePhase } from '../product';
+import { discovery, installExamples, launchState, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 type ClientId = keyof typeof installExamples;
 
 const clients: Array<{ id: ClientId; label: string; packageName: string; version: string }> = [
-  { id: 'http', label: 'Raw HTTP', packageName: 'OpenAPI 3.1.1', version: 'frozen candidate' },
-  { id: 'typescript', label: 'TypeScript', packageName: '@clervo/sdk', version: '0.3.0 candidate' },
-  { id: 'python', label: 'Python', packageName: 'clervo-sdk', version: '0.2.0 candidate' },
-  { id: 'mcp', label: 'MCP', packageName: '@clervo/mcp', version: '0.3.0 candidate' },
+  { id: 'http', label: 'Raw HTTP', packageName: 'OpenAPI 3.1.1', version: 'published contract' },
+  { id: 'typescript', label: 'TypeScript', packageName: '@clervo/sdk', version: '0.3.0 published' },
+  { id: 'python', label: 'Python', packageName: 'clervo-sdk', version: '0.2.0 published' },
+  { id: 'mcp', label: 'MCP', packageName: '@clervo/mcp', version: '0.3.0 published' },
 ];
 
 export function Docs({
@@ -37,14 +37,13 @@ export function Docs({
   return (
     <section className="docs-page">
       <header className="page-intro">
-        <ModeBadge>Package candidates · publication not verified</ModeBadge>
-        <p className="eyebrow">Developer access / frozen contract</p>
-        <h1>One interface.<br />Explicit limits.</h1>
+        <ModeBadge>Public packages verified · endpoint required</ModeBadge>
+        <p className="eyebrow">Developer quickstart / published clients</p>
+        <h1>Install the client.<br />Keep the boundary visible.</h1>
         <p>
-          Every client is bound to release candidate
-          {' '}<code>{discovery.distribution.releaseCandidateId}</code>. An
-          endpoint must be supplied explicitly because no public API deployment
-          is currently claimed.
+          The TypeScript SDK, MCP server, and Python SDK are published and
+          registry-verified. Every client still requires an explicit base URL
+          because the Clervo customer API is not publicly callable.
         </p>
       </header>
 
@@ -75,11 +74,11 @@ export function Docs({
             <span>{selected.version}</span>
           </header>
           <div className="truth-callout">
-            <b>Distribution boundary</b>
+            <b>Published package / private service boundary</b>
             <p>
-              The following is the prepared integration shape. The package
-              candidate is tested locally but has not been verified as the
-              current public registry release.
+              This client is installable from its public registry. It does not
+              discover a public endpoint, sign payment authorizations, or retry
+              an unknown settlement automatically.
             </p>
           </div>
           <CodeBlock
@@ -107,7 +106,7 @@ export function Docs({
             <h3>Typed errors stay visible.</h3>
             <ul className="contract-list">
               <li><b>400</b><span>Request rejected before execution.</span></li>
-              <li><b>402</b><span>Typed non-payable mock challenge; never auto-paid.</span></li>
+              <li><b>402</b><span>Typed challenge; current public discovery remains non-payable and clients never auto-sign.</span></li>
               <li><b>409</b><span>Idempotency key bound to a different request.</span></li>
               <li><b>429</b><span>Bounded preview quota exhausted.</span></li>
               <li><b>502</b><span>Executor or contract verification failed closed.</span></li>
@@ -121,7 +120,9 @@ export function Docs({
               <div><dt>Candidate</dt><dd>{discovery.distribution.releaseCandidateId}</dd></div>
               <div><dt>Hash</dt><dd>{discovery.distribution.interfaceHash}</dd></div>
               <div><dt>Public callable</dt><dd>false</dd></div>
-              <div><dt>Payment implemented</dt><dd>false</dd></div>
+              <div><dt>Package publication</dt><dd>{launchState.distribution.packages.state.replaceAll('_', ' ')}</dd></div>
+              <div><dt>Private payment proof</dt><dd>settled and replayed once</dd></div>
+              <div><dt>Public payment available</dt><dd>false</dd></div>
             </dl>
           </section>
         </article>

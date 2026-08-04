@@ -77,7 +77,9 @@ test('discovery is bound to the frozen private core without claiming public dist
     && product.payment.payable === false
     && product.pricing.model === 'non_payable_mock_fixture'));
   assert.deepEqual(discovery.products.map(({ selection, pricing }) => [selection.synthesize, pricing.displayPrice.amountAtomic]), [[false, '6000'], [true, '12000']]);
-  assert.match(discovery.description, /no public deployment or real payment/i);
+  assert.match(discovery.description, /not publicly callable/i);
+  assert.equal(discovery.payment.privateProofVerified, true);
+  assert.equal(discovery.payment.commercialProof, false);
   assert.deepEqual(await json('catalog.json'), {
     contractVersion: CONTRACT_VERSION,
     catalogVersion: discovery.discoveryVersion,
@@ -107,7 +109,8 @@ test('llms.txt publishes the candidate operation set and explicit distribution l
   assert.match(llms, /^# Clervo\n\n> /);
   assert.match(llms, /Projected operation IDs: search\.web, search\.answer/);
   assert.match(llms, /Public API callable: no/);
-  assert.match(llms, /x402 payment implementation: not implemented/);
+  assert.match(llms, /x402 public payment: unavailable/);
+  assert.match(llms, /one owner-funded useful result settled and replayed without a second charge/);
   assert.match(llms, /Six product cores: privately qualified and compatibility-frozen/);
   assert.match(llms, /First Revenue Release ready: no/);
   assert.match(llms, /llms\.txt is a documentation map, not a search or AI ranking claim/);

@@ -10,18 +10,36 @@ const output = path.join(root, 'docs/evidence/site/v6-browser-baseline');
 const origin = process.env.CLERVO_SITE_ORIGIN ?? 'http://127.0.0.1:4173';
 const routes = [
   '/',
+  '/research',
+  '/platform',
   '/product',
+  '/products/search',
+  '/products/ai',
+  '/products/sandbox',
+  '/products/rpc',
+  '/products/prediction',
+  '/products/crypto',
   '/build',
+  '/proof',
   '/proof-lab',
+  '/docs/quickstart',
   '/docs/http',
   '/docs/typescript',
   '/docs/python',
   '/docs/mcp',
+  '/docs/receipts',
+  '/docs/replay',
+  '/docs/failures',
+  '/docs/x402',
+  '/docs/catalog',
   '/pricing',
   '/benchmarks',
   '/security',
   '/legal',
   '/status',
+  '/changelog',
+  '/compare/blockrun',
+  '/trust',
 ];
 const browser = await chromium.launch({ headless: true });
 const report = {
@@ -32,11 +50,17 @@ const report = {
   runtimeDelivery: {},
   staticHtml: {},
   violations: [],
+  consoleErrors: [],
+  pageErrors: [],
 };
 
 for (const route of routes) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   const page = await context.newPage();
+  page.on('console', (message) => {
+    if (message.type() === 'error') report.consoleErrors.push({ route, text: message.text() });
+  });
+  page.on('pageerror', (error) => report.pageErrors.push({ route, text: error.message }));
   await page.goto(`${origin}${route}`, { waitUntil: 'networkidle' });
   const results = await new AxeBuilder({ page }).analyze();
   report.routes.push({ route, title: await page.title(), violations: results.violations.length });
@@ -114,7 +138,8 @@ const mobileRequests = [];
 deliveryPage.on('request', (request) => mobileRequests.push(request.url()));
 await deliveryPage.goto(origin, { waitUntil: 'networkidle' });
 report.runtimeDelivery.mobileLoadedWebGL = mobileRequests.some((url) => (
-  url.includes('WebGLInstrument') || url.endsWith('clervo-prism.glb')
+  url.includes('WebGLInstrument') || url.includes('WebGLWorlds')
+  || url.endsWith('clervo-prism.glb') || url.endsWith('clervo-worlds.glb')
 ));
 report.runtimeDelivery.mobileLoadedCanonicalStill = mobileRequests.some((url) => (
   url.endsWith('clervo-prism-portrait-risk.webp')
@@ -127,7 +152,8 @@ const desktopRequests = [];
 desktopDeliveryPage.on('request', (request) => desktopRequests.push(request.url()));
 await desktopDeliveryPage.goto(origin, { waitUntil: 'networkidle' });
 report.runtimeDelivery.desktopLoadedWebGLBeforeInteraction = desktopRequests.some((url) => (
-  url.includes('WebGLInstrument') || url.endsWith('clervo-prism.glb')
+  url.includes('WebGLInstrument') || url.includes('WebGLWorlds')
+  || url.endsWith('clervo-prism.glb') || url.endsWith('clervo-worlds.glb')
 ));
 await desktopDeliveryPage.mouse.move(720, 500);
 await desktopDeliveryPage.waitForFunction(() => (
@@ -136,6 +162,24 @@ await desktopDeliveryPage.waitForFunction(() => (
 report.runtimeDelivery.desktopLoadedWebGLAfterInteraction = desktopRequests.some((url) => (
   url.includes('WebGLInstrument') || url.endsWith('clervo-prism.glb')
 ));
+await desktopDeliveryPage.locator('.worlds-stage').scrollIntoViewIfNeeded();
+await desktopDeliveryPage.waitForFunction(() => (
+  [...performance.getEntriesByType('resource')].some(({ name }) => name.includes('clervo-worlds.glb'))
+));
+report.runtimeDelivery.desktopLoadedWorldsAfterScroll = desktopRequests.some((url) => (
+  url.includes('WebGLWorlds') || url.endsWith('clervo-worlds.glb')
+));
+report.runtimeDelivery.contextLossFallbacksVisible = await desktopDeliveryPage.evaluate(async () => {
+  for (const canvas of document.querySelectorAll('canvas')) {
+    const context = canvas.getContext('webgl2') ?? canvas.getContext('webgl');
+    context?.getExtension('WEBGL_lose_context')?.loseContext();
+  }
+  await new Promise((resolve) => window.setTimeout(resolve, 50));
+  const prism = document.querySelector('.instrument-still img');
+  const worlds = document.querySelector('.worlds-still img');
+  return prism instanceof HTMLImageElement && prism.complete && prism.naturalWidth > 0
+    && worlds instanceof HTMLImageElement && worlds.complete && worlds.naturalWidth > 0;
+});
 await desktopDeliveryContext.close();
 
 const noScriptContext = await browser.newContext({
@@ -152,7 +196,7 @@ await noScriptContext.close();
 const navigationContext = await browser.newContext({ viewport: { width: 1280, height: 800 } });
 const navigationPage = await navigationContext.newPage();
 await navigationPage.goto(origin, { waitUntil: 'networkidle' });
-await navigationPage.getByRole('link', { name: 'Enter Proof Lab' }).click();
+await navigationPage.getByRole('link', { name: 'See the first outcome' }).click();
 report.navigation.forward = new URL(navigationPage.url()).pathname;
 await navigationPage.goBack();
 report.navigation.back = new URL(navigationPage.url()).pathname;
@@ -179,21 +223,25 @@ const responsivePassed = report.responsive.every(({ overflow }) => overflow === 
 const deliveryPassed = report.runtimeDelivery.mobileLoadedWebGL === false
   && report.runtimeDelivery.mobileLoadedCanonicalStill === true
   && report.runtimeDelivery.desktopLoadedWebGLBeforeInteraction === false
-  && report.runtimeDelivery.desktopLoadedWebGLAfterInteraction === true;
+  && report.runtimeDelivery.desktopLoadedWebGLAfterInteraction === true
+  && report.runtimeDelivery.desktopLoadedWorldsAfterScroll === true
+  && report.runtimeDelivery.contextLossFallbacksVisible === true;
 const staticHtmlPassed = report.staticHtml.docsHeading?.includes('TypeScript') === true
   && report.staticHtml.hasCanonical === true;
-const navigationPassed = report.navigation.forward === '/proof-lab'
+const navigationPassed = report.navigation.forward === '/research'
   && report.navigation.back === '/'
-  && report.navigation.forwardAgain === '/proof-lab'
+  && report.navigation.forwardAgain === '/research'
   && report.navigation.commandOpened === true
   && report.navigation.commandDestination === '/security';
-if (severe.length > 0 || !navigationPassed || !responsivePassed || !deliveryPassed || !staticHtmlPassed) {
+if (severe.length > 0 || report.consoleErrors.length > 0 || report.pageErrors.length > 0 || !navigationPassed || !responsivePassed || !deliveryPassed || !staticHtmlPassed) {
   console.error(JSON.stringify({
     severe,
     navigation: report.navigation,
     responsive: report.responsive,
     runtimeDelivery: report.runtimeDelivery,
     staticHtml: report.staticHtml,
+    consoleErrors: report.consoleErrors,
+    pageErrors: report.pageErrors,
   }, null, 2));
   process.exitCode = 1;
 } else {

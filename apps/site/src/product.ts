@@ -1,4 +1,5 @@
 import discoverySource from '../../../generated/public/.well-known/clervo.json';
+import launchStateSource from '../../../generated/public/claims.json';
 import onboardingSource from '../../../generated/public/onboarding.json';
 
 export type ExperiencePhase = 'risk' | 'qualified' | 'approval' | 'verified' | 'receipt';
@@ -64,6 +65,79 @@ interface Discovery {
 
 export const discovery = discoverySource as unknown as Discovery;
 
+export type LaunchProductId = 'search' | 'ai' | 'sandbox' | 'rpc' | 'prediction' | 'crypto_intelligence';
+
+export interface LaunchProduct {
+  id: LaunchProductId;
+  label: string;
+  operations: string[];
+  engineeringState: string;
+  customerLifecycle: string;
+  commercialProof: string;
+  paymentState: string;
+  supplierRights: string;
+  allowedClaims: string[];
+  prohibitedClaims: string[];
+}
+
+interface LaunchState {
+  schemaVersion: 'clervo.launch-state.v1';
+  observedAt: string;
+  sourceCommit: string;
+  identity: {
+    category: string;
+    headline: string;
+    architectureNarrative: string;
+    commercialPromise: string;
+    explanation: string;
+  };
+  repository: { state: 'public_verified'; url: string };
+  distribution: {
+    packages: {
+      state: 'published_verified';
+      verifiedAt: string;
+      items: Array<{ registry: 'npm' | 'pypi'; name: string; version: string; url: string }>;
+    };
+    publicApi: {
+      state: 'private_production_candidate';
+      publicCallable: false;
+      publicTraffic: false;
+      customerEndpointAvailable: false;
+    };
+  };
+  paymentProof: {
+    state: 'owner_funded_private_proof';
+    productId: 'search.web';
+    network: 'Base';
+    asset: 'USDC';
+    amountAtomic: '6000';
+    decimals: 6;
+    amountDisplay: '0.006 USDC';
+    settlementConfirmed: true;
+    usefulResult: true;
+    replaySameReceipt: true;
+    secondAuthorization: false;
+    secondExecution: false;
+    secondCharge: false;
+    publicCustomerPaymentAvailable: false;
+    revenueEvidence: false;
+    demandEvidence: false;
+    transactionUrl: string;
+    evidence: string[];
+  };
+  products: LaunchProduct[];
+  competitors: {
+    blockrun: {
+      state: 'revalidation_required';
+      observedAt: string;
+      renderVolatileClaims: false;
+      reason: string;
+    };
+  };
+}
+
+export const launchState = launchStateSource as unknown as LaunchState;
+
 export interface OnboardingRecovery {
   code: 'insufficient_funds' | 'wrong_network_or_asset' | 'expired_quote' | 'rejected' | 'timeout' | 'unknown_settlement';
   problemCodes: string[];
@@ -78,7 +152,7 @@ interface Onboarding {
   paymentImplemented: false;
   journey: Array<{
     step: 'install' | 'ask' | 'fund' | 'approve' | 'result' | 'receipt';
-    state: 'candidate_verified' | 'fixture_verified' | 'fixture_only' | 'unavailable';
+    state: 'published_verified' | 'fixture_verified' | 'fixture_only' | 'unavailable';
     action: string;
   }>;
   recovery: OnboardingRecovery[];
@@ -181,3 +255,9 @@ result = clervo.search.web(
   }
 }`,
 } as const;
+
+export const publishedClients = [
+  { id: 'typescript', label: 'TypeScript', name: '@clervo/sdk', version: '0.3.0', url: 'https://www.npmjs.com/package/@clervo/sdk' },
+  { id: 'mcp', label: 'MCP', name: '@clervo/mcp', version: '0.3.0', url: 'https://www.npmjs.com/package/@clervo/mcp' },
+  { id: 'python', label: 'Python', name: 'clervo-sdk', version: '0.2.0', url: 'https://pypi.org/project/clervo-sdk/0.2.0/' },
+] as const;

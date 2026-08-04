@@ -8,7 +8,7 @@ import { CommandPalette } from './CommandPalette';
 export function Navigation({ activation }: { activation: ActivationState }) {
   const completed = Number(activation.proofCompleted) + Number(activation.receiptInspected);
   const { location } = useRouter();
-  const active = (path: string) => location.pathname === path
+  const active = (path: string) => location.pathname === path || location.pathname === `${path}/`
     || (path === '/docs' && location.pathname.startsWith('/docs/'));
   return (
     <header className="site-header">
@@ -17,8 +17,10 @@ export function Navigation({ activation }: { activation: ActivationState }) {
         <span>CLERVO</span>
       </Link>
       <nav className="global-nav" aria-label="Primary navigation">
-        <Link className={active('/product') ? 'active' : ''} to="/product">Product</Link>
-        <Link className={active('/proof-lab') ? 'active' : ''} to="/proof-lab">Proof Lab</Link>
+        <Link className={active('/research') ? 'active' : ''} to="/research">Outcome</Link>
+        <Link className={active('/platform') ? 'active' : ''} to="/platform"><span className="nav-long">How it works</span><span className="nav-short">How</span></Link>
+        <Link className={active('/pricing') ? 'active' : ''} to="/pricing">Pricing</Link>
+        <Link className={active('/proof') || active('/proof-lab') ? 'active' : ''} to="/proof">Proof</Link>
         <Link className={active('/docs') ? 'active' : ''} to="/docs">Docs</Link>
         <Link className={active('/status') ? 'active' : ''} to="/status">Status</Link>
       </nav>

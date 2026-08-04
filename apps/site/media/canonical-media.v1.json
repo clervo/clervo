@@ -10,6 +10,8 @@
     "Camera_Portrait_Canonical"
   ],
   "actions": [
+    "CLERVO_Shell_Left",
+    "CLERVO_Shell_Right",
     "CLERVO_Verification_Aperture",
     "CLERVO_Receipt_Ejection"
   ],
@@ -32,133 +34,133 @@
   "artifacts": [
     {
       "path": "apps/site/media/blender/clervo-prism-v1.blend",
-      "sizeBytes": 107574,
-      "sha256": "e16eaf459c117c4e713f01d69bf104371afaaadb9741ca5bf4c60b245d00c0ea"
+      "sizeBytes": 146804,
+      "sha256": "18504cb6a2d1026c4ca49ae369b724920783de1a6557fe8d9ffcb319dd972f07"
     },
     {
       "path": "apps/site/public-assets/clervo-prism.glb",
-      "sizeBytes": 154188,
-      "sha256": "f9e0c348f6a176d9ad790bd390ebd67e704134e914ec203cd1a3bf2389a7149e"
+      "sizeBytes": 818616,
+      "sha256": "dea87f665ce7a01f7925fc44aabfeb044e5d23a2c192f22c0749912e0663ba0f"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-desktop-approval.png",
-      "sizeBytes": 648179,
-      "sha256": "52d6837fb6c7efff98d00ab247f71f257eb000c52a92fa922bca247e45d72cd0"
+      "sizeBytes": 717135,
+      "sha256": "9cdc335c116be661f951ac5cd6859c3f73d0ab3ea8c9b1b3da1a2d9a20c63fa8"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-desktop-idle.png",
-      "sizeBytes": 600619,
-      "sha256": "d08e5e085df05b20a995bcad3fe5b172834411ae257210741fbe3d64a815ba8b"
+      "sizeBytes": 593997,
+      "sha256": "325923a13332be2ca6742f2edd2900687c08e3c8468619621a222557c3107a56"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-desktop-qualified.png",
-      "sizeBytes": 642933,
-      "sha256": "4c0a3cee96b2d5ae3782ea52f13f2640f3e753d28fa164b137512bee2f546972"
+      "sizeBytes": 687818,
+      "sha256": "bce986bfda393444e21642af8e51b99d6e04b1f3f6e433e6e3ac6e3d5a53203d"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-desktop-receipt.png",
-      "sizeBytes": 651496,
-      "sha256": "e8d2eb47bb127a4bdbb02f3bac8e40a008e976eb36ce341154ac6f6d138e098c"
+      "sizeBytes": 741253,
+      "sha256": "d2c8df82b3d3a4336b0a3b7f04e7973508b77fc16ab4910ac0026e7836b47517"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-desktop-risk.png",
-      "sizeBytes": 630752,
-      "sha256": "e9a42cf6a5c87f82a5e87cdfde20aa6598c0e63c4558eedbc6aae168566b6d9f"
+      "sizeBytes": 615097,
+      "sha256": "102b46db9dc2609e228bcf4928be526678a0c8e9b9044596574ffaa1ef129262"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-desktop-verified.png",
-      "sizeBytes": 620536,
-      "sha256": "9eb9d877def88f68c8987e8c9940f481bfbb33cf2e121e6ff35fd0cb4d2a2fd0"
+      "sizeBytes": 706275,
+      "sha256": "49feb607d60e1f6656502288f82a5b33a861f0ed2feb83b30483e6f5bbe9a252"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-portrait-approval.png",
-      "sizeBytes": 643676,
-      "sha256": "b022a987bd1c1c11818ccaf596c1770bc260e85858368115358d87e18516fd87"
+      "sizeBytes": 664018,
+      "sha256": "429fd2e6836d02f4c8cab81d9fb06324d51c9f5a5da184d78fd7f5a62cbdff80"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-portrait-idle.png",
-      "sizeBytes": 590791,
-      "sha256": "7679bd3d616479220ae43c37ba25c462e65c6f995de50df5ade96e6954ad8885"
+      "sizeBytes": 579123,
+      "sha256": "ad014ebf5d58bc64552707893428b65d0e637f343bee333e932a167ec8467822"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-portrait-qualified.png",
-      "sizeBytes": 638469,
-      "sha256": "25b866c30543d9a68fbecde169b6e89a3afce091d7abb70beb63e2a1f0f34a10"
+      "sizeBytes": 638077,
+      "sha256": "9b5c5b86dde3178424c82bfa05f73171ebfff48383a91363f8c89583110a8c35"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-portrait-receipt.png",
-      "sizeBytes": 640982,
-      "sha256": "c6358e40a57aa66c4ae8af710d2c58631e1eddab56ed30aee770f077de9ff01e"
+      "sizeBytes": 681829,
+      "sha256": "01d9ddf04f2d728c0e38e6b9b7d04f28a7d975d68dd2b9fb9c16018365fd70fa"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-portrait-risk.png",
-      "sizeBytes": 620608,
-      "sha256": "9a9be482ef143baab6fb6aa451cddf053f8298d7aa707b7471f5e3f90fcc0652"
+      "sizeBytes": 592718,
+      "sha256": "dca77addfe739c7ecf4a57157c68d10429203cda6aac74953fcebf6ae9d8ab48"
     },
     {
       "path": "apps/site/media/renders/clervo-prism-portrait-verified.png",
-      "sizeBytes": 605313,
-      "sha256": "85d7314c970ce6145dd90eac12f1e6fca53ddc17d4e0e9c3407e2158785973ab"
+      "sizeBytes": 648105,
+      "sha256": "8f660e230c04873f49cd74322a4bb7cfcd7694a3d49e1739bbb585340adce150"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-desktop-approval.webp",
-      "sizeBytes": 17162,
-      "sha256": "0ef016ad35e291fa145a3067e2570e889e079e2c97e5c516bceb0147154dc489"
+      "sizeBytes": 21720,
+      "sha256": "2747a94756f3b2afff01e239f3885b4d967fb3a44a894758b94b33fdb50c42cd"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-desktop-idle.webp",
-      "sizeBytes": 10934,
-      "sha256": "416807338ba7c5190986877af118366f0cc89aebc57564c0c07c38862aa0b336"
+      "sizeBytes": 8200,
+      "sha256": "fae047c311f82d207a6b7bd9ef2a7f0c27a842395b977001531d165601688bc4"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-desktop-qualified.webp",
-      "sizeBytes": 16436,
-      "sha256": "d51ea6753f74f69341bd12d9849b34f341e6a8bfe7e10ca541d39af9f609cd0b"
+      "sizeBytes": 19674,
+      "sha256": "0b19eb06130b4bb7cd1526aea23039635d5894cfa457ad76c9b8cf0421b8b7d0"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-desktop-receipt.webp",
-      "sizeBytes": 15746,
-      "sha256": "3a8397f97e9a50a306004512642c8abd4f8138f6e3b6b0e43afff3926d9cbce9"
+      "sizeBytes": 24990,
+      "sha256": "fd66ab2d1ad0f9c3e6f56a8432d1fc84246796ed5f6d5f06989fe9081911e0b2"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-desktop-risk.webp",
-      "sizeBytes": 16806,
-      "sha256": "82ed3d3f78df9f32c6e93592c5b58d8520d24cd5050bba712f3e8a9e942821d4"
+      "sizeBytes": 11044,
+      "sha256": "0c4da2af6b9428a918011e837bcb9ffba4c2b9fd67a9c6973c79cc778cc4cc9a"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-desktop-verified.webp",
-      "sizeBytes": 13122,
-      "sha256": "1fff75a3392a30270721b137602e70fc4ecd35e3ca76001da09c6f7267831d58"
+      "sizeBytes": 20788,
+      "sha256": "78dea12d3868f239cbffdc43fa2a71032adb06b702679aa30d2a39e7b8ed64ba"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-portrait-approval.webp",
-      "sizeBytes": 15322,
-      "sha256": "6e16440373f71bd7846bc8592b7c369821271b1959554b9055fdd623b6829838"
+      "sizeBytes": 16882,
+      "sha256": "3c91a2571444bf903ea41da89009b6254ae76e62b0bd04f5f40efccdad13e34b"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-portrait-idle.webp",
-      "sizeBytes": 10564,
-      "sha256": "f2bdebebccc206220577357e09b01f01d7e2828d1d115330781bb50d3157425e"
+      "sizeBytes": 7158,
+      "sha256": "4f1a73c192d1c5f186a6e683c8bf4f83067c480cb3ea5b9e3692396714be65c0"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-portrait-qualified.webp",
-      "sizeBytes": 16524,
-      "sha256": "f364ecfcd38d832af558f5ac48ec7de16c02dfe61aeb6385e0fbebd033695a8f"
+      "sizeBytes": 15408,
+      "sha256": "31edb1aa3ad59983d9153afc4b8a14b7330cceb8e673c56a176b13c9fd77444b"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-portrait-receipt.webp",
-      "sizeBytes": 14806,
-      "sha256": "6cc1b789526ab79b454b869da09fe56cd9b1cead7bb01ba7826aee69472a5a27"
+      "sizeBytes": 18556,
+      "sha256": "3919780c904c4398ea09994371757d3072910c09488c8a48964119e9b2ea1f90"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-portrait-risk.webp",
-      "sizeBytes": 15640,
-      "sha256": "eefbcb9ea9f12f945433a9278697cae47c3fffa4c5648dc1786e84a1083b66a6"
+      "sizeBytes": 9018,
+      "sha256": "5fdc3c502d5d2edb54ae362f2ce6be9fe84a91430b1c7173463dba1d9f1fae01"
     },
     {
       "path": "apps/site/media/optimized/clervo-prism-portrait-verified.webp",
-      "sizeBytes": 13242,
-      "sha256": "6af03e5e1d07ac95d53f55e5e5e0e52694666ea8379efb3f1089d3b66d30bb27"
+      "sizeBytes": 16584,
+      "sha256": "43b8cbe701ba9df0fa3c1f319ecaf8128449fbdfb79552c7e24862866e0d32d0"
     }
   ]
 }

@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 
 import type { ExperiencePhase } from '../product';
+import { MediaBoundary } from './MediaBoundary';
 
 const WebGLInstrument = lazy(async () => {
   const module = await import('./WebGLInstrument');
@@ -52,9 +53,11 @@ export function Instrument({ phase }: { phase: ExperiencePhase }) {
     <div className="instrument" aria-hidden="true">
       <CanonicalStill phase={phase} />
       {!staticInstrument && enhanced && (
-        <Suspense fallback={null}>
-          <WebGLInstrument phase={phase} />
-        </Suspense>
+        <MediaBoundary>
+          <Suspense fallback={null}>
+            <WebGLInstrument phase={phase} />
+          </Suspense>
+        </MediaBoundary>
       )}
     </div>
   );

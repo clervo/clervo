@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "clervo.public-pricing-state.v1",
+  "observedAt": "2026-08-03T23:28:13Z",
+  "publicOfferAvailable": false,
+  "publicPrice": null,
+  "privateProof": {
+    "productId": "search.web",
+    "amountDisplay": "0.006 USDC",
+    "label": "Owner-funded private proof amount; not a public customer offer."
+  },
+  "fixturePrices": [
+    {
+      "productId": "search.web",
+      "model": "non_payable_mock_fixture",
+      "displayPrice": {
+        "asset": "mock:usdc",
+        "amountAtomic": "6000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "search-web-candidate-2"
+    },
+    {
+      "productId": "search.answer",
+      "model": "non_payable_mock_fixture",
+      "displayPrice": {
+        "asset": "mock:usdc",
+        "amountAtomic": "12000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "search-answer-candidate-2"
+    }
+  ]
+}

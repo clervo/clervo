@@ -7,8 +7,48 @@
       "violations": 0
     },
     {
+      "route": "/research",
+      "title": "Research outcome — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/platform",
+      "title": "Clervo Platform — Clervo",
+      "violations": 0
+    },
+    {
       "route": "/product",
       "title": "Product and capabilities — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/products/search",
+      "title": "Research product core — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/products/ai",
+      "title": "AI product core — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/products/sandbox",
+      "title": "Secure Sandbox product core — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/products/rpc",
+      "title": "Multi-chain RPC product core — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/products/prediction",
+      "title": "Prediction Intelligence product core — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/products/crypto",
+      "title": "Crypto Intelligence product core — Clervo",
       "violations": 0
     },
     {
@@ -17,8 +57,18 @@
       "violations": 0
     },
     {
+      "route": "/proof",
+      "title": "Payment and replay proof — Clervo",
+      "violations": 0
+    },
+    {
       "route": "/proof-lab",
       "title": "Proof Lab — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/docs/quickstart",
+      "title": "Developer quickstart — Clervo",
       "violations": 0
     },
     {
@@ -39,6 +89,31 @@
     {
       "route": "/docs/mcp",
       "title": "MCP developer docs — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/docs/receipts",
+      "title": "Receipt contract guide — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/docs/replay",
+      "title": "Replay contract guide — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/docs/failures",
+      "title": "Failure recovery guide — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/docs/x402",
+      "title": "x402 contract guide — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/docs/catalog",
+      "title": "Capability catalog guide — Clervo",
       "violations": 0
     },
     {
@@ -65,12 +140,27 @@
       "route": "/status",
       "title": "Product status — Clervo",
       "violations": 0
+    },
+    {
+      "route": "/changelog",
+      "title": "Changelog — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/compare/blockrun",
+      "title": "Clervo and BlockRun — Clervo",
+      "violations": 0
+    },
+    {
+      "route": "/trust",
+      "title": "Trust center — Clervo",
+      "violations": 0
     }
   ],
   "navigation": {
-    "forward": "/proof-lab",
+    "forward": "/research",
     "back": "/",
-    "forwardAgain": "/proof-lab",
+    "forwardAgain": "/research",
     "commandOpened": true,
     "commandDestination": "/security",
     "firstTabTarget": "01\nRISK"
@@ -211,12 +301,16 @@
     "mobileLoadedWebGL": false,
     "mobileLoadedCanonicalStill": true,
     "desktopLoadedWebGLBeforeInteraction": false,
-    "desktopLoadedWebGLAfterInteraction": true
+    "desktopLoadedWebGLAfterInteraction": true,
+    "desktopLoadedWorldsAfterScroll": true,
+    "contextLossFallbacksVisible": true
   },
   "staticHtml": {
     "docsTitle": "TypeScript developer docs — Clervo",
     "docsHeading": "TypeScript client",
     "hasCanonical": true
   },
-  "violations": []
+  "violations": [],
+  "consoleErrors": [],
+  "pageErrors": []
 }

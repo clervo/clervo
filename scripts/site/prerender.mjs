@@ -11,28 +11,47 @@ const { render } = await import(serverBundle);
 
 const routes = [
   ['/', 'Outcome infrastructure for agents'],
+  ['/research', 'Research outcome'],
+  ['/platform', 'Clervo Platform'],
   ['/product', 'Product and capabilities'],
+  ['/products/search', 'Research product core'],
+  ['/products/ai', 'AI product core'],
+  ['/products/sandbox', 'Secure Sandbox product core'],
+  ['/products/rpc', 'Multi-chain RPC product core'],
+  ['/products/prediction', 'Prediction Intelligence product core'],
+  ['/products/crypto', 'Crypto Intelligence product core'],
   ['/build', 'Build with Clervo'],
+  ['/proof', 'Payment and replay proof'],
   ['/proof-lab', 'Proof Lab'],
   ['/docs', 'Developer docs'],
+  ['/docs/quickstart', 'Developer quickstart'],
   ['/docs/http', 'Raw HTTP developer docs'],
   ['/docs/typescript', 'TypeScript developer docs'],
   ['/docs/python', 'Python developer docs'],
   ['/docs/mcp', 'MCP developer docs'],
+  ['/docs/receipts', 'Receipt contract guide'],
+  ['/docs/replay', 'Replay contract guide'],
+  ['/docs/failures', 'Failure recovery guide'],
+  ['/docs/x402', 'x402 contract guide'],
+  ['/docs/catalog', 'Capability catalog guide'],
   ['/pricing', 'Pricing truth'],
   ['/benchmarks', 'Benchmark truth'],
   ['/security', 'Security controls'],
   ['/legal', 'Legal boundaries'],
   ['/status', 'Product status'],
+  ['/changelog', 'Changelog'],
+  ['/compare/blockrun', 'Clervo and BlockRun'],
+  ['/trust', 'Trust center'],
 ];
 
 for (const [route, title] of routes) {
   const content = render(`https://clervo.dev${route}`);
+  const canonical = route === '/' ? '/' : `${route}/`;
   const html = template
-    .replace('<div id="root"></div>', `<div id="root">${content}</div>`)
+    .replace('<div id="root"></div>', `<div id="root" data-prerender-path="${route}">${content}</div>`)
     .replace(
       /<title>.*?<\/title>/u,
-      `<title>${title} — Clervo</title><link rel="canonical" href="https://clervo.dev${route}">`,
+      `<title>${title} — Clervo</title><link rel="canonical" href="https://clervo.dev${canonical}">`,
     );
   const destination = route === '/'
     ? path.join(dist, 'index.html')

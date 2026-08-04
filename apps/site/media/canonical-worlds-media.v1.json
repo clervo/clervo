@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "clervo.canonical-worlds-media.v1",
+  "canonicalObject": "CLERVO_WORLDS_MASTER",
+  "blenderVersion": "5.2.0 LTS",
+  "source": "apps/site/media/blender/clervo-worlds-v1.blend",
+  "generator": "apps/site/media/blender/build_clervo_worlds.py",
+  "runtimeAsset": "apps/site/public-assets/clervo-worlds.glb",
+  "cameras": [
+    "Camera_Worlds_Desktop",
+    "Camera_Worlds_Portrait"
+  ],
+  "generatedMediaUsedAsProductProof": false,
+  "artifacts": [
+    {
+      "path": "apps/site/media/blender/clervo-worlds-v1.blend",
+      "sizeBytes": 189240,
+      "sha256": "0725ee79cbfb402dce95a1812a3beb95667a516bf1f0deafcebe065a2c20d8ab"
+    },
+    {
+      "path": "apps/site/public-assets/clervo-worlds.glb",
+      "sizeBytes": 828820,
+      "sha256": "4934ec89509e1071a2d2e7c6085d9931fb024c74c46536dafc4398522565f4bc"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-worlds-desktop.png",
+      "sizeBytes": 616756,
+      "sha256": "3f3431f4a4058896b4e6d829e6005c472570ce82842f6393f2757d80336cefca"
+    },
+    {
+      "path": "apps/site/media/renders/clervo-worlds-portrait.png",
+      "sizeBytes": 591154,
+      "sha256": "9279e6fc9cab0870dd6b603cba2c5cf725e486d5b3736effc81eee3ca0fe45e0"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-worlds-desktop.webp",
+      "sizeBytes": 20644,
+      "sha256": "08be76210e23b3b6e6d2343d558d241611daa08478b8493c357ca2997c4df89e"
+    },
+    {
+      "path": "apps/site/media/optimized/clervo-worlds-portrait.webp",
+      "sizeBytes": 18316,
+      "sha256": "5d86eea89e88c5be114eea9099c82d44aeee6df02aff0bf937c3074c7e2cd3a9"
+    }
+  ]
+}

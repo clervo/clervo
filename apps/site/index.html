@@ -13,15 +13,42 @@
       fetchpriority="high"
     />
     <meta name="description" content="Clervo is outcome infrastructure for agents: Find, Understand, Act." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Clervo" />
+    <meta property="og:title" content="Clervo — One job in. One inspectable result out." />
+    <meta property="og:description" content="Outcome infrastructure for agents, with evidence, cost, and a receipt." />
+    <meta property="og:url" content="https://clervo.dev/" />
+    <meta property="og:image" content="https://clervo.dev/assets/renders/clervo-prism-desktop-risk.webp" />
+    <meta property="og:image:alt" content="Clervo's sealed triangular outcome instrument" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Clervo — One job in. One inspectable result out." />
+    <meta name="twitter:description" content="Outcome infrastructure for agents, with evidence, cost, and a receipt." />
+    <meta name="twitter:image" content="https://clervo.dev/assets/renders/clervo-prism-desktop-risk.webp" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="color-scheme" content="dark" />
     <title>Clervo — Outcome infrastructure for agents</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Clervo",
-        "url": "https://clervo.dev",
-        "description": "Outcome infrastructure for agents: Find, Understand, Act."
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://clervo.dev/#organization",
+            "name": "Clervo",
+            "url": "https://clervo.dev/",
+            "sameAs": ["https://github.com/clervo/clervo", "https://www.npmjs.com/org/clervo"]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://clervo.dev/#software",
+            "name": "Clervo",
+            "url": "https://clervo.dev/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Web, Node.js, Python",
+            "description": "Outcome infrastructure for agents: one bounded job in, one inspectable result out.",
+            "publisher": { "@id": "https://clervo.dev/#organization" }
+          }
+        ]
       }
     </script>
   </head>
