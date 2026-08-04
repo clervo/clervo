@@ -6,6 +6,8 @@ import {
   normalizeBlockscoutToken,
   normalizeBlockscoutWallet,
   normalizeSolanaRpcWallet,
+  normalizeSolanaRpcToken,
+  normalizeSolanaRpcTransactions,
 } from '../../dist/adapters/blockchain/src/intelligence-normalizers.js';
 
 const observedAt = '2026-08-02T12:00:00.000Z';
@@ -88,4 +90,15 @@ test('Solana normalization rejects unsafe numeric precision, owner substitution,
   const unknown = token();
   unknown.value[0].account.data.program = 'unknown-parser';
   assert.throws(() => normalizeSolanaRpcWallet({ ...base, tokenAccountsResult: unknown }), /response_invalid/u);
+});
+
+test('Solana token supply and signature history remain exact without invented metadata or transfers', () => {
+  const token = normalizeSolanaRpcToken({ assetAddress: solanaMint, supplyResult: { value: { amount: '42000000', decimals: 9 } }, observedAt, staleAfterMs: 60_000, nowMs: Date.parse(observedAt) + 1_000 });
+  assert.equal(token.totalSupplyAtomic, '42000000');
+  assert.equal(token.symbol, null);
+  const signature = '2'.repeat(64);
+  const transactions = normalizeSolanaRpcTransactions({ address: solanaWallet, signaturesResult: [{ signature, slot: 123, blockTime: 1785672000, err: null }], observedAt });
+  assert.equal(transactions[0].transactionId, signature);
+  assert.equal(transactions[0].deterministicType, 'unknown');
+  assert.equal(transactions[0].tokenTransfers.length, 0);
 });

@@ -67,7 +67,7 @@ if (aiMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 
 if (sandboxPublicMode === 'paid' && (sandboxMode !== 'private' || x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || !/^sha256:[a-f0-9]{64}$/u.test(process.env.CLERVO_SANDBOX_RUNNER_DIGEST ?? ''))) throw new Error('public Sandbox requires qualified private execution, production x402, PostgreSQL state, and an exact runner digest');
 if (rpcMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || typeof process.env.CLERVO_RPC_ETHEREUM_ENDPOINT !== 'string')) throw new Error('public RPC requires production x402, PostgreSQL state, and a qualified Ethereum endpoint');
 if (predictionMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres')) throw new Error('public Prediction requires production x402 and PostgreSQL state');
-if (cryptoMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || typeof process.env.CLERVO_BLOCKSCOUT_API_KEY !== 'string')) throw new Error('public Crypto requires production x402, PostgreSQL state, and qualified blockchain data supply');
+if (cryptoMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || typeof process.env.CLERVO_BLOCKSCOUT_API_KEY !== 'string' || typeof process.env.CLERVO_SOLANA_RPC_ENDPOINT !== 'string')) throw new Error('public Crypto requires production x402, PostgreSQL state, and qualified EVM and Solana supply');
 if (privateMockCommerceEnabled && (environment !== 'stage4-private-qualification' || !['127.0.0.1', 'localhost'].includes(new URL(publicOrigin).hostname))) {
   throw new Error('private_mock_commerce_boundary_invalid');
 }
@@ -106,7 +106,7 @@ const aiRuntime = aiMode === 'paid' ? await createAiProductionRuntime({ artifact
 const rpcRuntime = rpcMode === 'paid' ? createRpcProductionRuntime({ ethereumEndpoint: process.env.CLERVO_RPC_ETHEREUM_ENDPOINT }) : undefined;
 const predictionStore = predictionMode === 'paid' ? await createPostgresPredictionMarketStoreFromEnvironment() : undefined;
 const predictionRuntime = predictionMode === 'paid' ? createPredictionProductionRuntime({ store: predictionStore }) : undefined;
-const cryptoRuntime = cryptoMode === 'paid' ? createCryptoProductionRuntime({ credential: process.env.CLERVO_BLOCKSCOUT_API_KEY, hardDailyCallCeiling: Number(process.env.CLERVO_CRYPTO_DAILY_CALL_CEILING ?? '100000') }) : undefined;
+const cryptoRuntime = cryptoMode === 'paid' ? createCryptoProductionRuntime({ credential: process.env.CLERVO_BLOCKSCOUT_API_KEY, solanaRpcEndpoint: process.env.CLERVO_SOLANA_RPC_ENDPOINT, hardDailyCallCeiling: Number(process.env.CLERVO_CRYPTO_DAILY_CALL_CEILING ?? '100000') }) : undefined;
 
 const monitoringExporter = monitoringDriver === 'sentry'
   ? createSentryMonitoringExporter({ dsn: sentryDsn, environment, release: releaseId })

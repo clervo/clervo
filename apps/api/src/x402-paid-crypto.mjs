@@ -6,7 +6,8 @@ export const CRYPTO_MAX_BODY_BYTES = 262_144;
 export const CRYPTO_REQUEST_SCHEMA_VERSION = 'crypto-operation-request.v1';
 export const CRYPTO_RESULT_SCHEMA_VERSION = 'crypto-operation-result.v1';
 
-const publicChains = Object.freeze(['eip155:1', 'eip155:8453']);
+const SOLANA_MAINNET = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp';
+const publicChains = Object.freeze(['eip155:1', 'eip155:8453', SOLANA_MAINNET]);
 const productByKind = Object.freeze({ wallet: 'crypto.wallet', token: 'crypto.token', transaction: 'crypto.transaction', protocol: 'crypto.protocol', report: 'crypto.report' });
 const priceByProduct = Object.freeze({ 'crypto.wallet': 500n, 'crypto.token': 250n, 'crypto.transaction': 500n, 'crypto.protocol': 750n, 'crypto.report': 1_000n });
 const allowedByKind = Object.freeze({
@@ -24,8 +25,13 @@ function object(value) {
 function exact(value, keys) {
   if (Object.keys(value).some((key) => !keys.includes(key))) throw new TypeError('crypto_http_request_additional_property');
 }
-function address(value) {
-  if (typeof value !== 'string' || !/^0x[a-fA-F0-9]{40}$/u.test(value)) throw new TypeError('crypto_address_invalid');
+function address(value, selectedChain) {
+  if (typeof value !== 'string') throw new TypeError('crypto_address_invalid');
+  if (selectedChain === SOLANA_MAINNET) {
+    if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/u.test(value)) throw new TypeError('crypto_address_invalid');
+    return value;
+  }
+  if (!/^0x[a-fA-F0-9]{40}$/u.test(value)) throw new TypeError('crypto_address_invalid');
   return value.toLowerCase();
 }
 function chainId(value) {
@@ -41,12 +47,14 @@ export function normalizeCryptoHttpRequest(value) {
   exact(value, allowedByKind[kind]);
   const selectedChain = chainId(value.chainId);
   let input;
-  if (kind === 'token') input = { kind, chainId: selectedChain, assetAddress: address(value.assetAddress) };
+  if (kind === 'protocol' && selectedChain === SOLANA_MAINNET) throw new TypeError('crypto_protocol_chain_unavailable');
+  if (kind === 'token') input = { kind, chainId: selectedChain, assetAddress: address(value.assetAddress, selectedChain) };
   else if (kind === 'transaction') {
-    if (!Number.isSafeInteger(value.limit) || value.limit < 1 || value.limit > 100) throw new TypeError('crypto_transaction_limit_invalid');
-    if (value.transactionId !== undefined && (typeof value.transactionId !== 'string' || !/^0x[a-fA-F0-9]{64}$/u.test(value.transactionId))) throw new TypeError('crypto_transaction_id_invalid');
-    input = { kind, chainId: selectedChain, address: address(value.address), limit: value.limit, ...(value.transactionId === undefined ? {} : { transactionId: value.transactionId.toLowerCase() }) };
-  } else input = { kind, chainId: selectedChain, address: address(value.address) };
+    const maximum = selectedChain === SOLANA_MAINNET ? 20 : 100;
+    if (!Number.isSafeInteger(value.limit) || value.limit < 1 || value.limit > maximum) throw new TypeError('crypto_transaction_limit_invalid');
+    if (value.transactionId !== undefined && (typeof value.transactionId !== 'string' || (selectedChain === SOLANA_MAINNET ? !/^[1-9A-HJ-NP-Za-km-z]{64,128}$/u.test(value.transactionId) : !/^0x[a-fA-F0-9]{64}$/u.test(value.transactionId)))) throw new TypeError('crypto_transaction_id_invalid');
+    input = { kind, chainId: selectedChain, address: address(value.address, selectedChain), limit: value.limit, ...(value.transactionId === undefined ? {} : { transactionId: selectedChain === SOLANA_MAINNET ? value.transactionId : value.transactionId.toLowerCase() }) };
+  } else input = { kind, chainId: selectedChain, address: address(value.address, selectedChain) };
   return Object.freeze({ productId: productByKind[kind], input: Object.freeze(input) });
 }
 

@@ -1,6 +1,7 @@
 import { CONTRACT_VERSION, hashJson } from '../../../dist/packages/contracts/src/index.js';
 import { BlockscoutDataAdapter } from '../../../dist/adapters/blockchain/src/blockscout-data.js';
-import { normalizeBlockscoutToken, normalizeBlockscoutTransactions, normalizeBlockscoutWallet } from '../../../dist/adapters/blockchain/src/intelligence-normalizers.js';
+import { normalizeBlockscoutToken, normalizeBlockscoutTransactions, normalizeBlockscoutWallet, normalizeSolanaRpcToken, normalizeSolanaRpcTransactions, normalizeSolanaRpcWallet } from '../../../dist/adapters/blockchain/src/intelligence-normalizers.js';
+import { createBoundedRpcHttpTransport, JsonRpcAdapter } from '../../../dist/adapters/rpc/src/json-rpc.js';
 import { CryptoIntelligenceGateway } from '../../../dist/services/crypto/src/gateway.js';
 import { normalizeCryptoProtocolPosition } from '../../../dist/services/crypto/src/normalization.js';
 import { CRYPTO_RESULT_SCHEMA_VERSION } from './x402-paid-crypto.mjs';
@@ -11,6 +12,10 @@ const CHAIN_CONFIG = Object.freeze({
 });
 const QUALIFICATION_ID = 'qual_BlockscoutValueAdded20260804';
 const SOURCE_REF = 'crypto_source_3c34c5827ba3f772';
+const SOLANA_SOURCE_REF = 'crypto_source_4eb6603d25bf6e2e';
+const SOLANA_MAINNET = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp';
+const SOLANA_TOKEN_PROGRAM = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
+const SOLANA_TOKEN_2022_PROGRAM = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb';
 const PROTOCOL_ASSETS = Object.freeze({
   'eip155:1': Object.freeze(new Map([
     ['0xae7ab96520de3a18e5e111b5eaab095312d7fe84', Object.freeze({ protocolId: 'lido', protocolName: 'Lido', category: 'staking' })],
@@ -40,10 +45,23 @@ function result(request, output, completedAt) {
   return Object.freeze({ ...unsigned, resultHash: hashJson(unsigned) });
 }
 
-export function createCryptoProductionRuntime({ credential, fetcher = globalThis.fetch, now = () => Date.now(), hardDailyCallCeiling = 100_000 } = {}) {
+function solanaEndpoint(value) {
+  let parsed;
+  try { parsed = new URL(value); } catch { throw new TypeError('crypto_solana_endpoint_invalid'); }
+  if (parsed.protocol !== 'https:' || parsed.username || parsed.password || parsed.hash || parsed.hostname !== 'solana-mainnet.g.alchemy.com' || !/^\/v2\/[A-Za-z0-9_-]{8,256}$/u.test(parsed.pathname) || parsed.search) throw new TypeError('crypto_solana_endpoint_invalid');
+  return parsed.href;
+}
+
+function rpcResults(outcomes) {
+  if (!Array.isArray(outcomes) || outcomes.some(({ ok }) => ok !== true)) throw new Error('crypto_solana_source_failed');
+  return outcomes.map(({ result: value }) => value);
+}
+
+export function createCryptoProductionRuntime({ credential, solanaRpcEndpoint, fetcher = globalThis.fetch, now = () => Date.now(), hardDailyCallCeiling = 100_000 } = {}) {
   if (typeof credential !== 'string' || credential.trim().length < 8 || typeof fetcher !== 'function' || typeof now !== 'function') throw new TypeError('crypto_production_configuration_invalid');
+  const selectedSolanaEndpoint = solanaEndpoint(solanaRpcEndpoint);
   const adapter = new BlockscoutDataAdapter({ apiKey: credential, allowedChainIds: Object.values(CHAIN_CONFIG).map(({ numericId }) => numericId), hardDailyCallCeiling }, boundedTransport(fetcher));
-  const source = Object.freeze({
+  const evmSource = Object.freeze({
     sourceRef: SOURCE_REF,
     chains: Object.freeze(Object.keys(CHAIN_CONFIG)),
     capabilities: Object.freeze(['wallet', 'token', 'transaction', 'protocol']),
@@ -92,11 +110,44 @@ export function createCryptoProductionRuntime({ credential, fetcher = globalThis
       }));
     },
   });
-  const gateway = new CryptoIntelligenceGateway([source]);
+  const solanaAdapter = new JsonRpcAdapter({
+    config: { routeId: 'rpc.route.alchemy_solana', chainId: SOLANA_MAINNET, allowedHosts: ['solana-mainnet.g.alchemy.com'], maximumRequestBytes: 262_144, maximumResponseBytes: 10_485_760, timeoutMs: 8_000 },
+    transport: createBoundedRpcHttpTransport(fetcher),
+    async resolveEndpoint() { return selectedSolanaEndpoint; },
+  });
+  const solanaSource = Object.freeze({
+    sourceRef: SOLANA_SOURCE_REF,
+    chains: Object.freeze([SOLANA_MAINNET]),
+    capabilities: Object.freeze(['wallet', 'token', 'transaction']),
+    async wallet(chainId, walletAddress, signal) {
+      if (chainId !== SOLANA_MAINNET) throw new Error('crypto_chain_unavailable');
+      const values = rpcResults(await solanaAdapter.execute([
+        { method: 'getBalance', params: [walletAddress, { commitment: 'finalized' }] },
+        { method: 'getTokenAccountsByOwner', params: [walletAddress, { programId: SOLANA_TOKEN_PROGRAM }, { encoding: 'jsonParsed', commitment: 'finalized' }] },
+        { method: 'getTokenAccountsByOwner', params: [walletAddress, { programId: SOLANA_TOKEN_2022_PROGRAM }, { encoding: 'jsonParsed', commitment: 'finalized' }] },
+      ], signal));
+      const legacy = values[1]; const token2022 = values[2];
+      if (!legacy || typeof legacy !== 'object' || !Array.isArray(legacy.value) || !token2022 || typeof token2022 !== 'object' || !Array.isArray(token2022.value)) throw new Error('crypto_solana_source_failed');
+      const observedAt = new Date(now()).toISOString();
+      return normalizeSolanaRpcWallet({ address: walletAddress, balanceResult: values[0], tokenAccountsResult: { value: [...legacy.value, ...token2022.value] }, observedAt, staleAfterMs: 60_000, nowMs: now() });
+    },
+    async token(chainId, assetAddress, signal) {
+      if (chainId !== SOLANA_MAINNET) throw new Error('crypto_chain_unavailable');
+      const [supply] = rpcResults(await solanaAdapter.execute([{ method: 'getTokenSupply', params: [assetAddress, { commitment: 'finalized' }] }], signal));
+      const observedAt = new Date(now()).toISOString();
+      return normalizeSolanaRpcToken({ assetAddress, supplyResult: supply, observedAt, staleAfterMs: 60_000, nowMs: now() });
+    },
+    async transactions(chainId, walletAddress, limit, signal) {
+      if (chainId !== SOLANA_MAINNET || limit > 20) throw new Error('crypto_chain_unavailable');
+      const [signatures] = rpcResults(await solanaAdapter.execute([{ method: 'getSignaturesForAddress', params: [walletAddress, { commitment: 'finalized', limit }] }], signal));
+      return normalizeSolanaRpcTransactions({ address: walletAddress, signaturesResult: signatures, observedAt: new Date(now()).toISOString() });
+    },
+  });
+  const gateway = new CryptoIntelligenceGateway([evmSource, solanaSource]);
 
   return Object.freeze({
     durable: true,
-    supportedChains: Object.freeze(Object.keys(CHAIN_CONFIG)),
+    supportedChains: Object.freeze([...Object.keys(CHAIN_CONFIG), SOLANA_MAINNET]),
     supportedKinds: Object.freeze(['wallet', 'token', 'transaction', 'protocol', 'report']),
     async ready() { return adapter.remainingCalls > 0; },
     async execute(request) {

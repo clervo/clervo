@@ -10,6 +10,9 @@ const address = '0x0000000000000000000000000000000000000001';
 const token = '0x0000000000000000000000000000000000000002';
 const transaction = `0x${'a'.repeat(64)}`;
 const ethereumWstEth = '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0';
+const solanaEndpoint = 'https://solana-mainnet.g.alchemy.com/v2/test-private-key';
+const solanaAddress = '11111111111111111111111111111111';
+const solanaMint = 'So11111111111111111111111111111111111111112';
 
 function fetcher(input) {
   const url = new URL(input);
@@ -24,7 +27,7 @@ function request(kind, input, amountAtomic) {
 }
 
 test('crypto production runtime returns useful hash-bound wallet, token, transaction, and report results', async () => {
-  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', fetcher, now: () => nowMs, hardDailyCallCeiling: 20 });
+  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', solanaRpcEndpoint: solanaEndpoint, fetcher, now: () => nowMs, hardDailyCallCeiling: 20 });
   const wallet = await runtime.execute(request('wallet', { address }, '500'));
   assert.equal(wallet.result.output.data.nativeBalance.amountAtomic, '100');
   assert.equal(wallet.result.output.data.assets[0].balanceAtomic, '42');
@@ -45,12 +48,12 @@ test('crypto production runtime returns useful hash-bound wallet, token, transac
 });
 
 test('crypto production runtime rejects unsupported chains and response substitution before useful output', async () => {
-  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, async fetcher() { return Response.json({ hash: token, coin_balance: '1', is_contract: false }); } });
+  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', solanaRpcEndpoint: solanaEndpoint, now: () => nowMs, async fetcher() { return Response.json({ hash: token, coin_balance: '1', is_contract: false }); } });
   await assert.rejects(runtime.execute(request('wallet', { address }, '500')), /unavailable|response_invalid/u);
 });
 
 test('crypto protocol operation classifies only an exact officially identified receipt-token address', async () => {
-  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, async fetcher(input) {
+  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', solanaRpcEndpoint: solanaEndpoint, now: () => nowMs, async fetcher(input) {
     const url = new URL(input);
     if (url.pathname.endsWith('/token-balances')) return Response.json([{ value: '12', token: { address_hash: ethereumWstEth, symbol: 'wstETH', decimals: '18', type: 'ERC-20' } }]);
     return Response.json({ hash: address, coin_balance: '0', is_contract: false, has_tokens: true, has_token_transfers: true });
@@ -59,4 +62,26 @@ test('crypto protocol operation classifies only an exact officially identified r
   assert.equal(protocols.result.output.data.positions.length, 1);
   assert.equal(protocols.result.output.data.positions[0].protocolId, 'lido');
   assert.equal(protocols.result.output.data.positions[0].suppliedAssets[0].amountAtomic, '12');
+});
+
+test('crypto production runtime serves bounded Solana wallet, token, and history from the dedicated RPC contract', async () => {
+  const signature = '2'.repeat(64);
+  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', solanaRpcEndpoint: solanaEndpoint, now: () => nowMs, async fetcher(input, init) {
+    assert.equal(new URL(input).hostname, 'solana-mainnet.g.alchemy.com');
+    const requests = JSON.parse(Buffer.from(init.body).toString('utf8'));
+    const values = (Array.isArray(requests) ? requests : [requests]).map(({ id, method }) => {
+      if (method === 'getBalance') return { jsonrpc: '2.0', id, result: { context: { slot: 123 }, value: 1000 } };
+      if (method === 'getTokenAccountsByOwner') return { jsonrpc: '2.0', id, result: { context: { slot: 123 }, value: [] } };
+      if (method === 'getTokenSupply') return { jsonrpc: '2.0', id, result: { context: { slot: 123 }, value: { amount: '42000000', decimals: 9 } } };
+      if (method === 'getSignaturesForAddress') return { jsonrpc: '2.0', id, result: [{ signature, slot: 123, blockTime: Math.floor(nowMs / 1000), err: null }] };
+      throw new Error('unexpected test RPC method');
+    });
+    return Response.json(Array.isArray(requests) ? values : values[0]);
+  } });
+  const wallet = await runtime.execute({ ...request('wallet', { address: solanaAddress }, '500'), input: { kind: 'wallet', chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp', address: solanaAddress } });
+  assert.equal(wallet.result.output.data.nativeBalance.amountAtomic, '1000');
+  const tokenResult = await runtime.execute({ ...request('token', { assetAddress: solanaMint }, '250'), input: { kind: 'token', chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp', assetAddress: solanaMint } });
+  assert.equal(tokenResult.result.output.data.totalSupplyAtomic, '42000000');
+  const transactions = await runtime.execute({ ...request('transaction', { address: solanaAddress, limit: 10 }, '500'), input: { kind: 'transaction', chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp', address: solanaAddress, limit: 10 } });
+  assert.equal(transactions.result.output.data.transactions[0].transactionId, signature);
 });
