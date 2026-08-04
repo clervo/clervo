@@ -26,7 +26,7 @@ test('full-platform readiness distinguishes private engineering from customer-fu
   }
   const aggregate = Math.round(readiness.pillars.reduce((total, { readinessBasisPoints }) => total + readinessBasisPoints, 0) / readiness.pillars.length);
   assert.equal(readiness.scoring.aggregateReadinessBasisPoints, aggregate);
-  assert.equal(aggregate, 4688);
+  assert.equal(aggregate, 4792);
   assert.equal(readiness.executionOrder[0], 'launch_public_search_revenue_wedge');
   assert.equal(readiness.executionOrder.at(-1), 'complete_external_paid_first_revenue_release');
 });
@@ -39,8 +39,8 @@ test('resumable instructions point to one continuous revenue finish line without
   ]);
   assert.ok(agents.split('\n').length <= 150);
   assert.match(agents, /FULL-PLATFORM-REVENUE-FINISH-LINE\.md/u);
-  assert.match(state, /Customer-functional paid readiness is currently 46\.88%/u);
-  assert.match(state, /Deploy the required-secret Cloudflare API edge/u);
+  assert.match(state, /Customer-functional paid readiness is currently 47\.92%/u);
+  assert.match(state, /public Search preview is externally verified/u);
   assert.match(finishLine, /The two finish lines/u);
   assert.match(finishLine, /Customer-functional definition/u);
   assert.match(finishLine, /Launch AI/u);

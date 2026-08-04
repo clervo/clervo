@@ -1,19 +1,28 @@
 {
   "schemaVersion": "clervo.public-pricing-state.v1",
-  "observedAt": "2026-08-03T23:28:13Z",
-  "publicOfferAvailable": false,
-  "publicPrice": null,
+  "observedAt": "2026-08-04T02:24:00Z",
+  "publicOfferAvailable": true,
+  "publicPrice": {
+    "productId": "search.web",
+    "network": "eip155:8453",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "amountAtomic": "6000",
+    "decimals": 6,
+    "amountDisplay": "0.006 USDC",
+    "maximumCharge": true
+  },
   "privateProof": {
     "productId": "search.web",
     "amountDisplay": "0.006 USDC",
     "label": "Owner-funded private proof amount; not a public customer offer."
   },
-  "fixturePrices": [
+  "offers": [
     {
       "productId": "search.web",
-      "model": "non_payable_mock_fixture",
+      "publicAvailable": true,
+      "model": "x402_exact",
       "displayPrice": {
-        "asset": "mock:usdc",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "amountAtomic": "6000",
         "decimals": 6
       },
@@ -22,12 +31,9 @@
     },
     {
       "productId": "search.answer",
-      "model": "non_payable_mock_fixture",
-      "displayPrice": {
-        "asset": "mock:usdc",
-        "amountAtomic": "12000",
-        "decimals": 6
-      },
+      "publicAvailable": false,
+      "model": "unavailable",
+      "displayPrice": null,
       "maximumChargeRequired": true,
       "priceVersion": "search-answer-candidate-2"
     }

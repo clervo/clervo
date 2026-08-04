@@ -4,7 +4,8 @@
   "version": "0.3.0",
   "registryUrl": "https://www.npmjs.com/package/@clervo/mcp",
   "transport": "stdio",
-  "publicApiAvailable": false,
+  "publicApiAvailable": true,
+  "publicApiBaseUrl": "https://api.clervo.dev",
   "configurationRequired": [
     "CLERVO_BASE_URL"
   ],

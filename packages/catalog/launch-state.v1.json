@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.launch-state.v1",
-  "observedAt": "2026-08-03T23:28:13Z",
-  "sourceCommit": "c34df8b",
+  "observedAt": "2026-08-04T02:24:00Z",
+  "sourceCommit": "a9f6aea25891",
   "identity": {
     "category": "Outcome infrastructure for agents",
     "headline": "One job in. One inspectable result out.",
@@ -24,10 +24,12 @@
       ]
     },
     "publicApi": {
-      "state": "private_production_candidate",
-      "publicCallable": false,
-      "publicTraffic": false,
-      "customerEndpointAvailable": false
+      "state": "public_search_preview_verified",
+      "endpoint": "https://api.clervo.dev",
+      "publicCallable": true,
+      "publicTraffic": true,
+      "customerEndpointAvailable": true,
+      "evidence": ["infra/production/cloudflare/public-search-release.v1.json"]
     }
   },
   "paymentProof": {
@@ -44,7 +46,7 @@
     "secondAuthorization": false,
     "secondExecution": false,
     "secondCharge": false,
-    "publicCustomerPaymentAvailable": false,
+    "publicCustomerPaymentAvailable": true,
     "revenueEvidence": false,
     "demandEvidence": false,
     "transactionUrl": "https://basescan.org/tx/0xf4a2c7d5568745ad7ce11157306d5899faaf4def041519e51527c76134eca720",
@@ -58,20 +60,23 @@
       "id": "search",
       "label": "Research",
       "operations": ["search.web", "search.answer"],
-      "engineeringState": "private_production_qualified",
-      "customerLifecycle": "preview_not_publicly_callable",
+      "engineeringState": "public_production_qualified",
+      "customerLifecycle": "preview_publicly_callable",
       "commercialProof": "owner_funded_plumbing_proof_only",
-      "paymentState": "private_settlement_and_replay_verified",
-      "supplierRights": "public_offer_not_approved",
+      "paymentState": "public_x402_available_private_settlement_and_replay_verified",
+      "supplierRights": "value_added_public_offer_approved",
       "allowedClaims": [
-        "The private Search path returned one useful result after one bounded x402 settlement.",
+        "Raw cited Search is publicly callable through a bounded free sample and an exact 0.006 USDC Base x402 offer.",
+        "The production edge returned live normalized results and citations while direct product access to the origin remained denied.",
+        "The private Search path returned one useful result after one bounded owner-funded x402 settlement.",
         "An exact replay returned the same receipt without another authorization, execution, or charge."
       ],
       "prohibitedClaims": [
-        "Publicly callable",
         "Customer revenue",
         "Market demand",
-        "Public paid release"
+        "External customer payment completed",
+        "Search synthesis publicly available",
+        "Full Platform First Revenue Release"
       ]
     },
     {

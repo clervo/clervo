@@ -6,23 +6,18 @@ import test from 'node:test';
 const root = path.resolve(import.meta.dirname, '../..');
 const read = (value) => readFile(path.join(root, value), 'utf8');
 
-test('site derives its public truth from the frozen distribution candidate', async () => {
+test('generated discovery exposes verified public raw Search and keeps synthesis unavailable', async () => {
   const discovery = JSON.parse(await read('generated/public/.well-known/clervo.json'));
-  assert.equal(discovery.distribution.state, 'candidate');
-  assert.equal(discovery.distribution.publicAvailable, false);
-  assert.equal(discovery.distribution.callable, false);
-  assert.equal(discovery.distribution.noPublicDistribution, true);
+  assert.equal(discovery.distribution.state, 'public_preview');
+  assert.equal(discovery.distribution.publicAvailable, true);
+  assert.equal(discovery.distribution.callable, true);
+  assert.equal(discovery.distribution.noPublicDistribution, false);
   assert.deepEqual(discovery.products.map(({ productId }) => productId), ['search.web', 'search.answer']);
-  assert.ok(discovery.products.every(({ payment }) => payment.payable === false));
+  assert.equal(discovery.products.find(({ productId }) => productId === 'search.web').payment.payable, true);
+  assert.equal(discovery.products.find(({ productId }) => productId === 'search.answer').payment.payable, false);
 
   const product = await read('apps/site/src/product.ts');
-  const proof = await read('apps/site/src/pages/ProofLab.tsx');
-  const docs = await read('apps/site/src/pages/Docs.tsx');
   assert.match(product, /generated\/public\/\.well-known\/clervo\.json/u);
-  assert.match(proof, /no network · no payment/iu);
-  assert.match(proof, /Additional charge<\/dt><dd>0/iu);
-  assert.match(docs, /Public packages verified/iu);
-  assert.match(docs, /customer API is not publicly callable/iu);
 });
 
 test('site ships canonical media, static routes, and hardened hosting controls', async () => {

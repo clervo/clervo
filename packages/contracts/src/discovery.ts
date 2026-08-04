@@ -88,7 +88,7 @@ export interface DiscoveryProduct {
   selection: { synthesize: boolean };
   pricing: {
     model: 'non_payable_mock_fixture' | 'x402_exact' | 'unavailable';
-    displayPrice: AssetAmount;
+    displayPrice: AssetAmount | null;
     maximumChargeRequired: true;
     priceVersion: string;
   };
@@ -255,7 +255,7 @@ export function createDiscoveryDocument(
         asset: projection.paymentAsset ?? SEARCH_PRODUCT_PRICING[productId].maximumCharge.asset,
         amountAtomic: SEARCH_PRODUCT_PRICING[productId].maximumCharge.amountAtomic,
         decimals: SEARCH_PRODUCT_PRICING[productId].maximumCharge.decimals,
-      } : SEARCH_PRODUCT_PRICING[productId].maximumCharge,
+      } : publicRelease ? null : SEARCH_PRODUCT_PRICING[productId].maximumCharge,
       maximumChargeRequired: true,
       priceVersion: SEARCH_PRODUCT_PRICING[productId].priceVersion,
     },
@@ -404,7 +404,7 @@ export function assertPreviewArtifacts(
     || product.selection.synthesize !== (product.productId === SEARCH_SYNTHESIS_PRODUCT_ID)
     || product.pricing.model !== 'non_payable_mock_fixture'
     || product.pricing.priceVersion !== SEARCH_PRODUCT_PRICING[product.productId].priceVersion
-    || product.pricing.displayPrice.amountAtomic !== SEARCH_PRODUCT_PRICING[product.productId].maximumCharge.amountAtomic
+    || product.pricing.displayPrice?.amountAtomic !== SEARCH_PRODUCT_PRICING[product.productId].maximumCharge.amountAtomic
     || product.payment.payable
   )) failures.push('discovery_product_projection_invalid');
   if (discovery.payment.implemented || discovery.payment.settlementVerified) failures.push('discovery_payment_claim_unsafe');
@@ -449,7 +449,7 @@ export function assertPublicArtifacts(
   const raw = discovery.products.find(({ productId }) => productId === SEARCH_RAW_PRODUCT_ID);
   const answer = discovery.products.find(({ productId }) => productId === SEARCH_SYNTHESIS_PRODUCT_ID);
   if (!raw?.publicAvailable || raw.pricing.model !== 'x402_exact' || !raw.payment.payable) failures.push('raw_search_public_offer_invalid');
-  if (answer?.publicAvailable || answer?.pricing.model !== 'unavailable' || answer?.payment.payable) failures.push('search_answer_must_remain_unavailable');
+  if (answer?.publicAvailable || answer?.pricing.model !== 'unavailable' || answer?.pricing.displayPrice !== null || answer?.payment.payable) failures.push('search_answer_must_remain_unavailable');
   if (!discovery.payment.implemented || !discovery.payment.settlementVerified || !discovery.payment.publicAvailable) failures.push('public_payment_status_invalid');
   if (discovery.payment.commercialProof) failures.push('commercial_proof_must_remain_false');
   try {

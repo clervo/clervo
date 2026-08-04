@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.capabilities.v1",
-  "observedAt": "2026-08-03T23:28:13Z",
-  "publicCallable": false,
+  "observedAt": "2026-08-04T02:24:00Z",
+  "publicCallable": true,
   "products": [
     {
       "id": "search",
@@ -10,8 +10,8 @@
         "search.web",
         "search.answer"
       ],
-      "engineeringState": "private_production_qualified",
-      "customerLifecycle": "preview_not_publicly_callable"
+      "engineeringState": "public_production_qualified",
+      "customerLifecycle": "preview_publicly_callable"
     },
     {
       "id": "ai",

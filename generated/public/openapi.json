@@ -2,15 +2,15 @@
   "openapi": "3.1.1",
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
-    "title": "Clervo search distribution candidate",
+    "title": "Clervo Search API",
     "version": "2026-07-29.1",
-    "description": "Generated contract candidate for the Search preview. It does not claim a public callable service or a publicly payable x402 route."
+    "description": "Public Search preview. Raw cited web retrieval is callable with a bounded free sample or an exact x402 payment. Synthesized answers remain unavailable."
   },
   "paths": {
     "/v1/search/free": {
       "post": {
         "summary": "Execute a bounded search preview",
-        "description": "Repository-local idempotent sample route. It is not a public availability claim.",
+        "description": "Public idempotent raw web-search sample. Set synthesize to false; synthesized answers are unavailable.",
         "operationId": "searchPreview",
         "parameters": [
           {
@@ -84,14 +84,24 @@
                 }
               }
             }
+          },
+          "503": {
+            "description": "Requested capability unavailable",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
           }
         }
       }
     },
     "/v1/search/paid": {
       "post": {
-        "summary": "Request a non-payable search challenge",
-        "description": "Returns an explicitly non-payable mock x402 challenge. Execution exists only through test dependency injection.",
+        "summary": "Request or settle a raw Search payment",
+        "description": "Returns an exact x402 challenge for raw cited web retrieval. The same idempotency key replays the completed receipt without another charge. Set synthesize to false.",
         "operationId": "searchPaymentChallenge",
         "parameters": [
           {
@@ -137,7 +147,7 @@
             }
           },
           "402": {
-            "description": "Non-payable mock payment challenge",
+            "description": "x402 payment required",
             "headers": {
               "PAYMENT-REQUIRED": {
                 "schema": {
@@ -166,6 +176,16 @@
           },
           "502": {
             "description": "Mock test execution failed closed",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Requested capability or settlement unavailable",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2638,11 +2658,11 @@
   },
   "x-clervo-status": {
     "lifecycle": "preview",
-    "distribution": "candidate",
-    "noPublicDistribution": true,
-    "publicCallable": false,
-    "paymentImplemented": false,
-    "deploymentVerified": false,
+    "distribution": "public_preview",
+    "noPublicDistribution": false,
+    "publicCallable": true,
+    "paymentImplemented": true,
+    "deploymentVerified": true,
     "releaseCandidateId": "clervo-private-core-2026-08-02.2",
     "interfaceHash": "sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622",
     "operationIds": [

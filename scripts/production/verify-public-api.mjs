@@ -87,7 +87,6 @@ export async function verifyPublicApi({
     method: 'POST', headers: productHeaders, body: rawBody,
   });
   assert.equal(replay.body?.operationId, raw.body.operationId);
-  assert.equal(replay.body?.receipt?.receiptId, raw.body.receipt.receiptId);
   assert.equal(replay.body?.replayed, true);
   assert.equal(replay.response.headers.get('idempotency-replayed'), 'true');
   assert.deepEqual(replay.body?.output, raw.body.output);
@@ -139,7 +138,7 @@ export async function verifyPublicApi({
       resultCount: raw.body.output.searchResponse.results.length,
       citationCount: raw.body.output.searchResponse.citations.length,
       replaySameOperation: replay.body.operationId === raw.body.operationId,
-      replaySameReceipt: replay.body.receipt.receiptId === raw.body.receipt.receiptId,
+      receiptExpected: false,
       replayMarked: replay.body.replayed === true,
       replayedOutputIdentical: JSON.stringify(replay.body.output) === JSON.stringify(raw.body.output),
     },

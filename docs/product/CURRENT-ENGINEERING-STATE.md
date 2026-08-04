@@ -7,7 +7,7 @@ reading it.
 ## Active finish line
 
 `docs/product/FULL-PLATFORM-REVENUE-FINISH-LINE.md` is the active continuous
-execution order. Customer-functional paid readiness is currently 46.88% under
+execution order. Customer-functional paid readiness is currently 47.92% under
 the eight-gate rubric in `packages/catalog/full-platform-readiness.v1.json`.
 This does not reduce the six-product master-plan scope.
 
@@ -18,13 +18,16 @@ reachability because organization policy prevents an `allUsers` IAM binding,
 but every product request requires the separate edge authorization and direct
 requests fail with `edge_unauthorized`. Health and readiness remain readable.
 
-The public Cloudflare Worker is not deployed. Its first deployment must include
-version 2 of `clervo-production-edge-authorization` atomically as required
-secret `CLERVO_EDGE_AUTHORIZATION`; this exact cross-secret-store transfer is an
-owner blocker. The Worker exposes only health, raw Search, the payable Search
-route, and generated machine discovery. Private Sandbox and unsupported routes
-remain blocked. The bounded public smoke and truthful public Search discovery
-projection are implemented and pass Stage 16 preflight locally.
+The public Search preview is externally verified. Cloudflare Worker
+`clervo-api-edge-production` version
+`4e783693-9fcc-426b-ab37-0280dbd036a0` receives 100% of both exact root and
+wildcard API routes with required secret `CLERVO_EDGE_AUTHORIZATION`. The edge
+exposes only health, raw Search, the payable Search route, and generated machine
+discovery. Private Sandbox and unsupported routes remain blocked. Root,
+discovery, OpenAPI, pricing, health, readiness, live raw results and citations,
+durable replay, stable 402, synthesis refusal, CORS, private-route denial, and
+direct-origin denial all passed. No wallet signature or payment occurred.
+Evidence is `infra/production/cloudflare/public-search-release.v1.json`.
 
 ## Active work
 
@@ -474,32 +477,27 @@ were removed; the existing private serving revision remains at 100% traffic.
 
 ## Next actions
 
-1. Deploy the required-secret Cloudflare API edge after the exact owner-approved
-   GCP-to-Cloudflare secret transfer. Verify the live raw result, replay, stable
-   402, synthesis refusal, private-route denial, direct-origin denial, CORS,
-   monitoring, and rollback without signing or settling another payment.
-2. Publish the verified Search lifecycle, exact 0.006 USDC offer, OpenAPI,
-   catalog, status, onboarding, pricing, MCP discovery, and capability state
-   from the API edge. Then obtain one external paid useful result and reconcile
-   it; do not repeat the owner-funded proof.
-3. Generalize the Search-specific public runtime into the shared six-product
+1. Operate the verified public raw Search preview and exact 0.006 USDC x402
+   offer. Obtain one external paid useful result and reconcile its receipt and
+   no-charge replay; do not repeat the owner-funded proof.
+2. Generalize the Search-specific public runtime into the shared six-product
    operation, x402, idempotency, receipt, accounting, artifact, and recovery
    gateway while preserving the frozen contract semantics.
-4. Launch AI next: refresh at least three lawful supply families, connect exact
+3. Launch AI next: refresh at least three lawful supply families, connect exact
    chat/embedding/image/speech routes and stable aliases, enforce usage and
    shadow budgets, add durable media artifacts, and qualify public commerce and
    failure handling. Do not modify or expose the protected `ai.clervo.dev`
    runtime.
-5. Launch Sandbox through the shared gateway with fixed charges, abuse policy,
+4. Launch Sandbox through the shared gateway with fixed charges, abuse policy,
    secure artifacts, durable sessions, and supportable capacity; keep its
    private controller unreachable from customers.
-6. Continue RPC, Prediction, and Crypto public integration, but keep customer
+5. Continue RPC, Prediction, and Crypto public integration, but keep customer
    routing disabled until their respective commercial supply/reuse/data rights
    are qualified. Source lawful replacements without pausing other work.
-7. Create a new versioned full-platform release candidate rather than mutating
+6. Create a new versioned full-platform release candidate rather than mutating
    the historical private freeze. Expand and republish the SDKs, MCP, Python,
    raw HTTP, OpenAPI, and discovery from its exact six-product operation set.
-8. Run one consolidated full-platform production acceptance and complete every
+7. Run one consolidated full-platform production acceptance and complete every
    master-plan section 3.1 gate. Only the external paid useful result permits
    the First Revenue Release claim.
 
@@ -510,5 +508,7 @@ one owner-funded 0.006 USDC settlement and a proven no-charge replay; it is not
 revenue or demand evidence. The external RPC resale-permission
 blocker remains isolated. `ai.clervo.dev` is live on protected Clervo VM
 infrastructure and must never be included in sandbox/cloud cleanup. Migration
-0006 remains the only managed schema mutation in this work. No public/customer
-traffic or customer-data operation occurred. `ai.clervo.dev` was untouched.
+0006 remains the only managed schema mutation in this work. Public raw Search
+traffic and an unpaid x402 challenge are now enabled through the protected API
+edge; no external customer payment, revenue evidence, customer-data operation,
+or additional managed schema mutation occurred. `ai.clervo.dev` was untouched.

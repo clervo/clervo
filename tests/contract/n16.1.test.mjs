@@ -17,6 +17,8 @@ const text = async (path) => readFile(new URL(path, root), 'utf8');
 
 test('public launch policy exposes only live raw Search through a zero-traffic fail-closed rollout', async () => {
   const policy = await json('infra/production/gcp/public-launch.v1.json');
+  const release = await json('infra/production/cloudflare/public-search-release.v1.json');
+  const launchState = await json('packages/catalog/launch-state.v1.json');
   const worker = await json('apps/worker/wrangler.jsonc');
   assert.equal(policy.publicOrigin, 'https://api.clervo.dev/');
   assert.equal(policy.search.mode, 'live_external');
@@ -30,6 +32,20 @@ test('public launch policy exposes only live raw Search through a zero-traffic f
   assert.equal(policy.edge.sharedSecret, 'clervo-production-edge-authorization');
   assert.ok(policy.protectedResources.includes('ai.clervo.dev'));
   assert.deepEqual(worker.secrets.required, ['CLERVO_EDGE_AUTHORIZATION']);
+  assert.deepEqual(worker.routes.map(({ pattern }) => pattern), ['api.clervo.dev/', 'api.clervo.dev/*']);
+  assert.equal(release.state, 'public_preview_verified');
+  assert.equal(release.edge.trafficPercent, 100);
+  assert.equal(release.origin.directProductAccessStatus, 401);
+  assert.equal(release.observed.rawSearchStatus, 200);
+  assert.equal(release.observed.x402ChallengeStatus, 402);
+  assert.equal(release.commerce.paymentAttempted, false);
+  assert.equal(release.commerce.revenueEvidence, false);
+  assert.deepEqual(release.protectedResourcesTouched, []);
+  assert.equal(launchState.distribution.publicApi.publicCallable, true);
+  assert.equal(launchState.distribution.publicApi.publicTraffic, true);
+  assert.equal(launchState.paymentProof.publicCustomerPaymentAvailable, true);
+  assert.equal(launchState.paymentProof.revenueEvidence, false);
+  assert.equal(launchState.products.find(({ id }) => id === 'search').customerLifecycle, 'preview_publicly_callable');
 });
 
 test('public release tooling keeps deployment private until three independent promotion checks pass', async () => {
@@ -84,6 +100,7 @@ test('public Search discovery exposes only the exact verified raw product and pr
   assert.equal(raw.pricing.displayPrice.amountAtomic, '6000');
   assert.equal(answer.publicAvailable, false);
   assert.equal(answer.payment.payable, false);
+  assert.equal(answer.pricing.displayPrice, null);
   assert.match(llms, /no customer revenue or demand claimed/iu);
 });
 
@@ -96,7 +113,6 @@ test('external public smoke verifies live retrieval, replay, stable challenge, i
     fundingMode: 'free',
     replayed: false,
     output: { searchResponse: { results: [{ title: 'x402' }], citations: [{ id: 'citation-1' }] } },
-    receipt: { receiptId: 'rcpt_publicsmoketest0000001' },
   };
   globalThis.fetch = async (input, init = {}) => {
     const url = new URL(input);
@@ -126,7 +142,7 @@ test('external public smoke verifies live retrieval, replay, stable challenge, i
   try {
     const report = await verifyPublicApi({ publicOrigin: 'https://public.invalid', cloudRunOrigin: 'https://origin.invalid' });
     assert.equal(report.rawSearch.replaySameOperation, true);
-    assert.equal(report.rawSearch.replaySameReceipt, true);
+    assert.equal(report.rawSearch.receiptExpected, false);
     assert.equal(report.x402Challenge.stable, true);
     assert.equal(report.paymentSigned, false);
     assert.equal(report.paymentSettled, false);

@@ -41,20 +41,20 @@ not a customer-functional product. Every released pillar needs all eight:
 
 ## Honest readiness snapshot
 
-The customer-functional score is 46.88%, calculated from the eight gates above:
+The customer-functional score is 47.92%, calculated from the eight gates above:
 complete is 1, partial is 0.5, and missing or blocked is 0. It measures release
 readiness, not code volume or effort remaining.
 
 | Pillar | Readiness | Current reality |
 | --- | ---: | --- |
-| Search | 81.25% | Production origin, supply, x402, durability, and operations are proven; the required-secret edge and external acceptance remain. |
+| Search | 87.50% | The required-secret public edge, supply, x402, durability, operations, and external public smoke are proven; the first external paid customer remains. |
 | AI | 31.25% | Private contracts, adapters, and supply qualifications exist; public runtime, commerce, durability, and current production qualification remain. |
 | Secure Sandbox | 56.25% | Private gVisor execution and durable replay work; public commerce, artifacts, abuse policy, external acceptance, and spare capacity remain. |
 | RPC | 37.50% | Private gateway behavior is complete; commercial supply rights and every public-release layer remain. |
 | Prediction | 37.50% | Private normalized intelligence works; commercial reuse/history rights and every public-release layer remain. |
 | Crypto Intelligence | 37.50% | Private read-only intelligence works; commercial data rights and every public-release layer remain. |
 
-Shared engineering is further advanced than 46.88%, but shared infrastructure
+Shared engineering is further advanced than 47.92%, but shared infrastructure
 cannot make an unavailable product customer-functional.
 
 ## Documentation gaps this plan closes
@@ -82,12 +82,12 @@ cannot make an unavailable product customer-functional.
 
 ### 1. Put raw Search into revenue service
 
-- Transfer version 2 of the existing GCP edge authorization into the required
-  Cloudflare Worker secret and deploy code plus secret atomically.
-- Verify root, health, readiness, raw cited output, exact replay, stable 402,
-  synthesis refusal, CORS, private-route denial, and direct-origin denial.
-- Change Search lifecycle and machine discovery only after that public smoke.
-- Rerun monitoring, rollback, cost ceiling, and failure checks.
+The public runtime portion completed on 2026-08-04. Only the external paid
+customer result remains for the revenue wedge.
+
+- Preserve the verified required-secret Cloudflare edge, public lifecycle,
+  discovery, exact 0.006 USDC offer, direct-origin denial, and rollback target.
+- Continue bounded monitoring, cost-ceiling, and failure checks while public.
 - Accept one external 0.006 USDC payment, reconcile it, and prove no-charge
   replay. Do not repeat the owner-funded proof.
 
@@ -188,8 +188,6 @@ cannot make an unavailable product customer-functional.
 
 ## Isolated owner blockers
 
-- Exact approval to transfer the existing edge authorization between GCP and
-  Cloudflare secret stores.
 - Provider account, written commercial permission, or quota interaction when
   no terms-compatible technical alternative exists.
 - Any real customer or owner wallet signature; unknown settlement always stops

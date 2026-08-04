@@ -21,8 +21,8 @@ test('generated launch state is evidence-bound across packages, payment, and pub
     generated.distribution.packages.items.map(({ registry, name, version }) => [registry, name, version]),
     release.packages.map(({ registry, name, version }) => [registry, name, version]),
   );
-  assert.equal(generated.distribution.publicApi.publicCallable, false);
-  assert.equal(generated.distribution.publicApi.publicTraffic, false);
+  assert.equal(generated.distribution.publicApi.publicCallable, true);
+  assert.equal(generated.distribution.publicApi.publicTraffic, true);
   assert.equal(generated.paymentProof.amountAtomic, proof.observedSettlement.customerChargeAtomic);
   assert.equal(generated.paymentProof.settlementConfirmed, true);
   assert.equal(generated.paymentProof.replaySameReceipt, true);
@@ -33,7 +33,7 @@ test('generated launch state is evidence-bound across packages, payment, and pub
   assert.equal(generated.paymentProof.demandEvidence, false);
 });
 
-test('machine discovery separates installable clients from the unavailable customer API', async () => {
+test('machine discovery publishes only the verified raw Search offer', async () => {
   const [discovery, status, pricing, capabilities, mcp, openapi, yaml] = await Promise.all([
     json('generated/public/.well-known/clervo.json'),
     json('generated/public/status.json'),
@@ -43,17 +43,18 @@ test('machine discovery separates installable clients from the unavailable custo
     json('generated/public/openapi.json'),
     json('generated/public/openapi.yaml'),
   ]);
-  assert.equal(discovery.distribution.callable, false);
-  assert.equal(discovery.payment.publicAvailable, false);
+  assert.equal(discovery.distribution.callable, true);
+  assert.equal(discovery.payment.publicAvailable, true);
   assert.equal(discovery.payment.privateProofVerified, true);
   assert.equal(discovery.payment.commercialProof, false);
   assert.equal(status.packages.state, 'published_verified');
-  assert.equal(status.publicApi.customerEndpointAvailable, false);
-  assert.equal(pricing.publicOfferAvailable, false);
-  assert.equal(pricing.publicPrice, null);
+  assert.equal(status.publicApi.customerEndpointAvailable, true);
+  assert.equal(pricing.publicOfferAvailable, true);
+  assert.equal(pricing.publicPrice.productId, 'search.web');
+  assert.equal(pricing.publicPrice.amountAtomic, '6000');
   assert.equal(capabilities.products.length, 6);
   assert.equal(mcp.name, '@clervo/mcp');
-  assert.equal(mcp.publicApiAvailable, false);
+  assert.equal(mcp.publicApiAvailable, true);
   assert.equal(mcp.paymentSigningImplemented, false);
   assert.deepEqual(yaml, openapi);
 });
@@ -92,7 +93,7 @@ test('launch pages and discovery surfaces exist without forbidden or stale claim
   assert.doesNotMatch(publicText, /Every AI model|Google-quality|BlockRun has 0 free|20% cheaper than BlockRun/iu);
   assert.doesNotMatch(publicText, /Package candidates · publication not verified/iu);
   assert.match(publicText, /One job in/iu);
-  assert.match(publicText, /not publicly callable/iu);
+  assert.match(publicText, /Public API callable: yes/iu);
   assert.match(publicText, /no customer revenue or demand claimed/iu);
 
   const machineFiles = [

@@ -1,11 +1,15 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-03T23:28:13Z",
+  "observedAt": "2026-08-04T02:24:00Z",
   "publicApi": {
-    "state": "private_production_candidate",
-    "publicCallable": false,
-    "publicTraffic": false,
-    "customerEndpointAvailable": false
+    "state": "public_search_preview_verified",
+    "endpoint": "https://api.clervo.dev",
+    "publicCallable": true,
+    "publicTraffic": true,
+    "customerEndpointAvailable": true,
+    "evidence": [
+      "infra/production/cloudflare/public-search-release.v1.json"
+    ]
   },
   "packages": {
     "state": "published_verified",
@@ -45,7 +49,7 @@
     "secondAuthorization": false,
     "secondExecution": false,
     "secondCharge": false,
-    "publicCustomerPaymentAvailable": false,
+    "publicCustomerPaymentAvailable": true,
     "revenueEvidence": false,
     "demandEvidence": false,
     "transactionUrl": "https://basescan.org/tx/0xf4a2c7d5568745ad7ce11157306d5899faaf4def041519e51527c76134eca720",
@@ -57,8 +61,8 @@
   "products": [
     {
       "id": "search",
-      "engineeringState": "private_production_qualified",
-      "customerLifecycle": "preview_not_publicly_callable",
+      "engineeringState": "public_production_qualified",
+      "customerLifecycle": "preview_publicly_callable",
       "commercialProof": "owner_funded_plumbing_proof_only"
     },
     {

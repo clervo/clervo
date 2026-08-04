@@ -8,7 +8,7 @@
     "missingBasisPoints": 0,
     "blockedBasisPoints": 0,
     "gateCountPerPillar": 8,
-    "aggregateReadinessBasisPoints": 4688
+    "aggregateReadinessBasisPoints": 4792
   },
   "finishLines": [
     {
@@ -35,18 +35,18 @@
   "pillars": [
     {
       "id": "search",
-      "readinessBasisPoints": 8125,
+      "readinessBasisPoints": 8750,
       "gates": {
         "contract": "complete",
         "supply": "complete",
         "runtime": "complete",
-        "public_access": "partial",
+        "public_access": "complete",
         "commerce": "complete",
         "durability": "complete",
         "operations": "complete",
         "external_acceptance": "missing"
       },
-      "nextOutcome": "Deploy the required-secret API edge, pass the public smoke, publish the public lifecycle, and obtain one external paid result."
+      "nextOutcome": "Operate the verified public preview and obtain one external paid result with receipt reconciliation and no-charge replay."
     },
     {
       "id": "ai",
@@ -138,7 +138,6 @@
     "complete_external_paid_first_revenue_release"
   ],
   "ownerBlockers": [
-    "Approve the exact GCP-to-Cloudflare edge-secret transfer.",
     "Complete provider account, commercial-permission, or quota interactions only where technical qualification cannot resolve them.",
     "Provide an external payer for the final demand proof; do not repeat the owner-funded settlement proof."
   ]

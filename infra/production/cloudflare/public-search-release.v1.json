@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "clervo.public-search-release.v1",
+  "state": "public_preview_verified",
+  "verifiedAt": "2026-08-04T02:25:40.778Z",
+  "publicOrigin": "https://api.clervo.dev",
+  "edge": {
+    "worker": "clervo-api-edge-production",
+    "deploymentId": "c49f888f-205d-4c03-a770-7dd16e42bad5",
+    "versionId": "4e783693-9fcc-426b-ab37-0280dbd036a0",
+    "trafficPercent": 100,
+    "routes": ["api.clervo.dev/", "api.clervo.dev/*"],
+    "requiredSecretConfigured": true,
+    "secretValueRecorded": false,
+    "precedingVersionId": "9c2813f6-47c8-427e-bd00-46ed29bde711"
+  },
+  "origin": {
+    "service": "clervo-api-production",
+    "revision": "clervo-api-production-00014-zit",
+    "trafficPercent": 100,
+    "directProductAccessStatus": 401,
+    "directProductAccessCode": "edge_unauthorized"
+  },
+  "observed": {
+    "rootStatus": 200,
+    "discoveryStatus": 200,
+    "openapiStatus": 200,
+    "pricingStatus": 200,
+    "healthStatus": 200,
+    "readinessStatus": 200,
+    "rawSearchStatus": 200,
+    "rawResultCount": 3,
+    "citationCount": 3,
+    "replaySameOperation": true,
+    "replayMarked": true,
+    "replayedOutputIdentical": true,
+    "synthesisStatus": 503,
+    "synthesisCode": "search_synthesis_unavailable",
+    "x402ChallengeStatus": 402,
+    "x402ChallengeStable": true,
+    "privateRouteStatus": 404,
+    "corsStatus": 204
+  },
+  "commerce": {
+    "productId": "search.web",
+    "network": "eip155:8453",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "maximumChargeAtomic": "6000",
+    "decimals": 6,
+    "paymentAttempted": false,
+    "paymentSigned": false,
+    "paymentSettled": false,
+    "externalCustomerPaymentObserved": false,
+    "revenueEvidence": false,
+    "demandEvidence": false,
+    "ownerCashSpentUsd": 0
+  },
+  "claims": {
+    "rawSearchPubliclyCallable": true,
+    "searchAnswerPubliclyCallable": false,
+    "fullPlatformLaunched": false
+  },
+  "protectedResourcesTouched": []
+}

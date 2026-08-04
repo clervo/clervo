@@ -10,6 +10,10 @@
   },
   "routes": [
     {
+      "pattern": "api.clervo.dev/",
+      "zone_name": "clervo.dev"
+    },
+    {
       "pattern": "api.clervo.dev/*",
       "zone_name": "clervo.dev"
     }

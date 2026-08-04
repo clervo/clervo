@@ -5,17 +5,17 @@
 Current verified status:
 
 - Developer distribution: public TypeScript, MCP, and Python packages are registry-verified
-- Customer API: private production candidate; not publicly callable and receiving no public traffic
+- Customer API: public Search preview at https://api.clervo.dev
 - Frozen release candidate: clervo-private-core-2026-08-02.2
 - Frozen interface hash: sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622
 - Six product cores: privately qualified and compatibility-frozen
-- Public lifecycle: Search preview; AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence unavailable
+- Public lifecycle: raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable
 - Projected operation IDs: search.web, search.answer
-- Public API callable: no
-- x402 public payment: unavailable
+- Public API callable: yes
+- x402 public payment: available for search.web at a maximum charge of 0.006 USDC on Base
 - x402 private proof: one owner-funded useful result settled and replayed without a second charge
 - Commercial proof: no customer revenue or demand claimed
-- Prices in this candidate: non-payable mock fixtures only
+- Public price: search.web maximum charge is 0.006 USDC; search.answer has no public offer
 - First Revenue Release ready: no
 - llms.txt is a documentation map, not a search or AI ranking claim
 

@@ -2,10 +2,10 @@
   "contractVersion": "2026-07-29.1",
   "catalogVersion": "2026-08-02.2",
   "distribution": {
-    "state": "candidate",
-    "publicAvailable": false,
-    "callable": false,
-    "noPublicDistribution": true,
+    "state": "public_preview",
+    "publicAvailable": true,
+    "callable": true,
+    "noPublicDistribution": false,
     "releaseCandidateId": "clervo-private-core-2026-08-02.2",
     "interfaceHash": "sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622"
   },
@@ -171,7 +171,7 @@
       "title": "Web search evidence",
       "summary": "Normalized ranked retrieval evidence without synthesized prose.",
       "lifecycle": "preview",
-      "publicAvailable": false,
+      "publicAvailable": true,
       "deliveryModes": [
         "sync"
       ],
@@ -179,9 +179,9 @@
         "synthesize": false
       },
       "pricing": {
-        "model": "non_payable_mock_fixture",
+        "model": "x402_exact",
         "displayPrice": {
-          "asset": "mock:usdc",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "amountAtomic": "6000",
           "decimals": 6
         },
@@ -194,8 +194,8 @@
       },
       "payment": {
         "challengeImplemented": true,
-        "payable": false,
-        "mockExecutionAvailableByInjectionOnly": true
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
       }
     },
     {
@@ -212,12 +212,8 @@
         "synthesize": true
       },
       "pricing": {
-        "model": "non_payable_mock_fixture",
-        "displayPrice": {
-          "asset": "mock:usdc",
-          "amountAtomic": "12000",
-          "decimals": 6
-        },
+        "model": "unavailable",
+        "displayPrice": null,
         "maximumChargeRequired": true,
         "priceVersion": "search-answer-candidate-2"
       },
@@ -226,9 +222,9 @@
         "paidChallenge": "/v1/search/paid"
       },
       "payment": {
-        "challengeImplemented": true,
+        "challengeImplemented": false,
         "payable": false,
-        "mockExecutionAvailableByInjectionOnly": true
+        "mockExecutionAvailableByInjectionOnly": false
       }
     }
   ]
