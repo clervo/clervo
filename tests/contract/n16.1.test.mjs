@@ -2,6 +2,14 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
+import {
+  PUBLIC_SEARCH_DISTRIBUTION_PROJECTION,
+  assertPublicArtifacts,
+  createDiscoveryDocument,
+  createLlmsText,
+  createOpenApiDocument,
+} from '../../dist/packages/contracts/src/index.js';
+
 const root = new URL('../..', import.meta.url);
 const json = async (path) => JSON.parse(await readFile(new URL(path, root), 'utf8'));
 const text = async (path) => readFile(new URL(path, root), 'utf8');
@@ -45,4 +53,25 @@ test('API edge publishes only health and Search routes and blocks private Sandbo
   assert.equal(preflight.status, 204);
   assert.equal(preflight.headers.get('access-control-allow-origin'), '*');
   assert.match(preflight.headers.get('access-control-allow-headers') ?? '', /payment-signature/u);
+});
+
+test('public Search discovery exposes only the exact verified raw product and preserves commercial boundaries', () => {
+  const projection = PUBLIC_SEARCH_DISTRIBUTION_PROJECTION;
+  const openapi = createOpenApiDocument({}, projection);
+  const discovery = createDiscoveryDocument(projection);
+  const llms = createLlmsText(projection);
+  assert.doesNotThrow(() => assertPublicArtifacts(openapi, discovery, llms, projection));
+  assert.equal(openapi['x-clervo-status'].distribution, 'public_preview');
+  assert.equal(discovery.distribution.callable, true);
+  assert.equal(discovery.payment.publicAvailable, true);
+  assert.equal(discovery.payment.commercialProof, false);
+  const raw = discovery.products.find(({ productId }) => productId === 'search.web');
+  const answer = discovery.products.find(({ productId }) => productId === 'search.answer');
+  assert.equal(raw.publicAvailable, true);
+  assert.equal(raw.payment.payable, true);
+  assert.equal(raw.pricing.displayPrice.asset, '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913');
+  assert.equal(raw.pricing.displayPrice.amountAtomic, '6000');
+  assert.equal(answer.publicAvailable, false);
+  assert.equal(answer.payment.payable, false);
+  assert.match(llms, /no customer revenue or demand claimed/iu);
 });

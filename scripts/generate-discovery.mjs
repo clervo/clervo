@@ -29,6 +29,18 @@ function stableJson(value) {
 }
 
 const { interfaceHash, ...unsignedReleaseCandidate } = releaseCandidate;
+const publicApiFlags = [
+  launchState.distribution.publicApi.publicCallable,
+  launchState.distribution.publicApi.publicTraffic,
+  launchState.distribution.publicApi.customerEndpointAvailable,
+];
+const publicSearch = publicApiFlags.every((value) => value === true)
+  && launchState.paymentProof.publicCustomerPaymentAvailable === true
+  && launchState.products.find(({ id }) => id === 'search')?.customerLifecycle === 'preview_publicly_callable';
+const privateCandidate = publicApiFlags.every((value) => value === false)
+  && launchState.paymentProof.publicCustomerPaymentAvailable === false
+  && launchState.products.find(({ id }) => id === 'search')?.customerLifecycle === 'preview_not_publicly_callable';
+
 if (
   releaseCandidate.state !== 'private_core_frozen'
   || releaseCandidate.noPublicDistribution !== true
@@ -59,7 +71,7 @@ if (
   })
 ) throw new Error('distribution_lifecycle_projection_invalid');
 
-const projection = Object.freeze({
+const frozenProjection = Object.freeze({
   releaseCandidateId: releaseCandidate.releaseCandidateId,
   interfaceHash,
   noPublicDistribution: true,
@@ -67,8 +79,8 @@ const projection = Object.freeze({
 });
 if (
   onboarding.schemaVersion !== 'clervo.distribution-onboarding.v1'
-  || onboarding.releaseCandidateId !== projection.releaseCandidateId
-  || onboarding.interfaceHash !== projection.interfaceHash
+  || onboarding.releaseCandidateId !== frozenProjection.releaseCandidateId
+  || onboarding.interfaceHash !== frozenProjection.interfaceHash
   || onboarding.publicCallable !== false
   || onboarding.paymentImplemented !== false
   || onboarding.journey.map(({ step }) => step).join(',') !== 'install,ask,fund,approve,result,receipt'
@@ -91,8 +103,7 @@ if (
     && published.name === item.name
     && published.version === item.version
   )))
-  || launchState.distribution.publicApi.publicCallable !== false
-  || launchState.distribution.publicApi.publicTraffic !== false
+  || (!privateCandidate && !publicSearch)
   || launchState.paymentProof.state !== 'owner_funded_private_proof'
   || launchState.paymentProof.productId !== x402Proof.productId
   || launchState.paymentProof.amountAtomic !== x402Proof.observedSettlement.customerChargeAtomic
@@ -104,6 +115,24 @@ if (
   || launchState.products.length !== 6
   || launchState.products.some(({ id }) => !registry.pillars.some(({ pillarId }) => pillarId === id))
 ) throw new Error('launch_state_invalid');
+const projection = publicSearch ? Object.freeze({
+  ...contractModule.PUBLIC_SEARCH_DISTRIBUTION_PROJECTION,
+  releaseCandidateId: releaseCandidate.releaseCandidateId,
+  interfaceHash,
+}) : frozenProjection;
+const projectedOnboarding = publicSearch ? {
+  ...onboarding,
+  publicCallable: true,
+  paymentImplemented: true,
+  journey: onboarding.journey.map((step) => ({
+    ...step,
+    ...(step.step === 'ask' ? { state: 'public_raw_search', action: 'Submit one bounded raw Search request with an idempotency key.' } : {}),
+    ...(step.step === 'fund' ? { state: 'user_managed', action: 'Hold enough exact quoted USDC on Base before approving a paid request.' } : {}),
+    ...(step.step === 'approve' ? { state: 'explicit_wallet_action', action: 'Inspect the exact maximum charge, network, asset, resource, and expiry before signing.' } : {}),
+    ...(step.step === 'result' ? { state: 'public_raw_search', action: 'Verify the normalized result and its source citations.' } : {}),
+    ...(step.step === 'receipt' ? { state: 'public_verified', action: 'Inspect the payment response, receipt, request hash, and no-charge replay behavior.' } : {}),
+  })),
+} : onboarding;
 
 await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(path.join(outputDirectory, 'schemas', contractModule.CONTRACT_VERSION), { recursive: true });
@@ -124,15 +153,16 @@ const openapi = contractModule.createOpenApiDocument(schemas, projection);
 const discovery = contractModule.createDiscoveryDocument(projection);
 const llms = contractModule.createLlmsText(projection);
 const catalog = contractModule.createCatalogDocument(projection);
-contractModule.assertPreviewArtifacts(openapi, discovery, llms, projection);
+if (publicSearch) contractModule.assertPublicArtifacts(openapi, discovery, llms, projection);
+else contractModule.assertPreviewArtifacts(openapi, discovery, llms, projection);
 await writeFile(path.join(outputDirectory, 'openapi.json'), stableJson(openapi));
 await writeFile(path.join(outputDirectory, 'catalog.json'), stableJson(catalog));
-await writeFile(path.join(outputDirectory, 'onboarding.json'), stableJson(onboarding));
+await writeFile(path.join(outputDirectory, 'onboarding.json'), stableJson(projectedOnboarding));
 await writeFile(path.join(outputDirectory, 'claims.json'), stableJson(launchState));
 await writeFile(path.join(outputDirectory, 'capabilities.json'), stableJson({
   schemaVersion: 'clervo.capabilities.v1',
   observedAt: launchState.observedAt,
-  publicCallable: false,
+  publicCallable: publicSearch,
   products: launchState.products.map(({ id, label, operations, engineeringState, customerLifecycle }) => ({
     id,
     label,
@@ -141,7 +171,26 @@ await writeFile(path.join(outputDirectory, 'capabilities.json'), stableJson({
     customerLifecycle,
   })),
 }));
-await writeFile(path.join(outputDirectory, 'pricing.json'), stableJson({
+await writeFile(path.join(outputDirectory, 'pricing.json'), stableJson(publicSearch ? {
+  schemaVersion: 'clervo.public-pricing-state.v1',
+  observedAt: launchState.observedAt,
+  publicOfferAvailable: true,
+  publicPrice: {
+    productId: 'search.web',
+    network: projection.paymentNetwork,
+    asset: projection.paymentAsset,
+    amountAtomic: '6000',
+    decimals: 6,
+    amountDisplay: '0.006 USDC',
+    maximumCharge: true,
+  },
+  privateProof: {
+    productId: launchState.paymentProof.productId,
+    amountDisplay: launchState.paymentProof.amountDisplay,
+    label: 'Owner-funded private proof amount; not a public customer offer.',
+  },
+  offers: discovery.products.map(({ productId, publicAvailable, pricing }) => ({ productId, publicAvailable, ...pricing })),
+} : {
   schemaVersion: 'clervo.public-pricing-state.v1',
   observedAt: launchState.observedAt,
   publicOfferAvailable: false,
@@ -174,7 +223,8 @@ await writeFile(path.join(outputDirectory, '.well-known', 'mcp.json'), stableJso
   version: launchState.distribution.packages.items.find(({ name }) => name === '@clervo/mcp').version,
   registryUrl: launchState.distribution.packages.items.find(({ name }) => name === '@clervo/mcp').url,
   transport: 'stdio',
-  publicApiAvailable: false,
+  publicApiAvailable: publicSearch,
+  ...(publicSearch ? { publicApiBaseUrl: projection.publicBaseUrl } : {}),
   configurationRequired: ['CLERVO_BASE_URL'],
   paymentSigningImplemented: false,
   automaticPaymentRetry: false,
@@ -188,4 +238,4 @@ await writeFile(path.join(outputDirectory, '.well-known', 'security.txt'), [
 await writeFile(path.join(outputDirectory, 'openapi.yaml'), stableJson(openapi));
 await writeFile(path.join(outputDirectory, 'llms.txt'), llms);
 
-console.log(`distribution discovery generation: PASS (${projection.publicOperationIds.length} operations, ${Object.keys(schemas).length} schemas)`);
+console.log(`distribution discovery generation: PASS (${publicSearch ? 'public Search preview' : 'private candidate'}, ${projection.publicOperationIds.length} operations, ${Object.keys(schemas).length} schemas)`);
