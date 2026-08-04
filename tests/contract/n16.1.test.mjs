@@ -15,7 +15,8 @@ test('public launch policy exposes only live raw Search through a zero-traffic f
   assert.equal(policy.commerce.mode, 'settlement_enabled');
   assert.equal(policy.sandbox.publicRoute, false);
   assert.equal(policy.rollout.deployTrafficPercent, 0);
-  assert.equal(policy.rollout.publicInvokerAddedOnlyAfterPromotion, true);
+  assert.equal(policy.rollout.publicAccessEnabledOnlyAfterPromotion, true);
+  assert.equal(policy.rollout.publicAccessMethod, 'cloud_run_invoker_iam_check_disabled');
   assert.equal(policy.edge.sharedSecret, 'clervo-production-edge-authorization');
   assert.ok(policy.protectedResources.includes('ai.clervo.dev'));
 });
@@ -27,9 +28,9 @@ test('public release tooling keeps deployment private until three independent pr
   assert.match(source, /CLERVO_LIVE_SEARCH_SMOKE/u);
   assert.match(source, /CLERVO_X402_CHALLENGE_SMOKE/u);
   assert.match(source, /CLERVO_MONITORING_DELIVERY/u);
-  assert.match(source, /add-iam-policy-binding/u);
-  assert.match(source, /remove-iam-policy-binding/u);
-  assert.match(source, /publicInvokerAddedOnlyAfterPromotion/u);
+  assert.match(source, /--no-invoker-iam-check/u);
+  assert.match(source, /--invoker-iam-check/u);
+  assert.match(source, /publicAccessEnabledOnlyAfterPromotion/u);
   assert.match(source, /CLERVO_EDGE_AUTHORIZATION_SECRET_VERSION/u);
 });
 

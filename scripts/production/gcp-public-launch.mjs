@@ -28,6 +28,11 @@ function publicInvoker() {
   const iam = JSON.parse(gcloud(['run', 'services', 'get-iam-policy', policy.service, '--project', policy.project, '--region', policy.region, '--format=json'], true));
   return (iam.bindings ?? []).some(({ role, members = [] }) => role === 'roles/run.invoker' && members.includes('allUsers'));
 }
+function invokerIamDisabled() {
+  const current = service();
+  return current.metadata?.annotations?.['run.googleapis.com/invoker-iam-disabled'] === 'true';
+}
+function publicAccess() { return publicInvoker() || invokerIamDisabled(); }
 function verifyArtifact(candidateImage) {
   const result = spawnSync(process.execPath, ['scripts/production/gcp-release.mjs', 'verify-artifact'], {
     cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 16 * 1024 * 1024,
@@ -45,14 +50,14 @@ const plan = Object.freeze({
   action: 'plan', state: policy.state, project: policy.project, region: policy.region, service: policy.service,
   publicOrigin: policy.publicOrigin, searchMode: policy.search.mode, synthesisEnabled: policy.search.synthesisEnabled,
   x402Mode: policy.commerce.mode, sandboxMode: policy.sandbox.mode, deployTrafficPercent: 0,
-  publicInvokerAddedOnlyAfterPromotion: true, protectedResources: policy.protectedResources,
+  publicAccessEnabledOnlyAfterPromotion: true, publicAccessMethod: policy.rollout.publicAccessMethod, protectedResources: policy.protectedResources,
 });
 
 let result;
 if (action === 'plan') result = plan;
 else if (action === 'observe') {
   const current = service();
-  result = { action: 'observed', latestReadyRevision: current.status?.latestReadyRevisionName, traffic: traffic(current), publicInvoker: publicInvoker(), serviceUrl: current.status?.url };
+  result = { action: 'observed', latestReadyRevision: current.status?.latestReadyRevisionName, traffic: traffic(current), publicInvoker: publicInvoker(), invokerIamDisabled: invokerIamDisabled(), publicAccess: publicAccess(), serviceUrl: current.status?.url };
 } else if (action === 'deploy') {
   const releaseId = release();
   const candidateImage = image();
@@ -67,7 +72,7 @@ else if (action === 'observe') {
   const artifact = verifyArtifact(candidateImage);
   const before = service();
   const beforeTraffic = traffic(before);
-  assert.equal(publicInvoker(), false, 'zero-traffic candidate requires private origin');
+  assert.equal(publicAccess(), false, 'zero-traffic candidate requires private origin');
   const tag = `public-${releaseId.slice(0, 12)}`;
   const environment = [
     'CLERVO_ENV=production', `CLERVO_RELEASE_ID=${releaseId}`, `CLERVO_PUBLIC_ORIGIN=${policy.publicOrigin}`,
@@ -106,7 +111,7 @@ else if (action === 'observe') {
   ]);
   const after = service();
   assert.deepEqual(traffic(after), beforeTraffic, 'serving traffic changed during zero-traffic deploy');
-  assert.equal(publicInvoker(), false, 'public invoker changed during zero-traffic deploy');
+  assert.equal(publicAccess(), false, 'public access changed during zero-traffic deploy');
   const candidateRevision = after.status?.latestReadyRevisionName;
   if (!/^clervo-api-production-[0-9]{5}-[a-z0-9]{3}$/u.test(candidateRevision ?? '')) refuse('candidate_revision_missing');
   const serviceUrl = new URL(after.status.url);
@@ -122,15 +127,15 @@ else if (action === 'observe') {
   assert.equal(describedImage(candidateRevision), candidateImage, 'candidate image mismatch');
   verifyArtifact(candidateImage);
   gcloud(['run', 'services', 'update-traffic', policy.service, '--project', policy.project, '--region', policy.region, '--to-revisions', `${candidateRevision}=100`, '--quiet']);
-  gcloud(['run', 'services', 'add-iam-policy-binding', policy.service, '--project', policy.project, '--region', policy.region, '--member', 'allUsers', '--role', 'roles/run.invoker', '--quiet']);
-  assert.equal(publicInvoker(), true, 'public invoker missing after promotion');
-  result = { action: 'public-origin-promoted', revision: candidateRevision, image: candidateImage, trafficPercent: 100, publicInvoker: true };
+  gcloud(['run', 'services', 'update', policy.service, '--project', policy.project, '--region', policy.region, '--no-invoker-iam-check', '--quiet']);
+  assert.equal(invokerIamDisabled(), true, 'invoker IAM check remained enabled after promotion');
+  result = { action: 'public-origin-promoted', revision: candidateRevision, image: candidateImage, trafficPercent: 100, publicAccess: true, accessMethod: 'invoker_iam_check_disabled' };
 } else if (action === 'privatize') {
   const releaseId = release();
   assert.equal(env('CLERVO_PUBLIC_LAUNCH_CONFIRM'), `privatize:${releaseId}`, 'confirmation mismatch');
-  gcloud(['run', 'services', 'remove-iam-policy-binding', policy.service, '--project', policy.project, '--region', policy.region, '--member', 'allUsers', '--role', 'roles/run.invoker', '--quiet']);
-  assert.equal(publicInvoker(), false, 'public invoker remained after privatize');
-  result = { action: 'public-origin-privatized', publicInvoker: false };
+  gcloud(['run', 'services', 'update', policy.service, '--project', policy.project, '--region', policy.region, '--invoker-iam-check', '--quiet']);
+  assert.equal(publicAccess(), false, 'public access remained after privatize');
+  result = { action: 'public-origin-privatized', publicAccess: false };
 } else refuse('usage_plan_observe_deploy_promote_privatize');
 
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);

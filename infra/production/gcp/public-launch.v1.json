@@ -36,7 +36,8 @@
     "stableChallengeRequired": true,
     "monitoringDeliveryRequired": true,
     "previousRevisionRequired": true,
-    "publicInvokerAddedOnlyAfterPromotion": true,
+    "publicAccessEnabledOnlyAfterPromotion": true,
+    "publicAccessMethod": "cloud_run_invoker_iam_check_disabled",
     "edgeDeployedOnlyAfterOriginVerification": true
   },
   "protectedResources": [
