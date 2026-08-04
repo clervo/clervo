@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "clervo.sandbox-public-release.v1",
+  "observedAt": "2026-08-04T04:44:23Z",
+  "state": "origin_promoted_edge_release_pending",
+  "releaseCommit": "e5e604278161b0d81c309881a894a6a6945d1a97",
+  "cloudBuildId": "24c42783-478a-45c0-b40c-45e5f5ddb6ad",
+  "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:a8e362ec6ecd190d379490bd4e857b3cfc08b938be16fcdfe75a31be099ae2d0",
+  "revision": "clervo-api-production-00026-web",
+  "originTrafficPercent": 100,
+  "edge": {
+    "route": "/v1/sandbox/execute",
+    "enabled": false,
+    "deploymentPending": true
+  },
+  "commerce": {
+    "priceVersion": "sandbox-run-public-2026-08-04.1",
+    "maximumChargeAtomic": "120000",
+    "asset": "USDC",
+    "network": "eip155:8453",
+    "x402ChallengeStatus": 402,
+    "mppChallengePresent": true,
+    "paymentAttempted": false,
+    "paidResultVerified": false,
+    "revenueEvidence": false
+  },
+  "qualification": {
+    "directOriginProductStatus": 401,
+    "liveSearchPreserved": true,
+    "usefulSandboxExitCode": 0,
+    "usefulOutputVerified": true,
+    "durableReplayVerified": true,
+    "residualRuntimeResources": 0,
+    "monitoringDeliveryAcknowledged": true,
+    "criticalVulnerabilities": 0,
+    "highVulnerabilities": 0
+  },
+  "constraints": {
+    "executionMode": "one_shot_nodejs_gvisor",
+    "capacity": "single_node",
+    "networkAccess": false,
+    "publicSessions": false,
+    "publicArtifacts": false
+  },
+  "protectedResourcesTouched": []
+}

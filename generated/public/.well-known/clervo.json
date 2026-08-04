@@ -2,7 +2,7 @@
   "discoveryVersion": "2026-08-02.2",
   "contractVersion": "2026-07-29.1",
   "name": "Clervo",
-  "description": "Machine-readable public Search and paid AI preview. Raw Search and qualified bounded AI chat requests are callable; unsupported AI modalities and the remaining product cores fail closed. No external customer revenue or demand is claimed.",
+  "description": "Machine-readable public Search, paid AI chat, and paid one-shot Secure Sandbox previews. Each published operation returns real output through the production path; unsupported operations fail closed. No external customer revenue or demand is claimed.",
   "lifecycle": "preview",
   "distribution": {
     "state": "public_preview",
@@ -277,20 +277,54 @@
         "mockExecutionAvailableByInjectionOnly": false
       },
       "commercialProof": false
+    },
+    {
+      "productId": "sandbox.run",
+      "operationId": "sandbox.run",
+      "title": "Secure one-shot code execution",
+      "summary": "Bounded Node.js execution in a pinned gVisor image with no network, strict resource ceilings, cleanup, receipt, and no-charge replay.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "image": "Pinned qualified sandbox.nodejs-24 image; caller cannot select an arbitrary image."
+      },
+      "pricing": {
+        "model": "fixed_request",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "120000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "sandbox-run-public-2026-08-04.1"
+      },
+      "routes": {
+        "paidChallenge": "/v1/sandbox/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "commercialProof": false
     }
   ],
   "limitations": [
-    "Raw cited Search and bounded paid AI chat are publicly callable previews; Search synthesis and AI media remain unavailable.",
-    "AI prices are exact per-request maximum-charge quotes, not one fixed model price.",
-    "The AI production origin and stable challenge are verified; an owner-signed paid AI result remains pending.",
-    "Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain publicly unavailable.",
+    "Raw cited Search, bounded paid AI chat, and bounded paid one-shot Secure Sandbox execution are publicly callable previews.",
+    "The Sandbox has one qualified execution node; high availability, sessions, arbitrary images, network access, and public artifact retrieval are not claimed.",
+    "Search synthesis, AI media, RPC, Prediction, and Crypto Intelligence remain unavailable.",
+    "The Sandbox production origin, useful gVisor output, replay, and cleanup are verified; an owner-signed public paid Sandbox result remains pending.",
     "No external customer payment, revenue, or demand is claimed."
   ],
   "runtimeRelease": {
-    "sourceCommit": "1936d7966a27",
+    "sourceCommit": "e5e604278161b0d81c309881a894a6a6945d1a97",
     "operationIds": [
       "search.web",
-      "ai.chat"
+      "ai.chat",
+      "sandbox.run"
     ]
   }
 }

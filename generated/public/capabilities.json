@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.capabilities.v1",
-  "observedAt": "2026-08-04T03:16:40Z",
+  "observedAt": "2026-08-04T04:44:23Z",
   "publicCallable": true,
   "products": [
     {
@@ -35,8 +35,8 @@
         "sandbox.artifact.get",
         "sandbox.session.destroy"
       ],
-      "engineeringState": "private_production_qualified_single_node",
-      "customerLifecycle": "unavailable"
+      "engineeringState": "public_production_qualified_single_node",
+      "customerLifecycle": "preview_publicly_callable"
     },
     {
       "id": "rpc",

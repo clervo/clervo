@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.launch-state.v1",
-  "observedAt": "2026-08-04T03:16:40Z",
-  "sourceCommit": "1936d7966a27",
+  "observedAt": "2026-08-04T04:44:23Z",
+  "sourceCommit": "e5e604278161b0d81c309881a894a6a6945d1a97",
   "identity": {
     "category": "Outcome infrastructure for agents",
     "headline": "One job in. One inspectable result out.",
@@ -39,13 +39,14 @@
       ]
     },
     "publicApi": {
-      "state": "public_search_and_ai_preview_verified",
+      "state": "public_search_ai_and_sandbox_preview_verified",
       "endpoint": "https://api.clervo.dev",
       "publicCallable": true,
       "publicTraffic": true,
       "customerEndpointAvailable": true,
       "evidence": [
-        "infra/production/cloudflare/public-search-release.v1.json"
+        "infra/production/cloudflare/public-search-release.v1.json",
+        "infra/production/gcp/sandbox-public-release.v1.json"
       ]
     }
   },
@@ -135,18 +136,23 @@
         "sandbox.artifact.get",
         "sandbox.session.destroy"
       ],
-      "engineeringState": "private_production_qualified_single_node",
-      "customerLifecycle": "unavailable",
+      "engineeringState": "public_production_qualified_single_node",
+      "customerLifecycle": "preview_publicly_callable",
       "commercialProof": "unproven",
-      "paymentState": "unavailable",
+      "paymentState": "public_x402_challenge_available_paid_result_pending",
       "supplierRights": "not_applicable",
       "allowedClaims": [
-        "The private gVisor execution path passed isolation, replay, and cleanup qualification."
+        "Bounded one-shot Node.js execution is publicly callable through an exact 0.12 USDC Base x402 or MPP offer.",
+        "The production origin executed useful output in the qualified gVisor runner, replayed the same result without another execution, and left no runtime resources.",
+        "The current release is intentionally single-node and fails closed when its bounded capacity is unavailable."
       ],
       "prohibitedClaims": [
-        "Publicly available",
         "Highly available",
-        "Unlimited scale"
+        "Unlimited scale",
+        "Public sessions or artifact retrieval",
+        "Arbitrary container images or network access",
+        "Paid Sandbox result verified",
+        "Customer revenue or demand"
       ]
     },
     {

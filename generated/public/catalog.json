@@ -255,6 +255,39 @@
         "mockExecutionAvailableByInjectionOnly": false
       },
       "commercialProof": false
+    },
+    {
+      "productId": "sandbox.run",
+      "operationId": "sandbox.run",
+      "title": "Secure one-shot code execution",
+      "summary": "Bounded Node.js execution in a pinned gVisor image with no network, strict resource ceilings, cleanup, receipt, and no-charge replay.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "image": "Pinned qualified sandbox.nodejs-24 image; caller cannot select an arbitrary image."
+      },
+      "pricing": {
+        "model": "fixed_request",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "120000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "sandbox-run-public-2026-08-04.1"
+      },
+      "routes": {
+        "paidChallenge": "/v1/sandbox/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "commercialProof": false
     }
   ]
 }

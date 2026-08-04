@@ -30,3 +30,8 @@ Current verified status:
 - [Status](/status.json): current packages, API, payment proof, and product states.
 - [Discovery document](/.well-known/clervo.json): release-candidate binding and distribution status.
 - [JSON Schemas](/schemas/2026-07-29.1/): projected public-wire contracts.
+
+## Secure Sandbox preview
+
+- `POST /v1/sandbox/execute`: fixed maximum charge 0.120000 USDC on Base for one bounded Node.js gVisor execution.
+- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.

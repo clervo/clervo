@@ -15,7 +15,7 @@ const root = new URL('../..', import.meta.url);
 const json = async (path) => JSON.parse(await readFile(new URL(path, root), 'utf8'));
 const text = async (path) => readFile(new URL(path, root), 'utf8');
 
-test('public launch policy exposes only live raw Search through a zero-traffic fail-closed rollout', async () => {
+test('public launch policy exposes qualified Search, AI, and Sandbox through a zero-traffic fail-closed rollout', async () => {
   const policy = await json('infra/production/gcp/public-launch.v1.json');
   const release = await json('infra/production/cloudflare/public-search-release.v1.json');
   const launchState = await json('packages/catalog/launch-state.v1.json');
@@ -35,6 +35,8 @@ test('public launch policy exposes only live raw Search through a zero-traffic f
   assert.equal(policy.edge.sharedSecret, 'clervo-production-edge-authorization');
   assert.ok(policy.protectedResources.includes('ai.clervo.dev'));
   assert.deepEqual(worker.secrets.required, ['CLERVO_EDGE_AUTHORIZATION']);
+  assert.equal(worker.vars.CLERVO_AI_PUBLIC_ENABLED, 'true');
+  assert.equal(worker.vars.CLERVO_SANDBOX_PUBLIC_ENABLED, 'true');
   assert.deepEqual(worker.routes.map(({ pattern }) => pattern), ['api.clervo.dev/', 'api.clervo.dev/*']);
   assert.equal(release.state, 'public_preview_verified');
   assert.equal(release.edge.trafficPercent, 100);
@@ -50,9 +52,10 @@ test('public launch policy exposes only live raw Search through a zero-traffic f
   assert.equal(launchState.paymentProof.revenueEvidence, false);
   assert.equal(launchState.products.find(({ id }) => id === 'search').customerLifecycle, 'preview_publicly_callable');
   assert.equal(launchState.products.find(({ id }) => id === 'ai').customerLifecycle, 'preview_publicly_callable');
+  assert.equal(launchState.products.find(({ id }) => id === 'sandbox').customerLifecycle, 'preview_publicly_callable');
 });
 
-test('public release tooling keeps deployment private until three independent promotion checks pass', async () => {
+test('public release tooling keeps deployment private until all independent promotion checks pass', async () => {
   const source = await text('scripts/production/gcp-public-launch.mjs');
   assert.match(source, /--no-allow-unauthenticated/u);
   assert.match(source, /--no-traffic/u);
