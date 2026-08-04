@@ -11,23 +11,29 @@ execution order. Customer-functional paid readiness is currently 47.92% under
 the eight-gate rubric in `packages/catalog/full-platform-readiness.v1.json`.
 This does not reduce the six-product master-plan scope.
 
-The immediate revenue wedge is public raw `search.web`. Cloud Run revision
-`clervo-api-production-00014-zit` serves the qualified live-external Search and
-x402 runtime at 100% origin traffic. The origin permits unauthenticated network
+The immediate revenue wedge is public raw `search.web`; bounded `ai.chat` is
+also publicly payable in preview. Cloud Run revision
+`clervo-api-production-00023-mil` serves the qualified live-external Search,
+qualified Luna chat route, and shared x402/MPP commerce runtime at 100% origin
+traffic. The origin permits unauthenticated network
 reachability because organization policy prevents an `allUsers` IAM binding,
 but every product request requires the separate edge authorization and direct
 requests fail with `edge_unauthorized`. Health and readiness remain readable.
 
-The public Search preview is externally verified. Cloudflare Worker
+The public Search and AI preview edge is externally verified. Cloudflare Worker
 `clervo-api-edge-production` version
-`4e783693-9fcc-426b-ab37-0280dbd036a0` receives 100% of both exact root and
+`b6031e7e-e60c-4b7e-a6e9-009b98b24d0f` receives 100% of both exact root and
 wildcard API routes with required secret `CLERVO_EDGE_AUTHORIZATION`. The edge
-exposes only health, raw Search, the payable Search route, and generated machine
-discovery. Private Sandbox and unsupported routes remain blocked. Root,
-discovery, OpenAPI, pricing, health, readiness, live raw results and citations,
-durable replay, stable 402, synthesis refusal, CORS, private-route denial, and
-direct-origin denial all passed. No wallet signature or payment occurred.
-Evidence is `infra/production/cloudflare/public-search-release.v1.json`.
+exposes only health, raw Search, payable Search and AI chat, and generated
+machine discovery. Private Sandbox and unsupported routes remain blocked. The
+live OpenAPI contact, no-auth free operation, scanner-safe schemas, Bazaar
+schemas, favicon, and runtime probes pass `@agentcash/discovery` with zero
+warnings. Both paid operations return x402 `PAYMENT-REQUIRED` and MPP
+`WWW-Authenticate` before request validation; both challenges bind the same
+Base USDC receiver and exact atomic amount. Search is 6000 atomic USDC and the
+bounded Luna probe is 113 atomic USDC. x402 has one owner-funded Search
+settlement and no-charge replay; no production MPP settlement or paid AI result
+has yet been signed, so neither is claimed as customer revenue or demand.
 
 ## Active work
 
