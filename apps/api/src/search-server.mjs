@@ -45,6 +45,15 @@ import {
   rpcHttpRequestHash,
   rpcPublicPricing,
 } from './x402-paid-rpc.mjs';
+import {
+  PREDICTION_DISCOVERY,
+  PREDICTION_MAX_BODY_BYTES,
+  PREDICTION_PAID_PATH,
+  createX402PaidPredictionProcessor,
+  normalizePredictionHttpRequest,
+  predictionHttpRequestHash,
+  predictionPublicPricing,
+} from './x402-paid-prediction.mjs';
 
 const JSON_TYPE = 'application/json; charset=utf-8';
 const PROBLEM_TYPE = 'application/problem+json; charset=utf-8';
@@ -155,6 +164,7 @@ export function createSearchServer({
   aiMonitor,
   sandboxPublicRunnerDigest,
   rpcRuntime,
+  predictionRuntime,
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
   if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
@@ -175,6 +185,7 @@ export function createSearchServer({
   if (aiArtifactAccess !== undefined && (typeof aiArtifactAccess.matches !== 'function' || typeof aiArtifactAccess.retrieve !== 'function')) throw new TypeError('invalid AI artifact access');
   if (sandboxPublicRunnerDigest !== undefined && (sandboxGateway === undefined || x402Service === undefined)) throw new TypeError('public Sandbox requires private execution and x402 commerce');
   if (rpcRuntime !== undefined && x402Service === undefined) throw new TypeError('public RPC requires x402 commerce');
+  if (predictionRuntime !== undefined && x402Service === undefined) throw new TypeError('public Prediction requires x402 commerce');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
   if (
     typeof searchState.begin !== 'function'
@@ -218,6 +229,7 @@ export function createSearchServer({
     acquireExecution,
   });
   const x402RpcProcessor = rpcRuntime === undefined ? undefined : createX402PaidRpcProcessor({ service: x402Service, stateStore: x402StateStore, runtime: rpcRuntime, acquireExecution });
+  const x402PredictionProcessor = predictionRuntime === undefined ? undefined : createX402PaidPredictionProcessor({ service: x402Service, stateStore: x402StateStore, runtime: predictionRuntime, acquireExecution });
 
   async function discoveryPaymentChallenge(pathname, observedAt) {
     let productId;
@@ -242,6 +254,12 @@ export function createSearchServer({
       requestHash = rpcHttpRequestHash(normalized);
       pricing = rpcPublicPricing(normalized);
       discovery = RPC_DISCOVERY;
+    } else if (pathname === PREDICTION_PAID_PATH) {
+      const normalized = normalizePredictionHttpRequest(PREDICTION_DISCOVERY.input);
+      productId = normalized.productId;
+      requestHash = predictionHttpRequestHash(normalized);
+      pricing = predictionPublicPricing(normalized);
+      discovery = PREDICTION_DISCOVERY;
     } else {
       const normalized = normalizeSearchHttpRequest(SEARCH_DISCOVERY_PROBE_REQUEST);
       productId = searchProductId(normalized);
@@ -284,6 +302,7 @@ export function createSearchServer({
         aiPaidEnabled: x402AiProcessor?.mode === 'settlement_enabled',
         sandboxPaidEnabled: x402SandboxProcessor?.mode === 'settlement_enabled',
         rpcPaidEnabled: x402RpcProcessor?.mode === 'settlement_enabled',
+        predictionPaidEnabled: x402PredictionProcessor?.mode === 'settlement_enabled',
         retrievalMode,
       });
       return;
@@ -296,7 +315,8 @@ export function createSearchServer({
           && await searchState.ready()
           && (x402StateStore === undefined || await x402StateStore.ready())
           && (sandboxGateway === undefined || await sandboxGateway.ready())
-          && (rpcRuntime === undefined || await rpcRuntime.ready());
+          && (rpcRuntime === undefined || await rpcRuntime.ready())
+          && (predictionRuntime === undefined || await predictionRuntime.ready());
         send(response, ready ? 200 : 503, {
           status: ready ? 'ready' : 'unavailable',
           service: 'clervo-search-api',
@@ -445,6 +465,36 @@ export function createSearchServer({
       } catch (error) {
         const code = errorCode(error); const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;
         send(response, status, problem(status, code, status === 400 ? 'Invalid RPC request' : status === 409 ? 'RPC operation conflict' : 'RPC execution unavailable', status >= 500 ? 'The RPC operation failed closed. Do not retry an unknown paid operation until reconciliation.' : 'The RPC request was rejected before execution.', url.pathname, operationId), status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
+      }
+      return;
+    }
+    if (request.method === 'POST' && url.pathname === PREDICTION_PAID_PATH && x402PredictionProcessor !== undefined) {
+      if (edgeAuthorization !== undefined && !internalAuthorized(request.headers['x-clervo-edge-authorization'], edgeAuthorization)) {
+        send(response, 401, problem(401, 'edge_unauthorized', 'Unauthorized', 'The public API edge is required.', url.pathname), {}, PROBLEM_TYPE); return;
+      }
+      if (trafficControl?.snapshot().mode === 'stopped') {
+        send(response, 503, problem(503, 'traffic_stopped', 'Traffic temporarily stopped', 'New execution is disabled by the independent traffic safety control.', url.pathname), { 'retry-after': '30' }, PROBLEM_TYPE); return;
+      }
+      if (url.search !== '') {
+        send(response, 400, problem(400, 'query_parameters_not_allowed', 'Query parameters not allowed', 'The Prediction contract accepts JSON body fields only.', url.pathname), {}, PROBLEM_TYPE); return;
+      }
+      let operationId;
+      try {
+        const keyHeader = request.headers['idempotency-key'];
+        const authorizationHeader = mppAuthorization(request.headers.authorization);
+        if (typeof keyHeader !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined) {
+          const challenge = await discoveryPaymentChallenge(PREDICTION_PAID_PATH, now()); send(response, challenge.status, challenge.body, challenge.headers); return;
+        }
+        if (typeof keyHeader !== 'string') throw Object.assign(new Error('idempotency_key_required'), { status: 400 });
+        validateIdempotencyKey(keyHeader);
+        const normalized = normalizePredictionHttpRequest(await readJson(request, PREDICTION_MAX_BODY_BYTES));
+        const requestHash = predictionHttpRequestHash(normalized);
+        operationId = identifier('op', `${keyHeader}:${requestHash}`);
+        const paid = await x402PredictionProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now() });
+        send(response, paid.status, paid.body, paid.headers);
+      } catch (error) {
+        const code = errorCode(error); const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;
+        send(response, status, problem(status, code, status === 400 ? 'Invalid Prediction request' : status === 404 ? 'Prediction market not found' : status === 409 ? 'Prediction operation conflict' : 'Prediction execution unavailable', status >= 500 ? 'The Prediction operation failed closed. Do not retry an unknown paid operation until reconciliation.' : 'The Prediction request was rejected before execution.', url.pathname, operationId), status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
       }
       return;
     }

@@ -125,6 +125,12 @@ test('API edge publishes enabled products while blocking private control and dis
     method: 'POST', headers: { 'content-length': '262145' },
   }), { CLERVO_RPC_PUBLIC_ENABLED: 'true' });
   assert.equal(oversizedRpc.status, 413);
+  const disabledPrediction = await worker.fetch(new Request('https://api.clervo.dev/v1/prediction/execute', { method: 'OPTIONS' }), { CLERVO_RPC_PUBLIC_ENABLED: 'true' });
+  assert.equal(disabledPrediction.status, 404);
+  const predictionPreflight = await worker.fetch(new Request('https://api.clervo.dev/v1/prediction/execute', { method: 'OPTIONS' }), { CLERVO_PREDICTION_PUBLIC_ENABLED: 'true' });
+  assert.equal(predictionPreflight.status, 204);
+  const oversizedPrediction = await worker.fetch(new Request('https://api.clervo.dev/v1/prediction/execute', { method: 'POST', headers: { 'content-length': '262145' } }), { CLERVO_PREDICTION_PUBLIC_ENABLED: 'true' });
+  assert.equal(oversizedPrediction.status, 413);
   const artifactPath = `/v1/artifacts/tenant_${'a'.repeat(32)}/${'b'.repeat(64)}/png/1785819900/${'c'.repeat(43)}`;
   const artifactPreflight = await worker.fetch(new Request(`https://api.clervo.dev${artifactPath}`, { method: 'OPTIONS' }));
   assert.equal(artifactPreflight.status, 204);
