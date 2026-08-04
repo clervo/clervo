@@ -110,7 +110,7 @@ else if (action === 'observe') {
     '--concurrency', '16', '--min-instances', '0', '--max-instances', '1', '--timeout', `${sandbox.cloudRun.requestTimeoutSeconds}s`,
     '--no-cpu-throttling', '--no-session-affinity', '--port', '8080', '--set-cloudsql-instances', `${policy.project}:${policy.region}:${deployment.resources.databaseInstance}`,
     '--network', sandbox.network, '--subnet', sandbox.serverlessSubnet.name, '--vpc-egress', sandbox.cloudRun.directVpcEgress, '--network-tags', sandbox.cloudRun.networkTag,
-    '--set-env-vars', environment.join(','), '--set-secrets', secrets.join(','),
+    '--set-env-vars', `^@^${environment.join('@')}`, '--set-secrets', secrets.join(','),
     '--startup-probe', 'httpGet.path=/readyz,httpGet.port=8080,periodSeconds=2,timeoutSeconds=1,failureThreshold=30',
     '--liveness-probe', 'httpGet.path=/v1/health,httpGet.port=8080,periodSeconds=10,timeoutSeconds=1,failureThreshold=3',
     '--readiness-probe', 'httpGet.path=/readyz,httpGet.port=8080,periodSeconds=5,timeoutSeconds=1,failureThreshold=2,successThreshold=1',
