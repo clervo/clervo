@@ -69,6 +69,8 @@ else if (action === 'observe') {
     sandboxApi: version('CLERVO_SANDBOX_API_SECRET_VERSION'), searchPrimary: version('CLERVO_SEARCH_PRIMARY_SECRET_VERSION'),
     searchFallback: version('CLERVO_SEARCH_FALLBACK_SECRET_VERSION'), edge: version('CLERVO_EDGE_AUTHORIZATION_SECRET_VERSION'),
     aiClervo: version('CLERVO_AI_CLERVO_SECRET_VERSION'), groq: version('CLERVO_GROQ_SECRET_VERSION'), cloudflare: version('CLERVO_CLOUDFLARE_SECRET_VERSION'),
+    aiDeepgram: version('CLERVO_DEEPGRAM_SECRET_VERSION'), r2Access: version('CLERVO_R2_ACCESS_KEY_SECRET_VERSION'),
+    r2Secret: version('CLERVO_R2_SECRET_ACCESS_KEY_SECRET_VERSION'), artifactSigning: version('CLERVO_ARTIFACT_SIGNING_SECRET_VERSION'),
     mpp: version('CLERVO_MPP_SECRET_VERSION'),
   };
   const artifact = verifyArtifact(candidateImage);
@@ -88,6 +90,9 @@ else if (action === 'observe') {
     'CLERVO_RELEASE_CHANNEL=public-live-candidate',
     `CLERVO_AI_MODE=${policy.ai.mode}`, `CLERVO_AI_ROUTE_FAMILIES=${policy.ai.routeFamilies}`,
     `CLERVO_AI_BASE_URL=${policy.ai.baseUrl}`, `CLERVO_VERTEX_PROJECT_ID=${policy.ai.vertexProjectId}`,
+    `CLERVO_AI_ARTIFACT_MODE=${policy.ai.artifacts.mode}`, `R2_S3_ENDPOINT=${env('CLERVO_R2_S3_ENDPOINT')}`,
+    `R2_BUCKET_NAME=${policy.ai.artifacts.bucket}`, `CLERVO_ARTIFACT_RETENTION_SECONDS=${policy.ai.artifacts.retentionSeconds}`,
+    `CLERVO_ARTIFACT_MAXIMUM_OBJECT_BYTES=${policy.ai.artifacts.maximumObjectBytes}`,
     `CLOUDFLARE_ACCOUNT_ID=${env('CLERVO_CLOUDFLARE_ACCOUNT_ID')}`,
   ];
   const secrets = [
@@ -105,6 +110,10 @@ else if (action === 'observe') {
     `CLERVO_AI_API_KEY=${policy.ai.clervoSecret}:${versions.aiClervo}`,
     `GROQ_API_KEY=${policy.ai.groqSecret}:${versions.groq}`,
     `CLOUDFLARE_AI_TOKEN=${policy.ai.cloudflareSecret}:${versions.cloudflare}`,
+    `DEEPGRAM_API_KEY=${policy.ai.deepgramSecret}:${versions.aiDeepgram}`,
+    `R2_ACCESS_KEY_ID=${policy.ai.artifacts.accessKeyIdSecret}:${versions.r2Access}`,
+    `R2_SECRET_ACCESS_KEY=${policy.ai.artifacts.secretAccessKeySecret}:${versions.r2Secret}`,
+    `CLERVO_ARTIFACT_SIGNING_SECRET=${policy.ai.artifacts.signingSecret}:${versions.artifactSigning}`,
   ];
   gcloud([
     'run', 'deploy', policy.service, '--project', policy.project, '--region', policy.region, '--image', candidateImage,

@@ -29,6 +29,10 @@ test('public launch policy exposes qualified Search, AI, and Sandbox through a z
   assert.equal(policy.sandbox.publicMode, 'paid');
   assert.match(policy.sandbox.runnerDigest, /^sha256:[a-f0-9]{64}$/u);
   assert.equal(policy.sandbox.maximumChargeAtomic, '120000');
+  assert.match(policy.ai.routeFamilies, /deepgram/u);
+  assert.equal(policy.ai.artifacts.mode, 'r2');
+  assert.equal(policy.ai.artifacts.bucket, 'clervo-artifacts');
+  assert.equal(policy.ai.artifacts.retentionSeconds, 604800);
   assert.equal(policy.rollout.deployTrafficPercent, 0);
   assert.equal(policy.rollout.publicAccessEnabledOnlyAfterPromotion, true);
   assert.equal(policy.rollout.publicAccessMethod, 'cloud_run_invoker_iam_check_disabled');
@@ -67,6 +71,9 @@ test('public release tooling keeps deployment private until all independent prom
   assert.match(source, /--invoker-iam-check/u);
   assert.match(source, /publicAccessEnabledOnlyAfterPromotion/u);
   assert.match(source, /CLERVO_EDGE_AUTHORIZATION_SECRET_VERSION/u);
+  assert.match(source, /CLERVO_ARTIFACT_SIGNING_SECRET_VERSION/u);
+  assert.match(source, /CLERVO_R2_SECRET_ACCESS_KEY_SECRET_VERSION/u);
+  assert.match(source, /CLERVO_DEEPGRAM_SECRET_VERSION/u);
 });
 
 test('API edge publishes enabled products while blocking private control and disabled public products', async () => {
