@@ -30,6 +30,15 @@
     "mode": "private",
     "publicRoute": false
   },
+  "ai": {
+    "mode": "paid",
+    "routeFamilies": "clervo_gateway,groq,cloudflare,vertex",
+    "baseUrl": "https://ai.clervo.dev/v1/",
+    "vertexProjectId": "bloxsniper-prod",
+    "clervoSecret": "clervo-production-ai-api-key",
+    "groqSecret": "clervo-production-groq-api-key",
+    "cloudflareSecret": "clervo-production-cloudflare-ai-token"
+  },
   "rollout": {
     "deployTrafficPercent": 0,
     "authenticatedLiveSearchSmokeRequired": true,

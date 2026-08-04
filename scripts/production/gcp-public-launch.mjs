@@ -68,11 +68,12 @@ else if (action === 'observe') {
     x402PayTo: version('CLERVO_X402_PAY_TO_SECRET_VERSION'), sandboxControl: version('CLERVO_SANDBOX_CONTROL_SECRET_VERSION'),
     sandboxApi: version('CLERVO_SANDBOX_API_SECRET_VERSION'), searchPrimary: version('CLERVO_SEARCH_PRIMARY_SECRET_VERSION'),
     searchFallback: version('CLERVO_SEARCH_FALLBACK_SECRET_VERSION'), edge: version('CLERVO_EDGE_AUTHORIZATION_SECRET_VERSION'),
+    aiClervo: version('CLERVO_AI_CLERVO_SECRET_VERSION'), groq: version('CLERVO_GROQ_SECRET_VERSION'), cloudflare: version('CLERVO_CLOUDFLARE_SECRET_VERSION'),
   };
   const artifact = verifyArtifact(candidateImage);
   const before = service();
   const beforeTraffic = traffic(before);
-  assert.equal(publicAccess(), false, 'zero-traffic candidate requires private origin');
+  const beforePublicAccess = publicAccess();
   const tag = `public-${releaseId.slice(0, 12)}`;
   const environment = [
     'CLERVO_ENV=production', `CLERVO_RELEASE_ID=${releaseId}`, `CLERVO_PUBLIC_ORIGIN=${policy.publicOrigin}`,
@@ -83,6 +84,9 @@ else if (action === 'observe') {
     `CLERVO_X402_NETWORK=${policy.commerce.network}`, `CLERVO_X402_ASSET=${policy.commerce.asset}`,
     `CLERVO_SANDBOX_MODE=${policy.sandbox.mode}`, `CLERVO_SANDBOX_CONTROL_ORIGIN=${sandbox.cloudRun.controlOrigin}`,
     'CLERVO_RELEASE_CHANNEL=public-live-candidate',
+    `CLERVO_AI_MODE=${policy.ai.mode}`, `CLERVO_AI_ROUTE_FAMILIES=${policy.ai.routeFamilies}`,
+    `CLERVO_AI_BASE_URL=${policy.ai.baseUrl}`, `CLERVO_VERTEX_PROJECT_ID=${policy.ai.vertexProjectId}`,
+    `CLOUDFLARE_ACCOUNT_ID=${env('CLERVO_CLOUDFLARE_ACCOUNT_ID')}`,
   ];
   const secrets = [
     `CLERVO_DATABASE_URL=${deployment.runtime.secretEnvironment.CLERVO_DATABASE_URL}:${versions.database}`,
@@ -95,6 +99,9 @@ else if (action === 'observe') {
     `CLERVO_SEARCH_PRIMARY_KEY=${policy.search.primarySecret}:${versions.searchPrimary}`,
     `CLERVO_SEARCH_FALLBACK_KEY=${policy.search.fallbackSecret}:${versions.searchFallback}`,
     `CLERVO_EDGE_AUTHORIZATION=${policy.edge.sharedSecret}:${versions.edge}`,
+    `CLERVO_AI_API_KEY=${policy.ai.clervoSecret}:${versions.aiClervo}`,
+    `GROQ_API_KEY=${policy.ai.groqSecret}:${versions.groq}`,
+    `CLOUDFLARE_AI_TOKEN=${policy.ai.cloudflareSecret}:${versions.cloudflare}`,
   ];
   gcloud([
     'run', 'deploy', policy.service, '--project', policy.project, '--region', policy.region, '--image', candidateImage,
@@ -111,11 +118,11 @@ else if (action === 'observe') {
   ]);
   const after = service();
   assert.deepEqual(traffic(after), beforeTraffic, 'serving traffic changed during zero-traffic deploy');
-  assert.equal(publicAccess(), false, 'public access changed during zero-traffic deploy');
+  assert.equal(publicAccess(), beforePublicAccess, 'public access changed during zero-traffic deploy');
   const candidateRevision = after.status?.latestReadyRevisionName;
   if (!/^clervo-api-production-[0-9]{5}-[a-z0-9]{3}$/u.test(candidateRevision ?? '')) refuse('candidate_revision_missing');
   const serviceUrl = new URL(after.status.url);
-  result = { action: 'public-live-candidate-deployed', revision: candidateRevision, tag, targetOrigin: `${serviceUrl.protocol}//${tag}---${serviceUrl.hostname}`, trafficPercent: 0, publicInvoker: false, artifact };
+  result = { action: 'public-live-candidate-deployed', revision: candidateRevision, tag, targetOrigin: `${serviceUrl.protocol}//${tag}---${serviceUrl.hostname}`, trafficPercent: 0, publicAccess: beforePublicAccess, artifact };
 } else if (action === 'promote') {
   const releaseId = release();
   const candidateImage = image();
