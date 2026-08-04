@@ -117,6 +117,14 @@ test('API edge publishes enabled products while blocking private control and dis
     method: 'POST', headers: { 'content-length': '1500001' },
   }), { CLERVO_AI_PUBLIC_ENABLED: 'true', CLERVO_SANDBOX_PUBLIC_ENABLED: 'true' });
   assert.equal(oversizedSandbox.status, 413);
+  const disabledRpc = await worker.fetch(new Request('https://api.clervo.dev/v1/rpc/execute', { method: 'OPTIONS' }), { CLERVO_AI_PUBLIC_ENABLED: 'true', CLERVO_SANDBOX_PUBLIC_ENABLED: 'true' });
+  assert.equal(disabledRpc.status, 404);
+  const rpcPreflight = await worker.fetch(new Request('https://api.clervo.dev/v1/rpc/execute', { method: 'OPTIONS' }), { CLERVO_RPC_PUBLIC_ENABLED: 'true' });
+  assert.equal(rpcPreflight.status, 204);
+  const oversizedRpc = await worker.fetch(new Request('https://api.clervo.dev/v1/rpc/execute', {
+    method: 'POST', headers: { 'content-length': '262145' },
+  }), { CLERVO_RPC_PUBLIC_ENABLED: 'true' });
+  assert.equal(oversizedRpc.status, 413);
   const artifactPath = `/v1/artifacts/tenant_${'a'.repeat(32)}/${'b'.repeat(64)}/png/1785819900/${'c'.repeat(43)}`;
   const artifactPreflight = await worker.fetch(new Request(`https://api.clervo.dev${artifactPath}`, { method: 'OPTIONS' }));
   assert.equal(artifactPreflight.status, 204);
