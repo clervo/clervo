@@ -8,7 +8,8 @@
   "edge": {
     "worker": "clervo-api-edge-production",
     "route": "api.clervo.dev/*",
-    "configuration": "apps/worker/wrangler.jsonc"
+    "configuration": "apps/worker/wrangler.jsonc",
+    "sharedSecret": "clervo-production-edge-authorization"
   },
   "search": {
     "mode": "live_external",

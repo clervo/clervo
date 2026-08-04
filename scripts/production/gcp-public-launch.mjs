@@ -62,7 +62,7 @@ else if (action === 'observe') {
     x402KeyId: version('CLERVO_X402_KEY_ID_SECRET_VERSION'), x402KeySecret: version('CLERVO_X402_KEY_SECRET_SECRET_VERSION'),
     x402PayTo: version('CLERVO_X402_PAY_TO_SECRET_VERSION'), sandboxControl: version('CLERVO_SANDBOX_CONTROL_SECRET_VERSION'),
     sandboxApi: version('CLERVO_SANDBOX_API_SECRET_VERSION'), searchPrimary: version('CLERVO_SEARCH_PRIMARY_SECRET_VERSION'),
-    searchFallback: version('CLERVO_SEARCH_FALLBACK_SECRET_VERSION'),
+    searchFallback: version('CLERVO_SEARCH_FALLBACK_SECRET_VERSION'), edge: version('CLERVO_EDGE_AUTHORIZATION_SECRET_VERSION'),
   };
   const artifact = verifyArtifact(candidateImage);
   const before = service();
@@ -89,6 +89,7 @@ else if (action === 'observe') {
     `CLERVO_SANDBOX_API_TOKEN=${sandbox.cloudRun.apiTokenSecret}:${versions.sandboxApi}`,
     `CLERVO_SEARCH_PRIMARY_KEY=${policy.search.primarySecret}:${versions.searchPrimary}`,
     `CLERVO_SEARCH_FALLBACK_KEY=${policy.search.fallbackSecret}:${versions.searchFallback}`,
+    `CLERVO_EDGE_AUTHORIZATION=${policy.edge.sharedSecret}:${versions.edge}`,
   ];
   gcloud([
     'run', 'deploy', policy.service, '--project', policy.project, '--region', policy.region, '--image', candidateImage,

@@ -20,8 +20,14 @@ function json(status, body) {
   return new Response(JSON.stringify(body), { status, headers });
 }
 
+async function quotaSubject(request) {
+  const address = request.headers.get('cf-connecting-ip') ?? 'cloudflare-unknown';
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(address));
+  return `sha256:${[...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('')}`;
+}
+
 export default {
-  async fetch(request) {
+  async fetch(request, env = {}) {
     const incoming = new URL(request.url);
     if (request.method === 'OPTIONS' && PRODUCT_PATHS.has(incoming.pathname)) return new Response(null, { status: 204, headers: cors() });
     if (incoming.search && incoming.pathname !== '/') return json(400, { code: 'query_parameters_not_allowed', status: 400 });
@@ -38,6 +44,9 @@ export default {
     const upstream = new URL(incoming.pathname, UPSTREAM_ORIGIN);
     const headers = new Headers(request.headers);
     for (const name of ['cf-connecting-ip', 'cf-ipcountry', 'cf-ray', 'cf-visitor', 'x-forwarded-host', 'x-forwarded-proto']) headers.delete(name);
+    if (typeof env.CLERVO_EDGE_AUTHORIZATION !== 'string' || env.CLERVO_EDGE_AUTHORIZATION.length < 32) return json(503, { code: 'edge_configuration_unavailable', status: 503 });
+    headers.set('x-clervo-edge-authorization', `Bearer ${env.CLERVO_EDGE_AUTHORIZATION}`);
+    headers.set('x-clervo-quota-subject', await quotaSubject(request));
     const response = await fetch(new Request(upstream, {
       method: request.method,
       headers,

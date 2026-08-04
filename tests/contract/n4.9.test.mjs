@@ -125,6 +125,23 @@ test('a raw-only release refuses synthesis before quota, execution, or payment c
   });
 });
 
+test('an edge-bound release rejects direct product calls before quota or execution', async () => {
+  const executor = recordedExecutor();
+  const edgeAuthorization = 'edge-authorization-value-at-least-32-characters';
+  await withServer({ executor, now: () => now, edgeAuthorization }, async (origin) => {
+    const refused = await post(origin, SEARCH_FREE_PATH, 'idem_n49_edge_refused', { query: 'live raw', synthesize: false });
+    assert.equal(refused.status, 401);
+    assert.equal((await refused.json()).code, 'edge_unauthorized');
+    assert.equal(executor.calls, 0);
+    const accepted = await post(origin, SEARCH_FREE_PATH, 'idem_n49_edge_accepted', { query: 'live raw', synthesize: false }, {
+      'x-clervo-edge-authorization': `Bearer ${edgeAuthorization}`,
+      'x-clervo-quota-subject': `sha256:${'a'.repeat(64)}`,
+    });
+    assert.equal(accepted.status, 200);
+    assert.equal(executor.calls, 1);
+  });
+});
+
 test('explicit test-only mock-paid injection verifies, executes, settles, and returns a paid receipt', async () => {
   const executor = recordedExecutor();
   await withServer({ executor, now: () => now, allowMockPaidExecution: true }, async (origin) => {

@@ -30,6 +30,7 @@ const trafficControl = createTrafficControl(process.env.CLERVO_TRAFFIC_MODE ?? '
 const x402Mode = process.env.CLERVO_X402_MODE ?? 'disabled';
 const sandboxMode = process.env.CLERVO_SANDBOX_MODE ?? 'disabled';
 const searchMode = process.env.CLERVO_SEARCH_MODE ?? 'recorded';
+const edgeAuthorization = process.env.CLERVO_EDGE_AUTHORIZATION;
 
 if (!releaseId) throw new Error('CLERVO_RELEASE_ID is required');
 if (!Number.isSafeInteger(port) || port < 1 || port > 65_535) throw new Error('invalid HTTP port');
@@ -40,6 +41,7 @@ if (environment === 'production' && !sentryDsn) throw new Error('production requ
 if (!['disabled', 'challenge_only', 'settlement_enabled'].includes(x402Mode)) throw new Error('invalid CLERVO_X402_MODE');
 if (!['disabled', 'private'].includes(sandboxMode)) throw new Error('invalid CLERVO_SANDBOX_MODE');
 if (!['recorded', 'live_external'].includes(searchMode)) throw new Error('invalid CLERVO_SEARCH_MODE');
+if (environment === 'production' && searchMode === 'live_external' && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new Error('production live search requires edge authorization');
 if (x402Mode !== 'disabled' && stateBackend !== 'postgres') throw new Error('x402 requires PostgreSQL state');
 if (sandboxMode !== 'disabled' && stateBackend !== 'postgres') throw new Error('sandbox requires PostgreSQL state');
 if (privateMockCommerceEnabled && (environment !== 'stage4-private-qualification' || !['127.0.0.1', 'localhost'].includes(new URL(publicOrigin).hostname))) {
@@ -104,6 +106,7 @@ const server = createSearchServer({
   sandboxApiToken: sandboxMode === 'disabled' ? undefined : process.env.CLERVO_SANDBOX_API_TOKEN,
   synthesisEnabled: searchMode !== 'live_external',
   retrievalMode: searchMode,
+  edgeAuthorization,
 });
 
 const exportTimer = setInterval(() => {

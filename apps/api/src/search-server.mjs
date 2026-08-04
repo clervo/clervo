@@ -103,6 +103,7 @@ export function createSearchServer({
   sandboxApiToken,
   synthesisEnabled = true,
   retrievalMode = 'recorded',
+  edgeAuthorization,
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
   if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
@@ -116,6 +117,7 @@ export function createSearchServer({
   if (sandboxApiToken !== undefined && (typeof sandboxApiToken !== 'string' || sandboxApiToken.length < 32 || sandboxApiToken.length > 512)) throw new TypeError('invalid sandbox API token');
   if (environment === 'production' && sandboxGateway !== undefined && sandboxGateway.durable !== true) throw new TypeError('production sandbox requires durable state');
   if (typeof synthesisEnabled !== 'boolean' || !['recorded', 'live_external'].includes(retrievalMode)) throw new TypeError('invalid search capability configuration');
+  if (edgeAuthorization !== undefined && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new TypeError('invalid edge authorization');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
   if (
     typeof searchState.begin !== 'function'
@@ -216,6 +218,10 @@ export function createSearchServer({
       send(response, 404, problem(404, 'not_found', 'Not found', 'No route matches this request.', url.pathname), {}, PROBLEM_TYPE);
       return;
     }
+    if (edgeAuthorization !== undefined && !internalAuthorized(request.headers['x-clervo-edge-authorization'], edgeAuthorization)) {
+      send(response, 401, problem(401, 'edge_unauthorized', 'Unauthorized', 'The public API edge is required.', url.pathname), {}, PROBLEM_TYPE);
+      return;
+    }
     if (trafficControl?.snapshot().mode === 'stopped') {
       send(response, 503, problem(503, 'traffic_stopped', 'Traffic temporarily stopped', 'New execution is disabled by the independent traffic safety control.', url.pathname), { 'retry-after': '30' }, PROBLEM_TYPE);
       return;
@@ -287,7 +293,10 @@ export function createSearchServer({
       const executionInput = Object.freeze({ ...normalized, operationId, productId, requestHash, fundingMode });
 
       if (fundingMode === 'free') {
-        const subject = request.socket.remoteAddress ?? 'loopback-unknown';
+        const edgeSubject = request.headers['x-clervo-quota-subject'];
+        const subject = edgeAuthorization !== undefined && typeof edgeSubject === 'string' && /^sha256:[a-f0-9]{64}$/u.test(edgeSubject)
+          ? edgeSubject
+          : request.socket.remoteAddress ?? 'loopback-unknown';
         const quota = await searchState.consumeFreeQuota(subject, now());
         const quotaHeaders = {
           'ratelimit-limit': String(quota.limit),
