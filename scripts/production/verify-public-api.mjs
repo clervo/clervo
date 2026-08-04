@@ -51,6 +51,21 @@ export async function verifyPublicApi({
 
   const root = await requestJson(publicOrigin, '/');
   assert.equal(root.body?.service, 'Clervo API');
+  assert.equal(root.body?.discovery, `${publicOrigin}/.well-known/clervo.json`);
+  const discovery = await requestJson(publicOrigin, '/.well-known/clervo.json');
+  assert.equal(discovery.body?.distribution?.state, 'public_preview');
+  assert.equal(discovery.body?.distribution?.callable, true);
+  assert.equal(discovery.body?.payment?.publicAvailable, true);
+  assert.equal(discovery.body?.payment?.commercialProof, false);
+  assert.equal(discovery.body?.products?.find(({ productId }) => productId === 'search.web')?.publicAvailable, true);
+  assert.equal(discovery.body?.products?.find(({ productId }) => productId === 'search.answer')?.publicAvailable, false);
+  const openapi = await requestJson(publicOrigin, '/openapi.json');
+  assert.equal(openapi.body?.['x-clervo-status']?.distribution, 'public_preview');
+  assert.equal(openapi.body?.['x-clervo-status']?.publicCallable, true);
+  const pricing = await requestJson(publicOrigin, '/pricing.json');
+  assert.equal(pricing.body?.publicOfferAvailable, true);
+  assert.equal(pricing.body?.publicPrice?.productId, 'search.web');
+  assert.equal(pricing.body?.publicPrice?.amountAtomic, '6000');
   const health = await requestJson(publicOrigin, '/v1/health');
   assert.equal(health.body?.status, 'ok');
   assert.equal(health.body?.retrievalMode, 'live_external');
@@ -114,6 +129,9 @@ export async function verifyPublicApi({
     publicOrigin,
     cloudRunOriginProtected: true,
     root: root.response.status,
+    discovery: discovery.response.status,
+    openapi: openapi.response.status,
+    pricing: pricing.response.status,
     health: health.response.status,
     readiness: readiness.response.status,
     rawSearch: {

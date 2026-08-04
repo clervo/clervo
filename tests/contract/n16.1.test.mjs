@@ -49,7 +49,15 @@ test('API edge publishes only health and Search routes and blocks private Sandbo
   const worker = (await import('../../apps/worker/src/api-edge.js')).default;
   const rootResponse = await worker.fetch(new Request('https://api.clervo.dev/'));
   assert.equal(rootResponse.status, 200);
-  assert.equal((await rootResponse.json()).discovery, 'https://clervo.dev/.well-known/clervo.json');
+  assert.equal((await rootResponse.json()).discovery, 'https://api.clervo.dev/.well-known/clervo.json');
+  const discovery = await worker.fetch(new Request('https://api.clervo.dev/.well-known/clervo.json'));
+  assert.equal(discovery.status, 200);
+  assert.equal((await discovery.json()).name, 'Clervo');
+  const openapi = await worker.fetch(new Request('https://api.clervo.dev/openapi.json'));
+  assert.equal(openapi.status, 200);
+  assert.equal((await openapi.json()).openapi, '3.1.1');
+  const unsafeQuery = await worker.fetch(new Request('https://api.clervo.dev/openapi.json?version=old'));
+  assert.equal(unsafeQuery.status, 400);
   const internal = await worker.fetch(new Request('https://api.clervo.dev/internal/v1/sandbox/run', { method: 'POST' }));
   assert.equal(internal.status, 404);
   const preflight = await worker.fetch(new Request('https://api.clervo.dev/v1/search/paid', { method: 'OPTIONS' }));
@@ -94,7 +102,17 @@ test('external public smoke verifies live retrieval, replay, stable challenge, i
     const url = new URL(input);
     const method = init.method ?? 'GET';
     if (url.hostname === 'origin.invalid') return Response.json({ code: 'edge_unauthorized' }, { status: 401 });
-    if (url.pathname === '/') return Response.json({ service: 'Clervo API' });
+    if (url.pathname === '/') return Response.json({ service: 'Clervo API', discovery: 'https://public.invalid/.well-known/clervo.json' });
+    if (url.pathname === '/.well-known/clervo.json') return Response.json({
+      distribution: { state: 'public_preview', callable: true },
+      payment: { publicAvailable: true, commercialProof: false },
+      products: [
+        { productId: 'search.web', publicAvailable: true },
+        { productId: 'search.answer', publicAvailable: false },
+      ],
+    });
+    if (url.pathname === '/openapi.json') return Response.json({ 'x-clervo-status': { distribution: 'public_preview', publicCallable: true } });
+    if (url.pathname === '/pricing.json') return Response.json({ publicOfferAvailable: true, publicPrice: { productId: 'search.web', amountAtomic: '6000' } });
     if (url.pathname === '/v1/health') return Response.json({ status: 'ok', retrievalMode: 'live_external', paidExecutionEnabled: true, durableState: true });
     if (url.pathname === '/readyz') return Response.json({ status: 'ready' });
     if (url.pathname === '/internal/v1/sandbox/run') return Response.json({ code: 'not_found' }, { status: 404 });

@@ -1,6 +1,25 @@
+import catalog from '../../../generated/public/catalog.json' with { type: 'json' };
+import capabilities from '../../../generated/public/capabilities.json' with { type: 'json' };
+import discovery from '../../../generated/public/.well-known/clervo.json' with { type: 'json' };
+import mcpDiscovery from '../../../generated/public/.well-known/mcp.json' with { type: 'json' };
+import onboarding from '../../../generated/public/onboarding.json' with { type: 'json' };
+import openapi from '../../../generated/public/openapi.json' with { type: 'json' };
+import pricing from '../../../generated/public/pricing.json' with { type: 'json' };
+import status from '../../../generated/public/status.json' with { type: 'json' };
+
 const UPSTREAM_ORIGIN = 'https://clervo-api-production-jbtbib4yqa-uc.a.run.app';
 const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid']);
-const READ_PATHS = new Set(['/', '/v1/health', '/readyz']);
+const DISCOVERY_DOCUMENTS = new Map([
+  ['/.well-known/clervo.json', discovery],
+  ['/.well-known/mcp.json', mcpDiscovery],
+  ['/openapi.json', openapi],
+  ['/catalog.json', catalog],
+  ['/capabilities.json', capabilities],
+  ['/pricing.json', pricing],
+  ['/status.json', status],
+  ['/onboarding.json', onboarding],
+]);
+const READ_PATHS = new Set(['/', '/v1/health', '/readyz', ...DISCOVERY_DOCUMENTS.keys()]);
 const MAXIMUM_REQUEST_BYTES = 16_384;
 
 function cors(headers = new Headers()) {
@@ -36,9 +55,10 @@ export default {
     if (!READ_PATHS.has(incoming.pathname) && !PRODUCT_PATHS.has(incoming.pathname)) return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/') return json(200, {
       service: 'Clervo API',
-      discovery: 'https://clervo.dev/.well-known/clervo.json',
-      documentation: 'https://clervo.dev/docs/',
+      discovery: 'https://api.clervo.dev/.well-known/clervo.json',
+      openapi: 'https://api.clervo.dev/openapi.json',
     });
+    if (DISCOVERY_DOCUMENTS.has(incoming.pathname)) return json(200, DISCOVERY_DOCUMENTS.get(incoming.pathname));
     const declared = Number(request.headers.get('content-length'));
     if (Number.isFinite(declared) && declared > MAXIMUM_REQUEST_BYTES) return json(413, { code: 'request_body_too_large', status: 413 });
     const upstream = new URL(incoming.pathname, UPSTREAM_ORIGIN);
