@@ -1,6 +1,7 @@
 import { createHash, createPrivateKey, randomBytes, sign } from 'node:crypto';
 import { HTTPFacilitatorClient, x402ResourceServer } from '@x402/core/server';
 import { ExactEvmScheme } from '@x402/evm/exact/server';
+import { bazaarResourceServerExtension, declareDiscoveryExtension } from '@x402/extensions/bazaar';
 import { isQuoteExpired, verifyQuote } from '../../../dist/packages/contracts/src/index.js';
 
 const PAYMENT_REQUIRED_HEADER = 'PAYMENT-REQUIRED';
@@ -9,6 +10,45 @@ const MAXIMUM_PAYMENT_HEADER_BYTES = 65_536;
 const pathMethods = Object.freeze({ supported: 'GET', verify: 'POST', settle: 'POST' });
 const BASE_USDC_EIP712_DOMAIN = Object.freeze({ name: 'USD Coin', version: '2' });
 const PAYABLE_RESOURCE_PATHS = new Set(['/v1/search/paid', '/v1/ai/execute']);
+const SEARCH_DISCOVERY_INPUT = Object.freeze({ query: 'current x402 protocol documentation', maxResults: 3, synthesize: false, language: 'en', region: 'US' });
+const AI_DISCOVERY_INPUT = Object.freeze({
+  model: 'gpt-5.6-luna',
+  input: Object.freeze({ kind: 'chat', messages: Object.freeze([Object.freeze({ role: 'user', content: 'Reply with the single word ready.' })]), responseFormat: 'text', stream: false }),
+  maximumOutputTokens: 16,
+});
+
+function discoveryExtension(resourcePath) {
+  const ai = resourcePath === '/v1/ai/execute';
+  const input = ai ? AI_DISCOVERY_INPUT : SEARCH_DISCOVERY_INPUT;
+  const inputSchema = ai ? {
+    type: 'object', required: ['model', 'input', 'maximumOutputTokens'], additionalProperties: false,
+    properties: {
+      model: { type: 'string', enum: ['gpt-5.6-luna'] },
+      input: {
+        type: 'object', required: ['kind', 'messages', 'responseFormat', 'stream'], additionalProperties: false,
+        properties: {
+          kind: { const: 'chat' },
+          messages: { type: 'array', minItems: 1, items: { type: 'object', required: ['role', 'content'], properties: { role: { enum: ['user'] }, content: { type: 'string', minLength: 1 } }, additionalProperties: false } },
+          responseFormat: { const: 'text' }, stream: { const: false },
+        },
+      },
+      maximumOutputTokens: { type: 'integer', minimum: 1, maximum: 16384 },
+    },
+  } : {
+    type: 'object', required: ['query', 'synthesize'], additionalProperties: false,
+    properties: {
+      query: { type: 'string', minLength: 1, maxLength: 2000 }, maxResults: { type: 'integer', minimum: 1, maximum: 10 },
+      synthesize: { const: false }, language: { type: 'string' }, region: { type: 'string' },
+    },
+  };
+  const outputExample = ai
+    ? { productId: 'ai.chat', state: 'RECEIPTED', replayed: false, exactModelId: 'gpt-5.6-luna', result: { output: { kind: 'chat', content: 'ready' } }, receipt: { settlement: { status: 'settled' } } }
+    : { productId: 'search.web', state: 'RECEIPTED', replayed: false, output: { searchResponse: { results: [], citations: [] } }, receipt: { settlement: { status: 'settled' } } };
+  return declareDiscoveryExtension({
+    method: 'POST', bodyType: 'json', input, inputSchema,
+    output: { example: outputExample, schema: { additionalProperties: true } },
+  });
+}
 
 function base64url(value) {
   return Buffer.from(typeof value === 'string' ? value : JSON.stringify(value)).toString('base64url');
@@ -111,7 +151,9 @@ export async function createX402ChallengeService({
     url: facilitatorUrl(url).toString(),
     createAuthHeaders: createCdpFacilitatorAuth({ keyId, keySecret, url }),
   });
-  const server = new x402ResourceServer(client).register(network, new ExactEvmScheme());
+  const server = new x402ResourceServer(client)
+    .register(network, new ExactEvmScheme())
+    .registerExtension(bazaarResourceServerExtension);
   await server.initialize();
   return Object.freeze({
     mode: paymentMode,
@@ -143,7 +185,7 @@ export async function createX402ChallengeService({
         url: `${origin.origin}${resourcePath}`,
         description,
         mimeType: 'application/json',
-      }, 'PAYMENT-SIGNATURE header is required');
+      }, 'PAYMENT-SIGNATURE header is required', discoveryExtension(resourcePath));
       const header = Buffer.from(JSON.stringify(body), 'utf8').toString('base64');
       return Object.freeze({ status: 402, headers: Object.freeze({ [PAYMENT_REQUIRED_HEADER]: header }), body });
     },

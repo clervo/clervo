@@ -6,6 +6,7 @@ import { promisify } from 'node:util';
 import test from 'node:test';
 import { x402Client } from '@x402/core/client';
 import { registerExactEvmScheme } from '@x402/evm/exact/client';
+import { validateDiscoveryExtension } from '@x402/extensions/bazaar';
 import { CONTRACT_VERSION, sealQuote } from '../../dist/packages/contracts/src/index.js';
 import { createCdpFacilitatorAuth, createX402ChallengeService } from '../../apps/api/src/x402-resource.mjs';
 
@@ -81,6 +82,12 @@ test('real x402 challenge is quote-bound while verify and settle remain unavaila
   assert.equal(requirement.extra.name, 'USD Coin');
   assert.equal(requirement.extra.version, '2');
   assert.equal(result.body.resource.url, 'https://api.clervo.dev/v1/search/paid');
+  assert.equal(validateDiscoveryExtension(result.body.extensions.bazaar).valid, true);
+  assert.deepEqual(result.body.extensions.bazaar.info.input.body, {
+    query: 'current x402 protocol documentation', maxResults: 3, synthesize: false, language: 'en', region: 'US',
+  });
+  assert.equal(result.body.extensions.bazaar.schema.properties.input.properties.body.type, 'object');
+  assert.equal(result.body.extensions.bazaar.schema.properties.output.properties.example.type, 'object');
   assert.deepEqual(requirement.extra.clervo, {
     quoteId: quote.quoteId,
     quoteHash: quote.quoteHash,
@@ -112,6 +119,9 @@ test('challenge service binds AI payments to the exact public AI resource', asyn
   const service = await createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/' });
   const result = await service.challenge({ quote, description: 'Bounded ai.chat execution', now: issuedAt, resourcePath: '/v1/ai/execute' });
   assert.equal(result.body.resource.url, 'https://api.clervo.dev/v1/ai/execute');
+  assert.equal(result.body.extensions.bazaar.info.input.body.input.kind, 'chat');
+  assert.equal(result.body.extensions.bazaar.info.output.example.exactModelId, 'gpt-5.6-luna');
+  assert.equal(validateDiscoveryExtension(result.body.extensions.bazaar).valid, true);
   await assert.rejects(
     service.challenge({ quote, description: 'Invalid route', now: issuedAt, resourcePath: '/v1/unknown' }),
     /resource_path_invalid/u,
