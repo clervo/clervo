@@ -131,6 +131,12 @@ test('API edge publishes enabled products while blocking private control and dis
   assert.equal(predictionPreflight.status, 204);
   const oversizedPrediction = await worker.fetch(new Request('https://api.clervo.dev/v1/prediction/execute', { method: 'POST', headers: { 'content-length': '262145' } }), { CLERVO_PREDICTION_PUBLIC_ENABLED: 'true' });
   assert.equal(oversizedPrediction.status, 413);
+  const disabledCrypto = await worker.fetch(new Request('https://api.clervo.dev/v1/crypto/execute', { method: 'OPTIONS' }), { CLERVO_PREDICTION_PUBLIC_ENABLED: 'true' });
+  assert.equal(disabledCrypto.status, 404);
+  const cryptoPreflight = await worker.fetch(new Request('https://api.clervo.dev/v1/crypto/execute', { method: 'OPTIONS' }), { CLERVO_CRYPTO_PUBLIC_ENABLED: 'true' });
+  assert.equal(cryptoPreflight.status, 204);
+  const oversizedCrypto = await worker.fetch(new Request('https://api.clervo.dev/v1/crypto/execute', { method: 'POST', headers: { 'content-length': '262145' } }), { CLERVO_CRYPTO_PUBLIC_ENABLED: 'true' });
+  assert.equal(oversizedCrypto.status, 413);
   const artifactPath = `/v1/artifacts/tenant_${'a'.repeat(32)}/${'b'.repeat(64)}/png/1785819900/${'c'.repeat(43)}`;
   const artifactPreflight = await worker.fetch(new Request(`https://api.clervo.dev${artifactPath}`, { method: 'OPTIONS' }));
   assert.equal(artifactPreflight.status, 204);

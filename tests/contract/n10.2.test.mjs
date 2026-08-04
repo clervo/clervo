@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import {
   normalizeBlockscoutTransactions,
+  normalizeBlockscoutToken,
   normalizeBlockscoutWallet,
   normalizeSolanaRpcWallet,
 } from '../../dist/adapters/blockchain/src/intelligence-normalizers.js';
@@ -34,6 +35,14 @@ test('qualified EVM adapter output maps into the canonical wallet and transactio
   });
   assert.equal(transactions[0].deterministicType, 'native_transfer');
   assert.equal(transactions[0].chainId, 'eip155:8453');
+});
+
+test('qualified indexed token metadata remains evidence-backed while market values stay absent', () => {
+  const token = normalizeBlockscoutToken({ chainId: 1, token: { contractAddress: evmToken, symbol: 'TKN', name: 'Test Token', decimals: 6, totalSupplyAtomic: '42000000', tokenType: 'ERC-20' }, observedAt, staleAfterMs: 60_000, nowMs: Date.parse(observedAt) + 1_000 });
+  assert.equal(token.assetId, `eip155:1/token:${evmToken}`);
+  assert.equal(token.totalSupplyAtomic, '42000000');
+  assert.equal(token.priceMicrousd, null);
+  assert.deepEqual(token.confidence.basis, ['indexed_contract_metadata', 'single_source']);
 });
 
 test('standard Solana RPC balance and parsed token accounts map without inventing token metadata', () => {

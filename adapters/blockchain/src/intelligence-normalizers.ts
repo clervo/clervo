@@ -1,8 +1,9 @@
 import { createHash } from 'node:crypto';
 
-import type { WalletAddressOverview, WalletTokenBalance, WalletTransactionSummary } from './blockscout-data.js';
+import type { TokenOverview, WalletAddressOverview, WalletTokenBalance, WalletTransactionSummary } from './blockscout-data.js';
 import {
   normalizeCryptoTransaction,
+  normalizeCryptoToken,
   normalizeCryptoWallet,
   type CryptoChainId,
   type CryptoEvidence,
@@ -19,6 +20,33 @@ function evidence(sourceUrl: string, observedAt: string, fieldGroups: readonly s
     observedAt,
     fieldGroups: Object.freeze([...fieldGroups]),
   });
+}
+
+export function normalizeBlockscoutToken(input: Readonly<{
+  chainId: number;
+  token: Readonly<TokenOverview>;
+  observedAt: string;
+  staleAfterMs: number;
+  nowMs: number;
+}>) {
+  const chainId = evmChain(input.chainId);
+  return normalizeCryptoToken({
+    chainId,
+    assetAddress: input.token.contractAddress,
+    symbol: input.token.symbol,
+    name: input.token.name,
+    decimals: input.token.decimals,
+    totalSupplyAtomic: input.token.totalSupplyAtomic,
+    priceMicrousd: null,
+    marketCapMicrousd: null,
+    liquidityMicrousd: null,
+    observedAt: input.observedAt,
+    staleAfterMs: input.staleAfterMs,
+    confidenceBasisPoints: 7_000,
+    confidenceBasis: ['indexed_contract_metadata', 'single_source'],
+    evidence: [evidence(`https://blockscout.com/token/${input.token.contractAddress}`, input.observedAt, ['token_metadata'])],
+    risk: { level: 'unverified', classifications: Object.freeze([]), evidenceRefs: Object.freeze([]) },
+  }, input.nowMs);
 }
 
 function evmChain(chainId: number): CryptoChainId {
