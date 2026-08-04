@@ -83,7 +83,6 @@ await writeFile(path.join(target, '_redirects'), [
       const canonical = `${route.replace(/\/+$/u, '')}/`;
       return `${canonical.slice(0, -1)} ${canonical} 301`;
     }),
-  '/* /index.html 200',
   '',
 ].join('\n'));
 await writeFile(path.join(target, 'manifest.webmanifest'), `${JSON.stringify({
