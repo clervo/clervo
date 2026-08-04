@@ -180,6 +180,7 @@
     "serve:x402-browser-proof": "node ./scripts/verify-runtime.mjs && node ./scripts/production/serve-x402-browser-proof.mjs",
     "production:gcp:x402-proof": "node ./scripts/verify-runtime.mjs && node ./scripts/production/gcp-x402-proof-deploy.mjs",
     "production:gcp:public-launch": "node ./scripts/verify-runtime.mjs && node ./scripts/production/gcp-public-launch.mjs",
+    "production:verify-public-api": "node ./scripts/verify-runtime.mjs && node ./scripts/production/verify-public-api.mjs",
     "production:gcp:sandbox-connectivity": "node ./scripts/verify-runtime.mjs && node ./scripts/production/gcp-sandbox-connectivity.mjs",
     "production:migrate": "node ./scripts/verify-runtime.mjs && node ./scripts/production/apply-postgres-migrations.mjs",
     "test:n14.10": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/n14.10.test.mjs",

@@ -9,6 +9,7 @@ import {
   createLlmsText,
   createOpenApiDocument,
 } from '../../dist/packages/contracts/src/index.js';
+import { verifyPublicApi } from '../../scripts/production/verify-public-api.mjs';
 
 const root = new URL('../..', import.meta.url);
 const json = async (path) => JSON.parse(await readFile(new URL(path, root), 'utf8'));
@@ -16,6 +17,7 @@ const text = async (path) => readFile(new URL(path, root), 'utf8');
 
 test('public launch policy exposes only live raw Search through a zero-traffic fail-closed rollout', async () => {
   const policy = await json('infra/production/gcp/public-launch.v1.json');
+  const worker = await json('apps/worker/wrangler.jsonc');
   assert.equal(policy.publicOrigin, 'https://api.clervo.dev/');
   assert.equal(policy.search.mode, 'live_external');
   assert.equal(policy.search.synthesisEnabled, false);
@@ -27,6 +29,7 @@ test('public launch policy exposes only live raw Search through a zero-traffic f
   assert.equal(policy.rollout.publicAccessMethod, 'cloud_run_invoker_iam_check_disabled');
   assert.equal(policy.edge.sharedSecret, 'clervo-production-edge-authorization');
   assert.ok(policy.protectedResources.includes('ai.clervo.dev'));
+  assert.deepEqual(worker.secrets.required, ['CLERVO_EDGE_AUTHORIZATION']);
 });
 
 test('public release tooling keeps deployment private until three independent promotion checks pass', async () => {
@@ -74,4 +77,42 @@ test('public Search discovery exposes only the exact verified raw product and pr
   assert.equal(answer.publicAvailable, false);
   assert.equal(answer.payment.payable, false);
   assert.match(llms, /no customer revenue or demand claimed/iu);
+});
+
+test('external public smoke verifies live retrieval, replay, stable challenge, isolation, and CORS without payment', async () => {
+  const originalFetch = globalThis.fetch;
+  let rawCalls = 0;
+  const result = {
+    operationId: 'op_publicsmoketest000000001',
+    productId: 'search.web',
+    fundingMode: 'free',
+    replayed: false,
+    output: { searchResponse: { results: [{ title: 'x402' }], citations: [{ id: 'citation-1' }] } },
+    receipt: { receiptId: 'rcpt_publicsmoketest0000001' },
+  };
+  globalThis.fetch = async (input, init = {}) => {
+    const url = new URL(input);
+    const method = init.method ?? 'GET';
+    if (url.hostname === 'origin.invalid') return Response.json({ code: 'edge_unauthorized' }, { status: 401 });
+    if (url.pathname === '/') return Response.json({ service: 'Clervo API' });
+    if (url.pathname === '/v1/health') return Response.json({ status: 'ok', retrievalMode: 'live_external', paidExecutionEnabled: true, durableState: true });
+    if (url.pathname === '/readyz') return Response.json({ status: 'ready' });
+    if (url.pathname === '/internal/v1/sandbox/run') return Response.json({ code: 'not_found' }, { status: 404 });
+    if (url.pathname === '/v1/search/paid' && method === 'OPTIONS') return new Response(null, { status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'payment-signature' } });
+    const body = JSON.parse(init.body);
+    if (body.synthesize) return Response.json({ code: 'search_synthesis_unavailable' }, { status: 503 });
+    if (url.pathname === '/v1/search/paid') return Response.json({ code: 'payment_required', exact: 'stable' }, { status: 402, headers: { 'payment-required': 'stable-payment-requirement-that-is-long-enough' } });
+    rawCalls += 1;
+    return Response.json({ ...result, replayed: rawCalls > 1 }, { headers: rawCalls > 1 ? { 'idempotency-replayed': 'true' } : {} });
+  };
+  try {
+    const report = await verifyPublicApi({ publicOrigin: 'https://public.invalid', cloudRunOrigin: 'https://origin.invalid' });
+    assert.equal(report.rawSearch.replaySameOperation, true);
+    assert.equal(report.rawSearch.replaySameReceipt, true);
+    assert.equal(report.x402Challenge.stable, true);
+    assert.equal(report.paymentSigned, false);
+    assert.equal(report.paymentSettled, false);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
