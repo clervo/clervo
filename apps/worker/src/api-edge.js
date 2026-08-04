@@ -8,7 +8,7 @@ import pricing from '../../../generated/public/pricing.json' with { type: 'json'
 import status from '../../../generated/public/status.json' with { type: 'json' };
 
 const UPSTREAM_ORIGIN = 'https://clervo-api-production-jbtbib4yqa-uc.a.run.app';
-const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid']);
+const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid', '/v1/ai/execute']);
 const DISCOVERY_DOCUMENTS = new Map([
   ['/.well-known/clervo.json', discovery],
   ['/.well-known/mcp.json', mcpDiscovery],
@@ -20,7 +20,11 @@ const DISCOVERY_DOCUMENTS = new Map([
   ['/onboarding.json', onboarding],
 ]);
 const READ_PATHS = new Set(['/', '/v1/health', '/readyz', ...DISCOVERY_DOCUMENTS.keys()]);
-const MAXIMUM_REQUEST_BYTES = 16_384;
+const MAXIMUM_REQUEST_BYTES = Object.freeze({
+  '/v1/search/free': 16_384,
+  '/v1/search/paid': 16_384,
+  '/v1/ai/execute': 262_144,
+});
 
 function cors(headers = new Headers()) {
   headers.set('access-control-allow-origin', '*');
@@ -48,6 +52,7 @@ async function quotaSubject(request) {
 export default {
   async fetch(request, env = {}) {
     const incoming = new URL(request.url);
+    if (incoming.pathname === '/v1/ai/execute' && env.CLERVO_AI_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (request.method === 'OPTIONS' && PRODUCT_PATHS.has(incoming.pathname)) return new Response(null, { status: 204, headers: cors() });
     if (incoming.search && incoming.pathname !== '/') return json(400, { code: 'query_parameters_not_allowed', status: 400 });
     if (READ_PATHS.has(incoming.pathname) && request.method !== 'GET') return json(405, { code: 'method_not_allowed', status: 405 });
@@ -60,7 +65,8 @@ export default {
     });
     if (DISCOVERY_DOCUMENTS.has(incoming.pathname)) return json(200, DISCOVERY_DOCUMENTS.get(incoming.pathname));
     const declared = Number(request.headers.get('content-length'));
-    if (Number.isFinite(declared) && declared > MAXIMUM_REQUEST_BYTES) return json(413, { code: 'request_body_too_large', status: 413 });
+    const maximumRequestBytes = MAXIMUM_REQUEST_BYTES[incoming.pathname];
+    if (Number.isFinite(declared) && maximumRequestBytes !== undefined && declared > maximumRequestBytes) return json(413, { code: 'request_body_too_large', status: 413 });
     const upstream = new URL(incoming.pathname, UPSTREAM_ORIGIN);
     const headers = new Headers(request.headers);
     for (const name of ['cf-connecting-ip', 'cf-ipcountry', 'cf-ray', 'cf-visitor', 'x-forwarded-host', 'x-forwarded-proto']) headers.delete(name);

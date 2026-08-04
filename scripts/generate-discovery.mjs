@@ -40,6 +40,8 @@ const publicSearch = publicApiFlags.every((value) => value === true)
 const privateCandidate = publicApiFlags.every((value) => value === false)
   && launchState.paymentProof.publicCustomerPaymentAvailable === false
   && launchState.products.find(({ id }) => id === 'search')?.customerLifecycle === 'preview_not_publicly_callable';
+const publicAi = publicSearch
+  && launchState.products.find(({ id }) => id === 'ai')?.customerLifecycle === 'preview_publicly_callable';
 
 if (
   releaseCandidate.state !== 'private_core_frozen'
@@ -151,8 +153,54 @@ for (const fileName of projectedSchemaFiles) {
 
 const openapi = contractModule.createOpenApiDocument(schemas, projection);
 const discovery = contractModule.createDiscoveryDocument(projection);
-const llms = contractModule.createLlmsText(projection);
+let llms = contractModule.createLlmsText(projection);
+if (publicAi) {
+  openapi.info.title = 'Clervo Search and AI API';
+  openapi.info.description = 'Public Search and bounded paid AI preview. AI quotes are request-derived from current qualified exact-model routes; unsupported modalities fail closed.';
+  openapi.paths['/v1/ai/execute'] = {
+    post: {
+      summary: 'Request or settle a bounded AI operation',
+      description: 'Returns an exact x402 quote for a qualified AI request. A completed idempotency key replays the same result and receipt without another charge.',
+      operationId: 'aiExecute',
+      parameters: [{ name: 'Idempotency-Key', in: 'header', required: true, schema: { type: 'string', minLength: 8, maxLength: 128 } }],
+      requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/AiHttpRequest' } } } },
+      responses: {
+        200: { description: 'AI operation completed or replayed', content: { 'application/json': { schema: { $ref: '#/components/schemas/AiHttpResult' } } } },
+        400: { description: 'Invalid bounded AI request', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
+        402: { description: 'Exact x402 payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } } } },
+        409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
+        503: { description: 'No qualified route, capacity, or settlement path is available', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
+      },
+    },
+  };
+  openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, 'ai.chat'];
+  openapi['x-clervo-status'].runtimeRelease = launchState.sourceCommit;
+  discovery.description = 'Machine-readable public Search and paid AI preview. Raw Search and qualified bounded AI chat requests are callable; unsupported AI modalities and the remaining product cores fail closed. No external customer revenue or demand is claimed.';
+  discovery.products.push({
+    productId: 'ai.chat', operationId: 'ai.chat', title: 'Qualified AI chat',
+    summary: 'Bounded provider-neutral chat with exact returned model identity, usage, receipt, and no-charge replay.',
+    lifecycle: 'preview', publicAvailable: true, deliveryModes: ['sync'],
+    selection: { model: 'Exact qualified model ID or supported Clervo alias.' },
+    pricing: { model: 'x402_request_quote', displayPrice: null, maximumChargeRequired: true, priceVersion: 'qualified-route-request-derived' },
+    routes: { paidChallenge: '/v1/ai/execute' },
+    payment: { challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
+    commercialProof: false,
+  });
+  discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: ['search.web', 'ai.chat'] };
+  discovery.limitations = [
+    'Raw cited Search and bounded paid AI chat are publicly callable previews; Search synthesis and AI media remain unavailable.',
+    'AI prices are exact per-request maximum-charge quotes, not one fixed model price.',
+    'The AI production origin and stable challenge are verified; an owner-signed paid AI result remains pending.',
+    'Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain publicly unavailable.',
+    'No external customer payment, revenue, or demand is claimed.',
+  ];
+  llms = llms
+    .replace('raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable', 'raw cited Search and bounded paid AI chat are callable; synthesized Search, AI media, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable')
+    .replace('Projected operation IDs: search.web, search.answer', 'Projected operation IDs: search.web, search.answer, ai.chat')
+    .replace('x402 public payment: available for search.web at a maximum charge of 0.006 USDC on Base', 'x402 public payment: available for search.web at a maximum charge of 0.006 USDC and for ai.chat through an exact request-derived maximum-charge quote on Base');
+}
 const catalog = contractModule.createCatalogDocument(projection);
+if (publicAi) catalog.products = discovery.products;
 if (publicSearch) contractModule.assertPublicArtifacts(openapi, discovery, llms, projection);
 else contractModule.assertPreviewArtifacts(openapi, discovery, llms, projection);
 await writeFile(path.join(outputDirectory, 'openapi.json'), stableJson(openapi));
@@ -238,4 +286,5 @@ await writeFile(path.join(outputDirectory, '.well-known', 'security.txt'), [
 await writeFile(path.join(outputDirectory, 'openapi.yaml'), stableJson(openapi));
 await writeFile(path.join(outputDirectory, 'llms.txt'), llms);
 
-console.log(`distribution discovery generation: PASS (${publicSearch ? 'public Search preview' : 'private candidate'}, ${projection.publicOperationIds.length} operations, ${Object.keys(schemas).length} schemas)`);
+const publicOperationCount = projection.publicOperationIds.length + (publicAi ? 1 : 0);
+console.log(`distribution discovery generation: PASS (${publicAi ? 'public Search and AI preview' : publicSearch ? 'public Search preview' : 'private candidate'}, ${publicOperationCount} operations, ${Object.keys(schemas).length} schemas)`);

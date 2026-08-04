@@ -46,6 +46,7 @@ test('public launch policy exposes only live raw Search through a zero-traffic f
   assert.equal(launchState.paymentProof.publicCustomerPaymentAvailable, true);
   assert.equal(launchState.paymentProof.revenueEvidence, false);
   assert.equal(launchState.products.find(({ id }) => id === 'search').customerLifecycle, 'preview_publicly_callable');
+  assert.equal(launchState.products.find(({ id }) => id === 'ai').customerLifecycle, 'preview_publicly_callable');
 });
 
 test('public release tooling keeps deployment private until three independent promotion checks pass', async () => {
@@ -61,7 +62,7 @@ test('public release tooling keeps deployment private until three independent pr
   assert.match(source, /CLERVO_EDGE_AUTHORIZATION_SECRET_VERSION/u);
 });
 
-test('API edge publishes only health and Search routes and blocks private Sandbox access', async () => {
+test('API edge publishes health, Search, and paid AI while blocking private Sandbox access', async () => {
   const worker = (await import('../../apps/worker/src/api-edge.js')).default;
   const rootResponse = await worker.fetch(new Request('https://api.clervo.dev/'));
   assert.equal(rootResponse.status, 200);
@@ -80,6 +81,15 @@ test('API edge publishes only health and Search routes and blocks private Sandbo
   assert.equal(preflight.status, 204);
   assert.equal(preflight.headers.get('access-control-allow-origin'), '*');
   assert.match(preflight.headers.get('access-control-allow-headers') ?? '', /payment-signature/u);
+  const disabledAi = await worker.fetch(new Request('https://api.clervo.dev/v1/ai/execute', { method: 'OPTIONS' }));
+  assert.equal(disabledAi.status, 404);
+  const aiPreflight = await worker.fetch(new Request('https://api.clervo.dev/v1/ai/execute', { method: 'OPTIONS' }), { CLERVO_AI_PUBLIC_ENABLED: 'true' });
+  assert.equal(aiPreflight.status, 204);
+  const oversizedAi = await worker.fetch(new Request('https://api.clervo.dev/v1/ai/execute', {
+    method: 'POST',
+    headers: { 'content-length': '262145' },
+  }), { CLERVO_AI_PUBLIC_ENABLED: 'true' });
+  assert.equal(oversizedAi.status, 413);
 });
 
 test('public Search discovery exposes only the exact verified raw product and preserves commercial boundaries', () => {

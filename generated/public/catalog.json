@@ -226,6 +226,35 @@
         "payable": false,
         "mockExecutionAvailableByInjectionOnly": false
       }
+    },
+    {
+      "productId": "ai.chat",
+      "operationId": "ai.chat",
+      "title": "Qualified AI chat",
+      "summary": "Bounded provider-neutral chat with exact returned model identity, usage, receipt, and no-charge replay.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "model": "Exact qualified model ID or supported Clervo alias."
+      },
+      "pricing": {
+        "model": "x402_request_quote",
+        "displayPrice": null,
+        "maximumChargeRequired": true,
+        "priceVersion": "qualified-route-request-derived"
+      },
+      "routes": {
+        "paidChallenge": "/v1/ai/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "commercialProof": false
     }
   ]
 }

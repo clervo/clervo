@@ -2,9 +2,9 @@
   "openapi": "3.1.1",
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
-    "title": "Clervo Search API",
+    "title": "Clervo Search and AI API",
     "version": "2026-07-29.1",
-    "description": "Public Search preview. Raw cited web retrieval is callable with a bounded free sample or an exact x402 payment. Synthesized answers remain unavailable."
+    "description": "Public Search and bounded paid AI preview. AI quotes are request-derived from current qualified exact-model routes; unsupported modalities fail closed."
   },
   "paths": {
     "/v1/search/free": {
@@ -186,6 +186,88 @@
           },
           "503": {
             "description": "Requested capability or settlement unavailable",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ai/execute": {
+      "post": {
+        "summary": "Request or settle a bounded AI operation",
+        "description": "Returns an exact x402 quote for a qualified AI request. A completed idempotency key replays the same result and receipt without another charge.",
+        "operationId": "aiExecute",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AiHttpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "AI operation completed or replayed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AiHttpResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded AI request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Exact x402 payment required",
+            "headers": {
+              "PAYMENT-REQUIRED": {
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency or quote conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No qualified route, capacity, or settlement path is available",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3241,7 +3323,9 @@
     "interfaceHash": "sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622",
     "operationIds": [
       "search.web",
-      "search.answer"
-    ]
+      "search.answer",
+      "ai.chat"
+    ],
+    "runtimeRelease": "1936d7966a27"
   }
 }

@@ -5,6 +5,9 @@
   "compatibility_date": "2026-08-04",
   "workers_dev": false,
   "preview_urls": false,
+  "vars": {
+    "CLERVO_AI_PUBLIC_ENABLED": "true"
+  },
   "secrets": {
     "required": ["CLERVO_EDGE_AUTHORIZATION"]
   },

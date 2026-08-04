@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.capabilities.v1",
-  "observedAt": "2026-08-04T02:24:00Z",
+  "observedAt": "2026-08-04T03:16:40Z",
   "publicCallable": true,
   "products": [
     {
@@ -22,8 +22,8 @@
         "ai.image",
         "ai.speech"
       ],
-      "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable"
+      "engineeringState": "public_production_origin_qualified",
+      "customerLifecycle": "preview_publicly_callable"
     },
     {
       "id": "sandbox",

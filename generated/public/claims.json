@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.launch-state.v1",
-  "observedAt": "2026-08-04T02:24:00Z",
-  "sourceCommit": "a9f6aea25891",
+  "observedAt": "2026-08-04T03:16:40Z",
+  "sourceCommit": "1936d7966a27",
   "identity": {
     "category": "Outcome infrastructure for agents",
     "headline": "One job in. One inspectable result out.",
@@ -39,7 +39,7 @@
       ]
     },
     "publicApi": {
-      "state": "public_search_preview_verified",
+      "state": "public_search_and_ai_preview_verified",
       "endpoint": "https://api.clervo.dev",
       "publicCallable": true,
       "publicTraffic": true,
@@ -108,18 +108,21 @@
         "ai.image",
         "ai.speech"
       ],
-      "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable",
+      "engineeringState": "public_production_origin_qualified",
+      "customerLifecycle": "preview_publicly_callable",
       "commercialProof": "unproven",
-      "paymentState": "unavailable",
-      "supplierRights": "public_offer_not_approved",
+      "paymentState": "public_x402_challenge_available_paid_result_pending",
+      "supplierRights": "qualified_resale_allowed_selected_routes",
       "allowedClaims": [
-        "The AI core is privately qualified."
+        "Bounded AI chat requests expose an exact request-derived Base USDC x402 quote through the protected production edge.",
+        "The production origin returned a stable 402 challenge for gpt-5.6-luna while direct product access remained denied.",
+        "Only currently qualified exact routes are eligible; unsupported or expired routes fail closed."
       ],
       "prohibitedClaims": [
-        "Publicly available",
         "Every model",
-        "Production-ready catalog"
+        "All AI modalities publicly available",
+        "Paid AI result verified",
+        "Customer revenue or demand"
       ]
     },
     {

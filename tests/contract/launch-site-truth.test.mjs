@@ -33,7 +33,7 @@ test('generated launch state is evidence-bound across packages, payment, and pub
   assert.equal(generated.paymentProof.demandEvidence, false);
 });
 
-test('machine discovery publishes only the verified raw Search offer', async () => {
+test('machine discovery publishes verified Search and bounded paid AI without overstating proof', async () => {
   const [discovery, status, pricing, capabilities, mcp, openapi, yaml] = await Promise.all([
     json('generated/public/.well-known/clervo.json'),
     json('generated/public/status.json'),
@@ -47,6 +47,11 @@ test('machine discovery publishes only the verified raw Search offer', async () 
   assert.equal(discovery.payment.publicAvailable, true);
   assert.equal(discovery.payment.privateProofVerified, true);
   assert.equal(discovery.payment.commercialProof, false);
+  const ai = discovery.products.find(({ productId }) => productId === 'ai.chat');
+  assert.equal(ai.publicAvailable, true);
+  assert.equal(ai.payment.payable, true);
+  assert.equal(ai.pricing.model, 'x402_request_quote');
+  assert.equal(ai.pricing.displayPrice, null);
   assert.equal(status.packages.state, 'published_verified');
   assert.equal(status.publicApi.customerEndpointAvailable, true);
   assert.equal(pricing.publicOfferAvailable, true);
@@ -57,6 +62,7 @@ test('machine discovery publishes only the verified raw Search offer', async () 
   assert.equal(mcp.publicApiAvailable, true);
   assert.equal(mcp.paymentSigningImplemented, false);
   assert.deepEqual(yaml, openapi);
+  assert.ok(openapi.paths['/v1/ai/execute']);
 });
 
 test('launch pages and discovery surfaces exist without forbidden or stale claims', async () => {

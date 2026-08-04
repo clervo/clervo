@@ -2,7 +2,7 @@
   "discoveryVersion": "2026-08-02.2",
   "contractVersion": "2026-07-29.1",
   "name": "Clervo",
-  "description": "Machine-readable public Search preview. Raw cited web retrieval is callable through a bounded free sample and exact x402 payment. Synthesized Search and the other five product cores remain unavailable. No customer revenue or demand is claimed.",
+  "description": "Machine-readable public Search and paid AI preview. Raw Search and qualified bounded AI chat requests are callable; unsupported AI modalities and the remaining product cores fail closed. No external customer revenue or demand is claimed.",
   "lifecycle": "preview",
   "distribution": {
     "state": "public_preview",
@@ -248,12 +248,49 @@
         "payable": false,
         "mockExecutionAvailableByInjectionOnly": false
       }
+    },
+    {
+      "productId": "ai.chat",
+      "operationId": "ai.chat",
+      "title": "Qualified AI chat",
+      "summary": "Bounded provider-neutral chat with exact returned model identity, usage, receipt, and no-charge replay.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "model": "Exact qualified model ID or supported Clervo alias."
+      },
+      "pricing": {
+        "model": "x402_request_quote",
+        "displayPrice": null,
+        "maximumChargeRequired": true,
+        "priceVersion": "qualified-route-request-derived"
+      },
+      "routes": {
+        "paidChallenge": "/v1/ai/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "commercialProof": false
     }
   ],
   "limitations": [
-    "Only raw cited web retrieval is publicly callable; synthesized Search is unavailable.",
-    "The x402 route is payable, but no external customer payment, revenue, or demand is claimed.",
-    "Free access is quota-limited and durable idempotency is required.",
-    "AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain publicly unavailable."
-  ]
+    "Raw cited Search and bounded paid AI chat are publicly callable previews; Search synthesis and AI media remain unavailable.",
+    "AI prices are exact per-request maximum-charge quotes, not one fixed model price.",
+    "The AI production origin and stable challenge are verified; an owner-signed paid AI result remains pending.",
+    "Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain publicly unavailable.",
+    "No external customer payment, revenue, or demand is claimed."
+  ],
+  "runtimeRelease": {
+    "sourceCommit": "1936d7966a27",
+    "operationIds": [
+      "search.web",
+      "ai.chat"
+    ]
+  }
 }

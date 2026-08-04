@@ -9,10 +9,10 @@ Current verified status:
 - Frozen release candidate: clervo-private-core-2026-08-02.2
 - Frozen interface hash: sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622
 - Six product cores: privately qualified and compatibility-frozen
-- Public lifecycle: raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable
-- Projected operation IDs: search.web, search.answer
+- Public lifecycle: raw cited Search and bounded paid AI chat are callable; synthesized Search, AI media, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable
+- Projected operation IDs: search.web, search.answer, ai.chat
 - Public API callable: yes
-- x402 public payment: available for search.web at a maximum charge of 0.006 USDC on Base
+- x402 public payment: available for search.web at a maximum charge of 0.006 USDC and for ai.chat through an exact request-derived maximum-charge quote on Base
 - x402 private proof: one owner-funded useful result settled and replayed without a second charge
 - Commercial proof: no customer revenue or demand claimed
 - Public price: search.web maximum charge is 0.006 USDC; search.answer has no public offer
