@@ -64,6 +64,7 @@ test('machine discovery publishes verified Search and bounded paid AI without ov
   assert.deepEqual(yaml, openapi);
   assert.ok(openapi.paths['/v1/ai/execute']);
   assert.equal(openapi.info.contact.url, 'https://github.com/clervo/clervo');
+  assert.equal(openapi.info.contact.email, 'mo@clervo.dev');
   assert.match(openapi.info['x-guidance'], /same key.*without a second charge/iu);
   assert.deepEqual(openapi.paths['/v1/search/free'].post.security, []);
   assert.deepEqual(openapi.paths['/v1/search/paid'].post['x-payment-info'], {

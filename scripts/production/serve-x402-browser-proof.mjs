@@ -11,9 +11,34 @@ import { getAddress, isAddress } from 'viem';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const dist = path.join(root, 'tools/x402-browser-proof/dist');
 const asset = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
-const resource = 'https://api.clervo.dev/v1/search/paid';
+const productId = String(process.env.CLERVO_X402_PROOF_PRODUCT ?? 'search.web');
+const profiles = Object.freeze({
+  'search.web': Object.freeze({
+    route: '/v1/search/paid',
+    resource: 'https://api.clervo.dev/v1/search/paid',
+    amountAtomic: '6000',
+    amountDisplay: '0.006 USDC',
+    supplierCostCeilingAtomic: '0',
+    request: { query: 'Clervo bounded x402 launch proof', maxResults: 1, synthesize: false },
+  }),
+  'ai.chat': Object.freeze({
+    route: '/v1/ai/execute',
+    resource: 'https://api.clervo.dev/v1/ai/execute',
+    amountAtomic: '113',
+    amountDisplay: '0.000113 USDC',
+    supplierCostCeilingAtomic: '225',
+    request: {
+      model: 'gpt-5.6-luna',
+      input: { kind: 'chat', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], responseFormat: 'text', stream: false },
+      maximumOutputTokens: 16,
+    },
+  }),
+});
+assert.equal(Object.hasOwn(profiles, productId), true, 'proof product is not allowlisted');
+const profile = profiles[productId];
 const target = new URL(process.env.CLERVO_X402_PROOF_TARGET_ORIGIN ?? '');
-const audience = new URL(process.env.CLERVO_X402_PROOF_IDENTITY_AUDIENCE ?? '');
+const audienceValue = process.env.CLERVO_X402_PROOF_IDENTITY_AUDIENCE;
+const audience = audienceValue === undefined ? undefined : new URL(audienceValue);
 const port = Number(process.env.CLERVO_X402_PROOF_PORT ?? '8790');
 const payer = normalizeAddress(process.env.CLERVO_X402_PROOF_PAYER, 'payer');
 const payTo = normalizeAddress(process.env.CLERVO_X402_PROOF_PAY_TO, 'receiver');
@@ -25,18 +50,22 @@ function normalizeAddress(value, label) {
 }
 
 assert.equal(target.protocol, 'https:');
-assert.match(target.hostname, /^[a-z0-9-]+\.(?:[a-z0-9-]+\.)?run\.app$/u);
+assert.equal(target.hostname === 'api.clervo.dev' || /^[a-z0-9-]+\.(?:[a-z0-9-]+\.)?run\.app$/u.test(target.hostname), true);
 assert.equal(target.pathname, '/');
 assert.equal(target.username, '');
 assert.equal(target.password, '');
-assert.equal(audience.protocol, 'https:');
-assert.match(audience.hostname, /^[a-z0-9-]+\.(?:[a-z0-9-]+\.)?run\.app$/u);
-assert.equal(audience.pathname, '/');
+if (target.hostname === 'api.clervo.dev') assert.equal(audience, undefined, 'public proof must not use a Cloud Run identity token');
+else {
+  assert.equal(audience?.protocol, 'https:');
+  assert.match(audience?.hostname ?? '', /^[a-z0-9-]+\.(?:[a-z0-9-]+\.)?run\.app$/u);
+  assert.equal(audience?.pathname, '/');
+}
 assert.notEqual(payer.toLowerCase(), payTo.toLowerCase(), 'payer and receiver must differ');
 assert.match(idempotencyKey, /^idem_[a-z0-9_]{16,96}$/u);
 assert.equal(Number.isSafeInteger(port) && port >= 1024 && port <= 65535, true);
 
 function identityToken() {
+  assert.notEqual(audience, undefined, 'identity token requested for public target');
   const result = spawnSync('gcloud', ['auth', 'print-identity-token', `--audiences=${audience.origin}`], {
     encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 30_000, maxBuffer: 64 * 1024,
   });
@@ -74,28 +103,30 @@ async function staticFile(response, pathname) {
 }
 
 const proofConfig = Object.freeze({
-  network: 'eip155:8453', chainIdHex: '0x2105', asset, amountAtomic: '6000', amountDisplay: '0.006 USDC',
-  payTo, payer, productId: 'search.web', resource, idempotencyKey,
-  request: { query: 'Clervo bounded x402 launch proof', maxResults: 1, synthesize: false },
+  network: 'eip155:8453', chainIdHex: '0x2105', asset,
+  amountAtomic: profile.amountAtomic, amountDisplay: profile.amountDisplay,
+  payTo, payer, productId, resource: profile.resource, idempotencyKey,
+  payerBalanceCapAtomic: '32000', supplierCostCeilingAtomic: profile.supplierCostCeilingAtomic,
+  request: profile.request,
 });
 
 const server = createServer(async (request, response) => {
   try {
     const url = new URL(request.url ?? '/', 'http://127.0.0.1');
     if (request.method === 'GET' && url.pathname === '/config') return json(response, 200, proofConfig);
-    if (request.method === 'POST' && url.pathname === '/api/paid-search') {
+    if (request.method === 'POST' && url.pathname === '/api/paid-operation') {
       const incoming = await body(request);
       assert.deepEqual(JSON.parse(incoming.toString('utf8')), proofConfig.request, 'request body drift');
       assert.equal(request.headers['idempotency-key'], idempotencyKey, 'idempotency key drift');
       const payment = request.headers['payment-signature'];
       if (payment !== undefined) assert.equal(typeof payment === 'string' && payment.length <= 32_768, true, 'payment header invalid');
       const headers = {
-        authorization: `Bearer ${identityToken()}`,
         'content-type': 'application/json',
         'idempotency-key': idempotencyKey,
+        ...(audience === undefined ? {} : { authorization: `Bearer ${identityToken()}` }),
         ...(payment ? { 'payment-signature': payment } : {}),
       };
-      const upstream = await fetch(new URL('/v1/search/paid', target), {
+      const upstream = await fetch(new URL(profile.route, target), {
         method: 'POST', headers, body: incoming, redirect: 'manual', signal: AbortSignal.timeout(45_000),
       });
       assert.equal(upstream.status >= 300 && upstream.status < 400, false, 'redirect refused');
@@ -118,5 +149,5 @@ const server = createServer(async (request, response) => {
 
 server.listen(port, '127.0.0.1', () => {
   process.stdout.write(`bounded x402 proof ready on http://127.0.0.1:${port}\n`);
-  process.stdout.write('private target: configured; wallet values: not printed; payment: not authorized\n');
+  process.stdout.write(`${audience === undefined ? 'public' : 'private'} target: configured; wallet values: not printed; payment: not authorized\n`);
 });

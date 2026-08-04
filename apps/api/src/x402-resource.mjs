@@ -8,6 +8,7 @@ const PAYMENT_RESPONSE_HEADER = 'PAYMENT-RESPONSE';
 const MAXIMUM_PAYMENT_HEADER_BYTES = 65_536;
 const pathMethods = Object.freeze({ supported: 'GET', verify: 'POST', settle: 'POST' });
 const BASE_USDC_EIP712_DOMAIN = Object.freeze({ name: 'USD Coin', version: '2' });
+const PAYABLE_RESOURCE_PATHS = new Set(['/v1/search/paid', '/v1/ai/execute']);
 
 function base64url(value) {
   return Buffer.from(typeof value === 'string' ? value : JSON.stringify(value)).toString('base64url');
@@ -114,11 +115,12 @@ export async function createX402ChallengeService({
   await server.initialize();
   return Object.freeze({
     mode: paymentMode,
-    async challenge({ quote, description, now }) {
+    async challenge({ quote, description, now, resourcePath = '/v1/search/paid' }) {
       if (!verifyQuote(quote)) throw new TypeError('quote_hash_invalid');
       if (isQuoteExpired(quote, now)) throw new TypeError('quote_expired');
       if (quote.maximumCharge.asset !== 'USDC' || quote.maximumCharge.decimals !== 6) throw new TypeError('quote_asset_invalid');
       if (typeof description !== 'string' || description.length < 1 || description.length > 500) throw new TypeError('description_invalid');
+      if (!PAYABLE_RESOURCE_PATHS.has(resourcePath)) throw new TypeError('resource_path_invalid');
       const requirements = await server.buildPaymentRequirements({
         scheme: 'exact',
         network,
@@ -138,7 +140,7 @@ export async function createX402ChallengeService({
         },
       });
       const body = await server.createPaymentRequiredResponse(requirements, {
-        url: `${origin.origin}/v1/search/paid`,
+        url: `${origin.origin}${resourcePath}`,
         description,
         mimeType: 'application/json',
       }, 'PAYMENT-SIGNATURE header is required');

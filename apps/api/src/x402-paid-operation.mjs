@@ -84,11 +84,14 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       prepare,
       execute,
       createResponse,
+      resourcePath,
       overloadCode = 'operation_overloaded',
     }) {
       if (typeof execute !== 'function' || typeof createResponse !== 'function') throw new TypeError('invalid_x402_operation_handler');
       if (prepare !== undefined && typeof prepare !== 'function') throw new TypeError('invalid_x402_operation_prepare');
       if (!/^[a-z][a-z0-9]*(?:\.[a-z][a-z0-9]*)+$/u.test(productId ?? '')) throw new TypeError('invalid_x402_product_id');
+      const effectiveResourcePath = resourcePath ?? (productId.startsWith('ai.') ? '/v1/ai/execute' : '/v1/search/paid');
+      if (!['/v1/search/paid', '/v1/ai/execute'].includes(effectiveResourcePath)) throw new TypeError('invalid_x402_operation_resource');
       const base = { idempotencyKey, requestHash, operationId, now };
       let state = await stateStore.lookup(base);
       if (state.kind === 'conflict') refuse('idempotency_conflict');
@@ -115,7 +118,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
           issuedAt: now,
           expiresAt: new Date(Date.parse(now) + 300_000).toISOString(),
         });
-        const challenge = await service.challenge({ quote, description: `Bounded ${productId} execution`, now });
+        const challenge = await service.challenge({ quote, description: `Bounded ${productId} execution`, now, resourcePath: effectiveResourcePath });
         state = await stateStore.challenge({ ...base, quote, challenge });
       }
       if (state.kind === 'conflict') refuse('idempotency_conflict');

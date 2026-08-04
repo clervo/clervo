@@ -26,6 +26,7 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
         productId: normalized.productId,
         paymentHeader,
         now,
+        resourcePath: '/v1/ai/execute',
         overloadCode: 'ai_overloaded',
         prepare() {
           const quote = publicPricing.quote({ normalized, operationId, now });

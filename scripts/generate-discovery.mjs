@@ -255,7 +255,7 @@ const discovery = contractModule.createDiscoveryDocument(projection);
 let llms = contractModule.createLlmsText(projection);
 if (publicSearch) {
   openapi.servers = [{ url: 'https://api.clervo.dev' }];
-  openapi.info.contact = { name: 'Clervo', url: 'https://github.com/clervo/clervo' };
+  openapi.info.contact = { name: 'Clervo', email: 'mo@clervo.dev', url: 'https://github.com/clervo/clervo' };
   openapi.info['x-guidance'] = 'Use POST /v1/search/free for a bounded no-payment sample. Paid routes return an x402 v2 challenge before execution. Supply the required JSON body and a stable Idempotency-Key, inspect the exact payment requirements, and send PAYMENT-SIGNATURE only after approval. Reuse the same key to recover or replay a completed result without a second charge. AI discovery currently advertises only qualified non-streaming chat; unsupported capabilities fail closed.';
   openapi.paths['/v1/search/free'].post = scannerSafeOperation(openapi.paths['/v1/search/free'].post, {
     requestSchema: searchProbeSchema,

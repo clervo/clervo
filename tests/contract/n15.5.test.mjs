@@ -22,9 +22,6 @@ test('browser proof refuses drift and allows exactly one authorization attempt',
   for (const guard of [
     "network: 'eip155:8453'",
     "chainIdHex: '0x2105'",
-    "amountAtomic: '6000'",
-    "productId: 'search.web'",
-    "resource: 'https://api.clervo.dev/v1/search/paid'",
     'payer and receiver must be different',
     'USDC EIP-712 domain mismatch',
     'quote expiry outside bounded window',
@@ -32,13 +29,25 @@ test('browser proof refuses drift and allows exactly one authorization attempt',
     'payment was already attempted; reconcile instead of retrying',
     "replay.headers.get('idempotency-replayed') !== 'true'",
   ]) assert.ok(browser.includes(guard), `missing browser guard: ${guard}`);
+  for (const guard of [
+    "'search.web'",
+    "resource: 'https://api.clervo.dev/v1/search/paid'",
+    "amountAtomic: '6000'",
+    "'ai.chat'",
+    "resource: 'https://api.clervo.dev/v1/ai/execute'",
+    "amountAtomic: '113'",
+    "supplierCostCeilingAtomic: '225'",
+  ]) assert.ok(proxy.includes(guard), `missing proxy bound: ${guard}`);
+  assert.match(browser, /approved payer balance exceeds the bounded proof cap/u);
+  assert.match(browser, /receipt\?\.receiptId !== paidBody\?\.receipt\?\.receiptId/u);
   assert.match(browser, /paymentAttempted = true/u);
   assert.match(browser, /Do not sign or retry again/u);
 });
 
 test('local proof proxy is loopback-only, exact-route, bounded, and credential-redacting', () => {
   assert.match(proxy, /server\.listen\(port, '127\.0\.0\.1'/u);
-  assert.match(proxy, /new URL\('\/v1\/search\/paid', target\)/u);
+  assert.match(proxy, /new URL\(profile\.route, target\)/u);
+  assert.match(proxy, /public proof must not use a Cloud Run identity token/u);
   assert.match(proxy, /redirect: 'manual'/u);
   assert.match(proxy, /response too large/u);
   assert.match(proxy, /request body drift/u);

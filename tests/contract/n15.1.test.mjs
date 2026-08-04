@@ -80,6 +80,7 @@ test('real x402 challenge is quote-bound while verify and settle remain unavaila
   assert.equal(requirement.amount, quote.maximumCharge.amountAtomic);
   assert.equal(requirement.extra.name, 'USD Coin');
   assert.equal(requirement.extra.version, '2');
+  assert.equal(result.body.resource.url, 'https://api.clervo.dev/v1/search/paid');
   assert.deepEqual(requirement.extra.clervo, {
     quoteId: quote.quoteId,
     quoteHash: quote.quoteHash,
@@ -102,6 +103,19 @@ test('real x402 challenge is quote-bound while verify and settle remain unavaila
   assert.equal(payment.accepted.amount, quote.maximumCharge.amountAtomic);
   assert.equal(payment.payload.authorization.value, quote.maximumCharge.amountAtomic);
   assert.deepEqual(calls, { supported: 1, verify: 0, settle: 0 });
+});
+
+test('challenge service binds AI payments to the exact public AI resource', async () => {
+  const facilitator = {
+    async getSupported() { return { kinds: [{ x402Version: 2, scheme: 'exact', network }], extensions: [], signers: {} }; },
+  };
+  const service = await createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/' });
+  const result = await service.challenge({ quote, description: 'Bounded ai.chat execution', now: issuedAt, resourcePath: '/v1/ai/execute' });
+  assert.equal(result.body.resource.url, 'https://api.clervo.dev/v1/ai/execute');
+  await assert.rejects(
+    service.challenge({ quote, description: 'Invalid route', now: issuedAt, resourcePath: '/v1/unknown' }),
+    /resource_path_invalid/u,
+  );
 });
 
 test('challenge service rejects the protected model gateway and non-Base configuration', async () => {

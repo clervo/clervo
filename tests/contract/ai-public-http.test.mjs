@@ -25,9 +25,14 @@ async function pricing() {
 
 test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-safe', async (context) => {
   const calls = { challenge: 0, authorize: 0, settle: 0, execute: 0 };
+  const resourcePaths = [];
   const service = {
     mode: 'settlement_enabled',
-    async challenge({ quote }) { calls.challenge += 1; return { status: 402, headers: { 'PAYMENT-REQUIRED': 'ai-http' }, body: { x402Version: 2, accepts: [{ amount: quote.maximumCharge.amountAtomic }] } }; },
+    async challenge({ quote, resourcePath }) {
+      calls.challenge += 1;
+      resourcePaths.push(resourcePath);
+      return { status: 402, headers: { 'PAYMENT-REQUIRED': 'ai-http' }, body: { x402Version: 2, accepts: [{ amount: quote.maximumCharge.amountAtomic }], resource: { url: `https://api.clervo.dev${resourcePath}` } } };
+    },
     async authorize() { calls.authorize += 1; return { fingerprint: `sha256:${'7'.repeat(64)}` }; },
     async settle() { calls.settle += 1; return { kind: 'settled', headers: { 'PAYMENT-RESPONSE': 'ai-http-settled' }, settlement: { network: 'eip155:8453', transaction: `0x${'8'.repeat(64)}` } }; },
   };
@@ -58,6 +63,13 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
 
   const denied = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers, body });
   assert.equal(denied.status, 401);
+  const edgeOnly = { 'x-clervo-edge-authorization': 'Bearer edge-authorization-at-least-32-characters' };
+  const aiProbe = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers: edgeOnly });
+  assert.equal(aiProbe.status, 402);
+  assert.equal((await aiProbe.json()).resource.url, 'https://api.clervo.dev/v1/ai/execute');
+  const searchProbe = await fetch(`${origin}/v1/search/paid`, { method: 'POST', headers: edgeOnly });
+  assert.equal(searchProbe.status, 402);
+  assert.equal((await searchProbe.json()).accepts[0].amount, '6000');
   const authorized = { ...headers, 'x-clervo-edge-authorization': 'Bearer edge-authorization-at-least-32-characters' };
   const challenge = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers: authorized, body });
   assert.equal(challenge.status, 402);
@@ -77,5 +89,6 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
   const replayed = await replay.json();
   assert.equal(replayed.replayed, true);
   assert.equal(replayed.receipt.receiptId, result.receipt.receiptId);
-  assert.deepEqual(calls, { challenge: 1, authorize: 1, settle: 1, execute: 1 });
+  assert.deepEqual(resourcePaths, ['/v1/ai/execute', '/v1/search/paid', '/v1/ai/execute']);
+  assert.deepEqual(calls, { challenge: 3, authorize: 1, settle: 1, execute: 1 });
 });

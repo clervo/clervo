@@ -25,7 +25,7 @@ import {
   validateIdempotencyKey,
 } from '../../../dist/packages/contracts/src/index.js';
 import { InMemorySearchStateStore } from './search-state-store.mjs';
-import { createX402PaidSearchProcessor } from './x402-paid-search.mjs';
+import { createX402PaidSearchProcessor, x402SearchPricing } from './x402-paid-search.mjs';
 import { createX402PaidAiProcessor } from './x402-paid-ai.mjs';
 
 const JSON_TYPE = 'application/json; charset=utf-8';
@@ -33,6 +33,23 @@ const PROBLEM_TYPE = 'application/problem+json; charset=utf-8';
 const MOCK_PAYMENT_HEADER = 'x-clervo-mock-payment';
 const SANDBOX_PRIVATE_PATH = '/internal/v1/sandbox/run';
 const SANDBOX_MAX_BODY_BYTES = 1_500_000;
+const AI_DISCOVERY_PROBE_REQUEST = Object.freeze({
+  model: 'gpt-5.6-luna',
+  input: Object.freeze({
+    kind: 'chat',
+    messages: Object.freeze([Object.freeze({ role: 'user', content: 'Reply with the single word ready.' })]),
+    responseFormat: 'text',
+    stream: false,
+  }),
+  maximumOutputTokens: 16,
+});
+const SEARCH_DISCOVERY_PROBE_REQUEST = Object.freeze({
+  query: 'current x402 protocol documentation',
+  maxResults: 3,
+  synthesize: false,
+  language: 'en',
+  region: 'US',
+});
 
 function identifier(prefix, seed) {
   return `${prefix}_${createHash('sha256').update(seed).digest('hex').slice(0, 32)}`;
@@ -163,6 +180,37 @@ export function createSearchServer({
     monitor: aiMonitor,
   });
 
+  async function discoveryPaymentChallenge(pathname, observedAt) {
+    let productId;
+    let requestHash;
+    let pricing;
+    if (pathname === AI_PAID_PATH) {
+      const normalized = normalizeAiHttpRequest(AI_DISCOVERY_PROBE_REQUEST);
+      productId = normalized.productId;
+      requestHash = aiHttpRequestHash(normalized);
+      const operationId = identifier('op', `discovery:${pathname}:${requestHash}`);
+      pricing = aiPublicPricing.quote({ normalized, operationId, now: observedAt }).pricing;
+    } else {
+      const normalized = normalizeSearchHttpRequest(SEARCH_DISCOVERY_PROBE_REQUEST);
+      productId = searchProductId(normalized);
+      requestHash = searchHttpRequestHash(normalized, SEARCH_PAID_PATH);
+      pricing = x402SearchPricing(productId);
+    }
+    const operationId = identifier('op', `discovery:${pathname}:${requestHash}`);
+    const quote = sealQuote({
+      contractVersion: CONTRACT_VERSION,
+      quoteId: identifier('quote', `discovery:${pathname}:${requestHash}`),
+      operationId,
+      productId,
+      requestHash,
+      priceVersion: pricing.priceVersion,
+      maximumCharge: pricing.maximumCharge,
+      issuedAt: observedAt,
+      expiresAt: new Date(Date.parse(observedAt) + 300_000).toISOString(),
+    });
+    return x402Service.challenge({ quote, description: `Bounded ${productId} discovery challenge`, now: observedAt, resourcePath: pathname });
+  }
+
   const record = (input) => {
     try { monitor?.record(input); } catch { /* Monitoring must never alter customer response behavior. */ }
   };
@@ -249,6 +297,11 @@ export function createSearchServer({
       let aiOperationId;
       try {
         const keyHeader = request.headers['idempotency-key'];
+        if (typeof keyHeader !== 'string' && typeof request.headers['payment-signature'] !== 'string') {
+          const challenge = await discoveryPaymentChallenge(AI_PAID_PATH, now());
+          send(response, challenge.status, challenge.body, challenge.headers);
+          return;
+        }
         if (typeof keyHeader !== 'string') throw Object.assign(new Error('idempotency_key_required'), { status: 400 });
         validateIdempotencyKey(keyHeader);
         const normalized = normalizeAiHttpRequest(await readJson(request, AI_MAX_BODY_BYTES));
@@ -296,6 +349,11 @@ export function createSearchServer({
     const startedAt = monotonicNow();
     try {
       const keyHeader = request.headers['idempotency-key'];
+      if (url.pathname === SEARCH_PAID_PATH && typeof keyHeader !== 'string' && typeof request.headers['payment-signature'] !== 'string') {
+        const challenge = await discoveryPaymentChallenge(SEARCH_PAID_PATH, now());
+        send(response, challenge.status, challenge.body, challenge.headers);
+        return;
+      }
       if (typeof keyHeader !== 'string') throw Object.assign(new Error('idempotency_key_required'), { status: 400 });
       validateIdempotencyKey(keyHeader);
       const normalized = normalizeSearchHttpRequest(await readJson(request));

@@ -47,6 +47,7 @@ export function createX402PaidSearchProcessor({ service, stateStore, executor, a
         paymentHeader,
         now,
         pricing,
+        resourcePath: '/v1/search/paid',
         overloadCode: 'search_overloaded',
         async execute(input) {
           const output = await executor.execute(input);

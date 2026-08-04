@@ -9,14 +9,16 @@ type ProofConfig = {
   network: 'eip155:8453';
   chainIdHex: '0x2105';
   asset: Address;
-  amountAtomic: '6000';
-  amountDisplay: '0.006 USDC';
+  amountAtomic: string;
+  amountDisplay: string;
   payTo: Address;
   payer: Address;
-  productId: 'search.web';
-  resource: 'https://api.clervo.dev/v1/search/paid';
+  productId: 'search.web' | 'ai.chat';
+  resource: 'https://api.clervo.dev/v1/search/paid' | 'https://api.clervo.dev/v1/ai/execute';
   idempotencyKey: string;
-  request: { query: string; maxResults: 1; synthesize: false };
+  payerBalanceCapAtomic: string;
+  supplierCostCeilingAtomic: string;
+  request: Record<string, unknown>;
 };
 
 const connectButton = document.querySelector<HTMLButtonElement>('#connect')!;
@@ -34,6 +36,21 @@ function show(message: string) { status.textContent = message; }
 function sameAddress(left: string, right: string) { return left.toLowerCase() === right.toLowerCase(); }
 function decodeHeader(value: string) {
   try { return JSON.parse(atob(value)); } catch { throw new Error('invalid PAYMENT-REQUIRED encoding'); }
+}
+
+function balanceOfData(address: Address) {
+  return `0x70a08231${address.slice(2).toLowerCase().padStart(64, '0')}`;
+}
+
+function usefulPaidResult(body: any) {
+  if (body?.productId !== config.productId || body?.receipt?.productId !== config.productId) return false;
+  if (config.productId === 'ai.chat') {
+    return body?.exactModelId === 'gpt-5.6-luna'
+      && body?.result?.output?.kind === 'chat'
+      && typeof body?.result?.output?.content === 'string'
+      && body.result.output.content.trim().length > 0;
+  }
+  return Array.isArray(body?.output?.searchResponse?.results) && body.output.searchResponse.results.length > 0;
 }
 
 function validateChallenge(response: Response, body: any) {
@@ -66,7 +83,7 @@ const requestInit = () => ({
 });
 
 async function getChallenge() {
-  const response = await fetch('/api/paid-search', requestInit());
+  const response = await fetch('/api/paid-operation', requestInit());
   const body = await response.clone().json();
   challengeIdentity = validateChallenge(response, body);
   approveButton.disabled = false;
@@ -86,9 +103,17 @@ async function connect() {
   payer = getAddress(accounts[0]);
   if (!sameAddress(payer, config.payer)) throw new Error('connected account is not the approved payer');
   if (sameAddress(payer, config.payTo)) throw new Error('payer and receiver must be different');
+  const rawBalance = await provider.request({
+    method: 'eth_call',
+    params: [{ to: config.asset, data: balanceOfData(payer) }, 'latest'],
+  });
+  if (typeof rawBalance !== 'string' || !/^0x[a-fA-F0-9]+$/u.test(rawBalance)) throw new Error('USDC balance check failed');
+  const balance = BigInt(rawBalance);
+  if (balance < BigInt(config.amountAtomic)) throw new Error('approved payer has insufficient USDC');
+  if (balance > BigInt(config.payerBalanceCapAtomic)) throw new Error('approved payer balance exceeds the bounded proof cap');
   challengeButton.disabled = false;
   connectButton.disabled = true;
-  show(`Approved payer connected: ${payer}\nNo signature has been requested.`);
+  show(`Approved payer connected: ${payer}\nVerified balance: ${balance} atomic USDC (within cap)\nNo signature has been requested.`);
 }
 
 async function approveOnce() {
@@ -123,17 +148,18 @@ async function approveOnce() {
   };
   const paidFetch = wrapFetchWithPayment(boundedFetch, client);
   show('Waiting for one bounded MetaMask signature…');
-  const paid = await paidFetch('/api/paid-search', requestInit());
+  const paid = await paidFetch('/api/paid-operation', requestInit());
   if (!paid.ok) throw new Error(`paid request failed with ${paid.status}; reconcile before any retry`);
   const paidBody = await paid.json();
+  if (!usefulPaidResult(paidBody)) throw new Error('paid response is not a useful exact-product result; reconcile');
   if (paidBody?.receipt?.customerCharge?.amountAtomic !== config.amountAtomic) throw new Error('paid receipt amount mismatch; reconcile');
   if (paidBody?.receipt?.settlement?.status !== 'settled') throw new Error('settlement is not confirmed; reconcile');
   if (!paid.headers.get('payment-response')) throw new Error('PAYMENT-RESPONSE is missing; reconcile');
 
-  const replay = await fetch('/api/paid-search', requestInit());
+  const replay = await fetch('/api/paid-operation', requestInit());
   if (!replay.ok || replay.headers.get('idempotency-replayed') !== 'true') throw new Error('no-charge replay was not proven; reconcile');
   const replayBody = await replay.json();
-  if (replayBody?.replayed !== true || replayBody?.operationId !== paidBody?.operationId) throw new Error('replay identity mismatch; reconcile');
+  if (replayBody?.replayed !== true || replayBody?.operationId !== paidBody?.operationId || replayBody?.receipt?.receiptId !== paidBody?.receipt?.receiptId) throw new Error('replay identity mismatch; reconcile');
 
   show(`PROOF COMPLETE\n\nOperation: ${paidBody.operationId}\nReceipt: ${paidBody.receipt?.receiptId ?? 'recorded'}\nCharge: ${config.amountDisplay}\nSettlement: confirmed\nReplay: same result, no second authorization\n\nDo not sign again.`);
 }
@@ -145,6 +171,8 @@ async function load() {
   bounds.innerHTML = [
     ['Network', 'Base mainnet (8453)'], ['Asset', 'Native USDC'], ['Maximum', config.amountDisplay],
     ['Product', config.productId], ['Receiver', config.payTo], ['Payer', config.payer],
+    ['Payer cap', `${config.payerBalanceCapAtomic} atomic USDC`],
+    ['Supplier ceiling', `${config.supplierCostCeilingAtomic} atomic USD`],
     ['Execution', 'one authorization; replay must be free'],
   ].map(([term, value]) => `<dt>${term}</dt><dd>${value}</dd>`).join('');
   show('Configuration loaded. Connect only the approved funded payer.');
