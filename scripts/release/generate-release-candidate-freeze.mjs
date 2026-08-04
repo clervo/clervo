@@ -9,7 +9,8 @@ import { hashJson } from '../../dist/packages/contracts/src/receipt.js';
 
 const root = process.cwd();
 const readJson = async (name) => JSON.parse(await readFile(path.join(root, name), 'utf8'));
-const sha256 = async (name) => `sha256:${createHash('sha256').update(await readFile(path.join(root, name))).digest('hex')}`;
+const hashBytes = (value) => `sha256:${createHash('sha256').update(value).digest('hex')}`;
+const sha256 = async (name) => hashBytes(await readFile(path.join(root, name)));
 const descriptors = async (directory, names) => Promise.all(names.sort().map(async (name) => {
   const file = path.posix.join(directory, name);
   return Object.freeze({ file, sha256: await sha256(file) });
@@ -18,6 +19,14 @@ const descriptors = async (directory, names) => Promise.all(names.sort().map(asy
 const registryFile = 'packages/catalog/platform-registry.v1.json';
 const visibilityFile = 'packages/catalog/schema-visibility.v1.json';
 const workflowFile = 'packages/catalog/private-workflows.v1.json';
+// Stage 12 is an immutable historical snapshot. Public contracts introduced
+// after that freeze remain part of the current visibility manifest, but they
+// must not silently rewrite the frozen schema set or its historical manifest
+// hash. A new full-platform freeze will supersede this explicit boundary.
+const postFreezeSchemaNames = new Set([
+  'ai-http-request.schema.json',
+  'ai-http-result.schema.json',
+]);
 const priceFiles = [
   'packages/contracts/src/search-http.ts',
   'packages/catalog/ai-launch-pricing.v1.json',
@@ -27,16 +36,27 @@ const priceFiles = [
   'packages/catalog/crypto-product-pricing.v1.json',
 ];
 const registry = await readJson(registryFile);
-const visibility = await readJson(visibilityFile);
+const visibilitySource = await readFile(path.join(root, visibilityFile), 'utf8');
+const visibility = JSON.parse(visibilitySource);
 const workflows = await readJson(workflowFile);
-const schemaNames = (await readdir(path.join(root, 'packages/contracts/schemas'))).filter((name) => name.endsWith('.schema.json'));
+const allSchemaNames = (await readdir(path.join(root, 'packages/contracts/schemas'))).filter((name) => name.endsWith('.schema.json'));
+const schemaNames = allSchemaNames.filter((name) => !postFreezeSchemaNames.has(name));
 const fixtureNames = (await readdir(path.join(root, 'packages/contracts/fixtures'))).filter((name) => name.endsWith('.json'));
 const schemas = await descriptors('packages/contracts/schemas', schemaNames);
 const fixtures = await descriptors('packages/contracts/fixtures', fixtureNames);
 const prices = await Promise.all(priceFiles.map(async (file) => Object.freeze({ file, sha256: await sha256(file) })));
 
 const visibleFiles = new Set(visibility.schemas.map(({ file }) => file));
-if (visibleFiles.size !== schemaNames.length || schemaNames.some((name) => !visibleFiles.has(name))) throw new Error('release_freeze_schema_visibility_incomplete');
+if (visibleFiles.size !== allSchemaNames.length || allSchemaNames.some((name) => !visibleFiles.has(name))) throw new Error('release_freeze_schema_visibility_incomplete');
+for (const name of postFreezeSchemaNames) {
+  if (!allSchemaNames.includes(name) || visibility.schemas.find(({ file }) => file === name)?.visibility !== 'public_wire') {
+    throw new Error(`release_freeze_post_freeze_schema_invalid:${name}`);
+  }
+}
+const frozenVisibilitySource = visibilitySource
+  .split('\n')
+  .filter((line) => ![...postFreezeSchemaNames].some((name) => line.includes(`"file": "${name}"`)))
+  .join('\n');
 if (workflows.coreQualifications.length !== 6 || workflows.coreQualifications.some(({ privateCoreQualified }) => !privateCoreQualified)) throw new Error('release_freeze_core_qualification_incomplete');
 const publicOperationIds = ['search.web', 'search.answer'];
 for (const operationId of publicOperationIds) {
@@ -53,7 +73,7 @@ const unsigned = {
   state: 'private_core_frozen',
   noPublicDistribution: true,
   baseRegistry: { file: registryFile, version: registry.registryVersion, sha256: await sha256(registryFile) },
-  schemaVisibility: { file: visibilityFile, version: visibility.policyVersion, sha256: await sha256(visibilityFile) },
+  schemaVisibility: { file: visibilityFile, version: visibility.policyVersion, sha256: hashBytes(frozenVisibilitySource) },
   privateWorkflowCatalog: { file: workflowFile, sha256: await sha256(workflowFile) },
   coreQualifications: workflows.coreQualifications.map(({ pillar, privateCoreQualified, publicLifecycle }) => ({ pillar, privateCoreQualified, publicLifecycle })),
   operationSet: {
