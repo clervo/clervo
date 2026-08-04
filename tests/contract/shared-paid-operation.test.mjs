@@ -100,6 +100,42 @@ test('shared paid operation kernel rejects unbounded or asset-confused pricing b
   assert.equal(upstream.calls.challenge, 0);
 });
 
+test('durable JSON amount comparison is independent of JSONB key order', async () => {
+  const memory = new InMemoryX402OperationStore({ environmentNamespace: 'jsonb_order' });
+  const stateStore = {
+    durable: true,
+    lookup: memory.lookup.bind(memory),
+    claimExecution: memory.claimExecution.bind(memory),
+    recordExecution: memory.recordExecution.bind(memory),
+    markExecutionUnknown: memory.markExecutionUnknown.bind(memory),
+    claimSettlement: memory.claimSettlement.bind(memory),
+    markSettlementUnknown: memory.markSettlementUnknown.bind(memory),
+    complete: memory.complete.bind(memory),
+    async challenge(input) {
+      const state = await memory.challenge(input);
+      return {
+        ...state,
+        quote: {
+          ...state.quote,
+          maximumCharge: {
+            decimals: state.quote.maximumCharge.decimals,
+            asset: state.quote.maximumCharge.asset,
+            amountAtomic: state.quote.maximumCharge.amountAtomic,
+          },
+        },
+      };
+    },
+  };
+  const processor = createX402PaidOperationProcessor({ service: service(), stateStore });
+  const response = await processor.process({
+    idempotencyKey: 'idem_jsonb_order_001', requestHash, operationId, productId: 'ai.chat', executionInput: {}, now, pricing,
+    execute: async () => ({ output: { useful: true }, provenance: [{ adapterId: 'adapter_ai.qualified_test', qualificationId: `qual_${'b'.repeat(32)}`, providerReferenceHash: requestHash }] }),
+    createResponse: ({ output, receipt }) => ({ output, receipt }),
+  });
+  assert.equal(response.status, 402);
+  assert.equal(response.body.quote.maximumCharge.amountAtomic, pricing.maximumCharge.amountAtomic);
+});
+
 test('capacity rejection does not poison the durable operation lease', async () => {
   const upstream = service();
   const stateStore = new InMemoryX402OperationStore({ environmentNamespace: 'shared_capacity' });

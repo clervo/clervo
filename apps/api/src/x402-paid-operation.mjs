@@ -29,6 +29,12 @@ function assertPricing(value) {
   assertAmount(value.supplierCost, 'usd', 'invalid_x402_operation_supplier_cost');
 }
 
+function sameAmount(left, right) {
+  return left?.asset === right?.asset
+    && left?.amountAtomic === right?.amountAtomic
+    && left?.decimals === right?.decimals;
+}
+
 function executionSupplierCost(value, maximum) {
   if (value === undefined) return maximum;
   assertAmount(value, 'usd', 'invalid_x402_operation_supplier_cost');
@@ -113,7 +119,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
         state = await stateStore.challenge({ ...base, quote, challenge });
       }
       if (state.kind === 'conflict') refuse('idempotency_conflict');
-      if (state.quote.priceVersion !== effectivePricing.priceVersion || JSON.stringify(state.quote.maximumCharge) !== JSON.stringify(effectivePricing.maximumCharge)) refuse('quote_pricing_changed');
+      if (state.quote.priceVersion !== effectivePricing.priceVersion || !sameAmount(state.quote.maximumCharge, effectivePricing.maximumCharge)) refuse('quote_pricing_changed');
       if (isQuoteExpired(state.quote, now)) refuse('quote_expired');
       if (paymentHeader === undefined) return challengeResponse(state);
       if (service.mode !== 'settlement_enabled') refuse('x402_settlement_disabled', 503);
