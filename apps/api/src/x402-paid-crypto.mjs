@@ -7,12 +7,13 @@ export const CRYPTO_REQUEST_SCHEMA_VERSION = 'crypto-operation-request.v1';
 export const CRYPTO_RESULT_SCHEMA_VERSION = 'crypto-operation-result.v1';
 
 const publicChains = Object.freeze(['eip155:1', 'eip155:8453']);
-const productByKind = Object.freeze({ wallet: 'crypto.wallet', token: 'crypto.token', transaction: 'crypto.transaction', report: 'crypto.report' });
-const priceByProduct = Object.freeze({ 'crypto.wallet': 500n, 'crypto.token': 250n, 'crypto.transaction': 500n, 'crypto.report': 1_000n });
+const productByKind = Object.freeze({ wallet: 'crypto.wallet', token: 'crypto.token', transaction: 'crypto.transaction', protocol: 'crypto.protocol', report: 'crypto.report' });
+const priceByProduct = Object.freeze({ 'crypto.wallet': 500n, 'crypto.token': 250n, 'crypto.transaction': 500n, 'crypto.protocol': 750n, 'crypto.report': 1_000n });
 const allowedByKind = Object.freeze({
   wallet: ['kind', 'chainId', 'address'],
   token: ['kind', 'chainId', 'assetAddress'],
   transaction: ['kind', 'chainId', 'address', 'transactionId', 'limit'],
+  protocol: ['kind', 'chainId', 'address'],
   report: ['kind', 'chainId', 'address'],
 });
 
@@ -36,7 +37,7 @@ export function normalizeCryptoHttpRequest(value) {
   object(value);
   exact(value, ['kind', 'chainId', 'address', 'assetAddress', 'transactionId', 'limit']);
   const kind = value.kind;
-  if (!Object.hasOwn(productByKind, kind)) throw new TypeError(kind === 'protocol' ? 'crypto_protocol_unavailable' : 'crypto_kind_invalid');
+  if (!Object.hasOwn(productByKind, kind)) throw new TypeError('crypto_kind_invalid');
   exact(value, allowedByKind[kind]);
   const selectedChain = chainId(value.chainId);
   let input;

@@ -2,6 +2,7 @@ import { CONTRACT_VERSION, hashJson } from '../../../dist/packages/contracts/src
 import { BlockscoutDataAdapter } from '../../../dist/adapters/blockchain/src/blockscout-data.js';
 import { normalizeBlockscoutToken, normalizeBlockscoutTransactions, normalizeBlockscoutWallet } from '../../../dist/adapters/blockchain/src/intelligence-normalizers.js';
 import { CryptoIntelligenceGateway } from '../../../dist/services/crypto/src/gateway.js';
+import { normalizeCryptoProtocolPosition } from '../../../dist/services/crypto/src/normalization.js';
 import { CRYPTO_RESULT_SCHEMA_VERSION } from './x402-paid-crypto.mjs';
 
 const CHAIN_CONFIG = Object.freeze({
@@ -10,6 +11,15 @@ const CHAIN_CONFIG = Object.freeze({
 });
 const QUALIFICATION_ID = 'qual_BlockscoutValueAdded20260804';
 const SOURCE_REF = 'crypto_source_3c34c5827ba3f772';
+const PROTOCOL_ASSETS = Object.freeze({
+  'eip155:1': Object.freeze(new Map([
+    ['0xae7ab96520de3a18e5e111b5eaab095312d7fe84', Object.freeze({ protocolId: 'lido', protocolName: 'Lido', category: 'staking' })],
+    ['0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0', Object.freeze({ protocolId: 'lido', protocolName: 'Lido', category: 'staking' })],
+  ])),
+  'eip155:8453': Object.freeze(new Map([
+    ['0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452', Object.freeze({ protocolId: 'lido', protocolName: 'Lido', category: 'staking' })],
+  ])),
+});
 
 function boundedTransport(fetcher) {
   return async ({ url, signal, maximumResponseBytes }) => {
@@ -36,7 +46,7 @@ export function createCryptoProductionRuntime({ credential, fetcher = globalThis
   const source = Object.freeze({
     sourceRef: SOURCE_REF,
     chains: Object.freeze(Object.keys(CHAIN_CONFIG)),
-    capabilities: Object.freeze(['wallet', 'token', 'transaction']),
+    capabilities: Object.freeze(['wallet', 'token', 'transaction', 'protocol']),
     async wallet(chainId, walletAddress, signal) {
       const config = CHAIN_CONFIG[chainId];
       if (!config) throw new Error('crypto_chain_unavailable');
@@ -58,13 +68,36 @@ export function createCryptoProductionRuntime({ credential, fetcher = globalThis
       const observedAt = new Date(now()).toISOString();
       return normalizeBlockscoutTransactions({ chainId: config.numericId, transactions: rows.slice(0, limit), observedAt });
     },
+    async protocols(chainId, walletAddress, signal) {
+      const wallet = await this.wallet(chainId, walletAddress, signal);
+      const selected = PROTOCOL_ASSETS[chainId];
+      if (!selected) throw new Error('crypto_chain_unavailable');
+      return Object.freeze(wallet.assets.flatMap((asset) => {
+        const definition = selected.get(asset.assetAddress);
+        if (!definition || asset.balanceAtomic === '0') return [];
+        return [normalizeCryptoProtocolPosition({
+          chainId,
+          walletAddress,
+          protocolId: definition.protocolId,
+          protocolName: definition.protocolName,
+          category: definition.category,
+          positionId: `receipt-token:${asset.assetAddress}`,
+          suppliedAssets: Object.freeze([{ assetAddress: asset.assetAddress, amountAtomic: asset.balanceAtomic, decimals: asset.decimals }]),
+          borrowedAssets: Object.freeze([]),
+          netValueMicrousd: null,
+          observedAt: wallet.observedAt,
+          staleAfterMs: wallet.freshness.staleAfterMs,
+          evidence: wallet.evidence,
+        }, now())];
+      }));
+    },
   });
   const gateway = new CryptoIntelligenceGateway([source]);
 
   return Object.freeze({
     durable: true,
     supportedChains: Object.freeze(Object.keys(CHAIN_CONFIG)),
-    supportedKinds: Object.freeze(['wallet', 'token', 'transaction', 'report']),
+    supportedKinds: Object.freeze(['wallet', 'token', 'transaction', 'protocol', 'report']),
     async ready() { return adapter.remainingCalls > 0; },
     async execute(request) {
       const nowMs = now();
@@ -81,6 +114,10 @@ export function createCryptoProductionRuntime({ credential, fetcher = globalThis
         const filtered = request.input.transactionId === undefined ? value.transactions : value.transactions.filter(({ transactionId }) => transactionId === request.input.transactionId);
         const observedAt = new Date(now()).toISOString();
         operation = { kind: 'transaction', state: value.state, chainId: request.input.chainId, observedAt, freshness: 'fresh', coverage: ['transactions'], conflictCount: value.conflicts.length, evidenceRefs: [...new Set(filtered.flatMap(({ evidence }) => evidence.map(({ evidenceRef }) => evidenceRef)))], data: Object.freeze({ transactions: Object.freeze(filtered), conflicts: value.conflicts }) };
+      } else if (request.input.kind === 'protocol') {
+        const value = await gateway.protocols(request.input.chainId, request.input.address);
+        const observedAt = value.positions[0]?.observedAt ?? new Date(now()).toISOString();
+        operation = { kind: 'protocol', state: value.state, chainId: request.input.chainId, observedAt, freshness: value.positions.some(({ freshness }) => freshness.status === 'stale') ? 'mixed' : 'fresh', coverage: ['protocol_positions'], conflictCount: 0, evidenceRefs: [...new Set(value.positions.flatMap(({ evidence }) => evidence.map(({ evidenceRef }) => evidenceRef)))], data: Object.freeze({ supportedProtocolIds: Object.freeze(['lido']), positions: value.positions, coverageNote: 'Exact supported receipt-token positions only; absence is not proof that the wallet has no other protocol positions.' }) };
       } else if (request.input.kind === 'report') {
         const report = await gateway.report(request.input.chainId, request.input.address, new Date(now()).toISOString());
         operation = { kind: 'report', state: report.coverage.missing.length === 0 ? 'available' : 'degraded', chainId: request.input.chainId, observedAt: report.generatedAt, freshness: 'fresh', coverage: report.coverage.covered, conflictCount: report.summary.unresolvedConflictCount, evidenceRefs: report.evidenceRefs, data: report };
