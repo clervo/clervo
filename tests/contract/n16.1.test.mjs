@@ -67,6 +67,9 @@ test('API edge publishes health, Search, and paid AI while blocking private Sand
   const rootResponse = await worker.fetch(new Request('https://api.clervo.dev/'));
   assert.equal(rootResponse.status, 200);
   assert.equal((await rootResponse.json()).discovery, 'https://api.clervo.dev/.well-known/clervo.json');
+  const favicon = await worker.fetch(new Request('https://api.clervo.dev/favicon.ico'));
+  assert.equal(favicon.status, 200);
+  assert.match(favicon.headers.get('content-type') ?? '', /image\/svg\+xml/u);
   const discovery = await worker.fetch(new Request('https://api.clervo.dev/.well-known/clervo.json'));
   assert.equal(discovery.status, 200);
   assert.equal((await discovery.json()).name, 'Clervo');

@@ -8,6 +8,7 @@ import pricing from '../../../generated/public/pricing.json' with { type: 'json'
 import status from '../../../generated/public/status.json' with { type: 'json' };
 
 const UPSTREAM_ORIGIN = 'https://clervo-api-production-jbtbib4yqa-uc.a.run.app';
+const FAVICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32 2 62 32 32 62 2 32Z" fill="#050606" stroke="#64706d" stroke-width="2"/><path d="M39.5 23.5a12 12 0 1 0 0 17" fill="none" stroke="#f4f7f6" stroke-width="6" stroke-linecap="square"/><circle cx="43" cy="21" r="3" fill="#d6b86a"/></svg>';
 const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid', '/v1/ai/execute']);
 const DISCOVERY_DOCUMENTS = new Map([
   ['/.well-known/clervo.json', discovery],
@@ -19,7 +20,7 @@ const DISCOVERY_DOCUMENTS = new Map([
   ['/status.json', status],
   ['/onboarding.json', onboarding],
 ]);
-const READ_PATHS = new Set(['/', '/v1/health', '/readyz', ...DISCOVERY_DOCUMENTS.keys()]);
+const READ_PATHS = new Set(['/', '/favicon.ico', '/favicon.svg', '/v1/health', '/readyz', ...DISCOVERY_DOCUMENTS.keys()]);
 const MAXIMUM_REQUEST_BYTES = Object.freeze({
   '/v1/search/free': 16_384,
   '/v1/search/paid': 16_384,
@@ -62,6 +63,10 @@ export default {
       service: 'Clervo API',
       discovery: 'https://api.clervo.dev/.well-known/clervo.json',
       openapi: 'https://api.clervo.dev/openapi.json',
+    });
+    if (['/favicon.ico', '/favicon.svg'].includes(incoming.pathname)) return new Response(FAVICON, {
+      status: 200,
+      headers: cors(new Headers({ 'content-type': 'image/svg+xml; charset=utf-8' })),
     });
     if (DISCOVERY_DOCUMENTS.has(incoming.pathname)) return json(200, DISCOVERY_DOCUMENTS.get(incoming.pathname));
     const declared = Number(request.headers.get('content-length'));
