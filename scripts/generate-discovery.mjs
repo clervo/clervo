@@ -28,6 +28,105 @@ function stableJson(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
+const publicProblemSchema = Object.freeze({
+  type: 'object',
+  description: 'Fail-closed RFC 9457-style problem details.',
+  additionalProperties: true,
+});
+const publicResultSchema = Object.freeze({
+  type: 'object',
+  required: ['operationId', 'state', 'replayed', 'requestHash'],
+  properties: {
+    operationId: { type: 'string' },
+    state: { const: 'RECEIPTED' },
+    replayed: { type: 'boolean' },
+    requestHash: { type: 'string', pattern: '^sha256:[a-f0-9]{64}$' },
+    receipt: { type: 'object', additionalProperties: true },
+  },
+  additionalProperties: true,
+});
+const searchProbeExample = Object.freeze({
+  query: 'current x402 protocol documentation',
+  maxResults: 3,
+  synthesize: false,
+  language: 'en',
+  region: 'US',
+});
+const searchProbeSchema = Object.freeze({
+  type: 'object',
+  required: ['query', 'synthesize'],
+  properties: {
+    query: { type: 'string', minLength: 1, maxLength: 2000, default: searchProbeExample.query },
+    maxResults: { type: 'integer', minimum: 1, maximum: 10, default: searchProbeExample.maxResults },
+    synthesize: { type: 'boolean', const: false, default: false },
+    language: { type: 'string', pattern: '^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$', default: 'en' },
+    region: { type: 'string', pattern: '^[A-Z]{2}$', default: 'US' },
+  },
+  additionalProperties: false,
+});
+const aiProbeExample = Object.freeze({
+  model: 'gpt-5.6-luna',
+  input: {
+    kind: 'chat',
+    messages: [{ role: 'user', content: 'Reply with the single word ready.' }],
+    responseFormat: 'text',
+    stream: false,
+  },
+  maximumOutputTokens: 16,
+});
+const aiChatProbeSchema = Object.freeze({
+  type: 'object',
+  required: ['model', 'input', 'maximumOutputTokens'],
+  properties: {
+    model: { type: 'string', enum: ['gpt-5.6-luna'], default: aiProbeExample.model },
+    input: {
+      type: 'object',
+      required: ['kind', 'messages', 'responseFormat', 'stream'],
+      properties: {
+        kind: { type: 'string', const: 'chat', default: 'chat' },
+        messages: {
+          type: 'array',
+          minItems: 1,
+          maxItems: 128,
+          default: aiProbeExample.input.messages,
+          items: {
+            type: 'object',
+            required: ['role', 'content'],
+            properties: {
+              role: { type: 'string', enum: ['user'], default: 'user' },
+              content: { type: 'string', minLength: 1, maxLength: 100000, default: aiProbeExample.input.messages[0].content },
+            },
+            additionalProperties: false,
+          },
+        },
+        responseFormat: { type: 'string', enum: ['text'], default: 'text' },
+        stream: { type: 'boolean', const: false, default: false },
+      },
+      additionalProperties: false,
+      default: aiProbeExample.input,
+    },
+    maximumOutputTokens: { type: 'integer', minimum: 1, maximum: 16384, default: aiProbeExample.maximumOutputTokens },
+  },
+  additionalProperties: false,
+});
+
+function scannerSafeOperation(operation, { requestSchema, example, paymentInfo, free = false }) {
+  const cloned = structuredClone(operation);
+  cloned.parameters = cloned.parameters.map((parameter) => ({
+    ...parameter,
+    schema: { ...parameter.schema, default: 'x402scan-clervo-probe' },
+    example: 'x402scan-clervo-probe',
+  }));
+  cloned.requestBody.content['application/json'] = { schema: requestSchema, example };
+  for (const response of Object.values(cloned.responses)) {
+    if (response?.content === undefined) continue;
+    for (const media of Object.values(response.content)) media.schema = response === cloned.responses['200'] ? publicResultSchema : publicProblemSchema;
+  }
+  if (free) cloned.security = [];
+  if (paymentInfo !== undefined) cloned['x-payment-info'] = paymentInfo;
+  return cloned;
+}
+
 const { interfaceHash, ...unsignedReleaseCandidate } = releaseCandidate;
 const publicApiFlags = [
   launchState.distribution.publicApi.publicCallable,
@@ -154,6 +253,25 @@ for (const fileName of projectedSchemaFiles) {
 const openapi = contractModule.createOpenApiDocument(schemas, projection);
 const discovery = contractModule.createDiscoveryDocument(projection);
 let llms = contractModule.createLlmsText(projection);
+if (publicSearch) {
+  openapi.servers = [{ url: 'https://api.clervo.dev' }];
+  openapi.info.contact = { name: 'Clervo', url: 'https://github.com/clervo/clervo' };
+  openapi.info['x-guidance'] = 'Use POST /v1/search/free for a bounded no-payment sample. Paid routes return an x402 v2 challenge before execution. Supply the required JSON body and a stable Idempotency-Key, inspect the exact payment requirements, and send PAYMENT-SIGNATURE only after approval. Reuse the same key to recover or replay a completed result without a second charge. AI discovery currently advertises only qualified non-streaming chat; unsupported capabilities fail closed.';
+  openapi.paths['/v1/search/free'].post = scannerSafeOperation(openapi.paths['/v1/search/free'].post, {
+    requestSchema: searchProbeSchema,
+    example: searchProbeExample,
+    free: true,
+  });
+  openapi.paths['/v1/search/paid'].post = scannerSafeOperation(openapi.paths['/v1/search/paid'].post, {
+    requestSchema: searchProbeSchema,
+    example: searchProbeExample,
+    paymentInfo: {
+      price: { mode: 'fixed', currency: 'USD', amount: '0.006000' },
+      protocols: [{ x402: {} }],
+    },
+  });
+  openapi.paths['/v1/search/paid'].post.responses['200'].description = 'Raw cited Search completed or replayed';
+}
 if (publicAi) {
   openapi.info.title = 'Clervo Search and AI API';
   openapi.info.description = 'Public Search and bounded paid AI preview. AI quotes are request-derived from current qualified exact-model routes; unsupported modalities fail closed.';
@@ -173,6 +291,14 @@ if (publicAi) {
       },
     },
   };
+  openapi.paths['/v1/ai/execute'].post = scannerSafeOperation(openapi.paths['/v1/ai/execute'].post, {
+    requestSchema: aiChatProbeSchema,
+    example: aiProbeExample,
+    paymentInfo: {
+      price: { mode: 'dynamic', currency: 'USD', min: '0.000001', max: '2.621440' },
+      protocols: [{ x402: {} }],
+    },
+  });
   openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, 'ai.chat'];
   openapi['x-clervo-status'].runtimeRelease = launchState.sourceCommit;
   discovery.description = 'Machine-readable public Search and paid AI preview. Raw Search and qualified bounded AI chat requests are callable; unsupported AI modalities and the remaining product cores fail closed. No external customer revenue or demand is claimed.';

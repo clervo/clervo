@@ -63,6 +63,20 @@ test('machine discovery publishes verified Search and bounded paid AI without ov
   assert.equal(mcp.paymentSigningImplemented, false);
   assert.deepEqual(yaml, openapi);
   assert.ok(openapi.paths['/v1/ai/execute']);
+  assert.equal(openapi.info.contact.url, 'https://github.com/clervo/clervo');
+  assert.match(openapi.info['x-guidance'], /same key.*without a second charge/iu);
+  assert.deepEqual(openapi.paths['/v1/search/free'].post.security, []);
+  assert.deepEqual(openapi.paths['/v1/search/paid'].post['x-payment-info'], {
+    price: { mode: 'fixed', currency: 'USD', amount: '0.006000' },
+    protocols: [{ x402: {} }],
+  });
+  assert.deepEqual(openapi.paths['/v1/ai/execute'].post['x-payment-info'], {
+    price: { mode: 'dynamic', currency: 'USD', min: '0.000001', max: '2.621440' },
+    protocols: [{ x402: {} }],
+  });
+  assert.equal(openapi.paths['/v1/search/paid'].post.requestBody.content['application/json'].example.synthesize, false);
+  assert.equal(openapi.paths['/v1/ai/execute'].post.requestBody.content['application/json'].example.input.kind, 'chat');
+  assert.doesNotMatch(JSON.stringify(openapi.paths), /"\$ref"/u);
 });
 
 test('launch pages and discovery surfaces exist without forbidden or stale claims', async () => {

@@ -4,7 +4,12 @@
   "info": {
     "title": "Clervo Search and AI API",
     "version": "2026-07-29.1",
-    "description": "Public Search and bounded paid AI preview. AI quotes are request-derived from current qualified exact-model routes; unsupported modalities fail closed."
+    "description": "Public Search and bounded paid AI preview. AI quotes are request-derived from current qualified exact-model routes; unsupported modalities fail closed.",
+    "contact": {
+      "name": "Clervo",
+      "url": "https://github.com/clervo/clervo"
+    },
+    "x-guidance": "Use POST /v1/search/free for a bounded no-payment sample. Paid routes return an x402 v2 challenge before execution. Supply the required JSON body and a stable Idempotency-Key, inspect the exact payment requirements, and send PAYMENT-SIGNATURE only after approval. Reuse the same key to recover or replay a completed result without a second charge. AI discovery currently advertises only qualified non-streaming chat; unsupported capabilities fail closed."
   },
   "paths": {
     "/v1/search/free": {
@@ -20,8 +25,10 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128
-            }
+              "maxLength": 128,
+              "default": "x402scan-clervo-probe"
+            },
+            "example": "x402scan-clervo-probe"
           }
         ],
         "requestBody": {
@@ -29,7 +36,48 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SearchHttpRequest"
+                "type": "object",
+                "required": [
+                  "query",
+                  "synthesize"
+                ],
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "default": "current x402 protocol documentation"
+                  },
+                  "maxResults": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10,
+                    "default": 3
+                  },
+                  "synthesize": {
+                    "type": "boolean",
+                    "const": false,
+                    "default": false
+                  },
+                  "language": {
+                    "type": "string",
+                    "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$",
+                    "default": "en"
+                  },
+                  "region": {
+                    "type": "string",
+                    "pattern": "^[A-Z]{2}$",
+                    "default": "US"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "example": {
+                "query": "current x402 protocol documentation",
+                "maxResults": 3,
+                "synthesize": false,
+                "language": "en",
+                "region": "US"
               }
             }
           }
@@ -40,7 +88,33 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SearchHttpResult"
+                  "type": "object",
+                  "required": [
+                    "operationId",
+                    "state",
+                    "replayed",
+                    "requestHash"
+                  ],
+                  "properties": {
+                    "operationId": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "const": "RECEIPTED"
+                    },
+                    "replayed": {
+                      "type": "boolean"
+                    },
+                    "requestHash": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "receipt": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": true
                 }
               }
             }
@@ -50,7 +124,9 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
@@ -60,7 +136,9 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
@@ -70,7 +148,9 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
@@ -80,7 +160,9 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
@@ -90,12 +172,15 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
           }
-        }
+        },
+        "security": []
       }
     },
     "/v1/search/paid": {
@@ -111,8 +196,10 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128
-            }
+              "maxLength": 128,
+              "default": "x402scan-clervo-probe"
+            },
+            "example": "x402scan-clervo-probe"
           }
         ],
         "requestBody": {
@@ -120,18 +207,85 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SearchHttpRequest"
+                "type": "object",
+                "required": [
+                  "query",
+                  "synthesize"
+                ],
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "default": "current x402 protocol documentation"
+                  },
+                  "maxResults": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10,
+                    "default": 3
+                  },
+                  "synthesize": {
+                    "type": "boolean",
+                    "const": false,
+                    "default": false
+                  },
+                  "language": {
+                    "type": "string",
+                    "pattern": "^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$",
+                    "default": "en"
+                  },
+                  "region": {
+                    "type": "string",
+                    "pattern": "^[A-Z]{2}$",
+                    "default": "US"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "example": {
+                "query": "current x402 protocol documentation",
+                "maxResults": 3,
+                "synthesize": false,
+                "language": "en",
+                "region": "US"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Injected mock test execution completed",
+            "description": "Raw cited Search completed or replayed",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SearchHttpResult"
+                  "type": "object",
+                  "required": [
+                    "operationId",
+                    "state",
+                    "replayed",
+                    "requestHash"
+                  ],
+                  "properties": {
+                    "operationId": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "const": "RECEIPTED"
+                    },
+                    "replayed": {
+                      "type": "boolean"
+                    },
+                    "requestHash": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "receipt": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": true
                 }
               }
             }
@@ -141,7 +295,9 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
@@ -159,7 +315,9 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MockPaymentRequired"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
@@ -169,7 +327,9 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
@@ -179,7 +339,9 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
@@ -189,11 +351,25 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
           }
+        },
+        "x-payment-info": {
+          "price": {
+            "mode": "fixed",
+            "currency": "USD",
+            "amount": "0.006000"
+          },
+          "protocols": [
+            {
+              "x402": {}
+            }
+          ]
         }
       }
     },
@@ -210,8 +386,10 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128
-            }
+              "maxLength": 128,
+              "default": "x402scan-clervo-probe"
+            },
+            "example": "x402scan-clervo-probe"
           }
         ],
         "requestBody": {
@@ -219,7 +397,117 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AiHttpRequest"
+                "type": "object",
+                "required": [
+                  "model",
+                  "input",
+                  "maximumOutputTokens"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "gpt-5.6-luna"
+                    ],
+                    "default": "gpt-5.6-luna"
+                  },
+                  "input": {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "messages",
+                      "responseFormat",
+                      "stream"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "chat",
+                        "default": "chat"
+                      },
+                      "messages": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 128,
+                        "default": [
+                          {
+                            "role": "user",
+                            "content": "Reply with the single word ready."
+                          }
+                        ],
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "role",
+                            "content"
+                          ],
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "user"
+                              ],
+                              "default": "user"
+                            },
+                            "content": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100000,
+                              "default": "Reply with the single word ready."
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "responseFormat": {
+                        "type": "string",
+                        "enum": [
+                          "text"
+                        ],
+                        "default": "text"
+                      },
+                      "stream": {
+                        "type": "boolean",
+                        "const": false,
+                        "default": false
+                      }
+                    },
+                    "additionalProperties": false,
+                    "default": {
+                      "kind": "chat",
+                      "messages": [
+                        {
+                          "role": "user",
+                          "content": "Reply with the single word ready."
+                        }
+                      ],
+                      "responseFormat": "text",
+                      "stream": false
+                    }
+                  },
+                  "maximumOutputTokens": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 16384,
+                    "default": 16
+                  }
+                },
+                "additionalProperties": false
+              },
+              "example": {
+                "model": "gpt-5.6-luna",
+                "input": {
+                  "kind": "chat",
+                  "messages": [
+                    {
+                      "role": "user",
+                      "content": "Reply with the single word ready."
+                    }
+                  ],
+                  "responseFormat": "text",
+                  "stream": false
+                },
+                "maximumOutputTokens": 16
               }
             }
           }
@@ -230,7 +518,33 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AiHttpResult"
+                  "type": "object",
+                  "required": [
+                    "operationId",
+                    "state",
+                    "replayed",
+                    "requestHash"
+                  ],
+                  "properties": {
+                    "operationId": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "const": "RECEIPTED"
+                    },
+                    "replayed": {
+                      "type": "boolean"
+                    },
+                    "requestHash": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "receipt": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": true
                 }
               }
             }
@@ -240,7 +554,9 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
@@ -261,7 +577,9 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
@@ -271,11 +589,26 @@
             "content": {
               "application/problem+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
                 }
               }
             }
           }
+        },
+        "x-payment-info": {
+          "price": {
+            "mode": "dynamic",
+            "currency": "USD",
+            "min": "0.000001",
+            "max": "2.621440"
+          },
+          "protocols": [
+            {
+              "x402": {}
+            }
+          ]
         }
       }
     }
@@ -3327,5 +3660,10 @@
       "ai.chat"
     ],
     "runtimeRelease": "1936d7966a27"
-  }
+  },
+  "servers": [
+    {
+      "url": "https://api.clervo.dev"
+    }
+  ]
 }
