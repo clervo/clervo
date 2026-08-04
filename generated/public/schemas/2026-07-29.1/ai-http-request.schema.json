@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-http-request.schema.json",
+  "title": "Clervo public bounded AI request",
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "required": [
+        "citationId",
+        "resultId",
+        "canonicalUrl",
+        "quote"
+      ],
+      "properties": {
+        "citationId": {
+          "type": "string",
+          "pattern": "^cite_[A-Za-z0-9]{20,64}$"
+        },
+        "resultId": {
+          "type": "string",
+          "pattern": "^sr_[A-Za-z0-9]{20,64}$"
+        },
+        "canonicalUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "model",
+    "input"
+  ],
+  "properties": {
+    "model": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "maximumOutputTokens": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65536
+    },
+    "maximumReasoningTokens": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65536
+    },
+    "input": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "messages",
+            "responseFormat",
+            "stream"
+          ],
+          "properties": {
+            "kind": {
+              "const": "chat"
+            },
+            "messages": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 128,
+              "items": {
+                "type": "object",
+                "required": [
+                  "role",
+                  "content"
+                ],
+                "properties": {
+                  "role": {
+                    "enum": [
+                      "system",
+                      "user",
+                      "assistant",
+                      "tool"
+                    ]
+                  },
+                  "content": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100000
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "responseFormat": {
+              "enum": [
+                "text",
+                "json_object"
+              ]
+            },
+            "stream": {
+              "type": "boolean"
+            },
+            "evidence": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 100,
+              "items": {
+                "$ref": "#/$defs/evidence"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "inputs"
+          ],
+          "properties": {
+            "kind": {
+              "const": "embedding"
+            },
+            "inputs": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "dimensions": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4096
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "prompt",
+            "size",
+            "quality",
+            "count"
+          ],
+          "properties": {
+            "kind": {
+              "const": "image"
+            },
+            "prompt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32000
+            },
+            "size": {
+              "enum": [
+                "1024x1024",
+                "1024x1536",
+                "1536x1024"
+              ]
+            },
+            "quality": {
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ]
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 16
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "input",
+            "voice",
+            "responseFormat"
+          ],
+          "properties": {
+            "kind": {
+              "const": "speech"
+            },
+            "input": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100000
+            },
+            "voice": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "responseFormat": {
+              "enum": [
+                "mp3",
+                "opus",
+                "aac",
+                "flac",
+                "wav",
+                "pcm"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

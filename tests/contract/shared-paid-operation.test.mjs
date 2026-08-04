@@ -50,6 +50,7 @@ test('shared paid operation kernel is product-neutral, durable-shaped, and repla
       executions += 1;
       return {
         output: { kind: 'chat', content: `result:${value.prompt}` },
+        supplierCost: { asset: 'usd', amountAtomic: '300', decimals: 6 },
         provenance: [{
           adapterId: 'adapter_ai.qualified_test',
           qualificationId: `qual_${'b'.repeat(32)}`,
@@ -73,6 +74,7 @@ test('shared paid operation kernel is product-neutral, durable-shaped, and repla
   assert.equal(paid.body.output.content, 'result:bounded test');
   assert.equal(paid.body.receipt.productId, 'ai.chat');
   assert.equal(paid.body.receipt.customerCharge.amountAtomic, '5000');
+  assert.equal(paid.body.receipt.supplierCost.amountAtomic, '300');
   assert.equal(paid.body.receipt.settlement.status, 'settled');
   assert.deepEqual({ ...upstream.calls, executions }, { challenge: 1, authorize: 1, settle: 1, executions: 1 });
 

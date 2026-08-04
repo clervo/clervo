@@ -29,6 +29,13 @@ function assertPricing(value) {
   assertAmount(value.supplierCost, 'usd', 'invalid_x402_operation_supplier_cost');
 }
 
+function executionSupplierCost(value, maximum) {
+  if (value === undefined) return maximum;
+  assertAmount(value, 'usd', 'invalid_x402_operation_supplier_cost');
+  if (BigInt(value.amountAtomic) > BigInt(maximum.amountAtomic)) throw new TypeError('x402_operation_supplier_cost_exceeded');
+  return Object.freeze({ ...value });
+}
+
 function challengeResponse(record) {
   return Object.freeze({
     status: 402,
@@ -68,12 +75,13 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       paymentHeader,
       now,
       pricing,
+      prepare,
       execute,
       createResponse,
       overloadCode = 'operation_overloaded',
     }) {
-      assertPricing(pricing);
       if (typeof execute !== 'function' || typeof createResponse !== 'function') throw new TypeError('invalid_x402_operation_handler');
+      if (prepare !== undefined && typeof prepare !== 'function') throw new TypeError('invalid_x402_operation_prepare');
       if (!/^[a-z][a-z0-9]*(?:\.[a-z][a-z0-9]*)+$/u.test(productId ?? '')) throw new TypeError('invalid_x402_product_id');
       const base = { idempotencyKey, requestHash, operationId, now };
       let state = await stateStore.lookup(base);
@@ -84,6 +92,11 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       if (state.kind === 'unknown') refuse(state.state, 503);
       if (['executing', 'settling'].includes(state.kind)) refuse('idempotency_in_progress');
 
+      const prepared = prepare === undefined ? undefined : await prepare();
+      const effectivePricing = prepared?.pricing ?? pricing;
+      const effectiveExecutionInput = prepared?.executionInput ?? executionInput;
+      assertPricing(effectivePricing);
+
       if (state.kind === 'missing') {
         const quote = sealQuote({
           contractVersion: CONTRACT_VERSION,
@@ -91,8 +104,8 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
           operationId,
           productId,
           requestHash,
-          priceVersion: pricing.priceVersion,
-          maximumCharge: pricing.maximumCharge,
+          priceVersion: effectivePricing.priceVersion,
+          maximumCharge: effectivePricing.maximumCharge,
           issuedAt: now,
           expiresAt: new Date(Date.parse(now) + 300_000).toISOString(),
         });
@@ -100,6 +113,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
         state = await stateStore.challenge({ ...base, quote, challenge });
       }
       if (state.kind === 'conflict') refuse('idempotency_conflict');
+      if (state.quote.priceVersion !== effectivePricing.priceVersion || JSON.stringify(state.quote.maximumCharge) !== JSON.stringify(effectivePricing.maximumCharge)) refuse('quote_pricing_changed');
       if (isQuoteExpired(state.quote, now)) refuse('quote_expired');
       if (paymentHeader === undefined) return challengeResponse(state);
       if (service.mode !== 'settlement_enabled') refuse('x402_settlement_disabled', 503);
@@ -114,11 +128,11 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
           claimed = await stateStore.claimExecution({ ...base, paymentFingerprint: authorization.fingerprint });
           if (claimed.kind === 'payment_conflict') refuse('x402_payment_already_bound');
           if (claimed.kind !== 'claimed') refuse(claimed.kind === 'unknown' ? claimed.state : 'idempotency_in_progress', claimed.kind === 'unknown' ? 503 : 409);
-          const completed = await execute(executionInput);
+          const completed = await execute(effectiveExecutionInput);
           if (!completed || typeof completed !== 'object' || !Array.isArray(completed.provenance) || completed.provenance.length < 1) throw new TypeError('x402_operation_execution_invalid');
           execution = Object.freeze({
             output: completed.output,
-            supplierCost: pricing.supplierCost,
+            supplierCost: executionSupplierCost(completed.supplierCost, effectivePricing.supplierCost),
             provenance: Object.freeze(completed.provenance.map((entry) => Object.freeze({ ...entry }))),
           });
           await stateStore.recordExecution({ idempotencyKey, leaseId: claimed.leaseId, execution, now });
@@ -155,7 +169,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
         provenance: execution.provenance,
         completedAt: now,
       });
-      const response = createResponse({ executionInput, output: execution.output, receipt });
+      const response = createResponse({ executionInput: effectiveExecutionInput, output: execution.output, receipt });
       await stateStore.complete({
         idempotencyKey,
         leaseId: settlementClaim.leaseId,

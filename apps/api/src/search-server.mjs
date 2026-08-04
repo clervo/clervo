@@ -3,6 +3,8 @@
 import http from 'node:http';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import {
+  AI_MAX_BODY_BYTES,
+  AI_PAID_PATH,
   CONTRACT_VERSION,
   InMemoryFreeSearchQuota,
   MockCommerceKernel,
@@ -11,9 +13,11 @@ import {
   SEARCH_MAX_BODY_BYTES,
   SEARCH_PAID_PATH,
   assertSearchExecutionOutput,
+  aiHttpRequestHash,
   createMockChallengeResponse,
   createSearchHttpResult,
   normalizeSearchHttpRequest,
+  normalizeAiHttpRequest,
   sealQuote,
   searchHttpRequestHash,
   searchProductId,
@@ -22,6 +26,7 @@ import {
 } from '../../../dist/packages/contracts/src/index.js';
 import { InMemorySearchStateStore } from './search-state-store.mjs';
 import { createX402PaidSearchProcessor } from './x402-paid-search.mjs';
+import { createX402PaidAiProcessor } from './x402-paid-ai.mjs';
 
 const JSON_TYPE = 'application/json; charset=utf-8';
 const PROBLEM_TYPE = 'application/problem+json; charset=utf-8';
@@ -104,6 +109,9 @@ export function createSearchServer({
   synthesisEnabled = true,
   retrievalMode = 'recorded',
   edgeAuthorization,
+  aiPublicPricing,
+  aiAdapters,
+  aiMonitor,
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
   if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
@@ -118,6 +126,8 @@ export function createSearchServer({
   if (environment === 'production' && sandboxGateway !== undefined && sandboxGateway.durable !== true) throw new TypeError('production sandbox requires durable state');
   if (typeof synthesisEnabled !== 'boolean' || !['recorded', 'live_external'].includes(retrievalMode)) throw new TypeError('invalid search capability configuration');
   if (edgeAuthorization !== undefined && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new TypeError('invalid edge authorization');
+  if ((aiPublicPricing === undefined) !== (aiAdapters === undefined)) throw new TypeError('AI pricing and adapters must be configured together');
+  if (aiPublicPricing !== undefined && x402Service === undefined) throw new TypeError('public AI requires x402 commerce');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
   if (
     typeof searchState.begin !== 'function'
@@ -144,6 +154,14 @@ export function createSearchServer({
     executor,
     acquireExecution,
   });
+  const x402AiProcessor = aiPublicPricing === undefined ? undefined : createX402PaidAiProcessor({
+    service: x402Service,
+    stateStore: x402StateStore,
+    publicPricing: aiPublicPricing,
+    adapters: aiAdapters,
+    acquireExecution,
+    monitor: aiMonitor,
+  });
 
   const record = (input) => {
     try { monitor?.record(input); } catch { /* Monitoring must never alter customer response behavior. */ }
@@ -163,6 +181,7 @@ export function createSearchServer({
         trafficMode: trafficControl?.snapshot().mode ?? 'open',
         sandboxPrivateEnabled: sandboxGateway !== undefined,
         sandboxDurableState: sandboxGateway?.durable === true,
+        aiPaidEnabled: x402AiProcessor?.mode === 'settlement_enabled',
         retrievalMode,
       });
       return;
@@ -211,6 +230,45 @@ export function createSearchServer({
         const code = errorCode(error);
         const status = Number.isInteger(error?.status) ? error.status : code.includes('invalid') ? 400 : 503;
         send(response, status, problem(status, code, status === 409 ? 'Sandbox operation conflict' : status === 400 ? 'Invalid Sandbox request' : 'Sandbox execution unavailable', 'The private Sandbox operation failed closed without a customer charge.', url.pathname), status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
+      }
+      return;
+    }
+    if (request.method === 'POST' && url.pathname === AI_PAID_PATH && x402AiProcessor !== undefined) {
+      if (edgeAuthorization !== undefined && !internalAuthorized(request.headers['x-clervo-edge-authorization'], edgeAuthorization)) {
+        send(response, 401, problem(401, 'edge_unauthorized', 'Unauthorized', 'The public API edge is required.', url.pathname), {}, PROBLEM_TYPE);
+        return;
+      }
+      if (trafficControl?.snapshot().mode === 'stopped') {
+        send(response, 503, problem(503, 'traffic_stopped', 'Traffic temporarily stopped', 'New execution is disabled by the independent traffic safety control.', url.pathname), { 'retry-after': '30' }, PROBLEM_TYPE);
+        return;
+      }
+      if (url.search !== '') {
+        send(response, 400, problem(400, 'query_parameters_not_allowed', 'Query parameters not allowed', 'The AI contract accepts JSON body fields only.', url.pathname), {}, PROBLEM_TYPE);
+        return;
+      }
+      let aiOperationId;
+      try {
+        const keyHeader = request.headers['idempotency-key'];
+        if (typeof keyHeader !== 'string') throw Object.assign(new Error('idempotency_key_required'), { status: 400 });
+        validateIdempotencyKey(keyHeader);
+        const normalized = normalizeAiHttpRequest(await readJson(request, AI_MAX_BODY_BYTES));
+        const requestHash = aiHttpRequestHash(normalized);
+        aiOperationId = identifier('op', `${keyHeader}:${requestHash}`);
+        const paid = await x402AiProcessor.process({
+          idempotencyKey: keyHeader,
+          requestHash,
+          operationId: aiOperationId,
+          normalized,
+          paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
+          now: now(),
+        });
+        send(response, paid.status, paid.body, paid.headers);
+      } catch (error) {
+        const code = errorCode(error);
+        const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;
+        const title = status === 400 ? 'Invalid AI request' : status === 409 ? 'AI operation conflict' : 'AI execution unavailable';
+        const detail = status === 400 ? 'The request did not satisfy the bounded AI HTTP contract.' : 'The AI operation failed closed without an additional customer charge.';
+        send(response, status, problem(status, code, title, detail, url.pathname, aiOperationId), status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
       }
       return;
     }
