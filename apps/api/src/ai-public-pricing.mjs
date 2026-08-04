@@ -1,10 +1,10 @@
 import { estimateAiSupplierCost, selectAiRoute, verifyAiModelCatalog } from '../../../dist/packages/contracts/src/index.js';
 
 const aliasModels = Object.freeze({
-  'clervo/fast': Object.freeze(['gpt-5.6-luna']),
-  'clervo/smart': Object.freeze(['gpt-5.6-terra']),
-  'clervo/code': Object.freeze(['gpt-5.6-sol']),
-  'clervo/deep': Object.freeze(['gpt-5.6-sol']),
+  'clervo/fast': Object.freeze(['gpt-5.6-luna', 'openai/gpt-oss-20b', '@cf/qwen/qwen3-30b-a3b-fp8']),
+  'clervo/smart': Object.freeze(['gpt-5.6-terra', 'openai/gpt-oss-120b', 'gemini-3.6-flash', '@cf/nvidia/nemotron-3-120b-a12b']),
+  'clervo/code': Object.freeze(['gpt-5.6-sol', 'openai/gpt-oss-120b', '@cf/openai/gpt-oss-120b']),
+  'clervo/deep': Object.freeze(['gpt-5.6-sol', 'openai/gpt-oss-120b', 'gemini-3.6-flash', '@cf/openai/gpt-oss-120b']),
 });
 
 function micros(value, code) {
@@ -136,14 +136,18 @@ function routePricing(modelId, productId, catalogs) {
   return undefined;
 }
 
-export function createAiPublicPricing(catalogs) {
+export function createAiPublicPricing(catalogs, { enabledRouteIds } = {}) {
   if (!verifyAiModelCatalog(catalogs?.model)) throw new TypeError('ai_public_model_catalog_invalid');
   for (const name of ['gateway', 'credit', 'speech', 'recurring', 'edge']) if (typeof catalogs[name]?.priceVersion !== 'string') throw new TypeError('ai_public_pricing_catalog_invalid');
+
+  const enabled = enabledRouteIds === undefined ? undefined : new Set(enabledRouteIds);
+  if (enabled !== undefined && (enabled.size === 0 || [...enabled].some((routeId) => typeof routeId !== 'string'))) throw new TypeError('ai_public_enabled_routes_invalid');
 
   function availableRoutes(normalized, now) {
     const alias = aliasModels[normalized.model];
     const routes = [];
     for (const definition of catalogs.model.routes) {
+      if (enabled !== undefined && !enabled.has(definition.routeId)) continue;
       if (!definition.productIds.includes(normalized.productId) || definition.qualification.status !== 'passed' || definition.qualification.resaleAllowed !== true || Date.parse(definition.qualification.expiresAt) <= Date.parse(now)) continue;
       if (alias !== undefined ? !alias.includes(definition.exactModelId) : definition.exactModelId !== normalized.model && definition.routeId !== normalized.model) continue;
       const prices = routePricing(definition.exactModelId, normalized.productId, catalogs);

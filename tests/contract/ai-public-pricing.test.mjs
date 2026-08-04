@@ -26,7 +26,7 @@ async function pricing() {
 test('public AI pricing resolves exact and alias routes into bounded USDC quotes', async () => {
   const publicPricing = await pricing();
   const cases = [
-    { request: { model: 'clervo/fast', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 100 }, productId: 'ai.chat', exact: 'gpt-5.6-luna' },
+    { request: { model: 'gpt-5.6-luna', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 100 }, productId: 'ai.chat', exact: 'gpt-5.6-luna' },
     { request: { model: 'gemini-embedding-001', input: { kind: 'embedding', inputs: ['one', 'two'], dimensions: 64 } }, productId: 'ai.embed', exact: 'gemini-embedding-001' },
     { request: { model: 'gemini-3.1-flash-lite-image', input: { kind: 'image', prompt: 'A prism', size: '1024x1024', quality: 'low', count: 1 } }, productId: 'ai.image', exact: 'gemini-3.1-flash-lite-image' },
     { request: { model: 'aura-2-thalia-en', input: { kind: 'speech', input: 'Hello', voice: 'aura-2-thalia-en', responseFormat: 'mp3' } }, productId: 'ai.speech', exact: 'aura-2-thalia-en' },

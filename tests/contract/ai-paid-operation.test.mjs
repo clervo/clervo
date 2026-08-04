@@ -60,7 +60,7 @@ test('paid AI challenges before execution, returns exact-model proof, and replay
     publicPricing: await publicPricing(),
     adapters: [adapter],
   });
-  const normalized = normalizeAiHttpRequest({ model: 'clervo/fast', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 100 });
+  const normalized = normalizeAiHttpRequest({ model: 'gpt-5.6-luna', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 100 });
   const input = { idempotencyKey: 'idem_ai_paid_001', requestHash: aiHttpRequestHash(normalized), operationId, normalized, now };
 
   const challenge = await processor.process(input);

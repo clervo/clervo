@@ -53,7 +53,7 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
   context.after(() => new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve())));
   const address = server.address();
   const origin = `http://127.0.0.1:${address.port}`;
-  const body = JSON.stringify({ model: 'clervo/fast', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 100 });
+  const body = JSON.stringify({ model: 'gpt-5.6-luna', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 100 });
   const headers = { 'content-type': 'application/json', 'idempotency-key': 'idem_ai_http_001' };
 
   const denied = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers, body });
