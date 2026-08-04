@@ -115,6 +115,16 @@ test('paid route is non-payable by default and never executes even if a mock pay
   });
 });
 
+test('a raw-only release refuses synthesis before quota, execution, or payment challenge', async () => {
+  const executor = recordedExecutor();
+  await withServer({ executor, now: () => now, synthesisEnabled: false, retrievalMode: 'live_external' }, async (origin) => {
+    const response = await post(origin, SEARCH_PAID_PATH, 'idem_n49_synthesis_off', { query: 'live answer', synthesize: true });
+    assert.equal(response.status, 503);
+    assert.equal((await response.json()).code, 'search_synthesis_unavailable');
+    assert.equal(executor.calls, 0);
+  });
+});
+
 test('explicit test-only mock-paid injection verifies, executes, settles, and returns a paid receipt', async () => {
   const executor = recordedExecutor();
   await withServer({ executor, now: () => now, allowMockPaidExecution: true }, async (origin) => {

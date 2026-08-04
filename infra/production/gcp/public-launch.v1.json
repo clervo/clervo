@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "clervo.production-public-launch.v1",
+  "state": "prepared_zero_traffic",
+  "project": "bloxsniper-prod",
+  "region": "us-central1",
+  "service": "clervo-api-production",
+  "publicOrigin": "https://api.clervo.dev/",
+  "edge": {
+    "worker": "clervo-api-edge-production",
+    "route": "api.clervo.dev/*",
+    "configuration": "apps/worker/wrangler.jsonc"
+  },
+  "search": {
+    "mode": "live_external",
+    "synthesisEnabled": false,
+    "primarySecret": "clervo-production-search-primary",
+    "fallbackSecret": "clervo-production-search-fallback",
+    "primaryCallCeiling": 1000,
+    "fallbackCallCeiling": 2500,
+    "automaticPaidOverage": false
+  },
+  "commerce": {
+    "mode": "settlement_enabled",
+    "network": "eip155:8453",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "facilitatorUrl": "https://api.cdp.coinbase.com/platform/v2/x402"
+  },
+  "sandbox": {
+    "mode": "private",
+    "publicRoute": false
+  },
+  "rollout": {
+    "deployTrafficPercent": 0,
+    "authenticatedLiveSearchSmokeRequired": true,
+    "stableChallengeRequired": true,
+    "monitoringDeliveryRequired": true,
+    "previousRevisionRequired": true,
+    "publicInvokerAddedOnlyAfterPromotion": true,
+    "edgeDeployedOnlyAfterOriginVerification": true
+  },
+  "protectedResources": [
+    "ai.clervo.dev",
+    "the existing Clervo VM model gateway",
+    "all unrelated and legacy cloud resources"
+  ]
+}

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { createRecordedSearchExecutor } from '../../../dist/services/search/src/recorded-pipeline.js';
+import { createLiveExternalSearchExecutor } from '../../../dist/services/search/src/live-external-pipeline.js';
 import { createSearchMonitor } from '../../../dist/services/search/src/monitoring.js';
 import { createSearchServer } from './search-server.mjs';
 import {
@@ -28,6 +29,7 @@ const monitoringDriver = process.env.CLERVO_MONITORING_DRIVER ?? 'http';
 const trafficControl = createTrafficControl(process.env.CLERVO_TRAFFIC_MODE ?? 'open');
 const x402Mode = process.env.CLERVO_X402_MODE ?? 'disabled';
 const sandboxMode = process.env.CLERVO_SANDBOX_MODE ?? 'disabled';
+const searchMode = process.env.CLERVO_SEARCH_MODE ?? 'recorded';
 
 if (!releaseId) throw new Error('CLERVO_RELEASE_ID is required');
 if (!Number.isSafeInteger(port) || port < 1 || port > 65_535) throw new Error('invalid HTTP port');
@@ -37,6 +39,7 @@ if (environment === 'production' && monitoringDriver !== 'sentry') throw new Err
 if (environment === 'production' && !sentryDsn) throw new Error('production requires CLERVO_SENTRY_DSN');
 if (!['disabled', 'challenge_only', 'settlement_enabled'].includes(x402Mode)) throw new Error('invalid CLERVO_X402_MODE');
 if (!['disabled', 'private'].includes(sandboxMode)) throw new Error('invalid CLERVO_SANDBOX_MODE');
+if (!['recorded', 'live_external'].includes(searchMode)) throw new Error('invalid CLERVO_SEARCH_MODE');
 if (x402Mode !== 'disabled' && stateBackend !== 'postgres') throw new Error('x402 requires PostgreSQL state');
 if (sandboxMode !== 'disabled' && stateBackend !== 'postgres') throw new Error('sandbox requires PostgreSQL state');
 if (privateMockCommerceEnabled && (environment !== 'stage4-private-qualification' || !['127.0.0.1', 'localhost'].includes(new URL(publicOrigin).hostname))) {
@@ -63,6 +66,14 @@ const sandboxGateway = sandboxMode === 'disabled' ? undefined : createSandboxPri
   stateStore: sandboxStateStore,
   environment,
 });
+const executor = searchMode === 'live_external'
+  ? createLiveExternalSearchExecutor({
+    primaryCredential: process.env.CLERVO_SEARCH_PRIMARY_KEY ?? '',
+    fallbackCredential: process.env.CLERVO_SEARCH_FALLBACK_KEY ?? '',
+    primaryCallCeiling: Number(process.env.CLERVO_SEARCH_PRIMARY_CALL_CEILING ?? '1000'),
+    fallbackCallCeiling: Number(process.env.CLERVO_SEARCH_FALLBACK_CALL_CEILING ?? '2500'),
+  })
+  : createRecordedSearchExecutor();
 
 const monitoringExporter = monitoringDriver === 'sentry'
   ? createSentryMonitoringExporter({ dsn: sentryDsn, environment, release: releaseId })
@@ -78,7 +89,7 @@ const monitoringExporter = monitoringDriver === 'sentry'
       };
 const monitor = createSearchMonitor(monitoringExporter);
 const server = createSearchServer({
-  executor: createRecordedSearchExecutor(),
+  executor,
   monitor,
   environment,
   releaseId,
@@ -91,6 +102,8 @@ const server = createSearchServer({
   x402StateStore,
   sandboxGateway,
   sandboxApiToken: sandboxMode === 'disabled' ? undefined : process.env.CLERVO_SANDBOX_API_TOKEN,
+  synthesisEnabled: searchMode !== 'live_external',
+  retrievalMode: searchMode,
 });
 
 const exportTimer = setInterval(() => {
@@ -131,7 +144,7 @@ server.listen(port, host, () => {
     maxConcurrentExecutions,
     monitoringDelivery: monitoringDriver === 'sentry' ? 'sentry' : monitoringEndpoint ? 'https' : 'stdout',
     trafficMode: trafficControl.snapshot().mode,
-    retrievalMode: 'recorded',
+    retrievalMode: searchMode,
     sandboxPrivateEnabled: sandboxMode === 'private',
   }));
 });

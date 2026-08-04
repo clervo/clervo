@@ -101,6 +101,8 @@ export function createSearchServer({
   x402StateStore,
   sandboxGateway,
   sandboxApiToken,
+  synthesisEnabled = true,
+  retrievalMode = 'recorded',
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
   if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
@@ -113,6 +115,7 @@ export function createSearchServer({
   if (sandboxGateway !== undefined && (typeof sandboxGateway.run !== 'function' || typeof sandboxGateway.ready !== 'function')) throw new TypeError('invalid sandbox gateway');
   if (sandboxApiToken !== undefined && (typeof sandboxApiToken !== 'string' || sandboxApiToken.length < 32 || sandboxApiToken.length > 512)) throw new TypeError('invalid sandbox API token');
   if (environment === 'production' && sandboxGateway !== undefined && sandboxGateway.durable !== true) throw new TypeError('production sandbox requires durable state');
+  if (typeof synthesisEnabled !== 'boolean' || !['recorded', 'live_external'].includes(retrievalMode)) throw new TypeError('invalid search capability configuration');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
   if (
     typeof searchState.begin !== 'function'
@@ -158,6 +161,7 @@ export function createSearchServer({
         trafficMode: trafficControl?.snapshot().mode ?? 'open',
         sandboxPrivateEnabled: sandboxGateway !== undefined,
         sandboxDurableState: sandboxGateway?.durable === true,
+        retrievalMode,
       });
       return;
     }
@@ -231,6 +235,10 @@ export function createSearchServer({
       if (typeof keyHeader !== 'string') throw Object.assign(new Error('idempotency_key_required'), { status: 400 });
       validateIdempotencyKey(keyHeader);
       const normalized = normalizeSearchHttpRequest(await readJson(request));
+      if (normalized.synthesize && !synthesisEnabled) {
+        send(response, 503, problem(503, 'search_synthesis_unavailable', 'Search synthesis unavailable', 'Live cited synthesis is not enabled on this release. Retry with synthesize=false for raw results.', url.pathname), { 'retry-after': '300' }, PROBLEM_TYPE);
+        return;
+      }
       const requestHash = searchHttpRequestHash(normalized, url.pathname);
       const realPaid = url.pathname === SEARCH_PAID_PATH && x402PaidProcessor !== undefined;
       let stored;
