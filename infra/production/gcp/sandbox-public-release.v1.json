@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.sandbox-public-release.v1",
-  "observedAt": "2026-08-04T04:44:23Z",
-  "state": "origin_promoted_edge_release_pending",
+  "observedAt": "2026-08-04T04:46:50Z",
+  "state": "public_preview_verified",
   "releaseCommit": "e5e604278161b0d81c309881a894a6a6945d1a97",
   "cloudBuildId": "24c42783-478a-45c0-b40c-45e5f5ddb6ad",
   "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:a8e362ec6ecd190d379490bd4e857b3cfc08b938be16fcdfe75a31be099ae2d0",
@@ -9,8 +9,11 @@
   "originTrafficPercent": 100,
   "edge": {
     "route": "/v1/sandbox/execute",
-    "enabled": false,
-    "deploymentPending": true
+    "enabled": true,
+    "deploymentPending": false,
+    "workerVersion": "b2729c93-adf8-43b9-9c72-356198e82ed4",
+    "trafficPercent": 100,
+    "discoveryWarnings": 0
   },
   "commerce": {
     "priceVersion": "sandbox-run-public-2026-08-04.1",
