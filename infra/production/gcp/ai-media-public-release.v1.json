@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "clervo.ai-media-public-release.v1",
+  "observedAt": "2026-08-04T05:12:00.000Z",
+  "releaseCommit": "e23264a52c0c2a0254d19ff8062437b05ce1bad8",
+  "cloudBuildId": "41d088fb-c53d-4818-b78d-a032f5a1ff66",
+  "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:78718e50a50c2a74f639a4da5a03e80988d95611014d9c310cba1fe4d5d79df9",
+  "artifactVerification": {
+    "provenance": "cloud-build-observed",
+    "effectiveCriticalVulnerabilities": 0,
+    "effectiveHighVulnerabilities": 0
+  },
+  "origin": {
+    "revision": "clervo-api-production-00028-nor",
+    "trafficPercent": 100,
+    "directProductAccessStatus": 401
+  },
+  "edge": {
+    "worker": "clervo-api-edge-production",
+    "version": "4ee82dea-bc76-4f03-9184-35ab281233ef",
+    "trafficPercent": 100
+  },
+  "ai": {
+    "publicPath": "/v1/ai/execute",
+    "products": ["ai.chat", "ai.embed", "ai.image", "ai.speech"],
+    "challengeStatus": 402,
+    "protocols": ["x402", "mpp"],
+    "liveSupplierQualification": {
+      "embedding": { "exactModelIdentityVerified": true, "dimensions": 32 },
+      "speech": { "exactModelIdentityVerified": true, "bytes": 13536, "artifactHashVerified": true },
+      "image": { "exactModelIdentityVerified": true, "width": 1024, "height": 1024, "bytes": 35414, "artifactHashVerified": true }
+    }
+  },
+  "artifacts": {
+    "storage": "private_r2",
+    "payerScoped": true,
+    "signedAccess": true,
+    "retentionSeconds": 604800,
+    "lifecyclePrefix": "tenants/",
+    "publicEdgeRetrievalStatus": 200,
+    "byteExact": true,
+    "hashVerified": true,
+    "cacheControl": "no-store"
+  },
+  "regression": {
+    "liveRawSearchStatus": 200,
+    "liveRawSearchReplay": true,
+    "sandboxPrivateExecutionStatus": 200,
+    "sandboxPrivateReplay": true,
+    "sandboxUsefulOutput": true,
+    "sandboxResidualClaims": 0,
+    "sandboxResidualExecutionPods": 0,
+    "monitoringDelivery": "acknowledged"
+  },
+  "commerce": {
+    "paymentExecuted": false,
+    "usdcSpentAtomic": "0",
+    "paidAiOutputProven": false,
+    "revenueEvidence": false
+  },
+  "boundaries": {
+    "secretValuesPrinted": false,
+    "secretValuesCommitted": false,
+    "protectedGatewayModified": false,
+    "legacyRuntimeUsed": false
+  }
+}

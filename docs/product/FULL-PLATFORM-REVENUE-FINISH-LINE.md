@@ -41,15 +41,15 @@ not a customer-functional product. Every released pillar needs all eight:
 
 ## Honest readiness snapshot
 
-The customer-functional score is 47.92%, calculated from the eight gates above:
+The customer-functional score is 58.33%, calculated from the eight gates above:
 complete is 1, partial is 0.5, and missing or blocked is 0. It measures release
 readiness, not code volume or effort remaining.
 
 | Pillar | Readiness | Current reality |
 | --- | ---: | --- |
 | Search | 87.50% | The required-secret public edge, supply, x402, durability, operations, and external public smoke are proven; the first external paid customer remains. |
-| AI | 31.25% | Private contracts, adapters, and supply qualifications exist; public runtime, commerce, durability, and current production qualification remain. |
-| Secure Sandbox | 56.25% | Private gVisor execution and durable replay work; public commerce, artifacts, abuse policy, external acceptance, and spare capacity remain. |
+| AI | 75.00% | Chat, embedding, image, speech, durable private artifacts, public x402/MPP challenges, and current production supply pass; the product-specific paid result/replay and external acceptance remain. |
+| Secure Sandbox | 75.00% | Private gVisor execution, durable replay, public x402/MPP challenges, cleanup, and bounded production capacity pass; the product-specific paid result/replay and external acceptance remain. |
 | RPC | 37.50% | Private gateway behavior is complete; commercial supply rights and every public-release layer remain. |
 | Prediction | 37.50% | Private normalized intelligence works; commercial reuse/history rights and every public-release layer remain. |
 | Crypto Intelligence | 37.50% | Private read-only intelligence works; commercial data rights and every public-release layer remain. |
@@ -64,14 +64,15 @@ cannot make an unavailable product customer-functional.
    authoritative; `CURRENT-ENGINEERING-STATE.md` controls current status.
 2. Private six-product core completion was not clearly separated from public,
    payable customer functionality.
-3. The active release candidate exposes only `search.web` and `search.answer`;
-   the other 30 frozen operations remain internal.
+3. The production release exposes Search, four AI product kinds, and Sandbox;
+   RPC, Prediction, Crypto, and their remaining operations stay internal.
 4. Published TypeScript, MCP, and Python clients expose only Search and do not
    implement bounded signing or automatic payment retry.
-5. The deployed API serves Search plus a private Sandbox route, not one shared
-   public six-product gateway.
-6. AI, Sandbox, RPC, Prediction, and Crypto lack product-specific public x402,
-   receipts, production operations, and external acceptance.
+5. The deployed API serves Search, AI, and Sandbox through the shared commerce
+   gateway; RPC, Prediction, and Crypto are not yet public.
+6. RPC, Prediction, and Crypto lack product-specific public x402, receipts,
+   production operations, and external acceptance. AI and Sandbox still lack
+   their final real paid-result acceptance.
 7. RPC, Prediction, and Crypto have explicit supplier-rights blockers; hiding
    those blockers behind private-core completion created a false sense of
    readiness.
@@ -113,6 +114,10 @@ customer result remains for the revenue wedge.
 
 ### 3. Launch AI
 
+Production runtime, qualified supply, public access, durable media delivery,
+and dual-protocol challenges completed on 2026-08-04. Product-specific paid
+result/replay acceptance remains for the final consolidated proof.
+
 - Refresh qualifications for at least three independent lawful supply families
   and disable expired, substituted, unhealthy, or accounting-unknown routes.
 - Protect the existing `ai.clervo.dev` gateway; use it only as an upstream exact
@@ -127,6 +132,11 @@ customer result remains for the revenue wedge.
   x402, receipts, replay, monitoring, and external output.
 
 ### 4. Launch Secure Sandbox
+
+Private execution, public access, bounded commerce challenges, durable replay,
+cleanup, and single-node production capacity completed on 2026-08-04.
+Product-specific paid result/replay acceptance remains for the final
+consolidated proof.
 
 - Put the existing private gVisor controller behind the shared public operation
   gateway without exposing its control endpoint or credentials.

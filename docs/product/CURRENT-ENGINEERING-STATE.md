@@ -7,33 +7,47 @@ reading it.
 ## Active finish line
 
 `docs/product/FULL-PLATFORM-REVENUE-FINISH-LINE.md` is the active continuous
-execution order. Customer-functional paid readiness is currently 47.92% under
+execution order. Customer-functional paid readiness is currently 58.33% under
 the eight-gate rubric in `packages/catalog/full-platform-readiness.v1.json`.
 This does not reduce the six-product master-plan scope.
 
-The immediate revenue wedge is public raw `search.web`; bounded `ai.chat` is
-also publicly payable in preview. Cloud Run revision
-`clervo-api-production-00023-mil` serves the qualified live-external Search,
-qualified Luna chat route, and shared x402/MPP commerce runtime at 100% origin
-traffic. The origin permits unauthenticated network
-reachability because organization policy prevents an `allUsers` IAM binding,
-but every product request requires the separate edge authorization and direct
-requests fail with `edge_unauthorized`. Health and readiness remain readable.
+## Latest production truth
 
-The public Search and AI preview edge is externally verified. Cloudflare Worker
-`clervo-api-edge-production` version
-`b6031e7e-e60c-4b7e-a6e9-009b98b24d0f` receives 100% of both exact root and
-wildcard API routes with required secret `CLERVO_EDGE_AUTHORIZATION`. The edge
-exposes only health, raw Search, payable Search and AI chat, and generated
-machine discovery. Private Sandbox and unsupported routes remain blocked. The
-live OpenAPI contact, no-auth free operation, scanner-safe schemas, Bazaar
-schemas, favicon, and runtime probes pass `@agentcash/discovery` with zero
-warnings. Both paid operations return x402 `PAYMENT-REQUIRED` and MPP
-`WWW-Authenticate` before request validation; both challenges bind the same
-Base USDC receiver and exact atomic amount. Search is 6000 atomic USDC and the
-bounded Luna probe is 113 atomic USDC. x402 has one owner-funded Search
-settlement and no-charge replay; no production MPP settlement or paid AI result
-has yet been signed, so neither is claimed as customer revenue or demand.
+Production now serves release `e23264a52c0c2a0254d19ff8062437b05ce1bad8`
+on Cloud Run revision `clervo-api-production-00028-nor` at 100% origin traffic
+and Cloudflare Worker version `4ee82dea-bc76-4f03-9184-35ab281233ef` at 100%
+edge traffic. The signed Cloud Build image has verified provenance with zero
+effective critical or high findings. Search, AI, and Sandbox remain publicly
+payable through the protected edge; direct product access to the origin is
+denied.
+
+The public AI operation now selects qualified chat, embedding, image, and
+speech routes. Every product kind returns both x402 and MPP challenges before
+body validation. Live supplier qualification returned an exact 32-dimensional
+embedding, a 13,536-byte speech result, and a 1024x1024 image result. Generated
+media was stored in private R2, retrieved byte-for-byte with its hash intact,
+and is exposed only through payer-scoped, signed, expiring artifact paths. R2
+expires only the `tenants/` artifact prefix after seven days. The exact public
+edge retrieval path passed. No AI payment has yet been signed, so this proves
+production supply and delivery rather than a paid AI result.
+
+The same release requalified live raw Search and no-execution replay, plus
+private Sandbox useful execution, durable replay, and complete runtime cleanup.
+The public Sandbox x402/MPP challenge remains live. No USDC was spent during
+this release. Exact evidence is
+`infra/production/gcp/ai-media-public-release.v1.json`.
+
+The edge currently exposes health, generated discovery, raw and payable Search,
+payable AI chat/embedding/image/speech, payable Sandbox, and signed artifact
+retrieval. Unsupported RPC, Prediction, and Crypto routes remain blocked. The
+one owner-funded Search settlement and no-charge replay remain the only real
+payment proof; no customer revenue or demand is claimed.
+
+## Historical implementation record
+
+The sections below preserve important completed engineering evidence. Their
+historical lifecycle wording and revision identifiers do not override the
+latest production truth above.
 
 ## Active work
 
@@ -483,29 +497,21 @@ were removed; the existing private serving revision remains at 100% traffic.
 
 ## Next actions
 
-1. Operate the verified public raw Search preview and exact 0.006 USDC x402
-   offer. Obtain one external paid useful result and reconcile its receipt and
-   no-charge replay; do not repeat the owner-funded proof.
-2. Generalize the Search-specific public runtime into the shared six-product
-   operation, x402, idempotency, receipt, accounting, artifact, and recovery
-   gateway while preserving the frozen contract semantics.
-3. Launch AI next: refresh at least three lawful supply families, connect exact
-   chat/embedding/image/speech routes and stable aliases, enforce usage and
-   shadow budgets, add durable media artifacts, and qualify public commerce and
-   failure handling. Do not modify or expose the protected `ai.clervo.dev`
-   runtime.
-4. Launch Sandbox through the shared gateway with fixed charges, abuse policy,
-   secure artifacts, durable sessions, and supportable capacity; keep its
-   private controller unreachable from customers.
-5. Continue RPC, Prediction, and Crypto public integration, but keep customer
-   routing disabled until their respective commercial supply/reuse/data rights
-   are qualified. Source lawful replacements without pausing other work.
-6. Create a new versioned full-platform release candidate rather than mutating
+1. Connect terms-compatible production RPC supply and publish its read-only
+   payable operations through the shared durable commerce gateway.
+2. Connect commercially permitted Prediction data and retained history, then
+   publish its normalized payable intelligence operations.
+3. Connect commercially permitted EVM, Solana, wallet, and protocol data, then
+   publish read-only payable Crypto Intelligence operations.
+4. Keep customer routing disabled for any RPC, Prediction, or Crypto source
+   until its commercial supply, reuse, and data rights
+   are qualified; source lawful replacements without pausing other work.
+5. Create a new versioned full-platform release candidate rather than mutating
    the historical private freeze. Expand and republish the SDKs, MCP, Python,
    raw HTTP, OpenAPI, and discovery from its exact six-product operation set.
-7. Run one consolidated full-platform production acceptance and complete every
-   master-plan section 3.1 gate. Only the external paid useful result permits
-   the First Revenue Release claim.
+6. Run one consolidated full-platform production acceptance, then execute one
+   minimum-cost owner-signed useful payment and no-charge replay for each of the
+   six products. Do not repeat the completed Search proof unnecessarily.
 
 ## Preserved boundaries
 
@@ -514,7 +520,8 @@ one owner-funded 0.006 USDC settlement and a proven no-charge replay; it is not
 revenue or demand evidence. The external RPC resale-permission
 blocker remains isolated. `ai.clervo.dev` is live on protected Clervo VM
 infrastructure and must never be included in sandbox/cloud cleanup. Migration
-0006 remains the only managed schema mutation in this work. Public raw Search
-traffic and an unpaid x402 challenge are now enabled through the protected API
-edge; no external customer payment, revenue evidence, customer-data operation,
-or additional managed schema mutation occurred. `ai.clervo.dev` was untouched.
+0006 remains the only managed schema mutation in this work. Search, AI,
+Sandbox, and signed artifact delivery are enabled through the protected API
+edge; RPC, Prediction, and Crypto remain blocked. No external customer payment,
+revenue evidence, customer-data operation, or additional managed schema
+mutation occurred. `ai.clervo.dev` was untouched.

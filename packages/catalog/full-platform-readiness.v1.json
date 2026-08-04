@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.full-platform-readiness.v1",
-  "observedAt": "2026-08-04T02:15:15Z",
+  "observedAt": "2026-08-04T05:12:00Z",
   "basis": "Customer-functional paid readiness, not private-core engineering completion.",
   "scoring": {
     "completeBasisPoints": 10000,
@@ -8,7 +8,7 @@
     "missingBasisPoints": 0,
     "blockedBasisPoints": 0,
     "gateCountPerPillar": 8,
-    "aggregateReadinessBasisPoints": 4792
+    "aggregateReadinessBasisPoints": 5833
   },
   "finishLines": [
     {
@@ -50,33 +50,33 @@
     },
     {
       "id": "ai",
-      "readinessBasisPoints": 3125,
-      "gates": {
-        "contract": "complete",
-        "supply": "partial",
-        "runtime": "partial",
-        "public_access": "missing",
-        "commerce": "missing",
-        "durability": "missing",
-        "operations": "partial",
-        "external_acceptance": "missing"
-      },
-      "nextOutcome": "Refresh lawful three-family supply, build the shared public AI runtime and usage commerce, and qualify durable media delivery."
-    },
-    {
-      "id": "sandbox",
-      "readinessBasisPoints": 5625,
+      "readinessBasisPoints": 7500,
       "gates": {
         "contract": "complete",
         "supply": "complete",
         "runtime": "complete",
-        "public_access": "missing",
-        "commerce": "missing",
+        "public_access": "complete",
+        "commerce": "partial",
         "durability": "complete",
         "operations": "partial",
         "external_acceptance": "missing"
       },
-      "nextOutcome": "Add bounded public commerce and abuse policy, secure artifact delivery, and enough production capacity for supportable customer execution."
+      "nextOutcome": "Complete the bounded paid-result and no-charge replay acceptance through the exact public AI path, then retain operations evidence in the full-platform release."
+    },
+    {
+      "id": "sandbox",
+      "readinessBasisPoints": 7500,
+      "gates": {
+        "contract": "complete",
+        "supply": "complete",
+        "runtime": "complete",
+        "public_access": "complete",
+        "commerce": "partial",
+        "durability": "complete",
+        "operations": "partial",
+        "external_acceptance": "missing"
+      },
+      "nextOutcome": "Complete the bounded paid-result and no-charge replay acceptance through the exact public Sandbox path, then retain operations evidence in the full-platform release."
     },
     {
       "id": "rpc",
