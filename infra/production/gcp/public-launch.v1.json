@@ -32,7 +32,12 @@
   },
   "sandbox": {
     "mode": "private",
-    "publicRoute": false
+    "publicMode": "paid",
+    "publicRoute": true,
+    "runnerDigest": "sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
+    "priceVersion": "sandbox-run-public-2026-08-04.1",
+    "maximumChargeAtomic": "120000",
+    "maximumSupplierCostAtomic": "100000"
   },
   "ai": {
     "mode": "paid",
@@ -47,6 +52,7 @@
     "deployTrafficPercent": 0,
     "authenticatedLiveSearchSmokeRequired": true,
     "stableChallengeRequired": true,
+    "sandboxLiveSmokeRequired": true,
     "monitoringDeliveryRequired": true,
     "previousRevisionRequired": true,
     "publicAccessEnabledOnlyAfterPromotion": true,

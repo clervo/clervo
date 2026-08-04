@@ -6,7 +6,8 @@
   "workers_dev": false,
   "preview_urls": false,
   "vars": {
-    "CLERVO_AI_PUBLIC_ENABLED": "true"
+    "CLERVO_AI_PUBLIC_ENABLED": "true",
+    "CLERVO_SANDBOX_PUBLIC_ENABLED": "false"
   },
   "secrets": {
     "required": ["CLERVO_EDGE_AUTHORIZATION"]

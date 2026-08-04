@@ -27,6 +27,15 @@ import {
 import { InMemorySearchStateStore } from './search-state-store.mjs';
 import { createX402PaidSearchProcessor, x402SearchPricing } from './x402-paid-search.mjs';
 import { createX402PaidAiProcessor } from './x402-paid-ai.mjs';
+import {
+  SANDBOX_DISCOVERY,
+  SANDBOX_MAX_BODY_BYTES as SANDBOX_PUBLIC_MAX_BODY_BYTES,
+  SANDBOX_PAID_PATH,
+  SANDBOX_RUN_PRICING,
+  createX402PaidSandboxProcessor,
+  normalizeSandboxHttpRequest,
+  sandboxHttpRequestHash,
+} from './x402-paid-sandbox.mjs';
 
 const JSON_TYPE = 'application/json; charset=utf-8';
 const PROBLEM_TYPE = 'application/problem+json; charset=utf-8';
@@ -133,6 +142,7 @@ export function createSearchServer({
   aiPublicPricing,
   aiAdapters,
   aiMonitor,
+  sandboxPublicRunnerDigest,
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
   if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
@@ -149,6 +159,7 @@ export function createSearchServer({
   if (edgeAuthorization !== undefined && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new TypeError('invalid edge authorization');
   if ((aiPublicPricing === undefined) !== (aiAdapters === undefined)) throw new TypeError('AI pricing and adapters must be configured together');
   if (aiPublicPricing !== undefined && x402Service === undefined) throw new TypeError('public AI requires x402 commerce');
+  if (sandboxPublicRunnerDigest !== undefined && (sandboxGateway === undefined || x402Service === undefined)) throw new TypeError('public Sandbox requires private execution and x402 commerce');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
   if (
     typeof searchState.begin !== 'function'
@@ -183,17 +194,31 @@ export function createSearchServer({
     acquireExecution,
     monitor: aiMonitor,
   });
+  const x402SandboxProcessor = sandboxPublicRunnerDigest === undefined ? undefined : createX402PaidSandboxProcessor({
+    service: x402Service,
+    stateStore: x402StateStore,
+    gateway: sandboxGateway,
+    runnerDigest: sandboxPublicRunnerDigest,
+    acquireExecution,
+  });
 
   async function discoveryPaymentChallenge(pathname, observedAt) {
     let productId;
     let requestHash;
     let pricing;
+    let discovery;
     if (pathname === AI_PAID_PATH) {
       const normalized = normalizeAiHttpRequest(AI_DISCOVERY_PROBE_REQUEST);
       productId = normalized.productId;
       requestHash = aiHttpRequestHash(normalized);
       const operationId = identifier('op', `discovery:${pathname}:${requestHash}`);
       pricing = aiPublicPricing.quote({ normalized, operationId, now: observedAt }).pricing;
+    } else if (pathname === SANDBOX_PAID_PATH) {
+      const normalized = normalizeSandboxHttpRequest(SANDBOX_DISCOVERY.input);
+      productId = 'sandbox.run';
+      requestHash = sandboxHttpRequestHash(normalized);
+      pricing = SANDBOX_RUN_PRICING;
+      discovery = SANDBOX_DISCOVERY;
     } else {
       const normalized = normalizeSearchHttpRequest(SEARCH_DISCOVERY_PROBE_REQUEST);
       productId = searchProductId(normalized);
@@ -212,7 +237,7 @@ export function createSearchServer({
       issuedAt: observedAt,
       expiresAt: new Date(Date.parse(observedAt) + 300_000).toISOString(),
     });
-    return x402Service.challenge({ quote, description: `Bounded ${productId} discovery challenge`, now: observedAt, resourcePath: pathname });
+    return x402Service.challenge({ quote, description: `Bounded ${productId} discovery challenge`, now: observedAt, resourcePath: pathname, discovery });
   }
 
   const record = (input) => {
@@ -234,6 +259,7 @@ export function createSearchServer({
         sandboxPrivateEnabled: sandboxGateway !== undefined,
         sandboxDurableState: sandboxGateway?.durable === true,
         aiPaidEnabled: x402AiProcessor?.mode === 'settlement_enabled',
+        sandboxPaidEnabled: x402SandboxProcessor?.mode === 'settlement_enabled',
         retrievalMode,
       });
       return;
@@ -328,6 +354,52 @@ export function createSearchServer({
         const title = status === 400 ? 'Invalid AI request' : status === 409 ? 'AI operation conflict' : 'AI execution unavailable';
         const detail = status === 400 ? 'The request did not satisfy the bounded AI HTTP contract.' : 'The AI operation failed closed without an additional customer charge.';
         send(response, status, problem(status, code, title, detail, url.pathname, aiOperationId), status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
+      }
+      return;
+    }
+    if (request.method === 'POST' && url.pathname === SANDBOX_PAID_PATH && x402SandboxProcessor !== undefined) {
+      if (edgeAuthorization !== undefined && !internalAuthorized(request.headers['x-clervo-edge-authorization'], edgeAuthorization)) {
+        send(response, 401, problem(401, 'edge_unauthorized', 'Unauthorized', 'The public API edge is required.', url.pathname), {}, PROBLEM_TYPE);
+        return;
+      }
+      if (trafficControl?.snapshot().mode === 'stopped') {
+        send(response, 503, problem(503, 'traffic_stopped', 'Traffic temporarily stopped', 'New execution is disabled by the independent traffic safety control.', url.pathname), { 'retry-after': '30' }, PROBLEM_TYPE);
+        return;
+      }
+      if (url.search !== '') {
+        send(response, 400, problem(400, 'query_parameters_not_allowed', 'Query parameters not allowed', 'The Sandbox contract accepts JSON body fields only.', url.pathname), {}, PROBLEM_TYPE);
+        return;
+      }
+      let sandboxOperationId;
+      try {
+        const keyHeader = request.headers['idempotency-key'];
+        const authorizationHeader = mppAuthorization(request.headers.authorization);
+        if (typeof keyHeader !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined) {
+          const challenge = await discoveryPaymentChallenge(SANDBOX_PAID_PATH, now());
+          send(response, challenge.status, challenge.body, challenge.headers);
+          return;
+        }
+        if (typeof keyHeader !== 'string') throw Object.assign(new Error('idempotency_key_required'), { status: 400 });
+        validateIdempotencyKey(keyHeader);
+        const normalized = normalizeSandboxHttpRequest(await readJson(request, SANDBOX_PUBLIC_MAX_BODY_BYTES));
+        const requestHash = sandboxHttpRequestHash(normalized);
+        sandboxOperationId = identifier('op', `${keyHeader}:${requestHash}`);
+        const paid = await x402SandboxProcessor.process({
+          idempotencyKey: keyHeader,
+          requestHash,
+          operationId: sandboxOperationId,
+          normalized,
+          paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
+          authorizationHeader,
+          now: now(),
+        });
+        send(response, paid.status, paid.body, paid.headers);
+      } catch (error) {
+        const code = errorCode(error);
+        const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;
+        const title = status === 400 ? 'Invalid Sandbox request' : status === 409 ? 'Sandbox operation conflict' : 'Sandbox execution unavailable';
+        const detail = status === 400 ? 'The request did not satisfy the bounded public Sandbox contract.' : 'The Sandbox operation failed closed without an additional customer charge.';
+        send(response, status, problem(status, code, title, detail, url.pathname, sandboxOperationId), status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
       }
       return;
     }

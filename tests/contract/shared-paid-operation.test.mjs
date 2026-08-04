@@ -167,3 +167,20 @@ test('capacity rejection does not poison the durable operation lease', async () 
   assert.equal(executions, 1);
   assert.equal(upstream.calls.settle, 1);
 });
+
+test('shared paid operation kernel binds non-AI products to their exact public resource', async () => {
+  const upstream = service();
+  const processor = createX402PaidOperationProcessor({
+    service: upstream,
+    stateStore: new InMemoryX402OperationStore({ environmentNamespace: 'shared_sandbox' }),
+  });
+  const response = await processor.process({
+    idempotencyKey: 'idem_shared_sandbox_001', requestHash, operationId, productId: 'sandbox.run',
+    executionInput: {}, now, pricing, resourcePath: '/v1/sandbox/execute',
+    discovery: { method: 'POST', bodyType: 'json', input: {}, inputSchema: { type: 'object' }, output: { example: {}, schema: { type: 'object' } } },
+    execute: async () => ({ output: {}, provenance: [{ adapterId: 'adapter_sandbox.test', qualificationId: `qual_${'b'.repeat(32)}`, providerReferenceHash: requestHash }] }),
+    createResponse: ({ output, receipt }) => ({ output, receipt }),
+  });
+  assert.equal(response.status, 402);
+  assert.equal(upstream.calls.challenge, 1);
+});

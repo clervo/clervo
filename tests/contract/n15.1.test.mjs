@@ -186,6 +186,24 @@ test('challenge service binds AI payments to the exact public AI resource', asyn
   );
 });
 
+test('challenge service supports every six-product public commerce resource with explicit discovery', async () => {
+  const facilitator = {
+    async getSupported() { return { kinds: [{ x402Version: 2, scheme: 'exact', network }], extensions: [], signers: {} }; },
+  };
+  const service = await createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/', mppSecretKey });
+  const discovery = {
+    method: 'POST', bodyType: 'json', input: { productId: 'sandbox.run', input: { kind: 'run' } },
+    inputSchema: { type: 'object', required: ['productId', 'input'], properties: { productId: { const: 'sandbox.run' }, input: { type: 'object' } }, additionalProperties: false },
+    output: { example: { productId: 'sandbox.run', state: 'RECEIPTED' }, schema: { type: 'object', additionalProperties: true } },
+  };
+  for (const resourcePath of ['/v1/sandbox/execute', '/v1/rpc/execute', '/v1/prediction/execute', '/v1/crypto/execute']) {
+    const result = await service.challenge({ quote, description: 'Bounded product execution', now: issuedAt, resourcePath, discovery });
+    assert.equal(result.body.resource.url, `https://api.clervo.dev${resourcePath}`);
+    assert.equal(result.body.extensions.bazaar.info.input.body.productId, 'sandbox.run');
+    assert.equal(validateDiscoveryExtension(result.body.extensions.bazaar).valid, true);
+  }
+});
+
 test('challenge service rejects the protected model gateway and non-Base configuration', async () => {
   const facilitator = { async getSupported() { return { kinds: [], extensions: [], signers: {} }; } };
   await assert.rejects(createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://ai.clervo.dev/', mppSecretKey }), /invalid x402 public origin/u);

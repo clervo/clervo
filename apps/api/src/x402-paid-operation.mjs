@@ -6,6 +6,9 @@ import {
   sealQuote,
   sealReceipt,
 } from '../../../dist/packages/contracts/src/index.js';
+import { PAYABLE_RESOURCE_PATHS } from './x402-resource.mjs';
+
+const payableResourcePaths = new Set(PAYABLE_RESOURCE_PATHS);
 
 function identifier(prefix, seed) {
   return `${prefix}_${createHash('sha256').update(seed).digest('hex').slice(0, 32)}`;
@@ -86,13 +89,14 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       execute,
       createResponse,
       resourcePath,
+      discovery,
       overloadCode = 'operation_overloaded',
     }) {
       if (typeof execute !== 'function' || typeof createResponse !== 'function') throw new TypeError('invalid_x402_operation_handler');
       if (prepare !== undefined && typeof prepare !== 'function') throw new TypeError('invalid_x402_operation_prepare');
       if (!/^[a-z][a-z0-9]*(?:\.[a-z][a-z0-9]*)+$/u.test(productId ?? '')) throw new TypeError('invalid_x402_product_id');
       const effectiveResourcePath = resourcePath ?? (productId.startsWith('ai.') ? '/v1/ai/execute' : '/v1/search/paid');
-      if (!['/v1/search/paid', '/v1/ai/execute'].includes(effectiveResourcePath)) throw new TypeError('invalid_x402_operation_resource');
+      if (!payableResourcePaths.has(effectiveResourcePath)) throw new TypeError('invalid_x402_operation_resource');
       const base = { idempotencyKey, requestHash, operationId, now };
       let state = await stateStore.lookup(base);
       if (state.kind === 'conflict') refuse('idempotency_conflict');
@@ -119,7 +123,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
           issuedAt: now,
           expiresAt: new Date(Date.parse(now) + 300_000).toISOString(),
         });
-        const challenge = await service.challenge({ quote, description: `Bounded ${productId} execution`, now, resourcePath: effectiveResourcePath });
+        const challenge = await service.challenge({ quote, description: `Bounded ${productId} execution`, now, resourcePath: effectiveResourcePath, discovery });
         state = await stateStore.challenge({ ...base, quote, challenge });
       }
       if (state.kind === 'conflict') refuse('idempotency_conflict');
@@ -138,7 +142,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
           claimed = await stateStore.claimExecution({ ...base, paymentFingerprint: authorization.fingerprint });
           if (claimed.kind === 'payment_conflict') refuse('x402_payment_already_bound');
           if (claimed.kind !== 'claimed') refuse(claimed.kind === 'unknown' ? claimed.state : 'idempotency_in_progress', claimed.kind === 'unknown' ? 503 : 409);
-          const completed = await execute(effectiveExecutionInput);
+          const completed = await execute(effectiveExecutionInput, Object.freeze({ authorization, quote: state.quote, operationId, productId, requestHash }));
           if (!completed || typeof completed !== 'object' || !Array.isArray(completed.provenance) || completed.provenance.length < 1) throw new TypeError('x402_operation_execution_invalid');
           execution = Object.freeze({
             output: completed.output,

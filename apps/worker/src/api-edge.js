@@ -9,7 +9,7 @@ import status from '../../../generated/public/status.json' with { type: 'json' }
 
 const UPSTREAM_ORIGIN = 'https://clervo-api-production-jbtbib4yqa-uc.a.run.app';
 const FAVICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32 2 62 32 32 62 2 32Z" fill="#050606" stroke="#64706d" stroke-width="2"/><path d="M39.5 23.5a12 12 0 1 0 0 17" fill="none" stroke="#f4f7f6" stroke-width="6" stroke-linecap="square"/><circle cx="43" cy="21" r="3" fill="#d6b86a"/></svg>';
-const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid', '/v1/ai/execute']);
+const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid', '/v1/ai/execute', '/v1/sandbox/execute']);
 const DISCOVERY_DOCUMENTS = new Map([
   ['/.well-known/clervo.json', discovery],
   ['/.well-known/mcp.json', mcpDiscovery],
@@ -25,6 +25,7 @@ const MAXIMUM_REQUEST_BYTES = Object.freeze({
   '/v1/search/free': 16_384,
   '/v1/search/paid': 16_384,
   '/v1/ai/execute': 262_144,
+  '/v1/sandbox/execute': 1_500_000,
 });
 
 function cors(headers = new Headers()) {
@@ -54,6 +55,7 @@ export default {
   async fetch(request, env = {}) {
     const incoming = new URL(request.url);
     if (incoming.pathname === '/v1/ai/execute' && env.CLERVO_AI_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
+    if (incoming.pathname === '/v1/sandbox/execute' && env.CLERVO_SANDBOX_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (request.method === 'OPTIONS' && PRODUCT_PATHS.has(incoming.pathname)) return new Response(null, { status: 204, headers: cors() });
     if (incoming.search && incoming.pathname !== '/') return json(400, { code: 'query_parameters_not_allowed', status: 400 });
     if (READ_PATHS.has(incoming.pathname) && request.method !== 'GET') return json(405, { code: 'method_not_allowed', status: 405 });

@@ -33,6 +33,7 @@ const sandboxMode = process.env.CLERVO_SANDBOX_MODE ?? 'disabled';
 const searchMode = process.env.CLERVO_SEARCH_MODE ?? 'recorded';
 const edgeAuthorization = process.env.CLERVO_EDGE_AUTHORIZATION;
 const aiMode = process.env.CLERVO_AI_MODE ?? 'disabled';
+const sandboxPublicMode = process.env.CLERVO_SANDBOX_PUBLIC_MODE ?? 'disabled';
 
 if (!releaseId) throw new Error('CLERVO_RELEASE_ID is required');
 if (!Number.isSafeInteger(port) || port < 1 || port > 65_535) throw new Error('invalid HTTP port');
@@ -44,11 +45,13 @@ if (!['disabled', 'challenge_only', 'settlement_enabled'].includes(x402Mode)) th
 if (!['disabled', 'private'].includes(sandboxMode)) throw new Error('invalid CLERVO_SANDBOX_MODE');
 if (!['recorded', 'live_external'].includes(searchMode)) throw new Error('invalid CLERVO_SEARCH_MODE');
 if (!['disabled', 'paid'].includes(aiMode)) throw new Error('invalid CLERVO_AI_MODE');
+if (!['disabled', 'paid'].includes(sandboxPublicMode)) throw new Error('invalid CLERVO_SANDBOX_PUBLIC_MODE');
 if (environment === 'production' && searchMode === 'live_external' && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new Error('production live search requires edge authorization');
 if (x402Mode !== 'disabled' && stateBackend !== 'postgres') throw new Error('x402 requires PostgreSQL state');
 if (x402Mode !== 'disabled' && (typeof process.env.CLERVO_MPP_SECRET_KEY !== 'string' || Buffer.byteLength(process.env.CLERVO_MPP_SECRET_KEY) < 32)) throw new Error('x402 commerce requires MPP secret key');
 if (sandboxMode !== 'disabled' && stateBackend !== 'postgres') throw new Error('sandbox requires PostgreSQL state');
 if (aiMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres')) throw new Error('public AI requires production x402 and PostgreSQL state');
+if (sandboxPublicMode === 'paid' && (sandboxMode !== 'private' || x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || !/^sha256:[a-f0-9]{64}$/u.test(process.env.CLERVO_SANDBOX_RUNNER_DIGEST ?? ''))) throw new Error('public Sandbox requires qualified private execution, production x402, PostgreSQL state, and an exact runner digest');
 if (privateMockCommerceEnabled && (environment !== 'stage4-private-qualification' || !['127.0.0.1', 'localhost'].includes(new URL(publicOrigin).hostname))) {
   throw new Error('private_mock_commerce_boundary_invalid');
 }
@@ -116,6 +119,7 @@ const server = createSearchServer({
   edgeAuthorization,
   aiPublicPricing: aiRuntime?.publicPricing,
   aiAdapters: aiRuntime?.adapters,
+  sandboxPublicRunnerDigest: sandboxPublicMode === 'paid' ? process.env.CLERVO_SANDBOX_RUNNER_DIGEST : undefined,
 });
 
 const exportTimer = setInterval(() => {
@@ -160,5 +164,6 @@ server.listen(port, host, () => {
     sandboxPrivateEnabled: sandboxMode === 'private',
     aiPaidEnabled: aiMode === 'paid',
     aiRouteFamilies: aiRuntime?.families ?? [],
+    sandboxPaidEnabled: sandboxPublicMode === 'paid',
   }));
 });

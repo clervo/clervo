@@ -13,7 +13,15 @@ const MPP_RECEIPT_HEADER = 'Payment-Receipt';
 const MAXIMUM_PAYMENT_HEADER_BYTES = 65_536;
 const pathMethods = Object.freeze({ supported: 'GET', verify: 'POST', settle: 'POST' });
 const BASE_USDC_EIP712_DOMAIN = Object.freeze({ name: 'USD Coin', version: '2' });
-const PAYABLE_RESOURCE_PATHS = new Set(['/v1/search/paid', '/v1/ai/execute']);
+export const PAYABLE_RESOURCE_PATHS = Object.freeze([
+  '/v1/search/paid',
+  '/v1/ai/execute',
+  '/v1/sandbox/execute',
+  '/v1/rpc/execute',
+  '/v1/prediction/execute',
+  '/v1/crypto/execute',
+]);
+const payableResourcePaths = new Set(PAYABLE_RESOURCE_PATHS);
 const SEARCH_DISCOVERY_INPUT = Object.freeze({ query: 'current x402 protocol documentation', maxResults: 3, synthesize: false, language: 'en', region: 'US' });
 const AI_DISCOVERY_INPUT = Object.freeze({
   model: 'gpt-5.6-luna',
@@ -21,7 +29,7 @@ const AI_DISCOVERY_INPUT = Object.freeze({
   maximumOutputTokens: 16,
 });
 
-function discoveryExtension(resourcePath) {
+function defaultDiscovery(resourcePath) {
   const ai = resourcePath === '/v1/ai/execute';
   const input = ai ? AI_DISCOVERY_INPUT : SEARCH_DISCOVERY_INPUT;
   const inputSchema = ai ? {
@@ -48,10 +56,18 @@ function discoveryExtension(resourcePath) {
   const outputExample = ai
     ? { productId: 'ai.chat', state: 'RECEIPTED', replayed: false, exactModelId: 'gpt-5.6-luna', result: { output: { kind: 'chat', content: 'ready' } }, receipt: { settlement: { status: 'settled' } } }
     : { productId: 'search.web', state: 'RECEIPTED', replayed: false, output: { searchResponse: { results: [], citations: [] } }, receipt: { settlement: { status: 'settled' } } };
-  return declareDiscoveryExtension({
+  return Object.freeze({
     method: 'POST', bodyType: 'json', input, inputSchema,
     output: { example: outputExample, schema: { additionalProperties: true } },
   });
+}
+
+function discoveryExtension(resourcePath, discovery) {
+  const selected = discovery ?? defaultDiscovery(resourcePath);
+  if (selected?.method !== 'POST' || selected?.bodyType !== 'json' || selected?.input === undefined
+    || selected?.inputSchema?.type !== 'object' || selected?.output?.schema === undefined
+    || selected?.output?.example === undefined) throw new TypeError('resource_discovery_invalid');
+  return declareDiscoveryExtension(selected);
 }
 
 function base64url(value) {
@@ -231,12 +247,12 @@ export async function createX402ChallengeService({
 
   return Object.freeze({
     mode: paymentMode,
-    async challenge({ quote, description, now, resourcePath = '/v1/search/paid' }) {
+    async challenge({ quote, description, now, resourcePath = '/v1/search/paid', discovery }) {
       if (!verifyQuote(quote)) throw new TypeError('quote_hash_invalid');
       if (isQuoteExpired(quote, now)) throw new TypeError('quote_expired');
       if (quote.maximumCharge.asset !== 'USDC' || quote.maximumCharge.decimals !== 6) throw new TypeError('quote_asset_invalid');
       if (typeof description !== 'string' || description.length < 1 || description.length > 500) throw new TypeError('description_invalid');
-      if (!PAYABLE_RESOURCE_PATHS.has(resourcePath)) throw new TypeError('resource_path_invalid');
+      if (!payableResourcePaths.has(resourcePath)) throw new TypeError('resource_path_invalid');
       const requirements = await server.buildPaymentRequirements({
         scheme: 'exact',
         network,
@@ -259,7 +275,7 @@ export async function createX402ChallengeService({
         url: `${origin.origin}${resourcePath}`,
         description,
         mimeType: 'application/json',
-      }, 'PAYMENT-SIGNATURE header is required', discoveryExtension(resourcePath));
+      }, 'PAYMENT-SIGNATURE header is required', discoveryExtension(resourcePath, discovery));
       const header = Buffer.from(JSON.stringify(body), 'utf8').toString('base64');
       const mpp = mppHandler({ quote, description, resourcePath });
       const mppResult = await mpp.handler(new Request(`${origin.origin}${resourcePath}`, { method: 'POST' }));

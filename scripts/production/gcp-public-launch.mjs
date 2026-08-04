@@ -49,7 +49,7 @@ function describedImage(candidateRevision) {
 const plan = Object.freeze({
   action: 'plan', state: policy.state, project: policy.project, region: policy.region, service: policy.service,
   publicOrigin: policy.publicOrigin, searchMode: policy.search.mode, synthesisEnabled: policy.search.synthesisEnabled,
-  x402Mode: policy.commerce.mode, sandboxMode: policy.sandbox.mode, deployTrafficPercent: 0,
+  x402Mode: policy.commerce.mode, sandboxMode: policy.sandbox.mode, sandboxPublicMode: policy.sandbox.publicMode, deployTrafficPercent: 0,
   publicAccessEnabledOnlyAfterPromotion: true, publicAccessMethod: policy.rollout.publicAccessMethod, protectedResources: policy.protectedResources,
 });
 
@@ -83,7 +83,8 @@ else if (action === 'observe') {
     `CLERVO_SEARCH_PRIMARY_CALL_CEILING=${policy.search.primaryCallCeiling}`, `CLERVO_SEARCH_FALLBACK_CALL_CEILING=${policy.search.fallbackCallCeiling}`,
     `CLERVO_X402_MODE=${policy.commerce.mode}`, `CLERVO_X402_FACILITATOR_URL=${policy.commerce.facilitatorUrl}`,
     `CLERVO_X402_NETWORK=${policy.commerce.network}`, `CLERVO_X402_ASSET=${policy.commerce.asset}`,
-    `CLERVO_SANDBOX_MODE=${policy.sandbox.mode}`, `CLERVO_SANDBOX_CONTROL_ORIGIN=${sandbox.cloudRun.controlOrigin}`,
+    `CLERVO_SANDBOX_MODE=${policy.sandbox.mode}`, `CLERVO_SANDBOX_PUBLIC_MODE=${policy.sandbox.publicMode}`,
+    `CLERVO_SANDBOX_RUNNER_DIGEST=${policy.sandbox.runnerDigest}`, `CLERVO_SANDBOX_CONTROL_ORIGIN=${sandbox.cloudRun.controlOrigin}`,
     'CLERVO_RELEASE_CHANNEL=public-live-candidate',
     `CLERVO_AI_MODE=${policy.ai.mode}`, `CLERVO_AI_ROUTE_FAMILIES=${policy.ai.routeFamilies}`,
     `CLERVO_AI_BASE_URL=${policy.ai.baseUrl}`, `CLERVO_VERTEX_PROJECT_ID=${policy.ai.vertexProjectId}`,
@@ -132,6 +133,7 @@ else if (action === 'observe') {
   assert.equal(env('CLERVO_PUBLIC_LAUNCH_CONFIRM'), `promote-public:${releaseId}:${candidateRevision}`, 'confirmation mismatch');
   assert.equal(env('CLERVO_LIVE_SEARCH_SMOKE'), 'passed', 'live search smoke missing');
   assert.equal(env('CLERVO_X402_CHALLENGE_SMOKE'), 'passed', 'x402 challenge smoke missing');
+  assert.equal(env('CLERVO_SANDBOX_LIVE_SMOKE'), 'passed', 'Sandbox live smoke missing');
   assert.equal(env('CLERVO_MONITORING_DELIVERY'), 'acknowledged', 'monitoring delivery missing');
   assert.equal(describedImage(candidateRevision), candidateImage, 'candidate image mismatch');
   verifyArtifact(candidateImage);
