@@ -63,11 +63,15 @@ function catalogRouteId(exactModelId) {
   return `ai.route.${exactModelId.replace(/[^a-zA-Z0-9]+/gu, '_').replace(/^_|_$/gu, '').toLowerCase()}`;
 }
 
-export async function createAiProductionRuntime({ env = process.env, fetcher = globalThis.fetch, artifactStore } = {}) {
+export async function createAiProductionRuntime({ env = process.env, fetcher = globalThis.fetch, artifactStore, artifactStoreFactory } = {}) {
   const families = parseFamilies(env.CLERVO_AI_ROUTE_FAMILIES);
   if (typeof fetcher !== 'function') throw new TypeError('ai_runtime_fetcher_invalid');
+  if (artifactStoreFactory !== undefined && typeof artifactStoreFactory !== 'function') throw new TypeError('ai_runtime_artifact_store_factory_invalid');
+  const resolveArtifactStore = artifactStoreFactory ?? (artifactStore === undefined ? undefined : () => artifactStore);
   const transport = createBoundedAiHttpTransport(fetcher);
   const adapters = [];
+  const mediaAdapterFactories = [];
+  const mediaRouteIds = [];
   const resolveSecret = secret(env);
 
   if (families.includes('clervo_gateway')) {
@@ -113,7 +117,10 @@ export async function createAiProductionRuntime({ env = process.env, fetcher = g
       transport,
       secret: resolveSecret,
     }));
-    if (artifactStore !== undefined) adapters.push(new CloudflareAuraSpeechAdapter({ config: { routeId: 'ai.route.cloudflare_aura_2_en', accountId, secretName: tokenName, maximumResponseBytes: 20_000_000 }, transport, secret: resolveSecret, artifacts: artifactStore }));
+    if (resolveArtifactStore !== undefined) {
+      mediaRouteIds.push('ai.route.cloudflare_aura_2_en');
+      mediaAdapterFactories.push((store) => new CloudflareAuraSpeechAdapter({ config: { routeId: 'ai.route.cloudflare_aura_2_en', accountId, secretName: tokenName, maximumResponseBytes: 20_000_000 }, transport, secret: resolveSecret, artifacts: store }));
+    }
   }
 
   if (families.includes('vertex')) {
@@ -125,20 +132,39 @@ export async function createAiProductionRuntime({ env = process.env, fetcher = g
       accessToken,
     }));
     adapters.push(new VertexEmbeddingAdapter({ config: { routeId: 'ai.route.gemini_embedding_001', projectId, location: 'us-central1', exactModelId: 'gemini-embedding-001', maximumResponseBytes: 20_000_000 }, transport, accessToken }));
-    if (artifactStore !== undefined) for (const exactModelId of ['gemini-3.1-flash-lite-image', 'gemini-3.1-flash-image', 'gemini-3-pro-image']) adapters.push(new VertexGeminiAdapter({
-      config: { routeId: catalogRouteId(exactModelId), projectId, location: 'global', exactModelId, productId: 'ai.image', maximumResponseBytes: 20_000_000 },
-      transport,
-      accessToken,
-      artifacts: artifactStore,
-    }));
+    if (resolveArtifactStore !== undefined) for (const exactModelId of ['gemini-3.1-flash-lite-image', 'gemini-3.1-flash-image', 'gemini-3-pro-image']) {
+      mediaRouteIds.push(catalogRouteId(exactModelId));
+      mediaAdapterFactories.push((store) => new VertexGeminiAdapter({
+        config: { routeId: catalogRouteId(exactModelId), projectId, location: 'global', exactModelId, productId: 'ai.image', maximumResponseBytes: 20_000_000 },
+        transport,
+        accessToken,
+        artifacts: store,
+      }));
+    }
   }
 
   if (families.includes('deepgram')) {
-    if (artifactStore === undefined) throw new TypeError('ai_runtime_artifact_store_required');
+    if (resolveArtifactStore === undefined) throw new TypeError('ai_runtime_artifact_store_required');
     required(env, 'DEEPGRAM_API_KEY');
-    for (const exactModelId of ['aura-2-thalia-en', 'aura-2-arcas-en']) adapters.push(new DeepgramSpeechAdapter({ config: { routeId: `ai.route.${exactModelId.replaceAll('-', '_')}`, exactModelId, secretName: 'DEEPGRAM_API_KEY', maximumResponseBytes: 20_000_000 }, transport, secret: resolveSecret, artifacts: artifactStore }));
+    for (const exactModelId of ['aura-2-thalia-en', 'aura-2-arcas-en']) {
+      const routeId = `ai.route.${exactModelId.replaceAll('-', '_')}`;
+      mediaRouteIds.push(routeId);
+      mediaAdapterFactories.push((store) => new DeepgramSpeechAdapter({ config: { routeId, exactModelId, secretName: 'DEEPGRAM_API_KEY', maximumResponseBytes: 20_000_000 }, transport, secret: resolveSecret, artifacts: store }));
+    }
   }
 
   const values = await catalogs();
-  return Object.freeze({ adapters: Object.freeze(adapters), publicPricing: createAiPublicPricing(values, { enabledRouteIds: adapters.map(({ routeId }) => routeId) }), families: Object.freeze(families) });
+  const enabledRouteIds = [...adapters.map(({ routeId }) => routeId), ...mediaRouteIds];
+  return Object.freeze({
+    adapters: Object.freeze(adapters),
+    ...(resolveArtifactStore === undefined ? {} : {
+      adapterFactory(authorization) {
+        const store = resolveArtifactStore(authorization);
+        if (!store || typeof store.put !== 'function') throw new TypeError('ai_runtime_artifact_store_invalid');
+        return Object.freeze([...adapters, ...mediaAdapterFactories.map((factory) => factory(store))]);
+      },
+    }),
+    publicPricing: createAiPublicPricing(values, { enabledRouteIds }),
+    families: Object.freeze(families),
+  });
 }

@@ -110,6 +110,13 @@ test('API edge publishes enabled products while blocking private control and dis
     method: 'POST', headers: { 'content-length': '1500001' },
   }), { CLERVO_AI_PUBLIC_ENABLED: 'true', CLERVO_SANDBOX_PUBLIC_ENABLED: 'true' });
   assert.equal(oversizedSandbox.status, 413);
+  const artifactPath = `/v1/artifacts/tenant_${'a'.repeat(32)}/${'b'.repeat(64)}/png/1785819900/${'c'.repeat(43)}`;
+  const artifactPreflight = await worker.fetch(new Request(`https://api.clervo.dev${artifactPath}`, { method: 'OPTIONS' }));
+  assert.equal(artifactPreflight.status, 204);
+  const artifactMethod = await worker.fetch(new Request(`https://api.clervo.dev${artifactPath}`, { method: 'POST' }));
+  assert.equal(artifactMethod.status, 405);
+  const malformedArtifact = await worker.fetch(new Request(`https://api.clervo.dev${artifactPath.slice(0, -1)}`));
+  assert.equal(malformedArtifact.status, 404);
 });
 
 test('public Search discovery exposes only the exact verified raw product and preserves commercial boundaries', () => {

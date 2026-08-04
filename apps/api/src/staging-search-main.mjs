@@ -15,6 +15,7 @@ import { createPostgresX402OperationStoreFromEnvironment } from './x402-operatio
 import { createSandboxPrivateGateway } from './sandbox-private-gateway.mjs';
 import { createPostgresSandboxOperationStoreFromEnvironment } from './sandbox-operation-store.mjs';
 import { createAiProductionRuntime } from './ai-production-runtime.mjs';
+import { createAiArtifactRuntime } from './ai-artifact-runtime.mjs';
 
 const environment = process.env.CLERVO_ENV ?? 'staging';
 const releaseId = process.env.CLERVO_RELEASE_ID;
@@ -34,6 +35,7 @@ const searchMode = process.env.CLERVO_SEARCH_MODE ?? 'recorded';
 const edgeAuthorization = process.env.CLERVO_EDGE_AUTHORIZATION;
 const aiMode = process.env.CLERVO_AI_MODE ?? 'disabled';
 const sandboxPublicMode = process.env.CLERVO_SANDBOX_PUBLIC_MODE ?? 'disabled';
+const aiArtifactMode = process.env.CLERVO_AI_ARTIFACT_MODE ?? 'disabled';
 
 if (!releaseId) throw new Error('CLERVO_RELEASE_ID is required');
 if (!Number.isSafeInteger(port) || port < 1 || port > 65_535) throw new Error('invalid HTTP port');
@@ -46,6 +48,7 @@ if (!['disabled', 'private'].includes(sandboxMode)) throw new Error('invalid CLE
 if (!['recorded', 'live_external'].includes(searchMode)) throw new Error('invalid CLERVO_SEARCH_MODE');
 if (!['disabled', 'paid'].includes(aiMode)) throw new Error('invalid CLERVO_AI_MODE');
 if (!['disabled', 'paid'].includes(sandboxPublicMode)) throw new Error('invalid CLERVO_SANDBOX_PUBLIC_MODE');
+if (!['disabled', 'r2'].includes(aiArtifactMode)) throw new Error('invalid CLERVO_AI_ARTIFACT_MODE');
 if (environment === 'production' && searchMode === 'live_external' && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new Error('production live search requires edge authorization');
 if (x402Mode !== 'disabled' && stateBackend !== 'postgres') throw new Error('x402 requires PostgreSQL state');
 if (x402Mode !== 'disabled' && (typeof process.env.CLERVO_MPP_SECRET_KEY !== 'string' || Buffer.byteLength(process.env.CLERVO_MPP_SECRET_KEY) < 32)) throw new Error('x402 commerce requires MPP secret key');
@@ -85,7 +88,8 @@ const executor = searchMode === 'live_external'
     fallbackCallCeiling: Number(process.env.CLERVO_SEARCH_FALLBACK_CALL_CEILING ?? '2500'),
   })
   : createRecordedSearchExecutor();
-const aiRuntime = aiMode === 'paid' ? await createAiProductionRuntime() : undefined;
+const aiArtifactRuntime = aiArtifactMode === 'r2' ? createAiArtifactRuntime() : undefined;
+const aiRuntime = aiMode === 'paid' ? await createAiProductionRuntime({ artifactStoreFactory: aiArtifactRuntime?.forAuthorization }) : undefined;
 
 const monitoringExporter = monitoringDriver === 'sentry'
   ? createSentryMonitoringExporter({ dsn: sentryDsn, environment, release: releaseId })
@@ -119,6 +123,8 @@ const server = createSearchServer({
   edgeAuthorization,
   aiPublicPricing: aiRuntime?.publicPricing,
   aiAdapters: aiRuntime?.adapters,
+  aiAdapterFactory: aiRuntime?.adapterFactory,
+  aiArtifactAccess: aiArtifactRuntime,
   sandboxPublicRunnerDigest: sandboxPublicMode === 'paid' ? process.env.CLERVO_SANDBOX_RUNNER_DIGEST : undefined,
 });
 

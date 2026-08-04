@@ -9,9 +9,10 @@ function refuse(code, status = 503) {
   throw Object.assign(new Error(code), { status });
 }
 
-export function createX402PaidAiProcessor({ service, stateStore, publicPricing, adapters, acquireExecution, monitor } = {}) {
+export function createX402PaidAiProcessor({ service, stateStore, publicPricing, adapters, adapterFactory, acquireExecution, monitor } = {}) {
   if (!publicPricing || typeof publicPricing.quote !== 'function') throw new TypeError('invalid_ai_public_pricing');
   if (!Array.isArray(adapters) || adapters.some((adapter) => typeof adapter?.routeId !== 'string' || typeof adapter?.execute !== 'function')) throw new TypeError('invalid_ai_adapters');
+  if (adapterFactory !== undefined && typeof adapterFactory !== 'function') throw new TypeError('invalid_ai_adapter_factory');
   const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution });
 
   return Object.freeze({
@@ -40,13 +41,15 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
           prepared = Object.freeze({ quote, request });
           return Object.freeze({ pricing: quote.pricing, executionInput: request });
         },
-        async execute(request) {
+        async execute(request, { authorization }) {
           if (prepared === undefined) throw new TypeError('ai_execution_not_prepared');
+          const executionAdapters = adapterFactory === undefined ? adapters : adapterFactory(authorization);
+          if (!Array.isArray(executionAdapters) || executionAdapters.some((adapter) => typeof adapter?.routeId !== 'string' || typeof adapter?.execute !== 'function')) throw new TypeError('invalid_ai_execution_adapters');
           const outcome = await executeAiOperation({
             request,
             catalog: prepared.quote.catalog,
             routes: prepared.quote.routes,
-            adapters,
+            adapters: executionAdapters,
             startedAt: now,
             clock: () => Date.parse(now),
             monitor,

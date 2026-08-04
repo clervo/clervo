@@ -27,6 +27,7 @@ const MAXIMUM_REQUEST_BYTES = Object.freeze({
   '/v1/ai/execute': 262_144,
   '/v1/sandbox/execute': 1_500_000,
 });
+const ARTIFACT_PATH = /^\/v1\/artifacts\/tenant_[A-Za-z0-9]{20,64}\/[a-f0-9]{64}\/[a-z0-9]{3,8}\/[1-9][0-9]{9}\/[A-Za-z0-9_-]{43}$/u;
 
 function cors(headers = new Headers()) {
   headers.set('access-control-allow-origin', '*');
@@ -54,13 +55,15 @@ async function quotaSubject(request) {
 export default {
   async fetch(request, env = {}) {
     const incoming = new URL(request.url);
+    const artifactRequest = ARTIFACT_PATH.test(incoming.pathname);
     if (incoming.pathname === '/v1/ai/execute' && env.CLERVO_AI_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/v1/sandbox/execute' && env.CLERVO_SANDBOX_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
-    if (request.method === 'OPTIONS' && PRODUCT_PATHS.has(incoming.pathname)) return new Response(null, { status: 204, headers: cors() });
+    if (request.method === 'OPTIONS' && (PRODUCT_PATHS.has(incoming.pathname) || artifactRequest)) return new Response(null, { status: 204, headers: cors() });
     if (incoming.search && incoming.pathname !== '/') return json(400, { code: 'query_parameters_not_allowed', status: 400 });
     if (READ_PATHS.has(incoming.pathname) && request.method !== 'GET') return json(405, { code: 'method_not_allowed', status: 405 });
     if (PRODUCT_PATHS.has(incoming.pathname) && request.method !== 'POST') return json(405, { code: 'method_not_allowed', status: 405 });
-    if (!READ_PATHS.has(incoming.pathname) && !PRODUCT_PATHS.has(incoming.pathname)) return json(404, { code: 'not_found', status: 404 });
+    if (artifactRequest && request.method !== 'GET') return json(405, { code: 'method_not_allowed', status: 405 });
+    if (!READ_PATHS.has(incoming.pathname) && !PRODUCT_PATHS.has(incoming.pathname) && !artifactRequest) return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/') return json(200, {
       service: 'Clervo API',
       discovery: 'https://api.clervo.dev/.well-known/clervo.json',

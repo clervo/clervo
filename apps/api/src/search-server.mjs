@@ -141,6 +141,8 @@ export function createSearchServer({
   edgeAuthorization,
   aiPublicPricing,
   aiAdapters,
+  aiAdapterFactory,
+  aiArtifactAccess,
   aiMonitor,
   sandboxPublicRunnerDigest,
 } = {}) {
@@ -159,6 +161,8 @@ export function createSearchServer({
   if (edgeAuthorization !== undefined && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new TypeError('invalid edge authorization');
   if ((aiPublicPricing === undefined) !== (aiAdapters === undefined)) throw new TypeError('AI pricing and adapters must be configured together');
   if (aiPublicPricing !== undefined && x402Service === undefined) throw new TypeError('public AI requires x402 commerce');
+  if (aiAdapterFactory !== undefined && (aiPublicPricing === undefined || typeof aiAdapterFactory !== 'function')) throw new TypeError('invalid AI adapter factory');
+  if (aiArtifactAccess !== undefined && (typeof aiArtifactAccess.matches !== 'function' || typeof aiArtifactAccess.retrieve !== 'function')) throw new TypeError('invalid AI artifact access');
   if (sandboxPublicRunnerDigest !== undefined && (sandboxGateway === undefined || x402Service === undefined)) throw new TypeError('public Sandbox requires private execution and x402 commerce');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
   if (
@@ -191,6 +195,7 @@ export function createSearchServer({
     stateStore: x402StateStore,
     publicPricing: aiPublicPricing,
     adapters: aiAdapters,
+    adapterFactory: aiAdapterFactory,
     acquireExecution,
     monitor: aiMonitor,
   });
@@ -287,6 +292,37 @@ export function createSearchServer({
           durableState: searchState.durable === true,
           trafficMode: trafficControl?.snapshot().mode ?? 'open',
         });
+      }
+      return;
+    }
+    if (aiArtifactAccess?.matches(url.pathname)) {
+      if (edgeAuthorization !== undefined && !internalAuthorized(request.headers['x-clervo-edge-authorization'], edgeAuthorization)) {
+        send(response, 401, problem(401, 'edge_unauthorized', 'Unauthorized', 'The public API edge is required.', url.pathname), {}, PROBLEM_TYPE);
+        return;
+      }
+      if (request.method !== 'GET') {
+        send(response, 405, problem(405, 'method_not_allowed', 'Method not allowed', 'Artifact retrieval requires GET.', url.pathname), { allow: 'GET' }, PROBLEM_TYPE);
+        return;
+      }
+      if (url.search !== '') {
+        send(response, 400, problem(400, 'query_parameters_not_allowed', 'Query parameters not allowed', 'The signed artifact path already contains the complete access grant.', url.pathname), {}, PROBLEM_TYPE);
+        return;
+      }
+      try {
+        const artifact = await aiArtifactAccess.retrieve(url.pathname);
+        response.writeHead(200, {
+          'content-type': artifact.mimeType,
+          'content-length': String(artifact.bytes.byteLength),
+          'cache-control': 'private, no-store',
+          'x-content-type-options': 'nosniff',
+          'x-clervo-artifact-sha256': artifact.sha256,
+          'x-clervo-artifact-expires': artifact.expiresAt,
+        });
+        response.end(Buffer.from(artifact.bytes));
+      } catch (error) {
+        const code = errorCode(error);
+        const status = Number.isInteger(error?.status) ? error.status : 503;
+        send(response, status, problem(status, code, status === 410 ? 'Artifact access expired' : status === 404 ? 'Artifact not found' : 'Artifact unavailable', 'The artifact request failed closed without exposing storage credentials or a different tenant object.', url.pathname), status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
       }
       return;
     }
