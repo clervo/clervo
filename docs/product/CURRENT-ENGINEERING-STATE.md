@@ -11,6 +11,27 @@ execution order. Customer-functional paid readiness is currently 58.33% under
 the eight-gate rubric in `packages/catalog/full-platform-readiness.v1.json`.
 This does not reduce the six-product master-plan scope.
 
+## Exact revenue-continuation point
+
+Search, AI, and Sandbox are the three currently public payable products. The
+owner-funded 0.006 USDC Search settlement and no-charge replay remain the only
+real payment proof; do not repeat that charge. Public commerce implementations
+for the remaining products are committed at `f4f5759` (RPC), `af20e38`
+(Prediction), and `5e2dbeb` plus `a517a12`/`a1c0118` (Crypto EVM, exact Lido
+positions, and bounded Solana intelligence). They are not public yet.
+
+Resume by making the smallest legitimate Sandbox execution dynamically priced
+and affordable without weakening its maximum resource/cost ceilings. Then add
+the three new product runtimes to the production launch configuration, finish
+their live supply qualification, deploy them behind the protected edge, update
+generated lifecycle/discovery/client truth, and run one minimum-cost real
+settlement plus no-charge replay for each product that lacks proof. RPC needs a
+Google Blockchain RPC Ethereum endpoint, Crypto needs a Blockscout key and a
+dedicated Alchemy Solana endpoint; obtain those through hidden terminal input,
+never chat. Prediction's two read-only sources are already live-qualified.
+Keep the website deferred until all six products return useful paid output in
+production.
+
 ## Latest production truth
 
 Production now serves release `e23264a52c0c2a0254d19ff8062437b05ce1bad8`
