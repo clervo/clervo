@@ -256,7 +256,7 @@ let llms = contractModule.createLlmsText(projection);
 if (publicSearch) {
   openapi.servers = [{ url: 'https://api.clervo.dev' }];
   openapi.info.contact = { name: 'Clervo', email: 'mo@clervo.dev', url: 'https://github.com/clervo/clervo' };
-  openapi.info['x-guidance'] = 'Use POST /v1/search/free for a bounded no-payment sample. Paid routes return an x402 v2 challenge before execution. Supply the required JSON body and a stable Idempotency-Key, inspect the exact payment requirements, and send PAYMENT-SIGNATURE only after approval. Reuse the same key to recover or replay a completed result without a second charge. AI discovery currently advertises only qualified non-streaming chat; unsupported capabilities fail closed.';
+  openapi.info['x-guidance'] = 'Use POST /v1/search/free for a bounded no-payment sample. Paid routes return x402 v2 and MPP EVM charge challenges before execution. Supply the required JSON body and a stable Idempotency-Key, inspect the exact payment requirements, and send either PAYMENT-SIGNATURE for x402 or Authorization: Payment for MPP only after approval. Reuse the same key to recover or replay a completed result without a second charge. AI discovery currently advertises only qualified non-streaming chat; unsupported capabilities fail closed.';
   openapi.paths['/v1/search/free'].post = scannerSafeOperation(openapi.paths['/v1/search/free'].post, {
     requestSchema: searchProbeSchema,
     example: searchProbeExample,
@@ -267,7 +267,7 @@ if (publicSearch) {
     example: searchProbeExample,
     paymentInfo: {
       price: { mode: 'fixed', currency: 'USD', amount: '0.006000' },
-      protocols: [{ x402: {} }],
+      protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
     },
   });
   openapi.paths['/v1/search/paid'].post.responses['200'].description = 'Raw cited Search completed or replayed';
@@ -285,7 +285,7 @@ if (publicAi) {
       responses: {
         200: { description: 'AI operation completed or replayed', content: { 'application/json': { schema: { $ref: '#/components/schemas/AiHttpResult' } } } },
         400: { description: 'Invalid bounded AI request', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
-        402: { description: 'Exact x402 payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } } } },
+        402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
         409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
         503: { description: 'No qualified route, capacity, or settlement path is available', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
       },
@@ -296,7 +296,7 @@ if (publicAi) {
     example: aiProbeExample,
     paymentInfo: {
       price: { mode: 'dynamic', currency: 'USD', min: '0.000001', max: '2.621440' },
-      protocols: [{ x402: {} }],
+      protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
     },
   });
   openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, 'ai.chat'];

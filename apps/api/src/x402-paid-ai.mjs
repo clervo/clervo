@@ -17,7 +17,7 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
   return Object.freeze({
     mode: processor.mode,
     durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, now }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
       let prepared;
       return processor.process({
         idempotencyKey,
@@ -25,6 +25,7 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
         operationId,
         productId: normalized.productId,
         paymentHeader,
+        authorizationHeader,
         now,
         resourcePath: '/v1/ai/execute',
         overloadCode: 'ai_overloaded',

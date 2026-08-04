@@ -7,12 +7,15 @@ import test from 'node:test';
 import { x402Client } from '@x402/core/client';
 import { registerExactEvmScheme } from '@x402/evm/exact/client';
 import { validateDiscoveryExtension } from '@x402/extensions/bazaar';
+import { Mppx as MppxClient, evm as clientEvm } from 'mppx/client';
+import { privateKeyToAccount } from 'viem/accounts';
 import { CONTRACT_VERSION, sealQuote } from '../../dist/packages/contracts/src/index.js';
 import { createCdpFacilitatorAuth, createX402ChallengeService } from '../../apps/api/src/x402-resource.mjs';
 
 const network = 'eip155:8453';
 const asset = `0x${'1'.repeat(40)}`;
 const payTo = `0x${'2'.repeat(40)}`;
+const mppSecretKey = 'test-only-mpp-secret-key-at-least-thirty-two-bytes';
 const issuedAt = '2026-08-03T12:00:00.000Z';
 const expiresAt = '2026-08-03T12:05:00.000Z';
 const execute = promisify(execFile);
@@ -66,11 +69,13 @@ test('real x402 challenge is quote-bound while verify and settle remain unavaila
     asset,
     payTo,
     publicOrigin: 'https://api.clervo.dev/',
+    mppSecretKey,
   });
   const result = await service.challenge({ quote, description: 'Bounded search.web execution', now: issuedAt });
   assert.equal(service.mode, 'challenge_only');
   assert.equal(result.status, 402);
   assert.match(result.headers['PAYMENT-REQUIRED'], /^[A-Za-z0-9+/]+=*$/u);
+  assert.match(result.headers['WWW-Authenticate'], /^Payment\s+/u);
   assert.equal(result.body.x402Version, 2);
   assert.equal(result.body.accepts.length, 1);
   const requirement = result.body.accepts[0];
@@ -112,11 +117,64 @@ test('real x402 challenge is quote-bound while verify and settle remain unavaila
   assert.deepEqual(calls, { supported: 1, verify: 0, settle: 0 });
 });
 
+test('MPP EVM charge is quote-bound, verifies before execution, settles once, and returns a receipt', async () => {
+  const calls = { supported: 0, verify: 0, settle: 0 };
+  const payer = privateKeyToAccount(`0x${'3'.repeat(64)}`);
+  const mppIssuedAt = new Date().toISOString();
+  const mppQuote = sealQuote({
+    contractVersion: CONTRACT_VERSION,
+    quoteId: 'quote_mppcharge000000000000000000',
+    operationId: 'op_mppcharge000000000000000000000',
+    productId: 'search.web',
+    requestHash: `sha256:${'b'.repeat(64)}`,
+    priceVersion: 'search-2026-08-01.1',
+    maximumCharge: { asset: 'USDC', amountAtomic: '1000', decimals: 6 },
+    issuedAt: mppIssuedAt,
+    expiresAt: new Date(Date.parse(mppIssuedAt) + 300_000).toISOString(),
+  });
+  const facilitator = {
+    async getSupported() {
+      calls.supported += 1;
+      return { kinds: [{ x402Version: 2, scheme: 'exact', network }], extensions: [], signers: {} };
+    },
+    async verify(payload, requirements) {
+      calls.verify += 1;
+      assert.deepEqual(payload.accepted, requirements);
+      assert.equal(payload.payload.authorization.from.toLowerCase(), payer.address.toLowerCase());
+      assert.equal(payload.payload.authorization.value, mppQuote.maximumCharge.amountAtomic);
+      return { isValid: true, payer: payer.address };
+    },
+    async settle(payload, requirements) {
+      calls.settle += 1;
+      assert.deepEqual(payload.accepted, requirements);
+      return { success: true, transaction: `0x${'5'.repeat(64)}`, network, payer: payer.address };
+    },
+  };
+  const service = await createX402ChallengeService({
+    facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/', paymentMode: 'settlement_enabled', mppSecretKey,
+  });
+  const challenge = await service.challenge({ quote: mppQuote, description: 'Bounded search.web execution', now: mppIssuedAt });
+  const client = MppxClient.create({
+    methods: [clientEvm.charge({ account: payer, currencies: [clientEvm.assets.base.USDC], networks: [8453], maxAtomicAmount: '1000' })],
+    polyfill: false,
+  });
+  const credential = await client.createCredential(new Response(null, { status: 402, headers: { 'WWW-Authenticate': challenge.headers['WWW-Authenticate'] } }));
+  assert.match(credential, /^Payment\s+/u);
+  const authorization = await service.authorize({ authorizationHeader: credential, challenge });
+  assert.equal(authorization.protocol, 'mpp');
+  assert.match(authorization.fingerprint, /^sha256:[a-f0-9]{64}$/u);
+  assert.deepEqual(calls, { supported: 1, verify: 1, settle: 0 });
+  const settled = await service.settle(authorization);
+  assert.equal(settled.kind, 'settled');
+  assert.match(settled.headers['Payment-Receipt'], /^[A-Za-z0-9_-]+$/u);
+  assert.deepEqual(calls, { supported: 1, verify: 1, settle: 1 });
+});
+
 test('challenge service binds AI payments to the exact public AI resource', async () => {
   const facilitator = {
     async getSupported() { return { kinds: [{ x402Version: 2, scheme: 'exact', network }], extensions: [], signers: {} }; },
   };
-  const service = await createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/' });
+  const service = await createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/', mppSecretKey });
   const result = await service.challenge({ quote, description: 'Bounded ai.chat execution', now: issuedAt, resourcePath: '/v1/ai/execute' });
   assert.equal(result.body.resource.url, 'https://api.clervo.dev/v1/ai/execute');
   assert.equal(result.body.extensions.bazaar.info.input.body.input.kind, 'chat');
@@ -130,8 +188,8 @@ test('challenge service binds AI payments to the exact public AI resource', asyn
 
 test('challenge service rejects the protected model gateway and non-Base configuration', async () => {
   const facilitator = { async getSupported() { return { kinds: [], extensions: [], signers: {} }; } };
-  await assert.rejects(createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://ai.clervo.dev/' }), /invalid x402 public origin/u);
-  await assert.rejects(createX402ChallengeService({ facilitator, network: 'eip155:84532', asset, payTo, publicOrigin: 'https://api.clervo.dev/' }), /unsupported x402 production network/u);
+  await assert.rejects(createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://ai.clervo.dev/', mppSecretKey }), /invalid x402 public origin/u);
+  await assert.rejects(createX402ChallengeService({ facilitator, network: 'eip155:84532', asset, payTo, publicOrigin: 'https://api.clervo.dev/', mppSecretKey }), /unsupported x402 production network/u);
 });
 
 test('payment processing verifies once, settles once, and quarantines unknown settlement', async () => {
@@ -153,7 +211,7 @@ test('payment processing verifies once, settles once, and quarantines unknown se
     },
   };
   const service = await createX402ChallengeService({
-    facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/', paymentMode: 'settlement_enabled',
+    facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/', paymentMode: 'settlement_enabled', mppSecretKey,
   });
   const challenge = await service.challenge({ quote, description: 'Bounded search.web execution', now: issuedAt });
   const paymentPayload = { x402Version: 2, accepted: challenge.body.accepts[0], payload: { signature: 'opaque-test-value' } };
@@ -172,6 +230,7 @@ test('payment processing verifies once, settles once, and quarantines unknown se
     payTo,
     publicOrigin: 'https://api.clervo.dev/',
     paymentMode: 'settlement_enabled',
+    mppSecretKey,
   });
   const uncertainChallenge = await uncertain.challenge({ quote, description: 'Bounded search.web execution', now: issuedAt });
   const uncertainPayload = { ...paymentPayload, accepted: uncertainChallenge.body.accepts[0] };
@@ -189,7 +248,7 @@ test('challenge-only mode rejects payment headers before facilitator verificatio
     async getSupported() { return { kinds: [{ x402Version: 2, scheme: 'exact', network }], extensions: [], signers: {} }; },
     async verify() { throw new Error('must_not_run'); },
   };
-  const service = await createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/' });
+  const service = await createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/', mppSecretKey });
   const challenge = await service.challenge({ quote, description: 'Bounded search.web execution', now: issuedAt });
   await assert.rejects(service.authorize({ paymentHeader: 'opaque', challenge }), /x402 settlement is disabled/u);
 });

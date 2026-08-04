@@ -105,6 +105,10 @@ function internalAuthorized(value, expected) {
   return supplied.byteLength === required.byteLength && timingSafeEqual(supplied, required);
 }
 
+function mppAuthorization(value) {
+  return typeof value === 'string' && /^Payment\s+/iu.test(value) ? value : undefined;
+}
+
 export function createSearchServer({
   executor,
   now = () => new Date().toISOString(),
@@ -297,7 +301,8 @@ export function createSearchServer({
       let aiOperationId;
       try {
         const keyHeader = request.headers['idempotency-key'];
-        if (typeof keyHeader !== 'string' && typeof request.headers['payment-signature'] !== 'string') {
+        const authorizationHeader = mppAuthorization(request.headers.authorization);
+        if (typeof keyHeader !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined) {
           const challenge = await discoveryPaymentChallenge(AI_PAID_PATH, now());
           send(response, challenge.status, challenge.body, challenge.headers);
           return;
@@ -313,6 +318,7 @@ export function createSearchServer({
           operationId: aiOperationId,
           normalized,
           paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
+          authorizationHeader,
           now: now(),
         });
         send(response, paid.status, paid.body, paid.headers);
@@ -349,7 +355,8 @@ export function createSearchServer({
     const startedAt = monotonicNow();
     try {
       const keyHeader = request.headers['idempotency-key'];
-      if (url.pathname === SEARCH_PAID_PATH && typeof keyHeader !== 'string' && typeof request.headers['payment-signature'] !== 'string') {
+      const authorizationHeader = mppAuthorization(request.headers.authorization);
+      if (url.pathname === SEARCH_PAID_PATH && typeof keyHeader !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined) {
         const challenge = await discoveryPaymentChallenge(SEARCH_PAID_PATH, now());
         send(response, challenge.status, challenge.body, challenge.headers);
         return;
@@ -457,6 +464,7 @@ export function createSearchServer({
           productId,
           normalized,
           paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
+          authorizationHeader,
           now: now(),
         });
         record({ timestamp: now(), productId, outcome: paid.status === 402 ? 'payment_challenge' : 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });

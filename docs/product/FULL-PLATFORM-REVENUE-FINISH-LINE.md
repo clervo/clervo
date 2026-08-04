@@ -33,7 +33,7 @@ not a customer-functional product. Every released pillar needs all eight:
 2. Qualified, commercially permitted, cost-bounded production supply.
 3. A useful production runtime with safe degradation and exact identity.
 4. Protected public access with private-path and unsupported-route denial.
-5. Price, quote, x402 verification/settlement, and no-charge replay.
+5. Price, quote, x402 and MPP verification/settlement, and no-charge replay.
 6. Durable operations, receipts, accounting, reconciliation, and artifacts.
 7. Monitoring, quotas, cost stops, abuse controls, recovery, rollback, and
    supportable capacity.
@@ -98,6 +98,10 @@ customer result remains for the revenue wedge.
 - Bind every released operation to one price version, maximum charge, supplier
   cost ceiling, idempotency key, durable state machine, receipt, and accounting
   entry.
+- Publish both x402 and MPP on every payable operation. An unpaid probe must
+  receive both protocol-native challenge headers before body validation; both
+  protocols must bind the same price, receiver, request, replay state, useful
+  output, settlement ledger, and receipt semantics.
 - Add async operation and artifact delivery for long-running media and Sandbox
   work; use private R2 storage, scanning, bounded signed retrieval, expiry, and
   cleanup.

@@ -81,10 +81,12 @@ test('API edge publishes health, Search, and paid AI while blocking private Sand
   assert.equal(preflight.status, 204);
   assert.equal(preflight.headers.get('access-control-allow-origin'), '*');
   assert.match(preflight.headers.get('access-control-allow-headers') ?? '', /payment-signature/u);
+  assert.match(preflight.headers.get('access-control-allow-headers') ?? '', /authorization/u);
   const disabledAi = await worker.fetch(new Request('https://api.clervo.dev/v1/ai/execute', { method: 'OPTIONS' }));
   assert.equal(disabledAi.status, 404);
   const aiPreflight = await worker.fetch(new Request('https://api.clervo.dev/v1/ai/execute', { method: 'OPTIONS' }), { CLERVO_AI_PUBLIC_ENABLED: 'true' });
   assert.equal(aiPreflight.status, 204);
+  assert.match(aiPreflight.headers.get('access-control-expose-headers') ?? '', /www-authenticate/u);
   const oversizedAi = await worker.fetch(new Request('https://api.clervo.dev/v1/ai/execute', {
     method: 'POST',
     headers: { 'content-length': '262145' },

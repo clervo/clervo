@@ -29,8 +29,8 @@ const MAXIMUM_REQUEST_BYTES = Object.freeze({
 function cors(headers = new Headers()) {
   headers.set('access-control-allow-origin', '*');
   headers.set('access-control-allow-methods', 'GET, POST, OPTIONS');
-  headers.set('access-control-allow-headers', 'content-type, idempotency-key, payment-signature');
-  headers.set('access-control-expose-headers', 'payment-required, payment-response, idempotency-replayed, ratelimit-limit, ratelimit-remaining, ratelimit-reset, retry-after');
+  headers.set('access-control-allow-headers', 'authorization, content-type, idempotency-key, payment-signature');
+  headers.set('access-control-expose-headers', 'payment-required, payment-response, payment-receipt, www-authenticate, idempotency-replayed, ratelimit-limit, ratelimit-remaining, ratelimit-reset, retry-after');
   headers.set('access-control-max-age', '86400');
   headers.set('x-content-type-options', 'nosniff');
   headers.set('referrer-policy', 'no-referrer');

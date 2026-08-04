@@ -69,6 +69,7 @@ else if (action === 'observe') {
     sandboxApi: version('CLERVO_SANDBOX_API_SECRET_VERSION'), searchPrimary: version('CLERVO_SEARCH_PRIMARY_SECRET_VERSION'),
     searchFallback: version('CLERVO_SEARCH_FALLBACK_SECRET_VERSION'), edge: version('CLERVO_EDGE_AUTHORIZATION_SECRET_VERSION'),
     aiClervo: version('CLERVO_AI_CLERVO_SECRET_VERSION'), groq: version('CLERVO_GROQ_SECRET_VERSION'), cloudflare: version('CLERVO_CLOUDFLARE_SECRET_VERSION'),
+    mpp: version('CLERVO_MPP_SECRET_VERSION'),
   };
   const artifact = verifyArtifact(candidateImage);
   const before = service();
@@ -94,6 +95,7 @@ else if (action === 'observe') {
     `CLERVO_X402_FACILITATOR_KEY_ID=${x402.secrets.keyId}:${versions.x402KeyId}`,
     `CLERVO_X402_FACILITATOR_KEY_SECRET=${x402.secrets.keySecret}:${versions.x402KeySecret}`,
     `CLERVO_X402_PAY_TO=${x402.secrets.payTo}:${versions.x402PayTo}`,
+    `CLERVO_MPP_SECRET_KEY=${policy.commerce.mppSecret}:${versions.mpp}`,
     `CLERVO_SANDBOX_CONTROL_TOKEN=${sandbox.cloudRun.controlTokenSecret}:${versions.sandboxControl}`,
     `CLERVO_SANDBOX_API_TOKEN=${sandbox.cloudRun.apiTokenSecret}:${versions.sandboxApi}`,
     `CLERVO_SEARCH_PRIMARY_KEY=${policy.search.primarySecret}:${versions.searchPrimary}`,

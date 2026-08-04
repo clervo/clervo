@@ -27,7 +27,7 @@
     { "id": "supply", "definition": "Production supply is qualified, commercially permitted, cost-bounded, and truthfully identified." },
     { "id": "runtime", "definition": "The production adapter and product runtime return useful results and fail safely." },
     { "id": "public_access", "definition": "The supported operation is reachable through the protected public API and direct private paths are denied." },
-    { "id": "commerce", "definition": "Price, quote, x402 challenge, authorization, verification, settlement, and no-charge replay are integrated." },
+    { "id": "commerce", "definition": "Price, quote, x402 and MPP challenges, authorization, verification, post-output settlement, protocol-native receipts, and no-charge replay are integrated." },
     { "id": "durability", "definition": "Idempotency, operation state, receipts, accounting, reconciliation, and artifacts survive process replacement." },
     { "id": "operations", "definition": "Monitoring, alerts, quotas, cost stops, abuse controls, recovery, rollback, and capacity are production-qualified." },
     { "id": "external_acceptance", "definition": "An external request receives a useful result through the exact public release path." }

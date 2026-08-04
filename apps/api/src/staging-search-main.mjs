@@ -46,6 +46,7 @@ if (!['recorded', 'live_external'].includes(searchMode)) throw new Error('invali
 if (!['disabled', 'paid'].includes(aiMode)) throw new Error('invalid CLERVO_AI_MODE');
 if (environment === 'production' && searchMode === 'live_external' && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new Error('production live search requires edge authorization');
 if (x402Mode !== 'disabled' && stateBackend !== 'postgres') throw new Error('x402 requires PostgreSQL state');
+if (x402Mode !== 'disabled' && (typeof process.env.CLERVO_MPP_SECRET_KEY !== 'string' || Buffer.byteLength(process.env.CLERVO_MPP_SECRET_KEY) < 32)) throw new Error('x402 commerce requires MPP secret key');
 if (sandboxMode !== 'disabled' && stateBackend !== 'postgres') throw new Error('sandbox requires PostgreSQL state');
 if (aiMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres')) throw new Error('public AI requires production x402 and PostgreSQL state');
 if (privateMockCommerceEnabled && (environment !== 'stage4-private-qualification' || !['127.0.0.1', 'localhost'].includes(new URL(publicOrigin).hostname))) {
@@ -64,6 +65,7 @@ const x402Service = x402Mode === 'disabled' ? undefined : await createX402Challe
   payTo: process.env.CLERVO_X402_PAY_TO,
   publicOrigin,
   paymentMode: x402Mode,
+  mppSecretKey: process.env.CLERVO_MPP_SECRET_KEY,
 });
 const sandboxStateStore = sandboxMode === 'disabled' ? undefined : await createPostgresSandboxOperationStoreFromEnvironment();
 const sandboxGateway = sandboxMode === 'disabled' ? undefined : createSandboxPrivateGateway({

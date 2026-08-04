@@ -79,6 +79,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       productId,
       executionInput,
       paymentHeader,
+      authorizationHeader,
       now,
       pricing,
       prepare,
@@ -124,10 +125,10 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       if (state.kind === 'conflict') refuse('idempotency_conflict');
       if (state.quote.priceVersion !== effectivePricing.priceVersion || !sameAmount(state.quote.maximumCharge, effectivePricing.maximumCharge)) refuse('quote_pricing_changed');
       if (isQuoteExpired(state.quote, now)) refuse('quote_expired');
-      if (paymentHeader === undefined) return challengeResponse(state);
+      if (paymentHeader === undefined && authorizationHeader === undefined) return challengeResponse(state);
       if (service.mode !== 'settlement_enabled') refuse('x402_settlement_disabled', 503);
 
-      const authorization = await service.authorize({ paymentHeader, challenge: state.challenge });
+      const authorization = await service.authorize({ paymentHeader, authorizationHeader, challenge: state.challenge });
       let execution = state.execution;
       if (state.state === 'challenged') {
         const release = acquireExecution?.();

@@ -69,11 +69,11 @@ test('machine discovery publishes verified Search and bounded paid AI without ov
   assert.deepEqual(openapi.paths['/v1/search/free'].post.security, []);
   assert.deepEqual(openapi.paths['/v1/search/paid'].post['x-payment-info'], {
     price: { mode: 'fixed', currency: 'USD', amount: '0.006000' },
-    protocols: [{ x402: {} }],
+    protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
   });
   assert.deepEqual(openapi.paths['/v1/ai/execute'].post['x-payment-info'], {
     price: { mode: 'dynamic', currency: 'USD', min: '0.000001', max: '2.621440' },
-    protocols: [{ x402: {} }],
+    protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
   });
   assert.equal(openapi.paths['/v1/search/paid'].post.requestBody.content['application/json'].example.synthesize, false);
   assert.equal(openapi.paths['/v1/ai/execute'].post.requestBody.content['application/json'].example.input.kind, 'chat');

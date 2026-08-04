@@ -2,10 +2,14 @@ import { createHash, createPrivateKey, randomBytes, sign } from 'node:crypto';
 import { HTTPFacilitatorClient, x402ResourceServer } from '@x402/core/server';
 import { ExactEvmScheme } from '@x402/evm/exact/server';
 import { bazaarResourceServerExtension, declareDiscoveryExtension } from '@x402/extensions/bazaar';
+import { Receipt } from 'mppx';
+import { Mppx, evm } from 'mppx/server';
 import { isQuoteExpired, verifyQuote } from '../../../dist/packages/contracts/src/index.js';
 
 const PAYMENT_REQUIRED_HEADER = 'PAYMENT-REQUIRED';
 const PAYMENT_RESPONSE_HEADER = 'PAYMENT-RESPONSE';
+const MPP_CHALLENGE_HEADER = 'WWW-Authenticate';
+const MPP_RECEIPT_HEADER = 'Payment-Receipt';
 const MAXIMUM_PAYMENT_HEADER_BYTES = 65_536;
 const pathMethods = Object.freeze({ supported: 'GET', verify: 'POST', settle: 'POST' });
 const BASE_USDC_EIP712_DOMAIN = Object.freeze({ name: 'USD Coin', version: '2' });
@@ -99,6 +103,44 @@ function decodePaymentHeader(value) {
   return payment;
 }
 
+function decimalAmount(amountAtomic, decimals = 6) {
+  if (!/^(?:0|[1-9][0-9]{0,77})$/u.test(amountAtomic ?? '') || decimals !== 6) throw new TypeError('invalid payment amount');
+  const padded = amountAtomic.padStart(decimals + 1, '0');
+  const whole = padded.slice(0, -decimals);
+  const fraction = padded.slice(-decimals).replace(/0+$/u, '');
+  return fraction ? `${whole}.${fraction}` : whole;
+}
+
+function mppMetadata(quote, resourcePath) {
+  return Object.freeze({
+    quoteId: quote.quoteId,
+    quoteHash: quote.quoteHash,
+    requestHash: quote.requestHash,
+    operationId: quote.operationId,
+    priceVersion: quote.priceVersion,
+    quoteExpiresAt: quote.expiresAt,
+    resource: resourcePath,
+  });
+}
+
+function mppAuthorizationPayload(payload, requirements) {
+  return Object.freeze({
+    x402Version: 2,
+    accepted: requirements,
+    payload: Object.freeze({
+      authorization: Object.freeze({
+        from: payload.from,
+        nonce: payload.nonce,
+        to: payload.to,
+        validAfter: payload.validAfter,
+        validBefore: payload.validBefore,
+        value: payload.value,
+      }),
+      signature: payload.signature,
+    }),
+  });
+}
+
 export function createCdpFacilitatorAuth({ keyId, keySecret, url, now = () => Date.now(), nonce = () => randomBytes(16).toString('hex') } = {}) {
   if (typeof keyId !== 'string' || keyId.length < 3 || keyId.length > 256) throw new TypeError('invalid facilitator key id');
   if (typeof keySecret !== 'string' || keySecret.length < 32) throw new TypeError('invalid facilitator key secret');
@@ -138,6 +180,7 @@ export async function createX402ChallengeService({
   payTo,
   publicOrigin,
   paymentMode = 'challenge_only',
+  mppSecretKey,
 } = {}) {
   if (network !== 'eip155:8453') throw new TypeError('unsupported x402 production network');
   if (!/^0x[a-fA-F0-9]{40}$/u.test(asset ?? '')) throw new TypeError('invalid x402 asset');
@@ -147,6 +190,7 @@ export async function createX402ChallengeService({
     throw new TypeError('invalid x402 public origin');
   }
   if (!['challenge_only', 'settlement_enabled'].includes(paymentMode)) throw new TypeError('invalid x402 payment mode');
+  if (typeof mppSecretKey !== 'string' || Buffer.byteLength(mppSecretKey) < 32 || Buffer.byteLength(mppSecretKey) > 512) throw new TypeError('invalid MPP secret key');
   const client = facilitator ?? new HTTPFacilitatorClient({
     url: facilitatorUrl(url).toString(),
     createAuthHeaders: createCdpFacilitatorAuth({ keyId, keySecret, url }),
@@ -155,6 +199,36 @@ export async function createX402ChallengeService({
     .register(network, new ExactEvmScheme())
     .registerExtension(bazaarResourceServerExtension);
   await server.initialize();
+
+  function mppHandler({ quote, description, resourcePath, onVerified }) {
+    const meta = mppMetadata(quote, resourcePath);
+    const amount = decimalAmount(quote.maximumCharge.amountAtomic, quote.maximumCharge.decimals);
+    const scope = `POST ${resourcePath}`;
+    const method = evm.charge({
+      currency: evm.assets.base.USDC,
+      recipient: payTo,
+      async settle({ payload, request }) {
+        const requirements = Object.freeze({
+          scheme: 'exact', network, amount: request.amount, asset: request.currency, payTo: request.recipient,
+          maxTimeoutSeconds: Math.min(300, Math.max(1, Math.floor((Date.parse(quote.expiresAt) - Date.parse(quote.issuedAt)) / 1_000))),
+          extra: Object.freeze({ ...BASE_USDC_EIP712_DOMAIN, clervo: meta }),
+        });
+        const paymentPayload = mppAuthorizationPayload(payload, requirements);
+        const verification = await client.verify(paymentPayload, requirements);
+        if (!verification.isValid) throw new TypeError(`MPP payment invalid:${verification.invalidReason ?? verification.invalidMessage ?? 'unknown'}`);
+        const fingerprint = `sha256:${createHash('sha256').update(JSON.stringify({ protocol: 'mpp', paymentPayload })).digest('hex')}`;
+        onVerified?.(Object.freeze({ paymentPayload, requirements, verification, fingerprint }));
+        return { reference: `verified:${fingerprint}`, timestamp: quote.issuedAt };
+      },
+    });
+    const mppx = Mppx.create({ methods: [method], realm: origin.host, secretKey: mppSecretKey });
+    return {
+      handler: mppx.evm.charge({ amount, description, externalId: quote.operationId, expires: quote.expiresAt, meta, scope }),
+      meta,
+      scope,
+    };
+  }
+
   return Object.freeze({
     mode: paymentMode,
     async challenge({ quote, description, now, resourcePath = '/v1/search/paid' }) {
@@ -187,10 +261,41 @@ export async function createX402ChallengeService({
         mimeType: 'application/json',
       }, 'PAYMENT-SIGNATURE header is required', discoveryExtension(resourcePath));
       const header = Buffer.from(JSON.stringify(body), 'utf8').toString('base64');
-      return Object.freeze({ status: 402, headers: Object.freeze({ [PAYMENT_REQUIRED_HEADER]: header }), body });
+      const mpp = mppHandler({ quote, description, resourcePath });
+      const mppResult = await mpp.handler(new Request(`${origin.origin}${resourcePath}`, { method: 'POST' }));
+      if (mppResult.status !== 402) throw new TypeError('MPP challenge unavailable');
+      const mppHeader = mppResult.challenge.headers.get(MPP_CHALLENGE_HEADER);
+      if (!mppHeader) throw new TypeError('MPP challenge header unavailable');
+      return Object.freeze({
+        status: 402,
+        headers: Object.freeze({ [PAYMENT_REQUIRED_HEADER]: header, [MPP_CHALLENGE_HEADER]: mppHeader }),
+        body,
+        quote,
+        mpp: Object.freeze({ description, resourcePath }),
+      });
     },
-    async authorize({ paymentHeader, challenge }) {
+    async authorize({ paymentHeader, authorizationHeader, challenge }) {
       if (paymentMode !== 'settlement_enabled') throw new Error('x402 settlement is disabled');
+      if (paymentHeader !== undefined && authorizationHeader !== undefined) throw new TypeError('multiple payment credentials are not allowed');
+      if (authorizationHeader !== undefined) {
+        if (typeof authorizationHeader !== 'string' || Buffer.byteLength(authorizationHeader) > MAXIMUM_PAYMENT_HEADER_BYTES || !/^Payment\s+/iu.test(authorizationHeader)) {
+          throw new TypeError('invalid MPP payment credential');
+        }
+        let verified;
+        try {
+          const mpp = mppHandler({
+            quote: challenge?.quote,
+            description: challenge?.mpp?.description,
+            resourcePath: challenge?.mpp?.resourcePath,
+            onVerified(value) { verified = value; },
+          });
+          const result = await mpp.handler(new Request(`${origin.origin}${challenge.mpp.resourcePath}`, { method: 'POST', headers: { Authorization: authorizationHeader } }));
+          if (result.status !== 200 || !verified) throw new TypeError('MPP payment credential rejected');
+        } catch {
+          throw new TypeError('invalid MPP payment credential');
+        }
+        return Object.freeze({ protocol: 'mpp', ...verified });
+      }
       const paymentPayload = decodePaymentHeader(paymentHeader);
       const requirements = server.findMatchingRequirements(challenge?.body?.accepts ?? [], paymentPayload);
       if (!requirements) throw new TypeError('x402 payment requirements mismatch');
@@ -199,7 +304,7 @@ export async function createX402ChallengeService({
       const verification = await server.verifyPayment(paymentPayload, requirements, challenge.body.extensions ?? {});
       if (!verification.isValid) throw new TypeError(`x402 payment invalid:${verification.invalidReason ?? 'unknown'}`);
       const fingerprint = `sha256:${createHash('sha256').update(JSON.stringify(paymentPayload)).digest('hex')}`;
-      return Object.freeze({ paymentPayload, requirements, verification, fingerprint });
+      return Object.freeze({ protocol: 'x402', paymentPayload, requirements, verification, fingerprint });
     },
     async settle(authorization) {
       if (paymentMode !== 'settlement_enabled') throw new Error('x402 settlement is disabled');
@@ -209,10 +314,13 @@ export async function createX402ChallengeService({
       try {
         const settlement = await server.settlePayment(authorization.paymentPayload, authorization.requirements);
         if (!settlement.success) return Object.freeze({ kind: 'unknown', reason: settlement.errorReason ?? 'settlement_failed' });
+        const headers = authorization.protocol === 'mpp'
+          ? Object.freeze({ [MPP_RECEIPT_HEADER]: Receipt.serialize(Receipt.from({ method: 'evm', reference: settlement.transaction, status: 'success', timestamp: new Date().toISOString() })) })
+          : Object.freeze({ [PAYMENT_RESPONSE_HEADER]: Buffer.from(JSON.stringify(settlement), 'utf8').toString('base64') });
         return Object.freeze({
           kind: 'settled',
           settlement,
-          headers: Object.freeze({ [PAYMENT_RESPONSE_HEADER]: Buffer.from(JSON.stringify(settlement), 'utf8').toString('base64') }),
+          headers,
         });
       } catch (error) {
         return Object.freeze({ kind: 'unknown', reason: error?.errorReason ?? 'settlement_transport_or_state_unknown' });

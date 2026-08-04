@@ -116,6 +116,7 @@ test('production IAM control is exact-project, least-privilege, and confirmation
     'clervo-production-x402-key-id',
     'clervo-production-x402-key-secret',
     'clervo-production-x402-pay-to',
+    'clervo-production-mpp-secret-key',
     'clervo-sandbox-control-token',
     'clervo-sandbox-api-token',
   ]);

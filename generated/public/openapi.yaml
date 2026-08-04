@@ -10,7 +10,7 @@
       "email": "mo@clervo.dev",
       "url": "https://github.com/clervo/clervo"
     },
-    "x-guidance": "Use POST /v1/search/free for a bounded no-payment sample. Paid routes return an x402 v2 challenge before execution. Supply the required JSON body and a stable Idempotency-Key, inspect the exact payment requirements, and send PAYMENT-SIGNATURE only after approval. Reuse the same key to recover or replay a completed result without a second charge. AI discovery currently advertises only qualified non-streaming chat; unsupported capabilities fail closed."
+    "x-guidance": "Use POST /v1/search/free for a bounded no-payment sample. Paid routes return x402 v2 and MPP EVM charge challenges before execution. Supply the required JSON body and a stable Idempotency-Key, inspect the exact payment requirements, and send either PAYMENT-SIGNATURE for x402 or Authorization: Payment for MPP only after approval. Reuse the same key to recover or replay a completed result without a second charge. AI discovery currently advertises only qualified non-streaming chat; unsupported capabilities fail closed."
   },
   "paths": {
     "/v1/search/free": {
@@ -304,12 +304,17 @@
             }
           },
           "402": {
-            "description": "x402 payment required",
+            "description": "x402 or MPP payment required",
             "headers": {
               "PAYMENT-REQUIRED": {
                 "schema": {
                   "type": "string",
                   "contentEncoding": "base64"
+                }
+              },
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
                 }
               }
             },
@@ -369,6 +374,13 @@
           "protocols": [
             {
               "x402": {}
+            },
+            {
+              "mpp": {
+                "method": "evm",
+                "intent": "charge",
+                "currency": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              }
             }
           ]
         }
@@ -563,12 +575,17 @@
             }
           },
           "402": {
-            "description": "Exact x402 payment required",
+            "description": "x402 or MPP payment required",
             "headers": {
               "PAYMENT-REQUIRED": {
                 "schema": {
                   "type": "string",
                   "contentEncoding": "base64"
+                }
+              },
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -608,6 +625,13 @@
           "protocols": [
             {
               "x402": {}
+            },
+            {
+              "mpp": {
+                "method": "evm",
+                "intent": "charge",
+                "currency": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              }
             }
           ]
         }

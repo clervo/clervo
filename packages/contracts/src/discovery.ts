@@ -202,8 +202,11 @@ export function createOpenApiDocument(
             200: { description: 'Injected mock test execution completed', content: { 'application/json': { schema: { $ref: '#/components/schemas/SearchHttpResult' } } } },
             400: { description: 'Invalid request', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
             402: {
-              description: publicRelease ? 'x402 payment required' : 'Non-payable mock payment challenge',
-              headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } } },
+              description: publicRelease ? 'x402 or MPP payment required' : 'Non-payable mock payment challenge',
+              headers: {
+                'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } },
+                ...(publicRelease ? { 'WWW-Authenticate': { schema: { type: 'string' } } } : {}),
+              },
               content: { 'application/json': { schema: { $ref: '#/components/schemas/MockPaymentRequired' } } },
             },
             409: { description: 'Idempotency conflict', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
