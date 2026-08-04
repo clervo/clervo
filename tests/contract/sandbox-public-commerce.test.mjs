@@ -62,6 +62,7 @@ test('public Sandbox uses the shared paid state machine, payer-derived tenant, a
   const paid = await processor.process({ ...input, paymentHeader: 'opaque-payment' });
   assert.equal(paid.status, 200);
   assert.equal(paid.body.result.output.stdoutBase64, 'cmVhZHk=');
+  assert.equal(paid.body.requestHash, input.requestHash);
   assert.equal(paid.body.receipt.customerCharge.amountAtomic, '120000');
   assert.equal(paid.body.receipt.supplierCost.amountAtomic, '100000');
   const replay = await processor.process(input);

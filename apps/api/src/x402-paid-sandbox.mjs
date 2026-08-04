@@ -144,7 +144,7 @@ export function createX402PaidSandboxProcessor({ service, stateStore, gateway, r
           });
         },
         createResponse({ output, receipt }) {
-          return Object.freeze({ operationId, productId: 'sandbox.run', state: 'RECEIPTED', replayed: false, result: output, receipt });
+          return Object.freeze({ operationId, productId: 'sandbox.run', state: 'RECEIPTED', replayed: false, requestHash, result: output, receipt });
         },
       });
     },

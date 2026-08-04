@@ -109,6 +109,29 @@ const aiChatProbeSchema = Object.freeze({
   },
   additionalProperties: false,
 });
+const sandboxProbeExample = Object.freeze({
+  command: Object.freeze(['node', '-e', "process.stdout.write('ready')"]),
+  limits: Object.freeze({ wallTimeMs: 5_000, memoryBytes: 67_108_864 }),
+});
+const sandboxProbeSchema = Object.freeze({
+  type: 'object', required: ['command'], additionalProperties: false,
+  properties: {
+    command: { type: 'array', minItems: 1, maxItems: 32, items: { type: 'string', minLength: 1, maxLength: 4096 }, default: sandboxProbeExample.command },
+    stdinBase64: { type: 'string' },
+    limits: {
+      type: 'object', additionalProperties: false, default: sandboxProbeExample.limits,
+      properties: {
+        cpuMillis: { type: 'integer', minimum: 1, maximum: 30_000 },
+        memoryBytes: { type: 'integer', minimum: 16_777_216, maximum: 536_870_912 },
+        processes: { type: 'integer', minimum: 1, maximum: 64 },
+        diskBytes: { type: 'integer', minimum: 1_048_576, maximum: 1_073_741_824 },
+        outputBytes: { type: 'integer', minimum: 1, maximum: 1_048_576 },
+        artifactBytes: { type: 'integer', minimum: 1, maximum: 10_485_760 },
+        wallTimeMs: { type: 'integer', minimum: 100, maximum: 60_000 },
+      },
+    },
+  },
+});
 
 function scannerSafeOperation(operation, { requestSchema, example, paymentInfo, free = false }) {
   const cloned = structuredClone(operation);
@@ -141,6 +164,8 @@ const privateCandidate = publicApiFlags.every((value) => value === false)
   && launchState.products.find(({ id }) => id === 'search')?.customerLifecycle === 'preview_not_publicly_callable';
 const publicAi = publicSearch
   && launchState.products.find(({ id }) => id === 'ai')?.customerLifecycle === 'preview_publicly_callable';
+const publicSandbox = publicAi
+  && launchState.products.find(({ id }) => id === 'sandbox')?.customerLifecycle === 'preview_publicly_callable';
 
 if (
   releaseCandidate.state !== 'private_core_frozen'
@@ -256,7 +281,7 @@ let llms = contractModule.createLlmsText(projection);
 if (publicSearch) {
   openapi.servers = [{ url: 'https://api.clervo.dev' }];
   openapi.info.contact = { name: 'Clervo', email: 'mo@clervo.dev', url: 'https://github.com/clervo/clervo' };
-  openapi.info['x-guidance'] = 'Use POST /v1/search/free for a bounded no-payment sample. Paid routes return x402 v2 and MPP EVM charge challenges before execution. Supply the required JSON body and a stable Idempotency-Key, inspect the exact payment requirements, and send either PAYMENT-SIGNATURE for x402 or Authorization: Payment for MPP only after approval. Reuse the same key to recover or replay a completed result without a second charge. AI discovery currently advertises only qualified non-streaming chat; unsupported capabilities fail closed.';
+  openapi.info['x-guidance'] = 'Use POST /v1/search/free for a bounded no-payment sample. Paid routes return x402 v2 and MPP EVM charge challenges before execution. Supply the required JSON body and a stable Idempotency-Key, inspect the exact payment requirements, and send either PAYMENT-SIGNATURE for x402 or Authorization: Payment for MPP only after approval. Reuse the same key to recover or replay a completed result without a second charge. Every unsupported capability fails closed.';
   openapi.paths['/v1/search/free'].post = scannerSafeOperation(openapi.paths['/v1/search/free'].post, {
     requestSchema: searchProbeSchema,
     example: searchProbeExample,
@@ -325,8 +350,57 @@ if (publicAi) {
     .replace('Projected operation IDs: search.web, search.answer', 'Projected operation IDs: search.web, search.answer, ai.chat')
     .replace('x402 public payment: available for search.web at a maximum charge of 0.006 USDC on Base', 'x402 public payment: available for search.web at a maximum charge of 0.006 USDC and for ai.chat through an exact request-derived maximum-charge quote on Base');
 }
+if (publicSandbox) {
+  openapi.info.title = 'Clervo Search, AI, and Secure Sandbox API';
+  openapi.info.description = 'Public raw Search plus bounded paid AI chat and one-shot gVisor Sandbox previews. Every paid route is quote-bound, receipt-bearing, and replay-safe.';
+  openapi.paths['/v1/sandbox/execute'] = {
+    post: {
+      summary: 'Request or settle a bounded one-shot Secure Sandbox execution',
+      description: 'Runs one command in the pinned qualified Node.js gVisor image with no network, strict resources, cleanup, a receipt, and no-charge replay. Sessions and artifact retrieval are not yet public.',
+      operationId: 'sandboxExecute',
+      parameters: [{ name: 'Idempotency-Key', in: 'header', required: true, schema: { type: 'string', minLength: 8, maxLength: 128 } }],
+      requestBody: { required: true, content: { 'application/json': { schema: sandboxProbeSchema } } },
+      responses: {
+        200: { description: 'Sandbox execution completed or replayed', content: { 'application/json': { schema: publicResultSchema } } },
+        400: { description: 'Invalid bounded Sandbox request', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
+        409: { description: 'Idempotency, quote, or execution reconciliation conflict', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        503: { description: 'Capacity, execution, cleanup, or settlement path unavailable', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+      },
+    },
+  };
+  openapi.paths['/v1/sandbox/execute'].post = scannerSafeOperation(openapi.paths['/v1/sandbox/execute'].post, {
+    requestSchema: sandboxProbeSchema,
+    example: sandboxProbeExample,
+    paymentInfo: {
+      price: { mode: 'fixed', currency: 'USD', amount: '0.120000' },
+      protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
+    },
+  });
+  openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, 'sandbox.run'];
+  discovery.description = 'Machine-readable public Search, paid AI chat, and paid one-shot Secure Sandbox previews. Each published operation returns real output through the production path; unsupported operations fail closed. No external customer revenue or demand is claimed.';
+  discovery.products.push({
+    productId: 'sandbox.run', operationId: 'sandbox.run', title: 'Secure one-shot code execution',
+    summary: 'Bounded Node.js execution in a pinned gVisor image with no network, strict resource ceilings, cleanup, receipt, and no-charge replay.',
+    lifecycle: 'preview', publicAvailable: true, deliveryModes: ['sync'],
+    selection: { image: 'Pinned qualified sandbox.nodejs-24 image; caller cannot select an arbitrary image.' },
+    pricing: { model: 'fixed_request', displayPrice: { asset: 'USDC', amountAtomic: '120000', decimals: 6 }, maximumChargeRequired: true, priceVersion: 'sandbox-run-public-2026-08-04.1' },
+    routes: { paidChallenge: '/v1/sandbox/execute' },
+    payment: { challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
+    commercialProof: false,
+  });
+  discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: ['search.web', 'ai.chat', 'sandbox.run'] };
+  discovery.limitations = [
+    'Raw cited Search, bounded paid AI chat, and bounded paid one-shot Secure Sandbox execution are publicly callable previews.',
+    'The Sandbox has one qualified execution node; high availability, sessions, arbitrary images, network access, and public artifact retrieval are not claimed.',
+    'Search synthesis, AI media, RPC, Prediction, and Crypto Intelligence remain unavailable.',
+    'The Sandbox production origin, useful gVisor output, replay, and cleanup are verified; an owner-signed public paid Sandbox result remains pending.',
+    'No external customer payment, revenue, or demand is claimed.',
+  ];
+  llms += '\n## Secure Sandbox preview\n\n- `POST /v1/sandbox/execute`: fixed maximum charge 0.120000 USDC on Base for one bounded Node.js gVisor execution.\n- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.\n';
+}
 const catalog = contractModule.createCatalogDocument(projection);
-if (publicAi) catalog.products = discovery.products;
+if (publicAi || publicSandbox) catalog.products = discovery.products;
 if (publicSearch) contractModule.assertPublicArtifacts(openapi, discovery, llms, projection);
 else contractModule.assertPreviewArtifacts(openapi, discovery, llms, projection);
 await writeFile(path.join(outputDirectory, 'openapi.json'), stableJson(openapi));
@@ -412,5 +486,5 @@ await writeFile(path.join(outputDirectory, '.well-known', 'security.txt'), [
 await writeFile(path.join(outputDirectory, 'openapi.yaml'), stableJson(openapi));
 await writeFile(path.join(outputDirectory, 'llms.txt'), llms);
 
-const publicOperationCount = projection.publicOperationIds.length + (publicAi ? 1 : 0);
-console.log(`distribution discovery generation: PASS (${publicAi ? 'public Search and AI preview' : publicSearch ? 'public Search preview' : 'private candidate'}, ${publicOperationCount} operations, ${Object.keys(schemas).length} schemas)`);
+const publicOperationCount = projection.publicOperationIds.length + (publicAi ? 1 : 0) + (publicSandbox ? 1 : 0);
+console.log(`distribution discovery generation: PASS (${publicSandbox ? 'public Search, AI, and Sandbox preview' : publicAi ? 'public Search and AI preview' : publicSearch ? 'public Search preview' : 'private candidate'}, ${publicOperationCount} operations, ${Object.keys(schemas).length} schemas)`);
