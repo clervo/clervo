@@ -1,8 +1,30 @@
 # Current engineering state
 
-Updated 2026-08-03 after the bounded production x402 settlement proof. This is a compact
+Updated 2026-08-04 for the full-platform revenue finish line. This is a compact
 resumable handoff, not an authorization gate. Continue automatically after
 reading it.
+
+## Active finish line
+
+`docs/product/FULL-PLATFORM-REVENUE-FINISH-LINE.md` is the active continuous
+execution order. Customer-functional paid readiness is currently 46.88% under
+the eight-gate rubric in `packages/catalog/full-platform-readiness.v1.json`.
+This does not reduce the six-product master-plan scope.
+
+The immediate revenue wedge is public raw `search.web`. Cloud Run revision
+`clervo-api-production-00014-zit` serves the qualified live-external Search and
+x402 runtime at 100% origin traffic. The origin permits unauthenticated network
+reachability because organization policy prevents an `allUsers` IAM binding,
+but every product request requires the separate edge authorization and direct
+requests fail with `edge_unauthorized`. Health and readiness remain readable.
+
+The public Cloudflare Worker is not deployed. Its first deployment must include
+version 2 of `clervo-production-edge-authorization` atomically as required
+secret `CLERVO_EDGE_AUTHORIZATION`; this exact cross-secret-store transfer is an
+owner blocker. The Worker exposes only health, raw Search, the payable Search
+route, and generated machine discovery. Private Sandbox and unsupported routes
+remain blocked. The bounded public smoke and truthful public Search discovery
+projection are implemented and pass Stage 16 preflight locally.
 
 ## Active work
 
@@ -452,23 +474,34 @@ were removed; the existing private serving revision remains at 100% traffic.
 
 ## Next actions
 
-1. Stage 13 source and package distribution are complete. Preserve the
-   immutable public versions and provenance, keep stale npm previews marked
-   with the bounded legacy deprecation messages, and use new versions for any
-   future artifact changes. Package availability is not API availability.
-2. Keep Crypto Intelligence customer routing disabled until written commercial
-   permission or replacement terms-compatible EVM, Solana, and protocol supply
-   exists; this isolated owner blocker does not pause combined local work.
-3. Keep Prediction customer routing and retained history disabled until
-   commercial reuse, resale, and history rights are qualified; this isolated
-   owner blocker does not pause combined workflows or other local engineering.
-4. Keep RPC customer routing disabled until written commercial permission or
-   replacement terms-compatible supply exists; this isolated owner blocker does
-   not pause combined workflows or other local engineering.
-5. Keep Sandbox public lifecycle `unavailable` until a public release candidate
-   passes the final external release checks. The private single-node system and
-   execution planes are qualified, but high availability and spare scale-out
-   headroom are not proven because the project-wide CPU quota is fully used.
+1. Deploy the required-secret Cloudflare API edge after the exact owner-approved
+   GCP-to-Cloudflare secret transfer. Verify the live raw result, replay, stable
+   402, synthesis refusal, private-route denial, direct-origin denial, CORS,
+   monitoring, and rollback without signing or settling another payment.
+2. Publish the verified Search lifecycle, exact 0.006 USDC offer, OpenAPI,
+   catalog, status, onboarding, pricing, MCP discovery, and capability state
+   from the API edge. Then obtain one external paid useful result and reconcile
+   it; do not repeat the owner-funded proof.
+3. Generalize the Search-specific public runtime into the shared six-product
+   operation, x402, idempotency, receipt, accounting, artifact, and recovery
+   gateway while preserving the frozen contract semantics.
+4. Launch AI next: refresh at least three lawful supply families, connect exact
+   chat/embedding/image/speech routes and stable aliases, enforce usage and
+   shadow budgets, add durable media artifacts, and qualify public commerce and
+   failure handling. Do not modify or expose the protected `ai.clervo.dev`
+   runtime.
+5. Launch Sandbox through the shared gateway with fixed charges, abuse policy,
+   secure artifacts, durable sessions, and supportable capacity; keep its
+   private controller unreachable from customers.
+6. Continue RPC, Prediction, and Crypto public integration, but keep customer
+   routing disabled until their respective commercial supply/reuse/data rights
+   are qualified. Source lawful replacements without pausing other work.
+7. Create a new versioned full-platform release candidate rather than mutating
+   the historical private freeze. Expand and republish the SDKs, MCP, Python,
+   raw HTTP, OpenAPI, and discovery from its exact six-product operation set.
+8. Run one consolidated full-platform production acceptance and complete every
+   master-plan section 3.1 gate. Only the external paid useful result permits
+   the First Revenue Release claim.
 
 ## Preserved boundaries
 

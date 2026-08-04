@@ -8,8 +8,15 @@
   blockers explicit without pausing unrelated engineering.
 - `/workspace/docs/CLERVO-BLOCKRUN-10X-MASTER-PLAN.md` defines product scope,
   roadmap order, correctness, security, truthful claims, and launch gates.
+- `docs/product/FULL-PLATFORM-REVENUE-FINISH-LINE.md` defines the active
+  customer-functional execution order: public Search revenue first, then the
+  shared commerce gateway and the other five payable product releases. Its
+  readiness data is `packages/catalog/full-platform-readiness.v1.json`.
 - `docs/product/CURRENT-ENGINEERING-STATE.md` is the compact resumable handoff;
   read it before selecting the next unfinished roadmap work.
+- The master plan's embedded historical "Current stage" and ticket-era
+  authorization text do not describe current execution state. They do not
+  override this file, the current-state handoff, or the active finish line.
 - The roadmap's stages and ticket labels are an implementation checklist, not
   authorization boundaries. Read the current status and relevant sections;
   do not reread the complete roadmap or historical evidence for ordinary work.
