@@ -1,0 +1,58 @@
+schema_version: 1
+updated_at: "2026-08-05"
+
+gate:
+  id: GATE-4.5
+  name: shop-open-productization-and-control-reset
+  status: active
+
+objective:
+  product_id: search.web
+  outcome: open-the-best-search-shop-current-technology-can-support
+
+public_truth:
+  api: https://api.clervo.dev
+  search_web:
+    lifecycle: preview
+    callable: true
+    payable: true
+    maximum_charge_usdc: 0.006
+  ai_chat:
+    lifecycle: preview
+    callable: true
+  sandbox_run:
+    lifecycle: preview
+    callable: true
+  search_answer:
+    callable: false
+
+opening_test:
+  wallet: owner-approved
+  maximum_authorized_spend_usdc: 0.006
+  public_purchase: pending
+  receipt: pending
+  safe_replay: pending
+  second_new_purchase: pending
+
+active_work:
+  - reset-control-authority
+  - synchronize-search-visibility
+  - complete-owner-wallet-public-purchase
+  - open-search-distribution
+
+paused:
+  - search-answer-expansion
+  - ai-expansion
+  - sandbox-expansion
+  - rpc
+  - prediction
+  - crypto-intelligence
+  - broad-refactors
+  - broad-test-campaigns
+  - replacement-website-implementation
+
+policy:
+  reuse_first: true
+  rewrite_requires_buyer_or_revenue_advantage: true
+  focused_checks_during_build: true
+  final_opening_test_after_assembly: true

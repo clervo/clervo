@@ -2,60 +2,49 @@
 
 Clervo is outcome infrastructure for agents: **Find → Understand → Act**.
 
-This repository contains the clean-room Clervo platform, frozen distribution
-candidate, TypeScript and Python clients, MCP server, and the repository-local
-V6 product experience.
+## Public preview
 
-## Current public boundary
+The protected public API is available at `https://api.clervo.dev`.
 
-The distribution candidate exposes two frozen operations:
+Current generated public operations include:
 
-- `search.web`
-- `search.answer`
+- `search.web` — live cited web results; maximum charge `0.006 USDC` on Base
+- `ai.chat` — bounded qualified AI chat with request-derived pricing
+- `sandbox.run` — bounded one-shot gVisor execution; maximum charge `0.120000 USDC`
 
-They are repository-local preview surfaces. No public callable deployment or
-payable route is currently verified. The SDKs require an explicit base URL, and
-they never sign, pay, or retry a payment automatically.
+`search.answer` synthesis and the remaining private product operations are not
+currently public offers.
 
-The other Clervo product cores and combined workflows are implemented and
-qualified privately. Their customer lifecycle and public availability remain
-controlled by the canonical registry and current evidence; source code or a
-package archive does not make a capability production-ready.
+The active Shop-Open focus is `search.web`: synchronize every discovery and
+buyer surface, complete the owner-approved production purchase, verify the
+receipt and safe replay, and open distribution.
 
 ## Packages
 
-- [`@clervo/sdk`](packages/sdk-typescript) — typed TypeScript client
-- [`clervo-sdk`](packages/sdk-python) — dependency-free Python client
-- [`@clervo/mcp`](packages/mcp) — stdio MCP server backed by the TypeScript SDK
+- `@clervo/sdk` — TypeScript client
+- `clervo-sdk` — Python client
+- `@clervo/mcp` — MCP server backed by the TypeScript SDK
 
-The current versions are published with registry provenance: `@clervo/sdk` and
-`@clervo/mcp` at `0.3.0`, and `clervo-sdk` at `0.2.0`. Older registry versions
-are preserved as history and carry deprecation guidance where their claims are
-stale. Package publication does not make the API publicly callable.
+Clients require an explicit Clervo base URL and never silently sign or retry a
+payment.
 
-## Local verification
+## Product truth
 
-The repository is pinned to Node.js `24.18.1` and npm `10.9.8`.
-
-```sh
-npm ci --ignore-scripts
-npm run test:stage13:clients
-npm run test:stage13:site
-```
-
-The site can then be previewed locally:
+Current public truth is generated from the repository registry and
+`packages/catalog/launch-state.v1.json`:
 
 ```sh
-npm run site:preview
+npm run generate:discovery
+node ./scripts/verify-product-scope.mjs
 ```
 
-## Security and product truth
+Generated catalog, pricing, status, OpenAPI, MCP discovery, onboarding,
+`llms.txt`, and the website must agree.
 
-Product contracts and lifecycle records are the source of truth. Never place
-credentials, wallet material, customer payloads, or authentication files in
-issues or commits. Security concerns can be reported through the repository's
-private security-reporting channel once the canonical GitHub repository is
-public.
+## Security
 
-This source is currently unlicensed (`UNLICENSED`). No permission to copy,
-modify, or redistribute is granted unless Clervo publishes separate terms.
+Never place credentials, wallet material, customer payloads, or authentication
+files in issues, commits, or logs. Payment retries remain prohibited while
+settlement is unknown.
+
+This source is currently unlicensed (`UNLICENSED`).

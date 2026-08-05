@@ -1,73 +1,34 @@
-# Clervo Platform First Revenue Release marketing scope
+# Clervo Shop-Open commercial scope
 
 ## Position
 
-**Buy outcomes. Not integrations.** Clervo is outcome infrastructure for
-agents. The First Revenue Release is the all-six **Clervo Platform**: Live
-Intelligence/Search, AI, Secure Sandbox, RPC, Prediction, and Crypto
-Intelligence. All six cores and their cross-pillar contracts must be stable
-before one shared machine-discoverable access and distribution layer is built.
-The permanent product narrative is **Find → Understand → Act**.
+Clervo sells useful outcomes to agents.
 
-Before comparative commercial proof, use **Clervo-owned live Web retrieval**.
-After the benchmark gate passes, use **Advanced live intelligence for agents**.
-Never use a general superiority claim when only one named workflow comparison
-has passed.
+The active product is `search.web`: live cited web results through a
+machine-readable public API with an exact maximum charge, receipt, and safe
+replay.
 
-N4.27S did not pass that gate and left five Stage 4 blockers. Search remains a
-`preview`, is not commercially competitive, production-qualified, or the
-reference pattern, and “Advanced live intelligence for agents” remains
-unauthorized. AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are
-`unavailable`, and implementation of those five cores has not started.
+## Opening offer
 
-## Solution-pack lanes
+- Product: `search.web`
+- Output: structured live results with citations
+- Price: maximum `0.006 USDC` on Base
+- Access: raw HTTP, TypeScript, Python, and MCP
+- Payment: explicit wallet approval
+- Recovery: same-key replay without a second charge
 
-- Commerce and Marketplace Intelligence.
-- Property and Local-Market Intelligence.
-- Company and Competitive Intelligence.
-- Research and Evidence.
-- Developer and Agent Context.
+## Visibility
 
-Commerce is one pack, not the company. Each published page names the exact
-customer job, callable products, connector access mode, data boundary, source
-policy, price or maximum charge only when verified, failure behavior,
-receipt/provenance, and reproducible proof.
+Catalog, pricing, status, OpenAPI, MCP discovery, SDK documentation,
+`llms.txt`, onboarding, examples, and the website must agree.
 
-## Proof-led launch system
+## Expansion
 
-Marketing uses real one-request demonstrations, source/result evidence,
-benchmark comparisons, failure proofs, build updates, and working templates.
-The public journey is **Install → Ask → Fund → Approve → Result → Receipt**.
-The planned primary x402 journey must require neither a traditional API key nor
-manual payment-header construction.
+AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain permanent
+families. Their existing engineering is preserved. Expansion does not block
+opening Search.
 
-After the Stage 12 core and contract freeze, Stage 13 performs one shared pass
-for the API, OpenAPI, MCP, TypeScript and Python SDKs, raw HTTP examples,
-onboarding, design, documentation, x402 discovery and x402scan, `llms.txt`,
-JSON-LD, sitemaps, SEO, registries, GitHub, task pages, working examples,
-status, and distribution. These surfaces must tell the same truth and are not
-currently launch-ready. `llms.txt` alone is not a search or AI ranking
-strategy.
+## Language
 
-## Evidence labels
-
-- **Build in public:** implementation progress; never readiness.
-- **Capability preview:** repository or recorded evidence exists; launch gates
-  remain incomplete.
-- **Launch-ready proof:** deployed, repeatable, paid/receipt-safe behavior has
-  passed its source-bound gate.
-- **Market-verified:** an external buyer received and paid for a useful result.
-- **Unavailable product core:** a required First Revenue Release pillar whose
-  implementation or proof has not started or has not passed its gate.
-- **Shared-surface candidate:** API, SDK, design, discovery, documentation,
-  SEO, onboarding, or distribution work held until the Stage 12 freeze.
-
-Stage 5 passed private Live Intelligence qualification above the Stage 4 Search
-reference pattern. Search is privately core-qualified and remains `preview`;
-later cores, shared surfaces, payment, production, and launch claims remain
-incomplete.
-
-No placeholder may contain invented prices, providers, commands, transactions,
-customers, logos, testimonials, revenue, usage, accuracy, screenshots,
-dashboards, agents, or results. Closed platforms are authorized connectors,
-never unrestricted anonymous Web coverage.
+Market the outcome and purchase experience. Do not market internal stages,
+tests, architecture, or qualification work.

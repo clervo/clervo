@@ -6,47 +6,52 @@ const root = new URL('../..', import.meta.url);
 const read = (path) => readFile(new URL(path, root), 'utf8');
 const json = async (path) => JSON.parse(await read(path));
 
-test('full-platform readiness distinguishes private engineering from customer-functional paid release', async () => {
-  const readiness = await json('packages/catalog/full-platform-readiness.v1.json');
-  assert.equal(readiness.schemaVersion, 'clervo.full-platform-readiness.v1');
-  assert.deepEqual(readiness.pillars.map(({ id }) => id), [
-    'search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence',
+test('Shop-Open readiness follows the real Search money path', async () => {
+  const [launch, discovery, pricing, onboarding] = await Promise.all([
+    json('packages/catalog/launch-state.v1.json'),
+    json('generated/public/.well-known/clervo.json'),
+    json('generated/public/pricing.json'),
+    json('generated/public/onboarding.json'),
   ]);
-  assert.equal(readiness.gates.length, 8);
-  assert.deepEqual(readiness.finishLines.map(({ id }) => id), [
-    'revenue_wedge', 'full_platform_first_revenue_release',
-  ]);
-  assert.ok(readiness.finishLines.every(({ platformLaunchClaimAllowed }) => platformLaunchClaimAllowed === false));
 
-  const points = { complete: 10_000, partial: 5_000, missing: 0, blocked: 0 };
-  for (const pillar of readiness.pillars) {
-    assert.deepEqual(Object.keys(pillar.gates), readiness.gates.map(({ id }) => id));
-    const expected = Math.round(Object.values(pillar.gates).reduce((total, status) => total + points[status], 0) / readiness.gates.length);
-    assert.equal(pillar.readinessBasisPoints, expected, pillar.id);
-  }
-  const aggregate = Math.round(readiness.pillars.reduce((total, { readinessBasisPoints }) => total + readinessBasisPoints, 0) / readiness.pillars.length);
-  assert.equal(readiness.scoring.aggregateReadinessBasisPoints, aggregate);
-  assert.equal(aggregate, 5833);
-  assert.equal(readiness.executionOrder[0], 'launch_public_search_revenue_wedge');
-  assert.equal(readiness.executionOrder.at(-1), 'complete_external_paid_first_revenue_release');
+  assert.equal(launch.distribution.publicApi.publicCallable, true);
+  const search = discovery.products.find(({ productId }) => productId === 'search.web');
+  assert.equal(search.publicAvailable, true);
+  assert.equal(search.payment.payable, true);
+  assert.equal(search.pricing.displayPrice.amountAtomic, '6000');
+
+  assert.equal(pricing.publicPrice.productId, 'search.web');
+  assert.equal(pricing.publicPrice.amountDisplay, '0.006 USDC');
+  assert.equal(onboarding.publicCallable, true);
+  assert.equal(onboarding.paymentImplemented, true);
+  assert.deepEqual(onboarding.journey.map(({ step }) => step), [
+    'install', 'ask', 'fund', 'approve', 'result', 'receipt',
+  ]);
 });
 
-test('resumable instructions point to one continuous revenue finish line without changing scope', async () => {
-  const [agents, state, finishLine] = await Promise.all([
+test('current authority opens Search without an all-six or external-payer gate', async () => {
+  const [agents, product, state, execution] = await Promise.all([
     read('AGENTS.md'),
-    read('docs/product/CURRENT-ENGINEERING-STATE.md'),
-    read('docs/product/FULL-PLATFORM-REVENUE-FINISH-LINE.md'),
+    read('docs/PRODUCT.md'),
+    read('docs/CURRENT-STATE.yaml'),
+    read('docs/product/SHOP-OPEN-EXECUTION.md'),
   ]);
-  assert.ok(agents.split('\n').length <= 150);
-  assert.match(agents, /FULL-PLATFORM-REVENUE-FINISH-LINE\.md/u);
-  assert.match(state, /Customer-functional paid readiness is currently 58\.33%/u);
-  assert.match(state, /Search, AI, and Sandbox remain publicly[\s\S]*payable/u);
-  assert.match(finishLine, /The two finish lines/u);
-  assert.match(finishLine, /Customer-functional definition/u);
-  assert.match(finishLine, /Launch AI/u);
-  assert.match(finishLine, /Launch Secure Sandbox/u);
-  assert.match(finishLine, /Launch RPC/u);
-  assert.match(finishLine, /Launch Prediction Intelligence/u);
-  assert.match(finishLine, /Launch Crypto Intelligence/u);
-  assert.match(finishLine, /Full Platform First Revenue Release/u);
+
+  assert.ok(agents.split('\n').length <= 120);
+  assert.match(agents, /owner-approved production\s+wallet/u);
+  assert.match(product, /active Shop-Open product is `search\.web`/u);
+  assert.match(state, /maximum_authorized_spend_usdc: 0\.006/u);
+  assert.match(execution, /No external tester is required before opening/u);
+
+  const combined = [agents, product, state, execution].join('\n');
+  assert.doesNotMatch(combined, /58\.33%/u);
+  assert.doesNotMatch(combined, /one external customer pays once/iu);
+  assert.doesNotMatch(combined, /all-six \*\*Clervo Platform\*\*/u);
+});
+
+test('six permanent families remain preserved without blocking Search opening', async () => {
+  const registry = await json('packages/catalog/platform-registry.v1.json');
+  assert.deepEqual(registry.pillars.map(({ pillarId }) => pillarId), [
+    'search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence',
+  ]);
 });
