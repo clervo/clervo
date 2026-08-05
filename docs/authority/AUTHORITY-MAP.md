@@ -3,7 +3,7 @@
 ## Active precedence
 
 1. Security, protection of funds, and explicit owner authorization
-2. Approved versioned decisions
+2. Approved versioned decisions, applying explicit supersession first
 3. Locked Clervo product and website decisions
 4. Recovery control roadmap
 5. `docs/PRODUCT.md`
@@ -16,6 +16,11 @@
 12. Historical and archived material
 
 Lower sources cannot silently override higher sources.
+
+Within the decision layer, an explicit supersession controls. The Gate 4.5
+six-family correction supersedes the conflicting NPLAN.3 all-six-before-first-
+revenue sequence and the NPLAN.4 standing autonomous stage program. The eight
+restored NPLAN records are historical references, not active authority.
 
 ## Permanent decisions
 

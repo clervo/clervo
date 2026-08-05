@@ -97,7 +97,31 @@ try {
 
   for (const relative of restoredPaths) {
     assert.equal(await exists(relative), true, `missing restored history: ${relative}`);
+    const restored = await read(relative);
+    assert.match(
+      restored,
+      /^> \*\*Historical restoration notice \(Gate 4\.5\):\*\*/,
+      `restored NPLAN record lacks historical notice: ${relative}`,
+    );
+    assert.match(
+      restored,
+      /It is not part of the active authority/,
+      `restored NPLAN record may look active: ${relative}`,
+    );
   }
+
+  assert.match(
+    decision,
+    /NPLAN\.3's requirement to finish all six cores before first revenue/,
+  );
+  assert.match(
+    decision,
+    /NPLAN\.4's standing autonomous exact-ticket program/,
+  );
+  assert.match(
+    authorityMap,
+    /explicit supersession controls/,
+  );
 
   assert.equal(
     await exists('docs/product/SHOP-OPEN-EXECUTION.md'),

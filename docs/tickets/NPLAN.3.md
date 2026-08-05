@@ -1,3 +1,9 @@
+> **Historical restoration notice (Gate 4.5):** This file preserves earlier
+> project history at its original path. Its original status and instructions
+> below are historical metadata only. It is not part of the active authority
+> chain and cannot authorize work. The Gate 4.5 six-family correction controls
+> every conflict.
+
 # NPLAN.3 — Six-product core-first Clervo Platform roadmap amendment
 
 - **Stage:** owner-authorized planning/product-authority amendment while Stage

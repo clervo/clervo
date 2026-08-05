@@ -137,5 +137,17 @@ this decision.
 This decision supersedes the Search-only authority introduced by `0cdcbba`.
 The commit itself remains preserved as historical evidence.
 
+Where they conflict with the corrected recovery program, this decision also
+supersedes:
+
+- NPLAN.3's requirement to finish all six cores before first revenue and its
+  obsolete Stage 5–16 forward sequence;
+- NPLAN.4's standing autonomous exact-ticket program and its obsolete stage
+  dependencies.
+
+The eight restored NPLAN.3, NPLAN.3R, and NPLAN.4 files preserve history at
+their original paths. Their original status labels are historical metadata and
+do not reactivate them.
+
 The locked Clervo product and website decisions, recovery roadmap, current
 source-bound evidence, and this correction control future work.

@@ -1,3 +1,9 @@
+> **Historical restoration notice (Gate 4.5):** This file preserves earlier
+> project history at its original path. Its original status and instructions
+> below are historical metadata only. It is not part of the active authority
+> chain and cannot authorize work. The Gate 4.5 six-family correction controls
+> every conflict.
+
 # NPLAN.4 — Standing autonomous exact-ticket completion authority
 
 - **Status:** accepted

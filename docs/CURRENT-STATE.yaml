@@ -63,3 +63,4 @@ history:
   drift_commit_preserved: true
   shop_open_program: "archived as failed authority"
   github_issue_10: "superseded; must not control work"
+  restored_nplan_records: "historical only; not active authority"

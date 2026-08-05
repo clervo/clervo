@@ -31,7 +31,7 @@ website, or recovery finish line.
 Use this order when instructions conflict:
 
 1. security, protection of funds, and explicit owner authorization;
-2. approved versioned decisions;
+2. approved versioned decisions, applying explicit supersession first;
 3. locked Clervo product and website authority;
 4. the recovery control roadmap;
 5. `docs/PRODUCT.md`;
@@ -42,6 +42,10 @@ Use this order when instructions conflict:
 10. historical and archived material.
 
 GitHub issues coordinate work. They do not override approved decisions.
+
+The Gate 4.5 six-family correction supersedes conflicting NPLAN.3 and
+NPLAN.4 instructions. Their restored files preserve history only; original
+status labels inside those files do not reactivate them.
 
 ## Operating rules
 

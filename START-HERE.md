@@ -37,3 +37,6 @@ switching, wallet payment, production mutation, or replacement website
 implementation unless a later approved gate explicitly authorizes it.
 
 Do not load `docs/archive/` as current authority.
+
+Do not load restored NPLAN.3, NPLAN.3R, or NPLAN.4 records as current
+authority. Their original paths are preserved for history only.

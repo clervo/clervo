@@ -32,6 +32,17 @@ test('Gate 4.5 restores six-family authority without asserting fake readiness', 
   assert.match(state, /current_gate: 5/);
   assert.match(state, /implementation_authorized: false/);
   assert.doesNotMatch(state, /readiness(_| )percentage/i);
+
+  const nplan3 = await read(
+    'docs/decisions/NPLAN.3-SIX-PRODUCT-CORE-FIRST-PLATFORM.md',
+  );
+  const nplan4 = await read(
+    'docs/decisions/NPLAN.4-STANDING-AUTONOMOUS-COMPLETION.md',
+  );
+  assert.match(nplan3, /^> \*\*Historical restoration notice \(Gate 4\.5\):\*\*/);
+  assert.match(nplan4, /^> \*\*Historical restoration notice \(Gate 4\.5\):\*\*/);
+  assert.match(decision, /NPLAN\.3's requirement to finish all six cores/);
+  assert.match(decision, /NPLAN\.4's standing autonomous exact-ticket program/);
 });
 
 test('control verifier passes', () => {
