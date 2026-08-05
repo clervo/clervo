@@ -1,88 +1,90 @@
-# Clervo engineering rules
+# Clervo engineering instructions
 
-## Objective
+## Current program
 
-Open the strongest Clervo shop the existing technology can support and use it to
-collect money.
+Clervo is one permanent six-family platform:
 
-No work is authorized unless it improves the product, offer, price-to-value,
-payment, visibility, distribution, reliability, capacity, revenue, or
-protection against material loss.
+1. Search
+2. AI
+3. Secure Sandbox
+4. Multi-chain RPC
+5. Prediction
+6. Crypto Intelligence
 
-## Authority
+Recovery is sequential, not Search-only. The active recovery gate is Gate 5:
+Reconcile Clervo Against Market Reality.
 
-1. Security and protection of funds
-2. Current approved ADRs
-3. `docs/PRODUCT.md`
-4. `packages/catalog/launch-state.v1.json`
-5. Active Shop-Open issue
-6. `docs/CURRENT-STATE.yaml`
-7. Current code, generated artifacts, and deployment evidence
-8. This file
-9. Archived history
+Gate 5 work order:
 
-Report unresolved conflicts. Never follow an old gate or handoff as current
-authority.
+1. Search
+2. AI
+3. Secure Sandbox
+4. Multi-chain RPC
+5. Crypto Intelligence
+6. Prediction
 
-## Context
+Search being first does not redefine the company, catalog, launch architecture,
+website, or recovery finish line.
 
-Read only this file, current state, the active issue, relevant nested
-instructions, and directly relevant source, schemas, focused tests, and
-deployment files.
+## Authority order
 
-Do not automatically read archived roadmaps, completed gates, old handoffs,
-journals, broad research, or unrelated product families.
+Use this order when instructions conflict:
 
-## Reuse first
+1. security, protection of funds, and explicit owner authorization;
+2. approved versioned decisions;
+3. locked Clervo product and website authority;
+4. the recovery control roadmap;
+5. `docs/PRODUCT.md`;
+6. `docs/CURRENT-STATE.yaml`;
+7. `docs/authority/AUTHORITY-MAP.md`;
+8. current canonical registry, runtime evidence, and source contracts;
+9. current code and focused tests;
+10. historical and archived material.
 
-- Preserve working code.
-- Trace the current path before editing.
+GitHub issues coordinate work. They do not override approved decisions.
+
+## Operating rules
+
+- Inspect Git state before editing.
+- Work on a branch; never commit directly to `main`.
+- Preserve existing engineering and trace the current path before replacing it.
 - Prefer Keep, Connect, or Fix over Replace.
-- A rewrite requires a demonstrated buyer or revenue advantage.
-- Do not clean unrelated legacy code.
-- Do not create architecture buyers cannot feel.
-- Do not expand another family unless the active issue requires it.
+- Revenue-first changes execution priority, not permanent platform scope.
+- Use one connected workstream for one buyer outcome; avoid artificial
+  micro-tickets and repeated documentation.
+- Tests support delivery and safety. Passing a test is not itself a product
+  milestone.
+- Do not claim lifecycle, availability, price, provider, deployment, payment,
+  revenue, or demand without source-bound evidence.
+- Public truth must eventually derive from one canonical lifecycle registry.
+- Keep unavailable operations visible as platform scope but never advertise
+  them as purchasable.
+- Website Steps 1-7G and the locked v4 visual authority remain preserved.
+  Replacement website implementation belongs to recovery Gate 10.
 
-## Work unit
+## Owner-only blockers
 
-Use one issue, one branch, and one PR for the connected work required to open
-one product. Do not split one buying journey into artificial micro-tickets.
+Stop only when progress requires the owner to:
 
-## Verification
+- provide credentials, account access, login, CAPTCHA, MFA, or approval;
+- approve spending or sign a wallet action;
+- select between materially different paid or legal options without a clear
+  evidence-backed winner;
+- authorize an irreversible production, customer-data, billing, IAM, domain,
+  registry, or unrelated infrastructure action.
 
-Use focused checks while assembling the product.
+Continue independent local work around isolated blockers.
 
-The Shop-Open test runs after provider, result, price, payment, receipt, replay,
-visibility, and onboarding are connected. It uses the owner-approved production
-wallet and the exact approved spending cap.
+## Permanent safety boundaries
 
-Required opening behavior:
-
-- a fresh useful production result;
-- one approved-wallet payment;
-- a valid result and receipt;
-- no second charge or execution on replay;
-- another new purchase works;
-- all public visibility surfaces agree.
-
-Tests and documentation are tools for opening the shop, not finish lines.
-
-## Public truth
-
-Public surfaces derive from generated artifacts backed by
-`packages/catalog/launch-state.v1.json` and the existing platform registry.
-
-Do not manually maintain conflicting prices, routes, lifecycle labels, or
-descriptions. Public language must be accurate, confident, outcome-focused, and
-free of internal gate terminology.
-
-## Safety
-
-Never expose secrets, wallet material, customer payloads, or credentials.
-Never spend or sign beyond explicit owner approval. Unknown settlement fails
-closed. Preserve payment idempotency, replay safety, hard cost ceilings,
-sandbox isolation, SSRF protection, and the protected `ai.clervo.dev` runtime.
-
-Stop only when customer funds or credentials are at risk, payment can
-double-charge, spending is uncontrolled, the intended paid use is explicitly
-prohibited, or a real unresolved product decision blocks opening.
+- Never expose secrets, wallet material, credentials, or customer payloads.
+- Never spend or sign without exact owner authorization and a hard cap.
+- Unknown payment or settlement state fails closed and must be reconciled before
+  another authorization or retry.
+- Preserve payment idempotency, receipts, no-charge replay, hard cost ceilings,
+  sandbox isolation, SSRF and redirect protection, and resource cleanup.
+- Never weaken contracts or fabricate proof.
+- `/opt/clervo-ai` and `ai.clervo.dev` are protected, separate infrastructure.
+  Do not stop, replace, reconfigure, expose, or include them in cleanup without
+  explicit authorization.
+- Preserve the clean-room repository boundary and unrelated infrastructure.

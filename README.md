@@ -1,50 +1,55 @@
 # Clervo
 
-Clervo is outcome infrastructure for agents: **Find → Understand → Act**.
+Clervo is one unified platform for purchasing verified agent outcomes.
 
-## Public preview
+**Human promise:** Give your agent a task. Get a verified result.
+**Commercial promise:** Buy outcomes. Not integrations.
+**Mechanism:** Find → Understand → Act.
 
-The protected public API is available at `https://api.clervo.dev`.
+## Platform families
 
-Current generated public operations include:
+1. Search
+2. AI
+3. Secure Sandbox
+4. Multi-chain RPC
+5. Prediction
+6. Crypto Intelligence
 
-- `search.web` — live cited web results; maximum charge `0.006 USDC` on Base
-- `ai.chat` — bounded qualified AI chat with request-derived pricing
-- `sandbox.run` — bounded one-shot gVisor execution; maximum charge `0.120000 USDC`
+This repository contains Clervo platform source, contracts, clients, MCP
+integration, product evidence, and the repository-local product experience.
 
-`search.answer` synthesis and the remaining private product operations are not
-currently public offers.
+## Current recovery state
 
-The active Shop-Open focus is `search.web`: synchronize every discovery and
-buyer surface, complete the owner-approved production purchase, verify the
-receipt and safe replay, and open distribution.
+Gate 4.5 corrected a Search-only authority drift without changing runtime,
+deployment, providers, payments, production, or the website.
 
-## Packages
+The active next gate is Gate 5: operation-level reconciliation against market
+and runtime reality, in this order:
 
-- `@clervo/sdk` — TypeScript client
-- `clervo-sdk` — Python client
-- `@clervo/mcp` — MCP server backed by the TypeScript SDK
+1. Search
+2. AI
+3. Secure Sandbox
+4. Multi-chain RPC
+5. Crypto Intelligence
+6. Prediction
 
-Clients require an explicit Clervo base URL and never silently sign or retry a
-payment.
+Current public availability, pricing, provider rights, payment proof, and
+commercial readiness must be established from the canonical registry and
+source-bound evidence during Gate 5. Source code, packages, tests, design
+fixtures, or historical documents do not independently prove that an operation
+is public or sellable.
 
-## Product truth
+## Core interfaces
 
-Current public truth is generated from the repository registry and
-`packages/catalog/launch-state.v1.json`:
+The repository includes TypeScript and Python clients and an MCP server.
+Published versions, callable operations, base URLs, payment behavior, and
+lifecycle must be verified from current package metadata, generated discovery,
+contracts, and evidence.
 
-```sh
-npm run generate:discovery
-node ./scripts/verify-product-scope.mjs
-```
+## Safety
 
-Generated catalog, pricing, status, OpenAPI, MCP discovery, onboarding,
-`llms.txt`, and the website must agree.
+Never commit credentials, wallet material, authentication files, customer
+payloads, or provider secrets. Never spend, sign, deploy, or change protected
+infrastructure without explicit authorization.
 
-## Security
-
-Never place credentials, wallet material, customer payloads, or authentication
-files in issues, commits, or logs. Payment retries remain prohibited while
-settlement is unknown.
-
-This source is currently unlicensed (`UNLICENSED`).
+`/opt/clervo-ai` and `ai.clervo.dev` remain protected and separate.

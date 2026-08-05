@@ -1,34 +1,54 @@
-# Clervo Shop-Open commercial scope
+# Clervo initial commercial release authority
 
 ## Position
 
-Clervo sells useful outcomes to agents.
+Clervo Platform is one six-family platform. Commercial release may begin with
+the first operation that passes its own evidence-bound release requirements.
+The platform does not need to pretend all operations are simultaneously ready,
+and the first released operation does not become the whole company.
 
-The active product is `search.web`: live cited web results through a
-machine-readable public API with an exact maximum charge, receipt, and safe
-replay.
+## Permanent families
 
-## Opening offer
+1. Search
+2. AI
+3. Secure Sandbox
+4. Multi-chain RPC
+5. Prediction
+6. Crypto Intelligence
 
-- Product: `search.web`
-- Output: structured live results with citations
-- Price: maximum `0.006 USDC` on Base
-- Access: raw HTTP, TypeScript, Python, and MCP
-- Payment: explicit wallet approval
-- Recovery: same-key replay without a second charge
+## Release truth
 
-## Visibility
+For every marketed operation, publish only verified:
 
-Catalog, pricing, status, OpenAPI, MCP discovery, SDK documentation,
-`llms.txt`, onboarding, examples, and the website must agree.
+- purchased outcome;
+- inputs, outputs, limits, and source boundary;
+- lifecycle and availability;
+- price or maximum charge;
+- payment and approval behavior;
+- evidence and provenance;
+- receipt and replay behavior;
+- failure and recovery behavior.
 
-## Expansion
+Unavailable operations remain visible as platform scope but are not presented
+as purchasable.
 
-AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain permanent
-families. Their existing engineering is preserved. Expansion does not block
-opening Search.
+## Proof states
 
-## Language
+Keep these states separate:
 
-Market the outcome and purchase experience. Do not market internal stages,
-tests, architecture, or qualification work.
+- implementation evidence;
+- private qualification;
+- operational/public-path proof;
+- payment-plumbing proof;
+- external customer and demand proof.
+
+An owner-funded payment may validate bounded payment plumbing. It does not prove
+external demand or revenue.
+
+## Distribution
+
+Catalog, pricing, status, OpenAPI, MCP, SDKs, onboarding, examples, discovery,
+`llms.txt`, and the future website must derive from one canonical registry.
+
+Customer-facing language should be confident and plain. Internal gates, stale
+readiness percentages, and fixture content must not appear as product claims.

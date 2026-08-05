@@ -1,41 +1,59 @@
-# Clervo commercial visibility guide
+# Clervo builder and messaging authority
 
-Clervo is outcome infrastructure for agents.
+This file guides product copy, documentation, site, motion, onboarding, and
+agent-facing presentation. It does not establish runtime readiness.
 
-**Promise:** Give your agent a task. Get a verified result.
-**Commercial promise:** Buy outcomes. Not integrations.
-**Narrative:** Find → Understand → Act.
+## Messaging hierarchy
 
-## Active Shop-Open focus
+Use the hierarchy in this order:
 
-The active product is `search.web`.
+1. **Company:** Clervo
+2. **Human promise:** Give your agent a task. Get a verified result.
+3. **Commercial promise:** Buy outcomes. Not integrations.
+4. A plain explanation of the purchased outcome.
+5. **Technical category:** Outcome infrastructure for AI agents.
+6. **Mechanism:** Find → Understand → Act.
+7. **Operating model:** Acquire → Operate → Prove.
 
-Public product truth comes from generated artifacts and
-`packages/catalog/launch-state.v1.json`. Never copy lifecycle, price, route, or
-availability from an archived roadmap or design reference.
+Do not merge the company name and technical category into an invented tagline.
 
-The six permanent families remain Search, AI, Secure Sandbox, Multi-chain RPC,
-Prediction, and Crypto Intelligence. Their existence does not require finishing
-all six before opening a useful product.
+## Product architecture
 
-## Copy standard
+- Parent product: **Clervo Platform**
+- Installation/runtime wedge: **ClervoRouter**
+- Permanent families:
+  - Search
+  - AI
+  - Secure Sandbox
+  - Multi-chain RPC
+  - Prediction
+  - Crypto Intelligence
 
-Describe the purchased outcome:
+Products may be recovered and released sequentially. A focused first operation
+does not replace the parent platform or erase the other families.
 
-- Live web results with citations
-- Exact maximum charge
-- Replay-safe payment
-- Result and receipt
-- Clear recovery action
+## Truth standard
 
-Do not expose stage names, qualification language, internal failure codes, or
-weak phrases such as “does the job.” Do not invent prices, providers,
-transactions, customers, usage, accuracy, or revenue.
+Every visible operation, price, route, lifecycle, example, CTA, receipt, status,
+and limitation must match the canonical registry and current evidence.
 
-## Experience
+Do not invent or infer:
 
-Preserve the V6 cinematic system, semantic HTML, responsive behavior, reduced
-motion, and DOM-owned proof. Visual effects never establish product truth.
+- public availability;
+- prices or providers;
+- transactions, customers, usage, revenue, or demand;
+- benchmark superiority;
+- screenshots, receipts, incidents, or results.
 
-Every visible product, CTA, guide, price, status, and example must match the
-generated public artifacts.
+Website fixtures demonstrate structure and interaction only. They are not
+runtime truth.
+
+## Experience authority
+
+Preserve the locked v4 design program, Hollow Apex identity, semantic state
+system, high-end motion, responsive composition, accessibility, and DOM-owned
+proof and recovery.
+
+Visual effects never establish product truth. The replacement website is
+integrated at recovery Gate 10 after product truth and commercial authority are
+reconciled.
