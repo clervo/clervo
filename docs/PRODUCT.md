@@ -1,64 +1,76 @@
-# Clervo product
+# Clervo product authority
 
-## Category
+## Identity
 
-Clervo is outcome infrastructure for AI agents.
-
-**Promise:** Give your agent a task. Get a verified result.
-**Commercial promise:** Buy outcomes. Not integrations.
-
-## Business objective
-
-Clervo exists to sell useful outcomes and maximize revenue. Engineering,
-testing, providers, architecture, and design serve the shop.
+- **Company:** Clervo
+- **Parent product:** Clervo Platform
+- **Installation/runtime wedge:** ClervoRouter
+- **Human promise:** Give your agent a task. Get a verified result.
+- **Commercial promise:** Buy outcomes. Not integrations.
+- **Technical category:** Outcome infrastructure for AI agents.
+- **Mechanism:** Find → Understand → Act.
+- **Operating model:** Acquire → Operate → Prove.
 
 ## Permanent platform
 
-- Search
-- AI
-- Secure Sandbox
-- Multi-chain RPC
-- Prediction
-- Crypto Intelligence
+Clervo has six permanent product families:
 
-Only one product must be actively finished at a time.
+1. Search
+2. AI
+3. Secure Sandbox
+4. Multi-chain RPC
+5. Prediction
+6. Crypto Intelligence
 
-## Active product
+Family identity is permanent. Operation lifecycle is evidence-bound and may
+differ by operation.
 
-The active Shop-Open product is `search.web`.
+Products may be recovered, priced, and released sequentially. Search is first
+in the current recovery work order only. It is not the entire company, catalog,
+launch architecture, or recovery finish line.
 
-It competes through useful live results, structured output, citations,
-machine-readable discovery, SDK and MCP access, wallet-native payment, a
-receipt, safe replay, and a competitive price.
+## Purchased-outcome contract
 
-## Finished
+A sellable operation should provide:
 
-A product is ready to open when production can:
+1. a bounded request;
+2. an exact operation and version;
+3. an honest price or maximum charge;
+4. explicit approval when payment is required;
+5. one useful result or a clear no-charge failure;
+6. evidence and provenance appropriate to the operation;
+7. a durable receipt;
+8. idempotent, no-charge replay;
+9. one bounded recovery action for uncertainty or failure.
 
-1. show a clear offer;
-2. return a useful result;
-3. accept the approved-wallet payment;
-4. return the purchased result and receipt;
-5. replay without a second charge or execution;
-6. complete another new purchase;
-7. show the same truth on every public surface.
+Payment-plumbing proof, operational proof, and external demand proof are
+different states and must not be collapsed into one claim.
 
-## Buyer-visible quality
+## Canonical truth
 
-Compete where buyers feel it: usefulness, evidence, price-to-value, latency,
-reliability, onboarding, payment simplicity, and machine visibility.
+One lifecycle registry must own or generate operation-level:
 
-Do not add complexity the buyer cannot feel.
+- family and operation identity;
+- schemas and versions;
+- lifecycle and availability;
+- providers and supply qualification;
+- prices, limits, and approval bounds;
+- evidence and provenance;
+- receipts, replay, and failure behavior;
+- commercial proof state.
 
-## Pricing
+Catalog, pricing, status, OpenAPI, MCP, SDK metadata, onboarding, discovery,
+`llms.txt`, examples, and the future website must agree with that registry.
 
-Before meaningful sales, price to make the offer attractive while enforcing
-hard supplier and infrastructure ceilings. A bounded launch subsidy is allowed.
+## Recovery sequence
 
-After sales begin, increase capacity, improve contribution, introduce
-higher-value operations, and expand distribution.
+1. Search
+2. AI
+3. Secure Sandbox
+4. Multi-chain RPC
+5. Crypto Intelligence
+6. Prediction
 
-## Visibility
-
-Website, catalog, pricing, status, OpenAPI, MCP, SDK documentation, `llms.txt`,
-x402 discovery, examples, onboarding, and agent directories must agree.
+Revenue-first work must reuse existing engineering and minimize unnecessary
+documentation and broad test campaigns. It must not erase permanent platform
+scope or skip source-bound reconciliation.

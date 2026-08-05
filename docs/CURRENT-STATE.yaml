@@ -1,58 +1,66 @@
-schema_version: 1
-updated_at: "2026-08-05"
+version: 1
+updated: "2026-08-05"
+program: "Clervo recovery"
 
-gate:
-  id: GATE-4.5
-  name: shop-open-productization-and-control-reset
-  status: active
+authority:
+  current_gate: 5
+  previous_gate: 4.5
+  gate_4_5_status: "corrected by the current control-only follow-up commit"
+  correction_target: "0cdcbba6b64b547178dfce9d7005b49dd62e4739"
+  rule: "Revenue-first changes recovery sequence, not permanent platform scope."
 
-objective:
-  product_id: search.web
-  outcome: open-the-best-search-shop-current-technology-can-support
+platform:
+  parent_product: "Clervo Platform"
+  runtime_wedge: "ClervoRouter"
+  families:
+    - id: search
+      reconciliation_order: 1
+      operation_state: "unresolved by Gate 5"
+    - id: ai
+      reconciliation_order: 2
+      operation_state: "unresolved by Gate 5"
+    - id: secure_sandbox
+      reconciliation_order: 3
+      operation_state: "unresolved by Gate 5"
+    - id: multi_chain_rpc
+      reconciliation_order: 4
+      operation_state: "unresolved by Gate 5"
+    - id: crypto_intelligence
+      reconciliation_order: 5
+      operation_state: "unresolved by Gate 5"
+    - id: prediction
+      reconciliation_order: 6
+      operation_state: "unresolved by Gate 5"
 
-public_truth:
-  api: https://api.clervo.dev
-  search_web:
-    lifecycle: preview
-    callable: true
-    payable: true
-    maximum_charge_usdc: 0.006
-  ai_chat:
-    lifecycle: preview
-    callable: true
-  sandbox_run:
-    lifecycle: preview
-    callable: true
-  search_answer:
-    callable: false
+gate_5:
+  name: "Reconcile Clervo Against Market Reality"
+  first_workstream: "Search"
+  required_dimensions:
+    - operation identity and schema
+    - runtime and deployment evidence
+    - provider and resale rights
+    - supplier cost and customer price
+    - margin and hard cost ceiling
+    - payment, receipt, and replay
+    - public lifecycle and availability
+    - commercial proof state
+  implementation_authorized: false
+  cleanup_authorized: false
 
-opening_test:
-  wallet: owner-approved
-  maximum_authorized_spend_usdc: 0.006
-  public_purchase: pending
-  receipt: pending
-  safe_replay: pending
-  second_new_purchase: pending
+protected:
+  runtime:
+    - "/opt/clervo-ai"
+    - "ai.clervo.dev"
+  prohibited_without_explicit_authorization:
+    - deployment
+    - provider switching
+    - wallet payment or signing
+    - production mutation
+    - GitHub or public cleanup outside the approved coordination action
+    - replacement website implementation
 
-active_work:
-  - reset-control-authority
-  - synchronize-search-visibility
-  - complete-owner-wallet-public-purchase
-  - open-search-distribution
-
-paused:
-  - search-answer-expansion
-  - ai-expansion
-  - sandbox-expansion
-  - rpc
-  - prediction
-  - crypto-intelligence
-  - broad-refactors
-  - broad-test-campaigns
-  - replacement-website-implementation
-
-policy:
-  reuse_first: true
-  rewrite_requires_buyer_or_revenue_advantage: true
-  focused_checks_during_build: true
-  final_opening_test_after_assembly: true
+history:
+  drift_commit_preserved: true
+  shop_open_program: "archived as failed authority"
+  github_issue_10: "superseded; must not control work"
+  restored_nplan_records: "historical only; not active authority"

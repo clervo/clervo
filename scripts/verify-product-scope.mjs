@@ -1,93 +1,160 @@
 #!/usr/bin/env node
 
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (relative) => readFile(path.join(root, relative), 'utf8');
-const json = async (relative) => JSON.parse(await read(relative));
+const exists = async (relative) => {
+  try {
+    await access(path.join(root, relative));
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const families = [
+  'Search',
+  'AI',
+  'Secure Sandbox',
+  'Multi-chain RPC',
+  'Prediction',
+  'Crypto Intelligence',
+];
+
+const activeAuthorityPaths = [
+  'AGENTS.md',
+  'AI_BUILDER.md',
+  'README.md',
+  'START-HERE.md',
+  'docs/PRODUCT.md',
+  'docs/CURRENT-STATE.yaml',
+  'docs/authority/AUTHORITY-MAP.md',
+  'docs/brand/FOCUSED-LAUNCH-SCOPE-v1.md',
+  'docs/marketing/INITIAL-COMMERCIAL-RELEASE.md',
+  'docs/product/CURRENT-ENGINEERING-STATE.md',
+  'docs/product/FULL-PLATFORM-REVENUE-FINISH-LINE.md',
+  'docs/decisions/GATE4_5-SIX-FAMILY-AUTHORITY-CORRECTION-v1-20260805.md',
+];
+
+const restoredPaths = [
+  'docs/decisions/NPLAN.3-SIX-PRODUCT-CORE-FIRST-PLATFORM.md',
+  'docs/evidence/NPLAN.3-six-product-core-first-roadmap-audit.md',
+  'docs/tickets/NPLAN.3.md',
+  'docs/evidence/NPLAN.3R-acceptance-handoff-repair.md',
+  'docs/tickets/NPLAN.3R.md',
+  'docs/decisions/NPLAN.4-STANDING-AUTONOMOUS-COMPLETION.md',
+  'docs/evidence/NPLAN.4-autonomous-completion-and-owner-package.md',
+  'docs/tickets/NPLAN.4.md',
+];
+
+const escaped = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 try {
-  const [registry, launch, discovery, catalog, pricing, status, onboarding, openapi] = await Promise.all([
-    json('packages/catalog/platform-registry.v1.json'),
-    json('packages/catalog/launch-state.v1.json'),
-    json('generated/public/.well-known/clervo.json'),
-    json('generated/public/catalog.json'),
-    json('generated/public/pricing.json'),
-    json('generated/public/status.json'),
-    json('generated/public/onboarding.json'),
-    json('generated/public/openapi.json'),
-  ]);
+  const product = await read('docs/PRODUCT.md');
+  const state = await read('docs/CURRENT-STATE.yaml');
+  const agents = await read('AGENTS.md');
+  const decision = await read(
+    'docs/decisions/GATE4_5-SIX-FAMILY-AUTHORITY-CORRECTION-v1-20260805.md',
+  );
+  const authorityMap = await read('docs/authority/AUTHORITY-MAP.md');
+  const packageJson = JSON.parse(await read('package.json'));
 
-  const families = ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence'];
-  assert.deepEqual(registry.pillars.map(({ pillarId }) => pillarId), families);
-  assert.deepEqual(launch.products.map(({ id }) => id), families);
-
-  assert.equal(launch.distribution.publicApi.publicCallable, true);
-  assert.equal(launch.distribution.publicApi.publicTraffic, true);
-  assert.equal(launch.distribution.publicApi.customerEndpointAvailable, true);
-
-  const discoveryById = new Map(discovery.products.map((product) => [product.productId, product]));
-  const search = discoveryById.get('search.web');
-  assert.ok(search, 'search.web missing from discovery');
-  assert.equal(search.lifecycle, 'preview');
-  assert.equal(search.publicAvailable, true);
-  assert.equal(search.payment.payable, true);
-  assert.equal(search.pricing.displayPrice.amountAtomic, '6000');
-  assert.equal(search.pricing.displayPrice.decimals, 6);
-
-  const answer = discoveryById.get('search.answer');
-  assert.ok(answer, 'search.answer missing from discovery');
-  assert.equal(answer.publicAvailable, false);
-  assert.equal(answer.payment.payable, false);
-
-  const catalogById = new Map(catalog.products.map((product) => [product.productId, product]));
-  assert.equal(catalogById.get('search.web')?.publicAvailable, true);
-  assert.equal(catalogById.get('search.answer')?.publicAvailable, false);
-
-  assert.equal(pricing.publicOfferAvailable, true);
-  assert.equal(pricing.publicPrice.productId, 'search.web');
-  assert.equal(pricing.publicPrice.amountAtomic, '6000');
-  assert.equal(pricing.offers.find(({ productId }) => productId === 'search.web')?.publicAvailable, true);
-  assert.equal(pricing.offers.find(({ productId }) => productId === 'search.answer')?.publicAvailable, false);
-
-  assert.deepEqual(status.publicApi, launch.distribution.publicApi);
-  assert.equal(onboarding.publicCallable, true);
-  assert.equal(onboarding.paymentImplemented, true);
-  assert.ok(openapi.paths['/v1/search/free']);
-  assert.ok(openapi.paths['/v1/search/paid']);
-
-  const controls = await Promise.all([
-    'AGENTS.md',
-    'AI_BUILDER.md',
-    'README.md',
-    'docs/PRODUCT.md',
-    'docs/product/CURRENT-ENGINEERING-STATE.md',
-    'docs/product/SHOP-OPEN-EXECUTION.md',
-    'docs/brand/FOCUSED-LAUNCH-SCOPE-v1.md',
-    'docs/marketing/INITIAL-COMMERCIAL-RELEASE.md',
-  ].map(async (relative) => [relative, await read(relative)]));
-
-  const obsolete = [
-    /all-six \*\*Clervo Platform\*\*/u,
-    /Customer-functional paid readiness is currently 58\.33%/u,
-    /external payer needed/u,
-    /one external customer pays once/u,
-    /apps\/site\/capability-scope\.json/u,
-    /apps\/site\/PROTOTYPE-COPY\.md/u,
-  ];
-
-  for (const [relative, source] of controls) {
-    for (const pattern of obsolete) {
-      assert.doesNotMatch(source, pattern, `${relative}: obsolete authority`);
-    }
+  for (const family of families) {
+    assert.match(product, new RegExp(escaped(family)));
+    assert.match(agents, new RegExp(escaped(family)));
   }
 
-  assert.ok((await read('AGENTS.md')).split('\n').length <= 120);
-  console.log('shop-open product scope consistency: PASS');
+  for (const id of [
+    'search',
+    'ai',
+    'secure_sandbox',
+    'multi_chain_rpc',
+    'crypto_intelligence',
+    'prediction',
+  ]) {
+    assert.match(state, new RegExp(`id: ${id}`));
+  }
+
+  assert.match(
+    decision,
+    /Revenue-first changes how the six-family platform is recovered\./,
+  );
+  assert.match(decision, /Search is first only in the recovery work order\./);
+  assert.match(authorityMap, /Issue `#10`.*is superseded/s);
+  assert.equal(
+    Object.hasOwn(packageJson.scripts ?? {}, 'test:stage5'),
+    false,
+    'obsolete test:stage5 must remain retired',
+  );
+
+  for (const relative of activeAuthorityPaths) {
+    assert.equal(await exists(relative), true, `missing active authority: ${relative}`);
+  }
+
+  for (const relative of restoredPaths) {
+    assert.equal(await exists(relative), true, `missing restored history: ${relative}`);
+    const restored = await read(relative);
+    assert.match(
+      restored,
+      /^> \*\*Historical restoration notice \(Gate 4\.5\):\*\*/,
+      `restored NPLAN record lacks historical notice: ${relative}`,
+    );
+    assert.match(
+      restored,
+      /It is not part of the active authority/,
+      `restored NPLAN record may look active: ${relative}`,
+    );
+  }
+
+  assert.match(
+    decision,
+    /NPLAN\.3's requirement to finish all six cores before first revenue/,
+  );
+  assert.match(
+    decision,
+    /NPLAN\.4's standing autonomous exact-ticket program/,
+  );
+  assert.match(
+    authorityMap,
+    /explicit supersession controls/,
+  );
+
+  assert.equal(
+    await exists('docs/product/SHOP-OPEN-EXECUTION.md'),
+    false,
+    'Search-only Shop-Open program must not remain active',
+  );
+  assert.equal(
+    await exists(
+      'docs/archive/gate4-5-control-reset-20260805/product/SHOP-OPEN-EXECUTION.failed-authority.md',
+    ),
+    true,
+    'failed Shop-Open program must remain archived',
+  );
+
+  const combined = (
+    await Promise.all(activeAuthorityPaths.map((relative) => read(relative)))
+  ).join('\n');
+
+  for (const forbidden of [
+    'Only Search matters until the shop opens',
+    'The active product is `search.web`',
+    'Open the strongest Clervo shop',
+  ]) {
+    assert.doesNotMatch(combined, new RegExp(escaped(forbidden)));
+  }
+
+  assert.match(
+    combined,
+    /Search being first does not redefine the company, catalog, launch architecture,/,
+  );
+
+  console.log('Gate 4.5 six-family authority verification passed.');
 } catch (error) {
-  console.error(`shop-open product scope consistency: FAIL: ${error.message}`);
+  console.error(error);
   process.exitCode = 1;
 }

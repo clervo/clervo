@@ -1,29 +1,50 @@
-# Authority map
+# Clervo authority map
 
-| Truth | Live authority |
-|---|---|
-| Product promise and finish standard | `docs/PRODUCT.md` |
-| Current public deployment and commercial truth | `packages/catalog/launch-state.v1.json` |
-| Platform capability structure | `packages/catalog/platform-registry.v1.json` |
-| Current objective and blockers | `docs/CURRENT-STATE.yaml` |
-| Current implementation contract | Active Shop-Open issue |
-| Generated public truth | `generated/public/**` |
-| Stable engineering rules | `AGENTS.md` |
-| Historical decisions and evidence | Git and `docs/archive/**` |
+## Active precedence
 
-## Precedence
+1. Security, protection of funds, and explicit owner authorization
+2. Approved versioned decisions, applying explicit supersession first
+3. Locked Clervo product and website decisions
+4. Recovery control roadmap
+5. `docs/PRODUCT.md`
+6. `docs/CURRENT-STATE.yaml`
+7. This authority map
+8. Gate 5 source-bound reconciliation records
+9. Canonical registry, generated artifacts, and runtime evidence
+10. Current source contracts and focused tests
+11. GitHub issues and execution notes
+12. Historical and archived material
 
-1. Security and protection of funds
-2. Current approved ADRs
-3. Product authority
-4. Launch state
-5. Active issue
-6. Current state
-7. Current implementation and deployment evidence
-8. Agent instructions
-9. Archived history
+Lower sources cannot silently override higher sources.
 
-Do not silently reconcile conflicts. Record the conflict and the smallest
-decision required.
+Within the decision layer, an explicit supersession controls. The Gate 4.5
+six-family correction supersedes the conflicting NPLAN.3 all-six-before-first-
+revenue sequence and the NPLAN.4 standing autonomous stage program. The eight
+restored NPLAN records are historical references, not active authority.
 
-Archived files are never loaded by default.
+## Permanent decisions
+
+- Clervo is one six-family platform.
+- Search is first only in the current recovery order.
+- Family identity is permanent; operation lifecycle is evidence-bound.
+- Public truth must derive from one canonical lifecycle registry.
+- Revenue-first work reuses existing engineering and reduces bureaucracy.
+- Payment must remain bounded, receipt-bearing, idempotent, and replay-safe.
+- Website Steps 1-7G and the locked v4 visual authority remain preserved.
+- Replacement website implementation occurs at recovery Gate 10.
+- `/opt/clervo-ai` and `ai.clervo.dev` are protected and separate.
+
+## Coordination documents
+
+GitHub issues coordinate approved work. They do not create product authority,
+change the gate sequence, redefine platform scope, authorize spending, or prove
+runtime facts.
+
+Issue `#10`, “Gate 4.5: Open the search.web shop,” is superseded by the Gate 4.5
+six-family correction and must not be executed.
+
+## Historical evidence
+
+`docs/archive/` preserves exact evidence and superseded programs. Archive files
+are not loaded as current authority and must never be executed merely because
+they contain detailed instructions.

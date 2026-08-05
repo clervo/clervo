@@ -1,57 +1,60 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { spawnSync } from 'node:child_process';
+import path from 'node:path';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
 
-const root = new URL('../..', import.meta.url);
-const read = (path) => readFile(new URL(path, root), 'utf8');
-const json = async (path) => JSON.parse(await read(path));
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const read = (relative) => readFile(path.join(root, relative), 'utf8');
+const escaped = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-test('Shop-Open readiness follows the real Search money path', async () => {
-  const [launch, discovery, pricing, onboarding] = await Promise.all([
-    json('packages/catalog/launch-state.v1.json'),
-    json('generated/public/.well-known/clervo.json'),
-    json('generated/public/pricing.json'),
-    json('generated/public/onboarding.json'),
-  ]);
+test('Gate 4.5 restores six-family authority without asserting fake readiness', async () => {
+  const decision = await read(
+    'docs/decisions/GATE4_5-SIX-FAMILY-AUTHORITY-CORRECTION-v1-20260805.md',
+  );
+  const state = await read('docs/CURRENT-STATE.yaml');
+  const product = await read('docs/PRODUCT.md');
 
-  assert.equal(launch.distribution.publicApi.publicCallable, true);
-  const search = discovery.products.find(({ productId }) => productId === 'search.web');
-  assert.equal(search.publicAvailable, true);
-  assert.equal(search.payment.payable, true);
-  assert.equal(search.pricing.displayPrice.amountAtomic, '6000');
+  for (const family of [
+    'Search',
+    'AI',
+    'Secure Sandbox',
+    'Multi-chain RPC',
+    'Prediction',
+    'Crypto Intelligence',
+  ]) {
+    assert.match(decision, new RegExp(escaped(family)));
+    assert.match(product, new RegExp(escaped(family)));
+  }
 
-  assert.equal(pricing.publicPrice.productId, 'search.web');
-  assert.equal(pricing.publicPrice.amountDisplay, '0.006 USDC');
-  assert.equal(onboarding.publicCallable, true);
-  assert.equal(onboarding.paymentImplemented, true);
-  assert.deepEqual(onboarding.journey.map(({ step }) => step), [
-    'install', 'ask', 'fund', 'approve', 'result', 'receipt',
-  ]);
+  assert.match(decision, /Search is first only in the recovery work order\./);
+  assert.match(state, /current_gate: 5/);
+  assert.match(state, /implementation_authorized: false/);
+  assert.doesNotMatch(state, /readiness(_| )percentage/i);
+
+  const nplan3 = await read(
+    'docs/decisions/NPLAN.3-SIX-PRODUCT-CORE-FIRST-PLATFORM.md',
+  );
+  const nplan4 = await read(
+    'docs/decisions/NPLAN.4-STANDING-AUTONOMOUS-COMPLETION.md',
+  );
+  assert.match(nplan3, /^> \*\*Historical restoration notice \(Gate 4\.5\):\*\*/);
+  assert.match(nplan4, /^> \*\*Historical restoration notice \(Gate 4\.5\):\*\*/);
+  assert.match(decision, /NPLAN\.3's requirement to finish all six cores/);
+  assert.match(decision, /NPLAN\.4's standing autonomous exact-ticket program/);
 });
 
-test('current authority opens Search without an all-six or external-payer gate', async () => {
-  const [agents, product, state, execution] = await Promise.all([
-    read('AGENTS.md'),
-    read('docs/PRODUCT.md'),
-    read('docs/CURRENT-STATE.yaml'),
-    read('docs/product/SHOP-OPEN-EXECUTION.md'),
-  ]);
+test('control verifier passes', () => {
+  const result = spawnSync(
+    process.execPath,
+    [path.join(root, 'scripts/verify-product-scope.mjs')],
+    { cwd: root, encoding: 'utf8' },
+  );
 
-  assert.ok(agents.split('\n').length <= 120);
-  assert.match(agents, /owner-approved production\s+wallet/u);
-  assert.match(product, /active Shop-Open product is `search\.web`/u);
-  assert.match(state, /maximum_authorized_spend_usdc: 0\.006/u);
-  assert.match(execution, /No external tester is required before opening/u);
-
-  const combined = [agents, product, state, execution].join('\n');
-  assert.doesNotMatch(combined, /58\.33%/u);
-  assert.doesNotMatch(combined, /one external customer pays once/iu);
-  assert.doesNotMatch(combined, /all-six \*\*Clervo Platform\*\*/u);
-});
-
-test('six permanent families remain preserved without blocking Search opening', async () => {
-  const registry = await json('packages/catalog/platform-registry.v1.json');
-  assert.deepEqual(registry.pillars.map(({ pillarId }) => pillarId), [
-    'search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence',
-  ]);
+  assert.equal(
+    result.status,
+    0,
+    `verifier failed\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`,
+  );
 });
