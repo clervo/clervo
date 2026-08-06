@@ -273,7 +273,6 @@ main {
 .scope-section,
 .distribution-section,
 .proof-lab,
-.docs-page,
 .product-page,
 .build-page,
 .trust-page,
@@ -526,16 +525,14 @@ p {
 .quote dl,
 .route-decision dl,
 .recovery-proof dl,
-.receipt dl,
-.contract-binding dl {
+.receipt dl {
   margin: 0;
 }
 
 .quote dl div,
 .route-decision dl div,
 .recovery-proof dl div,
-.receipt dl div,
-.contract-binding dl div {
+.receipt dl div {
   display: grid;
   grid-template-columns: 0.7fr 1.3fr;
   gap: 1rem;
@@ -639,7 +636,6 @@ dd {
 }
 
 .proof-lab,
-.docs-page,
 .product-page,
 .build-page,
 .trust-page {
@@ -955,151 +951,6 @@ fieldset label small {
   font: 0.65rem var(--mono);
 }
 
-.docs-layout {
-  display: grid;
-  grid-template-columns: 16rem minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 6rem);
-}
-
-/* The first call comes before the client list: a stranger should be able to run
-   one command without choosing an SDK first. */
-.docs-first-call {
-  margin: 0 0 clamp(2.5rem, 5vw, 4.5rem);
-  padding: clamp(1.6rem, 3vw, 2.6rem);
-  border: 1px solid var(--line-strong);
-  background: linear-gradient(140deg, rgb(87 216 232 / 6%), transparent 55%), #050707;
-}
-
-.docs-first-call h2 {
-  margin: 0.4rem 0 1rem;
-  font-size: clamp(1.6rem, 3vw, 2.6rem);
-  font-weight: 560;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-}
-
-.docs-first-call > p:not(.eyebrow) {
-  max-width: 44rem;
-  margin: 0 0 1.5rem;
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.docs-first-call__boundary {
-  margin: 1.5rem 0 0;
-  font-size: 0.85rem;
-}
-
-.docs-first-call__boundary code {
-  font: 0.8rem var(--mono);
-}
-
-.docs-nav {
-  position: sticky;
-  top: 7.5rem;
-  align-self: start;
-}
-
-.docs-nav > p {
-  color: var(--muted);
-  font: 0.65rem var(--mono);
-  text-transform: uppercase;
-}
-
-.docs-nav > a {
-  min-height: 4rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.35rem;
-  padding-left: 1rem;
-  border-left: 1px solid var(--line);
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.docs-nav > a.is-active {
-  border-left-color: var(--qualified);
-  color: var(--text);
-}
-
-.docs-nav > a span {
-  font-size: 0.9rem;
-}
-
-.docs-nav > a small {
-  font: 0.62rem var(--mono);
-}
-
-.docs-proof {
-  margin-top: 2rem;
-  padding: 1rem;
-  border: 1px solid var(--line);
-}
-
-.docs-proof span,
-.docs-proof small {
-  display: block;
-  color: var(--muted);
-  font: 0.62rem/1.5 var(--mono);
-}
-
-.docs-proof b {
-  display: block;
-  margin: 0.6rem 0;
-  font-size: 0.78rem;
-}
-
-.docs-content {
-  max-width: 58rem;
-}
-
-.docs-content > header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--line-strong);
-}
-
-.docs-content > header .eyebrow {
-  grid-column: 1 / -1;
-}
-
-.docs-content > header h2 {
-  margin: 0;
-  font-size: clamp(2.6rem, 5vw, 5rem);
-  font-weight: 560;
-  letter-spacing: -0.06em;
-}
-
-.docs-content > header > span {
-  color: var(--muted);
-  font: 0.66rem var(--mono);
-}
-
-.truth-callout {
-  display: grid;
-  grid-template-columns: 10rem 1fr;
-  gap: 2rem;
-  margin: 2rem 0;
-  padding: 1rem 0;
-  border-top: 1px solid var(--approval);
-  border-bottom: 1px solid var(--line);
-}
-
-.truth-callout b {
-  color: var(--approval);
-  font: 0.67rem var(--mono);
-  text-transform: uppercase;
-}
-
-.truth-callout p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.6;
-}
-
 .code-block {
   border: 1px solid var(--line-strong);
   background: #080a0a;
@@ -1137,81 +988,6 @@ fieldset label small {
   color: #dfe5e3;
   font: 0.77rem/1.75 "SFMono-Regular", Consolas, var(--mono);
 }
-
-.docs-content > section {
-  margin-top: 5rem;
-}
-
-.docs-content > section h3 {
-  font-size: clamp(2rem, 3.5vw, 3.8rem);
-  font-weight: 540;
-  line-height: 1;
-  letter-spacing: -0.05em;
-}
-
-.method-table {
-  border-top: 1px solid var(--line-strong);
-}
-
-.method-table > div {
-  min-height: 5rem;
-  display: grid;
-  grid-template-columns: 11rem 1fr auto;
-  align-items: center;
-  gap: 1.5rem;
-  border-bottom: 1px solid var(--line);
-}
-
-.method-table code {
-  color: var(--qualified);
-}
-
-.method-table span {
-  color: var(--muted);
-  line-height: 1.5;
-}
-
-.method-table b {
-  color: var(--muted);
-  font: 0.64rem var(--mono);
-  text-transform: uppercase;
-}
-
-.contract-list {
-  margin: 2rem 0 0;
-  padding: 0;
-  border-top: 1px solid var(--line-strong);
-  list-style: none;
-}
-
-.contract-list li {
-  min-height: 4.5rem;
-  display: grid;
-  grid-template-columns: 4rem 1fr;
-  align-items: center;
-  gap: 1rem;
-  border-bottom: 1px solid var(--line);
-}
-
-.contract-list b {
-  color: var(--phase);
-  font: 0.74rem var(--mono);
-}
-
-.contract-list span {
-  color: var(--muted);
-}
-
-.contract-binding dl {
-  border-top: 1px solid var(--line-strong);
-}
-
-.contract-binding dl div {
-  min-height: 4rem;
-  align-items: center;
-}
-
-
 
 .activation-journey {
   margin: 0;
@@ -1554,8 +1330,7 @@ fieldset label small {
     .scope-section,
   .distribution-section,
   .proof-lab,
-  .docs-page,
-    .product-page,
+      .product-page,
   .build-page,
   .trust-page,
 .compare-page,
@@ -1622,62 +1397,11 @@ fieldset label small {
     margin: 1rem 0 0;
   }
 
-  .docs-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .docs-nav {
-    position: static;
-    display: grid;
-    min-width: 0;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .docs-content {
-    min-width: 0;
-  }
-
-  .docs-content > header {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .docs-content > header > *,
   .page-intro code,
   .eyebrow {
     min-width: 0;
     max-width: 100%;
     overflow-wrap: anywhere;
-  }
-
-  .docs-nav > p,
-  .docs-proof {
-    grid-column: 1 / -1;
-  }
-
-  .docs-nav > a {
-    padding: 0.7rem;
-    border-left: 0;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .docs-nav > a span,
-  .docs-nav > a small {
-    overflow-wrap: anywhere;
-  }
-
-  .docs-nav > a.is-active {
-    border-bottom-color: var(--qualified);
-  }
-
-  .truth-callout {
-    grid-template-columns: 1fr;
-    gap: 0.7rem;
-  }
-
-  .method-table > div {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-    padding: 1rem 0;
   }
 
   .activation-journey li {
@@ -1763,15 +1487,6 @@ fieldset label small {
     grid-column: 2;
   }
 
-  .docs-content > header {
-    grid-template-columns: 1fr;
-  }
-
-  .docs-content > header > span {
-    margin-top: 1rem;
-  }
-
-  .contract-binding dl div,
   .receipt dl div {
     grid-template-columns: 1fr;
     gap: 0.35rem;

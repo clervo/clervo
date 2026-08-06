@@ -1087,3 +1087,130 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* --- /docs and /docs/:client ---------------------------------------------- */
+
+.docs-body > * + * {
+  margin-top: var(--space-6);
+}
+
+.docs-note {
+  max-width: 46rem;
+  gap: var(--space-4);
+}
+
+.docs-note code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+}
+
+/*
+ * Client switcher. It sits above the snippet rather than in a sticky sidebar:
+ * on a phone the sidebar became a three-column strip of truncated labels, and
+ * the choice belongs next to the thing it changes.
+ */
+.docs-clients {
+  gap: var(--space-2);
+}
+
+.docs-clients a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* 44px minimum target, same rule as every other control on the site. */
+  min-height: 44px;
+  justify-content: center;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  font-size: var(--step-small);
+  text-decoration: none;
+}
+
+.docs-clients a i {
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  font-style: normal;
+  letter-spacing: 0.06em;
+}
+
+.docs-clients a:hover {
+  border-color: var(--line-loud);
+  color: var(--text);
+}
+
+.docs-clients a.is-active {
+  border-color: var(--line-loud);
+  color: var(--text);
+  background: var(--surface-1);
+}
+
+/*
+ * Published operations. Four columns on a wide screen: identity, what it does,
+ * its ceiling, and the observed state of the family behind it. The last two are
+ * different facts and never share a cell.
+ */
+.docs-operations,
+.docs-failures {
+  border-top: 1px solid var(--line);
+}
+
+.docs-operations > li {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.7fr) minmax(0, 1.6fr) auto auto;
+  gap: var(--space-3) var(--space-5);
+  align-items: center;
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.docs-operations code {
+  font-family: var(--mono);
+  font-size: var(--step-small);
+  overflow-wrap: anywhere;
+}
+
+.docs-operations__price {
+  color: var(--text-secondary);
+  font-size: var(--step-micro);
+  white-space: nowrap;
+}
+
+.docs-failures > li {
+  display: grid;
+  grid-template-columns: 4rem 9rem minmax(0, 1fr);
+  gap: var(--space-3) var(--space-5);
+  align-items: baseline;
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.docs-failures b {
+  font-size: var(--step-3);
+  font-weight: 560;
+}
+
+@media (width <= 860px) {
+  .docs-operations > li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .docs-operations code {
+    grid-column: 1;
+  }
+
+  .docs-operations .quiet {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (width <= 560px) {
+  .docs-operations > li,
+  .docs-failures > li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+}

@@ -396,8 +396,21 @@ export const quickStartCurl = observedFreeRoute === null
 /** True when the published curl needs no idempotency key, as observed. */
 export const quickStartNeedsNoKey = observedFreeRoute?.acceptsNaiveRequest === true;
 
+/*
+ * The base URL every client example configures.
+ *
+ * It is the origin of the free route the probe actually saw, so a reader who
+ * copies a snippet points at the endpoint that answered rather than at a
+ * loopback address that only exists on a developer's machine. When no public
+ * route is observed there is no honest public origin to publish, and the
+ * examples fall back to the local one.
+ */
+export const observedApiOrigin = observedFreeRoute === null
+  ? 'http://127.0.0.1:8080'
+  : new URL(observedFreeRoute.route).origin;
+
 export const installExamples = {
-  http: quickStartCurl ?? `export CLERVO_BASE_URL=http://127.0.0.1:8080
+  http: quickStartCurl ?? `export CLERVO_BASE_URL=${observedApiOrigin}
 
 curl --fail-with-body \\
   --request POST "$CLERVO_BASE_URL/v1/search/free" \\
@@ -415,7 +428,7 @@ curl --fail-with-body \\
 import { ClervoClient } from '@clervo/sdk';
 
 const clervo = new ClervoClient({
-  baseUrl: 'http://127.0.0.1:8080'
+  baseUrl: '${observedApiOrigin}'
 });
 
 const result = await clervo.search.web({
@@ -426,7 +439,7 @@ const result = await clervo.search.web({
 from clervo import Clervo
 
 clervo = Clervo(
-    base_url="http://127.0.0.1:8080"
+    base_url="${observedApiOrigin}"
 )
 
 result = clervo.search.web(
@@ -438,7 +451,7 @@ result = clervo.search.web(
       "command": "npx",
       "args": ["-y", "@clervo/mcp"],
       "env": {
-        "CLERVO_BASE_URL": "http://127.0.0.1:8080"
+        "CLERVO_BASE_URL": "${observedApiOrigin}"
       }
     }
   }
