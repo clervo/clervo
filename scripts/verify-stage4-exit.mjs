@@ -185,9 +185,30 @@ export function evaluateStage4Exit(evidence, actualSourceState) {
   assert.equal(evidence.stage, 4, 'stage4 evidence must target Stage 4');
   assert.equal(evidence.scope, 'bounded_repository_and_staging_exit_verification');
   assert.match(evidence.evaluatedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u);
+  // The Stage 4 evidence file is a historical record of what was true when
+  // Stage 4 was evaluated, before anything was public. It is not a description
+  // of the system today. Fields that legitimately advance as products launch
+  // are allowed to have moved forward from their historical value; they are
+  // not allowed to move backward. Only the genuinely frozen staging facts must
+  // still match exactly.
+  //
+  // Without this, every truthful launch broke the build: publishing Search, AI,
+  // and Sandbox flipped paymentImplemented and payable to true, which no longer
+  // equalled a snapshot recorded when they were false.
+  const ADVANCEABLE = ['discoveryPaymentImplemented', 'discoveryPaidRoutePayable', 'openApiDeploymentVerified', 'openApiPaymentImplemented'];
   const { discoveryLifecycle: historicalLifecycle, ...historicalState } = evidence.sourceState;
   const { discoveryLifecycle: currentLifecycle, ...currentState } = actualSourceState;
-  assert.deepEqual(historicalState, currentState, 'stage4 source-state assertions do not match checked-in artifacts');
+  const frozenHistorical = { ...historicalState };
+  const frozenCurrent = { ...currentState };
+  for (const key of ADVANCEABLE) {
+    assert.ok(
+      historicalState[key] === false || currentState[key] === true,
+      `${key}: regressed from its Stage 4 historical value`,
+    );
+    delete frozenHistorical[key];
+    delete frozenCurrent[key];
+  }
+  assert.deepEqual(frozenHistorical, frozenCurrent, 'stage4 source-state assertions do not match checked-in artifacts');
   assert.equal(historicalLifecycle, 'implemented_unverified', 'stage4 historical discovery lifecycle drift');
   assert.ok(
     currentLifecycle === historicalLifecycle || currentLifecycle === 'preview',

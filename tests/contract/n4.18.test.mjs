@@ -62,7 +62,15 @@ test('deployable staging entry point exposes release health and keeps mock-paid 
   await withStagingProcess(async ({ origin, releaseId }) => {
     const healthResponse = await fetch(`${origin}/v1/health`);
     assert.equal(healthResponse.status, 200);
-    assert.deepEqual(await healthResponse.json(), {
+    // Assert the fields this test is about, rather than the exact shape of the
+    // whole payload. The strict deepEqual here failed as soon as the health
+    // response gained aiPaidEnabled, sandboxPaidEnabled, rpcPaidEnabled,
+    // predictionPaidEnabled, cryptoPaidEnabled, and retrievalMode: adding a
+    // field to an unrelated product broke a Search staging test. The point of
+    // this check is that staging reports itself correctly and keeps paid
+    // execution off, which a subset assertion covers exactly as well.
+    const health = await healthResponse.json();
+    for (const [key, value] of Object.entries({
       status: 'ok',
       service: 'clervo-search-api',
       environment: 'staging',
@@ -73,7 +81,11 @@ test('deployable staging entry point exposes release health and keeps mock-paid 
       trafficMode: 'open',
       sandboxPrivateEnabled: false,
       sandboxDurableState: false,
-    });
+    })) assert.equal(health[key], value, `health.${key}`);
+    // No paid surface may be enabled in staging, including ones added later.
+    for (const [key, value] of Object.entries(health)) {
+      if (key.endsWith('PaidEnabled')) assert.equal(value, false, `health.${key} must be false in staging`);
+    }
 
     const paidResponse = await fetch(`${origin}/v1/search/paid`, {
       method: 'POST',
