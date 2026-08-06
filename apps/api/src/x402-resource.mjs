@@ -22,6 +22,21 @@ export const PAYABLE_RESOURCE_PATHS = Object.freeze([
   '/v1/crypto/execute',
 ]);
 const payableResourcePaths = new Set(PAYABLE_RESOURCE_PATHS);
+// Bazaar reads `serviceName`, `tags`, and `iconUrl` off the resource block of the
+// settled payment payload (`sanitizeResourceServiceMetadata`), and metadata
+// completeness feeds its ranking. The library silently drops any field that
+// fails its own bounds, so these stay inside them: service name <= 32 printable
+// ASCII characters, at most 5 tags of <= 32 characters each, and an icon URL on
+// a public https host.
+const RESOURCE_SERVICE_NAME = 'Clervo';
+const RESOURCE_TAGS = Object.freeze({
+  '/v1/search/paid': Object.freeze(['search', 'web', 'citations', 'x402']),
+  '/v1/ai/execute': Object.freeze(['ai', 'llm', 'chat', 'inference', 'x402']),
+  '/v1/sandbox/execute': Object.freeze(['sandbox', 'code-execution', 'isolated', 'x402']),
+  '/v1/rpc/execute': Object.freeze(['rpc', 'blockchain', 'evm', 'json-rpc', 'x402']),
+  '/v1/prediction/execute': Object.freeze(['prediction-markets', 'odds', 'forecasting', 'x402']),
+  '/v1/crypto/execute': Object.freeze(['crypto', 'onchain', 'wallet', 'analytics', 'x402']),
+});
 const SEARCH_DISCOVERY_INPUT = Object.freeze({ query: 'current x402 protocol documentation', maxResults: 3, synthesize: false, language: 'en', region: 'US' });
 const AI_DISCOVERY_INPUT = Object.freeze({
   model: 'gpt-5.6-luna',
@@ -68,6 +83,19 @@ function discoveryExtension(resourcePath, discovery) {
     || selected?.inputSchema?.type !== 'object' || selected?.output?.schema === undefined
     || selected?.output?.example === undefined) throw new TypeError('resource_discovery_invalid');
   return declareDiscoveryExtension(selected);
+}
+
+function resourceInfo(origin, resourcePath, description) {
+  const tags = RESOURCE_TAGS[resourcePath];
+  if (tags === undefined) throw new TypeError('resource_path_invalid');
+  return Object.freeze({
+    url: `${origin.origin}${resourcePath}`,
+    description,
+    mimeType: 'application/json',
+    serviceName: RESOURCE_SERVICE_NAME,
+    tags,
+    iconUrl: `${origin.origin}/favicon.svg`,
+  });
 }
 
 function base64url(value) {
@@ -271,11 +299,7 @@ export async function createX402ChallengeService({
           },
         },
       });
-      const body = await server.createPaymentRequiredResponse(requirements, {
-        url: `${origin.origin}${resourcePath}`,
-        description,
-        mimeType: 'application/json',
-      }, 'PAYMENT-SIGNATURE header is required', discoveryExtension(resourcePath, discovery));
+      const body = await server.createPaymentRequiredResponse(requirements, resourceInfo(origin, resourcePath, description), 'PAYMENT-SIGNATURE header is required', discoveryExtension(resourcePath, discovery));
       const header = Buffer.from(JSON.stringify(body), 'utf8').toString('base64');
       const mpp = mppHandler({ quote, description, resourcePath });
       const mppResult = await mpp.handler(new Request(`${origin.origin}${resourcePath}`, { method: 'POST' }));
@@ -310,7 +334,20 @@ export async function createX402ChallengeService({
         } catch {
           throw new TypeError('invalid MPP payment credential');
         }
-        return Object.freeze({ protocol: 'mpp', ...verified });
+        // Same reason as the x402 branch below: the settlement that reaches the
+        // facilitator has to name the resource it paid for, or it indexes
+        // nothing. The MPP credential carries the EIP-3009 authorization only,
+        // so the resource and the declared discovery extension come from the
+        // challenge this payment answered.
+        return Object.freeze({
+          protocol: 'mpp',
+          ...verified,
+          paymentPayload: Object.freeze({
+            ...verified.paymentPayload,
+            resource: challenge.body?.resource,
+            extensions: { ...(challenge.body?.extensions ?? {}) },
+          }),
+        });
       }
       const paymentPayload = decodePaymentHeader(paymentHeader);
       const requirements = server.findMatchingRequirements(challenge?.body?.accepts ?? [], paymentPayload);
@@ -320,7 +357,20 @@ export async function createX402ChallengeService({
       const verification = await server.verifyPayment(paymentPayload, requirements, challenge.body.extensions ?? {});
       if (!verification.isValid) throw new TypeError(`x402 payment invalid:${verification.invalidReason ?? 'unknown'}`);
       const fingerprint = `sha256:${createHash('sha256').update(JSON.stringify(paymentPayload)).digest('hex')}`;
-      return Object.freeze({ protocol: 'x402', paymentPayload, requirements, verification, fingerprint });
+      // Bazaar indexes a settlement by reading `resource` and the `bazaar`
+      // extension off the payload that reaches the facilitator. Those fields are
+      // ours, not the payer's: `@x402/core`'s client copies them out of the
+      // challenge, but a payer that omits or trims them would settle against an
+      // empty resource URL and index nothing. Both are restored here from the
+      // challenge we issued, after verification and after the fingerprint is
+      // taken over exactly the bytes the payer signed for, so neither the
+      // payment binding nor the idempotency identity changes.
+      const settlementPayload = Object.freeze({
+        ...paymentPayload,
+        resource: challenge.body.resource,
+        extensions: { ...(paymentPayload.extensions ?? {}), ...(challenge.body.extensions ?? {}) },
+      });
+      return Object.freeze({ protocol: 'x402', paymentPayload: settlementPayload, requirements, verification, fingerprint });
     },
     async settle(authorization) {
       if (paymentMode !== 'settlement_enabled') throw new Error('x402 settlement is disabled');

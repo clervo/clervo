@@ -1,5 +1,16 @@
 import { estimateAiSupplierCost, selectAiRoute, verifyAiModelCatalog } from '../../../dist/packages/contracts/src/index.js';
 
+// The CDP x402 Bazaar refuses to index any resource whose payment requirement
+// quotes below 1000 atomic units ($0.001): "Amount 113 is below $0.001 minimum
+// (1000 atomic units)". AI is priced per request from the model the caller
+// names, so most chat, embedding, and speech routes quote far under that on a
+// short prompt. The floor is a minimum billable charge applied above the route's
+// own derived price: it only ever raises a quote, so no route is sold for less
+// than the price model already asked. Its identity is carried in the price
+// version so an observed quote says which policy produced it.
+const MINIMUM_CHARGE_ATOMIC = 1_000n;
+const PRICE_POLICY = `min${MINIMUM_CHARGE_ATOMIC}`;
+
 const aliasModels = Object.freeze({
   'clervo/fast': Object.freeze(['gpt-5.6-luna', 'openai/gpt-oss-20b', '@cf/qwen/qwen3-30b-a3b-fp8']),
   'clervo/smart': Object.freeze(['gpt-5.6-terra', 'openai/gpt-oss-120b', 'gemini-3.6-flash', '@cf/nvidia/nemotron-3-120b-a12b']),
@@ -175,14 +186,19 @@ export function createAiPublicPricing(catalogs, { enabledRouteIds } = {}) {
       const selected = routes.find(({ definition }) => definition.routeId === decision.selectedRouteId);
       if (selected === undefined || decision.maximumSupplierCost === undefined) throw new TypeError('ai_public_route_selection_invalid');
       const charge = estimateAiSupplierCost(normalized.usageBounds, selected.customerPricing);
+      const chargeAtomic = BigInt(charge.amountAtomic);
       return Object.freeze({
         catalog: catalogs.model,
         routes,
         decision,
         selected,
         pricing: Object.freeze({
-          priceVersion: `ai-${selected.priceVersion}-${selected.definition.routeId}`.slice(0, 128),
-          maximumCharge: Object.freeze({ asset: 'USDC', amountAtomic: (BigInt(charge.amountAtomic) > 0n ? charge.amountAtomic : '1'), decimals: 6 }),
+          priceVersion: `ai-${selected.priceVersion}-${selected.definition.routeId}-${PRICE_POLICY}`.slice(0, 128),
+          maximumCharge: Object.freeze({
+            asset: 'USDC',
+            amountAtomic: (chargeAtomic > MINIMUM_CHARGE_ATOMIC ? chargeAtomic : MINIMUM_CHARGE_ATOMIC).toString(),
+            decimals: 6,
+          }),
           supplierCost: Object.freeze({ asset: 'usd', amountAtomic: decision.maximumSupplierCost.amountAtomic, decimals: 6 }),
         }),
       });

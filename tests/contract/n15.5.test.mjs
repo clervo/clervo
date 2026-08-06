@@ -35,7 +35,7 @@ test('browser proof refuses drift and allows exactly one authorization attempt',
     "amountAtomic: '6000'",
     "'ai.chat'",
     "resource: 'https://api.clervo.dev/v1/ai/execute'",
-    "amountAtomic: '113'",
+    "amountAtomic: '1000'",
     "supplierCostCeilingAtomic: '225'",
   ]) assert.ok(proxy.includes(guard), `missing proxy bound: ${guard}`);
   assert.match(browser, /approved payer balance exceeds the bounded proof cap/u);

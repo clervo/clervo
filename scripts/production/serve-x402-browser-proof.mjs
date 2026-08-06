@@ -24,8 +24,8 @@ const profiles = Object.freeze({
   'ai.chat': Object.freeze({
     route: '/v1/ai/execute',
     resource: 'https://api.clervo.dev/v1/ai/execute',
-    amountAtomic: '113',
-    amountDisplay: '0.000113 USDC',
+    amountAtomic: '1000',
+    amountDisplay: '0.001 USDC',
     supplierCostCeilingAtomic: '225',
     request: {
       model: 'gpt-5.6-luna',

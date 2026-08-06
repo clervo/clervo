@@ -233,6 +233,20 @@ const observedProvenance = {
   states: liveRegistry.states,
 };
 
+// CDP Bazaar state as the prober observed it, keyed by resource URL. Absent for
+// a resource the prober did not reach — rendered as `null`, never as a claim.
+function bazaarStateFor(resource) {
+  const entry = (liveRegistry.bazaar?.resources ?? []).find((item) => item.resource === resource);
+  if (entry === undefined) return null;
+  return {
+    validatorAccepted: entry.valid,
+    indexed: entry.indexed,
+    indexActive: entry.indexActive,
+    indexLastCrawledAt: entry.indexLastCrawledAt,
+    failedChecks: entry.failedChecks,
+  };
+}
+
 if (
   releaseCandidate.state !== 'private_core_frozen'
   || releaseCandidate.noPublicDistribution !== true
@@ -774,6 +788,11 @@ const x402Resources = [
         bodyType: 'json',
         idempotency: 'idempotency-key header; the same key with the same body replays without a second charge',
         bazaarExtensionPresent: quote.bazaarExtensionPresent,
+        // Bazaar eligibility and Bazaar indexing are separate observed facts,
+        // and both are published rather than implied. A resource CDP's
+        // validator accepts is listable; it appears in the catalog only after a
+        // payment settles through the CDP facilitator.
+        bazaar: bazaarStateFor(`${publicBaseUrl}${resourcePath}`),
         ...(priceModel === 'request_derived_per_model' ? { modelList: `${publicBaseUrl}/v1/models` } : {}),
       },
     };
@@ -787,6 +806,12 @@ const x402Manifest = {
     provenance: observedProvenance,
     states: liveRegistry.states,
     proofLevels: liveRegistry.proofLevels,
+    bazaar: liveRegistry.bazaar === undefined ? null : {
+      facilitator: liveRegistry.bazaar.facilitator,
+      validator: liveRegistry.bazaar.validator,
+      indexedResourceCount: liveRegistry.bazaar.indexedResourceCount,
+      note: liveRegistry.bazaar.note,
+    },
     // A free path is not an x402 item — it carries no payment requirement — but
     // an agent that finds this manifest first should not have to pay to try the
     // service. It is advertised alongside, clearly separated.

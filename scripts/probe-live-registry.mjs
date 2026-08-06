@@ -536,6 +536,88 @@ const conformance = [
 ].sort((left, right) => left.id.localeCompare(right.id));
 
 // ---------------------------------------------------------------------------
+// CDP x402 Bazaar state
+// ---------------------------------------------------------------------------
+//
+// Bazaar listing is a fact about our resources that lives outside our own
+// system, so it is observed the same way everything else here is: by asking CDP
+// and recording what it answered. Two independent questions are asked.
+//
+//   * The validator says whether a resource is *eligible* to be indexed —
+//     whether the 402 it serves passes every required check. It reads the live
+//     402 itself and needs no credential.
+//   * The merchant discovery endpoint says whether a resource is *actually
+//     indexed*. Only a settled payment through the CDP facilitator puts it
+//     there, so this stays empty until a real settlement happens. It is
+//     recorded either way, because "not indexed" is the honest current answer.
+//
+// Neither call pays, signs, or authorizes anything.
+
+const BAZAAR_VALIDATE_URL = 'https://api.cdp.coinbase.com/platform/v2/x402/validate';
+const BAZAAR_MERCHANT_URL = 'https://api.cdp.coinbase.com/platform/v2/x402/discovery/merchant';
+
+const bazaarResourcePaths = [
+  { productId: 'search', resourcePath: '/v1/search/paid' },
+  { productId: 'ai', resourcePath: '/v1/ai/execute' },
+  { productId: 'sandbox', resourcePath: '/v1/sandbox/execute' },
+];
+
+// The receiver is read from the quote the deployed system actually returned,
+// never from configuration, so the merchant lookup can only ever ask about the
+// address production is really advertising.
+const observedPayTo = [surfaceById['api.search_paid'], surfaceById['api.sandbox_execute'], ...routeProbes]
+  .map((probe) => quoteFrom(probe)?.payTo)
+  .find((value) => typeof value === 'string' && /^0x[a-fA-F0-9]{40}$/u.test(value)) ?? null;
+
+const merchantProbe = observedPayTo === null
+  ? null
+  : await observe('bazaar.merchant', `${BAZAAR_MERCHANT_URL}?payTo=${observedPayTo}`);
+
+const indexedByResource = new Map();
+for (const item of Array.isArray(merchantProbe?.body?.items) ? merchantProbe.body.items : []) {
+  if (typeof item?.resource === 'string') indexedByResource.set(item.resource, item);
+}
+
+const bazaarResources = [];
+for (const { productId, resourcePath } of bazaarResourcePaths) {
+  const resource = `${API_ORIGIN}${resourcePath}`;
+  const validation = await observe(`bazaar.validate.${productId}`, BAZAAR_VALIDATE_URL,
+    postJson({ resource, method: 'POST' }));
+  const checks = Array.isArray(validation.body?.preflight) ? validation.body.preflight : [];
+  const indexed = indexedByResource.get(resource) ?? null;
+  bazaarResources.push({
+    productId,
+    resource,
+    // `valid` is CDP's own verdict on the live 402. Recorded as observed, and
+    // null when the validator itself could not be reached — an unreachable
+    // validator is not a failed resource.
+    validatorReachable: validation.reachable && validation.status === 200,
+    valid: validation.body?.valid ?? null,
+    // Only the checks that actually failed, and only their identity and
+    // severity. Enough to act on, and it cannot grow into a copy of CDP's
+    // response inside our registry.
+    failedChecks: checks.filter((check) => check.passed === false)
+      .map((check) => ({ check: check.check ?? null, severity: check.severity ?? null, expected: check.expected ?? null, actual: check.actual ?? null }))
+      .sort((left, right) => String(left.check).localeCompare(String(right.check))),
+    // Indexing is a separate fact from eligibility: a resource can be fully
+    // valid and still be absent from the catalog until a payment settles.
+    indexed: indexed !== null,
+    indexActive: indexed?.index?.active ?? null,
+    indexLastCrawledAt: indexed?.index?.lastCrawledAt ?? null,
+  });
+}
+
+const bazaar = {
+  facilitator: 'https://api.cdp.coinbase.com/platform/v2/x402',
+  validator: BAZAAR_VALIDATE_URL,
+  payTo: observedPayTo,
+  merchantLookupReachable: merchantProbe !== null && merchantProbe.reachable && merchantProbe.status === 200,
+  indexedResourceCount: bazaarResources.filter((entry) => entry.indexed).length,
+  note: 'Indexing triggers only on a payment settled through the CDP facilitator. A valid resource that has never been paid for is eligible and unindexed, which is not a defect.',
+  resources: bazaarResources.sort((left, right) => left.resource.localeCompare(right.resource)),
+};
+
+// ---------------------------------------------------------------------------
 // Assemble and write
 // ---------------------------------------------------------------------------
 
@@ -581,9 +663,12 @@ const registry = sortedKeys({
     aiRoutes: aiRouteStates,
     discoverySurfaces: discoverySurfaces.reduce((counts, surface) => ({ ...counts, [surface.state]: (counts[surface.state] ?? 0) + 1 }), {}),
     conformanceDefectsOpen: conformance.filter((check) => !check.conformant).length,
+    bazaarValidResources: bazaar.resources.filter((entry) => entry.valid === true).length,
+    bazaarIndexedResources: bazaar.indexedResourceCount,
   },
   products,
   aiRoutes,
+  bazaar,
   discoverySurfaces,
   conformance,
   supplyFamilies: supplyProbes.map((probe) => ({
@@ -605,3 +690,4 @@ console.log(`probe-live-registry: wrote ${path.relative(root, outputPath)}`);
 console.log(`  products        ${JSON.stringify(registry.summary.products)}`);
 console.log(`  aiRoutes        ${JSON.stringify(registry.summary.aiRoutes)}`);
 console.log(`  discovery       ${JSON.stringify(registry.summary.discoverySurfaces)}`);
+console.log(`  bazaar          valid ${registry.summary.bazaarValidResources}/${bazaar.resources.length}, indexed ${registry.summary.bazaarIndexedResources}`);

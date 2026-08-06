@@ -225,6 +225,15 @@ test('payment processing verifies once, settles once, and quarantines unknown se
     async settle(payload, requirements) {
       calls.settle += 1;
       assert.deepEqual(payload.accepted, requirements);
+      // The payer above sent neither `resource` nor `extensions`. Bazaar indexes
+      // a settlement by reading exactly those off the payload that reaches the
+      // facilitator, so the server restores them from the challenge it issued;
+      // without this a settled payment would index nothing.
+      assert.equal(payload.resource.url, 'https://api.clervo.dev/v1/search/paid');
+      assert.equal(payload.resource.serviceName, 'Clervo');
+      assert.ok(payload.resource.tags.includes('search'));
+      assert.equal(payload.resource.iconUrl, 'https://api.clervo.dev/favicon.svg');
+      assert.equal(payload.extensions.bazaar.info.input.method, 'POST');
       return { success: true, transaction: `0x${'4'.repeat(64)}`, network, payer: `0x${'3'.repeat(40)}` };
     },
   };
