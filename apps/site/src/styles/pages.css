@@ -511,3 +511,43 @@
 .status-ledger__head h3 {
   font-size: var(--step-3);
 }
+
+/* --- /changelog ------------------------------------------------------------ */
+
+.changelog-body {
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-gutter);
+}
+
+.changelog-list {
+  display: grid;
+  max-width: 62rem;
+}
+
+.changelog-entry {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: var(--space-5);
+  padding-block: var(--space-6);
+  border-top: 1px solid var(--line);
+}
+
+.changelog-entry:first-child {
+  border-top: 1px solid var(--line-strong);
+}
+
+.changelog-entry h3 {
+  font-size: var(--step-2);
+}
+
+.changelog-entry p:not(.quiet):not(.eyebrow) {
+  color: var(--text-secondary);
+}
+
+@media (width <= 640px) {
+  .changelog-entry {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+}
