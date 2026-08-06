@@ -31,22 +31,21 @@ test('full-platform readiness distinguishes private engineering from customer-fu
   assert.equal(readiness.executionOrder.at(-1), 'complete_external_paid_first_revenue_release');
 });
 
-test('resumable instructions point to one continuous revenue finish line without changing scope', async () => {
-  const [agents, state, finishLine] = await Promise.all([
+test('agent instructions name ROADMAP.md as the single planning authority', async () => {
+  const [agents, claude, roadmap] = await Promise.all([
     read('AGENTS.md'),
-    read('docs/product/CURRENT-ENGINEERING-STATE.md'),
-    read('docs/product/FULL-PLATFORM-REVENUE-FINISH-LINE.md'),
+    read('CLAUDE.md'),
+    read('ROADMAP.md'),
   ]);
   assert.ok(agents.split('\n').length <= 150);
-  assert.match(agents, /FULL-PLATFORM-REVENUE-FINISH-LINE\.md/u);
-  assert.match(state, /Customer-functional paid readiness is currently 58\.33%/u);
-  assert.match(state, /Search, AI, and Sandbox remain publicly[\s\S]*payable/u);
-  assert.match(finishLine, /The two finish lines/u);
-  assert.match(finishLine, /Customer-functional definition/u);
-  assert.match(finishLine, /Launch AI/u);
-  assert.match(finishLine, /Launch Secure Sandbox/u);
-  assert.match(finishLine, /Launch RPC/u);
-  assert.match(finishLine, /Launch Prediction Intelligence/u);
-  assert.match(finishLine, /Launch Crypto Intelligence/u);
-  assert.match(finishLine, /Full Platform First Revenue Release/u);
+  assert.match(agents, /ROADMAP\.md/u);
+  assert.match(agents, /CLAUDE\.md/u);
+  assert.match(claude, /ROADMAP\.md/u);
+  assert.match(claude, /single and only planning authority/u);
+  // docs/ is an archived research library and must not be cited as authority
+  assert.doesNotMatch(agents, /docs\/product\//u);
+  assert.doesNotMatch(claude, /docs\/product\//u);
+  assert.match(roadmap, /Code and live behaviour are the only truth/u);
+  assert.match(roadmap, /STEP 1/u);
+  assert.match(roadmap, /STEP 10/u);
 });

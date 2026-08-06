@@ -5,8 +5,9 @@ description: Continuously execute the Clervo production build from frozen contra
 
 # Clervo autonomous build
 
-1. Read `docs/product/CURRENT-ENGINEERING-STATE.md` and
-   `docs/product/CLERVO-V6-VISUAL-AUTHORITY.md`.
+1. Read `ROADMAP.md` at the repository root for scope, order, and status.
+   `docs/product/CLERVO-V6-VISUAL-AUTHORITY.md` is archived reference for
+   visual direction only and carries no product authority.
 2. Preserve owner work and verify the current release-candidate contracts.
 3. Invoke `$clervo-authority-lock` for all public data and visible behavior.
 4. Build the shared HTTP/OpenAPI projection, SDKs, MCP, and conformance before
