@@ -277,7 +277,6 @@ main {
 .product-page,
 .build-page,
 .trust-page,
-.guide-page,
 .not-found {
   width: min(100%, 96rem);
   margin: 0 auto;
@@ -287,8 +286,7 @@ main {
 
 .research-page,
 .proof-page,
-.compare-page,
-.changelog-page {
+.compare-page {
   width: min(100%, 96rem);
   margin: 0 auto;
   padding-left: clamp(2rem, 6vw, 7rem);
@@ -297,9 +295,7 @@ main {
 
 .research-page,
 .proof-page,
-.compare-page,
-.changelog-page,
-.guide-page {
+.compare-page {
   position: relative;
   z-index: 5;
   min-height: 100svh;
@@ -474,15 +470,6 @@ p {
 
 
 
-.guide-ledger { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line); }
-.guide-ledger article { min-height: 15rem; padding: 1.5rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.guide-ledger span { color: var(--phase); font: 0.58rem var(--mono); }
-.guide-ledger h2 { margin: 3.2rem 0 1rem; font-size: 1.25rem; font-weight: 520; text-transform: capitalize; }
-.guide-ledger p { max-width: 34rem; color: var(--muted); line-height: 1.6; }
-.guide-links { display: flex; flex-wrap: wrap; margin-top: 3rem; border-top: 1px solid var(--line-strong); }
-.guide-links a { padding: 1rem 1.3rem; border-right: 1px solid var(--line); color: var(--muted); text-decoration: none; text-transform: capitalize; }
-.guide-links a.is-active { color: var(--phase); }
-.machine-links { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2rem; font: 0.65rem var(--mono); }
 
 .trust-map { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line); }
 .trust-map a { min-height: 15rem; padding: 1.5rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-decoration: none; }
@@ -1652,7 +1639,6 @@ fieldset label small {
   .research-page,
   .proof-page,
   .compare-page,
-  .changelog-page,
   .not-found {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
@@ -1670,7 +1656,6 @@ fieldset label small {
   }
 
   .trust-map { grid-template-columns: 1fr; }
-  .guide-ledger { grid-template-columns: 1fr; }
   .comparison-policy,
   .package-provenance > div { grid-template-columns: 1fr; }
   .proof-index > div { grid-template-columns: 1fr 1fr; }

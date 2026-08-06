@@ -758,3 +758,130 @@
     justify-self: start;
   }
 }
+
+/* --- Contract guides: /docs/receipts, /replay, /failures, /x402, /catalog --- */
+
+.guide-body {
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-gutter);
+}
+
+/*
+ * Recovery. The state pill answers "was I charged" and the line beneath it
+ * answers "may I retry" in words, so neither fact depends on the colour of the
+ * pill or on the reader recognising the difference between two shades.
+ */
+.recovery-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+  gap: var(--space-4);
+}
+
+.recovery-list__head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.recovery-list__head h3 {
+  font-size: var(--step-3);
+  text-transform: capitalize;
+}
+
+.recovery-list p:not(.quiet) {
+  color: var(--text-secondary);
+}
+
+.guide-catalog {
+  display: grid;
+  border-top: 1px solid var(--line-strong);
+}
+
+.guide-catalog li {
+  display: grid;
+  grid-template-columns: minmax(0, 14rem) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.guide-catalog b {
+  font-size: var(--step-body);
+  font-weight: 560;
+}
+
+.guide-steps {
+  display: grid;
+  max-width: 58rem;
+  border-top: 1px solid var(--line-strong);
+}
+
+.guide-steps li {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: var(--space-4);
+  padding-block: var(--space-5);
+  border-bottom: 1px solid var(--line);
+}
+
+.guide-steps h3 {
+  font-size: var(--step-3);
+}
+
+.guide-steps .quiet {
+  max-width: 46rem;
+}
+
+.machine-links {
+  margin-top: var(--space-5);
+  gap: var(--space-5);
+}
+
+/*
+ * The guide switcher. Same geometry as the trust and family switchers: a 44px
+ * target, a visible active fill, and `aria-current` on the current page.
+ */
+.guide-links {
+  margin-top: var(--space-6);
+}
+
+.guide-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  font-size: var(--step-small);
+  text-decoration: none;
+  text-transform: capitalize;
+  transition:
+    color var(--motion-micro) var(--ease),
+    border-color var(--motion-micro) var(--ease);
+}
+
+.guide-links a:hover {
+  color: var(--text);
+  border-color: var(--line-loud);
+}
+
+.guide-links a.is-active {
+  color: var(--text);
+  border-color: var(--line-loud);
+  background: var(--surface-1);
+}
+
+@media (width <= 640px) {
+  .guide-catalog li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+  .guide-catalog .state {
+    justify-self: start;
+  }
+}
