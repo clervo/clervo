@@ -1,6 +1,20 @@
 #!/usr/bin/env node
 
-import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+// Projects generated/public into apps/site/public so the deployed site serves
+// exactly what the generator produced.
+//
+// This script previously refused to run unless the discovery document declared
+// the product not publicly distributed, not publicly available, and not
+// callable. That was a frozen-status gate living in the publish path: the
+// moment the runtime started taking payment, the only way to publish was to
+// keep saying it did not. It is the reason the deployed site denied that the
+// API was callable while the API was returning real payment challenges.
+//
+// The gate is replaced by an invariant that does not care what the status says:
+// the projected files must equal the generated files, byte for byte. Truth is
+// the generator's job, and the generator renders it from the probed registry.
+
+import { cp, mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -11,11 +25,12 @@ const mediaSource = path.join(root, 'apps/site/public-assets');
 const renderSource = path.join(root, 'apps/site/media/optimized');
 const discovery = JSON.parse(await readFile(path.join(source, '.well-known/clervo.json'), 'utf8'));
 
-if (
-  discovery.distribution?.noPublicDistribution !== true
-  || discovery.distribution?.publicAvailable !== false
-  || discovery.distribution?.callable !== false
-) throw new Error('site_public_projection_unsafe');
+// The projection must carry the generator's observed truth through unchanged.
+// A projected surface that has lost it is a surface that can no longer say what
+// the runtime does.
+if (!Array.isArray(discovery.observedTruth?.products) || discovery.observedTruth.products.length === 0) {
+  throw new Error('site_public_projection_missing_observed_truth');
+}
 
 await rm(target, { recursive: true, force: true });
 await mkdir(target, { recursive: true });
@@ -107,5 +122,37 @@ await writeFile(path.join(target, '_headers'), [
   '  Cache-Control: public, max-age=31536000, immutable',
   '',
 ].join('\n'));
+
+// The invariant that replaces the frozen-status gate: every generated file is
+// present in the projection and identical to its source. The site cannot
+// disagree with the generator, whatever either of them happens to say.
+async function generatedFiles(directory, prefix = '') {
+  const files = [];
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const relative = prefix === '' ? entry.name : `${prefix}/${entry.name}`;
+    if (entry.isDirectory()) files.push(...await generatedFiles(path.join(directory, entry.name), relative));
+    else files.push(relative);
+  }
+  return files.sort();
+}
+
+const projectionMismatches = [];
+for (const relative of await generatedFiles(source)) {
+  const projected = path.join(target, relative);
+  try {
+    await stat(projected);
+  } catch {
+    projectionMismatches.push(`${relative}: missing from the projection`);
+    continue;
+  }
+  const [generated, published] = await Promise.all([
+    readFile(path.join(source, relative)),
+    readFile(projected),
+  ]);
+  if (!generated.equals(published)) projectionMismatches.push(`${relative}: differs from the generated file`);
+}
+if (projectionMismatches.length > 0) {
+  throw new Error(`site_public_projection_differs_from_generated: ${projectionMismatches.join('; ')}`);
+}
 
 console.log(`site public projection: PASS (${discovery.distribution.releaseCandidateId})`);
