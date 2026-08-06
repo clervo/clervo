@@ -11,9 +11,9 @@ import { Docs } from './pages/Docs';
 import { Home } from './pages/Home';
 import { Operation } from './pages/Operation';
 import { Product } from './pages/Product';
-import { ProofLab } from './pages/ProofLab';
+import { Proof } from './pages/Proof';
 import { Status } from './pages/Status';
-import { Trust, type TrustTopic } from './pages/Trust';
+import { Trust, type LegalSection, type TrustTopic } from './pages/Trust';
 import type { ExperiencePhase } from './product';
 import { Link, useRouter } from './router';
 
@@ -33,13 +33,13 @@ export function App() {
     if (location.pathname.startsWith('/docs')) setPhase(activation.receiptInspected ? 'receipt' : 'qualified');
     else if (location.pathname.startsWith('/product') || location.pathname.startsWith('/catalog') || location.pathname.startsWith('/capabilities') || location.pathname.startsWith('/operations')) setPhase('qualified');
     else if (location.pathname === '/start' || location.pathname === '/build' || location.pathname === '/pricing') setPhase('approval');
-    else if (location.pathname.startsWith('/status') || ['/benchmarks', '/security', '/legal', '/changelog'].includes(location.pathname)) setPhase('verified');
+    else if (location.pathname.startsWith('/status') || ['/benchmarks', '/security', '/legal', '/changelog'].includes(location.pathname) || location.pathname.startsWith('/legal/')) setPhase('verified');
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [activation.receiptInspected, location.pathname]);
 
   useEffect(() => {
     const exactTitles: Record<string, string> = {
-      '/': 'Outcome infrastructure for AI agents', '/product': 'Product and capabilities', '/catalog': 'Catalog', '/start': 'Set up Clervo', '/build': 'Set up Clervo', '/proof': 'Proof', '/proof-lab': 'Proof', '/docs': 'Developer docs', '/docs/http': 'Raw HTTP developer docs', '/docs/typescript': 'TypeScript developer docs', '/docs/python': 'Python developer docs', '/docs/mcp': 'MCP developer docs', '/pricing': 'Pricing truth', '/benchmarks': 'Benchmark truth', '/security': 'Security controls', '/legal': 'Legal boundaries', '/status': 'Product status', '/changelog': 'Changelog',
+      '/': 'Outcome infrastructure for AI agents', '/product': 'Product and capabilities', '/catalog': 'Catalog', '/start': 'Set up Clervo', '/build': 'Set up Clervo', '/proof': 'Proof', '/proof-lab': 'Proof', '/docs': 'Developer docs', '/docs/http': 'HTTP and OpenAPI docs', '/docs/typescript': 'TypeScript docs', '/docs/python': 'Python docs', '/docs/mcp': 'MCP docs', '/pricing': 'Pricing truth', '/benchmarks': 'Benchmark truth', '/security': 'Security controls', '/legal': 'Legal boundaries', '/legal/terms': 'Terms structure', '/legal/privacy': 'Privacy structure', '/legal/payments': 'Payments structure', '/legal/acceptable-use': 'Acceptable Use structure', '/status': 'Product status', '/changelog': 'Changelog',
     };
     let routeTitle = exactTitles[location.pathname];
     if (routeTitle === undefined && location.pathname.startsWith('/capabilities/')) routeTitle = 'Capability family';
@@ -55,7 +55,7 @@ export function App() {
     if (location.pathname === '/product') return <Product onPhase={updatePhase} />;
     if (location.pathname === '/catalog') return <Catalog onPhase={updatePhase} />;
     if (location.pathname === '/start' || location.pathname === '/build') return <Build activation={activation} onPhase={updatePhase} />;
-    if (location.pathname === '/proof' || location.pathname === '/proof-lab') return <ProofLab activation={activation} updateActivation={updateActivation} onPhase={updatePhase} />;
+    if (location.pathname === '/proof' || location.pathname === '/proof-lab') return <Proof activation={activation} updateActivation={updateActivation} onPhase={updatePhase} />;
     const capabilityMatch = location.pathname.match(/^\/capabilities\/([^/]+)\/?$/u);
     if (capabilityMatch?.[1] !== undefined) return <Capability slug={decodeURIComponent(capabilityMatch[1])} onPhase={updatePhase} />;
     const operationMatch = location.pathname.match(/^\/operations\/([^/]+)\/?$/u);
@@ -65,8 +65,14 @@ export function App() {
     if (docsMatch?.[1] !== undefined && ['http', 'typescript', 'python', 'mcp'].includes(docsMatch[1])) return <Docs client={docsMatch[1]} activation={activation} updateActivation={updateActivation} onPhase={updatePhase} />;
     if (location.pathname === '/status') return <Status onPhase={updatePhase} />;
     if (location.pathname === '/changelog') return <Changelog onPhase={updatePhase} />;
-    const trustPath = location.pathname.startsWith('/legal/') ? 'legal' : location.pathname.slice(1);
-    if (['pricing', 'benchmarks', 'security', 'legal'].includes(trustPath)) return <Trust topic={trustPath as TrustTopic} onPhase={updatePhase} />;
+    const legalMatch = location.pathname.match(/^\/legal(?:\/([^/]+))?\/?$/u);
+    if (legalMatch) {
+      const section = legalMatch[1];
+      const legalSection: LegalSection = section === 'terms' || section === 'privacy' || section === 'payments' || section === 'acceptable-use' ? section : 'overview';
+      return <Trust topic="legal" legalSection={legalSection} onPhase={updatePhase} />;
+    }
+    const trustPath = location.pathname.slice(1) as TrustTopic;
+    if (['pricing', 'benchmarks', 'security'].includes(trustPath)) return <Trust topic={trustPath} onPhase={updatePhase} />;
     return <NotFound />;
   })();
 
@@ -78,9 +84,7 @@ export function App() {
       <main id="main-content">{route}</main>
       <footer className="site-footer authority-footer">
         <span>CLERVO / FIND · UNDERSTAND · ACT</span>
-        <nav aria-label="Footer">
-          <Link to="/product">Product</Link><Link to="/catalog">Catalog</Link><Link to="/start">Set up Clervo</Link><Link to="/pricing">Pricing</Link><Link to="/proof">Proof</Link><Link to="/docs">Docs</Link><Link to="/security">Security</Link><Link to="/status">Status</Link><Link to="/changelog">Changelog</Link><Link to="/legal">Legal</Link><a href="/openapi.json">OpenAPI</a><a href="/.well-known/clervo.json">Discovery</a>
-        </nav>
+        <nav aria-label="Footer"><Link to="/product">Product</Link><Link to="/catalog">Catalog</Link><Link to="/start">Start</Link><Link to="/pricing">Pricing</Link><Link to="/proof">Proof</Link><Link to="/status">Status</Link><Link to="/docs">Docs</Link><Link to="/security">Security</Link><Link to="/benchmarks">Benchmarks</Link><Link to="/changelog">Changelog</Link><Link to="/legal/terms">Terms</Link><Link to="/legal/privacy">Privacy</Link><Link to="/legal/payments">Payments</Link><Link to="/legal/acceptable-use">Acceptable Use</Link><a href="/openapi.json">OpenAPI</a><a href="/.well-known/clervo.json">Discovery</a></nav>
         <small>Repository-local release candidate. Public distribution, payment, and production execution are not yet verified.</small>
       </footer>
     </div>
