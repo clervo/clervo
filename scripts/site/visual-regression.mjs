@@ -67,20 +67,51 @@ const freeze = `
   html { scroll-behavior: auto !important; }
 `;
 
-/** Decode a PNG buffer to raw RGBA using the browser itself, so the harness
- * needs no image-decoding dependency of its own. */
-async function decode(page, buffer) {
-  return page.evaluate(async (base64) => {
-    const bitmap = await createImageBitmap(
-      await (await fetch(`data:image/png;base64,${base64}`)).blob(),
-    );
-    const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
-    const context = canvas.getContext('2d');
-    if (context === null) throw new Error('canvas_context_unavailable');
-    context.drawImage(bitmap, 0, 0);
-    const { data } = context.getImageData(0, 0, bitmap.width, bitmap.height);
-    return { width: bitmap.width, height: bitmap.height, data: [...data] };
-  }, buffer.toString('base64'));
+/*
+ * Compare two PNG buffers inside the browser and return only the verdict.
+ *
+ * The comparison runs in the page rather than in Node so the harness needs no
+ * image-decoding dependency of its own — and, just as importantly, so the pixel
+ * data never crosses the bridge. A full-page capture at 1600px is tens of
+ * millions of channel values; serialising two of those as JavaScript arrays
+ * exhausted the heap before the first route finished. Only the dimensions and a
+ * count come back.
+ */
+async function comparePixels(page, baseline, shot, tolerance) {
+  return page.evaluate(async ([baselineBase64, shotBase64, channelTolerance]) => {
+    const load = async (base64) => {
+      const bitmap = await createImageBitmap(
+        await (await fetch(`data:image/png;base64,${base64}`)).blob(),
+      );
+      const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+      const context = canvas.getContext('2d');
+      if (context === null) throw new Error('canvas_context_unavailable');
+      context.drawImage(bitmap, 0, 0);
+      return {
+        width: bitmap.width,
+        height: bitmap.height,
+        data: context.getImageData(0, 0, bitmap.width, bitmap.height).data,
+      };
+    };
+    const a = await load(baselineBase64);
+    const b = await load(shotBase64);
+    if (a.width !== b.width || a.height !== b.height) {
+      return { a: { width: a.width, height: a.height }, b: { width: b.width, height: b.height } };
+    }
+    let differing = 0;
+    for (let index = 0; index < a.data.length; index += 4) {
+      if (
+        Math.abs(a.data[index] - b.data[index]) > channelTolerance
+        || Math.abs(a.data[index + 1] - b.data[index + 1]) > channelTolerance
+        || Math.abs(a.data[index + 2] - b.data[index + 2]) > channelTolerance
+      ) differing += 1;
+    }
+    return {
+      a: { width: a.width, height: a.height },
+      b: { width: b.width, height: b.height },
+      fraction: differing / (a.data.length / 4),
+    };
+  }, [baseline.toString('base64'), shot.toString('base64'), tolerance]);
 }
 
 const browser = await chromium.launch();
@@ -140,23 +171,14 @@ for (const [name, route] of routes) {
       continue;
     }
 
-    const [a, b] = await Promise.all([decode(page, baseline), decode(page, shot)]);
-    if (a.width !== b.width || a.height !== b.height) {
+    const { a, b, fraction } = await comparePixels(page, baseline, shot, CHANNEL_TOLERANCE);
+    if (fraction === undefined) {
       failures.push(`${name}@${width}: size ${a.width}x${a.height} became ${b.width}x${b.height}`);
       await mkdir(outputDir, { recursive: true });
       await writeFile(path.join(outputDir, file), shot);
       continue;
     }
 
-    let differing = 0;
-    for (let index = 0; index < a.data.length; index += 4) {
-      if (
-        Math.abs(a.data[index] - b.data[index]) > CHANNEL_TOLERANCE
-        || Math.abs(a.data[index + 1] - b.data[index + 1]) > CHANNEL_TOLERANCE
-        || Math.abs(a.data[index + 2] - b.data[index + 2]) > CHANNEL_TOLERANCE
-      ) differing += 1;
-    }
-    const fraction = differing / (a.data.length / 4);
     if (fraction > PIXEL_BUDGET) {
       await mkdir(outputDir, { recursive: true });
       await writeFile(path.join(outputDir, file), shot);

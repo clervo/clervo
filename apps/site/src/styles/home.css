@@ -67,7 +67,7 @@
   position: relative;
   z-index: 5;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
   gap: var(--space-5);
   padding-top: var(--space-5);
   border-top: 1px solid var(--line-strong);
@@ -92,7 +92,7 @@
 
 .mechanism__steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
   gap: var(--space-4);
   max-width: var(--shell-max);
   margin-inline: auto;
@@ -139,7 +139,7 @@
 
 .families__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -173,7 +173,7 @@
 
 .home-proof__links {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   gap: var(--space-4);
   max-width: var(--shell-max);
   margin: var(--space-7) auto 0;
@@ -365,7 +365,7 @@
   .worlds-nodes {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
     gap: var(--space-3);
     margin-top: var(--space-4);
   }

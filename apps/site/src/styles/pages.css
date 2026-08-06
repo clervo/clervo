@@ -41,7 +41,7 @@
 
 .start-steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
   gap: var(--space-4);
   counter-reset: none;
 }
@@ -57,7 +57,7 @@
 
 .start-client-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -125,7 +125,7 @@
 
 .catalog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -246,7 +246,7 @@
 
 .operation-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -368,7 +368,7 @@
 .trust-panels,
 .control-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -465,7 +465,7 @@
  */
 .status-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
   gap: var(--space-6);
 }
 
@@ -497,7 +497,7 @@
 
 .status-ledger {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -556,7 +556,7 @@
 
 .trust-map {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -586,7 +586,7 @@
  */
 .family-facts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   gap: var(--space-6);
 }
 
@@ -689,7 +689,7 @@
 
 .family-claims {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -774,7 +774,7 @@
  */
 .recovery-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(21rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -942,7 +942,7 @@
 
 .proof-claims {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -956,7 +956,7 @@
  */
 .proof-evidence {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
   gap: var(--space-6);
 }
 
@@ -988,7 +988,7 @@
 
 .proof-packages {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -1060,7 +1060,7 @@
  */
 .research-returns {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   gap: var(--space-4);
 }
 
@@ -1348,7 +1348,7 @@
 .lab-progress {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(7rem, 1fr);
+  grid-auto-columns: minmax(min(7rem, 100%), 1fr);
   border: 1px solid var(--line);
   border-radius: var(--radius-panel);
   overflow-x: auto;
@@ -1616,7 +1616,7 @@
 }
 
 .compare-suppressed {
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
 }
 
 .compare-sources {
