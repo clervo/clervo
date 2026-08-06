@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
 import type { ActivationState } from '../experience';
-import { onboarding, type ExperiencePhase } from '../product';
+import { onboarding, publicApiCallable, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 interface BrowserCheck {
@@ -64,13 +64,21 @@ export function Build({
   return (
     <section className="build-page">
       <header className="page-intro">
-        <ModeBadge>Published clients · public endpoint not deployed</ModeBadge>
+        {/* Read from the probe. This badge asserted "public endpoint not
+          * deployed" for as long as api.clervo.dev was answering requests. */}
+        <ModeBadge>
+          {publicApiCallable
+            ? 'Published clients · public endpoint answering'
+            : 'Published clients · public endpoint not deployed'}
+        </ModeBadge>
         <p className="eyebrow">Build / evidence-backed setup</p>
         <h1>Prove the path.<br />Then connect it.</h1>
         <p>
           Install a verified public client, inspect the deterministic lifecycle,
-          then supply an explicit endpoint after customer deployment is
-          verified. Package availability does not imply API availability.
+          then point it at an explicit endpoint.{' '}
+          {publicApiCallable
+            ? 'The public endpoint is answering, but package availability and API availability remain separate facts, and each client still takes its base URL explicitly.'
+            : 'Package availability does not imply API availability.'}
         </p>
       </header>
 

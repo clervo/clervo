@@ -45,7 +45,10 @@ export function Guide({ topic, onPhase }: { topic: GuideTopic; onPhase(phase: Ex
   return (
     <section className="guide-page">
       <header className="page-intro">
-        <ModeBadge>{`${discovery.distribution.releaseCandidateId} · public callable false`}</ModeBadge>
+        {/* The badge reads the probed distribution rather than restating it.
+          * It used to say "public callable false" while the deployed API was
+          * answering public requests and quoting prices. */}
+        <ModeBadge>{`${discovery.distribution.releaseCandidateId} · public callable ${String(discovery.distribution.callable)}`}</ModeBadge>
         <p className="eyebrow">{guide.eyebrow}</p>
         <h1>{guide.title}</h1>
         <p>{guide.intro}</p>

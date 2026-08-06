@@ -39,7 +39,11 @@ export function Docs({
   return (
     <section className="docs-page">
       <header className="page-intro">
-        <ModeBadge>Public packages verified · endpoint required</ModeBadge>
+        <ModeBadge>
+          {publicApiCallable
+            ? 'Public packages verified · endpoint answering'
+            : 'Public packages verified · endpoint required'}
+        </ModeBadge>
         <p className="eyebrow">Developer quickstart / published clients</p>
         <h1>Install the client.<br />Keep the boundary visible.</h1>
         <p>
@@ -95,11 +99,11 @@ export function Docs({
             <span>{selected.version}</span>
           </header>
           <div className="truth-callout">
-            <b>Published package / private service boundary</b>
+            <b>What the client does, and what it will not do for you</b>
             <p>
-              This client is installable from its public registry. It does not
-              discover a public endpoint, sign payment authorizations, or retry
-              an unknown settlement automatically.
+              This client is installable from its public registry. It takes an
+              explicit base URL, does not sign payment authorizations on your
+              behalf, and never retries an unknown settlement automatically.
             </p>
           </div>
           <CodeBlock
@@ -129,7 +133,7 @@ export function Docs({
               <li><b>400</b><span>Request rejected before execution.</span></li>
               <li><b>402</b><span>Typed challenge carrying the exact maximum charge; clients never auto-sign.</span></li>
               <li><b>409</b><span>Idempotency key bound to a different request.</span></li>
-              <li><b>429</b><span>Bounded preview quota exhausted.</span></li>
+              <li><b>429</b><span>Free entry quota exhausted; the request was not executed.</span></li>
               <li><b>502</b><span>Executor or contract verification failed closed.</span></li>
             </ul>
           </section>
