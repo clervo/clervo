@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 import type { ActivationState } from '../experience';
 import { phases, type ExperiencePhase } from '../product';
@@ -73,7 +74,7 @@ export function Navigation({ activation }: { activation: ActivationState }) {
             aria-label="Open menu"
             aria-expanded={open}
             aria-controls="mobile-navigation"
-            onClick={() => setOpen(true)}
+            onClick={() => flushSync(() => setOpen(true))}
           >
             <span /><span /><span />
           </button>
