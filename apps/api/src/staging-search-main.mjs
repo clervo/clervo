@@ -16,10 +16,6 @@ import { createSandboxPrivateGateway } from './sandbox-private-gateway.mjs';
 import { createPostgresSandboxOperationStoreFromEnvironment } from './sandbox-operation-store.mjs';
 import { createAiProductionRuntime } from './ai-production-runtime.mjs';
 import { createAiArtifactRuntime } from './ai-artifact-runtime.mjs';
-import { createRpcProductionRuntime } from './rpc-production-runtime.mjs';
-import { createPredictionProductionRuntime } from './prediction-production-runtime.mjs';
-import { createPostgresPredictionMarketStoreFromEnvironment } from './prediction-market-store.mjs';
-import { createCryptoProductionRuntime } from './crypto-production-runtime.mjs';
 
 const environment = process.env.CLERVO_ENV ?? 'staging';
 const releaseId = process.env.CLERVO_RELEASE_ID;
@@ -40,9 +36,6 @@ const edgeAuthorization = process.env.CLERVO_EDGE_AUTHORIZATION;
 const aiMode = process.env.CLERVO_AI_MODE ?? 'disabled';
 const sandboxPublicMode = process.env.CLERVO_SANDBOX_PUBLIC_MODE ?? 'disabled';
 const aiArtifactMode = process.env.CLERVO_AI_ARTIFACT_MODE ?? 'disabled';
-const rpcMode = process.env.CLERVO_RPC_MODE ?? 'disabled';
-const predictionMode = process.env.CLERVO_PREDICTION_MODE ?? 'disabled';
-const cryptoMode = process.env.CLERVO_CRYPTO_MODE ?? 'disabled';
 
 if (!releaseId) throw new Error('CLERVO_RELEASE_ID is required');
 if (!Number.isSafeInteger(port) || port < 1 || port > 65_535) throw new Error('invalid HTTP port');
@@ -56,18 +49,12 @@ if (!['recorded', 'live_external'].includes(searchMode)) throw new Error('invali
 if (!['disabled', 'paid'].includes(aiMode)) throw new Error('invalid CLERVO_AI_MODE');
 if (!['disabled', 'paid'].includes(sandboxPublicMode)) throw new Error('invalid CLERVO_SANDBOX_PUBLIC_MODE');
 if (!['disabled', 'r2'].includes(aiArtifactMode)) throw new Error('invalid CLERVO_AI_ARTIFACT_MODE');
-if (!['disabled', 'paid'].includes(rpcMode)) throw new Error('invalid CLERVO_RPC_MODE');
-if (!['disabled', 'paid'].includes(predictionMode)) throw new Error('invalid CLERVO_PREDICTION_MODE');
-if (!['disabled', 'paid'].includes(cryptoMode)) throw new Error('invalid CLERVO_CRYPTO_MODE');
 if (environment === 'production' && searchMode === 'live_external' && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new Error('production live search requires edge authorization');
 if (x402Mode !== 'disabled' && stateBackend !== 'postgres') throw new Error('x402 requires PostgreSQL state');
 if (x402Mode !== 'disabled' && (typeof process.env.CLERVO_MPP_SECRET_KEY !== 'string' || Buffer.byteLength(process.env.CLERVO_MPP_SECRET_KEY) < 32)) throw new Error('x402 commerce requires MPP secret key');
 if (sandboxMode !== 'disabled' && stateBackend !== 'postgres') throw new Error('sandbox requires PostgreSQL state');
 if (aiMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres')) throw new Error('public AI requires production x402 and PostgreSQL state');
 if (sandboxPublicMode === 'paid' && (sandboxMode !== 'private' || x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || !/^sha256:[a-f0-9]{64}$/u.test(process.env.CLERVO_SANDBOX_RUNNER_DIGEST ?? ''))) throw new Error('public Sandbox requires qualified private execution, production x402, PostgreSQL state, and an exact runner digest');
-if (rpcMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || typeof process.env.CLERVO_RPC_ETHEREUM_ENDPOINT !== 'string')) throw new Error('public RPC requires production x402, PostgreSQL state, and a qualified Ethereum endpoint');
-if (predictionMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres')) throw new Error('public Prediction requires production x402 and PostgreSQL state');
-if (cryptoMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || typeof process.env.CLERVO_BLOCKSCOUT_API_KEY !== 'string' || typeof process.env.CLERVO_SOLANA_RPC_ENDPOINT !== 'string')) throw new Error('public Crypto requires production x402, PostgreSQL state, and qualified EVM and Solana supply');
 if (privateMockCommerceEnabled && (environment !== 'stage4-private-qualification' || !['127.0.0.1', 'localhost'].includes(new URL(publicOrigin).hostname))) {
   throw new Error('private_mock_commerce_boundary_invalid');
 }
@@ -103,10 +90,6 @@ const executor = searchMode === 'live_external'
   : createRecordedSearchExecutor();
 const aiArtifactRuntime = aiArtifactMode === 'r2' ? createAiArtifactRuntime() : undefined;
 const aiRuntime = aiMode === 'paid' ? await createAiProductionRuntime({ artifactStoreFactory: aiArtifactRuntime?.forAuthorization }) : undefined;
-const rpcRuntime = rpcMode === 'paid' ? createRpcProductionRuntime({ ethereumEndpoint: process.env.CLERVO_RPC_ETHEREUM_ENDPOINT }) : undefined;
-const predictionStore = predictionMode === 'paid' ? await createPostgresPredictionMarketStoreFromEnvironment() : undefined;
-const predictionRuntime = predictionMode === 'paid' ? createPredictionProductionRuntime({ store: predictionStore }) : undefined;
-const cryptoRuntime = cryptoMode === 'paid' ? createCryptoProductionRuntime({ credential: process.env.CLERVO_BLOCKSCOUT_API_KEY, solanaRpcEndpoint: process.env.CLERVO_SOLANA_RPC_ENDPOINT, hardDailyCallCeiling: Number(process.env.CLERVO_CRYPTO_DAILY_CALL_CEILING ?? '100000') }) : undefined;
 
 const monitoringExporter = monitoringDriver === 'sentry'
   ? createSentryMonitoringExporter({ dsn: sentryDsn, environment, release: releaseId })
@@ -143,9 +126,6 @@ const server = createSearchServer({
   aiAdapterFactory: aiRuntime?.adapterFactory,
   aiArtifactAccess: aiArtifactRuntime,
   sandboxPublicRunnerDigest: sandboxPublicMode === 'paid' ? process.env.CLERVO_SANDBOX_RUNNER_DIGEST : undefined,
-  rpcRuntime,
-  predictionRuntime,
-  cryptoRuntime,
 });
 
 const exportTimer = setInterval(() => {
@@ -165,7 +145,6 @@ for (const signal of ['SIGINT', 'SIGTERM']) {
         await stateStore.close();
         await x402StateStore?.close();
         await sandboxGateway?.close();
-        await predictionRuntime?.close();
       } catch {
         console.error(JSON.stringify({ event: 'clervo.search.state_shutdown_failed' }));
         process.exitCode = 1;
@@ -192,8 +171,5 @@ server.listen(port, host, () => {
     aiPaidEnabled: aiMode === 'paid',
     aiRouteFamilies: aiRuntime?.families ?? [],
     sandboxPaidEnabled: sandboxPublicMode === 'paid',
-    rpcPaidEnabled: rpcMode === 'paid',
-    predictionPaidEnabled: predictionMode === 'paid',
-    cryptoPaidEnabled: cryptoMode === 'paid',
   }));
 });

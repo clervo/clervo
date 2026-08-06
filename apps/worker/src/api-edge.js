@@ -10,7 +10,7 @@ import { AGENT_DOCUMENT, SKILL_DOCUMENT } from '../../../generated/worker/agent-
 
 const UPSTREAM_ORIGIN = 'https://clervo-api-production-jbtbib4yqa-uc.a.run.app';
 const FAVICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32 2 62 32 32 62 2 32Z" fill="#050606" stroke="#64706d" stroke-width="2"/><path d="M39.5 23.5a12 12 0 1 0 0 17" fill="none" stroke="#f4f7f6" stroke-width="6" stroke-linecap="square"/><circle cx="43" cy="21" r="3" fill="#d6b86a"/></svg>';
-const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid', '/v1/ai/execute', '/v1/sandbox/execute', '/v1/rpc/execute', '/v1/prediction/execute', '/v1/crypto/execute']);
+const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid', '/v1/ai/execute', '/v1/sandbox/execute']);
 const DISCOVERY_DOCUMENTS = new Map([
   ['/.well-known/clervo.json', discovery],
   ['/.well-known/mcp.json', mcpDiscovery],
@@ -33,9 +33,6 @@ const MAXIMUM_REQUEST_BYTES = Object.freeze({
   '/v1/search/paid': 16_384,
   '/v1/ai/execute': 262_144,
   '/v1/sandbox/execute': 1_500_000,
-  '/v1/rpc/execute': 262_144,
-  '/v1/prediction/execute': 262_144,
-  '/v1/crypto/execute': 262_144,
 });
 const ARTIFACT_PATH = /^\/v1\/artifacts\/tenant_[A-Za-z0-9]{20,64}\/[a-f0-9]{64}\/[a-z0-9]{3,8}\/[1-9][0-9]{9}\/[A-Za-z0-9_-]{43}$/u;
 
@@ -68,9 +65,6 @@ export default {
     const artifactRequest = ARTIFACT_PATH.test(incoming.pathname);
     if (incoming.pathname === '/v1/ai/execute' && env.CLERVO_AI_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/v1/sandbox/execute' && env.CLERVO_SANDBOX_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
-    if (incoming.pathname === '/v1/rpc/execute' && env.CLERVO_RPC_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
-    if (incoming.pathname === '/v1/prediction/execute' && env.CLERVO_PREDICTION_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
-    if (incoming.pathname === '/v1/crypto/execute' && env.CLERVO_CRYPTO_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (request.method === 'OPTIONS' && (PRODUCT_PATHS.has(incoming.pathname) || artifactRequest)) return new Response(null, { status: 204, headers: cors() });
     if (incoming.search && incoming.pathname !== '/') return json(400, { code: 'query_parameters_not_allowed', status: 400 });
     if (READ_PATHS.has(incoming.pathname) && request.method !== 'GET') return json(405, { code: 'method_not_allowed', status: 405 });

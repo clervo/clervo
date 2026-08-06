@@ -37,15 +37,6 @@ export interface WalletTransactionSummary {
   valueAtomic: string;
 }
 
-export interface TokenOverview {
-  contractAddress: string;
-  symbol: string | null;
-  name: string | null;
-  decimals: number;
-  totalSupplyAtomic: string | null;
-  tokenType: string;
-}
-
 function record(value: unknown, code: string): Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) throw new Error(code);
   return value as Record<string, unknown>;
@@ -54,11 +45,6 @@ function record(value: unknown, code: string): Record<string, unknown> {
 function text(value: unknown, code: string, maximum = 512): string {
   if (typeof value !== 'string' || value.length < 1 || value.length > maximum) throw new Error(code);
   return value;
-}
-
-function nullableText(value: unknown, code: string, maximum = 512): string | null {
-  if (value === null || value === undefined || value === '') return null;
-  return text(value, code, maximum);
 }
 
 function address(value: unknown, nullable = false): string | null {
@@ -72,13 +58,6 @@ function unsigned(value: unknown, code: string): string {
   const normalized = text(value, code, 100);
   if (!/^\d+$/u.test(normalized)) throw new Error(code);
   return normalized;
-}
-
-function dateTime(value: unknown, code: string): string {
-  const input = text(value, code, 40);
-  const parsed = Date.parse(input);
-  if (!Number.isFinite(parsed)) throw new Error(code);
-  return new Date(parsed).toISOString();
 }
 
 export class BlockscoutDataAdapter {
@@ -133,26 +112,6 @@ export class BlockscoutDataAdapter {
     }));
   }
 
-  async tokenOverview(chainId: number, contractAddress: string, signal?: AbortSignal): Promise<Readonly<TokenOverview>> {
-    const normalized = address(contractAddress)!;
-    const body = record(await this.get(chainId, `/api/v2/tokens/${normalized}`, signal), 'blockchain_data_token_response_invalid');
-    const responseAddress = address(body.address_hash ?? body.address);
-    if (responseAddress !== normalized) throw new Error('blockchain_data_token_response_invalid');
-    const decimals = Number(body.decimals);
-    if (!Number.isSafeInteger(decimals) || decimals < 0 || decimals > 255) throw new Error('blockchain_data_token_response_invalid');
-    const totalSupply = body.total_supply === null || body.total_supply === undefined || body.total_supply === ''
-      ? null
-      : unsigned(body.total_supply, 'blockchain_data_token_response_invalid');
-    return Object.freeze({
-      contractAddress: normalized,
-      symbol: nullableText(body.symbol, 'blockchain_data_token_response_invalid', 64),
-      name: nullableText(body.name, 'blockchain_data_token_response_invalid', 200),
-      decimals,
-      totalSupplyAtomic: totalSupply,
-      tokenType: text(body.type, 'blockchain_data_token_response_invalid', 32),
-    });
-  }
-
   async transactions(chainId: number, walletAddress: string, signal?: AbortSignal): Promise<readonly Readonly<WalletTransactionSummary>[]> {
     const normalized = address(walletAddress)!;
     const body = record(await this.get(chainId, `/api/v2/addresses/${normalized}/transactions`, signal), 'blockchain_data_transaction_response_invalid');
@@ -164,7 +123,7 @@ export class BlockscoutDataAdapter {
       const blockNumber = row.block_number;
       if (!Number.isSafeInteger(blockNumber) || (blockNumber as number) < 0) throw new Error('blockchain_data_transaction_response_invalid');
       const status = row.status === 'ok' ? 'confirmed' as const : row.status === 'error' ? 'failed' as const : 'unknown' as const;
-      return Object.freeze({ transactionHash: text(row.hash, 'blockchain_data_transaction_response_invalid', 66).toLowerCase(), blockNumber: blockNumber as number, timestamp: dateTime(row.timestamp, 'blockchain_data_transaction_response_invalid'), status, from: address(from.hash)!, to: to === null ? null : address(to.hash), valueAtomic: unsigned(row.value ?? '0', 'blockchain_data_transaction_response_invalid') });
+      return Object.freeze({ transactionHash: text(row.hash, 'blockchain_data_transaction_response_invalid', 66).toLowerCase(), blockNumber: blockNumber as number, timestamp: text(row.timestamp, 'blockchain_data_transaction_response_invalid', 40), status, from: address(from.hash)!, to: to === null ? null : address(to.hash), valueAtomic: unsigned(row.value ?? '0', 'blockchain_data_transaction_response_invalid') });
     }));
   }
 }

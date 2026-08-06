@@ -23,15 +23,15 @@ const contractTests = [
   'tests/contract/nplan.1.test.mjs',
   'tests/contract/nplan.2.test.mjs',
   'tests/contract/nplan.3.test.mjs',
-  // The four remaining product families are served over public HTTP and were
-  // never in this list, so the acceptance run could pass while their public
-  // routes were broken. The registry consistency test is here for the same
-  // reason: it is the gate that stops a public surface disagreeing with the
-  // probed live registry.
+  // The product families served over public HTTP were never in this list, so
+  // the acceptance run could pass while their public routes were broken. The
+  // registry consistency test is here for the same reason: it is the gate that
+  // stops a public surface disagreeing with the probed live registry.
+  //
+  // This release branch carries no RPC, Prediction, or Crypto runtime, so their
+  // public-HTTP tests are absent here too. They remain on `main` with the code
+  // they cover; this list must match the tree it validates.
   'tests/contract/ai-public-http.test.mjs',
-  'tests/contract/rpc-public-http.test.mjs',
-  'tests/contract/prediction-public-http.test.mjs',
-  'tests/contract/crypto-public-http.test.mjs',
   'tests/contract/registry-public-consistency.test.mjs',
 ];
 

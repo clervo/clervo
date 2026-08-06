@@ -37,8 +37,3 @@ test('multichain data adapter normalizes an unused address null balance to zero'
   const adapter = new BlockscoutDataAdapter({ apiKey: 'test-private-key', allowedChainIds: [1], hardDailyCallCeiling: 1 }, async () => ({ status: 200, body: { hash: wallet, coin_balance: null, is_contract: false } }));
   assert.deepEqual(await adapter.addressOverview(1, wallet), { address: wallet, nativeBalanceAtomic: '0', isContract: false, transactionActivityPresent: false, tokenActivityPresent: false });
 });
-
-test('multichain data adapter normalizes exact token contract metadata without trusting market fields', async () => {
-  const adapter = new BlockscoutDataAdapter({ apiKey: 'test-private-key', allowedChainIds: [1], hardDailyCallCeiling: 1 }, async () => ({ status: 200, body: { address_hash: counterparty, symbol: 'TKN', name: 'Test Token', decimals: '6', total_supply: '42000000', type: 'ERC-20', exchange_rate: '999999' } }));
-  assert.deepEqual(await adapter.tokenOverview(1, counterparty), { contractAddress: counterparty, symbol: 'TKN', name: 'Test Token', decimals: 6, totalSupplyAtomic: '42000000', tokenType: 'ERC-20' });
-});

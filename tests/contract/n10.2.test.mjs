@@ -3,11 +3,8 @@ import test from 'node:test';
 
 import {
   normalizeBlockscoutTransactions,
-  normalizeBlockscoutToken,
   normalizeBlockscoutWallet,
   normalizeSolanaRpcWallet,
-  normalizeSolanaRpcToken,
-  normalizeSolanaRpcTransactions,
 } from '../../dist/adapters/blockchain/src/intelligence-normalizers.js';
 
 const observedAt = '2026-08-02T12:00:00.000Z';
@@ -37,14 +34,6 @@ test('qualified EVM adapter output maps into the canonical wallet and transactio
   });
   assert.equal(transactions[0].deterministicType, 'native_transfer');
   assert.equal(transactions[0].chainId, 'eip155:8453');
-});
-
-test('qualified indexed token metadata remains evidence-backed while market values stay absent', () => {
-  const token = normalizeBlockscoutToken({ chainId: 1, token: { contractAddress: evmToken, symbol: 'TKN', name: 'Test Token', decimals: 6, totalSupplyAtomic: '42000000', tokenType: 'ERC-20' }, observedAt, staleAfterMs: 60_000, nowMs: Date.parse(observedAt) + 1_000 });
-  assert.equal(token.assetId, `eip155:1/token:${evmToken}`);
-  assert.equal(token.totalSupplyAtomic, '42000000');
-  assert.equal(token.priceMicrousd, null);
-  assert.deepEqual(token.confidence.basis, ['indexed_contract_metadata', 'single_source']);
 });
 
 test('standard Solana RPC balance and parsed token accounts map without inventing token metadata', () => {
@@ -90,15 +79,4 @@ test('Solana normalization rejects unsafe numeric precision, owner substitution,
   const unknown = token();
   unknown.value[0].account.data.program = 'unknown-parser';
   assert.throws(() => normalizeSolanaRpcWallet({ ...base, tokenAccountsResult: unknown }), /response_invalid/u);
-});
-
-test('Solana token supply and signature history remain exact without invented metadata or transfers', () => {
-  const token = normalizeSolanaRpcToken({ assetAddress: solanaMint, supplyResult: { value: { amount: '42000000', decimals: 9 } }, observedAt, staleAfterMs: 60_000, nowMs: Date.parse(observedAt) + 1_000 });
-  assert.equal(token.totalSupplyAtomic, '42000000');
-  assert.equal(token.symbol, null);
-  const signature = '2'.repeat(64);
-  const transactions = normalizeSolanaRpcTransactions({ address: solanaWallet, signaturesResult: [{ signature, slot: 123, blockTime: 1785672000, err: null }], observedAt });
-  assert.equal(transactions[0].transactionId, signature);
-  assert.equal(transactions[0].deterministicType, 'unknown');
-  assert.equal(transactions[0].tokenTransfers.length, 0);
 });
