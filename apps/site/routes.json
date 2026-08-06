@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "clervo.site-routes.v1",
+  "routes": [
+    { "path": "/", "title": "Outcome infrastructure for AI agents", "expect": "Give your agent a task." },
+    { "path": "/product", "title": "Product and capabilities", "expect": "Buy outcomes." },
+    { "path": "/catalog", "title": "Catalog", "expect": "Describe the outcome." },
+    { "path": "/start", "title": "Set up Clervo", "expect": "Set up Clervo in your agent." },
+    { "path": "/proof", "title": "Proof", "expect": "Proof when work succeeds" },
+    { "path": "/docs", "title": "Developer docs", "expect": "Start from what your agent needs to do." },
+    { "path": "/docs/http", "title": "HTTP and OpenAPI docs", "expect": "HTTP / OpenAPI client" },
+    { "path": "/docs/typescript", "title": "TypeScript docs", "expect": "TypeScript client" },
+    { "path": "/docs/python", "title": "Python docs", "expect": "Python client" },
+    { "path": "/docs/mcp", "title": "MCP docs", "expect": "MCP client" },
+    { "path": "/pricing", "title": "Pricing truth", "expect": "Know the maximum before Clervo acts." },
+    { "path": "/benchmarks", "title": "Benchmark truth", "expect": "No number without the method behind it." },
+    { "path": "/security", "title": "Security controls", "expect": "Authority is explicit, scoped, and inspectable." },
+    { "path": "/legal", "title": "Legal boundaries", "expect": "Terms should explain how the system actually works." },
+    { "path": "/legal/terms", "title": "Terms structure", "expect": "Terms of Service structure" },
+    { "path": "/legal/privacy", "title": "Privacy structure", "expect": "Privacy structure" },
+    { "path": "/legal/payments", "title": "Payments structure", "expect": "Payments structure" },
+    { "path": "/legal/acceptable-use", "title": "Acceptable Use structure", "expect": "Acceptable Use structure" },
+    { "path": "/status", "title": "Product status", "expect": "Current truth without marketing interpretation." },
+    { "path": "/changelog", "title": "Changelog", "expect": "What changed, what broke, and what replaces it." },
+    { "path": "/capabilities/search", "title": "Search capability", "expect": "Acquire current information with inspectable evidence." },
+    { "path": "/capabilities/ai", "title": "AI capability", "expect": "Choose an appropriate model route for the task and boundary." },
+    { "path": "/capabilities/secure-sandbox", "title": "Secure Sandbox capability", "expect": "Execute bounded code and file work inside an explicit isolation contract." },
+    { "path": "/capabilities/multi-chain-rpc", "title": "Multi-chain RPC capability", "expect": "Route chain work with the network and operation made explicit." },
+    { "path": "/capabilities/prediction", "title": "Prediction capability", "expect": "Turn market and forecast data into structured, attributable evidence." },
+    { "path": "/capabilities/crypto-intelligence", "title": "Crypto Intelligence capability", "expect": "Trace assets, entities, and transactions into explainable evidence." },
+    { "path": "/operations/search.web", "title": "Web search evidence operation", "expect": "Web search evidence" },
+    { "path": "/operations/search.answer", "title": "Search answer operation", "expect": "Search answer" }
+  ],
+  "aliases": [
+    { "path": "/build", "target": "/start" },
+    { "path": "/proof-lab", "target": "/proof" }
+  ]
+}

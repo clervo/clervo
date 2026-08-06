@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "npm --prefix ../.. run generate:discovery && node ../../scripts/site/validate-canonical-media.mjs && node ../../scripts/site/prepare-public.mjs",
+    "predev": "npm --prefix ../.. run generate:discovery && node ../../scripts/site/validate-canonical-media.mjs && node ../../scripts/site/validate-step8-design.mjs && node ../../scripts/site/prepare-public.mjs",
     "dev": "vite",
-    "prebuild": "npm --prefix ../.. run generate:discovery && node ../../scripts/site/validate-canonical-media.mjs && node ../../scripts/site/prepare-public.mjs",
+    "prebuild": "npm --prefix ../.. run generate:discovery && node ../../scripts/site/validate-canonical-media.mjs && node ../../scripts/site/validate-step8-design.mjs && node ../../scripts/site/prepare-public.mjs",
     "build": "tsc --project tsconfig.json --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist-server && node ../../scripts/site/prerender.mjs && node ../../scripts/site/validate-prerender.mjs",
-    "test:authority": "node --test ../../tests/contract/step8-design-authority.test.mjs ../../tests/contract/step8-page-authority.test.mjs",
+    "test:authority": "node --test ../../tests/contract/step8-design-authority.test.mjs ../../tests/contract/step8-page-authority.test.mjs ../../tests/contract/step8-source-identity.test.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
