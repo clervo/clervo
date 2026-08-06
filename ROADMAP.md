@@ -17,20 +17,20 @@ Update only when execution state actually changes. This is not a journal.
 
 | Field | Value |
 |---|---|
-| Current milestone | **B1 — Truth spine** |
-| Milestone status | `externally_verified` — deployed 2026-08-06 from `e4a281b`; all five external checks in B1 field 12 pass against the public URLs. |
+| Current milestone | **B2 — Front door open** |
+| Milestone status | `built_awaiting_deploy` — B1 is `externally_verified` (deployed 2026-08-06 from `e4a281b`). B2 is code-complete at `0555c83` with acceptance green; both B2 field 12 proofs still fail against the live deployment because the fixes are not deployed. |
 | Current branch | `main` |
-| Latest commit | `e4a281b` — `feat(site): render lifecycle state and proof level from the probed registry` |
+| Latest commit | `0555c83` — `feat(front-door): make the first call succeed with no headers and 404 real` |
 | Current production release | Site worker `clervo-site-production` version `2437daaa-e049-472b-9d89-41a1c81056a0`; API edge worker `clervo-api-edge-production` version `99f96564-3824-47d5-b8a5-a84783e6e5cb`; Cloud Run origin `e23264a52c0c2a0254d19ff8062437b05ce1bad8` unchanged behind them. |
 | Rollback targets | Site `aed2cb42-aedf-4479-be66-78649f7f9eb9`; API edge `4ee82dea-bc76-4f03-9184-35ab281233ef`. Roll back with `npx wrangler rollback <version> --config apps/site/wrangler.jsonc` or `apps/worker/wrangler.jsonc`. |
 | Latest externally verified customer outcome | `/v1/search/free` returns real cited results to an unauthenticated caller that supplies an `idempotency-key`, and a repeated key replays the identical `searchResponse` with `replayed: true` and no second execution. Proof level `externally_repeated`. Nothing else has reached `paid_outcome_verified`. |
-| Current blockers | None for B1. The two conformance defects the registry records are B2 scope: `/v1/search/free` still returns 400 without a caller-supplied `idempotency-key`, and `clervo.dev` still returns 200 for a nonexistent URL. |
+| Current blockers | B2 cannot be verified without a production deploy of the API edge worker, the Cloud Run origin, and the site. Until that deploy the two conformance defects stay open in the registry: `/v1/search/free` returns 400 without a caller-supplied `idempotency-key`, and `clervo.dev` returns 200 for a nonexistent URL. |
 | External dependencies | Bazaar settlements (owner funds); Prediction terms decision; Crypto resale scope; RPC supply; gateway funding. |
-| Owner approvals waiting | None. |
+| Owner approvals waiting | **Production deploy of the API edge worker, the Cloud Run search origin, and the site** (B2 field 15). Nothing else in B2 is blocked. |
 | Dates that move on their own | **2026-08-09** — `ai.clervo.dev` funding resumes, and all 21 AI route qualifications expire, same day. **30 days after any Bazaar listing** — a resource with no settlement in that window is dropped from the CDP catalog. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
-| Exact next task | Open B2 — Front door open. First task: generate `idempotency-key` server-side in the free search handler when the caller supplies none, without weakening replay for callers that do supply one. |
-| Files and services for that task | The free search handler and its idempotency binding; `apps/site/wrangler.jsonc` (`not_found_handling`); `skill.md` and `agent.md` serving; the public quick-start curl on the site and in `llms.txt`. |
+| Exact next task | Deploy `0555c83` to production, then re-run `scripts/probe-live-registry.mjs` so both conformance checks record as conformant, regenerate the public surfaces so the published curl drops its `idempotency-key` line, and verify the two B2 field 12 proofs from an unrelated machine. |
+| Files and services for that task | Cloud Run service (free-search handler), `clervo-api-edge-production`, `clervo-site-production`; then `scripts/probe-live-registry.mjs`, `scripts/generate-discovery.mjs`, `scripts/site/prepare-public.mjs`. |
 
 ---
 
@@ -437,7 +437,9 @@ Every milestone below carries the same seventeen fields.
 ### B2 — Front door open
 
 1. **Milestone:** B2 — Front door open
-2. **Status:** `not_started`
+2. **Status:** `built_awaiting_deploy` — all work in field 8 is implemented and
+   the acceptance run is green at `0555c83`. Field 12 is unproven until the
+   production deploy in field 15 is approved and applied.
 3. **Customer-visible outcome:** A stranger runs one curl with no headers and
    gets a cited result. A nonexistent URL returns 404.
 4. **Why it matters commercially:** This is the top of the entire funnel. A
