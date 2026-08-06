@@ -6,7 +6,11 @@ import path from 'node:path';
 const root = path.resolve(import.meta.dirname, '../..');
 const dist = path.join(root, 'apps/site/dist');
 const expectations = [
-  ['index.html', 'One job in.'],
+  // The locked human promise. It is the first line of the homepage and the
+  // first line of /start, so it is asserted on both.
+  ['index.html', 'Give your agent a task.'],
+  ['start/index.html', 'Give your agent a task.'],
+  ['catalog/index.html', 'Every route, and what it costs.'],
   ['research/index.html', 'Ask now.'],
   ['platform/index.html', 'One platform.'],
   ['product/index.html', 'One platform.'],

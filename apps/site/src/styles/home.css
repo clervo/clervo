@@ -1,0 +1,321 @@
+/*
+ * The homepage.
+ *
+ * Composed from the layout primitives in base.css rather than from a separate
+ * per-section geometry. The previous homepage set every band to `100svh` and a
+ * bespoke two-column grid, which produced long stretches of near-empty black
+ * between paragraphs on a large monitor and a stack of full-height sections on
+ * a phone. Height here follows content.
+ */
+
+.hero {
+  display: grid;
+  gap: var(--space-8);
+  align-content: center;
+  max-width: var(--shell-max);
+  /* Not 100svh: the hero is as tall as it needs to be, and the section below
+   * it is deliberately visible at the fold so the page reads as a document
+   * rather than a slideshow. */
+  min-height: min(78svh, 46rem);
+  margin-inline: auto;
+  padding-block: clamp(var(--space-8), 9vw, var(--space-10)) var(--space-8);
+  padding-inline: var(--shell-gutter);
+}
+
+.hero__copy {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  gap: var(--space-5);
+  justify-items: start;
+  /* The instrument occupies the right of the viewport on a wide screen, so the
+   * headline is capped short of it rather than running underneath it. */
+  max-width: min(100%, 46rem);
+}
+
+.hero h1 {
+  /* Slightly tighter than the global h1: this is the one line on the site that
+   * has to land in the first second. */
+  font-size: clamp(2.9rem, 1.5rem + 5.2vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.hero__deck {
+  max-width: 40rem;
+  color: var(--text-secondary);
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+  line-height: 1.55;
+}
+
+.hero__actions {
+  margin-top: var(--space-2);
+}
+
+.hero__free {
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-small);
+}
+
+/*
+ * The observed strip. Four probed facts, set in mono with tabular figures so
+ * they read as instrument output rather than as marketing statistics — which
+ * is exactly what they are and are not.
+ */
+.hero__observed {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line-strong);
+}
+
+.hero__observed dt {
+  color: var(--text-quiet);
+  font-size: var(--step-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero__observed dd {
+  margin-top: var(--space-2);
+  font-family: var(--mono);
+  font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.75rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+/* --- Find, Understand, Act ------------------------------------------------ */
+
+.mechanism__steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: var(--space-4);
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-gutter);
+}
+
+.mechanism__steps h3 {
+  font-size: var(--step-3);
+}
+
+.mechanism__steps p {
+  color: var(--text-secondary);
+  font-size: var(--step-small);
+}
+
+.mechanism .section-head,
+.families .section-head,
+.home-proof .section-head {
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-gutter);
+}
+
+/* --- First call ----------------------------------------------------------- */
+
+.home-first__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(var(--space-6), 5vw, var(--space-8));
+  align-items: center;
+}
+
+.home-first .code pre {
+  max-height: 22rem;
+}
+
+@media (width <= 900px) {
+  .home-first__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Six families --------------------------------------------------------- */
+
+.families__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: var(--space-4);
+}
+
+.families__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.families__head h3 {
+  font-size: var(--step-3);
+}
+
+.families__card p {
+  overflow-wrap: anywhere;
+}
+
+.families__actions {
+  margin-top: var(--space-6);
+}
+
+/* --- Proof ---------------------------------------------------------------- */
+
+.home-proof__facts {
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-gutter);
+}
+
+.home-proof__links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-4);
+  max-width: var(--shell-max);
+  margin: var(--space-7) auto 0;
+  padding-inline: var(--shell-gutter);
+}
+
+.home-proof__links h3 {
+  font-size: var(--step-3);
+}
+
+/* --- Closing call to action ----------------------------------------------- */
+
+.home-cta {
+  border-top: 1px solid var(--line);
+}
+
+.home-cta__inner {
+  justify-items: start;
+  gap: var(--space-5);
+}
+
+.home-cta h2 {
+  font-size: clamp(2.25rem, 1.4rem + 3.4vw, 3.5rem);
+}
+
+@media (width <= 520px) {
+  /* A full-width primary action is easier to hit one-handed than a pill that
+   * happens to be as wide as its label. */
+  .hero__actions .button,
+  .home-cta .button {
+    width: 100%;
+  }
+}
+
+/* --- Lifecycle sequence --------------------------------------------------- */
+
+/*
+ * Five steps: request, qualify, approve, verify, receipt. Each one scrolls the
+ * Apex instrument to its own state, so the sequence has to be tall enough for
+ * the scroll to register — but the previous version gave each step a full
+ * viewport for two short sentences, producing 4,500px of mostly empty black on
+ * a desktop. Each step is now sized to its content with generous but bounded
+ * breathing room, and the sequence keeps a hairline spine down its left edge so
+ * the five steps read as one progression rather than five unrelated bands.
+ */
+.phase-sequence {
+  position: relative;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-gutter);
+}
+
+.phase-section {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+  gap: clamp(var(--space-5), 4vw, var(--space-8));
+  align-items: start;
+  padding-block: clamp(var(--space-6), 4vw, var(--space-8));
+  padding-left: var(--space-6);
+  border-top: 1px solid var(--line);
+}
+
+.phase-section:first-child {
+  border-top: 1px solid var(--line-strong);
+}
+
+/*
+ * The spine marker: a short rule at the left edge of each step, carrying that
+ * step's semantic colour. Red is the unbound request, cyan is qualification and
+ * execution, gold is reserved for the two steps that are actually proof. The
+ * sequence therefore reads red, cyan, cyan, gold, gold from top to bottom —
+ * the same progression the Apex instrument runs through, at document scale.
+ */
+.phase-section::before {
+  content: "";
+  position: absolute;
+  top: clamp(var(--space-6), 4vw, var(--space-8));
+  left: 0;
+  width: 2px;
+  height: 2.25rem;
+  background: var(--line-loud);
+}
+
+.phase-section--risk::before {
+  background: var(--request);
+}
+
+.phase-section--qualified::before,
+.phase-section--approval::before {
+  background: var(--qualify);
+}
+
+.phase-section--verified::before,
+.phase-section--receipt::before {
+  background: var(--verified);
+}
+
+.phase-copy {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 42rem;
+}
+
+.phase-copy h2 {
+  font-size: var(--step-1);
+}
+
+.phase-copy p {
+  color: var(--text-secondary);
+}
+
+.phase-evidence {
+  align-self: start;
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--surface-1);
+}
+
+.phase-evidence > span {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  letter-spacing: 0.14em;
+}
+
+.phase-evidence dl div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+}
+
+@media (width <= 860px) {
+  .phase-section {
+    grid-template-columns: 1fr;
+    padding-left: var(--space-5);
+  }
+}

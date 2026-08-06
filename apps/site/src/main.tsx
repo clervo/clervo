@@ -14,6 +14,7 @@ import './styles.css';
 import './styles/controls.css';
 import './styles/mark.css';
 import './styles/shell.css';
+import './styles/home.css';
 import './styles/pages.css';
 
 const root = document.getElementById('root');
