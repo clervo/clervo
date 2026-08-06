@@ -607,7 +607,7 @@
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_authentication_unavailable"
+        "supplyReason": "upstream_completion_failed"
       },
       "exactModelId": "gpt-5.6-luna",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
@@ -625,7 +625,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_authentication_unavailable",
+      "reason": "upstream_completion_failed",
       "routeId": "ai.route.gpt_5_6_luna",
       "sellable": false,
       "state": "supply_paused",
@@ -647,7 +647,7 @@
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_authentication_unavailable"
+        "supplyReason": "upstream_completion_failed"
       },
       "exactModelId": "gpt-5.6-sol",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
@@ -665,7 +665,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_authentication_unavailable",
+      "reason": "upstream_completion_failed",
       "routeId": "ai.route.gpt_5_6_sol",
       "sellable": false,
       "state": "supply_paused",
@@ -687,7 +687,7 @@
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_authentication_unavailable"
+        "supplyReason": "upstream_completion_failed"
       },
       "exactModelId": "gpt-5.6-terra",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
@@ -705,7 +705,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_authentication_unavailable",
+      "reason": "upstream_completion_failed",
       "routeId": "ai.route.gpt_5_6_terra",
       "sellable": false,
       "state": "supply_paused",
@@ -837,18 +837,18 @@
   ],
   "conformance": [
     {
-      "conformant": false,
+      "conformant": true,
       "expectation": "free search succeeds without a caller-supplied idempotency-key",
       "id": "api.search_free_accepts_naive_request",
-      "observedCode": "idempotency_key_required",
-      "observedStatus": 400,
+      "observedCode": null,
+      "observedStatus": 200,
       "url": "https://api.clervo.dev/v1/search/free"
     },
     {
-      "conformant": false,
+      "conformant": true,
       "expectation": "a nonexistent site URL returns 404",
       "id": "site.not_found_is_404",
-      "observedStatus": 200,
+      "observedStatus": 404,
       "url": "https://clervo.dev/clervo-live-registry-probe-nonexistent"
     }
   ],
@@ -857,7 +857,7 @@
     "apiOrigin": "https://api.clervo.dev",
     "environment": "production",
     "paidExecutionEnabled": true,
-    "releaseId": "e23264a52c0c2a0254d19ff8062437b05ce1bad8",
+    "releaseId": "35a2f7af3bbe4914dc5e1685e6974c07a04eebf0",
     "sandboxPaidEnabled": true,
     "siteOrigin": "https://clervo.dev",
     "stateBackend": "postgres",
@@ -907,7 +907,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-06T11:40:50.003Z",
+  "observedAt": "2026-08-06T14:42:37.447Z",
   "products": [
     {
       "evidence": {
@@ -1052,12 +1052,12 @@
       },
       "expectedReturnAt": null,
       "freeEntry": {
-        "acceptsNaiveRequest": false,
+        "acceptsNaiveRequest": true,
         "freeOutcomeObserved": true,
-        "naiveRejectionCode": "idempotency_key_required",
+        "naiveRejectionCode": null,
         "route": "https://api.clervo.dev/v1/search/free",
         "withIdempotencyKeyStatus": 200,
-        "withoutIdempotencyKeyStatus": 400
+        "withoutIdempotencyKeyStatus": 200
       },
       "id": "search",
       "label": "Research",
@@ -1092,7 +1092,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "94317df00c9c8223225f681cdd989e0275f5d2d8",
+  "sourceCommit": "35a2f7af3bbe4914dc5e1685e6974c07a04eebf0",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -1103,7 +1103,7 @@
       "live": 18,
       "supply_paused": 3
     },
-    "conformanceDefectsOpen": 2,
+    "conformanceDefectsOpen": 0,
     "discoverySurfaces": {
       "live": 2,
       "unavailable": 3
@@ -1126,8 +1126,8 @@
         "gpt-5.6-terra"
       ],
       "outcome": "failed",
-      "providerErrorCode": "auth_unavailable",
-      "reason": "upstream_authentication_unavailable",
+      "providerErrorCode": "internal_server_error",
+      "reason": "upstream_completion_failed",
       "supplyFamilyId": "supply.clervo_ai_gateway"
     }
   ]

@@ -11,9 +11,9 @@ const root = process.cwd();
 const readJson = async (name) => JSON.parse(await readFile(path.join(root, name), 'utf8'));
 const hashBytes = (value) => `sha256:${createHash('sha256').update(value).digest('hex')}`;
 const sha256 = async (name) => hashBytes(await readFile(path.join(root, name)));
-const descriptors = async (directory, names) => Promise.all(names.sort().map(async (name) => {
+const descriptors = async (directory, names, frozenHashes = new Map()) => Promise.all(names.sort().map(async (name) => {
   const file = path.posix.join(directory, name);
-  return Object.freeze({ file, sha256: await sha256(file) });
+  return Object.freeze({ file, sha256: frozenHashes.get(name) ?? await sha256(file) });
 }));
 
 const registryFile = 'packages/catalog/platform-registry.v1.json';
@@ -26,6 +26,24 @@ const workflowFile = 'packages/catalog/private-workflows.v1.json';
 const postFreezeSchemaNames = new Set([
   'ai-http-request.schema.json',
   'ai-http-result.schema.json',
+]);
+// A schema inside the frozen set that has legitimately been edited since the
+// freeze. The manifest keeps the hash the schema had at the freeze, because
+// interfaceHash derives from it and that hash is a published identifier: it is
+// pinned in both SDKs, in infra/production/release-policy.v1.json, in the
+// distribution sources, and on every generated public surface. Recomputing it
+// would silently reissue the frozen release candidate's identity, which is why
+// scripts/generate-discovery.mjs refuses a manifest whose interfaceHash does
+// not match the one the published surfaces carry.
+//
+// ai-speech-pricing.schema.json was widened in ba76817: priceVersion,
+// listingStatus, and positioning were single `const` literals that the catalog
+// had already moved past, so honest pricing data failed its own schema. The
+// widening constrains the same fields to the value sets the catalog reports and
+// removes no requirement. The wire contract is unchanged, so the frozen
+// interface is unchanged, and the frozen hash stands.
+const frozenSchemaHashes = new Map([
+  ['ai-speech-pricing.schema.json', 'sha256:b290584d94341427b2fcb4d01ca77f23f4172ab507317ea670c18794ef364ed2'],
 ]);
 const priceFiles = [
   'packages/contracts/src/search-http.ts',
@@ -42,7 +60,7 @@ const workflows = await readJson(workflowFile);
 const allSchemaNames = (await readdir(path.join(root, 'packages/contracts/schemas'))).filter((name) => name.endsWith('.schema.json'));
 const schemaNames = allSchemaNames.filter((name) => !postFreezeSchemaNames.has(name));
 const fixtureNames = (await readdir(path.join(root, 'packages/contracts/fixtures'))).filter((name) => name.endsWith('.json'));
-const schemas = await descriptors('packages/contracts/schemas', schemaNames);
+const schemas = await descriptors('packages/contracts/schemas', schemaNames, frozenSchemaHashes);
 const fixtures = await descriptors('packages/contracts/fixtures', fixtureNames);
 const prices = await Promise.all(priceFiles.map(async (file) => Object.freeze({ file, sha256: await sha256(file) })));
 
@@ -51,6 +69,16 @@ if (visibleFiles.size !== allSchemaNames.length || allSchemaNames.some((name) =>
 for (const name of postFreezeSchemaNames) {
   if (!allSchemaNames.includes(name) || visibility.schemas.find(({ file }) => file === name)?.visibility !== 'public_wire') {
     throw new Error(`release_freeze_post_freeze_schema_invalid:${name}`);
+  }
+}
+// A pinned hash that no longer belongs to any schema in the frozen set is dead
+// weight that would hide the next real drift, and one that matches the file on
+// disk means the exemption has been made redundant by a revert. Both should be
+// removed rather than left to rot.
+for (const [name, frozenHash] of frozenSchemaHashes) {
+  if (!schemaNames.includes(name)) throw new Error(`release_freeze_frozen_hash_unknown_schema:${name}`);
+  if (await sha256(path.posix.join('packages/contracts/schemas', name)) === frozenHash) {
+    throw new Error(`release_freeze_frozen_hash_redundant:${name}`);
   }
 }
 const frozenVisibilitySource = visibilitySource
