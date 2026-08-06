@@ -3,10 +3,12 @@ import { useEffect } from 'react';
 import { CodeBlock } from '../components/CodeBlock';
 import { ModeBadge } from '../components/Navigation';
 import type { ActivationState } from '../experience';
-import { discovery, installExamples, launchState, type ExperiencePhase } from '../product';
+import { discovery, familyOf, installExamples, launchState, lifecycleLabels, observedProduct, publicApiCallable, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 type ClientId = keyof typeof installExamples;
+
+const searchObserved = observedProduct('search');
 
 const clients: Array<{ id: ClientId; label: string; packageName: string; version: string }> = [
   { id: 'http', label: 'Raw HTTP', packageName: 'OpenAPI 3.1.1', version: 'published contract' },
@@ -42,8 +44,9 @@ export function Docs({
         <h1>Install the client.<br />Keep the boundary visible.</h1>
         <p>
           The TypeScript SDK, MCP server, and Python SDK are published and
-          registry-verified. Every client still requires an explicit base URL
-          because the Clervo customer API is not publicly callable.
+          registry-verified. Every client takes an explicit base URL, so the
+          endpoint you are calling is never implicit
+          {publicApiCallable ? ' — the public one is https://api.clervo.dev.' : ' and the customer API is not publicly callable.'}
         </p>
       </header>
 
@@ -95,7 +98,7 @@ export function Docs({
                 <div role="row" key={product.productId}>
                   <code role="cell">{product.productId}</code>
                   <span role="cell">{product.summary}</span>
-                  <b role="cell">{product.lifecycle}</b>
+                  <b role="cell">{lifecycleLabels[observedProduct(familyOf(product.productId)).lifecycleState]}</b>
                 </div>
               ))}
             </div>
@@ -106,7 +109,7 @@ export function Docs({
             <h3>Typed errors stay visible.</h3>
             <ul className="contract-list">
               <li><b>400</b><span>Request rejected before execution.</span></li>
-              <li><b>402</b><span>Typed challenge; current public discovery remains non-payable and clients never auto-sign.</span></li>
+              <li><b>402</b><span>Typed challenge carrying the exact maximum charge; clients never auto-sign.</span></li>
               <li><b>409</b><span>Idempotency key bound to a different request.</span></li>
               <li><b>429</b><span>Bounded preview quota exhausted.</span></li>
               <li><b>502</b><span>Executor or contract verification failed closed.</span></li>
@@ -119,10 +122,10 @@ export function Docs({
               <div><dt>Contract</dt><dd>{discovery.contractVersion}</dd></div>
               <div><dt>Candidate</dt><dd>{discovery.distribution.releaseCandidateId}</dd></div>
               <div><dt>Hash</dt><dd>{discovery.distribution.interfaceHash}</dd></div>
-              <div><dt>Public callable</dt><dd>false</dd></div>
+              <div><dt>Public callable</dt><dd>{String(publicApiCallable)}</dd></div>
               <div><dt>Package publication</dt><dd>{launchState.distribution.packages.state.replaceAll('_', ' ')}</dd></div>
               <div><dt>Private payment proof</dt><dd>settled and replayed once</dd></div>
-              <div><dt>Public payment available</dt><dd>false</dd></div>
+              <div><dt>Public payment available</dt><dd>{String(searchObserved.observedPrice !== null)}</dd></div>
             </dl>
           </section>
         </article>

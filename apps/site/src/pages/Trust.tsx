@@ -1,10 +1,20 @@
 import { useEffect } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
-import { discovery, launchState, type ExperiencePhase } from '../product';
+import { discovery, launchState, observedTruth, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 export type TrustTopic = 'pricing' | 'benchmarks' | 'security' | 'legal';
+
+// What the deployed system quotes, read from observed truth. This sentence used
+// to assert that no public offer existed while the API returned real quotes.
+const priced = observedTruth.products.filter(({ observedPrice }) => observedPrice !== null);
+const pricedFamilies = priced.length === 0
+  ? 'no public route currently quotes a price.'
+  : `${priced.map(({ label }) => label).join(', ')} quote their own prices over x402 on the deployed API.`;
+
+// Families the deployed system does not serve, and why.
+const withheld = observedTruth.products.filter(({ publiclyReachable }) => !publiclyReachable);
 
 const topicCopy: Record<TrustTopic, {
   eyebrow: string;
@@ -14,7 +24,7 @@ const topicCopy: Record<TrustTopic, {
   pricing: {
     eyebrow: 'Pricing / candidate truth',
     title: 'Proof amount is not public price.',
-    intro: 'The private proof settled for 0.006 USDC. No public customer offer exists, and fixture amounts remain explicitly non-payable.',
+    intro: `The private proof settled for 0.006 USDC. That amount is a recorded owner-funded proof, not a public price: ${pricedFamilies}`,
   },
   benchmarks: {
     eyebrow: 'Benchmarks / claim boundary',
@@ -57,13 +67,17 @@ export function Trust({
           <strong>{launchState.paymentProof.amountDisplay}</strong>
           <p>Owner-funded · {launchState.paymentProof.productId} · not a public customer offer</p>
         </section><section className="truth-table">
-          <header><h2>Non-payable fixture ledger</h2><span>Interface testing only</span></header>
+          <header><h2>Published price ledger</h2><span>Observed from the deployed system</span></header>
           {discovery.products.map((product) => (
             <div key={product.productId}>
               <code>{product.productId}</code>
-              <span>{product.pricing.displayPrice.amountAtomic} atomic {product.pricing.displayPrice.asset}</span>
+              <span>
+                {product.pricing.displayPrice === null
+                  ? 'price derived per request'
+                  : `${product.pricing.displayPrice.amountAtomic} atomic ${product.pricing.displayPrice.asset}`}
+              </span>
               <b>{product.pricing.priceVersion}</b>
-              <strong>payable: false</strong>
+              <strong>payable: {String(product.payment.payable)}</strong>
             </div>
           ))}
         </section></>
@@ -93,7 +107,15 @@ export function Trust({
 
       {topic === 'legal' ? (
         <section className="truth-panels">
-          <article><span>CURRENT</span><h2>Terms-aware routing</h2><p>RPC, Prediction, and Crypto public routing remain unavailable where resale or commercial reuse rights are not qualified.</p></article>
+          <article>
+            <span>CURRENT</span>
+            <h2>Terms-aware routing</h2>
+            <p>
+              {withheld.length === 0
+                ? 'Every product family is publicly routed; no family is withheld on rights grounds.'
+                : `${withheld.map(({ label }) => label).join(', ')} public routing remains withheld: ${[...new Set(withheld.map(({ reason }) => (reason ?? 'unstated').replaceAll('_', ' ')))].join('; ')}.`}
+            </p>
+          </article>
           <article><span>PENDING</span><h2>Customer documents</h2><p>Production privacy, terms, support, retention, and pricing language require reviewed release text before launch.</p></article>
           <article><span>BOUNDARY</span><h2>Protected infrastructure</h2><p>The existing model gateway is protected infrastructure and is not changed, exposed, or represented as this public candidate.</p></article>
         </section>

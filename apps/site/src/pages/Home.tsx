@@ -2,8 +2,17 @@ import { useEffect, useRef } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
 import { Worlds } from '../components/Worlds';
-import { installExamples, launchState, phases, type ExperiencePhase } from '../product';
+import { installExamples, launchState, observedProduct, observedTruth, phases, proofLabels, publicApiCallable, type ExperiencePhase } from '../product';
 import { Link } from '../router';
+
+// Read from observed truth rather than written by hand: which families the
+// deployed system actually serves right now.
+const liveLabels = observedTruth.products
+  .filter(({ lifecycleState }) => lifecycleState === 'live')
+  .map(({ label }) => label)
+  .join(', ');
+
+const searchObserved = observedProduct('search');
 
 function PhaseSection({
   id,
@@ -69,7 +78,9 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
             <Link className="button button--quiet" to="/docs/quickstart">Install a client</Link>
           </div>
           <p className="hero-boundary">
-            Public packages are verified. The customer API is not publicly callable yet.
+            {publicApiCallable
+              ? `Public packages are verified. ${liveLabels} are callable now over x402 on Base.`
+              : 'Public packages are verified. The customer API is not publicly callable yet.'}
           </p>
         </div>
         <aside className="hero-proof hero-proof--settled" aria-label="Latest proof state">
@@ -92,8 +103,10 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           <h2>Ask a current question.<br />Receive evidence, not a black box.</h2>
           <p>
             Search is the first bounded public-release target. Its private
-            production path has settled once and replayed safely; public
-            customer access remains closed until the external release passes.
+            production path has settled once and replayed safely.
+            {searchObserved.publiclyReachable
+              ? ` The public route is reachable and quotes a price; proof level is ${proofLabels[searchObserved.proofLevel]}.`
+              : ' Public customer access remains closed until the external release passes.'}
           </p>
         </div>
         <div className="outcome-record">
@@ -134,7 +147,11 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
         <div>
           <p className="eyebrow">Developer quickstart / public clients</p>
           <h2>Install the interface.<br />Bring an explicit endpoint.</h2>
-          <p>The clients are public and registry-verified. The customer service is not publicly callable, so the example preserves an endpoint placeholder instead of pretending a live API exists.</p>
+          <p>
+            {publicApiCallable
+              ? 'The clients are public and registry-verified, and the customer API is publicly callable. The example still takes an explicit base URL so the endpoint you are calling is never implicit.'
+              : 'The clients are public and registry-verified. The customer service is not publicly callable, so the example preserves an endpoint placeholder instead of pretending a live API exists.'}
+          </p>
           <div className="home-quickstart__links">
             <Link className="button button--primary" to="/docs/quickstart">Open quickstart</Link>
             <Link className="button button--quiet" to="/docs/catalog">Inspect catalog</Link>

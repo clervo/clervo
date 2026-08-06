@@ -3,30 +3,67 @@ import launchStateSource from '../../../generated/public/claims.json';
 import onboardingSource from '../../../generated/public/onboarding.json';
 
 export type ExperiencePhase = 'risk' | 'qualified' | 'approval' | 'verified' | 'receipt';
-export type PillarLifecycle = 'preview' | 'unavailable';
+export type PillarLifecycle = 'preview' | 'unavailable' | 'available';
+
+// Lifecycle state and proof level are two separate facts, observed by probing
+// the deployed system, and the site renders both. Collapsing them into one
+// would let a returned quote read as a working paid product.
+export type LifecycleState = 'live' | 'supply_paused' | 'unavailable';
+export type ProofLevel = 'none' | 'quote_observed_unpaid' | 'paid_outcome_verified' | 'externally_repeated';
+
+export interface ObservedProduct {
+  id: 'search' | 'ai' | 'sandbox' | 'rpc' | 'prediction' | 'crypto_intelligence';
+  label: string;
+  operations: string[];
+  lifecycleState: LifecycleState;
+  proofLevel: ProofLevel;
+  reason: string | null;
+  expectedReturnAt: string | null;
+  publiclyReachable: boolean;
+  observedPrice: {
+    amountAtomic: string;
+    asset: string;
+    network: string;
+    priceVersion: string;
+  } | null;
+  freeEntry: { route: string; acceptsNaiveRequest: boolean } | null;
+}
+
+export interface ObservedTruth {
+  provenance: {
+    source: string;
+    generatedBy: string;
+    observedAt: string;
+    releaseId: string;
+    proofLevels: Record<ProofLevel, string>;
+    states: Record<LifecycleState, string>;
+  };
+  products: ObservedProduct[];
+}
 
 interface DiscoveryProduct {
-  productId: 'search.web' | 'search.answer';
-  operationId: 'search.web' | 'search.answer';
+  productId: string;
+  operationId: string;
   title: string;
   summary: string;
   lifecycle: PillarLifecycle;
-  publicAvailable: false;
+  publicAvailable: boolean;
   deliveryModes: string[];
   pricing: {
-    model: 'non_payable_mock_fixture';
+    model: string;
     displayPrice: {
-      asset: 'mock:usdc';
+      asset: string;
       amountAtomic: string;
-      decimals: 6;
-    };
-    maximumChargeRequired: true;
+      decimals: number;
+    } | null;
+    maximumChargeRequired: boolean;
     priceVersion: string;
   };
+  routes?: { freeSample?: string; paidChallenge?: string };
   payment: {
-    challengeImplemented: true;
-    payable: false;
-    mockExecutionAvailableByInjectionOnly: true;
+    challengeImplemented: boolean;
+    payable: boolean;
+    mockExecutionAvailableByInjectionOnly: boolean;
   };
 }
 
@@ -42,10 +79,10 @@ interface Discovery {
   contractVersion: string;
   description: string;
   distribution: {
-    state: 'candidate';
-    publicAvailable: false;
-    callable: false;
-    noPublicDistribution: true;
+    state: string;
+    publicAvailable: boolean;
+    callable: boolean;
+    noPublicDistribution: boolean;
     releaseCandidateId: string;
     interfaceHash: string;
   };
@@ -57,13 +94,56 @@ interface Discovery {
       ready: true;
     };
     firstRevenueRelease: {
-      ready: false;
+      ready: boolean;
     };
     pillars: DiscoveryPillar[];
   };
+  observedTruth: ObservedTruth;
 }
 
 export const discovery = discoverySource as unknown as Discovery;
+export const observedTruth = discovery.observedTruth;
+
+const observedById = new Map(observedTruth.products.map((product) => [product.id, product]));
+
+export function observedProduct(id: ObservedProduct['id']): ObservedProduct {
+  const product = observedById.get(id);
+  if (product === undefined) throw new Error(`observed_product_missing: ${id}`);
+  return product;
+}
+
+/** Human-readable lifecycle state, never a hand-written status claim. */
+export const lifecycleLabels: Record<LifecycleState, string> = {
+  live: 'live',
+  supply_paused: 'supply paused',
+  unavailable: 'unavailable',
+};
+
+export const proofLabels: Record<ProofLevel, string> = {
+  none: 'nothing demonstrated',
+  quote_observed_unpaid: 'quote observed, unpaid',
+  paid_outcome_verified: 'paid outcome verified',
+  externally_repeated: 'externally repeated',
+};
+
+/** True when the deployed system serves at least one publicly reachable family. */
+export const publicApiCallable = observedTruth.products.some(({ publiclyReachable }) => publiclyReachable);
+
+const familyByPrefix: Record<string, ObservedProduct['id']> = {
+  search: 'search',
+  ai: 'ai',
+  sandbox: 'sandbox',
+  rpc: 'rpc',
+  prediction: 'prediction',
+  crypto: 'crypto_intelligence',
+};
+
+/** Map an operation identifier such as `search.web` to its observed family. */
+export function familyOf(operationId: string): ObservedProduct['id'] {
+  const family = familyByPrefix[operationId.split('.')[0] ?? ''];
+  if (family === undefined) throw new Error(`observed_family_missing: ${operationId}`);
+  return family;
+}
 
 export type LaunchProductId = 'search' | 'ai' | 'sandbox' | 'rpc' | 'prediction' | 'crypto_intelligence';
 
@@ -99,10 +179,11 @@ interface LaunchState {
       items: Array<{ registry: 'npm' | 'pypi'; name: string; version: string; url: string }>;
     };
     publicApi: {
-      state: 'private_production_candidate';
-      publicCallable: false;
-      publicTraffic: false;
-      customerEndpointAvailable: false;
+      state: string;
+      endpoint?: string;
+      publicCallable: boolean;
+      publicTraffic: boolean;
+      customerEndpointAvailable: boolean;
     };
   };
   paymentProof: {
@@ -119,9 +200,9 @@ interface LaunchState {
     secondAuthorization: false;
     secondExecution: false;
     secondCharge: false;
-    publicCustomerPaymentAvailable: false;
-    revenueEvidence: false;
-    demandEvidence: false;
+    publicCustomerPaymentAvailable: boolean;
+    revenueEvidence: boolean;
+    demandEvidence: boolean;
     transactionUrl: string;
     evidence: string[];
   };
@@ -148,11 +229,11 @@ export interface OnboardingRecovery {
 interface Onboarding {
   releaseCandidateId: string;
   interfaceHash: string;
-  publicCallable: false;
-  paymentImplemented: false;
+  publicCallable: boolean;
+  paymentImplemented: boolean;
   journey: Array<{
     step: 'install' | 'ask' | 'fund' | 'approve' | 'result' | 'receipt';
-    state: 'published_verified' | 'fixture_verified' | 'fixture_only' | 'unavailable';
+    state: string;
     action: string;
   }>;
   recovery: OnboardingRecovery[];

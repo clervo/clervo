@@ -17,7 +17,9 @@ import { Research } from './pages/Research';
 import { Status } from './pages/Status';
 import { Trust, type TrustTopic } from './pages/Trust';
 import { TrustOverview } from './pages/TrustOverview';
-import type { ExperiencePhase } from './product';
+import { observedTruth, publicApiCallable, type ExperiencePhase } from './product';
+
+const liveFamilyCount = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
 import { Link, useRouter } from './router';
 
 function NotFound() {
@@ -179,7 +181,11 @@ export function App() {
           <a href="/openapi.json">OpenAPI</a>
           <a href="/.well-known/clervo.json">Discovery</a>
         </nav>
-        <small>Public packages verified. Private payment plumbing proven once. Public API and customer payment remain unavailable.</small>
+        <small>
+          {publicApiCallable
+            ? `Public packages verified. ${liveFamilyCount} of ${observedTruth.products.length} product families observed serving; no customer revenue or demand is claimed.`
+            : 'Public packages verified. Private payment plumbing proven once. Public API and customer payment remain unavailable.'}
+        </small>
       </footer>
     </div>
   );

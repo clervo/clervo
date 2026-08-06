@@ -1,13 +1,21 @@
 import { useEffect } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
-import { launchState, type ExperiencePhase } from '../product';
+import { launchState, observedTruth, publicApiCallable, type ExperiencePhase } from '../product';
+
+// The public API row is read from observed truth, not written by hand. It said
+// "Not publicly callable" while the deployed API was returning real payment
+// challenges.
+const liveCount = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
+const publicApiRow = publicApiCallable
+  ? `Publicly callable; ${liveCount} of ${observedTruth.products.length} families serving`
+  : 'Not publicly callable';
 
 const comparison = [
   ['Product frame', 'Outcome infrastructure with result evidence and receipt', 'Routing and payment product surfaces'],
   ['Public SDKs', 'TypeScript, Python, MCP, and raw HTTP contract', 'Documented public integrations'],
   ['Payment proof', 'One owner-funded private settlement; no public customer payment', 'Not asserted here without current proof'],
-  ['Public API', 'Not publicly callable', 'See the linked current official documentation'],
+  ['Public API', publicApiRow, 'See the linked current official documentation'],
   ['Commercial proof', 'No revenue or demand claim', 'Not asserted here without current proof'],
 ] as const;
 

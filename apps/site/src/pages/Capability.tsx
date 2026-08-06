@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
-import { launchState, type ExperiencePhase, type LaunchProductId } from '../product';
+import { launchState, lifecycleLabels, observedProduct, proofLabels, type ExperiencePhase, type LaunchProductId } from '../product';
 import { Link } from '../router';
 
 const routeToProduct: Record<string, LaunchProductId> = {
@@ -18,11 +18,14 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
   const product = launchState.products.find(({ id }) => id === productId);
   useEffect(() => onPhase(productId === 'search' ? 'qualified' : 'risk'), [onPhase, productId]);
   if (product === undefined) return null;
-  const publicPreview = product.customerLifecycle === 'preview_not_publicly_callable';
+  // The lifecycle shown here is the probed one, not the frozen prose in
+  // launch-state. Those two disagreed for as long as the API quoted prices
+  // while this page said "preview_not_publicly_callable".
+  const observed = observedProduct(productId);
   return (
     <section className="capability-page">
       <header className="page-intro">
-        <ModeBadge>{`${product.engineeringState.replaceAll('_', ' ')} · ${product.customerLifecycle.replaceAll('_', ' ')}`}</ModeBadge>
+        <ModeBadge>{`${product.engineeringState.replaceAll('_', ' ')} · ${lifecycleLabels[observed.lifecycleState]}`}</ModeBadge>
         <p className="eyebrow">Product core / {routeId}</p>
         <h1>{product.label}.<br />State before promise.</h1>
         <p>{product.allowedClaims[0]}</p>
@@ -30,8 +33,22 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
 
       <section className="capability-state-grid">
         <article><span>ENGINEERING</span><h2>{product.engineeringState.replaceAll('_', ' ')}</h2><p>Private contract and qualification state.</p></article>
-        <article><span>CUSTOMER LIFECYCLE</span><h2>{product.customerLifecycle.replaceAll('_', ' ')}</h2><p>{publicPreview ? 'Inspectable preview; no public customer endpoint.' : 'No customer workflow is offered.'}</p></article>
-        <article><span>COMMERCIAL PROOF</span><h2>{product.commercialProof.replaceAll('_', ' ')}</h2><p>No broader revenue or demand claim follows.</p></article>
+        <article>
+          <span>OBSERVED LIFECYCLE</span>
+          <h2>{lifecycleLabels[observed.lifecycleState]}</h2>
+          <p>
+            {observed.publiclyReachable
+              ? 'A public route answers this family right now.'
+              : observed.reason === null
+                ? 'No public route is served.'
+                : `No public route is served: ${observed.reason.replaceAll('_', ' ')}.`}
+          </p>
+        </article>
+        <article>
+          <span>OBSERVED PROOF</span>
+          <h2>{proofLabels[observed.proofLevel]}</h2>
+          <p>Proof level is separate from lifecycle; a served quote is not a paid outcome.</p>
+        </article>
       </section>
 
       <section className="capability-contract">
@@ -47,12 +64,12 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
       <section className="source-boundary">
         <div><span>SUPPLIER RIGHTS</span><strong>{product.supplierRights.replaceAll('_', ' ')}</strong></div>
         <div><span>PAYMENT</span><strong>{product.paymentState.replaceAll('_', ' ')}</strong></div>
-        <div><span>PUBLIC ACTION</span><strong>{publicPreview ? 'inspect only' : 'none'}</strong></div>
+        <div><span>PUBLIC ACTION</span><strong>{observed.publiclyReachable ? 'call the deployed route' : 'inspect only'}</strong></div>
       </section>
 
       <div className="next-action">
-        <p>{publicPreview ? 'Inspect the recorded Research path without implying public access.' : 'Read the platform contract; no fake start flow is exposed.'}</p>
-        <Link className="button button--primary" to={publicPreview ? '/research' : '/platform'}>{publicPreview ? 'Inspect Research' : 'Back to platform'}</Link>
+        <p>{observed.publiclyReachable ? 'Call the deployed route directly, or inspect the recorded Research path first.' : 'Read the platform contract; no fake start flow is exposed.'}</p>
+        <Link className="button button--primary" to={observed.publiclyReachable ? '/docs/quickstart' : '/platform'}>{observed.publiclyReachable ? 'Install a client' : 'Back to platform'}</Link>
       </div>
     </section>
   );

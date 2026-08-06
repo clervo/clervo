@@ -2,10 +2,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
 import type { ActivationState } from '../experience';
-import type { ExperiencePhase } from '../product';
+import { lifecycleLabels, observedTruth, proofLabels, type ExperiencePhase } from '../product';
 import { Link, useRouter } from '../router';
 
 type ProductId = 'search.web' | 'search.answer';
+
+const liveFamilies = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live');
 type LabState =
   | 'request'
   | 'route'
@@ -142,11 +144,13 @@ export function ProofLab({
 
   const result = useMemo(() => ({
     title: 'Distribution contract inspection',
-    summary: 'The frozen public projection exposes two Search operation identities while public calling and customer payment remain unavailable.',
+    summary: `This lab runs a deterministic fixture: no request leaves the browser and nothing is charged. The deployed system separately reports ${liveFamilies.length} of ${observedTruth.products.length} product families as ${lifecycleLabels.live}.`,
     observations: [
       'All six product cores are privately qualified and compatibility-frozen.',
-      'Search is preview; five public product lifecycles remain unavailable.',
-      'The challenge amount is a non-payable mock fixture, not a customer charge.',
+      ...observedTruth.products.map((product) => (
+        `${product.label}: ${lifecycleLabels[product.lifecycleState]}, proof ${proofLabels[product.proofLevel]}.`
+      )),
+      'The challenge amount below is a fixture, not a customer charge; the deployed route quotes its own price.',
       'A separate owner-funded private proof settled once; this fixture does not replay that transaction.',
     ],
   }), []);

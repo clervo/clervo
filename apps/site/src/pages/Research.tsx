@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
-import { launchState, type ExperiencePhase } from '../product';
+import { launchState, publicApiCallable, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 const journey = [
@@ -24,9 +24,10 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
         <h1>Ask now.<br />Know what came back.</h1>
         <p>
           The Research outcome is designed to return current evidence or a
-          cited answer inside one explicit cost boundary. The public customer
-          route is not open yet; the private production path has completed one
-          bounded, reconciled payment proof.
+          cited answer inside one explicit cost boundary.
+          {publicApiCallable
+            ? ' The public customer route is open; what has been proven end to end is one bounded, reconciled owner-funded payment, not customer revenue.'
+            : ' The public customer route is not open yet; the private production path has completed one bounded, reconciled payment proof.'}
         </p>
       </header>
 
@@ -36,7 +37,7 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
             <span>{String(index + 1).padStart(2, '0')}</span>
             <h2>{name}</h2>
             <p>{detail}</p>
-            <small>{name === 'Fund' ? 'public path unavailable' : 'contract prepared'}</small>
+            <small>{name === 'Fund' && !publicApiCallable ? 'public path unavailable' : 'contract prepared'}</small>
           </article>
         ))}
       </div>

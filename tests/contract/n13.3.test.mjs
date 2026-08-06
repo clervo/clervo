@@ -65,7 +65,10 @@ test('site ships canonical media, static routes, and hardened hosting controls',
     ['apps/site/dist/proof-lab/index.html', 'Inspect the mechanism.'],
     ['apps/site/dist/docs/typescript/index.html', 'TypeScript'],
     ['apps/site/dist/security/index.html', 'Failure closes the boundary'],
-    ['apps/site/dist/status/index.html', 'Built privately.'],
+    // The status headline is deliberately a constant that describes the method,
+    // not the status. Pinning a rendered status value here would make the test
+    // a second, competing source of truth.
+    ['apps/site/dist/status/index.html', 'Probed, not asserted.'],
   ];
   for (const [file, expected] of staticRoutes) {
     const html = await read(file);

@@ -33,7 +33,7 @@ const expectations = [
   ['benchmarks/index.html', 'No superiority claim'],
   ['security/index.html', 'Failure closes the boundary'],
   ['legal/index.html', 'Availability follows rights'],
-  ['status/index.html', 'Built privately.'],
+  ['status/index.html', 'Probed, not asserted.'],
   ['changelog/index.html', 'What changed.'],
   ['compare/blockrun/index.html', 'Compare mechanisms.'],
   ['trust/index.html', 'Inspect the mechanism.'],

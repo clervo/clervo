@@ -1200,9 +1200,17 @@ dd {
   text-transform: uppercase;
 }
 
-.state--preview {
+.state--preview,
+.state--live {
   border-color: color-mix(in srgb, var(--qualified) 45%, var(--line));
   color: var(--qualified);
+}
+
+/* Paused supply is still supply we own; it must not render like an absent
+   product. */
+.state--supply_paused {
+  border-color: color-mix(in srgb, var(--risk) 45%, var(--line));
+  color: var(--risk);
 }
 
 .operation-list {
@@ -1908,8 +1916,15 @@ fieldset label small {
   background: var(--line-strong);
 }
 
-.status-dot--preview {
+.status-dot--preview,
+.status-dot--live {
   background: var(--qualified);
+}
+
+/* supply_paused keeps its own colour: paused supply is still supply we own and
+   must not read as absent. */
+.status-dot--supply_paused {
+  background: var(--risk);
 }
 
 .product-operations {

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
-import { discovery, pillarLabels, type ExperiencePhase } from '../product';
+import { discovery, familyOf, lifecycleLabels, observedProduct, pillarLabels, proofLabels, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
@@ -13,9 +13,10 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
         <p className="eyebrow">Product / capability truth</p>
         <h1>One platform.<br />No borrowed readiness.</h1>
         <p>
-          Six product cores share one frozen compatibility surface. Only the
-          two Search operations below are projected into the distribution
-          candidate, and neither is publicly callable yet.
+          Six product cores share one frozen compatibility surface. The
+          operations below are the ones the deployed system currently publishes;
+          each carries its own observed lifecycle state and proof level, and a
+          published operation is never presented as a proven one.
         </p>
       </header>
 
@@ -25,19 +26,30 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
           <h2>Preview means inspectable.<br />It does not mean launched.</h2>
         </header>
         <div className="operation-list">
-          {discovery.products.map((product) => (
-            <article key={product.productId}>
-              <span>{product.operationId}</span>
-              <h3>{product.title}</h3>
-              <p>{product.summary}</p>
-              <dl>
-                <div><dt>Lifecycle</dt><dd>{product.lifecycle}</dd></div>
-                <div><dt>Delivery</dt><dd>{product.deliveryModes.join(', ')}</dd></div>
-                <div><dt>Public callable</dt><dd>false</dd></div>
-                <div><dt>Payment</dt><dd>non-payable fixture only</dd></div>
-              </dl>
-            </article>
-          ))}
+          {discovery.products.map((product) => {
+            const observed = observedProduct(familyOf(product.productId));
+            return (
+              <article key={product.productId}>
+                <span>{product.operationId}</span>
+                <h3>{product.title}</h3>
+                <p>{product.summary}</p>
+                <dl>
+                  <div><dt>Lifecycle</dt><dd>{lifecycleLabels[observed.lifecycleState]}</dd></div>
+                  <div><dt>Proof</dt><dd>{proofLabels[observed.proofLevel]}</dd></div>
+                  <div><dt>Delivery</dt><dd>{product.deliveryModes.join(', ')}</dd></div>
+                  <div><dt>Public callable</dt><dd>{String(observed.publiclyReachable)}</dd></div>
+                  <div>
+                    <dt>Payment</dt>
+                    <dd>
+                      {observed.observedPrice === null
+                        ? 'no observed price'
+                        : `${observed.observedPrice.amountAtomic} atomic ${observed.observedPrice.network}`}
+                    </dd>
+                  </div>
+                </dl>
+              </article>
+            );
+          })}
         </div>
       </section>
 
@@ -51,22 +63,27 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
             requirements are proven.
           </p>
         </header>
-        {discovery.releaseScope.pillars.map((pillar, index) => (
-          <details key={pillar.pillarId} open={pillar.pillarId === 'search'}>
-            <summary>
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <b>{pillarLabels[pillar.pillarId]}</b>
-              <i className={`state state--${pillar.lifecycle}`}>{pillar.lifecycle}</i>
-            </summary>
-            <div>
-              <p>Private core qualified: yes</p>
-              <ul>
-                {pillar.capabilityIds.map((capability) => <li key={capability}><code>{capability}</code></li>)}
-              </ul>
-              <Link className="text-link" to={`/products/${pillar.pillarId === 'crypto_intelligence' ? 'crypto' : pillar.pillarId}`}>Open exact product state →</Link>
-            </div>
-          </details>
-        ))}
+        {discovery.releaseScope.pillars.map((pillar, index) => {
+          const observed = observedProduct(pillar.pillarId);
+          return (
+            <details key={pillar.pillarId} open={observed.lifecycleState === 'live'}>
+              <summary>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <b>{pillarLabels[pillar.pillarId]}</b>
+                <i className={`state state--${observed.lifecycleState}`}>{lifecycleLabels[observed.lifecycleState]}</i>
+              </summary>
+              <div>
+                <p>Private core qualified: yes</p>
+                <p>Observed proof: {proofLabels[observed.proofLevel]}</p>
+                {observed.reason === null ? null : <p>Reason: {observed.reason.replaceAll('_', ' ')}</p>}
+                <ul>
+                  {pillar.capabilityIds.map((capability) => <li key={capability}><code>{capability}</code></li>)}
+                </ul>
+                <Link className="text-link" to={`/products/${pillar.pillarId === 'crypto_intelligence' ? 'crypto' : pillar.pillarId}`}>Open exact product state →</Link>
+              </div>
+            </details>
+          );
+        })}
       </section>
 
       <div className="next-action">

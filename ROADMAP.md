@@ -18,17 +18,18 @@ Update only when execution state actually changes. This is not a journal.
 | Field | Value |
 |---|---|
 | Current milestone | **B1 — Truth spine** |
-| Milestone status | `not_started` |
+| Milestone status | `blocked_on_owner` — repository work complete and green; the two external URLs in B1 field 12 still serve the pre-B1 build, so the stopping condition is not met until the production deploy runs. |
 | Current branch | `main` |
-| Latest commit | `bc09ef8` — `docs(roadmap): record steps 1 and 2 part 1, add supply-paused constraint` |
+| Latest commit | `ba76817` — `test(truth): bind public surfaces to the probed registry, unpin frozen status` |
 | Current production release | `e23264a52c0c2a0254d19ff8062437b05ce1bad8` (Cloud Run origin behind the Cloudflare worker) |
 | Latest externally verified customer outcome | `/v1/search/free` returns real cited results to an unauthenticated caller that supplies an `idempotency-key`. Proof level `externally_repeated`. Nothing else has reached `paid_outcome_verified`. |
-| Current blockers | `scripts/site/prepare-public.mjs` throws `site_public_projection_unsafe`, so the deployed site still denies that the API takes payment. |
+| Current blockers | Deployed site and worker still serve the pre-B1 build: `https://clervo.dev/llms.txt` returns `Public API callable: no` and `https://api.clervo.dev/catalog.json` has no `observedTruth` block. Both are correct in `generated/public` and in `apps/site/dist`. |
 | External dependencies | Bazaar settlements (owner funds); Prediction terms decision; Crypto resale scope; RPC supply; gateway funding. |
-| Owner approvals waiting | None. B1 needs no money, no deploy, no secret. |
+| Owner approvals waiting | Production deploy of the site and worker, to satisfy B1 field 12. No money, no secret, no DNS. |
 | Dates that move on their own | **2026-08-09** — `ai.clervo.dev` funding resumes, and all 21 AI route qualifications expire, same day. **30 days after any Bazaar listing** — a resource with no settlement in that window is dropped from the CDP catalog. |
-| Exact next task | Commit `scripts/probe-live-registry.mjs` and `packages/catalog/live-registry.json`, then make `scripts/generate-discovery.mjs` read the registry, then add a registry-to-public-output consistency test, then remove the frozen-status throw in `scripts/site/prepare-public.mjs`. |
-| Files and services for that task | `scripts/probe-live-registry.mjs`, `packages/catalog/live-registry.json`, `scripts/generate-discovery.mjs`, `scripts/site/prepare-public.mjs`, `generated/public/*`, `apps/site/public/*`, `scripts/run-acceptance.mjs` |
+| B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
+| Exact next task | Deploy the site and worker so the two public URLs serve registry-derived truth. Then open B2; its first task is generating `idempotency-key` server-side in the free search handler. |
+| Files and services for that task | Cloudflare worker and site deploy for `clervo.dev` and `api.clervo.dev`; `generated/public/*`; `apps/site/dist/*` |
 
 ---
 
@@ -222,8 +223,8 @@ where it and this section disagree, the registry wins.
 ### AI routes — 18 `live`, 3 `supply_paused`
 
 Only `gpt-5.6-luna`, `gpt-5.6-terra`, and `gpt-5.6-sol` are paused, reason
-`upstream_completion_failed`, expected return **2026-08-09**. They stay in the
-catalog.
+`upstream_authentication_unavailable` (provider error code `auth_unavailable`),
+expected return **2026-08-09**. They stay in the catalog.
 
 **Recorded so it is not repeated:** an earlier probe reported 11 live and 10
 paused. That was a defect in the prober, not in the runtime. It sent a
@@ -374,7 +375,9 @@ Every milestone below carries the same seventeen fields.
 ### B1 — Truth spine
 
 1. **Milestone:** B1 — Truth spine
-2. **Status:** `not_started`
+2. **Status:** `blocked_on_owner` — every repository item in field 8 is done and
+   the acceptance suite is green; field 12 is unmet only because the deployed
+   site and worker still serve the pre-B1 build.
 3. **Customer-visible outcome:** Every public Clervo surface states what the
    runtime actually does. The site stops denying that the API takes payment.
 4. **Why it matters commercially:** The site currently tells arriving buyers the
@@ -385,10 +388,15 @@ Every milestone below carries the same seventeen fields.
 5. **Preserve:** `scripts/generate-discovery.mjs` and its invariant checks;
    `packages/catalog/launch-state.v1.json`; the reviewed prober and registry;
    the existing `generated/public/*` output shapes.
-6. **Current evidence:** Registry generated and reviewed, untracked.
-   `generated/public/llms.txt` truthful; `apps/site/public/llms.txt` stale and
-   matching what is deployed. `prepare-public.mjs` throws
-   `site_public_projection_unsafe`.
+6. **Current evidence:** Prober and registry committed. `generate-discovery.mjs`
+   reads `live-registry.json`, and every generated surface plus the site source
+   renders lifecycle state and proof level as separate fields. The frozen-status
+   throw in `prepare-public.mjs` is replaced by a projection-equality invariant,
+   and `tests/contract/registry-public-consistency.test.mjs` fails the build on
+   any disagreement. `generated/public/llms.txt` and `apps/site/public/llms.txt`
+   are identical and truthful. The deployed `https://clervo.dev/llms.txt` still
+   returns `Public API callable: no` and `https://api.clervo.dev/catalog.json`
+   still has no `observedTruth` block, because neither has been redeployed.
 7. **Research:** None. No market question changes this build.
 8. **Work:** Commit the prober and registry. Make `generate-discovery.mjs` read
    `live-registry.json` for lifecycle state and proof level, keeping
@@ -412,8 +420,10 @@ Every milestone below carries the same seventeen fields.
     neither claims the API is uncallable.
 13. **Visibility shipped:** `llms.txt`, `catalog.json`, `pricing.json`,
     `status.json`, `capabilities.json`, site copy — all regenerated.
-14. **Metrics:** Baseline snapshot — live products, live routes, routes below
-    the Bazaar minimum, conformance defects open.
+14. **Metrics:** Baseline snapshot recorded in the continuity block, observed
+    2026-08-06T11:40:50.003Z: live products 3 of 6; live AI routes 18 of 21;
+    supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic
+    minimum 18; conformance defects open 2.
 15. **Owner approval:** Production deploy of the site and worker. No money, no
     secret, no DNS.
 16. **Stopping condition:** The consistency test is green, and the two public

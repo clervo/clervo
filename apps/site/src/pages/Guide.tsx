@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
-import { discovery, onboarding, launchState, type ExperiencePhase } from '../product';
+import { discovery, lifecycleLabels, onboarding, launchState, observedTruth, proofLabels, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 export type GuideTopic = 'receipts' | 'replay' | 'failures' | 'x402' | 'catalog';
@@ -28,14 +28,14 @@ const guideCopy: Record<GuideTopic, { eyebrow: string; title: string; intro: str
   x402: {
     eyebrow: 'Docs / x402 boundary',
     title: 'Inspect before authorization.',
-    intro: 'The private payment path has one reconciled owner-funded proof. The public candidate is non-payable and no browser or client may represent a real authorization flow today.',
+    intro: 'The private payment path has one reconciled owner-funded proof. Deployed routes issue typed x402 challenges carrying an exact maximum; no browser or client here signs an authorization on your behalf.',
     items: [['Challenge', 'Bind network, asset, recipient, operation, amount, expiry, and typed-data domain.'], ['Approve', 'Show the exact maximum and allow cancellation before signing.'], ['Settle', 'Verify the authorization and record one durable result.'], ['Reconcile', 'Quarantine unknown state; never guess or automatically sign again.']],
   },
   catalog: {
     eyebrow: 'Docs / machine catalog',
     title: 'One registry drives every surface.',
     intro: 'Capabilities, claims, lifecycle, prices, packages, and discovery are generated from repository truth. Private qualification and customer availability remain different fields.',
-    items: launchState.products.map(({ label, engineeringState, customerLifecycle }) => [label, `${engineeringState.replaceAll('_', ' ')} / ${customerLifecycle.replaceAll('_', ' ')}`]),
+    items: observedTruth.products.map(({ label, lifecycleState, proofLevel }) => [label, `${lifecycleLabels[lifecycleState]} / ${proofLabels[proofLevel]}`]),
   },
 };
 
