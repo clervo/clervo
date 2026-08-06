@@ -2,6 +2,40 @@
 
 **Status:** active and sole authority. Written 2026-08-06.
 
+## Where execution currently stands
+
+Last updated 2026-08-06. Update this block whenever a step's status changes.
+
+| Step | State |
+|---|---|
+| 1 — Stop total-loss risk | **DONE** |
+| 2 — Establish single truth | **Part 1 done** (authority, frozen-status gates). **Part 2 open** (live registry) |
+| 3–10 | Not started |
+
+**Next action:** Step 2 Part 2 — build `packages/catalog/live-registry.json`
+by probing the deployed system, then render every public surface from it.
+
+**Dates that move on their own:**
+
+- **2026-08-09** — all 21 AI route qualifications expire.
+- **2026-08-09** — `ai.clervo.dev` funding resumes; luna, terra, and sol are
+  rate-limited and out of balance until then. Requalify those three *after*
+  funds land, never before. Read the Step 5 constraint before touching the
+  AI catalog.
+- **30 days from any Bazaar listing** — a resource with no settlement in that
+  window is dropped from the CDP catalog.
+
+**Do not repeat these mistakes, both found the hard way:**
+
+- Never pin a status value in a test. Four tests asserted pre-launch status as
+  an ongoing gate, which made telling the truth break the build, which is why
+  the repository stayed frozen and lying for weeks. Assert invariants; compare
+  against the registry.
+- Never drop a route because a probe failed. Failure means `supply_paused`,
+  not removal. Three models we own outright are unfunded right now.
+
+---
+
 This file replaces every other planning, gate, authority, ticket, and status
 document in this repository. Where this file and any other document disagree,
 this file wins. Where this file and observed live behaviour disagree, **live
@@ -248,55 +282,85 @@ Do not start a step before the previous step's public proof exists.
 
 ---
 
-### STEP 1 — Stop the total-loss risk
+### STEP 1 — Stop the total-loss risk — **DONE 2026-08-06**
 
-**Research:** none.
+37 commits pushed to `origin/main`. The 74M pre-recovery bundle was not moved
+and does not need to be: both of its refs (`b21ee74`, `47dd8ac`) are now
+ancestors of `origin/main`, so every commit inside it is replicated on GitHub.
+It is a stale local cache, not a sole copy. Left in place rather than deleted.
 
-**Build:**
-- Push 37 commits to `origin/main`.
-- Move `/workspace/handoffs/clervo-next-pre-recovery-20260805.bundle` off this
-  disk.
-
-**Prove:** `git log origin/main` shows `b21ee74`. Backup exists elsewhere.
-
-**Why first:** every launch commit and its backup are on one drive. One
-hardware failure ends the company. Cost: one command.
+**Proven:** `git ls-remote --heads origin main` matches local HEAD; `git log
+origin/main..HEAD` is empty; `git merge-base --is-ancestor` confirms both
+bundle refs are contained.
 
 ---
 
-### STEP 2 — Establish single truth
+### STEP 2 — Establish single truth — **PART 1 DONE 2026-08-06, PART 2 OPEN**
 
-**Research:** list every file asserting product status.
-Known: `AI_BUILDER.md`, `platform-registry.v1.json`,
-`release-candidate-freeze.v1.json`, `CURRENT-ENGINEERING-STATE.md`,
-`generated/public/*`, `full-platform-readiness.v1.json`.
+#### Part 1 — authority and the frozen-status gates — DONE
 
-**Build:**
+`CLAUDE.md` created at the repository root as the single load path, naming
+`ROADMAP.md` as sole authority. There had never been a project `CLAUDE.md`;
+`AGENTS.md` is Codex's file, so Claude Code sessions were loading nothing
+project-specific at all. That is a large part of why guidance kept drifting.
+
+`AGENTS.md` reduced from 109 lines to a pointer. It had named three competing
+authorities, one of them a plan stored outside version control in two diverging
+copies. Also updated: `.cline/rules/00-clervo-authority.md`,
+`.codex-autonomy-policy.md`, `clervo-authority-lock/SKILL.md`,
+`clervo-autonomous-build/SKILL.md`.
+
+`docs/product/` (6 files) moved to `docs/archive/product-plans/`. Nothing
+deleted; no live code read them. `docs/archive/README.md` added, stating that
+everything under the archive is research and history with no authority.
+
+**The important discovery: the published files were already truthful.**
+`launch-state.v1.json` was correct, the generator was correct, and regenerating
+`generated/public/` produced a zero diff. The lie lived in the **tests**, which
+asserted pre-launch status as an ongoing gate. `npm test` failed at `b21ee74`,
+before any of this work — verified by checking out that commit and running it.
+
+Four instances of the same disease, all fixed:
+
+| Where | What it demanded |
+|---|---|
+| `tests/contract/n1.3` | `llms.txt` byte-exact, plus the literals `Public API callable: no`, `x402 public payment: unavailable`, `not publicly callable` |
+| `scripts/verify-stage4-exit` | payment and deployment flags still `false` |
+| `scripts/verify-product-scope` | five pillars `unavailable`, `productionWebsite: false` |
+| `tests/contract/n4.18` | exact health payload; broke when other products added fields |
+
+Each replaced with invariants that hold at any stage, compared against
+`launch-state.v1.json` rather than a snapshot. The frozen core binding and
+interface hash are still asserted exactly, because those genuinely are frozen.
+`verify-product-scope.mjs` was deleted outright: its input
+`apps/site/capability-scope.json` was removed in `eae134c`, so it had been
+erroring on every invocation, unnoticed, and nothing in `npm test` called it.
+
+`npm test` now passes end to end — the first green run.
+
+**Lesson to carry forward:** a test that pins current status will, the moment
+status improves, make honesty the thing that breaks the build. Assert
+invariants and cross-check against the registry. Never pin a status value in a
+test.
+
+#### Part 2 — the live registry — OPEN
+
 - `packages/catalog/live-registry.json`, generated by probing the deployed
   system — never hand-edited. Records per product: lifecycle, routes, prices,
   supplier terms status, health, public reachability.
+- Three states only: `live`, `supply_paused`, `unavailable`. A failed probe
+  yields `supply_paused`, never removal. See the Step 5 constraint — three
+  gateway routes are unfunded until 2026-08-09 and must survive probing.
 - Every public surface renders from it: site copy, `catalog.json`,
-  `pricing.json`, `status.json`, `llms.txt`, `.well-known/*`, OpenAPI, SDK,
-  MCP.
+  `pricing.json`, `status.json`, `llms.txt`, `.well-known/*`, OpenAPI, SDK, MCP.
 - CI fails when any public file disagrees with the registry.
-- Move all 165 markdown files to `docs/archive/`. **Nothing is deleted.** They
-  are kept as a research and history library — supplier findings, terms
-  research, competitor notes, past design reasoning. That knowledge was paid
-  for and stays readable.
-  What archiving removes is **authority**, not information. An archived file
-  may not assert current product status, readiness, gates, rules, or
-  authorization. Anything in an archived file that contradicts the live
-  registry is history, not instruction.
-  Add `docs/archive/README.md` stating exactly that, so a future agent reading
-  one of those files cannot mistake it for a live directive.
-  Keep active at root: `README.md`, `AGENTS.md` (short operating rules only),
-  `ROADMAP.md` (this file), `docs/OPERATIONS.md`.
-- Delete the external master-plan reference from `AGENTS.md`. Copy anything
-  still valuable into this file first.
+- Sweep the remaining 159 archived markdown files for status claims that
+  contradict the registry.
 
-**Prove:** regenerate all public artifacts; every claim traces to observed
-state. No file says "unavailable" for a product that takes money. Every
-archived file is still readable and still in git history.
+**Prove:** every public claim traces to observed state. No file says
+"unavailable" for a product that takes money. Every archived file is still
+readable and still in git history.
+
 
 ---
 
@@ -353,6 +417,42 @@ change away.
 ---
 
 ### STEP 5 — Unshelve the AI catalog
+
+**Hard scheduling constraint — read before planning this step.**
+
+Two unrelated things land on the same date, **2026-08-09**:
+
+1. `ai.clervo.dev` (the gateway behind `gpt-5.6-luna`, `gpt-5.6-terra`, and
+   `gpt-5.6-sol`) is rate-limited and out of balance. Funding resumes
+   2026-08-09.
+2. All 21 route qualifications in `ai-model-catalog.v1.json` expire 2026-08-09.
+
+Consequences, in order:
+
+- **Requalification of the three gateway routes must run after funds land, not
+  before.** Run it early and it fails for the wrong reason — an unfunded
+  account looks identical to a dead route in the evidence.
+- **The gateway routes stay in the catalog throughout.** They are qualified and
+  owned; they are temporarily unfunded. Removing them would be a lie in the
+  other direction. Mark them `supply_paused` with the reason and the expected
+  return date, and show that publicly. This is the "hides nothing" rule applied
+  to our own outage.
+- **The prober must never delete a route for failing a probe.** A failed probe
+  moves a route to `supply_paused`; only a route that is unqualified or absent
+  from the catalog becomes `unavailable`. A prober that silently drops
+  temporarily-unfunded supply would erase three of the models we own outright.
+- The other 18 routes have no funding dependency. Requalify them on schedule.
+
+Registry states, exactly three:
+
+| State | Meaning | In catalog | Sellable |
+|---|---|---|---|
+| `live` | probed, returns a real result | yes | yes |
+| `supply_paused` | qualified, temporarily unfunded or rate-limited, has an expected return date | yes, shown with reason | no |
+| `unavailable` | not qualified, or no longer exists | no | no |
+
+Automate requalification on a schedule so an expiry date never again arrives
+unnoticed.
 
 **Research:** fetch `blockrun.ai/api/v1/models` — public, unauthenticated.
 Compare model-for-model against our 21 qualified routes.
