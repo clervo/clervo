@@ -18,18 +18,19 @@ Update only when execution state actually changes. This is not a journal.
 | Field | Value |
 |---|---|
 | Current milestone | **B1 — Truth spine** |
-| Milestone status | `blocked_on_owner` — repository work complete and green; the two external URLs in B1 field 12 still serve the pre-B1 build, so the stopping condition is not met until the production deploy runs. |
+| Milestone status | `externally_verified` — deployed 2026-08-06 from `e4a281b`; all five external checks in B1 field 12 pass against the public URLs. |
 | Current branch | `main` |
-| Latest commit | `ba76817` — `test(truth): bind public surfaces to the probed registry, unpin frozen status` |
-| Current production release | `e23264a52c0c2a0254d19ff8062437b05ce1bad8` (Cloud Run origin behind the Cloudflare worker) |
-| Latest externally verified customer outcome | `/v1/search/free` returns real cited results to an unauthenticated caller that supplies an `idempotency-key`. Proof level `externally_repeated`. Nothing else has reached `paid_outcome_verified`. |
-| Current blockers | Deployed site and worker still serve the pre-B1 build: `https://clervo.dev/llms.txt` returns `Public API callable: no` and `https://api.clervo.dev/catalog.json` has no `observedTruth` block. Both are correct in `generated/public` and in `apps/site/dist`. |
+| Latest commit | `e4a281b` — `feat(site): render lifecycle state and proof level from the probed registry` |
+| Current production release | Site worker `clervo-site-production` version `2437daaa-e049-472b-9d89-41a1c81056a0`; API edge worker `clervo-api-edge-production` version `99f96564-3824-47d5-b8a5-a84783e6e5cb`; Cloud Run origin `e23264a52c0c2a0254d19ff8062437b05ce1bad8` unchanged behind them. |
+| Rollback targets | Site `aed2cb42-aedf-4479-be66-78649f7f9eb9`; API edge `4ee82dea-bc76-4f03-9184-35ab281233ef`. Roll back with `npx wrangler rollback <version> --config apps/site/wrangler.jsonc` or `apps/worker/wrangler.jsonc`. |
+| Latest externally verified customer outcome | `/v1/search/free` returns real cited results to an unauthenticated caller that supplies an `idempotency-key`, and a repeated key replays the identical `searchResponse` with `replayed: true` and no second execution. Proof level `externally_repeated`. Nothing else has reached `paid_outcome_verified`. |
+| Current blockers | None for B1. The two conformance defects the registry records are B2 scope: `/v1/search/free` still returns 400 without a caller-supplied `idempotency-key`, and `clervo.dev` still returns 200 for a nonexistent URL. |
 | External dependencies | Bazaar settlements (owner funds); Prediction terms decision; Crypto resale scope; RPC supply; gateway funding. |
-| Owner approvals waiting | Production deploy of the site and worker, to satisfy B1 field 12. No money, no secret, no DNS. |
+| Owner approvals waiting | None. |
 | Dates that move on their own | **2026-08-09** — `ai.clervo.dev` funding resumes, and all 21 AI route qualifications expire, same day. **30 days after any Bazaar listing** — a resource with no settlement in that window is dropped from the CDP catalog. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
-| Exact next task | Deploy the site and worker so the two public URLs serve registry-derived truth. Then open B2; its first task is generating `idempotency-key` server-side in the free search handler. |
-| Files and services for that task | Cloudflare worker and site deploy for `clervo.dev` and `api.clervo.dev`; `generated/public/*`; `apps/site/dist/*` |
+| Exact next task | Open B2 — Front door open. First task: generate `idempotency-key` server-side in the free search handler when the caller supplies none, without weakening replay for callers that do supply one. |
+| Files and services for that task | The free search handler and its idempotency binding; `apps/site/wrangler.jsonc` (`not_found_handling`); `skill.md` and `agent.md` serving; the public quick-start curl on the site and in `llms.txt`. |
 
 ---
 
@@ -375,9 +376,8 @@ Every milestone below carries the same seventeen fields.
 ### B1 — Truth spine
 
 1. **Milestone:** B1 — Truth spine
-2. **Status:** `blocked_on_owner` — every repository item in field 8 is done and
-   the acceptance suite is green; field 12 is unmet only because the deployed
-   site and worker still serve the pre-B1 build.
+2. **Status:** `externally_verified` — deployed 2026-08-06 from `e4a281b`; every
+   check in field 12 passes against the public URLs.
 3. **Customer-visible outcome:** Every public Clervo surface states what the
    runtime actually does. The site stops denying that the API takes payment.
 4. **Why it matters commercially:** The site currently tells arriving buyers the
@@ -394,9 +394,10 @@ Every milestone below carries the same seventeen fields.
    throw in `prepare-public.mjs` is replaced by a projection-equality invariant,
    and `tests/contract/registry-public-consistency.test.mjs` fails the build on
    any disagreement. `generated/public/llms.txt` and `apps/site/public/llms.txt`
-   are identical and truthful. The deployed `https://clervo.dev/llms.txt` still
-   returns `Public API callable: no` and `https://api.clervo.dev/catalog.json`
-   still has no `observedTruth` block, because neither has been redeployed.
+   are identical and truthful. Deployed and verified externally on 2026-08-06:
+   `https://clervo.dev/llms.txt` returns `Public API callable: yes` with the
+   observed lifecycle and proof table, and `https://api.clervo.dev/catalog.json`
+   carries the `observedTruth` block matching the registry.
 7. **Research:** None. No market question changes this build.
 8. **Work:** Commit the prober and registry. Make `generate-discovery.mjs` read
    `live-registry.json` for lifecycle state and proof level, keeping
