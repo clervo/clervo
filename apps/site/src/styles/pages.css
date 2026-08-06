@@ -1554,3 +1554,148 @@
     margin-left: 0;
   }
 }
+
+/* --- /compare/blockrun --- */
+
+.compare-body .facts {
+  max-width: 46rem;
+}
+
+.compare-note {
+  max-width: 52rem;
+  margin-top: var(--space-4);
+  line-height: 1.6;
+}
+
+/*
+ * A real table, because this is tabular data: three columns of the same kind of
+ * statement, read across a row. The previous ARIA grid gave a screen reader the
+ * row and column structure only by assertion; a table gives it by construction,
+ * and header cells scoped by row and column let a reader ask which dimension
+ * and which side any cell belongs to.
+ */
+.compare-table {
+  width: 100%;
+  margin-top: var(--space-5);
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.compare-table th,
+.compare-table td {
+  padding-block: var(--space-4);
+  padding-right: var(--space-5);
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.compare-table thead th {
+  border-bottom: 1px solid var(--line-strong);
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.compare-table th[scope='row'] {
+  width: 14rem;
+  color: var(--text);
+  font-size: var(--step-body);
+  font-weight: 560;
+}
+
+.compare-table td {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.compare-table td:last-child {
+  padding-right: 0;
+}
+
+.compare-suppressed {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.compare-sources {
+  display: grid;
+  margin-top: var(--space-5);
+  border-top: 1px solid var(--line-strong);
+}
+
+.compare-sources a {
+  display: grid;
+  gap: var(--space-1);
+  min-height: 3.5rem;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.compare-sources a:hover {
+  background: var(--surface-1);
+}
+
+.compare-sources b {
+  font-weight: 560;
+}
+
+.compare-sources span {
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  overflow-wrap: anywhere;
+}
+
+.compare-actions {
+  margin-top: var(--space-5);
+}
+
+/*
+ * Under 720px the three columns stop being readable side by side, so each row
+ * becomes a stacked card. The column headings are visually hidden rather than
+ * dropped, so the labelled side of each statement survives the reflow instead
+ * of leaving two unattributed paragraphs.
+ */
+@media (width <= 720px) {
+  .compare-table,
+  .compare-table tbody,
+  .compare-table tr,
+  .compare-table th,
+  .compare-table td {
+    display: block;
+  }
+
+  .compare-table thead {
+    display: none;
+  }
+
+  .compare-table tr {
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .compare-table th,
+  .compare-table td {
+    padding-block: 0;
+    padding-right: 0;
+    border-bottom: 0;
+  }
+
+  .compare-table td {
+    margin-top: var(--space-3);
+  }
+
+  .compare-table td::before {
+    display: block;
+    margin-bottom: var(--space-1);
+    color: var(--text-quiet);
+    content: attr(data-column);
+    font-family: var(--mono);
+    font-size: var(--step-micro);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+}

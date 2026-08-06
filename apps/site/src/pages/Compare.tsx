@@ -1,65 +1,215 @@
 import { useEffect } from 'react';
 
-import { ModeBadge } from '../components/Navigation';
 import { launchState, observedTruth, publicApiCallable, type ExperiencePhase } from '../product';
+import { Link } from '../router';
 
-// The public API row is read from observed truth, not written by hand. It said
-// "Not publicly callable" while the deployed API was returning real payment
-// challenges.
+/*
+ * /compare/blockrun — a dated, source-bounded comparison.
+ *
+ * The rule this page exists to enforce is that a comparison is only as current
+ * as its observation. Model counts, free tiers, prices, latency, availability
+ * and savings all move faster than a static page can track, so none of them
+ * render while revalidation is pending; what remains is mechanism, which
+ * changes slowly and can be checked against primary sources.
+ *
+ * The Clervo column is read from the probe rather than written by hand. It
+ * asserted "Not publicly callable" for as long as the deployed API was
+ * returning real payment challenges.
+ */
+
 const liveCount = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
-const publicApiRow = publicApiCallable
-  ? `Publicly callable; ${liveCount} of ${observedTruth.products.length} families serving`
-  : 'Not publicly callable';
 
-const comparison = [
-  ['Product frame', 'Outcome infrastructure with result evidence and receipt', 'Routing and payment product surfaces'],
-  ['Public SDKs', 'TypeScript, Python, MCP, and raw HTTP contract', 'Documented public integrations'],
-  ['Payment proof', 'One owner-funded private settlement; no public customer payment', 'Not asserted here without current proof'],
-  ['Public API', publicApiRow, 'See the linked current official documentation'],
-  ['Commercial proof', 'No revenue or demand claim', 'Not asserted here without current proof'],
-] as const;
+const publicApiRow = publicApiCallable
+  ? `Publicly callable. ${liveCount} of ${observedTruth.products.length} families observed serving.`
+  : 'No public route observed serving.';
+
+const comparison: Array<[string, string, string]> = [
+  ['Product frame', 'Outcome infrastructure with result evidence and a receipt.', 'Routing and payment product surfaces.'],
+  ['Public clients', 'TypeScript, Python, MCP and the raw HTTP contract.', 'Documented public integrations.'],
+  ['Payment proof', 'One owner-funded settlement. No customer payment.', 'Not asserted here without a current observation.'],
+  ['Public API', publicApiRow, 'See the linked official documentation.'],
+  ['Commercial proof', 'No revenue and no demand claim.', 'Not asserted here without a current observation.'],
+];
+
+const sources: Array<[string, string]> = [
+  ['BlockRun homepage', 'https://blockrun.ai/'],
+  ['BlockRun documentation', 'https://blockrun.ai/docs'],
+  ['BlockRun MCP documentation', 'https://blockrun.ai/docs/mcp/blockrun-mcp'],
+  ['ClawRouter source', 'https://github.com/BlockRunAI/ClawRouter'],
+];
+
+// What this page will not print until an observation is current. Naming the
+// suppressed dimensions is the honest version of omitting them: a reader can
+// see the comparison is partial and why.
+const suppressed = [
+  'Model counts',
+  'Free-tier limits',
+  'Prices',
+  'Latency',
+  'Availability',
+  'Savings claims',
+];
 
 export function Compare({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   useEffect(() => onPhase('verified'), [onPhase]);
+  const { observedAt, state, reason } = launchState.competitors.blockrun;
+
   return (
-    <section className="compare-page">
-      <header className="page-intro">
-        <ModeBadge>Dated comparison · volatile counts suppressed</ModeBadge>
+    <>
+      <section className="page-lead">
         <p className="eyebrow">Compare / BlockRun</p>
         <h1>Compare mechanisms.<br />Not marketing arithmetic.</h1>
-        <p>
-          This page records what Clervo can prove and links to BlockRun’s own
-          current surfaces. Model counts, free-tier counts, prices, latency,
-          availability, and savings claims do not render while revalidation is pending.
+        <p className="lede">
+          This page records what Clervo can prove and links to BlockRun&rsquo;s
+          own current surfaces. Every dimension that moves faster than a static
+          page can track is suppressed rather than guessed.
         </p>
-      </header>
-
-      <div className="comparison-meta">
-        <span>Observed {launchState.competitors.blockrun.observedAt.slice(0, 10)}</span>
-        <b>{launchState.competitors.blockrun.state.replaceAll('_', ' ')}</b>
-        <p>{launchState.competitors.blockrun.reason}</p>
-      </div>
-
-      <div className="comparison-table" role="table" aria-label="Clervo and BlockRun mechanism comparison">
-        <div role="row" className="comparison-table__head"><b role="columnheader">Dimension</b><b role="columnheader">Clervo today</b><b role="columnheader">BlockRun source boundary</b></div>
-        {comparison.map(([dimension, clervo, blockrun]) => (
-          <div role="row" key={dimension}><b role="cell">{dimension}</b><span role="cell">{clervo}</span><span role="cell">{blockrun}</span></div>
-        ))}
-      </div>
-
-      <section className="source-list">
-        <h2>Primary surfaces for review</h2>
-        <a href="https://blockrun.ai/" target="_blank" rel="noreferrer">BlockRun homepage</a>
-        <a href="https://blockrun.ai/docs" target="_blank" rel="noreferrer">BlockRun documentation</a>
-        <a href="https://blockrun.ai/docs/mcp/blockrun-mcp" target="_blank" rel="noreferrer">BlockRun MCP documentation</a>
-        <a href="https://github.com/BlockRunAI/ClawRouter" target="_blank" rel="noreferrer">ClawRouter source</a>
+        <div className="cluster page-lead__actions">
+          <Link className="button button--secondary" to="/proof">See what Clervo has proven</Link>
+          <Link className="button button--quiet" to="/benchmarks">Read the benchmark boundary</Link>
+        </div>
       </section>
 
-      <section className="comparison-policy">
-        <article><span>METHODOLOGY</span><h2>Mechanism before counts</h2><p>Compare only visible product behavior and primary-source documentation observed on the recorded date. Suppress changing model counts, free tiers, prices, latency, availability, and savings until a reproducible observation is current.</p></article>
-        <article><span>CORRECTIONS</span><h2>Update the evidence, then the copy</h2><p>Corrections must change the dated source object and regenerate this page. Report a stale or incorrect observation through the public repository; marketing copy is never patched independently.</p><a href="https://github.com/clervo/clervo/issues" target="_blank" rel="noreferrer">Open a correction issue →</a></article>
-        <article><span>COMPARISON LOG</span><h2>2026-08-04</h2><p>Initial launch comparison recorded. All volatile numerical claims remain suppressed pending revalidation.</p></article>
+      <section className="band band--ruled compare-body" aria-labelledby="compare-observation">
+        <div className="section-head">
+          <p className="eyebrow">Observation</p>
+          <h2 id="compare-observation">Dated {observedAt.slice(0, 10)}, and marked stale.</h2>
+        </div>
+        <dl className="facts">
+          <div>
+            <dt>Observed</dt>
+            <dd>{observedAt.slice(0, 10)}</dd>
+          </div>
+          <div>
+            <dt>State</dt>
+            {/* Unresolved rather than refused: the observation is not wrong, it
+              * is out of date, and the page has not reached a conclusion. */}
+            <dd className="state state--unresolved">{state.replaceAll('_', ' ')}</dd>
+          </div>
+        </dl>
+        <p className="quiet compare-note">{reason}</p>
       </section>
-    </section>
+
+      <section className="band band--ruled compare-body" aria-labelledby="compare-table">
+        <div className="section-head">
+          <p className="eyebrow">Mechanism</p>
+          <h2 id="compare-table">Five dimensions, both columns bounded.</h2>
+          <p className="lede">
+            The Clervo column is read from the probe. The BlockRun column states
+            only what its own primary sources say, and defers to the links below
+            for anything that could have changed since the observation date.
+          </p>
+        </div>
+        <table className="compare-table">
+          <caption className="sr-only">Clervo and BlockRun mechanism comparison</caption>
+          <thead>
+            <tr>
+              <th scope="col">Dimension</th>
+              <th scope="col">Clervo, observed</th>
+              <th scope="col">BlockRun, source boundary</th>
+            </tr>
+          </thead>
+          <tbody>
+            {comparison.map(([dimension, clervo, blockrun]) => (
+              <tr key={dimension}>
+                <th scope="row">{dimension}</th>
+                {/* data-column carries the column heading into the stacked
+                  * mobile layout, where the header row is not displayed. */}
+                <td data-column="Clervo, observed">{clervo}</td>
+                <td data-column="BlockRun, source boundary">{blockrun}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section className="band band--ruled compare-body" aria-labelledby="compare-suppressed">
+        <div className="section-head">
+          <p className="eyebrow">Deliberately absent</p>
+          <h2 id="compare-suppressed">What this page refuses to print.</h2>
+          <p className="lede">
+            These move faster than a static page can track. Publishing a stale
+            number as a current one is the failure mode this comparison exists to
+            avoid, so each stays absent until a reproducible observation is
+            current.
+          </p>
+        </div>
+        <ul className="claim-list claim-list--refused compare-suppressed">
+          {suppressed.map((item) => <li key={item}>{item}</li>)}
+        </ul>
+      </section>
+
+      <section className="band band--ruled compare-body" aria-labelledby="compare-sources">
+        <div className="section-head">
+          <p className="eyebrow">Primary surfaces</p>
+          <h2 id="compare-sources">Check it yourself.</h2>
+          <p className="lede">
+            Every BlockRun statement above is bounded by these. If one has moved,
+            the source is right, and this page is what needs correcting.
+          </p>
+        </div>
+        <ul className="compare-sources">
+          {sources.map(([label, url]) => (
+            <li key={url}>
+              <a href={url} rel="noreferrer" target="_blank">
+                <b>{label}</b>
+                <span className="quiet">{url}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="band compare-body" aria-labelledby="compare-method">
+        <div className="section-head">
+          <p className="eyebrow">Method</p>
+          <h2 id="compare-method">How a correction reaches this page.</h2>
+        </div>
+        <ol className="guide-steps">
+          <li>
+            <span className="data">01</span>
+            <div className="stack stack--tight">
+              <h3>Mechanism before counts</h3>
+              <p className="quiet">
+                Compare visible product behaviour and primary-source
+                documentation observed on the recorded date. Nothing volatile is
+                compared at all.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span className="data">02</span>
+            <div className="stack stack--tight">
+              <h3>Update the evidence, then the copy</h3>
+              <p className="quiet">
+                A correction changes the dated source object and regenerates this
+                page. Marketing copy is never patched on its own, because that
+                would leave the evidence and the claim disagreeing.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span className="data">03</span>
+            <div className="stack stack--tight">
+              <h3>Report what looks wrong</h3>
+              <p className="quiet">
+                A stale or incorrect observation is a defect. Report it through
+                the public repository and it is fixed at the source.
+              </p>
+            </div>
+          </li>
+        </ol>
+        <div className="cluster compare-actions">
+          <a
+            className="button button--quiet"
+            href="https://github.com/clervo/clervo/issues"
+            rel="noreferrer"
+            target="_blank"
+          >
+            Open a correction issue
+          </a>
+        </div>
+      </section>
+    </>
   );
 }
