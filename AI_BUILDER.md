@@ -20,13 +20,12 @@ product cores are:
 - Prediction; and
 - Crypto Intelligence.
 
-Search is the only current `preview`. The other five product cores are
-`unavailable`, and their implementation has not started. Build and stabilize
-the cores privately in roadmap order. After the Stage 12 core and
-cross-pillar contract freeze, Stage 13 creates one shared API, MCP, SDK,
-onboarding, design, documentation, discovery, JSON-LD, sitemap, SEO, and
-distribution layer. Preserve stable capability identifiers and interfaces
-throughout.
+Product status is not asserted in this file. It is observed from the deployed
+system and read from the live registry. See `ROADMAP.md`. Never copy a
+lifecycle label out of a document into public copy; read it from the registry
+at build time.
+
+Preserve stable capability identifiers and interfaces throughout.
 
 The company tagline is **Buy outcomes. Not integrations.** Preserve
 **Install → Ask → Fund → Approve → Result → Receipt**.
@@ -38,13 +37,13 @@ retrieval**. After it passes, **Advanced live intelligence for agents** is
 permitted. Any superiority claim names the exact workflow, comparison, corpus,
 date, environment, and metric.
 
-Search is currently `preview`; AI, Sandbox, RPC, Prediction, and Crypto
-Intelligence are `unavailable`. Stage 5 passed private Live Intelligence
-qualification above the Stage 4 Search reference pattern, including comparison,
-monitoring, recorded change alerts, and five cited solution packs. Search is
-privately core-qualified but not publicly available. External scheduling and
-alert delivery, all shared Stage 13 access and distribution surfaces, production
-deployment, payable settlement, and external demand remain unproven.
+Lifecycle labels are read from the live registry, never written here. Any
+superiority claim names the exact workflow, comparison, corpus, date,
+environment, and metric.
+
+Public copy may describe only what the deployed system currently does. A
+capability that is not externally reachable is not described as available,
+regardless of how complete its implementation is.
 
 Never invent prices, providers, commands, screenshots, customers, agents,
 testimonials, metrics, transactions, revenue, accuracy, or results. Never
