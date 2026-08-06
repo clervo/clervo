@@ -1,8 +1,12 @@
 import { useEffect } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
-import { launchState, type ExperiencePhase } from '../product';
+import { launchState, observedTruth, publicApiCallable, type ExperiencePhase } from '../product';
 import { Link } from '../router';
+
+// Read from the probe. The evidence index below counted zero live public
+// families while three of them were answering requests.
+const liveFamilies = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live');
 
 export function Proof({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   useEffect(() => onPhase('receipt'), [onPhase]);
@@ -58,7 +62,11 @@ export function Proof({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           <ul>
             <li>No customer bought this result.</li>
             <li>No revenue or market demand is claimed.</li>
-            <li>No public endpoint currently accepts traffic or payment.</li>
+            <li>
+              {publicApiCallable
+                ? 'A public route answering a request is not the same as a customer paying for one.'
+                : 'No public endpoint currently accepts traffic or payment.'}
+            </li>
             <li>No broad capability or quality comparison follows from it.</li>
           </ul>
         </article>
@@ -67,7 +75,15 @@ export function Proof({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
       <section className="proof-index">
         <header><p className="eyebrow">Evidence index / current release</p><h2>One record. Five explicit classes.</h2></header>
         <div>
-          <article><span>LIVE PUBLIC</span><strong>0</strong><p>No public endpoint or uptime series exists.</p></article>
+          <article>
+            <span>LIVE PUBLIC</span>
+            <strong>{liveFamilies.length}</strong>
+            <p>
+              {liveFamilies.length === 0
+                ? 'No public endpoint or uptime series exists.'
+                : `${liveFamilies.map(({ label }) => label).join(', ')} observed serving. No uptime series is published yet.`}
+            </p>
+          </article>
           <article><span>PRIVATE QUALIFICATION</span><strong>1</strong><p>The bounded owner-funded settlement and replay record above.</p></article>
           <article><span>RECORDED DEMO</span><strong>1</strong><p>Proof Lab’s deterministic non-payable fixture.</p></article>
           <article><span>BENCHMARK</span><strong>0 public</strong><p>No comparative superiority result is approved.</p></article>
