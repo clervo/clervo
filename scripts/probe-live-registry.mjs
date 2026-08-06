@@ -364,6 +364,17 @@ const aiRoutes = catalog.routes.map((route) => {
 // Product records
 // ---------------------------------------------------------------------------
 
+// Proof level is not lifecycle state. Lifecycle answers "does the deployed
+// system serve this"; proof answers "what have we actually demonstrated". A
+// route can be live and still have proved nothing beyond its own price.
+//
+// This script never pays, so it can establish at most `quote_observed_unpaid`.
+// `paid_outcome_verified` and `externally_repeated` require a settlement and an
+// unrelated party, neither of which a probe can manufacture. They are therefore
+// never written here.
+const PROOF_NONE = 'none';
+const PROOF_QUOTED = 'quote_observed_unpaid';
+
 function productFromProbes({ id, label, operations, probeIds, freeProbeId = null, commercialBlocker = null }) {
   if (commercialBlocker !== null) {
     return {
@@ -374,6 +385,7 @@ function productFromProbes({ id, label, operations, probeIds, freeProbeId = null
       reason: commercialBlocker,
       expectedReturnAt: null,
       publiclyReachable: false,
+      proof: PROOF_NONE,
       observedQuote: null,
       freeEntry: null,
       evidence: { probed: false, basis: 'no_public_route_is_served' },
@@ -402,6 +414,7 @@ function productFromProbes({ id, label, operations, probeIds, freeProbeId = null
     reason,
     expectedReturnAt: null,
     publiclyReachable: paid.reachable && paid.status !== 404,
+    proof: state === STATE_LIVE ? PROOF_QUOTED : PROOF_NONE,
     observedQuote: quote,
     freeEntry: free === null ? null : {
       route: free.url,
@@ -409,6 +422,10 @@ function productFromProbes({ id, label, operations, probeIds, freeProbeId = null
       withoutIdempotencyKeyStatus: naive?.status ?? null,
       acceptsNaiveRequest: naive?.status === 200,
       naiveRejectionCode: naive?.status === 200 ? null : problemCode(naive ?? {}),
+      // An observed 200 on a free path is a real free outcome from a public
+      // URL. It is recorded as an observation, never promoted into a paid
+      // proof level.
+      freeOutcomeObserved: free.status === 200,
     },
     evidence: { probed: true, edgeStatus: paid.status, edgeCode: problemCode(paid), edgeAttempts: paid.attempts ?? 1 },
   };
@@ -427,6 +444,7 @@ const aiProductRecord = {
   reason: aiLiveRoutes.length > 0 ? null : 'no_route_currently_live',
   expectedReturnAt: null,
   publiclyReachable: surfaceById['api.health'].reachable,
+  proof: aiLiveRoutes.length > 0 ? PROOF_QUOTED : PROOF_NONE,
   observedQuote: aiLiveRoutes[0]?.observedQuote ?? null,
   freeEntry: null,
   evidence: { probed: true, routeStates: aiRouteStates, liveRouteCount: aiLiveRoutes.length, totalRouteCount: aiRoutes.length },
@@ -534,6 +552,19 @@ const registry = sortedKeys({
     supply_paused: 'in the catalog, temporarily not serving; carries a reason and, where known, an expected return date',
     unavailable: 'absent from the catalog or has no public route at all',
   },
+  // Lifecycle state and proof level are different things, and conflating them
+  // is what once let a quote be mistaken for a working product. Every public
+  // surface renders both.
+  proofLevels: {
+    none: 'nothing demonstrated',
+    quote_observed_unpaid: 'publicly offered, a price was returned, and a valid payment challenge was formed; nothing else',
+    paid_outcome_verified: 'we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge',
+    externally_repeated: 'an unrelated party did it, more than once',
+  },
+  proofCeiling: {
+    level: 'quote_observed_unpaid',
+    reason: 'this prober never pays, so it cannot establish a paid or externally repeated proof level',
+  },
   deployment: {
     apiOrigin: API_ORIGIN,
     siteOrigin: SITE_ORIGIN,
@@ -549,10 +580,12 @@ const registry = sortedKeys({
     products: products.reduce((counts, product) => ({ ...counts, [product.state]: (counts[product.state] ?? 0) + 1 }), {}),
     aiRoutes: aiRouteStates,
     discoverySurfaces: discoverySurfaces.reduce((counts, surface) => ({ ...counts, [surface.state]: (counts[surface.state] ?? 0) + 1 }), {}),
+    conformanceDefectsOpen: conformance.filter((check) => !check.conformant).length,
   },
   products,
   aiRoutes,
   discoverySurfaces,
+  conformance,
   supplyFamilies: supplyProbes.map((probe) => ({
     supplyFamilyId: probe.supplyFamilyId,
     outcome: probe.outcome,

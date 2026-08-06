@@ -2,6 +2,149 @@
   "schemaVersion": "clervo.capabilities.v1",
   "observedAt": "2026-08-04T04:44:23Z",
   "publicCallable": true,
+  "observedTruth": {
+    "provenance": {
+      "source": "packages/catalog/live-registry.json",
+      "generatedBy": "scripts/probe-live-registry.mjs",
+      "observedAt": "2026-08-06T11:40:50.003Z",
+      "releaseId": "e23264a52c0c2a0254d19ff8062437b05ce1bad8",
+      "proofLevels": {
+        "externally_repeated": "an unrelated party did it, more than once",
+        "none": "nothing demonstrated",
+        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
+        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
+      },
+      "states": {
+        "live": "probed; the deployed system serves it now",
+        "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
+        "unavailable": "absent from the catalog or has no public route at all"
+      }
+    },
+    "products": [
+      {
+        "id": "ai",
+        "label": "AI",
+        "operations": [
+          "ai.chat",
+          "ai.embed",
+          "ai.image",
+          "ai.speech"
+        ],
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "reason": null,
+        "expectedReturnAt": null,
+        "publiclyReachable": true,
+        "observedPrice": {
+          "amountAtomic": "390",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en"
+        },
+        "freeEntry": null
+      },
+      {
+        "id": "crypto_intelligence",
+        "label": "Crypto Intelligence",
+        "operations": [
+          "crypto.protocol",
+          "crypto.report",
+          "crypto.token",
+          "crypto.transaction",
+          "crypto.wallet"
+        ],
+        "lifecycleState": "unavailable",
+        "proofLevel": "none",
+        "reason": "commercial_rights_blocked",
+        "expectedReturnAt": null,
+        "publiclyReachable": false,
+        "observedPrice": null,
+        "freeEntry": null
+      },
+      {
+        "id": "prediction",
+        "label": "Prediction Intelligence",
+        "operations": [
+          "prediction.compare",
+          "prediction.history",
+          "prediction.market",
+          "prediction.markets",
+          "prediction.signal"
+        ],
+        "lifecycleState": "unavailable",
+        "proofLevel": "none",
+        "reason": "commercial_rights_blocked",
+        "expectedReturnAt": null,
+        "publiclyReachable": false,
+        "observedPrice": null,
+        "freeEntry": null
+      },
+      {
+        "id": "rpc",
+        "label": "Multi-chain RPC",
+        "operations": [
+          "rpc.archive",
+          "rpc.batch",
+          "rpc.broadcast",
+          "rpc.call",
+          "rpc.health"
+        ],
+        "lifecycleState": "unavailable",
+        "proofLevel": "none",
+        "reason": "commercial_rights_blocked",
+        "expectedReturnAt": null,
+        "publiclyReachable": false,
+        "observedPrice": null,
+        "freeEntry": null
+      },
+      {
+        "id": "sandbox",
+        "label": "Secure Sandbox",
+        "operations": [
+          "sandbox.artifact.get",
+          "sandbox.run",
+          "sandbox.session.create",
+          "sandbox.session.destroy",
+          "sandbox.session.exec"
+        ],
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "reason": null,
+        "expectedReturnAt": null,
+        "publiclyReachable": true,
+        "observedPrice": {
+          "amountAtomic": "120000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "priceVersion": "sandbox-run-public-2026-08-04.1"
+        },
+        "freeEntry": null
+      },
+      {
+        "id": "search",
+        "label": "Research",
+        "operations": [
+          "search.answer",
+          "search.web"
+        ],
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "reason": null,
+        "expectedReturnAt": null,
+        "publiclyReachable": true,
+        "observedPrice": {
+          "amountAtomic": "6000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "priceVersion": "search-web-usdc-2026-08-03.1"
+        },
+        "freeEntry": {
+          "route": "https://api.clervo.dev/v1/search/free",
+          "acceptsNaiveRequest": false
+        }
+      }
+    ]
+  },
   "products": [
     {
       "id": "search",
@@ -11,7 +154,9 @@
         "search.answer"
       ],
       "engineeringState": "public_production_qualified",
-      "customerLifecycle": "preview_publicly_callable"
+      "customerLifecycle": "preview_publicly_callable",
+      "lifecycleState": "live",
+      "proofLevel": "quote_observed_unpaid"
     },
     {
       "id": "ai",
@@ -23,7 +168,9 @@
         "ai.speech"
       ],
       "engineeringState": "public_production_origin_qualified",
-      "customerLifecycle": "preview_publicly_callable"
+      "customerLifecycle": "preview_publicly_callable",
+      "lifecycleState": "live",
+      "proofLevel": "quote_observed_unpaid"
     },
     {
       "id": "sandbox",
@@ -36,7 +183,9 @@
         "sandbox.session.destroy"
       ],
       "engineeringState": "public_production_qualified_single_node",
-      "customerLifecycle": "preview_publicly_callable"
+      "customerLifecycle": "preview_publicly_callable",
+      "lifecycleState": "live",
+      "proofLevel": "quote_observed_unpaid"
     },
     {
       "id": "rpc",
@@ -49,7 +198,9 @@
         "rpc.broadcast"
       ],
       "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable"
+      "customerLifecycle": "unavailable",
+      "lifecycleState": "unavailable",
+      "proofLevel": "none"
     },
     {
       "id": "prediction",
@@ -62,7 +213,9 @@
         "prediction.signal"
       ],
       "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable"
+      "customerLifecycle": "unavailable",
+      "lifecycleState": "unavailable",
+      "proofLevel": "none"
     },
     {
       "id": "crypto_intelligence",
@@ -75,7 +228,9 @@
         "crypto.report"
       ],
       "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable"
+      "customerLifecycle": "unavailable",
+      "lifecycleState": "unavailable",
+      "proofLevel": "none"
     }
   ]
 }

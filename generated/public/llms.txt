@@ -35,3 +35,16 @@ Current verified status:
 
 - `POST /v1/sandbox/execute`: fixed maximum charge 0.120000 USDC on Base for one bounded Node.js gVisor execution.
 - The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.
+
+## Observed lifecycle state and proof level
+
+Probed from the deployed system at 2026-08-06T11:40:50.003Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
+
+| Product | Lifecycle state | Proof level |
+|---|---|---|
+| AI | live | quote_observed_unpaid |
+| Crypto Intelligence | unavailable (commercial_rights_blocked) | none |
+| Prediction Intelligence | unavailable (commercial_rights_blocked) | none |
+| Multi-chain RPC | unavailable (commercial_rights_blocked) | none |
+| Secure Sandbox | live | quote_observed_unpaid |
+| Research | live | quote_observed_unpaid |
