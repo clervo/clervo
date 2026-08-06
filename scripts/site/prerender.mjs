@@ -7,38 +7,36 @@ const root = path.resolve(import.meta.dirname, '../..');
 const dist = path.join(root, 'apps/site/dist');
 const serverBundle = path.join(root, 'apps/site/dist-server/entry-server.js');
 const template = await readFile(path.join(dist, 'index.html'), 'utf8');
+const manifest = JSON.parse(await readFile(path.join(root, 'apps/site/routes.json'), 'utf8'));
 const { render } = await import(serverBundle);
 
-const routes = [
-  ['/', 'Outcome infrastructure for agents'],
-  ['/product', 'Product and capabilities'],
-  ['/build', 'Build with Clervo'],
-  ['/proof-lab', 'Proof Lab'],
-  ['/docs', 'Developer docs'],
-  ['/docs/http', 'Raw HTTP developer docs'],
-  ['/docs/typescript', 'TypeScript developer docs'],
-  ['/docs/python', 'Python developer docs'],
-  ['/docs/mcp', 'MCP developer docs'],
-  ['/pricing', 'Pricing truth'],
-  ['/benchmarks', 'Benchmark truth'],
-  ['/security', 'Security controls'],
-  ['/legal', 'Legal boundaries'],
-  ['/status', 'Product status'],
-];
+function escapeHtml(value) {
+  return value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+}
+function destinationFor(route) {
+  return route === '/' ? path.join(dist, 'index.html') : path.join(dist, route.slice(1), 'index.html');
+}
 
-for (const [route, title] of routes) {
-  const content = render(`https://clervo.dev${route}`);
+for (const route of manifest.routes) {
+  const content = render(`https://clervo.dev${route.path}`);
+  const canonical = `https://clervo.dev${route.path}`;
   const html = template
     .replace('<div id="root"></div>', `<div id="root">${content}</div>`)
-    .replace(
-      /<title>.*?<\/title>/u,
-      `<title>${title} — Clervo</title><link rel="canonical" href="https://clervo.dev${route}">`,
-    );
-  const destination = route === '/'
-    ? path.join(dist, 'index.html')
-    : path.join(dist, route.slice(1), 'index.html');
+    .replace(/<title>.*?<\/title>/u, `<title>${escapeHtml(route.title)} — Clervo</title>`)
+    .replace(/<link rel="canonical"[^>]*>/u, `<link rel="canonical" href="${canonical}" />`)
+    .replace(/<meta property="og:url"[^>]*>/u, `<meta property="og:url" content="${canonical}" />`)
+    .replace(/<meta property="og:title"[^>]*>/u, `<meta property="og:title" content="${escapeHtml(route.title)} — Clervo" />`);
+  const destination = destinationFor(route.path);
   await mkdir(path.dirname(destination), { recursive: true });
   await writeFile(destination, html);
 }
 
-console.log(`site prerender: PASS (${routes.length} static routes)`);
+for (const alias of manifest.aliases) {
+  const canonical = `https://clervo.dev${alias.target}`;
+  const html = `<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><link rel="canonical" href="${canonical}"><meta http-equiv="refresh" content="0;url=${alias.target}"><title>Moved — Clervo</title></head><body><p>This route moved to <a href="${alias.target}">${alias.target}</a>.</p><script>location.replace(${JSON.stringify(alias.target)});</script></body></html>`;
+  const destination = destinationFor(alias.path);
+  await mkdir(path.dirname(destination), { recursive: true });
+  await writeFile(destination, html);
+}
+
+console.log(`site prerender: PASS (${manifest.routes.length} canonical routes, ${manifest.aliases.length} aliases)`);

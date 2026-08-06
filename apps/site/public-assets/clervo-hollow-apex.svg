@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 32" role="img" aria-labelledby="title desc" data-logo-authority="hollow-apex-v1.0" data-logo-implementation="web-v1.3-locked">
+  <title id="title">Clervo Hollow Apex</title>
+  <desc id="desc">A hollow white apex crossed by a red request, cyan qualification and execution, and gold verified proof beam.</desc>
+  <path d="M-4 18H14" fill="none" stroke="#FF3B30" stroke-linecap="round" stroke-width="1.45"/>
+  <path d="M14 18H26" fill="none" stroke="#00E5FF" stroke-linecap="round" stroke-width="1.45"/>
+  <path d="M26 18H44" fill="none" stroke="#FFC800" stroke-linecap="round" stroke-width="1.45"/>
+  <path d="M20 2 38 30H2L20 2Zm0 7.1L8.7 26h22.6L20 9.1Z" fill="#F5F5F5" fill-rule="evenodd"/>
+</svg>
