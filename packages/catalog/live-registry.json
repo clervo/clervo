@@ -1,0 +1,1076 @@
+{
+  "aiRoutes": [
+    {
+      "capabilities": [
+        "audio_output",
+        "text_input"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T03:08:58.000Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "aura-2-arcas-en",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "390",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en",
+        "resourceDescription": "Bounded ai.speech execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.speech"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.aura_2_arcas_en",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.deepgram"
+    },
+    {
+      "capabilities": [
+        "audio_output",
+        "text_input"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T03:08:58.000Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "aura-2-thalia-en",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "390",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_thalia_en",
+        "resourceDescription": "Bounded ai.speech execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.speech"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.aura_2_thalia_en",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.deepgram"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "streaming",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T06:29:49.120Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "16",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.cloudflare_workers_ai"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "streaming",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T06:29:49.120Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "@cf/nvidia/nemotron-3-120b-a12b",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "27",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cf_nvidia_nemotron_3_120b_a12b",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.cf_nvidia_nemotron_3_120b_a12b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.cloudflare_workers_ai"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "streaming",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T06:29:49.120Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "@cf/openai/gpt-oss-120b",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "15",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_120b",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.cf_openai_gpt_oss_120b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.cloudflare_workers_ai"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "streaming",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T06:29:49.120Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "@cf/openai/gpt-oss-20b",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "7",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_20b",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.cf_openai_gpt_oss_20b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.cloudflare_workers_ai"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "streaming",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T06:29:49.120Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "7",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cf_qwen_qwen3_30b_a3b_fp8",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.cf_qwen_qwen3_30b_a3b_fp8",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.cloudflare_workers_ai"
+    },
+    {
+      "capabilities": [
+        "audio_output",
+        "text_input"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T08:07:20.497Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "@cf/deepgram/aura-2-en",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "312",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cloudflare_aura_2_en",
+        "resourceDescription": "Bounded ai.speech execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.speech"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.cloudflare_aura_2_en",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.cloudflare_workers_ai"
+    },
+    {
+      "capabilities": [
+        "image_output",
+        "text_input"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "gemini-3.1-flash-image",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "35000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_image",
+        "resourceDescription": "Bounded ai.image execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.image"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.gemini_3_1_flash_image",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.google_vertex"
+    },
+    {
+      "capabilities": [
+        "image_output",
+        "text_input"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "gemini-3.1-flash-lite-image",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "15000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_lite_image",
+        "resourceDescription": "Bounded ai.image execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.image"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.gemini_3_1_flash_lite_image",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.google_vertex"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "gemini-3.5-flash",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "169",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.gemini_3_5_flash",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.google_vertex"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "gemini-3.5-flash-lite",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "28",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash_lite",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.gemini_3_5_flash_lite",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.google_vertex"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "gemini-3.6-flash",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "145",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_6_flash",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.gemini_3_6_flash",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.google_vertex"
+    },
+    {
+      "capabilities": [
+        "image_output",
+        "text_input"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "gemini-3-pro-image",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "75000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_pro_image",
+        "resourceDescription": "Bounded ai.image execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.image"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.gemini_3_pro_image",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.google_vertex"
+    },
+    {
+      "capabilities": [
+        "embedding_output",
+        "text_input"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T03:18:00.000Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "gemini-embedding-001",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "2",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_embedding_001",
+        "resourceDescription": "Bounded ai.embed execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.embed"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.gemini_embedding_001",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.google_vertex"
+    },
+    {
+      "capabilities": [
+        "streaming",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "failed",
+        "supplyReason": "upstream_completion_failed"
+      },
+      "exactModelId": "gpt-5.6-luna",
+      "expectedReturnAt": "2026-08-09T00:00:00Z",
+      "observedQuote": {
+        "amountAtomic": "113",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_luna",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": "upstream_completion_failed",
+      "routeId": "ai.route.gpt_5_6_luna",
+      "sellable": false,
+      "state": "supply_paused",
+      "supplyFamilyId": "supply.clervo_ai_gateway"
+    },
+    {
+      "capabilities": [
+        "streaming",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "failed",
+        "supplyReason": "upstream_completion_failed"
+      },
+      "exactModelId": "gpt-5.6-sol",
+      "expectedReturnAt": "2026-08-09T00:00:00Z",
+      "observedQuote": {
+        "amountAtomic": "563",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_sol",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": "upstream_completion_failed",
+      "routeId": "ai.route.gpt_5_6_sol",
+      "sellable": false,
+      "state": "supply_paused",
+      "supplyFamilyId": "supply.clervo_ai_gateway"
+    },
+    {
+      "capabilities": [
+        "streaming",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "failed",
+        "supplyReason": "upstream_completion_failed"
+      },
+      "exactModelId": "gpt-5.6-terra",
+      "expectedReturnAt": "2026-08-09T00:00:00Z",
+      "observedQuote": {
+        "amountAtomic": "282",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_terra",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": "upstream_completion_failed",
+      "routeId": "ai.route.gpt_5_6_terra",
+      "sellable": false,
+      "state": "supply_paused",
+      "supplyFamilyId": "supply.clervo_ai_gateway"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "streaming",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T03:29:20.759Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "openai/gpt-oss-120b",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "10",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_120b",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.gpt_oss_120b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.groq"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "streaming",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T03:29:20.759Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "openai/gpt-oss-20b",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "5",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_20b",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.gpt_oss_20b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.groq"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "streaming",
+        "structured_output",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "edgeCode": null,
+        "edgeQuoted": true,
+        "edgeStatus": 402,
+        "qualificationExpired": false,
+        "qualificationExpiresAt": "2026-08-09T03:29:20.759Z",
+        "resaleAllowed": true,
+        "supplyOutcome": "not_probed",
+        "supplyReason": null
+      },
+      "exactModelId": "qwen/qwen3.6-27b",
+      "expectedReturnAt": null,
+      "observedQuote": {
+        "amountAtomic": "49",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.3-ai.route.qwen3_6_27b",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "ai.route.qwen3_6_27b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.groq"
+    }
+  ],
+  "deployment": {
+    "aiPaidEnabled": true,
+    "apiOrigin": "https://api.clervo.dev",
+    "environment": "production",
+    "paidExecutionEnabled": true,
+    "releaseId": "e23264a52c0c2a0254d19ff8062437b05ce1bad8",
+    "sandboxPaidEnabled": true,
+    "siteOrigin": "https://clervo.dev",
+    "stateBackend": "postgres",
+    "trafficMode": "open"
+  },
+  "discoverySurfaces": [
+    {
+      "id": "api.llms_txt",
+      "observedStatus": 404,
+      "purpose": "llm_api_reference",
+      "reason": "not_served_status_404",
+      "state": "unavailable",
+      "url": "https://api.clervo.dev/llms.txt"
+    },
+    {
+      "id": "api.models",
+      "observedStatus": 404,
+      "purpose": "public_model_list",
+      "reason": "not_served_status_404",
+      "state": "unavailable",
+      "url": "https://api.clervo.dev/v1/models"
+    },
+    {
+      "id": "api.well_known_x402",
+      "observedStatus": 404,
+      "purpose": "agent_resource_manifest",
+      "reason": "not_served_status_404",
+      "state": "unavailable",
+      "url": "https://api.clervo.dev/.well-known/x402"
+    },
+    {
+      "id": "site.llms_txt",
+      "observedStatus": 200,
+      "purpose": "llm_api_reference",
+      "reason": null,
+      "state": "live",
+      "url": "https://clervo.dev/llms.txt"
+    },
+    {
+      "id": "site.sitemap",
+      "observedStatus": 200,
+      "purpose": "crawler_index",
+      "reason": null,
+      "state": "live",
+      "url": "https://clervo.dev/sitemap.xml"
+    }
+  ],
+  "generatedBy": "scripts/probe-live-registry.mjs",
+  "handEditingProhibited": true,
+  "observedAt": "2026-08-06T10:54:14.555Z",
+  "products": [
+    {
+      "evidence": {
+        "liveRouteCount": 18,
+        "probed": true,
+        "routeStates": {
+          "live": 18,
+          "supply_paused": 3
+        },
+        "totalRouteCount": 21
+      },
+      "expectedReturnAt": null,
+      "freeEntry": null,
+      "id": "ai",
+      "label": "AI",
+      "observedQuote": {
+        "amountAtomic": "390",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en",
+        "resourceDescription": "Bounded ai.speech execution",
+        "scheme": "exact"
+      },
+      "operations": [
+        "ai.chat",
+        "ai.embed",
+        "ai.image",
+        "ai.speech"
+      ],
+      "publiclyReachable": true,
+      "reason": null,
+      "state": "live"
+    },
+    {
+      "evidence": {
+        "basis": "no_public_route_is_served",
+        "probed": false
+      },
+      "expectedReturnAt": null,
+      "freeEntry": null,
+      "id": "crypto_intelligence",
+      "label": "Crypto Intelligence",
+      "observedQuote": null,
+      "operations": [
+        "crypto.protocol",
+        "crypto.report",
+        "crypto.token",
+        "crypto.transaction",
+        "crypto.wallet"
+      ],
+      "publiclyReachable": false,
+      "reason": "commercial_rights_blocked",
+      "state": "unavailable"
+    },
+    {
+      "evidence": {
+        "basis": "no_public_route_is_served",
+        "probed": false
+      },
+      "expectedReturnAt": null,
+      "freeEntry": null,
+      "id": "prediction",
+      "label": "Prediction Intelligence",
+      "observedQuote": null,
+      "operations": [
+        "prediction.compare",
+        "prediction.history",
+        "prediction.market",
+        "prediction.markets",
+        "prediction.signal"
+      ],
+      "publiclyReachable": false,
+      "reason": "commercial_rights_blocked",
+      "state": "unavailable"
+    },
+    {
+      "evidence": {
+        "basis": "no_public_route_is_served",
+        "probed": false
+      },
+      "expectedReturnAt": null,
+      "freeEntry": null,
+      "id": "rpc",
+      "label": "Multi-chain RPC",
+      "observedQuote": null,
+      "operations": [
+        "rpc.archive",
+        "rpc.batch",
+        "rpc.broadcast",
+        "rpc.call",
+        "rpc.health"
+      ],
+      "publiclyReachable": false,
+      "reason": "commercial_rights_blocked",
+      "state": "unavailable"
+    },
+    {
+      "evidence": {
+        "edgeCode": null,
+        "edgeStatus": 402,
+        "probed": true
+      },
+      "expectedReturnAt": null,
+      "freeEntry": null,
+      "id": "sandbox",
+      "label": "Secure Sandbox",
+      "observedQuote": {
+        "amountAtomic": "120000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "sandbox-run-public-2026-08-04.1",
+        "resourceDescription": "Bounded sandbox.run execution",
+        "scheme": "exact"
+      },
+      "operations": [
+        "sandbox.artifact.get",
+        "sandbox.run",
+        "sandbox.session.create",
+        "sandbox.session.destroy",
+        "sandbox.session.exec"
+      ],
+      "publiclyReachable": true,
+      "reason": null,
+      "state": "live"
+    },
+    {
+      "evidence": {
+        "edgeCode": null,
+        "edgeStatus": 402,
+        "probed": true
+      },
+      "expectedReturnAt": null,
+      "freeEntry": {
+        "acceptsNaiveRequest": false,
+        "naiveRejectionCode": "idempotency_key_required",
+        "route": "https://api.clervo.dev/v1/search/free",
+        "withIdempotencyKeyStatus": 200,
+        "withoutIdempotencyKeyStatus": 400
+      },
+      "id": "search",
+      "label": "Research",
+      "observedQuote": {
+        "amountAtomic": "6000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "search-web-usdc-2026-08-03.1",
+        "resourceDescription": "Bounded search.web execution",
+        "scheme": "exact"
+      },
+      "operations": [
+        "search.answer",
+        "search.web"
+      ],
+      "publiclyReachable": true,
+      "reason": null,
+      "state": "live"
+    }
+  ],
+  "schemaVersion": "clervo.live-registry.v1",
+  "sourceCommit": "bc09ef88f6b624e4cce66effde382526411985b5",
+  "states": {
+    "live": "probed; the deployed system serves it now",
+    "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
+    "unavailable": "absent from the catalog or has no public route at all"
+  },
+  "summary": {
+    "aiRoutes": {
+      "live": 18,
+      "supply_paused": 3
+    },
+    "discoverySurfaces": {
+      "live": 2,
+      "unavailable": 3
+    },
+    "products": {
+      "live": 3,
+      "unavailable": 3
+    }
+  },
+  "supplyFamilies": [
+    {
+      "expectedReturnAt": "2026-08-09T00:00:00Z",
+      "modelIdsAdvertised": [
+        "clervo/code",
+        "clervo/deep",
+        "clervo/fast",
+        "clervo/smart",
+        "gpt-5.6-luna",
+        "gpt-5.6-sol",
+        "gpt-5.6-terra"
+      ],
+      "outcome": "failed",
+      "providerErrorCode": "internal_server_error",
+      "reason": "upstream_completion_failed",
+      "supplyFamilyId": "supply.clervo_ai_gateway"
+    }
+  ]
+}
