@@ -83,8 +83,13 @@ export function Status({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           {summary.map(({ value, label, detail }) => (
             <div key={label}>
               <dt>{label}</dt>
-              <dd>{value}</dd>
-              <p className="quiet">{detail}</p>
+              {/* A definition list may only contain dt, dd and grouping divs,
+                * so the explanatory line lives inside the dd rather than beside
+                * it. */}
+              <dd>
+                <b>{value}</b>
+                <span className="quiet">{detail}</span>
+              </dd>
             </div>
           ))}
         </dl>
