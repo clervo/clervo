@@ -1038,3 +1038,52 @@
     padding-block: var(--space-3);
   }
 }
+
+/* --- /research ------------------------------------------------------------ */
+
+.research-body > * + * {
+  margin-top: var(--space-6);
+}
+
+/*
+ * The settled charge is rendered as a state pill inside a definition list, so
+ * the pill's own type scale has to be restored over `.facts dd`.
+ */
+.research-body .facts dd.state {
+  font-size: var(--step-micro);
+}
+
+/*
+ * What the outcome contains. Four panels, because the fourth item is the cost
+ * boundary and it belongs in the same reading as the three content promises
+ * rather than in a separate band that a scanner can skip.
+ */
+.research-returns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-4);
+}
+
+.research-returns h3 {
+  font-size: var(--step-3);
+  font-weight: 560;
+  letter-spacing: -0.01em;
+}
+
+.research-returns .quiet {
+  max-width: 30rem;
+}
+
+.research-note {
+  max-width: 42rem;
+}
+
+.research-actions {
+  gap: var(--space-3);
+}
+
+@media (width <= 640px) {
+  .research-returns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

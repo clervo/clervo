@@ -284,7 +284,6 @@ main {
   padding-right: clamp(2rem, 7vw, 8rem);
 }
 
-.research-page,
 .compare-page {
   width: min(100%, 96rem);
   margin: 0 auto;
@@ -292,7 +291,6 @@ main {
   padding-right: clamp(2rem, 7vw, 8rem);
 }
 
-.research-page,
 .compare-page {
   position: relative;
   z-index: 5;
@@ -487,40 +485,6 @@ p {
 .comparison-policy h2 { margin: 4rem 0 1rem; font-size: 1.35rem; font-weight: 520; }
 .comparison-policy p { color: var(--muted); line-height: 1.65; }
 .comparison-policy a { color: var(--qualified); font: 0.65rem var(--mono); }
-
-.journey-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--line-strong);
-  border-left: 1px solid var(--line);
-}
-
-.journey-grid article {
-  min-height: 17rem;
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: var(--surface);
-}
-.journey-grid article.is-gated { background: linear-gradient(135deg, rgb(224 168 75 / 8%), var(--surface)); }
-.journey-grid span,
-.journey-grid small { color: var(--muted); font: 0.65rem var(--mono); text-transform: uppercase; }
-.journey-grid h2 { margin: auto 0 0.8rem; font-size: 2rem; font-weight: 550; }
-.journey-grid p { color: var(--muted); line-height: 1.55; }
-.journey-grid small { color: var(--approval); }
-
-.proof-window { margin-top: 7rem; padding: 3rem; }
-.proof-window header h2,
-.source-list h2 {
-  font-size: clamp(2rem, 4vw, 4.5rem);
-  font-weight: 550;
-  line-height: 0.96;
-  letter-spacing: -0.055em;
-}
-.proof-window > p { max-width: 46rem; color: var(--muted); line-height: 1.7; }
-.proof-window > div { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
 
 .comparison-meta { display: grid; grid-template-columns: auto auto 1fr; gap: 1rem 2rem; align-items: center; padding: 1rem 0; border-top: 1px solid var(--approval); border-bottom: 1px solid var(--line); }
 .comparison-meta span,
@@ -1594,8 +1558,7 @@ fieldset label small {
     .product-page,
   .build-page,
   .trust-page,
-  .research-page,
-    .compare-page,
+.compare-page,
   .not-found {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
@@ -1604,10 +1567,6 @@ fieldset label small {
   .page-intro h1,
   .not-found h1 {
     overflow-wrap: anywhere;
-  }
-
-  .journey-grid {
-    grid-template-columns: 1fr;
   }
 
   .trust-map { grid-template-columns: 1fr; }
@@ -1619,7 +1578,6 @@ fieldset label small {
   .worlds-nodes { position: relative; display: grid; grid-template-columns: 1fr 1fr; border-left: 1px solid var(--line); }
   .worlds-nodes > li { position: static; width: auto; min-height: 7rem; border-width: 0 1px 1px 0; background: var(--surface); backdrop-filter: none; }
   .worlds-stage__boundary { position: static; margin-top: 0.8rem; text-align: right; }
-  .proof-window { margin-top: 4rem; padding: 1.5rem; }
   .comparison-meta { grid-template-columns: 1fr; }
   .comparison-table > div { grid-template-columns: 1fr; gap: 0.6rem; padding: 1.3rem 0; }
   .comparison-table__head { display: none; }

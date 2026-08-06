@@ -1,69 +1,189 @@
 import { useEffect } from 'react';
 
-import { ModeBadge } from '../components/Navigation';
-import { launchState, publicApiCallable, type ExperiencePhase } from '../product';
+import {
+  formatUsdc,
+  launchState,
+  lifecycleLabels,
+  observedProduct,
+  observedTruth,
+  proofLabels,
+  quickStartCurl,
+  quickStartNeedsNoKey,
+  type ExperiencePhase,
+} from '../product';
 import { Link } from '../router';
 
-const journey = [
-  ['Install', 'Use a verified public SDK, MCP server, or the raw HTTP contract.'],
-  ['Ask', 'Bind one current question to one operation and idempotency key.'],
-  ['Fund', 'Use the quoted network and asset only when a public payable route exists.'],
-  ['Approve', 'See the exact maximum before any authorization leaves the wallet.'],
-  ['Result', 'Receive the bounded result with its supporting evidence.'],
-  ['Receipt', 'Keep an inspectable record that replays without another charge.'],
-] as const;
+/*
+ * /research — one complete outcome, end to end.
+ *
+ * The other pages describe the mechanism. This one describes a job: what you
+ * ask for, what comes back, what it costs at most, and what it deliberately
+ * does not do. It is the page a buyer reads to decide whether the thing is
+ * worth calling at all.
+ *
+ * The six-step path lives on /start, which is where every primary call to
+ * action leads. Repeating it here would make two pages that both look like the
+ * onboarding page and neither of which is.
+ */
+
+const search = observedProduct('search');
+const proof = launchState.paymentProof;
+
+// What the outcome contains, and what it does not. Raw evidence and a
+// synthesized answer are different products with different availability, and
+// the difference is the single most misread thing about this family.
+const returns: Array<[string, string]> = [
+  ['Ranked evidence', 'Normalized retrieval results in a stable shape, ordered by relevance rather than by whoever paid for placement.'],
+  ['Source citations', 'Every result carries the source it came from, so the answer can be checked rather than trusted.'],
+  ['No synthesized prose', 'The publicly available operation returns evidence, not an essay. Synthesis is a separate operation and is not publicly available.'],
+  ['A bounded cost', 'The maximum charge is quoted before anything runs, and the settled amount is never higher.'],
+];
 
 export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   useEffect(() => onPhase('verified'), [onPhase]);
-  const proof = launchState.paymentProof;
+
   return (
-    <section className="research-page">
-      <header className="page-intro page-intro--outcome">
-        <ModeBadge>First release target · recorded private proof</ModeBadge>
-        <p className="eyebrow">Research / a complete agent job</p>
+    <>
+      <section className="page-lead">
+        <p className="eyebrow">Research / one complete agent job</p>
         <h1>Ask now.<br />Know what came back.</h1>
-        <p>
-          The Research outcome is designed to return current evidence or a
-          cited answer inside one explicit cost boundary.
-          {publicApiCallable
-            ? ' The public customer route is open; what has been proven end to end is one bounded, reconciled owner-funded payment, not customer revenue.'
-            : ' The public customer route is not open yet; the private production path has completed one bounded, reconciled payment proof.'}
+        <p className="lede">
+          {search.freeEntry === null
+            ? 'Research returns current evidence with its sources inside one explicit cost boundary. The free entry route is not being served right now, so this page publishes no command that would fail.'
+            : 'Research returns current evidence with its sources inside one explicit cost boundary. The first call needs no account, no key and no wallet.'}
         </p>
-      </header>
+        <div className="cluster page-lead__actions">
+          <Link className="button button--primary" to="/start">Set up Clervo</Link>
+          <Link className="button button--quiet" to="/products/search">See the family state</Link>
+        </div>
+      </section>
 
-      <div className="journey-grid">
-        {journey.map(([name, detail], index) => (
-          <article key={name} className={name === 'Fund' ? 'is-gated' : ''}>
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <h2>{name}</h2>
-            <p>{detail}</p>
-            <small>{name === 'Fund' && !publicApiCallable ? 'public path unavailable' : 'contract prepared'}</small>
-          </article>
-        ))}
-      </div>
+      {quickStartCurl === null ? null : (
+        <section className="band band--ruled research-body" aria-labelledby="research-call">
+          <div className="section-head">
+            <p className="eyebrow">The whole job / one command</p>
+            <h2 id="research-call">This is the entire integration.</h2>
+            <p className="lede">
+              {quickStartNeedsNoKey
+                ? 'No account, no key, no wallet. The free route generates an idempotency key and returns it in the response header, so the same call can be replayed deliberately.'
+                : 'No account, no key, no wallet. The free route currently requires an idempotency-key header, so the command below carries one; reuse the same value to replay without a second execution.'}
+            </p>
+          </div>
+          <div className="code">
+            <div className="code__head">
+              <span>Free Research call</span>
+              <span className={`state state--${search.lifecycleState}`}>
+                {lifecycleLabels[search.lifecycleState]}
+              </span>
+            </div>
+            {/*
+              * A horizontally scrollable region must be a real stop in the tab
+              * order, or a keyboard-only reader cannot reach the end of a long
+              * command.
+              */}
+            <pre tabIndex={0} role="group" aria-label="Free Research call, scrollable"><code>{quickStartCurl}</code></pre>
+          </div>
+        </section>
+      )}
 
-      <section className="proof-window">
-        <header>
-          <p className="eyebrow">What exists today</p>
-          <h2>One useful result. One settlement. One safe replay.</h2>
-        </header>
-        <dl>
-          <div><dt>Operation</dt><dd>{proof.productId}</dd></div>
-          <div><dt>Network</dt><dd>{proof.network}</dd></div>
-          <div><dt>Bounded charge</dt><dd>{proof.amountDisplay}</dd></div>
-          <div><dt>Result</dt><dd>{proof.usefulResult ? 'useful' : 'not proven'}</dd></div>
-          <div><dt>Replay</dt><dd>{proof.replaySameReceipt ? 'same receipt' : 'not proven'}</dd></div>
-          <div><dt>Additional charge</dt><dd>{proof.secondCharge ? 'observed' : 'none'}</dd></div>
+      <section className="band band--ruled research-body" aria-labelledby="research-returns">
+        <div className="section-head">
+          <p className="eyebrow">What comes back</p>
+          <h2 id="research-returns">Evidence you can check, not prose you must trust.</h2>
+        </div>
+        <ul className="research-returns">
+          {returns.map(([name, detail]) => (
+            <li key={name} className="panel">
+              <div className="panel__body stack stack--tight">
+                <h3>{name}</h3>
+                <p className="quiet">{detail}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="band band--ruled research-body" aria-labelledby="research-cost">
+        <div className="section-head">
+          <p className="eyebrow">What it costs</p>
+          <h2 id="research-cost">A ceiling, quoted before anything runs.</h2>
+        </div>
+        <dl className="facts">
+          <div>
+            <dt>Observed maximum charge</dt>
+            <dd>
+              {search.observedPrice === null
+                ? 'not quoted right now'
+                : formatUsdc(search.observedPrice.amountAtomic, 6)}
+            </dd>
+          </div>
+          <div>
+            <dt>Network</dt>
+            <dd>{search.observedPrice?.network ?? 'not quoted right now'}</dd>
+          </div>
+          <div>
+            <dt>Free entry route</dt>
+            <dd>{search.freeEntry === null ? 'not served right now' : search.freeEntry.route}</dd>
+          </div>
+          <div>
+            <dt>Lifecycle state</dt>
+            <dd>{lifecycleLabels[search.lifecycleState]}</dd>
+          </div>
+          <div>
+            <dt>Proof level</dt>
+            <dd>{proofLabels[search.proofLevel]}</dd>
+          </div>
         </dl>
-        <p>
-          This was funded by the owner to verify payment plumbing. It is not a
-          customer transaction, revenue, demand, or public availability.
+        <p className="quiet research-note">
+          Observed {observedTruth.provenance.observedAt} from{' '}
+          {observedTruth.provenance.source}. A price that changes on the deployed
+          system changes here on the next probe, not on an edit.
         </p>
-        <div>
-          <Link className="button button--primary" to="/proof">Inspect proof</Link>
+      </section>
+
+      <section className="band research-body" aria-labelledby="research-proof">
+        <div className="section-head">
+          <p className="eyebrow">What has been paid for</p>
+          <h2 id="research-proof">One settlement, one useful result, one safe replay.</h2>
+          <p className="lede">
+            The owner funded this to verify payment plumbing. It is not a
+            customer transaction, and no revenue, demand or public commercial
+            traction follows from it.
+          </p>
+        </div>
+        <dl className="facts">
+          <div>
+            <dt>Operation</dt>
+            <dd>{proof.productId}</dd>
+          </div>
+          <div>
+            <dt>Bounded charge</dt>
+            {/* Gold appears once on this page, on the amount that was actually
+              * settled and reconciled. */}
+            <dd className="state state--verified">{proof.amountDisplay}</dd>
+          </div>
+          <div>
+            <dt>Network</dt>
+            <dd>{proof.network}</dd>
+          </div>
+          <div>
+            <dt>Result</dt>
+            <dd>{proof.usefulResult ? 'useful' : 'not proven'}</dd>
+          </div>
+          <div>
+            <dt>Replay</dt>
+            <dd>{proof.replaySameReceipt ? 'same receipt, no second charge' : 'not proven'}</dd>
+          </div>
+          <div>
+            <dt>Customer revenue evidence</dt>
+            <dd>{proof.revenueEvidence ? 'recorded' : 'none'}</dd>
+          </div>
+        </dl>
+        <div className="cluster research-actions">
+          <Link className="button button--secondary" to="/proof">Inspect the proof record</Link>
           <Link className="button button--quiet" to="/proof-lab">Run the no-payment fixture</Link>
         </div>
       </section>
-    </section>
+    </>
   );
 }
