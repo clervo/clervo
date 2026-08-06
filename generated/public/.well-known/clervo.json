@@ -186,7 +186,10 @@
     "llms": "/llms.txt",
     "schemas": "/schemas/2026-07-29.1/",
     "skill": "/skill.md",
-    "agent": "/agent.md"
+    "agent": "/agent.md",
+    "models": "/v1/models",
+    "x402": "/.well-known/x402",
+    "reference": "/llms.txt"
   },
   "products": [
     {

@@ -65,3 +65,11 @@ Paid requests go to `POST https://api.clervo.dev/v1/search/paid`, which returns 
 
 - [Agent skill](/skill.md): when to use Clervo and how to make the first call.
 - [Agent reference](/agent.md): identity, observed state, idempotency contract, and boundaries.
+
+## Agent discovery
+
+- [`GET https://api.clervo.dev/v1/models`](/models.json): every catalogued AI route with its exact model identity, lifecycle state, proof level, and observed price. OpenAI list shape.
+- [`GET https://api.clervo.dev/.well-known/x402`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.
+- `GET https://api.clervo.dev/llms.txt`: this document, served from the API host as well as the site.
+
+Model list: 21 catalogued routes, 18 sellable. Payment manifest: 3 paid resources.

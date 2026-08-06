@@ -164,6 +164,7 @@ test('the site projection is byte-identical to the generated output', async () =
     'llms.txt',
     'skill.md',
     'agent.md',
+    'models.json',
     'catalog.json',
     'capabilities.json',
     'pricing.json',
@@ -174,6 +175,7 @@ test('the site projection is byte-identical to the generated output', async () =
     'openapi.yaml',
     '.well-known/clervo.json',
     '.well-known/mcp.json',
+    '.well-known/x402.json',
   ];
   for (const file of files) {
     const [generated, projected] = await Promise.all([

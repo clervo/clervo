@@ -1,0 +1,169 @@
+{
+  "x402Version": 2,
+  "items": [
+    {
+      "resource": "https://api.clervo.dev/v1/search/paid",
+      "type": "http",
+      "x402Version": 2,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "6000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+          "maxTimeoutSeconds": 60,
+          "extra": {
+            "clervo": {
+              "operationId": "search.web",
+              "priceModel": "fixed_request",
+              "priceVersion": "search-web-usdc-2026-08-03.1",
+              "amountIsBinding": true,
+              "exampleRouteId": null,
+              "lifecycleState": "live",
+              "proofLevel": "quote_observed_unpaid"
+            }
+          }
+        }
+      ],
+      "lastUpdated": 1786027357,
+      "metadata": {
+        "category": "search",
+        "provider": "clervo",
+        "description": "Bounded search.web execution",
+        "method": "POST",
+        "bodyType": "json",
+        "idempotency": "idempotency-key header; the same key with the same body replays without a second charge",
+        "bazaarExtensionPresent": true
+      }
+    },
+    {
+      "resource": "https://api.clervo.dev/v1/ai/execute",
+      "type": "http",
+      "x402Version": 2,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "16",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+          "maxTimeoutSeconds": 60,
+          "extra": {
+            "clervo": {
+              "operationId": "ai.chat",
+              "priceModel": "request_derived_per_model",
+              "priceVersion": "ai-2026-08-02.7-ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
+              "amountIsBinding": false,
+              "exampleRouteId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
+              "lifecycleState": "live",
+              "proofLevel": "quote_observed_unpaid"
+            }
+          }
+        }
+      ],
+      "lastUpdated": 1786027357,
+      "metadata": {
+        "category": "ai",
+        "provider": "clervo",
+        "description": "Bounded ai.chat execution",
+        "method": "POST",
+        "bodyType": "json",
+        "idempotency": "idempotency-key header; the same key with the same body replays without a second charge",
+        "bazaarExtensionPresent": true,
+        "modelList": "https://api.clervo.dev/v1/models"
+      }
+    },
+    {
+      "resource": "https://api.clervo.dev/v1/sandbox/execute",
+      "type": "http",
+      "x402Version": 2,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "120000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+          "maxTimeoutSeconds": 60,
+          "extra": {
+            "clervo": {
+              "operationId": "sandbox.run",
+              "priceModel": "fixed_request",
+              "priceVersion": "sandbox-run-public-2026-08-04.1",
+              "amountIsBinding": true,
+              "exampleRouteId": null,
+              "lifecycleState": "live",
+              "proofLevel": "quote_observed_unpaid"
+            }
+          }
+        }
+      ],
+      "lastUpdated": 1786027357,
+      "metadata": {
+        "category": "sandbox",
+        "provider": "clervo",
+        "description": "Bounded sandbox.run execution",
+        "method": "POST",
+        "bodyType": "json",
+        "idempotency": "idempotency-key header; the same key with the same body replays without a second charge",
+        "bazaarExtensionPresent": true
+      }
+    }
+  ],
+  "pagination": {
+    "limit": 3,
+    "offset": 0,
+    "total": 3
+  },
+  "clervo": {
+    "provenance": {
+      "source": "packages/catalog/live-registry.json",
+      "generatedBy": "scripts/probe-live-registry.mjs",
+      "observedAt": "2026-08-06T14:42:37.447Z",
+      "releaseId": "35a2f7af3bbe4914dc5e1685e6974c07a04eebf0",
+      "proofLevels": {
+        "externally_repeated": "an unrelated party did it, more than once",
+        "none": "nothing demonstrated",
+        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
+        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
+      },
+      "states": {
+        "live": "probed; the deployed system serves it now",
+        "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
+        "unavailable": "absent from the catalog or has no public route at all"
+      }
+    },
+    "states": {
+      "live": "probed; the deployed system serves it now",
+      "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
+      "unavailable": "absent from the catalog or has no public route at all"
+    },
+    "proofLevels": {
+      "externally_repeated": "an unrelated party did it, more than once",
+      "none": "nothing demonstrated",
+      "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
+      "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
+    },
+    "freeResources": [
+      {
+        "resource": "https://api.clervo.dev/v1/search/free",
+        "type": "http",
+        "method": "POST",
+        "bodyType": "json",
+        "paymentRequired": false,
+        "acceptsRequestWithoutIdempotencyKey": true,
+        "operationId": "search.web",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "quota": "Capped per caller and globally. Over the cap the route answers 429 free_quota_exceeded rather than executing."
+      }
+    ],
+    "documents": {
+      "models": "https://api.clervo.dev/v1/models",
+      "reference": "https://api.clervo.dev/llms.txt",
+      "discovery": "https://api.clervo.dev/.well-known/clervo.json",
+      "openapi": "https://api.clervo.dev/openapi.json"
+    }
+  }
+}

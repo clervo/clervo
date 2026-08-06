@@ -54,6 +54,8 @@ curl -sS https://api.clervo.dev/v1/search/free \
 ## Discovery paths
 
 - `/.well-known/clervo.json`
+- `/.well-known/x402` — x402 v2 payment manifest; each item carries the exact quote its resource returns.
+- `/v1/models` — every catalogued AI route, OpenAI list shape, with lifecycle state, proof level, and observed price.
 - `/openapi.json`
 - `/catalog.json`
 - `/capabilities.json`
@@ -61,6 +63,13 @@ curl -sS https://api.clervo.dev/v1/search/free \
 - `/status.json`
 - `/onboarding.json`
 - `/llms.txt`
+
+## Model selection
+
+- 21 catalogued routes; 18 sellable now.
+- Send `clervo.routeId`'s exact model identity as `model` on `POST /v1/ai/execute`.
+- A route with `clervo.lifecycleState: supply_paused` is listed with its reason and is not sellable. Do not select it; it stays listed because the supply is owned and returning.
+- `clervo.observedPrice` is the quote observed at the probe above. The 402 returned for your own request is the binding one.
 
 ## Boundaries
 

@@ -14,6 +14,7 @@ const registry = JSON.parse(await readFile(path.join(root, releaseCandidate.base
 const onboarding = JSON.parse(await readFile(path.join(root, 'packages/distribution/onboarding.v1.json'), 'utf8'));
 const launchState = JSON.parse(await readFile(path.join(root, 'packages/catalog/launch-state.v1.json'), 'utf8'));
 const liveRegistry = JSON.parse(await readFile(path.join(root, 'packages/catalog/live-registry.json'), 'utf8'));
+const modelCatalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
 const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
 const x402Proof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/x402-proof.v1.json'), 'utf8'));
 
@@ -475,7 +476,7 @@ discovery.observedTruth = { provenance: observedProvenance, products: observedTr
 catalog.observedTruth = discovery.observedTruth;
 // The two agent-facing documents are advertised where an agent already looks,
 // so finding them does not require guessing a filename.
-discovery.artifacts = { ...discovery.artifacts, skill: '/skill.md', agent: '/agent.md' };
+discovery.artifacts = { ...discovery.artifacts, skill: '/skill.md', agent: '/agent.md', models: '/v1/models', x402: '/.well-known/x402', reference: '/llms.txt' };
 if (publicSearch) contractModule.assertPublicArtifacts(openapi, discovery, llms, projection);
 else contractModule.assertPreviewArtifacts(openapi, discovery, llms, projection);
 llms += [
@@ -650,7 +651,180 @@ if (quickStartCurl !== null) {
     '',
   ].join('\n');
 }
+
+// ---------------------------------------------------------------------------
+// Agent discovery documents
+// ---------------------------------------------------------------------------
+//
+// An agent cannot open an account or read a marketing page. It reads three
+// documents: a model list, a payment manifest, and a reference. All three are
+// rendered from the probed registry for the same reason every other surface is
+// — a hand-written model list drifts the moment supply changes, and a stale one
+// is worse than none, because it makes an agent call a route that fails closed.
+//
+// The registry's own catalog rule decides what appears: `live` and
+// `supply_paused` are in the catalog, the second carrying its reason and
+// expected return date, and `unavailable` is absent. Dropping a paused route
+// would erase supply we own; listing an unavailable one would advertise supply
+// we do not have.
+const CATALOGUED_STATES = new Set(['live', 'supply_paused']);
+const routeQualifiedAt = new Map(modelCatalog.routes.map((route) => [route.routeId, route.qualification?.checkedAt ?? null]));
+const epochSeconds = (value) => (value === null || Number.isNaN(Date.parse(value)) ? null : Math.floor(Date.parse(value) / 1_000));
+
+// OpenAI's list shape, so a client that already speaks it works unmodified. The
+// observed lifecycle state, proof level, and price live under `clervo` rather
+// than being folded into the standard fields: an OpenAI client ignores them,
+// and an agent that reads them cannot mistake a priced route for a proven one.
+const modelList = {
+  object: 'list',
+  data: liveRegistry.aiRoutes
+    .filter(({ state }) => CATALOGUED_STATES.has(state))
+    .map((route) => ({
+      id: route.exactModelId,
+      object: 'model',
+      created: epochSeconds(routeQualifiedAt.get(route.routeId) ?? null),
+      owned_by: 'clervo',
+      clervo: {
+        routeId: route.routeId,
+        supplyFamilyId: route.supplyFamilyId,
+        productIds: route.productIds,
+        capabilities: route.capabilities,
+        route: '/v1/ai/execute',
+        lifecycleState: route.state,
+        proofLevel: route.proof,
+        sellable: route.sellable,
+        reason: route.reason,
+        expectedReturnAt: route.expectedReturnAt,
+        observedPrice: route.observedQuote === null ? null : {
+          amountAtomic: route.observedQuote.amountAtomic,
+          asset: route.observedQuote.asset,
+          network: route.observedQuote.network,
+          decimals: 6,
+          priceVersion: route.observedQuote.priceVersion,
+          maximumCharge: true,
+        },
+      },
+    }))
+    .sort((left, right) => left.id.localeCompare(right.id)),
+  clervo: {
+    provenance: observedProvenance,
+    states: liveRegistry.states,
+    proofLevels: liveRegistry.proofLevels,
+    counts: liveRegistry.summary.aiRoutes,
+    note: 'Lifecycle state and proof level are separate facts. A live route at quote_observed_unpaid is offered and priced; it is not a demonstrated paid outcome. A supply_paused route stays listed with its reason and is not sellable.',
+  },
+};
+
+// The x402 v2 discovery listing shape: `items[]`, each with the resource URL and
+// the `accepts` array the resource actually answers with. Every entry is the
+// exact quote the deployed system returned during the probe, not a price copied
+// from a pricing file, because a manifest that disagrees with the 402 sends an
+// agent to sign the wrong amount.
+//
+// `/v1/ai/execute` has no single price: it quotes per request from the model the
+// caller names. The example carried here is therefore taken from a specific live
+// chat route and names that route, rather than from whichever route happened to
+// sort first — the product-level quote is a speech route, and publishing a
+// speech price under `ai.chat` would misprice the operation an agent calls.
+const aiExampleRoute = liveRegistry.aiRoutes.find((route) => route.state === 'live'
+  && route.productIds.includes('ai.chat')
+  && route.observedQuote !== null) ?? null;
+
+const x402Resources = [
+  { productId: 'search', path: '/v1/search/paid', operationId: 'search.web', priceModel: 'fixed_request', quote: observed.search.observedQuote, exampleRouteId: null },
+  { productId: 'ai', path: '/v1/ai/execute', operationId: 'ai.chat', priceModel: 'request_derived_per_model', quote: aiExampleRoute?.observedQuote ?? null, exampleRouteId: aiExampleRoute?.routeId ?? null },
+  { productId: 'sandbox', path: '/v1/sandbox/execute', operationId: 'sandbox.run', priceModel: 'fixed_request', quote: observed.sandbox.observedQuote, exampleRouteId: null },
+]
+  .filter(({ productId, quote }) => observed[productId].state === 'live' && quote !== null)
+  .map(({ productId, path: resourcePath, operationId, priceModel, quote, exampleRouteId }) => {
+    const product = observed[productId];
+    return {
+      resource: `${publicBaseUrl}${resourcePath}`,
+      type: 'http',
+      x402Version: 2,
+      accepts: [{
+        scheme: quote.scheme,
+        network: quote.network,
+        amount: quote.amountAtomic,
+        asset: quote.asset,
+        payTo: quote.payTo,
+        maxTimeoutSeconds: 60,
+        extra: {
+          clervo: {
+            operationId,
+            priceModel,
+            priceVersion: quote.priceVersion,
+            // The amount above is one observed quote. For a request-derived
+            // price it is an example from the route named here, not a fixed
+            // offer: the 402 the resource returns for the caller's own request
+            // is the binding one.
+            amountIsBinding: priceModel === 'fixed_request',
+            exampleRouteId,
+            lifecycleState: product.state,
+            proofLevel: product.proof,
+          },
+        },
+      }],
+      lastUpdated: epochSeconds(liveRegistry.observedAt),
+      metadata: {
+        category: productId,
+        provider: 'clervo',
+        description: quote.resourceDescription,
+        method: 'POST',
+        bodyType: 'json',
+        idempotency: 'idempotency-key header; the same key with the same body replays without a second charge',
+        bazaarExtensionPresent: quote.bazaarExtensionPresent,
+        ...(priceModel === 'request_derived_per_model' ? { modelList: `${publicBaseUrl}/v1/models` } : {}),
+      },
+    };
+  });
+
+const x402Manifest = {
+  x402Version: 2,
+  items: x402Resources,
+  pagination: { limit: x402Resources.length, offset: 0, total: x402Resources.length },
+  clervo: {
+    provenance: observedProvenance,
+    states: liveRegistry.states,
+    proofLevels: liveRegistry.proofLevels,
+    // A free path is not an x402 item — it carries no payment requirement — but
+    // an agent that finds this manifest first should not have to pay to try the
+    // service. It is advertised alongside, clearly separated.
+    freeResources: observed.search.freeEntry === null ? [] : [{
+      resource: observed.search.freeEntry.route,
+      type: 'http',
+      method: 'POST',
+      bodyType: 'json',
+      paymentRequired: false,
+      acceptsRequestWithoutIdempotencyKey: observed.search.freeEntry.acceptsNaiveRequest,
+      operationId: 'search.web',
+      lifecycleState: observed.search.state,
+      proofLevel: observed.search.proof,
+      quota: 'Capped per caller and globally. Over the cap the route answers 429 free_quota_exceeded rather than executing.',
+    }],
+    documents: { models: `${publicBaseUrl}/v1/models`, reference: `${publicBaseUrl}/llms.txt`, discovery: `${publicBaseUrl}/.well-known/clervo.json`, openapi: `${publicBaseUrl}/openapi.json` },
+  },
+};
+
+if (publicBaseUrl !== null) {
+  llms += [
+    '',
+    '## Agent discovery',
+    '',
+    `- [\`GET ${publicBaseUrl}/v1/models\`](/models.json): every catalogued AI route with its exact model identity, lifecycle state, proof level, and observed price. OpenAI list shape.`,
+    `- [\`GET ${publicBaseUrl}/.well-known/x402\`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.`,
+    `- \`GET ${publicBaseUrl}/llms.txt\`: this document, served from the API host as well as the site.`,
+    '',
+    `Model list: ${modelList.data.length} catalogued routes, ${modelList.data.filter(({ clervo }) => clervo.sellable).length} sellable. Payment manifest: ${x402Resources.length} paid resources.`,
+    '',
+  ].join('\n');
+}
 await writeFile(path.join(outputDirectory, 'llms.txt'), llms);
+// Both agent documents are also written as plain files so the site host serves
+// byte-identical copies. The API host serves them at their canonical agent
+// paths — `/v1/models` and `/.well-known/x402` — from the same bytes.
+await writeFile(path.join(outputDirectory, 'models.json'), stableJson(modelList));
+await writeFile(path.join(outputDirectory, '.well-known', 'x402.json'), stableJson(x402Manifest));
 
 const skillDocument = [
   '# Clervo skill',
@@ -713,6 +887,8 @@ const skillDocument = [
   '## Machine-readable contracts',
   '',
   '- `/.well-known/clervo.json` — discovery, products, and observed truth.',
+  '- `/.well-known/x402` — x402 v2 payment manifest with the exact quote each paid resource returns.',
+  '- `/v1/models` — catalogued AI routes with lifecycle state, proof level, and observed price.',
   '- `/openapi.json` — request and response contracts.',
   '- `/status.json` — current lifecycle state, proof level, and open conformance defects.',
   '- `/pricing.json` — the public offer boundary.',
@@ -772,6 +948,8 @@ const agentDocument = [
   '## Discovery paths',
   '',
   '- `/.well-known/clervo.json`',
+  '- `/.well-known/x402` — x402 v2 payment manifest; each item carries the exact quote its resource returns.',
+  '- `/v1/models` — every catalogued AI route, OpenAI list shape, with lifecycle state, proof level, and observed price.',
   '- `/openapi.json`',
   '- `/catalog.json`',
   '- `/capabilities.json`',
@@ -779,6 +957,13 @@ const agentDocument = [
   '- `/status.json`',
   '- `/onboarding.json`',
   '- `/llms.txt`',
+  '',
+  '## Model selection',
+  '',
+  `- ${modelList.data.length} catalogued routes; ${modelList.data.filter(({ clervo }) => clervo.sellable).length} sellable now.`,
+  '- Send `clervo.routeId`\'s exact model identity as `model` on `POST /v1/ai/execute`.',
+  '- A route with `clervo.lifecycleState: supply_paused` is listed with its reason and is not sellable. Do not select it; it stays listed because the supply is owned and returning.',
+  '- `clervo.observedPrice` is the quote observed at the probe above. The 402 returned for your own request is the binding one.',
   '',
   '## Boundaries',
   '',
@@ -789,21 +974,28 @@ const agentDocument = [
 await writeFile(path.join(outputDirectory, 'skill.md'), skillDocument);
 await writeFile(path.join(outputDirectory, 'agent.md'), agentDocument);
 
-// The API edge is a Worker with no filesystem, so it cannot read the two
+// The API edge is a Worker with no filesystem, so it cannot read these
 // documents at request time. They are emitted as a module it imports, from the
 // same strings written above, so the site host and the API host can never serve
 // two different versions of the same document.
+//
+// `llms.txt` is here for that reason: it was already served from the site, and
+// an agent that finds the API host first must get the identical reference
+// rather than a 404 that makes the service look undocumented.
 const workerDirectory = path.join(root, 'generated/worker');
 await mkdir(workerDirectory, { recursive: true });
 await writeFile(path.join(workerDirectory, 'agent-documents.js'), [
   '// Generated by scripts/generate-discovery.mjs. Do not edit.',
   '//',
   '// Imported by apps/worker/src/api-edge.js so api.clervo.dev serves byte-identical',
-  '// copies of generated/public/skill.md and generated/public/agent.md.',
+  '// copies of generated/public/skill.md, generated/public/agent.md, and',
+  '// generated/public/llms.txt.',
   '',
   `export const SKILL_DOCUMENT = ${JSON.stringify(skillDocument)};`,
   '',
   `export const AGENT_DOCUMENT = ${JSON.stringify(agentDocument)};`,
+  '',
+  `export const LLMS_DOCUMENT = ${JSON.stringify(llms)};`,
   '',
 ].join('\n'));
 

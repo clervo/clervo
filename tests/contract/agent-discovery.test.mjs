@@ -1,0 +1,247 @@
+// B3 — API discovery served.
+//
+// An agent cannot open an account or read a marketing page. It reads three
+// documents: a model list, a payment manifest, and a reference. These tests
+// assert the four launch-critical properties of those documents:
+//
+//   1. every document is derived from the probed live registry;
+//   2. every operation a document lists is callable on the deployed edge;
+//   3. no document lists a route the registry marks `unavailable`;
+//   4. no document claims a proof level the registry does not hold.
+//
+// As in registry-public-consistency.test.mjs, nothing here pins a status value.
+// A document is compared against the registry, never against a literal state,
+// so improving the runtime can never break this suite.
+
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import test from 'node:test';
+
+import worker from '../../apps/worker/src/api-edge.js';
+
+const root = path.resolve(import.meta.dirname, '../..');
+const json = async (file) => JSON.parse(await readFile(path.join(root, file), 'utf8'));
+const text = (file) => readFile(path.join(root, file), 'utf8');
+
+const LIFECYCLE_STATES = new Set(['live', 'supply_paused', 'unavailable']);
+const PROOF_LEVELS = ['none', 'quote_observed_unpaid', 'paid_outcome_verified', 'externally_repeated'];
+// A route in one of these states is in the catalog. `unavailable` is not: it
+// has no public route at all, and listing it would advertise supply we do not
+// have. A paused route stays listed with its reason, because dropping it would
+// erase supply we own.
+const CATALOGUED_STATES = new Set(['live', 'supply_paused']);
+
+const registry = await json('packages/catalog/live-registry.json');
+const models = await json('generated/public/models.json');
+const manifest = await json('generated/public/.well-known/x402.json');
+
+const environment = {
+  CLERVO_AI_PUBLIC_ENABLED: 'true',
+  CLERVO_SANDBOX_PUBLIC_ENABLED: 'true',
+  CLERVO_EDGE_AUTHORIZATION: 'edge-authorization-at-least-32-characters',
+};
+const get = (pathname) => worker.fetch(new Request(`https://api.clervo.dev${pathname}`), environment);
+
+test('the model list carries every catalogued route and no route the registry does not catalogue', async () => {
+  const catalogued = registry.aiRoutes
+    .filter(({ state }) => CATALOGUED_STATES.has(state))
+    .map(({ routeId }) => routeId)
+    .sort();
+  const listed = models.data.map(({ clervo }) => clervo.routeId).sort();
+  assert.deepEqual(listed, catalogued);
+
+  // Every listed model must be callable by the exact identity the registry
+  // observed. A list whose `id` is not the string the route accepts sends an
+  // agent to a request that fails closed.
+  for (const entry of models.data) {
+    const route = registry.aiRoutes.find(({ routeId }) => routeId === entry.clervo.routeId);
+    assert.equal(entry.id, route.exactModelId, `${route.routeId} must list its exact model identity`);
+    assert.equal(entry.object, 'model');
+    assert.equal(entry.clervo.route, '/v1/ai/execute');
+  }
+  assert.equal(models.object, 'list');
+});
+
+test('the model list renders lifecycle state and proof level from the registry, never above it', () => {
+  const ceiling = PROOF_LEVELS.indexOf(registry.proofCeiling.level);
+  assert.ok(ceiling >= 0);
+  for (const entry of models.data) {
+    const route = registry.aiRoutes.find(({ routeId }) => routeId === entry.clervo.routeId);
+    assert.equal(entry.clervo.lifecycleState, route.state, `${route.routeId} lifecycle must match the registry`);
+    assert.equal(entry.clervo.proofLevel, route.proof, `${route.routeId} proof level must match the registry`);
+    assert.equal(entry.clervo.sellable, route.sellable, `${route.routeId} sellability must match the registry`);
+    assert.ok(LIFECYCLE_STATES.has(entry.clervo.lifecycleState));
+    assert.ok(
+      PROOF_LEVELS.indexOf(entry.clervo.proofLevel) <= ceiling,
+      `${route.routeId} claims ${entry.clervo.proofLevel}, above the probe ceiling`,
+    );
+    // A route that is not sellable must carry the reason it is not, so an agent
+    // can tell temporarily-unfunded supply from supply that never existed.
+    if (!entry.clervo.sellable) {
+      assert.equal(typeof entry.clervo.reason, 'string', `${route.routeId} must publish why it is not sellable`);
+      assert.ok(entry.clervo.reason.length > 0);
+    }
+    assert.equal(entry.clervo.reason, route.reason);
+    assert.equal(entry.clervo.expectedReturnAt, route.expectedReturnAt);
+  }
+  assert.deepEqual(models.clervo.counts, registry.summary.aiRoutes);
+  assert.equal(models.clervo.provenance.observedAt, registry.observedAt);
+  assert.equal(models.clervo.provenance.source, 'packages/catalog/live-registry.json');
+});
+
+test('every model price is the price the registry observed, marked as a maximum charge', () => {
+  for (const entry of models.data) {
+    const route = registry.aiRoutes.find(({ routeId }) => routeId === entry.clervo.routeId);
+    if (route.observedQuote === null) {
+      assert.equal(entry.clervo.observedPrice, null, `${route.routeId} must publish no price it did not observe`);
+      continue;
+    }
+    assert.equal(entry.clervo.observedPrice.amountAtomic, route.observedQuote.amountAtomic);
+    assert.equal(entry.clervo.observedPrice.asset, route.observedQuote.asset);
+    assert.equal(entry.clervo.observedPrice.network, route.observedQuote.network);
+    assert.equal(entry.clervo.observedPrice.priceVersion, route.observedQuote.priceVersion);
+    assert.equal(entry.clervo.observedPrice.maximumCharge, true);
+  }
+});
+
+test('the x402 manifest lists only resources the registry serves, at the quote it observed', () => {
+  const familyOfResource = {
+    'https://api.clervo.dev/v1/search/paid': 'search',
+    'https://api.clervo.dev/v1/ai/execute': 'ai',
+    'https://api.clervo.dev/v1/sandbox/execute': 'sandbox',
+  };
+  assert.equal(manifest.x402Version, 2);
+  assert.ok(manifest.items.length > 0, 'a manifest with no items advertises nothing');
+
+  const servedFamilies = new Set(registry.products.filter(({ state }) => state === 'live').map(({ id }) => id));
+  for (const item of manifest.items) {
+    const family = familyOfResource[item.resource];
+    assert.ok(family !== undefined, `${item.resource} is not a known Clervo resource`);
+    assert.ok(servedFamilies.has(family), `the manifest offers ${item.resource} but the registry does not serve ${family}`);
+
+    const product = registry.products.find(({ id }) => id === family);
+    const [offer] = item.accepts;
+    assert.equal(item.x402Version, 2);
+    assert.equal(offer.network, product.observedQuote.network);
+    assert.equal(offer.asset, product.observedQuote.asset);
+    assert.equal(offer.payTo, product.observedQuote.payTo);
+    assert.equal(offer.scheme, product.observedQuote.scheme);
+    assert.equal(offer.extra.clervo.lifecycleState, product.state, `${family} lifecycle must match the registry`);
+    assert.equal(offer.extra.clervo.proofLevel, product.proof, `${family} proof level must match the registry`);
+
+    // A request-derived price carries an example quote and says so. A fixed
+    // price is the product-level quote and is binding. Publishing a per-request
+    // example as binding would send an agent to sign the wrong amount.
+    if (offer.extra.clervo.amountIsBinding) {
+      assert.equal(offer.amount, product.observedQuote.amountAtomic);
+      assert.equal(offer.extra.clervo.priceVersion, product.observedQuote.priceVersion);
+      assert.equal(offer.extra.clervo.exampleRouteId, null);
+    } else {
+      const example = registry.aiRoutes.find(({ routeId }) => routeId === offer.extra.clervo.exampleRouteId);
+      assert.ok(example !== undefined, 'an example price must name the route that produced it');
+      assert.ok(
+        example.productIds.includes(offer.extra.clervo.operationId),
+        `the example route must serve ${offer.extra.clervo.operationId}`,
+      );
+      assert.equal(example.state, registry.aiRoutes.find(({ routeId }) => routeId === example.routeId).state);
+      assert.equal(example.sellable, true, 'an example price must come from a sellable route');
+      assert.equal(offer.amount, example.observedQuote.amountAtomic);
+      assert.equal(offer.extra.clervo.priceVersion, example.observedQuote.priceVersion);
+    }
+  }
+});
+
+test('the manifest advertises the free path as free and never as a payable resource', () => {
+  const freeEntry = registry.products.find(({ id }) => id === 'search').freeEntry;
+  if (freeEntry === null) {
+    assert.deepEqual(manifest.clervo.freeResources, []);
+    return;
+  }
+  const [free] = manifest.clervo.freeResources;
+  assert.equal(free.resource, freeEntry.route);
+  assert.equal(free.paymentRequired, false);
+  assert.equal(free.acceptsRequestWithoutIdempotencyKey, freeEntry.acceptsNaiveRequest);
+  // The free path carries no payment requirement, so it must not appear as an
+  // x402 item: an agent that treats it as payable would try to sign for a route
+  // that never charges.
+  assert.ok(!manifest.items.some(({ resource }) => resource === freeEntry.route));
+});
+
+test('no discovery document lists a product the registry marks unavailable', () => {
+  const unavailable = registry.products.filter(({ state }) => state === 'unavailable').map(({ id }) => id);
+  const manifestText = JSON.stringify(manifest);
+  const modelsText = JSON.stringify(models);
+  const routeOfFamily = { rpc: '/v1/rpc/execute', prediction: '/v1/prediction/execute', crypto_intelligence: '/v1/crypto/execute' };
+  for (const family of unavailable) {
+    const route = routeOfFamily[family];
+    if (route === undefined) continue;
+    assert.ok(!manifestText.includes(route), `the x402 manifest must not offer ${route}`);
+    assert.ok(!modelsText.includes(route), `the model list must not offer ${route}`);
+  }
+});
+
+test('the API edge serves all three agent documents, and llms.txt byte-identically', async () => {
+  const [modelsResponse, manifestResponse, llmsResponse] = await Promise.all([
+    get('/v1/models'),
+    get('/.well-known/x402'),
+    get('/llms.txt'),
+  ]);
+  assert.equal(modelsResponse.status, 200);
+  assert.equal(manifestResponse.status, 200);
+  assert.equal(llmsResponse.status, 200);
+  assert.match(modelsResponse.headers.get('content-type'), /application\/json/u);
+  assert.match(manifestResponse.headers.get('content-type'), /application\/json/u);
+  assert.match(llmsResponse.headers.get('content-type'), /text\/plain/u);
+  assert.equal(modelsResponse.headers.get('access-control-allow-origin'), '*');
+
+  assert.deepEqual(await modelsResponse.json(), models);
+  assert.deepEqual(await manifestResponse.json(), manifest);
+  // The Worker has no filesystem, so llms.txt is compiled into a module. Two
+  // hosts serving two versions of the same reference is the drift this guards.
+  assert.equal(await llmsResponse.text(), await text('generated/public/llms.txt'));
+});
+
+test('the agent documents are read-only and reachable without a credential', async () => {
+  for (const pathname of ['/v1/models', '/.well-known/x402', '/llms.txt']) {
+    const posted = await worker.fetch(new Request(`https://api.clervo.dev${pathname}`, { method: 'POST' }), environment);
+    assert.equal(posted.status, 405, `${pathname} must reject a non-GET method`);
+  }
+  // No credential is supplied here beyond the edge's own upstream secret, which
+  // a caller never sends. A discovery document behind authentication is
+  // invisible to the customer it exists for.
+  const response = await worker.fetch(new Request('https://api.clervo.dev/v1/models'), {
+    CLERVO_AI_PUBLIC_ENABLED: 'true',
+    CLERVO_SANDBOX_PUBLIC_ENABLED: 'true',
+  });
+  assert.equal(response.status, 200);
+});
+
+test('the API root and the reference point at the three agent paths', async () => {
+  const root_ = await (await get('/')).json();
+  assert.equal(root_.models, 'https://api.clervo.dev/v1/models');
+  assert.equal(root_.x402, 'https://api.clervo.dev/.well-known/x402');
+  assert.equal(root_.reference, 'https://api.clervo.dev/llms.txt');
+
+  const discovery = await json('generated/public/.well-known/clervo.json');
+  assert.equal(discovery.artifacts.models, '/v1/models');
+  assert.equal(discovery.artifacts.x402, '/.well-known/x402');
+  assert.equal(discovery.artifacts.reference, '/llms.txt');
+
+  const llms = await text('generated/public/llms.txt');
+  assert.ok(llms.includes('https://api.clervo.dev/v1/models'));
+  assert.ok(llms.includes('https://api.clervo.dev/.well-known/x402'));
+});
+
+test('this suite pins no status value', async () => {
+  // Rule 2. Comparing a document against the registry is the point; naming a
+  // state as the value a document is expected to have is what previously made
+  // honesty break the build.
+  const source = await text('tests/contract/agent-discovery.test.mjs');
+  const states = [...LIFECYCLE_STATES].join('|');
+  const offenders = source
+    .split('\n')
+    .filter((line) => line.trimStart().startsWith('assert.'))
+    .filter((line) => new RegExp(`,\\s*'(?:${states})'`, 'u').test(line));
+  assert.deepEqual(offenders, [], 'an assertion pins a lifecycle state as an expected value');
+});

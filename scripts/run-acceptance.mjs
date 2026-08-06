@@ -33,6 +33,10 @@ const contractTests = [
   'tests/contract/prediction-public-http.test.mjs',
   'tests/contract/crypto-public-http.test.mjs',
   'tests/contract/registry-public-consistency.test.mjs',
+  // The three agent discovery documents are how an agent finds the service at
+  // all. This suite binds them to the probed registry so a document can never
+  // list supply the deployed system does not serve.
+  'tests/contract/agent-discovery.test.mjs',
 ];
 
 const gates = [

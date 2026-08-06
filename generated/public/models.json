@@ -1,0 +1,727 @@
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "@cf/deepgram/aura-2-en",
+      "object": "model",
+      "created": 1785658040,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.cloudflare_aura_2_en",
+        "supplyFamilyId": "supply.cloudflare_workers_ai",
+        "productIds": [
+          "ai.speech"
+        ],
+        "capabilities": [
+          "audio_output",
+          "text_input"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "312",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.7-ai.route.cloudflare_aura_2_en",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "object": "model",
+      "created": 1785652189,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
+        "supplyFamilyId": "supply.cloudflare_workers_ai",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "streaming",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "16",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.7-ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "@cf/nvidia/nemotron-3-120b-a12b",
+      "object": "model",
+      "created": 1785652189,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.cf_nvidia_nemotron_3_120b_a12b",
+        "supplyFamilyId": "supply.cloudflare_workers_ai",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "streaming",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "27",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.7-ai.route.cf_nvidia_nemotron_3_120b_a12b",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "@cf/openai/gpt-oss-120b",
+      "object": "model",
+      "created": 1785652189,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.cf_openai_gpt_oss_120b",
+        "supplyFamilyId": "supply.cloudflare_workers_ai",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "streaming",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "15",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_120b",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "@cf/openai/gpt-oss-20b",
+      "object": "model",
+      "created": 1785652189,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.cf_openai_gpt_oss_20b",
+        "supplyFamilyId": "supply.cloudflare_workers_ai",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "streaming",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "7",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_20b",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "object": "model",
+      "created": 1785652189,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.cf_qwen_qwen3_30b_a3b_fp8",
+        "supplyFamilyId": "supply.cloudflare_workers_ai",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "streaming",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "7",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.7-ai.route.cf_qwen_qwen3_30b_a3b_fp8",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "aura-2-arcas-en",
+      "object": "model",
+      "created": 1785640138,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.aura_2_arcas_en",
+        "supplyFamilyId": "supply.deepgram",
+        "productIds": [
+          "ai.speech"
+        ],
+        "capabilities": [
+          "audio_output",
+          "text_input"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "390",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "aura-2-thalia-en",
+      "object": "model",
+      "created": 1785640138,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.aura_2_thalia_en",
+        "supplyFamilyId": "supply.deepgram",
+        "productIds": [
+          "ai.speech"
+        ],
+        "capabilities": [
+          "audio_output",
+          "text_input"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "390",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_thalia_en",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "gemini-3-pro-image",
+      "object": "model",
+      "created": 1785639271,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gemini_3_pro_image",
+        "supplyFamilyId": "supply.google_vertex",
+        "productIds": [
+          "ai.image"
+        ],
+        "capabilities": [
+          "image_output",
+          "text_input"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "75000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_pro_image",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "gemini-3.1-flash-image",
+      "object": "model",
+      "created": 1785639271,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gemini_3_1_flash_image",
+        "supplyFamilyId": "supply.google_vertex",
+        "productIds": [
+          "ai.image"
+        ],
+        "capabilities": [
+          "image_output",
+          "text_input"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "35000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_image",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "gemini-3.1-flash-lite-image",
+      "object": "model",
+      "created": 1785639271,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gemini_3_1_flash_lite_image",
+        "supplyFamilyId": "supply.google_vertex",
+        "productIds": [
+          "ai.image"
+        ],
+        "capabilities": [
+          "image_output",
+          "text_input"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "15000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_lite_image",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "gemini-3.5-flash",
+      "object": "model",
+      "created": 1785639271,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gemini_3_5_flash",
+        "supplyFamilyId": "supply.google_vertex",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "169",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "gemini-3.5-flash-lite",
+      "object": "model",
+      "created": 1785639271,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gemini_3_5_flash_lite",
+        "supplyFamilyId": "supply.google_vertex",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "28",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash_lite",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "gemini-3.6-flash",
+      "object": "model",
+      "created": 1785639271,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gemini_3_6_flash",
+        "supplyFamilyId": "supply.google_vertex",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "145",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_6_flash",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "gemini-embedding-001",
+      "object": "model",
+      "created": 1785640680,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gemini_embedding_001",
+        "supplyFamilyId": "supply.google_vertex",
+        "productIds": [
+          "ai.embed"
+        ],
+        "capabilities": [
+          "embedding_output",
+          "text_input"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "2",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_embedding_001",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "gpt-5.6-luna",
+      "object": "model",
+      "created": 1785637993,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gpt_5_6_luna",
+        "supplyFamilyId": "supply.clervo_ai_gateway",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "streaming",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "upstream_completion_failed",
+        "expectedReturnAt": "2026-08-09T00:00:00Z",
+        "observedPrice": {
+          "amountAtomic": "113",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_luna",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "gpt-5.6-sol",
+      "object": "model",
+      "created": 1785637993,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gpt_5_6_sol",
+        "supplyFamilyId": "supply.clervo_ai_gateway",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "streaming",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "upstream_completion_failed",
+        "expectedReturnAt": "2026-08-09T00:00:00Z",
+        "observedPrice": {
+          "amountAtomic": "563",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_sol",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "gpt-5.6-terra",
+      "object": "model",
+      "created": 1785637993,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gpt_5_6_terra",
+        "supplyFamilyId": "supply.clervo_ai_gateway",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "streaming",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "upstream_completion_failed",
+        "expectedReturnAt": "2026-08-09T00:00:00Z",
+        "observedPrice": {
+          "amountAtomic": "282",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_terra",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "openai/gpt-oss-120b",
+      "object": "model",
+      "created": 1785641360,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gpt_oss_120b",
+        "supplyFamilyId": "supply.groq",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "streaming",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "10",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_120b",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "openai/gpt-oss-20b",
+      "object": "model",
+      "created": 1785641360,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.gpt_oss_20b",
+        "supplyFamilyId": "supply.groq",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "streaming",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "5",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_20b",
+          "maximumCharge": true
+        }
+      }
+    },
+    {
+      "id": "qwen/qwen3.6-27b",
+      "object": "model",
+      "created": 1785641360,
+      "owned_by": "clervo",
+      "clervo": {
+        "routeId": "ai.route.qwen3_6_27b",
+        "supplyFamilyId": "supply.groq",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "streaming",
+          "structured_output",
+          "text_input",
+          "text_output"
+        ],
+        "route": "/v1/ai/execute",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "sellable": true,
+        "reason": null,
+        "expectedReturnAt": null,
+        "observedPrice": {
+          "amountAtomic": "49",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "decimals": 6,
+          "priceVersion": "ai-2026-08-02.3-ai.route.qwen3_6_27b",
+          "maximumCharge": true
+        }
+      }
+    }
+  ],
+  "clervo": {
+    "provenance": {
+      "source": "packages/catalog/live-registry.json",
+      "generatedBy": "scripts/probe-live-registry.mjs",
+      "observedAt": "2026-08-06T14:42:37.447Z",
+      "releaseId": "35a2f7af3bbe4914dc5e1685e6974c07a04eebf0",
+      "proofLevels": {
+        "externally_repeated": "an unrelated party did it, more than once",
+        "none": "nothing demonstrated",
+        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
+        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
+      },
+      "states": {
+        "live": "probed; the deployed system serves it now",
+        "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
+        "unavailable": "absent from the catalog or has no public route at all"
+      }
+    },
+    "states": {
+      "live": "probed; the deployed system serves it now",
+      "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
+      "unavailable": "absent from the catalog or has no public route at all"
+    },
+    "proofLevels": {
+      "externally_repeated": "an unrelated party did it, more than once",
+      "none": "nothing demonstrated",
+      "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
+      "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
+    },
+    "counts": {
+      "live": 18,
+      "supply_paused": 3
+    },
+    "note": "Lifecycle state and proof level are separate facts. A live route at quote_observed_unpaid is offered and priced; it is not a demonstrated paid outcome. A supply_paused route stays listed with its reason and is not sellable."
+  }
+}
