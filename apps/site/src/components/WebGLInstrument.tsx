@@ -5,6 +5,38 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 import type { ExperiencePhase } from '../product';
 
+/*
+ * The Solid Apex Core: a live render of the canonical prism, driven by the
+ * lifecycle phase the reader has scrolled to.
+ *
+ * On the warm hues below, and why they are not a gold-rule violation.
+ *
+ * Gold in the state vocabulary is `--verified` (#ffc800) and is emitted by
+ * `.state--verified` alone: it is the one colour on this site that asserts an
+ * observed fact. The homepage spine used to paint its `verified` and `receipt`
+ * steps with that exact token, which made a narrative diagram look like
+ * evidence, and those rules were removed.
+ *
+ * The materials here are a different case, confirmed by measurement rather than
+ * by reading the hex. `#d6b86a` and `#e0a84b` are a desaturated brass, not the
+ * token: across all six canonical renders, no warm pixel comes within 80 units
+ * of #ffc800 in RGB, and the nearest any of them gets is 102. They read as a
+ * lit metal object, not as a verified badge. The canvas is also `aria-hidden`
+ * decoration behind the page, carrying no label a reader could act on.
+ *
+ * They are additionally load-bearing. Every value here is matched to
+ * `apps/site/media/blender/build_clervo_prism.py`, whose output — the GLB and
+ * the twelve poster renders this component falls back to on mobile, under
+ * reduced motion, and when WebGL is unavailable — is hash-pinned by
+ * `apps/site/media/canonical-media.v1.json` and enforced by
+ * `scripts/site/validate-canonical-media.mjs`. Recolouring the live materials
+ * without re-rendering would make the 3D frame and its own fallback poster
+ * disagree, which is a worse defect than the one it would be trying to avoid.
+ *
+ * So: keep these in step with the Blender source, and do not "correct" them
+ * towards `--verified`. If the prism is ever re-mastered, change both together.
+ */
+
 const semanticColor: Record<ExperiencePhase, string> = {
   risk: '#ff4d52',
   qualified: '#57d8e8',
