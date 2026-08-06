@@ -574,7 +574,7 @@ const merchantProbe = observedPayTo === null
   : await observe('bazaar.merchant', `${BAZAAR_MERCHANT_URL}?payTo=${observedPayTo}`);
 
 const indexedByResource = new Map();
-for (const item of Array.isArray(merchantProbe?.body?.items) ? merchantProbe.body.items : []) {
+for (const item of Array.isArray(merchantProbe?.body?.resources) ? merchantProbe.body.resources : []) {
   if (typeof item?.resource === 'string') indexedByResource.set(item.resource, item);
 }
 
@@ -600,10 +600,11 @@ for (const { productId, resourcePath } of bazaarResourcePaths) {
       .map((check) => ({ check: check.check ?? null, severity: check.severity ?? null, expected: check.expected ?? null, actual: check.actual ?? null }))
       .sort((left, right) => String(left.check).localeCompare(String(right.check))),
     // Indexing is a separate fact from eligibility: a resource can be fully
-    // valid and still be absent from the catalog until a payment settles.
+    // valid and still be absent from the catalog until a payment settles. The
+    // merchant listing proves presence; the validator carries the crawl state.
     indexed: indexed !== null,
-    indexActive: indexed?.index?.active ?? null,
-    indexLastCrawledAt: indexed?.index?.lastCrawledAt ?? null,
+    indexActive: validation.body?.index?.active ?? indexed?.index?.active ?? null,
+    indexLastCrawledAt: validation.body?.index?.lastCrawledAt ?? indexed?.index?.lastCrawledAt ?? null,
   });
 }
 

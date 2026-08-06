@@ -19,12 +19,12 @@
       "exactModelId": "aura-2-arcas-en",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "390",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en",
+        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en-min1000",
         "resourceDescription": "Bounded ai.speech execution",
         "scheme": "exact"
       },
@@ -57,12 +57,12 @@
       "exactModelId": "aura-2-thalia-en",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "390",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_thalia_en",
+        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_thalia_en-min1000",
         "resourceDescription": "Bounded ai.speech execution",
         "scheme": "exact"
       },
@@ -98,12 +98,12 @@
       "exactModelId": "@cf/meta/llama-4-scout-17b-16e-instruct",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "16",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cf_meta_llama_4_scout_17b_16e_instruct-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -139,12 +139,12 @@
       "exactModelId": "@cf/nvidia/nemotron-3-120b-a12b",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "27",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cf_nvidia_nemotron_3_120b_a12b",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cf_nvidia_nemotron_3_120b_a12b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -180,12 +180,12 @@
       "exactModelId": "@cf/openai/gpt-oss-120b",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "15",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_120b",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_120b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -221,12 +221,12 @@
       "exactModelId": "@cf/openai/gpt-oss-20b",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "7",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_20b",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_20b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -262,12 +262,12 @@
       "exactModelId": "@cf/qwen/qwen3-30b-a3b-fp8",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "7",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cf_qwen_qwen3_30b_a3b_fp8",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cf_qwen_qwen3_30b_a3b_fp8-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -300,12 +300,12 @@
       "exactModelId": "@cf/deepgram/aura-2-en",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "312",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cloudflare_aura_2_en",
+        "priceVersion": "ai-2026-08-02.7-ai.route.cloudflare_aura_2_en-min1000",
         "resourceDescription": "Bounded ai.speech execution",
         "scheme": "exact"
       },
@@ -343,7 +343,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_image",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_image-min1000",
         "resourceDescription": "Bounded ai.image execution",
         "scheme": "exact"
       },
@@ -381,7 +381,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_lite_image",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_lite_image-min1000",
         "resourceDescription": "Bounded ai.image execution",
         "scheme": "exact"
       },
@@ -416,12 +416,12 @@
       "exactModelId": "gemini-3.5-flash",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "169",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -456,12 +456,12 @@
       "exactModelId": "gemini-3.5-flash-lite",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "28",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash_lite",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash_lite-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -496,12 +496,12 @@
       "exactModelId": "gemini-3.6-flash",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "145",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_6_flash",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_6_flash-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -539,7 +539,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_pro_image",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_pro_image-min1000",
         "resourceDescription": "Bounded ai.image execution",
         "scheme": "exact"
       },
@@ -572,12 +572,12 @@
       "exactModelId": "gemini-embedding-001",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "2",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_embedding_001",
+        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_embedding_001-min1000",
         "resourceDescription": "Bounded ai.embed execution",
         "scheme": "exact"
       },
@@ -607,17 +607,17 @@
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_authentication_unavailable"
+        "supplyReason": "upstream_completion_failed"
       },
       "exactModelId": "gpt-5.6-luna",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
       "observedQuote": {
-        "amountAtomic": "113",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_luna",
+        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_luna-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -625,7 +625,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_authentication_unavailable",
+      "reason": "upstream_completion_failed",
       "routeId": "ai.route.gpt_5_6_luna",
       "sellable": false,
       "state": "supply_paused",
@@ -647,17 +647,17 @@
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_authentication_unavailable"
+        "supplyReason": "upstream_completion_failed"
       },
       "exactModelId": "gpt-5.6-sol",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
       "observedQuote": {
-        "amountAtomic": "563",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_sol",
+        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_sol-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -665,7 +665,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_authentication_unavailable",
+      "reason": "upstream_completion_failed",
       "routeId": "ai.route.gpt_5_6_sol",
       "sellable": false,
       "state": "supply_paused",
@@ -687,17 +687,17 @@
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_authentication_unavailable"
+        "supplyReason": "upstream_completion_failed"
       },
       "exactModelId": "gpt-5.6-terra",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
       "observedQuote": {
-        "amountAtomic": "282",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_terra",
+        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_terra-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -705,7 +705,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_authentication_unavailable",
+      "reason": "upstream_completion_failed",
       "routeId": "ai.route.gpt_5_6_terra",
       "sellable": false,
       "state": "supply_paused",
@@ -733,12 +733,12 @@
       "exactModelId": "openai/gpt-oss-120b",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "10",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_120b",
+        "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_120b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -774,12 +774,12 @@
       "exactModelId": "openai/gpt-oss-20b",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "5",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_20b",
+        "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_20b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -815,12 +815,12 @@
       "exactModelId": "qwen/qwen3.6-27b",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "49",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.3-ai.route.qwen3_6_27b",
+        "priceVersion": "ai-2026-08-02.3-ai.route.qwen3_6_27b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -835,6 +835,46 @@
       "supplyFamilyId": "supply.groq"
     }
   ],
+  "bazaar": {
+    "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",
+    "indexedResourceCount": 1,
+    "merchantLookupReachable": true,
+    "note": "Indexing triggers only on a payment settled through the CDP facilitator. A valid resource that has never been paid for is eligible and unindexed, which is not a defect.",
+    "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+    "resources": [
+      {
+        "failedChecks": [],
+        "indexActive": null,
+        "indexLastCrawledAt": null,
+        "indexed": false,
+        "productId": "ai",
+        "resource": "https://api.clervo.dev/v1/ai/execute",
+        "valid": true,
+        "validatorReachable": true
+      },
+      {
+        "failedChecks": [],
+        "indexActive": null,
+        "indexLastCrawledAt": null,
+        "indexed": false,
+        "productId": "sandbox",
+        "resource": "https://api.clervo.dev/v1/sandbox/execute",
+        "valid": true,
+        "validatorReachable": true
+      },
+      {
+        "failedChecks": [],
+        "indexActive": true,
+        "indexLastCrawledAt": "2026-08-06T16:59:46.261Z",
+        "indexed": true,
+        "productId": "search",
+        "resource": "https://api.clervo.dev/v1/search/paid",
+        "valid": true,
+        "validatorReachable": true
+      }
+    ],
+    "validator": "https://api.cdp.coinbase.com/platform/v2/x402/validate"
+  },
   "conformance": [
     {
       "conformant": true,
@@ -857,7 +897,7 @@
     "apiOrigin": "https://api.clervo.dev",
     "environment": "production",
     "paidExecutionEnabled": true,
-    "releaseId": "35a2f7af3bbe4914dc5e1685e6974c07a04eebf0",
+    "releaseId": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
     "sandboxPaidEnabled": true,
     "siteOrigin": "https://clervo.dev",
     "stateBackend": "postgres",
@@ -907,7 +947,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-06T15:14:21.853Z",
+  "observedAt": "2026-08-06T17:01:41.422Z",
   "products": [
     {
       "evidence": {
@@ -924,12 +964,12 @@
       "id": "ai",
       "label": "AI",
       "observedQuote": {
-        "amountAtomic": "390",
+        "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en",
+        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en-min1000",
         "resourceDescription": "Bounded ai.speech execution",
         "scheme": "exact"
       },
@@ -1092,7 +1132,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "4bd9df74762cb3df04e95309be2f76d0a2c95caa",
+  "sourceCommit": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -1103,6 +1143,8 @@
       "live": 18,
       "supply_paused": 3
     },
+    "bazaarIndexedResources": 1,
+    "bazaarValidResources": 3,
     "conformanceDefectsOpen": 0,
     "discoverySurfaces": {
       "live": 5
@@ -1125,8 +1167,8 @@
         "gpt-5.6-terra"
       ],
       "outcome": "failed",
-      "providerErrorCode": "auth_unavailable",
-      "reason": "upstream_authentication_unavailable",
+      "providerErrorCode": "internal_server_error",
+      "reason": "upstream_completion_failed",
       "supplyFamilyId": "supply.clervo_ai_gateway"
     }
   ]

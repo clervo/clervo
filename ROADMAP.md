@@ -18,21 +18,22 @@ Update only when execution state actually changes. This is not a journal.
 | Field | Value |
 |---|---|
 | Current milestone | **B4 — Bazaar entry** |
-| Milestone status | `not_started` — B1, B2, and B3 are all `externally_verified`. B3 shipped the three agent discovery documents on the API host; the probed registry records `api.models`, `api.well_known_x402`, and `api.llms_txt` as `live` at status 200, five discovery surfaces live, and zero open conformance defects. |
+| Milestone status | `externally_verified` — the CDP merchant discovery endpoint returns `https://api.clervo.dev/v1/search/paid` with `index.active: true`, crawled `2026-08-06T16:59:46.261Z`, after one settled 0.006 USDC payment on Base mainnet. All three payable resources validate `true`. AI and Sandbox remain valid and unindexed, which is expected: indexing triggers only on a settled payment through the CDP facilitator. |
 | Current branch | `main` |
-| Latest commit | `4bd9df7` — `feat(discovery): serve the three agent discovery documents on the API host`, plus the post-deploy generated state committed on top. The deployed B2 fixes were cherry-picked onto `main` without the release-only revert, so the preserved RPC, Prediction, and Crypto work is intact. |
-| Current production release | Cloud Run origin `clervo-api-production-00031-kos` at 100% traffic, image `sha256:63ad8aaa619f46fac962f9366c26eb13c7c241dc8e3d21c773ede4f43f62f44f`, `CLERVO_RELEASE_ID=35a2f7af3bbe4914dc5e1685e6974c07a04eebf0`; API edge worker `clervo-api-edge-production` version `835110e7-41cd-46d1-a964-c9fc53be9004`; site worker `clervo-site-production` version `11c90f2b-df5e-4b3c-8bb6-166c502bc346`. B3 changed the edge worker only; the Cloud Run origin is unchanged. |
-| Rollback targets | Cloud Run revision `clervo-api-production-00028-nor` (image `sha256:78718e50a50c2a74f639a4da5a03e80988d95611014d9c310cba1fe4d5d79df9`) — roll back with `gcloud run services update-traffic clervo-api-production --project bloxsniper-prod --region us-central1 --to-revisions clervo-api-production-00028-nor=100`. API edge `6e17ea78-32eb-4b87-8781-72aa37f90321` (the pre-B3 edge); site `4939f9da-765d-4f3c-a96f-6f0384fe8338`. Roll a worker back with `npx wrangler rollback <version> --config apps/worker/wrangler.jsonc` or `apps/site/wrangler.jsonc`. |
-| Latest externally verified customer outcome | `POST https://api.clervo.dev/v1/search/free` with a JSON body and no other headers returns 200 with three cited results and a server-minted `idempotency-key` response header; replaying that key returns the identical `searchResponse` with `replayed: true` and `idempotency-replayed: true`; a caller's own key still replays the same way; the free cap still returns 429 `free_quota_exceeded`. Proof level `externally_repeated`. Nothing has reached `paid_outcome_verified`. |
-| Current blockers | None. B4 needs no owner approval to begin; the first Bazaar settlement does. |
+| Latest commit | `777b7c6` — `fix(bazaar): make the three live x402 resources indexable`, plus the post-settlement observed state committed on top. The deployed B2 fixes were cherry-picked onto `main` without the release-only revert, so the preserved RPC, Prediction, and Crypto work is intact. |
+| Current production release | Cloud Run origin `clervo-api-production-00033-vub` at 100% traffic, image `sha256:7bb3211061e8cbca5abfa2f1930f7888877aaaed065fd2f54c8905aedf5422ad`, `CLERVO_RELEASE_ID=777b7c616e3e384c9a4b2b7112cef74521b7f7a5`; API edge worker `clervo-api-edge-production` version `835110e7-41cd-46d1-a964-c9fc53be9004`; site worker `clervo-site-production` version `11c90f2b-df5e-4b3c-8bb6-166c502bc346`. B4 changed the Cloud Run origin only; both workers are unchanged, so the deployed `/.well-known/x402` document still carries the pre-B4 AI amount until the edge worker is redeployed. |
+| Rollback targets | Cloud Run revision `clervo-api-production-00031-kos` (image `sha256:63ad8aaa619f46fac962f9366c26eb13c7c241dc8e3d21c773ede4f43f62f44f`, the pre-B4 origin) — roll back with `gcloud run services update-traffic clervo-api-production --project bloxsniper-prod --region us-central1 --to-revisions clervo-api-production-00031-kos=100`. The older `clervo-api-production-00028-nor` (image `sha256:78718e50a50c2a74f639a4da5a03e80988d95611014d9c310cba1fe4d5d79df9`) remains available behind it. API edge `6e17ea78-32eb-4b87-8781-72aa37f90321` (the pre-B3 edge); site `4939f9da-765d-4f3c-a96f-6f0384fe8338`. Roll a worker back with `npx wrangler rollback <version> --config apps/worker/wrangler.jsonc` or `apps/site/wrangler.jsonc`. |
+| Latest externally verified customer outcome | A settled x402 payment on `https://api.clervo.dev/v1/search/paid`: 0.006 USDC (6000 atomic) on Base mainnet `eip155:8453` to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`, operation `op_0549a567589cc87d31231376f9986602`, receipt `rcpt_582a23e6f1e066fe25984119c59c2ab0`, returning a real search result. Replaying idempotency key `idem_b4_bazaar_entry_search_01` returned the same operation with no second authorization and no second charge; the on-chain USDC delta is exactly one transfer of 6000 atomic units. `search.web` reaches `paid_outcome_verified`. The free path outcome above still holds at `externally_repeated`. |
+| Current blockers | None. B4 is complete and externally verified. |
 | External dependencies | Bazaar settlements (owner funds); Prediction terms decision; Crypto resale scope; RPC supply; gateway funding. |
-| Owner approvals waiting | Owner funds for the first Bazaar settlement, and any pricing change B4 concludes is needed. Nothing else in B4 is blocked. |
+| Owner approvals waiting | None for B4. A later keepalive settlement inside 30 days of `2026-08-06` will need approval again, as will any further Bazaar listing that requires its own settlement. |
 | Dates that move on their own | **2026-08-09** — `ai.clervo.dev` funding resumes, and all 21 AI route qualifications expire, same day. **30 days after any Bazaar listing** — a resource with no settlement in that window is dropped from the CDP catalog. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
 | B2 metrics (observed 2026-08-06T14:42:37.447Z) | Conformance defects open 0. Naive free-search rejection rate 0: `withoutIdempotencyKeyStatus` 200. Site 404 correctness: a nonexistent URL returns 404. |
 | B3 metrics (observed 2026-08-06T15:14:21.853Z) | Discovery surfaces live 5 of 5, including `api.models`, `api.well_known_x402`, and `api.llms_txt` at status 200. Model list entries 21 (18 sellable, 3 supply-paused with a reason). x402 manifest payable resources 3, free resources 1. |
-| Exact next task | Open B4. First task there: determine CDP Bazaar resource and indexing granularity before any pricing change. |
-| Files and services for that task | `apps/worker/src/api-edge.js` (`DISCOVERY_DOCUMENTS`, `READ_PATHS`), `scripts/generate-discovery.mjs`, `packages/catalog/ai-model-catalog.v1.json`; then `clervo-api-edge-production`. |
+| B4 metrics (observed 2026-08-06T17:01:41.422Z) | Bazaar-valid resources 3 of 3. Indexed resources 1 of 3: `https://api.clervo.dev/v1/search/paid`, `index.active: true`, last crawled `2026-08-06T16:59:46.261Z`. Settlements executed 1, total 0.006 USDC. AI routes quoting below the 1000-atomic minimum 0 — the floor is applied as a minimum billable charge above the derived price, so no route is sold below cost. Days until the search listing idles out: 30 from `2026-08-06`. |
+| Exact next task | Open B5. First task there: inventory the shared surface across the six `x402-paid-*.mjs` handlers. |
+| Files and services for that task | `apps/api/src/x402-paid-search.mjs`, `x402-paid-ai.mjs`, `x402-paid-sandbox.mjs`, `x402-paid-rpc.mjs`, `x402-paid-prediction.mjs`, `x402-paid-crypto.mjs`, and the shared `apps/api/src/x402-resource.mjs`. |
 
 ---
 
@@ -538,7 +539,13 @@ Every milestone below carries the same seventeen fields.
 ### B4 — Bazaar entry
 
 1. **Milestone:** B4 — Bazaar entry
-2. **Status:** `not_started`
+2. **Status:** `externally_verified` — deployed 2026-08-06 from release
+   `777b7c6` as Cloud Run revision `clervo-api-production-00033-vub`. Field 12
+   passed from outside: the CDP merchant discovery endpoint returns
+   `https://api.clervo.dev/v1/search/paid` with `index.active: true`, and the
+   settlement that triggered it returned a real cited search result with an
+   accurate receipt and a replay that returned the same operation without a
+   second charge.
 3. **Customer-visible outcome:** Clervo resources are findable in the CDP x402
    Bazaar, so agents discover them without ever visiting our site.
 4. **Why it matters commercially:** This is the largest single distribution
@@ -547,9 +554,25 @@ Every milestone below carries the same seventeen fields.
 5. **Preserve:** Existing prices where they clear the minimum; the CDP
    facilitator configuration; the valid `extensions.bazaar` blocks; the payment
    binding and idempotency guarantees.
-6. **Current evidence:** Search and Sandbox validate `true`. `index: null` on
-   all resources. 15 of 18 live AI routes quote below 1000 atomic; only the
-   three image routes clear it.
+6. **Current evidence:** All three payable resources validate `true` against
+   `POST https://api.cdp.coinbase.com/platform/v2/x402/validate`. Bazaar
+   granularity is per resource URL, not per domain, operation, or route: the
+   merchant listing keys on the exact resource, and one settled payment indexed
+   `/v1/search/paid` alone, leaving `/v1/ai/execute` and `/v1/sandbox/execute`
+   valid and unindexed. Indexing triggers only on a payment settled through the
+   CDP facilitator, so a valid never-paid resource is eligible and unindexed
+   rather than defective. The AI defect was a single failed check —
+   `Amount 113 is below $0.001 minimum (1000 atomic units)` on
+   `accepts[0].amount` — now closed by a 1000-atomic minimum billable charge
+   applied above the derived price, which only ever raises a quote and so
+   cannot sell below cost. The other defect was structural: the official x402
+   client copies `resource` and `extensions` from the challenge into the
+   settlement payload, but Clervo rebuilt that payload from the caller's
+   `PAYMENT-SIGNATURE` header, so a payer omitting either field would settle
+   against an empty resource URL and index nothing. Both fields are now
+   re-attached server-side from the issued challenge after verification and
+   after the fingerprint is taken, leaving payment binding and idempotency
+   identity unchanged.
 7. **Research:** **Determine the exact Bazaar resource and indexing granularity
    before any payment.** Is a resource a URL, an operation, or a route within an
    operation? Does one settled payment index the endpoint or only the specific
@@ -580,8 +603,11 @@ Every milestone below carries the same seventeen fields.
 15. **Owner approval:** **Real money.** Required, with the exact endpoint list,
     per-settlement amount, and total stated before any payment. Also production
     deploy for the price changes.
-16. **Stopping condition:** `index` non-null for every resource we chose to
-    list, and at least one route at `paid_outcome_verified`. Records **R2**.
+16. **Stopping condition:** Met. `index` is non-null and active for
+    `/v1/search/paid`, the resource chosen for the first listing, and
+    `search.web` is at `paid_outcome_verified`. Records **R2**. Listing AI and
+    Sandbox needs one settlement each, at 0.001 and 0.12 USDC respectively, and
+    is a separate owner approval rather than a B4 blocker.
 17. **Continuation point:** Open B5. First task there: inventory the shared
     surface across the six `x402-paid-*.mjs` handlers.
 

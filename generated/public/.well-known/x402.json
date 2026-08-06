@@ -26,7 +26,7 @@
           }
         }
       ],
-      "lastUpdated": 1786029261,
+      "lastUpdated": 1786035701,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -34,7 +34,14 @@
         "method": "POST",
         "bodyType": "json",
         "idempotency": "idempotency-key header; the same key with the same body replays without a second charge",
-        "bazaarExtensionPresent": true
+        "bazaarExtensionPresent": true,
+        "bazaar": {
+          "validatorAccepted": true,
+          "indexed": true,
+          "indexActive": true,
+          "indexLastCrawledAt": "2026-08-06T16:59:46.261Z",
+          "failedChecks": []
+        }
       }
     },
     {
@@ -45,7 +52,7 @@
         {
           "scheme": "exact",
           "network": "eip155:8453",
-          "amount": "16",
+          "amount": "1000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
           "maxTimeoutSeconds": 60,
@@ -53,7 +60,7 @@
             "clervo": {
               "operationId": "ai.chat",
               "priceModel": "request_derived_per_model",
-              "priceVersion": "ai-2026-08-02.7-ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
+              "priceVersion": "ai-2026-08-02.7-ai.route.cf_meta_llama_4_scout_17b_16e_instruct-min1000",
               "amountIsBinding": false,
               "exampleRouteId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
               "lifecycleState": "live",
@@ -62,7 +69,7 @@
           }
         }
       ],
-      "lastUpdated": 1786029261,
+      "lastUpdated": 1786035701,
       "metadata": {
         "category": "ai",
         "provider": "clervo",
@@ -71,6 +78,13 @@
         "bodyType": "json",
         "idempotency": "idempotency-key header; the same key with the same body replays without a second charge",
         "bazaarExtensionPresent": true,
+        "bazaar": {
+          "validatorAccepted": true,
+          "indexed": false,
+          "indexActive": null,
+          "indexLastCrawledAt": null,
+          "failedChecks": []
+        },
         "modelList": "https://api.clervo.dev/v1/models"
       }
     },
@@ -99,7 +113,7 @@
           }
         }
       ],
-      "lastUpdated": 1786029261,
+      "lastUpdated": 1786035701,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -107,7 +121,14 @@
         "method": "POST",
         "bodyType": "json",
         "idempotency": "idempotency-key header; the same key with the same body replays without a second charge",
-        "bazaarExtensionPresent": true
+        "bazaarExtensionPresent": true,
+        "bazaar": {
+          "validatorAccepted": true,
+          "indexed": false,
+          "indexActive": null,
+          "indexLastCrawledAt": null,
+          "failedChecks": []
+        }
       }
     }
   ],
@@ -120,8 +141,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-06T15:14:21.853Z",
-      "releaseId": "35a2f7af3bbe4914dc5e1685e6974c07a04eebf0",
+      "observedAt": "2026-08-06T17:01:41.422Z",
+      "releaseId": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -144,6 +165,12 @@
       "none": "nothing demonstrated",
       "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
       "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
+    },
+    "bazaar": {
+      "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",
+      "validator": "https://api.cdp.coinbase.com/platform/v2/x402/validate",
+      "indexedResourceCount": 1,
+      "note": "Indexing triggers only on a payment settled through the CDP facilitator. A valid resource that has never been paid for is eligible and unindexed, which is not a defect."
     },
     "freeResources": [
       {

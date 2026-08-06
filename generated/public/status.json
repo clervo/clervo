@@ -63,8 +63,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-06T15:14:21.853Z",
-      "releaseId": "35a2f7af3bbe4914dc5e1685e6974c07a04eebf0",
+      "observedAt": "2026-08-06T17:01:41.422Z",
+      "releaseId": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -93,10 +93,10 @@
         "expectedReturnAt": null,
         "publiclyReachable": true,
         "observedPrice": {
-          "amountAtomic": "390",
+          "amountAtomic": "1000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
-          "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en"
+          "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en-min1000"
         },
         "freeEntry": null
       },
@@ -212,19 +212,19 @@
       {
         "routeId": "ai.route.gpt_5_6_luna",
         "exactModelId": "gpt-5.6-luna",
-        "reason": "upstream_authentication_unavailable",
+        "reason": "upstream_completion_failed",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
       },
       {
         "routeId": "ai.route.gpt_5_6_sol",
         "exactModelId": "gpt-5.6-sol",
-        "reason": "upstream_authentication_unavailable",
+        "reason": "upstream_completion_failed",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
       },
       {
         "routeId": "ai.route.gpt_5_6_terra",
         "exactModelId": "gpt-5.6-terra",
-        "reason": "upstream_authentication_unavailable",
+        "reason": "upstream_completion_failed",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
       }
     ]
