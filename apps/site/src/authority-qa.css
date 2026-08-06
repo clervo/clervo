@@ -1,0 +1,35 @@
+/* Step 8D interaction and safe-area hardening. */
+button,
+[role="button"],
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  min-height: 44px;
+}
+button,
+[role="button"] {
+  min-width: 44px;
+}
+.command-trigger {
+  min-height: 44px;
+}
+.authority-header {
+  padding-left: max(2rem, env(safe-area-inset-left));
+  padding-right: max(2rem, env(safe-area-inset-right));
+}
+.mobile-navigation-panel {
+  padding-right: max(1rem, env(safe-area-inset-right));
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  padding-left: max(1rem, env(safe-area-inset-left));
+}
+@media (max-width: 640px) {
+  .authority-header {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+.code-block-bar button {
+  min-height: 44px;
+  padding: .65rem .8rem;
+}

@@ -6,6 +6,7 @@ import { Router } from './router';
 import './styles.css';
 import './authority.css';
 import './authority-pages.css';
+import './authority-qa.css';
 
 const root = document.getElementById('root');
 if (root === null) throw new Error('clervo_site_root_missing');
