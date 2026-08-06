@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react';
 
+import { HollowApex } from '../components/HollowApex';
 import { ModeBadge } from '../components/Navigation';
-import { discovery, phases, pillarLabels, type ExperiencePhase } from '../product';
+import { familyProfiles } from '../content';
+import { discovery, phases, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 function PhaseSection({
@@ -22,9 +24,7 @@ function PhaseSection({
     const element = ref.current;
     if (element === null) return;
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) onPhase(id);
-      },
+      ([entry]) => { if (entry?.isIntersecting) onPhase(id); },
       { rootMargin: '-38% 0px -38% 0px', threshold: 0.01 },
     );
     observer.observe(element);
@@ -32,13 +32,9 @@ function PhaseSection({
   }, [id, onPhase]);
   return (
     <section ref={ref} id={id} className={`phase-section phase-section--${id}`}>
-      <div className="phase-copy">
-        <p className="eyebrow">{eyebrow}</p>
-        <h2>{title}</h2>
-        <p>{detail}</p>
-      </div>
+      <div className="phase-copy"><p className="eyebrow">{eyebrow}</p><h2>{title}</h2><p>{detail}</p></div>
       <div className="phase-evidence" aria-label={`${id} evidence`}>
-        <span>{id === 'risk' ? 'UNRESOLVED' : id.toUpperCase()}</span>
+        <span>{id === 'risk' ? 'REQUEST' : id.toUpperCase()}</span>
         <dl>
           <div><dt>Contract</dt><dd>{discovery.contractVersion}</dd></div>
           <div><dt>State</dt><dd>{id}</dd></div>
@@ -52,78 +48,64 @@ function PhaseSection({
 export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   return (
     <>
-      <section className="hero">
+      <section className="hero authority-home-hero">
         <div className="hero-copy">
-          <ModeBadge />
-          <p className="eyebrow">Outcome infrastructure for agents</p>
-          <h1>Find.<br />Understand.<br />Act.</h1>
-          <p className="hero-deck">
-            One bounded path from request to evidence and receipt. The private
-            product core is frozen; public distribution and real payment are not.
-          </p>
+          <ModeBadge>Repository-local preview · public execution not deployed</ModeBadge>
+          <p className="eyebrow">Outcome infrastructure for AI agents</p>
+          <h1>Give your agent a task.<br />Get a verified result.</h1>
+          <p className="hero-deck">Clervo qualifies the route, keeps cost and execution inside explicit boundaries, and returns the result with evidence. Current public data remains a truthful release-candidate fixture.</p>
           <div className="hero-actions">
-            <Link className="button button--primary" to="/proof-lab">Enter Proof Lab</Link>
-            <Link className="button button--quiet" to="/docs">Read the contracts</Link>
+            <Link className="liquid-capsule liquid-capsule--primary" to="/start">Set up Clervo</Link>
+            <Link className="liquid-capsule liquid-capsule--secondary" to="/catalog">Browse the catalog</Link>
           </div>
+          <p className="hero-mechanism"><span>Find</span><i>→</i><span>Understand</span><i>→</i><span>Act</span></p>
+        </div>
+        <div className="authority-hero-mark" aria-label="Request, qualification, and verified proof mechanism">
+          <HollowApex decorative={false} className="authority-hero-apex" />
+          <div><span>Request</span><span>Qualify and execute</span><span>Verified proof</span></div>
         </div>
         <div className="hero-proof">
-          <span>PRIVATE CORE / FROZEN</span>
+          <span>RELEASE CANDIDATE / FIXTURE</span>
           <strong>{discovery.distribution.releaseCandidateId}</strong>
           <small>Public API callable: no · Payment implemented: no</small>
         </div>
       </section>
 
       <div className="phase-sequence" aria-label="Clervo outcome lifecycle">
-        {phases.map((phase) => (
-          <PhaseSection key={phase.id} {...phase} onPhase={onPhase} />
-        ))}
+        {phases.map((phase) => <PhaseSection key={phase.id} {...phase} onPhase={onPhase} />)}
       </div>
 
-      <section className="scope-section">
+      <section className="scope-section authority-family-section">
         <div className="section-heading">
-          <p className="eyebrow">Six private cores / honest public state</p>
-          <h2>Qualified beneath the surface.<br />Unavailable until proven outside it.</h2>
-          <p>
-            Private qualification does not become a launch claim. Each public
-            lifecycle remains bound to deployment, terms, operations, and proof.
-          </p>
+          <p className="eyebrow">Permanent platform</p>
+          <h2>Six capability families.<br />One outcome layer.</h2>
+          <p>The platform identity remains complete even while public lifecycle and callable operations stay narrow and evidence-bound.</p>
         </div>
         <div className="pillar-list">
-          {discovery.releaseScope.pillars.map((pillar, index) => (
-            <article key={pillar.pillarId}>
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <h3>{pillarLabels[pillar.pillarId]}</h3>
-              <div>
-                <b className={`state state--${pillar.lifecycle}`}>{pillar.lifecycle}</b>
-                <small>private core qualified</small>
-              </div>
-            </article>
-          ))}
+          {familyProfiles.map((family, index) => {
+            const pillar = discovery.releaseScope.pillars.find((item) => item.pillarId === family.id);
+            return (
+              <article key={family.id}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <h3>{family.title}</h3>
+                <div><b className={`state state--${pillar?.lifecycle ?? 'unavailable'}`}>{pillar?.lifecycle ?? 'unavailable'}</b><Link to={`/capabilities/${family.slug}`}>Inspect family</Link></div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
       <section className="distribution-section">
-        <div>
-          <p className="eyebrow">Frozen external projection</p>
-          <h2>Two operations. No hidden expansion.</h2>
-        </div>
+        <div><p className="eyebrow">Current distribution candidate</p><h2>Inspectable operations.<br />No hidden launch claim.</h2></div>
         <div className="operation-list">
           {discovery.products.map((product) => (
             <article key={product.productId}>
-              <span>{product.productId}</span>
-              <h3>{product.title}</h3>
-              <p>{product.summary}</p>
-              <footer>
-                <b>{product.lifecycle}</b>
-                <small>publicly callable: no</small>
-              </footer>
+              <span>{product.productId}</span><h3>{product.title}</h3><p>{product.summary}</p>
+              <footer><b>{product.lifecycle}</b><Link to={`/operations/${product.operationId}`}>Inspect contract →</Link></footer>
             </article>
           ))}
         </div>
-        <div className="next-action">
-          <p>Inspect the complete request-to-receipt behavior without a wallet or network call.</p>
-          <Link className="button button--primary" to="/proof-lab">Run the fixture</Link>
-        </div>
+        <div className="next-action"><p>Inspect the complete request-to-receipt behavior without a wallet or network call.</p><Link className="liquid-capsule liquid-capsule--primary" to="/proof">Open Proof</Link></div>
       </section>
     </>
   );
