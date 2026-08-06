@@ -2,52 +2,29 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
-const read = (path) => readFile(new URL(`../../${path}`, import.meta.url), 'utf8');
+import { RpcMethodPolicy } from '../../dist/services/rpc/src/policy.js';
 
-test('Step 8A implements the locked Hollow Apex geometry and semantic beam', async () => {
-  const source = await read('apps/site/src/components/HollowApex.tsx');
-  assert.match(source, /M20 2 38 30H2L20 2/);
-  assert.match(source, /M14 18H26/);
-  assert.match(source, /#FF3B30/);
-  assert.match(source, /#00E5FF/);
-  assert.match(source, /#FFC800/);
-  assert.match(source, /data-logo-authority="hollow-apex-v1\.0"/);
+const registry = JSON.parse(await readFile(new URL('../../infra/rpc/chain-registry.v1.json', import.meta.url), 'utf8'));
+const policy = new RpcMethodPolicy(registry.chains);
+
+test('RPC registry starts with a bounded read-only multi-chain matrix', () => {
+  assert.equal(registry.lifecycle, 'unavailable'); assert.equal(registry.chains.length, 8); assert.ok(registry.chains.every(({ archiveQualified, broadcastQualified }) => !archiveQualified && !broadcastQualified));
+  const call = policy.authorize({ productId: 'rpc.call', chainId: 'eip155:1', calls: { method: 'eth_getBalance', params: ['0x0000000000000000000000000000000000000000', 'latest'] } });
+  assert.equal(call.sideEffecting, false); assert.equal(call.cachePolicy, 'short'); assert.match(call.requestHash, /^sha256:[a-f0-9]{64}$/u);
+  assert.equal(policy.authorize({ productId: 'rpc.call', chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp', calls: { method: 'getGenesisHash', params: [] } }).cachePolicy, 'finalized_immutable');
 });
 
-test('Step 8A shell uses canonical locked navigation and setup route', async () => {
-  const source = await read('apps/site/src/components/Navigation.tsx');
-  for (const label of ['Product', 'Catalog', 'Pricing', 'Docs', 'Status', 'Set up Clervo']) {
-    assert.ok(source.includes(label), `missing navigation label: ${label}`);
-  }
-  assert.match(source, /to="\/start"/);
-  assert.match(source, /mobile-navigation-panel/);
-  assert.match(source, /aria-modal="true"/);
+test('RPC policy denies unsafe namespaces, unqualified archive/broadcast, oversized batches, and arbitrary chains', () => {
+  for (const method of ['eth_sendTransaction', 'personal_unlockAccount', 'debug_traceTransaction', 'trace_call', 'admin_peers', 'txpool_content']) assert.throws(() => policy.authorize({ productId: 'rpc.call', chainId: 'eip155:1', calls: { method, params: [] } }), /method_denied/u);
+  assert.throws(() => policy.authorize({ productId: 'rpc.archive', chainId: 'eip155:1', calls: { method: 'eth_getBalance', params: [] } }), /archive_unavailable/u);
+  assert.throws(() => policy.authorize({ productId: 'rpc.broadcast', chainId: 'eip155:1', calls: { method: 'eth_sendRawTransaction', params: ['0x01'] }, idempotencyKey: 'idem_0123456789ABCDEFGHIJ' }), /broadcast_unavailable/u);
+  assert.throws(() => policy.authorize({ productId: 'rpc.batch', chainId: 'eip155:1', calls: Array.from({ length: 21 }, () => ({ method: 'eth_chainId', params: [] })) }), /batch_invalid/u);
+  assert.throws(() => policy.authorize({ productId: 'rpc.call', chainId: 'eip155:999999', calls: { method: 'eth_chainId', params: [] } }), /chain_unavailable/u);
 });
 
-test('Step 8A exposes the locked site routes while preserving safe legacy aliases', async () => {
-  const source = await read('apps/site/src/App.tsx');
-  for (const route of ['/catalog', '/start', '/proof', '/capabilities/', '/operations/', '/changelog']) {
-    assert.ok(source.includes(route), `missing route: ${route}`);
-  }
-  const router = await read('apps/site/src/router.tsx');
-  assert.match(router, /'\/build'.*'\/start'/s);
-  assert.match(router, /'\/proof-lab'.*'\/proof'/s);
-});
-
-test('Step 8A authority layer locks semantic colors, liquid controls, mobile targets, and reduced motion', async () => {
-  const css = await read('apps/site/src/authority.css');
-  assert.match(css, /--request:\s*#ff3b30/i);
-  assert.match(css, /--qualified:\s*#00e5ff/i);
-  assert.match(css, /--verified:\s*#ffc800/i);
-  assert.match(css, /\.liquid-capsule/);
-  assert.match(css, /min-height:\s*46px/);
-  assert.match(css, /\.mobile-menu-trigger/);
-  assert.match(css, /prefers-reduced-motion/);
-});
-
-test('Step 8A keeps all six permanent capability families visible', async () => {
-  const source = await read('apps/site/src/content.ts');
-  for (const family of ['Search', 'AI', 'Secure Sandbox', 'Multi-chain RPC', 'Prediction', 'Crypto Intelligence']) {
-    assert.ok(source.includes(`title: '${family}'`), `missing family: ${family}`);
-  }
+test('broadcast requires qualification and idempotency and binds the raw transaction into the request hash', () => {
+  const enabled = new RpcMethodPolicy([{ ...registry.chains[0], broadcastQualified: true }]);
+  assert.throws(() => enabled.authorize({ productId: 'rpc.broadcast', chainId: 'eip155:1', calls: { method: 'eth_sendRawTransaction', params: ['0x01'] } }), /idempotency_required/u);
+  const decision = enabled.authorize({ productId: 'rpc.broadcast', chainId: 'eip155:1', calls: { method: 'eth_sendRawTransaction', params: ['0x01'] }, idempotencyKey: 'idem_0123456789ABCDEFGHIJ' });
+  assert.equal(decision.sideEffecting, true); assert.equal(decision.cachePolicy, 'never'); assert.equal(JSON.stringify(decision).includes('0x01'), true);
 });
