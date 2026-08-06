@@ -19,6 +19,7 @@ __pycache__/
 *.blend1
 apps/site/public/
 apps/site/dist-server/
+apps/site/qa-artifacts/
 
 # Runtime state
 data/
