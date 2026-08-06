@@ -35,6 +35,14 @@ const GATEWAY_FUNDING_RESUMES_AT = '2026-08-09T00:00:00Z';
 
 const PROBE_TIMEOUT_MS = 30_000;
 
+// A single transient blip must never publish an outage. Any observation that
+// would pause a route is retried before it is believed. Attempts are recorded
+// in the observation so the registry shows how hard we tried.
+const PROBE_ATTEMPTS = 3;
+const PROBE_RETRY_DELAY_MS = 2_000;
+
+const sleep = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+
 function fail(message) {
   console.error(`probe-live-registry: FAIL: ${message}`);
   process.exit(1);
@@ -62,7 +70,7 @@ async function localEnvironment() {
 
 // Every network observation funnels through here so the registry can never
 // contain a claim that was not produced by an actual request.
-async function observe(id, url, init = {}) {
+async function attemptObserve(id, url, init = {}) {
   const started = Date.now();
   try {
     const response = await fetch(url, { ...init, redirect: 'manual', signal: AbortSignal.timeout(PROBE_TIMEOUT_MS) });
@@ -92,6 +100,27 @@ async function observe(id, url, init = {}) {
       body: null,
     };
   }
+}
+
+// An observation that would downgrade a route is not believed on first sight.
+// Transport failures, upstream 5xx, timeouts, and rate limits are the shapes a
+// transient blip takes; a 402, a 200, or a 404 is a real answer from a
+// responsive system and is believed immediately.
+function isTransientFailure(observation) {
+  if (!observation.reachable) return true;
+  if (observation.status === null) return true;
+  return observation.status >= 500 || observation.status === 408 || observation.status === 429;
+}
+
+async function observe(id, url, init = {}) {
+  let observation = await attemptObserve(id, url, init);
+  let attempts = 1;
+  while (attempts < PROBE_ATTEMPTS && isTransientFailure(observation)) {
+    await sleep(PROBE_RETRY_DELAY_MS * attempts);
+    attempts += 1;
+    observation = await attemptObserve(id, url, init);
+  }
+  return { ...observation, attempts };
 }
 
 function postJson(body, idempotencyKey) {
@@ -268,6 +297,7 @@ function classifyRoute(route) {
     edgeStatus: probe.status,
     edgeCode: problemCode(probe),
     edgeQuoted: quote !== null,
+    edgeAttempts: probe.attempts ?? 1,
     supplyOutcome: supply?.outcome ?? 'not_probed',
     supplyReason: supply?.reason ?? null,
     qualificationExpiresAt: expiresAt,
@@ -380,7 +410,7 @@ function productFromProbes({ id, label, operations, probeIds, freeProbeId = null
       acceptsNaiveRequest: naive?.status === 200,
       naiveRejectionCode: naive?.status === 200 ? null : problemCode(naive ?? {}),
     },
-    evidence: { probed: true, edgeStatus: paid.status, edgeCode: problemCode(paid) },
+    evidence: { probed: true, edgeStatus: paid.status, edgeCode: problemCode(paid), edgeAttempts: paid.attempts ?? 1 },
   };
 }
 
