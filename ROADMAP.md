@@ -17,20 +17,21 @@ Update only when execution state actually changes. This is not a journal.
 
 | Field | Value |
 |---|---|
-| Current milestone | **B3 — API discovery served** |
-| Milestone status | `not_started` — B1 and B2 are both `externally_verified`. B2 was deployed 2026-08-06 from release `35a2f7a` (Cloud Run revision `clervo-api-production-00031-kos`, image `sha256:63ad8aaa619f46fac962f9366c26eb13c7c241dc8e3d21c773ede4f43f62f44f`); the probed registry now records zero open conformance defects. |
-| Current branch | `release/b2-front-door` |
-| Latest commit | `35a2f7a` — `test(acceptance): check the release-candidate freeze locally` (the deployed release), plus the post-deploy generated state committed on top. |
-| Current production release | Cloud Run origin `clervo-api-production-00031-kos` at 100% traffic, image `sha256:63ad8aaa619f46fac962f9366c26eb13c7c241dc8e3d21c773ede4f43f62f44f`, `CLERVO_RELEASE_ID=35a2f7af3bbe4914dc5e1685e6974c07a04eebf0`; API edge worker `clervo-api-edge-production` version `6e17ea78-32eb-4b87-8781-72aa37f90321`; site worker `clervo-site-production` version `11c90f2b-df5e-4b3c-8bb6-166c502bc346`. |
-| Rollback targets | Cloud Run revision `clervo-api-production-00028-nor` (image `sha256:78718e50a50c2a74f639a4da5a03e80988d95611014d9c310cba1fe4d5d79df9`) — roll back with `gcloud run services update-traffic clervo-api-production --project bloxsniper-prod --region us-central1 --to-revisions clervo-api-production-00028-nor=100`. API edge `99f96564-3824-47d5-b8a5-a84783e6e5cb`; site `4939f9da-765d-4f3c-a96f-6f0384fe8338`. Roll a worker back with `npx wrangler rollback <version> --config apps/worker/wrangler.jsonc` or `apps/site/wrangler.jsonc`. |
+| Current milestone | **B4 — Bazaar entry** |
+| Milestone status | `not_started` — B1, B2, and B3 are all `externally_verified`. B3 shipped the three agent discovery documents on the API host; the probed registry records `api.models`, `api.well_known_x402`, and `api.llms_txt` as `live` at status 200, five discovery surfaces live, and zero open conformance defects. |
+| Current branch | `main` |
+| Latest commit | `4bd9df7` — `feat(discovery): serve the three agent discovery documents on the API host`, plus the post-deploy generated state committed on top. The deployed B2 fixes were cherry-picked onto `main` without the release-only revert, so the preserved RPC, Prediction, and Crypto work is intact. |
+| Current production release | Cloud Run origin `clervo-api-production-00031-kos` at 100% traffic, image `sha256:63ad8aaa619f46fac962f9366c26eb13c7c241dc8e3d21c773ede4f43f62f44f`, `CLERVO_RELEASE_ID=35a2f7af3bbe4914dc5e1685e6974c07a04eebf0`; API edge worker `clervo-api-edge-production` version `835110e7-41cd-46d1-a964-c9fc53be9004`; site worker `clervo-site-production` version `11c90f2b-df5e-4b3c-8bb6-166c502bc346`. B3 changed the edge worker only; the Cloud Run origin is unchanged. |
+| Rollback targets | Cloud Run revision `clervo-api-production-00028-nor` (image `sha256:78718e50a50c2a74f639a4da5a03e80988d95611014d9c310cba1fe4d5d79df9`) — roll back with `gcloud run services update-traffic clervo-api-production --project bloxsniper-prod --region us-central1 --to-revisions clervo-api-production-00028-nor=100`. API edge `6e17ea78-32eb-4b87-8781-72aa37f90321` (the pre-B3 edge); site `4939f9da-765d-4f3c-a96f-6f0384fe8338`. Roll a worker back with `npx wrangler rollback <version> --config apps/worker/wrangler.jsonc` or `apps/site/wrangler.jsonc`. |
 | Latest externally verified customer outcome | `POST https://api.clervo.dev/v1/search/free` with a JSON body and no other headers returns 200 with three cited results and a server-minted `idempotency-key` response header; replaying that key returns the identical `searchResponse` with `replayed: true` and `idempotency-replayed: true`; a caller's own key still replays the same way; the free cap still returns 429 `free_quota_exceeded`. Proof level `externally_repeated`. Nothing has reached `paid_outcome_verified`. |
-| Current blockers | None. B3 needs no owner approval to begin. |
+| Current blockers | None. B4 needs no owner approval to begin; the first Bazaar settlement does. |
 | External dependencies | Bazaar settlements (owner funds); Prediction terms decision; Crypto resale scope; RPC supply; gateway funding. |
-| Owner approvals waiting | Production deploy of the API edge worker when B3 is ready to ship. Nothing in B3 is blocked before that. |
+| Owner approvals waiting | Owner funds for the first Bazaar settlement, and any pricing change B4 concludes is needed. Nothing else in B4 is blocked. |
 | Dates that move on their own | **2026-08-09** — `ai.clervo.dev` funding resumes, and all 21 AI route qualifications expire, same day. **30 days after any Bazaar listing** — a resource with no settlement in that window is dropped from the CDP catalog. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
 | B2 metrics (observed 2026-08-06T14:42:37.447Z) | Conformance defects open 0. Naive free-search rejection rate 0: `withoutIdempotencyKeyStatus` 200. Site 404 correctness: a nonexistent URL returns 404. |
-| Exact next task | Open B3. First task there: serve `/v1/models` on `api.clervo.dev`. |
+| B3 metrics (observed 2026-08-06T15:14:21.853Z) | Discovery surfaces live 5 of 5, including `api.models`, `api.well_known_x402`, and `api.llms_txt` at status 200. Model list entries 21 (18 sellable, 3 supply-paused with a reason). x402 manifest payable resources 3, free resources 1. |
+| Exact next task | Open B4. First task there: determine CDP Bazaar resource and indexing granularity before any pricing change. |
 | Files and services for that task | `apps/worker/src/api-edge.js` (`DISCOVERY_DOCUMENTS`, `READ_PATHS`), `scripts/generate-discovery.mjs`, `packages/catalog/ai-model-catalog.v1.json`; then `clervo-api-edge-production`. |
 
 ---
@@ -489,7 +490,7 @@ Every milestone below carries the same seventeen fields.
 ### B3 — API discovery served
 
 1. **Milestone:** B3 — API discovery served
-2. **Status:** `not_started`
+2. **Status:** `externally_verified`
 3. **Customer-visible outcome:** An agent that has never seen Clervo can find
    the operation list, the model list, and the payment manifest without human
    help.
@@ -499,9 +500,15 @@ Every milestone below carries the same seventeen fields.
 5. **Preserve:** The existing `DISCOVERY_DOCUMENTS` map in
    `apps/worker/src/api-edge.js` and the eight documents it already serves
    correctly; the `extensions.bazaar` blocks already present in the 402 bodies.
-6. **Current evidence:** `api.clervo.dev/.well-known/x402`, `/llms.txt`, and
-   `/v1/models` all 404. The x402 manifest content already exists inside the 402
-   bodies; it is simply not served at a discovery path.
+6. **Current evidence:** All three paths are served on `api.clervo.dev` and are
+   recorded `live` at status 200 by the probe of 2026-08-06T15:14:21.853Z. From
+   an unrelated machine, `/v1/models`, `/.well-known/x402`, and `/llms.txt`
+   return 200 with bodies byte-identical to the registry-derived generated
+   output, and each of the three resources the manifest advertises returns a
+   valid 402 carrying the advertised amount: `search.web` 6000, `ai.chat` 16,
+   `sandbox.run` 120000 atomic USDC on `eip155:8453`. The free search path
+   returns 200 without payment and is advertised as free rather than as an x402
+   item.
 7. **Research:** BlockRun's `/llms.txt` and `/.well-known/x402` structure — what
    an agent actually parses, and what field set makes a resource usable on first
    read. One question, answered before fixing the document shape.

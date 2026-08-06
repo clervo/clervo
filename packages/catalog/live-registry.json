@@ -607,7 +607,7 @@
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_completion_failed"
+        "supplyReason": "upstream_authentication_unavailable"
       },
       "exactModelId": "gpt-5.6-luna",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
@@ -625,7 +625,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_completion_failed",
+      "reason": "upstream_authentication_unavailable",
       "routeId": "ai.route.gpt_5_6_luna",
       "sellable": false,
       "state": "supply_paused",
@@ -647,7 +647,7 @@
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_completion_failed"
+        "supplyReason": "upstream_authentication_unavailable"
       },
       "exactModelId": "gpt-5.6-sol",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
@@ -665,7 +665,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_completion_failed",
+      "reason": "upstream_authentication_unavailable",
       "routeId": "ai.route.gpt_5_6_sol",
       "sellable": false,
       "state": "supply_paused",
@@ -687,7 +687,7 @@
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_completion_failed"
+        "supplyReason": "upstream_authentication_unavailable"
       },
       "exactModelId": "gpt-5.6-terra",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
@@ -705,7 +705,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_completion_failed",
+      "reason": "upstream_authentication_unavailable",
       "routeId": "ai.route.gpt_5_6_terra",
       "sellable": false,
       "state": "supply_paused",
@@ -866,26 +866,26 @@
   "discoverySurfaces": [
     {
       "id": "api.llms_txt",
-      "observedStatus": 404,
+      "observedStatus": 200,
       "purpose": "llm_api_reference",
-      "reason": "not_served_status_404",
-      "state": "unavailable",
+      "reason": null,
+      "state": "live",
       "url": "https://api.clervo.dev/llms.txt"
     },
     {
       "id": "api.models",
-      "observedStatus": 404,
+      "observedStatus": 200,
       "purpose": "public_model_list",
-      "reason": "not_served_status_404",
-      "state": "unavailable",
+      "reason": null,
+      "state": "live",
       "url": "https://api.clervo.dev/v1/models"
     },
     {
       "id": "api.well_known_x402",
-      "observedStatus": 404,
+      "observedStatus": 200,
       "purpose": "agent_resource_manifest",
-      "reason": "not_served_status_404",
-      "state": "unavailable",
+      "reason": null,
+      "state": "live",
       "url": "https://api.clervo.dev/.well-known/x402"
     },
     {
@@ -907,7 +907,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-06T14:42:37.447Z",
+  "observedAt": "2026-08-06T15:14:21.853Z",
   "products": [
     {
       "evidence": {
@@ -1092,7 +1092,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "35a2f7af3bbe4914dc5e1685e6974c07a04eebf0",
+  "sourceCommit": "4bd9df74762cb3df04e95309be2f76d0a2c95caa",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -1105,8 +1105,7 @@
     },
     "conformanceDefectsOpen": 0,
     "discoverySurfaces": {
-      "live": 2,
-      "unavailable": 3
+      "live": 5
     },
     "products": {
       "live": 3,
@@ -1126,8 +1125,8 @@
         "gpt-5.6-terra"
       ],
       "outcome": "failed",
-      "providerErrorCode": "internal_server_error",
-      "reason": "upstream_completion_failed",
+      "providerErrorCode": "auth_unavailable",
+      "reason": "upstream_authentication_unavailable",
       "supplyFamilyId": "supply.clervo_ai_gateway"
     }
   ]

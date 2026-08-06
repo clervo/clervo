@@ -63,7 +63,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-06T14:42:37.447Z",
+      "observedAt": "2026-08-06T15:14:21.853Z",
       "releaseId": "35a2f7af3bbe4914dc5e1685e6974c07a04eebf0",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -212,19 +212,19 @@
       {
         "routeId": "ai.route.gpt_5_6_luna",
         "exactModelId": "gpt-5.6-luna",
-        "reason": "upstream_completion_failed",
+        "reason": "upstream_authentication_unavailable",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
       },
       {
         "routeId": "ai.route.gpt_5_6_sol",
         "exactModelId": "gpt-5.6-sol",
-        "reason": "upstream_completion_failed",
+        "reason": "upstream_authentication_unavailable",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
       },
       {
         "routeId": "ai.route.gpt_5_6_terra",
         "exactModelId": "gpt-5.6-terra",
-        "reason": "upstream_completion_failed",
+        "reason": "upstream_authentication_unavailable",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
       }
     ]
