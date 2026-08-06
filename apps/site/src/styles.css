@@ -278,7 +278,6 @@ main {
 .product-page,
 .build-page,
 .trust-page,
-.capability-page,
 .guide-page,
 .not-found {
   width: min(100%, 96rem);
@@ -301,7 +300,6 @@ main {
 .proof-page,
 .compare-page,
 .changelog-page,
-.capability-page,
 .guide-page {
   position: relative;
   z-index: 5;
@@ -476,29 +474,6 @@ p {
 
 
 
-
-.capability-state-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--line-strong);
-  border-left: 1px solid var(--line);
-}
-
-.capability-state-grid article { min-height: 18rem; padding: 1.6rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.capability-state-grid span,
-.source-boundary span { color: var(--muted); font: 0.58rem var(--mono); }
-.capability-state-grid h2 { margin: 4rem 0 1rem; font-size: 1.35rem; font-weight: 520; text-transform: capitalize; }
-.capability-state-grid p { color: var(--muted); line-height: 1.6; }
-
-.capability-contract { padding: 8rem 0; }
-.capability-contract header { max-width: 48rem; }
-.capability-contract h2 { font-size: clamp(2.7rem, 5vw, 5rem); line-height: 0.95; letter-spacing: -0.055em; }
-.capability-contract > div { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 3rem; }
-.capability-contract code { padding: 0.8rem 1rem; border: 1px solid var(--line-strong); color: var(--qualified); background: var(--surface); }
-
-.source-boundary { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line); }
-.source-boundary > div { min-height: 10rem; display: flex; flex-direction: column; justify-content: space-between; gap: 1rem; padding: 1.4rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.source-boundary strong { font-size: 0.85rem; font-weight: 500; text-transform: capitalize; }
 
 .guide-ledger { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line); }
 .guide-ledger article { min-height: 15rem; padding: 1.5rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -770,20 +745,6 @@ dd {
   border-top: 1px solid var(--line);
 }
 
-.next-action {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--line-strong);
-}
-
-.next-action p {
-  margin: 0;
-  color: var(--muted);
-}
 
 /*
  * The interior-page opening block.
@@ -1973,11 +1934,7 @@ fieldset label small {
     grid-template-columns: 1fr;
   }
 
-  .capability-state-grid,
-  .source-boundary,
   .trust-map { grid-template-columns: 1fr; }
-  .capability-state-grid article { min-height: 13rem; }
-  .capability-state-grid h2 { margin-top: 2.5rem; }
   .guide-ledger { grid-template-columns: 1fr; }
   .comparison-policy,
   .package-provenance > div { grid-template-columns: 1fr; }
@@ -2013,11 +1970,6 @@ fieldset label small {
 
   .operation-list article {
     min-height: 22rem;
-  }
-
-  .next-action {
-    align-items: flex-start;
-    flex-direction: column;
   }
 
   .page-intro {
