@@ -270,10 +270,6 @@ main {
   color: var(--phase);
 }
 
-.scope-section,
-.distribution-section,
-.product-page,
-.trust-page,
 .not-found {
   width: min(100%, 96rem);
   margin: 0 auto;
@@ -307,7 +303,6 @@ main {
   margin: 0 0 1.1rem;
 }
 
-
 h1,
 h2,
 h3,
@@ -315,7 +310,6 @@ p {
   margin-top: 0;
 }
 
-.page-intro h1,
 .not-found h1 {
   margin-bottom: var(--space-4);
   font-weight: 600;
@@ -323,25 +317,7 @@ p {
   letter-spacing: -0.04em;
 }
 
-
-
-
-
 /* Controls now live in styles/controls.css. */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .worlds-stage {
   position: relative;
@@ -443,61 +419,13 @@ p {
   text-transform: uppercase;
 }
 
-
-
-
-
-
-
-
 .trust-map { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line); }
 .trust-map a { min-height: 15rem; padding: 1.5rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-decoration: none; }
 .trust-map span { color: var(--phase); font-size: 1.15rem; }
 .trust-map p { margin-top: 5rem; color: var(--muted); line-height: 1.6; }
 
-.release-entry { display: grid; grid-template-columns: 10rem 1fr; gap: clamp(2rem, 6vw, 7rem); padding: 4rem 0; border-top: 1px solid var(--line-strong); }
-.release-entry time { color: var(--receipt); font: 0.7rem var(--mono); }
-.release-entry h2 { max-width: 50rem; font-size: clamp(2rem, 4vw, 4.5rem); font-weight: 550; line-height: 0.98; letter-spacing: -0.055em; }
-.release-entry p:not(.eyebrow) { max-width: 48rem; color: var(--muted); line-height: 1.7; }
-.release-entry small { color: var(--approval); font: 0.65rem/1.5 var(--mono); }
-
-.private-price-proof { margin-bottom: 4rem; padding: 2rem 0; border-top: 1px solid var(--receipt); border-bottom: 1px solid var(--line); }
-.private-price-proof span,
-.private-price-proof p { color: var(--muted); font: 0.66rem/1.5 var(--mono); }
-.private-price-proof strong { display: block; margin: 1rem 0; color: var(--receipt); font: 500 clamp(3rem, 6vw, 6rem)/1 var(--mono); letter-spacing: -0.07em; }
-
-.section-heading h2,
-.distribution-section > div:first-child h2 {
-  margin-bottom: 1.3rem;
-  font-size: clamp(2.8rem, 5.2vw, 5.8rem);
-  font-weight: 560;
-  line-height: 0.96;
-  letter-spacing: -0.058em;
-}
-
-.section-heading > p:last-child {
-  color: var(--muted);
-  font-size: 1.02rem;
-  line-height: 1.7;
-}
-
 .not-found h1 {
   font-size: var(--step-hero);
-}
-
-.page-intro > p:not(.eyebrow) {
-  max-width: 46rem;
-  color: var(--text-secondary);
-  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
-  line-height: 1.6;
-}
-
-.product-page,
-.trust-page {
-  position: relative;
-  z-index: 5;
-  min-height: 100svh;
-  padding-bottom: 9rem;
 }
 
 .code-block {
@@ -536,112 +464,6 @@ p {
   overflow: auto;
   color: #dfe5e3;
   font: 0.77rem/1.75 "SFMono-Regular", Consolas, var(--mono);
-}
-
-.truth-table {
-  margin-bottom: 7rem;
-  border-top: 1px solid var(--line-strong);
-}
-
-.truth-table > header {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 2rem;
-  padding: 4rem 0 2rem;
-}
-
-.truth-table > header h2 {
-  margin: 0;
-}
-
-.truth-table > header span {
-  color: var(--muted);
-  font: 0.65rem var(--mono);
-}
-
-.truth-table > div {
-  min-height: 6rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  align-items: center;
-  gap: 1rem;
-  border-bottom: 1px solid var(--line);
-}
-
-.truth-table code {
-  color: var(--approval);
-}
-
-.truth-table span,
-.truth-table b,
-.truth-table strong {
-  color: var(--muted);
-  font: 0.66rem var(--mono);
-}
-
-.truth-panels {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-bottom: 7rem;
-  border: 1px solid var(--line);
-  background: var(--line);
-  gap: 1px;
-}
-
-.truth-panels article {
-  min-height: 24rem;
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
-  background: var(--surface);
-}
-
-.truth-panels span {
-  color: var(--phase);
-  font: 0.64rem var(--mono);
-}
-
-.truth-panels h2 {
-  margin: auto 0 1rem;
-  font-size: 1.65rem;
-  font-weight: 540;
-}
-
-.truth-panels p {
-  color: var(--muted);
-  line-height: 1.65;
-}
-
-.control-ledger {
-  margin-bottom: 7rem;
-  border-top: 1px solid var(--line-strong);
-}
-
-.control-ledger article {
-  min-height: 8rem;
-  display: grid;
-  grid-template-columns: 3rem minmax(12rem, 0.65fr) 1.35fr;
-  align-items: center;
-  gap: 2rem;
-  border-bottom: 1px solid var(--line);
-}
-
-.control-ledger span {
-  color: var(--muted);
-  font: 0.65rem var(--mono);
-}
-
-.control-ledger h2 {
-  margin: 0;
-  font-size: 1.35rem;
-  font-weight: 530;
-}
-
-.control-ledger p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.55;
 }
 
 .trust-links {
@@ -694,10 +516,6 @@ p {
     opacity: 0.68;
   }
 
-  .app--internal .page-intro {
-    padding-top: 24rem;
-  }
-
   .instrument-still {
     opacity: 0.86;
   }
@@ -706,16 +524,11 @@ p {
     display: none;
   }
 
-    .scope-section,
-  .distribution-section,
-        .product-page,
-    .trust-page,
   .not-found {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
   }
 
-  .page-intro h1,
   .not-found h1 {
     overflow-wrap: anywhere;
   }
@@ -728,74 +541,18 @@ p {
   .worlds-nodes { position: relative; display: grid; grid-template-columns: 1fr 1fr; border-left: 1px solid var(--line); }
   .worlds-nodes > li { position: static; width: auto; min-height: 7rem; border-width: 0 1px 1px 0; background: var(--surface); backdrop-filter: none; }
   .worlds-stage__boundary { position: static; margin-top: 0.8rem; text-align: right; }
-  .release-entry { grid-template-columns: 1fr; gap: 1.5rem; }
 
-  .pillar-list article {
-    grid-template-columns: 2rem 1fr;
-    padding: 1rem 0;
-  }
-
-  .pillar-list article > div {
-    grid-column: 2;
-    justify-content: space-between;
-  }
-
-  .page-intro {
-    padding-top: var(--space-7);
-    padding-bottom: var(--space-5);
-  }
-
-  .page-intro code,
   .eyebrow {
     min-width: 0;
     max-width: 100%;
     overflow-wrap: anywhere;
   }
 
-  .truth-table > header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .truth-table > div {
-    grid-template-columns: 1fr;
-    gap: 0.55rem;
-    padding: 1.2rem 0;
-  }
-
-  .truth-panels {
-    grid-template-columns: 1fr;
-  }
-
-  .truth-panels article {
-    min-height: 17rem;
-  }
-
-  .control-ledger article {
-    grid-template-columns: 2rem 1fr;
-    gap: 1rem;
-    padding: 1.5rem 0;
-  }
-
-  .control-ledger p {
-    grid-column: 2;
-  }
 }
 
 @media (max-width: 520px) {
   .lab-actions .button {
     width: 100%;
-  }
-
-  .scope-section,
-  .distribution-section {
-    padding-top: 7rem;
-    padding-bottom: 7rem;
-  }
-
-  .section-heading h2,
-  .distribution-section > div:first-child h2 {
-    font-size: 2.8rem;
   }
 
 }
