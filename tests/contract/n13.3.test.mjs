@@ -6,15 +6,37 @@ import test from 'node:test';
 const root = path.resolve(import.meta.dirname, '../..');
 const read = (value) => readFile(path.join(root, value), 'utf8');
 
-test('generated discovery exposes verified public raw Search and keeps synthesis unavailable', async () => {
+test('generated discovery publishes exactly the product families the registry observes live', async () => {
   const discovery = JSON.parse(await read('generated/public/.well-known/clervo.json'));
-  assert.equal(discovery.distribution.state, 'public_preview');
-  assert.equal(discovery.distribution.publicAvailable, true);
-  assert.equal(discovery.distribution.callable, true);
-  assert.equal(discovery.distribution.noPublicDistribution, false);
-  assert.deepEqual(discovery.products.map(({ productId }) => productId), ['search.web', 'search.answer']);
-  assert.equal(discovery.products.find(({ productId }) => productId === 'search.web').payment.payable, true);
-  assert.equal(discovery.products.find(({ productId }) => productId === 'search.answer').payment.payable, false);
+  const registry = JSON.parse(await read('packages/catalog/live-registry.json'));
+  // This test used to pin the distribution block to the private-candidate
+  // snapshot and freeze the published product list at the two Search
+  // operations. Both broke the moment a further family went live: the fix for
+  // a truthful surface was to make the test fail. It now asserts the binding
+  // instead — every published operation belongs to a family the probed
+  // registry observes live, and no live family is silently withheld.
+  const familyOf = (productId) => ({ search: 'search', ai: 'ai', sandbox: 'sandbox', rpc: 'rpc', prediction: 'prediction', crypto: 'crypto_intelligence' })[productId.split('.')[0]];
+  const liveFamilies = new Set(registry.products.filter(({ publiclyReachable }) => publiclyReachable).map(({ id }) => id));
+  const published = discovery.products.map(({ productId }) => productId);
+  assert.ok(published.includes('search.web'), 'raw Search must stay published');
+  assert.ok(published.includes('search.answer'), 'Search synthesis must stay listed');
+  for (const productId of published) {
+    assert.ok(liveFamilies.has(familyOf(productId)), `${productId} is published but its family is not observed live`);
+  }
+  for (const family of liveFamilies) {
+    assert.ok(published.some((productId) => familyOf(productId) === family), `${family} is observed live but nothing is published for it`);
+  }
+
+  // Distribution flags follow the registry rather than a frozen snapshot.
+  assert.equal(discovery.distribution.callable, liveFamilies.size > 0);
+  assert.equal(discovery.distribution.publicAvailable, liveFamilies.size > 0);
+  assert.equal(discovery.distribution.noPublicDistribution, liveFamilies.size === 0);
+
+  // Only an operation with an observed price may be advertised as payable.
+  for (const product of discovery.products) {
+    if (product.payment.payable !== true) continue;
+    assert.notEqual(product.pricing.model, 'non_payable_mock_fixture', `${product.productId} advertises a mock price`);
+  }
 
   const product = await read('apps/site/src/product.ts');
   assert.match(product, /generated\/public\/\.well-known\/clervo\.json/u);

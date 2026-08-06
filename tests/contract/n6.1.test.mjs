@@ -118,7 +118,7 @@ test('prohibited identities and non-GPT QuickAI routes cannot enter the catalog'
   assert.throws(() => createAiModelCatalog({ catalogId: 'aicat_01K0AICATALOG0000000003', evaluatedAt: '2026-08-02T00:00:00.000Z', routes: [route({ suffix: 'QUICK', providerId: 'provider.quickai', exactModelId: 'generic-premium', quickAiPremium: true })] }), /quickai_route_invalid/u);
 });
 
-test('AI catalog schemas compile strictly and remain private', async () => {
+test('AI catalog schemas compile strictly and the internal control schemas stay private', async () => {
   const schemaDirectory = path.join(root, 'packages/contracts/schemas');
   const schemaFiles = (await readdir(schemaDirectory)).filter((file) => file.endsWith('.schema.json')).sort();
   const ajv = new Ajv2020({ strict: true, allErrors: true });
@@ -129,6 +129,13 @@ test('AI catalog schemas compile strictly and remain private', async () => {
   assert.equal(validate(catalog), true, ajv.errorsText(validate.errors));
   const visibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
   for (const file of ['ai-model-catalog.schema.json', 'ai-route-qualification.schema.json']) assert.equal(visibility.schemas.find((entry) => entry.file === file)?.visibility, 'internal_control');
+  // The wire schemas for the public /v1/ai/execute route are published on
+  // purpose; publishing them is what lets a caller construct a request without
+  // reading our source. What must never leak is the control plane: supplier
+  // identities, route qualifications, and cost structure. This assertion used
+  // to forbid every ai-* file from the public directory, which made publishing
+  // the public route's own contract a build failure.
   const publicFiles = await readdir(path.join(root, 'generated/public/schemas/2026-07-29.1'));
-  assert.equal(publicFiles.some((file) => file.startsWith('ai-')), false);
+  const internalControl = new Set(visibility.schemas.filter(({ visibility: value }) => value === 'internal_control').map(({ file }) => file));
+  for (const file of publicFiles) assert.equal(internalControl.has(file), false, `internal control schema published: ${file}`);
 });

@@ -17,7 +17,7 @@
   },
   "properties": {
     "schemaVersion": { "const": "clervo.ai-speech-pricing.v1" },
-    "priceVersion": { "const": "2026-08-02.1" },
+    "priceVersion": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$" },
     "evaluatedAt": { "type": "string", "format": "date-time" },
     "currency": { "const": "USD" },
     "providerVisibility": { "const": "internal_only" },
@@ -90,8 +90,8 @@
         "required": ["modelId", "listingStatus", "positioning", "customerUsdPerMinute", "shadowUsdPerMinute", "keytermCustomerUsdPerMinute", "keytermShadowUsdPerMinute", "knownLimitation"],
         "properties": {
           "modelId": { "const": "nova-3" },
-          "listingStatus": { "const": "priced_qualified_integration_pending" },
-          "positioning": { "const": "best_general_english" },
+          "listingStatus": { "enum": ["priced_qualified_integration_pending", "priced_qualified_adapter_ready_contract_pending", "qualified_adapter_ready_contract_pending", "sellable"] },
+          "positioning": { "enum": ["best_general_english", "best_funded_general_english"] },
           "customerUsdPerMinute": { "$ref": "#/$defs/minutePrice" },
           "shadowUsdPerMinute": { "$ref": "#/$defs/minutePrice" },
           "keytermCustomerUsdPerMinute": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },

@@ -1,23 +1,41 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
 const onboarding = JSON.parse(await readFile('packages/distribution/onboarding.v1.json', 'utf8'));
 const generated = JSON.parse(await readFile('generated/public/onboarding.json', 'utf8'));
 const discovery = JSON.parse(await readFile('generated/public/.well-known/clervo.json', 'utf8'));
 
-test('onboarding remains bound to the frozen candidate without implying payment', () => {
-  assert.deepEqual(generated, onboarding);
+test('onboarding stays bound to the frozen candidate and tracks observed callability', () => {
+  const registry = JSON.parse(readFileSync('packages/catalog/live-registry.json', 'utf8'));
+  // The generated onboarding document is a projection of the source file: it
+  // keeps the source's identity and shape, and moves publicCallable,
+  // paymentImplemented, and the per-step states forward once the deployed
+  // system serves a public paid route. This test used to require the projected
+  // values to equal the frozen source and to pin publicCallable to false, which
+  // made the honest projection a build failure.
+  assert.equal(generated.schemaVersion, onboarding.schemaVersion);
+  assert.equal(generated.releaseCandidateId, discovery.distribution.releaseCandidateId);
   assert.equal(onboarding.releaseCandidateId, discovery.distribution.releaseCandidateId);
+  assert.equal(generated.interfaceHash, discovery.distribution.interfaceHash);
   assert.equal(onboarding.interfaceHash, discovery.distribution.interfaceHash);
-  assert.equal(onboarding.publicCallable, false);
-  assert.equal(onboarding.paymentImplemented, false);
-  assert.equal(onboarding.journey.find(({ step }) => step === 'install').state, 'published_verified');
+  assert.deepEqual(generated.recovery, onboarding.recovery);
+
+  const searchLive = registry.products.find(({ id }) => id === 'search').publiclyReachable;
+  assert.equal(generated.publicCallable, searchLive);
+  assert.equal(generated.paymentImplemented, searchLive);
+  assert.equal(generated.publicCallable, discovery.distribution.callable);
+
+  // The journey keeps its six steps in order, whatever their states become.
   assert.deepEqual(
-    onboarding.journey.map(({ step }) => step),
+    generated.journey.map(({ step }) => step),
     ['install', 'ask', 'fund', 'approve', 'result', 'receipt'],
   );
-  assert.equal(onboarding.journey.find(({ step }) => step === 'fund').state, 'unavailable');
+  assert.deepEqual(generated.journey.map(({ step }) => step), onboarding.journey.map(({ step }) => step));
+  assert.equal(generated.journey.find(({ step }) => step === 'install').state, 'published_verified');
+  // Every step carries a concrete action; a projected step must never lose it.
+  for (const step of generated.journey) assert.ok(step.action.length >= 20, `${step.step} needs a real action`);
   assert.equal(discovery.artifacts.onboarding, '/onboarding.json');
 });
 

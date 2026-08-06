@@ -45,7 +45,15 @@ test('agent instructions name ROADMAP.md as the single planning authority', asyn
   // docs/ is an archived research library and must not be cited as authority
   assert.doesNotMatch(agents, /docs\/product\//u);
   assert.doesNotMatch(claude, /docs\/product\//u);
-  assert.match(roadmap, /Code and live behaviour are the only truth/u);
-  assert.match(roadmap, /STEP 1/u);
-  assert.match(roadmap, /STEP 10/u);
+  // ROADMAP.md was rewritten from a numbered STEP list into lettered milestones
+  // (B1, B2, …). Assert the properties that make it usable as the single
+  // authority — it declares itself authoritative, it yields to live behaviour,
+  // and it carries an ordered milestone sequence — rather than the section
+  // headings of one particular revision.
+  assert.match(roadmap, /single planning authority/u);
+  assert.match(roadmap, /live behaviour wins/u);
+  assert.match(roadmap, /## Continuity block/u);
+  const milestones = [...roadmap.matchAll(/^### B(\d+) — /gmu)].map(([, number]) => Number(number));
+  assert.ok(milestones.length >= 2, 'the roadmap must contain an ordered milestone sequence');
+  assert.deepEqual(milestones, [...milestones].sort((left, right) => left - right), 'milestones must be in order');
 });

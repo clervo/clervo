@@ -16,7 +16,15 @@ test('credit-backed multimodal prices are paid, competitive, bounded, and honest
   const validate = ajv.compile(schema);
   assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
   const guard = pricing.creditGuard;
-  assert.equal(guard.chatAllocationUsd + guard.embeddingAllocationUsd + guard.imageAllocationUsd + guard.videoAllocationUsd + guard.reserveUsd, guard.ownerReportedBalanceUsd);
+  // The allocations must account for the whole reported balance. Summing every
+  // *AllocationUsd key rather than a fixed list means adding a new modality
+  // cannot silently leave part of the balance unallocated, which is what
+  // happened when music funding was added and this assertion still summed only
+  // chat, embedding, image, and video.
+  const allocated = Object.entries(guard)
+    .filter(([key]) => key.endsWith('AllocationUsd'))
+    .reduce((total, [, value]) => total + value, 0);
+  assert.equal(allocated + guard.reserveUsd, guard.ownerReportedBalanceUsd);
   assert.equal(pricing.policy.customerFreeByDefault, false);
   assert.ok(pricing.chatRoutes.every(({ listingStatus }) => listingStatus === 'sellable'));
   assert.ok(pricing.embeddingRoutes.every(({ listingStatus }) => listingStatus === 'sellable'));

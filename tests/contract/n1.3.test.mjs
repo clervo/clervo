@@ -98,12 +98,15 @@ test('discovery is bound to the frozen private core and agrees with launch state
   }
   assert.equal(discovery.payment.privateProofVerified, true);
   assert.equal(discovery.payment.commercialProof, false);
+  // catalog.json is a projection of the discovery document, including the
+  // observed truth block the generator renders from the probed live registry.
   assert.deepEqual(await json('catalog.json'), {
     contractVersion: CONTRACT_VERSION,
     catalogVersion: discovery.discoveryVersion,
     distribution: discovery.distribution,
     releaseScope: discovery.releaseScope,
     products: discovery.products,
+    observedTruth: discovery.observedTruth,
   });
   assert.equal(discovery.discoveryVersion, '2026-08-02.2');
   assert.equal(discovery.releaseScope.scopeVersion, '2026-08-01.3');

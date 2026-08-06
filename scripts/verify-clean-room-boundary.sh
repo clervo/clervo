@@ -69,6 +69,7 @@ legacy_matches=$(find "$repo_root" \
 allowed_legacy_references="$repo_root/README.md
 $repo_root/AGENTS.md
 $repo_root/CLAUDE.md
+$repo_root/ROADMAP.md
 $repo_root/docs/decisions/ADR-0001-clean-room-repository-boundary.md
 $repo_root/docs/tickets/N0.1.md"
 

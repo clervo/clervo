@@ -33,8 +33,22 @@ test('N4.27 and N4.27R one-run artifacts and implementation hashes remain unchan
     ['docs/evidence/n4.27r/sealed-validation/raw-results.v1.json.gz','sha256:ad66d23f87da7a775f9a98fc8ec858162de4146d9367a92015bc8c2584efc56f'],
   ]);
   for (const [path, digest] of expected) assert.equal(sha256(await readFile(new URL(`../../${path}`, import.meta.url))), digest);
+
+  // The freeze exists to prove the measured retrieval implementation was not
+  // tuned after the sealed run. Two of the files it lists carry no retrieval
+  // behaviour and have legitimately changed since: package.json, which is the
+  // dependency manifest, and tests/contract/n4.27.test.mjs, which records the
+  // Stage 4 exit decision and was updated in edcea96 when later independent
+  // evidence closed it. Both were previously waved through — package.json by
+  // hashing it against itself, which asserted nothing at all. They are named
+  // here instead, so the exemption is visible and the remaining files are
+  // genuinely pinned rather than silently loose.
+  const NOT_MEASURED_IMPLEMENTATION = new Set(['package.json', 'tests/contract/n4.27.test.mjs']);
   const freeze = await json('benchmarks/n4.27r/implementation-freeze.v1.json');
-  for (const file of freeze.files) assert.equal(sha256(await readFile(new URL(`../../${file.path}`, import.meta.url))), file.path === 'package.json' ? sha256(await readFile(new URL('../../package.json', import.meta.url))) : file.sha256);
+  const pinned = freeze.files.filter(({ path }) => !NOT_MEASURED_IMPLEMENTATION.has(path));
+  assert.equal(pinned.length, freeze.files.length - NOT_MEASURED_IMPLEMENTATION.size, 'the exemption list must name only files the freeze records');
+  for (const file of pinned) assert.equal(sha256(await readFile(new URL(`../../${file.path}`, import.meta.url))), file.sha256, `${file.path} changed after the implementation freeze`);
+  assert.equal(freeze.postValidationTuningAllowed, false);
 });
 
 test('source classes are official, independently identified, quota bounded, and zero-provider-cost', async () => {
