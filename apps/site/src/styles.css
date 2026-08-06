@@ -274,7 +274,6 @@ main {
 .distribution-section,
 .proof-lab,
 .product-page,
-.build-page,
 .trust-page,
 .not-found {
   width: min(100%, 96rem);
@@ -637,7 +636,6 @@ dd {
 
 .proof-lab,
 .product-page,
-.build-page,
 .trust-page {
   position: relative;
   z-index: 5;
@@ -989,176 +987,6 @@ fieldset label small {
   font: 0.77rem/1.75 "SFMono-Regular", Consolas, var(--mono);
 }
 
-.activation-journey {
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--line-strong);
-  list-style: none;
-}
-
-.activation-journey li {
-  min-height: 11rem;
-  display: grid;
-  grid-template-columns: 4rem 1fr auto;
-  align-items: center;
-  gap: 2rem;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.activation-journey li > span {
-  color: #5c6361;
-  font: 1rem var(--mono);
-}
-
-.activation-journey li > div {
-  max-width: 44rem;
-}
-
-.activation-journey h2 {
-  margin-bottom: 0.7rem;
-  font-size: clamp(1.5rem, 2.8vw, 2.8rem);
-  font-weight: 540;
-  letter-spacing: -0.035em;
-}
-
-.activation-journey p {
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-.activation-journey a {
-  color: var(--phase);
-  font: 0.72rem var(--mono);
-}
-
-.activation-journey li > b {
-  color: #646c6a;
-  font: 0.63rem var(--mono);
-  text-transform: uppercase;
-}
-
-.activation-journey li.is-current > span,
-.activation-journey li.is-current > b {
-  color: var(--approval);
-}
-
-.activation-journey li.is-complete > span,
-.activation-journey li.is-complete > b {
-  color: var(--receipt);
-}
-
-.activation-journey li.is-blocked > span,
-.activation-journey li.is-blocked > b {
-  color: var(--risk);
-}
-
-.recovery-contract {
-  padding: 8rem 0 2rem;
-}
-
-.recovery-contract > header {
-  display: grid;
-  grid-template-columns: 1fr minmax(18rem, 0.7fr);
-  align-items: end;
-  gap: 4rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid var(--line-strong);
-}
-
-.recovery-contract h2 {
-  margin: 0;
-  font-size: clamp(2.6rem, 5vw, 5rem);
-  font-weight: 540;
-  letter-spacing: -0.055em;
-}
-
-.recovery-contract > header > p,
-.recovery-contract article p {
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-.recovery-contract > div {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.recovery-contract article {
-  min-height: 18rem;
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.recovery-contract article:nth-child(3n) {
-  border-right: 0;
-}
-
-.recovery-contract article > span,
-.recovery-contract article > b {
-  color: var(--approval);
-  font: 0.63rem var(--mono);
-  text-transform: uppercase;
-}
-
-.recovery-contract article h3 {
-  margin: 3rem 0 0.8rem;
-  font-size: 1.25rem;
-  font-weight: 550;
-  text-transform: capitalize;
-}
-
-.recovery-contract article > b {
-  margin-top: auto;
-}
-
-.browser-preflight {
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: clamp(3rem, 8vw, 8rem);
-  padding: 8rem 0;
-}
-
-.browser-preflight > div:first-child > p:not(.eyebrow),
-.browser-preflight > div:last-child > p {
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-.browser-preflight article {
-  min-height: 5rem;
-  display: grid;
-  grid-template-columns: 0.6rem 1fr auto;
-  align-items: center;
-  gap: 1rem;
-  border-bottom: 1px solid var(--line);
-}
-
-.browser-preflight article > span {
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 50%;
-  background: var(--risk);
-}
-
-.browser-preflight article.is-pass > span {
-  background: var(--receipt);
-}
-
-.browser-preflight article div {
-  display: grid;
-  gap: 0.35rem;
-}
-
-.browser-preflight article small,
-.browser-preflight article strong {
-  color: var(--muted);
-  font: 0.63rem var(--mono);
-}
-
 .truth-table {
   margin-bottom: 7rem;
   border-top: 1px solid var(--line-strong);
@@ -1331,8 +1159,7 @@ fieldset label small {
   .distribution-section,
   .proof-lab,
       .product-page,
-  .build-page,
-  .trust-page,
+    .trust-page,
 .compare-page,
   .not-found {
     padding-left: 1.25rem;
@@ -1402,35 +1229,6 @@ fieldset label small {
     min-width: 0;
     max-width: 100%;
     overflow-wrap: anywhere;
-  }
-
-  .activation-journey li {
-    grid-template-columns: 2.5rem 1fr;
-    gap: 1rem;
-  }
-
-  .activation-journey li > b {
-    grid-column: 2;
-  }
-
-  .recovery-contract > header {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .recovery-contract > div {
-    grid-template-columns: 1fr;
-  }
-
-  .recovery-contract article,
-  .recovery-contract article:nth-child(3n) {
-    min-height: 14rem;
-    border-right: 0;
-  }
-
-  .browser-preflight {
-    grid-template-columns: 1fr;
-    padding: 6rem 0;
   }
 
   .truth-table > header {

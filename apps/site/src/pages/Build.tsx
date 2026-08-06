@@ -1,9 +1,28 @@
 import { useEffect, useState } from 'react';
 
-import { ModeBadge } from '../components/Navigation';
 import type { ActivationState } from '../experience';
-import { onboarding, publicApiCallable, type ExperiencePhase } from '../product';
+import {
+  observedApiOrigin,
+  observedProduct,
+  onboarding,
+  publicApiCallable,
+  type ExperiencePhase,
+} from '../product';
 import { Link } from '../router';
+
+/*
+ * /build — what this browser has actually done.
+ *
+ * /start describes the contract. This page describes the reader's own progress
+ * through it, which is the one thing on the site that is not generated from the
+ * probe: it is local state, held in this browser and sent nowhere.
+ *
+ * The distinction has to stay visible, because a mark here means "you did
+ * this", never "the system supports this". The two are rendered as separate
+ * columns for exactly that reason, a step the deployed system does not offer
+ * cannot be marked done by local activity, and none of it uses the state pills
+ * or the gold token, which belong to observed and verified facts alone.
+ */
 
 interface BrowserCheck {
   label: string;
@@ -16,7 +35,7 @@ function inspectBrowser(): BrowserCheck[] {
     {
       label: 'Deterministic hashing',
       passed: crypto?.subtle !== undefined,
-      evidence: crypto?.subtle !== undefined ? 'window.crypto.subtle available' : 'Web Crypto unavailable',
+      evidence: crypto?.subtle === undefined ? 'Web Crypto unavailable' : 'window.crypto.subtle available',
     },
     {
       label: 'Bounded cancellation',
@@ -31,6 +50,17 @@ function inspectBrowser(): BrowserCheck[] {
   ];
 }
 
+const stepTitles: Record<string, string> = {
+  install: 'Install a client',
+  ask: 'Send one bounded request',
+  fund: 'Hold the quoted amount',
+  approve: 'Approve a visible maximum',
+  result: 'Read the result',
+  receipt: 'Inspect and replay the receipt',
+};
+
+const search = observedProduct('search');
+
 export function Build({
   activation,
   onPhase,
@@ -43,108 +73,141 @@ export function Build({
     activation.receiptInspected,
     onPhase,
   ]);
-  const completed = {
+
+  // Local evidence only. Funding and approval happen in a wallet this page
+  // cannot see, so they are never marked done from browser state.
+  const done: Record<string, boolean> = {
     install: activation.selectedClient !== null,
     ask: activation.proofCompleted,
     fund: false,
-    approve: activation.proofCompleted,
+    approve: false,
     result: activation.proofCompleted,
     receipt: activation.receiptInspected,
-  } as const;
-  const current = activation.selectedClient === null
-    ? 'install'
-    : !activation.proofCompleted ? 'ask'
-      : !activation.receiptInspected ? 'receipt'
-        : null;
-  const journeyLink = (step: keyof typeof completed) => {
-    if (step === 'install') return { to: '/docs/http', label: activation.selectedClient ? 'Review client choices' : 'Choose an access path' };
-    if (step === 'fund') return { to: '/status', label: 'Read the payment boundary' };
-    return { to: '/proof-lab', label: activation.proofCompleted ? 'Review fixture evidence' : 'Start Proof Lab' };
   };
+
+  const nextStep = onboarding.journey.find(({ step }) => !done[step])?.step ?? null;
+  const doneCount = onboarding.journey.filter(({ step }) => done[step]).length;
+
+  const stepLink = (step: string): { to: string; label: string } => {
+    if (step === 'install') return { to: '/docs', label: 'Open the quickstart' };
+    if (step === 'fund' || step === 'approve') return { to: '/pricing', label: 'Read the payment boundary' };
+    return { to: '/proof-lab', label: 'Open Proof Lab' };
+  };
+
   return (
-    <section className="build-page">
-      <header className="page-intro">
-        {/* Read from the probe. This badge asserted "public endpoint not
-          * deployed" for as long as api.clervo.dev was answering requests. */}
-        <ModeBadge>
-          {publicApiCallable
-            ? 'Published clients · public endpoint answering'
-            : 'Published clients · public endpoint not deployed'}
-        </ModeBadge>
-        <p className="eyebrow">Build / evidence-backed setup</p>
-        <h1>Prove the path.<br />Then connect it.</h1>
-        <p>
-          Install a verified public client, inspect the deterministic lifecycle,
-          then point it at an explicit endpoint.{' '}
-          {publicApiCallable
-            ? 'The public endpoint is answering, but package availability and API availability remain separate facts, and each client still takes its base URL explicitly.'
-            : 'Package availability does not imply API availability.'}
+    <>
+      <section className="page-lead">
+        <p className="eyebrow">Build / your progress in this browser</p>
+        <h1>What you have done.<br />What the system offers.</h1>
+        <p className="lede">
+          {doneCount === 0
+            ? 'Nothing is recorded yet. Copying a client snippet or completing a Proof Lab run marks a step below. That record is held in this browser and is never sent anywhere.'
+            : `${doneCount} of ${onboarding.journey.length} steps are recorded in this browser. The record is local, is never sent anywhere, and clearing site data removes it.`}
         </p>
-      </header>
+        <div className="cluster page-lead__actions">
+          <Link className="button button--primary" to="/start">Set up Clervo</Link>
+          <Link className="button button--quiet" to="/proof-lab">Run the no-payment fixture</Link>
+        </div>
+      </section>
 
-      <ol className="activation-journey">
-        {onboarding.journey.map((item, index) => {
-          const link = journeyLink(item.step);
-          const isComplete = completed[item.step];
-          return (
-            <li
-              key={item.step}
-              className={isComplete ? 'is-complete' : current === item.step ? 'is-current' : item.state === 'unavailable' ? 'is-blocked' : ''}
-            >
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <div>
-                <h2>{item.step}</h2>
-                <p>{item.action}</p>
-                <Link to={link.to}>{link.label}</Link>
-              </div>
-              <b>{isComplete ? 'proven locally' : item.state.replaceAll('_', ' ')}</b>
-            </li>
-          );
-        })}
-      </ol>
-
-      <section className="recovery-contract">
-        <header>
-          <div>
-            <p className="eyebrow">One failure / one next action</p>
-            <h2>Recovery never guesses.</h2>
-          </div>
-          <p>
-            These actions are prepared for the future payable path. They do not
-            imply that funding, signing, or settlement is available today.
+      <section className="band band--ruled build-body" aria-labelledby="build-progress">
+        <div className="section-head">
+          <p className="eyebrow">Local progress</p>
+          <h2 id="build-progress">Two columns, never merged.</h2>
+          <p className="lede">
+            The left column is what this browser has recorded you doing. The
+            right is what the deployed system offers for that step. A step can be
+            offered and not done, or done against a local fixture while the
+            public path is unavailable.
           </p>
-        </header>
-        <div>
-          {onboarding.recovery.map((item, index) => (
-            <article key={item.code}>
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <h3>{item.code.replaceAll('_', ' ')}</h3>
-              <p>{item.action}</p>
-              <b>{item.retry.replaceAll('_', ' ')}</b>
-            </article>
-          ))}
+        </div>
+        <ol className="build-steps">
+          {onboarding.journey.map(({ step, state, action }, index) => {
+            const isDone = done[step] === true;
+            const link = stepLink(step);
+            return (
+              <li key={step} className={step === nextStep ? 'is-next' : undefined}>
+                <span className="data build-steps__index">{String(index + 1).padStart(2, '0')}</span>
+                <div className="stack stack--tight">
+                  <h3>{stepTitles[step] ?? step}</h3>
+                  <p className="quiet">{action}</p>
+                  <Link className="text-link" to={link.to}>{link.label}</Link>
+                </div>
+                {/* A local record is not proof of anything the system did, so
+                  * it never renders as a state pill and never renders in gold.
+                  * The word carries the meaning; the mark only repeats it. */}
+                <div className="build-steps__marks">
+                  <b className={isDone ? 'is-done' : undefined}>
+                    {isDone ? 'done here' : 'not done here'}
+                  </b>
+                  <span className="quiet">{state.replaceAll('_', ' ')}</span>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+
+      <section className="band band--ruled build-body" aria-labelledby="build-preflight">
+        <div className="section-head">
+          <p className="eyebrow">This browser only</p>
+          <h2 id="build-preflight">Check the fixture prerequisites.</h2>
+          <p className="lede">
+            This inspects the browser you are reading in. It does not inspect
+            Node, Python, an MCP host, a wallet, or any Clervo service.
+          </p>
+        </div>
+        <button className="button button--secondary" type="button" onClick={() => setChecks(inspectBrowser())}>
+          Run browser preflight
+        </button>
+        <div aria-live="polite">
+          {checks === null ? (
+            <p className="quiet">No checks run.</p>
+          ) : (
+            <ul className="build-checks">
+              {checks.map(({ label, passed, evidence }) => (
+                <li key={label} className={passed ? 'is-pass' : 'is-fail'}>
+                  {/* A browser feature check is a local observation, not a
+                    * verified outcome, so it stays off the gold token too. */}
+                  <b>{passed ? 'available' : 'missing'}</b>
+                  <span>{label}</span>
+                  <span className="quiet">{evidence}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
 
-      <section className="browser-preflight">
-        <div>
-          <p className="eyebrow">This browser only</p>
-          <h2>Inspect fixture prerequisites.</h2>
-          <p>This does not inspect Node, Python, MCP, a wallet, or a public Clervo service.</p>
-          <button className="button button--quiet" type="button" onClick={() => setChecks(inspectBrowser())}>
-            Run browser preflight
-          </button>
+      <section className="band build-body" aria-labelledby="build-endpoint">
+        <div className="section-head">
+          <p className="eyebrow">Where a client points</p>
+          <h2 id="build-endpoint">Package availability is not endpoint availability.</h2>
         </div>
-        <div aria-live="polite">
-          {checks === null ? <p>No checks run.</p> : checks.map((check) => (
-            <article key={check.label} className={check.passed ? 'is-pass' : 'is-fail'}>
-              <span aria-hidden="true" />
-              <div><b>{check.label}</b><small>{check.evidence}</small></div>
-              <strong>{check.passed ? 'PASS' : 'FAIL'}</strong>
-            </article>
-          ))}
-        </div>
+        <dl className="facts">
+          <div>
+            <dt>Observed API origin</dt>
+            <dd>{publicApiCallable ? observedApiOrigin : 'none observed'}</dd>
+          </div>
+          <div>
+            <dt>Free entry route</dt>
+            <dd>{search.freeEntry === null ? 'not served right now' : search.freeEntry.route}</dd>
+          </div>
+          <div>
+            <dt>Public payment quoted</dt>
+            <dd>{search.observedPrice === null ? 'no' : 'yes'}</dd>
+          </div>
+          <div>
+            <dt>Local record</dt>
+            <dd>{doneCount} of {onboarding.journey.length} steps, this browser only</dd>
+          </div>
+        </dl>
+        <p className="quiet build-note">
+          Every published client takes its base URL explicitly, so the endpoint a
+          snippet calls is never implicit and never inherited from a default that
+          may have moved.
+        </p>
       </section>
-    </section>
+    </>
   );
 }

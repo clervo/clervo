@@ -20,7 +20,7 @@ const expectations = [
   ['products/rpc/index.html', 'Multi-chain RPC.'],
   ['products/prediction/index.html', 'Prediction Intelligence.'],
   ['products/crypto/index.html', 'Crypto Intelligence.'],
-  ['build/index.html', 'Prove the path.'],
+  ['build/index.html', 'What you have done.'],
   ['proof-lab/index.html', 'Inspect the mechanism.'],
   ['proof/index.html', 'The mechanism ran.'],
   ['docs/quickstart/index.html', 'Install the client.'],
