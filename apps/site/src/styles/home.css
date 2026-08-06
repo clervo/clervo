@@ -286,31 +286,36 @@
   color: var(--text-secondary);
 }
 
-.phase-evidence {
+/*
+ * The rule panel beside each step. It states the invariant that step enforces
+ * and links to the contract that specifies it, so the claim in the copy is
+ * checkable rather than decorative. It is deliberately not styled as an
+ * instrument readout: this is prose about the design, and dressing it as
+ * telemetry would make an explanation look like an observation.
+ */
+.phase-rule {
   align-self: start;
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
   padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: var(--radius-panel);
   background: var(--surface-1);
 }
 
-.phase-evidence > span {
-  display: block;
-  margin-bottom: var(--space-2);
+.phase-rule__label {
   color: var(--text-quiet);
   font-family: var(--mono);
   font-size: var(--step-micro);
   letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.phase-evidence dl div {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-3);
-  padding-block: var(--space-2);
-  border-top: 1px solid var(--line);
-  font-family: var(--mono);
-  font-size: var(--step-micro);
+.phase-rule__text {
+  color: var(--text-secondary);
+  font-size: var(--step-small);
+  line-height: 1.55;
 }
 
 /*

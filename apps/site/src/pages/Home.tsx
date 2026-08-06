@@ -48,12 +48,16 @@ function PhaseSection({
   eyebrow,
   title,
   detail,
+  rule,
+  contract,
   onPhase,
 }: {
   id: ExperiencePhase;
   eyebrow: string;
   title: string;
   detail: string;
+  rule: string;
+  contract: { to: string; label: string };
   onPhase(phase: ExperiencePhase): void;
 }) {
   const ref = useRef<HTMLElement>(null);
@@ -76,14 +80,11 @@ function PhaseSection({
         <h2>{title}</h2>
         <p>{detail}</p>
       </div>
-      <div className="phase-evidence" aria-label={`${id} evidence`}>
-        <span>{id === 'risk' ? 'BOUND' : id.toUpperCase()}</span>
-        <dl>
-          <div><dt>Layer</dt><dd>{id}</dd></div>
-          <div><dt>Behavior</dt><dd>fail closed</dd></div>
-          <div><dt>Evidence</dt><dd>inspectable</dd></div>
-        </dl>
-      </div>
+      <aside className="phase-rule">
+        <p className="phase-rule__label">The rule this step enforces</p>
+        <p className="phase-rule__text">{rule}</p>
+        <Link className="text-link" to={contract.to}>{contract.label}</Link>
+      </aside>
     </section>
   );
 }

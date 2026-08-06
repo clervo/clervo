@@ -336,41 +336,65 @@ export const pillarLabels: Record<DiscoveryPillar['pillarId'], string> = {
   crypto_intelligence: 'Crypto Intelligence',
 };
 
+/*
+ * The five lifecycle steps the homepage narrates and the instrument follows.
+ *
+ * This is a description of how the mechanism is designed, not a report of
+ * anything the deployed system has just done. Each step therefore names the
+ * document that specifies it and the rule that step enforces, and the homepage
+ * links to that document — a reader who does not believe the sentence can go
+ * read the contract. The previous version printed an identical three-row panel
+ * on all five steps ("Layer / Behavior / Evidence", always "fail closed",
+ * always "inspectable") under an "evidence" label, which is the shape of an
+ * instrument readout carrying none of the content of one.
+ */
 export const phases: Array<{
   id: ExperiencePhase;
   eyebrow: string;
   title: string;
   detail: string;
+  rule: string;
+  contract: { to: string; label: string };
 }> = [
   {
     id: 'risk',
     eyebrow: '01 / Bound the request',
     title: 'Unknown work enters as risk.',
     detail: 'Identity, scope, price ceiling, and failure policy are made explicit before execution.',
+    rule: 'A request without a bound maximum charge is refused before anything runs.',
+    contract: { to: '/docs/x402', label: 'The x402 boundary' },
   },
   {
     id: 'qualified',
     eyebrow: '02 / Qualify',
     title: 'A route earns the right to run.',
     detail: 'Contracts, provider terms, cost controls, and evidence gates remain attached to the decision.',
+    rule: 'Qualification is private engineering state and never implies customer availability.',
+    contract: { to: '/docs/catalog', label: 'The machine catalog' },
   },
   {
     id: 'approval',
     eyebrow: '03 / Approve',
     title: 'The maximum charge is visible.',
     detail: 'Approval is a deliberate boundary. Unknown settlement state always fails closed.',
+    rule: 'Nothing signs an authorization on the caller’s behalf; the challenge is handed over intact.',
+    contract: { to: '/pricing', label: 'Observed ceilings' },
   },
   {
     id: 'verified',
     eyebrow: '04 / Verify',
     title: 'The result carries its evidence.',
     detail: 'Outputs remain bound to exact operations, request hashes, citations, and safe failure behavior.',
+    rule: 'A failure names the next safe action and says whether retrying is allowed.',
+    contract: { to: '/docs/failures', label: 'Recovery states' },
   },
   {
     id: 'receipt',
     eyebrow: '05 / Receipt',
     title: 'Every outcome closes with proof.',
     detail: 'A replay-safe receipt preserves what ran, what it cost, and which evidence supports the result.',
+    rule: 'Replaying one request returns the existing receipt instead of executing a second time.',
+    contract: { to: '/docs/replay', label: 'Replay behaviour' },
   },
 ];
 
