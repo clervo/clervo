@@ -243,10 +243,15 @@
 
 /*
  * The spine marker: a short rule at the left edge of each step, carrying that
- * step's semantic colour. Red is the unbound request, cyan is qualification and
- * execution, gold is reserved for the two steps that are actually proof. The
- * sequence therefore reads red, cyan, cyan, gold, gold from top to bottom —
- * the same progression the Apex instrument runs through, at document scale.
+ * step's semantic colour. Red is the unbound request and cyan is qualification
+ * and execution, so the sequence reads red, cyan, cyan, neutral, neutral from
+ * top to bottom.
+ *
+ * The last two steps are deliberately not gold. This sequence describes how the
+ * mechanism works, which is a claim about the design rather than an observation
+ * of anything having been verified — and gold is reserved for an observed proof
+ * level, emitted only by .state--verified. Painting a narrative step gold would
+ * make an explanation look like evidence.
  */
 .phase-section::before {
   content: "";
@@ -265,11 +270,6 @@
 .phase-section--qualified::before,
 .phase-section--approval::before {
   background: var(--qualify);
-}
-
-.phase-section--verified::before,
-.phase-section--receipt::before {
-  background: var(--verified);
 }
 
 .phase-copy {
@@ -311,6 +311,77 @@
   border-top: 1px solid var(--line);
   font-family: var(--mono);
   font-size: var(--step-micro);
+}
+
+/*
+ * The capability worlds stage.
+ *
+ * The cards are absolutely positioned over the render on a wide screen, which
+ * is a composition, not a data structure. Under 900px they stop being an
+ * overlay and become an ordinary two-column list beneath the artwork, because a
+ * card floating over a photograph on a 390px screen is unreadable regardless of
+ * how well it is placed.
+ */
+.worlds-nodes {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.worlds-nodes > li {
+  position: absolute;
+  width: 9.5rem;
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-panel);
+  background: rgb(4 7 7 / 88%);
+  backdrop-filter: blur(12px);
+}
+
+.worlds-nodes b {
+  font-size: var(--step-small);
+  font-weight: 560;
+  line-height: 1.3;
+}
+
+.worlds-stage__boundary {
+  position: absolute;
+  z-index: 4;
+  right: var(--space-4);
+  bottom: var(--space-3);
+  max-width: 22rem;
+  margin: 0;
+  color: var(--text-quiet);
+  font-size: var(--step-micro);
+  text-align: right;
+}
+
+@media (width <= 900px) {
+  .worlds-nodes {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+
+  .worlds-nodes > li {
+    position: static;
+    width: auto;
+    backdrop-filter: none;
+    background: var(--surface-1);
+  }
+
+  .worlds-stage__boundary {
+    position: static;
+    margin-top: var(--space-3);
+    text-align: left;
+  }
 }
 
 @media (width <= 860px) {

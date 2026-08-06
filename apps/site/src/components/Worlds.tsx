@@ -1,16 +1,39 @@
 import { type CSSProperties, lazy, Suspense, useEffect, useRef, useState } from 'react';
+
+import { lifecycleLabels, observedTruth, type LifecycleState } from '../product';
 import { MediaBoundary } from './MediaBoundary';
 
-type WorldProduct = {
-  id: string;
-  label: string;
-  customerLifecycle: string;
-};
+/*
+ * The capability worlds stage.
+ *
+ * The render behind the six cards is a system model, not telemetry: it is a
+ * fixed artwork and it describes nothing about what the deployed system is
+ * doing right now. The cards in front of it are the opposite — each one carries
+ * the family's observed lifecycle, read from the probe.
+ *
+ * Those two facts have to stay distinguishable, which is why the stage says so
+ * in words rather than relying on the reader to infer it, and why the card
+ * state renders through the shared state pill: the pill carries a shape as well
+ * as a colour, so the meaning survives a reader who cannot separate cyan from
+ * red. The previous version tinted card borders by position in the list, which
+ * made an arbitrary layout decision look like a status signal.
+ */
 
 const WebGLWorlds = lazy(async () => {
   const module = await import('./WebGLWorlds');
   return { default: module.WebGLWorlds };
 });
+
+// Where each card sits on the desktop stage. Position is composition only; it
+// carries no meaning and is deliberately not derived from lifecycle state.
+const placement: Array<CSSProperties> = [
+  { left: '3%', bottom: '12%' },
+  { left: '20%', top: '28%' },
+  { left: '40%', bottom: '8%' },
+  { right: '27%', top: '36%' },
+  { right: '3%', bottom: '10%' },
+  { right: '5%', top: '14%' },
+];
 
 function WorldsStill() {
   return (
@@ -21,7 +44,7 @@ function WorldsStill() {
   );
 }
 
-export function Worlds({ products }: { products: WorldProduct[] }) {
+export function Worlds() {
   const root = useRef<HTMLDivElement>(null);
   const [enhanced, setEnhanced] = useState(false);
 
@@ -50,21 +73,20 @@ export function Worlds({ products }: { products: WorldProduct[] }) {
           </Suspense>
         </MediaBoundary>
       )}
-      <div className="worlds-stage__legend" aria-hidden="true">
-        <span>CYAN / QUALIFY</span>
-        <span>RED / RECOVER</span>
-        <span>GOLD / DELIVER</span>
-      </div>
-      <ol className="worlds-nodes" aria-label="Six Clervo capability cores">
-        {products.map((product, index) => (
-          <li key={product.id} style={{ '--world-index': index } as CSSProperties}>
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <b>{product.label}</b>
-            <small>{product.customerLifecycle.replaceAll('_', ' ')}</small>
-          </li>
-        ))}
+      <ol className="worlds-nodes" aria-label="Six Clervo capability families, with observed state">
+        {observedTruth.products.map((product, index) => {
+          const state = product.lifecycleState as LifecycleState;
+          return (
+            <li key={product.id} style={placement[index]}>
+              <b>{product.label}</b>
+              <span className={`state state--${state}`}>{lifecycleLabels[state]}</span>
+            </li>
+          );
+        })}
       </ol>
-      <p className="worlds-stage__boundary">Cinematic system model · not live telemetry</p>
+      <p className="worlds-stage__boundary">
+        The artwork is a system model. The state on each card is observed.
+      </p>
     </div>
   );
 }

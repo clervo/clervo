@@ -278,7 +278,7 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
       </section>
 
       <section className="band band--ruled worlds-section" aria-label="Capability worlds">
-        <Worlds products={launchState.products} />
+        <Worlds />
       </section>
 
       {/* Proof, stated at exactly the strength the evidence supports. */}

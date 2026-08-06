@@ -351,73 +351,6 @@ p {
 .worlds-still img { object-fit: cover; }
 .worlds-webgl { z-index: 1; }
 
-.worlds-stage__legend {
-  position: absolute;
-  z-index: 4;
-  top: 1rem;
-  left: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem 1rem;
-  color: var(--muted);
-  font: 0.56rem/1.3 var(--mono);
-}
-
-.worlds-stage__legend span::before {
-  content: "";
-  display: inline-block;
-  width: 1.2rem;
-  height: 1px;
-  margin: 0 0.45rem 0.2rem 0;
-  background: var(--qualified);
-}
-
-.worlds-stage__legend span:nth-child(2)::before { background: var(--risk); }
-.worlds-stage__legend span:nth-child(3)::before { background: var(--receipt); }
-
-.worlds-nodes {
-  position: absolute;
-  z-index: 4;
-  inset: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.worlds-nodes > li {
-  position: absolute;
-  width: 8.5rem;
-  min-height: 5.7rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 0.75rem;
-  border: 1px solid var(--line-strong);
-  background: rgb(4 7 7 / 84%);
-  backdrop-filter: blur(12px);
-}
-
-.worlds-nodes > li:nth-child(1) { left: 3%; bottom: 12%; }
-.worlds-nodes > li:nth-child(2) { left: 20%; top: 28%; }
-.worlds-nodes > li:nth-child(3) { left: 40%; bottom: 8%; }
-.worlds-nodes > li:nth-child(4) { right: 27%; top: 36%; border-color: color-mix(in srgb, var(--risk) 42%, var(--line)); }
-.worlds-nodes > li:nth-child(5) { right: 3%; bottom: 10%; border-color: color-mix(in srgb, var(--receipt) 42%, var(--line)); }
-.worlds-nodes > li:nth-child(6) { right: 5%; top: 14%; border-color: color-mix(in srgb, var(--receipt) 42%, var(--line)); }
-
-.worlds-nodes span,
-.worlds-nodes small { color: var(--muted); font: 0.56rem/1.35 var(--mono); text-transform: uppercase; }
-.worlds-nodes b { font-size: 0.78rem; }
-
-.worlds-stage__boundary {
-  position: absolute;
-  z-index: 4;
-  right: 1rem;
-  bottom: 0.7rem;
-  margin: 0;
-  color: var(--muted);
-  font: 0.55rem var(--mono);
-  text-transform: uppercase;
-}
 
 .not-found h1 {
   font-size: var(--step-hero);
@@ -503,10 +436,6 @@ p {
 
   .worlds-stage { min-height: auto; overflow: visible; border: 0; background: transparent; }
   .worlds-still { position: relative !important; display: block; height: 34rem; border: 1px solid var(--line-strong); overflow: hidden; }
-  .worlds-stage__legend { top: 1rem; }
-  .worlds-nodes { position: relative; display: grid; grid-template-columns: 1fr 1fr; border-left: 1px solid var(--line); }
-  .worlds-nodes > li { position: static; width: auto; min-height: 7rem; border-width: 0 1px 1px 0; background: var(--surface); backdrop-filter: none; }
-  .worlds-stage__boundary { position: static; margin-top: 0.8rem; text-align: right; }
 
   .eyebrow {
     min-width: 0;
