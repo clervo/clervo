@@ -885,3 +885,156 @@
     justify-self: start;
   }
 }
+
+/* --- /proof ---------------------------------------------------------------- */
+
+.proof-body {
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-gutter);
+}
+
+.proof-record {
+  display: grid;
+  grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+  gap: clamp(var(--space-5), 4vw, var(--space-8));
+  align-items: start;
+}
+
+.proof-record__amount {
+  display: grid;
+  gap: var(--space-3);
+}
+
+/*
+ * The settled amount. This is the one number on the site that was paid for and
+ * verified, so it is the one place gold carries a value rather than a label.
+ */
+.proof-record__value {
+  justify-self: start;
+  min-height: 0;
+  padding: var(--space-3) var(--space-4);
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  text-transform: none;
+}
+
+.proof-record__checks {
+  display: grid;
+  border-top: 1px solid var(--line-strong);
+}
+
+.proof-record__checks li {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 3.5rem;
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--line);
+}
+
+.proof-record__checks b {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.proof-claims {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--space-4);
+}
+
+.proof-claims h3 {
+  font-size: var(--step-3);
+}
+
+/*
+ * The evidence index. Each class is counted on its own, so the numbers are
+ * deliberately not styled to compete: a zero here is as informative as a one.
+ */
+.proof-evidence {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-6);
+}
+
+.proof-evidence dt {
+  color: var(--text-quiet);
+  font-size: var(--step-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.proof-evidence dd {
+  margin: var(--space-2) 0 0;
+}
+
+.proof-evidence dd b {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--mono);
+  font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.25rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.proof-evidence dd .quiet {
+  display: block;
+}
+
+.proof-packages {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: var(--space-4);
+}
+
+.proof-packages a {
+  display: grid;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--surface-1);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color var(--motion-micro) var(--ease);
+}
+
+.proof-packages a:hover {
+  border-color: var(--line-loud);
+}
+
+.proof-packages b {
+  font-size: var(--step-body);
+  font-weight: 560;
+  overflow-wrap: anywhere;
+}
+
+.proof-packages code {
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+}
+
+.proof-actions {
+  margin-top: var(--space-6);
+}
+
+@media (width <= 860px) {
+  .proof-record {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (width <= 480px) {
+  .proof-record__checks li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+    padding-block: var(--space-3);
+  }
+}
