@@ -345,11 +345,10 @@ p {
 
 .page-intro h1,
 .not-found h1 {
-  margin-bottom: 1.8rem;
-  font-size: clamp(4.4rem, 8.2vw, 9rem);
-  font-weight: 620;
-  line-height: 0.81;
-  letter-spacing: -0.078em;
+  margin-bottom: var(--space-4);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
 }
 
 
@@ -786,19 +785,34 @@ dd {
   color: var(--muted);
 }
 
+/*
+ * The interior-page opening block.
+ *
+ * This used to set a 4rem-to-8rem headline and 10rem of top padding, which made
+ * every interior route open with a second homepage hero. An interior page opens
+ * at the scale of the document it introduces, so the rhythm here now matches
+ * `.page-lead` in styles/pages.css, which is what the rebuilt pages use.
+ */
 .page-intro {
-  max-width: 72rem;
-  padding-top: 10rem;
-  padding-bottom: 5rem;
+  max-width: 62rem;
+  padding-top: clamp(var(--space-8), 7vw, var(--space-9));
+  padding-bottom: var(--space-6);
 }
 
 .page-intro .mode-badge {
-  margin-bottom: 2.5rem;
+  margin-bottom: var(--space-5);
 }
 
 .page-intro h1,
 .not-found h1 {
-  font-size: clamp(4rem, 7vw, 8rem);
+  font-size: var(--step-hero);
+}
+
+.page-intro > p:not(.eyebrow) {
+  max-width: 46rem;
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  line-height: 1.6;
 }
 
 .proof-lab,
@@ -1950,8 +1964,6 @@ fieldset label small {
 
   .page-intro h1,
   .not-found h1 {
-    font-size: clamp(3.2rem, 14.5vw, 5.6rem);
-    line-height: 0.88;
     overflow-wrap: anywhere;
   }
 
@@ -2009,8 +2021,8 @@ fieldset label small {
   }
 
   .page-intro {
-    padding-top: 8rem;
-    padding-bottom: 3.5rem;
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-5);
   }
 
   .lab-progress {

@@ -551,3 +551,22 @@
     gap: var(--space-3);
   }
 }
+
+/* --- /trust ---------------------------------------------------------------- */
+
+.trust-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: var(--space-4);
+}
+
+.trust-map a {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.trust-map h3 {
+  font-size: var(--step-3);
+}

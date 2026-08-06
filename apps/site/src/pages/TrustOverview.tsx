@@ -1,29 +1,56 @@
 import { useEffect } from 'react';
 
-import { ModeBadge } from '../components/Navigation';
 import type { ExperiencePhase } from '../product';
 import { Link } from '../router';
 
+/*
+ * /trust — the index of the claim-boundary pages.
+ *
+ * It exists so that the six kinds of readiness Clervo tracks are visible as six
+ * separate things. Collapsing them is how one kind of readiness starts to
+ * impersonate another: a published package standing in for a live API, a
+ * settled proof standing in for revenue.
+ */
+
+const map: Array<{ to: string; label: string; detail: string }> = [
+  { to: '/status', label: 'Status', detail: 'What the deployed system was observed doing, probed rather than asserted.' },
+  { to: '/proof', label: 'Proof', detail: 'The recorded settlement and replay evidence, and what it does not establish.' },
+  { to: '/pricing', label: 'Pricing', detail: 'Observed maximum charges, kept separate from the recorded proof amount.' },
+  { to: '/security', label: 'Security', detail: 'The controls that fail closed, including unknown-settlement quarantine.' },
+  { to: '/benchmarks', label: 'Benchmarks', detail: 'What has and has not been comparatively established.' },
+  { to: '/legal', label: 'Rights', detail: 'Supplier rights, terms-aware routing, and pending customer documents.' },
+];
+
 export function TrustOverview({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   useEffect(() => onPhase('verified'), [onPhase]);
+
   return (
-    <section className="trust-page">
-      <header className="page-intro">
-        <ModeBadge>Evidence before assertion</ModeBadge>
-        <p className="eyebrow">Trust / current boundaries</p>
-        <h1>Inspect the mechanism.<br />Keep the non-claims.</h1>
-        <p>Clervo separates engineering state, customer lifecycle, commercial proof, security controls, supplier rights, and incident status so one kind of readiness cannot impersonate another.</p>
-      </header>
-      <section className="trust-map">
-        {[
-          ['/proof', 'Proof', 'Recorded private settlement and replay evidence.'],
-          ['/security', 'Security', 'Fail-closed controls and permanent safety boundaries.'],
-          ['/pricing', 'Pricing', 'Recorded proof amount separated from any future public offer.'],
-          ['/benchmarks', 'Benchmarks', 'What has and has not been comparatively established.'],
-          ['/legal', 'Rights', 'Supplier-rights and customer-document boundaries.'],
-          ['/status', 'Status', 'Current availability without launch theater.'],
-        ].map(([to, label, detail]) => <Link key={to} to={to}><span>{label}</span><p>{detail}</p></Link>)}
+    <>
+      <section className="page-lead">
+        <p className="eyebrow">Trust</p>
+        <h1>Inspect the mechanism.</h1>
+        <p className="lede">
+          Clervo keeps engineering state, customer lifecycle, commercial proof,
+          security controls, supplier rights, and observed status as six
+          separate facts, so one kind of readiness cannot impersonate another.
+        </p>
       </section>
-    </section>
+
+      <section className="band band--ruled trust-body" aria-labelledby="trust-map-heading">
+        <h2 id="trust-map-heading" className="sr-only">Claim boundary pages</h2>
+        <ul className="trust-map">
+          {map.map(({ to, label, detail }) => (
+            <li key={to}>
+              <Link className="panel panel--interactive" to={to}>
+                <div className="panel__body stack stack--tight">
+                  <h3>{label}</h3>
+                  <p className="quiet">{detail}</p>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </>
   );
 }
