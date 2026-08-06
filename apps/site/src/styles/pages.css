@@ -1333,3 +1333,224 @@
     gap: var(--space-2);
   }
 }
+
+/* --- /proof-lab ----------------------------------------------------------- */
+
+.lab-body > * + * {
+  margin-top: var(--space-5);
+}
+
+/*
+ * Step rail. Position in a sequence, not a status: the marks are weight and a
+ * rule, never a semantic colour, because a completed fixture step says nothing
+ * about the deployed system.
+ */
+.lab-progress {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(7rem, 1fr);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  overflow-x: auto;
+}
+
+.lab-progress > li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding-inline: var(--space-3);
+  border-right: 1px solid var(--line);
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.lab-progress > li:last-child {
+  border-right: 0;
+}
+
+.lab-progress > li.is-complete {
+  color: var(--text-secondary);
+}
+
+.lab-progress > li.is-active {
+  color: var(--text);
+  background: var(--surface-1);
+  box-shadow: inset 0 -2px 0 var(--line-loud);
+}
+
+.lab-progress b {
+  font-weight: 500;
+}
+
+.lab-console {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.8fr) minmax(20rem, 1.2fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.lab-evidence__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.lab-evidence h3 {
+  font-size: var(--step-3);
+  font-weight: 560;
+  letter-spacing: -0.01em;
+}
+
+/*
+ * The fixture amount. It is set in mono at a readable size rather than as a
+ * display number: a large figure here would read as a price, and no price on
+ * this page was quoted by anything.
+ */
+.lab-quote {
+  color: var(--text-secondary);
+  font-size: var(--step-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-quote span {
+  color: var(--text-quiet);
+  font-size: var(--step-micro);
+  letter-spacing: 0.06em;
+}
+
+.lab-links {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.lab-receipt summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--text-secondary);
+  font-family: var(--mono);
+  font-size: var(--step-small);
+  cursor: pointer;
+}
+
+.lab-receipt[open] summary {
+  color: var(--text);
+}
+
+.lab-receipt > * + * {
+  margin-top: var(--space-3);
+}
+
+.lab-actions {
+  gap: var(--space-3);
+}
+
+.lab-note {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+}
+
+/* --- Fixture form controls ------------------------------------------------ */
+
+.field-label {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  color: var(--text-quiet);
+  font-size: var(--step-small);
+}
+
+.lab-input textarea {
+  width: 100%;
+  min-height: 11rem;
+  resize: vertical;
+  padding: var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-panel);
+  color: var(--text);
+  background: var(--surface-1);
+  font: inherit;
+  line-height: 1.55;
+}
+
+.lab-input textarea:disabled {
+  color: var(--text-secondary);
+}
+
+.lab-input fieldset {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.lab-input legend {
+  margin-bottom: var(--space-2);
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.lab-input fieldset label {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  /* 44px minimum target, same as every other control. */
+  min-height: 44px;
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+
+.lab-input fieldset label.is-selected {
+  border-color: var(--line-loud);
+  background: var(--surface-1);
+}
+
+.lab-input fieldset label span {
+  font-family: var(--mono);
+  font-size: var(--step-small);
+}
+
+.lab-input fieldset label small {
+  color: var(--text-quiet);
+  font-size: var(--step-micro);
+}
+
+.form-error {
+  color: var(--request);
+  font-size: var(--step-small);
+}
+
+@media (width <= 860px) {
+  .lab-console {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (width <= 560px) {
+  .lab-input fieldset label {
+    grid-template-columns: auto 1fr;
+  }
+
+  .lab-input fieldset label small {
+    grid-column: 2;
+  }
+
+  .lab-note {
+    margin-left: 0;
+  }
+}
