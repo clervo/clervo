@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `packages/catalog/live-registry.json`, probed at 2026-08-06T11:40:50.003Z. Release: `e23264a52c0c2a0254d19ff8062437b05ce1bad8`.
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-06T14:42:37.447Z. Release: `35a2f7af3bbe4914dc5e1685e6974c07a04eebf0`.
 
 ## Identity
 
@@ -31,7 +31,7 @@ outcome. Report it that way if you cite it.
 ## Free entry point
 
 - `POST https://api.clervo.dev/v1/search/free`
-- Accepts a request with no idempotency key: no
+- Accepts a request with no idempotency key: yes
 - Quota headers: `ratelimit-limit`, `ratelimit-remaining`, `ratelimit-reset`.
 - Over the cap the route answers `429 free_quota_exceeded` rather than executing. Do not treat 429 as a transport error.
 
@@ -40,8 +40,7 @@ outcome. Report it that way if you cite it.
 ```bash
 curl -sS https://api.clervo.dev/v1/search/free \
   -H 'content-type: application/json' \
-  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}' \
-  -H 'idempotency-key: clervo-first-call-0001'
+  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}'
 ```
 
 ## Idempotency contract

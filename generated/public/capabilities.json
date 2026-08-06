@@ -6,8 +6,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-06T11:40:50.003Z",
-      "releaseId": "e23264a52c0c2a0254d19ff8062437b05ce1bad8",
+      "observedAt": "2026-08-06T14:42:37.447Z",
+      "releaseId": "35a2f7af3bbe4914dc5e1685e6974c07a04eebf0",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -140,7 +140,7 @@
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",
-          "acceptsNaiveRequest": false
+          "acceptsNaiveRequest": true
         }
       }
     ]

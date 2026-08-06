@@ -63,8 +63,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-06T11:40:50.003Z",
-      "releaseId": "e23264a52c0c2a0254d19ff8062437b05ce1bad8",
+      "observedAt": "2026-08-06T14:42:37.447Z",
+      "releaseId": "35a2f7af3bbe4914dc5e1685e6974c07a04eebf0",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -197,28 +197,12 @@
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",
-          "acceptsNaiveRequest": false
+          "acceptsNaiveRequest": true
         }
       }
     ]
   },
-  "conformanceDefectsOpen": [
-    {
-      "conformant": false,
-      "expectation": "free search succeeds without a caller-supplied idempotency-key",
-      "id": "api.search_free_accepts_naive_request",
-      "observedCode": "idempotency_key_required",
-      "observedStatus": 400,
-      "url": "https://api.clervo.dev/v1/search/free"
-    },
-    {
-      "conformant": false,
-      "expectation": "a nonexistent site URL returns 404",
-      "id": "site.not_found_is_404",
-      "observedStatus": 200,
-      "url": "https://clervo.dev/clervo-live-registry-probe-nonexistent"
-    }
-  ],
+  "conformanceDefectsOpen": [],
   "aiRoutes": {
     "counts": {
       "live": 18,
@@ -228,19 +212,19 @@
       {
         "routeId": "ai.route.gpt_5_6_luna",
         "exactModelId": "gpt-5.6-luna",
-        "reason": "upstream_authentication_unavailable",
+        "reason": "upstream_completion_failed",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
       },
       {
         "routeId": "ai.route.gpt_5_6_sol",
         "exactModelId": "gpt-5.6-sol",
-        "reason": "upstream_authentication_unavailable",
+        "reason": "upstream_completion_failed",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
       },
       {
         "routeId": "ai.route.gpt_5_6_terra",
         "exactModelId": "gpt-5.6-terra",
-        "reason": "upstream_authentication_unavailable",
+        "reason": "upstream_completion_failed",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
       }
     ]

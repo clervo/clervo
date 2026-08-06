@@ -144,12 +144,12 @@
   "schemas": {
     "directory": "packages/contracts/schemas",
     "count": 94,
-    "aggregateHash": "sha256:1df0c0cccc5a2cdb5b577561310bd0bcb676184552218a7c025af4dc5d8632f2"
+    "aggregateHash": "sha256:6c6271554d0ce15abda4251fad4a6b8dfc6df83ee8a8842d12b4d4281d751bb8"
   },
   "examples": {
     "directory": "packages/contracts/fixtures",
     "count": 130,
     "aggregateHash": "sha256:5348aaf6c4f594a08ec0b0e576e00b5cb63cb7efeac799528cd8cd360ef5b200"
   },
-  "interfaceHash": "sha256:382626ee65b7c0c5ce51550db00d034177dd2fff60b7d820f7f52a988166c8d8"
+  "interfaceHash": "sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622"
 }
