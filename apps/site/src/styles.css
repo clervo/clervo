@@ -1611,6 +1611,39 @@ fieldset label small {
   gap: clamp(2rem, 5vw, 6rem);
 }
 
+/* The first call comes before the client list: a stranger should be able to run
+   one command without choosing an SDK first. */
+.docs-first-call {
+  margin: 0 0 clamp(2.5rem, 5vw, 4.5rem);
+  padding: clamp(1.6rem, 3vw, 2.6rem);
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(140deg, rgb(87 216 232 / 6%), transparent 55%), #050707;
+}
+
+.docs-first-call h2 {
+  margin: 0.4rem 0 1rem;
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  font-weight: 560;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.docs-first-call > p:not(.eyebrow) {
+  max-width: 44rem;
+  margin: 0 0 1.5rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.docs-first-call__boundary {
+  margin: 1.5rem 0 0;
+  font-size: 0.85rem;
+}
+
+.docs-first-call__boundary code {
+  font: 0.8rem monospace;
+}
+
 .docs-nav {
   position: sticky;
   top: 7.5rem;

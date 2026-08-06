@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { CodeBlock } from '../components/CodeBlock';
 import { ModeBadge } from '../components/Navigation';
 import type { ActivationState } from '../experience';
-import { discovery, familyOf, installExamples, launchState, lifecycleLabels, observedProduct, publicApiCallable, type ExperiencePhase } from '../product';
+import { discovery, familyOf, installExamples, launchState, lifecycleLabels, observedProduct, publicApiCallable, quickStartCurl, quickStartNeedsNoKey, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 type ClientId = keyof typeof installExamples;
@@ -49,6 +49,24 @@ export function Docs({
           {publicApiCallable ? ' — the public one is https://api.clervo.dev.' : ' and the customer API is not publicly callable.'}
         </p>
       </header>
+
+      {quickStartCurl !== null && (
+        <section className="docs-first-call">
+          <p className="eyebrow">First call / no account required</p>
+          <h2>One command. A cited result.</h2>
+          <p>
+            {quickStartNeedsNoKey
+              ? 'The free sample takes no account, no API key, no wallet, and no idempotency key. The server generates a key and returns it in the idempotency-key response header; send that value back to replay the same operation without a second execution.'
+              : 'The free sample takes no account, no API key, and no wallet. It currently requires an idempotency-key header, so this command carries one; reuse the same value to replay the same operation without a second execution.'}
+          </p>
+          <CodeBlock label="First free Search call" code={quickStartCurl} />
+          <p className="docs-first-call__boundary">
+            Over the free cap the route answers <code>429 free_quota_exceeded</code>
+            {' '}rather than executing. Paid requests return a 402 carrying the exact
+            maximum charge before anything runs.
+          </p>
+        </section>
+      )}
 
       <div className="docs-layout">
         <aside className="docs-nav">

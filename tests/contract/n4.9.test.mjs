@@ -68,6 +68,16 @@ async function post(origin, path, key, body, headers = {}) {
   });
 }
 
+// A first-time caller sends no idempotency-key. This is the naive request the
+// free sample must accept.
+async function postWithoutKey(origin, path, body, headers = {}) {
+  return fetch(`${origin}${path}`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', ...headers },
+    body: JSON.stringify(body),
+  });
+}
+
 test('bounded free route executes the existing search contract and replays without re-execution or quota use', async () => {
   const executor = recordedExecutor();
   await withServer({ executor, now: () => now, freeQuota: new InMemoryFreeSearchQuota(1, 60_000) }, async (origin) => {
@@ -99,6 +109,115 @@ test('free route rejects idempotency conflicts, excess quota, query parameters, 
     assert.equal((await limited.json()).code, 'free_quota_exceeded');
     assert.equal((await post(origin, `${SEARCH_FREE_PATH}?query=hidden`, 'idem_n49_query_01', { query: 'body' })).status, 400);
     assert.equal((await post(origin, SEARCH_FREE_PATH, 'idem_n49_extra_01', { query: 'body', unbounded: true })).status, 400);
+  });
+});
+
+test('free route accepts a naive request with no idempotency-key, reports the generated key, and keeps unkeyed requests distinct', async () => {
+  const executor = recordedExecutor();
+  await withServer({ executor, now: () => now, freeQuota: new InMemoryFreeSearchQuota(3, 60_000) }, async (origin) => {
+    const naive = await postWithoutKey(origin, SEARCH_FREE_PATH, { query: 'naive first call', maxResults: 1, synthesize: false });
+    assert.equal(naive.status, 200);
+    const generatedKey = naive.headers.get('idempotency-key');
+    assert.ok(generatedKey, 'the server must report the key it generated');
+    assert.equal(naive.headers.get('idempotency-replayed'), null);
+    const result = await naive.json();
+    assert.equal(result.fundingMode, 'free');
+    assert.equal(result.replayed, false);
+    assert.equal(executor.calls, 1);
+
+    // Two unkeyed callers asking the same question are two operations, not one
+    // replayed operation. A key derived from the request body would serve the
+    // second caller the first caller's result.
+    const second = await postWithoutKey(origin, SEARCH_FREE_PATH, { query: 'naive first call', maxResults: 1, synthesize: false });
+    assert.equal(second.status, 200);
+    assert.notEqual(second.headers.get('idempotency-key'), generatedKey);
+    assert.equal((await second.json()).replayed, false);
+    assert.equal(executor.calls, 2);
+
+    // The reported key is a real key: replaying it returns the same operation
+    // without re-executing.
+    const replay = await post(origin, SEARCH_FREE_PATH, generatedKey, { query: 'naive first call', maxResults: 1, synthesize: false });
+    assert.equal(replay.status, 200);
+    assert.equal((await replay.json()).replayed, true);
+    assert.equal(executor.calls, 2);
+  });
+});
+
+test('a caller-supplied key keeps its exact replay and conflict behaviour, and the paid route still requires one', async () => {
+  const executor = recordedExecutor();
+  await withServer({ executor, now: () => now, freeQuota: new InMemoryFreeSearchQuota(3, 60_000) }, async (origin) => {
+    const first = await post(origin, SEARCH_FREE_PATH, 'idem_n49_supplied_001', { query: 'supplied key', maxResults: 1, synthesize: false });
+    assert.equal(first.status, 200);
+    // The server reports a generated key only when it generated one.
+    assert.equal(first.headers.get('idempotency-key'), null);
+    const replay = await post(origin, SEARCH_FREE_PATH, 'idem_n49_supplied_001', { query: 'supplied key', maxResults: 1, synthesize: false });
+    assert.equal(replay.status, 200);
+    assert.equal((await replay.json()).replayed, true);
+    assert.equal(replay.headers.get('idempotency-replayed'), 'true');
+    const conflict = await post(origin, SEARCH_FREE_PATH, 'idem_n49_supplied_001', { query: 'different question', maxResults: 1, synthesize: false });
+    assert.equal(conflict.status, 409);
+    assert.equal((await conflict.json()).code, 'idempotency_conflict');
+    assert.equal(executor.calls, 1);
+
+    // The paid route never mints a key on the caller's behalf: an unknown
+    // settlement state must leave the caller something to retry with. A payment
+    // header without a key is refused before any execution.
+    const paidNaive = await postWithoutKey(origin, SEARCH_PAID_PATH, { query: 'paid without key', maxResults: 1, synthesize: false }, {
+      'payment-signature': 'mock-signature-value',
+    });
+    assert.equal(paidNaive.status, 400);
+    assert.equal(paidNaive.headers.get('idempotency-key'), null);
+    assert.equal((await paidNaive.json()).code, 'idempotency_key_required');
+    assert.equal(executor.calls, 1);
+  });
+});
+
+test('the free route reads a JSON body from the content types a naive client sends, and the paid route still requires application/json', async () => {
+  const executor = recordedExecutor();
+  await withServer({ executor, now: () => now, freeQuota: new InMemoryFreeSearchQuota(5, 60_000) }, async (origin) => {
+    const body = JSON.stringify({ query: 'shortest possible command', maxResults: 1, synthesize: false });
+    // `curl -d` sends application/x-www-form-urlencoded, and a fetch() with a
+    // string body and no headers sends text/plain. Both are what the published
+    // one-line example actually produces, so both must reach the free route.
+    for (const contentType of ['application/x-www-form-urlencoded', 'text/plain;charset=UTF-8', 'multipart/form-data', 'application/json']) {
+      const response = await fetch(`${origin}${SEARCH_FREE_PATH}`, { method: 'POST', headers: { 'content-type': contentType }, body });
+      assert.equal(response.status, 200, `free route must accept a JSON body declared as ${contentType}`);
+      assert.equal((await response.json()).fundingMode, 'free');
+    }
+    // An absent content-type is accepted for the same reason.
+    const undeclared = await fetch(`${origin}${SEARCH_FREE_PATH}`, { method: 'POST', headers: { 'content-type': '' }, body });
+    assert.equal(undeclared.status, 200);
+
+    // The body itself is still required to be JSON. Nothing is ever parsed as a
+    // form, so a real form submission is refused rather than reinterpreted.
+    const form = await fetch(`${origin}${SEARCH_FREE_PATH}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body: 'query=form+encoded',
+    });
+    assert.equal(form.status, 400);
+
+    // A payable request must be explicit about what it is sending: the
+    // relaxation is scoped to the unauthenticated free sample.
+    const paid = await fetch(`${origin}${SEARCH_PAID_PATH}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded', 'idempotency-key': 'idem_n49_media_paid1' },
+      body,
+    });
+    assert.equal(paid.status, 415);
+    assert.equal(executor.calls, 5);
+  });
+});
+
+test('the free-tier quota still refuses a naive caller rather than executing past the cap', async () => {
+  const executor = recordedExecutor();
+  await withServer({ executor, now: () => now, freeQuota: new InMemoryFreeSearchQuota(1, 60_000) }, async (origin) => {
+    assert.equal((await postWithoutKey(origin, SEARCH_FREE_PATH, { query: 'first naive', maxResults: 1, synthesize: false })).status, 200);
+    const limited = await postWithoutKey(origin, SEARCH_FREE_PATH, { query: 'second naive', maxResults: 1, synthesize: false });
+    assert.equal(limited.status, 429);
+    assert.equal((await limited.json()).code, 'free_quota_exceeded');
+    // Refused at the cap, never silently executed and billed to us.
+    assert.equal(executor.calls, 1);
   });
 });
 

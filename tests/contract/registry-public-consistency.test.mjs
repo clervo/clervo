@@ -162,6 +162,8 @@ test('no public surface offers an operation the registry does not serve', async 
 test('the site projection is byte-identical to the generated output', async () => {
   const files = [
     'llms.txt',
+    'skill.md',
+    'agent.md',
     'catalog.json',
     'capabilities.json',
     'pricing.json',
@@ -180,6 +182,61 @@ test('the site projection is byte-identical to the generated output', async () =
     ]);
     assert.ok(generated.equals(projected), `apps/site/public/${file} must equal generated/public/${file}`);
   }
+});
+
+test('the agent-facing documents render the registry rather than a hand-written claim', async () => {
+  const [skill, agent, llms] = await Promise.all([
+    text('generated/public/skill.md'),
+    text('generated/public/agent.md'),
+    text('generated/public/llms.txt'),
+  ]);
+  const freeEntry = registry.products.find(({ id }) => id === 'search').freeEntry;
+
+  for (const [name, document] of [['skill.md', skill], ['agent.md', agent]]) {
+    assert.ok(document.includes(registry.observedAt), `${name} must cite the registry observation time`);
+    assert.ok(document.includes('packages/catalog/live-registry.json'), `${name} must name its source`);
+    for (const product of registry.products) {
+      const row = document.split('\n').find((line) => line.startsWith(`| ${product.label} |`));
+      assert.ok(row !== undefined, `${name} must list ${product.label}`);
+      assert.ok(row.includes(product.state), `${name}: ${product.label} row must state its lifecycle`);
+      assert.ok(row.includes(product.proof), `${name}: ${product.label} row must state its proof level`);
+    }
+  }
+
+  // The published command must match what the runtime actually accepts. While
+  // the free route still requires a caller key the example carries one; once it
+  // accepts a naive request the header disappears. A command that contradicts
+  // the observed route would hand every first-time caller a 400.
+  if (freeEntry !== null) {
+    for (const [name, document] of [['skill.md', skill], ['agent.md', agent], ['llms.txt', llms]]) {
+      assert.ok(document.includes(freeEntry.route), `${name} must publish the observed free route`);
+      assert.equal(
+        document.includes("-H 'idempotency-key:"),
+        !freeEntry.acceptsNaiveRequest,
+        `${name} must show an idempotency-key header exactly when the observed route requires one`,
+      );
+    }
+    assert.ok(agent.includes(`Accepts a request with no idempotency key: ${freeEntry.acceptsNaiveRequest ? 'yes' : 'no'}`));
+  }
+
+  // An agent that reads the discovery document must be able to find them
+  // without guessing a filename.
+  const discovery = await json('generated/public/.well-known/clervo.json');
+  assert.equal(discovery.artifacts.skill, '/skill.md');
+  assert.equal(discovery.artifacts.agent, '/agent.md');
+});
+
+test('the API edge serves byte-identical copies of the two agent documents', async () => {
+  // The Worker has no filesystem, so the documents are compiled into a module.
+  // Two hosts serving two versions of the same document is the drift this
+  // guards against.
+  const [{ SKILL_DOCUMENT, AGENT_DOCUMENT }, skill, agent] = await Promise.all([
+    import('../../generated/worker/agent-documents.js'),
+    text('generated/public/skill.md'),
+    text('generated/public/agent.md'),
+  ]);
+  assert.equal(SKILL_DOCUMENT, skill);
+  assert.equal(AGENT_DOCUMENT, agent);
 });
 
 test('this suite pins no status value', async () => {

@@ -6,6 +6,7 @@ import onboarding from '../../../generated/public/onboarding.json' with { type: 
 import openapi from '../../../generated/public/openapi.json' with { type: 'json' };
 import pricing from '../../../generated/public/pricing.json' with { type: 'json' };
 import status from '../../../generated/public/status.json' with { type: 'json' };
+import { AGENT_DOCUMENT, SKILL_DOCUMENT } from '../../../generated/worker/agent-documents.js';
 
 const UPSTREAM_ORIGIN = 'https://clervo-api-production-jbtbib4yqa-uc.a.run.app';
 const FAVICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32 2 62 32 32 62 2 32Z" fill="#050606" stroke="#64706d" stroke-width="2"/><path d="M39.5 23.5a12 12 0 1 0 0 17" fill="none" stroke="#f4f7f6" stroke-width="6" stroke-linecap="square"/><circle cx="43" cy="21" r="3" fill="#d6b86a"/></svg>';
@@ -20,7 +21,13 @@ const DISCOVERY_DOCUMENTS = new Map([
   ['/status.json', status],
   ['/onboarding.json', onboarding],
 ]);
-const READ_PATHS = new Set(['/', '/favicon.ico', '/favicon.svg', '/v1/health', '/readyz', ...DISCOVERY_DOCUMENTS.keys()]);
+const READ_PATHS = new Set(['/', '/favicon.ico', '/favicon.svg', '/v1/health', '/readyz', '/skill.md', '/agent.md', ...DISCOVERY_DOCUMENTS.keys()]);
+// The agent-facing documents. An agent that discovers the API host first must
+// not have to know that these live only on the site host.
+const TEXT_DOCUMENTS = new Map([
+  ['/skill.md', SKILL_DOCUMENT],
+  ['/agent.md', AGENT_DOCUMENT],
+]);
 const MAXIMUM_REQUEST_BYTES = Object.freeze({
   '/v1/search/free': 16_384,
   '/v1/search/paid': 16_384,
@@ -36,7 +43,7 @@ function cors(headers = new Headers()) {
   headers.set('access-control-allow-origin', '*');
   headers.set('access-control-allow-methods', 'GET, POST, OPTIONS');
   headers.set('access-control-allow-headers', 'authorization, content-type, idempotency-key, payment-signature');
-  headers.set('access-control-expose-headers', 'payment-required, payment-response, payment-receipt, www-authenticate, idempotency-replayed, ratelimit-limit, ratelimit-remaining, ratelimit-reset, retry-after');
+  headers.set('access-control-expose-headers', 'payment-required, payment-response, payment-receipt, www-authenticate, idempotency-key, idempotency-replayed, ratelimit-limit, ratelimit-remaining, ratelimit-reset, retry-after');
   headers.set('access-control-max-age', '86400');
   headers.set('x-content-type-options', 'nosniff');
   headers.set('referrer-policy', 'no-referrer');
@@ -80,6 +87,10 @@ export default {
       headers: cors(new Headers({ 'content-type': 'image/svg+xml; charset=utf-8' })),
     });
     if (DISCOVERY_DOCUMENTS.has(incoming.pathname)) return json(200, DISCOVERY_DOCUMENTS.get(incoming.pathname));
+    if (TEXT_DOCUMENTS.has(incoming.pathname)) return new Response(TEXT_DOCUMENTS.get(incoming.pathname), {
+      status: 200,
+      headers: cors(new Headers({ 'content-type': 'text/markdown; charset=utf-8' })),
+    });
     const declared = Number(request.headers.get('content-length'));
     const maximumRequestBytes = MAXIMUM_REQUEST_BYTES[incoming.pathname];
     if (Number.isFinite(declared) && maximumRequestBytes !== undefined && declared > maximumRequestBytes) return json(413, { code: 'request_body_too_large', status: 413 });

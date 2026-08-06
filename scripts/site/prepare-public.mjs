@@ -121,6 +121,20 @@ await writeFile(path.join(target, '_headers'), [
   '/assets/*',
   '  Cache-Control: public, max-age=31536000, immutable',
   '',
+  // The agent-facing documents are for machine readers, which need to fetch
+  // them cross-origin and must receive them as text rather than a download.
+  '/skill.md',
+  '  Content-Type: text/markdown; charset=utf-8',
+  '  Access-Control-Allow-Origin: *',
+  '',
+  '/agent.md',
+  '  Content-Type: text/markdown; charset=utf-8',
+  '  Access-Control-Allow-Origin: *',
+  '',
+  '/llms.txt',
+  '  Content-Type: text/plain; charset=utf-8',
+  '  Access-Control-Allow-Origin: *',
+  '',
 ].join('\n'));
 
 // The invariant that replaces the frozen-status gate: every generated file is

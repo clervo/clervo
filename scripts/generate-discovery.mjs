@@ -473,6 +473,9 @@ if (publicAi || publicSandbox) catalog.products = discovery.products;
 // side, sourced from the probed registry rather than from any prose.
 discovery.observedTruth = { provenance: observedProvenance, products: observedTruth };
 catalog.observedTruth = discovery.observedTruth;
+// The two agent-facing documents are advertised where an agent already looks,
+// so finding them does not require guessing a filename.
+discovery.artifacts = { ...discovery.artifacts, skill: '/skill.md', agent: '/agent.md' };
 if (publicSearch) contractModule.assertPublicArtifacts(openapi, discovery, llms, projection);
 else contractModule.assertPreviewArtifacts(openapi, discovery, llms, projection);
 llms += [
@@ -582,7 +585,227 @@ await writeFile(path.join(outputDirectory, '.well-known', 'security.txt'), [
   '',
 ].join('\n'));
 await writeFile(path.join(outputDirectory, 'openapi.yaml'), stableJson(openapi));
+
+// `skill.md` and `agent.md` are the two documents an agent runtime looks for
+// when it wants to use a service without a human reading marketing pages. They
+// previously resolved to the site's HTML shell, which told an agent nothing.
+//
+// Both are generated from the probed registry for the same reason every other
+// public surface is: a hand-written capability document drifts from the runtime
+// the moment the runtime changes, and a stale skill file is worse than none —
+// it makes an agent attempt an operation that fails closed.
+const freeEntryRoute = observed.search.freeEntry?.route ?? null;
+const naiveFreeAccepted = observed.search.freeEntry?.acceptsNaiveRequest === true;
+const publicBaseUrl = publicSearch ? projection.publicBaseUrl : null;
+
+// The one command a first-time caller runs. Built from the probed registry, so
+// it can never advertise a header requirement the deployed system does not have:
+// while the free route still demands a caller-supplied key the published command
+// shows one, because a copy-pasteable example that returns 400 is worse than no
+// example. Once the route accepts a naive request the key line disappears and
+// the server reports the key it generated in the `idempotency-key` response
+// header. The site renders the same command from the same registry field.
+const quickStartCurl = publicBaseUrl === null
+  ? null
+  : [
+    `curl -sS ${publicBaseUrl}/v1/search/free \\`,
+    "  -H 'content-type: application/json' \\",
+    `  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}'${naiveFreeAccepted ? '' : ' \\'}`,
+    ...(naiveFreeAccepted ? [] : ["  -H 'idempotency-key: clervo-first-call-0001'"]),
+  ].join('\n');
+
+function observedRows() {
+  return observedTruth.map((product) => `| ${product.label} | \`${product.id}\` | ${product.lifecycleState}${product.reason === null ? '' : ` (${product.reason})`} | ${product.proofLevel} |`);
+}
+
+const observedTable = [
+  '| Product | ID | Lifecycle state | Proof level |',
+  '|---|---|---|---|',
+  ...observedRows(),
+];
+
+// The same command, published on the site and in llms.txt, so a reader of
+// either runs the identical first call.
+if (quickStartCurl !== null) {
+  llms += [
+    '',
+    '## First call',
+    '',
+    naiveFreeAccepted
+      ? 'No account, no API key, no wallet, no idempotency key:'
+      : 'No account, no API key, no wallet:',
+    '',
+    '```bash',
+    quickStartCurl,
+    '```',
+    '',
+    naiveFreeAccepted
+      ? 'The free sample accepts a request with no `idempotency-key` header. The server generates one and returns it in the `idempotency-key` response header; send that value back to replay the same operation without a second execution.'
+      : 'The free sample currently rejects a request with no `idempotency-key` header; supply a stable value of 8 to 128 token characters.',
+    '',
+    `Paid requests go to \`POST ${publicBaseUrl}/v1/search/paid\`, which returns a 402 carrying the exact maximum charge before anything executes.`,
+    '',
+    '- [Agent skill](/skill.md): when to use Clervo and how to make the first call.',
+    '- [Agent reference](/agent.md): identity, observed state, idempotency contract, and boundaries.',
+    '',
+  ].join('\n');
+}
 await writeFile(path.join(outputDirectory, 'llms.txt'), llms);
+
+const skillDocument = [
+  '# Clervo skill',
+  '',
+  'Clervo sells bounded outcomes over HTTP: one request in, one verified result',
+  'and one receipt out. Payment, when required, uses x402 or MPP over USDC on',
+  'Base and is always quoted before execution.',
+  '',
+  `Generated from \`${observedProvenance.source}\`, probed at ${observedProvenance.observedAt}. Every row below is observed from the deployed system, never asserted.`,
+  '',
+  '## When to use this skill',
+  '',
+  '- You need current cited web evidence for a question and want the sources with the answer.',
+  '- You want to pay per request instead of holding an account or an API key.',
+  '- You need the same request to be safely retryable without being charged twice.',
+  '',
+  '## Observed capability',
+  '',
+  ...observedTable,
+  '',
+  'Lifecycle state is what the runtime serves right now. Proof level is what has',
+  'actually been demonstrated: `quote_observed_unpaid` means a price and a valid',
+  'payment challenge were returned and nothing more. Do not treat a priced route',
+  'as a proven paid outcome.',
+  '',
+  ...(quickStartCurl === null ? [
+    '## Calling it',
+    '',
+    'No public endpoint is served in this release. Do not construct a call.',
+    '',
+  ] : [
+    '## First call',
+    '',
+    naiveFreeAccepted ? 'No key, no account, no wallet:' : 'No account, no wallet:',
+    '',
+    '```bash',
+    quickStartCurl,
+    '```',
+    '',
+    naiveFreeAccepted
+      ? 'The free sample accepts a request with no `idempotency-key`. The server mints one and returns it in the `idempotency-key` response header; send that value back to replay the same operation without re-executing it.'
+      : 'The free sample currently requires a caller-supplied `idempotency-key` header. Send a stable value of 8 to 128 token characters.',
+    '',
+    '## Paid call',
+    '',
+    `1. \`POST ${publicBaseUrl}/v1/search/paid\` with the same body and your own \`idempotency-key\`.`,
+    '2. Read the 402 response: `accepts[0]` carries the exact maximum charge, asset, network, and expiry.',
+    '3. Approve deliberately, then resend with `PAYMENT-SIGNATURE` (x402) or `Authorization: Payment` (MPP).',
+    '4. Reuse the same key to replay the completed result. A replay never charges again.',
+    '',
+    '## Failure behaviour',
+    '',
+    '- `400` the request was rejected before execution; fix it and resend.',
+    '- `402` payment is required; the body carries the exact quote.',
+    '- `409` the key is bound to a different request body; use a new key.',
+    '- `429` the free quota is exhausted; wait for the window in `ratelimit-reset`.',
+    '- `5xx` the operation failed closed. Retry the same key. Never retry a payment of unknown settlement state with a new key.',
+    '',
+  ]),
+  '## Machine-readable contracts',
+  '',
+  '- `/.well-known/clervo.json` — discovery, products, and observed truth.',
+  '- `/openapi.json` — request and response contracts.',
+  '- `/status.json` — current lifecycle state, proof level, and open conformance defects.',
+  '- `/pricing.json` — the public offer boundary.',
+  '- `/llms.txt` — this service as a documentation map.',
+  '',
+].join('\n');
+
+const agentDocument = [
+  '# Clervo for agents',
+  '',
+  'This document is written for an autonomous caller. It states what is callable,',
+  'what it costs, and what has actually been proven. It contains no marketing',
+  'claim and no capability that the deployed system does not serve.',
+  '',
+  `Source: \`${observedProvenance.source}\`, probed at ${observedProvenance.observedAt}. Release: \`${observedProvenance.releaseId ?? 'unknown'}\`.`,
+  '',
+  '## Identity',
+  '',
+  `- API origin: ${publicBaseUrl ?? 'not publicly served in this release'}`,
+  '- Site origin: https://clervo.dev',
+  '- Payment protocols: x402 and MPP EVM charge intents, USDC on Base.',
+  '- Authentication: none. The free sample needs no credential; paid routes need a payment, not an account.',
+  '',
+  '## Observed state',
+  '',
+  ...observedTable,
+  '',
+  'These are two independent facts. A `live` product with proof level',
+  '`quote_observed_unpaid` is offered and priced; it is not a demonstrated paid',
+  'outcome. Report it that way if you cite it.',
+  '',
+  ...(freeEntryRoute === null ? [] : [
+    '## Free entry point',
+    '',
+    `- \`POST ${freeEntryRoute}\``,
+    `- Accepts a request with no idempotency key: ${naiveFreeAccepted ? 'yes' : 'no'}`,
+    '- Quota headers: `ratelimit-limit`, `ratelimit-remaining`, `ratelimit-reset`.',
+    '- Over the cap the route answers `429 free_quota_exceeded` rather than executing. Do not treat 429 as a transport error.',
+    '',
+  ]),
+  ...(quickStartCurl === null ? [] : [
+    '## Minimum viable request',
+    '',
+    '```bash',
+    quickStartCurl,
+    '```',
+    '',
+  ]),
+  '## Idempotency contract',
+  '',
+  '- A key is 8 to 128 visible ASCII token characters.',
+  '- The same key with the same body replays the stored result and sets `idempotency-replayed: true`. No second execution, no second charge.',
+  '- The same key with a different body returns `409 idempotency_conflict`.',
+  '- If the free sample generates a key for you, it is returned in the `idempotency-key` response header. Keep it if you may need to replay.',
+  '- On an unknown settlement state, retry with the same key only. A new key authorizes a new charge.',
+  '',
+  '## Discovery paths',
+  '',
+  '- `/.well-known/clervo.json`',
+  '- `/openapi.json`',
+  '- `/catalog.json`',
+  '- `/capabilities.json`',
+  '- `/pricing.json`',
+  '- `/status.json`',
+  '- `/onboarding.json`',
+  '- `/llms.txt`',
+  '',
+  '## Boundaries',
+  '',
+  ...(discovery.limitations ?? []).map((limitation) => `- ${limitation}`),
+  '',
+].join('\n');
+
+await writeFile(path.join(outputDirectory, 'skill.md'), skillDocument);
+await writeFile(path.join(outputDirectory, 'agent.md'), agentDocument);
+
+// The API edge is a Worker with no filesystem, so it cannot read the two
+// documents at request time. They are emitted as a module it imports, from the
+// same strings written above, so the site host and the API host can never serve
+// two different versions of the same document.
+const workerDirectory = path.join(root, 'generated/worker');
+await mkdir(workerDirectory, { recursive: true });
+await writeFile(path.join(workerDirectory, 'agent-documents.js'), [
+  '// Generated by scripts/generate-discovery.mjs. Do not edit.',
+  '//',
+  '// Imported by apps/worker/src/api-edge.js so api.clervo.dev serves byte-identical',
+  '// copies of generated/public/skill.md and generated/public/agent.md.',
+  '',
+  `export const SKILL_DOCUMENT = ${JSON.stringify(skillDocument)};`,
+  '',
+  `export const AGENT_DOCUMENT = ${JSON.stringify(agentDocument)};`,
+  '',
+].join('\n'));
 
 const publicOperationCount = projection.publicOperationIds.length + (publicAi ? 1 : 0) + (publicSandbox ? 1 : 0);
 console.log(`distribution discovery generation: PASS (${publicSandbox ? 'public Search, AI, and Sandbox preview' : publicAi ? 'public Search and AI preview' : publicSearch ? 'public Search preview' : 'private candidate'}, ${publicOperationCount} operations, ${Object.keys(schemas).length} schemas)`);

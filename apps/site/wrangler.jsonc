@@ -16,7 +16,12 @@
   ],
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "single-page-application"
+    // Every real route is prerendered to its own index.html, so an unmatched
+    // path is genuinely not a page. `single-page-application` answered 200 to
+    // every URL, which is why a crawler would not index the site: a site that
+    // says yes to everything says nothing. `404-page` serves the prerendered
+    // /404.html with a real 404 status.
+    "not_found_handling": "404-page"
   },
   "observability": {
     "enabled": true,

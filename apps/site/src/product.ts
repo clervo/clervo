@@ -288,8 +288,30 @@ export const phases: Array<{
   },
 ];
 
+// The one command a first-time caller runs, built from the probed registry so
+// the published example can never advertise a route or a header requirement the
+// deployed system does not have. The base URL is the observed free route's own
+// origin, not a placeholder: a copy-pasteable example that needs to be edited
+// before it works is not copy-pasteable.
+const observedFreeRoute = observedTruth.products.find(({ id }) => id === 'search')?.freeEntry ?? null;
+
+export const quickStartCurl = observedFreeRoute === null
+  ? null
+  : [
+    `curl -sS ${observedFreeRoute.route} \\`,
+    "  -H 'content-type: application/json' \\",
+    `  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}'${observedFreeRoute.acceptsNaiveRequest ? '' : ' \\'}`,
+    // While the free route still demands a caller key, the published example
+    // shows one. Publishing the shorter command before the runtime accepts it
+    // would hand every first-time caller a 400.
+    ...(observedFreeRoute.acceptsNaiveRequest ? [] : ["  -H 'idempotency-key: clervo-first-call-0001'"]),
+  ].join('\n');
+
+/** True when the published curl needs no idempotency key, as observed. */
+export const quickStartNeedsNoKey = observedFreeRoute?.acceptsNaiveRequest === true;
+
 export const installExamples = {
-  http: `export CLERVO_BASE_URL=http://127.0.0.1:8080
+  http: quickStartCurl ?? `export CLERVO_BASE_URL=http://127.0.0.1:8080
 
 curl --fail-with-body \\
   --request POST "$CLERVO_BASE_URL/v1/search/free" \\

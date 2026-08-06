@@ -50,4 +50,17 @@ for (const [file, content] of expectations) {
   if (html.includes('<div id="root"></div>')) throw new Error(`site_prerender_empty:${file}`);
 }
 
-console.log(`site prerender validation: PASS (${expectations.length} content routes)`);
+// The 404 document is what makes a nonexistent URL answer 404 instead of 200.
+// It is checked separately because it is deliberately not canonical and
+// deliberately not indexed.
+const notFound = await readFile(path.join(dist, '404.html'), 'utf8');
+const notFoundText = notFound
+  .replace(/<!--.*?-->/gu, '')
+  .replace(/<[^>]+>/gu, ' ')
+  .replace(/\s+/gu, ' ');
+if (!notFoundText.includes('This path has no contract.')) throw new Error('site_prerender_content_missing:404.html');
+if (notFound.includes('<div id="root"></div>')) throw new Error('site_prerender_empty:404.html');
+if (notFound.includes('rel="canonical"')) throw new Error('site_prerender_404_must_not_be_canonical');
+if (!notFound.includes('name="robots" content="noindex"')) throw new Error('site_prerender_404_must_be_noindex');
+
+console.log(`site prerender validation: PASS (${expectations.length} content routes, 404 document)`);

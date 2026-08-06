@@ -60,4 +60,21 @@ for (const [route, title] of routes) {
   await writeFile(destination, html);
 }
 
-console.log(`site prerender: PASS (${routes.length} static routes)`);
+// The site previously answered 200 for every unknown URL, so a crawler saw a
+// site that claimed every path existed and would not index it. Every real route
+// above is a file, so an unmatched path is genuinely not a page: the deployment
+// serves this document with a real 404 status
+// (`not_found_handling: 404-page` in apps/site/wrangler.jsonc).
+//
+// It is rendered from the same app as every other route, so the 404 page is a
+// real page rather than a bare string, and it carries no canonical link —
+// nothing should be indexed as the canonical version of a missing route.
+const notFoundPath = '/404';
+await writeFile(
+  path.join(dist, '404.html'),
+  template
+    .replace('<div id="root"></div>', `<div id="root" data-prerender-path="${notFoundPath}">${render(`https://clervo.dev${notFoundPath}`)}</div>`)
+    .replace(/<title>.*?<\/title>/u, '<title>Route not found — Clervo</title><meta name="robots" content="noindex">'),
+);
+
+console.log(`site prerender: PASS (${routes.length} static routes, 404 document)`);

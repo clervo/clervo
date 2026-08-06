@@ -184,7 +184,9 @@
     "pricing": "/pricing.json",
     "status": "/status.json",
     "llms": "/llms.txt",
-    "schemas": "/schemas/2026-07-29.1/"
+    "schemas": "/schemas/2026-07-29.1/",
+    "skill": "/skill.md",
+    "agent": "/agent.md"
   },
   "products": [
     {

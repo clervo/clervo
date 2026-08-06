@@ -48,3 +48,21 @@ Probed from the deployed system at 2026-08-06T11:40:50.003Z. Lifecycle state is 
 | Multi-chain RPC | unavailable (commercial_rights_blocked) | none |
 | Secure Sandbox | live | quote_observed_unpaid |
 | Research | live | quote_observed_unpaid |
+
+## First call
+
+No account, no API key, no wallet:
+
+```bash
+curl -sS https://api.clervo.dev/v1/search/free \
+  -H 'content-type: application/json' \
+  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}' \
+  -H 'idempotency-key: clervo-first-call-0001'
+```
+
+The free sample currently rejects a request with no `idempotency-key` header; supply a stable value of 8 to 128 token characters.
+
+Paid requests go to `POST https://api.clervo.dev/v1/search/paid`, which returns a 402 carrying the exact maximum charge before anything executes.
+
+- [Agent skill](/skill.md): when to use Clervo and how to make the first call.
+- [Agent reference](/agent.md): identity, observed state, idempotency contract, and boundaries.

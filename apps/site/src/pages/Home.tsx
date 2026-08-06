@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { ModeBadge } from '../components/Navigation';
 import { Worlds } from '../components/Worlds';
-import { installExamples, launchState, observedProduct, observedTruth, phases, proofLabels, publicApiCallable, type ExperiencePhase } from '../product';
+import { installExamples, launchState, observedProduct, observedTruth, phases, proofLabels, publicApiCallable, quickStartCurl, quickStartNeedsNoKey, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 // Read from observed truth rather than written by hand: which families the
@@ -145,19 +145,23 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
 
       <section className="home-quickstart">
         <div>
-          <p className="eyebrow">Developer quickstart / public clients</p>
-          <h2>Install the interface.<br />Bring an explicit endpoint.</h2>
+          <p className="eyebrow">First call / one command</p>
+          <h2>Run one command.<br />Get a cited result.</h2>
           <p>
-            {publicApiCallable
-              ? 'The clients are public and registry-verified, and the customer API is publicly callable. The example still takes an explicit base URL so the endpoint you are calling is never implicit.'
-              : 'The clients are public and registry-verified. The customer service is not publicly callable, so the example preserves an endpoint placeholder instead of pretending a live API exists.'}
+            {quickStartCurl === null
+              ? 'The clients are public and registry-verified. The customer service is not publicly callable, so no command is published that would fail.'
+              : quickStartNeedsNoKey
+                ? 'No account, no API key, no wallet, no idempotency key. The free sample generates the key for you and returns it in the idempotency-key response header, so the same call can be replayed deliberately.'
+                : 'No account, no API key, no wallet. The free sample currently requires an idempotency-key header, so the published command carries one; reuse the same value to replay without a second execution.'}
           </p>
           <div className="home-quickstart__links">
             <Link className="button button--primary" to="/docs/quickstart">Open quickstart</Link>
             <Link className="button button--quiet" to="/docs/catalog">Inspect catalog</Link>
           </div>
         </div>
-        <pre aria-label="TypeScript installation and bounded request example"><code>{installExamples.typescript}</code></pre>
+        {quickStartCurl === null
+          ? <pre aria-label="TypeScript installation and bounded request example"><code>{installExamples.typescript}</code></pre>
+          : <pre aria-label="First free Search call"><code>{quickStartCurl}</code></pre>}
       </section>
 
       <section className="home-trust">

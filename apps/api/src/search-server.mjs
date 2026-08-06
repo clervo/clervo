@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import http from 'node:http';
-import { createHash, timingSafeEqual } from 'node:crypto';
+import { createHash, randomUUID, timingSafeEqual } from 'node:crypto';
 import {
   AI_MAX_BODY_BYTES,
   AI_PAID_PATH,
@@ -91,6 +91,23 @@ function identifier(prefix, seed) {
   return `${prefix}_${createHash('sha256').update(seed).digest('hex').slice(0, 32)}`;
 }
 
+// A first-time caller of the free sample has no reason to know what an
+// idempotency key is, and rejecting them with 400 lost them at the top of the
+// funnel. When no key is supplied the server mints one and reports it in
+// `idempotency-key` on the response, so the caller can replay deliberately.
+//
+// The generated key is random, never derived from the request. Deriving it from
+// the body would silently collapse two unrelated callers asking the same
+// question into one operation: the second would be served the first one's
+// result as a replay. Randomness keeps every unkeyed request its own operation,
+// which is exactly what a caller who supplied no key asked for.
+//
+// Callers that do supply a key take the untouched path below, so replay,
+// conflict, and in-progress behaviour for them is unchanged.
+function generatedIdempotencyKey() {
+  return `srv.free.${randomUUID().replaceAll('-', '')}`;
+}
+
 function problem(status, code, title, detail, instance, operationId) {
   return {
     type: `https://api.clervo.dev/problems/${code.replaceAll('_', '-')}`,
@@ -115,9 +132,27 @@ function send(response, status, body, headers = {}, contentType = JSON_TYPE) {
   response.end(JSON.stringify(body));
 }
 
-async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES) {
+// `curl -d '{"query":"..."}'` sends `application/x-www-form-urlencoded`, so a
+// first-time caller who copies the shortest possible command received 415 from
+// the free sample. The free path therefore accepts any of the content types a
+// naive client sends and still requires the body itself to be JSON; nothing is
+// ever parsed as a form. Paid paths keep the strict check, because a payable
+// request should be explicit about what it is sending.
+//
+// This makes the free route reachable by a cross-origin HTML form without a
+// preflight. It is safe here and only here: the route is unauthenticated, reads
+// no cookie, carries no ambient identity, is capped by the per-subject free
+// quota, and answers `cache-control: no-store`. A forged submission can
+// therefore consume a caller's own free quota and nothing else.
+const NAIVE_CONTENT_TYPES = new Set(['application/json', 'text/plain', 'application/x-www-form-urlencoded', 'multipart/form-data']);
+
+async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType = false } = {}) {
   const contentType = request.headers['content-type'];
-  if (typeof contentType !== 'string' || contentType.split(';', 1)[0].trim().toLowerCase() !== 'application/json') throw Object.assign(new Error('unsupported_media_type'), { status: 415 });
+  const declaredType = typeof contentType === 'string' ? contentType.split(';', 1)[0].trim().toLowerCase() : '';
+  const acceptable = acceptNaiveContentType
+    ? declaredType === '' || NAIVE_CONTENT_TYPES.has(declaredType)
+    : declaredType === 'application/json';
+  if (!acceptable) throw Object.assign(new Error('unsupported_media_type'), { status: 415 });
   const declared = Number(request.headers['content-length']);
   if (Number.isFinite(declared) && declared > maximumBytes) throw Object.assign(new Error('request_body_too_large'), { status: 413 });
   const chunks = [];
@@ -617,16 +652,25 @@ export function createSearchServer({
     let stateCompletionAttempted = false;
     const startedAt = monotonicNow();
     try {
-      const keyHeader = request.headers['idempotency-key'];
+      const suppliedKey = request.headers['idempotency-key'];
       const authorizationHeader = mppAuthorization(request.headers.authorization);
-      if (url.pathname === SEARCH_PAID_PATH && typeof keyHeader !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined) {
+      if (url.pathname === SEARCH_PAID_PATH && typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined) {
         const challenge = await discoveryPaymentChallenge(SEARCH_PAID_PATH, now());
         send(response, challenge.status, challenge.body, challenge.headers);
         return;
       }
+      // The free sample accepts a naive caller. The paid path still requires a
+      // caller-supplied key, because a generated key on a payable request would
+      // give the caller nothing to retry with after a settlement of unknown
+      // state — the one case that must fail closed.
+      const keyGenerated = typeof suppliedKey !== 'string' && url.pathname === SEARCH_FREE_PATH;
+      const keyHeader = keyGenerated ? generatedIdempotencyKey() : suppliedKey;
       if (typeof keyHeader !== 'string') throw Object.assign(new Error('idempotency_key_required'), { status: 400 });
       validateIdempotencyKey(keyHeader);
-      const normalized = normalizeSearchHttpRequest(await readJson(request));
+      // A caller who supplied no key is told which one was used, so a
+      // deliberate replay of this exact operation is still possible.
+      const keyHeaders = keyGenerated ? { 'idempotency-key': keyHeader } : {};
+      const normalized = normalizeSearchHttpRequest(await readJson(request, SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType: url.pathname === SEARCH_FREE_PATH }));
       if (normalized.synthesize && !synthesisEnabled) {
         send(response, 503, problem(503, 'search_synthesis_unavailable', 'Search synthesis unavailable', 'Live cited synthesis is not enabled on this release. Retry with synthesize=false for raw results.', url.pathname), { 'retry-after': '300' }, PROBLEM_TYPE);
         return;
@@ -700,7 +744,7 @@ export function createSearchServer({
         if (releaseExecution === undefined) {
           idempotency.delete(keyHeader);
           if (stateClaim?.kind === 'claimed') await searchState.abandon({ idempotencyKey: keyHeader, requestHash, operationId, leaseId: stateClaim.leaseId });
-          send(response, 503, problem(503, 'search_overloaded', 'Search temporarily overloaded', 'The bounded execution pool is full. Retry this request with the same idempotency key.', url.pathname, operationId), { 'retry-after': '1' }, PROBLEM_TYPE);
+          send(response, 503, problem(503, 'search_overloaded', 'Search temporarily overloaded', 'The bounded execution pool is full. Retry this request with the same idempotency key.', url.pathname, operationId), { ...keyHeaders, 'retry-after': '1' }, PROBLEM_TYPE);
           return;
         }
         const pending = Promise.resolve()
@@ -715,7 +759,7 @@ export function createSearchServer({
         }
         idempotency.set(keyHeader, { operationId, requestHash, response: result });
         record({ timestamp: now(), productId, outcome: 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
-        send(response, 200, result, quotaHeaders);
+        send(response, 200, result, { ...quotaHeaders, ...keyHeaders });
         return;
       }
 
