@@ -1,0 +1,426 @@
+/*
+ * Controls and product-state surfaces.
+ *
+ * The Clervo Liquid Capsule is the locked control material (vault Step 7G):
+ * a restrained specular highlight, a 1px lift on hover, a compression on
+ * press, a 44x44 minimum target, and a real keyboard state. The specular
+ * response tracks the pointer, which is what separates it from a static
+ * gradient — but it is neutral material, so semantic colour is added only by
+ * product state, never by the control itself.
+ */
+
+.button {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding-inline: var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font-family: var(--sans);
+  font-size: var(--step-small);
+  font-weight: 560;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform var(--motion-micro) var(--ease),
+    background-color var(--motion-control) var(--ease),
+    border-color var(--motion-control) var(--ease),
+    box-shadow var(--motion-control) var(--ease);
+}
+
+/* The specular sheen. `--sheen-x` and `--sheen-y` are set from JS on pointer
+ * move and default to a fixed position, so a control that is never hovered —
+ * or is rendered on the server — still looks lit rather than flat. */
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    120px 46px at var(--sheen-x, 50%) var(--sheen-y, 0%),
+    rgb(255 255 255 / 40%),
+    rgb(255 255 255 / 6%) 46%,
+    transparent 72%
+  );
+  opacity: 0.4;
+  transition: opacity var(--motion-control) var(--ease);
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 18%),
+    inset 0 -1px 0 rgb(0 0 0 / 30%);
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 36%);
+}
+
+.button:hover::before {
+  opacity: 0.75;
+}
+
+.button:active {
+  transform: translateY(0) scale(0.985);
+  transition-duration: 90ms;
+}
+
+.button[disabled],
+.button[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.button--primary {
+  color: #050505;
+  background: linear-gradient(180deg, #fff 0%, #e7e7ec 100%);
+  border-color: rgb(255 255 255 / 90%);
+}
+
+.button--secondary {
+  color: var(--text);
+  background: rgb(255 255 255 / 5%);
+  border-color: rgb(255 255 255 / 16%);
+  backdrop-filter: blur(14px) saturate(115%);
+}
+
+.button--quiet {
+  color: var(--text-secondary);
+  background: transparent;
+  border-color: var(--line-strong);
+}
+
+.button--quiet:hover {
+  color: var(--text);
+  border-color: var(--line-loud);
+}
+
+.button--quiet::after {
+  box-shadow: none;
+}
+
+/* A loading control keeps its width so the layout does not jump, and states
+ * its progress in text for screen readers rather than in the spinner alone. */
+.button[data-loading="true"] {
+  color: transparent;
+  pointer-events: none;
+}
+
+.button[data-loading="true"]::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 50% auto auto 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border: 1.5px solid currentcolor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  box-shadow: none;
+  color: var(--text);
+  animation: clervo-spin 620ms linear infinite;
+}
+
+.button--primary[data-loading="true"]::after {
+  color: #050505;
+}
+
+@keyframes clervo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:hover,
+  .button:active {
+    transform: none;
+  }
+
+  .button[data-loading="true"]::after {
+    animation: none;
+    border-top-color: currentcolor;
+    opacity: 0.5;
+  }
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* Standalone link: same target minimum as a button. Inline links inside a
+   * paragraph are exempt under WCAG 2.2 and do not use this class. */
+  min-height: 44px;
+  color: var(--text);
+  font-size: var(--step-small);
+  font-weight: 540;
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-strong);
+  transition: border-color var(--motion-control) var(--ease);
+}
+
+.text-link:hover {
+  border-color: var(--text);
+}
+
+/* --- Product state -------------------------------------------------------- */
+
+/*
+ * A state pill never relies on colour alone: it carries a text label and a
+ * shape, so a monochrome display, a colour-blind reader, and a screen reader
+ * all receive the same fact. This is the rule that keeps a refused operation
+ * from looking like a verified one on a bad display.
+ */
+.state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 26px;
+  padding-inline: var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.state::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentcolor;
+  flex: none;
+}
+
+.state--live {
+  color: var(--qualify);
+  border-color: rgb(0 229 255 / 32%);
+  background: rgb(0 229 255 / 7%);
+}
+
+/* Supply-paused is a square dot, not a round one: an owned route that is
+ * temporarily unfunded is a different kind of fact from one that is serving,
+ * and the difference must survive a greyscale screenshot. The registry spells
+ * this state `supply_paused`, so both spellings resolve to the same rule and
+ * a page can render the observed value directly. */
+.state--paused,
+.state--supply_paused {
+  color: var(--request);
+  border-color: rgb(255 59 48 / 30%);
+  background: rgb(255 59 48 / 7%);
+}
+
+.state--paused::before,
+.state--supply_paused::before {
+  border-radius: 1px;
+}
+
+.state--unavailable {
+  color: var(--text-quiet);
+}
+
+.state--unavailable::before {
+  background: transparent;
+  border: 1px solid currentcolor;
+}
+
+/*
+ * Refused and unresolved are the two outcomes a buyer most needs to be able to
+ * tell apart, and they are not the same fact.
+ *
+ * Refused means the system declined before anything executed: no charge, no
+ * side effect, and a retry is safe once the request is corrected. It is drawn
+ * in request red with a barred dot.
+ *
+ * Unresolved means execution began and the settlement state is not known. It
+ * never retries; it reconciles first. It carries no semantic colour at all,
+ * because colouring it either red or cyan would assert a conclusion the system
+ * has not reached, and its dot is a hollow square rather than a filled one.
+ */
+.state--refused {
+  color: var(--request);
+  border-color: rgb(255 59 48 / 30%);
+  background: rgb(255 59 48 / 7%);
+}
+
+.state--refused::before {
+  border-radius: 0;
+  width: 8px;
+  height: 2px;
+}
+
+.state--unresolved {
+  color: var(--text-secondary);
+  border-color: var(--line-loud);
+  background: repeating-linear-gradient(
+    135deg,
+    rgb(255 255 255 / 4%) 0 4px,
+    transparent 4px 8px
+  );
+}
+
+.state--unresolved::before {
+  background: transparent;
+  border: 1px solid currentcolor;
+  border-radius: 1px;
+  width: 7px;
+  height: 7px;
+}
+
+/*
+ * Gold. The only token in this system that asserts something happened.
+ * Permitted on `.state--verified` and nowhere else — a quote, a price, a
+ * plan, or a marketing panel that renders gold is a bug.
+ */
+.state--verified {
+  color: var(--verified);
+  border-color: rgb(255 200 0 / 34%);
+  background: rgb(255 200 0 / 8%);
+}
+
+.state--verified::before {
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  border-radius: 0;
+  width: 7px;
+  height: 7px;
+}
+
+/* --- Panels --------------------------------------------------------------- */
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--surface-1);
+}
+
+.panel--raised {
+  background: var(--surface-2);
+  border-color: var(--line-strong);
+}
+
+.panel--interactive {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color var(--motion-control) var(--ease),
+    background-color var(--motion-control) var(--ease),
+    transform var(--motion-micro) var(--ease);
+}
+
+.panel--interactive:hover {
+  border-color: var(--line-loud);
+  background: var(--surface-2);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel--interactive:hover {
+    transform: none;
+  }
+}
+
+.panel__body {
+  padding: clamp(var(--space-5), 2.4vw, var(--space-6));
+}
+
+/* --- Definition rows ------------------------------------------------------ */
+
+/*
+ * Contract facts — price, network, route, receipt — are set as label/value
+ * rows with a mono value column, so a reader can scan the values without
+ * reading the labels. Tabular figures keep the column aligned across rows.
+ */
+.facts {
+  display: grid;
+  gap: 0;
+}
+
+.facts > div {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.6fr) 1fr;
+  gap: var(--space-4);
+  align-items: baseline;
+  padding-block: var(--space-3);
+  border-top: 1px solid var(--line);
+}
+
+.facts > div:first-child {
+  border-top: 0;
+}
+
+.facts dt {
+  color: var(--text-quiet);
+  font-size: var(--step-small);
+}
+
+.facts dd {
+  font-family: var(--mono);
+  font-size: var(--step-small);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+@media (width <= 560px) {
+  .facts > div {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+}
+
+/* --- Code ----------------------------------------------------------------- */
+
+.code {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--surface-1);
+  overflow: hidden;
+}
+
+.code__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding-inline: var(--space-4);
+  border-bottom: 1px solid var(--line);
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.code pre {
+  padding: var(--space-4);
+  overflow-x: auto;
+  font-size: var(--step-small);
+  line-height: 1.6;
+}
+
+.code code {
+  font-size: inherit;
+}

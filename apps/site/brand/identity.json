@@ -1,0 +1,91 @@
+{
+  "identity": "clervo.hollow-apex",
+  "version": "1.0.0",
+  "authority": "02-logo-system/locked/CLERVO-HOLLOW-APEX-LOGO-AUTHORITY-v1.0-LOCKED-2026-08-04.md",
+  "concept": "Hollow triangular apex with an inner void, crossed left to right by one signal: red request, cyan qualification, gold verified outcome.",
+  "geometry": {
+    "viewBox": "0 0 64 64",
+    "view": 64,
+    "apexPath": "M32 8L59.5 55H4.5ZM32 23.05L17.75 47.4H46.25Z",
+    "apex": [
+      32,
+      8
+    ],
+    "left": 4.5,
+    "right": 59.5,
+    "baseLeft": [
+      4.5,
+      55
+    ],
+    "baseRight": [
+      59.5,
+      55
+    ],
+    "limbWidth": 7.6,
+    "signalY": 39.28,
+    "voidEntryX": 22.5,
+    "voidExitX": 41.5,
+    "opticalCorrections": [
+      "Base widened beyond equilateral so the mark does not read top-heavy below 24px.",
+      "Void derived by angle-bisector inset, not coordinate inset, so all three limbs carry equal optical weight.",
+      "Signal placed on the void centroid rather than the outer centroid, so the beam reads as passing through the hole."
+    ]
+  },
+  "palette": {
+    "request": "#FF3B30",
+    "qualify": "#00E5FF",
+    "verified": "#FFC800",
+    "mist": "#E6E6E8",
+    "black": "#0B0B0B"
+  },
+  "clearSpace": {
+    "rule": "One limb width on every side, measured at the mark's own scale.",
+    "atViewBox64": 7.6
+  },
+  "minimumSize": {
+    "symbolPx": 16,
+    "symbolWithBeamPx": 24,
+    "horizontalLockupPx": 96,
+    "note": "Below 24px the three-colour beam is not resolvable; use clervo-apex-symbol.svg or favicon.svg, which are drawn for that range."
+  },
+  "animation": {
+    "rule": "The beam animates only to represent a real operation state. Idle is static.",
+    "sequence": [
+      "request",
+      "qualify",
+      "execute",
+      "verify",
+      "receipt"
+    ],
+    "forbidden": [
+      "looping idle shimmer",
+      "rotation",
+      "gold before verification"
+    ],
+    "reducedMotion": "No beam animation; the final state is rendered directly."
+  },
+  "accessibility": {
+    "decorative": "aria-hidden=\"true\" when a text wordmark is adjacent.",
+    "standalone": "role=\"img\" with an accessible name of \"Clervo\".",
+    "colourIndependence": "Beam colour never carries meaning alone; the adjacent label states the operation state in text."
+  },
+  "rejected": [
+    "The diamond-and-arc favicon previously served at /assets/favicon.svg — not the locked concept.",
+    "The bare letter \"C\" header mark in apps/site/src/App.tsx — not a Clervo mark.",
+    "Any apex drawn without the inner void, or with a beam that does not exit gold to the right."
+  ],
+  "assets": [
+    "clervo-apex-master.svg",
+    "clervo-apex-symbol.svg",
+    "clervo-apex-mono-light.svg",
+    "clervo-apex-mono-dark.svg",
+    "favicon.svg",
+    "clervo-app-icon.svg",
+    "clervo-social-avatar.svg",
+    "clervo-registry-dark.svg",
+    "clervo-registry-light.svg",
+    "clervo-lockup-horizontal.svg",
+    "clervo-lockup-horizontal-mono-dark.svg",
+    "clervo-lockup-compact.svg"
+  ]
+}

@@ -1,0 +1,273 @@
+/*
+ * Base layer: reset, document defaults, typography roles, layout primitives.
+ *
+ * Typographic roles are assigned by element and by class, not by page. A page
+ * that needs a new size is a page that has drifted from the scale.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--surface-0);
+  scroll-behavior: smooth;
+  scrollbar-color: var(--line-strong) var(--surface-0);
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  /* 320px is a supported width, not a graceful-degradation width. */
+  min-width: 320px;
+  min-height: 100svh;
+  overflow-x: hidden;
+  background: var(--surface-0);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: var(--step-body);
+  line-height: 1.55;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 500;
+  line-height: 1.06;
+  /* Negative tracking scales with size: display type set at body tracking
+   * reads loose, and body type set at display tracking reads cramped. */
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-hero);
+  letter-spacing: -0.045em;
+}
+
+h2 {
+  font-size: var(--step-1);
+  letter-spacing: -0.035em;
+}
+
+h3 {
+  font-size: var(--step-2);
+}
+
+h4 {
+  font-family: var(--sans);
+  font-size: var(--step-3);
+  font-weight: 560;
+  letter-spacing: -0.015em;
+}
+
+p,
+li,
+dd {
+  margin: 0;
+  /* A measure cap, so no paragraph runs the full width of a 1600px monitor. */
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img,
+svg,
+picture,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+dl,
+dt,
+dd {
+  margin: 0;
+}
+
+pre {
+  margin: 0;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  font-variant-ligatures: none;
+}
+
+::selection {
+  color: var(--surface-0);
+  background: var(--text);
+}
+
+/*
+ * One focus ring for the whole site, in qualify cyan: focus is the interface
+ * telling you it has understood where you are, which is the same meaning cyan
+ * carries in the product.
+ */
+:focus-visible {
+  outline: 2px solid var(--qualify);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --- Typographic roles ---------------------------------------------------- */
+
+.eyebrow {
+  margin: 0;
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.lede {
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  line-height: 1.6;
+}
+
+.quiet {
+  color: var(--text-quiet);
+  font-size: var(--step-small);
+}
+
+.data {
+  font-family: var(--mono);
+  font-size: var(--step-small);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Layout primitives ---------------------------------------------------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-gutter);
+}
+
+/* Vertical rhythm between major page bands. Sections declare their band, not
+ * their own top and bottom padding, so adjacent sections never double-space. */
+.band {
+  padding-block: clamp(var(--space-8), 6vw, var(--space-10));
+}
+
+.band--tight {
+  padding-block: clamp(var(--space-7), 4vw, var(--space-8));
+}
+
+/* A hairline that marks the top of a band. Used instead of a background
+ * change, which would create a second surface with no elevation meaning. */
+.band--ruled {
+  border-top: 1px solid var(--line);
+}
+
+.stack {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+}
+
+.stack--tight {
+  gap: var(--space-2);
+}
+
+.stack--loose {
+  gap: var(--space-6);
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.section-head {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 46rem;
+  margin-bottom: var(--space-7);
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 200;
+  top: var(--space-3);
+  left: var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-tight);
+  color: var(--surface-0);
+  background: var(--text);
+  font-weight: 560;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform var(--motion-micro) var(--ease);
+}
+
+.skip-link:focus {
+  transform: none;
+}

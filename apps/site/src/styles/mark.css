@@ -1,0 +1,43 @@
+/*
+ * The Hollow Apex mark.
+ *
+ * The mark is drawn in `currentColor` so it inherits whatever surface it sits
+ * on, and the three beam segments are addressable individually so a real
+ * operation state can light them in order: request, then qualification, then
+ * verification. Segments are never lit ahead of the fact they represent —
+ * gold appearing before a verified outcome would be the same class of bug as a
+ * hand-written status line.
+ */
+
+.apex-mark {
+  flex: none;
+  color: var(--text);
+}
+
+.apex-mark__segment {
+  opacity: 0.28;
+  transition: opacity var(--motion-control) var(--ease);
+}
+
+/* Idle: the beam is present but unlit, so the mark reads as one shape rather
+ * than as a decoration that has been switched off. */
+.apex-mark--request .apex-mark__segment--request,
+.apex-mark--qualify .apex-mark__segment--request,
+.apex-mark--qualify .apex-mark__segment--qualify,
+.apex-mark--verified .apex-mark__segment {
+  opacity: 1;
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+}
+
+.wordmark__text {
+  font-family: var(--display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}

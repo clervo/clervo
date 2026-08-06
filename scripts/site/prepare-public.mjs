@@ -47,6 +47,8 @@ await writeFile(path.join(target, 'robots.txt'), [
 
 const siteRoutes = [
   '/',
+  '/start/',
+  '/catalog/',
   '/research/',
   '/platform/',
   '/product',

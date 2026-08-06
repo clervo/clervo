@@ -11,6 +11,8 @@ const { render } = await import(serverBundle);
 
 const routes = [
   ['/', 'Outcome infrastructure for agents'],
+  ['/start', 'Set up Clervo'],
+  ['/catalog', 'Live capability catalog'],
   ['/research', 'Research outcome'],
   ['/platform', 'Clervo Platform'],
   ['/product', 'Product and capabilities'],

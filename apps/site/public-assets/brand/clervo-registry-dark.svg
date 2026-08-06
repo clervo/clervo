@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 76" width="76" height="76" role="img" aria-labelledby="favicon-title">
-<title id="favicon-title">Clervo</title>
-<rect width="76" height="76" fill="#0B0B0B"/>
-<g transform="translate(6 6)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80" role="img" aria-labelledby="registry-dark-title">
+<title id="registry-dark-title">Clervo</title>
+<rect width="80" height="80" fill="#0B0B0B"/>
+<g transform="translate(8 8)">
 <path d="M3 39.28H22.5" stroke="#FF3B30" stroke-width="3.1" stroke-linecap="round"/><path d="M22.5 39.28H41.5" stroke="#00E5FF" stroke-width="3.1" stroke-linecap="round"/><path d="M41.5 39.28H61" stroke="#FFC800" stroke-width="3.1" stroke-linecap="round"/>
 <path d="M32 8L59.5 55H4.5ZM32 23.05L17.75 47.4H46.25Z" fill="#E6E6E8" fill-rule="evenodd"/>
 </g>

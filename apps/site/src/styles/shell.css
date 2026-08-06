@@ -1,0 +1,342 @@
+/*
+ * Global shell: header, mobile navigation, footer.
+ */
+
+.site-header {
+  position: sticky;
+  z-index: 60;
+  top: 0;
+  border-bottom: 1px solid var(--line);
+  /* A translucent header needs a fallback: on a browser without backdrop
+   * filter support the bar must still be opaque, or the page scrolls through
+   * the navigation and the links become unreadable. */
+  background: rgb(11 11 11 / 92%);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .site-header {
+    background: rgb(11 11 11 / 68%);
+    backdrop-filter: blur(16px) saturate(140%);
+  }
+}
+
+.site-header__inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-6);
+  min-height: 64px;
+}
+
+.site-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-header__wordmark {
+  font-family: var(--display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.site-header__nav {
+  display: flex;
+  justify-content: center;
+  gap: clamp(var(--space-4), 2vw, var(--space-6));
+}
+
+.site-header__nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--text-secondary);
+  font-size: var(--step-small);
+  font-weight: 480;
+  text-decoration: none;
+  transition: color var(--motion-micro) var(--ease);
+}
+
+.site-header__nav a:hover {
+  color: var(--text);
+}
+
+.site-header__nav a.is-active {
+  color: var(--text);
+}
+
+/* The active route is marked with a rule, not only a colour change: a 12%
+ * lightness difference is not a reliable signal on a dimmed laptop screen. */
+.site-header__nav a.is-active::after {
+  content: "";
+  position: absolute;
+  inset: auto var(--space-1) -1px;
+  height: 1px;
+  background: var(--text);
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  justify-self: end;
+}
+
+.site-header__cta {
+  padding-inline: var(--space-4);
+  font-size: var(--step-micro);
+  letter-spacing: 0;
+}
+
+.site-header__menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-tight);
+  background: var(--surface-1);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.site-header__menu span,
+.site-header__menu span::before,
+.site-header__menu span::after {
+  display: block;
+  width: 15px;
+  height: 1.5px;
+  background: currentcolor;
+  transition: transform var(--motion-micro) var(--ease);
+}
+
+.site-header__menu span::before,
+.site-header__menu span::after {
+  content: "";
+  position: relative;
+}
+
+.site-header__menu span::before {
+  top: -5px;
+}
+
+.site-header__menu span::after {
+  top: 3.5px;
+}
+
+.site-header__menu[aria-expanded="true"] span {
+  background: transparent;
+}
+
+.site-header__menu[aria-expanded="true"] span::before {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.site-header__menu[aria-expanded="true"] span::after {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+/*
+ * Below 900px the horizontal navigation is replaced by a panel rather than
+ * compressed. Five links squeezed into a phone header is the "shrunk desktop"
+ * failure the locked mobile authority rules out.
+ */
+@media (width <= 900px) {
+  .site-header__inner {
+    grid-template-columns: auto 1fr;
+    gap: var(--space-4);
+  }
+
+  .site-header__nav {
+    display: none;
+  }
+
+  .site-header__menu {
+    display: flex;
+  }
+}
+
+@media (width <= 420px) {
+  /* The primary action leaves the header at phone width and lives in the
+   * panel, so the brand and the menu control both keep full tap targets. */
+  .site-header__cta {
+    display: none;
+  }
+}
+
+/* --- Mobile navigation ---------------------------------------------------- */
+
+.mobile-nav {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+  background: rgb(0 0 0 / 72%);
+  opacity: 0;
+  transition: opacity var(--motion-micro) var(--ease);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .mobile-nav {
+    backdrop-filter: blur(10px);
+  }
+}
+
+.mobile-nav.is-open {
+  opacity: 1;
+}
+
+.mobile-nav__panel {
+  position: absolute;
+  inset: 0 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: min(420px, 100%);
+  /* Safe-area inset so the last link is not under a phone's home indicator. */
+  padding: var(--space-4) var(--space-4) calc(var(--space-6) + env(safe-area-inset-bottom));
+  border-left: 1px solid var(--line);
+  background: var(--surface-1);
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform var(--motion-control) var(--ease);
+}
+
+.mobile-nav.is-open .mobile-nav__panel {
+  transform: none;
+}
+
+.mobile-nav__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.mobile-nav__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.mobile-nav__links {
+  display: grid;
+  margin-top: var(--space-4);
+}
+
+.mobile-nav__links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.mobile-nav__links a::after {
+  content: "→";
+  color: var(--text-quiet);
+}
+
+.mobile-nav__links a[aria-current="page"] {
+  color: var(--qualify);
+}
+
+.mobile-nav__cta {
+  margin-top: var(--space-5);
+  min-height: 50px;
+}
+
+/* --- Footer --------------------------------------------------------------- */
+
+.site-footer {
+  margin-top: var(--space-10);
+  border-top: 1px solid var(--line);
+  padding-block: var(--space-8) var(--space-6);
+}
+
+.site-footer__inner {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) 2.4fr;
+  gap: var(--space-7);
+}
+
+.site-footer__brand {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.site-footer__columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--space-6);
+}
+
+.site-footer__columns section {
+  display: grid;
+  gap: var(--space-1);
+  align-content: start;
+}
+
+.site-footer__columns h2 {
+  margin-bottom: var(--space-2);
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.site-footer__columns a {
+  display: inline-flex;
+  align-items: center;
+  /* A footer link is a standalone target, not an inline one, so it carries the
+   * same 44px minimum as every other control on the site. */
+  min-height: 44px;
+  color: var(--text-secondary);
+  font-size: var(--step-small);
+  text-decoration: none;
+  transition: color var(--motion-micro) var(--ease);
+}
+
+.site-footer__columns a:hover {
+  color: var(--text);
+}
+
+.site-footer__note {
+  max-width: var(--shell-max);
+  margin: var(--space-7) auto 0;
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+}
+
+@media (width <= 760px) {
+  .site-footer__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}

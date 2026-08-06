@@ -1,5 +1,6 @@
 import discoverySource from '../../../generated/public/.well-known/clervo.json';
 import launchStateSource from '../../../generated/public/claims.json';
+import modelsSource from '../../../generated/public/models.json';
 import onboardingSource from '../../../generated/public/onboarding.json';
 
 export type ExperiencePhase = 'risk' | 'qualified' | 'approval' | 'verified' | 'receipt';
@@ -240,6 +241,91 @@ interface Onboarding {
 }
 
 export const onboarding = onboardingSource as unknown as Onboarding;
+
+/*
+ * The observed model catalog.
+ *
+ * `models.json` is generated from the same probed registry as the discovery
+ * document, so a route appears in the catalog exactly when the deployed system
+ * was observed serving it. Every field the catalog page renders — lifecycle
+ * state, supply family, price, pause reason, expected return — comes from here,
+ * and none of it is restated in page source.
+ */
+
+export interface ObservedRoute {
+  id: string;
+  routeId: string;
+  supplyFamilyId: string;
+  productIds: string[];
+  capabilities: string[];
+  route: string;
+  lifecycleState: LifecycleState;
+  proofLevel: ProofLevel;
+  sellable: boolean;
+  reason: string | null;
+  expectedReturnAt: string | null;
+  observedPrice: {
+    amountAtomic: string;
+    asset: string;
+    network: string;
+    decimals: number;
+    priceVersion: string;
+    maximumCharge: boolean;
+  } | null;
+}
+
+interface ModelsDocument {
+  object: 'list';
+  data: Array<{
+    id: string;
+    object: 'model';
+    created: number;
+    owned_by: string;
+    clervo: Omit<ObservedRoute, 'id'>;
+  }>;
+  clervo: { provenance: ObservedTruth['provenance'] };
+}
+
+const modelsDocument = modelsSource as unknown as ModelsDocument;
+
+export const observedRoutes: ObservedRoute[] = modelsDocument.data
+  .map(({ id, clervo }) => ({ id, ...clervo }))
+  // Serving routes first, then paused ones, and alphabetically within each
+  // group: a catalog that leads with what a caller cannot use today is a
+  // catalog that reads as broken.
+  .sort((left, right) => {
+    if (left.lifecycleState !== right.lifecycleState) {
+      return left.lifecycleState === 'live' ? -1 : 1;
+    }
+    return left.id.localeCompare(right.id);
+  });
+
+export const supplyFamilyLabels: Record<string, string> = {
+  'supply.cloudflare_workers_ai': 'Cloudflare Workers AI',
+  'supply.clervo_ai_gateway': 'Clervo AI gateway',
+  'supply.deepgram': 'Deepgram',
+  'supply.google_vertex': 'Google Vertex',
+  'supply.groq': 'Groq',
+};
+
+/** A supply family's display name, falling back to its observed identifier. */
+export function supplyFamilyLabel(id: string): string {
+  return supplyFamilyLabels[id] ?? id;
+}
+
+/**
+ * Format an observed atomic price as a display amount. The decimals come from
+ * the observation, never from an assumption about the asset.
+ */
+export function formatUsdc(amountAtomic: string, decimals: number): string {
+  const value = Number(amountAtomic) / 10 ** decimals;
+  return `${value.toFixed(Math.min(decimals, 6)).replace(/0+$/u, '').replace(/\.$/u, '')} USDC`;
+}
+
+/** Human-readable capability tag, as observed on the route. */
+export function capabilityLabel(capability: string): string {
+  return capability.replaceAll('_', ' ');
+}
 
 export const pillarLabels: Record<DiscoveryPillar['pillarId'], string> = {
   search: 'Search',

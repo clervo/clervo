@@ -3,8 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#050606" />
+    <meta name="theme-color" content="#0b0b0b" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/brand/clervo-app-icon.svg" />
+    <!--
+      The two fonts that set the first painted text: Space Grotesk 600 for the
+      headline and the Inter variable face for everything under it. Both are
+      self-hosted because the site's Content-Security-Policy is
+      `font-src 'self'`, and both are preloaded because a swap on the headline
+      is the most visible layout shift this page can produce.
+    -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/assets/fonts/space-grotesk-latin-600.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/assets/fonts/inter-latin-variable.woff2"
+      crossorigin
+    />
     <link
       rel="preload"
       as="image"
@@ -54,6 +76,28 @@
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
+    <!--
+      The degraded shell.
+
+      Every route is prerendered, so with scripting unavailable the page still
+      renders its full content — but the controls that need hydration (the
+      mobile navigation panel, the catalog filters, the Proof Lab) become
+      inert. Saying so is more useful than letting a reader tap a dead button,
+      and the note names the paths that keep working without scripting.
+    -->
+    <noscript>
+      <div class="degraded shell" role="status">
+        <p class="degraded__title">Reading this page without JavaScript.</p>
+        <p class="degraded__body">
+          All page content is served as static HTML and is complete. Controls
+          that need scripting — the navigation panel, the catalog filters and
+          the Proof Lab — will not respond. The
+          <a href="/catalog/">catalog</a>, <a href="/start/">setup guide</a>,
+          <a href="/docs/">docs</a> and
+          <a href="/openapi.json">OpenAPI document</a> are readable as they are.
+        </p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

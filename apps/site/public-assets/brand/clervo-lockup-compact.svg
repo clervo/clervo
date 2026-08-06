@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 73 75" width="73" height="75" role="img" aria-labelledby="lockup-c-title">
+<title id="lockup-c-title">Clervo</title>
+<g transform="translate(12.5 0) scale(0.75)">
+<path d="M3 39.28H22.5" stroke="#FF3B30" stroke-width="3.1" stroke-linecap="round"/><path d="M22.5 39.28H41.5" stroke="#00E5FF" stroke-width="3.1" stroke-linecap="round"/><path d="M41.5 39.28H61" stroke="#FFC800" stroke-width="3.1" stroke-linecap="round"/>
+<path d="M32 8L59.5 55H4.5ZM32 23.05L17.75 47.4H46.25Z" fill="#E6E6E8" fill-rule="evenodd"/>
+</g>
+<g transform="translate(0.37 75) scale(0.21)">
+<path d="M28.9 1.4C11.2 1.4 5.2-9.6 5.2-24.7v-21.7c0-15.1 6-26.1 23.7-26.1 15.4 0 22.6 8.5 22.6 21.4v3.2H38.2v-3c0-6.2-2.5-10.3-9.3-10.3-7.4 0-10.1 4.6-10.1 12.4v26.5c0 7.8 2.7 12.4 10.1 12.4 6.8 0 9.3-4.1 9.3-10.3v-4.2h13.3v4.4C51.5-7.1 44.3 1.4 28.9 1.4ZM61.9 0v-71.4h13.4v59.5h29.6V0Zm52.9 0v-71.4h44.6v11.9h-31.2v17.2h28.4v11.9h-28.4v18.5h31.2V0Zm56.7 0v-71.4h27.4c13.9 0 21.1 7.6 21.1 19.6 0 9.2-4.2 15.5-11.8 18.1L221.5 0h-14.9l-11.6-31.3h-9.7V0Zm13.4-43.2h12.8c6 0 9-3 9-8.3 0-5.4-3-8.4-9-8.4h-12.8ZM248.7 0l-22.2-71.4h14.4l16.1 55.5 16.1-55.5h14L265 0Zm70.4 1.4c-17.7 0-24.7-11-24.7-26.1v-21.7c0-15.1 7-26.1 24.7-26.1s24.7 11 24.7 26.1v21.7c0 15.1-7 26.1-24.7 26.1Zm0-11.9c7.9 0 11.3-4.6 11.3-12.4v-26.5c0-7.8-3.4-12.4-11.3-12.4s-11.3 4.6-11.3 12.4v26.5c0 7.8 3.4 12.4 11.3 12.4Z" fill="#E6E6E8"/>
+</g>
+</svg>

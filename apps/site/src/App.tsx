@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useCapsuleSheen } from './capsule';
 import { Instrument } from './components/Instrument';
-import { LifecycleRail, Navigation } from './components/Navigation';
+import { LifecycleRail } from './components/Navigation';
+import { SiteFooter, SiteHeader } from './components/Shell';
 import { useActivation } from './experience';
 import { Docs } from './pages/Docs';
 import { Build } from './pages/Build';
 import { Capability } from './pages/Capability';
+import { Catalog } from './pages/Catalog';
 import { Changelog } from './pages/Changelog';
 import { Compare } from './pages/Compare';
 import { Home } from './pages/Home';
@@ -14,6 +17,7 @@ import { Proof } from './pages/Proof';
 import { ProofLab } from './pages/ProofLab';
 import { Product } from './pages/Product';
 import { Research } from './pages/Research';
+import { Start } from './pages/Start';
 import { Status } from './pages/Status';
 import { Trust, type TrustTopic } from './pages/Trust';
 import { TrustOverview } from './pages/TrustOverview';
@@ -21,6 +25,14 @@ import { observedTruth, publicApiCallable, type ExperiencePhase } from './produc
 
 const liveFamilyCount = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
 import { Link, useRouter } from './router';
+
+/*
+ * The footer availability line is derived from observed truth rather than
+ * written, so it cannot outlive the fact it describes.
+ */
+const footerNote = publicApiCallable
+  ? `${liveFamilyCount} of ${observedTruth.products.length} product families observed serving. Public packages verified. No customer revenue or demand is claimed.`
+  : 'Public packages verified. Private payment plumbing proven once. Public API and customer payment remain unavailable.';
 
 function NotFound() {
   return (
@@ -38,6 +50,7 @@ export function App() {
   const { location } = useRouter();
   const pathname = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/u, '');
   const updatePhase = useCallback((next: ExperiencePhase) => setPhase(next), []);
+  useCapsuleSheen();
 
   useEffect(() => {
     if (pathname === '/') return;
@@ -56,6 +69,8 @@ export function App() {
   useEffect(() => {
     const exactTitles: Record<string, string> = {
       '/': 'Outcome infrastructure for agents',
+      '/start': 'Set up Clervo',
+      '/catalog': 'Live capability catalog',
       '/research': 'Research outcome',
       '/platform': 'Clervo Platform',
       '/product': 'Product and capabilities',
@@ -106,6 +121,8 @@ export function App() {
 
   const route = (() => {
     if (pathname === '/') return <Home onPhase={updatePhase} />;
+    if (pathname === '/start') return <Start onPhase={updatePhase} />;
+    if (pathname === '/catalog') return <Catalog onPhase={updatePhase} />;
     if (pathname === '/research') return <Research onPhase={updatePhase} />;
     const capabilityMatch = pathname.match(/^\/products\/([^/]+)$/u);
     if (capabilityMatch?.[1] !== undefined && ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto'].includes(capabilityMatch[1])) {
@@ -161,32 +178,11 @@ export function App() {
 
   return (
     <div className={`app app--${phase} ${pathname === '/' ? 'app--home' : 'app--internal'}`}>
-      <Navigation activation={activation} />
+      <SiteHeader />
       <Instrument phase={phase} />
       <LifecycleRail phase={phase} />
       <main id="main-content">{route}</main>
-      <footer className="site-footer">
-        <span>CLERVO / FIND · UNDERSTAND · ACT</span>
-        <nav aria-label="Footer">
-          <Link to="/research">Research</Link>
-          <Link to="/platform">Platform</Link>
-          <Link to="/build">Build</Link>
-          <Link to="/pricing">Pricing</Link>
-          <Link to="/security">Security</Link>
-          <Link to="/legal">Legal</Link>
-          <Link to="/status">Truth status</Link>
-          <Link to="/trust">Trust</Link>
-          <Link to="/changelog">Changelog</Link>
-          <Link to="/compare/blockrun">Compare</Link>
-          <a href="/openapi.json">OpenAPI</a>
-          <a href="/.well-known/clervo.json">Discovery</a>
-        </nav>
-        <small>
-          {publicApiCallable
-            ? `Public packages verified. ${liveFamilyCount} of ${observedTruth.products.length} product families observed serving; no customer revenue or demand is claimed.`
-            : 'Public packages verified. Private payment plumbing proven once. Public API and customer payment remain unavailable.'}
-        </small>
-      </footer>
+      <SiteFooter note={footerNote} />
     </div>
   );
 }

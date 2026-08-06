@@ -1,105 +1,48 @@
+/*
+ * Legacy page styles.
+ *
+ * The shell, the control material, the colour system, and the type scale now
+ * live in styles/tokens.css, styles/base.css, styles/controls.css, and
+ * styles/shell.css. This file keeps only the page-body rules that have not yet
+ * been rebuilt, and it is imported first so the new layers win on conflict.
+ *
+ * The legacy colour names below are aliases onto the locked tokens rather than
+ * independent values. They had drifted — request was #ff4d52 against a locked
+ * #ff3b30, and `--receipt` gold was being spent on routes where nothing had
+ * been verified — so aliasing them corrects every legacy page at once and
+ * makes a future divergence impossible.
+ */
+
 :root {
-  color-scheme: dark;
-  font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-synthesis: none;
-  --void: #050606;
-  --surface: #0a0c0c;
-  --surface-raised: #101313;
-  --line: #252929;
-  --line-strong: #3b4140;
-  --text: #f4f7f6;
-  --muted: #9da6a4;
-  --risk: #ff4d52;
-  --qualified: #57d8e8;
-  --approval: #e0a84b;
-  --verified: #f4f7f6;
-  --receipt: #d6b86a;
-  --phase: var(--risk);
-  background: var(--void);
-  color: var(--text);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  background: var(--void);
-  scroll-behavior: smooth;
-  scrollbar-color: var(--line-strong) var(--void);
-}
-
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  overflow-x: hidden;
-  background: var(--void);
-}
-
-button,
-textarea,
-input {
-  font: inherit;
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-a {
-  color: inherit;
-}
-
-::selection {
-  color: var(--void);
-  background: var(--phase);
-}
-
-:focus-visible {
-  outline: 2px solid var(--phase);
-  outline-offset: 4px;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.skip-link {
-  position: fixed;
-  z-index: 100;
-  top: 0.75rem;
-  left: 0.75rem;
-  padding: 0.8rem 1rem;
-  color: var(--void);
-  background: var(--text);
-  transform: translateY(-160%);
-  transition: transform 160ms ease;
-}
-
-.skip-link:focus {
-  transform: translateY(0);
+  --void: var(--surface-0);
+  --surface: var(--surface-1);
+  --surface-raised: var(--surface-2);
+  --muted: var(--text-secondary);
+  --risk: var(--request);
+  --qualified: var(--qualify);
+  --approval: var(--text-secondary);
+  /*
+   * Legacy pages used `--receipt` as a decorative accent on any page that
+   * mentioned a receipt, including routes where nothing had been verified.
+   * Gold asserts that something happened, so the alias resolves to neutral
+   * text: gold is emitted only by `.state--verified` in controls.css, against
+   * an observed proof level. Rebuilt proof pages will opt in explicitly.
+   */
+  --receipt: var(--text-secondary);
+  --phase: var(--request);
+  /* One source for the header height: the sticky shell is 64px, and the
+   * legacy fixed overlays are anchored to the same number rather than to a
+   * copy of it. */
+  --header-h: 64px;
 }
 
 .app {
-  --phase: var(--risk);
-  min-height: 100vh;
-  background:
-    linear-gradient(var(--line), var(--line)) 2rem 0 / 1px 100% no-repeat,
-    var(--void);
+  --phase: var(--request);
+  min-height: 100svh;
 }
 
 .app--qualified {
-  --phase: var(--qualified);
+  --phase: var(--qualify);
 }
 
 .app--approval {
@@ -107,128 +50,13 @@ a {
 }
 
 .app--verified {
-  --phase: var(--verified);
+  --phase: var(--text);
 }
 
 .app--receipt {
-  --phase: var(--receipt);
-}
-
-.site-header {
-  position: fixed;
-  z-index: 30;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 5.5rem;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 2rem;
-  padding: 0 2rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
-  background: color-mix(in srgb, var(--void) 88%, transparent);
-  backdrop-filter: blur(18px);
-}
-
-.wordmark {
-  display: inline-flex;
-  width: fit-content;
-  align-items: center;
-  gap: 0.7rem;
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.22em;
-  text-decoration: none;
-}
-
-.wordmark-mark {
-  display: grid;
-  width: 1.85rem;
-  height: 1.85rem;
-  place-items: center;
-  border: 1px solid var(--line-strong);
-  transform: rotate(45deg);
-  font-size: 0.68rem;
-}
-
-.wordmark-mark::first-letter {
-  transform: rotate(-45deg);
-}
-
-.global-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.global-nav a {
-  min-height: 2.75rem;
-  display: grid;
-  place-items: center;
-  padding: 0 1rem;
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-}
-
-.global-nav a:hover,
-.global-nav a.active {
-  color: var(--text);
-}
-
-.global-nav a.active::after {
-  content: "";
-  width: 0.3rem;
-  height: 0.3rem;
-  margin-top: -0.35rem;
-  border-radius: 50%;
-  background: var(--phase);
-}
-
-.nav-short { display: none; }
-
-.activation-meter {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  color: var(--muted);
-  font: 650 0.68rem/1 monospace;
-}
-
-.activation-meter i {
-  --progress: 0;
-  width: 4.5rem;
-  height: 2px;
-  background:
-    linear-gradient(90deg, var(--phase) calc(var(--progress) * 100%), var(--line) 0);
-}
-
-.header-actions {
-  justify-self: end;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.command-trigger {
-  min-height: 2.4rem;
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0 0.7rem;
-  border: 1px solid var(--line);
-  color: var(--muted);
-  background: transparent;
-  font-size: 0.68rem;
-  cursor: pointer;
-}
-
-.command-trigger kbd {
-  color: #69716f;
-  font: 0.62rem monospace;
+  /* The receipt phase is a scroll position, not a verified outcome, so it does
+   * not light the page gold. */
+  --phase: var(--text);
 }
 
 .command-backdrop {
@@ -332,7 +160,7 @@ main {
     content: "";
     position: fixed;
     z-index: -1;
-    inset: 5.5rem 0 0;
+    inset: var(--header-h) 0 0;
     pointer-events: none;
     background: linear-gradient(
       90deg,
@@ -347,10 +175,10 @@ main {
 .instrument {
   position: fixed;
   z-index: 1;
-  top: 5.5rem;
+  top: var(--header-h);
   right: 0;
   width: 58vw;
-  height: calc(100vh - 5.5rem);
+  height: calc(100svh - var(--header-h));
   pointer-events: none;
 }
 
@@ -411,7 +239,7 @@ main {
 
 .lifecycle-rail a {
   width: 6.5rem;
-  min-height: 2.35rem;
+  min-height: 44px;
   display: grid;
   grid-template-columns: 1.5rem 1fr;
   align-items: center;
@@ -528,10 +356,6 @@ main {
 
 .eyebrow {
   margin: 0 0 1.1rem;
-  color: var(--phase);
-  font: 700 0.68rem/1.4 monospace;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 .hero .eyebrow {
@@ -582,40 +406,7 @@ p {
   margin-top: 2.5rem;
 }
 
-.button {
-  min-height: 3.15rem;
-  display: inline-grid;
-  place-items: center;
-  padding: 0 1.25rem;
-  border: 1px solid var(--line-strong);
-  color: var(--text);
-  background: var(--surface);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.button:hover {
-  border-color: var(--phase);
-}
-
-.button--primary {
-  border-color: var(--phase);
-  color: var(--void);
-  background: var(--phase);
-}
-
-.button--primary:hover {
-  color: var(--text);
-  background: var(--surface);
-}
-
-.button--quiet {
-  color: var(--muted);
-  background: transparent;
-}
+/* Controls now live in styles/controls.css. */
 
 .hero-proof {
   position: absolute;
@@ -660,8 +451,12 @@ p {
 }
 
 .hero-proof--settled > a {
-  display: inline-block;
-  margin-top: 0.65rem;
+  /* A 15px-tall link is not a reliable target on any device. The minimum here
+   * is the same 44px the rest of the site uses. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 0.35rem;
   font: 0.66rem/1.4 monospace;
 }
 
@@ -721,7 +516,7 @@ p {
   border-top: 1px solid var(--line);
   font: 0.72rem/1.4 monospace;
 }
-.text-link { color: var(--receipt); font: 0.72rem monospace; }
+
 
 .worlds-section {
   overflow: hidden;
@@ -1192,26 +987,8 @@ dd {
   font: 0.66rem monospace;
 }
 
-.state {
-  padding: 0.4rem 0.55rem;
-  border: 1px solid var(--line);
-  color: var(--muted);
-  font: 0.64rem monospace;
-  text-transform: uppercase;
-}
-
-.state--preview,
-.state--live {
-  border-color: color-mix(in srgb, var(--qualified) 45%, var(--line));
-  color: var(--qualified);
-}
-
-/* Paused supply is still supply we own; it must not render like an absent
-   product. */
-.state--supply_paused {
-  border-color: color-mix(in srgb, var(--risk) 45%, var(--line));
-  color: var(--risk);
-}
+/* State pills now live in styles/controls.css, where the lifecycle states also
+   carry a shape so their meaning survives a greyscale display. */
 
 .operation-list {
   display: grid;
@@ -1767,7 +1544,11 @@ fieldset label small {
 }
 
 .code-block-bar button {
-  min-height: 2rem;
+  /* A copy control that a phone user misses is a copy control that does not
+   * exist. 44px minimum, same as every other target. */
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: 0.5rem;
   border: 0;
   color: var(--qualified);
   background: transparent;
@@ -2360,6 +2141,11 @@ fieldset label small {
 }
 
 .trust-links a {
+  /* Standalone topic switcher, not an inline link: it carries the same 44px
+   * minimum target as every other control on the site. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   padding: 0.75rem 1rem;
   border: 1px solid var(--line);
   color: var(--muted);
@@ -2381,115 +2167,11 @@ fieldset label small {
   justify-content: center;
 }
 
-.site-footer {
-  position: relative;
-  z-index: 5;
-  min-height: 9rem;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-content: center;
-  gap: 1rem 2rem;
-  padding: 2rem clamp(2rem, 6vw, 7rem);
-  border-top: 1px solid var(--line);
-  background: var(--void);
-  color: var(--muted);
-  font: 0.65rem/1.5 monospace;
-}
-
-.site-footer nav {
-  display: flex;
-  gap: 1.2rem;
-}
-
-.site-footer small {
-  grid-column: 1 / -1;
-}
+/* The legacy footer markup is gone; the shell footer lives in styles/shell.css. */
 
 @media (max-width: 900px) {
-  .site-header {
-    grid-template-columns: 1fr auto;
-    height: 4.75rem;
-    padding: 0 12px;
-    background: var(--void);
-    backdrop-filter: none;
-  }
-
-  .global-nav {
-    order: 3;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    min-height: calc(4rem + env(safe-area-inset-bottom));
-    justify-content: space-around;
-    padding-bottom: env(safe-area-inset-bottom);
-    border-top: 1px solid var(--line);
-    background: color-mix(in srgb, var(--void) 94%, transparent);
-    backdrop-filter: blur(18px);
-  }
-
-  .global-nav a {
-    flex: 1;
-    min-width: 0;
-    min-height: 4rem;
-    padding: 0 0.25rem;
-    overflow-wrap: normal;
-    white-space: nowrap;
-    font-size: 0.64rem;
-    letter-spacing: 0.02em;
-  }
-
-  .nav-long { display: none; }
-  .nav-short { display: inline; }
-
-  .activation-meter {
-    grid-column: 2;
-  }
-
-  .header-actions {
-    grid-column: 2;
-    gap: 6px;
-  }
-
-  .command-trigger {
-    width: 40px;
-    min-height: 40px;
-    padding: 0;
-    justify-content: center;
-  }
-
-  .command-trigger span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-  }
-
-  .command-trigger kbd {
-    color: var(--muted);
-  }
-
-  .activation-meter {
-    font-size: min(0.68rem, 12px);
-  }
-
-  .activation-meter i {
-    display: none;
-  }
-
-  .wordmark {
-    gap: 8px;
-    font-size: min(0.78rem, 14px);
-  }
-
-  .wordmark-mark {
-    width: 30px;
-    height: 30px;
-  }
-
   .instrument {
-    top: 4.75rem;
+    top: var(--header-h);
     width: 100vw;
     height: 36svh;
     opacity: 0.82;
@@ -2835,23 +2517,9 @@ fieldset label small {
   .capability-ledger details > div {
     padding-left: 3rem;
   }
-
-  .site-footer {
-    margin-bottom: calc(4rem + env(safe-area-inset-bottom));
-    grid-template-columns: 1fr;
-    padding: 2rem 1.25rem;
-  }
-
-  .site-footer nav {
-    flex-wrap: wrap;
-  }
 }
 
 @media (max-width: 520px) {
-  .activation-meter i {
-    width: 2.5rem;
-  }
-
   .hero-actions .button,
   .lab-actions .button {
     width: 100%;

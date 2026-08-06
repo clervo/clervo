@@ -1,0 +1,130 @@
+/*
+ * Clervo design tokens.
+ *
+ * Values here are the locked brand system (vault 03-brand-system/step-3a and
+ * step-3b), not taste. The previous stylesheet drifted: it used #ff4d52 for
+ * request, #57d8e8 for qualify, and #d6b86a for receipt, and it spent gold on
+ * routes where nothing had been verified. Gold is the most expensive colour in
+ * this system — it is the only one that asserts a fact — so it is defined here
+ * once and permitted only where a verified outcome exists.
+ */
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/space-grotesk-latin-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/space-grotesk-latin-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/inter-latin-variable.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/jetbrains-mono-latin-variable.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+
+  /* --- Semantic state. Locked. Direction is always left to right. --- */
+  --request: #ff3b30;
+  --qualify: #00e5ff;
+  --verified: #ffc800;
+
+  /* --- Surfaces. Five steps, each one a real elevation, not a gradient. --- */
+  --surface-0: #0b0b0b;
+  --surface-1: #101012;
+  --surface-2: #141417;
+  --surface-3: #1a1a1e;
+  --surface-4: #22222a;
+
+  /* --- Line weights. Hairlines carry the grid; strong lines carry focus. --- */
+  --line: #1f1f24;
+  --line-strong: #33333c;
+  --line-loud: #4a4a55;
+
+  /* --- Text. Three steps only. A fourth invites illegible decoration. --- */
+  --text: #f2f2f4;
+  --text-secondary: #a6a6ad;
+  --text-quiet: #8a8a93;
+
+  /* --- Type families. --- */
+  --display: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  /*
+   * Type scale. Display sizes are fluid between the 390px and 1600px
+   * breakpoints so a headline never needs a per-breakpoint override, and never
+   * grows past the point where it stops being readable on a large monitor.
+   */
+  --step-hero: clamp(2.75rem, 1.6rem + 4.4vw, 4.5rem);
+  --step-1: clamp(2rem, 1.4rem + 2.2vw, 3rem);
+  --step-2: clamp(1.5rem, 1.2rem + 1.1vw, 2rem);
+  --step-3: 1.25rem;
+  --step-body: 1rem;
+  --step-small: 0.875rem;
+  --step-micro: 0.75rem;
+
+  /* --- Space. A 4px base, so every gap is a multiple of one number. --- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  /* --- Layout. --- */
+  --shell-max: 1440px;
+  --shell-gutter: clamp(1rem, 0.5rem + 2vw, 4rem);
+  --measure: 68ch;
+
+  --radius-control: 999px;
+  --radius-panel: 12px;
+  --radius-tight: 8px;
+
+  /*
+   * Motion. Three durations, one easing. Anything slower than --motion-spatial
+   * puts the interface in front of the information, which is the failure mode
+   * this brand is defined against.
+   */
+  --motion-micro: 140ms;
+  --motion-control: 240ms;
+  --motion-spatial: 420ms;
+  --ease: cubic-bezier(0.22, 0.8, 0.24, 1);
+}
+
+/*
+ * Reduced motion is a correctness requirement here, not a courtesy: the Apex
+ * Core represents payment state, and a user who cannot watch an animation must
+ * still be able to read the state it lands on.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-micro: 1ms;
+    --motion-control: 1ms;
+    --motion-spatial: 1ms;
+  }
+}

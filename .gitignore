@@ -20,6 +20,12 @@ __pycache__/
 apps/site/public/
 apps/site/dist-server/
 
+# Visual-regression captures. Baselines are 25 MB of PNGs that are regenerated
+# from the build, so they are a local artifact rather than source: capture with
+# `--update` before a change, then run the harness after it to see the drift.
+apps/site/visual-baseline/
+apps/site/visual-output/
+
 # Runtime state
 data/
 tmp/

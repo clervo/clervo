@@ -1,0 +1,206 @@
+/*
+ * The two routes the locked authority requires and the deployed site answered
+ * 404 for: /start and /catalog.
+ *
+ * Both are built from the layout primitives in base.css rather than from new
+ * page-specific geometry, so they inherit the shell's measure, rhythm and
+ * breakpoints instead of introducing a third layout system.
+ */
+
+.start-intro,
+.catalog-intro {
+  display: grid;
+  gap: var(--space-4);
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-block: clamp(var(--space-8), 7vw, var(--space-9)) var(--space-6);
+  padding-inline: var(--shell-gutter);
+}
+
+.start-intro p:not(.eyebrow),
+.catalog-intro p:not(.eyebrow) {
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+}
+
+.start-intro__actions {
+  margin-top: var(--space-3);
+}
+
+/* --- /start --------------------------------------------------------------- */
+
+.start-first,
+.start-journey,
+.start-clients,
+.start-price,
+.start-recovery {
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-gutter);
+}
+
+.start-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: var(--space-4);
+  counter-reset: none;
+}
+
+.start-step h3 {
+  font-size: var(--step-3);
+}
+
+.start-step p {
+  color: var(--text-secondary);
+  font-size: var(--step-small);
+}
+
+.start-client-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-4);
+}
+
+.start-price__note {
+  margin-top: var(--space-5);
+}
+
+.start-recovery__actions {
+  margin-top: var(--space-6);
+}
+
+/* --- /catalog ------------------------------------------------------------- */
+
+.catalog-body {
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-gutter);
+}
+
+.catalog-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.catalog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.catalog-filter {
+  min-height: 44px;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--step-small);
+  font-weight: 540;
+  cursor: pointer;
+  transition:
+    color var(--motion-micro) var(--ease),
+    border-color var(--motion-micro) var(--ease),
+    background-color var(--motion-micro) var(--ease);
+}
+
+.catalog-filter:hover {
+  color: var(--text);
+  border-color: var(--line-loud);
+}
+
+/* The pressed filter is filled, not merely tinted: `aria-pressed` is announced
+ * to a screen reader, and the fill is what carries the same fact visually. */
+.catalog-filter[aria-pressed="true"] {
+  color: var(--surface-0);
+  background: var(--text);
+  border-color: var(--text);
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: var(--space-4);
+}
+
+.catalog-card__head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.catalog-card__id {
+  font-family: var(--mono);
+  font-size: var(--step-small);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.catalog-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.catalog-card__tags li {
+  padding: 2px var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tight);
+  color: var(--text-quiet);
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+}
+
+.catalog-note {
+  margin-top: var(--space-6);
+}
+
+.catalog-actions {
+  margin-top: var(--space-6);
+}
+
+/* --- Degraded shell ------------------------------------------------------- */
+
+/*
+ * Shown only inside <noscript>. Every route is prerendered, so the content
+ * below this banner is complete; what is missing is the behaviour of the
+ * controls that need hydration. The banner states that difference instead of
+ * leaving a reader to discover it by tapping a dead button.
+ */
+.degraded {
+  margin-block: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-left: 2px solid var(--request);
+  border-radius: var(--radius-panel);
+  background: var(--surface-1);
+}
+
+.degraded__title {
+  font-family: var(--mono);
+  font-size: var(--step-micro);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.degraded__body {
+  margin-top: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--step-small);
+}
+
+.degraded__body a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

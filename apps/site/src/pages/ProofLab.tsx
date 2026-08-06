@@ -117,6 +117,7 @@ export function ProofLab({
   const [lab, setLab] = useState<SavedLab>(initialLab);
   const restored = useRef(false);
   const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
   const [shared, setShared] = useState(false);
   const phase = phaseForState(lab.state);
   const price = lab.productId === 'search.web' ? '6000' : '12000';
@@ -167,26 +168,35 @@ export function ProofLab({
     else if (lab.state === 'quote') update({ state: 'approval' });
     else if (lab.state === 'approval') update({ state: 'evidence' });
     else if (lab.state === 'evidence') {
-      const requestHash = await hash(JSON.stringify({
-        operation: lab.productId,
-        query: lab.query.trim(),
-        fixture: true,
-      }));
-      const receipt: FixtureReceipt = {
-        receiptId: `fixture_${requestHash.slice(7, 23)}`,
-        operationId: 'fixture_contract_inspection',
-        productId: lab.productId,
-        requestHash,
-        price: {
-          asset: 'mock:usdc',
-          amountAtomic: price,
-          decimals: 6,
-          payable: false,
-        },
-        evidence: ['/openapi.json', '/catalog.json', '/.well-known/clervo.json'],
-      };
-      update({ state: 'verified', receipt });
-      updateActivation({ proofCompleted: true });
+      // The only genuinely asynchronous step in the fixture: hashing the
+      // request through SubtleCrypto. The control reports that it is working
+      // rather than looking unresponsive, and it cannot be pressed twice into
+      // two receipts for one request.
+      setBusy(true);
+      try {
+        const requestHash = await hash(JSON.stringify({
+          operation: lab.productId,
+          query: lab.query.trim(),
+          fixture: true,
+        }));
+        const receipt: FixtureReceipt = {
+          receiptId: `fixture_${requestHash.slice(7, 23)}`,
+          operationId: 'fixture_contract_inspection',
+          productId: lab.productId,
+          requestHash,
+          price: {
+            asset: 'mock:usdc',
+            amountAtomic: price,
+            decimals: 6,
+            payable: false,
+          },
+          evidence: ['/openapi.json', '/catalog.json', '/.well-known/clervo.json'],
+        };
+        update({ state: 'verified', receipt });
+        updateActivation({ proofCompleted: true });
+      } finally {
+        setBusy(false);
+      }
     } else if (lab.state === 'verified') update({ state: 'result' });
     else if (lab.state === 'result') update({ state: 'receipt' });
     else if (lab.state === 'receipt') update({ state: 'recovery' });
@@ -362,8 +372,14 @@ export function ProofLab({
 
       <div className="lab-actions">
         {lab.state !== 'recovery' ? (
-          <button className="button button--primary" type="button" onClick={advance}>
-            {lab.state === 'request' ? 'Qualify fixture route'
+          <button
+            className="button button--primary"
+            type="button"
+            onClick={advance}
+            data-loading={busy ? 'true' : undefined}
+            disabled={busy}
+          >
+            {busy ? 'Sealing fixture receipt' : lab.state === 'request' ? 'Qualify fixture route'
               : lab.state === 'route' ? 'Generate fixture quote'
                 : lab.state === 'quote' ? 'Review approval boundary'
                   : lab.state === 'approval' ? 'Approve fixture only'
@@ -377,6 +393,8 @@ export function ProofLab({
         )}
         <button className="button button--quiet" type="button" onClick={reset}>Reset fixture</button>
         <button className="button button--quiet" type="button" onClick={share}>{shared ? 'State URL copied' : 'Share state'}</button>
+        {/* The spinner is decoration; this is the part a screen reader hears. */}
+        <p className="sr-only" role="status">{busy ? 'Sealing the fixture receipt.' : ''}</p>
         <span className="activation-note">
           {activation.receiptInspected ? 'Receipt inspection recorded locally.' : 'Open the receipt to complete this proof.'}
         </span>
