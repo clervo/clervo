@@ -419,11 +419,6 @@ p {
   text-transform: uppercase;
 }
 
-.trust-map { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line); }
-.trust-map a { min-height: 15rem; padding: 1.5rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-decoration: none; }
-.trust-map span { color: var(--phase); font-size: 1.15rem; }
-.trust-map p { margin-top: 5rem; color: var(--muted); line-height: 1.6; }
-
 .not-found h1 {
   font-size: var(--step-hero);
 }
@@ -466,33 +461,6 @@ p {
   font: 0.77rem/1.75 "SFMono-Regular", Consolas, var(--mono);
 }
 
-.trust-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 3rem 0 7rem;
-  border-top: 1px solid var(--line-strong);
-}
-
-.trust-links a {
-  /* Standalone topic switcher, not an inline link: it carries the same 44px
-   * minimum target as every other control on the site. */
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--line);
-  color: var(--muted);
-  font: 0.67rem var(--mono);
-  text-decoration: none;
-  text-transform: uppercase;
-}
-
-.trust-links a.is-active {
-  border-color: var(--phase);
-  color: var(--text);
-}
-
 .not-found {
   min-height: 90svh;
   display: flex;
@@ -532,8 +500,6 @@ p {
   .not-found h1 {
     overflow-wrap: anywhere;
   }
-
-  .trust-map { grid-template-columns: 1fr; }
 
   .worlds-stage { min-height: auto; overflow: visible; border: 0; background: transparent; }
   .worlds-still { position: relative !important; display: block; height: 34rem; border: 1px solid var(--line-strong); overflow: hidden; }
