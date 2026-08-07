@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { B12HeroApex } from '../components/B12HeroApex';
+import { B12HomepageBelowHero } from '../components/B12HomepageBelowHero';
 import type { ExperiencePhase } from '../product';
 import { Link } from '../router';
 
@@ -166,6 +167,8 @@ export function Home({ onPhase: _onPhase }: { onPhase(phase: ExperiencePhase): v
         <span>Search</span><i>·</i><span>AI</span><i>·</i><span>Secure Sandbox</span><i>·</i>
         <span>Multi-chain RPC</span><i>·</i><span>Prediction</span><i>·</i><span>Crypto Intelligence</span>
       </div>
+
+      <B12HomepageBelowHero />
     </div>
   );
 }
