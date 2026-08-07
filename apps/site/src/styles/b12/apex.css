@@ -94,8 +94,6 @@
   align-self: center;
   display: grid;
   gap: 1.45rem;
-  padding-left: clamp(1.5rem, 3vw, 3rem);
-  border-left: 1px solid var(--b12-hairline);
 }
 
 .b12-truth {
