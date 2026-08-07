@@ -32,8 +32,9 @@ Update only when execution state actually changes. This is not a journal.
 | B2 metrics (observed 2026-08-06T14:42:37.447Z) | Conformance defects open 0. Naive free-search rejection rate 0: `withoutIdempotencyKeyStatus` 200. Site 404 correctness: a nonexistent URL returns 404. |
 | B3 metrics (observed 2026-08-06T15:14:21.853Z) | Discovery surfaces live 5 of 5, including `api.models`, `api.well_known_x402`, and `api.llms_txt` at status 200. Model list entries 21 (18 sellable, 3 supply-paused with a reason). x402 manifest payable resources 3, free resources 1. |
 | B4 metrics (observed 2026-08-06T17:01:41.422Z) | Bazaar-valid resources 3 of 3. Indexed resources 1 of 3: `https://api.clervo.dev/v1/search/paid`, `index.active: true`, last crawled `2026-08-06T16:59:46.261Z`. Settlements executed 1, total 0.006 USDC. AI routes quoting below the 1000-atomic minimum 0 — the floor is applied as a minimum billable charge above the derived price, so no route is sold below cost. Days until the search listing idles out: 30 from `2026-08-06`. |
-| Exact next task | Open B5. First task there: inventory the shared surface across the six `x402-paid-*.mjs` handlers. |
-| Files and services for that task | `apps/api/src/x402-paid-search.mjs`, `x402-paid-ai.mjs`, `x402-paid-sandbox.mjs`, `x402-paid-rpc.mjs`, `x402-paid-prediction.mjs`, `x402-paid-crypto.mjs`, and the shared `apps/api/src/x402-resource.mjs`. |
+| B5 metrics (observed 2026-08-07T05:22:00Z) | Products routing through one commerce core 6 of 6 (already true before this milestone). Duplicated commerce-surface copies removed: result verifiers 2 to 1, response-envelope builders 4 to 1, request-hash builders 4 to 1, fixed-price lookups 2 to 1, provenance builders 4 to 1. Duplicate-charge incidents 0. Payment-path defect count 0. Commerce suite 18 of 18 before and after each product move; full acceptance 262 of 262, unchanged. |
+| Exact next task | Open B6. First task there: answer the B6 research question — BlockRun's install, wallet creation, and free-first-success path: what the one command is, what it creates on disk, and where the free success happens relative to funding. Choose the client distribution channel from that answer before writing any client code. |
+| Files and services for that task | No client exists yet. The B5 commerce core `apps/api/src/x402-paid-operation.mjs` is the single money path the client must speak to; `apps/api/src/x402-resource.mjs` holds the payable resource paths; the live catalog the client reads is `packages/catalog/live-registry.json` via `https://api.clervo.dev/.well-known/clervo.json`. |
 
 ---
 
@@ -616,7 +617,7 @@ Every milestone below carries the same seventeen fields.
 ### B5 — Shared commerce core
 
 1. **Milestone:** B5 — Shared commerce core
-2. **Status:** `not_started`
+2. **Status:** `complete` (2026-08-07)
 3. **Customer-visible outcome:** Payment, receipt, replay, and retry behave
    identically on every product, so a customer learns them once.
 4. **Why it matters commercially:** Three products are about to be switched on.
@@ -626,10 +627,16 @@ Every milestone below carries the same seventeen fields.
 5. **Preserve:** **All existing payment semantics exactly.** The six handlers
    are correct. This milestone changes where the logic lives, never what it
    does. No guarantee may be weakened to simplify the extraction.
-6. **Current evidence:** `apps/api/src/x402-paid-search.mjs`,
-   `-ai.mjs`, `-sandbox.mjs`, `-rpc.mjs`, `-prediction.mjs`, `-crypto.mjs` each
-   implement quote, authorize, idempotency, replay, receipt, and reconciliation
-   separately.
+6. **Current evidence:** **Corrected on 2026-08-07.** This field previously
+   read that the six handlers each implement quote, authorize, idempotency,
+   replay, receipt, and reconciliation separately. That was already false when
+   B5 opened: all six delegate to `apps/api/src/x402-paid-operation.mjs`, which
+   owns the state machine, the quote seal, the payment binding, the settlement
+   claim, the receipt seal, and the accounting record. The money path was one
+   path before this milestone began. What was genuinely copied per product was
+   the surface around it — the runtime request envelope, the RECEIPTED
+   response envelope, the request hash, the fixed-price lookup, the runtime
+   result verifier, and provenance construction.
 7. **Research:** None. This is internal structure.
 8. **Work:** Extract one module implementing the capability contract
    `discover, quote, authorize, execute, receipt, replay, reconcile, status`.
@@ -650,8 +657,27 @@ Every milestone below carries the same seventeen fields.
 14. **Metrics:** Payment-path defect count; duplicate-charge incidents (must
     remain zero).
 15. **Owner approval:** Production deploy.
-16. **Stopping condition:** All six products route through one core, all payment
-    tests pass, and external behaviour is unchanged.
+16. **Stopping condition:** **Met 2026-08-07.** All six products route through
+    one core; the shared commerce surface is extracted into it and the
+    per-product copies are gone. Commerce suite 18/18 before and after each
+    product move, full acceptance 262/262 unchanged. External behaviour is
+    unchanged and was proved by value, not by assertion: the request hash and
+    public pricing for `rpc.call`, `crypto.wallet`, and `prediction.markets`
+    are byte-identical across the change, and the `sandbox.run` request hash
+    matches the one the live edge served during the work
+    (`sha256:668d33c40fde8f25c3ff0ca16c4cf241d93893fdd7059a38f92bb2d30649012e`).
+    Forged results, wrong schema versions, wrong operation ids, empty
+    provenance, unqualified sources, and unpriced products are all still
+    refused.
+
+    **No production deploy was performed, and none is required.** The change is
+    to `apps/api/src`, which runs on Cloud Run, not to the Cloudflare edge. The
+    three live paid routes (`search`, `ai`, `sandbox`) are byte-identical in
+    behaviour, so there is no customer-visible change to ship; `rpc`,
+    `prediction`, and `crypto` are not publicly mounted on the edge yet
+    (`/v1/rpc/execute` answers 404 from `api.clervo.dev`). Field 15's owner
+    approval for a production deploy therefore remains **unspent** and is
+    carried into whichever milestone next changes live API behaviour.
 17. **Continuation point:** Open B6. First task there: choose the client
     distribution channel from the B6 research question.
 
