@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { discovery, observedProduct } from '../product';
+import { discovery } from '../product';
 import { Link } from '../router';
 
 type ProofState = 'rest' | 'request' | 'qualify' | 'execute' | 'verify' | 'prove';
@@ -171,7 +171,16 @@ const familyPresentation = {
   crypto_intelligence: { copy: 'Combine token, wallet, protocol, and risk signals.', example: 'Example · analyze a protocol', icon: <path d="M4 17 9 12l4 3 7-8M4 5h16M4 21h16" /> },
 } as const;
 
-const canonicalFamilies = discovery.releaseScope.pillars.map(({ pillarId }) => ({ id: pillarId, label: observedProduct(pillarId).label, ...familyPresentation[pillarId] }));
+const familyDisplayNames = {
+  search: 'Search',
+  ai: 'AI',
+  sandbox: 'Secure Sandbox',
+  rpc: 'Multi-chain RPC',
+  prediction: 'Prediction',
+  crypto_intelligence: 'Crypto Intelligence',
+} as const;
+
+const canonicalFamilies = discovery.releaseScope.pillars.map(({ pillarId }) => ({ id: pillarId, label: familyDisplayNames[pillarId], ...familyPresentation[pillarId] }));
 const familyCountWord = canonicalFamilies.length === 6 ? 'six' : String(canonicalFamilies.length);
 const familyCountTitle = canonicalFamilies.length === 6 ? 'Six' : String(canonicalFamilies.length);
 
