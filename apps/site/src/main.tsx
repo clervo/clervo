@@ -15,6 +15,7 @@ import './styles/controls.css';
 import './styles/mark.css';
 import './styles/shell.css';
 import './styles/home.css';
+import './styles/b12-hero.css';
 import './styles/pages.css';
 
 const root = document.getElementById('root');
