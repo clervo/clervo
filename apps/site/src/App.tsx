@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { useCapsuleSheen } from './capsule';
+import { B12Hero } from './components/B12Hero';
 import { Instrument } from './components/Instrument';
 import { LifecycleRail } from './components/Navigation';
 import { SiteFooter, SiteHeader } from './components/Shell';
@@ -120,7 +121,7 @@ export function App() {
   }, [pathname]);
 
   const route = (() => {
-    if (pathname === '/') return <Home onPhase={updatePhase} />;
+    if (pathname === '/') return <><B12Hero /><Home onPhase={updatePhase} /></>;
     if (pathname === '/start') return <Start onPhase={updatePhase} />;
     if (pathname === '/catalog') return <Catalog onPhase={updatePhase} />;
     if (pathname === '/research') return <Research onPhase={updatePhase} />;
