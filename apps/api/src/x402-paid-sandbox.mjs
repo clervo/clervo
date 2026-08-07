@@ -4,9 +4,15 @@ import {
   CONTRACT_VERSION,
   SANDBOX_OPERATION_REQUEST_SCHEMA_VERSION,
   assertSandboxOperationRequest,
-  hashJson,
 } from '../../../dist/packages/contracts/src/index.js';
-import { createX402PaidOperationProcessor } from './x402-paid-operation.mjs';
+import {
+  assertOperationKeys,
+  assertOperationObject,
+  createX402PaidOperationProcessor,
+  operationExecutionRequest,
+  operationHttpResult,
+  operationRequestHash,
+} from './x402-paid-operation.mjs';
 
 export const SANDBOX_PAID_PATH = '/v1/sandbox/execute';
 export const SANDBOX_MAX_BODY_BYTES = 1_500_000;
@@ -36,12 +42,11 @@ const minimumLimits = Object.freeze({
 });
 
 function object(value, code) {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError(code);
-  return value;
+  return assertOperationObject(value, code);
 }
 
 function exactKeys(value, allowed, code) {
-  if (Object.keys(value).some((key) => !allowed.includes(key))) throw new TypeError(code);
+  assertOperationKeys(value, allowed, code);
 }
 
 function normalizedLimits(value = {}) {
@@ -79,7 +84,7 @@ export function normalizeSandboxHttpRequest(value) {
 }
 
 export function sandboxHttpRequestHash(normalized) {
-  return hashJson({ target: SANDBOX_PAID_PATH, productId: 'sandbox.run', input: normalized });
+  return operationRequestHash({ resourcePath: SANDBOX_PAID_PATH, productId: 'sandbox.run', input: normalized });
 }
 
 function payerTenant(authorization) {
@@ -118,14 +123,18 @@ export function createX402PaidSandboxProcessor({ service, stateStore, gateway, r
     mode: processor.mode,
     durable: processor.durable,
     async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
-      const request = Object.freeze({
-        contractVersion: CONTRACT_VERSION,
+      /* Sandbox bounds the runtime by the supplier cost: it rents real
+       * compute per run. Its deadline is the only content-dependent one on the
+       * platform — a run may legitimately take as long as the wall-time limit
+       * the customer bought, plus scheduling overhead. */
+      const request = operationExecutionRequest({
         schemaVersion: SANDBOX_OPERATION_REQUEST_SCHEMA_VERSION,
         operationId,
         productId: 'sandbox.run',
         input: Object.freeze({ kind: 'run', executionId: executionId(operationId), imageDigest: runnerDigest, ...normalized }),
-        maximumCharge: Object.freeze({ asset: 'USD', amountAtomic: SANDBOX_RUN_PRICING.supplierCost.amountAtomic, decimals: 6 }),
-        deadlineAt: new Date(Date.parse(now) + normalized.limits.wallTimeMs + 60_000).toISOString(),
+        boundAmountAtomic: SANDBOX_RUN_PRICING.supplierCost.amountAtomic,
+        now,
+        deadlineMs: normalized.limits.wallTimeMs + 60_000,
       });
       assertSandboxOperationRequest(request);
       return processor.process({
@@ -144,7 +153,7 @@ export function createX402PaidSandboxProcessor({ service, stateStore, gateway, r
           });
         },
         createResponse({ output, receipt }) {
-          return Object.freeze({ operationId, productId: 'sandbox.run', state: 'RECEIPTED', replayed: false, requestHash, result: output, receipt });
+          return operationHttpResult({ operationId, productId: 'sandbox.run', requestHash, output, receipt });
         },
       });
     },

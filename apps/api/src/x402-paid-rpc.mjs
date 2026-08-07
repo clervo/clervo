@@ -2,10 +2,17 @@ import {
   CONTRACT_VERSION,
   RPC_OPERATION_REQUEST_SCHEMA_VERSION,
   assertRpcOperationRequest,
-  hashJson,
   verifyRpcOperationResult,
 } from '../../../dist/packages/contracts/src/index.js';
-import { createX402PaidOperationProcessor } from './x402-paid-operation.mjs';
+import {
+  assertOperationKeys,
+  assertOperationObject,
+  createX402PaidOperationProcessor,
+  operationExecutionRequest,
+  operationHttpResult,
+  operationRequestHash,
+  qualifiedProvenance,
+} from './x402-paid-operation.mjs';
 
 export const RPC_PAID_PATH = '/v1/rpc/execute';
 export const RPC_MAX_BODY_BYTES = 262_144;
@@ -13,12 +20,11 @@ export const RPC_MAX_BODY_BYTES = 262_144;
 const pricingByKind = Object.freeze({ call: 1n, batch: 1n });
 
 function object(value, code) {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError(code);
-  return value;
+  return assertOperationObject(value, code);
 }
 
 function exactKeys(value, allowed, code) {
-  if (Object.keys(value).some((key) => !allowed.includes(key))) throw new TypeError(code);
+  assertOperationKeys(value, allowed, code);
 }
 
 export function normalizeRpcHttpRequest(value) {
@@ -37,7 +43,7 @@ export function normalizeRpcHttpRequest(value) {
 }
 
 export function rpcHttpRequestHash(normalized) {
-  return hashJson({ target: RPC_PAID_PATH, productId: normalized.productId, input: normalized.input });
+  return operationRequestHash({ resourcePath: RPC_PAID_PATH, productId: normalized.productId, input: normalized.input });
 }
 
 export function rpcPublicPricing(normalized) {
@@ -74,14 +80,18 @@ export function createX402PaidRpcProcessor({ service, stateStore, runtime, acqui
     durable: processor.durable,
     async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
       const selectedPricing = rpcPublicPricing(normalized);
-      const request = Object.freeze({
-        contractVersion: CONTRACT_VERSION,
+      /* RPC bounds the runtime by the supplier cost, not the customer charge.
+       * It buys each call from an upstream provider, so the supplier figure is
+       * the real ceiling; the two happen to be equal at current prices, and
+       * binding the wrong one would go unnoticed until they diverge. */
+      const request = operationExecutionRequest({
         schemaVersion: RPC_OPERATION_REQUEST_SCHEMA_VERSION,
         operationId,
         productId: normalized.productId,
         input: normalized.input,
-        maximumCharge: Object.freeze({ asset: 'USD', amountAtomic: selectedPricing.supplierCost.amountAtomic, decimals: 6 }),
-        deadlineAt: new Date(Date.parse(now) + 30_000).toISOString(),
+        boundAmountAtomic: selectedPricing.supplierCost.amountAtomic,
+        now,
+        deadlineMs: 30_000,
       });
       assertRpcOperationRequest(request);
       return processor.process({
@@ -90,15 +100,20 @@ export function createX402PaidRpcProcessor({ service, stateStore, runtime, acqui
         discovery: RPC_DISCOVERY, overloadCode: 'rpc_overloaded',
         async execute(executionRequest) {
           const completed = await runtime.execute(executionRequest);
-          if (!completed?.result || !verifyRpcOperationResult(completed.result, executionRequest) || !/^qual_[A-Za-z0-9]{20,64}$/u.test(completed.qualificationId ?? '')) throw new TypeError('rpc_runtime_result_invalid');
+          if (!completed?.result || !verifyRpcOperationResult(completed.result, executionRequest)) throw new TypeError('rpc_runtime_result_invalid');
           return Object.freeze({
             output: completed.result,
             supplierCost: selectedPricing.supplierCost,
-            provenance: Object.freeze([Object.freeze({ adapterId: 'adapter_rpc.qualified_route', qualificationId: completed.qualificationId, providerReferenceHash: completed.result.resultHash })]),
+            provenance: qualifiedProvenance({
+              adapterId: 'adapter_rpc.qualified_route',
+              qualificationIds: [completed.qualificationId],
+              providerReferenceHash: completed.result.resultHash,
+              code: 'rpc_runtime_result_invalid',
+            }),
           });
         },
         createResponse({ output, receipt }) {
-          return Object.freeze({ operationId, productId: normalized.productId, state: 'RECEIPTED', replayed: false, requestHash, result: output, receipt });
+          return operationHttpResult({ operationId, productId: normalized.productId, requestHash, output, receipt });
         },
       });
     },

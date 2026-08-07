@@ -1,5 +1,14 @@
-import { CONTRACT_VERSION, hashJson } from '../../../dist/packages/contracts/src/index.js';
-import { createX402PaidOperationProcessor } from './x402-paid-operation.mjs';
+import {
+  assertOperationKeys,
+  assertOperationObject,
+  createX402PaidOperationProcessor,
+  fixedPublicPricing,
+  operationExecutionRequest,
+  operationHttpResult,
+  operationRequestHash,
+  qualifiedProvenance,
+  verifiedRuntimeResult,
+} from './x402-paid-operation.mjs';
 
 export const PREDICTION_PAID_PATH = '/v1/prediction/execute';
 export const PREDICTION_MAX_BODY_BYTES = 262_144;
@@ -16,11 +25,10 @@ const allowedByKind = Object.freeze({
 });
 
 function object(value, code = 'prediction_http_request_invalid') {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError(code);
-  return value;
+  return assertOperationObject(value, code);
 }
 function exact(value, keys) {
-  if (Object.keys(value).some((key) => !keys.includes(key))) throw new TypeError('prediction_http_request_additional_property');
+  assertOperationKeys(value, keys, 'prediction_http_request_additional_property');
 }
 function marketRef(value) {
   if (typeof value !== 'string' || !/^pmkt_[a-f0-9]{32}$/u.test(value)) throw new TypeError('prediction_market_ref_invalid');
@@ -52,11 +60,15 @@ export function normalizePredictionHttpRequest(value) {
   return Object.freeze({ productId: productByKind[kind], input: Object.freeze(input) });
 }
 
-export function predictionHttpRequestHash(normalized) { return hashJson({ target: PREDICTION_PAID_PATH, productId: normalized.productId, input: normalized.input }); }
+export function predictionHttpRequestHash(normalized) {
+  return operationRequestHash({ resourcePath: PREDICTION_PAID_PATH, productId: normalized.productId, input: normalized.input });
+}
 export function predictionPublicPricing(normalized) {
-  const amountAtomic = priceByProduct[normalized.productId]?.toString();
-  if (amountAtomic === undefined) throw new TypeError('prediction_pricing_invalid');
-  return Object.freeze({ priceVersion: `prediction-public-2026-08-04.1-${normalized.productId}`, maximumCharge: Object.freeze({ asset: 'USDC', amountAtomic, decimals: 6 }), supplierCost: Object.freeze({ asset: 'usd', amountAtomic: '0', decimals: 6 }) });
+  return fixedPublicPricing({
+    priceVersion: `prediction-public-2026-08-04.1-${normalized.productId}`,
+    productId: normalized.productId,
+    amountAtomic: priceByProduct[normalized.productId]?.toString(),
+  });
 }
 
 export const PREDICTION_DISCOVERY = Object.freeze({
@@ -67,9 +79,7 @@ export const PREDICTION_DISCOVERY = Object.freeze({
 });
 
 function validResult(value, request) {
-  if (!value || value.contractVersion !== CONTRACT_VERSION || value.schemaVersion !== PREDICTION_RESULT_SCHEMA_VERSION || value.operationId !== request.operationId || value.productId !== request.productId || value.output?.kind !== request.input.kind || !/^sha256:[a-f0-9]{64}$/u.test(value.resultHash ?? '')) return false;
-  const unsigned = { contractVersion: value.contractVersion, schemaVersion: value.schemaVersion, operationId: value.operationId, productId: value.productId, completedAt: value.completedAt, meteredCharge: value.meteredCharge, output: value.output };
-  return value.resultHash === hashJson(unsigned);
+  return verifiedRuntimeResult(value, request, PREDICTION_RESULT_SCHEMA_VERSION);
 }
 
 export function createX402PaidPredictionProcessor({ service, stateStore, runtime, acquireExecution } = {}) {
@@ -78,14 +88,35 @@ export function createX402PaidPredictionProcessor({ service, stateStore, runtime
   return Object.freeze({ mode: processor.mode, durable: processor.durable,
     async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
       const pricing = predictionPublicPricing(normalized);
-      const request = Object.freeze({ contractVersion: CONTRACT_VERSION, schemaVersion: PREDICTION_REQUEST_SCHEMA_VERSION, operationId, productId: normalized.productId, input: normalized.input, maximumCharge: Object.freeze({ asset: 'USD', amountAtomic: pricing.maximumCharge.amountAtomic, decimals: 6 }), deadlineAt: new Date(Date.parse(now) + 30_000).toISOString() });
+      /* Bounded by the customer charge, as crypto is and for the same reason:
+       * prediction is served from indexed state, so supplier cost is 0. */
+      const request = operationExecutionRequest({
+        schemaVersion: PREDICTION_REQUEST_SCHEMA_VERSION,
+        operationId,
+        productId: normalized.productId,
+        input: normalized.input,
+        boundAmountAtomic: pricing.maximumCharge.amountAtomic,
+        now,
+        deadlineMs: 30_000,
+      });
       return processor.process({ idempotencyKey, requestHash, operationId, productId: normalized.productId, executionInput: request, paymentHeader, authorizationHeader, now, pricing, resourcePath: PREDICTION_PAID_PATH, discovery: PREDICTION_DISCOVERY, overloadCode: 'prediction_overloaded',
         async execute(executionRequest) {
           const completed = await runtime.execute(executionRequest);
-          if (!validResult(completed?.result, executionRequest) || !Array.isArray(completed.qualificationIds) || completed.qualificationIds.length < 1 || completed.qualificationIds.some((id) => !/^qual_[A-Za-z0-9]{20,64}$/u.test(id))) throw new TypeError('prediction_runtime_result_invalid');
-          return Object.freeze({ output: completed.result, supplierCost: pricing.supplierCost, provenance: Object.freeze(completed.qualificationIds.map((qualificationId) => Object.freeze({ adapterId: 'adapter_prediction.qualified_source', qualificationId, providerReferenceHash: completed.result.resultHash }))) });
+          if (!validResult(completed?.result, executionRequest)) throw new TypeError('prediction_runtime_result_invalid');
+          return Object.freeze({
+            output: completed.result,
+            supplierCost: pricing.supplierCost,
+            provenance: qualifiedProvenance({
+              adapterId: 'adapter_prediction.qualified_source',
+              qualificationIds: completed.qualificationIds,
+              providerReferenceHash: completed.result.resultHash,
+              code: 'prediction_runtime_result_invalid',
+            }),
+          });
         },
-        createResponse({ output, receipt }) { return Object.freeze({ operationId, productId: normalized.productId, state: 'RECEIPTED', replayed: false, requestHash, result: output, receipt }); },
+        createResponse({ output, receipt }) {
+          return operationHttpResult({ operationId, productId: normalized.productId, requestHash, output, receipt });
+        },
       });
     },
   });

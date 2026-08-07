@@ -1,5 +1,14 @@
-import { CONTRACT_VERSION, hashJson } from '../../../dist/packages/contracts/src/index.js';
-import { createX402PaidOperationProcessor } from './x402-paid-operation.mjs';
+import {
+  assertOperationKeys,
+  assertOperationObject,
+  createX402PaidOperationProcessor,
+  fixedPublicPricing,
+  operationExecutionRequest,
+  operationHttpResult,
+  operationRequestHash,
+  qualifiedProvenance,
+  verifiedRuntimeResult,
+} from './x402-paid-operation.mjs';
 
 export const CRYPTO_PAID_PATH = '/v1/crypto/execute';
 export const CRYPTO_MAX_BODY_BYTES = 262_144;
@@ -19,11 +28,10 @@ const allowedByKind = Object.freeze({
 });
 
 function object(value) {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new TypeError('crypto_http_request_invalid');
-  return value;
+  return assertOperationObject(value, 'crypto_http_request_invalid');
 }
 function exact(value, keys) {
-  if (Object.keys(value).some((key) => !keys.includes(key))) throw new TypeError('crypto_http_request_additional_property');
+  assertOperationKeys(value, keys, 'crypto_http_request_additional_property');
 }
 function address(value, selectedChain) {
   if (typeof value !== 'string') throw new TypeError('crypto_address_invalid');
@@ -58,14 +66,14 @@ export function normalizeCryptoHttpRequest(value) {
   return Object.freeze({ productId: productByKind[kind], input: Object.freeze(input) });
 }
 
-export function cryptoHttpRequestHash(normalized) { return hashJson({ target: CRYPTO_PAID_PATH, productId: normalized.productId, input: normalized.input }); }
+export function cryptoHttpRequestHash(normalized) {
+  return operationRequestHash({ resourcePath: CRYPTO_PAID_PATH, productId: normalized.productId, input: normalized.input });
+}
 export function cryptoPublicPricing(normalized) {
-  const amountAtomic = priceByProduct[normalized.productId]?.toString();
-  if (amountAtomic === undefined) throw new TypeError('crypto_pricing_invalid');
-  return Object.freeze({
+  return fixedPublicPricing({
     priceVersion: `crypto-public-2026-08-04.1-${normalized.productId}`,
-    maximumCharge: Object.freeze({ asset: 'USDC', amountAtomic, decimals: 6 }),
-    supplierCost: Object.freeze({ asset: 'usd', amountAtomic: '0', decimals: 6 }),
+    productId: normalized.productId,
+    amountAtomic: priceByProduct[normalized.productId]?.toString(),
   });
 }
 
@@ -80,9 +88,7 @@ export const CRYPTO_DISCOVERY = Object.freeze({
 });
 
 function validResult(value, request) {
-  if (!value || value.contractVersion !== CONTRACT_VERSION || value.schemaVersion !== CRYPTO_RESULT_SCHEMA_VERSION || value.operationId !== request.operationId || value.productId !== request.productId || value.output?.kind !== request.input.kind || !/^sha256:[a-f0-9]{64}$/u.test(value.resultHash ?? '')) return false;
-  const unsigned = { contractVersion: value.contractVersion, schemaVersion: value.schemaVersion, operationId: value.operationId, productId: value.productId, completedAt: value.completedAt, meteredCharge: value.meteredCharge, output: value.output };
-  return value.resultHash === hashJson(unsigned);
+  return verifiedRuntimeResult(value, request, CRYPTO_RESULT_SCHEMA_VERSION);
 }
 
 export function createX402PaidCryptoProcessor({ service, stateStore, runtime, acquireExecution } = {}) {
@@ -92,16 +98,37 @@ export function createX402PaidCryptoProcessor({ service, stateStore, runtime, ac
     mode: processor.mode, durable: processor.durable,
     async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
       const pricing = cryptoPublicPricing(normalized);
-      const request = Object.freeze({ contractVersion: CONTRACT_VERSION, schemaVersion: CRYPTO_REQUEST_SCHEMA_VERSION, operationId, productId: normalized.productId, input: normalized.input, maximumCharge: Object.freeze({ asset: 'USD', amountAtomic: pricing.maximumCharge.amountAtomic, decimals: 6 }), deadlineAt: new Date(Date.parse(now) + 30_000).toISOString() });
+      /* Crypto bounds the runtime by the customer charge: it buys nothing per
+       * call, so the supplier cost is 0 and would bound the request to zero. */
+      const request = operationExecutionRequest({
+        schemaVersion: CRYPTO_REQUEST_SCHEMA_VERSION,
+        operationId,
+        productId: normalized.productId,
+        input: normalized.input,
+        boundAmountAtomic: pricing.maximumCharge.amountAtomic,
+        now,
+        deadlineMs: 30_000,
+      });
       return processor.process({
         idempotencyKey, requestHash, operationId, productId: normalized.productId, executionInput: request,
         paymentHeader, authorizationHeader, now, pricing, resourcePath: CRYPTO_PAID_PATH, discovery: CRYPTO_DISCOVERY, overloadCode: 'crypto_overloaded',
         async execute(executionRequest) {
           const completed = await runtime.execute(executionRequest);
-          if (!validResult(completed?.result, executionRequest) || !Array.isArray(completed.qualificationIds) || completed.qualificationIds.length < 1 || completed.qualificationIds.some((id) => !/^qual_[A-Za-z0-9]{20,64}$/u.test(id))) throw new TypeError('crypto_runtime_result_invalid');
-          return Object.freeze({ output: completed.result, supplierCost: pricing.supplierCost, provenance: Object.freeze(completed.qualificationIds.map((qualificationId) => Object.freeze({ adapterId: 'adapter_crypto.qualified_source', qualificationId, providerReferenceHash: completed.result.resultHash }))) });
+          if (!validResult(completed?.result, executionRequest)) throw new TypeError('crypto_runtime_result_invalid');
+          return Object.freeze({
+            output: completed.result,
+            supplierCost: pricing.supplierCost,
+            provenance: qualifiedProvenance({
+              adapterId: 'adapter_crypto.qualified_source',
+              qualificationIds: completed.qualificationIds,
+              providerReferenceHash: completed.result.resultHash,
+              code: 'crypto_runtime_result_invalid',
+            }),
+          });
         },
-        createResponse({ output, receipt }) { return Object.freeze({ operationId, productId: normalized.productId, state: 'RECEIPTED', replayed: false, requestHash, result: output, receipt }); },
+        createResponse({ output, receipt }) {
+          return operationHttpResult({ operationId, productId: normalized.productId, requestHash, output, receipt });
+        },
       });
     },
   });
