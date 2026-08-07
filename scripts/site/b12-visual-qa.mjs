@@ -216,9 +216,93 @@ try {
     const navigation = await cdp.send('Page.navigate', { url }); assert(!navigation.errorText, `navigation_failed:${navigation.errorText}`); await loaded;
     await cdp.send('Runtime.evaluate', { expression: 'document.fonts ? document.fonts.ready.then(() => true) : true', awaitPromise: true, returnByValue: true });
     await waitForState(cdp, state); await sleep(120);
-    const dimensions = (await cdp.send('Runtime.evaluate', { expression: `(() => ({scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth,bodyScrollWidth:document.body.scrollWidth}))()`, returnByValue: true })).result.value;
-    const screenshot = path.join(shots, `${id}.png`); const image = await cdp.send('Page.captureScreenshot', { format: 'png', fromSurface: true, captureBeyondViewport: false }); await writeFile(screenshot, Buffer.from(image.data, 'base64'));
-    results.push({ id, state, url: `/?state=${state}`, width, height, deviceScaleFactor: 1, consoleErrors: [...new Set(consoleErrors)], pageErrors: [...new Set(pageErrors)], ...dimensions, horizontalOverflow: Math.max(dimensions.scrollWidth, dimensions.bodyScrollWidth) > dimensions.clientWidth, screenshot: path.relative(root, screenshot) });
+    const diagnostics = (await cdp.send('Runtime.evaluate', { expression: `(() => {
+      const documentElement = document.documentElement;
+      const body = document.body;
+      const clientWidth = documentElement.clientWidth;
+      const sectionNodes = [...document.querySelectorAll('#step-7a > .s7a-section, #step-7a > .s7a-footer')];
+      const sections = sectionNodes.map((element, index) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          id: element.id || (element.classList.contains('s7a-footer') ? 's7a-footer' : 's7a-section-' + (index + 1)),
+          left: rect.left,
+          right: rect.right,
+          width: rect.width,
+          height: rect.height,
+          clippedHorizontally: rect.left < -1 || rect.right > clientWidth + 1,
+          empty: rect.width < 1 || rect.height < 1,
+        };
+      });
+      const positionedElements = [...document.querySelectorAll('body *')].flatMap((element) => {
+        const style = getComputedStyle(element);
+        if (style.position !== 'fixed' && style.position !== 'sticky') return [];
+        const rect = element.getBoundingClientRect();
+        if (rect.width < 1 || rect.height < 1 || rect.bottom <= 0 || rect.top >= innerHeight || style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity || 1) <= .01) return [];
+        return [{
+          selector: element.id ? '#' + element.id : '.' + [...element.classList].join('.'),
+          position: style.position,
+          left: rect.left,
+          top: rect.top,
+          right: rect.right,
+          bottom: rect.bottom,
+        }];
+      });
+      const obscuredSections = sections.flatMap((section, index) => {
+        const rect = sectionNodes[index].getBoundingClientRect();
+        const overlaps = positionedElements.filter((item) => item.left < rect.right && item.right > rect.left && item.top < rect.bottom && item.bottom > rect.top);
+        return overlaps.length ? [{ id: section.id, by: overlaps.map(({ selector }) => selector) }] : [];
+      });
+      const rail = document.querySelector('.b12-rail');
+      const railRect = rail?.getBoundingClientRect();
+      const railStyle = rail ? getComputedStyle(rail) : null;
+      return {
+        scrollWidth: documentElement.scrollWidth,
+        clientWidth,
+        bodyScrollWidth: body.scrollWidth,
+        scrollHeight: Math.max(documentElement.scrollHeight, body.scrollHeight),
+        sections,
+        clippedSections: sections.filter(({ clippedHorizontally, empty }) => clippedHorizontally || empty).map(({ id }) => id),
+        positionedElements,
+        obscuredSections,
+        rail: rail && railRect && railStyle ? {
+          left: railRect.left,
+          right: railRect.right,
+          clientWidth: rail.clientWidth,
+          scrollWidth: rail.scrollWidth,
+          overflowX: railStyle.overflowX,
+          contained: railRect.left >= -1 && railRect.right <= clientWidth + 1,
+          internalOverflow: rail.scrollWidth > rail.clientWidth + 1,
+        } : null,
+      };
+    })()`, returnByValue: true })).result.value;
+    const screenshot = path.join(shots, `${id}.png`);
+    const viewportImage = await cdp.send('Page.captureScreenshot', { format: 'png', fromSurface: true, captureBeyondViewport: false });
+    await writeFile(screenshot, Buffer.from(viewportImage.data, 'base64'));
+    const layout = await cdp.send('Page.getLayoutMetrics');
+    const contentSize = layout.cssContentSize ?? layout.contentSize;
+    const fullPageScreenshot = path.join(shots, `${id}--full-page.png`);
+    const fullPageImage = await cdp.send('Page.captureScreenshot', {
+      format: 'png',
+      fromSurface: true,
+      captureBeyondViewport: true,
+      clip: { x: 0, y: 0, width: contentSize.width, height: contentSize.height, scale: 1 },
+    });
+    await writeFile(fullPageScreenshot, Buffer.from(fullPageImage.data, 'base64'));
+    results.push({
+      id,
+      state,
+      url: `/?state=${state}`,
+      width,
+      height,
+      deviceScaleFactor: 1,
+      consoleErrors: [...new Set(consoleErrors)],
+      pageErrors: [...new Set(pageErrors)],
+      ...diagnostics,
+      fullPageHeight: contentSize.height,
+      horizontalOverflow: Math.max(diagnostics.scrollWidth, diagnostics.bodyScrollWidth) > diagnostics.clientWidth,
+      screenshot: path.relative(root, screenshot),
+      fullPageScreenshot: path.relative(root, fullPageScreenshot),
+    });
   }
 } finally {
   const cleanupErrors = [];
@@ -239,10 +323,40 @@ try {
 }
 
 const comparisons = (await Promise.all(results.map(compare))).filter(Boolean);
-const issues = results.flatMap((item) => [...item.consoleErrors.map((error) => `${item.id}:console:${error}`), ...item.pageErrors.map((error) => `${item.id}:page:${error}`), ...(item.horizontalOverflow ? [`${item.id}:horizontal_overflow:${item.scrollWidth}/${item.clientWidth}`] : [])]);
-const report = { schemaVersion: 'clervo.b12.visual-qa.v1', generatedAt: new Date().toISOString(), target: site, chrome: browser?.executable ?? null, build, captures: results, technicalIssues: issues, comparisons, comparisonPolicy: 'Comparison artifacts are evidence only. Pixel differences never auto-approve a design; owner visual judgment is final.' };
+const issues = results.flatMap((item) => [
+  ...item.consoleErrors.map((error) => `${item.id}:console:${error}`),
+  ...item.pageErrors.map((error) => `${item.id}:page:${error}`),
+  ...(item.horizontalOverflow ? [`${item.id}:horizontal_overflow:${item.scrollWidth}/${item.clientWidth}`] : []),
+  ...item.clippedSections.map((section) => `${item.id}:clipped_section:${section}`),
+  ...item.obscuredSections.map(({ id: section, by }) => `${item.id}:obscured_section:${section}:${by.join(',')}`),
+  ...(item.rail && !item.rail.contained ? [`${item.id}:rail_not_contained:${item.rail.left}/${item.rail.right}/${item.clientWidth}`] : []),
+]);
+const report = {
+  schemaVersion: 'clervo.b12.visual-qa.v2',
+  generatedAt: new Date().toISOString(),
+  target: site,
+  chrome: browser?.executable ?? null,
+  build,
+  captures: results,
+  technicalIssues: issues,
+  comparisons,
+  fullPageReferenceCoverage: 'No exact locked full-page homepage references are present in the supplied Vault; locked 390x844 and 320x700 references remain viewport comparisons.',
+  comparisonPolicy: 'Comparison artifacts are evidence only. Pixel differences never auto-approve a design; owner visual judgment is final.',
+};
 await writeFile(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
-await writeFile(path.join(out, 'summary.md'), ['# Clervo B12 visual QA', '', `- Build: ${build.skipped ? 'existing build used' : build.exitCode === 0 ? 'PASS' : 'FAIL'}`, `- Captures: ${results.length}`, `- Technical issues: ${issues.length}`, `- Comparison artifacts: ${comparisons.filter(({ status }) => status === 'generated').length}`, '- Visual comparison never auto-approves; owner judgment is final.', '', ...results.map((item) => `- ${item.id}: ${item.width}x${item.height}@1 state=${item.state}; scrollWidth/clientWidth=${item.scrollWidth}/${item.clientWidth}; console=${item.consoleErrors.length}; page=${item.pageErrors.length}; ${item.screenshot}`), ''].join('\n'));
+await writeFile(path.join(out, 'summary.md'), [
+  '# Clervo B12 visual QA',
+  '',
+  `- Build: ${build.skipped ? 'existing build used' : build.exitCode === 0 ? 'PASS' : 'FAIL'}`,
+  `- Capture pairs: ${results.length} viewport + ${results.length} full-page`,
+  `- Technical issues: ${issues.length}`,
+  `- Comparison artifacts: ${comparisons.filter(({ status }) => status === 'generated').length}`,
+  '- Full-page locked references: none supplied; viewport mobile references remain the visual comparison authority.',
+  '- Visual comparison never auto-approves; owner judgment is final.',
+  '',
+  ...results.map((item) => `- ${item.id}: ${item.width}x${item.height}@1 state=${item.state}; pageHeight=${item.fullPageHeight}; scrollWidth/clientWidth=${item.scrollWidth}/${item.clientWidth}; console=${item.consoleErrors.length}; page=${item.pageErrors.length}; clipped=${item.clippedSections.length}; obscured=${item.obscuredSections.length}; rail=${item.rail ? `${item.rail.contained ? 'contained' : 'NOT-CONTAINED'}${item.rail.internalOverflow ? '/internal-scroll' : ''}` : 'missing'}; viewport=${item.screenshot}; full=${item.fullPageScreenshot}`),
+  '',
+].join('\n'));
 console.log(`B12 visual QA: ${issues.length ? 'ISSUES' : 'PASS'} (${results.length} captures)`);
 console.log(path.join(out, 'summary.md'));
 if (cleanupError) throw cleanupError;
