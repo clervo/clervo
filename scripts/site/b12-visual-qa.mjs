@@ -24,21 +24,34 @@ const useBuilt = has('--use-built') || site !== defaultSite;
 const shots = path.join(out, 'captures');
 const comparisonsDir = path.join(out, 'comparisons');
 
-const matrix = [
-  ['desktop-1600-rest', 1600, 900, 'rest'],
-  ['desktop-1600-prove', 1600, 900, 'prove'],
-  ['tablet-1024-rest', 1024, 768, 'rest'],
-  ['mobile-390-rest', 390, 844, 'rest'],
-  ['mobile-390-prove', 390, 844, 'prove'],
-  ['mobile-320-rest', 320, 700, 'rest'],
-  ['mobile-320-prove', 320, 700, 'prove'],
+const homeMatrix = [
+  { id: 'desktop-1600-rest', surface: 'home', path: '/?state=rest', width: 1600, height: 900, state: 'rest' },
+  { id: 'desktop-1600-prove', surface: 'home', path: '/?state=prove', width: 1600, height: 900, state: 'prove' },
+  { id: 'tablet-1024-rest', surface: 'home', path: '/?state=rest', width: 1024, height: 768, state: 'rest' },
+  { id: 'mobile-390-rest', surface: 'home', path: '/?state=rest', width: 390, height: 844, state: 'rest' },
+  { id: 'mobile-390-prove', surface: 'home', path: '/?state=prove', width: 390, height: 844, state: 'prove' },
+  { id: 'mobile-320-rest', surface: 'home', path: '/?state=rest', width: 320, height: 700, state: 'rest' },
+  { id: 'mobile-320-prove', surface: 'home', path: '/?state=prove', width: 320, height: 700, state: 'prove' },
 ];
+const startMatrix = [
+  { id: 'start-desktop-1600-entry', surface: 'start', path: '/start', width: 1600, height: 900, startState: 'entry' },
+  { id: 'start-desktop-1600-verified', surface: 'start', path: '/start', width: 1600, height: 900, startState: 'verified' },
+  { id: 'start-tablet-1024-entry', surface: 'start', path: '/start', width: 1024, height: 768, startState: 'entry' },
+  { id: 'start-tablet-1024-verified', surface: 'start', path: '/start', width: 1024, height: 768, startState: 'verified' },
+  { id: 'start-mobile-390-entry', surface: 'start', path: '/start', width: 390, height: 844, startState: 'entry' },
+  { id: 'start-mobile-390-verified', surface: 'start', path: '/start', width: 390, height: 844, startState: 'verified' },
+  { id: 'start-mobile-320-entry', surface: 'start', path: '/start', width: 320, height: 700, startState: 'entry' },
+  { id: 'start-mobile-320-verified', surface: 'start', path: '/start', width: 320, height: 700, startState: 'verified' },
+];
+const matrix = [...homeMatrix, ...startMatrix];
 const slice2ProofOrder = ['request', 'qualify', 'execute', 'verify', 'prove'];
 const referenceMap = {
   'desktop-1600-rest': '06-hero/locked/prototype-v1.0/preview-desktop-rest.png',
   'desktop-1600-prove': '06-hero/locked/prototype-v1.0/preview-desktop-prove.png',
   'mobile-390-rest': '07-full-site-design/locked/visual-creative-mobile-hardening-v1.0/final-home-390.png',
   'mobile-320-rest': '07-full-site-design/locked/visual-creative-mobile-hardening-v1.0/final-home-320.png',
+  'start-mobile-390-entry': '07-full-site-design/locked/visual-creative-mobile-hardening-v1.0/final-start-390.png',
+  'start-mobile-320-entry': '07-full-site-design/locked/visual-creative-mobile-hardening-v1.0/final-start-320.png',
 };
 const mime = {
   '.css': 'text/css; charset=utf-8', '.html': 'text/html; charset=utf-8',
@@ -144,28 +157,28 @@ async function launchChrome(port, profile) {
   return { child, executable, ws: page.webSocketDebuggerUrl };
 }
 
-async function waitForState(cdp, state) {
-  const expected = JSON.stringify(state);
-  const expression = `(() => document.querySelector('.b12-home')?.dataset.state === ${expected} || document.body.dataset.state === ${expected})()`;
-  const end = Date.now() + 5_000;
-  while (Date.now() < end) {
-    const result = await cdp.send('Runtime.evaluate', { expression, returnByValue: true });
-    if (result.result?.value === true) return;
-    await sleep(50);
-  }
-  throw new Error(`state_not_reached:${state}`);
-}
-
-async function waitForSlice2ProofState(cdp, state, timeout = 5_000) {
-  const expected = JSON.stringify(state);
-  const expression = `document.querySelector('.s7a-proof-frame')?.dataset.proofState === ${expected}`;
+async function waitForExpression(cdp, expression, code, timeout = 8_000) {
   const end = Date.now() + timeout;
   while (Date.now() < end) {
     const result = await cdp.send('Runtime.evaluate', { expression, returnByValue: true });
     if (result.result?.value === true) return;
     await sleep(50);
   }
-  throw new Error(`slice2_proof_state_not_reached:${state}`);
+  throw new Error(`${code}_timeout`);
+}
+
+async function waitForHomeState(cdp, state) {
+  const expected = JSON.stringify(state);
+  await waitForExpression(cdp, `(() => document.querySelector('.b12-home')?.dataset.state === ${expected} || document.body.dataset.state === ${expected})()`, `state_not_reached:${state}`, 5_000);
+}
+
+async function waitForSlice2ProofState(cdp, state, timeout = 5_000) {
+  const expected = JSON.stringify(state);
+  await waitForExpression(cdp, `document.querySelector('.s7a-proof-frame')?.dataset.proofState === ${expected}`, `slice2_proof_state_not_reached:${state}`, timeout);
+}
+
+async function waitForStartStage(cdp, index) {
+  await waitForExpression(cdp, `document.querySelector('.stage-panel')?.dataset.stageIndex === ${JSON.stringify(String(index))}`, `start_stage_not_reached:${index}`, 5_000);
 }
 
 async function imageSize(file) {
@@ -196,6 +209,106 @@ async function compare(capture) {
   return { id: capture.id, status: 'generated', reference: referenceMap[capture.id], sideBySide: path.relative(root, sidePath), overlay: path.relative(root, overlayPath), ownerApprovalRequired: true };
 }
 
+async function inspectMobileMenu(cdp, width) {
+  if (width > 900) return null;
+  const opened = await cdp.send('Runtime.evaluate', { expression: `(() => { const button = document.querySelector('.site-header__menu'); if (!(button instanceof HTMLButtonElement) || getComputedStyle(button).display === 'none') return false; button.click(); return true; })()`, returnByValue: true });
+  if (opened.result?.value !== true) return { present: false, contained: false, controlsContained: false, tooSmallTargets: ['menu_trigger_missing'] };
+  await waitForExpression(cdp, `document.querySelector('.mobile-nav')?.classList.contains('is-open') === true && document.querySelector('.mobile-nav')?.hidden === false`, 'mobile_menu_open');
+  const result = (await cdp.send('Runtime.evaluate', { expression: `(() => {
+    const panel = document.querySelector('.mobile-nav__panel');
+    if (!(panel instanceof HTMLElement)) return null;
+    const clientWidth = document.documentElement.clientWidth;
+    const clientHeight = document.documentElement.clientHeight;
+    const rect = panel.getBoundingClientRect();
+    const controls = [...panel.querySelectorAll('a[href],button')].filter((element) => {
+      const style = getComputedStyle(element); const box = element.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && box.width > 0 && box.height > 0;
+    }).map((element) => { const box = element.getBoundingClientRect(); return { label: element.getAttribute('aria-label') || element.textContent?.trim() || element.tagName, left: box.left, right: box.right, top: box.top, bottom: box.bottom, width: box.width, height: box.height }; });
+    return {
+      present: true,
+      left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom,
+      contained: rect.left >= -1 && rect.right <= clientWidth + 1 && rect.top >= -1 && rect.bottom <= clientHeight + 1,
+      controlsContained: controls.every((item) => item.left >= -1 && item.right <= clientWidth + 1),
+      tooSmallTargets: controls.filter((item) => item.width < 44 || item.height < 44).map((item) => item.label),
+    };
+  })()`, returnByValue: true })).result.value;
+  await cdp.send('Runtime.evaluate', { expression: `document.querySelector('.mobile-nav__close')?.click()` });
+  await waitForExpression(cdp, `document.querySelector('.mobile-nav')?.hidden === true`, 'mobile_menu_close');
+  return result;
+}
+
+async function inspectPage(cdp, capture) {
+  const surface = JSON.stringify(capture.surface);
+  return (await cdp.send('Runtime.evaluate', { expression: `(() => {
+    const surface = ${surface};
+    const documentElement = document.documentElement;
+    const body = document.body;
+    const clientWidth = documentElement.clientWidth;
+    const clientHeight = documentElement.clientHeight;
+    const homeSections = [...document.querySelectorAll('#step-7a > .s7a-section, #step-7a > .s7a-footer')];
+    const startSections = [...document.querySelectorAll('.b12-start > .b12-start-section, .b12-start > #entry')];
+    const sectionNodes = surface === 'start' ? startSections : homeSections;
+    const sections = sectionNodes.map((element, index) => {
+      const rect = element.getBoundingClientRect();
+      return { id: element.id || (element.classList.contains('s7a-footer') ? 's7a-footer' : surface + '-section-' + (index + 1)), left: rect.left, right: rect.right, width: rect.width, height: rect.height, clippedHorizontally: rect.left < -1 || rect.right > clientWidth + 1, empty: rect.width < 1 || rect.height < 1 };
+    });
+    const positionedElements = [...document.querySelectorAll('body *')].flatMap((element) => {
+      const style = getComputedStyle(element);
+      if (style.position !== 'fixed' && style.position !== 'sticky') return [];
+      const rect = element.getBoundingClientRect();
+      if (rect.width < 1 || rect.height < 1 || rect.bottom <= 0 || rect.top >= clientHeight || style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity || 1) <= .01) return [];
+      return [{ selector: element.id ? '#' + element.id : '.' + [...element.classList].join('.'), position: style.position, left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom }];
+    });
+    const obscuredSections = sections.flatMap((section, index) => {
+      const rect = sectionNodes[index].getBoundingClientRect();
+      const overlaps = positionedElements.filter((item) => item.selector !== '.site-header' && item.left < rect.right && item.right > rect.left && item.top < rect.bottom && item.bottom > rect.top);
+      return overlaps.length ? [{ id: section.id, by: overlaps.map(({ selector }) => selector) }] : [];
+    });
+    const rail = document.querySelector('.b12-rail');
+    const railRect = rail?.getBoundingClientRect();
+    const railStyle = rail ? getComputedStyle(rail) : null;
+    const mechanismPanel = document.querySelector('.s7a-mechanism-panel');
+    const mechanismRect = mechanismPanel?.getBoundingClientRect();
+    const slice2ProofFrame = document.querySelector('.s7a-proof-frame');
+    const startPanel = document.querySelector('.stage-panel');
+    const startTone = startPanel?.getAttribute('data-tone') ?? null;
+    const startStageIndex = startPanel?.getAttribute('data-stage-index') ?? null;
+    const importantStart = [...document.querySelectorAll('.b12-start .shell,.b12-start .command-wrap,.b12-start .entry-shell,.b12-start .environment-grid,.b12-start .workspace,.b12-start .stage-panel,.b12-start .state-inspector,.b12-start .final-command')]
+      .filter((element) => { const style = getComputedStyle(element); const rect = element.getBoundingClientRect(); return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0; })
+      .map((element) => { const rect = element.getBoundingClientRect(); return { selector: element.id ? '#' + element.id : '.' + [...element.classList].join('.'), left: rect.left, right: rect.right, width: rect.width, contained: rect.left >= -1 && rect.right <= clientWidth + 1 }; });
+    const controls = surface === 'start' ? [...document.querySelectorAll('.b12-start button,.b12-start a[href],.b12-start input,.site-header button,.site-header a[href]')] : [];
+    const controlTargets = controls.filter((element) => {
+      const style = getComputedStyle(element); const rect = element.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+    }).map((element) => { const rect = element.getBoundingClientRect(); const intentionalRail = element.closest('.journey,.state-list') !== null; return { label: element.getAttribute('aria-label') || element.textContent?.trim().slice(0,80) || element.tagName, left: rect.left, right: rect.right, width: rect.width, height: rect.height, contained: intentionalRail || (rect.left >= -1 && rect.right <= clientWidth + 1), tooSmall: rect.width < 44 || rect.height < 44 }; });
+    const header = document.querySelector('.site-header');
+    const headerRect = header?.getBoundingClientRect();
+    const visibleStartContent = [...document.querySelectorAll('.b12-start h1,.b12-start .stage-bar,.b12-start .section-head')].filter((element) => { const rect = element.getBoundingClientRect(); return rect.bottom > 0 && rect.top < clientHeight; });
+    const headerObscures = surface === 'start' && headerRect ? visibleStartContent.some((element) => { const rect = element.getBoundingClientRect(); return rect.top < headerRect.bottom - 1 && rect.bottom > headerRect.top + 1; }) : false;
+    return {
+      scrollWidth: documentElement.scrollWidth,
+      clientWidth,
+      bodyScrollWidth: body.scrollWidth,
+      scrollHeight: Math.max(documentElement.scrollHeight, body.scrollHeight),
+      sections,
+      clippedSections: sections.filter(({ clippedHorizontally, empty }) => clippedHorizontally || empty).map(({ id }) => id),
+      positionedElements,
+      obscuredSections,
+      slice2ProofState: slice2ProofFrame?.dataset.proofState ?? null,
+      startStageIndex,
+      startTone,
+      startImportant: importantStart,
+      startClippedImportant: importantStart.filter(({ contained }) => !contained).map(({ selector }) => selector),
+      controlTargets,
+      controlsOutsideViewport: controlTargets.filter(({ contained }) => !contained).map(({ label }) => label),
+      controlsTooSmall: controlTargets.filter(({ tooSmall }) => tooSmall).map(({ label }) => label),
+      headerObscures,
+      mechanism: mechanismPanel && mechanismRect ? { left: mechanismRect.left, right: mechanismRect.right, width: mechanismRect.width, contained: mechanismRect.left >= -1 && mechanismRect.right <= clientWidth + 1 } : null,
+      rail: rail && railRect && railStyle ? { left: railRect.left, right: railRect.right, clientWidth: rail.clientWidth, scrollWidth: rail.scrollWidth, overflowX: railStyle.overflowX, contained: railRect.left >= -1 && railRect.right <= clientWidth + 1, internalOverflow: rail.scrollWidth > rail.clientWidth + 1 } : null,
+    };
+  })()`, returnByValue: true })).result.value;
+}
+
 assert(typeof WebSocket === 'function', 'node_websocket_unavailable');
 await mkdir(out, { recursive: true });
 for (const target of [shots, comparisonsDir, path.join(out, 'report.json'), path.join(out, 'summary.md'), path.join(out, 'build.log')]) await rm(target, { recursive: true, force: true });
@@ -221,124 +334,53 @@ try {
   cdp.on('Log.entryAdded', ({ entry }) => { if (entry.level === 'error') consoleErrors.push(entry.text); });
   cdp.on('Runtime.exceptionThrown', ({ exceptionDetails }) => pageErrors.push(exceptionDetails.exception?.description ?? exceptionDetails.text ?? 'runtime_exception'));
 
-  for (const [id, width, height, state] of matrix) {
+  for (const capture of matrix) {
+    const { id, width, height } = capture;
     consoleErrors = []; pageErrors = [];
     await cdp.send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false, screenWidth: width, screenHeight: height });
     const loaded = cdp.once('Page.loadEventFired');
-    const url = `http://127.0.0.1:${webPort}/?state=${encodeURIComponent(state)}`;
+    const url = `http://127.0.0.1:${webPort}${capture.path}`;
     const navigation = await cdp.send('Page.navigate', { url }); assert(!navigation.errorText, `navigation_failed:${navigation.errorText}`); await loaded;
     await cdp.send('Runtime.evaluate', { expression: 'document.fonts ? document.fonts.ready.then(() => true) : true', awaitPromise: true, returnByValue: true });
-    await waitForState(cdp, state);
     const slice2ProofTrace = [];
-    if (state === 'prove') {
-      const trigger = await cdp.send('Runtime.evaluate', {
-        expression: `(() => { const button = document.querySelector('.s7a-proof-actions .s7a-button-primary'); if (!(button instanceof HTMLButtonElement)) return false; button.click(); return true; })()`,
-        returnByValue: true,
-      });
-      assert(trigger.result?.value === true, 'slice2_proof_trigger_missing');
-      for (const proofState of slice2ProofOrder) {
-        await waitForSlice2ProofState(cdp, proofState);
-        slice2ProofTrace.push(proofState);
+    if (capture.surface === 'home') {
+      await waitForHomeState(cdp, capture.state);
+      if (capture.state === 'prove') {
+        const trigger = await cdp.send('Runtime.evaluate', { expression: `(() => { const button = document.querySelector('.s7a-proof-actions .s7a-button-primary'); if (!(button instanceof HTMLButtonElement)) return false; button.click(); return true; })()`, returnByValue: true });
+        assert(trigger.result?.value === true, 'slice2_proof_trigger_missing');
+        for (const proofState of slice2ProofOrder) { await waitForSlice2ProofState(cdp, proofState); slice2ProofTrace.push(proofState); }
       }
+      await cdp.send('Runtime.evaluate', { expression: 'scrollTo(0,0)' });
+    } else {
+      await waitForExpression(cdp, `document.querySelector('.b12-start') instanceof HTMLElement`, 'start_root_missing');
+      await waitForStartStage(cdp, 0);
+      if (capture.startState === 'verified') {
+        const trigger = await cdp.send('Runtime.evaluate', { expression: `(() => { const button = document.querySelector('[data-start-stage-button="3"]'); if (!(button instanceof HTMLButtonElement)) return false; button.click(); return true; })()`, returnByValue: true });
+        assert(trigger.result?.value === true, 'start_verified_trigger_missing');
+        await waitForStartStage(cdp, 3);
+        await waitForExpression(cdp, `document.querySelector('.stage-panel')?.getAttribute('data-tone') === 'gold'`, 'start_verified_gold_not_reached');
+        await cdp.send('Runtime.evaluate', { expression: `(() => { document.querySelector('#workspace')?.scrollIntoView({block:'start',behavior:'instant'}); scrollBy(0,-72); return true; })()` });
+      } else await cdp.send('Runtime.evaluate', { expression: 'scrollTo(0,0)' });
     }
     await sleep(120);
-    const diagnostics = (await cdp.send('Runtime.evaluate', { expression: `(() => {
-      const documentElement = document.documentElement;
-      const body = document.body;
-      const clientWidth = documentElement.clientWidth;
-      const sectionNodes = [...document.querySelectorAll('#step-7a > .s7a-section, #step-7a > .s7a-footer')];
-      const sections = sectionNodes.map((element, index) => {
-        const rect = element.getBoundingClientRect();
-        return {
-          id: element.id || (element.classList.contains('s7a-footer') ? 's7a-footer' : 's7a-section-' + (index + 1)),
-          left: rect.left,
-          right: rect.right,
-          width: rect.width,
-          height: rect.height,
-          clippedHorizontally: rect.left < -1 || rect.right > clientWidth + 1,
-          empty: rect.width < 1 || rect.height < 1,
-        };
-      });
-      const positionedElements = [...document.querySelectorAll('body *')].flatMap((element) => {
-        const style = getComputedStyle(element);
-        if (style.position !== 'fixed' && style.position !== 'sticky') return [];
-        const rect = element.getBoundingClientRect();
-        if (rect.width < 1 || rect.height < 1 || rect.bottom <= 0 || rect.top >= innerHeight || style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity || 1) <= .01) return [];
-        return [{
-          selector: element.id ? '#' + element.id : '.' + [...element.classList].join('.'),
-          position: style.position,
-          left: rect.left,
-          top: rect.top,
-          right: rect.right,
-          bottom: rect.bottom,
-        }];
-      });
-      const obscuredSections = sections.flatMap((section, index) => {
-        const rect = sectionNodes[index].getBoundingClientRect();
-        const overlaps = positionedElements.filter((item) => item.left < rect.right && item.right > rect.left && item.top < rect.bottom && item.bottom > rect.top);
-        return overlaps.length ? [{ id: section.id, by: overlaps.map(({ selector }) => selector) }] : [];
-      });
-      const rail = document.querySelector('.b12-rail');
-      const railRect = rail?.getBoundingClientRect();
-      const railStyle = rail ? getComputedStyle(rail) : null;
-      const mechanismPanel = document.querySelector('.s7a-mechanism-panel');
-      const mechanismRect = mechanismPanel?.getBoundingClientRect();
-      const slice2ProofFrame = document.querySelector('.s7a-proof-frame');
-      return {
-        scrollWidth: documentElement.scrollWidth,
-        clientWidth,
-        bodyScrollWidth: body.scrollWidth,
-        scrollHeight: Math.max(documentElement.scrollHeight, body.scrollHeight),
-        sections,
-        clippedSections: sections.filter(({ clippedHorizontally, empty }) => clippedHorizontally || empty).map(({ id }) => id),
-        positionedElements,
-        obscuredSections,
-        slice2ProofState: slice2ProofFrame?.dataset.proofState ?? null,
-        mechanism: mechanismPanel && mechanismRect ? {
-          left: mechanismRect.left,
-          right: mechanismRect.right,
-          width: mechanismRect.width,
-          contained: mechanismRect.left >= -1 && mechanismRect.right <= clientWidth + 1,
-        } : null,
-        rail: rail && railRect && railStyle ? {
-          left: railRect.left,
-          right: railRect.right,
-          clientWidth: rail.clientWidth,
-          scrollWidth: rail.scrollWidth,
-          overflowX: railStyle.overflowX,
-          contained: railRect.left >= -1 && railRect.right <= clientWidth + 1,
-          internalOverflow: rail.scrollWidth > rail.clientWidth + 1,
-        } : null,
-      };
-    })()`, returnByValue: true })).result.value;
+    const mobileMenu = capture.surface === 'start' ? await inspectMobileMenu(cdp, width) : null;
+    const diagnostics = await inspectPage(cdp, capture);
     const screenshot = path.join(shots, `${id}.png`);
     const viewportImage = await cdp.send('Page.captureScreenshot', { format: 'png', fromSurface: true, captureBeyondViewport: false });
     await writeFile(screenshot, Buffer.from(viewportImage.data, 'base64'));
     const layout = await cdp.send('Page.getLayoutMetrics');
     const contentSize = layout.cssContentSize ?? layout.contentSize;
     const fullPageScreenshot = path.join(shots, `${id}--full-page.png`);
-    const fullPageImage = await cdp.send('Page.captureScreenshot', {
-      format: 'png',
-      fromSurface: true,
-      captureBeyondViewport: true,
-      clip: { x: 0, y: 0, width: contentSize.width, height: contentSize.height, scale: 1 },
-    });
+    const fullPageImage = await cdp.send('Page.captureScreenshot', { format: 'png', fromSurface: true, captureBeyondViewport: true, clip: { x: 0, y: 0, width: contentSize.width, height: contentSize.height, scale: 1 } });
     await writeFile(fullPageScreenshot, Buffer.from(fullPageImage.data, 'base64'));
     results.push({
-      id,
-      state,
-      url: `/?state=${state}`,
-      width,
-      height,
-      deviceScaleFactor: 1,
-      consoleErrors: [...new Set(consoleErrors)],
-      pageErrors: [...new Set(pageErrors)],
-      slice2ProofTrace,
+      id, surface: capture.surface, path: capture.path, state: capture.state ?? null, startState: capture.startState ?? null,
+      width, height, deviceScaleFactor: 1,
+      consoleErrors: [...new Set(consoleErrors)], pageErrors: [...new Set(pageErrors)], slice2ProofTrace, mobileMenu,
       ...diagnostics,
       fullPageHeight: contentSize.height,
       horizontalOverflow: Math.max(diagnostics.scrollWidth, diagnostics.bodyScrollWidth) > diagnostics.clientWidth,
-      screenshot: path.relative(root, screenshot),
-      fullPageScreenshot: path.relative(root, fullPageScreenshot),
+      screenshot: path.relative(root, screenshot), fullPageScreenshot: path.relative(root, fullPageScreenshot),
     });
   }
 } finally {
@@ -348,10 +390,7 @@ try {
     const child = browser?.child;
     if (child && child.exitCode === null && child.signalCode === null) {
       child.kill('SIGTERM');
-      if (!(await waitForExit(child))) {
-        child.kill('SIGKILL');
-        if (!(await waitForExit(child))) cleanupErrors.push(new Error('chrome_exit_timeout'));
-      }
+      if (!(await waitForExit(child))) { child.kill('SIGKILL'); if (!(await waitForExit(child))) cleanupErrors.push(new Error('chrome_exit_timeout')); }
     }
   } catch (error) { cleanupErrors.push(error); }
   try { await new Promise((resolve) => server.close(resolve)); } catch (error) { cleanupErrors.push(error); }
@@ -367,37 +406,38 @@ const issues = results.flatMap((item) => [
   ...item.clippedSections.map((section) => `${item.id}:clipped_section:${section}`),
   ...item.obscuredSections.map(({ id: section, by }) => `${item.id}:obscured_section:${section}:${by.join(',')}`),
   ...(item.rail && !item.rail.contained ? [`${item.id}:rail_not_contained:${item.rail.left}/${item.rail.right}/${item.clientWidth}`] : []),
-  ...((item.width === 390 || item.width === 320) && (!item.mechanism || !item.mechanism.contained) ? [`${item.id}:mechanism_not_contained:${item.mechanism?.left ?? 'missing'}/${item.mechanism?.right ?? 'missing'}/${item.clientWidth}`] : []),
-  ...(item.state === 'prove' && item.slice2ProofState !== 'prove' ? [`${item.id}:slice2_proof_not_reached:${item.slice2ProofState ?? 'missing'}`] : []),
-  ...(item.state === 'prove' && item.slice2ProofTrace.join('>') !== slice2ProofOrder.join('>') ? [`${item.id}:slice2_proof_trace_incomplete:${item.slice2ProofTrace.join('>')}`] : []),
+  ...((item.surface === 'home' && (item.width === 390 || item.width === 320) && (!item.mechanism || !item.mechanism.contained)) ? [`${item.id}:mechanism_not_contained:${item.mechanism?.left ?? 'missing'}/${item.mechanism?.right ?? 'missing'}/${item.clientWidth}`] : []),
+  ...(item.surface === 'home' && item.state === 'prove' && item.slice2ProofState !== 'prove' ? [`${item.id}:slice2_proof_not_reached:${item.slice2ProofState ?? 'missing'}`] : []),
+  ...(item.surface === 'home' && item.state === 'prove' && item.slice2ProofTrace.join('>') !== slice2ProofOrder.join('>') ? [`${item.id}:slice2_proof_trace_incomplete:${item.slice2ProofTrace.join('>')}`] : []),
+  ...(item.surface === 'start' ? item.startClippedImportant.map((selector) => `${item.id}:start_content_not_contained:${selector}`) : []),
+  ...(item.surface === 'start' ? item.controlsOutsideViewport.map((label) => `${item.id}:control_not_contained:${label}`) : []),
+  ...(item.surface === 'start' ? item.controlsTooSmall.map((label) => `${item.id}:control_below_44px:${label}`) : []),
+  ...(item.surface === 'start' && item.headerObscures ? [`${item.id}:sticky_header_obscures_content`] : []),
+  ...(item.surface === 'start' && item.startState === 'verified' && (item.startStageIndex !== '3' || item.startTone !== 'gold') ? [`${item.id}:verified_state_not_reached:${item.startStageIndex ?? 'missing'}/${item.startTone ?? 'missing'}`] : []),
+  ...(item.surface === 'start' && item.width <= 900 && (!item.mobileMenu?.present || !item.mobileMenu.contained || !item.mobileMenu.controlsContained) ? [`${item.id}:mobile_menu_not_contained`] : []),
+  ...(item.surface === 'start' && item.width <= 900 ? (item.mobileMenu?.tooSmallTargets ?? []).map((label) => `${item.id}:mobile_menu_target_below_44px:${label}`) : []),
 ]);
 const report = {
-  schemaVersion: 'clervo.b12.visual-qa.v2',
-  generatedAt: new Date().toISOString(),
-  target: site,
-  chrome: browser?.executable ?? null,
-  build,
-  captures: results,
-  technicalIssues: issues,
-  comparisons,
-  fullPageReferenceCoverage: 'No exact locked full-page homepage references are present in the supplied Vault; locked 390x844 and 320x700 references remain viewport comparisons.',
+  schemaVersion: 'clervo.b12.visual-qa.v3', generatedAt: new Date().toISOString(), target: site, chrome: browser?.executable ?? null, build,
+  captures: results, technicalIssues: issues, comparisons,
+  referenceCoverage: 'Exact locked comparisons are generated for the approved homepage viewport references and /start final 390x844 + 320x700 entry references. No exact v1.3 1600x900, 1024x768, or verified-state /start reference is supplied.',
   comparisonPolicy: 'Comparison artifacts are evidence only. Pixel differences never auto-approve a design; owner visual judgment is final.',
 };
 await writeFile(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
 await writeFile(path.join(out, 'summary.md'), [
-  '# Clervo B12 visual QA',
-  '',
+  '# Clervo B12 visual QA', '',
   `- Build: ${build.skipped ? 'existing build used' : build.exitCode === 0 ? 'PASS' : 'FAIL'}`,
-  `- Capture pairs: ${results.length} viewport + ${results.length} full-page`,
+  `- Homepage captures: ${results.filter(({ surface }) => surface === 'home').length} viewport + full-page`,
+  `- /start captures: ${results.filter(({ surface }) => surface === 'start').length} viewport + full-page`,
   `- Technical issues: ${issues.length}`,
   `- Comparison artifacts: ${comparisons.filter(({ status }) => status === 'generated').length}`,
-  '- Full-page locked references: none supplied; viewport mobile references remain the visual comparison authority.',
-  '- Visual comparison never auto-approves; owner judgment is final.',
-  '',
-  ...results.map((item) => `- ${item.id}: ${item.width}x${item.height}@1 state=${item.state}; slice2=${item.slice2ProofState ?? 'missing'}${item.slice2ProofTrace.length ? `/trace=${item.slice2ProofTrace.join('>')}` : ''}; pageHeight=${item.fullPageHeight}; scrollWidth/clientWidth=${item.scrollWidth}/${item.clientWidth}; console=${item.consoleErrors.length}; page=${item.pageErrors.length}; clipped=${item.clippedSections.length}; obscured=${item.obscuredSections.length}; mechanism=${item.mechanism ? (item.mechanism.contained ? 'contained' : 'NOT-CONTAINED') : 'missing'}; rail=${item.rail ? `${item.rail.contained ? 'contained' : 'NOT-CONTAINED'}${item.rail.internalOverflow ? '/internal-scroll' : ''}` : 'missing'}; viewport=${item.screenshot}; full=${item.fullPageScreenshot}`),
+  '- Visual comparison never auto-approves; owner judgment is final.', '',
+  ...results.map((item) => item.surface === 'start'
+    ? `- ${item.id}: ${item.width}x${item.height}@1 start=${item.startState}; stage=${item.startStageIndex ?? 'missing'}/${item.startTone ?? 'missing'}; pageHeight=${item.fullPageHeight}; scrollWidth/clientWidth=${item.scrollWidth}/${item.clientWidth}; console=${item.consoleErrors.length}; page=${item.pageErrors.length}; clipped=${item.clippedSections.length + item.startClippedImportant.length}; obscured=${item.obscuredSections.length}; controlsOutside=${item.controlsOutsideViewport.length}; controlsSmall=${item.controlsTooSmall.length}; menu=${item.mobileMenu ? `${item.mobileMenu.contained && item.mobileMenu.controlsContained ? 'contained' : 'NOT-CONTAINED'}` : 'n/a'}; viewport=${item.screenshot}; full=${item.fullPageScreenshot}`
+    : `- ${item.id}: ${item.width}x${item.height}@1 state=${item.state}; slice2=${item.slice2ProofState ?? 'missing'}${item.slice2ProofTrace.length ? `/trace=${item.slice2ProofTrace.join('>')}` : ''}; pageHeight=${item.fullPageHeight}; scrollWidth/clientWidth=${item.scrollWidth}/${item.clientWidth}; console=${item.consoleErrors.length}; page=${item.pageErrors.length}; clipped=${item.clippedSections.length}; obscured=${item.obscuredSections.length}; mechanism=${item.mechanism ? (item.mechanism.contained ? 'contained' : 'NOT-CONTAINED') : 'missing'}; rail=${item.rail ? `${item.rail.contained ? 'contained' : 'NOT-CONTAINED'}${item.rail.internalOverflow ? '/internal-scroll' : ''}` : 'missing'}; viewport=${item.screenshot}; full=${item.fullPageScreenshot}`),
   '',
 ].join('\n'));
-console.log(`B12 visual QA: ${issues.length ? 'ISSUES' : 'PASS'} (${results.length} captures)`);
+console.log(`B12 visual QA: ${issues.length ? 'ISSUES' : 'PASS'} (${results.length} viewport + ${results.length} full-page captures)`);
 console.log(path.join(out, 'summary.md'));
 if (cleanupError) throw cleanupError;
 if (issues.length) process.exitCode = 1;
