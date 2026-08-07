@@ -1,0 +1,225 @@
+#!/usr/bin/env node
+
+import { spawn, spawnSync } from 'node:child_process';
+import { access, mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { constants } from 'node:fs';
+import http from 'node:http';
+import net from 'node:net';
+import os from 'node:os';
+import path from 'node:path';
+
+const root = path.resolve(import.meta.dirname, '../..');
+const args = process.argv.slice(2);
+const has = (flag) => args.includes(flag);
+const value = (flag) => {
+  const index = args.indexOf(flag);
+  return index === -1 ? null : args[index + 1] ?? null;
+};
+const defaultSite = path.join(root, 'apps/site/dist');
+const site = path.resolve(value('--site-root') ?? defaultSite);
+const out = path.resolve(value('--out') ?? path.join(root, 'apps/site/qa-artifacts'));
+const vaultArg = value('--reference-root') ?? process.env.CLERVO_B12_VAULT_ROOT ?? null;
+const vault = vaultArg === null ? null : path.resolve(vaultArg);
+const useBuilt = has('--use-built') || site !== defaultSite;
+const shots = path.join(out, 'captures');
+const comparisonsDir = path.join(out, 'comparisons');
+
+const matrix = [
+  ['desktop-1600-rest', 1600, 900, 'rest'],
+  ['desktop-1600-prove', 1600, 900, 'prove'],
+  ['tablet-1024-rest', 1024, 768, 'rest'],
+  ['mobile-390-rest', 390, 844, 'rest'],
+  ['mobile-390-prove', 390, 844, 'prove'],
+  ['mobile-320-rest', 320, 700, 'rest'],
+  ['mobile-320-prove', 320, 700, 'prove'],
+];
+const referenceMap = {
+  'desktop-1600-rest': '06-hero/locked/prototype-v1.0/preview-desktop-rest.png',
+  'desktop-1600-prove': '06-hero/locked/prototype-v1.0/preview-desktop-prove.png',
+  'mobile-390-rest': '07-full-site-design/locked/visual-creative-mobile-hardening-v1.0/final-home-390.png',
+  'mobile-320-rest': '07-full-site-design/locked/visual-creative-mobile-hardening-v1.0/final-home-320.png',
+};
+const mime = {
+  '.css': 'text/css; charset=utf-8', '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml',
+  '.webp': 'image/webp', '.woff2': 'font/woff2',
+};
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const assert = (condition, code) => { if (!condition) throw new Error(code); };
+
+async function freePort() {
+  return new Promise((resolve, reject) => {
+    const server = net.createServer().once('error', reject).listen(0, '127.0.0.1', () => {
+      const address = server.address();
+      server.close((error) => error ? reject(error) : resolve(address.port));
+    });
+  });
+}
+
+async function serve(port) {
+  const server = http.createServer(async (request, response) => {
+    try {
+      const url = new URL(request.url ?? '/', `http://127.0.0.1:${port}`);
+      let file = path.resolve(site, decodeURIComponent(url.pathname).replace(/^\/+/, ''));
+      assert(file === site || file.startsWith(`${site}${path.sep}`), 'path_traversal');
+      let info; try { info = await stat(file); } catch { info = null; }
+      if (info?.isDirectory() || (info === null && path.extname(file) === '')) file = path.join(file, 'index.html');
+      const body = await readFile(file);
+      response.writeHead(200, { 'cache-control': 'no-store', 'content-type': mime[path.extname(file)] ?? 'application/octet-stream' });
+      response.end(request.method === 'HEAD' ? undefined : body);
+    } catch {
+      response.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' }).end('not found');
+    }
+  });
+  await new Promise((resolve, reject) => server.once('error', reject).listen(port, '127.0.0.1', resolve));
+  return server;
+}
+
+async function findChrome() {
+  const candidates = [process.env.CHROME_PATH,
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    '/Applications/Chromium.app/Contents/MacOS/Chromium',
+    '/usr/bin/google-chrome-stable', '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser'].filter(Boolean);
+  for (const candidate of candidates) {
+    try { await access(candidate, constants.X_OK); return candidate; } catch { /* next */ }
+  }
+  throw new Error('chrome_executable_missing');
+}
+
+async function fetchJson(url, timeout = 15_000) {
+  const end = Date.now() + timeout;
+  while (Date.now() < end) {
+    try { const response = await fetch(url); if (response.ok) return response.json(); } catch { /* retry */ }
+    await sleep(100);
+  }
+  throw new Error(`endpoint_timeout:${url}`);
+}
+
+class Cdp {
+  constructor(url) { this.ws = new WebSocket(url); this.id = 1; this.pending = new Map(); this.events = new Map(); }
+  async open() {
+    await new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('cdp_open_timeout')), 10_000);
+      this.ws.addEventListener('open', () => { clearTimeout(timer); resolve(); }, { once: true });
+      this.ws.addEventListener('error', () => { clearTimeout(timer); reject(new Error('cdp_socket_error')); }, { once: true });
+    });
+    this.ws.addEventListener('message', ({ data }) => {
+      const message = JSON.parse(String(data));
+      if (message.id !== undefined) {
+        const call = this.pending.get(message.id); if (!call) return;
+        this.pending.delete(message.id);
+        message.error ? call.reject(new Error(`${call.method}:${message.error.message}`)) : call.resolve(message.result ?? {});
+      } else for (const callback of this.events.get(message.method) ?? []) callback(message.params ?? {});
+    });
+  }
+  send(method, params = {}) {
+    const id = this.id++;
+    return new Promise((resolve, reject) => { this.pending.set(id, { method, resolve, reject }); this.ws.send(JSON.stringify({ id, method, params })); });
+  }
+  on(method, callback) { const list = this.events.get(method) ?? []; list.push(callback); this.events.set(method, list); return () => this.events.set(method, (this.events.get(method) ?? []).filter((item) => item !== callback)); }
+  once(method, timeout = 15_000) { return new Promise((resolve, reject) => { const timer = setTimeout(() => { off(); reject(new Error(`${method}_timeout`)); }, timeout); const off = this.on(method, (value) => { clearTimeout(timer); off(); resolve(value); }); }); }
+  close() { this.ws.close(); }
+}
+
+async function launchChrome(port, profile) {
+  const executable = await findChrome();
+  const child = spawn(executable, ['--headless=new', '--no-sandbox', '--disable-dev-shm-usage', '--disable-background-networking', '--disable-extensions', '--disable-sync', '--mute-audio', '--no-first-run', '--hide-scrollbars', `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, 'about:blank'], { stdio: 'ignore' });
+  const end = Date.now() + 15_000; let page;
+  while (!page && Date.now() < end) {
+    try { page = (await fetchJson(`http://127.0.0.1:${port}/json/list`, 2_000)).find(({ type }) => type === 'page'); } catch { /* retry */ }
+    if (!page) await sleep(100);
+  }
+  assert(page?.webSocketDebuggerUrl, 'chrome_page_target_missing');
+  return { child, executable, ws: page.webSocketDebuggerUrl };
+}
+
+async function waitForState(cdp, state) {
+  const expected = JSON.stringify(state);
+  const expression = `(() => document.querySelector('.b12-home')?.dataset.state === ${expected} || document.body.dataset.state === ${expected})()`;
+  const end = Date.now() + 5_000;
+  while (Date.now() < end) {
+    const result = await cdp.send('Runtime.evaluate', { expression, returnByValue: true });
+    if (result.result?.value === true) return;
+    await sleep(50);
+  }
+  throw new Error(`state_not_reached:${state}`);
+}
+
+async function imageSize(file) {
+  const bytes = await readFile(file);
+  assert(bytes.subarray(1, 4).toString() === 'PNG', `reference_not_png:${file}`);
+  return { width: bytes.readUInt32BE(16), height: bytes.readUInt32BE(20) };
+}
+
+async function dataUri(file) {
+  return `data:image/png;base64,${(await readFile(file)).toString('base64')}`;
+}
+
+async function compare(capture) {
+  if (vault === null || referenceMap[capture.id] === undefined) return null;
+  const referencePath = path.join(vault, referenceMap[capture.id]);
+  try { await access(referencePath, constants.R_OK); } catch { return { id: capture.id, status: 'reference_missing', reference: referenceMap[capture.id] }; }
+  const currentPath = path.join(root, capture.screenshot);
+  const currentSize = await imageSize(currentPath), referenceSize = await imageSize(referencePath);
+  if (currentSize.width !== referenceSize.width || currentSize.height !== referenceSize.height) {
+    return { id: capture.id, status: 'dimension_mismatch', reference: referenceMap[capture.id], currentSize, referenceSize, ownerApprovalRequired: true };
+  }
+  const current = await dataUri(currentPath), reference = await dataUri(referencePath);
+  const { width, height } = currentSize;
+  const side = `<svg xmlns="http://www.w3.org/2000/svg" width="${width * 2}" height="${height}" viewBox="0 0 ${width * 2} ${height}"><image href="${reference}" width="${width}" height="${height}"/><image href="${current}" x="${width}" width="${width}" height="${height}"/></svg>`;
+  const overlay = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><image href="${reference}" width="${width}" height="${height}"/><image href="${current}" width="${width}" height="${height}" opacity=".5"/></svg>`;
+  const sidePath = path.join(comparisonsDir, `${capture.id}--side-by-side.svg`), overlayPath = path.join(comparisonsDir, `${capture.id}--overlay.svg`);
+  await writeFile(sidePath, side); await writeFile(overlayPath, overlay);
+  return { id: capture.id, status: 'generated', reference: referenceMap[capture.id], sideBySide: path.relative(root, sidePath), overlay: path.relative(root, overlayPath), ownerApprovalRequired: true };
+}
+
+assert(typeof WebSocket === 'function', 'node_websocket_unavailable');
+await mkdir(out, { recursive: true });
+for (const target of [shots, comparisonsDir, path.join(out, 'report.json'), path.join(out, 'summary.md'), path.join(out, 'build.log')]) await rm(target, { recursive: true, force: true });
+await mkdir(shots, { recursive: true }); await mkdir(comparisonsDir, { recursive: true });
+
+let build = { command: 'npm run build --workspace @clervo/site', skipped: useBuilt, exitCode: null };
+if (!useBuilt) {
+  const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+  const result = spawnSync(npm, ['run', 'build', '--workspace', '@clervo/site'], { cwd: root, encoding: 'utf8' });
+  build = { ...build, exitCode: result.status };
+  await writeFile(path.join(out, 'build.log'), `${result.stdout ?? ''}${result.stderr ?? ''}`);
+  assert(result.status === 0, `site_build_failed:${result.status}`);
+}
+await access(site, constants.R_OK);
+
+const webPort = await freePort(), debugPort = await freePort(), profile = await mkdtemp(path.join(os.tmpdir(), 'clervo-b12-chrome-'));
+const server = await serve(webPort); let browser, cdp; const results = [];
+try {
+  browser = await launchChrome(debugPort, profile); cdp = new Cdp(browser.ws); await cdp.open();
+  await Promise.all(['Page.enable', 'Runtime.enable', 'Log.enable'].map((method) => cdp.send(method)));
+  let consoleErrors = [], pageErrors = [];
+  cdp.on('Runtime.consoleAPICalled', ({ type, args: values }) => { if (type === 'error') consoleErrors.push(values.map(({ value: v, description }) => v ?? description ?? '').join(' ')); });
+  cdp.on('Log.entryAdded', ({ entry }) => { if (entry.level === 'error') consoleErrors.push(entry.text); });
+  cdp.on('Runtime.exceptionThrown', ({ exceptionDetails }) => pageErrors.push(exceptionDetails.exception?.description ?? exceptionDetails.text ?? 'runtime_exception'));
+
+  for (const [id, width, height, state] of matrix) {
+    consoleErrors = []; pageErrors = [];
+    await cdp.send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: false, screenWidth: width, screenHeight: height });
+    const loaded = cdp.once('Page.loadEventFired');
+    const url = `http://127.0.0.1:${webPort}/?state=${encodeURIComponent(state)}`;
+    const navigation = await cdp.send('Page.navigate', { url }); assert(!navigation.errorText, `navigation_failed:${navigation.errorText}`); await loaded;
+    await cdp.send('Runtime.evaluate', { expression: 'document.fonts ? document.fonts.ready.then(() => true) : true', awaitPromise: true, returnByValue: true });
+    await waitForState(cdp, state); await sleep(120);
+    const dimensions = (await cdp.send('Runtime.evaluate', { expression: `(() => ({scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth,bodyScrollWidth:document.body.scrollWidth}))()`, returnByValue: true })).result.value;
+    const screenshot = path.join(shots, `${id}.png`); const image = await cdp.send('Page.captureScreenshot', { format: 'png', fromSurface: true, captureBeyondViewport: false }); await writeFile(screenshot, Buffer.from(image.data, 'base64'));
+    results.push({ id, state, url: `/?state=${state}`, width, height, deviceScaleFactor: 1, consoleErrors: [...new Set(consoleErrors)], pageErrors: [...new Set(pageErrors)], ...dimensions, horizontalOverflow: Math.max(dimensions.scrollWidth, dimensions.bodyScrollWidth) > dimensions.clientWidth, screenshot: path.relative(root, screenshot) });
+  }
+} finally {
+  cdp?.close(); browser?.child.kill('SIGTERM'); await new Promise((resolve) => server.close(resolve)); await rm(profile, { recursive: true, force: true });
+}
+
+const comparisons = (await Promise.all(results.map(compare))).filter(Boolean);
+const issues = results.flatMap((item) => [...item.consoleErrors.map((error) => `${item.id}:console:${error}`), ...item.pageErrors.map((error) => `${item.id}:page:${error}`), ...(item.horizontalOverflow ? [`${item.id}:horizontal_overflow:${item.scrollWidth}/${item.clientWidth}`] : [])]);
+const report = { schemaVersion: 'clervo.b12.visual-qa.v1', generatedAt: new Date().toISOString(), target: site, chrome: browser?.executable ?? null, build, captures: results, technicalIssues: issues, comparisons, comparisonPolicy: 'Comparison artifacts are evidence only. Pixel differences never auto-approve a design; owner visual judgment is final.' };
+await writeFile(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
+await writeFile(path.join(out, 'summary.md'), ['# Clervo B12 visual QA', '', `- Build: ${build.skipped ? 'existing build used' : build.exitCode === 0 ? 'PASS' : 'FAIL'}`, `- Captures: ${results.length}`, `- Technical issues: ${issues.length}`, `- Comparison artifacts: ${comparisons.filter(({ status }) => status === 'generated').length}`, '- Visual comparison never auto-approves; owner judgment is final.', '', ...results.map((item) => `- ${item.id}: ${item.width}x${item.height}@1 state=${item.state}; scrollWidth/clientWidth=${item.scrollWidth}/${item.clientWidth}; console=${item.consoleErrors.length}; page=${item.pageErrors.length}; ${item.screenshot}`), ''].join('\n'));
+console.log(`B12 visual QA: ${issues.length ? 'ISSUES' : 'PASS'} (${results.length} captures)`);
+console.log(path.join(out, 'summary.md'));
+if (issues.length) process.exitCode = 1;
