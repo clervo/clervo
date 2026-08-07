@@ -201,19 +201,24 @@ pre {
 
 .shell {
   width: 100%;
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
 
 /* Vertical rhythm between major page bands. Sections declare their band, not
- * their own top and bottom padding, so adjacent sections never double-space. */
+ * their own top and bottom padding, so adjacent sections never double-space.
+ *
+ * Bands are deliberately taller than the content needs. Whitespace is the
+ * cheapest signal of confidence a page has: a section that is allowed to end
+ * reads as finished, and a stack of sections separated only by a hairline
+ * reads as one document rather than as a scroll of panels. */
 .band {
-  padding-block: clamp(var(--space-8), 6vw, var(--space-10));
+  padding-block: clamp(var(--space-9), 8vw, var(--space-10));
 }
 
 .band--tight {
-  padding-block: clamp(var(--space-7), 4vw, var(--space-8));
+  padding-block: clamp(var(--space-8), 5vw, var(--space-9));
 }
 
 /* A hairline that marks the top of a band. Used instead of a background
@@ -246,8 +251,8 @@ pre {
 .section-head {
   display: grid;
   gap: var(--space-4);
-  max-width: 46rem;
-  margin-bottom: var(--space-7);
+  max-width: 44rem;
+  margin-bottom: var(--space-8);
 }
 
 .skip-link {

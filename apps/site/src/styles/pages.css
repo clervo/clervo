@@ -11,7 +11,7 @@
 .catalog-intro {
   display: grid;
   gap: var(--space-4);
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-block: clamp(var(--space-8), 7vw, var(--space-9)) var(--space-6);
   padding-inline: var(--shell-gutter);
@@ -34,7 +34,7 @@
 .start-clients,
 .start-price,
 .start-recovery {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
@@ -72,7 +72,7 @@
 /* --- /catalog ------------------------------------------------------------- */
 
 .catalog-body {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
@@ -216,7 +216,7 @@
 .page-lead {
   display: grid;
   gap: var(--space-4);
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-block: clamp(var(--space-8), 7vw, var(--space-9)) var(--space-6);
   padding-inline: var(--shell-gutter);
@@ -239,7 +239,7 @@
 .product-operations,
 .capability-ledger,
 .product-next {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
@@ -348,7 +348,7 @@
 /* --- Claim boundary pages: /pricing, /benchmarks, /security, /legal -------- */
 
 .trust-body {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
@@ -453,7 +453,7 @@
 /* --- /status --------------------------------------------------------------- */
 
 .status-body {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
@@ -515,7 +515,7 @@
 /* --- /changelog ------------------------------------------------------------ */
 
 .changelog-body {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
@@ -574,7 +574,7 @@
 /* --- /products/:family ------------------------------------------------------ */
 
 .family-body {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
@@ -762,7 +762,7 @@
 /* --- Contract guides: /docs/receipts, /replay, /failures, /x402, /catalog --- */
 
 .guide-body {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
@@ -889,7 +889,7 @@
 /* --- /proof ---------------------------------------------------------------- */
 
 .proof-body {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }

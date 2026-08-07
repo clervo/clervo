@@ -328,7 +328,7 @@
 }
 
 .site-footer__note {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin: var(--space-7) auto 0;
   padding-top: var(--space-5);
   border-top: 1px solid var(--line);

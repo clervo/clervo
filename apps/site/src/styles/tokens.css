@@ -97,8 +97,15 @@
   --space-10: 8rem;
 
   /* --- Layout. --- */
+  /*
+   * 1440px let a card grid run to six columns on a large monitor and left the
+   * eye no fixed left edge to return to. The content column is capped at
+   * 1200px and the gutter widened, so a wide viewport buys margin rather than
+   * more columns. --shell-max stays as the outer bound for full-bleed bands.
+   */
   --shell-max: 1440px;
-  --shell-gutter: clamp(1rem, 0.5rem + 2vw, 4rem);
+  --content-max: 1200px;
+  --shell-gutter: clamp(1.25rem, 0.5rem + 2.6vw, 5rem);
   --measure: 68ch;
 
   --radius-control: 999px;

@@ -12,7 +12,7 @@
   display: grid;
   gap: var(--space-8);
   align-content: center;
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   /* Not 100svh: the hero is as tall as it needs to be, and the section below
    * it is deliberately visible at the fold so the page reads as a document
    * rather than a slideshow. */
@@ -94,7 +94,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
   gap: var(--space-4);
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
@@ -111,7 +111,7 @@
 .mechanism .section-head,
 .families .section-head,
 .home-proof .section-head {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
@@ -166,7 +166,7 @@
 /* --- Proof ---------------------------------------------------------------- */
 
 .home-proof__facts {
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }
@@ -175,7 +175,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   gap: var(--space-4);
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin: var(--space-7) auto 0;
   padding-inline: var(--shell-gutter);
 }
@@ -221,7 +221,7 @@
  */
 .phase-sequence {
   position: relative;
-  max-width: var(--shell-max);
+  max-width: var(--content-max);
   margin-inline: auto;
   padding-inline: var(--shell-gutter);
 }

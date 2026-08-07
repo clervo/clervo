@@ -37,7 +37,12 @@
 
 /* The specular sheen. `--sheen-x` and `--sheen-y` are set from JS on pointer
  * move and default to a fixed position, so a control that is never hovered —
- * or is rendered on the server — still looks lit rather than flat. */
+ * or is rendered on the server — still looks lit rather than flat.
+ *
+ * The gradient is much weaker than it was (40% white peak, now 14%). At full
+ * strength it read as a glass button from a previous decade and it fought the
+ * one thing the control has to do, which is look pressable and get out of the
+ * way of the label. */
 .button::before {
   content: "";
   position: absolute;
@@ -45,8 +50,8 @@
   z-index: -1;
   background: radial-gradient(
     120px 46px at var(--sheen-x, 50%) var(--sheen-y, 0%),
-    rgb(255 255 255 / 40%),
-    rgb(255 255 255 / 6%) 46%,
+    rgb(255 255 255 / 14%),
+    rgb(255 255 255 / 3%) 46%,
     transparent 72%
   );
   opacity: 0.4;
@@ -59,18 +64,20 @@
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 18%),
-    inset 0 -1px 0 rgb(0 0 0 / 30%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 10%);
 }
 
+/*
+ * Hover is a 1px lift and nothing else. The 30px black drop shadow it used to
+ * carry was invisible against #0b0b0b except as a grey halo, so it bought
+ * blur cost and no depth.
+ */
 .button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 30px rgb(0 0 0 / 36%);
 }
 
 .button:hover::before {
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .button:active {
@@ -86,10 +93,21 @@
   box-shadow: none;
 }
 
+/*
+ * The primary control is flat white, not a gradient. A 180deg white-to-grey
+ * ramp on a 44px control is a 3-stop gradient nobody can see, and it made the
+ * button's bottom edge read as dirty next to the pure white text elsewhere on
+ * the page.
+ */
 .button--primary {
   color: #050505;
-  background: linear-gradient(180deg, #fff 0%, #e7e7ec 100%);
-  border-color: rgb(255 255 255 / 90%);
+  background: #fff;
+  border-color: #fff;
+}
+
+.button--primary:hover {
+  background: #e4e4e9;
+  border-color: #e4e4e9;
 }
 
 .button--secondary {
@@ -97,6 +115,10 @@
   background: rgb(255 255 255 / 5%);
   border-color: rgb(255 255 255 / 16%);
   backdrop-filter: blur(14px) saturate(115%);
+}
+
+.button--secondary:hover {
+  border-color: rgb(255 255 255 / 28%);
 }
 
 .button--quiet {
@@ -308,6 +330,12 @@
 
 /* --- Panels --------------------------------------------------------------- */
 
+/*
+ * A panel is a hairline and a surface, nothing more. The border does the
+ * separating; a shadow under a card on a near-black page renders as a smudge
+ * rather than as height, so there is none. Elevation is expressed by the
+ * surface step alone, which is why there are five of them.
+ */
 .panel {
   border: 1px solid var(--line);
   border-radius: var(--radius-panel);
@@ -325,20 +353,18 @@
   text-decoration: none;
   transition:
     border-color var(--motion-control) var(--ease),
-    background-color var(--motion-control) var(--ease),
-    transform var(--motion-micro) var(--ease);
+    background-color var(--motion-control) var(--ease);
 }
 
+/*
+ * Hover brightens the hairline and the surface. The previous rule also lifted
+ * the card 2px, which on a grid of cards made the whole grid feel loose — the
+ * pointer appeared to peel the page. Border and surface alone are enough to
+ * say "this is the one", and they cost no layout.
+ */
 .panel--interactive:hover {
   border-color: var(--line-loud);
   background: var(--surface-2);
-  transform: translateY(-2px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .panel--interactive:hover {
-    transform: none;
-  }
 }
 
 .panel__body {
