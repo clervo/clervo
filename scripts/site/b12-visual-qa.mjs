@@ -48,6 +48,15 @@ const mime = {
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const assert = (condition, code) => { if (!condition) throw new Error(code); };
 
+async function waitForExit(child, timeoutMs = 2_000) {
+  if (child.exitCode !== null || child.signalCode !== null) return true;
+  return new Promise((resolve) => {
+    const onExit = () => { clearTimeout(timer); resolve(true); };
+    const timer = setTimeout(() => { child.off('exit', onExit); resolve(child.exitCode !== null || child.signalCode !== null); }, timeoutMs);
+    child.once('exit', onExit);
+  });
+}
+
 async function freePort() {
   return new Promise((resolve, reject) => {
     const server = net.createServer().once('error', reject).listen(0, '127.0.0.1', () => {
@@ -190,7 +199,7 @@ if (!useBuilt) {
 await access(site, constants.R_OK);
 
 const webPort = await freePort(), debugPort = await freePort(), profile = await mkdtemp(path.join(os.tmpdir(), 'clervo-b12-chrome-'));
-const server = await serve(webPort); let browser, cdp; const results = [];
+const server = await serve(webPort); let browser, cdp, cleanupError; const results = [];
 try {
   browser = await launchChrome(debugPort, profile); cdp = new Cdp(browser.ws); await cdp.open();
   await Promise.all(['Page.enable', 'Runtime.enable', 'Log.enable'].map((method) => cdp.send(method)));
@@ -212,7 +221,21 @@ try {
     results.push({ id, state, url: `/?state=${state}`, width, height, deviceScaleFactor: 1, consoleErrors: [...new Set(consoleErrors)], pageErrors: [...new Set(pageErrors)], ...dimensions, horizontalOverflow: Math.max(dimensions.scrollWidth, dimensions.bodyScrollWidth) > dimensions.clientWidth, screenshot: path.relative(root, screenshot) });
   }
 } finally {
-  cdp?.close(); browser?.child.kill('SIGTERM'); await new Promise((resolve) => server.close(resolve)); await rm(profile, { recursive: true, force: true });
+  const cleanupErrors = [];
+  try { cdp?.close(); } catch (error) { cleanupErrors.push(error); }
+  try {
+    const child = browser?.child;
+    if (child && child.exitCode === null && child.signalCode === null) {
+      child.kill('SIGTERM');
+      if (!(await waitForExit(child))) {
+        child.kill('SIGKILL');
+        if (!(await waitForExit(child))) cleanupErrors.push(new Error('chrome_exit_timeout'));
+      }
+    }
+  } catch (error) { cleanupErrors.push(error); }
+  try { await new Promise((resolve) => server.close(resolve)); } catch (error) { cleanupErrors.push(error); }
+  try { await rm(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }); } catch (error) { cleanupErrors.push(error); }
+  if (cleanupErrors.length) cleanupError = new AggregateError(cleanupErrors, 'b12_visual_qa_cleanup_failed');
 }
 
 const comparisons = (await Promise.all(results.map(compare))).filter(Boolean);
@@ -222,4 +245,5 @@ await writeFile(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2
 await writeFile(path.join(out, 'summary.md'), ['# Clervo B12 visual QA', '', `- Build: ${build.skipped ? 'existing build used' : build.exitCode === 0 ? 'PASS' : 'FAIL'}`, `- Captures: ${results.length}`, `- Technical issues: ${issues.length}`, `- Comparison artifacts: ${comparisons.filter(({ status }) => status === 'generated').length}`, '- Visual comparison never auto-approves; owner judgment is final.', '', ...results.map((item) => `- ${item.id}: ${item.width}x${item.height}@1 state=${item.state}; scrollWidth/clientWidth=${item.scrollWidth}/${item.clientWidth}; console=${item.consoleErrors.length}; page=${item.pageErrors.length}; ${item.screenshot}`), ''].join('\n'));
 console.log(`B12 visual QA: ${issues.length ? 'ISSUES' : 'PASS'} (${results.length} captures)`);
 console.log(path.join(out, 'summary.md'));
+if (cleanupError) throw cleanupError;
 if (issues.length) process.exitCode = 1;
