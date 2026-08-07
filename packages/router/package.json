@@ -1,0 +1,54 @@
+{
+  "name": "@clervo/router",
+  "version": "0.1.0",
+  "description": "ClervoRouter — one command from install to a paid, receipted machine outcome over x402 on Base.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "keywords": [
+    "clervo",
+    "x402",
+    "agent",
+    "cli",
+    "base",
+    "usdc"
+  ],
+  "homepage": "https://clervo.dev/docs/router",
+  "bugs": {
+    "url": "https://github.com/clervo/clervo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clervo/clervo.git",
+    "directory": "packages/router"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "bin": {
+    "clervo": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@scure/bip39": "1.6.0",
+    "@x402/core": "2.20.0",
+    "@x402/evm": "2.20.0",
+    "viem": "2.55.10"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

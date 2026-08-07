@@ -17,24 +17,25 @@ Update only when execution state actually changes. This is not a journal.
 
 | Field | Value |
 |---|---|
-| Current milestone | **B4 — Bazaar entry** |
-| Milestone status | `externally_verified` — the CDP merchant discovery endpoint returns `https://api.clervo.dev/v1/search/paid` with `index.active: true`, crawled `2026-08-06T16:59:46.261Z`, after one settled 0.006 USDC payment on Base mainnet. All three payable resources validate `true`. AI and Sandbox remain valid and unindexed, which is expected: indexing triggers only on a settled payment through the CDP facilitator. |
+| Current milestone | **B6 — Clervo Connect v0 (ClervoRouter customer path v0)** |
+| Milestone status | `free_path_complete_paid_leg_awaiting_owner_approval` — `@clervo/router` 0.1.0 is built, packed, and proven from outside: installed from a real tarball into an empty directory that had never seen the repository, `clervo search` returned 10 real results from `https://api.clervo.dev` with **no wallet, no key, and no funding**, and no wallet file was created. The live catalog, a live 0.006 USDC 402 quote, wallet creation with `0700`/`0600` permissions, a live Base balance read, and `doctor` all verified in that same clean install. The paid leg is deliberately not claimed: a funded wallet and one real settlement need owner approval. This continuity field previously read B4 while B5 was already accepted; corrected here. |
 | Current branch | `main` |
-| Latest commit | `777b7c6` — `fix(bazaar): make the three live x402 resources indexable`, plus the post-settlement observed state committed on top. The deployed B2 fixes were cherry-picked onto `main` without the release-only revert, so the preserved RPC, Prediction, and Crypto work is intact. |
+| Latest commit | `dc483ac` — `feat(router): ClervoRouter customer path v0, free path externally verified`. Preceded by `aff57e8` closing B5. This row read `777b7c6` until 2026-08-07; that was stale by several commits, so treat the hash here as authoritative only when it matches `git log -1`. Nothing about the earlier record changed: the deployed B2 fixes were cherry-picked onto `main` without the release-only revert, so the preserved RPC, Prediction, and Crypto work is intact. |
 | Current production release | Cloud Run origin `clervo-api-production-00033-vub` at 100% traffic, image `sha256:7bb3211061e8cbca5abfa2f1930f7888877aaaed065fd2f54c8905aedf5422ad`, `CLERVO_RELEASE_ID=777b7c616e3e384c9a4b2b7112cef74521b7f7a5`; API edge worker `clervo-api-edge-production` version `835110e7-41cd-46d1-a964-c9fc53be9004`; site worker `clervo-site-production` version `11c90f2b-df5e-4b3c-8bb6-166c502bc346`. B4 changed the Cloud Run origin only; both workers are unchanged, so the deployed `/.well-known/x402` document still carries the pre-B4 AI amount until the edge worker is redeployed. |
 | Rollback targets | Cloud Run revision `clervo-api-production-00031-kos` (image `sha256:63ad8aaa619f46fac962f9366c26eb13c7c241dc8e3d21c773ede4f43f62f44f`, the pre-B4 origin) — roll back with `gcloud run services update-traffic clervo-api-production --project bloxsniper-prod --region us-central1 --to-revisions clervo-api-production-00031-kos=100`. The older `clervo-api-production-00028-nor` (image `sha256:78718e50a50c2a74f639a4da5a03e80988d95611014d9c310cba1fe4d5d79df9`) remains available behind it. API edge `6e17ea78-32eb-4b87-8781-72aa37f90321` (the pre-B3 edge); site `4939f9da-765d-4f3c-a96f-6f0384fe8338`. Roll a worker back with `npx wrangler rollback <version> --config apps/worker/wrangler.jsonc` or `apps/site/wrangler.jsonc`. |
 | Latest externally verified customer outcome | A settled x402 payment on `https://api.clervo.dev/v1/search/paid`: 0.006 USDC (6000 atomic) on Base mainnet `eip155:8453` to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`, operation `op_0549a567589cc87d31231376f9986602`, receipt `rcpt_582a23e6f1e066fe25984119c59c2ab0`, returning a real search result. Replaying idempotency key `idem_b4_bazaar_entry_search_01` returned the same operation with no second authorization and no second charge; the on-chain USDC delta is exactly one transfer of 6000 atomic units. `search.web` reaches `paid_outcome_verified`. The free path outcome above still holds at `externally_repeated`. |
-| Current blockers | None. B4 is complete and externally verified. |
+| Current blockers | B6's paid leg is blocked on owner approval only, not on engineering. Nothing else is blocked. |
 | External dependencies | Bazaar settlements (owner funds); Prediction terms decision; Crypto resale scope; RPC supply; gateway funding. |
-| Owner approvals waiting | None for B4. A later keepalive settlement inside 30 days of `2026-08-06` will need approval again, as will any further Bazaar listing that requires its own settlement. |
+| Owner approvals waiting | **Three for B6, all unspent:** (1) **npm publish of `@clervo/router` 0.1.0** — built, packed, verified installable, `publishConfig` is `{access: public, provenance: true}`; nothing is published. (2) **A funded test wallet and one real paid operation** — the only way to close B6 fields 12 and 16; expect a single 0.006 USDC `search.web` settlement. (3) **Production deploy** — the B5 approval carried forward is still unspent, and the `llms.txt` install section is generated but not deployed. Separately, a later Bazaar keepalive settlement inside 30 days of `2026-08-06` will need approval again, as will any further Bazaar listing that requires its own settlement. |
 | Dates that move on their own | **2026-08-09** — `ai.clervo.dev` funding resumes, and all 21 AI route qualifications expire, same day. **30 days after any Bazaar listing** — a resource with no settlement in that window is dropped from the CDP catalog. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
 | B2 metrics (observed 2026-08-06T14:42:37.447Z) | Conformance defects open 0. Naive free-search rejection rate 0: `withoutIdempotencyKeyStatus` 200. Site 404 correctness: a nonexistent URL returns 404. |
 | B3 metrics (observed 2026-08-06T15:14:21.853Z) | Discovery surfaces live 5 of 5, including `api.models`, `api.well_known_x402`, and `api.llms_txt` at status 200. Model list entries 21 (18 sellable, 3 supply-paused with a reason). x402 manifest payable resources 3, free resources 1. |
 | B4 metrics (observed 2026-08-06T17:01:41.422Z) | Bazaar-valid resources 3 of 3. Indexed resources 1 of 3: `https://api.clervo.dev/v1/search/paid`, `index.active: true`, last crawled `2026-08-06T16:59:46.261Z`. Settlements executed 1, total 0.006 USDC. AI routes quoting below the 1000-atomic minimum 0 — the floor is applied as a minimum billable charge above the derived price, so no route is sold below cost. Days until the search listing idles out: 30 from `2026-08-06`. |
 | B5 metrics (observed 2026-08-07T05:22:00Z) | Products routing through one commerce core 6 of 6 (already true before this milestone). Duplicated commerce-surface copies removed: result verifiers 2 to 1, response-envelope builders 4 to 1, request-hash builders 4 to 1, fixed-price lookups 2 to 1, provenance builders 4 to 1. Duplicate-charge incidents 0. Payment-path defect count 0. Commerce suite 18 of 18 before and after each product move; full acceptance 262 of 262, unchanged. |
-| Exact next task | Open B6. First task there: answer the B6 research question — BlockRun's install, wallet creation, and free-first-success path: what the one command is, what it creates on disk, and where the free success happens relative to funding. Choose the client distribution channel from that answer before writing any client code. |
-| Files and services for that task | No client exists yet. The B5 commerce core `apps/api/src/x402-paid-operation.mjs` is the single money path the client must speak to; `apps/api/src/x402-resource.mjs` holds the payable resource paths; the live catalog the client reads is `packages/catalog/live-registry.json` via `https://api.clervo.dev/.well-known/clervo.json`. |
+| B6 metrics (observed 2026-08-07T06:37:00Z) | Installs 1 (local tarball, not npm). Wallets created 1 — throwaway, deleted after confirming on-chain it held nothing. **Free first success: yes, and it happened before any wallet existed**, which is the ordering advantage over BlockRun. Wallets funded 0. Paid outcomes 0. Live catalog at that time: 4 capabilities, 1 free, 3 payable; `search.web` quoted 0.006 USDC to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`. Package: 35 files, 40.4 kB packed, 17 installed dependencies, no TypeScript sources or wallet material in the tarball. Tests: B6 suite 10 of 10; `shared-paid-operation` 5 of 5 unchanged; full contract suite 720 of 722, the 2 failures being `n13.3` and `n13.5` site tests that fail identically with all B6 work stashed and are therefore inherited from B5. |
+| Exact next task | Open B7. First task there: requalify routes and re-verify which supply is commercially permitted. **This is time-critical: all 21 AI route qualifications expire `2026-08-09`, two days out.** B6 needs no further engineering — its three remaining actions are owner approvals (see the row above), and they can be spent in parallel with B7 rather than blocking it. |
+| Files and services for that task | For B7: `scripts/check-ai-supply-readiness.mjs` (the supply readiness gate), `npm run verify:stage6-exit`, and the 21 AI route qualifications whose expiry drives the deadline; `ai.clervo.dev` funding resumes the same day, `2026-08-09`. For the carried-forward B6 approvals: `packages/router` (the package to publish), and `generated/public/llms.txt` plus `generated/worker/agent-documents.js` (regenerated with the install section, awaiting deploy). The B5 commerce core `apps/api/src/x402-paid-operation.mjs` remains the single money path; `apps/api/src/x402-resource.mjs` holds the payable resource paths; the live catalog is `https://api.clervo.dev/.well-known/clervo.json`. |
 
 ---
 
@@ -685,8 +686,8 @@ Every milestone below carries the same seventeen fields.
 
 ### B6 — Clervo Connect v0
 
-1. **Milestone:** B6 — Clervo Connect v0
-2. **Status:** `not_started`
+1. **Milestone:** B6 — Clervo Connect v0 (ClervoRouter customer path v0)
+2. **Status:** `free_path_complete_paid_leg_awaiting_owner_approval`
 3. **Customer-visible outcome:** From a clean machine: install, a local wallet
    is created, the live catalog loads, a free operation succeeds, the wallet is
    funded, a paid operation succeeds, the receipt is correct, and a retry does
@@ -697,35 +698,136 @@ Every milestone below carries the same seventeen fields.
    buy at all.
 5. **Preserve:** The B5 commerce core as the single money path; existing
    idempotency and replay semantics; the registry as the catalog source.
-6. **Current evidence:** No client exists. Payment currently requires the caller
-   to construct and sign the `PAYMENT-SIGNATURE` header themselves.
-7. **Research:** BlockRun's install, wallet creation, and free-first-success
-   path — what the one command is, what it creates on disk, and where the free
-   success happens relative to funding. One question, answered before choosing
-   our distribution channel and wallet layout.
-8. **Work:** One local runtime: install, local wallet with restrictive file
-   permissions, balance, live catalog from the registry, x402 signing,
-   idempotency, replay handling, spend limits, local receipts, and `doctor`.
-   **The wallet must refuse to silently replace a funded wallet.** Backup and
-   recovery is required before any wallet can hold funds — it is not deferred to
+6. **Current evidence:** `@clervo/router` 0.1.0 exists at `packages/router` and
+   is proven from outside. Verified 2026-08-07 by packing a real tarball
+   (`npm pack`, 35 files, no TypeScript sources, no env files, no wallet
+   material) and installing it into an empty directory that had never seen the
+   repository, then running the customer path against `https://api.clervo.dev`
+   and Base mainnet:
+   - `clervo search "…"` returned 10 real results with **no wallet, no key, no
+     funding, and no wallet file created**. This is the free-first-success
+     ordering advantage over BlockRun, proven rather than asserted.
+   - `clervo catalog` loaded the live registry: 4 capabilities, 1 free, 3
+     payable, joined against `observedTruth` so an unreachable family is never
+     offered.
+   - `clervo quote search.web "…"` returned a live 402 quote of 0.006 USDC to
+     `0xBd11…ca28`, still with no wallet present and nothing charged.
+   - `clervo wallet create` wrote `0700` home and `0600` wallet, printed the
+     recovery phrase once, and showed Base USDC funding guidance stating no ETH
+     is needed. A second `wallet create` **refused and did not touch the
+     existing wallet**.
+   - `clervo wallet balance` read the real USDC and native balance from
+     `https://mainnet.base.org`.
+   - `clervo doctor` reported all checks with the unfunded wallet as the single
+     `warn`, and `Ready.`
+   - `clervo run search.web "…"` showed the quote and the buyer's own limits and,
+     when declined, recorded nothing and signed nothing.
+   Payment no longer requires the caller to construct or sign the
+   `PAYMENT-SIGNATURE` header. The signing path itself was proven against the
+   live 402 with a throwaway mnemonic during design: the EIP-3009 payload matched
+   the shape the server verifies, and it was **signed only, never sent**, so
+   nothing settled and no money moved.
+7. **Research:** Resolved by the owner before work began; no report was produced.
+   BlockRun's strongest developer distribution is a one-command npm/MCP install
+   that creates or uses a locally stored non-custodial wallet, with funding before
+   normal paid use, and public docs that are inconsistent about whether free model
+   success truly precedes funding. Clervo deliberately beats this: the first
+   useful outcome happens **before wallet creation or funding**, using the
+   already-live free Search. B6 therefore ships a minimal installable CLI as the
+   v0 distribution channel; the MCP, SDK, and OpenAI-compatible surfaces remain
    B11.
+8. **Work:** Done. One local runtime at `packages/router`, published surface
+   `clervo`: `search`, `catalog`, `quote`, `run`, `replay`, `receipt`, `history`,
+   `reconcile`, `doctor`, `wallet create|address|balance|restore|backup`,
+   `limits`, `limits set`; `--json` on every command.
+   - **Non-destructive wallet.** `createWallet` writes with the `wx` flag, so the
+     refusal is atomic and two concurrent invocations cannot both believe they
+     made the wallet. `replaceWallet` demands proof the outgoing wallet is empty
+     as an argument, and the CLI reads the on-chain balance to obtain that proof,
+     refusing outright when it is non-zero. A wallet that cannot be read is
+     treated as possibly funded, never as empty.
+   - **Backup and recovery shipped, not deferred.** `wallet create` prints the
+     phrase once; `wallet backup` reprints it only after explicit confirmation;
+     `wallet restore` recovers from a phrase. Permissions (`0700`/`0600`) are
+     re-checked on **every** wallet load, not only by `doctor`, and the recorded
+     address is re-derived from the phrase on load so a tampered file is refused.
+   - **Fail-closed settlement.** `authorizing` is written to disk *before* a
+     signature exists; any ambiguous answer becomes `unknown`; both states block
+     every further paid call through `assertNothingUnreconciled`. Reconciliation
+     probes with a replay that carries **no payment header**, so reconciliation
+     itself cannot charge. A 402 to that probe proves no payment settled.
+   - **Buyer-side spend limits** (defaults 0.02 USDC per operation, 0.10 USDC per
+     day) checked against the live quote before anything is signed, in addition to
+     the seller's own ceiling.
+   - **Registry as capability truth.** `products` is joined with
+     `observedTruth.products`; a product declaring itself payable inside a family
+     the probe found unreachable is not offered.
+   Deliberately excluded per the owner's instruction: the MCP server, the SDKs,
+   and the OpenAI compatibility layer, which belong to B11.
 9. **Dependencies:** B5.
 10. **Parallel:** Track C continues; Track D prepares the B12 page templates.
-11. **Launch-critical tests:** wallet creation is not destructive; keys are
-    written with restrictive permissions and never logged; spend limits are
-    enforced client-side and server-side; retry does not double-charge; replay
-    returns the same operation; `doctor` detects a broken configuration.
-12. **External acceptance proof:** The full clean-machine sequence in field 3,
-    performed on a machine that has never contacted us, ending with a correct
-    receipt and a retry that does not double-charge.
-13. **Visibility shipped:** Install instructions on the site and in `llms.txt`;
-    package published to its registry; quick start updated.
-14. **Metrics:** Installs; wallets created; free first success; wallet funded;
-    first paid outcome. This is the funnel's spine.
-15. **Owner approval:** Package registry publish; production deploy; any funded
-    test wallet.
-16. **Stopping condition:** The clean-machine sequence passes end to end from
-    outside.
+11. **Launch-critical tests:** Shipped in `tests/contract/b6.test.mjs`, 10 tests,
+    10 passing, covering the whole list: wallet creation is not destructive (and a
+    refused replacement leaves the wallet byte-identical); keys are written `0600`
+    under a `0700` home, are absent from the view every command renders, and are
+    absent from `doctor` output; spend limits are enforced buyer-side before
+    signing (asserted with a wallet present, so a missing wallet cannot be
+    mistaken for the limit firing); a retry does not double-charge; a replay
+    returns the same operation and sends no payment header; `doctor` detects a
+    broken configuration and every failure carries an actionable remedy. Also
+    covered: an unknown settlement fails closed and blocks further spend until
+    reconciled, reconciliation records a settlement it discovers and counts it
+    once, a record stuck in `authorizing` is treated as unreconciled, and the free
+    path needs no wallet. Baseline `shared-paid-operation` remains 5/5. Full
+    contract suite 720/722; the 2 failures are `n13.3` and `n13.5` site tests that
+    **fail identically with all B6 work stashed**, so they are inherited from B5
+    and are not caused by B6. `lint`, `scan:secrets`, `validate-contracts`, and
+    `verify-clean-room-boundary` all PASS.
+    Two defects were found and fixed by these tests rather than in production:
+    (a) `spentTodayAtomic` excluded replayed records, so a replay erased a real
+    charge from the day's total — a spend limit that failed **open**; `replayed`
+    is now provenance only and every settled record counts once, which is correct
+    because a key is charged at most once. (b) `createWallet` and `saveLimits`
+    took `env` inside an options object while every other module took it
+    positionally, so a wrong call silently fell back to the operator's real
+    `~/.clervo`; this actually happened during development, wrote a throwaway
+    wallet and limits file there, and was cleaned up after confirming on-chain
+    that the wallet held nothing. Both signatures are now uniform, and the suite
+    additionally repoints `process.env.CLERVO_HOME` at a temporary directory so no
+    test can reach a real wallet.
+12. **External acceptance proof:** The free-path portion of the clean-machine
+    sequence is proven from outside — see field 6 for the verified commands.
+    **Outstanding and explicitly not claimed:** the paid leg (funded wallet → paid
+    operation → correct receipt → retry that does not double-charge) has not been
+    performed against live settlement, because it requires spending real money.
+    Its logic is proven by contract test against the real wire shapes and by a
+    live-402 signing proof that was never sent. Field 16 is therefore not yet met.
+13. **Visibility shipped:** Install instructions are in `llms.txt` (a new
+    `## Command line` section, generated only when the free entry route is
+    actually served, so a reader is never told to install something whose first
+    command would fail) and in `packages/router/README.md`. **Not done:** the
+    package is not published to npm, and the site is untouched. Publication needs
+    owner approval (field 15); the site install instructions are deliberately
+    deferred to **B12**, per the owner's direction that B12 rebuilds the full
+    site — a note is recorded in B12 field 8 so this is not forgotten.
+14. **Metrics:** Observed 2026-08-07 from the clean-machine run: installs 1 (local
+    tarball, not npm); wallets created 1 (throwaway, deleted after verifying
+    on-chain it held nothing); free first success **yes, before any wallet
+    existed**; wallets funded 0; paid outcomes 0. Live figures at that time:
+    catalog 4 capabilities (1 free, 3 payable), `search.web` quoted 0.006 USDC.
+    The funnel's spine is instrumented only as far as the free step, because the
+    paid step has not been run.
+15. **Owner approval:** Three actions remain and are all unspent:
+    - **npm publish of `@clervo/router` 0.1.0** — the package is built, packed,
+      and verified installable, but not published. `publishConfig` is
+      `{access: public, provenance: true}`.
+    - **A funded test wallet and one real paid operation** — needed to close
+      field 12 and field 16.
+    - **Production deploy** — the B5 approval carried forward is still unspent;
+      the `llms.txt` change is generated but not deployed.
+16. **Stopping condition:** **Not yet met.** The free half of the clean-machine
+    sequence passes end to end from outside; the paid half needs a funded wallet
+    and a real settlement, which is an owner decision.
 17. **Continuation point:** Open B7. First task there: requalify routes and
     re-verify which supply is commercially permitted.
 
@@ -1001,6 +1103,16 @@ Every milestone below carries the same seventeen fields.
    JSON-LD. `llms.txt` and `llms-full.txt`. RSS changelog. MCP directory and
    x402 ecosystem listings. **The site hides nothing:** blocked products are
    shown as blocked, prices are shown, failures are shown, evidence is linkable.
+   **Carried in from B6 (do not lose):** the site must publish the `@clervo/router`
+   install instructions. B6 shipped them to `llms.txt` and the package README but
+   deliberately did not touch the site, because the owner directed that B12
+   rebuilds the site in full. The site's version must lead with the free-first
+   ordering — `npx @clervo/router search "…"` returns a real result **before** a
+   wallet exists or is funded — since that ordering is the deliberate advantage
+   over BlockRun and is the one claim most likely to be flattened by a rewrite.
+   Render it from the registry like every other page: show the command only while
+   the free entry route is actually served, exactly as the `llms.txt` generator
+   already gates it.
 9. **Dependencies:** B2 (404 correctness); B1 (registry rendering); the products
    being real.
 10. **Parallel:** Track G measurement.

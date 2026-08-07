@@ -666,6 +666,39 @@ if (quickStartCurl !== null) {
   ].join('\n');
 }
 
+// The command-line client, described only when the free path it opens with is
+// actually being served. A reader must not be told to install something whose
+// first command would fail against the deployed system.
+if (freeEntryRoute !== null && publicBaseUrl !== null) {
+  llms += [
+    '',
+    '## Command line',
+    '',
+    'One install, and a real result before a wallet exists:',
+    '',
+    '```bash',
+    'npx @clervo/router search "who is shipping x402 in production"',
+    '```',
+    '',
+    'No account, no API key, no wallet, no funding. The free path above is what that command calls.',
+    '',
+    'Paid use is opt-in and comes later, in this order:',
+    '',
+    '```bash',
+    'clervo catalog                      # what is being served right now',
+    'clervo quote search.web "<query>"   # the exact price, without paying it',
+    'clervo wallet create                # a dedicated wallet, only when you want a paid product',
+    'clervo wallet address               # fund it with USDC on Base mainnet',
+    'clervo run search.web "<query>"     # pay for one call, with the price shown first',
+    'clervo replay <key>                 # the same result again, never a second charge',
+    'clervo doctor                       # check the machine end to end',
+    '```',
+    '',
+    '`clervo wallet create` never overwrites an existing wallet, and `clervo wallet restore` refuses if the wallet it would replace holds a balance. Payment is a signed USDC authorization on Base, so no gas is paid from that wallet. If a call fails after the authorization was sent, the settlement is unknown: the client records it, refuses to spend again, and resolves it with `clervo reconcile`.',
+    '',
+  ].join('\n');
+}
+
 // ---------------------------------------------------------------------------
 // Agent discovery documents
 // ---------------------------------------------------------------------------
