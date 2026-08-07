@@ -33,6 +33,7 @@ const matrix = [
   ['mobile-320-rest', 320, 700, 'rest'],
   ['mobile-320-prove', 320, 700, 'prove'],
 ];
+const slice2ProofOrder = ['request', 'qualify', 'execute', 'verify', 'prove'];
 const referenceMap = {
   'desktop-1600-rest': '06-hero/locked/prototype-v1.0/preview-desktop-rest.png',
   'desktop-1600-prove': '06-hero/locked/prototype-v1.0/preview-desktop-prove.png',
@@ -155,6 +156,18 @@ async function waitForState(cdp, state) {
   throw new Error(`state_not_reached:${state}`);
 }
 
+async function waitForSlice2ProofState(cdp, state, timeout = 5_000) {
+  const expected = JSON.stringify(state);
+  const expression = `document.querySelector('.s7a-proof-frame')?.dataset.proofState === ${expected}`;
+  const end = Date.now() + timeout;
+  while (Date.now() < end) {
+    const result = await cdp.send('Runtime.evaluate', { expression, returnByValue: true });
+    if (result.result?.value === true) return;
+    await sleep(50);
+  }
+  throw new Error(`slice2_proof_state_not_reached:${state}`);
+}
+
 async function imageSize(file) {
   const bytes = await readFile(file);
   assert(bytes.subarray(1, 4).toString() === 'PNG', `reference_not_png:${file}`);
@@ -215,7 +228,20 @@ try {
     const url = `http://127.0.0.1:${webPort}/?state=${encodeURIComponent(state)}`;
     const navigation = await cdp.send('Page.navigate', { url }); assert(!navigation.errorText, `navigation_failed:${navigation.errorText}`); await loaded;
     await cdp.send('Runtime.evaluate', { expression: 'document.fonts ? document.fonts.ready.then(() => true) : true', awaitPromise: true, returnByValue: true });
-    await waitForState(cdp, state); await sleep(120);
+    await waitForState(cdp, state);
+    const slice2ProofTrace = [];
+    if (state === 'prove') {
+      const trigger = await cdp.send('Runtime.evaluate', {
+        expression: `(() => { const button = document.querySelector('.s7a-proof-actions .s7a-button-primary'); if (!(button instanceof HTMLButtonElement)) return false; button.click(); return true; })()`,
+        returnByValue: true,
+      });
+      assert(trigger.result?.value === true, 'slice2_proof_trigger_missing');
+      for (const proofState of slice2ProofOrder) {
+        await waitForSlice2ProofState(cdp, proofState);
+        slice2ProofTrace.push(proofState);
+      }
+    }
+    await sleep(120);
     const diagnostics = (await cdp.send('Runtime.evaluate', { expression: `(() => {
       const documentElement = document.documentElement;
       const body = document.body;
@@ -255,6 +281,9 @@ try {
       const rail = document.querySelector('.b12-rail');
       const railRect = rail?.getBoundingClientRect();
       const railStyle = rail ? getComputedStyle(rail) : null;
+      const mechanismPanel = document.querySelector('.s7a-mechanism-panel');
+      const mechanismRect = mechanismPanel?.getBoundingClientRect();
+      const slice2ProofFrame = document.querySelector('.s7a-proof-frame');
       return {
         scrollWidth: documentElement.scrollWidth,
         clientWidth,
@@ -264,6 +293,13 @@ try {
         clippedSections: sections.filter(({ clippedHorizontally, empty }) => clippedHorizontally || empty).map(({ id }) => id),
         positionedElements,
         obscuredSections,
+        slice2ProofState: slice2ProofFrame?.dataset.proofState ?? null,
+        mechanism: mechanismPanel && mechanismRect ? {
+          left: mechanismRect.left,
+          right: mechanismRect.right,
+          width: mechanismRect.width,
+          contained: mechanismRect.left >= -1 && mechanismRect.right <= clientWidth + 1,
+        } : null,
         rail: rail && railRect && railStyle ? {
           left: railRect.left,
           right: railRect.right,
@@ -297,6 +333,7 @@ try {
       deviceScaleFactor: 1,
       consoleErrors: [...new Set(consoleErrors)],
       pageErrors: [...new Set(pageErrors)],
+      slice2ProofTrace,
       ...diagnostics,
       fullPageHeight: contentSize.height,
       horizontalOverflow: Math.max(diagnostics.scrollWidth, diagnostics.bodyScrollWidth) > diagnostics.clientWidth,
@@ -330,6 +367,9 @@ const issues = results.flatMap((item) => [
   ...item.clippedSections.map((section) => `${item.id}:clipped_section:${section}`),
   ...item.obscuredSections.map(({ id: section, by }) => `${item.id}:obscured_section:${section}:${by.join(',')}`),
   ...(item.rail && !item.rail.contained ? [`${item.id}:rail_not_contained:${item.rail.left}/${item.rail.right}/${item.clientWidth}`] : []),
+  ...((item.width === 390 || item.width === 320) && (!item.mechanism || !item.mechanism.contained) ? [`${item.id}:mechanism_not_contained:${item.mechanism?.left ?? 'missing'}/${item.mechanism?.right ?? 'missing'}/${item.clientWidth}`] : []),
+  ...(item.state === 'prove' && item.slice2ProofState !== 'prove' ? [`${item.id}:slice2_proof_not_reached:${item.slice2ProofState ?? 'missing'}`] : []),
+  ...(item.state === 'prove' && item.slice2ProofTrace.join('>') !== slice2ProofOrder.join('>') ? [`${item.id}:slice2_proof_trace_incomplete:${item.slice2ProofTrace.join('>')}`] : []),
 ]);
 const report = {
   schemaVersion: 'clervo.b12.visual-qa.v2',
@@ -354,7 +394,7 @@ await writeFile(path.join(out, 'summary.md'), [
   '- Full-page locked references: none supplied; viewport mobile references remain the visual comparison authority.',
   '- Visual comparison never auto-approves; owner judgment is final.',
   '',
-  ...results.map((item) => `- ${item.id}: ${item.width}x${item.height}@1 state=${item.state}; pageHeight=${item.fullPageHeight}; scrollWidth/clientWidth=${item.scrollWidth}/${item.clientWidth}; console=${item.consoleErrors.length}; page=${item.pageErrors.length}; clipped=${item.clippedSections.length}; obscured=${item.obscuredSections.length}; rail=${item.rail ? `${item.rail.contained ? 'contained' : 'NOT-CONTAINED'}${item.rail.internalOverflow ? '/internal-scroll' : ''}` : 'missing'}; viewport=${item.screenshot}; full=${item.fullPageScreenshot}`),
+  ...results.map((item) => `- ${item.id}: ${item.width}x${item.height}@1 state=${item.state}; slice2=${item.slice2ProofState ?? 'missing'}${item.slice2ProofTrace.length ? `/trace=${item.slice2ProofTrace.join('>')}` : ''}; pageHeight=${item.fullPageHeight}; scrollWidth/clientWidth=${item.scrollWidth}/${item.clientWidth}; console=${item.consoleErrors.length}; page=${item.pageErrors.length}; clipped=${item.clippedSections.length}; obscured=${item.obscuredSections.length}; mechanism=${item.mechanism ? (item.mechanism.contained ? 'contained' : 'NOT-CONTAINED') : 'missing'}; rail=${item.rail ? `${item.rail.contained ? 'contained' : 'NOT-CONTAINED'}${item.rail.internalOverflow ? '/internal-scroll' : ''}` : 'missing'}; viewport=${item.screenshot}; full=${item.fullPageScreenshot}`),
   '',
 ].join('\n'));
 console.log(`B12 visual QA: ${issues.length ? 'ISSUES' : 'PASS'} (${results.length} captures)`);
