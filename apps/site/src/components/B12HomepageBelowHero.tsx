@@ -101,8 +101,8 @@ const controlStates: Record<ControlState, ControlCopy> = {
     state: 'Quote fixture',
     price: '≤ $0.02 USDC',
     network: 'Base · fixture',
-    expiry: '90 seconds',
-    policy: 'Within agent budget',
+    expiry: '90 seconds · fixture',
+    policy: 'Within agent budget · fixture',
     message: 'No paid route begins until the user or authorized policy approves this exact maximum, network, asset, and expiry.',
     primary: 'Approve fixture',
     secondary: 'Cancel',
@@ -112,8 +112,8 @@ const controlStates: Record<ControlState, ControlCopy> = {
     state: 'Approved fixture',
     price: '≤ $0.02 USDC',
     network: 'Base · fixture',
-    expiry: 'Quote locked',
-    policy: 'No write permission',
+    expiry: 'Quote locked · fixture',
+    policy: 'No write permission · fixture',
     message: 'Approval applies only to this task identity and quote. It does not create standing payment authority.',
     primary: 'View execution',
     secondary: 'Revoke',
@@ -121,10 +121,10 @@ const controlStates: Record<ControlState, ControlCopy> = {
   receipt: {
     title: 'Verification resolved the receipt',
     state: 'Verified fixture',
-    price: '$0.018 USDC',
+    price: '$0.018 USDC · fixture',
     network: 'Base · fixture',
-    expiry: 'Settled',
-    policy: 'Evidence attached',
+    expiry: 'Settled · fixture',
+    policy: 'Evidence attached · fixture',
     message: 'Gold is earned only after the result, evidence, cost, and receipt reconcile.',
     primary: 'Inspect receipt',
     secondary: 'View evidence',
@@ -132,10 +132,10 @@ const controlStates: Record<ControlState, ControlCopy> = {
   refused: {
     title: 'The request stopped at the boundary',
     state: 'Refused fixture',
-    price: '$0.00',
-    network: 'No provider call',
+    price: '$0.00 · fixture',
+    network: 'No provider call · fixture',
     expiry: 'Not applicable',
-    policy: 'Policy mismatch',
+    policy: 'Policy mismatch · fixture',
     message: 'Refusal is a complete product state: no execution, no charge, and a clear next action.',
     primary: 'Change policy',
     secondary: 'Close',
@@ -143,10 +143,10 @@ const controlStates: Record<ControlState, ControlCopy> = {
   replay: {
     title: 'The existing result is returned safely',
     state: 'Replay fixture',
-    price: '$0.00 additional',
-    network: 'Original receipt',
-    expiry: 'Replay protected',
-    policy: 'Same task identity',
+    price: '$0.00 additional · fixture',
+    network: 'Original receipt · fixture',
+    expiry: 'Replay protected · fixture',
+    policy: 'Same task identity · fixture',
     message: 'The same task identity returns the resolved result without a duplicate provider call or charge.',
     primary: 'Return result',
     secondary: 'Inspect identity',
@@ -263,7 +263,7 @@ export function B12HomepageBelowHero() {
         <div className="s7a-proof-frame" data-proof-state={proofState}>
           <div className="s7a-proof-toolbar"><span>Featured outcome trace</span><span className="s7a-proof-status"><i /><b>{proof.status}</b></span></div><div className="s7a-proof-progress"><span /></div>
           <div className="s7a-proof-main">
-            <div className="s7a-request-pane"><p className="s7a-label">Agent task</p><p className="s7a-task">Research an on-chain protocol, verify its current claims, and return cited evidence.</p><dl className="s7a-contract-list"><div className="s7a-contract-row"><dt>Qualified route</dt><dd>{proof.route}</dd></div><div className="s7a-contract-row"><dt>Maximum charge</dt><dd className="fixture-value">≤ $0.02 USDC · fixture</dd></div><div className="s7a-contract-row"><dt>Approval</dt><dd>Required before paid execution</dd></div><div className="s7a-contract-row"><dt>Replay</dt><dd>Existing result returned without a second charge</dd></div></dl><div className="s7a-proof-actions"><button className="s7a-button s7a-button-primary clervo-liquid" data-liquid="primary" disabled={proofRunning} onClick={runProof} type="button">{proofHasRun ? 'Run again' : 'Run demonstration'}</button><button className="s7a-button" onClick={resetProof} type="button">Reset</button></div></div>
+            <div className="s7a-request-pane"><p className="s7a-label">Agent task</p><p className="s7a-task">Research an on-chain protocol, verify its current claims, and return cited evidence.</p><dl className="s7a-contract-list"><div className="s7a-contract-row"><dt>Qualified route</dt><dd>{proof.route} · fixture</dd></div><div className="s7a-contract-row"><dt>Maximum charge</dt><dd className="fixture-value">≤ $0.02 USDC · fixture</dd></div><div className="s7a-contract-row"><dt>Approval</dt><dd>Required before paid execution</dd></div><div className="s7a-contract-row"><dt>Replay</dt><dd>Existing result returned without a second charge · fixture behavior</dd></div></dl><div className="s7a-proof-actions"><button className="s7a-button s7a-button-primary clervo-liquid" data-liquid="primary" disabled={proofRunning} onClick={runProof} type="button">{proofHasRun ? 'Run again' : 'Run demonstration'}</button><button className="s7a-button" onClick={resetProof} type="button">Reset</button></div></div>
             <div className="s7a-outcome-pane"><div><div aria-label="Outcome sequence" className="s7a-flow">{proofOrder.map((step, index) => <span className={`s7a-flow-step${activeProofIndex >= index && activeProofIndex >= 0 ? ' active' : ''}`} data-step={step} key={step}>{step[0]?.toUpperCase()}{step.slice(1)}</span>)}</div><div className="s7a-result-eyebrow"><i /><span>{proof.label}</span></div><h3 className="s7a-result-title">{proof.title}</h3><p className="s7a-result-copy">{proof.copy}</p></div><div className="s7a-proof-metrics"><div className="s7a-proof-metric"><span>Result</span><strong>{proof.metrics[0]}</strong></div><div className="s7a-proof-metric"><span>Evidence</span><strong>{proof.metrics[1]}</strong></div><div className="s7a-proof-metric"><span>Receipt</span><strong>{proof.metrics[2]}</strong></div></div></div>
           </div>
         </div>
