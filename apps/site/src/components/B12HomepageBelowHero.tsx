@@ -99,7 +99,7 @@ const controlStates: Record<ControlState, ControlCopy> = {
   quote: {
     title: 'Approval required before execution',
     state: 'Quote fixture',
-    price: '≤ $0.02 USDC',
+    price: '≤ $0.02 USDC · fixture',
     network: 'Base · fixture',
     expiry: '90 seconds · fixture',
     policy: 'Within agent budget · fixture',
@@ -110,7 +110,7 @@ const controlStates: Record<ControlState, ControlCopy> = {
   approved: {
     title: 'Execution is bounded by the approved quote',
     state: 'Approved fixture',
-    price: '≤ $0.02 USDC',
+    price: '≤ $0.02 USDC · fixture',
     network: 'Base · fixture',
     expiry: 'Quote locked · fixture',
     policy: 'No write permission · fixture',
