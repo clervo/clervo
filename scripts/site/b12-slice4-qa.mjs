@@ -68,8 +68,8 @@ async function inspectMenu(page, width) {
   const panel = page.locator('.mobile-nav__panel');
   await panel.waitFor({ state: 'visible' });
   const result = await panel.evaluate((element) => {
-    const viewportWidth = document.documentElement.clientWidth;
-    const viewportHeight = document.documentElement.clientHeight;
+    const vw = document.documentElement.clientWidth;
+    const vh = document.documentElement.clientHeight;
     const rect = element.getBoundingClientRect();
     const controls = [...element.querySelectorAll('a[href],button')]
       .filter((node) => {
@@ -82,8 +82,8 @@ async function inspectMenu(page, width) {
         return { width: box.width, height: box.height, left: box.left, right: box.right };
       });
     return {
-      contained: rect.left >= -1 && rect.right <= viewportWidth + 1 && rect.top >= -1 && rect.bottom <= viewportHeight + 1,
-      controlsContained: controls.every((item) => item.left >= -1 && item.right <= viewportWidth + 1),
+      contained: rect.left >= -1 && rect.right <= vw + 1 && rect.top >= -1 && rect.bottom <= vh + 1,
+      controlsContained: controls.every((item) => item.left >= -1 && item.right <= vw + 1),
       tooSmall: controls.filter((item) => item.width < 44 || item.height < 44),
     };
   });
@@ -96,10 +96,10 @@ async function inspectPage(page, expectedFamily) {
   return page.evaluate((family) => {
     const root = document.querySelector('.b12-slice4');
     if (!(root instanceof HTMLElement)) return { missingRoot: true };
-    const width = document.documentElement.clientWidth;
+    const vw = document.documentElement.clientWidth;
     const pageWidth = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
     const rootRect = root.getBoundingClientRect();
-    const targets = [...root.querySelectorAll('button,input,select,.b12-button,.s4-family-row,.s4-family-strip a,.s4-back-link')]
+    const controls = [...root.querySelectorAll('button,input,select,.b12-button,.s4-family-row,.s4-family-strip a,.s4-back-link')]
       .filter((node) => {
         const box = node.getBoundingClientRect();
         const style = getComputedStyle(node);
@@ -116,18 +116,24 @@ async function inspectPage(page, expectedFamily) {
         const style = getComputedStyle(node);
         if (style.position === 'fixed') return false;
         const box = node.getBoundingClientRect();
-        return box.width > 1 && (box.left < -1 || box.right > width + 1);
+        return box.width > 1 && (box.left < -1 || box.right > vw + 1);
       })
       .slice(0, 20)
       .map((node) => ({ tag: node.tagName, className: String(node.className), rect: node.getBoundingClientRect().toJSON() }));
     const heading = root.querySelector('h1')?.textContent?.trim() ?? '';
+    const sections = [...root.querySelectorAll('section')].map((node) => {
+      const box = node.getBoundingClientRect();
+      const style = getComputedStyle(node);
+      return { className: String(node.className), width: box.width, height: box.height, display: style.display, visibility: style.visibility };
+    });
     return {
       pageWidth,
-      viewportWidth: width,
-      horizontalOverflow: pageWidth > width + 1,
-      rootContained: rootRect.left >= -1 && rootRect.right <= width + 1,
+      viewportWidth: vw,
+      horizontalOverflow: pageWidth > vw + 1,
+      rootContained: rootRect.left >= -1 && rootRect.right <= vw + 1,
       offenders,
-      tooSmallTargets: targets.filter((item) => item.width < 44 || item.height < 44),
+      tooSmallTargets: controls.filter((item) => item.width < 44 || item.height < 44),
+      clippedOrHiddenSections: sections.filter((item) => item.width < 1 || item.height < 1 || item.display === 'none' || item.visibility === 'hidden'),
       heading,
       familyMatch: family == null ? null : heading === family,
     };
@@ -135,38 +141,38 @@ async function inspectPage(page, expectedFamily) {
 }
 
 async function runProductFixture(page) {
-  const trace = [];
-  const read = () => page.locator('.b12-product').getAttribute('data-router-state');
-  trace.push(await read());
+  await page.evaluate(() => {
+    const root = document.querySelector('.b12-product');
+    window.__b12Slice4Trace = [root?.getAttribute('data-router-state')];
+    if (root) new MutationObserver(() => window.__b12Slice4Trace.push(root.getAttribute('data-router-state'))).observe(root, { attributes: true, attributeFilter: ['data-router-state'] });
+  });
   await page.getByRole('button', { name: 'Run fixture' }).click();
-  const deadline = Date.now() + 5000;
-  while (Date.now() < deadline) {
-    const current = await read();
-    if (trace.at(-1) !== current) trace.push(current);
-    if (current === 'verified') break;
-    await sleep(25);
-  }
-  if (trace.at(-1) !== 'verified') throw new Error(`product_verified_timeout:${trace.join('>')}`);
-  const semantics = await page.evaluate(() => {
+  await page.waitForFunction(() => document.querySelector('.b12-product')?.getAttribute('data-router-state') === 'verified');
+  await page.waitForFunction(() => {
+    const node = document.querySelector('.b12-outcome circle');
+    return node instanceof Element && Number.parseFloat(getComputedStyle(node).opacity) > 0.99;
+  });
+  return page.evaluate(() => {
     const style = (selector) => {
       const node = document.querySelector(selector);
       return node instanceof Element ? getComputedStyle(node) : null;
     };
     return {
-      requestStroke: style('.b12-request .b12-signal-line')?.stroke ?? null,
-      qualifyStroke: style('.b12-qualify .b12-signal-line')?.stroke ?? null,
-      outcomeStroke: style('.b12-outcome .b12-signal-line')?.stroke ?? null,
-      outcomeOpacity: style('.b12-outcome circle')?.opacity ?? null,
-      statusDot: style('.s4-router-status i')?.backgroundColor ?? null,
+      trace: [...new Set((window.__b12Slice4Trace ?? []).filter(Boolean))],
+      semantics: {
+        requestStroke: style('.b12-request .b12-signal-line')?.stroke ?? null,
+        qualifyStroke: style('.b12-qualify .b12-signal-line')?.stroke ?? null,
+        outcomeStroke: style('.b12-outcome .b12-signal-line')?.stroke ?? null,
+        outcomeOpacity: style('.b12-outcome circle')?.opacity ?? null,
+        statusDot: style('.s4-router-status i')?.backgroundColor ?? null,
+      },
     };
   });
-  return { trace: [...new Set(trace.filter(Boolean))], semantics };
 }
 
 async function filterCatalogDeterministically(page) {
   const cards = page.locator('.s4-operation-card');
-  const initial = await cards.count();
-  if (initial < 1) throw new Error('catalog_has_no_observed_routes');
+  if (await cards.count() < 1) throw new Error('catalog_has_no_observed_routes');
   const exactRoute = (await cards.first().locator('h3').textContent())?.trim();
   if (!exactRoute) throw new Error('catalog_first_route_missing_identity');
   await page.locator('[data-slice4-search]').fill(exactRoute);
@@ -205,9 +211,7 @@ try {
     if (item.kind === 'product') {
       interaction = { idleOutcomeOpacity: await page.locator('.b12-outcome circle').evaluate((node) => getComputedStyle(node).opacity) };
       if (item.state === 'verified') interaction = { ...interaction, ...(await runProductFixture(page)) };
-    } else if (item.kind === 'catalog' && item.state === 'filtered') {
-      interaction = await filterCatalogDeterministically(page);
-    }
+    } else if (item.kind === 'catalog' && item.state === 'filtered') interaction = await filterCatalogDeterministically(page);
 
     const menu = await inspectMenu(page, item.width);
     const inspection = await inspectPage(page, item.kind === 'family' ? item.state : null);
@@ -219,7 +223,7 @@ try {
 
     if (consoleErrors.length) report.failures.push(`${item.id}:console`);
     if (pageErrors.length) report.failures.push(`${item.id}:page`);
-    if (inspection.missingRoot || inspection.horizontalOverflow || !inspection.rootContained || inspection.offenders.length) report.failures.push(`${item.id}:containment`);
+    if (inspection.missingRoot || inspection.horizontalOverflow || !inspection.rootContained || inspection.offenders.length || inspection.clippedOrHiddenSections.length) report.failures.push(`${item.id}:containment`);
     if (inspection.tooSmallTargets.length) report.failures.push(`${item.id}:targets`);
     if (inspection.familyMatch === false) report.failures.push(`${item.id}:family-name`);
     if (menu && (!menu.present || !menu.contained || !menu.controlsContained || menu.tooSmall.length)) report.failures.push(`${item.id}:menu`);
@@ -227,7 +231,7 @@ try {
     if (item.kind === 'product' && item.state === 'verified') {
       if (JSON.stringify(interaction.trace) !== JSON.stringify(['idle', 'request', 'qualify', 'verified'])) report.failures.push(`${item.id}:trace`);
       const sem = interaction.semantics;
-      if (sem.requestStroke !== 'rgb(255, 59, 48)' || sem.qualifyStroke !== 'rgb(0, 229, 255)' || sem.outcomeStroke !== 'rgb(255, 200, 0)' || sem.outcomeOpacity !== '1' || sem.statusDot !== 'rgb(255, 200, 0)') report.failures.push(`${item.id}:state-semantics`);
+      if (sem.requestStroke !== 'rgb(255, 59, 48)' || sem.qualifyStroke !== 'rgb(0, 229, 255)' || sem.outcomeStroke !== 'rgb(255, 200, 0)' || Number.parseFloat(sem.outcomeOpacity) < 0.99 || sem.statusDot !== 'rgb(255, 200, 0)') report.failures.push(`${item.id}:state-semantics`);
     }
     await context.close();
   }
