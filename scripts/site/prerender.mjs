@@ -46,6 +46,19 @@ const routes = [
   ['/trust', 'Trust center'],
 ];
 
+// Operation pages are derived from the generated canonical public catalog so
+// prerendering cannot create handmade operation identities that the product
+// authority does not know about.
+const catalog = JSON.parse(await readFile(path.join(root, 'generated/public/catalog.json'), 'utf8'));
+const operationIds = new Set();
+for (const family of catalog.observedTruth?.products ?? []) {
+  for (const operationId of family.operations ?? []) operationIds.add(operationId);
+}
+for (const product of catalog.products ?? []) operationIds.add(product.operationId);
+for (const operationId of [...operationIds].sort()) {
+  routes.push([`/operations/${operationId}`, `Operation ${operationId}`]);
+}
+
 for (const [route, title] of routes) {
   const content = render(`https://clervo.dev${route}`);
   const canonical = route === '/' ? '/' : `${route}/`;
