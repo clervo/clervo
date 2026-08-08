@@ -17,7 +17,7 @@ jobs:
   acceptance:
     name: Clean install and acceptance
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - name: Check out full history for secret scanning
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
