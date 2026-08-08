@@ -1,0 +1,9 @@
+/* Slice 5 surgical QA hardening. Scoped to operation contract routes only. */
+/* Breadcrumb links already met the 44px height target but short labels could
+ * remain narrower than 44px. Keep their visual position while making the hit
+ * area meet the locked minimum interaction target. */
+.b12-operation .s5-breadcrumbs a{
+  min-width:44px;
+  justify-content:center;
+  padding-inline:.2rem;
+}
