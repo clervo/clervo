@@ -59,14 +59,14 @@ async function waitForHttp(url) {
 async function stop(child) {
   if (child.exitCode !== null) return;
   child.kill('SIGTERM');
-  await Promise.race([new Promise((resolve) => child.once('exit', resolve)), sleep(1200)]);
+  await Promise.race([new Promise((resolve) => child.once('exit', resolve)), sleep(1000)]);
   if (child.exitCode === null) child.kill('SIGKILL');
 }
 
 async function openRoute(page, base, route) {
   await page.goto(`${base}${route}`, { waitUntil: 'domcontentloaded' });
-  await page.locator('.b12-slice4').waitFor({ state: 'visible' });
-  await page.locator('h1').waitFor({ state: 'visible' });
+  await page.locator('.b12-slice4').waitFor({ state: 'visible', timeout: 5000 });
+  await page.locator('h1').waitFor({ state: 'visible', timeout: 5000 });
 }
 
 async function inspectMenu(page, width) {
@@ -75,7 +75,7 @@ async function inspectMenu(page, width) {
   if (!(await trigger.isVisible())) return { present: false };
   await trigger.click();
   const panel = page.locator('.mobile-nav__panel');
-  await panel.waitFor({ state: 'visible' });
+  await panel.waitFor({ state: 'visible', timeout: 3000 });
   const result = await panel.evaluate((element) => {
     const vw = document.documentElement.clientWidth;
     const vh = document.documentElement.clientHeight;
@@ -91,7 +91,7 @@ async function inspectMenu(page, width) {
     };
   });
   await page.locator('.mobile-nav__close').click();
-  await page.locator('.mobile-nav').waitFor({ state: 'hidden' });
+  await page.locator('.mobile-nav').waitFor({ state: 'hidden', timeout: 3000 });
   return { present: true, ...result };
 }
 
@@ -149,7 +149,7 @@ async function runProductFixture(page) {
     if (root) new MutationObserver(() => window.__b12Slice4Trace.push(root.getAttribute('data-router-state'))).observe(root, { attributes: true, attributeFilter: ['data-router-state'] });
   });
   await page.getByRole('button', { name: 'Run fixture' }).click();
-  await page.waitForFunction(() => document.querySelector('.b12-product')?.getAttribute('data-router-state') === 'verified');
+  await page.waitForFunction(() => document.querySelector('.b12-product')?.getAttribute('data-router-state') === 'verified', null, { timeout: 4000 });
   await page.waitForFunction(() => {
     const node = document.querySelector('.b12-outcome circle');
     return node instanceof Element && Number.parseFloat(getComputedStyle(node).opacity) > 0.99;
@@ -199,14 +199,17 @@ let browser;
 try {
   await waitForHttp(`${base}/product/`);
   browser = await chromium.launch({ headless: true, executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome' });
+  const context = await browser.newContext({ viewport: { width: 1600, height: 900 } });
+  const page = await context.newPage();
+  let consoleErrors = [];
+  let pageErrors = [];
+  page.on('console', (message) => { if (message.type() === 'error') consoleErrors.push(message.text()); });
+  page.on('pageerror', (error) => pageErrors.push(error.message));
 
   for (const item of cases) {
-    const context = await browser.newContext({ viewport: { width: item.width, height: item.height } });
-    const page = await context.newPage();
-    const consoleErrors = [];
-    const pageErrors = [];
-    page.on('console', (message) => { if (message.type() === 'error') consoleErrors.push(message.text()); });
-    page.on('pageerror', (error) => pageErrors.push(error.message));
+    consoleErrors = [];
+    pageErrors = [];
+    await page.setViewportSize({ width: item.width, height: item.height });
     await openRoute(page, base, item.route);
 
     let interaction = null;
@@ -220,11 +223,11 @@ try {
     const screenshot = path.join(captures, `${item.id}.png`);
     await page.screenshot({ path: screenshot });
     let fullPage = null;
-    if (['product-390-entry', 'catalog-390-entry', 'family-prediction-390'].includes(item.id)) {
+    if (['product-390-entry', 'product-320-entry', 'catalog-390-entry', 'catalog-320-entry'].includes(item.id)) {
       fullPage = path.join(captures, `${item.id}--full-page.png`);
       await page.screenshot({ path: fullPage, fullPage: true });
     }
-    report.cases.push({ ...item, consoleErrors, pageErrors, menu, inspection, interaction, screenshot: path.relative(root, screenshot), fullPage: fullPage ? path.relative(root, fullPage) : null });
+    report.cases.push({ ...item, consoleErrors: [...consoleErrors], pageErrors: [...pageErrors], menu, inspection, interaction, screenshot: path.relative(root, screenshot), fullPage: fullPage ? path.relative(root, fullPage) : null });
 
     if (consoleErrors.length) report.failures.push(`${item.id}:console`);
     if (pageErrors.length) report.failures.push(`${item.id}:page`);
@@ -238,26 +241,18 @@ try {
       const sem = interaction.semantics;
       if (sem.requestStroke !== 'rgb(255, 59, 48)' || sem.qualifyStroke !== 'rgb(0, 229, 255)' || sem.outcomeStroke !== 'rgb(255, 200, 0)' || Number.parseFloat(sem.outcomeOpacity) < 0.99 || sem.statusDot !== 'rgb(255, 200, 0)') report.failures.push(`${item.id}:state-semantics`);
     }
-    await context.close();
   }
 
-  const auditContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
-  const auditPage = await auditContext.newPage();
+  await page.setViewportSize({ width: 390, height: 844 });
   for (const [route, name] of familyRoutes) {
-    const consoleErrors = [];
-    const pageErrors = [];
-    const onConsole = (message) => { if (message.type() === 'error') consoleErrors.push(message.text()); };
-    const onError = (error) => pageErrors.push(error.message);
-    auditPage.on('console', onConsole);
-    auditPage.on('pageerror', onError);
-    await openRoute(auditPage, base, route);
-    const inspection = await inspectPage(auditPage, name);
-    report.familyRouteAudit.push({ route, name, consoleErrors, pageErrors, inspection });
+    consoleErrors = [];
+    pageErrors = [];
+    await openRoute(page, base, route);
+    const inspection = await inspectPage(page, name);
+    report.familyRouteAudit.push({ route, name, consoleErrors: [...consoleErrors], pageErrors: [...pageErrors], inspection });
     if (consoleErrors.length || pageErrors.length || inspection.horizontalOverflow || inspection.offenders.length || inspection.tooSmallTargets.length || inspection.familyMatch === false) report.failures.push(`family-audit:${name}`);
-    auditPage.off('console', onConsole);
-    auditPage.off('pageerror', onError);
   }
-  await auditContext.close();
+  await context.close();
 
   const reducedContext = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
   const reducedPage = await reducedContext.newPage();
@@ -267,7 +262,7 @@ try {
   reducedPage.on('pageerror', (error) => reducedErrors.push(error.message));
   await openRoute(reducedPage, base, '/product');
   await reducedPage.getByRole('button', { name: 'Run fixture' }).click();
-  await reducedPage.waitForFunction(() => document.querySelector('.b12-product')?.getAttribute('data-router-state') === 'verified');
+  await reducedPage.waitForFunction(() => document.querySelector('.b12-product')?.getAttribute('data-router-state') === 'verified', null, { timeout: 3000 });
   const reduced = await reducedPage.evaluate(() => {
     const root = document.querySelector('.b12-slice4');
     const liquid = document.querySelector('.b12-slice4 .b12-liquid');
@@ -288,7 +283,7 @@ try {
   await stop(preview);
   await writeFile(path.join(out, 'preview.log'), previewLog);
   await writeFile(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
-  await writeFile(path.join(out, 'summary.md'), `# B12 Slice 4 integrated QA\n\nViewport cases: ${report.cases.length}\nRepresentative full-page captures: 3\nSix-family route audits: ${report.familyRouteAudit.length}\nFailures: ${report.failures.length}\n${report.failures.length ? report.failures.map((failure) => `- ${failure}`).join('\n') : '- none'}\n\nOwner/control-room visual approval is still required.\n`);
+  await writeFile(path.join(out, 'summary.md'), `# B12 Slice 4 integrated QA\n\nViewport cases: ${report.cases.length}\nExact mobile full-page captures: 4\nSix-family route audits: ${report.familyRouteAudit.length}\nFailures: ${report.failures.length}\n${report.failures.length ? report.failures.map((failure) => `- ${failure}`).join('\n') : '- none'}\n\nOwner/control-room visual approval is still required.\n`);
 }
 
 if (report.failures.length) {
