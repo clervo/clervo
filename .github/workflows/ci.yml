@@ -17,7 +17,7 @@ jobs:
   acceptance:
     name: Clean install and acceptance
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Check out full history for secret scanning
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -33,3 +33,17 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Run repository acceptance gate
         run: npm test
+      - name: Build B12 site for Slice 4 evidence
+        if: always()
+        run: npm run build --workspace @clervo/site
+      - name: Run integrated B12 Slice 4 browser QA
+        if: always()
+        run: node scripts/site/b12-slice4-qa.mjs
+      - name: Upload B12 Slice 4 QA evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: b12-slice4-real-qa
+          path: apps/site/qa-artifacts/slice4
+          if-no-files-found: warn
+          retention-days: 3
