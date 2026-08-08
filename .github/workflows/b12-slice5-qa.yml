@@ -27,15 +27,25 @@ jobs:
       - name: Install locked dependencies
         run: npm ci --ignore-scripts
       - name: Build real site
-        run: npm run build --workspace @clervo/site 2>&1 | tee /tmp/b12-slice5-build.log
-      - name: Run real integrated Slice 5 browser QA
-        run: node scripts/site/b12-slice5-qa.mjs
-      - name: Record exact evidence head
         run: |
-          cp /tmp/b12-slice5-build.log apps/site/qa-artifacts/slice5/build.log
+          set -o pipefail
+          npm run build --workspace @clervo/site 2>&1 | tee /tmp/b12-slice5-build.log
+      - name: Run real integrated Slice 5 browser QA
+        if: success()
+        run: node scripts/site/b12-slice5-qa.mjs
+      - name: Preserve diagnostics and evidence metadata
+        if: always()
+        run: |
+          mkdir -p apps/site/qa-artifacts/slice5/diagnostics
+          cp /tmp/b12-slice5-build.log apps/site/qa-artifacts/slice5/build.log || true
           git rev-parse HEAD > apps/site/qa-artifacts/slice5/HEAD.txt
           git diff --name-status 77b08cfbcc982eb686e584716d6ecdcf58cc941f...HEAD > apps/site/qa-artifacts/slice5/changed-files.txt
+          if [ -f apps/site/dist/operations/ai.chat/index.html ]; then
+            cp apps/site/dist/operations/ai.chat/index.html apps/site/qa-artifacts/slice5/diagnostics/operation-ai-chat.html
+            grep -o '<div id="root"[^>]*>[^<]*' apps/site/dist/operations/ai.chat/index.html | head -5 > apps/site/qa-artifacts/slice5/diagnostics/root-snippet.txt || true
+          fi
       - name: Upload Slice 5 evidence
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: b12-slice5-owner-review
