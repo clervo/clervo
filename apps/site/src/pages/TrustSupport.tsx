@@ -76,6 +76,7 @@ function SupportNav({ page }: { page: TrustSupportPage }) {
 }
 
 function Hero({
+  page,
   eyebrow,
   title,
   lede,
@@ -118,16 +119,17 @@ function Hero({
   );
 }
 
-function Section({ eyebrow, title, copy, children, narrow = false, className = '' }: {
+function Section({ eyebrow, title, copy, children, narrow = false, className = '', id }: {
   eyebrow: string;
   title: string;
   copy?: string;
   children: ReactNode;
   narrow?: boolean;
   className?: string;
+  id?: string;
 }) {
   return (
-    <section className={`s6-section ${className}`}>
+    <section className={`s6-section ${className}`} id={id}>
       <div className={narrow ? 's6-narrow' : 's6-shell'}>
         <div className="s6-section-head">
           <div>
@@ -163,8 +165,8 @@ function PricingPage() {
     <>
       <Hero page="pricing" eyebrow="Pricing / approval boundary" title="Know the maximum before Clervo acts." lede="Clervo does not publish subscription tiers or a universal price sheet. A paid operation either exposes a current fixed maximum charge or returns a request-time quote before execution. The owner-funded proof amount is evidence, not a customer price." visual aside={pricingAside}>
         <div className="s6-hero-actions">
-          <Link className="s6-button s6-button--primary" to="/catalog">Inspect current catalog</Link>
-          <Link className="s6-button s6-button--quiet" to="/proof">Inspect payment proof</Link>
+          <a className="s6-button s6-button--primary" href="#s6-pricing-ledger">Inspect operation prices</a>
+          <Link className="s6-button s6-button--secondary" to="/proof">See payment proof</Link>
         </div>
       </Hero>
 
@@ -176,7 +178,7 @@ function PricingPage() {
         </div>
       </Section>
 
-      <Section eyebrow="Canonical offers" title="Operation-level pricing, not tiers." copy={`Generated contract ${discovery.contractVersion}. Values below are read from the current discovery document; a missing amount remains missing.`}>
+      <Section id="s6-pricing-ledger" eyebrow="Canonical offers" title="Operation-level pricing, not tiers." copy={`Generated contract ${discovery.contractVersion}. Values below are read from the current discovery document; a missing amount remains missing.`}>
         <div className="s6-ledger" role="table" aria-label="Current operation pricing">
           <div className="s6-ledger-row s6-ledger-row--head" role="row">
             <span role="columnheader">Operation</span><span role="columnheader">Model</span><span role="columnheader">Maximum</span><span role="columnheader">Lifecycle</span><span role="columnheader">Public</span>
@@ -253,9 +255,11 @@ function ProofPage() {
 
   return (
     <>
-      <Hero page="proof" eyebrow="Proof / evidence classes" title="Proof when work succeeds—and when it doesn’t." lede="Clervo separates engineering qualification, observed runtime state, private owner-funded payment proof, design fixtures, and claims that remain unproven. Gold appears only on directly verified proof." />
+      <Hero page="proof" eyebrow="Proof / evidence classes" title="Proof when work succeeds—and when it doesn’t." lede="Clervo separates engineering qualification, observed runtime state, private owner-funded payment proof, design fixtures, and claims that remain unproven. Gold appears only on directly verified proof.">
+        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-proof-library">Inspect proof records</a><Link className="s6-button s6-button--secondary" to="/status">View current status</Link></div>
+      </Hero>
 
-      <Section eyebrow="Proof library" title="One record class at a time." copy="A record must say what it proves, which evidence supports it, and what conclusions remain outside its boundary.">
+      <Section id="s6-proof-library" eyebrow="Proof library" title="One record class at a time." copy="A record must say what it proves, which evidence supports it, and what conclusions remain outside its boundary.">
         <div className="s6-proof-layout">
           <div className="s6-proof-menu" role="tablist" aria-label="Proof classes">
             {(Object.keys(proofClassCopy) as ProofClass[]).map((key) => <button key={key} role="tab" aria-selected={selected === key} className={selected === key ? 'is-active' : ''} type="button" onClick={() => setSelected(key)}>{proofClassCopy[key].label}</button>)}
@@ -311,9 +315,11 @@ function DocsPage() {
   const packageLine = launchState.distribution.packages.items.map(({ name, version }) => `${name}@${version}`).join(' · ');
   return (
     <>
-      <Hero page="docs" eyebrow="Docs / task-first" title="Start from what your agent needs to do." lede="Clervo documentation starts from task and authority, then exposes the exact interface contract underneath. Published clients, current API reachability, pricing, and operation availability remain separate facts." />
+      <Hero page="docs" eyebrow="Docs / task-first" title="Start from what your agent needs to do." lede="Clervo documentation starts from task and authority, then exposes the exact interface contract underneath. Published clients, current API reachability, pricing, and operation availability remain separate facts.">
+        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-docs-objectives">Choose a path</a><Link className="s6-button s6-button--secondary" to="/pricing">Understand paid use</Link></div>
+      </Hero>
 
-      <Section eyebrow="Choose a path" title="Five ways into the same contract." copy="Each path points to current generated truth or an explicitly unbound boundary; none assumes a package, provider, wallet, or route that has not been proven.">
+      <Section id="s6-docs-objectives" eyebrow="Choose a path" title="Five ways into the same contract." copy="Each path points to current generated truth or an explicitly unbound boundary; none assumes a package, provider, wallet, or route that has not been proven.">
         <div className="s6-objective-grid" role="tablist" aria-label="Documentation objectives">
           {(Object.keys(docsObjectives) as DocsObjective[]).map((key) => <button key={key} role="tab" aria-selected={objective === key} className={objective === key ? 'is-active' : ''} type="button" onClick={() => setObjective(key)}><b>{docsObjectives[key].number}</b><strong>{docsObjectives[key].title}</strong><span>Open path →</span></button>)}
         </div>
@@ -356,9 +362,11 @@ function StatusPage() {
   const pausedRoutes = observedRoutes.filter(({ lifecycleState }) => lifecycleState === 'supply_paused');
   return (
     <>
-      <Hero page="status" eyebrow={`Status / observed ${observedTruth.provenance.observedAt}`} title="Current truth without marketing interpretation." lede="This page reports the latest generated observation available to the website. It does not infer uptime, incident-free history, or a service-level agreement from a successful probe." centered />
+      <Hero page="status" eyebrow={`Status / observed ${observedTruth.provenance.observedAt}`} title="Current truth without marketing interpretation." lede="This page reports the latest generated observation available to the website. It does not infer uptime, incident-free history, or a service-level agreement from a successful probe." centered>
+        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-status-current">Inspect current state</a><Link className="s6-button s6-button--secondary" to="/security">Read security boundaries</Link></div>
+      </Hero>
 
-      <Section eyebrow="Observed snapshot" title="Lifecycle and proof stay separate." copy="A family can serve requests while having demonstrated only a returned quote. The status surface never collapses those facts into one green label.">
+      <Section id="s6-status-current" eyebrow="Observed snapshot" title="Lifecycle and proof stay separate." copy="A family can serve requests while having demonstrated only a returned quote. The status surface never collapses those facts into one green label.">
         <dl className="s6-status-strip">
           <div><dt>Public callable</dt><dd>{publicApiCallable ? 'observed yes' : 'observed no'}</dd></div>
           <div><dt>Families serving</dt><dd>{liveFamilies.length} / {FAMILY_ORDER.length}</dd></div>
@@ -402,9 +410,11 @@ function SecurityPage() {
   const aside = <div className="s6-fact-stack"><div><span>Third-party certification</span><strong>none claimed</strong></div><div><span>Independent audit</span><strong>not bound</strong></div><div><span>Replay proof</span><strong>owner-funded verified</strong></div><div><span>Sandbox contract</span><strong>{sandbox == null ? 'not bound' : 'published preview'}</strong></div></div>;
   return (
     <>
-      <Hero page="security" eyebrow="Security / authority boundary" title="Authority is explicit, scoped, and inspectable." lede="Security on this site means specific implemented or contract-bound controls with visible limitations. It does not mean a certification badge, audit opinion, or compliance status that Clervo has not published evidence for." visual aside={aside} />
+      <Hero page="security" eyebrow="Security / authority boundary" title="Authority is explicit, scoped, and inspectable." lede="Security on this site means specific implemented or contract-bound controls with visible limitations. It does not mean a certification badge, audit opinion, or compliance status that Clervo has not published evidence for." visual aside={aside}>
+        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-security-controls">Inspect controls</a><Link className="s6-button s6-button--secondary" to="/proof">See failure proof</Link></div>
+      </Hero>
 
-      <Section eyebrow="Control surface" title="Eight boundaries, each with an evidence state." copy="A control can be live-bound, directly verified, bounded but incomplete, unresolved, or explicitly not claimed. Those states are not interchangeable.">
+      <Section id="s6-security-controls" eyebrow="Control surface" title="Eight boundaries, each with an evidence state." copy="A control can be live-bound, directly verified, bounded but incomplete, unresolved, or explicitly not claimed. Those states are not interchangeable.">
         <div className="s6-control-grid">
           {securityControls.map(([number, title, status, body]) => <article className="s6-control" key={number}><span>{number}</span><em className={status === 'verified' ? 's6-state s6-state--verified' : status === 'unresolved' ? 's6-state s6-state--unresolved' : 's6-state'}>{status}</em><h3>{title}</h3><p>{body}</p></article>)}
         </div>
@@ -433,9 +443,11 @@ function BenchmarksPage() {
   const current = benchmarkTopics[topic];
   return (
     <>
-      <Hero page="benchmarks" eyebrow="Benchmarks / method before number" title="No number without the method behind it." lede="Clervo does not publish comparative performance bars, latency claims, percentage improvements, or superiority statements without a reproducible public method and evidence bundle." />
+      <Hero page="benchmarks" eyebrow="Benchmarks / method before number" title="No number without the method behind it." lede="Clervo does not publish comparative performance bars, latency claims, percentage improvements, or superiority statements without a reproducible public method and evidence bundle.">
+        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-benchmark-record">Inspect benchmark format</a><Link className="s6-button s6-button--secondary" to="/proof">Inspect task proof</Link></div>
+      </Hero>
 
-      <Section eyebrow="Benchmark publication contract" title="Method first. Result only when earned." copy="The locked benchmark surface is preserved, but invented fixture bars are removed because no public measured benchmark authority is currently bound.">
+      <Section id="s6-benchmark-record" eyebrow="Benchmark publication contract" title="Method first. Result only when earned." copy="The locked benchmark surface is preserved, but invented fixture bars are removed because no public measured benchmark authority is currently bound.">
         <div className="s6-benchmark-shell">
           <div className="s6-benchmark-menu" role="tablist" aria-label="Benchmark topics">
             {(Object.keys(benchmarkTopics) as BenchmarkTopic[]).map((key) => <button key={key} role="tab" aria-selected={topic === key} className={topic === key ? 'is-active' : ''} onClick={() => setTopic(key)} type="button">{benchmarkTopics[key].label}</button>)}
@@ -485,8 +497,10 @@ function ChangelogPage() {
   ].sort((left, right) => right.at.localeCompare(left.at));
   return (
     <>
-      <Hero page="changelog" eyebrow="Changelog / evidence-backed chronology" title="What changed, what broke, and what replaces it." lede="Only dated evidence already present in canonical generated truth appears here. This is not an invented marketing release log, and current operational truth remains on Status." />
-      <Section eyebrow="Chronology" title="Evidence-backed changes only." copy="Each row carries both the evidence-backed event and the boundary of what that event does not prove.">
+      <Hero page="changelog" eyebrow="Changelog / evidence-backed chronology" title="What changed, what broke, and what replaces it." lede="Only dated evidence already present in canonical generated truth appears here. This is not an invented marketing release log, and current operational truth remains on Status.">
+        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-changelog-records">Read releases</a><Link className="s6-button s6-button--secondary" to="/status">Current status</Link></div>
+      </Hero>
+      <Section id="s6-changelog-records" eyebrow="Chronology" title="Evidence-backed changes only." copy="Each row carries both the evidence-backed event and the boundary of what that event does not prove.">
         <ol className="s6-changelog-list">
           {entries.map((entry) => <li key={`${entry.at}-${entry.type}`}><time dateTime={entry.at}>{entry.at.slice(0, 10)}</time><div><span className="s6-eyebrow">{entry.type}</span><h3>{entry.title}</h3><p>{entry.body}</p><small>{entry.boundary}</small></div><Link to="/status">current truth →</Link></li>)}
         </ol>
@@ -507,9 +521,11 @@ function LegalPage() {
   const current = legalTopics[topic];
   return (
     <>
-      <Hero page="legal" eyebrow="Legal / structural authority only" title="Terms should explain how the system actually works." lede="The Vault defines the policy surfaces the product eventually needs. It does not provide final legal entity, jurisdiction, governing law, privacy, retention, regulatory, or contractual authority—and this implementation does not invent them." />
+      <Hero page="legal" eyebrow="Legal / structural authority only" title="Terms should explain how the system actually works." lede="The Vault defines the policy surfaces the product eventually needs. It does not provide final legal entity, jurisdiction, governing law, privacy, retention, regulatory, or contractual authority—and this implementation does not invent them.">
+        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-legal-docs">Inspect legal structure</a><Link className="s6-button s6-button--secondary" to="/security">Security model</Link></div>
+      </Hero>
 
-      <Section eyebrow="Policy structure" title="Four documents. No pretend legal authority." copy="This is a structural implementation for review. It is not legal advice and must not be published as final terms without qualified counsel and exact company, payment, data, and jurisdiction facts.">
+      <Section id="s6-legal-docs" eyebrow="Policy structure" title="Four documents. No pretend legal authority." copy="This is a structural implementation for review. It is not legal advice and must not be published as final terms without qualified counsel and exact company, payment, data, and jurisdiction facts.">
         <div className="s6-legal-alert"><span className="s6-state s6-state--refused">structural draft only</span><strong>Not final legal terms.</strong><p>No legal entity, registered address, jurisdiction, governing law, regulatory status, retention period, or final privacy/payment promise is bound by this page.</p></div>
         <div className="s6-legal-shell">
           <div className="s6-legal-menu" role="tablist" aria-label="Legal document structures">

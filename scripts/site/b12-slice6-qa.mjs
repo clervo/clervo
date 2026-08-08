@@ -186,15 +186,16 @@ async function pageAudit(cdp, page, width) {
     const semantic=[...document.querySelectorAll('.b12-trust-support .s6-state')].filter(visible).map((el)=>({text:el.textContent?.trim(),color:getComputedStyle(el).color,dot:getComputedStyle(el,'::before').backgroundColor,insideVerified:Boolean(el.closest('[data-proof="verified"]'))}));
     const illegalGold=semantic.filter((x)=>((x.color===gold||x.dot===gold)&&!x.insideVerified));
     const text=(root?.textContent||'').replace(/\s+/g,' ');
+    const currentPage=root?.dataset.supportPage;
     const truth={
-      pricing: page!=='pricing'||(text.includes('Design fixture')&&text.includes('No wallet, payment, settlement, or receipt action occurs')&&text.includes('Customer revenue evidence')),
-      proof: page!=='proof'||(text.includes('owner-funded private proof')&&text.includes('does not establish customer revenue or demand')),
-      docs: page!=='docs'||(text.includes('Provider publication contract: not publicly bound')||text.includes('Set up Clervo using https://clervo.dev/skill.md')),
-      status: page!=='status'||text.includes('No canonical incident/history feed'),
-      security: page!=='security'||(text.includes('No SOC 2')&&text.includes('Independent certification')),
-      benchmarks: page!=='benchmarks'||(text.includes('No public measured benchmark record is bound')&&text.includes('No superiority number is published')),
-      changelog: page!=='changelog'||text.includes('Customer revenue and demand remain unproven'),
-      legal: page!=='legal'||(text.includes('Not final legal terms')&&text.includes('No legal entity')),
+      pricing: currentPage!=='pricing'||(text.includes('Design fixture')&&text.includes('No wallet, payment, settlement, or receipt action occurs')&&text.includes('Customer revenue evidence')),
+      proof: currentPage!=='proof'||(text.includes('owner-funded private proof')&&text.includes('does not establish customer revenue or demand')),
+      docs: currentPage!=='docs'||(text.includes('Provider publication contract: not publicly bound')||text.includes('Set up Clervo using https://clervo.dev/skill.md')),
+      status: currentPage!=='status'||text.includes('No canonical incident/history feed'),
+      security: currentPage!=='security'||(text.includes('No SOC 2')&&text.includes('Independent certification')),
+      benchmarks: currentPage!=='benchmarks'||(text.includes('No public measured benchmark record is bound')&&text.includes('No superiority number is published')),
+      changelog: currentPage!=='changelog'||text.includes('Customer revenue and demand remain unproven'),
+      legal: currentPage!=='legal'||(text.includes('Not final legal terms')&&text.includes('No legal entity')),
     };
     return {
       page: ${JSON.stringify(page)}, width: ${JSON.stringify(width)}, root:Boolean(root), header:Boolean(document.querySelector('.site-header')), footer:Boolean(document.querySelector('.site-footer')),
