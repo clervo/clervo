@@ -85,6 +85,9 @@
   font-size:.85rem;
 }
 
+/* Locked watermark stays inside the entry-choice stage; it must not leak upward over the command card. */
+.b12-start .hero-stage{overflow:hidden}
+
 @media(max-width:900px){
   .app:has(#main-content > .b12-start) .site-header__inner{
     grid-template-columns:1fr auto;
