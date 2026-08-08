@@ -1,4 +1,7 @@
-/* Slice 4 surgical mobile containment hardening. Scoped to the product router visual. */
+/* Slice 4 surgical conformance hardening. Scoped to Product/Catalog/family routes. */
+/* Locked v1.3 uses 440 display weight; the initial port's 470 widened the 390px Product hero to a fourth line. */
+.b12-slice4 h1,.b12-slice4 h2{font-weight:440}
+
 @media(max-width:700px){
   .b12-slice4 .s4-router-visual{min-width:0}
   .b12-slice4 .s4-apex-wrap{width:min(390px,100%);min-width:0}
