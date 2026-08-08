@@ -1,0 +1,5 @@
+/* Slice 4 surgical mobile containment hardening. Scoped to the product router visual. */
+@media(max-width:700px){
+  .b12-slice4 .s4-router-visual{min-width:0}
+  .b12-slice4 .s4-apex-wrap{width:min(390px,100%);min-width:0}
+}
