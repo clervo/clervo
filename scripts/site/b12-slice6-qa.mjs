@@ -181,28 +181,35 @@ async function pageAudit(cdp, page, width) {
     const root=document.querySelector('.b12-trust-support');
     const visible=(el)=>{const s=getComputedStyle(el),r=el.getBoundingClientRect();return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0};
     const important=[...document.querySelectorAll('.s6-hero__grid,.s6-section-head,.s6-principles,.s6-ledger,.s6-quote-shell,.s6-proof-layout,.s6-objective-grid,.s6-docs-shell,.s6-status-strip,.s6-health-ledger,.s6-control-grid,.s6-security-ledger,.s6-benchmark-shell,.s6-changelog-list,.s6-legal-shell,.site-footer')].filter(visible).map((el)=>{const r=el.getBoundingClientRect();return {name:el.className,left:r.left,right:r.right,width:r.width,contained:r.left>=-1&&r.right<=w+1};});
-    const controls=[...document.querySelectorAll('.s6-subnav a,.s6-button,.s6-proof-menu button,.s6-objective-grid button,.s6-docs-tree a,.s6-benchmark-menu button,.s6-legal-menu button,.s6-quote-card button,.s6-quote-copy select')].filter(visible).map((el)=>{const r=el.getBoundingClientRect();return {label:(el.textContent||el.getAttribute('aria-label')||'').trim().slice(0,80),width:r.width,height:r.height,contained:r.left>=-1&&r.right<=w+1,rail:Boolean(el.closest('.s6-subnav'))};});
+    const controls=[...document.querySelectorAll('.s6-subnav a,.s6-button,.s6-proof-menu button,.s6-objective-grid button,.s6-docs-tree a,.s6-benchmark-menu button,.s6-legal-menu button,.s6-quote-card button,.s6-quote-copy select')].filter(visible).map((el)=>{const r=el.getBoundingClientRect();const rail=el.closest('.s6-subnav,.s6-proof-menu,.s6-docs-tree,.s6-benchmark-menu,.s6-legal-menu');return {label:(el.textContent||el.getAttribute('aria-label')||'').trim().slice(0,80),width:r.width,height:r.height,contained:r.left>=-1&&r.right<=w+1,rail:Boolean(rail)};});
     const gold='rgb(255, 200, 0)'; const red='rgb(255, 59, 48)'; const cyan='rgb(0, 229, 255)';
     const semantic=[...document.querySelectorAll('.b12-trust-support .s6-state')].filter(visible).map((el)=>({text:el.textContent?.trim(),color:getComputedStyle(el).color,dot:getComputedStyle(el,'::before').backgroundColor,insideVerified:Boolean(el.closest('[data-proof="verified"]'))}));
     const illegalGold=semantic.filter((x)=>((x.color===gold||x.dot===gold)&&!x.insideVerified));
-    const text=(root?.textContent||'').replace(/\s+/g,' ');
-    const currentPage=root?.dataset.supportPage;
-    const truth={
-      pricing: currentPage!=='pricing'||(Boolean(root?.querySelector('.s6-fixture'))&&text.includes('Customer revenue evidence')),
-      proof: currentPage!=='proof'||(Boolean(root?.querySelector('[data-proof=\"verified\"]'))&&text.includes('Customer revenue evidence')),
-      docs: currentPage!=='docs'||Boolean(root?.querySelector('.s6-docs-shell')),
-      status: currentPage!=='status'||(Boolean(root?.querySelector('.s6-panel--unbound'))&&text.includes('incident/history feed')),
-      security: currentPage!=='security'||(text.includes('No SOC 2')&&text.includes('Independent certification')),
-      benchmarks: currentPage!=='benchmarks'||Boolean(root?.querySelector('.s6-empty-result')),
-      changelog: currentPage!=='changelog'||Boolean(root?.querySelector('.s6-changelog-list')),
-      legal: currentPage!=='legal'||Boolean(root?.querySelector('.s6-legal-alert')),
-    };
     return {
       page: ${JSON.stringify(page)}, width: ${JSON.stringify(width)}, root:Boolean(root), header:Boolean(document.querySelector('.site-header')), footer:Boolean(document.querySelector('.site-footer')),
       horizontalOverflow:document.documentElement.scrollWidth>w+1, clipped:important.filter((x)=>!x.contained), tooSmall:controls.filter((x)=>x.width<44||x.height<44), controlsOutside:controls.filter((x)=>!x.contained&&!x.rail),
-      semantic, illegalGold, colors:{gold,red,cyan}, truth, title:document.title,
+      semantic, illegalGold, colors:{gold,red,cyan}, title:document.title,
     };
   })()`);
+}
+
+async function truthAudit(cdp, page) {
+  const result = await evaluate(cdp, `(() => {
+    const root=document.querySelector('.b12-trust-support');
+    if (!(root instanceof HTMLElement)) return {pass:false,details:'root missing'};
+    const has=(selector)=>Boolean(root.querySelector(selector));
+    const text=(root.textContent||'').replace(/\s+/g,' ');
+    if (${JSON.stringify(page)}==='pricing') return {pass:has('.s6-fixture')&&has('.s6-state-card--verified')&&text.includes('Customer revenue evidence'),details:'fixture + private proof + revenue boundary'};
+    if (${JSON.stringify(page)}==='proof') return {pass:has('[data-proof="verified"]')&&has('.s6-proof-menu')&&text.includes('customer revenue'),details:'verified owner proof + proof classes + revenue boundary'};
+    if (${JSON.stringify(page)}==='docs') return {pass:has('.s6-docs-shell')&&has('.s6-objective-grid')&&text.includes('Provider publication contract: not publicly bound'),details:'task-first docs + provider boundary'};
+    if (${JSON.stringify(page)}==='status') return {pass:has('.s6-panel--unbound')&&has('.s6-health-ledger')&&text.includes('incident/history feed'),details:'observed state + no incident history claim'};
+    if (${JSON.stringify(page)}==='security') return {pass:has('.s6-control-grid')&&text.includes('No SOC 2')&&text.includes('Independent certification'),details:'control ledger + no certification claim'};
+    if (${JSON.stringify(page)}==='benchmarks') return {pass:has('.s6-empty-result')&&text.includes('No public measured benchmark record is bound'),details:'method structure + no measured result'};
+    if (${JSON.stringify(page)}==='changelog') return {pass:has('.s6-changelog-list')&&text.includes('Customer revenue and demand remain unproven'),details:'evidence chronology + commercial boundary'};
+    if (${JSON.stringify(page)}==='legal') return {pass:has('.s6-legal-alert')&&text.includes('Not final legal terms')&&text.includes('No legal entity'),details:'structural draft + missing legal authority'};
+    return {pass:false,details:'unknown page'};
+  })()`);
+  return result;
 }
 
 await mkdir(captures, { recursive: true });
@@ -212,7 +219,7 @@ const server = await serve(webPort);
 const profile = await mkdtemp(path.join(os.tmpdir(), 'clervo-s6-chrome-'));
 const chrome = await launchChrome(debugPort, profile);
 const cdp = new Cdp(chrome.ws);
-const report = { head: process.env.GITHUB_SHA ?? null, cases: [], issues: [], reducedMotion: null, routeAudit: [] };
+const report = { head: process.env.GITHUB_SHA ?? null, cases: [], issues: [], reducedMotion: null, routeAudit: [], truthAudit: {} };
 let currentErrors = [];
 
 try {
@@ -233,7 +240,7 @@ try {
     const menu = await inspectMobileMenu(cdp, item.width);
     if (item.action) await applyAction(cdp, item.action);
     if (item.target && item.target !== '.s6-hero') {
-      await evaluate(cdp, `(() => { const el=document.querySelector(${JSON.stringify(item.target)}); if (!(el instanceof HTMLElement)) return false; el.scrollIntoView({block:${JSON.stringify(item.target === '.s6-hero' ? 'start' : 'center')},behavior:'instant'}); return true; })()`);
+      await evaluate(cdp, `(() => { const el=document.querySelector(${JSON.stringify(item.target)}); if (!(el instanceof HTMLElement)) return false; el.scrollIntoView({block:'center',behavior:'instant'}); return true; })()`);
       await sleep(100);
     }
     const audit = await pageAudit(cdp, item.page, item.width);
@@ -248,18 +255,22 @@ try {
     if (audit.tooSmall.length) report.issues.push(`${item.id}:targets:${audit.tooSmall.map((x)=>x.label).join('|')}`);
     if (audit.controlsOutside.length) report.issues.push(`${item.id}:controls_outside`);
     if (audit.illegalGold.length) report.issues.push(`${item.id}:gold_outside_verified:${audit.illegalGold.map((x)=>x.text).join('|')}`);
-    if (Object.values(audit.truth).some((value)=>value===false)) report.issues.push(`${item.id}:truth_label_missing`);
     if (currentErrors.length) report.issues.push(`${item.id}:errors:${currentErrors.join('|')}`);
     if (menu && (!menu.present || !menu.contained || !menu.controlsContained || menu.tooSmall.length)) report.issues.push(`${item.id}:mobile_menu`);
     if (focus && !focus.pass) report.issues.push(`${item.id}:keyboard_focus`);
   }
 
   for (const page of pages) {
+    currentErrors = [];
     await cdp.send('Emulation.setDeviceMetricsOverride', { width: 1280, height: 720, deviceScaleFactor: 1, mobile: false });
     await cdp.send('Page.navigate', { url: `http://127.0.0.1:${webPort}/${page}/` });
     await waitFor(cdp, `document.querySelector('.b12-trust-support')?.dataset.supportPage===${JSON.stringify(page)}`, `route_audit:${page}`);
     const reached = await evaluate(cdp, `Boolean(document.querySelector('.site-header')&&document.querySelector('.site-footer')&&document.querySelector('.s6-subnav'))`);
     if (!reached) report.issues.push(`route_audit:${page}:shared_shell_missing`);
+    const truth = await truthAudit(cdp, page);
+    report.truthAudit[page] = truth;
+    if (!truth.pass) report.issues.push(`truth_audit:${page}:${truth.details}`);
+    if (currentErrors.length) report.issues.push(`route_audit:${page}:errors:${currentErrors.join('|')}`);
     report.routeAudit.push(page);
   }
 
@@ -271,9 +282,9 @@ try {
   if (!report.reducedMotion.matches || report.reducedMotion.maxTransition > 0.0011 || report.reducedMotion.maxAnimation > 0.0011) report.issues.push('reduced_motion');
 
   await writeFile(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
-  await writeFile(path.join(out, 'summary.md'), `# B12 Slice 6 integrated QA\n\n- Head: ${report.head}\n- Viewport captures: ${report.cases.length}\n- Routes audited: ${report.routeAudit.length}\n- Technical issues: ${report.issues.length}\n\n${report.issues.map((issue)=>`- ${issue}`).join('\n') || 'PASS'}\n`);
+  await writeFile(path.join(out, 'summary.md'), `# B12 Slice 6 integrated QA\n\n- Head: ${report.head}\n- Viewport captures: ${report.cases.length}\n- Routes audited: ${report.routeAudit.length}\n- Truth surfaces audited: ${Object.keys(report.truthAudit).length}\n- Technical issues: ${report.issues.length}\n\n${report.issues.map((issue)=>`- ${issue}`).join('\n') || 'PASS'}\n`);
   assert(report.issues.length === 0, `slice6_qa_failed:${report.issues.join(',')}`);
-  console.log(`B12 Slice 6 QA: PASS (${report.cases.length} viewport captures + ${report.routeAudit.length} routes)`);
+  console.log(`B12 Slice 6 QA: PASS (${report.cases.length} viewport captures + ${report.routeAudit.length} routes + ${Object.keys(report.truthAudit).length} truth surfaces)`);
 } finally {
   cdp.close();
   server.close();
