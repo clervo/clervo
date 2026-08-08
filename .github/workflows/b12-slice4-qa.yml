@@ -12,7 +12,7 @@ jobs:
   slice4:
     name: Build and integrated Slice 4 QA
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 8
     steps:
       - name: Check out Slice 4 branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -29,7 +29,7 @@ jobs:
       - name: Build real site
         run: npm run build --workspace @clervo/site
       - name: Run real integrated Slice 4 browser QA
-        run: node scripts/site/b12-slice4-qa.mjs
+        run: node scripts/site/b12-slice4-qa-fast.mjs
       - name: Record exact evidence head
         run: |
           git rev-parse HEAD > apps/site/qa-artifacts/slice4/HEAD.txt
