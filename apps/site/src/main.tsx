@@ -17,6 +17,7 @@ import './styles/shell.css';
 import './styles/home.css';
 import './styles/pages.css';
 import './styles/b12/start-shell.css';
+import './styles/b12/product-catalog-hardening.css';
 
 const root = document.getElementById('root');
 if (root === null) throw new Error('clervo_site_root_missing');
