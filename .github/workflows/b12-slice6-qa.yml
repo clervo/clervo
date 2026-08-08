@@ -30,6 +30,8 @@ jobs:
         run: |
           set -o pipefail
           npm run build --workspace @clervo/site 2>&1 | tee /tmp/b12-slice6-build.log
+      - name: Run real integrated Slice 6 browser QA
+        run: node scripts/site/b12-slice6-qa.mjs
       - name: Preserve build evidence
         if: always()
         run: |
