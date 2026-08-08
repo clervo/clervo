@@ -17,7 +17,7 @@ jobs:
   acceptance:
     name: Clean install and acceptance
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Check out full history for secret scanning
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -33,3 +33,74 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Run repository acceptance gate
         run: npm test
+      - name: Build B12 site for Slice 3 evidence
+        if: always()
+        run: npm run build --workspace @clervo/site
+      - name: Run integrated B12 browser QA
+        if: always()
+        run: npm run qa:b12 --workspace @clervo/site -- --use-built
+      - name: Verify reduced-motion behavior on real /start
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run preview --workspace @clervo/site -- --host 127.0.0.1 --port 4173 > /tmp/clervo-b12-preview.log 2>&1 &
+          PREVIEW_PID=$!
+          trap 'kill "$PREVIEW_PID" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 50); do
+            if curl -fsS http://127.0.0.1:4173/start/ >/dev/null; then break; fi
+            sleep .2
+          done
+          node --input-type=module <<'NODE'
+          import { chromium } from 'playwright';
+          import { mkdir, writeFile } from 'node:fs/promises';
+          const browser = await chromium.launch({ headless: true, executablePath: '/usr/bin/google-chrome' });
+          const page = await browser.newPage({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+          const consoleErrors = [];
+          const pageErrors = [];
+          page.on('console', (message) => { if (message.type() === 'error') consoleErrors.push(message.text()); });
+          page.on('pageerror', (error) => pageErrors.push(error.message));
+          await page.goto('http://127.0.0.1:4173/start/', { waitUntil: 'networkidle' });
+          await page.locator('[data-start-stage-button="2"]').click();
+          const reduced = await page.evaluate(() => {
+            const liquid = document.querySelector('.b12-start .clervo-liquid');
+            const progress = document.querySelector('.b12-start .progress-track i');
+            const root = document.querySelector('.b12-start');
+            if (!(liquid instanceof HTMLElement) || !(progress instanceof HTMLElement) || !(root instanceof HTMLElement)) return null;
+            const liquidStyle = getComputedStyle(liquid);
+            const progressStyle = getComputedStyle(progress);
+            return {
+              reducedMotionMatches: matchMedia('(prefers-reduced-motion: reduce)').matches,
+              liquidTransitionDuration: liquidStyle.transitionDuration,
+              liquidAnimationDuration: liquidStyle.animationDuration,
+              progressAnimationDuration: progressStyle.animationDuration,
+              progressTransitionDuration: progressStyle.transitionDuration,
+              progressBoxShadow: progressStyle.boxShadow,
+              rootScrollWidth: root.scrollWidth,
+              viewportWidth: document.documentElement.clientWidth,
+            };
+          });
+          if (reduced === null) throw new Error('reduced_motion_probe_missing_nodes');
+          if (!reduced.reducedMotionMatches) throw new Error('reduced_motion_media_not_active');
+          if (reduced.progressBoxShadow !== 'none') throw new Error(`reduced_motion_progress_shadow:${reduced.progressBoxShadow}`);
+          if (consoleErrors.length) throw new Error(`reduced_motion_console:${consoleErrors.join('|')}`);
+          if (pageErrors.length) throw new Error(`reduced_motion_page:${pageErrors.join('|')}`);
+          if (reduced.rootScrollWidth > reduced.viewportWidth + 1) throw new Error(`reduced_motion_overflow:${reduced.rootScrollWidth}/${reduced.viewportWidth}`);
+          await page.locator('[data-start-stage-button="3"]').click();
+          const verified = await page.locator('.stage-panel').evaluate((element) => ({ stage: element.getAttribute('data-stage-index'), tone: element.getAttribute('data-tone') }));
+          if (verified.stage !== '3' || verified.tone !== 'gold') throw new Error(`reduced_motion_verified_not_reached:${verified.stage}/${verified.tone}`);
+          await mkdir('apps/site/qa-artifacts/captures', { recursive: true });
+          await page.screenshot({ path: 'apps/site/qa-artifacts/captures/start-mobile-390-reduced-motion.png' });
+          await writeFile('apps/site/qa-artifacts/reduced-motion.json', JSON.stringify({ reduced, verified, consoleErrors, pageErrors }, null, 2) + '\n');
+          await browser.close();
+          NODE
+      - name: Upload B12 Slice 3 QA evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: b12-slice3-real-qa
+          path: |
+            apps/site/qa-artifacts
+            /tmp/clervo-b12-preview.log
+          if-no-files-found: warn
+          retention-days: 3
