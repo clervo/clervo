@@ -14,6 +14,17 @@ const out = path.join(root, 'apps/site/qa-artifacts/slice5');
 const captures = path.join(out, 'captures');
 const assert = (condition, code) => { if (!condition) throw new Error(code); };
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const mime = {
+  '.css': 'text/css; charset=utf-8',
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png',
+  '.svg': 'image/svg+xml',
+  '.webp': 'image/webp',
+  '.woff2': 'font/woff2',
+};
 
 async function freePort() {
   return new Promise((resolve, reject) => {
@@ -32,7 +43,7 @@ async function serve(port) {
       const info = await stat(file).catch(() => null);
       if (info?.isDirectory() || (info === null && path.extname(file) === '')) file = path.join(file, 'index.html');
       const body = await readFile(file);
-      response.writeHead(200, { 'cache-control': 'no-store', 'content-type': path.extname(file) === '.html' ? 'text/html; charset=utf-8' : 'application/octet-stream' });
+      response.writeHead(200, { 'cache-control': 'no-store', 'content-type': mime[path.extname(file)] ?? 'application/octet-stream' });
       response.end(body);
     } catch {
       response.writeHead(404).end('not found');
