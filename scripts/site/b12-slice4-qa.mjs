@@ -13,27 +13,27 @@ const captures = path.join(out, 'captures');
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const cases = [
-  { id: 'product-1600-entry', path: '/product', width: 1600, height: 900, kind: 'product', state: 'entry' },
-  { id: 'product-1600-verified', path: '/product', width: 1600, height: 900, kind: 'product', state: 'verified' },
-  { id: 'product-1024-entry', path: '/product', width: 1024, height: 768, kind: 'product', state: 'entry' },
-  { id: 'product-390-entry', path: '/product', width: 390, height: 844, kind: 'product', state: 'entry' },
-  { id: 'product-390-verified', path: '/product', width: 390, height: 844, kind: 'product', state: 'verified' },
-  { id: 'product-320-entry', path: '/product', width: 320, height: 700, kind: 'product', state: 'entry' },
-  { id: 'catalog-1600-entry', path: '/catalog', width: 1600, height: 900, kind: 'catalog', state: 'entry' },
-  { id: 'catalog-1600-filtered', path: '/catalog', width: 1600, height: 900, kind: 'catalog', state: 'filtered' },
-  { id: 'catalog-1024-entry', path: '/catalog', width: 1024, height: 768, kind: 'catalog', state: 'entry' },
-  { id: 'catalog-390-entry', path: '/catalog', width: 390, height: 844, kind: 'catalog', state: 'entry' },
-  { id: 'catalog-320-entry', path: '/catalog', width: 320, height: 700, kind: 'catalog', state: 'entry' },
-  { id: 'family-search-1600', path: '/products/search', width: 1600, height: 900, kind: 'family', family: 'Search' },
-  { id: 'family-ai-1024', path: '/products/ai', width: 1024, height: 768, kind: 'family', family: 'AI' },
-  { id: 'family-search-390', path: '/products/search', width: 390, height: 844, kind: 'family', family: 'Search' },
-  { id: 'family-ai-390', path: '/products/ai', width: 390, height: 844, kind: 'family', family: 'AI' },
-  { id: 'family-sandbox-390', path: '/products/sandbox', width: 390, height: 844, kind: 'family', family: 'Secure Sandbox' },
-  { id: 'family-rpc-390', path: '/products/rpc', width: 390, height: 844, kind: 'family', family: 'Multi-chain RPC' },
-  { id: 'family-prediction-390', path: '/products/prediction', width: 390, height: 844, kind: 'family', family: 'Prediction' },
-  { id: 'family-crypto-390', path: '/products/crypto', width: 390, height: 844, kind: 'family', family: 'Crypto Intelligence' },
-  { id: 'family-prediction-320', path: '/products/prediction', width: 320, height: 700, kind: 'family', family: 'Prediction' },
-];
+  ['product-1600-entry', '/product', 1600, 900, 'product', 'entry'],
+  ['product-1600-verified', '/product', 1600, 900, 'product', 'verified'],
+  ['product-1024-entry', '/product', 1024, 768, 'product', 'entry'],
+  ['product-390-entry', '/product', 390, 844, 'product', 'entry'],
+  ['product-390-verified', '/product', 390, 844, 'product', 'verified'],
+  ['product-320-entry', '/product', 320, 700, 'product', 'entry'],
+  ['catalog-1600-entry', '/catalog', 1600, 900, 'catalog', 'entry'],
+  ['catalog-1600-filtered', '/catalog', 1600, 900, 'catalog', 'filtered'],
+  ['catalog-1024-entry', '/catalog', 1024, 768, 'catalog', 'entry'],
+  ['catalog-390-entry', '/catalog', 390, 844, 'catalog', 'entry'],
+  ['catalog-320-entry', '/catalog', 320, 700, 'catalog', 'entry'],
+  ['family-search-1600', '/products/search', 1600, 900, 'family', 'Search'],
+  ['family-ai-1024', '/products/ai', 1024, 768, 'family', 'AI'],
+  ['family-search-390', '/products/search', 390, 844, 'family', 'Search'],
+  ['family-ai-390', '/products/ai', 390, 844, 'family', 'AI'],
+  ['family-sandbox-390', '/products/sandbox', 390, 844, 'family', 'Secure Sandbox'],
+  ['family-rpc-390', '/products/rpc', 390, 844, 'family', 'Multi-chain RPC'],
+  ['family-prediction-390', '/products/prediction', 390, 844, 'family', 'Prediction'],
+  ['family-crypto-390', '/products/crypto', 390, 844, 'family', 'Crypto Intelligence'],
+  ['family-prediction-320', '/products/prediction', 320, 700, 'family', 'Prediction'],
+].map(([id, route, width, height, kind, state]) => ({ id, route, width, height, kind, state }));
 
 async function freePort() {
   return new Promise((resolve, reject) => {
@@ -44,13 +44,10 @@ async function freePort() {
   });
 }
 
-async function waitForHttp(url, timeout = 15_000) {
-  const end = Date.now() + timeout;
-  while (Date.now() < end) {
-    try {
-      const response = await fetch(url);
-      if (response.ok) return;
-    } catch { /* retry */ }
+async function waitForHttp(url) {
+  const deadline = Date.now() + 15_000;
+  while (Date.now() < deadline) {
+    try { if ((await fetch(url)).ok) return; } catch { /* retry */ }
     await sleep(100);
   }
   throw new Error(`preview_timeout:${url}`);
@@ -63,12 +60,10 @@ async function stop(child) {
   if (child.exitCode === null) child.kill('SIGKILL');
 }
 
-function unique(values) { return [...new Set(values)]; }
-
 async function inspectMenu(page, width) {
   if (width > 900) return null;
   const trigger = page.locator('.site-header__menu');
-  if (await trigger.count() === 0 || !(await trigger.isVisible())) return { present: false };
+  if (!(await trigger.isVisible())) return { present: false };
   await trigger.click();
   const panel = page.locator('.mobile-nav__panel');
   await panel.waitFor({ state: 'visible' });
@@ -84,10 +79,9 @@ async function inspectMenu(page, width) {
       })
       .map((node) => {
         const box = node.getBoundingClientRect();
-        return { text: (node.textContent ?? '').trim().replace(/\s+/gu, ' ').slice(0, 80), width: box.width, height: box.height, left: box.left, right: box.right };
+        return { width: box.width, height: box.height, left: box.left, right: box.right };
       });
     return {
-      rect: { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom },
       contained: rect.left >= -1 && rect.right <= viewportWidth + 1 && rect.top >= -1 && rect.bottom <= viewportHeight + 1,
       controlsContained: controls.every((item) => item.left >= -1 && item.right <= viewportWidth + 1),
       tooSmall: controls.filter((item) => item.width < 44 || item.height < 44),
@@ -98,100 +92,105 @@ async function inspectMenu(page, width) {
   return { present: true, ...result };
 }
 
-async function inspectPage(page, item) {
-  return page.evaluate(({ kind, family }) => {
+async function inspectPage(page, expectedFamily) {
+  return page.evaluate((family) => {
     const root = document.querySelector('.b12-slice4');
     if (!(root instanceof HTMLElement)) return { missingRoot: true };
-    const doc = document.documentElement;
-    const body = document.body;
-    const width = doc.clientWidth;
+    const width = document.documentElement.clientWidth;
+    const pageWidth = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
     const rootRect = root.getBoundingClientRect();
-    const standalone = [...root.querySelectorAll('button,input,select,.b12-button,.s4-family-row,.s4-family-strip a,.s4-back-link')]
+    const targets = [...root.querySelectorAll('button,input,select,.b12-button,.s4-family-row,.s4-family-strip a,.s4-back-link')]
       .filter((node) => {
-        const rect = node.getBoundingClientRect();
+        const box = node.getBoundingClientRect();
         const style = getComputedStyle(node);
-        return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+        return style.display !== 'none' && style.visibility !== 'hidden' && box.width > 0 && box.height > 0;
       })
       .map((node) => {
-        const rect = node.getBoundingClientRect();
-        return { tag: node.tagName, text: (node.textContent ?? '').trim().replace(/\s+/gu, ' ').slice(0, 70), width: rect.width, height: rect.height, left: rect.left, right: rect.right };
+        const box = node.getBoundingClientRect();
+        return { text: (node.textContent ?? '').trim().replace(/\s+/gu, ' ').slice(0, 60), width: box.width, height: box.height, left: box.left, right: box.right };
       });
-    const horizontalOffenders = [...root.querySelectorAll('*')]
+    const offenders = [...root.querySelectorAll('*')]
       .filter((node) => {
         if (!(node instanceof HTMLElement)) return false;
+        if (node.closest('.s4-search-presets')) return false;
         const style = getComputedStyle(node);
-        if (style.position === 'fixed' || node.closest('.s4-search-presets')) return false;
-        const rect = node.getBoundingClientRect();
-        return rect.width > 1 && (rect.left < -1 || rect.right > width + 1);
+        if (style.position === 'fixed') return false;
+        const box = node.getBoundingClientRect();
+        return box.width > 1 && (box.left < -1 || box.right > width + 1);
       })
       .slice(0, 20)
-      .map((node) => ({ selector: `${node.tagName.toLowerCase()}.${node.className}`, rect: node.getBoundingClientRect().toJSON() }));
+      .map((node) => ({ tag: node.tagName, className: String(node.className), rect: node.getBoundingClientRect().toJSON() }));
     const heading = root.querySelector('h1')?.textContent?.trim() ?? '';
     return {
-      kind,
-      heading,
-      familyExpected: family ?? null,
-      familyMatch: family == null ? null : heading === family,
-      documentWidth: Math.max(doc.scrollWidth, body.scrollWidth),
+      pageWidth,
       viewportWidth: width,
-      horizontalOverflow: Math.max(doc.scrollWidth, body.scrollWidth) > width + 1,
+      horizontalOverflow: pageWidth > width + 1,
       rootContained: rootRect.left >= -1 && rootRect.right <= width + 1,
-      horizontalOffenders,
-      tooSmallTargets: standalone.filter((item) => item.width < 44 || item.height < 44),
+      offenders,
+      tooSmallTargets: targets.filter((item) => item.width < 44 || item.height < 44),
+      heading,
+      familyMatch: family == null ? null : heading === family,
     };
-  }, { kind: item.kind, family: item.family ?? null });
+  }, expectedFamily ?? null);
 }
 
 async function runProductFixture(page) {
   const trace = [];
-  const state = async () => page.locator('.b12-product').getAttribute('data-router-state');
-  trace.push(await state());
+  const read = () => page.locator('.b12-product').getAttribute('data-router-state');
+  trace.push(await read());
   await page.getByRole('button', { name: 'Run fixture' }).click();
-  const end = Date.now() + 5_000;
-  while (Date.now() < end) {
-    const next = await state();
-    if (trace.at(-1) !== next) trace.push(next);
-    if (next === 'verified') break;
+  const deadline = Date.now() + 5000;
+  while (Date.now() < deadline) {
+    const current = await read();
+    if (trace.at(-1) !== current) trace.push(current);
+    if (current === 'verified') break;
     await sleep(25);
   }
-  if (trace.at(-1) !== 'verified') throw new Error(`slice4_product_verified_timeout:${trace.join('>')}`);
+  if (trace.at(-1) !== 'verified') throw new Error(`product_verified_timeout:${trace.join('>')}`);
   const semantics = await page.evaluate(() => {
-    const stroke = (selector) => {
+    const style = (selector) => {
       const node = document.querySelector(selector);
-      return node instanceof SVGElement ? getComputedStyle(node).stroke : null;
+      return node instanceof Element ? getComputedStyle(node) : null;
     };
-    const opacity = (selector) => {
-      const node = document.querySelector(selector);
-      return node instanceof Element ? getComputedStyle(node).opacity : null;
-    };
-    const dot = document.querySelector('.s4-router-status i');
     return {
-      requestStroke: stroke('.b12-product .b12-request .b12-signal-line'),
-      qualifyStroke: stroke('.b12-product .b12-qualify .b12-signal-line'),
-      outcomeStroke: stroke('.b12-product .b12-outcome .b12-signal-line'),
-      outcomeCircleOpacity: opacity('.b12-product .b12-outcome circle'),
-      statusDot: dot instanceof HTMLElement ? getComputedStyle(dot).backgroundColor : null,
+      requestStroke: style('.b12-request .b12-signal-line')?.stroke ?? null,
+      qualifyStroke: style('.b12-qualify .b12-signal-line')?.stroke ?? null,
+      outcomeStroke: style('.b12-outcome .b12-signal-line')?.stroke ?? null,
+      outcomeOpacity: style('.b12-outcome circle')?.opacity ?? null,
+      statusDot: style('.s4-router-status i')?.backgroundColor ?? null,
     };
   });
-  return { trace: unique(trace.filter(Boolean)), semantics };
+  return { trace: [...new Set(trace.filter(Boolean))], semantics };
+}
+
+async function filterCatalogDeterministically(page) {
+  const cards = page.locator('.s4-operation-card');
+  const initial = await cards.count();
+  if (initial < 1) throw new Error('catalog_has_no_observed_routes');
+  const exactRoute = (await cards.first().locator('h3').textContent())?.trim();
+  if (!exactRoute) throw new Error('catalog_first_route_missing_identity');
+  await page.locator('[data-slice4-search]').fill(exactRoute);
+  await page.waitForFunction((route) => {
+    const headings = [...document.querySelectorAll('.s4-operation-card h3')].map((node) => node.textContent?.trim());
+    return headings.length > 0 && headings.every((heading) => heading === route);
+  }, exactRoute);
+  return { query: exactRoute, shown: await cards.count() };
 }
 
 await rm(out, { recursive: true, force: true });
 await mkdir(captures, { recursive: true });
 const port = await freePort();
-const preview = spawn('npm', ['run', 'preview', '--workspace', '@clervo/site', '--', '--host', '127.0.0.1', '--port', String(port)], {
-  cwd: root,
-  stdio: ['ignore', 'pipe', 'pipe'],
-});
+const preview = spawn('npm', ['run', 'preview', '--workspace', '@clervo/site', '--', '--host', '127.0.0.1', '--port', String(port)], { cwd: root, stdio: ['ignore', 'pipe', 'pipe'] });
 let previewLog = '';
 preview.stdout.on('data', (chunk) => { previewLog += String(chunk); });
 preview.stderr.on('data', (chunk) => { previewLog += String(chunk); });
 
-const report = { generatedAt: new Date().toISOString(), port, cases: [], reducedMotion: null, failures: [] };
+const report = { generatedAt: new Date().toISOString(), cases: [], reducedMotion: null, failures: [] };
 let browser;
 try {
   await waitForHttp(`http://127.0.0.1:${port}/product/`);
   browser = await chromium.launch({ headless: true, executablePath: process.env.CHROME_PATH || '/usr/bin/google-chrome' });
+
   for (const item of cases) {
     const context = await browser.newContext({ viewport: { width: item.width, height: item.height } });
     const page = await context.newPage();
@@ -199,50 +198,36 @@ try {
     const pageErrors = [];
     page.on('console', (message) => { if (message.type() === 'error') consoleErrors.push(message.text()); });
     page.on('pageerror', (error) => pageErrors.push(error.message));
-    await page.goto(`http://127.0.0.1:${port}${item.path}`, { waitUntil: 'networkidle' });
+    await page.goto(`http://127.0.0.1:${port}${item.route}`, { waitUntil: 'networkidle' });
     await page.locator('.b12-slice4').waitFor({ state: 'visible' });
 
     let interaction = null;
     if (item.kind === 'product') {
-      const idleGold = await page.evaluate(() => {
-        const line = document.querySelector('.b12-product .b12-outcome .b12-signal-line');
-        const circle = document.querySelector('.b12-product .b12-outcome circle');
-        return {
-          lineTransform: line instanceof SVGElement ? getComputedStyle(line).transform : null,
-          circleOpacity: circle instanceof SVGElement ? getComputedStyle(circle).opacity : null,
-        };
-      });
-      interaction = { idleGold };
+      interaction = { idleOutcomeOpacity: await page.locator('.b12-outcome circle').evaluate((node) => getComputedStyle(node).opacity) };
       if (item.state === 'verified') interaction = { ...interaction, ...(await runProductFixture(page)) };
-    } else if (item.kind === 'catalog') {
-      await page.locator('[data-slice4-search]').focus();
-      if (item.state === 'filtered') {
-        await page.locator('[data-slice4-search]').fill('search');
-        await page.waitForFunction(() => document.querySelectorAll('.s4-operation-card').length > 0);
-        interaction = { query: 'search', shown: await page.locator('.s4-operation-card').count() };
-      }
+    } else if (item.kind === 'catalog' && item.state === 'filtered') {
+      interaction = await filterCatalogDeterministically(page);
     }
 
     const menu = await inspectMenu(page, item.width);
-    const inspection = await inspectPage(page, item);
+    const inspection = await inspectPage(page, item.kind === 'family' ? item.state : null);
     const screenshot = path.join(captures, `${item.id}.png`);
     const fullPage = path.join(captures, `${item.id}--full-page.png`);
     await page.screenshot({ path: screenshot });
     await page.screenshot({ path: fullPage, fullPage: true });
-    const result = { ...item, consoleErrors, pageErrors, menu, inspection, interaction, screenshot: path.relative(root, screenshot), fullPage: path.relative(root, fullPage) };
-    report.cases.push(result);
+    report.cases.push({ ...item, consoleErrors, pageErrors, menu, inspection, interaction, screenshot: path.relative(root, screenshot), fullPage: path.relative(root, fullPage) });
+
     if (consoleErrors.length) report.failures.push(`${item.id}:console`);
     if (pageErrors.length) report.failures.push(`${item.id}:page`);
-    if (inspection.missingRoot || inspection.horizontalOverflow || !inspection.rootContained || inspection.horizontalOffenders.length) report.failures.push(`${item.id}:containment`);
+    if (inspection.missingRoot || inspection.horizontalOverflow || !inspection.rootContained || inspection.offenders.length) report.failures.push(`${item.id}:containment`);
     if (inspection.tooSmallTargets.length) report.failures.push(`${item.id}:targets`);
-    if (inspection.familyMatch === false) report.failures.push(`${item.id}:family_name`);
+    if (inspection.familyMatch === false) report.failures.push(`${item.id}:family-name`);
     if (menu && (!menu.present || !menu.contained || !menu.controlsContained || menu.tooSmall.length)) report.failures.push(`${item.id}:menu`);
-    if (item.kind === 'product' && item.state === 'entry' && interaction?.idleGold?.circleOpacity !== '0') report.failures.push(`${item.id}:gold_before_verify`);
+    if (item.kind === 'product' && item.state === 'entry' && interaction.idleOutcomeOpacity !== '0') report.failures.push(`${item.id}:gold-before-verify`);
     if (item.kind === 'product' && item.state === 'verified') {
-      const expectedTrace = ['idle', 'request', 'qualify', 'verified'];
-      if (JSON.stringify(interaction?.trace) !== JSON.stringify(expectedTrace)) report.failures.push(`${item.id}:trace`);
-      const sem = interaction?.semantics;
-      if (sem?.requestStroke !== 'rgb(255, 59, 48)' || sem?.qualifyStroke !== 'rgb(0, 229, 255)' || sem?.outcomeStroke !== 'rgb(255, 200, 0)' || sem?.outcomeCircleOpacity !== '1' || sem?.statusDot !== 'rgb(255, 200, 0)') report.failures.push(`${item.id}:semantics`);
+      if (JSON.stringify(interaction.trace) !== JSON.stringify(['idle', 'request', 'qualify', 'verified'])) report.failures.push(`${item.id}:trace`);
+      const sem = interaction.semantics;
+      if (sem.requestStroke !== 'rgb(255, 59, 48)' || sem.qualifyStroke !== 'rgb(0, 229, 255)' || sem.outcomeStroke !== 'rgb(255, 200, 0)' || sem.outcomeOpacity !== '1' || sem.statusDot !== 'rgb(255, 200, 0)') report.failures.push(`${item.id}:state-semantics`);
     }
     await context.close();
   }
@@ -259,14 +244,13 @@ try {
   const reduced = await reducedPage.evaluate(() => {
     const root = document.querySelector('.b12-slice4');
     const liquid = document.querySelector('.b12-slice4 .b12-liquid');
-    if (!(root instanceof HTMLElement) || !(liquid instanceof HTMLElement)) return null;
-    return {
+    return root instanceof HTMLElement && liquid instanceof HTMLElement ? {
       media: matchMedia('(prefers-reduced-motion: reduce)').matches,
       transition: getComputedStyle(liquid).transitionDuration,
       animation: getComputedStyle(liquid).animationDuration,
       state: document.querySelector('.b12-product')?.getAttribute('data-router-state'),
       overflow: root.scrollWidth > document.documentElement.clientWidth + 1,
-    };
+    } : null;
   });
   await reducedPage.screenshot({ path: path.join(captures, 'product-390-reduced-motion.png') });
   report.reducedMotion = { reduced, consoleErrors: reducedConsole, pageErrors: reducedErrors };
@@ -277,18 +261,7 @@ try {
   await stop(preview);
   await writeFile(path.join(out, 'preview.log'), previewLog);
   await writeFile(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
-  const summary = [
-    '# B12 Slice 4 integrated QA',
-    '',
-    `Cases: ${report.cases.length}`,
-    `Viewport captures: ${report.cases.length}`,
-    `Full-page captures: ${report.cases.length}`,
-    `Failures: ${report.failures.length}`,
-    ...(report.failures.length ? report.failures.map((failure) => `- ${failure}`) : ['- none']),
-    '',
-    'Owner/control-room visual approval is still required.',
-  ].join('\n');
-  await writeFile(path.join(out, 'summary.md'), `${summary}\n`);
+  await writeFile(path.join(out, 'summary.md'), `# B12 Slice 4 integrated QA\n\nCases: ${report.cases.length}\nViewport captures: ${report.cases.length}\nFull-page captures: ${report.cases.length}\nFailures: ${report.failures.length}\n${report.failures.length ? report.failures.map((failure) => `- ${failure}`).join('\n') : '- none'}\n\nOwner/control-room visual approval is still required.\n`);
 }
 
 if (report.failures.length) {
