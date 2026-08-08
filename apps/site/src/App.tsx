@@ -5,6 +5,7 @@ import { Instrument } from './components/Instrument';
 import { LifecycleRail } from './components/Navigation';
 import { SiteFooter, SiteHeader } from './components/Shell';
 import { useActivation } from './experience';
+import { isCanonicalOperationId } from './operation';
 import { Docs } from './pages/Docs';
 import { Build } from './pages/Build';
 import { Capability } from './pages/Capability';
@@ -13,6 +14,7 @@ import { Changelog } from './pages/Changelog';
 import { Compare } from './pages/Compare';
 import { Home } from './pages/Home';
 import { Guide, type GuideTopic } from './pages/Guide';
+import { Operation } from './pages/Operation';
 import { Proof } from './pages/Proof';
 import { ProofLab } from './pages/ProofLab';
 import { Product } from './pages/Product';
@@ -56,6 +58,7 @@ export function App() {
     if (pathname === '/') return;
     if (pathname.startsWith('/proof-lab')) return;
     else if (pathname === '/proof') setPhase('receipt');
+    else if (pathname.startsWith('/operations/')) setPhase('qualified');
     else if (pathname.startsWith('/docs')) setPhase(activation.receiptInspected ? 'receipt' : 'qualified');
     else if (pathname.startsWith('/products/')) setPhase(pathname === '/products/search' ? 'qualified' : 'risk');
     else if (pathname.startsWith('/product') || pathname === '/platform') setPhase('qualified');
@@ -103,7 +106,9 @@ export function App() {
       '/docs/catalog': 'Capability catalog guide',
       '/trust': 'Trust center',
     };
-    const routeTitle = exactTitles[pathname] ?? 'Route not found';
+    const operationMatch = pathname.match(/^\/operations\/([^/]+)$/u);
+    const routeTitle = exactTitles[pathname]
+      ?? (operationMatch?.[1] !== undefined && isCanonicalOperationId(operationMatch[1]) ? `Operation ${operationMatch[1]}` : 'Route not found');
     document.title = `${routeTitle} — Clervo`;
     let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (canonical === null) {
@@ -124,6 +129,10 @@ export function App() {
     if (pathname === '/start') return <Start onPhase={updatePhase} />;
     if (pathname === '/catalog') return <Catalog onPhase={updatePhase} />;
     if (pathname === '/research') return <Research onPhase={updatePhase} />;
+    const operationMatch = pathname.match(/^\/operations\/([^/]+)$/u);
+    if (operationMatch?.[1] !== undefined && isCanonicalOperationId(operationMatch[1])) {
+      return <Operation operationId={operationMatch[1]} onPhase={updatePhase} />;
+    }
     const capabilityMatch = pathname.match(/^\/products\/([^/]+)$/u);
     if (capabilityMatch?.[1] !== undefined && ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto'].includes(capabilityMatch[1])) {
       return <Capability routeId={capabilityMatch[1]} onPhase={updatePhase} />;
