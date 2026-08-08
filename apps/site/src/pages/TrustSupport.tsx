@@ -416,7 +416,7 @@ function SecurityPage() {
 
       <Section id="s6-security-controls" eyebrow="Control surface" title="Eight boundaries, each with an evidence state." copy="A control can be live-bound, directly verified, bounded but incomplete, unresolved, or explicitly not claimed. Those states are not interchangeable.">
         <div className="s6-control-grid">
-          {securityControls.map(([number, title, status, body]) => <article className="s6-control" key={number}><span>{number}</span><em className={status === 'verified' ? 's6-state s6-state--verified' : status === 'unresolved' ? 's6-state s6-state--unresolved' : 's6-state'}>{status}</em><h3>{title}</h3><p>{body}</p></article>)}
+          {securityControls.map(([number, title, status, body]) => <article className="s6-control" data-proof={status === 'verified' ? 'verified' : undefined} key={number}><span>{number}</span><em className={status === 'verified' ? 's6-state s6-state--verified' : status === 'unresolved' ? 's6-state s6-state--unresolved' : 's6-state'}>{status}</em><h3>{title}</h3><p>{body}</p></article>)}
         </div>
       </Section>
 

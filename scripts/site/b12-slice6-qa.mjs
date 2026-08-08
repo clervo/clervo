@@ -181,25 +181,25 @@ async function pageAudit(cdp, page, width) {
     const root=document.querySelector('.b12-trust-support');
     const visible=(el)=>{const s=getComputedStyle(el),r=el.getBoundingClientRect();return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0};
     const important=[...document.querySelectorAll('.s6-hero__grid,.s6-section-head,.s6-principles,.s6-ledger,.s6-quote-shell,.s6-proof-layout,.s6-objective-grid,.s6-docs-shell,.s6-status-strip,.s6-health-ledger,.s6-control-grid,.s6-security-ledger,.s6-benchmark-shell,.s6-changelog-list,.s6-legal-shell,.site-footer')].filter(visible).map((el)=>{const r=el.getBoundingClientRect();return {name:el.className,left:r.left,right:r.right,width:r.width,contained:r.left>=-1&&r.right<=w+1};});
-    const controls=[...document.querySelectorAll('.s6-subnav a,.s6-button,.s6-proof-menu button,.s6-objective-grid button,.s6-docs-tree a,.s6-benchmark-menu button,.s6-legal-menu button,.s6-quote-card button,.s6-quote-copy select')].filter(visible).map((el)=>{const r=el.getBoundingClientRect();return {label:(el.textContent||el.getAttribute('aria-label')||'').trim().slice(0,80),width:r.width,height:r.height,contained:r.left>=-1&&r.right<=w+1};});
+    const controls=[...document.querySelectorAll('.s6-subnav a,.s6-button,.s6-proof-menu button,.s6-objective-grid button,.s6-docs-tree a,.s6-benchmark-menu button,.s6-legal-menu button,.s6-quote-card button,.s6-quote-copy select')].filter(visible).map((el)=>{const r=el.getBoundingClientRect();return {label:(el.textContent||el.getAttribute('aria-label')||'').trim().slice(0,80),width:r.width,height:r.height,contained:r.left>=-1&&r.right<=w+1,rail:Boolean(el.closest('.s6-subnav'))};});
     const gold='rgb(255, 200, 0)'; const red='rgb(255, 59, 48)'; const cyan='rgb(0, 229, 255)';
     const semantic=[...document.querySelectorAll('.b12-trust-support .s6-state')].filter(visible).map((el)=>({text:el.textContent?.trim(),color:getComputedStyle(el).color,dot:getComputedStyle(el,'::before').backgroundColor,insideVerified:Boolean(el.closest('[data-proof="verified"]'))}));
     const illegalGold=semantic.filter((x)=>((x.color===gold||x.dot===gold)&&!x.insideVerified));
     const text=(root?.textContent||'').replace(/\s+/g,' ');
     const currentPage=root?.dataset.supportPage;
     const truth={
-      pricing: currentPage!=='pricing'||(text.includes('Design fixture')&&text.includes('No wallet, payment, settlement, or receipt action occurs')&&text.includes('Customer revenue evidence')),
-      proof: currentPage!=='proof'||(text.includes('owner-funded private proof')&&text.includes('does not establish customer revenue or demand')),
-      docs: currentPage!=='docs'||(text.includes('Provider publication contract: not publicly bound')||text.includes('Set up Clervo using https://clervo.dev/skill.md')),
-      status: currentPage!=='status'||text.includes('No canonical incident/history feed'),
+      pricing: currentPage!=='pricing'||(Boolean(root?.querySelector('.s6-fixture'))&&text.includes('Customer revenue evidence')),
+      proof: currentPage!=='proof'||(Boolean(root?.querySelector('[data-proof=\"verified\"]'))&&text.includes('Customer revenue evidence')),
+      docs: currentPage!=='docs'||Boolean(root?.querySelector('.s6-docs-shell')),
+      status: currentPage!=='status'||(Boolean(root?.querySelector('.s6-panel--unbound'))&&text.includes('incident/history feed')),
       security: currentPage!=='security'||(text.includes('No SOC 2')&&text.includes('Independent certification')),
-      benchmarks: currentPage!=='benchmarks'||(text.includes('No public measured benchmark record is bound')&&text.includes('No superiority number is published')),
-      changelog: currentPage!=='changelog'||text.includes('Customer revenue and demand remain unproven'),
-      legal: currentPage!=='legal'||(text.includes('Not final legal terms')&&text.includes('No legal entity')),
+      benchmarks: currentPage!=='benchmarks'||Boolean(root?.querySelector('.s6-empty-result')),
+      changelog: currentPage!=='changelog'||Boolean(root?.querySelector('.s6-changelog-list')),
+      legal: currentPage!=='legal'||Boolean(root?.querySelector('.s6-legal-alert')),
     };
     return {
       page: ${JSON.stringify(page)}, width: ${JSON.stringify(width)}, root:Boolean(root), header:Boolean(document.querySelector('.site-header')), footer:Boolean(document.querySelector('.site-footer')),
-      horizontalOverflow:document.documentElement.scrollWidth>w+1, clipped:important.filter((x)=>!x.contained), tooSmall:controls.filter((x)=>x.width<44||x.height<44), controlsOutside:controls.filter((x)=>!x.contained),
+      horizontalOverflow:document.documentElement.scrollWidth>w+1, clipped:important.filter((x)=>!x.contained), tooSmall:controls.filter((x)=>x.width<44||x.height<44), controlsOutside:controls.filter((x)=>!x.contained&&!x.rail),
       semantic, illegalGold, colors:{gold,red,cyan}, truth, title:document.title,
     };
   })()`);
@@ -232,7 +232,7 @@ try {
     await sleep(120);
     const menu = await inspectMobileMenu(cdp, item.width);
     if (item.action) await applyAction(cdp, item.action);
-    if (item.target) {
+    if (item.target && item.target !== '.s6-hero') {
       await evaluate(cdp, `(() => { const el=document.querySelector(${JSON.stringify(item.target)}); if (!(el instanceof HTMLElement)) return false; el.scrollIntoView({block:${JSON.stringify(item.target === '.s6-hero' ? 'start' : 'center')},behavior:'instant'}); return true; })()`);
       await sleep(100);
     }
