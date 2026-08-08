@@ -138,3 +138,22 @@
 @media(prefers-reduced-motion:reduce){
   .b12-start *,.b12-start *::before,.b12-start *::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.b12-start .progress-track i{box-shadow:none}.b12-start .clervo-liquid:hover,.b12-start .clervo-liquid:active{transform:none!important}
 }
+
+/* Locked Slice-3 hero watermark. Reuse the generated canonical Hollow Apex asset;
+ * never redraw identity geometry in page CSS or markup. */
+.b12-start .hero-stage{position:relative;isolation:isolate}
+.b12-start .hero-stage::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  right:-4%;
+  top:-15%;
+  width:60%;
+  aspect-ratio:1;
+  background:url("/assets/brand/clervo-apex-mono-light.svg") center/contain no-repeat;
+  opacity:.22;
+  filter:blur(.1px);
+  pointer-events:none;
+}
+.b12-start .hero-stage .entry-shell{position:relative;z-index:1}
+@media(max-width:1100px){.b12-start .hero-stage::before{right:-4%;top:-28%}}
