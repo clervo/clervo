@@ -10,19 +10,16 @@ import { Docs } from './pages/Docs';
 import { Build } from './pages/Build';
 import { Capability } from './pages/Capability';
 import { Catalog } from './pages/Catalog';
-import { Changelog } from './pages/Changelog';
 import { Compare } from './pages/Compare';
 import { Home } from './pages/Home';
 import { Guide, type GuideTopic } from './pages/Guide';
 import { Operation } from './pages/Operation';
-import { Proof } from './pages/Proof';
 import { ProofLab } from './pages/ProofLab';
 import { Product } from './pages/Product';
 import { Research } from './pages/Research';
 import { Start } from './pages/Start';
-import { Status } from './pages/Status';
-import { Trust, type TrustTopic } from './pages/Trust';
 import { TrustOverview } from './pages/TrustOverview';
+import { TrustSupport, type TrustSupportPage } from './pages/TrustSupport';
 import { observedTruth, publicApiCallable, type ExperiencePhase } from './product';
 
 const liveFamilyCount = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
@@ -45,6 +42,10 @@ function NotFound() {
     </section>
   );
 }
+
+const trustSupportPages = new Set<TrustSupportPage>([
+  'pricing', 'proof', 'docs', 'status', 'security', 'benchmarks', 'changelog', 'legal',
+]);
 
 export function App() {
   const [phase, setPhase] = useState<ExperiencePhase>('risk');
@@ -150,8 +151,11 @@ export function App() {
         />
       );
     }
-    if (pathname === '/proof') return <Proof onPhase={updatePhase} />;
-    if (pathname === '/docs' || pathname === '/docs/quickstart') {
+    const trustSupportPage = pathname.slice(1) as TrustSupportPage;
+    if (trustSupportPages.has(trustSupportPage)) {
+      return <TrustSupport page={trustSupportPage} onPhase={updatePhase} />;
+    }
+    if (pathname === '/docs/quickstart') {
       return (
         <Docs
           activation={activation}
@@ -174,14 +178,8 @@ export function App() {
     if (docsMatch?.[1] !== undefined && ['receipts', 'replay', 'failures', 'x402', 'catalog'].includes(docsMatch[1])) {
       return <Guide topic={docsMatch[1] as GuideTopic} onPhase={updatePhase} />;
     }
-    if (pathname === '/status') return <Status onPhase={updatePhase} />;
-    if (pathname === '/changelog') return <Changelog onPhase={updatePhase} />;
     if (pathname === '/compare/blockrun') return <Compare onPhase={updatePhase} />;
     if (pathname === '/trust') return <TrustOverview onPhase={updatePhase} />;
-    const trustTopic = pathname.slice(1) as TrustTopic;
-    if (['pricing', 'benchmarks', 'security', 'legal'].includes(trustTopic)) {
-      return <Trust topic={trustTopic} onPhase={updatePhase} />;
-    }
     return <NotFound />;
   })();
 
