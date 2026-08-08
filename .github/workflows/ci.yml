@@ -39,7 +39,7 @@ jobs:
       - name: Run integrated B12 browser QA
         if: always()
         run: npm run qa:b12 --workspace @clervo/site -- --use-built
-      - name: Verify reduced-motion behavior on real /start
+      - name: Verify reduced motion and Slice 3 state semantics
         if: always()
         shell: bash
         run: |
@@ -54,6 +54,7 @@ jobs:
           node --input-type=module <<'NODE'
           import { chromium } from 'playwright';
           import { mkdir, writeFile } from 'node:fs/promises';
+
           const browser = await chromium.launch({ headless: true, executablePath: '/usr/bin/google-chrome' });
           const page = await browser.newPage({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
           const consoleErrors = [];
@@ -61,38 +62,122 @@ jobs:
           page.on('console', (message) => { if (message.type() === 'error') consoleErrors.push(message.text()); });
           page.on('pageerror', (error) => pageErrors.push(error.message));
           await page.goto('http://127.0.0.1:4173/start/', { waitUntil: 'networkidle' });
-          await page.locator('[data-start-stage-button="2"]').click();
-          const reduced = await page.evaluate(() => {
-            const liquid = document.querySelector('.b12-start .clervo-liquid');
-            const progress = document.querySelector('.b12-start .progress-track i');
-            const root = document.querySelector('.b12-start');
-            if (!(liquid instanceof HTMLElement) || !(progress instanceof HTMLElement) || !(root instanceof HTMLElement)) return null;
-            const liquidStyle = getComputedStyle(liquid);
-            const progressStyle = getComputedStyle(progress);
+
+          const expectedTones = ['cyan','cyan','cyan','gold','cyan','cyan','gold','cyan','cyan','cyan','gold'];
+          const stages = [];
+          const failures = [];
+          for (let index = 0; index < expectedTones.length; index += 1) {
+            await page.locator(`[data-start-stage-button="${index}"]`).click();
+            const observation = await page.evaluate(({ index, expectedTone }) => {
+              const panel = document.querySelector('.stage-panel');
+              const root = document.querySelector('.b12-start');
+              const progress = document.querySelector('.b12-start .progress-track i');
+              if (!(panel instanceof HTMLElement) || !(root instanceof HTMLElement)) return null;
+              const panelRect = panel.getBoundingClientRect();
+              const interactive = [...panel.querySelectorAll('button:not([disabled]), a[href], input:not([disabled])')]
+                .filter((element) => element instanceof HTMLElement && getComputedStyle(element).display !== 'none')
+                .map((element) => {
+                  const rect = element.getBoundingClientRect();
+                  return { tag: element.tagName, text: (element.textContent ?? '').trim().replace(/\s+/gu, ' ').slice(0, 80), width: rect.width, height: rect.height };
+                });
+              const tooSmall = interactive.filter(({ width, height }) => width < 43.5 || height < 43.5);
+              return {
+                index,
+                expectedTone,
+                actualStage: panel.dataset.stageIndex,
+                tone: panel.dataset.tone,
+                documentClientWidth: document.documentElement.clientWidth,
+                documentScrollWidth: document.documentElement.scrollWidth,
+                bodyClientWidth: document.body.clientWidth,
+                bodyScrollWidth: document.body.scrollWidth,
+                rootClientWidth: root.clientWidth,
+                rootScrollWidth: root.scrollWidth,
+                rootOverflowX: getComputedStyle(root).overflowX,
+                panelContained: panelRect.left >= -1 && panelRect.right <= document.documentElement.clientWidth + 1,
+                tooSmall,
+                progressBoxShadow: progress instanceof HTMLElement ? getComputedStyle(progress).boxShadow : null,
+              };
+            }, { index, expectedTone: expectedTones[index] });
+            if (observation === null) failures.push(`stage_${index}:missing_panel_or_root`);
+            else {
+              stages.push(observation);
+              if (observation.actualStage !== String(index)) failures.push(`stage_${index}:index=${observation.actualStage}`);
+              if (observation.tone !== expectedTones[index]) failures.push(`stage_${index}:tone=${observation.tone}`);
+              if (observation.documentScrollWidth > observation.documentClientWidth + 1) failures.push(`stage_${index}:document_overflow=${observation.documentScrollWidth}/${observation.documentClientWidth}`);
+              if (observation.bodyScrollWidth > observation.bodyClientWidth + 1) failures.push(`stage_${index}:body_overflow=${observation.bodyScrollWidth}/${observation.bodyClientWidth}`);
+              if (!observation.panelContained) failures.push(`stage_${index}:panel_not_contained`);
+              if (observation.tooSmall.length) failures.push(`stage_${index}:small_targets=${JSON.stringify(observation.tooSmall)}`);
+              if ((index === 2 || index === 5 || index === 9) && observation.progressBoxShadow !== 'none') failures.push(`stage_${index}:reduced_motion_progress_shadow=${observation.progressBoxShadow}`);
+            }
+          }
+
+          await page.locator('#states .state-button').first().click();
+          const semantics = await page.evaluate(() => {
+            const activeFailureDot = document.querySelector('#states .state-button.active i');
+            const stageDot = document.querySelector('.stage-panel .state-pill i');
+            const heroStage = document.querySelector('.b12-start .hero-stage');
+            if (!(activeFailureDot instanceof HTMLElement) || !(stageDot instanceof HTMLElement) || !(heroStage instanceof HTMLElement)) return null;
+            const apexPseudo = getComputedStyle(heroStage, '::before');
             return {
+              requestRed: getComputedStyle(activeFailureDot).backgroundColor,
+              verifiedGold: getComputedStyle(stageDot).backgroundColor,
+              apexBackground: apexPseudo.backgroundImage,
+              apexOpacity: apexPseudo.opacity,
+              apexTop: apexPseudo.top,
+              apexRight: apexPseudo.right,
+              heroStageOverflowX: getComputedStyle(heroStage).overflowX,
+              heroStageOverflowY: getComputedStyle(heroStage).overflowY,
               reducedMotionMatches: matchMedia('(prefers-reduced-motion: reduce)').matches,
-              liquidTransitionDuration: liquidStyle.transitionDuration,
-              liquidAnimationDuration: liquidStyle.animationDuration,
-              progressAnimationDuration: progressStyle.animationDuration,
-              progressTransitionDuration: progressStyle.transitionDuration,
-              progressBoxShadow: progressStyle.boxShadow,
-              rootScrollWidth: root.scrollWidth,
-              viewportWidth: document.documentElement.clientWidth,
+              documentClientWidth: document.documentElement.clientWidth,
+              documentScrollWidth: document.documentElement.scrollWidth,
+              bodyClientWidth: document.body.clientWidth,
+              bodyScrollWidth: document.body.scrollWidth,
             };
           });
-          if (reduced === null) throw new Error('reduced_motion_probe_missing_nodes');
-          if (!reduced.reducedMotionMatches) throw new Error('reduced_motion_media_not_active');
-          if (reduced.progressBoxShadow !== 'none') throw new Error(`reduced_motion_progress_shadow:${reduced.progressBoxShadow}`);
-          if (consoleErrors.length) throw new Error(`reduced_motion_console:${consoleErrors.join('|')}`);
-          if (pageErrors.length) throw new Error(`reduced_motion_page:${pageErrors.join('|')}`);
-          if (reduced.rootScrollWidth > reduced.viewportWidth + 1) throw new Error(`reduced_motion_overflow:${reduced.rootScrollWidth}/${reduced.viewportWidth}`);
+          if (semantics === null) failures.push('semantic_probe_missing_nodes');
+          else {
+            if (!semantics.reducedMotionMatches) failures.push('reduced_motion_media_not_active');
+            if (semantics.requestRed !== 'rgb(255, 59, 48)') failures.push(`request_red=${semantics.requestRed}`);
+            if (semantics.verifiedGold !== 'rgb(255, 200, 0)') failures.push(`verified_gold=${semantics.verifiedGold}`);
+            if (!semantics.apexBackground.includes('clervo-apex-mono-light.svg')) failures.push(`apex_asset=${semantics.apexBackground}`);
+            if (semantics.apexOpacity !== '0.22') failures.push(`apex_opacity=${semantics.apexOpacity}`);
+            if (semantics.heroStageOverflowX === 'visible' || semantics.heroStageOverflowY === 'visible') failures.push(`apex_not_contained=${semantics.heroStageOverflowX}/${semantics.heroStageOverflowY}`);
+            if (semantics.documentScrollWidth > semantics.documentClientWidth + 1) failures.push(`final_document_overflow=${semantics.documentScrollWidth}/${semantics.documentClientWidth}`);
+            if (semantics.bodyScrollWidth > semantics.bodyClientWidth + 1) failures.push(`final_body_overflow=${semantics.bodyScrollWidth}/${semantics.bodyClientWidth}`);
+          }
+
+          await page.locator('[data-start-stage-button="0"]').click();
+          const cyan = await page.locator('.stage-panel .state-pill i').evaluate((element) => getComputedStyle(element).backgroundColor);
+          if (cyan !== 'rgb(0, 229, 255)') failures.push(`execution_cyan=${cyan}`);
           await page.locator('[data-start-stage-button="3"]').click();
-          const verified = await page.locator('.stage-panel').evaluate((element) => ({ stage: element.getAttribute('data-stage-index'), tone: element.getAttribute('data-tone') }));
-          if (verified.stage !== '3' || verified.tone !== 'gold') throw new Error(`reduced_motion_verified_not_reached:${verified.stage}/${verified.tone}`);
+
+          const menu = await page.evaluate(async () => {
+            const trigger = document.querySelector('.site-header__menu');
+            if (!(trigger instanceof HTMLButtonElement)) return null;
+            trigger.click();
+            await new Promise((resolve) => setTimeout(resolve, 25));
+            const shell = document.querySelector('.mobile-nav');
+            const panel = document.querySelector('.mobile-nav__panel');
+            if (!(shell instanceof HTMLElement) || !(panel instanceof HTMLElement)) return null;
+            const rect = panel.getBoundingClientRect();
+            const result = {
+              open: shell.classList.contains('is-open') && !shell.hidden,
+              expanded: trigger.getAttribute('aria-expanded'),
+              contained: rect.left >= -1 && rect.right <= document.documentElement.clientWidth + 1 && rect.top >= -1 && rect.bottom <= window.innerHeight + 1,
+            };
+            trigger.click();
+            return result;
+          });
+          if (menu === null || !menu.open || menu.expanded !== 'true' || !menu.contained) failures.push(`mobile_menu=${JSON.stringify(menu)}`);
+
+          if (consoleErrors.length) failures.push(`console=${consoleErrors.join('|')}`);
+          if (pageErrors.length) failures.push(`page=${pageErrors.join('|')}`);
+
           await mkdir('apps/site/qa-artifacts/captures', { recursive: true });
           await page.screenshot({ path: 'apps/site/qa-artifacts/captures/start-mobile-390-reduced-motion.png' });
-          await writeFile('apps/site/qa-artifacts/reduced-motion.json', JSON.stringify({ reduced, verified, consoleErrors, pageErrors }, null, 2) + '\n');
+          await writeFile('apps/site/qa-artifacts/reduced-motion.json', JSON.stringify({ stages, semantics, cyan, menu, consoleErrors, pageErrors, failures }, null, 2) + '\n');
           await browser.close();
+          if (failures.length) throw new Error(`slice3_reduced_semantics_failed:${failures.join(';')}`);
           NODE
       - name: Upload B12 Slice 3 QA evidence
         if: always()
