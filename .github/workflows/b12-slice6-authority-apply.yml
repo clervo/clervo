@@ -1,0 +1,73 @@
+name: B12 Slice 6 authority apply
+
+on:
+  push:
+    branches:
+      - design/b12-vault-rebuild
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Apply locked Slice 6 hardening once
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          page = Path('apps/site/src/pages/TrustSupport.tsx')
+          text = page.read_text()
+          def rep(old, new):
+              global text
+              if old not in text:
+                  raise SystemExit('missing replacement anchor: ' + old[:100])
+              text = text.replace(old, new, 1)
+          rep("function Hero({\n  eyebrow,", "function Hero({\n  page,\n  eyebrow,")
+          rep("function Section({ eyebrow, title, copy, children, narrow = false, className = '' }: {\n  eyebrow: string;\n  title: string;\n  copy?: string;\n  children: ReactNode;\n  narrow?: boolean;\n  className?: string;\n}) {\n  return (\n    <section className={`s6-section ${className}`}>", "function Section({ eyebrow, title, copy, children, narrow = false, className = '', id }: {\n  eyebrow: string;\n  title: string;\n  copy?: string;\n  children: ReactNode;\n  narrow?: boolean;\n  className?: string;\n  id?: string;\n}) {\n  return (\n    <section className={`s6-section ${className}`} id={id}>")
+          rep('<Link className="s6-button s6-button--primary" to="/catalog">Inspect current catalog</Link>\n          <Link className="s6-button s6-button--quiet" to="/proof">Inspect payment proof</Link>', '<a className="s6-button s6-button--primary" href="#s6-pricing-ledger">Inspect operation prices</a>\n          <Link className="s6-button s6-button--secondary" to="/proof">See payment proof</Link>')
+          rep('<Section eyebrow="Canonical offers" title="Operation-level pricing, not tiers."', '<Section id="s6-pricing-ledger" eyebrow="Canonical offers" title="Operation-level pricing, not tiers."')
+          rep('<Hero page="proof" eyebrow="Proof / evidence classes" title="Proof when work succeeds—and when it doesn’t." lede="Clervo separates engineering qualification, observed runtime state, private owner-funded payment proof, design fixtures, and claims that remain unproven. Gold appears only on directly verified proof." />', '<Hero page="proof" eyebrow="Proof / evidence classes" title="Proof when work succeeds—and when it doesn’t." lede="Clervo separates engineering qualification, observed runtime state, private owner-funded payment proof, design fixtures, and claims that remain unproven. Gold appears only on directly verified proof.">\n        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-proof-library">Inspect proof records</a><Link className="s6-button s6-button--secondary" to="/status">View current status</Link></div>\n      </Hero>')
+          rep('<Section eyebrow="Proof library" title="One record class at a time."', '<Section id="s6-proof-library" eyebrow="Proof library" title="One record class at a time."')
+          rep('<Hero page="docs" eyebrow="Docs / task-first" title="Start from what your agent needs to do." lede="Clervo documentation starts from task and authority, then exposes the exact interface contract underneath. Published clients, current API reachability, pricing, and operation availability remain separate facts." />', '<Hero page="docs" eyebrow="Docs / task-first" title="Start from what your agent needs to do." lede="Clervo documentation starts from task and authority, then exposes the exact interface contract underneath. Published clients, current API reachability, pricing, and operation availability remain separate facts.">\n        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-docs-objectives">Choose a path</a><Link className="s6-button s6-button--secondary" to="/pricing">Understand paid use</Link></div>\n      </Hero>')
+          rep('<Section eyebrow="Choose a path" title="Five ways into the same contract."', '<Section id="s6-docs-objectives" eyebrow="Choose a path" title="Five ways into the same contract."')
+          rep('<Hero page="status" eyebrow={`Status / observed ${observedTruth.provenance.observedAt}`} title="Current truth without marketing interpretation." lede="This page reports the latest generated observation available to the website. It does not infer uptime, incident-free history, or a service-level agreement from a successful probe." centered />', '<Hero page="status" eyebrow={`Status / observed ${observedTruth.provenance.observedAt}`} title="Current truth without marketing interpretation." lede="This page reports the latest generated observation available to the website. It does not infer uptime, incident-free history, or a service-level agreement from a successful probe." centered>\n        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-status-current">Inspect current state</a><Link className="s6-button s6-button--secondary" to="/security">Read security boundaries</Link></div>\n      </Hero>')
+          rep('<Section eyebrow="Observed snapshot" title="Lifecycle and proof stay separate."', '<Section id="s6-status-current" eyebrow="Observed snapshot" title="Lifecycle and proof stay separate."')
+          rep('<Hero page="security" eyebrow="Security / authority boundary" title="Authority is explicit, scoped, and inspectable." lede="Security on this site means specific implemented or contract-bound controls with visible limitations. It does not mean a certification badge, audit opinion, or compliance status that Clervo has not published evidence for." visual aside={aside} />', '<Hero page="security" eyebrow="Security / authority boundary" title="Authority is explicit, scoped, and inspectable." lede="Security on this site means specific implemented or contract-bound controls with visible limitations. It does not mean a certification badge, audit opinion, or compliance status that Clervo has not published evidence for." visual aside={aside}>\n        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-security-controls">Inspect controls</a><Link className="s6-button s6-button--secondary" to="/proof">See failure proof</Link></div>\n      </Hero>')
+          rep('<Section eyebrow="Control surface" title="Eight boundaries, each with an evidence state."', '<Section id="s6-security-controls" eyebrow="Control surface" title="Eight boundaries, each with an evidence state."')
+          rep('<Hero page="benchmarks" eyebrow="Benchmarks / method before number" title="No number without the method behind it." lede="Clervo does not publish comparative performance bars, latency claims, percentage improvements, or superiority statements without a reproducible public method and evidence bundle." />', '<Hero page="benchmarks" eyebrow="Benchmarks / method before number" title="No number without the method behind it." lede="Clervo does not publish comparative performance bars, latency claims, percentage improvements, or superiority statements without a reproducible public method and evidence bundle.">\n        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-benchmark-record">Inspect benchmark format</a><Link className="s6-button s6-button--secondary" to="/proof">Inspect task proof</Link></div>\n      </Hero>')
+          rep('<Section eyebrow="Benchmark publication contract" title="Method first. Result only when earned."', '<Section id="s6-benchmark-record" eyebrow="Benchmark publication contract" title="Method first. Result only when earned."')
+          rep('<Hero page="changelog" eyebrow="Changelog / evidence-backed chronology" title="What changed, what broke, and what replaces it." lede="Only dated evidence already present in canonical generated truth appears here. This is not an invented marketing release log, and current operational truth remains on Status." />', '<Hero page="changelog" eyebrow="Changelog / evidence-backed chronology" title="What changed, what broke, and what replaces it." lede="Only dated evidence already present in canonical generated truth appears here. This is not an invented marketing release log, and current operational truth remains on Status.">\n        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-changelog-records">Read releases</a><Link className="s6-button s6-button--secondary" to="/status">Current status</Link></div>\n      </Hero>')
+          rep('<Section eyebrow="Chronology" title="Evidence-backed changes only."', '<Section id="s6-changelog-records" eyebrow="Chronology" title="Evidence-backed changes only."')
+          rep('<Hero page="legal" eyebrow="Legal / structural authority only" title="Terms should explain how the system actually works." lede="The Vault defines the policy surfaces the product eventually needs. It does not provide final legal entity, jurisdiction, governing law, privacy, retention, regulatory, or contractual authority—and this implementation does not invent them." />', '<Hero page="legal" eyebrow="Legal / structural authority only" title="Terms should explain how the system actually works." lede="The Vault defines the policy surfaces the product eventually needs. It does not provide final legal entity, jurisdiction, governing law, privacy, retention, regulatory, or contractual authority—and this implementation does not invent them.">\n        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-legal-docs">Inspect legal structure</a><Link className="s6-button s6-button--secondary" to="/security">Security model</Link></div>\n      </Hero>')
+          rep('<Section eyebrow="Policy structure" title="Four documents. No pretend legal authority."', '<Section id="s6-legal-docs" eyebrow="Policy structure" title="Four documents. No pretend legal authority."')
+          page.write_text(text)
+
+          css = Path('apps/site/src/styles/b12/trust-support.css')
+          style = css.read_text()
+          anchor = '.s6-hero--centered .s6-lede{margin-inline:auto}'
+          if anchor not in style:
+              raise SystemExit('missing centered hero CSS anchor')
+          css.write_text(style.replace(anchor, anchor + '.s6-hero--centered .s6-hero-actions{justify-content:center}', 1))
+
+          qa = Path('scripts/site/b12-slice6-qa.mjs')
+          q = qa.read_text()
+          anchor = "    const text=(root?.textContent||'').replace(/\\s+/g,' ');"
+          if anchor not in q:
+              raise SystemExit('missing QA page anchor')
+          q = q.replace(anchor, anchor + "\n    const currentPage=root?.dataset.supportPage;", 1)
+          for name in ['pricing','proof','docs','status','security','benchmarks','changelog','legal']:
+              q = q.replace(f"page!=='{name}'", f"currentPage!=='{name}'")
+          qa.write_text(q)
+          PY
+          node --check scripts/site/b12-slice6-qa.mjs
+          git diff --check
+          git config user.name "clervo-b12-bot"
+          git config user.email "clervo-b12-bot@users.noreply.github.com"
+          git add apps/site/src/pages/TrustSupport.tsx apps/site/src/styles/b12/trust-support.css scripts/site/b12-slice6-qa.mjs
+          git rm .github/workflows/b12-slice6-authority-apply.yml .github/workflows/b12-slice6-authority-hardening.yml
+          git commit -m "fix(site): align Slice 6 locked hero actions"
+          git push origin HEAD:design/b12-vault-rebuild
