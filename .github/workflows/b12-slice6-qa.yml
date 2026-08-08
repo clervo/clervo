@@ -47,3 +47,5 @@ jobs:
           path: apps/site/qa-artifacts/slice6
           if-no-files-found: error
           retention-days: 3
+
+# Authority-hardened Slice 6 evidence run. Remove this temporary workflow after evidence capture.
