@@ -34,8 +34,10 @@ jobs:
       - name: Install locked dependencies
         run: npm ci --ignore-scripts
 
-      - name: Syntax-check final QA harness
-        run: node --check scripts/site/b12-whole-site-qa.mjs
+      - name: Syntax-check final QA harnesses
+        run: |
+          node --check scripts/site/b12-whole-site-qa.mjs
+          node --check scripts/site/b12-owner-evidence.mjs
 
       - name: Build real site workspace
         run: npm run build --workspace @clervo/site
@@ -45,6 +47,9 @@ jobs:
 
       - name: Run final whole-site browser QA
         run: node scripts/site/b12-whole-site-qa.mjs --use-built --out apps/site/qa-artifacts-final/whole-site
+
+      - name: Capture focused owner evidence
+        run: node scripts/site/b12-owner-evidence.mjs --site-root apps/site/dist --out apps/site/qa-artifacts-final/owner-evidence
 
       - name: Write evidence manifest
         if: always()
