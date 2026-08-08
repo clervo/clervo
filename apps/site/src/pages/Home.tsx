@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { B12HeroApex } from '../components/B12HeroApex';
 import { B12HomepageBelowHero } from '../components/B12HomepageBelowHero';
 import type { ExperiencePhase } from '../product';
 import { Link } from '../router';
@@ -72,8 +73,6 @@ const allowedStates = new Set<DemoState>([
   'unresolved',
 ]);
 
-const heroVideoUrl = import.meta.env.VITE_HOME_HERO_VIDEO_URL as string | undefined;
-
 export function Home({ onPhase: _onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   const [state, setState] = useState<DemoState>('rest');
   const [running, setRunning] = useState(false);
@@ -122,67 +121,46 @@ export function Home({ onPhase: _onPhase }: { onPhase(phase: ExperiencePhase): v
   return (
     <div className="b12-home" data-running={running} data-state={state}>
       <a className="b12-skip" href="#b12-title">Skip to main content</a>
-
-      <section className="b12-hero" aria-labelledby="b12-title">
-        <div aria-hidden="true" className="b12-hero-media">
-          {heroVideoUrl !== undefined && heroVideoUrl.trim() !== '' ? (
-            <video
-              autoPlay
-              className="b12-hero-video"
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              src={heroVideoUrl}
-            />
-          ) : (
-            <div className="b12-hero-video-fallback" />
-          )}
-        </div>
-        <div aria-hidden="true" className="b12-hero-shade" />
-
-        <div className="b12-hero-shell shell">
-          <section className="b12-copy" aria-labelledby="b12-title">
-            <p className="b12-eyebrow">Agent outcome infrastructure</p>
-            <h1 id="b12-title">Give your agent a task.<br />Get a verified result.</h1>
-            <div className="b12-actions">
-              <Link className="b12-button b12-button-primary b12-liquid" data-liquid="primary" to="/start">
-                Set up Clervo
-              </Link>
-              <button
-                className="b12-button b12-button-secondary b12-run b12-liquid"
-                data-liquid="secondary"
-                disabled={running}
-                onClick={runSuccess}
-                type="button"
-              >
-                {hasRun ? 'Run again' : 'Run a task'}
-              </button>
-            </div>
-            <p aria-live="polite" className="b12-stage-state b12-stage-state--video">{labels[state]}</p>
-          </section>
-
-          <aside aria-label="Clervo outcome contract" className="b12-truths b12-truths--video">
-            {truths[state].map(([main, small]) => (
-              <p className="b12-truth" key={main}>
-                {main}
-                <small>{small}</small>
-              </p>
-            ))}
-          </aside>
-
-          <section aria-label="Demonstration task" className="b12-task-contract b12-task-contract--video">
-            <span className="b12-task-label">Demo task · no payment</span>
-            <p className="b12-task-text">
-              Research an on-chain protocol, verify its current claims, and return cited evidence. Fixture values are clearly labeled and do not represent a live customer transaction.
-            </p>
-          </section>
-
-          <div aria-hidden="true" className="b12-scroll-cue">
-            <span>Scroll to explore</span>
-            <i />
+      <section className="b12-hero shell" aria-labelledby="b12-title">
+        <section className="b12-copy" aria-labelledby="b12-title">
+          <p className="b12-eyebrow">Agent outcome infrastructure</p>
+          <h1 id="b12-title">Give your agent a task.<br />Get a verified result.</h1>
+          <div className="b12-actions">
+            <Link className="b12-button b12-button-primary b12-liquid" data-liquid="primary" to="/start">
+              Set up Clervo
+            </Link>
+            <button
+              className="b12-button b12-button-secondary b12-run b12-liquid"
+              data-liquid="secondary"
+              disabled={running}
+              onClick={runSuccess}
+              type="button"
+            >
+              {hasRun ? 'Run again' : 'Run a task'}
+            </button>
           </div>
-        </div>
+        </section>
+
+        <section aria-label="Clervo Apex Core" className="b12-stage">
+          <B12HeroApex />
+          <p aria-live="polite" className="b12-stage-state">{labels[state]}</p>
+        </section>
+
+        <aside aria-label="Clervo outcome contract" className="b12-truths">
+          {truths[state].map(([main, small]) => (
+            <p className="b12-truth" key={main}>
+              {main}
+              <small>{small}</small>
+            </p>
+          ))}
+        </aside>
+
+        <section aria-label="Demonstration task" className="b12-task-contract">
+          <span className="b12-task-label">Demo task · no payment</span>
+          <p className="b12-task-text">
+            Research an on-chain protocol, verify its current claims, and return cited evidence. Fixture values are clearly labeled and do not represent a live customer transaction.
+          </p>
+        </section>
       </section>
 
       <div className="b12-rail shell" aria-label="Capability families">
