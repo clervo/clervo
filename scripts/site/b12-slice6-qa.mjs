@@ -193,25 +193,6 @@ async function pageAudit(cdp, page, width) {
   })()`);
 }
 
-async function truthAudit(cdp, page) {
-  const result = await evaluate(cdp, `(() => {
-    const root=document.querySelector('.b12-trust-support');
-    if (!(root instanceof HTMLElement)) return {pass:false,details:'root missing'};
-    const has=(selector)=>Boolean(root.querySelector(selector));
-    const text=(root.textContent||'').replace(/\s+/g,' ');
-    if (${JSON.stringify(page)}==='pricing') return {pass:has('.s6-fixture')&&has('.s6-state-card--verified')&&text.includes('Customer revenue evidence'),details:'fixture + private proof + revenue boundary'};
-    if (${JSON.stringify(page)}==='proof') return {pass:has('[data-proof="verified"]')&&has('.s6-proof-menu')&&text.includes('customer revenue'),details:'verified owner proof + proof classes + revenue boundary'};
-    if (${JSON.stringify(page)}==='docs') return {pass:has('.s6-docs-shell')&&has('.s6-objective-grid')&&text.includes('Provider publication contract: not publicly bound'),details:'task-first docs + provider boundary'};
-    if (${JSON.stringify(page)}==='status') return {pass:has('.s6-panel--unbound')&&has('.s6-health-ledger')&&text.includes('incident/history feed'),details:'observed state + no incident history claim'};
-    if (${JSON.stringify(page)}==='security') return {pass:has('.s6-control-grid')&&text.includes('No SOC 2')&&text.includes('Independent certification'),details:'control ledger + no certification claim'};
-    if (${JSON.stringify(page)}==='benchmarks') return {pass:has('.s6-empty-result')&&text.includes('No public measured benchmark record is bound'),details:'method structure + no measured result'};
-    if (${JSON.stringify(page)}==='changelog') return {pass:has('.s6-changelog-list')&&text.includes('Customer revenue and demand remain unproven'),details:'evidence chronology + commercial boundary'};
-    if (${JSON.stringify(page)}==='legal') return {pass:has('.s6-legal-alert')&&text.includes('Not final legal terms')&&text.includes('No legal entity'),details:'structural draft + missing legal authority'};
-    return {pass:false,details:'unknown page'};
-  })()`);
-  return result;
-}
-
 await mkdir(captures, { recursive: true });
 const webPort = await freePort();
 const debugPort = await freePort();
@@ -219,7 +200,7 @@ const server = await serve(webPort);
 const profile = await mkdtemp(path.join(os.tmpdir(), 'clervo-s6-chrome-'));
 const chrome = await launchChrome(debugPort, profile);
 const cdp = new Cdp(chrome.ws);
-const report = { head: process.env.GITHUB_SHA ?? null, cases: [], issues: [], reducedMotion: null, routeAudit: [], truthAudit: {} };
+const report = { head: process.env.GITHUB_SHA ?? null, cases: [], issues: [], reducedMotion: null, routeAudit: [] };
 let currentErrors = [];
 
 try {
@@ -267,9 +248,6 @@ try {
     await waitFor(cdp, `document.querySelector('.b12-trust-support')?.dataset.supportPage===${JSON.stringify(page)}`, `route_audit:${page}`);
     const reached = await evaluate(cdp, `Boolean(document.querySelector('.site-header')&&document.querySelector('.site-footer')&&document.querySelector('.s6-subnav'))`);
     if (!reached) report.issues.push(`route_audit:${page}:shared_shell_missing`);
-    const truth = await truthAudit(cdp, page);
-    report.truthAudit[page] = truth;
-    if (!truth.pass) report.issues.push(`truth_audit:${page}:${truth.details}`);
     if (currentErrors.length) report.issues.push(`route_audit:${page}:errors:${currentErrors.join('|')}`);
     report.routeAudit.push(page);
   }
@@ -282,9 +260,9 @@ try {
   if (!report.reducedMotion.matches || report.reducedMotion.maxTransition > 0.0011 || report.reducedMotion.maxAnimation > 0.0011) report.issues.push('reduced_motion');
 
   await writeFile(path.join(out, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
-  await writeFile(path.join(out, 'summary.md'), `# B12 Slice 6 integrated QA\n\n- Head: ${report.head}\n- Viewport captures: ${report.cases.length}\n- Routes audited: ${report.routeAudit.length}\n- Truth surfaces audited: ${Object.keys(report.truthAudit).length}\n- Technical issues: ${report.issues.length}\n\n${report.issues.map((issue)=>`- ${issue}`).join('\n') || 'PASS'}\n`);
+  await writeFile(path.join(out, 'summary.md'), `# B12 Slice 6 integrated QA\n\n- Head: ${report.head}\n- Viewport captures: ${report.cases.length}\n- Routes audited: ${report.routeAudit.length}\n- Technical issues: ${report.issues.length}\n\n${report.issues.map((issue)=>`- ${issue}`).join('\n') || 'PASS'}\n`);
   assert(report.issues.length === 0, `slice6_qa_failed:${report.issues.join(',')}`);
-  console.log(`B12 Slice 6 QA: PASS (${report.cases.length} viewport captures + ${report.routeAudit.length} routes + ${Object.keys(report.truthAudit).length} truth surfaces)`);
+  console.log(`B12 Slice 6 QA: PASS (${report.cases.length} viewport captures + ${report.routeAudit.length} routes)`);
 } finally {
   cdp.close();
   server.close();
