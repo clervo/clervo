@@ -43,6 +43,20 @@ const expectations = [
   ['trust/index.html', 'Inspect the mechanism.'],
 ];
 
+// Validate every canonical operation route generated from the public catalog.
+// The operation identifier itself is the stable minimum content assertion:
+// published human copy may evolve, but the route must never render a different
+// contract identity or an empty shell.
+const catalog = JSON.parse(await readFile(path.join(root, 'generated/public/catalog.json'), 'utf8'));
+const operationIds = new Set();
+for (const family of catalog.observedTruth?.products ?? []) {
+  for (const operationId of family.operations ?? []) operationIds.add(operationId);
+}
+for (const product of catalog.products ?? []) operationIds.add(product.operationId);
+for (const operationId of [...operationIds].sort()) {
+  expectations.push([`operations/${operationId}/index.html`, operationId]);
+}
+
 for (const [file, content] of expectations) {
   const html = await readFile(path.join(dist, file), 'utf8');
   const text = html
