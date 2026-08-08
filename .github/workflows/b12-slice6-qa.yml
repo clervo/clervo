@@ -48,4 +48,4 @@ jobs:
           if-no-files-found: error
           retention-days: 3
 
-# Final corrected Slice 6 evidence run. Remove this temporary workflow after evidence capture.
+# Final rail-aware Slice 6 evidence trigger. Remove after evidence capture.
