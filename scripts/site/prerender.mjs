@@ -46,11 +46,27 @@ const routes = [
   ['/trust', 'Trust center'],
 ];
 
+// Operation pages are derived from the generated canonical public catalog so
+// prerendering cannot create handmade operation identities that the product
+// authority does not know about.
+const catalog = JSON.parse(await readFile(path.join(root, 'generated/public/catalog.json'), 'utf8'));
+const operationIds = new Set();
+for (const family of catalog.observedTruth?.products ?? []) {
+  for (const operationId of family.operations ?? []) operationIds.add(operationId);
+}
+for (const product of catalog.products ?? []) operationIds.add(product.operationId);
+for (const operationId of [...operationIds].sort()) {
+  routes.push([`/operations/${operationId}`, `Operation ${operationId}`]);
+}
+
 for (const [route, title] of routes) {
   const content = render(`https://clervo.dev${route}`);
   const canonical = route === '/' ? '/' : `${route}/`;
+  // Use a replacement callback: rendered contract/schema text can legitimately
+  // contain `$&`, which has special meaning in String.replace replacement
+  // strings and would otherwise inject a second empty root into the HTML.
   const html = template
-    .replace('<div id="root"></div>', `<div id="root" data-prerender-path="${route}">${content}</div>`)
+    .replace('<div id="root"></div>', () => `<div id="root" data-prerender-path="${route}">${content}</div>`)
     .replace(
       /<title>.*?<\/title>/u,
       `<title>${title} — Clervo</title><link rel="canonical" href="https://clervo.dev${canonical}">`,
@@ -75,7 +91,7 @@ const notFoundPath = '/404';
 await writeFile(
   path.join(dist, '404.html'),
   template
-    .replace('<div id="root"></div>', `<div id="root" data-prerender-path="${notFoundPath}">${render(`https://clervo.dev${notFoundPath}`)}</div>`)
+    .replace('<div id="root"></div>', () => `<div id="root" data-prerender-path="${notFoundPath}">${render(`https://clervo.dev${notFoundPath}`)}</div>`)
     .replace(/<title>.*?<\/title>/u, '<title>Route not found — Clervo</title><meta name="robots" content="noindex">'),
 );
 

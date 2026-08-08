@@ -1,0 +1,15 @@
+/* Slice 4 surgical conformance hardening. Scoped to Product/Catalog/family routes. */
+/* Locked v1.3 uses 440 display weight; the initial port's 470 widened mobile display copy. */
+.b12-slice4 h1,.b12-slice4 h2{font-weight:440}
+
+/* The integrated 390px shell balances the Product headline one line earlier than
+ * the locked 390px reference. Tighten only the >320 phone interval; the locked
+ * 320px composition already matches and remains untouched. */
+@media(min-width:321px) and (max-width:700px){
+  .b12-product .s4-product-copy h1{font-size:clamp(3.25rem,15vw,5rem)}
+}
+
+@media(max-width:700px){
+  .b12-slice4 .s4-router-visual{min-width:0}
+  .b12-slice4 .s4-apex-wrap{width:min(390px,100%);min-width:0}
+}

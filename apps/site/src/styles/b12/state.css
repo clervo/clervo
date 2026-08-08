@@ -1,0 +1,74 @@
+/* Exact v1.3 state semantics: gold appears only after verification. */
+.b12-home[data-state="request"] .b12-request .b12-signal-line,
+.b12-home[data-state="request"] .b12-request .b12-signal-glow,
+.b12-home[data-state="qualify"] .b12-request .b12-signal-line,
+.b12-home[data-state="qualify"] .b12-request .b12-signal-glow,
+.b12-home[data-state="execute"] .b12-request .b12-signal-line,
+.b12-home[data-state="execute"] .b12-request .b12-signal-glow,
+.b12-home[data-state="verify"] .b12-request .b12-signal-line,
+.b12-home[data-state="verify"] .b12-request .b12-signal-glow,
+.b12-home[data-state="prove"] .b12-request .b12-signal-line,
+.b12-home[data-state="prove"] .b12-request .b12-signal-glow,
+.b12-home[data-state="refused"] .b12-request .b12-signal-line,
+.b12-home[data-state="refused"] .b12-request .b12-signal-glow,
+.b12-home[data-state="unresolved"] .b12-request .b12-signal-line,
+.b12-home[data-state="unresolved"] .b12-request .b12-signal-glow {
+  transform: scaleX(1);
+}
+
+.b12-home[data-state="request"] .b12-request circle,
+.b12-home[data-state="qualify"] .b12-request circle,
+.b12-home[data-state="execute"] .b12-request circle,
+.b12-home[data-state="verify"] .b12-request circle,
+.b12-home[data-state="prove"] .b12-request circle,
+.b12-home[data-state="refused"] .b12-request circle,
+.b12-home[data-state="unresolved"] .b12-request circle {
+  opacity: 1;
+}
+
+.b12-home[data-state="qualify"] .b12-qualify .b12-signal-line,
+.b12-home[data-state="qualify"] .b12-qualify .b12-signal-glow,
+.b12-home[data-state="execute"] .b12-qualify .b12-signal-line,
+.b12-home[data-state="execute"] .b12-qualify .b12-signal-glow,
+.b12-home[data-state="verify"] .b12-qualify .b12-signal-line,
+.b12-home[data-state="verify"] .b12-qualify .b12-signal-glow,
+.b12-home[data-state="prove"] .b12-qualify .b12-signal-line,
+.b12-home[data-state="prove"] .b12-qualify .b12-signal-glow,
+.b12-home[data-state="unresolved"] .b12-qualify .b12-signal-line,
+.b12-home[data-state="unresolved"] .b12-qualify .b12-signal-glow {
+  transform: scaleX(1);
+}
+
+.b12-home[data-state="qualify"] .b12-qualify circle,
+.b12-home[data-state="execute"] .b12-qualify circle,
+.b12-home[data-state="verify"] .b12-qualify circle,
+.b12-home[data-state="prove"] .b12-qualify circle,
+.b12-home[data-state="unresolved"] .b12-qualify circle {
+  opacity: 1;
+}
+
+.b12-home[data-state="qualify"] .b12-route,
+.b12-home[data-state="execute"] .b12-route,
+.b12-home[data-state="verify"] .b12-route,
+.b12-home[data-state="prove"] .b12-route,
+.b12-home[data-state="unresolved"] .b12-route {
+  opacity: .45;
+}
+
+.b12-home[data-state="execute"] .b12-route-selected,
+.b12-home[data-state="verify"] .b12-route-selected,
+.b12-home[data-state="prove"] .b12-route-selected {
+  opacity: 1;
+  stroke: var(--b12-gold);
+}
+
+.b12-home[data-state="prove"] .b12-outcome .b12-signal-line,
+.b12-home[data-state="prove"] .b12-outcome .b12-signal-glow {
+  transform: scaleX(1);
+}
+
+.b12-home[data-state="prove"] .b12-outcome circle { opacity: 1; }
+.b12-home[data-state="refused"] .b12-halo { opacity: .3; }
+.b12-home[data-state="refused"] .b12-request .b12-signal-line { stroke-dasharray: 5 5; }
+.b12-home[data-state="unresolved"] .b12-qualify .b12-signal-line { stroke-dasharray: 4 5; }
+.b12-home[data-running="true"] .b12-run { pointer-events: none; }

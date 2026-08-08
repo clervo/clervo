@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import {
   capabilityLabel,
+  familyOf,
   formatUsdc,
   lifecycleLabels,
   observedRoutes,
@@ -10,151 +11,185 @@ import {
   supplyFamilyLabel,
   type ExperiencePhase,
   type LifecycleState,
+  type ProofLevel,
 } from '../product';
 import { Link } from '../router';
+import '../styles/b12/product-catalog.css';
+import { FAMILY_DISPLAY, FAMILY_ORDER, FAMILY_ROUTE, type Slice4FamilyId } from './b12Slice4';
 
-/*
- * /catalog — every route the deployed system was observed serving.
- *
- * This is the page a buyer opens to answer "what can I actually call today".
- * It renders the probed registry directly: a paused route keeps its reason and
- * its expected return date rather than disappearing, because an owned route
- * that is temporarily unfunded is a different fact from one that does not
- * exist, and hiding the difference is how a catalog starts lying.
- */
+type LifecycleFilter = 'all' | LifecycleState;
+type ProofFilter = 'all' | ProofLevel;
+type FamilyFilter = 'all' | Slice4FamilyId;
 
-type Filter = 'all' | LifecycleState;
-
-const filters: Array<{ id: Filter; label: string }> = [
-  { id: 'all', label: 'All routes' },
-  { id: 'live', label: 'Serving now' },
-  { id: 'supply_paused', label: 'Supply paused' },
+const lifecycleOptions: Array<{ value: LifecycleFilter; label: string }> = [
+  { value: 'all', label: 'All lifecycle states' },
+  { value: 'live', label: 'Live' },
+  { value: 'supply_paused', label: 'Supply paused' },
+  { value: 'unavailable', label: 'Unavailable' },
+];
+const proofOptions: Array<{ value: ProofFilter; label: string }> = [
+  { value: 'all', label: 'Any proof level' },
+  { value: 'none', label: 'Nothing demonstrated' },
+  { value: 'quote_observed_unpaid', label: 'Quote observed, unpaid' },
+  { value: 'paid_outcome_verified', label: 'Paid outcome verified' },
+  { value: 'externally_repeated', label: 'Externally repeated' },
 ];
 
-const liveCount = observedRoutes.filter(({ lifecycleState }) => lifecycleState === 'live').length;
-const pausedCount = observedRoutes.filter(({ lifecycleState }) => lifecycleState === 'supply_paused').length;
+function routeFamily(routeProductIds: string[]): Slice4FamilyId | null {
+  for (const id of routeProductIds) {
+    try { return familyOf(id) as Slice4FamilyId; } catch { /* continue */ }
+  }
+  return null;
+}
 
 export function Catalog({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
-  const [filter, setFilter] = useState<Filter>('all');
+  const [query, setQuery] = useState('');
+  const [family, setFamily] = useState<FamilyFilter>('all');
+  const [lifecycle, setLifecycle] = useState<LifecycleFilter>('all');
+  const [proof, setProof] = useState<ProofFilter>('all');
   useEffect(() => onPhase('qualified'), [onPhase]);
 
-  const shown = useMemo(
-    () => (filter === 'all'
-      ? observedRoutes
-      : observedRoutes.filter(({ lifecycleState }) => lifecycleState === filter)),
-    [filter],
-  );
+  const filtered = useMemo(() => {
+    const normalized = query.trim().toLowerCase();
+    return observedRoutes.filter((route) => {
+      const familyId = routeFamily(route.productIds);
+      if (family !== 'all' && familyId !== family) return false;
+      if (lifecycle !== 'all' && route.lifecycleState !== lifecycle) return false;
+      if (proof !== 'all' && route.proofLevel !== proof) return false;
+      if (normalized === '') return true;
+      const haystack = [
+        route.id,
+        route.routeId,
+        route.route,
+        supplyFamilyLabel(route.supplyFamilyId),
+        familyId === null ? '' : FAMILY_DISPLAY[familyId],
+        ...route.productIds,
+        ...route.capabilities.map(capabilityLabel),
+      ].join(' ').toLowerCase();
+      return normalized.split(/\s+/u).every((term) => haystack.includes(term));
+    });
+  }, [family, lifecycle, proof, query]);
+
+  const reset = () => { setQuery(''); setFamily('all'); setLifecycle('all'); setProof('all'); };
+  const showResults = () => document.getElementById('s4-catalog-results')?.scrollIntoView({ block: 'start' });
 
   return (
-    <>
-      <section className="catalog-intro">
-        <p className="eyebrow">Live capability catalog</p>
-        <h1>Every route, and what it costs.</h1>
-        <p>
-          {liveCount} routes were observed serving and {pausedCount} are supply
-          paused, as probed at {observedTruth.provenance.observedAt}. Prices are
-          maximum charges, quoted by the deployed system rather than published
-          here.
+    <div className="b12-slice4 b12-catalog">
+      <section className="s4-catalog-hero shell" aria-labelledby="s4-catalog-title">
+        <p className="s4-eyebrow">Observed capability catalog</p>
+        <h1 id="s4-catalog-title">What does your agent need to do?</h1>
+        <p className="s4-lede">
+          Describe the outcome. Clervo searches the canonical observed catalog and keeps lifecycle,
+          proof, price boundary, capabilities, and current route identity beside the action.
         </p>
-      </section>
 
-      <section className="band catalog-body" aria-labelledby="catalog-heading">
-        <div className="catalog-toolbar">
-          <h2 id="catalog-heading" className="sr-only">Observed routes</h2>
-          {/*
-            * A filter group rather than a select: three options that each
-            * change the count of a visible list are faster to operate as
-            * buttons, and the pressed state is announced without a label.
-            */}
-          <div className="catalog-filters" role="group" aria-label="Filter routes by state">
-            {filters.map(({ id, label }) => (
-              <button
-                key={id}
-                type="button"
-                className="catalog-filter"
-                aria-pressed={filter === id}
-                onClick={() => setFilter(id)}
-              >
-                {label}
-              </button>
+        <div className="s4-search-stage">
+          <div className="s4-search-main">
+            <span className="s4-search-icon" aria-hidden="true">⌕</span>
+            <label className="sr-only" htmlFor="s4-catalog-search">Search observed catalog</label>
+            <input
+              id="s4-catalog-search"
+              data-slice4-search
+              value={query}
+              onChange={(event) => setQuery(event.currentTarget.value)}
+              onKeyDown={(event) => { if (event.key === 'Enter') showResults(); }}
+              placeholder="Research a company, run code safely, inspect a wallet…"
+            />
+            <button className="b12-button b12-button-primary b12-liquid" type="button" onClick={showResults}>Search catalog</button>
+          </div>
+          <div className="s4-search-presets" aria-label="Example searches">
+            {['research sources', 'code sandbox', 'multi-chain', 'wallet risk', 'prediction'].map((preset) => (
+              <button key={preset} type="button" onClick={() => setQuery(preset)}>{preset}</button>
             ))}
           </div>
-          <p className="data quiet" aria-live="polite">
-            {shown.length} of {observedRoutes.length} shown
-          </p>
         </div>
 
-        <ul className="catalog-grid">
-          {shown.map((route) => (
-            <li key={route.routeId} className="panel catalog-card">
-              <div className="panel__body stack">
-                <div className="catalog-card__head">
-                  <h3 className="catalog-card__id">{route.id}</h3>
-                  <span className={`state state--${route.lifecycleState}`}>
-                    {lifecycleLabels[route.lifecycleState]}
-                  </span>
-                </div>
-
-                <p className="quiet">{supplyFamilyLabel(route.supplyFamilyId)}</p>
-
-                <ul className="catalog-card__tags" aria-label="Capabilities">
-                  {route.capabilities.map((capability) => (
-                    <li key={capability}>{capabilityLabel(capability)}</li>
-                  ))}
-                </ul>
-
-                <dl className="facts">
-                  <div>
-                    <dt>Operations</dt>
-                    <dd>{route.productIds.join(', ')}</dd>
-                  </div>
-                  <div>
-                    <dt>Endpoint</dt>
-                    <dd>{route.route}</dd>
-                  </div>
-                  <div>
-                    <dt>Maximum charge</dt>
-                    <dd>
-                      {route.observedPrice === null
-                        ? 'not quoted'
-                        : formatUsdc(route.observedPrice.amountAtomic, route.observedPrice.decimals)}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Proof</dt>
-                    <dd>{proofLabels[route.proofLevel]}</dd>
-                  </div>
-                  {route.reason === null ? null : (
-                    <div>
-                      <dt>Paused because</dt>
-                      <dd>{route.reason.replaceAll('_', ' ')}</dd>
-                    </div>
-                  )}
-                  {route.expectedReturnAt === null ? null : (
-                    <div>
-                      <dt>Expected back</dt>
-                      <dd>{route.expectedReturnAt}</dd>
-                    </div>
-                  )}
-                </dl>
-              </div>
-            </li>
-          ))}
-        </ul>
-
-        <p className="quiet catalog-note">
-          Generated by {observedTruth.provenance.generatedBy} from{' '}
-          {observedTruth.provenance.source} at release{' '}
-          {observedTruth.provenance.releaseId.slice(0, 7)}. A route that stops
-          serving leaves this page on the next probe, not on an edit.
-        </p>
-
-        <div className="cluster catalog-actions">
-          <Link className="button button--primary" to="/start">Set up Clervo</Link>
-          <Link className="button button--quiet" to="/pricing">See pricing truth</Link>
-          <a className="text-link" href="/models.json">Read the raw catalog</a>
+        <div className="s4-catalog-meta">
+          <div className="s4-catalog-stamp">
+            <span>Canonical observed snapshot</span>
+            <span>{observedTruth.provenance.observedAt}</span>
+            <strong>{observedRoutes.length} observed {observedRoutes.length === 1 ? 'route' : 'routes'}</strong>
+          </div>
+          <div className="s4-legend" aria-label="Lifecycle legend">
+            <span className="live"><i />Live</span>
+            <span className="paused"><i />Supply paused</span>
+            <span className="unavailable"><i />Unavailable</span>
+          </div>
         </div>
       </section>
-    </>
+
+      <section className="s4-catalog-area shell" aria-labelledby="s4-catalog-results">
+        <div className="s4-catalog-layout">
+          <aside className="s4-filter-rail" aria-label="Catalog filters">
+            <div className="s4-filter-group">
+              <label htmlFor="s4-family-filter">Family</label>
+              <select id="s4-family-filter" value={family} onChange={(event) => setFamily(event.currentTarget.value as FamilyFilter)}>
+                <option value="all">All families</option>
+                {FAMILY_ORDER.map((id) => <option key={id} value={id}>{FAMILY_DISPLAY[id]}</option>)}
+              </select>
+            </div>
+            <div className="s4-filter-group">
+              <label htmlFor="s4-lifecycle-filter">Lifecycle</label>
+              <select id="s4-lifecycle-filter" value={lifecycle} onChange={(event) => setLifecycle(event.currentTarget.value as LifecycleFilter)}>
+                {lifecycleOptions.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
+              </select>
+            </div>
+            <div className="s4-filter-group">
+              <label htmlFor="s4-proof-filter">Proof</label>
+              <select id="s4-proof-filter" value={proof} onChange={(event) => setProof(event.currentTarget.value as ProofFilter)}>
+                {proofOptions.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
+              </select>
+            </div>
+            <div className="s4-filter-boundary">
+              <span>Not bound</span>
+              <p>Latency, action class, interface compatibility, quote behavior, and provider availability are not exposed as filters without canonical fields.</p>
+            </div>
+            <button className="s4-reset" type="button" onClick={reset}>Reset all filters</button>
+          </aside>
+
+          <div className="s4-catalog-results">
+            <div className="s4-catalog-head">
+              <h2 id="s4-catalog-results">Matching operations</h2>
+              <span aria-live="polite">{filtered.length} of {observedRoutes.length} observed</span>
+            </div>
+
+            {filtered.length === 0 ? (
+              <div className="s4-empty"><h3>No matching observed route.</h3><p>The current canonical observation does not contain a route matching this query and filter set. No replacement is invented.</p><button className="b12-button b12-button-secondary b12-liquid" type="button" onClick={reset}>Reset search and filters</button></div>
+            ) : (
+              <div className="s4-operation-list">
+                {filtered.map((route) => {
+                  const familyId = routeFamily(route.productIds);
+                  return (
+                    <article className="s4-operation-card" key={route.routeId} data-lifecycle={route.lifecycleState}>
+                      <div className="s4-op-title">
+                        <div className="s4-op-top"><span className={`s4-lifecycle ${route.lifecycleState}`}><i />{lifecycleLabels[route.lifecycleState]}</span><span className="s4-live-label">Observed</span></div>
+                        <h3>{route.id}</h3>
+                        <code>{route.route}</code>
+                      </div>
+                      <div className="s4-op-description">
+                        <p>{familyId === null ? 'Observed route' : FAMILY_DISPLAY[familyId]} · {route.capabilities.map(capabilityLabel).join(' · ') || 'No capability tags observed'}</p>
+                        <div className="s4-op-meta">
+                          <div><small>Maximum charge</small><strong>{route.observedPrice === null ? 'not quoted' : formatUsdc(route.observedPrice.amountAtomic, route.observedPrice.decimals)}</strong></div>
+                          <div><small>Proof</small><strong className={route.proofLevel === 'paid_outcome_verified' || route.proofLevel === 'externally_repeated' ? 'proof-word' : undefined}>{proofLabels[route.proofLevel]}</strong></div>
+                          <div><small>Supply</small><strong>{supplyFamilyLabel(route.supplyFamilyId)}</strong></div>
+                        </div>
+                        <div className="s4-proof-flags"><span>{route.productIds.length} operation {route.productIds.length === 1 ? 'identity' : 'identities'}</span><span>{route.sellable ? 'registry sellable' : 'not sellable'}</span>{route.reason === null ? null : <span>{route.reason.replaceAll('_', ' ')}</span>}</div>
+                      </div>
+                      <div className="s4-op-action">
+                        {familyId === null ? <span className="s4-unresolved">Family unresolved</span> : <Link className="b12-button b12-button-secondary b12-liquid" to={`/products/${FAMILY_ROUTE[familyId]}`}>Open family</Link>}
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <nav className="s4-family-strip" aria-label="Permanent product families">
+          {FAMILY_ORDER.map((id) => <Link key={id} to={`/products/${FAMILY_ROUTE[id]}`}><span>{FAMILY_DISPLAY[id]}</span><small>{lifecycleLabels[observedTruth.products.find((product) => product.id === id)!.lifecycleState]}</small></Link>)}
+        </nav>
+      </section>
+    </div>
   );
 }
