@@ -6,10 +6,10 @@ import path from 'node:path';
 const root = path.resolve(import.meta.dirname, '../..');
 const dist = path.join(root, 'apps/site/dist');
 const expectations = [
-  // The locked human promise. It is the first line of the homepage and the
-  // first line of /start, so it is asserted on both.
+  // Locked route promises. Keep these as stable human-visible strings so a
+  // successful prerender proves the intended page body, not only an empty root.
   ['index.html', 'Give your agent a task.'],
-  ['start/index.html', 'Give your agent a task.'],
+  ['start/index.html', 'Set up Clervo'],
   ['catalog/index.html', 'Every route, and what it costs.'],
   ['research/index.html', 'Ask now.'],
   ['platform/index.html', 'One platform.'],
