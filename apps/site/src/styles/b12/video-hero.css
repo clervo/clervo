@@ -1,0 +1,293 @@
+/*
+ * Full-viewport cinematic homepage hero.
+ *
+ * The media URL is intentionally injected at runtime through
+ * VITE_HOME_HERO_VIDEO_URL. Review can temporarily point that variable at the
+ * Taj Alameera reference video without copying third-party media into Clervo.
+ * Production must replace the reference asset with approved Clervo-owned media.
+ */
+
+.app--home .site-header {
+  position: absolute;
+  z-index: 80;
+  top: 0;
+  right: 0;
+  left: 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / 48%) 0%, rgb(0 0 0 / 14%) 66%, transparent 100%);
+}
+
+.b12-home {
+  min-height: 100svh;
+}
+
+.b12-hero {
+  position: relative;
+  min-height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  background: #000;
+}
+
+.b12-hero-media,
+.b12-hero-shade,
+.b12-hero-video,
+.b12-hero-video-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.b12-hero-media {
+  z-index: -3;
+  overflow: hidden;
+  background: #020202;
+}
+
+.b12-hero-video {
+  display: block;
+  object-fit: cover;
+  object-position: 50% 50%;
+  transform: scale(1.01);
+  filter: saturate(.82) contrast(1.04) brightness(.78);
+}
+
+.b12-hero-video-fallback {
+  background:
+    radial-gradient(circle at 68% 42%, rgb(255 255 255 / 7%), transparent 23rem),
+    linear-gradient(115deg, #050505 0%, #101010 48%, #020202 100%);
+}
+
+.b12-hero-shade {
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgb(0 0 0 / 82%) 0%, rgb(0 0 0 / 55%) 38%, rgb(0 0 0 / 22%) 67%, rgb(0 0 0 / 34%) 100%),
+    linear-gradient(180deg, rgb(0 0 0 / 12%) 0%, transparent 44%, rgb(0 0 0 / 72%) 100%);
+}
+
+.b12-hero-shell {
+  position: relative;
+  z-index: 2;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, .48fr);
+  grid-template-rows: 1fr auto;
+  column-gap: clamp(3rem, 8vw, 9rem);
+  align-items: center;
+  padding-top: clamp(7.5rem, 15svh, 10rem);
+  padding-bottom: clamp(2.2rem, 5svh, 4.25rem);
+}
+
+.b12-hero-shell .b12-copy {
+  align-self: center;
+  max-width: 720px;
+}
+
+.b12-hero-shell .b12-eyebrow {
+  color: rgb(245 245 245 / 66%);
+  text-shadow: 0 1px 24px rgb(0 0 0 / 90%);
+}
+
+.b12-hero-shell .b12-copy h1 {
+  max-width: 700px;
+  font-size: clamp(3.65rem, 6vw, 6.75rem);
+  line-height: .91;
+  letter-spacing: -.066em;
+  text-shadow: 0 3px 40px rgb(0 0 0 / 58%);
+}
+
+.b12-hero-shell .b12-actions {
+  margin-top: clamp(1.6rem, 3vh, 2.3rem);
+}
+
+.b12-hero-shell .b12-button-secondary {
+  border-color: rgb(255 255 255 / 28%);
+  background: rgb(0 0 0 / 24%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 10%);
+  backdrop-filter: blur(18px) saturate(125%);
+}
+
+.b12-stage-state--video {
+  width: fit-content;
+  max-width: min(35rem, 100%);
+  margin: 1.15rem 0 0;
+  color: rgb(245 245 245 / 72%);
+  background: rgb(0 0 0 / 18%);
+  text-shadow: 0 1px 18px rgb(0 0 0 / 85%);
+  backdrop-filter: blur(8px);
+}
+
+.b12-truths--video {
+  align-self: center;
+  justify-self: end;
+  width: min(100%, 21rem);
+  margin: 0;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid rgb(255 255 255 / 14%);
+  background: rgb(0 0 0 / 22%);
+  box-shadow: 0 1.5rem 5rem rgb(0 0 0 / 24%);
+  backdrop-filter: blur(18px) saturate(118%);
+}
+
+.b12-truths--video .b12-truth {
+  border-color: rgb(255 255 255 / 11%);
+  text-shadow: 0 1px 15px rgb(0 0 0 / 80%);
+}
+
+.b12-task-contract--video {
+  grid-column: 1 / -1;
+  align-self: end;
+  width: min(46rem, calc(100% - 10rem));
+  margin: 0;
+  border-top-color: rgb(255 255 255 / 14%);
+  color: rgb(245 245 245 / 58%);
+}
+
+.b12-task-contract--video .b12-task-label,
+.b12-task-contract--video .b12-task-text {
+  text-shadow: 0 1px 18px rgb(0 0 0 / 85%);
+}
+
+.b12-scroll-cue {
+  position: absolute;
+  right: 0;
+  bottom: clamp(2.2rem, 5svh, 4.25rem);
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  color: rgb(245 245 245 / 48%);
+  font: 500 .61rem/1 var(--mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.b12-scroll-cue i {
+  width: 34px;
+  height: 1px;
+  display: block;
+  background: currentColor;
+  transform-origin: right center;
+}
+
+.b12-hero + .b12-rail {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .app--home .site-header {
+    background: linear-gradient(180deg, rgb(0 0 0 / 62%) 0%, rgb(0 0 0 / 16%) 72%, transparent 100%);
+  }
+
+  .b12-hero-shade {
+    background:
+      linear-gradient(180deg, rgb(0 0 0 / 18%) 0%, rgb(0 0 0 / 35%) 45%, rgb(0 0 0 / 78%) 100%),
+      linear-gradient(90deg, rgb(0 0 0 / 60%), rgb(0 0 0 / 15%));
+  }
+
+  .b12-hero-video {
+    object-position: 58% 50%;
+  }
+
+  .b12-hero-shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 1fr auto auto;
+    align-content: end;
+    gap: 1.6rem;
+    padding-top: 8rem;
+    padding-bottom: 2rem;
+  }
+
+  .b12-hero-shell .b12-copy {
+    align-self: end;
+    max-width: 40rem;
+  }
+
+  .b12-hero-shell .b12-copy h1 {
+    max-width: 38rem;
+    font-size: clamp(3.25rem, 11vw, 5.6rem);
+  }
+
+  .b12-truths--video {
+    justify-self: start;
+    width: min(100%, 34rem);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .8rem;
+  }
+
+  .b12-truths--video .b12-truth {
+    min-width: 0;
+  }
+
+  .b12-task-contract--video {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  .b12-scroll-cue {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .app--home .shell,
+  .b12-hero-shell.shell {
+    width: min(100% - 32px, 1440px);
+  }
+
+  .b12-hero {
+    min-height: 100dvh;
+  }
+
+  .b12-hero-shell {
+    min-height: 100dvh;
+    padding-top: 6.7rem;
+    padding-bottom: 1.4rem;
+  }
+
+  .b12-hero-video {
+    object-position: 62% center;
+  }
+
+  .b12-hero-shell .b12-eyebrow {
+    margin-bottom: 1.35rem;
+  }
+
+  .b12-hero-shell .b12-copy h1 {
+    font-size: clamp(3rem, 15vw, 4.7rem);
+  }
+
+  .b12-hero-shell .b12-actions {
+    align-items: stretch;
+    flex-direction: column;
+    width: min(100%, 20rem);
+  }
+
+  .b12-hero-shell .b12-button {
+    width: 100%;
+  }
+
+  .b12-truths--video {
+    display: none;
+  }
+
+  .b12-task-contract--video {
+    padding-top: 1rem;
+  }
+
+  .b12-task-contract--video .b12-task-text {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .b12-hero-video {
+    display: none;
+  }
+
+  .b12-hero-video-fallback {
+    display: block;
+  }
+}
