@@ -1126,7 +1126,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-09T16:17:57.555Z",
+  "observedAt": "2026-08-09T16:27:06.404Z",
   "products": [
     {
       "evidence": {
@@ -1327,7 +1327,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "5424390c924324c7e1daf7726867a0f2c20478c8",
+  "sourceCommit": "c48cec3c2e7332f6512d551897584381fac59654",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
