@@ -5,13 +5,13 @@ const profiles = Object.freeze({
   '/proof/b10-search': Object.freeze({
     productId: 'search.web', route: '/v1/search/paid', resource: 'https://api.clervo.dev/v1/search/paid',
     amountAtomic: '6000', amountDisplay: '0.006 USDC', supplierCostCeilingAtomic: '0',
-    idempotencyKey: 'idem_b10_search_proof_20260809',
+    idempotencyKey: 'idem_b10_search_proof_20260809b',
     request: Object.freeze({ query: 'Python programming', maxResults: 3, synthesize: false, language: 'en', region: 'US' }),
   }),
   '/proof/b10-sandbox': Object.freeze({
     productId: 'sandbox.run', route: '/v1/sandbox/execute', resource: 'https://api.clervo.dev/v1/sandbox/execute',
     amountAtomic: '10000', amountDisplay: '0.010 USDC', supplierCostCeilingAtomic: '8000',
-    idempotencyKey: 'idem_b10_sandbox_proof_20260809',
+    idempotencyKey: 'idem_b10_sandbox_proof_20260809b',
     request: Object.freeze({ command: Object.freeze(['node', '-e', 'process.stdout.write("B10 sandbox proof")']), limits: Object.freeze({ cpuMillis: 5000, memoryBytes: 268435456, processes: 16, diskBytes: 67108864, outputBytes: 65536, artifactBytes: 1048576, wallTimeMs: 10000 }) }),
   }),
 });
