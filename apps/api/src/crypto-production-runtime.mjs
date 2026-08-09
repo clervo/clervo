@@ -33,6 +33,34 @@ function boundedTransport(fetcher) {
   };
 }
 
+function pacedTransport(transport, minimumRequestIntervalMs) {
+  let scheduling = Promise.resolve();
+  let nextStartAt = 0;
+  return async (request) => {
+    let release;
+    const previous = scheduling;
+    scheduling = new Promise((resolve) => { release = resolve; });
+    await previous;
+    try {
+      if (request.signal.aborted) throw request.signal.reason;
+      const delayMs = Math.max(0, nextStartAt - Date.now());
+      if (delayMs > 0) {
+        await new Promise((resolve, reject) => {
+          const finish = () => { request.signal.removeEventListener('abort', cancel); resolve(); };
+          const timer = setTimeout(finish, delayMs);
+          const cancel = () => { clearTimeout(timer); request.signal.removeEventListener('abort', cancel); reject(request.signal.reason); };
+          request.signal.addEventListener('abort', cancel, { once: true });
+        });
+      }
+      if (request.signal.aborted) throw request.signal.reason;
+      nextStartAt = Date.now() + minimumRequestIntervalMs;
+    } finally {
+      release();
+    }
+    return transport(request);
+  };
+}
+
 function result(request, output, completedAt) {
   const unsigned = Object.freeze({ contractVersion: CONTRACT_VERSION, schemaVersion: CRYPTO_RESULT_SCHEMA_VERSION, operationId: request.operationId, productId: request.productId, completedAt, meteredCharge: Object.freeze({ asset: 'USD', amountAtomic: '0', decimals: 6 }), output });
   return Object.freeze({ ...unsigned, resultHash: hashJson(unsigned) });
@@ -121,9 +149,13 @@ function crossChainReport(address, requestedChains, reports, failures, derivedAt
   }));
 }
 
-export function createCryptoProductionRuntime({ credential, fetcher = globalThis.fetch, now = () => Date.now(), hardDailyCallCeiling = 100_000 } = {}) {
-  if (typeof credential !== 'string' || credential.trim().length < 8 || typeof fetcher !== 'function' || typeof now !== 'function') throw new TypeError('crypto_production_configuration_invalid');
-  const adapter = new BlockscoutDataAdapter({ apiKey: credential, allowedChainIds: Object.values(CHAIN_CONFIG).map(({ numericId }) => numericId), hardDailyCallCeiling, timeoutMs: 15_000 }, boundedTransport(fetcher));
+export function createCryptoProductionRuntime({ credential, fetcher = globalThis.fetch, now = () => Date.now(), hardDailyCallCeiling = 100_000, minimumRequestIntervalMs = 210 } = {}) {
+  if (typeof credential !== 'string' || credential.trim().length < 8 || typeof fetcher !== 'function' || typeof now !== 'function'
+    || !Number.isSafeInteger(minimumRequestIntervalMs) || minimumRequestIntervalMs < 0 || minimumRequestIntervalMs > 1_000) throw new TypeError('crypto_production_configuration_invalid');
+  const adapter = new BlockscoutDataAdapter(
+    { apiKey: credential, allowedChainIds: Object.values(CHAIN_CONFIG).map(({ numericId }) => numericId), hardDailyCallCeiling, timeoutMs: 15_000 },
+    pacedTransport(boundedTransport(fetcher), minimumRequestIntervalMs),
+  );
   const evmSource = Object.freeze({
     sourceRef: SOURCE_REF,
     chains: SUPPORTED_CHAINS,

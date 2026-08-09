@@ -38,7 +38,7 @@ function request(kind, amountAtomic) {
 }
 
 test('crypto production runtime returns bounded balances, holdings, activity, and deterministic report evidence', async () => {
-  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', fetcher, now: () => nowMs, hardDailyCallCeiling: 20 });
+  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', fetcher, now: () => nowMs, hardDailyCallCeiling: 20, minimumRequestIntervalMs: 0 });
   assert.deepEqual(runtime.supportedChains, ['eip155:1', 'eip155:8453']);
   assert.deepEqual(runtime.supportedKinds, ['balances', 'tokens', 'transactions', 'report']);
 
@@ -59,7 +59,7 @@ test('crypto production runtime returns bounded balances, holdings, activity, an
 });
 
 test('crypto production runtime preserves useful partial chain output and explicit source degradation', async () => {
-  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, async fetcher(input) {
+  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, minimumRequestIntervalMs: 0, async fetcher(input) {
     const url = new URL(input);
     if (url.pathname.startsWith('/8453/')) return new Response('unavailable', { status: 503 });
     return fetcher(input);
@@ -72,20 +72,20 @@ test('crypto production runtime preserves useful partial chain output and explic
 });
 
 test('crypto production runtime fails closed on total source failure, malformed data, expiry, and unsupported operation kinds', async () => {
-  const unavailable = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, async fetcher() { return new Response('unavailable', { status: 503 }); } });
+  const unavailable = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, minimumRequestIntervalMs: 0, async fetcher() { return new Response('unavailable', { status: 503 }); } });
   await assert.rejects(unavailable.execute(request('report', '4000')), /sources_unavailable/u);
 
-  const malformed = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, async fetcher() { return Response.json({ hash: token, coin_balance: '-1', is_contract: false }); } });
+  const malformed = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, minimumRequestIntervalMs: 0, async fetcher() { return Response.json({ hash: token, coin_balance: '-1', is_contract: false }); } });
   await assert.rejects(malformed.execute(request('balances', '2000')), /sources_unavailable/u);
 
-  const expired = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => Date.parse('2026-08-17T00:00:00.000Z'), fetcher });
+  const expired = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => Date.parse('2026-08-17T00:00:00.000Z'), fetcher, minimumRequestIntervalMs: 0 });
   assert.equal(await expired.ready(), false);
   await assert.rejects(expired.execute({ ...request('balances', '2000'), deadlineAt: '2026-08-17T00:00:30.000Z' }), /qualification_expired/u);
   await assert.rejects(unavailable.execute({ ...request('report', '4000'), input: { ...request('report', '4000').input, kind: 'protocol' } }), /kind_unavailable/u);
 });
 
 test('crypto production runtime applies the operation deadline across all upstream work', async () => {
-  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, fetcher(input, init) {
+  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, minimumRequestIntervalMs: 0, fetcher(input, init) {
     return new Promise((resolve, reject) => {
       init.signal.addEventListener('abort', () => reject(init.signal.reason), { once: true });
     });
@@ -94,7 +94,7 @@ test('crypto production runtime applies the operation deadline across all upstre
 });
 
 test('crypto production runtime parallelizes independent report reads within the bounded deadline', async () => {
-  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, fetcher(input, init) {
+  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, minimumRequestIntervalMs: 0, fetcher(input, init) {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => resolve(fetcher(input)), 40);
       init.signal.addEventListener('abort', () => { clearTimeout(timer); reject(init.signal.reason); }, { once: true });
@@ -103,4 +103,15 @@ test('crypto production runtime parallelizes independent report reads within the
   const completed = await runtime.execute({ ...request('report', '4000'), deadlineAt: new Date(nowMs + 100).toISOString() });
   assert.equal(completed.result.output.servedChains[0], 'eip155:1');
   assert.ok(completed.result.output.evidenceRefs.length > 0);
+});
+
+test('crypto production runtime paces concurrent upstream starts below the qualified five-RPS ceiling', async () => {
+  const starts = [];
+  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, minimumRequestIntervalMs: 10, fetcher(input) {
+    starts.push(Date.now());
+    return fetcher(input);
+  } });
+  await runtime.execute({ ...request('report', '4000'), deadlineAt: new Date(nowMs + 1_000).toISOString() });
+  assert.equal(starts.length, 4);
+  assert.ok(starts.every((value, index) => index === 0 || value - starts[index - 1] >= 8));
 });
