@@ -6,7 +6,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T14:46:33.716Z",
+      "observedAt": "2026-08-09T16:17:57.555Z",
       "releaseId": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -67,7 +67,7 @@
           "prediction.signal"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -213,9 +213,9 @@
         "prediction.signal"
       ],
       "engineeringState": "public_production_qualified",
-      "customerLifecycle": "preview_publicly_callable",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid"
+      "proofLevel": "paid_outcome_verified"
     },
     {
       "id": "crypto_intelligence",

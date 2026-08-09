@@ -26,7 +26,7 @@
           }
         }
       ],
-      "lastUpdated": 1786286793,
+      "lastUpdated": 1786292277,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -69,7 +69,7 @@
           }
         }
       ],
-      "lastUpdated": 1786286793,
+      "lastUpdated": 1786292277,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -107,12 +107,12 @@
               "amountIsBinding": false,
               "exampleRouteId": null,
               "lifecycleState": "live",
-              "proofLevel": "quote_observed_unpaid"
+              "proofLevel": "paid_outcome_verified"
             }
           }
         }
       ],
-      "lastUpdated": 1786286793,
+      "lastUpdated": 1786292277,
       "metadata": {
         "category": "prediction",
         "provider": "clervo",
@@ -123,9 +123,9 @@
         "bazaarExtensionPresent": true,
         "bazaar": {
           "validatorAccepted": true,
-          "indexed": false,
-          "indexActive": null,
-          "indexLastCrawledAt": null,
+          "indexed": true,
+          "indexActive": true,
+          "indexLastCrawledAt": "2026-08-09T16:00:37.868Z",
           "failedChecks": []
         }
       }
@@ -140,7 +140,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T14:46:33.716Z",
+      "observedAt": "2026-08-09T16:17:57.555Z",
       "releaseId": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -168,7 +168,7 @@
     "bazaar": {
       "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",
       "validator": "https://api.cdp.coinbase.com/platform/v2/x402/validate",
-      "indexedResourceCount": 1,
+      "indexedResourceCount": 2,
       "note": "Indexing triggers only on a payment settled through the CDP facilitator. A valid resource that has never been paid for is eligible and unindexed, which is not a defect."
     },
     "freeResources": [

@@ -11,6 +11,7 @@ import { PostgresPredictionMarketStore } from '../../apps/api/src/prediction-mar
 import { createPredictionProductionRuntime } from '../../apps/api/src/prediction-production-runtime.mjs';
 import { normalizePredictionHttpRequest, predictionPublicPricing } from '../../apps/api/src/x402-paid-prediction.mjs';
 import { sellablePredictionSources } from '../../apps/api/src/prediction-public-policy.mjs';
+import { hashJson } from '../../dist/packages/contracts/src/index.js';
 
 function market(overrides = {}, nowOffsetMs = 1_000) {
   const input = {
@@ -149,6 +150,63 @@ test('competitive pricing evidence is dated, confidence-labelled, and supports t
   const blockRun = evidence.evidence.find(({ competitor, capability, confidence }) => competitor === 'BlockRun / Predexon' && capability.includes('search') && confidence === 'PROVEN');
   assert.equal(blockRun.priceMicrousd, 8_500);
   assert.ok(BigInt(predictionPublicPricing(normalizePredictionHttpRequest({ kind: 'search', query: 'Fed', limit: 1 })).maximumCharge.amountAtomic) < BigInt(blockRun.priceMicrousd));
+});
+
+test('production payment proof binds two exact owner-funded outcomes without claiming revenue or unrelated demand', () => {
+  const proof = JSON.parse(readFileSync(new URL('../../infra/production/gcp/prediction-x402-proof.v1.json', import.meta.url), 'utf8'));
+  assert.equal(proof.schemaVersion, 'clervo.prediction-x402-proof.v1');
+  assert.equal(proof.state, 'settled_reconciled');
+  assert.equal(proof.endpoint, 'https://api.clervo.dev/v1/prediction/execute');
+  assert.equal(proof.network, 'eip155:8453');
+  assert.equal(proof.ownerAuthorization.maximumSpendAtomic, '4000');
+  assert.equal(proof.ownerAuthorization.paymentEffects, 2);
+  assert.deepEqual(proof.ownerAuthorization.operationsInOrder, ['prediction.markets', 'prediction.market']);
+  assert.equal(proof.operations.length, 2);
+  assert.equal(new Set(proof.operations.map(({ operationId }) => operationId)).size, 2);
+  assert.equal(new Set(proof.operations.map(({ receiptId }) => receiptId)).size, 2);
+  assert.equal(new Set(proof.operations.map(({ transactionHash }) => transactionHash)).size, 2);
+  assert.equal(proof.operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic), 0n), 4000n);
+  for (const operation of proof.operations) {
+    assert.equal(operation.customerChargeAtomic, '2000');
+    assert.equal(operation.supplierCostAtomic, '0');
+    assert.equal(operation.settlementStatus, 'settled');
+    assert.equal(operation.chainStatus, 'confirmed');
+    assert.equal(operation.exactTransferCount, 1);
+    assert.equal(operation.usefulResult, true);
+    assert.equal(operation.resultSummary.adapterId, 'adapter_prediction.pdata_rest');
+    assert.equal(operation.resultSummary.sourceId, 'pdata');
+    assert.equal(operation.resultSummary.license, 'CC BY 4.0');
+    assert.equal(operation.resultSummary.freshnessState, 'fresh');
+    assert.deepEqual(operation.replay, {
+      sameOperation: true,
+      sameReceipt: true,
+      sameResult: true,
+      idempotencyReplayed: true,
+      paymentHeaderSent: false,
+      secondAuthorization: false,
+      secondCharge: false,
+    });
+    assert.equal(operation.durable.state, 'completed');
+    assert.equal(operation.durable.operationRows, 1);
+    assert.equal(operation.durable.accountingRows, 1);
+    assert.equal(hashJson({ network: proof.network, transaction: operation.transactionHash }), operation.settlementReferenceHash);
+  }
+  assert.equal(proof.observedBalances.payerDeltaAtomic, '-4000');
+  assert.equal(proof.observedBalances.receiverDeltaAtomic, '4000');
+  assert.equal(proof.observedDurability.operationRows, 2);
+  assert.equal(proof.observedDurability.accountingRowsForOperations, 2);
+  assert.equal(proof.observedDurability.receiverLedgerChainValid, true);
+  assert.equal(proof.observedDurability.receiverLedgerBalanced, true);
+  assert.equal(proof.observedDurability.temporaryJobRemoved, true);
+  assert.deepEqual(proof.proofClassification, {
+    proofLevel: 'paid_outcome_verified',
+    ownerFunded: true,
+    commercialMechanismVerified: true,
+    revenueEvidence: false,
+    demandEvidence: false,
+    unrelatedCustomerEvidence: false,
+    externallyRepeatedClaimAllowed: false,
+  });
 });
 
 test('bounded source client rejects private origins, credentials, redirects, oversized bodies, timeouts, malformed JSON, and path traversal', async () => {

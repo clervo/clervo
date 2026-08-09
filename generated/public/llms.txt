@@ -44,13 +44,13 @@ Current verified status:
 
 ## Observed lifecycle state and proof level
 
-Probed from the deployed system at 2026-08-09T14:46:33.716Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
+Probed from the deployed system at 2026-08-09T16:17:57.555Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
 
 | Product | Lifecycle state | Proof level |
 |---|---|---|
 | AI | supply_paused (no_route_currently_live) | none |
 | Crypto Intelligence | unavailable (commercial_rights_blocked) | none |
-| Prediction Intelligence | live | quote_observed_unpaid |
+| Prediction Intelligence | live | paid_outcome_verified |
 | Multi-chain RPC | unavailable (commercial_rights_blocked) | none |
 | Secure Sandbox | live | quote_observed_unpaid |
 | Research | live | quote_observed_unpaid |

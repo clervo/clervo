@@ -24,8 +24,8 @@ async function json(relative) {
   return JSON.parse(await readFile(path.join(generated, relative), 'utf8'));
 }
 
-test('generated OpenAPI is deterministic, schema-complete, and truthfully exposes only search HTTP paths', async () => {
-  const document = await json('openapi.json');
+test('generated OpenAPI is deterministic, schema-complete, and exposes only registry-declared public paths', async () => {
+  const [document, discovery] = await Promise.all([json('openapi.json'), json('.well-known/clervo.json')]);
   assert.equal(document.openapi, '3.1.1');
   assert.equal(document.jsonSchemaDialect, 'https://json-schema.org/draft/2020-12/schema');
   // Paths and status advance as products launch. Assert the invariants that
@@ -36,8 +36,10 @@ test('generated OpenAPI is deterministic, schema-complete, and truthfully expose
   const paths = Object.keys(document.paths).sort();
   assert.ok(paths.includes(SEARCH_FREE_PATH), 'free Search path is required');
   assert.ok(paths.includes(SEARCH_PAID_PATH), 'paid Search path is required');
-  const KNOWN_PUBLIC_PATHS = new Set([SEARCH_FREE_PATH, SEARCH_PAID_PATH, '/v1/ai/execute', '/v1/sandbox/execute']);
-  for (const value of paths) assert.ok(KNOWN_PUBLIC_PATHS.has(value), `undeclared public path published: ${value}`);
+  const declaredPublicPaths = new Set(discovery.products
+    .filter(({ publicAvailable }) => publicAvailable)
+    .flatMap(({ routes }) => Object.values(routes)));
+  assert.deepEqual(paths, [...declaredPublicPaths].sort(), 'OpenAPI paths must equal the generated public product routes');
   const status = document['x-clervo-status'];
   assert.equal(status.releaseCandidateId, 'clervo-private-core-2026-08-02.2');
   assert.equal(status.interfaceHash, 'sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622');
@@ -88,14 +90,10 @@ test('discovery is bound to the frozen private core and agrees with launch state
     if (product.pricing.displayPrice === null) continue;
     assert.match(String(product.pricing.displayPrice.amountAtomic), /^\d+$/u, `${product.productId}: payable product needs an atomic amount`);
   }
-  // The description must not overstate: no revenue or demand may be claimed
-  // until a real external customer pays. It previously had to contain the
-  // literal "not publicly callable", which forbade describing the API
-  // accurately once it went public.
+  // The description must not overstate. Revenue and demand remain separate
+  // from an owner-funded paid-outcome proof and are carried in structured
+  // fields instead of requiring one frozen sentence to survive every launch.
   assert.doesNotMatch(discovery.description, /live service|available now|production-ready/iu);
-  if (launchState.paymentProof.commercialProof !== true) {
-    assert.match(discovery.description, /no external customer revenue or demand is claimed/iu);
-  }
   assert.equal(discovery.payment.privateProofVerified, true);
   assert.equal(discovery.payment.commercialProof, false);
   // catalog.json is a projection of the discovery document, including the
@@ -151,7 +149,13 @@ test('llms.txt matches the generator and states public status truthfully', async
   // was not callable while it was settling payments.
   assert.match(llms, /^- Public API callable: (yes|no)$/mu);
   assert.match(llms, /^- x402 public payment: .+$/mu);
-  assert.match(llms, /^- Projected operation IDs: search\.web(, [a-z_.]+)*$/mu);
+  const discovery = await json('.well-known/clervo.json');
+  const expectedPublicOperations = discovery.products
+    .filter(({ publicAvailable }) => publicAvailable)
+    .map(({ productId }) => productId);
+  const operationLine = llms.split('\n').find((line) => line.startsWith('- Public operation IDs: '));
+  assert.ok(operationLine !== undefined, 'llms.txt must publish its operation identities');
+  assert.deepEqual(operationLine.slice('- Public operation IDs: '.length).split(', '), expectedPublicOperations);
   // Whatever the status is, it must agree with launch state.
   const publiclyCallable = /^- Public API callable: yes$/mu.test(llms);
   assert.equal(

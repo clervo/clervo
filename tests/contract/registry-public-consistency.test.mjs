@@ -61,9 +61,10 @@ test('a route or product is only sellable where the registry says it is live', (
   }
 });
 
-test('no product claims a proof level above what a non-paying probe can establish', () => {
-  // This prober never sends a payment, so it cannot observe a settled outcome.
-  // Anything above quote_observed_unpaid in generated output would be fabricated.
+test('no product claims a proof level above the combined live-probe and accepted paid-proof ceiling', () => {
+  // The HTTP prober never sends payment. Anything above
+  // quote_observed_unpaid therefore needs a separately settled proof record
+  // that was accepted against the current release and current quote.
   const ceiling = PROOF_LEVELS.indexOf(registry.proofCeiling.level);
   assert.ok(ceiling >= 0);
   for (const product of registry.products) {
@@ -71,6 +72,13 @@ test('no product claims a proof level above what a non-paying probe can establis
       PROOF_LEVELS.indexOf(product.proof) <= ceiling,
       `${product.id} claims ${product.proof}, above the probe ceiling ${registry.proofCeiling.level}`,
     );
+    if (PROOF_LEVELS.indexOf(product.proof) > PROOF_LEVELS.indexOf('quote_observed_unpaid')) {
+      assert.equal(product.evidence?.paidOutcome?.accepted, true, `${product.id} paid proof must be explicitly accepted`);
+      assert.equal(product.evidence.paidOutcome.proofLevel, product.proof);
+    }
+    if (product.proof === 'externally_repeated') {
+      assert.equal(product.evidence?.paidOutcome?.externallyRepeated, true, `${product.id} must not infer unrelated-customer repetition from owner funding`);
+    }
   }
 });
 

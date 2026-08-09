@@ -2,14 +2,15 @@
   "schemaVersion": "clervo.public-status.v1",
   "observedAt": "2026-08-04T04:44:23Z",
   "publicApi": {
-    "state": "public_search_ai_and_sandbox_preview_verified",
+    "state": "public_search_ai_sandbox_and_prediction_preview_verified",
     "endpoint": "https://api.clervo.dev",
     "publicCallable": true,
     "publicTraffic": true,
     "customerEndpointAvailable": true,
     "evidence": [
       "infra/production/cloudflare/public-search-release.v1.json",
-      "infra/production/gcp/sandbox-public-release.v1.json"
+      "infra/production/gcp/sandbox-public-release.v1.json",
+      "infra/production/gcp/prediction-x402-proof.v1.json"
     ]
   },
   "packages": {
@@ -63,7 +64,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T14:46:33.716Z",
+      "observedAt": "2026-08-09T16:17:57.555Z",
       "releaseId": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -124,7 +125,7 @@
           "prediction.signal"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -372,10 +373,10 @@
     {
       "id": "prediction",
       "engineeringState": "public_production_qualified",
-      "customerLifecycle": "preview_publicly_callable",
-      "commercialProof": "quote_observed_unpaid",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
+      "commercialProof": "owner_funded_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid"
+      "proofLevel": "paid_outcome_verified"
     },
     {
       "id": "crypto_intelligence",

@@ -4,7 +4,7 @@ Clervo sells bounded outcomes over HTTP: one request in, one verified result
 and one receipt out. Payment, when required, uses x402 or MPP over USDC on
 Base and is always quoted before execution.
 
-Generated from `packages/catalog/live-registry.json`, probed at 2026-08-09T14:46:33.716Z. Every row below is observed from the deployed system, never asserted.
+Generated from `packages/catalog/live-registry.json`, probed at 2026-08-09T16:17:57.555Z. Every row below is observed from the deployed system, never asserted.
 
 ## When to use this skill
 
@@ -18,7 +18,7 @@ Generated from `packages/catalog/live-registry.json`, probed at 2026-08-09T14:46
 |---|---|---|---|
 | AI | `ai` | supply_paused (no_route_currently_live) | none |
 | Crypto Intelligence | `crypto_intelligence` | unavailable (commercial_rights_blocked) | none |
-| Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
+| Prediction Intelligence | `prediction` | live | paid_outcome_verified |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
 | Secure Sandbox | `sandbox` | live | quote_observed_unpaid |
 | Research | `search` | live | quote_observed_unpaid |

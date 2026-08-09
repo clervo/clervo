@@ -10,9 +10,12 @@
 //   * The output file is generated, never hand-edited.
 //
 // Safety: this script performs no payment. It sends no PAYMENT-SIGNATURE
-// header, so paid routes answer with a 402 quote and nothing settles. Supplier
-// credentials are read to probe supply health; only status codes and provider
-// error codes are recorded, never credential material or response bodies.
+// header, so paid routes answer with a 402 quote and nothing settles. A paid
+// proof level may only come from a separately recorded, settled, reconciled
+// production proof that this script validates against the currently deployed
+// release and current quote. Supplier credentials are read to probe supply
+// health; only status codes and provider error codes are recorded, never
+// credential material or response bodies.
 
 import { readFile, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
@@ -199,6 +202,13 @@ const permission = await (async () => {
   }
 })();
 const permissionByFamily = Object.fromEntries((permission?.families ?? []).map((family) => [family.supplyFamilyId, family]));
+const predictionPaidProof = await (async () => {
+  try {
+    return JSON.parse(await readFile(path.join(root, 'infra/production/gcp/prediction-x402-proof.v1.json'), 'utf8'));
+  } catch {
+    return null;
+  }
+})();
 
 // ---------------------------------------------------------------------------
 // Surface probes
@@ -232,6 +242,8 @@ const surfaceById = Object.fromEntries(surfaceProbes.map((probe) => [probe.id, p
 if (!surfaceById['api.health'].reachable) {
   fail('the deployed API was unreachable; refusing to write a registry that would understate live capability');
 }
+
+const health = surfaceById['api.health'].body ?? {};
 
 // ---------------------------------------------------------------------------
 // Supply health probes
@@ -538,14 +550,115 @@ const aiRoutes = catalog.routes.map((route) => {
 // system serve this"; proof answers "what have we actually demonstrated". A
 // route can be live and still have proved nothing beyond its own price.
 //
-// This script never pays, so it can establish at most `quote_observed_unpaid`.
-// `paid_outcome_verified` and `externally_repeated` require a settlement and an
-// unrelated party, neither of which a probe can manufacture. They are therefore
-// never written here.
+// This script never pays, so a live HTTP probe can establish at most
+// `quote_observed_unpaid`. It may elevate a product to
+// `paid_outcome_verified` only after validating an explicit settled proof
+// against the current release and the fresh 402 above. It never writes
+// `externally_repeated`: owner-funded production proof is not unrelated-customer
+// demand, however many times the bounded mechanism was exercised.
 const PROOF_NONE = 'none';
 const PROOF_QUOTED = 'quote_observed_unpaid';
+const PROOF_PAID = 'paid_outcome_verified';
 
-function productFromProbes({ id, label, operations, probeIds, freeProbeId = null, commercialBlocker = null }) {
+function predictionPaidProofValidation(quote) {
+  const proof = predictionPaidProof;
+  if (proof === null) return { accepted: false, reason: 'paid_proof_absent' };
+
+  const expectedOperations = ['prediction.markets', 'prediction.market'];
+  const operations = Array.isArray(proof.operations) ? proof.operations : [];
+  const operationIds = new Set(operations.map(({ operationId }) => operationId));
+  const receiptIds = new Set(operations.map(({ receiptId }) => receiptId));
+  const requestHashes = new Set(operations.map(({ requestHash }) => requestHash));
+  const resultHashes = new Set(operations.map(({ resultHash }) => resultHash));
+  const transactionHashes = new Set(operations.map(({ transactionHash }) => transactionHash));
+
+  const invariant = proof.schemaVersion === 'clervo.prediction-x402-proof.v1'
+    && proof.state === 'settled_reconciled'
+    && proof.publicOrigin === `${API_ORIGIN}/`
+    && proof.endpoint === `${API_ORIGIN}/v1/prediction/execute`
+    && proof.releaseCommit === health.releaseId
+    && proof.network === quote?.network
+    && proof.asset === quote?.asset
+    && proof.payTo === quote?.payTo
+    && proof.observedChallenge?.status === 402
+    && proof.observedChallenge?.amountAtomic === quote?.amountAtomic
+    && proof.observedChallenge?.networkMatched === true
+    && proof.observedChallenge?.assetMatched === true
+    && proof.observedChallenge?.payToMatched === true
+    && proof.observedChallenge?.facilitatorMatched === true
+    && proof.observedChallenge?.paymentAttemptedBeforeOwnerAuthorization === false
+    && proof.ownerAuthorization?.maximumSpendAtomic === '4000'
+    && proof.ownerAuthorization?.maximumExecutionCount === 2
+    && proof.ownerAuthorization?.amountAtomicPerOperation === '2000'
+    && proof.ownerAuthorization?.paymentEffects === 2
+    && proof.ownerAuthorization?.automaticRetry === false
+    && JSON.stringify(proof.ownerAuthorization?.operationsInOrder) === JSON.stringify(expectedOperations)
+    && operations.length === 2
+    && JSON.stringify(operations.map(({ productId }) => productId)) === JSON.stringify(expectedOperations)
+    && operationIds.size === 2
+    && receiptIds.size === 2
+    && requestHashes.size === 2
+    && resultHashes.size === 2
+    && transactionHashes.size === 2
+    && operations.every((operation) => operation.customerChargeAtomic === '2000'
+      && operation.supplierCostAtomic === '0'
+      && operation.settlementStatus === 'settled'
+      && operation.chainStatus === 'confirmed'
+      && operation.exactTransferCount === 1
+      && operation.usefulResult === true
+      && operation.resultSummary?.freshnessState === 'fresh'
+      && operation.resultSummary?.adapterId === 'adapter_prediction.pdata_rest'
+      && operation.resultSummary?.sourceId === 'pdata'
+      && operation.resultSummary?.license === 'CC BY 4.0'
+      && operation.replay?.sameOperation === true
+      && operation.replay?.sameReceipt === true
+      && operation.replay?.sameResult === true
+      && operation.replay?.idempotencyReplayed === true
+      && operation.replay?.paymentHeaderSent === false
+      && operation.replay?.secondAuthorization === false
+      && operation.replay?.secondCharge === false
+      && operation.durable?.state === 'completed'
+      && operation.durable?.operationRows === 1
+      && operation.durable?.accountingRows === 1)
+    && operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic), 0n) === 4000n
+    && proof.observedBalances?.payerDeltaAtomic === '-4000'
+    && proof.observedBalances?.receiverDeltaAtomic === '4000'
+    && proof.observedDurability?.databaseIdentityVerified === true
+    && proof.observedDurability?.operationRows === 2
+    && proof.observedDurability?.accountingRowsForOperations === 2
+    && proof.observedDurability?.receiverLedgerChainValid === true
+    && proof.observedDurability?.receiverLedgerBalanced === true
+    && proof.observedDurability?.temporaryJobRemoved === true
+    && proof.proofClassification?.proofLevel === PROOF_PAID
+    && proof.proofClassification?.ownerFunded === true
+    && proof.proofClassification?.commercialMechanismVerified === true
+    && proof.proofClassification?.revenueEvidence === false
+    && proof.proofClassification?.demandEvidence === false
+    && proof.proofClassification?.unrelatedCustomerEvidence === false
+    && proof.proofClassification?.externallyRepeatedClaimAllowed === false
+    && proof.cleanup?.loopbackServersStopped === true
+    && proof.cleanup?.browserTunnelsStopped === true
+    && proof.cleanup?.temporaryManagedJobRemoved === true;
+
+  if (!invariant) return { accepted: false, reason: 'paid_proof_invariant_failed' };
+  return {
+    accepted: true,
+    reason: null,
+    proofLevel: PROOF_PAID,
+    source: 'infra/production/gcp/prediction-x402-proof.v1.json',
+    releaseCommit: proof.releaseCommit,
+    operationCount: operations.length,
+    totalChargeAtomic: '4000',
+    usefulResultCount: operations.filter(({ usefulResult }) => usefulResult).length,
+    replayNoSecondChargeCount: operations.filter(({ replay }) => replay?.secondCharge === false).length,
+    ownerFunded: true,
+    revenueEvidence: false,
+    demandEvidence: false,
+    externallyRepeated: false,
+  };
+}
+
+function productFromProbes({ id, label, operations, probeIds, freeProbeId = null, commercialBlocker = null, paidProof = null }) {
   if (commercialBlocker !== null) {
     return {
       id,
@@ -576,6 +689,11 @@ function productFromProbes({ id, label, operations, probeIds, freeProbeId = null
     reason = problemCode(paid) ?? 'edge_route_unavailable';
   }
 
+  const paidOutcome = typeof paidProof === 'function' ? paidProof(quote) : null;
+  const proof = state === STATE_LIVE
+    ? paidOutcome?.accepted === true ? paidOutcome.proofLevel : PROOF_QUOTED
+    : PROOF_NONE;
+
   return {
     id,
     label,
@@ -584,7 +702,7 @@ function productFromProbes({ id, label, operations, probeIds, freeProbeId = null
     reason,
     expectedReturnAt: null,
     publiclyReachable: paid.reachable && paid.status !== 404,
-    proof: state === STATE_LIVE ? PROOF_QUOTED : PROOF_NONE,
+    proof,
     observedQuote: quote,
     freeEntry: free === null ? null : {
       route: free.url,
@@ -597,7 +715,13 @@ function productFromProbes({ id, label, operations, probeIds, freeProbeId = null
       // proof level.
       freeOutcomeObserved: free.status === 200,
     },
-    evidence: { probed: true, edgeStatus: paid.status, edgeCode: problemCode(paid), edgeAttempts: paid.attempts ?? 1 },
+    evidence: {
+      probed: true,
+      edgeStatus: paid.status,
+      edgeCode: problemCode(paid),
+      edgeAttempts: paid.attempts ?? 1,
+      ...(paidOutcome === null ? {} : { paidOutcome }),
+    },
   };
 }
 
@@ -647,6 +771,7 @@ const products = [
     label: 'Prediction Intelligence',
     operations: ['prediction.markets', 'prediction.market', 'prediction.compare', 'prediction.history', 'prediction.signal'],
     probeIds: { paid: 'api.prediction_execute' },
+    paidProof: predictionPaidProofValidation,
   }),
   productFromProbes({
     id: 'crypto_intelligence',
@@ -792,8 +917,6 @@ const bazaar = {
 // Assemble and write
 // ---------------------------------------------------------------------------
 
-const health = surfaceById['api.health'].body ?? {};
-
 const registry = sortedKeys({
   schemaVersion: 'clervo.live-registry.v1',
   generatedBy: 'scripts/probe-live-registry.mjs',
@@ -815,8 +938,10 @@ const registry = sortedKeys({
     externally_repeated: 'an unrelated party did it, more than once',
   },
   proofCeiling: {
-    level: 'quote_observed_unpaid',
-    reason: 'this prober never pays, so it cannot establish a paid or externally repeated proof level',
+    level: products.some(({ proof }) => proof === PROOF_PAID) ? PROOF_PAID : PROOF_QUOTED,
+    reason: products.some(({ proof }) => proof === PROOF_PAID)
+      ? 'the live probe itself never pays; paid_outcome_verified additionally requires a settled proof record validated against the current release and current quote; externally_repeated still requires unrelated-customer evidence'
+      : 'this prober never pays and no current-release settled proof record was accepted, so it cannot establish a paid or externally repeated proof level',
   },
   deployment: {
     apiOrigin: API_ORIGIN,

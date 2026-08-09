@@ -39,14 +39,15 @@
       ]
     },
     "publicApi": {
-      "state": "public_search_ai_and_sandbox_preview_verified",
+      "state": "public_search_ai_sandbox_and_prediction_preview_verified",
       "endpoint": "https://api.clervo.dev",
       "publicCallable": true,
       "publicTraffic": true,
       "customerEndpointAvailable": true,
       "evidence": [
         "infra/production/cloudflare/public-search-release.v1.json",
-        "infra/production/gcp/sandbox-public-release.v1.json"
+        "infra/production/gcp/sandbox-public-release.v1.json",
+        "infra/production/gcp/prediction-x402-proof.v1.json"
       ]
     }
   },
@@ -190,18 +191,19 @@
         "prediction.signal"
       ],
       "engineeringState": "public_production_qualified",
-      "customerLifecycle": "preview_publicly_callable",
-      "commercialProof": "quote_observed_unpaid",
-      "paymentState": "public_x402_challenge_available_paid_result_pending",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
+      "commercialProof": "owner_funded_paid_outcome_verified",
+      "paymentState": "public_x402_two_owner_funded_settlements_and_replays_verified",
       "supplierRights": "pdata_cc_by_4_0_derived_offer_approved",
       "allowedClaims": [
         "Derived Prediction Intelligence is publicly callable through exact Base USDC x402 offers from 0.002 to 0.003 USDC.",
         "Qualified zero-cost pdata supply covers Polymarket, Kalshi, Manifold, and Limitless with CC BY 4.0 attribution and Clervo transformation.",
-        "Direct venue adapters with unresolved commercial permission remain disabled and fail closed."
+        "Direct venue adapters with unresolved commercial permission remain disabled and fail closed.",
+        "Two bounded owner-funded production operations each settled for exactly 0.002 USDC, returned useful fresh pdata-attributed results, and replayed without another authorization or charge."
       ],
       "prohibitedClaims": [
-        "Paid Prediction outcome verified",
         "Customer revenue or demand",
+        "Unrelated-customer demand or externally repeated proof",
         "Raw pdata proxy or raw feed redistribution",
         "Commercial permission for unresolved direct venue adapters",
         "Trading advice, execution, or custody"
