@@ -164,7 +164,15 @@
     "edge": {
       "worker": "clervo-api-edge-production",
       "rollbackVersion": "74efc7db-d0a7-49a1-8d4e-9f20e049fb0e",
-      "predictionActivationVersion": "c39387eb-1291-4879-910e-77be4c12fadb"
+      "predictionActivationVersion": "c39387eb-1291-4879-910e-77be4c12fadb",
+      "generatedTruthVersion": "158b9290-03f4-4aab-8030-1f438566e894",
+      "reconciledTruthVersion": "abe8db52-23c8-42a9-a06c-6e6d410418f8"
+    },
+    "site": {
+      "worker": "clervo-site-production",
+      "rollbackVersion": "d9ebbe9d-2f7d-4ab8-9d23-c79928f359b2",
+      "generatedTruthVersion": "c5a67476-1e5d-4914-9481-9e2d3bb15cd6",
+      "reconciledTruthVersion": "f7d50013-583d-4113-aea3-27e0d8ccc679"
     },
     "prediction": {
       "endpoint": "https://api.clervo.dev/v1/prediction/execute",
@@ -197,10 +205,67 @@
       ],
       "pdataAttributionPublished": true,
       "commercialProofClaimed": false
+    },
+    "externalAcceptance": {
+      "status": "proven_unpaid",
+      "verifiedAt": "2026-08-09T15:22:48.171Z",
+      "client": "independent public HTTPS client without origin credentials",
+      "htmlPages": [
+        "/",
+        "/products/prediction/",
+        "/catalog/",
+        "/pricing/",
+        "/status/",
+        "/docs/catalog/"
+      ],
+      "htmlStatus": 200,
+      "predictionFactsMatched": true,
+      "machineJsonApiSiteSemanticEquality": true,
+      "llmsApiSiteByteEquality": true,
+      "marketsChallengeStatus": 402,
+      "marketChallengeStatus": 402,
+      "eachChallengeAmountAtomic": "2000",
+      "paymentAttempted": false
     }
   },
   "payment": {
-    "status": "not_authorized",
+    "status": "awaiting_exact_bounded_owner_authorization",
+    "readinessObservedAt": "2026-08-09T15:28:27.660Z",
+    "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",
+    "network": "eip155:8453",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+    "operationsPrepared": [
+      {
+        "productId": "prediction.markets",
+        "amountAtomic": "2000"
+      },
+      {
+        "productId": "prediction.market",
+        "amountAtomic": "2000"
+      }
+    ],
+    "maximumSpendAtomic": "4000",
+    "maximumSpendUsdc": 0.004,
+    "payerBalanceAtomic": "20000",
+    "payerBalanceWithinCap": true,
+    "payerAddressPrinted": false,
+    "receiverBalanceBeforeAtomic": "12000",
+    "browserSigner": "owner_controlled_metamask",
+    "boundedProofUtility": {
+      "build": "passed",
+      "officialX402LibrariesPinned": true,
+      "predictionMarketsProxyChallenge": "passed",
+      "predictionMarketProxyChallenge": "passed",
+      "predictionMarketRefBound": true,
+      "usefulResultRequiresPdataAttribution": true,
+      "supplierCostMustEqualAtomicZero": true,
+      "temporaryLoopbackServersStopped": true
+    },
+    "automaticPaymentRetry": false,
+    "replayRequiresNoSecondSignature": true,
+    "signaturesRequested": 0,
+    "paymentHeadersSent": 0,
     "ownerSpendUsdc": 0
   },
   "b8Closure": "open"

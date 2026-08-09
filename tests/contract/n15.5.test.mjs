@@ -37,11 +37,19 @@ test('browser proof refuses drift and allows exactly one authorization attempt',
     "resource: 'https://api.clervo.dev/v1/ai/execute'",
     "amountAtomic: '1000'",
     "supplierCostCeilingAtomic: '225'",
+    "'prediction.markets'",
+    "'prediction.market'",
+    "resource: 'https://api.clervo.dev/v1/prediction/execute'",
+    "request: { kind: 'markets', status: 'open', limit: 3 }",
+    "request: { kind: 'market', marketRef: predictionMarketRef }",
+    "supplierCostCeilingAtomic: '0'",
   ]) assert.ok(proxy.includes(guard), `missing proxy bound: ${guard}`);
   assert.match(browser, /approved payer balance exceeds the bounded proof cap/u);
   assert.match(browser, /receipt\?\.receiptId !== paidBody\?\.receipt\?\.receiptId/u);
   assert.match(browser, /paymentAttempted = true/u);
   assert.match(browser, /Do not sign or retry again/u);
+  assert.match(browser, /adapter_prediction\.pdata_rest/u);
+  assert.match(browser, /item\?\.sourceId === 'pdata' && item\?\.license === 'CC BY 4\.0'/u);
 });
 
 test('local proof proxy is loopback-only, exact-route, bounded, and credential-redacting', () => {

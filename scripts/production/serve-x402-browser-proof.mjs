@@ -12,6 +12,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const dist = path.join(root, 'tools/x402-browser-proof/dist');
 const asset = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const productId = String(process.env.CLERVO_X402_PROOF_PRODUCT ?? 'search.web');
+const predictionMarketRef = String(process.env.CLERVO_X402_PROOF_PREDICTION_MARKET_REF ?? '');
 const profiles = Object.freeze({
   'search.web': Object.freeze({
     route: '/v1/search/paid',
@@ -33,8 +34,25 @@ const profiles = Object.freeze({
       maximumOutputTokens: 16,
     },
   }),
+  'prediction.markets': Object.freeze({
+    route: '/v1/prediction/execute',
+    resource: 'https://api.clervo.dev/v1/prediction/execute',
+    amountAtomic: '2000',
+    amountDisplay: '0.002 USDC',
+    supplierCostCeilingAtomic: '0',
+    request: { kind: 'markets', status: 'open', limit: 3 },
+  }),
+  'prediction.market': Object.freeze({
+    route: '/v1/prediction/execute',
+    resource: 'https://api.clervo.dev/v1/prediction/execute',
+    amountAtomic: '2000',
+    amountDisplay: '0.002 USDC',
+    supplierCostCeilingAtomic: '0',
+    request: { kind: 'market', marketRef: predictionMarketRef },
+  }),
 });
 assert.equal(Object.hasOwn(profiles, productId), true, 'proof product is not allowlisted');
+if (productId === 'prediction.market') assert.match(predictionMarketRef, /^pmkt_[a-f0-9]{32}$/u, 'Prediction market ref is invalid');
 const profile = profiles[productId];
 const target = new URL(process.env.CLERVO_X402_PROOF_TARGET_ORIGIN ?? '');
 const audienceValue = process.env.CLERVO_X402_PROOF_IDENTITY_AUDIENCE;

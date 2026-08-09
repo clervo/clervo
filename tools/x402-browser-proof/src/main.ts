@@ -13,8 +13,8 @@ type ProofConfig = {
   amountDisplay: string;
   payTo: Address;
   payer: Address;
-  productId: 'search.web' | 'ai.chat';
-  resource: 'https://api.clervo.dev/v1/search/paid' | 'https://api.clervo.dev/v1/ai/execute';
+  productId: 'search.web' | 'ai.chat' | 'prediction.markets' | 'prediction.market';
+  resource: 'https://api.clervo.dev/v1/search/paid' | 'https://api.clervo.dev/v1/ai/execute' | 'https://api.clervo.dev/v1/prediction/execute';
   idempotencyKey: string;
   payerBalanceCapAtomic: string;
   supplierCostCeilingAtomic: string;
@@ -49,6 +49,23 @@ function usefulPaidResult(body: any) {
       && body?.result?.output?.kind === 'chat'
       && typeof body?.result?.output?.content === 'string'
       && body.result.output.content.trim().length > 0;
+  }
+  if (config.productId === 'prediction.markets') {
+    return body?.result?.output?.kind === 'markets'
+      && Array.isArray(body.result.output.markets)
+      && body.result.output.markets.length > 0
+      && body.result.output.markets.every((market: any) => Array.isArray(market?.supplyAttributions)
+        && market.supplyAttributions.some((item: any) => item?.sourceId === 'pdata' && item?.license === 'CC BY 4.0'))
+      && body?.receipt?.supplierCost?.amountAtomic === '0'
+      && body?.receipt?.provenance?.some((item: any) => item?.adapterId === 'adapter_prediction.pdata_rest');
+  }
+  if (config.productId === 'prediction.market') {
+    return body?.result?.output?.kind === 'market'
+      && /^pmkt_[a-f0-9]{32}$/u.test(body?.result?.output?.market?.marketRef ?? '')
+      && Array.isArray(body?.result?.output?.market?.supplyAttributions)
+      && body.result.output.market.supplyAttributions.some((item: any) => item?.sourceId === 'pdata' && item?.license === 'CC BY 4.0')
+      && body?.receipt?.supplierCost?.amountAtomic === '0'
+      && body?.receipt?.provenance?.some((item: any) => item?.adapterId === 'adapter_prediction.pdata_rest');
   }
   return Array.isArray(body?.output?.searchResponse?.results) && body.output.searchResponse.results.length > 0;
 }
