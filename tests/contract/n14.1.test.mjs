@@ -5,9 +5,22 @@ import test from 'node:test';
 const policy = JSON.parse(await readFile('infra/production/release-policy.v1.json', 'utf8'));
 const report = JSON.parse(await readFile('docs/evidence/production/local-container-qualification.v1.json', 'utf8'));
 const dockerfile = await readFile('Dockerfile', 'utf8');
-const entrypoint = await readFile('apps/api/src/staging-search-main.mjs', 'utf8');
+const entrypoint = 'staging-search-main.mjs';
 
-test('production candidate container is immutable-base, non-root, and fail-closed', () => {
+async function localRuntimeClosure(start) {
+  const pending = [start];
+  const seen = new Set();
+  while (pending.length > 0) {
+    const current = pending.shift();
+    if (seen.has(current)) continue;
+    seen.add(current);
+    const source = await readFile(`apps/api/src/${current}`, 'utf8');
+    for (const match of source.matchAll(/from ['"]\.\/([^'"]+\.mjs)['"]/gu)) pending.push(match[1]);
+  }
+  return [...seen].sort();
+}
+
+test('production candidate container is immutable-base, non-root, and fail-closed', async () => {
   assert.equal(policy.publicDeploymentEnabled, false);
   assert.equal(policy.paymentEnabled, false);
   assert.match(policy.container.baseImage, /@sha256:[a-f0-9]{64}$/u);
@@ -18,9 +31,9 @@ test('production candidate container is immutable-base, non-root, and fail-close
   assert.match(dockerfile, /^HEALTHCHECK /mu);
   assert.match(dockerfile, /npm ci --omit=dev --omit=optional/u);
   assert.doesNotMatch(dockerfile, /\b(?:latest|curl|wget|apt-get)\b/u);
-  const localRuntimeImports = [...entrypoint.matchAll(/from '\.\/([^']+)'/gu)].map((match) => match[1]);
-  assert.ok(localRuntimeImports.length > 0);
-  for (const imported of localRuntimeImports) assert.match(dockerfile, new RegExp(`\\b${imported.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')}\\b`, 'u'));
+  const localRuntimeFiles = await localRuntimeClosure(entrypoint);
+  assert.ok(localRuntimeFiles.length > 1);
+  for (const imported of localRuntimeFiles) assert.match(dockerfile, new RegExp(`\\b${imported.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')}\\b`, 'u'));
 });
 
 test('exact local image passed bounded runtime qualification without external effects', () => {
