@@ -153,12 +153,12 @@ export function Trust({ topic, onPhase }: { topic: TrustTopic; onPhase(phase: Ex
           <section className="band band--ruled trust-body" aria-labelledby="proof-amount">
             <div className="section-head">
               <p className="eyebrow">Recorded proof</p>
-              <h2 id="proof-amount">One settled payment, and what it is not.</h2>
+              <h2 id="proof-amount">The recorded Search payment, and what it is not.</h2>
             </div>
             {/*
               * Gold is spent here and nowhere else on this page. This amount is
-              * a settled, replayed, reconciled outcome — the one thing on the
-              * site that has actually been paid for and verified.
+              * the earlier settled, replayed, reconciled Search outcome. The
+              * generated product proof table owns aggregate current truth.
               */}
             <dl className="facts">
               <div>
@@ -183,8 +183,8 @@ export function Trust({ topic, onPhase }: { topic: TrustTopic; onPhase(phase: Ex
               </div>
             </dl>
             <p className="quiet trust-note">
-              This amount is a recorded proof, not an offer. No customer bought
-              this result and no revenue is claimed from it.
+              This Search amount is a recorded owner-funded proof, not an offer.
+              No customer revenue or demand is claimed from it.
             </p>
             <div className="cluster trust-actions">
               <Link className="button button--primary" to="/catalog">See every route and its ceiling</Link>
@@ -219,7 +219,7 @@ export function Trust({ topic, onPhase }: { topic: TrustTopic; onPhase(phase: Ex
               <div className="panel__body stack stack--tight">
                 <p className="eyebrow">Proven privately</p>
                 <h3>Bounded settlement mechanics</h3>
-                <p className="quiet">One owner-funded useful result settled and replayed safely. An external customer outcome remains unproven.</p>
+                <p className="quiet">The recorded Search result settled and replayed safely. Current product-level paid proof is reported separately from customer demand.</p>
               </div>
             </li>
           </ul>

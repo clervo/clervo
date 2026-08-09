@@ -4,12 +4,12 @@ import { launchState, observedTruth, publicApiCallable, type ExperiencePhase } f
 import { Link } from '../router';
 
 /*
- * /proof — the one thing on this site that was actually paid for.
+ * /proof — the detailed historical Search settlement record.
  *
  * A bounded owner-funded Search request settled on Base, returned a useful
  * result, and replayed to the same receipt with no second authorization,
  * execution or charge. That is a real, verified, externally inspectable fact,
- * and it is the only place gold is spent on this page.
+ * and it remains directly inspectable here.
  *
  * It is also a smaller claim than it looks, which is why the boundary is given
  * equal weight rather than a footnote: the owner funded it, no customer bought
@@ -17,6 +17,8 @@ import { Link } from '../router';
  */
 
 const liveFamilies = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live');
+const paidProofFamilies = observedTruth.products.filter(({ proofLevel }) =>
+  proofLevel === 'paid_outcome_verified' || proofLevel === 'externally_repeated');
 
 const proof = launchState.paymentProof;
 
@@ -46,8 +48,15 @@ const evidence: Array<{ value: string; label: string; detail: string }> = [
   },
   {
     value: '1',
-    label: 'Settled paid outcome',
-    detail: 'The owner-funded settlement and replay record above.',
+    label: 'Recorded Search settlement',
+    detail: 'The historical owner-funded Search settlement and replay record above.',
+  },
+  {
+    value: String(paidProofFamilies.length),
+    label: 'Families with current paid-outcome proof',
+    detail: paidProofFamilies.length === 0
+      ? 'No current product family carries paid-outcome proof.'
+      : `${paidProofFamilies.map(({ label }) => label).join(', ')} currently carry generated paid-outcome proof. Owner funding is not customer demand.`,
   },
   {
     value: '1',
@@ -95,9 +104,9 @@ export function Proof({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
         </div>
         <div className="proof-record">
           {/*
-            * Gold appears here and nowhere else on this page. This amount was
-            * settled, replayed and reconciled — it is the single fact on the
-            * site that has actually been paid for and verified.
+            * This historical Search amount was settled, replayed and
+            * reconciled. Aggregate current proof is generated above from the
+            * observed product registry rather than inferred from this record.
             */}
           <div className="proof-record__amount">
             <p className="eyebrow">Exact owner-funded charge</p>
@@ -123,7 +132,7 @@ export function Proof({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
       <section className="band band--ruled proof-body" aria-labelledby="boundary-heading">
         <div className="section-head">
           <p className="eyebrow">Claim boundary</p>
-          <h2 id="boundary-heading">What one settled payment does and does not establish.</h2>
+          <h2 id="boundary-heading">What the recorded Search payment does and does not establish.</h2>
         </div>
         <div className="proof-claims">
           <div className="panel">
@@ -157,7 +166,7 @@ export function Proof({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
       <section className="band band--ruled proof-body" aria-labelledby="evidence-heading">
         <div className="section-head">
           <p className="eyebrow">Evidence index</p>
-          <h2 id="evidence-heading">Five classes, counted separately.</h2>
+          <h2 id="evidence-heading">Evidence classes, counted separately.</h2>
           <p className="lede">
             Each class is counted on its own so a strong number in one cannot be
             read as evidence for another. A served route is not a settled

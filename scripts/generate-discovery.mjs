@@ -611,6 +611,7 @@ llms = llms
   .replace(/^- Public lifecycle:.*$/mu, `- Public lifecycle: ${lifecycleSummary}`)
   .replace(/^- Projected operation IDs:.*$/mu, `- Public operation IDs: ${publicOperationIds.join(', ')}`)
   .replace(/^- x402 public payment:.*$/mu, `- x402 public payment: available for ${publicOfferSummary}`)
+  .replace(/^- x402 private proof:.*$/mu, '- x402 owner-funded proof: settled outcomes are reported per product in the generated proof table; no customer revenue or demand is inferred')
   .replace(/^- Public price:.*$/mu, `- Public price: ${publicOfferSummary}`);
 // Every surface carries the observed lifecycle state and proof level side by
 // side, sourced from the probed registry rather than from any prose.

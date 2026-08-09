@@ -13,7 +13,7 @@ Current verified status:
 - Public operation IDs: search.web, sandbox.run, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal
 - Public API callable: yes
 - x402 public payment: available for search.web (0.006000 USDC maximum), sandbox.run (0.120000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum)
-- x402 private proof: one owner-funded useful result settled and replayed without a second charge
+- x402 owner-funded proof: settled outcomes are reported per product in the generated proof table; no customer revenue or demand is inferred
 - Commercial proof: no customer revenue or demand claimed
 - Public price: search.web (0.006000 USDC maximum), sandbox.run (0.120000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum)
 - First Revenue Release ready: no

@@ -125,8 +125,10 @@ test('launch pages and discovery surfaces exist without forbidden or stale claim
   ].join('\n');
   assert.doesNotMatch(publicText, /Every AI model|Google-quality|BlockRun has 0 free|20% cheaper than BlockRun/iu);
   assert.doesNotMatch(publicText, /Package candidates · publication not verified/iu);
+  assert.doesNotMatch(publicText, /the one thing on this site that was actually paid|the single fact on the site that has actually been paid|Settled paid outcome<\/dt><dd><b>1|x402 private proof: one owner-funded/iu);
   assert.match(publicText, /One job in/iu);
   assert.match(publicText, /Public API callable: yes/iu);
+  assert.match(publicText, /x402 owner-funded proof: settled outcomes are reported per product/iu);
   assert.match(publicText, /no customer revenue or demand claimed/iu);
 
   const machineFiles = [
