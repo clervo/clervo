@@ -43,7 +43,10 @@ test('prediction history is append-only, hash-linked, replay-safe, bounded, and 
   const first = market();
   const second = market({ observedAt: '2026-08-02T12:00:30.000Z', outcomes: [{ venueOutcomeId: 'yes', label: 'Yes', price: '0.60' }, { venueOutcomeId: 'no', label: 'No', price: '0.40' }] }, '2026-08-02T12:00:45.000Z');
   assert.equal((await store.append(first)).replayed, false);
-  assert.equal((await store.append(first)).replayed, true);
+  const retrievalRefresh = market({}, '2026-08-02T12:00:45.000Z');
+  assert.notDeepEqual(retrievalRefresh.freshness, first.freshness);
+  assert.equal((await store.append(retrievalRefresh)).replayed, true);
+  await assert.rejects(store.append(market({ outcomes: [{ venueOutcomeId: 'yes', label: 'Yes', price: '0.56' }, { venueOutcomeId: 'no', label: 'No', price: '0.44' }] })), /observation_conflict/u);
   assert.equal((await store.append(second)).record.sequence, 2);
   const records = await store.list(first.marketRef);
   assert.equal(verifyPredictionHistory(records), true);

@@ -1,5 +1,7 @@
 import { createHash } from 'node:crypto';
 
+import { predictionHistoryMateriallyEqual, predictionHistoryPayloadHash } from '../../../dist/services/prediction/src/history.js';
+
 function canonical(value) {
   if (value === null || typeof value !== 'object') return JSON.stringify(value);
   if (Array.isArray(value)) return `[${value.map((item) => canonical(item)).join(',')}]`;
@@ -31,7 +33,7 @@ export class PostgresPredictionMarketStore {
        ON CONFLICT (market_ref) DO UPDATE SET observed_at = EXCLUDED.observed_at, snapshot_json = EXCLUDED.snapshot_json, updated_at = clock_timestamp()
        WHERE clervo_prediction_markets.venue_id = EXCLUDED.venue_id
          AND clervo_prediction_markets.venue_market_id = EXCLUDED.venue_market_id
-         AND clervo_prediction_markets.observed_at <= EXCLUDED.observed_at`,
+         AND clervo_prediction_markets.observed_at < EXCLUDED.observed_at`,
       [snapshot.marketRef, snapshot.venueId, snapshot.venueMarketId, snapshot.observedAt, JSON.stringify(snapshot)],
     );
   }
@@ -50,16 +52,16 @@ export class PostgresPredictionMarketStore {
         `INSERT INTO clervo_prediction_markets (market_ref, venue_id, venue_market_id, observed_at, snapshot_json)
          VALUES ($1, $2, $3, $4::timestamptz, $5::jsonb)
          ON CONFLICT (market_ref) DO UPDATE SET observed_at = EXCLUDED.observed_at, snapshot_json = EXCLUDED.snapshot_json, updated_at = clock_timestamp()
-         WHERE clervo_prediction_markets.venue_id = EXCLUDED.venue_id AND clervo_prediction_markets.venue_market_id = EXCLUDED.venue_market_id AND clervo_prediction_markets.observed_at <= EXCLUDED.observed_at`,
+         WHERE clervo_prediction_markets.venue_id = EXCLUDED.venue_id AND clervo_prediction_markets.venue_market_id = EXCLUDED.venue_market_id AND clervo_prediction_markets.observed_at < EXCLUDED.observed_at`,
         [snapshot.marketRef, snapshot.venueId, snapshot.venueMarketId, snapshot.observedAt, JSON.stringify(snapshot)],
       );
       const selected = await client.query('SELECT sequence, observed_at, previous_hash, payload_hash, record_hash, snapshot_json FROM clervo_prediction_history WHERE market_ref = $1 ORDER BY sequence DESC LIMIT 1', [snapshot.marketRef]);
       const last = selected.rows[0];
-      const payloadHash = digest(canonical(snapshot));
+      const payloadHash = predictionHistoryPayloadHash(snapshot);
       if (last && new Date(last.observed_at).toISOString() === snapshot.observedAt) {
-        if (last.payload_hash !== payloadHash) throw new Error('prediction_history_observation_conflict');
+        if (!predictionHistoryMateriallyEqual(last.snapshot_json, snapshot)) throw new Error('prediction_history_observation_conflict');
         await client.query('COMMIT');
-        return Object.freeze({ record: Object.freeze({ sequence: last.sequence, marketRef: snapshot.marketRef, venueId: snapshot.venueId, observedAt: snapshot.observedAt, previousHash: last.previous_hash, payloadHash, recordHash: last.record_hash, snapshot: last.snapshot_json }), replayed: true });
+        return Object.freeze({ record: Object.freeze({ sequence: last.sequence, marketRef: snapshot.marketRef, venueId: snapshot.venueId, observedAt: snapshot.observedAt, previousHash: last.previous_hash, payloadHash: last.payload_hash, recordHash: last.record_hash, snapshot: last.snapshot_json }), replayed: true });
       }
       if (last && Date.parse(last.observed_at) >= Date.parse(snapshot.observedAt)) throw new Error('prediction_history_out_of_order');
       const sequence = (last?.sequence ?? 0) + 1;

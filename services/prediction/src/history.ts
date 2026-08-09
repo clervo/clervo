@@ -29,6 +29,22 @@ function digest(value: string): string {
   return createHash('sha256').update(value).digest('hex');
 }
 
+function historyPayload(snapshot: Readonly<NormalizedPredictionMarket>): unknown {
+  const { freshness, ...material } = snapshot;
+  return { ...material, freshness: { staleAfterMs: freshness.staleAfterMs } };
+}
+
+export function predictionHistoryPayloadHash(snapshot: Readonly<NormalizedPredictionMarket>): string {
+  identity(snapshot);
+  return digest(canonical(historyPayload(snapshot)));
+}
+
+export function predictionHistoryMateriallyEqual(left: Readonly<NormalizedPredictionMarket>, right: Readonly<NormalizedPredictionMarket>): boolean {
+  identity(left);
+  identity(right);
+  return canonical(historyPayload(left)) === canonical(historyPayload(right));
+}
+
 function identity(value: Readonly<NormalizedPredictionMarket>): void {
   if (!/^pmkt_[a-f0-9]{32}$/u.test(value.marketRef) || !isPredictionVenueId(value.venueId)
     || !Number.isFinite(Date.parse(value.observedAt)) || new Date(Date.parse(value.observedAt)).toISOString() !== value.observedAt) throw new TypeError('prediction_history_snapshot_invalid');
@@ -40,7 +56,7 @@ export function verifyPredictionHistory(records: readonly Readonly<PredictionHis
   const firstSequence = records[0]?.sequence ?? 1;
   for (let index = 0; index < records.length; index += 1) {
     const record = records[index]!;
-    const payloadHash = digest(canonical(record.snapshot));
+    const payloadHash = predictionHistoryPayloadHash(record.snapshot);
     const recordHash = digest(canonical({
       sequence: record.sequence,
       marketRef: record.marketRef,
@@ -75,10 +91,10 @@ export class InMemoryPredictionHistoryStore implements PredictionHistoryStore {
     identity(snapshot);
     if (!this.#historyAllowedVenues.has(snapshot.venueId)) throw new Error('prediction_history_terms_unqualified');
     const current = this.#records.get(snapshot.marketRef) ?? Object.freeze([]);
-    const payloadHash = digest(canonical(snapshot));
+    const payloadHash = predictionHistoryPayloadHash(snapshot);
     const last = current.at(-1);
     if (last?.observedAt === snapshot.observedAt) {
-      if (last.payloadHash !== payloadHash) throw new Error('prediction_history_observation_conflict');
+      if (!predictionHistoryMateriallyEqual(last.snapshot, snapshot)) throw new Error('prediction_history_observation_conflict');
       return Object.freeze({ record: last, replayed: true });
     }
     if (last !== undefined && Date.parse(snapshot.observedAt) <= Date.parse(last.observedAt)) throw new Error('prediction_history_out_of_order');

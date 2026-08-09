@@ -100,7 +100,12 @@ test('PostgreSQL history reconstructs after restart, retains a verifiable bounde
     market({ observedAt: '2026-08-09T12:00:30.000Z', outcomes: [{ venueOutcomeId: 'yes', label: 'Yes', price: '0.58' }, { venueOutcomeId: 'no', label: 'No', price: '0.42' }] }),
     market({ observedAt: '2026-08-09T12:01:00.000Z', outcomes: [{ venueOutcomeId: 'yes', label: 'Yes', price: '0.62' }, { venueOutcomeId: 'no', label: 'No', price: '0.38' }] }),
   ];
-  for (const snapshot of snapshots) await firstStore.append(snapshot);
+  await firstStore.append(snapshots[0]);
+  const retrievalRefresh = market({}, 30_000);
+  assert.notDeepEqual(retrievalRefresh.freshness, snapshots[0].freshness);
+  assert.equal((await firstStore.append(retrievalRefresh)).replayed, true);
+  await assert.rejects(firstStore.append(market({ outcomes: [{ venueOutcomeId: 'yes', label: 'Yes', price: '0.56' }, { venueOutcomeId: 'no', label: 'No', price: '0.44' }] })), /observation_conflict/u);
+  for (const snapshot of snapshots.slice(1)) await firstStore.append(snapshot);
   const restarted = new PostgresPredictionMarketStore(persistentClient(state), { maximumSnapshotsPerMarket: 2 });
   assert.equal(await restarted.ready(), true);
   assert.equal((await restarted.get(snapshots[0].marketRef)).observedAt, snapshots[2].observedAt);
