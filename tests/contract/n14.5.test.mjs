@@ -95,6 +95,7 @@ test('production migration runner is ordered, checksum-bound, secret-safe, and f
     '0006-sandbox-operation-state.sql',
     '0007-prediction-market-state.sql',
     '0008-ai-free-tier-quota.sql',
+    '0008-prediction-dynamic-venues.sql',
   ]);
   assert.ok(plan.migrations.every(({ checksum }) => /^sha256:[a-f0-9]{64}$/u.test(checksum)));
   assert.equal(plan.credentialInput, 'environment_or_stdin');
@@ -113,6 +114,7 @@ test('production migration runner is ordered, checksum-bound, secret-safe, and f
       PATH: process.env.PATH,
       CLERVO_ENV: 'production',
       CLERVO_DATABASE_MIGRATION_CONFIRM: 'apply:clervo-production-postgres',
+      CLERVO_DATABASE_MIGRATION_TARGET: '0008-prediction-dynamic-venues.sql',
       CLERVO_MIGRATION_PROXY_HOST: '127.0.0.1',
     },
   });
