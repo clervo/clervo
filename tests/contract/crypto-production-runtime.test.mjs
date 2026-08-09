@@ -92,3 +92,15 @@ test('crypto production runtime applies the operation deadline across all upstre
   } });
   await assert.rejects(runtime.execute({ ...request('report', '4000'), deadlineAt: new Date(nowMs + 5).toISOString() }), /deadline_exceeded/u);
 });
+
+test('crypto production runtime parallelizes independent report reads within the bounded deadline', async () => {
+  const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, fetcher(input, init) {
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => resolve(fetcher(input)), 40);
+      init.signal.addEventListener('abort', () => { clearTimeout(timer); reject(init.signal.reason); }, { once: true });
+    });
+  } });
+  const completed = await runtime.execute({ ...request('report', '4000'), deadlineAt: new Date(nowMs + 100).toISOString() });
+  assert.equal(completed.result.output.servedChains[0], 'eip155:1');
+  assert.ok(completed.result.output.evidenceRefs.length > 0);
+});

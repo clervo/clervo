@@ -148,8 +148,10 @@ export class CryptoIntelligenceGateway {
   }
 
   async report(chainId: string, walletAddress: string, generatedAt: string, options: Readonly<{ lookbackDays?: number; limit?: number }> = {}, signal?: AbortSignal): Promise<ReturnType<typeof buildCryptoReport>> {
-    const walletResult = await this.wallet(chainId, walletAddress, signal);
-    const transactions = await this.transactions(chainId, walletAddress, options.limit ?? 50, signal).catch(() => null);
+    const [walletResult, transactions] = await Promise.all([
+      this.wallet(chainId, walletAddress, signal),
+      this.transactions(chainId, walletAddress, options.limit ?? 50, signal).catch(() => null),
+    ]);
     return buildCryptoReport({
       wallet: walletResult.wallet,
       transactions: transactions?.transactions ?? Object.freeze([]),

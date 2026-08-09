@@ -131,9 +131,14 @@ export function createCryptoProductionRuntime({ credential, fetcher = globalThis
     async wallet(chainId, walletAddress, signal) {
       const config = CHAIN_CONFIG[chainId];
       if (!config) throw new Error('crypto_chain_unavailable');
-      const overview = await adapter.addressOverview(config.numericId, walletAddress, signal);
-      let tokens = []; let tokenCoverage = false;
-      try { tokens = await adapter.tokenBalances(config.numericId, walletAddress, signal); tokenCoverage = true; } catch { /* Native balance remains useful and missing token coverage stays explicit. */ }
+      const [overviewResult, tokenResult] = await Promise.allSettled([
+        adapter.addressOverview(config.numericId, walletAddress, signal),
+        adapter.tokenBalances(config.numericId, walletAddress, signal),
+      ]);
+      if (overviewResult.status === 'rejected') throw overviewResult.reason;
+      const overview = overviewResult.value;
+      const tokens = tokenResult.status === 'fulfilled' ? tokenResult.value : [];
+      const tokenCoverage = tokenResult.status === 'fulfilled';
       const observedAt = new Date(now()).toISOString();
       return normalizeBlockscoutWallet({ chainId: config.numericId, overview, tokens, nativeSymbol: config.nativeSymbol, nativeDecimals: config.nativeDecimals, observedAt, staleAfterMs: 120_000, nowMs: now(), coverage: tokenCoverage ? ['native_balance', 'token_balances'] : ['native_balance'] });
     },
