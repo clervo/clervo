@@ -40,14 +40,18 @@
     {
       "productId": "sandbox.run",
       "publicAvailable": true,
-      "model": "fixed_request",
+      "model": "class_derived_quote",
       "displayPrice": {
         "asset": "USDC",
-        "amountAtomic": "120000",
+        "amountAtomic": "10000",
         "decimals": 6
       },
       "maximumChargeRequired": true,
-      "priceVersion": "sandbox-run-public-2026-08-04.1"
+      "priceVersion": "sandbox-run-short-2026-08-09.1",
+      "priceRange": {
+        "minimumAtomic": "10000",
+        "maximumAtomic": "60000"
+      }
     },
     {
       "productId": "prediction.markets",

@@ -26,7 +26,7 @@ async function withServer(run) {
     async close() {},
     async run({ request }) {
       calls.execute += 1;
-      const unsigned = { operationId: request.operationId, productId: request.productId, output: { kind: 'execution', exitCode: 0, stdoutBase64: 'cmVhZHk=' } };
+      const unsigned = { operationId: request.operationId, productId: request.productId, output: { kind: 'execution', sessionId: `sbx_${'e'.repeat(32)}`, executionId: request.input.executionId, sessionState: 'destroyed', exitCode: 0, stdoutBase64: 'cmVhZHk=', stderrBase64: '', cpuMillis: 1, durationMs: 1, artifacts: [] } };
       return { replayed: false, result: { ...unsigned, resultHash: hashJson(unsigned) } };
     },
   };
@@ -71,7 +71,9 @@ test('public Sandbox challenges before validation, executes once after payment, 
     const completed = await paid.json();
     assert.equal(completed.productId, 'sandbox.run');
     assert.equal(completed.result.output.stdoutBase64, 'cmVhZHk=');
-    assert.equal(completed.receipt.customerCharge.amountAtomic, '120000');
+    assert.equal(completed.receipt.customerCharge.amountAtomic, '60000');
+    assert.equal(completed.execution.classId, 'sandbox.standard');
+    assert.equal(completed.execution.cleanup.state, 'destroyed');
 
     const replay = await post(origin, headers, request);
     assert.equal(replay.status, 200);

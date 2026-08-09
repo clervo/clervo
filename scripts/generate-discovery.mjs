@@ -46,6 +46,21 @@ const publicResultSchema = Object.freeze({
     replayed: { type: 'boolean' },
     requestHash: { type: 'string', pattern: '^sha256:[a-f0-9]{64}$' },
     receipt: { type: 'object', additionalProperties: true },
+    output: {
+      type: 'object',
+      properties: {
+        route: {
+          type: 'object',
+          required: ['routeId', 'qualificationId', 'servingAdapters', 'degraded', 'fallback', 'cost'],
+          properties: {
+            routeId: { type: 'string' }, qualificationId: { type: 'string' }, servingAdapters: { type: 'array', items: { type: 'string' } }, degraded: { type: 'boolean' }, fallback: { type: 'boolean' }, cost: { type: 'object', additionalProperties: true },
+          },
+          additionalProperties: true,
+        },
+      },
+      additionalProperties: true,
+    },
+    execution: { type: 'object', additionalProperties: true },
   },
   additionalProperties: true,
 });
@@ -115,7 +130,7 @@ const aiChatProbeSchema = Object.freeze({
 });
 const sandboxProbeExample = Object.freeze({
   command: Object.freeze(['node', '-e', "process.stdout.write('ready')"]),
-  limits: Object.freeze({ wallTimeMs: 5_000, memoryBytes: 67_108_864 }),
+  limits: Object.freeze({ cpuMillis: 5_000, memoryBytes: 268_435_456, processes: 16, diskBytes: 67_108_864, outputBytes: 65_536, artifactBytes: 1_048_576, wallTimeMs: 10_000 }),
 });
 const sandboxProbeSchema = Object.freeze({
   type: 'object', required: ['command'], additionalProperties: false,
@@ -470,7 +485,7 @@ if (publicSandbox) {
   openapi.paths['/v1/sandbox/execute'] = {
     post: {
       summary: 'Request or settle a bounded one-shot Secure Sandbox execution',
-      description: 'Runs one command in the pinned qualified Node.js gVisor image with no network, strict resources, cleanup, a receipt, and no-charge replay. Sessions and artifact retrieval are not yet public.',
+      description: 'Runs one command in the pinned qualified Node.js gVisor image with no network, strict resources, cleanup, a receipt, and no-charge replay. The short class is 0.010 USDC; larger bounded requests quote the standard class. Sessions and artifact retrieval are not yet public.',
       operationId: 'sandboxExecute',
       parameters: [{ name: 'Idempotency-Key', in: 'header', required: true, schema: { type: 'string', minLength: 8, maxLength: 128 } }],
       requestBody: { required: true, content: { 'application/json': { schema: sandboxProbeSchema } } },
@@ -487,7 +502,7 @@ if (publicSandbox) {
     requestSchema: sandboxProbeSchema,
     example: sandboxProbeExample,
     paymentInfo: {
-      price: { mode: 'fixed', currency: 'USD', amount: '0.120000' },
+      price: { mode: 'dynamic_class', currency: 'USD', minimum: '0.010000', maximum: '0.060000' },
       protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
     },
   });
@@ -498,7 +513,7 @@ if (publicSandbox) {
     summary: 'Bounded Node.js execution in a pinned gVisor image with no network, strict resource ceilings, cleanup, receipt, and no-charge replay.',
     lifecycle: 'preview', publicAvailable: true, deliveryModes: ['sync'],
     selection: { image: 'Pinned qualified sandbox.nodejs-24 image; caller cannot select an arbitrary image.' },
-    pricing: { model: 'fixed_request', displayPrice: { asset: 'USDC', amountAtomic: '120000', decimals: 6 }, maximumChargeRequired: true, priceVersion: 'sandbox-run-public-2026-08-04.1' },
+    pricing: { model: 'class_derived_quote', displayPrice: { asset: 'USDC', amountAtomic: '10000', decimals: 6 }, maximumChargeRequired: true, priceVersion: 'sandbox-run-short-2026-08-09.1', priceRange: { minimumAtomic: '10000', maximumAtomic: '60000' } },
     routes: { paidChallenge: '/v1/sandbox/execute' },
     payment: { challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
     commercialProof: false,
@@ -508,10 +523,10 @@ if (publicSandbox) {
     'Raw cited Search, bounded paid AI chat, and bounded paid one-shot Secure Sandbox execution are publicly callable previews.',
     'The Sandbox has one qualified execution node; high availability, sessions, arbitrary images, network access, and public artifact retrieval are not claimed.',
     'Search synthesis, AI media, RPC, Prediction, and Crypto Intelligence remain unavailable.',
-    'The Sandbox production origin, useful gVisor output, replay, and cleanup are verified; an owner-signed public paid Sandbox result remains pending.',
+    'The Sandbox production origin, useful gVisor output, replay, and cleanup are verified; a bounded paid Sandbox proof remains pending.',
     'No external customer payment, revenue, or demand is claimed.',
   ];
-  llms += '\n## Secure Sandbox preview\n\n- `POST /v1/sandbox/execute`: fixed maximum charge 0.120000 USDC on Base for one bounded Node.js gVisor execution.\n- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.\n';
+  llms += '\n## Secure Sandbox preview\n\n- `POST /v1/sandbox/execute`: class-derived 0.010000–0.060000 USDC quote on Base for one bounded Node.js gVisor execution.\n- The short class is capped at 5 CPU seconds, 256 MiB, 16 processes, 64 MiB disk, 64 KiB output, 1 MiB artifacts, and 10 seconds wall time; larger requests use the standard class without weaker ceilings.\n- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.\n';
 }
 if (publicPrediction) {
   const priceByProduct = new Map(predictionPricing.products.map((product) => [product.productId, product]));
@@ -1015,7 +1030,7 @@ const aiExampleRoute = liveRegistry.aiRoutes.find((route) => route.state === 'li
 const x402Resources = [
   { productId: 'search', path: '/v1/search/paid', operationId: 'search.web', priceModel: 'fixed_request', quote: observed.search.observedQuote, exampleRouteId: null },
   { productId: 'ai', path: '/v1/ai/execute', operationId: 'ai.chat', priceModel: 'request_derived_per_model', quote: aiExampleRoute?.observedQuote ?? null, exampleRouteId: aiExampleRoute?.routeId ?? null },
-  { productId: 'sandbox', path: '/v1/sandbox/execute', operationId: 'sandbox.run', priceModel: 'fixed_request', quote: observed.sandbox.observedQuote, exampleRouteId: null },
+  { productId: 'sandbox', path: '/v1/sandbox/execute', operationId: 'sandbox.run', priceModel: 'class_derived_quote', quote: observed.sandbox.observedQuote, exampleRouteId: null },
   { productId: 'prediction', path: '/v1/prediction/execute', operationId: 'prediction.markets', priceModel: 'request_derived_per_operation', quote: observed.prediction.observedQuote, exampleRouteId: null },
   { productId: 'crypto_intelligence', path: '/v1/crypto/execute', operationId: 'crypto.wallet.report', priceModel: 'request_derived_per_operation', quote: observed.crypto_intelligence.observedQuote, exampleRouteId: null },
 ]

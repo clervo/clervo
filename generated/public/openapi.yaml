@@ -113,6 +113,52 @@
                     "receipt": {
                       "type": "object",
                       "additionalProperties": true
+                    },
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "route": {
+                          "type": "object",
+                          "required": [
+                            "routeId",
+                            "qualificationId",
+                            "servingAdapters",
+                            "degraded",
+                            "fallback",
+                            "cost"
+                          ],
+                          "properties": {
+                            "routeId": {
+                              "type": "string"
+                            },
+                            "qualificationId": {
+                              "type": "string"
+                            },
+                            "servingAdapters": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "degraded": {
+                              "type": "boolean"
+                            },
+                            "fallback": {
+                              "type": "boolean"
+                            },
+                            "cost": {
+                              "type": "object",
+                              "additionalProperties": true
+                            }
+                          },
+                          "additionalProperties": true
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "execution": {
+                      "type": "object",
+                      "additionalProperties": true
                     }
                   },
                   "additionalProperties": true
@@ -284,6 +330,52 @@
                     "receipt": {
                       "type": "object",
                       "additionalProperties": true
+                    },
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "route": {
+                          "type": "object",
+                          "required": [
+                            "routeId",
+                            "qualificationId",
+                            "servingAdapters",
+                            "degraded",
+                            "fallback",
+                            "cost"
+                          ],
+                          "properties": {
+                            "routeId": {
+                              "type": "string"
+                            },
+                            "qualificationId": {
+                              "type": "string"
+                            },
+                            "servingAdapters": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "degraded": {
+                              "type": "boolean"
+                            },
+                            "fallback": {
+                              "type": "boolean"
+                            },
+                            "cost": {
+                              "type": "object",
+                              "additionalProperties": true
+                            }
+                          },
+                          "additionalProperties": true
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "execution": {
+                      "type": "object",
+                      "additionalProperties": true
                     }
                   },
                   "additionalProperties": true
@@ -389,7 +481,7 @@
     "/v1/sandbox/execute": {
       "post": {
         "summary": "Request or settle a bounded one-shot Secure Sandbox execution",
-        "description": "Runs one command in the pinned qualified Node.js gVisor image with no network, strict resources, cleanup, a receipt, and no-charge replay. Sessions and artifact retrieval are not yet public.",
+        "description": "Runs one command in the pinned qualified Node.js gVisor image with no network, strict resources, cleanup, a receipt, and no-charge replay. The short class is 0.010 USDC; larger bounded requests quote the standard class. Sessions and artifact retrieval are not yet public.",
         "operationId": "sandboxExecute",
         "parameters": [
           {
@@ -438,8 +530,13 @@
                     "type": "object",
                     "additionalProperties": false,
                     "default": {
-                      "wallTimeMs": 5000,
-                      "memoryBytes": 67108864
+                      "cpuMillis": 5000,
+                      "memoryBytes": 268435456,
+                      "processes": 16,
+                      "diskBytes": 67108864,
+                      "outputBytes": 65536,
+                      "artifactBytes": 1048576,
+                      "wallTimeMs": 10000
                     },
                     "properties": {
                       "cpuMillis": {
@@ -488,8 +585,13 @@
                   "process.stdout.write('ready')"
                 ],
                 "limits": {
-                  "wallTimeMs": 5000,
-                  "memoryBytes": 67108864
+                  "cpuMillis": 5000,
+                  "memoryBytes": 268435456,
+                  "processes": 16,
+                  "diskBytes": 67108864,
+                  "outputBytes": 65536,
+                  "artifactBytes": 1048576,
+                  "wallTimeMs": 10000
                 }
               }
             }
@@ -523,6 +625,52 @@
                       "pattern": "^sha256:[a-f0-9]{64}$"
                     },
                     "receipt": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "route": {
+                          "type": "object",
+                          "required": [
+                            "routeId",
+                            "qualificationId",
+                            "servingAdapters",
+                            "degraded",
+                            "fallback",
+                            "cost"
+                          ],
+                          "properties": {
+                            "routeId": {
+                              "type": "string"
+                            },
+                            "qualificationId": {
+                              "type": "string"
+                            },
+                            "servingAdapters": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "degraded": {
+                              "type": "boolean"
+                            },
+                            "fallback": {
+                              "type": "boolean"
+                            },
+                            "cost": {
+                              "type": "object",
+                              "additionalProperties": true
+                            }
+                          },
+                          "additionalProperties": true
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "execution": {
                       "type": "object",
                       "additionalProperties": true
                     }
@@ -587,9 +735,10 @@
         },
         "x-payment-info": {
           "price": {
-            "mode": "fixed",
+            "mode": "dynamic_class",
             "currency": "USD",
-            "amount": "0.120000"
+            "minimum": "0.010000",
+            "maximum": "0.060000"
           },
           "protocols": [
             {
@@ -817,6 +966,52 @@
                       "pattern": "^sha256:[a-f0-9]{64}$"
                     },
                     "receipt": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "route": {
+                          "type": "object",
+                          "required": [
+                            "routeId",
+                            "qualificationId",
+                            "servingAdapters",
+                            "degraded",
+                            "fallback",
+                            "cost"
+                          ],
+                          "properties": {
+                            "routeId": {
+                              "type": "string"
+                            },
+                            "qualificationId": {
+                              "type": "string"
+                            },
+                            "servingAdapters": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "degraded": {
+                              "type": "boolean"
+                            },
+                            "fallback": {
+                              "type": "boolean"
+                            },
+                            "cost": {
+                              "type": "object",
+                              "additionalProperties": true
+                            }
+                          },
+                          "additionalProperties": true
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "execution": {
                       "type": "object",
                       "additionalProperties": true
                     }
@@ -1125,6 +1320,52 @@
                       "pattern": "^sha256:[a-f0-9]{64}$"
                     },
                     "receipt": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "route": {
+                          "type": "object",
+                          "required": [
+                            "routeId",
+                            "qualificationId",
+                            "servingAdapters",
+                            "degraded",
+                            "fallback",
+                            "cost"
+                          ],
+                          "properties": {
+                            "routeId": {
+                              "type": "string"
+                            },
+                            "qualificationId": {
+                              "type": "string"
+                            },
+                            "servingAdapters": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "degraded": {
+                              "type": "boolean"
+                            },
+                            "fallback": {
+                              "type": "boolean"
+                            },
+                            "cost": {
+                              "type": "object",
+                              "additionalProperties": true
+                            }
+                          },
+                          "additionalProperties": true
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "execution": {
                       "type": "object",
                       "additionalProperties": true
                     }
@@ -2457,6 +2698,17 @@
                 },
                 "providerReferenceHash": {
                   "$ref": "#/$defs/hash"
+                },
+                "routeId": {
+                  "type": "string",
+                  "pattern": "^clervo\\.[a-z0-9][a-z0-9._-]{2,127}$"
+                },
+                "degraded": {
+                  "type": "boolean"
+                },
+                "costBasisId": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9._-]{2,127}$"
                 }
               },
               "additionalProperties": false
@@ -4131,6 +4383,38 @@
               },
               "score": {
                 "$ref": "#/$defs/score"
+              },
+              "attribution": {
+                "type": "object",
+                "required": [
+                  "sourceName",
+                  "sourceUrl",
+                  "license",
+                  "notice"
+                ],
+                "properties": {
+                  "sourceName": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "sourceUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "pattern": "^https?://"
+                  },
+                  "license": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  },
+                  "notice": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  }
+                },
+                "additionalProperties": false
               }
             },
             "additionalProperties": false

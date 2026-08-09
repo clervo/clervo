@@ -27,7 +27,7 @@
       "uniqueItems": true,
       "items": {
         "type": "object",
-        "required": ["serviceId", "productId", "publicAssetId", "billingUnit", "maximumResults", "customerPriceMicrousd", "supplierPriceMicrousd", "supplierPriceBasis", "allowance", "rateLimitQueriesPerSecond", "qualityGrade", "qualificationStatus", "listingStatus", "termsStatus", "fallbackStatus"],
+        "required": ["serviceId", "productId", "publicAssetId", "billingUnit", "maximumResults", "customerPriceMicrousd", "supplierPriceMicrousd", "supplierPriceBasis", "allowance", "rateLimitQueriesPerSecond", "qualityGrade", "qualificationStatus", "listingStatus", "termsStatus", "fallbackStatus", "technicalQualification", "commercialPermission", "publicSellable", "variableCost", "coverage", "freshness", "reliability", "officialTermsUrl", "officialDocumentationUrl"],
         "properties": {
           "serviceId": { "type": "string", "pattern": "^supply\\.[a-z0-9_]+$" },
           "productId": { "const": "search.web" },
@@ -36,7 +36,7 @@
           "maximumResults": { "type": "integer", "minimum": 1, "maximum": 100 },
           "customerPriceMicrousd": { "type": "integer", "minimum": 1 },
           "supplierPriceMicrousd": { "type": "integer", "minimum": 0 },
-          "supplierPriceBasis": { "enum": ["advertised_starter_tier", "recurring_monthly_credit", "unknown"] },
+          "supplierPriceBasis": { "enum": ["advertised_starter_tier", "recurring_monthly_credit", "open_no_fee", "unknown"] },
           "allowance": {
             "type": "object",
             "required": ["advertisedStarterQueries", "recurringMonthlyQueries", "ownedRemainingQueries", "ownedRemainingStatus", "purchasedCreditExpiryMonths", "hardCallCeiling", "automaticPaidOverageAllowed"],
@@ -56,7 +56,25 @@
           "qualificationStatus": { "enum": ["passed", "failed", "not_run"] },
           "listingStatus": { "enum": ["qualified_not_integrated", "qualified_adapter_ready", "sellable_preview", "blocked"] },
           "termsStatus": { "enum": ["approved", "restricted", "blocked"] },
-          "fallbackStatus": { "enum": ["independent_fallback_missing", "independent_fallback_ready"] }
+          "fallbackStatus": { "enum": ["independent_fallback_missing", "independent_fallback_ready"] },
+          "technicalQualification": { "enum": ["passed", "failed", "not_run"] },
+          "commercialPermission": { "enum": ["approved", "restricted", "unresolved", "blocked"] },
+          "publicSellable": { "type": "boolean" },
+          "variableCost": {
+            "type": "object",
+            "required": ["semantics", "amountAtomic", "basisId"],
+            "properties": {
+              "semantics": { "enum": ["exact_measured", "documented_cost_basis", "unknown"] },
+              "amountAtomic": { "type": "string", "pattern": "^(?:0|[1-9][0-9]{0,17})$" },
+              "basisId": { "type": "string", "pattern": "^[a-z][a-z0-9._-]{2,127}$" }
+            },
+            "additionalProperties": false
+          },
+          "coverage": { "type": "string", "minLength": 1, "maxLength": 512 },
+          "freshness": { "type": "string", "minLength": 1, "maxLength": 512 },
+          "reliability": { "type": "string", "minLength": 1, "maxLength": 512 },
+          "officialTermsUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+          "officialDocumentationUrl": { "type": "string", "format": "uri", "pattern": "^https://" }
         },
         "additionalProperties": false
       }

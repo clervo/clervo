@@ -23,6 +23,9 @@ export interface OperationReceipt {
     adapterId: string;
     qualificationId: string;
     providerReferenceHash: string;
+    routeId?: string;
+    degraded?: boolean;
+    costBasisId?: string;
   }[];
   completedAt: string;
   previousReceiptHash?: string;

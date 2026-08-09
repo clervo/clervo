@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "clervo.sandbox-product-pricing.v1",
+  "priceVersion": "sandbox-run-2026-08-09.1",
+  "effectiveAt": "2026-08-09T20:24:00.000Z",
+  "currency": "USD",
+  "operation": "sandbox.run",
+  "classes": [
+    {
+      "classId": "sandbox.short",
+      "priceVersion": "sandbox-run-short-2026-08-09.1",
+      "customerPriceMicrousd": 10000,
+      "fullyLoadedCostMicrousd": 8000,
+      "limits": { "cpuMillis": 5000, "memoryBytes": 268435456, "processes": 16, "diskBytes": 67108864, "outputBytes": 65536, "artifactBytes": 1048576, "wallTimeMs": 10000 },
+      "selection": "every requested limit must be at or below this envelope; omitted limits resolve to the standard class",
+      "competitiveReference": "BlockRun Modal one-shot create-exec-terminate is published at approximately 0.018 USDC",
+      "costBasisId": "sandbox-owned-gke-short-2026-08-09.1"
+    },
+    {
+      "classId": "sandbox.standard",
+      "priceVersion": "sandbox-run-standard-2026-08-09.1",
+      "customerPriceMicrousd": 60000,
+      "fullyLoadedCostMicrousd": 45000,
+      "limits": { "cpuMillis": 30000, "memoryBytes": 536870912, "processes": 64, "diskBytes": 1073741824, "outputBytes": 1048576, "artifactBytes": 10485760, "wallTimeMs": 60000 },
+      "selection": "the existing maximum bounded one-shot envelope",
+      "competitiveReference": "BlockRun Modal public sandbox is published at approximately 0.018 USDC for a smaller 1 vCPU/1 GiB short session; standard Clervo preserves a larger envelope and owned isolation plane",
+      "costBasisId": "sandbox-owned-gke-standard-2026-08-09.1"
+    }
+  ],
+  "economics": {
+    "basis": "on_demand_post_promotional_credit_model",
+    "promotionalCreditsExcluded": true,
+    "recurringGkeFreeTierOffsetAllowed": true,
+    "observedPlane": { "executionMachine": "e2-standard-2", "systemMachine": "e2-medium", "executionNodesMinimum": 1, "systemNodes": 1, "concurrencySlots": 2, "internalLoadBalancer": true, "persistentDiskGiB": 60 },
+    "hourlyAssumptionsMicrousd": { "executionNode": 67000, "systemNode": 33500, "internalLoadBalancer": 25000, "persistentDisk": 8200, "gkeManagementAfterRecurringFreeTier": 0 },
+    "utilizationAssumptionBasisPoints": 300,
+    "failureAndCleanupReserveBasisPoints": 1000,
+    "facilitatorOverageMicrousd": 1000,
+    "calculation": "fully_loaded_cost = floor(always_on_hourly_cost * class_wall_seconds / (concurrency_slots * utilization) * (1 + failure_cleanup_reserve) + facilitator_overage); prices are rounded above the resulting 0.008 and 0.042 USDC ceilings",
+    "unknowns": ["actual monthly utilization", "future GKE/Cloud Run/Postgres price changes", "unobserved database allocation by product"],
+    "safety": "price changes require a fresh post-credit model; no class weakens isolation or any resource ceiling"
+  },
+  "officialReferences": [
+    "https://cloud.google.com/kubernetes-engine/pricing",
+    "https://cloud.google.com/compute/vm-instance-pricing",
+    "https://modal.com/pricing",
+    "https://e2b.dev/pricing",
+    "https://www.daytona.io/pricing",
+    "https://blockrun.ai/services/modal",
+    "https://docs.cdp.coinbase.com/x402/core-concepts/facilitator"
+  ]
+}

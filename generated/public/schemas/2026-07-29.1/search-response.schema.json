@@ -123,6 +123,38 @@
         },
         "score": {
           "$ref": "#/$defs/score"
+        },
+        "attribution": {
+          "type": "object",
+          "required": [
+            "sourceName",
+            "sourceUrl",
+            "license",
+            "notice"
+          ],
+          "properties": {
+            "sourceName": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "sourceUrl": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "license": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "notice": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

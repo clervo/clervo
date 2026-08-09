@@ -36,6 +36,21 @@ export interface SearchHttpRequest {
 export interface SearchExecutionOutput {
   searchResponse: SearchResponse;
   synthesisReport?: RetrievalSynthesisReport;
+  route?: SearchExecutionRoute;
+}
+
+export interface SearchExecutionRoute {
+  routeId: string;
+  qualificationId: string;
+  servingAdapters: readonly string[];
+  degraded: boolean;
+  fallback: boolean;
+  observedAt: string;
+  cost: {
+    semantics: 'documented_cost_basis';
+    basisId: string;
+    amount: { asset: 'usd'; amountAtomic: string; decimals: 6 };
+  };
 }
 
 export interface SearchExecutorInput extends Required<SearchHttpRequest> {
@@ -137,6 +152,20 @@ export function assertSearchExecutionOutput(output: SearchExecutionOutput, input
   if (!response.citations.every((citation) => verifySearchCitation(citation, response.results).valid)) throw new TypeError('search_execution_citation_invalid');
   if (input.productId !== searchProductId(input)) throw new TypeError('search_product_binding_invalid');
   if (input.synthesize && output.synthesisReport === undefined) throw new TypeError('search_synthesis_required');
+  if (output.route !== undefined) {
+    const route = output.route;
+    if (!/^clervo\.search\.[a-z0-9._-]{3,96}$/u.test(route.routeId)
+      || !/^qual_[A-Za-z0-9]{20,64}$/u.test(route.qualificationId)
+      || !Array.isArray(route.servingAdapters) || route.servingAdapters.length < 1 || route.servingAdapters.length > 8
+      || new Set(route.servingAdapters).size !== route.servingAdapters.length
+      || route.servingAdapters.some((adapterId) => !/^adapter_[a-z0-9][a-z0-9._-]{2,63}$/u.test(adapterId))
+      || typeof route.degraded !== 'boolean' || typeof route.fallback !== 'boolean' || route.degraded !== route.fallback
+      || !Number.isFinite(Date.parse(route.observedAt)) || new Date(Date.parse(route.observedAt)).toISOString() !== route.observedAt
+      || route.cost?.semantics !== 'documented_cost_basis'
+      || !/^search-[a-z0-9._-]{3,96}$/u.test(route.cost.basisId ?? '')
+      || route.cost.amount?.asset !== 'usd' || route.cost.amount.decimals !== 6
+      || !/^(?:0|[1-9][0-9]{0,17})$/u.test(route.cost.amount.amountAtomic ?? '')) throw new TypeError('search_execution_route_invalid');
+  }
   if (output.synthesisReport !== undefined) {
     const synthesis = output.synthesisReport;
     if (!input.synthesize || synthesis.operationId !== input.operationId || synthesis.query !== input.query) throw new TypeError('search_synthesis_binding_invalid');

@@ -21,7 +21,15 @@ function executor() {
         maxResults: input.maxResults,
         evidence: [{ resultId: 'sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P', sourceId: 'adapter_search.recorded_release_candidate', url: 'https://example.com/http-x402', title: 'HTTP x402', snippet: evidenceText, evidenceText, retrievedAt: observedAt, authorityScore: 90, relevanceScore: 95 }],
         citations: [{ citationId: 'cite_01JZ8Q5Y4QFD48Q24H6M5F4K9P', resultId: 'sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P', canonicalUrl: 'https://example.com/http-x402', quote: evidenceText, startOffset: 0, endOffset: evidenceText.length }],
-      }) };
+      }), route: {
+        routeId: 'clervo.search.test.recorded.v1',
+        qualificationId: 'qual_01JZ8Q5Y4QFD48Q24H6M5F4K9P',
+        servingAdapters: ['adapter_search.recorded_release_candidate'],
+        degraded: false,
+        fallback: false,
+        observedAt,
+        cost: { semantics: 'documented_cost_basis', basisId: 'search-test-cost-2026-08-09', amount: { asset: 'usd', amountAtomic: '2000', decimals: 6 } },
+      } };
     },
   };
 }
@@ -66,7 +74,10 @@ test('HTTP route exposes standard x402 headers and no-charge durable replay', as
     const paid = await post(app.origin, { 'payment-signature': 'opaque-test-value' });
     assert.equal(paid.status, 200);
     assert.equal(paid.headers.get('payment-response'), 'bounded-public-settlement');
-    assert.equal((await paid.json()).receipt.settlement.status, 'settled');
+    const paidBody = await paid.json();
+    assert.equal(paidBody.receipt.settlement.status, 'settled');
+    assert.equal(paidBody.receipt.provenance[0].routeId, 'clervo.search.test.recorded.v1');
+    assert.equal(paidBody.receipt.provenance[0].degraded, false);
 
     const replay = await post(app.origin);
     assert.equal(replay.status, 200);

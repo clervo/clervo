@@ -16,11 +16,23 @@ import {
 
 export const SANDBOX_PAID_PATH = '/v1/sandbox/execute';
 export const SANDBOX_MAX_BODY_BYTES = 1_500_000;
-export const SANDBOX_RUN_PRICING = Object.freeze({
-  priceVersion: 'sandbox-run-public-2026-08-04.1',
-  maximumCharge: Object.freeze({ asset: 'USDC', amountAtomic: '120000', decimals: 6 }),
-  supplierCost: Object.freeze({ asset: 'usd', amountAtomic: '100000', decimals: 6 }),
+export const SANDBOX_RUN_PRICE_CLASSES = Object.freeze({
+  short: Object.freeze({
+    classId: 'sandbox.short',
+    priceVersion: 'sandbox-run-short-2026-08-09.1',
+    maximumCharge: Object.freeze({ asset: 'USDC', amountAtomic: '10000', decimals: 6 }),
+    supplierCost: Object.freeze({ asset: 'usd', amountAtomic: '8000', decimals: 6 }),
+    costBasisId: 'sandbox-owned-gke-short-2026-08-09.1',
+  }),
+  standard: Object.freeze({
+    classId: 'sandbox.standard',
+    priceVersion: 'sandbox-run-standard-2026-08-09.1',
+    maximumCharge: Object.freeze({ asset: 'USDC', amountAtomic: '60000', decimals: 6 }),
+    supplierCost: Object.freeze({ asset: 'usd', amountAtomic: '45000', decimals: 6 }),
+    costBasisId: 'sandbox-owned-gke-standard-2026-08-09.1',
+  }),
 });
+export const SANDBOX_RUN_PRICING = SANDBOX_RUN_PRICE_CLASSES.standard;
 
 const maximumLimits = Object.freeze({
   cpuMillis: 30_000,
@@ -39,6 +51,15 @@ const minimumLimits = Object.freeze({
   outputBytes: 1,
   artifactBytes: 1,
   wallTimeMs: 100,
+});
+const shortLimits = Object.freeze({
+  cpuMillis: 5_000,
+  memoryBytes: 268_435_456,
+  processes: 16,
+  diskBytes: 67_108_864,
+  outputBytes: 65_536,
+  artifactBytes: 1_048_576,
+  wallTimeMs: 10_000,
 });
 
 function object(value, code) {
@@ -87,6 +108,13 @@ export function sandboxHttpRequestHash(normalized) {
   return operationRequestHash({ resourcePath: SANDBOX_PAID_PATH, productId: 'sandbox.run', input: normalized });
 }
 
+export function sandboxRunPricing(normalized) {
+  const limits = normalized?.limits;
+  if (!limits || typeof limits !== 'object') throw new TypeError('sandbox_pricing_limits_required');
+  const short = Object.entries(shortLimits).every(([key, maximum]) => Number.isSafeInteger(limits[key]) && limits[key] <= maximum);
+  return short ? SANDBOX_RUN_PRICE_CLASSES.short : SANDBOX_RUN_PRICE_CLASSES.standard;
+}
+
 function payerTenant(authorization) {
   const payer = authorization?.verification?.payer;
   if (!/^0x[a-fA-F0-9]{40}$/u.test(payer ?? '')) throw Object.assign(new Error('sandbox_payer_identity_invalid'), { status: 502 });
@@ -100,7 +128,7 @@ function executionId(operationId) {
 export const SANDBOX_DISCOVERY = Object.freeze({
   method: 'POST',
   bodyType: 'json',
-  input: Object.freeze({ command: Object.freeze(['node', '-e', "process.stdout.write('ready')"]) }),
+  input: Object.freeze({ command: Object.freeze(['node', '-e', "process.stdout.write('ready')"]), limits: shortLimits }),
   inputSchema: Object.freeze({
     type: 'object', required: ['command'], additionalProperties: false,
     properties: Object.freeze({
@@ -123,6 +151,7 @@ export function createX402PaidSandboxProcessor({ service, stateStore, gateway, r
     mode: processor.mode,
     durable: processor.durable,
     async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
+      const pricing = sandboxRunPricing(normalized);
       /* Sandbox bounds the runtime by the supplier cost: it rents real
        * compute per run. Its deadline is the only content-dependent one on the
        * platform — a run may legitimately take as long as the wall-time limit
@@ -132,14 +161,14 @@ export function createX402PaidSandboxProcessor({ service, stateStore, gateway, r
         operationId,
         productId: 'sandbox.run',
         input: Object.freeze({ kind: 'run', executionId: executionId(operationId), imageDigest: runnerDigest, ...normalized }),
-        boundAmountAtomic: SANDBOX_RUN_PRICING.supplierCost.amountAtomic,
+        boundAmountAtomic: pricing.supplierCost.amountAtomic,
         now,
         deadlineMs: normalized.limits.wallTimeMs + 60_000,
       });
       assertSandboxOperationRequest(request);
       return processor.process({
         idempotencyKey, requestHash, operationId, productId: 'sandbox.run', executionInput: request,
-        paymentHeader, authorizationHeader, now, pricing: SANDBOX_RUN_PRICING,
+        paymentHeader, authorizationHeader, now, pricing,
         resourcePath: SANDBOX_PAID_PATH, discovery: SANDBOX_DISCOVERY, overloadCode: 'sandbox_overloaded',
         async execute(executionRequest, { authorization }) {
           const completed = await gateway.run({ tenantId: payerTenant(authorization), request: executionRequest });
@@ -149,11 +178,25 @@ export function createX402PaidSandboxProcessor({ service, stateStore, gateway, r
               adapterId: 'adapter_sandbox.gvisor',
               qualificationId: `qual_${runnerDigest.slice('sha256:'.length, 'sha256:'.length + 32)}`,
               providerReferenceHash: completed.result.resultHash,
+              routeId: 'clervo.sandbox.gvisor.one_shot.v1',
+              degraded: false,
+              costBasisId: pricing.costBasisId,
             })]),
           });
         },
         createResponse({ output, receipt }) {
-          return operationHttpResult({ operationId, productId: 'sandbox.run', requestHash, output, receipt });
+          const result = operationHttpResult({ operationId, productId: 'sandbox.run', requestHash, output, receipt });
+          return Object.freeze({
+            ...result,
+            execution: Object.freeze({
+              executionId: request.input.executionId,
+              classId: pricing.classId,
+              requestedLimits: normalized.limits,
+              runtime: Object.freeze({ routeId: 'clervo.sandbox.gvisor.one_shot.v1', isolation: 'gvisor', imageDigest: runnerDigest, qualificationId: `qual_${runnerDigest.slice('sha256:'.length, 'sha256:'.length + 32)}` }),
+              cleanup: Object.freeze({ state: output.output.sessionState }),
+              cost: Object.freeze({ semantics: 'documented_cost_basis', basisId: pricing.costBasisId, amount: pricing.supplierCost }),
+            }),
+          });
         },
       });
     },

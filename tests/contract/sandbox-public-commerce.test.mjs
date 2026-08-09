@@ -58,13 +58,13 @@ test('public Sandbox uses the shared paid state machine, payer-derived tenant, a
   const processor = createX402PaidSandboxProcessor({ service, stateStore: new InMemoryX402OperationStore({ environmentNamespace: 'sandbox_public' }), gateway, runnerDigest });
   const challenge = await processor.process(input);
   assert.equal(challenge.status, 402);
-  assert.equal(challenge.body.quote.maximumCharge.amountAtomic, '120000');
+  assert.equal(challenge.body.quote.maximumCharge.amountAtomic, '60000');
   const paid = await processor.process({ ...input, paymentHeader: 'opaque-payment' });
   assert.equal(paid.status, 200);
   assert.equal(paid.body.result.output.stdoutBase64, 'cmVhZHk=');
   assert.equal(paid.body.requestHash, input.requestHash);
-  assert.equal(paid.body.receipt.customerCharge.amountAtomic, '120000');
-  assert.equal(paid.body.receipt.supplierCost.amountAtomic, '100000');
+  assert.equal(paid.body.receipt.customerCharge.amountAtomic, '60000');
+  assert.equal(paid.body.receipt.supplierCost.amountAtomic, '45000');
   const replay = await processor.process(input);
   assert.equal(replay.body.replayed, true);
   assert.deepEqual(calls, { challenge: 1, authorize: 1, settle: 1, execute: 1 });

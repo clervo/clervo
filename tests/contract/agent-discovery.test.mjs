@@ -154,11 +154,18 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
       assert.equal(offer.amount, example.observedQuote.amountAtomic);
       assert.equal(offer.extra.clervo.priceVersion, example.observedQuote.priceVersion);
     } else {
-      const exampleOperationByFamily = { prediction: 'prediction.markets', crypto_intelligence: 'crypto.wallet.report' };
-      assert.ok(Object.hasOwn(exampleOperationByFamily, family), 'only AI, Prediction, and Crypto use request-derived public quotes');
+      const exampleOperationByFamily = {
+        prediction: 'prediction.markets',
+        crypto_intelligence: 'crypto.wallet.report',
+        sandbox: 'sandbox.run',
+      };
+      assert.ok(Object.hasOwn(exampleOperationByFamily, family), 'only AI, Prediction, Crypto, and Sandbox use request-derived public quotes');
       assert.equal(offer.extra.clervo.operationId, exampleOperationByFamily[family]);
       assert.equal(offer.extra.clervo.exampleRouteId, null);
-      assert.equal(offer.extra.clervo.priceModel, 'request_derived_per_operation');
+      assert.equal(
+        offer.extra.clervo.priceModel,
+        family === 'sandbox' ? 'class_derived_quote' : 'request_derived_per_operation',
+      );
       assert.equal(offer.amount, product.observedQuote.amountAtomic);
       assert.equal(offer.extra.clervo.priceVersion, product.observedQuote.priceVersion);
     }

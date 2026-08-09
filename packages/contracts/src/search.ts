@@ -24,6 +24,12 @@ export interface SearchEvidence {
   publishedAt?: string;
   authorityScore: number;
   relevanceScore: number;
+  attribution?: {
+    sourceName: string;
+    sourceUrl: string;
+    license: string;
+    notice: string;
+  };
 }
 
 export interface SearchScore {
@@ -145,6 +151,12 @@ function validateEvidence(value: SearchEvidence, nowMs: number): { evidence: Sea
   if (retrievedAt > nowMs || (publishedAt !== undefined && publishedAt > nowMs)) throw new Error('search_evidence_from_future');
   const authority = boundedScore(value.authorityScore, 'search_authority_score');
   const relevance = boundedScore(value.relevanceScore, 'search_relevance_score');
+  if (value.attribution !== undefined) {
+    assertText(value.attribution.sourceName, 'search_attribution_source_name', 256);
+    canonicalizeSearchUrl(value.attribution.sourceUrl);
+    assertText(value.attribution.license, 'search_attribution_license', 512);
+    assertText(value.attribution.notice, 'search_attribution_notice', 2_000);
+  }
   const canonicalUrl = canonicalizeSearchUrl(value.url);
   return {
     evidence: { ...value, authorityScore: authority, relevanceScore: relevance },

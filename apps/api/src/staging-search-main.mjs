@@ -2,6 +2,7 @@
 
 import { createRecordedSearchExecutor } from '../../../dist/services/search/src/recorded-pipeline.js';
 import { createLiveExternalSearchExecutor } from '../../../dist/services/search/src/live-external-pipeline.js';
+import { createOpenCommercialSearchExecutor } from '../../../dist/services/search/src/open-commercial-pipeline.js';
 import { createSearchMonitor } from '../../../dist/services/search/src/monitoring.js';
 import { createSearchServer } from './search-server.mjs';
 import {
@@ -52,14 +53,14 @@ if (environment === 'production' && monitoringDriver !== 'sentry') throw new Err
 if (environment === 'production' && !sentryDsn) throw new Error('production requires CLERVO_SENTRY_DSN');
 if (!['disabled', 'challenge_only', 'settlement_enabled'].includes(x402Mode)) throw new Error('invalid CLERVO_X402_MODE');
 if (!['disabled', 'private'].includes(sandboxMode)) throw new Error('invalid CLERVO_SANDBOX_MODE');
-if (!['recorded', 'live_external'].includes(searchMode)) throw new Error('invalid CLERVO_SEARCH_MODE');
+if (!['recorded', 'live_external', 'open_federation'].includes(searchMode)) throw new Error('invalid CLERVO_SEARCH_MODE');
 if (!['disabled', 'paid'].includes(aiMode)) throw new Error('invalid CLERVO_AI_MODE');
 if (!['disabled', 'paid'].includes(sandboxPublicMode)) throw new Error('invalid CLERVO_SANDBOX_PUBLIC_MODE');
 if (!['disabled', 'r2'].includes(aiArtifactMode)) throw new Error('invalid CLERVO_AI_ARTIFACT_MODE');
 if (!['disabled', 'paid'].includes(rpcMode)) throw new Error('invalid CLERVO_RPC_MODE');
 if (!['disabled', 'paid'].includes(predictionMode)) throw new Error('invalid CLERVO_PREDICTION_MODE');
 if (!['disabled', 'paid'].includes(cryptoMode)) throw new Error('invalid CLERVO_CRYPTO_MODE');
-if (environment === 'production' && searchMode === 'live_external' && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new Error('production live search requires edge authorization');
+if (environment === 'production' && searchMode !== 'recorded' && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new Error('production live search requires edge authorization');
 if (x402Mode !== 'disabled' && stateBackend !== 'postgres') throw new Error('x402 requires PostgreSQL state');
 if (x402Mode !== 'disabled' && (typeof process.env.CLERVO_MPP_SECRET_KEY !== 'string' || Buffer.byteLength(process.env.CLERVO_MPP_SECRET_KEY) < 32)) throw new Error('x402 commerce requires MPP secret key');
 if (sandboxMode !== 'disabled' && stateBackend !== 'postgres') throw new Error('sandbox requires PostgreSQL state');
@@ -93,14 +94,17 @@ const sandboxGateway = sandboxMode === 'disabled' ? undefined : createSandboxPri
   stateStore: sandboxStateStore,
   environment,
 });
-const executor = searchMode === 'live_external'
-  ? createLiveExternalSearchExecutor({
+const executor = searchMode === 'open_federation'
+  ? createOpenCommercialSearchExecutor({
+    primaryCallCeiling: Number(process.env.CLERVO_SEARCH_PRIMARY_CALL_CEILING ?? '1000'),
+    fallbackCallCeiling: Number(process.env.CLERVO_SEARCH_FALLBACK_CALL_CEILING ?? '1000'),
+  })
+  : searchMode === 'live_external' ? createLiveExternalSearchExecutor({
     primaryCredential: process.env.CLERVO_SEARCH_PRIMARY_KEY ?? '',
     fallbackCredential: process.env.CLERVO_SEARCH_FALLBACK_KEY ?? '',
     primaryCallCeiling: Number(process.env.CLERVO_SEARCH_PRIMARY_CALL_CEILING ?? '1000'),
     fallbackCallCeiling: Number(process.env.CLERVO_SEARCH_FALLBACK_CALL_CEILING ?? '2500'),
-  })
-  : createRecordedSearchExecutor();
+    }) : createRecordedSearchExecutor();
 const aiArtifactRuntime = aiArtifactMode === 'r2' ? createAiArtifactRuntime() : undefined;
 const aiRuntime = aiMode === 'paid' ? await createAiProductionRuntime({ artifactStoreFactory: aiArtifactRuntime?.forAuthorization }) : undefined;
 const rpcRuntime = rpcMode === 'paid' ? createRpcProductionRuntime({ ethereumEndpoint: process.env.CLERVO_RPC_ETHEREUM_ENDPOINT }) : undefined;
@@ -135,7 +139,7 @@ const server = createSearchServer({
   x402StateStore,
   sandboxGateway,
   sandboxApiToken: sandboxMode === 'disabled' ? undefined : process.env.CLERVO_SANDBOX_API_TOKEN,
-  synthesisEnabled: searchMode !== 'live_external',
+  synthesisEnabled: searchMode === 'recorded',
   retrievalMode: searchMode,
   edgeAuthorization,
   aiPublicPricing: aiRuntime?.publicPricing,

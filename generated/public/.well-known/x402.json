@@ -59,9 +59,9 @@
           "extra": {
             "clervo": {
               "operationId": "sandbox.run",
-              "priceModel": "fixed_request",
+              "priceModel": "class_derived_quote",
               "priceVersion": "sandbox-run-public-2026-08-04.1",
-              "amountIsBinding": true,
+              "amountIsBinding": false,
               "exampleRouteId": null,
               "lifecycleState": "live",
               "proofLevel": "quote_observed_unpaid"

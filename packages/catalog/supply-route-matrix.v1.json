@@ -53,9 +53,9 @@
     },
     {
       "catalog": "packages/catalog/blockchain-data-supply-pricing.v1.json",
-      "assetCount": 7,
-      "positiveCustomerPriceCount": 7,
-      "sellableCount": 3
+      "assetCount": 8,
+      "positiveCustomerPriceCount": 8,
+      "sellableCount": 4
     },
     {
       "catalog": "packages/catalog/payment-supply-pricing.v1.json",
@@ -77,9 +77,9 @@
     },
     {
       "catalog": "packages/catalog/search-supply-pricing.v1.json",
-      "assetCount": 2,
-      "positiveCustomerPriceCount": 2,
-      "sellableCount": 0
+      "assetCount": 4,
+      "positiveCustomerPriceCount": 4,
+      "sellableCount": 2
     },
     {
       "catalog": "packages/catalog/storage-supply-pricing.v1.json",
@@ -329,32 +329,34 @@
     {
       "capabilityId": "search.web",
       "publicAssets": [
-        "web-search-standard",
-        "web-search-independent-index"
+        "open-wikimedia-search",
+        "open-crossref-metadata"
       ],
       "lifecycle": "production",
-      "routeState": "qualified_provider_neutral_adapters_ready",
+      "routeState": "qualified_commercial_open_primary_with_health_fallback",
       "primaryServices": [
-        "supply.brave_search"
+        "supply.wikimedia_open_data"
       ],
       "fallbackServices": [
-        "supply.serper"
+        "supply.crossref_open_metadata"
       ],
       "pricingCatalogs": [
         "packages/catalog/search-supply-pricing.v1.json"
       ],
-      "quality": "best",
-      "termsStatus": "restricted",
-      "quotaRunway": "The primary has a recurring 1,000-call monthly credit and a matching hard ceiling; the independent fallback has an unexposed starter remainder and its own ceiling. Automatic paid overage and account pooling are disabled.",
+      "quality": "good",
+      "termsStatus": "approved",
+      "quotaRunway": "Open no-fee APIs are selected under explicit license/metadata permissions with hard per-process call ceilings, polite identity, maxlag, and no paid overage. Brave and Serper remain technical-only because current resale terms are not approved.",
       "healthMethod": [
-        "docs/evidence/supply-foundation/brave-search-qualification.v1.json",
-        "docs/evidence/supply-foundation/serper-qualification.v1.json",
-        "tests/contract/search-supply-routing.test.mjs"
+        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+        "https://www.mediawiki.org/wiki/API:Etiquette",
+        "https://www.crossref.org/documentation/retrieve-metadata/rest-api/rest-api-etiquette/",
+        "tests/contract/search-supply-routing.test.mjs",
+        "tests/contract/b10-search-sandbox.test.mjs"
       ],
       "secretLocations": [
-        "legacy_import:BRAVE_SEARCH_API_KEY,SERPER_API_KEY"
+        "none:open_data_route"
       ],
-      "replacementPlan": "Compose the ready provider-neutral router into the next production search deployment, retain transient-only processing, and move to official paid capacity after revenue."
+      "replacementPlan": "Keep the open licensed/metadata route bounded and attribution-preserving. Re-evaluate a paid general-web supplier only after written commercial permission and owner approval."
     },
     {
       "capabilityId": "rpc.multichain",
@@ -432,13 +434,14 @@
     {
       "capabilityId": "blockchain.data",
       "publicAssets": [
-        "evm-wallet-overview",
-        "evm-token-balances",
-        "evm-transaction-history",
-        "multichain-wallet-portfolio",
-        "multichain-token-search",
-        "multichain-transaction-history",
-        "multichain-protocol-directory"
+        "evm-wallet-balances",
+        "evm-wallet-tokens",
+        "evm-wallet-activity",
+        "evm-wallet-report",
+        "multichain-wallet-balances",
+        "multichain-wallet-tokens",
+        "multichain-wallet-activity",
+        "multichain-wallet-report"
       ],
       "lifecycle": "mixed",
       "routeState": "qualified_value_added_routes",

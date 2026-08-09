@@ -31,7 +31,7 @@ import {
   SANDBOX_DISCOVERY,
   SANDBOX_MAX_BODY_BYTES as SANDBOX_PUBLIC_MAX_BODY_BYTES,
   SANDBOX_PAID_PATH,
-  SANDBOX_RUN_PRICING,
+  sandboxRunPricing,
   createX402PaidSandboxProcessor,
   normalizeSandboxHttpRequest,
   sandboxHttpRequestHash,
@@ -223,7 +223,7 @@ export function createSearchServer({
   if (sandboxGateway !== undefined && (typeof sandboxGateway.run !== 'function' || typeof sandboxGateway.ready !== 'function')) throw new TypeError('invalid sandbox gateway');
   if (sandboxApiToken !== undefined && (typeof sandboxApiToken !== 'string' || sandboxApiToken.length < 32 || sandboxApiToken.length > 512)) throw new TypeError('invalid sandbox API token');
   if (environment === 'production' && sandboxGateway !== undefined && sandboxGateway.durable !== true) throw new TypeError('production sandbox requires durable state');
-  if (typeof synthesisEnabled !== 'boolean' || !['recorded', 'live_external'].includes(retrievalMode)) throw new TypeError('invalid search capability configuration');
+  if (typeof synthesisEnabled !== 'boolean' || !['recorded', 'live_external', 'open_federation'].includes(retrievalMode)) throw new TypeError('invalid search capability configuration');
   if (edgeAuthorization !== undefined && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new TypeError('invalid edge authorization');
   if ((aiPublicPricing === undefined) !== (aiAdapters === undefined)) throw new TypeError('AI pricing and adapters must be configured together');
   if (aiPublicPricing !== undefined && x402Service === undefined) throw new TypeError('public AI requires x402 commerce');
@@ -295,7 +295,7 @@ export function createSearchServer({
       const normalized = normalizeSandboxHttpRequest(SANDBOX_DISCOVERY.input);
       productId = 'sandbox.run';
       requestHash = sandboxHttpRequestHash(normalized);
-      pricing = SANDBOX_RUN_PRICING;
+      pricing = sandboxRunPricing(normalized);
       discovery = SANDBOX_DISCOVERY;
     } else if (pathname === RPC_PAID_PATH) {
       const normalized = normalizeRpcHttpRequest(RPC_DISCOVERY.input);

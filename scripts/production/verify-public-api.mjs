@@ -68,7 +68,7 @@ export async function verifyPublicApi({
   assert.equal(pricing.body?.publicPrice?.amountAtomic, '6000');
   const health = await requestJson(publicOrigin, '/v1/health');
   assert.equal(health.body?.status, 'ok');
-  assert.equal(health.body?.retrievalMode, 'live_external');
+  assert.equal(health.body?.retrievalMode, 'open_federation');
   assert.equal(health.body?.paidExecutionEnabled, true);
   assert.equal(health.body?.durableState, true);
   const readiness = await requestJson(publicOrigin, '/readyz');

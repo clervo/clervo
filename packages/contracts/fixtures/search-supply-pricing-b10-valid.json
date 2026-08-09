@@ -1,0 +1,19 @@
+{
+  "schema": "search-supply-pricing",
+  "valid": true,
+  "value": {
+    "schemaVersion": "clervo.search-supply-pricing.v1",
+    "priceVersion": "search-supply-2026-08-09.1",
+    "effectiveAt": "2026-08-09T20:24:00.000Z",
+    "currency": "USD",
+    "policy": { "customerFreeByDefault": false, "unknownAllowanceBlocksPricing": false, "automaticPaidTopUpAllowed": false, "providerNamesPublic": false, "singleAccountOnly": true },
+    "routes": [
+      {
+        "serviceId": "supply.wikimedia_open_data", "productId": "search.web", "publicAssetId": "open-wikimedia-search", "billingUnit": "request", "maximumResults": 10, "customerPriceMicrousd": 6000, "supplierPriceMicrousd": 0, "supplierPriceBasis": "open_no_fee",
+        "allowance": { "advertisedStarterQueries": 0, "recurringMonthlyQueries": 0, "ownedRemainingQueries": null, "ownedRemainingStatus": "not_exposed", "purchasedCreditExpiryMonths": 0, "hardCallCeiling": 1000, "automaticPaidOverageAllowed": false },
+        "rateLimitQueriesPerSecond": 2, "qualityGrade": "good", "qualificationStatus": "passed", "listingStatus": "sellable_preview", "termsStatus": "approved", "fallbackStatus": "independent_fallback_ready",
+        "technicalQualification": "passed", "commercialPermission": "approved", "publicSellable": true, "variableCost": { "semantics": "documented_cost_basis", "amountAtomic": "2000", "basisId": "search-open-federation-2026-08-09.1" }, "coverage": "Wikimedia", "freshness": "retrieval and revision", "reliability": "bounded fallback", "officialTermsUrl": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use", "officialDocumentationUrl": "https://www.mediawiki.org/wiki/API:Etiquette"
+      }
+    ]
+  }
+}

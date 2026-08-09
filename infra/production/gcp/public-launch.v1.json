@@ -12,12 +12,12 @@
     "sharedSecret": "clervo-production-edge-authorization"
   },
   "search": {
-    "mode": "live_external",
+    "mode": "open_federation",
     "synthesisEnabled": false,
-    "primarySecret": "clervo-production-search-primary",
-    "fallbackSecret": "clervo-production-search-fallback",
+    "primarySecret": null,
+    "fallbackSecret": null,
     "primaryCallCeiling": 1000,
-    "fallbackCallCeiling": 2500,
+    "fallbackCallCeiling": 1000,
     "automaticPaidOverage": false
   },
   "commerce": {
@@ -35,9 +35,11 @@
     "publicMode": "paid",
     "publicRoute": true,
     "runnerDigest": "sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
-    "priceVersion": "sandbox-run-public-2026-08-04.1",
-    "maximumChargeAtomic": "120000",
-    "maximumSupplierCostAtomic": "100000"
+    "priceVersion": "sandbox-run-2026-08-09.1",
+    "minimumChargeAtomic": "10000",
+    "maximumChargeAtomic": "60000",
+    "shortSupplierCostAtomic": "8000",
+    "standardSupplierCostAtomic": "45000"
   },
   "ai": {
     "mode": "paid",

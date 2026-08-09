@@ -21,14 +21,15 @@ test('public launch policy exposes qualified Search, AI, Sandbox, Prediction, an
   const launchState = await json('packages/catalog/launch-state.v1.json');
   const worker = await json('apps/worker/wrangler.jsonc');
   assert.equal(policy.publicOrigin, 'https://api.clervo.dev/');
-  assert.equal(policy.search.mode, 'live_external');
+  assert.equal(policy.search.mode, 'open_federation');
   assert.equal(policy.search.synthesisEnabled, false);
   assert.equal(policy.search.automaticPaidOverage, false);
   assert.equal(policy.commerce.mode, 'settlement_enabled');
   assert.equal(policy.sandbox.publicRoute, true);
   assert.equal(policy.sandbox.publicMode, 'paid');
   assert.match(policy.sandbox.runnerDigest, /^sha256:[a-f0-9]{64}$/u);
-  assert.equal(policy.sandbox.maximumChargeAtomic, '120000');
+  assert.equal(policy.sandbox.minimumChargeAtomic, '10000');
+  assert.equal(policy.sandbox.maximumChargeAtomic, '60000');
   assert.match(policy.ai.routeFamilies, /deepgram/u);
   assert.equal(policy.ai.artifacts.mode, 'r2');
   assert.equal(policy.ai.artifacts.bucket, 'clervo-artifacts');
@@ -224,7 +225,7 @@ test('external public smoke verifies live retrieval, replay, stable challenge, i
     });
     if (url.pathname === '/openapi.json') return Response.json({ 'x-clervo-status': { distribution: 'public_preview', publicCallable: true } });
     if (url.pathname === '/pricing.json') return Response.json({ publicOfferAvailable: true, publicPrice: { productId: 'search.web', amountAtomic: '6000' } });
-    if (url.pathname === '/v1/health') return Response.json({ status: 'ok', retrievalMode: 'live_external', paidExecutionEnabled: true, durableState: true });
+    if (url.pathname === '/v1/health') return Response.json({ status: 'ok', retrievalMode: 'open_federation', paidExecutionEnabled: true, durableState: true });
     if (url.pathname === '/readyz') return Response.json({ status: 'ready' });
     if (url.pathname === '/internal/v1/sandbox/run') return Response.json({ code: 'not_found' }, { status: 404 });
     if (url.pathname === '/v1/search/paid' && method === 'OPTIONS') return new Response(null, { status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'payment-signature' } });

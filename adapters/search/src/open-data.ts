@@ -77,7 +77,7 @@ export function createWikimediaOpenDataAdapter(options: {
       requireRequest(request);
       const language = request.language.split('-', 1)[0]!;
       const url = new URL(`https://${language}.wikipedia.org/w/api.php`);
-      url.search = new URLSearchParams({ action: 'query', format: 'json', formatversion: '2', generator: 'search', gsrsearch: request.query, gsrlimit: String(request.maximumResults), prop: 'info', inprop: 'url', maxlag: '5', origin: '*' }).toString();
+      url.search = new URLSearchParams({ action: 'query', format: 'json', formatversion: '2', generator: 'search', gsrsearch: request.query, gsrlimit: String(request.maximumResults), prop: 'info|extracts|revisions', inprop: 'url', exintro: '1', explaintext: '1', exchars: '1800', rvprop: 'timestamp', maxlag: '5', origin: '*' }).toString();
       const response = await options.transport({ url, headers: Object.freeze({ accept: 'application/json', 'user-agent': options.userAgent }), deadlineAt: request.deadlineAt, signal: request.signal });
       requireSuccess(response, 'wikimedia');
       const query = record(record(JSON.parse(response.body), 'wikimedia').query, 'wikimedia_query');
@@ -86,10 +86,14 @@ export function createWikimediaOpenDataAdapter(options: {
         const page = record(value, 'wikimedia_page');
         const title = clean(page.title, 'Untitled Wikimedia page', 512);
         const currentUrl = canonicalizeSearchUrl(typeof page.fullurl === 'string' ? page.fullurl : `https://${language}.wikipedia.org/wiki/${encodeURIComponent(title.replace(/ /gu, '_'))}`);
+        const revision = Array.isArray(page.revisions) ? record(page.revisions[0], 'wikimedia_revision') : undefined;
+        const publishedAt = revision === undefined || typeof revision.timestamp !== 'string' || !Number.isFinite(Date.parse(revision.timestamp))
+          ? undefined
+          : new Date(Date.parse(revision.timestamp)).toISOString();
         return Object.freeze({
           routeId: LIVE_FEDERATION_ROUTE_ID, providerId: WIKIMEDIA_PROVIDER_ID, adapterId: WIKIMEDIA_ADAPTER_ID,
-          currentUrl, title, snippet: title, retrievedAt: request.retrievedAt, language: request.language, region: request.region,
-          attribution: Object.freeze({ sourceId: 'wikimedia' as const, sourceName: 'Wikimedia', sourceUrl: currentUrl, license: 'page-specific; generally CC BY-SA 4.0/GFDL for Wikipedia text', notice: 'Wikimedia contributors; retain the page URL and comply with the page-level license and attribution requirements.' }),
+          currentUrl, title, snippet: clean(page.extract, title), retrievedAt: request.retrievedAt, ...(publishedAt === undefined ? {} : { publishedAt }), language: request.language, region: request.region,
+          attribution: Object.freeze({ sourceId: 'wikimedia' as const, sourceName: 'Wikimedia contributors', sourceUrl: currentUrl, license: 'CC BY-SA 4.0; page-specific notices may also apply', notice: 'Excerpt attributed by page URL to Wikimedia contributors; modified to plain text and distributed under CC BY-SA 4.0.' }),
           discoveryKind: 'open_data' as const,
         });
       }));

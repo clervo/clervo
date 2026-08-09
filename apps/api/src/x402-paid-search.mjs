@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import {
   assertSearchExecutionOutput,
   createSearchHttpResult,
@@ -7,9 +6,9 @@ import { createX402PaidOperationProcessor } from './x402-paid-operation.mjs';
 
 const PRICING = Object.freeze({
   'search.web': Object.freeze({
-    priceVersion: 'search-web-usdc-2026-08-03.1',
+    priceVersion: 'search-web-open-federation-2026-08-09.1',
     maximumCharge: Object.freeze({ asset: 'USDC', amountAtomic: '6000', decimals: 6 }),
-    supplierCost: Object.freeze({ asset: 'usd', amountAtomic: '400', decimals: 6 }),
+    supplierCost: Object.freeze({ asset: 'usd', amountAtomic: '2000', decimals: 6 }),
   }),
   'search.answer': Object.freeze({
     priceVersion: 'search-answer-usdc-2026-08-03.1',
@@ -17,10 +16,6 @@ const PRICING = Object.freeze({
     supplierCost: Object.freeze({ asset: 'usd', amountAtomic: '1500', decimals: 6 }),
   }),
 });
-
-function identifier(prefix, seed) {
-  return `${prefix}_${createHash('sha256').update(seed).digest('hex').slice(0, 32)}`;
-}
 
 export function x402SearchPricing(productId) {
   const pricing = PRICING[productId];
@@ -53,13 +48,18 @@ export function createX402PaidSearchProcessor({ service, stateStore, executor, a
         async execute(input) {
           const output = await executor.execute(input);
           assertSearchExecutionOutput(output, input);
+          if (output.route === undefined) throw new TypeError('search_paid_route_truth_required');
           return Object.freeze({
             output,
-            provenance: Object.freeze([{
-              adapterId: 'adapter_search.recorded_release_candidate',
-              qualificationId: identifier('qual', operationId),
+            supplierCost: output.route.cost.amount,
+            provenance: Object.freeze(output.route.servingAdapters.map((adapterId) => Object.freeze({
+              adapterId,
+              qualificationId: output.route.qualificationId,
               providerReferenceHash: requestHash,
-            }]),
+              routeId: output.route.routeId,
+              degraded: output.route.degraded,
+              costBasisId: output.route.cost.basisId,
+            }))),
           });
         },
         createResponse({ executionInput: input, output, receipt }) {
