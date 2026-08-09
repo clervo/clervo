@@ -39,6 +39,7 @@ const postFreezeFixtureNames = new Set([
   'prediction-event-valid.json',
   'qualified-ai-supply-catalog-valid.json',
   'qualified-ai-supply-catalog-secret-invalid.json',
+  'search-supply-pricing-b10-valid.json',
 ]);
 // A schema inside the frozen set that has legitimately been edited since the
 // freeze. The manifest keeps the hash the schema had at the freeze, because
@@ -89,6 +90,12 @@ const frozenSchemaHashes = new Map([
   ['crypto-product-pricing.schema.json', 'sha256:971ac42d6e10b52b8fa72841685a555f14028067082abfd461ea2149e41b74d2'],
   ['crypto-source-routes.schema.json', 'sha256:7699631024e05f1f5f0bb4efa6495c721ebdc064a8e9deb861d9952535072795'],
   ['external-supply-inventory.schema.json', 'sha256:bee7e9944649f911d2103f447c5d3934fc0ef33b278e9680c79ce71fd8ab3070'],
+  // B10 adds optional Search route/cost provenance and commercial-supply
+  // controls. The immutable Stage 12 snapshot retains its original wire and
+  // internal-control descriptors.
+  ['operation-receipt.schema.json', 'sha256:8d46892c4e4d05ecc48be73d0589048fbf62c38362d04d68fe3387f219fbb6c4'],
+  ['search-response.schema.json', 'sha256:005e86142d685ca00cec1caab53a5bc7cfe0359f72d0b78c0230035dff8be07a'],
+  ['search-supply-pricing.schema.json', 'sha256:95bcf7954804cd5ff42148e41ad9bc4b7bd680c88f81484c3ebf9aba0b52031a'],
 ]);
 const frozenFixtureHashes = new Map([
   ['prediction-market-valid.json', 'sha256:d1d9a5c35145c0bcab74cdef15dc22fe82ee9ab14c4bb562c731b315978ab2a8'],
@@ -110,6 +117,7 @@ const frozenFixtureHashes = new Map([
 // historical descriptor for any catalog revised by a later milestone instead
 // of silently reissuing the published Stage 12 interface identity.
 const frozenPriceHashes = new Map([
+  ['packages/contracts/src/search-http.ts', 'sha256:44a6f50ef356fcf5c980bc1257ba1e263532225ed7070bba81bb040ac90aae09'],
   ['packages/catalog/prediction-product-pricing.v1.json', 'sha256:bc8a742b44f43704606984e876457df1f03b3f02893c63d60a247739ce5a4a0a'],
   ['packages/catalog/crypto-product-pricing.v1.json', 'sha256:7ec207bb08e8cbeee0c6518b5cfa6148b71bfa2b38a8182c8467ae026a9ed55b'],
 ]);

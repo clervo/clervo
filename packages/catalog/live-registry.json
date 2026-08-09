@@ -1086,7 +1086,7 @@
     "apiOrigin": "https://api.clervo.dev",
     "environment": "production",
     "paidExecutionEnabled": true,
-    "releaseId": "671d369601e26ab7491b8fd5232e7d2942f05c51",
+    "releaseId": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
     "sandboxPaidEnabled": true,
     "siteOrigin": "https://clervo.dev",
     "stateBackend": "postgres",
@@ -1136,7 +1136,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-09T19:27:12.736Z",
+  "observedAt": "2026-08-09T21:00:29.384Z",
   "products": [
     {
       "evidence": {
@@ -1281,12 +1281,12 @@
       "id": "sandbox",
       "label": "Secure Sandbox",
       "observedQuote": {
-        "amountAtomic": "120000",
+        "amountAtomic": "60000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "sandbox-run-public-2026-08-04.1",
+        "priceVersion": "sandbox-run-standard-2026-08-09.1",
         "resourceDescription": "Bounded sandbox.run execution",
         "scheme": "exact"
       },
@@ -1326,7 +1326,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "search-web-usdc-2026-08-03.1",
+        "priceVersion": "search-web-open-federation-2026-08-09.1",
         "resourceDescription": "Bounded search.web execution",
         "scheme": "exact"
       },
@@ -1351,7 +1351,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "a5579f734a3ba7305b80c2d454507622b3aa668a",
+  "sourceCommit": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",

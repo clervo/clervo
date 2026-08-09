@@ -6,8 +6,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T19:27:12.736Z",
-      "releaseId": "671d369601e26ab7491b8fd5232e7d2942f05c51",
+      "observedAt": "2026-08-09T21:00:29.384Z",
+      "releaseId": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -117,10 +117,10 @@
         "expectedReturnAt": null,
         "publiclyReachable": true,
         "observedPrice": {
-          "amountAtomic": "120000",
+          "amountAtomic": "60000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
-          "priceVersion": "sandbox-run-public-2026-08-04.1"
+          "priceVersion": "sandbox-run-standard-2026-08-09.1"
         },
         "freeEntry": null
       },
@@ -140,7 +140,7 @@
           "amountAtomic": "6000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
-          "priceVersion": "search-web-usdc-2026-08-03.1"
+          "priceVersion": "search-web-open-federation-2026-08-09.1"
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",

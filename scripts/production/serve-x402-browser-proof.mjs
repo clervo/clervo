@@ -20,7 +20,18 @@ const profiles = Object.freeze({
     amountAtomic: '6000',
     amountDisplay: '0.006 USDC',
     supplierCostCeilingAtomic: '0',
-    request: { query: 'Clervo bounded x402 launch proof', maxResults: 1, synthesize: false },
+    request: { query: 'Python programming', maxResults: 3, synthesize: false, language: 'en', region: 'US' },
+  }),
+  'sandbox.run': Object.freeze({
+    route: '/v1/sandbox/execute',
+    resource: 'https://api.clervo.dev/v1/sandbox/execute',
+    amountAtomic: '10000',
+    amountDisplay: '0.010 USDC',
+    supplierCostCeilingAtomic: '8000',
+    request: {
+      command: ['node', '-e', 'process.stdout.write("B10 sandbox proof")'],
+      limits: { cpuMillis: 5000, memoryBytes: 268435456, processes: 16, diskBytes: 67108864, outputBytes: 65536, artifactBytes: 1048576, wallTimeMs: 10000 },
+    },
   }),
   'ai.chat': Object.freeze({
     route: '/v1/ai/execute',
@@ -74,7 +85,8 @@ const target = new URL(process.env.CLERVO_X402_PROOF_TARGET_ORIGIN ?? '');
 const audienceValue = process.env.CLERVO_X402_PROOF_IDENTITY_AUDIENCE;
 const audience = audienceValue === undefined ? undefined : new URL(audienceValue);
 const port = Number(process.env.CLERVO_X402_PROOF_PORT ?? '8790');
-const payer = normalizeAddress(process.env.CLERVO_X402_PROOF_PAYER, 'payer');
+const configuredPayer = String(process.env.CLERVO_X402_PROOF_PAYER ?? 'auto');
+const payer = configuredPayer === 'auto' ? null : normalizeAddress(configuredPayer, 'payer');
 const payTo = normalizeAddress(process.env.CLERVO_X402_PROOF_PAY_TO, 'receiver');
 const idempotencyKey = String(process.env.CLERVO_X402_PROOF_IDEMPOTENCY_KEY ?? '');
 
@@ -94,7 +106,7 @@ else {
   assert.match(audience?.hostname ?? '', /^[a-z0-9-]+\.(?:[a-z0-9-]+\.)?run\.app$/u);
   assert.equal(audience?.pathname, '/');
 }
-assert.notEqual(payer.toLowerCase(), payTo.toLowerCase(), 'payer and receiver must differ');
+if (payer !== null) assert.notEqual(payer.toLowerCase(), payTo.toLowerCase(), 'payer and receiver must differ');
 assert.match(idempotencyKey, /^idem_[a-z0-9_]{16,96}$/u);
 assert.equal(Number.isSafeInteger(port) && port >= 1024 && port <= 65535, true);
 
@@ -139,7 +151,7 @@ async function staticFile(response, pathname) {
 const proofConfig = Object.freeze({
   network: 'eip155:8453', chainIdHex: '0x2105', asset,
   amountAtomic: profile.amountAtomic, amountDisplay: profile.amountDisplay,
-  payTo, payer, productId, resource: profile.resource, idempotencyKey,
+  ...(payer === null ? {} : { payer }), payTo, productId, resource: profile.resource, idempotencyKey,
   payerBalanceCapAtomic: '32000', supplierCostCeilingAtomic: profile.supplierCostCeilingAtomic,
   request: profile.request,
 });

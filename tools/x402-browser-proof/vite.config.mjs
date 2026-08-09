@@ -5,11 +5,12 @@ const root = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
   root,
-  base: '/',
+  base: '/proof-assets/',
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: false,
     target: 'es2022',
+    assetsDir: '.',
   },
 });

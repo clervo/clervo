@@ -118,7 +118,7 @@
   "prices": [
     {
       "file": "packages/contracts/src/search-http.ts",
-      "sha256": "sha256:2ddbd7e9814051b32e14ed61b39a6cbf7a31c0aa8ab2b193524bab3486ccb5e3"
+      "sha256": "sha256:44a6f50ef356fcf5c980bc1257ba1e263532225ed7070bba81bb040ac90aae09"
     },
     {
       "file": "packages/catalog/ai-launch-pricing.v1.json",
@@ -144,12 +144,12 @@
   "schemas": {
     "directory": "packages/contracts/schemas",
     "count": 94,
-    "aggregateHash": "sha256:4f5fbf8a3de89cb8f07700cd821136798d008bd2bf480935d379d09f27762a39"
+    "aggregateHash": "sha256:6c6271554d0ce15abda4251fad4a6b8dfc6df83ee8a8842d12b4d4281d751bb8"
   },
   "examples": {
     "directory": "packages/contracts/fixtures",
-    "count": 131,
-    "aggregateHash": "sha256:59e328504bd80052771b097c48b0deb415822c2fb12ef974e0d2942eda95ae05"
+    "count": 130,
+    "aggregateHash": "sha256:5348aaf6c4f594a08ec0b0e576e00b5cb63cb7efeac799528cd8cd360ef5b200"
   },
-  "interfaceHash": "sha256:a597ee922e7f029feb6cee59b00072c50cf5acf4b28688abd2971e8b05d318f0"
+  "interfaceHash": "sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622"
 }

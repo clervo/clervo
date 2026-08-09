@@ -12,8 +12,8 @@ type ProofConfig = {
   amountAtomic: string;
   amountDisplay: string;
   payTo: Address;
-  payer: Address;
-  productId: 'search.web' | 'ai.chat' | 'prediction.markets' | 'prediction.market' | 'crypto.wallet.report' | 'crypto.wallet.transactions';
+  payer?: Address;
+  productId: 'search.web' | 'sandbox.run' | 'ai.chat' | 'prediction.markets' | 'prediction.market' | 'crypto.wallet.report' | 'crypto.wallet.transactions';
   resource: 'https://api.clervo.dev/v1/search/paid' | 'https://api.clervo.dev/v1/ai/execute' | 'https://api.clervo.dev/v1/prediction/execute' | 'https://api.clervo.dev/v1/crypto/execute';
   idempotencyKey: string;
   payerBalanceCapAtomic: string;
@@ -31,6 +31,10 @@ let provider: EthereumProvider;
 let payer: Address;
 let challengeIdentity = '';
 let paymentAttempted = false;
+const proofBase = /^\/proof\/b10-(?:search|sandbox)(?:\/|$)/u.test(window.location.pathname)
+  ? window.location.pathname.replace(/\/$/u, '')
+  : '';
+const proofFetch = (path: string, init?: RequestInit) => fetch(`${proofBase}${path}`, init);
 
 function show(message: string) { status.textContent = message; }
 function sameAddress(left: string, right: string) { return left.toLowerCase() === right.toLowerCase(); }
@@ -81,6 +85,14 @@ function usefulPaidResult(body: any) {
       && body?.receipt?.supplierCost?.amountAtomic === '0'
       && body?.receipt?.provenance?.some((item: any) => item?.adapterId === 'adapter_crypto.blockscout_value_added');
   }
+  if (config.productId === 'sandbox.run') {
+    return body?.productId === 'sandbox.run'
+      && body?.result?.output?.kind === 'execution'
+      && body?.result?.output?.exitCode === 0
+      && body?.result?.output?.stdoutBase64 === btoa('B10 sandbox proof')
+      && body?.execution?.classId === 'sandbox.short'
+      && body?.execution?.cleanup?.state === 'destroyed';
+  }
   return Array.isArray(body?.output?.searchResponse?.results) && body.output.searchResponse.results.length > 0;
 }
 
@@ -114,7 +126,7 @@ const requestInit = () => ({
 });
 
 async function getChallenge() {
-  const response = await fetch('/api/paid-operation', requestInit());
+  const response = await proofFetch('/api/paid-operation', requestInit());
   const body = await response.clone().json();
   challengeIdentity = validateChallenge(response, body);
   approveButton.disabled = false;
@@ -132,7 +144,7 @@ async function connect() {
   const accounts = await provider.request({ method: 'eth_requestAccounts' });
   if (!Array.isArray(accounts) || typeof accounts[0] !== 'string') throw new Error('MetaMask returned no account');
   payer = getAddress(accounts[0]);
-  if (!sameAddress(payer, config.payer)) throw new Error('connected account is not the approved payer');
+  if (config.payer !== undefined && !sameAddress(payer, config.payer)) throw new Error('connected account is not the approved payer');
   if (sameAddress(payer, config.payTo)) throw new Error('payer and receiver must be different');
   const rawBalance = await provider.request({
     method: 'eth_call',
@@ -169,7 +181,7 @@ async function approveOnce() {
   ));
 
   const boundedFetch: typeof fetch = async (input, init) => {
-    const response = await fetch(input, init);
+    const response = await proofFetch('/api/paid-operation', init);
     if (response.status === 402) {
       const body = await response.clone().json();
       const observed = validateChallenge(response, body);
@@ -187,7 +199,7 @@ async function approveOnce() {
   if (paidBody?.receipt?.settlement?.status !== 'settled') throw new Error('settlement is not confirmed; reconcile');
   if (!paid.headers.get('payment-response')) throw new Error('PAYMENT-RESPONSE is missing; reconcile');
 
-  const replay = await fetch('/api/paid-operation', requestInit());
+  const replay = await proofFetch('/api/paid-operation', requestInit());
   if (!replay.ok || replay.headers.get('idempotency-replayed') !== 'true') throw new Error('no-charge replay was not proven; reconcile');
   const replayBody = await replay.json();
   if (replayBody?.replayed !== true || replayBody?.operationId !== paidBody?.operationId || replayBody?.receipt?.receiptId !== paidBody?.receipt?.receiptId) throw new Error('replay identity mismatch; reconcile');
@@ -196,12 +208,12 @@ async function approveOnce() {
 }
 
 async function load() {
-  const response = await fetch('/config', { headers: { accept: 'application/json' } });
+  const response = await proofFetch('/config', { headers: { accept: 'application/json' } });
   if (!response.ok) throw new Error('guarded proof configuration unavailable');
   config = await response.json();
   bounds.innerHTML = [
     ['Network', 'Base mainnet (8453)'], ['Asset', 'Native USDC'], ['Maximum', config.amountDisplay],
-    ['Product', config.productId], ['Receiver', config.payTo], ['Payer', config.payer],
+    ['Product', config.productId], ['Receiver', config.payTo], ['Payer', config.payer ?? 'Selected MetaMask account (shown after connect)'],
     ['Payer cap', `${config.payerBalanceCapAtomic} atomic USDC`],
     ['Supplier ceiling', `${config.supplierCostCeilingAtomic} atomic USD`],
     ['Execution', 'one authorization; replay must be free'],
