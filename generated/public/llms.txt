@@ -5,17 +5,17 @@
 Current verified status:
 
 - Developer distribution: public TypeScript, MCP, and Python packages are registry-verified
-- Customer API: public Search preview at https://api.clervo.dev
+- Customer API: public preview at https://api.clervo.dev; live families are derived from the deployed registry
 - Frozen release candidate: clervo-private-core-2026-08-02.2
 - Frozen interface hash: sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622
 - Six product cores: privately qualified and compatibility-frozen
-- Public lifecycle: raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable
-- Projected operation IDs: search.web, search.answer
+- Public lifecycle: live: Prediction Intelligence, Secure Sandbox, Research; supply_paused: AI; unavailable: Crypto Intelligence, Multi-chain RPC
+- Public operation IDs: search.web, sandbox.run, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal
 - Public API callable: yes
-- x402 public payment: available for search.web at a maximum charge of 0.006 USDC on Base
+- x402 public payment: available for search.web (0.006000 USDC maximum), sandbox.run (0.120000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum)
 - x402 private proof: one owner-funded useful result settled and replayed without a second charge
 - Commercial proof: no customer revenue or demand claimed
-- Public price: search.web maximum charge is 0.006 USDC; search.answer has no public offer
+- Public price: search.web (0.006000 USDC maximum), sandbox.run (0.120000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum)
 - First Revenue Release ready: no
 - llms.txt is a documentation map, not a search or AI ranking claim
 
@@ -36,15 +36,21 @@ Current verified status:
 - `POST /v1/sandbox/execute`: fixed maximum charge 0.120000 USDC on Base for one bounded Node.js gVisor execution.
 - The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.
 
+## Prediction Intelligence preview
+
+- `POST /v1/prediction/execute`: `prediction.markets`, `prediction.market`, and `prediction.compare` cost at most 0.002000 USDC; `prediction.history` and `prediction.signal` cost at most 0.003000 USDC on Base.
+- Qualified zero-cost supply: pdata for Polymarket, Kalshi, Manifold, and Limitless. Direct venue adapters with unresolved commercial permission remain disabled.
+- Clervo returns normalized probabilities, stable market/event identities, conservative matching, durable observations, disagreement/movement signals, freshness, provenance, pdata/upstream attribution, an accurate receipt, and no-charge replay. It is not a raw pdata proxy and does not provide trading or custody.
+
 ## Observed lifecycle state and proof level
 
-Probed from the deployed system at 2026-08-07T09:06:22.253Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
+Probed from the deployed system at 2026-08-09T14:46:33.716Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
 
 | Product | Lifecycle state | Proof level |
 |---|---|---|
 | AI | supply_paused (no_route_currently_live) | none |
 | Crypto Intelligence | unavailable (commercial_rights_blocked) | none |
-| Prediction Intelligence | unavailable (commercial_rights_blocked) | none |
+| Prediction Intelligence | live | quote_observed_unpaid |
 | Multi-chain RPC | unavailable (commercial_rights_blocked) | none |
 | Secure Sandbox | live | quote_observed_unpaid |
 | Research | live | quote_observed_unpaid |
@@ -72,4 +78,4 @@ Paid requests go to `POST https://api.clervo.dev/v1/search/paid`, which returns 
 - [`GET https://api.clervo.dev/.well-known/x402`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.
 - `GET https://api.clervo.dev/llms.txt`: this document, served from the API host as well as the site.
 
-Model list: 21 catalogued routes, 0 sellable. Payment manifest: 2 paid resources.
+Model list: 21 catalogued routes, 0 sellable. Payment manifest: 3 paid resources.

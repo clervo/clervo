@@ -113,6 +113,7 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
     'https://api.clervo.dev/v1/search/paid': 'search',
     'https://api.clervo.dev/v1/ai/execute': 'ai',
     'https://api.clervo.dev/v1/sandbox/execute': 'sandbox',
+    'https://api.clervo.dev/v1/prediction/execute': 'prediction',
   };
   assert.equal(manifest.x402Version, 2);
   assert.ok(manifest.items.length > 0, 'a manifest with no items advertises nothing');
@@ -140,7 +141,7 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
       assert.equal(offer.amount, product.observedQuote.amountAtomic);
       assert.equal(offer.extra.clervo.priceVersion, product.observedQuote.priceVersion);
       assert.equal(offer.extra.clervo.exampleRouteId, null);
-    } else {
+    } else if (family === 'ai') {
       const example = registry.aiRoutes.find(({ routeId }) => routeId === offer.extra.clervo.exampleRouteId);
       assert.ok(example !== undefined, 'an example price must name the route that produced it');
       assert.ok(
@@ -151,6 +152,13 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
       assert.equal(example.sellable, true, 'an example price must come from a sellable route');
       assert.equal(offer.amount, example.observedQuote.amountAtomic);
       assert.equal(offer.extra.clervo.priceVersion, example.observedQuote.priceVersion);
+    } else {
+      assert.equal(family, 'prediction', 'only AI and Prediction use request-derived public quotes');
+      assert.equal(offer.extra.clervo.operationId, 'prediction.markets');
+      assert.equal(offer.extra.clervo.exampleRouteId, null);
+      assert.equal(offer.extra.clervo.priceModel, 'request_derived_per_operation');
+      assert.equal(offer.amount, product.observedQuote.amountAtomic);
+      assert.equal(offer.extra.clervo.priceVersion, product.observedQuote.priceVersion);
     }
   }
 });

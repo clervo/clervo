@@ -1,0 +1,207 @@
+{
+  "schemaVersion": "clervo.b8-commercial-launch-evidence.v1",
+  "milestone": "B8",
+  "classification": "sanitized_direct_production_evidence",
+  "sourcePreflight": {
+    "observedAt": "2026-08-09T12:36:51.712Z",
+    "branch": "work/b8-prediction-20260809",
+    "commit": "be7c742020f2f7c0b033a1cc734a5152472d244a",
+    "tree": "525ed2dfd7c3037b2016ab8a2497d5c6b61b7e4d",
+    "parent": "eef4b01d9d335502bf7ea2db77e3deb42aec8927",
+    "trackedWorktreeClean": true,
+    "indexClean": true,
+    "untrackedOwnerFilesPreservedAndExcludedFromArtifacts": [
+      {
+        "path": "apps/site/wrangler.preview.jsonc",
+        "type": "regular_file",
+        "sizeBytes": 691
+      },
+      {
+        "path": "main",
+        "type": "regular_file",
+        "sizeBytes": 0
+      }
+    ],
+    "artifactSourcePolicy": "detached_clean_git_worktree_at_exact_commit",
+    "secretValuesRecorded": false
+  },
+  "repositoryEngineering": {
+    "status": "proven_before_rollout",
+    "engineeringCommit": "eef4b01d9d335502bf7ea2db77e3deb42aec8927",
+    "roadmapTruthCommit": "be7c742020f2f7c0b033a1cc734a5152472d244a",
+    "releaseSource": {
+      "commit": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
+      "tree": "c9bff6247836873167639cbcd14f2b31db7fe09d",
+      "authorizedBase": "be7c742020f2f7c0b033a1cc734a5152472d244a",
+      "ordinaryCorrections": [
+        "production acceptance includes the reviewed B8 migration and exact-target fail-closed test input",
+        "production container includes the recursive local API runtime dependency and tests its complete local import closure",
+        "Prediction history replays retrieval-time-only refreshes while same-timestamp material changes remain conflicts"
+      ],
+      "targetedMigrationChecks": "4/4 passed",
+      "b8Checks": "36/36 passed"
+    }
+  },
+  "migration": {
+    "status": "proven",
+    "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-migrator@sha256:8c74265810464fdb7e56e3873112fd1f725fc6505a0426d625e50bc161dd615e",
+    "slsaBuildLevel": 3,
+    "effectiveCriticalVulnerabilities": 0,
+    "effectiveHighVulnerabilities": 0,
+    "execution": "clervo-production-migration-vsm67",
+    "completedAt": "2026-08-09T12:48:01.573151Z",
+    "applied": [
+      "0007-prediction-market-state.sql",
+      "0008-ai-free-tier-quota.sql",
+      "0008-prediction-dynamic-venues.sql"
+    ],
+    "previousChecksumsVerifiedThrough": "0006-sandbox-operation-state.sql",
+    "succeededCount": 1,
+    "jobRemoved": true,
+    "credentialReadByVm": false,
+    "credentialPrinted": false,
+    "paymentEnabled": false
+  },
+  "deployment": {
+    "status": "promoted",
+    "attempts": [
+      {
+        "revision": "clervo-api-production-00035-duh",
+        "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:934daad59c78e1fe45544a2e08bae39434a6753cd53cba2fc79193a5f1f7c3af",
+        "trafficPercent": 0,
+        "result": "startup_probe_failed",
+        "provenCause": "container omitted recursively imported ai-dynamic-production-runtime.mjs",
+        "productionServingRevisionUnchanged": "clervo-api-production-00033-vub"
+      },
+      {
+        "revision": "clervo-api-production-00036-xuc",
+        "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:a9cb2e587098640c1c8f73ae46988baee9ad045192c9fb1b6bf31c2f87622c8a",
+        "trafficPercent": 0,
+        "result": "candidate_healthy_pdata_repeat_smoke_exposed_history_conflict",
+        "provenCause": "same upstream observedAt with recomputed freshness metadata changed the full-snapshot payload hash",
+        "productionServingRevisionUnchanged": "clervo-api-production-00033-vub"
+      },
+      {
+        "revision": "clervo-api-production-00037-nid",
+        "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:f9dd5aba3ffb4bc08f98ce160be087475fbd1e41289a5d053cce3bff829c09c2",
+        "sourceCommit": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
+        "trafficPercent": 0,
+        "result": "candidate_qualified",
+        "candidateChecks": {
+          "verifiedAt": "2026-08-09T13:35:49.512Z",
+          "healthStatus": 200,
+          "readinessStatus": 200,
+          "durableState": true,
+          "directOriginWithoutEdgeStatus": 401,
+          "liveFreeSearchStatus": 200,
+          "liveFreeSearchResults": 3,
+          "liveFreeSearchCitations": 3,
+          "predictionChallengeStatus": 402,
+          "predictionChallengeRepetitions": 3,
+          "predictionChallengeStable": true,
+          "searchChallengeStatus": 402,
+          "sandboxChallengeStatus": 402,
+          "paymentAttempted": false
+        },
+        "managedPredictionSmoke": {
+          "status": "proven",
+          "execution": "clervo-production-prediction-smoke-nfww4",
+          "completedAt": "2026-08-09T14:04:18.376445Z",
+          "succeededCount": 1,
+          "failedCount": 0,
+          "exactImageDigest": "sha256:f9dd5aba3ffb4bc08f98ce160be087475fbd1e41289a5d053cce3bff829c09c2",
+          "durableStoreReady": true,
+          "repeatedExecutions": 2,
+          "marketCounts": [8, 8],
+          "qualifiedAdapter": "adapter_prediction.pdata_rest",
+          "qualificationId": "qual_PdataCommercialSupply20260809",
+          "venuesProven": ["polymarket", "kalshi", "manifold", "limitless"],
+          "freshMarketsProven": true,
+          "pdataAttributionProven": true,
+          "license": "CC BY 4.0",
+          "paymentEffects": 0,
+          "temporaryJobRemoved": true,
+          "cloudLoggingEvidenceRetained": true,
+          "precedingHarnessFailures": [
+            {
+              "execution": "clervo-production-prediction-smoke-g6r74",
+              "cause": "generic node command was absent from the distroless runtime path",
+              "applicationCodeReached": false
+            },
+            {
+              "execution": "clervo-production-prediction-smoke-sr4rk",
+              "cause": "static import was invalid inside the inline eval diagnostic",
+              "applicationCodeReached": false
+            }
+          ]
+        },
+        "monitoringDelivery": {
+          "status": "proven",
+          "driver": "sentry",
+          "release": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
+          "secretVersion": 1,
+          "customerPayloadsIncluded": false,
+          "secretPrinted": false,
+          "paymentEffects": 0
+        },
+        "promotion": {
+          "status": "proven",
+          "trafficPercent": 100,
+          "publicAccess": true,
+          "accessMethod": "invoker_iam_check_disabled"
+        },
+        "productionServingRevisionBeforePromotion": "clervo-api-production-00033-vub"
+      }
+    ],
+    "rollbackRevision": "clervo-api-production-00033-vub"
+  },
+  "publicRuntime": {
+    "status": "quote_observed_unpaid",
+    "observedAt": "2026-08-09T14:46:33.716Z",
+    "runtimeRelease": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
+    "revision": "clervo-api-production-00037-nid",
+    "imageDigest": "sha256:f9dd5aba3ffb4bc08f98ce160be087475fbd1e41289a5d053cce3bff829c09c2",
+    "edge": {
+      "worker": "clervo-api-edge-production",
+      "rollbackVersion": "74efc7db-d0a7-49a1-8d4e-9f20e049fb0e",
+      "predictionActivationVersion": "c39387eb-1291-4879-910e-77be4c12fadb"
+    },
+    "prediction": {
+      "endpoint": "https://api.clervo.dev/v1/prediction/execute",
+      "state": "live",
+      "proofLevel": "quote_observed_unpaid",
+      "challengeStatus": 402,
+      "operationId": "prediction.markets",
+      "amountAtomic": "2000",
+      "decimals": 6,
+      "network": "eip155:8453",
+      "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+      "priceVersion": "prediction-product-2026-08-09.3-prediction.markets",
+      "bazaarValidatorReachable": true,
+      "bazaarValid": true,
+      "bazaarIndexed": false,
+      "paymentAttempted": false
+    },
+    "authoritativeProjection": {
+      "source": "packages/catalog/live-registry.json",
+      "generated": true,
+      "conformanceDefectsOpen": 0,
+      "publicOperationCount": 7,
+      "predictionOperations": [
+        "prediction.markets",
+        "prediction.market",
+        "prediction.compare",
+        "prediction.history",
+        "prediction.signal"
+      ],
+      "pdataAttributionPublished": true,
+      "commercialProofClaimed": false
+    }
+  },
+  "payment": {
+    "status": "not_authorized",
+    "ownerSpendUsdc": 0
+  },
+  "b8Closure": "open"
+}

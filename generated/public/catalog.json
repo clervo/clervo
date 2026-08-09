@@ -259,14 +259,239 @@
         "mockExecutionAvailableByInjectionOnly": false
       },
       "commercialProof": false
+    },
+    {
+      "productId": "prediction.markets",
+      "operationId": "prediction.markets",
+      "title": "Discover normalized markets",
+      "summary": "Search and paginate fresh normalized markets and conservative canonical events.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "venues": [
+          "polymarket",
+          "kalshi",
+          "manifold",
+          "limitless"
+        ],
+        "identity": "Stable Clervo market and event identities with conservative equivalent-event matching."
+      },
+      "pricing": {
+        "model": "fixed_by_operation",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "2000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "prediction-product-2026-08-09.3-prediction.markets"
+      },
+      "routes": {
+        "paidChallenge": "/v1/prediction/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "attribution": {
+        "source": "pdata.world",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "transformedBy": "Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance."
+      },
+      "commercialProof": false
+    },
+    {
+      "productId": "prediction.market",
+      "operationId": "prediction.market",
+      "title": "Inspect one normalized market",
+      "summary": "Read one stable Clervo market identity with normalized probabilities, freshness, evidence, and supply attribution.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "venues": [
+          "polymarket",
+          "kalshi",
+          "manifold",
+          "limitless"
+        ],
+        "identity": "Stable Clervo market and event identities with conservative equivalent-event matching."
+      },
+      "pricing": {
+        "model": "fixed_by_operation",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "2000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "prediction-product-2026-08-09.3-prediction.market"
+      },
+      "routes": {
+        "paidChallenge": "/v1/prediction/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "attribution": {
+        "source": "pdata.world",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "transformedBy": "Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance."
+      },
+      "commercialProof": false
+    },
+    {
+      "productId": "prediction.compare",
+      "operationId": "prediction.compare",
+      "title": "Compare equivalent markets",
+      "summary": "Compare two conservatively matched markets and return normalized disagreement evidence.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "venues": [
+          "polymarket",
+          "kalshi",
+          "manifold",
+          "limitless"
+        ],
+        "identity": "Stable Clervo market and event identities with conservative equivalent-event matching."
+      },
+      "pricing": {
+        "model": "fixed_by_operation",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "2000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "prediction-product-2026-08-09.3-prediction.compare"
+      },
+      "routes": {
+        "paidChallenge": "/v1/prediction/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "attribution": {
+        "source": "pdata.world",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "transformedBy": "Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance."
+      },
+      "commercialProof": false
+    },
+    {
+      "productId": "prediction.history",
+      "operationId": "prediction.history",
+      "title": "Read durable market history",
+      "summary": "Read a bounded hash-linked history of Clervo normalized observations.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "venues": [
+          "polymarket",
+          "kalshi",
+          "manifold",
+          "limitless"
+        ],
+        "identity": "Stable Clervo market and event identities with conservative equivalent-event matching."
+      },
+      "pricing": {
+        "model": "fixed_by_operation",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "3000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "prediction-product-2026-08-09.3-prediction.history"
+      },
+      "routes": {
+        "paidChallenge": "/v1/prediction/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "attribution": {
+        "source": "pdata.world",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "transformedBy": "Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance."
+      },
+      "commercialProof": false
+    },
+    {
+      "productId": "prediction.signal",
+      "operationId": "prediction.signal",
+      "title": "Derive market signals",
+      "summary": "Derive bounded movement or disagreement signals only when the evidence is sufficient.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "venues": [
+          "polymarket",
+          "kalshi",
+          "manifold",
+          "limitless"
+        ],
+        "identity": "Stable Clervo market and event identities with conservative equivalent-event matching."
+      },
+      "pricing": {
+        "model": "fixed_by_operation",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "3000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "prediction-product-2026-08-09.3-prediction.signal"
+      },
+      "routes": {
+        "paidChallenge": "/v1/prediction/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "attribution": {
+        "source": "pdata.world",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "transformedBy": "Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance."
+      },
+      "commercialProof": false
     }
   ],
   "observedTruth": {
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-07T09:06:22.253Z",
-      "releaseId": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
+      "observedAt": "2026-08-09T14:46:33.716Z",
+      "releaseId": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -325,12 +550,17 @@
           "prediction.markets",
           "prediction.signal"
         ],
-        "lifecycleState": "unavailable",
-        "proofLevel": "none",
-        "reason": "commercial_rights_blocked",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "reason": null,
         "expectedReturnAt": null,
-        "publiclyReachable": false,
-        "observedPrice": null,
+        "publiclyReachable": true,
+        "observedPrice": {
+          "amountAtomic": "2000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "priceVersion": "prediction-product-2026-08-09.3-prediction.markets"
+        },
         "freeEntry": null
       },
       {

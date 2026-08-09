@@ -21,11 +21,11 @@
         "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
-          "amountAtomic": "1000",
+          "amountAtomic": "1085",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.7-ai.route.cloudflare_aura_2_en-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.cloudflare_aura_2_en-min1000",
           "maximumCharge": true
         }
       }
@@ -57,7 +57,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.7-ai.route.cf_meta_llama_4_scout_17b_16e_instruct-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.cf_meta_llama_4_scout_17b_16e_instruct-min1000",
           "maximumCharge": true
         }
       }
@@ -89,7 +89,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.7-ai.route.cf_nvidia_nemotron_3_120b_a12b-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.cf_nvidia_nemotron_3_120b_a12b-min1000",
           "maximumCharge": true
         }
       }
@@ -121,7 +121,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_120b-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.cf_openai_gpt_oss_120b-min1000",
           "maximumCharge": true
         }
       }
@@ -153,7 +153,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_20b-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.cf_openai_gpt_oss_20b-min1000",
           "maximumCharge": true
         }
       }
@@ -185,7 +185,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.7-ai.route.cf_qwen_qwen3_30b_a3b_fp8-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.cf_qwen_qwen3_30b_a3b_fp8-min1000",
           "maximumCharge": true
         }
       }
@@ -210,11 +210,11 @@
         "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
-          "amountAtomic": "1000",
+          "amountAtomic": "1040",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.aura_2_arcas_en-min1000",
           "maximumCharge": true
         }
       }
@@ -239,11 +239,11 @@
         "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
-          "amountAtomic": "1000",
+          "amountAtomic": "1040",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_thalia_en-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.aura_2_thalia_en-min1000",
           "maximumCharge": true
         }
       }
@@ -268,11 +268,11 @@
         "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
-          "amountAtomic": "75000",
+          "amountAtomic": "160000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_pro_image-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_pro_image-min1000",
           "maximumCharge": true
         }
       }
@@ -297,11 +297,11 @@
         "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
-          "amountAtomic": "35000",
+          "amountAtomic": "80000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_image-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_1_flash_image-min1000",
           "maximumCharge": true
         }
       }
@@ -326,11 +326,11 @@
         "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
-          "amountAtomic": "15000",
+          "amountAtomic": "40000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_lite_image-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_1_flash_lite_image-min1000",
           "maximumCharge": true
         }
       }
@@ -361,7 +361,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_5_flash-min1000",
           "maximumCharge": true
         }
       }
@@ -392,7 +392,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash_lite-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_5_flash_lite-min1000",
           "maximumCharge": true
         }
       }
@@ -423,7 +423,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_6_flash-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_6_flash-min1000",
           "maximumCharge": true
         }
       }
@@ -452,7 +452,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.2-ai.route.gemini_embedding_001-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.gemini_embedding_001-min1000",
           "maximumCharge": true
         }
       }
@@ -476,16 +476,9 @@
         "lifecycleState": "supply_paused",
         "proofLevel": "none",
         "sellable": false,
-        "reason": "upstream_authentication_unavailable",
-        "expectedReturnAt": "2026-08-09T00:00:00Z",
-        "observedPrice": {
-          "amountAtomic": "1000",
-          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-          "network": "eip155:8453",
-          "decimals": 6,
-          "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_luna-min1000",
-          "maximumCharge": true
-        }
+        "reason": "ai_route_unavailable",
+        "expectedReturnAt": null,
+        "observedPrice": null
       }
     },
     {
@@ -507,16 +500,9 @@
         "lifecycleState": "supply_paused",
         "proofLevel": "none",
         "sellable": false,
-        "reason": "upstream_authentication_unavailable",
-        "expectedReturnAt": "2026-08-09T00:00:00Z",
-        "observedPrice": {
-          "amountAtomic": "1000",
-          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-          "network": "eip155:8453",
-          "decimals": 6,
-          "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_sol-min1000",
-          "maximumCharge": true
-        }
+        "reason": "ai_route_unavailable",
+        "expectedReturnAt": null,
+        "observedPrice": null
       }
     },
     {
@@ -538,16 +524,9 @@
         "lifecycleState": "supply_paused",
         "proofLevel": "none",
         "sellable": false,
-        "reason": "upstream_authentication_unavailable",
-        "expectedReturnAt": "2026-08-09T00:00:00Z",
-        "observedPrice": {
-          "amountAtomic": "1000",
-          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-          "network": "eip155:8453",
-          "decimals": 6,
-          "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_terra-min1000",
-          "maximumCharge": true
-        }
+        "reason": "ai_route_unavailable",
+        "expectedReturnAt": null,
+        "observedPrice": null
       }
     },
     {
@@ -577,7 +556,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_120b-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.gpt_oss_120b-min1000",
           "maximumCharge": true
         }
       }
@@ -609,7 +588,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_20b-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.gpt_oss_20b-min1000",
           "maximumCharge": true
         }
       }
@@ -641,7 +620,7 @@
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
           "network": "eip155:8453",
           "decimals": 6,
-          "priceVersion": "ai-2026-08-02.3-ai.route.qwen3_6_27b-min1000",
+          "priceVersion": "ai-2026-08-07.1-ai.route.qwen3_6_27b-min1000",
           "maximumCharge": true
         }
       }
@@ -651,8 +630,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-07T09:06:22.253Z",
-      "releaseId": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
+      "observedAt": "2026-08-09T14:46:33.716Z",
+      "releaseId": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",

@@ -48,6 +48,66 @@
       },
       "maximumChargeRequired": true,
       "priceVersion": "sandbox-run-public-2026-08-04.1"
+    },
+    {
+      "productId": "prediction.markets",
+      "publicAvailable": true,
+      "model": "fixed_by_operation",
+      "displayPrice": {
+        "asset": "USDC",
+        "amountAtomic": "2000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "prediction-product-2026-08-09.3-prediction.markets"
+    },
+    {
+      "productId": "prediction.market",
+      "publicAvailable": true,
+      "model": "fixed_by_operation",
+      "displayPrice": {
+        "asset": "USDC",
+        "amountAtomic": "2000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "prediction-product-2026-08-09.3-prediction.market"
+    },
+    {
+      "productId": "prediction.compare",
+      "publicAvailable": true,
+      "model": "fixed_by_operation",
+      "displayPrice": {
+        "asset": "USDC",
+        "amountAtomic": "2000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "prediction-product-2026-08-09.3-prediction.compare"
+    },
+    {
+      "productId": "prediction.history",
+      "publicAvailable": true,
+      "model": "fixed_by_operation",
+      "displayPrice": {
+        "asset": "USDC",
+        "amountAtomic": "3000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "prediction-product-2026-08-09.3-prediction.history"
+    },
+    {
+      "productId": "prediction.signal",
+      "publicAvailable": true,
+      "model": "fixed_by_operation",
+      "displayPrice": {
+        "asset": "USDC",
+        "amountAtomic": "3000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "prediction-product-2026-08-09.3-prediction.signal"
     }
   ]
 }

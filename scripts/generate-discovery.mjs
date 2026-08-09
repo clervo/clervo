@@ -563,8 +563,55 @@ if (publicPrediction) {
   ];
   llms += '\n## Prediction Intelligence preview\n\n- `POST /v1/prediction/execute`: `prediction.markets`, `prediction.market`, and `prediction.compare` cost at most 0.002000 USDC; `prediction.history` and `prediction.signal` cost at most 0.003000 USDC on Base.\n- Qualified zero-cost supply: pdata for Polymarket, Kalshi, Manifold, and Limitless. Direct venue adapters with unresolved commercial permission remain disabled.\n- Clervo returns normalized probabilities, stable market/event identities, conservative matching, durable observations, disagreement/movement signals, freshness, provenance, pdata/upstream attribution, an accurate receipt, and no-charge replay. It is not a raw pdata proxy and does not provide trading or custody.\n';
 }
+const liveApiFamilies = [
+  publicSearch ? { title: 'Search', description: 'raw cited Search' } : null,
+  publicAi ? { title: 'AI', description: 'bounded paid AI' } : null,
+  publicSandbox ? { title: 'Secure Sandbox', description: 'bounded one-shot Secure Sandbox execution' } : null,
+  publicPrediction ? { title: 'Prediction Intelligence', description: 'derived Prediction Intelligence' } : null,
+].filter(Boolean);
+if (liveApiFamilies.length > 0) {
+  openapi.info.title = `Clervo ${liveApiFamilies.map(({ title }) => title).join(', ')} API`;
+  openapi.info.description = `Publicly callable previews: ${liveApiFamilies.map(({ description }) => description).join(', ')}. Lifecycle and proof state are generated from the probed live registry; unavailable operations fail closed.`;
+  if (Array.isArray(discovery.limitations) && discovery.limitations.length > 0) {
+    discovery.limitations[0] = `Publicly callable previews: ${liveApiFamilies.map(({ description }) => description).join(', ')}.`;
+  }
+}
 const catalog = contractModule.createCatalogDocument(projection);
 if (publicAi || publicSandbox || publicPrediction) catalog.products = discovery.products;
+
+// The contract package still supplies the historical introductory shape of
+// llms.txt. Replace every lifecycle-sensitive summary row from the same live
+// registry and projected products used below. These rows must never become a
+// second hand-maintained status source.
+const lifecycleSummary = ['live', 'supply_paused', 'unavailable']
+  .map((state) => {
+    const labels = observedTruth.filter(({ lifecycleState }) => lifecycleState === state).map(({ label }) => label);
+    return labels.length === 0 ? null : `${state}: ${labels.join(', ')}`;
+  })
+  .filter(Boolean)
+  .join('; ');
+const publicProducts = discovery.products.filter(({ publicAvailable }) => publicAvailable === true);
+const publicOperationIds = publicProducts.map(({ operationId }) => operationId);
+if (!/^[a-f0-9]{40}$/u.test(observedProvenance.releaseId ?? '')) throw new Error('live_registry_release_id_invalid');
+discovery.description = `Machine-readable public preview for ${liveApiFamilies.map(({ title }) => title).join(', ')}. Lifecycle, proof, routes, and prices are generated from direct deployed-system observations; unavailable operations fail closed.`;
+discovery.runtimeRelease = {
+  sourceCommit: observedProvenance.releaseId,
+  operationIds: publicOperationIds,
+};
+openapi['x-clervo-status'].runtimeRelease = observedProvenance.releaseId;
+openapi['x-clervo-status'].operationIds = publicOperationIds;
+const publicOfferSummary = publicProducts.map(({ productId, pricing }) => {
+  const price = pricing?.displayPrice;
+  if (price === null || price === undefined) return `${productId} (request-derived quote)`;
+  const display = (Number(price.amountAtomic) / 10 ** Number(price.decimals)).toFixed(Number(price.decimals));
+  return `${productId} (${display} USDC maximum)`;
+}).join(', ');
+llms = llms
+  .replace(/^- Customer API:.*$/mu, `- Customer API: public preview at https://api.clervo.dev; live families are derived from the deployed registry`)
+  .replace(/^- Public lifecycle:.*$/mu, `- Public lifecycle: ${lifecycleSummary}`)
+  .replace(/^- Projected operation IDs:.*$/mu, `- Public operation IDs: ${publicOperationIds.join(', ')}`)
+  .replace(/^- x402 public payment:.*$/mu, `- x402 public payment: available for ${publicOfferSummary}`)
+  .replace(/^- Public price:.*$/mu, `- Public price: ${publicOfferSummary}`);
 // Every surface carries the observed lifecycle state and proof level side by
 // side, sourced from the probed registry rather than from any prose.
 discovery.observedTruth = { provenance: observedProvenance, products: observedTruth };
@@ -1176,5 +1223,6 @@ await writeFile(path.join(workerDirectory, 'agent-documents.js'), [
   '',
 ].join('\n'));
 
-const publicOperationCount = projection.publicOperationIds.length + (publicAi ? 1 : 0) + (publicSandbox ? 1 : 0);
-console.log(`distribution discovery generation: PASS (${publicSandbox ? 'public Search, AI, and Sandbox preview' : publicAi ? 'public Search and AI preview' : publicSearch ? 'public Search preview' : 'private candidate'}, ${publicOperationCount} operations, ${Object.keys(schemas).length} schemas)`);
+const publicOperationCount = discovery.products.filter(({ publicAvailable }) => publicAvailable === true).length;
+const liveFamilyLabels = observedTruth.filter(({ lifecycleState }) => lifecycleState === 'live').map(({ label }) => label);
+console.log(`distribution discovery generation: PASS (${liveFamilyLabels.length === 0 ? 'private candidate' : `public ${liveFamilyLabels.join(', ')} preview`}, ${publicOperationCount} operations, ${Object.keys(schemas).length} schemas)`);

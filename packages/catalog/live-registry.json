@@ -22,12 +22,12 @@
       "exactModelId": "aura-2-arcas-en",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "1000",
+        "amountAtomic": "1040",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.aura_2_arcas_en-min1000",
         "resourceDescription": "Bounded ai.speech execution",
         "scheme": "exact"
       },
@@ -63,12 +63,12 @@
       "exactModelId": "aura-2-thalia-en",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "1000",
+        "amountAtomic": "1040",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_thalia_en-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.aura_2_thalia_en-min1000",
         "resourceDescription": "Bounded ai.speech execution",
         "scheme": "exact"
       },
@@ -112,7 +112,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cf_meta_llama_4_scout_17b_16e_instruct-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.cf_meta_llama_4_scout_17b_16e_instruct-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -156,7 +156,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cf_nvidia_nemotron_3_120b_a12b-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.cf_nvidia_nemotron_3_120b_a12b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -200,7 +200,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_120b-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.cf_openai_gpt_oss_120b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -244,7 +244,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cf_openai_gpt_oss_20b-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.cf_openai_gpt_oss_20b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -288,7 +288,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cf_qwen_qwen3_30b_a3b_fp8-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.cf_qwen_qwen3_30b_a3b_fp8-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -324,12 +324,12 @@
       "exactModelId": "@cf/deepgram/aura-2-en",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "1000",
+        "amountAtomic": "1085",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.7-ai.route.cloudflare_aura_2_en-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.cloudflare_aura_2_en-min1000",
         "resourceDescription": "Bounded ai.speech execution",
         "scheme": "exact"
       },
@@ -365,12 +365,12 @@
       "exactModelId": "gemini-3.1-flash-image",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "35000",
+        "amountAtomic": "80000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_image-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_1_flash_image-min1000",
         "resourceDescription": "Bounded ai.image execution",
         "scheme": "exact"
       },
@@ -406,12 +406,12 @@
       "exactModelId": "gemini-3.1-flash-lite-image",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "15000",
+        "amountAtomic": "40000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_1_flash_lite_image-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_1_flash_lite_image-min1000",
         "resourceDescription": "Bounded ai.image execution",
         "scheme": "exact"
       },
@@ -454,7 +454,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_5_flash-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -497,7 +497,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_5_flash_lite-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_5_flash_lite-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -540,7 +540,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_6_flash-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_6_flash-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -576,12 +576,12 @@
       "exactModelId": "gemini-3-pro-image",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "75000",
+        "amountAtomic": "160000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_3_pro_image-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_pro_image-min1000",
         "resourceDescription": "Bounded ai.image execution",
         "scheme": "exact"
       },
@@ -622,7 +622,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.gemini_embedding_001-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_embedding_001-min1000",
         "resourceDescription": "Bounded ai.embed execution",
         "scheme": "exact"
       },
@@ -644,36 +644,27 @@
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
+        "edgeAttempts": 3,
+        "edgeCode": "ai_route_unavailable",
+        "edgeQuoted": false,
+        "edgeStatus": 503,
         "permissionBasis": "owner_operated_documented",
         "permissionRestricted": false,
-        "qualificationExpired": false,
+        "qualificationExpired": true,
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "failed",
-        "supplyReason": "upstream_authentication_unavailable"
+        "supplyOutcome": "passed",
+        "supplyReason": null
       },
       "exactModelId": "gpt-5.6-luna",
-      "expectedReturnAt": "2026-08-09T00:00:00Z",
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_luna-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
+      "expectedReturnAt": null,
+      "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_authentication_unavailable",
+      "reason": "ai_route_unavailable",
       "routeId": "ai.route.gpt_5_6_luna",
       "sellable": false,
       "state": "supply_paused",
@@ -687,36 +678,27 @@
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
+        "edgeAttempts": 3,
+        "edgeCode": "ai_route_unavailable",
+        "edgeQuoted": false,
+        "edgeStatus": 503,
         "permissionBasis": "owner_operated_documented",
         "permissionRestricted": false,
-        "qualificationExpired": false,
+        "qualificationExpired": true,
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "failed",
-        "supplyReason": "upstream_authentication_unavailable"
+        "supplyOutcome": "passed",
+        "supplyReason": null
       },
       "exactModelId": "gpt-5.6-sol",
-      "expectedReturnAt": "2026-08-09T00:00:00Z",
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_sol-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
+      "expectedReturnAt": null,
+      "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_authentication_unavailable",
+      "reason": "ai_route_unavailable",
       "routeId": "ai.route.gpt_5_6_sol",
       "sellable": false,
       "state": "supply_paused",
@@ -730,36 +712,27 @@
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
+        "edgeAttempts": 3,
+        "edgeCode": "ai_route_unavailable",
+        "edgeQuoted": false,
+        "edgeStatus": 503,
         "permissionBasis": "owner_operated_documented",
         "permissionRestricted": false,
-        "qualificationExpired": false,
+        "qualificationExpired": true,
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
         "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "failed",
-        "supplyReason": "upstream_authentication_unavailable"
+        "supplyOutcome": "passed",
+        "supplyReason": null
       },
       "exactModelId": "gpt-5.6-terra",
-      "expectedReturnAt": "2026-08-09T00:00:00Z",
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.1-ai.route.gpt_5_6_terra-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
+      "expectedReturnAt": null,
+      "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_authentication_unavailable",
+      "reason": "ai_route_unavailable",
       "routeId": "ai.route.gpt_5_6_terra",
       "sellable": false,
       "state": "supply_paused",
@@ -795,7 +768,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_120b-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.gpt_oss_120b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -839,7 +812,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.3-ai.route.gpt_oss_20b-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.gpt_oss_20b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -883,7 +856,7 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.3-ai.route.qwen3_6_27b-min1000",
+        "priceVersion": "ai-2026-08-07.1-ai.route.qwen3_6_27b-min1000",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
@@ -906,12 +879,155 @@
     "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
     "resources": [
       {
-        "failedChecks": [],
+        "failedChecks": [
+          {
+            "actual": null,
+            "check": "accepts[0].amount",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "accepts[0].asset",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "accepts[0].maxTimeoutSeconds",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "accepts[0].network",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "accepts[0].payTo",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "accepts[0].scheme",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "accepts[0].shape",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "bazaar.info",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "bazaar.info.input",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "bazaar.info.input.method",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "bazaar.info.input.type",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "bazaar.info.output",
+            "expected": null,
+            "severity": "advisory"
+          },
+          {
+            "actual": null,
+            "check": "bazaar.info.output.example",
+            "expected": null,
+            "severity": "advisory"
+          },
+          {
+            "actual": null,
+            "check": "bazaar.schema",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "has_accepts",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "has_bazaar_extension",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "has_resource",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "parse",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "payment_required_header",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": "503",
+            "check": "returns_402",
+            "expected": "402",
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "valid_json",
+            "expected": null,
+            "severity": "required"
+          },
+          {
+            "actual": null,
+            "check": "x402_version",
+            "expected": null,
+            "severity": "required"
+          }
+        ],
         "indexActive": null,
         "indexLastCrawledAt": null,
         "indexed": false,
         "productId": "ai",
         "resource": "https://api.clervo.dev/v1/ai/execute",
+        "valid": false,
+        "validatorReachable": true
+      },
+      {
+        "failedChecks": [],
+        "indexActive": null,
+        "indexLastCrawledAt": null,
+        "indexed": false,
+        "productId": "prediction",
+        "resource": "https://api.clervo.dev/v1/prediction/execute",
         "valid": true,
         "validatorReachable": true
       },
@@ -960,7 +1076,7 @@
     "apiOrigin": "https://api.clervo.dev",
     "environment": "production",
     "paidExecutionEnabled": true,
-    "releaseId": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
+    "releaseId": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
     "sandboxPaidEnabled": true,
     "siteOrigin": "https://clervo.dev",
     "stateBackend": "postgres",
@@ -1010,7 +1126,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-07T09:06:22.253Z",
+  "observedAt": "2026-08-09T14:46:33.716Z",
   "products": [
     {
       "evidence": {
@@ -1061,14 +1177,25 @@
     },
     {
       "evidence": {
-        "basis": "no_public_route_is_served",
-        "probed": false
+        "edgeAttempts": 1,
+        "edgeCode": null,
+        "edgeStatus": 402,
+        "probed": true
       },
       "expectedReturnAt": null,
       "freeEntry": null,
       "id": "prediction",
       "label": "Prediction Intelligence",
-      "observedQuote": null,
+      "observedQuote": {
+        "amountAtomic": "2000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "prediction-product-2026-08-09.3-prediction.markets",
+        "resourceDescription": "Bounded prediction.markets execution",
+        "scheme": "exact"
+      },
       "operations": [
         "prediction.compare",
         "prediction.history",
@@ -1076,10 +1203,10 @@
         "prediction.markets",
         "prediction.signal"
       ],
-      "proof": "none",
-      "publiclyReachable": false,
-      "reason": "commercial_rights_blocked",
-      "state": "unavailable"
+      "proof": "quote_observed_unpaid",
+      "publiclyReachable": true,
+      "reason": null,
+      "state": "live"
     },
     {
       "evidence": {
@@ -1185,7 +1312,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "e211ad78f64bd13b3d01905d0f69e9dec0d737b9",
+  "sourceCommit": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -1202,26 +1329,29 @@
       "live": 5
     },
     "products": {
-      "live": 2,
+      "live": 3,
       "supply_paused": 1,
-      "unavailable": 3
+      "unavailable": 2
     }
   },
   "supplyFamilies": [
     {
-      "expectedReturnAt": "2026-08-09T00:00:00Z",
+      "expectedReturnAt": null,
       "modelIdsAdvertised": [
         "clervo/code",
         "clervo/deep",
+        "clervo/deepseek-v4-flash",
         "clervo/fast",
+        "clervo/minimax-m3",
+        "clervo/qwen3.6-35b-a3b",
         "clervo/smart",
         "gpt-5.6-luna",
         "gpt-5.6-sol",
         "gpt-5.6-terra"
       ],
-      "outcome": "failed",
-      "providerErrorCode": "auth_unavailable",
-      "reason": "upstream_authentication_unavailable",
+      "outcome": "passed",
+      "providerErrorCode": null,
+      "reason": null,
       "supplyFamilyId": "supply.clervo_ai_gateway"
     },
     {

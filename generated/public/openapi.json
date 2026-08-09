@@ -2,9 +2,9 @@
   "openapi": "3.1.1",
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
-    "title": "Clervo Search, AI, and Secure Sandbox API",
+    "title": "Clervo Search, Secure Sandbox, Prediction Intelligence API",
     "version": "2026-07-29.1",
-    "description": "Public raw Search plus bounded paid AI chat and one-shot gVisor Sandbox previews. Every paid route is quote-bound, receipt-bearing, and replay-safe.",
+    "description": "Publicly callable previews: raw cited Search, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence. Lifecycle and proof state are generated from the probed live registry; unavailable operations fail closed.",
     "contact": {
       "name": "Clervo",
       "email": "mo@clervo.dev",
@@ -590,6 +590,313 @@
             "mode": "fixed",
             "currency": "USD",
             "amount": "0.120000"
+          },
+          "protocols": [
+            {
+              "x402": {}
+            },
+            {
+              "mpp": {
+                "method": "evm",
+                "intent": "charge",
+                "currency": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "/v1/prediction/execute": {
+      "post": {
+        "summary": "Request or settle a bounded Prediction Intelligence operation",
+        "description": "Discovers or analyzes prediction markets through stable Clervo identities, conservative matching, durable normalized observations, freshness, provenance, attribution, receipts, and no-charge replay.",
+        "operationId": "predictionExecute",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "default": "x402scan-clervo-probe"
+            },
+            "example": "x402scan-clervo-probe"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "enum": [
+                          "search",
+                          "markets"
+                        ],
+                        "default": "markets"
+                      },
+                      "query": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 500
+                      },
+                      "category": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "status": {
+                        "enum": [
+                          "open",
+                          "closed",
+                          "resolved",
+                          "cancelled"
+                        ],
+                        "default": "open"
+                      },
+                      "venues": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 16,
+                        "uniqueItems": true,
+                        "items": {
+                          "enum": [
+                            "polymarket",
+                            "kalshi",
+                            "manifold",
+                            "limitless"
+                          ]
+                        }
+                      },
+                      "limit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 100,
+                        "default": 3
+                      },
+                      "cursor": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2048
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "marketRef"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "const": "market"
+                      },
+                      "marketRef": {
+                        "type": "string",
+                        "pattern": "^pmkt_[a-f0-9]{32}$"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "marketRefs"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "const": "compare"
+                      },
+                      "marketRefs": {
+                        "type": "array",
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "string",
+                          "pattern": "^pmkt_[a-f0-9]{32}$"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "marketRef"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "const": "history"
+                      },
+                      "marketRef": {
+                        "type": "string",
+                        "pattern": "^pmkt_[a-f0-9]{32}$"
+                      },
+                      "afterSequence": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "limit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 100,
+                        "default": 10
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "marketRef"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "const": "signal"
+                      },
+                      "marketRef": {
+                        "type": "string",
+                        "pattern": "^pmkt_[a-f0-9]{32}$"
+                      },
+                      "compareMarketRef": {
+                        "type": "string",
+                        "pattern": "^pmkt_[a-f0-9]{32}$"
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "kind": "markets",
+                "status": "open",
+                "limit": 3
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Prediction operation completed or replayed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "operationId",
+                    "state",
+                    "replayed",
+                    "requestHash"
+                  ],
+                  "properties": {
+                    "operationId": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "const": "RECEIPTED"
+                    },
+                    "replayed": {
+                      "type": "boolean"
+                    },
+                    "requestHash": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "receipt": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded Prediction request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "x402 or MPP payment required",
+            "headers": {
+              "PAYMENT-REQUIRED": {
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested stable market identity was not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency or quote conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Qualified supply, durable state, or settlement is unavailable",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "x-payment-info": {
+          "price": {
+            "mode": "request_derived_per_operation",
+            "currency": "USD",
+            "min": "0.002000",
+            "max": "0.003000"
           },
           "protocols": [
             {
@@ -3650,9 +3957,14 @@
     "interfaceHash": "sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622",
     "operationIds": [
       "search.web",
-      "search.answer",
-      "sandbox.run"
-    ]
+      "sandbox.run",
+      "prediction.markets",
+      "prediction.market",
+      "prediction.compare",
+      "prediction.history",
+      "prediction.signal"
+    ],
+    "runtimeRelease": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2"
   },
   "servers": [
     {

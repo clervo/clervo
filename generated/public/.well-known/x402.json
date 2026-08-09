@@ -26,7 +26,7 @@
           }
         }
       ],
-      "lastUpdated": 1786093582,
+      "lastUpdated": 1786286793,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -69,7 +69,7 @@
           }
         }
       ],
-      "lastUpdated": 1786093582,
+      "lastUpdated": 1786286793,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -86,19 +86,62 @@
           "failedChecks": []
         }
       }
+    },
+    {
+      "resource": "https://api.clervo.dev/v1/prediction/execute",
+      "type": "http",
+      "x402Version": 2,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "2000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+          "maxTimeoutSeconds": 60,
+          "extra": {
+            "clervo": {
+              "operationId": "prediction.markets",
+              "priceModel": "request_derived_per_operation",
+              "priceVersion": "prediction-product-2026-08-09.3-prediction.markets",
+              "amountIsBinding": false,
+              "exampleRouteId": null,
+              "lifecycleState": "live",
+              "proofLevel": "quote_observed_unpaid"
+            }
+          }
+        }
+      ],
+      "lastUpdated": 1786286793,
+      "metadata": {
+        "category": "prediction",
+        "provider": "clervo",
+        "description": "Bounded prediction.markets execution",
+        "method": "POST",
+        "bodyType": "json",
+        "idempotency": "idempotency-key header; the same key with the same body replays without a second charge",
+        "bazaarExtensionPresent": true,
+        "bazaar": {
+          "validatorAccepted": true,
+          "indexed": false,
+          "indexActive": null,
+          "indexLastCrawledAt": null,
+          "failedChecks": []
+        }
+      }
     }
   ],
   "pagination": {
-    "limit": 2,
+    "limit": 3,
     "offset": 0,
-    "total": 2
+    "total": 3
   },
   "clervo": {
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-07T09:06:22.253Z",
-      "releaseId": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
+      "observedAt": "2026-08-09T14:46:33.716Z",
+      "releaseId": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",

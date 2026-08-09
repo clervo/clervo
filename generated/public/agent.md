@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `packages/catalog/live-registry.json`, probed at 2026-08-07T09:06:22.253Z. Release: `777b7c616e3e384c9a4b2b7112cef74521b7f7a5`.
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-09T14:46:33.716Z. Release: `ab0bb28b76fb8606bd854b741214961b8e1ba1d2`.
 
 ## Identity
 
@@ -19,7 +19,7 @@ Source: `packages/catalog/live-registry.json`, probed at 2026-08-07T09:06:22.253
 |---|---|---|---|
 | AI | `ai` | supply_paused (no_route_currently_live) | none |
 | Crypto Intelligence | `crypto_intelligence` | unavailable (commercial_rights_blocked) | none |
-| Prediction Intelligence | `prediction` | unavailable (commercial_rights_blocked) | none |
+| Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
 | Secure Sandbox | `sandbox` | live | quote_observed_unpaid |
 | Research | `search` | live | quote_observed_unpaid |
@@ -73,8 +73,8 @@ curl -sS https://api.clervo.dev/v1/search/free \
 
 ## Boundaries
 
-- Raw cited Search, bounded paid AI chat, and bounded paid one-shot Secure Sandbox execution are publicly callable previews.
-- The Sandbox has one qualified execution node; high availability, sessions, arbitrary images, network access, and public artifact retrieval are not claimed.
-- Search synthesis, AI media, RPC, Prediction, and Crypto Intelligence remain unavailable.
-- The Sandbox production origin, useful gVisor output, replay, and cleanup are verified; an owner-signed public paid Sandbox result remains pending.
-- No external customer payment, revenue, or demand is claimed.
+- Publicly callable previews: raw cited Search, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence.
+- Prediction uses the qualified pdata supply path for Polymarket, Kalshi, Manifold, and Limitless; unresolved direct venue adapters remain disabled.
+- Prediction output is transformed and attributed under CC BY 4.0; Clervo does not redistribute the raw pdata feed or provide trading execution or custody.
+- A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.
+- RPC and Crypto Intelligence remain publicly unavailable.
