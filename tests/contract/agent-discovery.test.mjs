@@ -114,6 +114,7 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
     'https://api.clervo.dev/v1/ai/execute': 'ai',
     'https://api.clervo.dev/v1/sandbox/execute': 'sandbox',
     'https://api.clervo.dev/v1/prediction/execute': 'prediction',
+    'https://api.clervo.dev/v1/crypto/execute': 'crypto_intelligence',
   };
   assert.equal(manifest.x402Version, 2);
   assert.ok(manifest.items.length > 0, 'a manifest with no items advertises nothing');
@@ -153,8 +154,9 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
       assert.equal(offer.amount, example.observedQuote.amountAtomic);
       assert.equal(offer.extra.clervo.priceVersion, example.observedQuote.priceVersion);
     } else {
-      assert.equal(family, 'prediction', 'only AI and Prediction use request-derived public quotes');
-      assert.equal(offer.extra.clervo.operationId, 'prediction.markets');
+      const exampleOperationByFamily = { prediction: 'prediction.markets', crypto_intelligence: 'crypto.wallet.report' };
+      assert.ok(Object.hasOwn(exampleOperationByFamily, family), 'only AI, Prediction, and Crypto use request-derived public quotes');
+      assert.equal(offer.extra.clervo.operationId, exampleOperationByFamily[family]);
       assert.equal(offer.extra.clervo.exampleRouteId, null);
       assert.equal(offer.extra.clervo.priceModel, 'request_derived_per_operation');
       assert.equal(offer.amount, product.observedQuote.amountAtomic);

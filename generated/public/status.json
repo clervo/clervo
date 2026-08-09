@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-04T04:44:23Z",
+  "observedAt": "2026-08-09T18:53:15.013Z",
   "publicApi": {
     "state": "public_search_ai_sandbox_and_prediction_preview_verified",
     "endpoint": "https://api.clervo.dev",
@@ -64,8 +64,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T16:51:02.261Z",
-      "releaseId": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
+      "observedAt": "2026-08-09T18:57:11.510Z",
+      "releaseId": "671d369601e26ab7491b8fd5232e7d2942f05c51",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -100,18 +100,22 @@
         "id": "crypto_intelligence",
         "label": "Crypto Intelligence",
         "operations": [
-          "crypto.protocol",
-          "crypto.report",
-          "crypto.token",
-          "crypto.transaction",
-          "crypto.wallet"
+          "crypto.wallet.balances",
+          "crypto.wallet.report",
+          "crypto.wallet.tokens",
+          "crypto.wallet.transactions"
         ],
-        "lifecycleState": "unavailable",
-        "proofLevel": "none",
-        "reason": "commercial_rights_blocked",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "reason": null,
         "expectedReturnAt": null,
-        "publiclyReachable": false,
-        "observedPrice": null,
+        "publiclyReachable": true,
+        "observedPrice": {
+          "amountAtomic": "4000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "priceVersion": "crypto-public-2026-08-09.1-crypto.wallet.report"
+        },
         "freeEntry": null
       },
       {
@@ -125,7 +129,7 @@
           "prediction.signal"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
+        "proofLevel": "quote_observed_unpaid",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -198,12 +202,21 @@
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",
-          "acceptsNaiveRequest": true
+          "acceptsNaiveRequest": false
         }
       }
     ]
   },
-  "conformanceDefectsOpen": [],
+  "conformanceDefectsOpen": [
+    {
+      "conformant": false,
+      "expectation": "free search succeeds without a caller-supplied idempotency-key",
+      "id": "api.search_free_accepts_naive_request",
+      "observedCode": "free_quota_exceeded",
+      "observedStatus": 429,
+      "url": "https://api.clervo.dev/v1/search/free"
+    }
+  ],
   "aiRoutes": {
     "counts": {
       "supply_paused": 21
@@ -302,20 +315,20 @@
       {
         "routeId": "ai.route.gpt_5_6_luna",
         "exactModelId": "gpt-5.6-luna",
-        "reason": "ai_route_unavailable",
-        "expectedReturnAt": null
+        "reason": "upstream_completion_failed",
+        "expectedReturnAt": "2026-08-09T00:00:00Z"
       },
       {
         "routeId": "ai.route.gpt_5_6_sol",
         "exactModelId": "gpt-5.6-sol",
-        "reason": "ai_route_unavailable",
-        "expectedReturnAt": null
+        "reason": "upstream_completion_failed",
+        "expectedReturnAt": "2026-08-09T00:00:00Z"
       },
       {
         "routeId": "ai.route.gpt_5_6_terra",
         "exactModelId": "gpt-5.6-terra",
-        "reason": "ai_route_unavailable",
-        "expectedReturnAt": null
+        "reason": "upstream_completion_failed",
+        "expectedReturnAt": "2026-08-09T00:00:00Z"
       },
       {
         "routeId": "ai.route.gpt_oss_120b",
@@ -376,15 +389,15 @@
       "customerLifecycle": "publicly_callable_paid_outcome_verified",
       "commercialProof": "owner_funded_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified"
+      "proofLevel": "quote_observed_unpaid"
     },
     {
       "id": "crypto_intelligence",
-      "engineeringState": "production_candidate_qualified",
-      "customerLifecycle": "deployment_pending",
-      "commercialProof": "unproven_until_paid_outcome",
-      "lifecycleState": "unavailable",
-      "proofLevel": "none"
+      "engineeringState": "public_production_qualified",
+      "customerLifecycle": "preview_publicly_callable",
+      "commercialProof": "quote_observed_unpaid",
+      "lifecycleState": "live",
+      "proofLevel": "quote_observed_unpaid"
     }
   ]
 }

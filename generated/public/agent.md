@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `packages/catalog/live-registry.json`, probed at 2026-08-09T16:51:02.261Z. Release: `ab0bb28b76fb8606bd854b741214961b8e1ba1d2`.
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-09T18:57:11.510Z. Release: `671d369601e26ab7491b8fd5232e7d2942f05c51`.
 
 ## Identity
 
@@ -18,8 +18,8 @@ Source: `packages/catalog/live-registry.json`, probed at 2026-08-09T16:51:02.261
 | Product | ID | Lifecycle state | Proof level |
 |---|---|---|---|
 | AI | `ai` | supply_paused (no_route_currently_live) | none |
-| Crypto Intelligence | `crypto_intelligence` | unavailable (commercial_rights_blocked) | none |
-| Prediction Intelligence | `prediction` | live | paid_outcome_verified |
+| Crypto Intelligence | `crypto_intelligence` | live | quote_observed_unpaid |
+| Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
 | Secure Sandbox | `sandbox` | live | quote_observed_unpaid |
 | Research | `search` | live | quote_observed_unpaid |
@@ -31,7 +31,7 @@ outcome. Report it that way if you cite it.
 ## Free entry point
 
 - `POST https://api.clervo.dev/v1/search/free`
-- Accepts a request with no idempotency key: yes
+- Accepts a request with no idempotency key: no
 - Quota headers: `ratelimit-limit`, `ratelimit-remaining`, `ratelimit-reset`.
 - Over the cap the route answers `429 free_quota_exceeded` rather than executing. Do not treat 429 as a transport error.
 
@@ -40,7 +40,8 @@ outcome. Report it that way if you cite it.
 ```bash
 curl -sS https://api.clervo.dev/v1/search/free \
   -H 'content-type: application/json' \
-  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}'
+  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}' \
+  -H 'idempotency-key: clervo-first-call-0001'
 ```
 
 ## Idempotency contract
@@ -73,8 +74,8 @@ curl -sS https://api.clervo.dev/v1/search/free \
 
 ## Boundaries
 
-- Publicly callable previews: raw cited Search, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence.
-- Prediction uses the qualified pdata supply path for Polymarket, Kalshi, Manifold, and Limitless; unresolved direct venue adapters remain disabled.
-- Prediction output is transformed and attributed under CC BY 4.0; Clervo does not redistribute the raw pdata feed or provide trading execution or custody.
+- Publicly callable previews: raw cited Search, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.
+- Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable without commercially qualified price supply.
+- Reports expose observed facts, deterministic signals, coverage, missing sources, freshness, evidence, and provenance; they do not infer wallet identity, risk, advice, custody, signing, or trading.
 - A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.
-- RPC and Crypto Intelligence remain publicly unavailable.
+- Solana and unsupported EVM chains fail closed.

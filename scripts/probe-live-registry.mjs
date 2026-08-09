@@ -955,12 +955,13 @@ const bazaarResourcePaths = [
   { productId: 'ai', resourcePath: '/v1/ai/execute' },
   { productId: 'sandbox', resourcePath: '/v1/sandbox/execute' },
   { productId: 'prediction', resourcePath: '/v1/prediction/execute' },
+  { productId: 'crypto_intelligence', resourcePath: '/v1/crypto/execute' },
 ];
 
 // The receiver is read from the quote the deployed system actually returned,
 // never from configuration, so the merchant lookup can only ever ask about the
 // address production is really advertising.
-const observedPayTo = [surfaceById['api.search_paid'], surfaceById['api.sandbox_execute'], surfaceById['api.prediction_execute'], ...routeProbes]
+const observedPayTo = [surfaceById['api.search_paid'], surfaceById['api.sandbox_execute'], surfaceById['api.prediction_execute'], surfaceById['api.crypto_execute'], ...routeProbes]
   .map((probe) => quoteFrom(probe)?.payTo)
   .find((value) => typeof value === 'string' && /^0x[a-fA-F0-9]{40}$/u.test(value)) ?? null;
 

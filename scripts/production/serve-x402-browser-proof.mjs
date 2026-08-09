@@ -50,6 +50,22 @@ const profiles = Object.freeze({
     supplierCostCeilingAtomic: '0',
     request: { kind: 'market', marketRef: predictionMarketRef },
   }),
+  'crypto.wallet.report': Object.freeze({
+    route: '/v1/crypto/execute',
+    resource: 'https://api.clervo.dev/v1/crypto/execute',
+    amountAtomic: '4000',
+    amountDisplay: '0.004 USDC',
+    supplierCostCeilingAtomic: '0',
+    request: { kind: 'report', address: '0x67c484fb4cfe84633b34f5d6514b5f0f39653f07', chains: ['eip155:8453'], lookbackDays: 30, limit: 10 },
+  }),
+  'crypto.wallet.transactions': Object.freeze({
+    route: '/v1/crypto/execute',
+    resource: 'https://api.clervo.dev/v1/crypto/execute',
+    amountAtomic: '3000',
+    amountDisplay: '0.003 USDC',
+    supplierCostCeilingAtomic: '0',
+    request: { kind: 'transactions', address: '0x338c0d6868638ed44f937999e363f9dc9f86a2b6', chains: ['eip155:1'], lookbackDays: 30, limit: 10 },
+  }),
 });
 assert.equal(Object.hasOwn(profiles, productId), true, 'proof product is not allowlisted');
 if (productId === 'prediction.market') assert.match(predictionMarketRef, /^pmkt_[a-f0-9]{32}$/u, 'Prediction market ref is invalid');

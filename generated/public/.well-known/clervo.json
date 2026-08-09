@@ -2,7 +2,7 @@
   "discoveryVersion": "2026-08-02.2",
   "contractVersion": "2026-07-29.1",
   "name": "Clervo",
-  "description": "Machine-readable public preview for Search, Secure Sandbox, Prediction Intelligence. Lifecycle, proof, routes, and prices are generated from direct deployed-system observations; unavailable operations fail closed.",
+  "description": "Machine-readable public preview for Search, Secure Sandbox, Prediction Intelligence, Crypto Intelligence. Lifecycle, proof, routes, and prices are generated from direct deployed-system observations; unavailable operations fail closed.",
   "lifecycle": "preview",
   "distribution": {
     "state": "public_preview",
@@ -510,17 +510,197 @@
         "transformedBy": "Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance."
       },
       "commercialProof": false
+    },
+    {
+      "productId": "crypto.wallet.balances",
+      "operationId": "crypto.wallet.balances",
+      "title": "Read wallet balances",
+      "summary": "Read exact native balances and bounded holding coverage across requested supported chains.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "chains": [
+          "Ethereum",
+          "Base"
+        ],
+        "lookbackDays": {
+          "minimum": 1,
+          "maximum": 90
+        },
+        "identity": "Caller-supplied EVM address only; no wallet-owner or third-party identity labels are inferred."
+      },
+      "pricing": {
+        "model": "fixed_by_operation",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "2000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "crypto-product-2026-08-09.1-crypto.wallet.balances"
+      },
+      "routes": {
+        "paidChallenge": "/v1/crypto/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "attribution": {
+        "source": "Blockscout PRO API",
+        "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
+      },
+      "commercialProof": false
+    },
+    {
+      "productId": "crypto.wallet.tokens",
+      "operationId": "crypto.wallet.tokens",
+      "title": "Read token holdings",
+      "summary": "Read bounded ERC-20 holdings with exact atomic amounts and explicit missing valuation.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "chains": [
+          "Ethereum",
+          "Base"
+        ],
+        "lookbackDays": {
+          "minimum": 1,
+          "maximum": 90
+        },
+        "identity": "Caller-supplied EVM address only; no wallet-owner or third-party identity labels are inferred."
+      },
+      "pricing": {
+        "model": "fixed_by_operation",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "2000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "crypto-product-2026-08-09.1-crypto.wallet.tokens"
+      },
+      "routes": {
+        "paidChallenge": "/v1/crypto/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "attribution": {
+        "source": "Blockscout PRO API",
+        "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
+      },
+      "commercialProof": false
+    },
+    {
+      "productId": "crypto.wallet.transactions",
+      "operationId": "crypto.wallet.transactions",
+      "title": "Read wallet activity",
+      "summary": "Read bounded normalized native and ERC-20 activity with direction, status, freshness, and evidence.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "chains": [
+          "Ethereum",
+          "Base"
+        ],
+        "lookbackDays": {
+          "minimum": 1,
+          "maximum": 90
+        },
+        "identity": "Caller-supplied EVM address only; no wallet-owner or third-party identity labels are inferred."
+      },
+      "pricing": {
+        "model": "fixed_by_operation",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "3000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "crypto-product-2026-08-09.1-crypto.wallet.transactions"
+      },
+      "routes": {
+        "paidChallenge": "/v1/crypto/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "attribution": {
+        "source": "Blockscout PRO API",
+        "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
+      },
+      "commercialProof": false
+    },
+    {
+      "productId": "crypto.wallet.report",
+      "operationId": "crypto.wallet.report",
+      "title": "Derive wallet intelligence",
+      "summary": "Derive one bounded multichain wallet report with holdings, activity, flows, counterparties, deterministic signals, coverage, freshness, and provenance.",
+      "lifecycle": "preview",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "chains": [
+          "Ethereum",
+          "Base"
+        ],
+        "lookbackDays": {
+          "minimum": 1,
+          "maximum": 90
+        },
+        "identity": "Caller-supplied EVM address only; no wallet-owner or third-party identity labels are inferred."
+      },
+      "pricing": {
+        "model": "fixed_by_operation",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "4000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "crypto-product-2026-08-09.1-crypto.wallet.report"
+      },
+      "routes": {
+        "paidChallenge": "/v1/crypto/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      },
+      "attribution": {
+        "source": "Blockscout PRO API",
+        "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
+      },
+      "commercialProof": false
     }
   ],
   "limitations": [
-    "Publicly callable previews: raw cited Search, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence.",
-    "Prediction uses the qualified pdata supply path for Polymarket, Kalshi, Manifold, and Limitless; unresolved direct venue adapters remain disabled.",
-    "Prediction output is transformed and attributed under CC BY 4.0; Clervo does not redistribute the raw pdata feed or provide trading execution or custody.",
+    "Publicly callable previews: raw cited Search, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.",
+    "Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable without commercially qualified price supply.",
+    "Reports expose observed facts, deterministic signals, coverage, missing sources, freshness, evidence, and provenance; they do not infer wallet identity, risk, advice, custody, signing, or trading.",
     "A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.",
-    "RPC and Crypto Intelligence remain publicly unavailable."
+    "Solana and unsupported EVM chains fail closed."
   ],
   "runtimeRelease": {
-    "sourceCommit": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
+    "sourceCommit": "671d369601e26ab7491b8fd5232e7d2942f05c51",
     "operationIds": [
       "search.web",
       "sandbox.run",
@@ -528,15 +708,19 @@
       "prediction.market",
       "prediction.compare",
       "prediction.history",
-      "prediction.signal"
+      "prediction.signal",
+      "crypto.wallet.balances",
+      "crypto.wallet.tokens",
+      "crypto.wallet.transactions",
+      "crypto.wallet.report"
     ]
   },
   "observedTruth": {
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T16:51:02.261Z",
-      "releaseId": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
+      "observedAt": "2026-08-09T18:57:11.510Z",
+      "releaseId": "671d369601e26ab7491b8fd5232e7d2942f05c51",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -571,18 +755,22 @@
         "id": "crypto_intelligence",
         "label": "Crypto Intelligence",
         "operations": [
-          "crypto.protocol",
-          "crypto.report",
-          "crypto.token",
-          "crypto.transaction",
-          "crypto.wallet"
+          "crypto.wallet.balances",
+          "crypto.wallet.report",
+          "crypto.wallet.tokens",
+          "crypto.wallet.transactions"
         ],
-        "lifecycleState": "unavailable",
-        "proofLevel": "none",
-        "reason": "commercial_rights_blocked",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "reason": null,
         "expectedReturnAt": null,
-        "publiclyReachable": false,
-        "observedPrice": null,
+        "publiclyReachable": true,
+        "observedPrice": {
+          "amountAtomic": "4000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "priceVersion": "crypto-public-2026-08-09.1-crypto.wallet.report"
+        },
         "freeEntry": null
       },
       {
@@ -596,7 +784,7 @@
           "prediction.signal"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
+        "proofLevel": "quote_observed_unpaid",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -669,7 +857,7 @@
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",
-          "acceptsNaiveRequest": true
+          "acceptsNaiveRequest": false
         }
       }
     ]

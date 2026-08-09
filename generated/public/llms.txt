@@ -9,13 +9,13 @@ Current verified status:
 - Frozen release candidate: clervo-private-core-2026-08-02.2
 - Frozen interface hash: sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622
 - Six product cores: privately qualified and compatibility-frozen
-- Public lifecycle: live: Prediction Intelligence, Secure Sandbox, Research; supply_paused: AI; unavailable: Crypto Intelligence, Multi-chain RPC
-- Public operation IDs: search.web, sandbox.run, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal
+- Public lifecycle: live: Crypto Intelligence, Prediction Intelligence, Secure Sandbox, Research; supply_paused: AI; unavailable: Multi-chain RPC
+- Public operation IDs: search.web, sandbox.run, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal, crypto.wallet.balances, crypto.wallet.tokens, crypto.wallet.transactions, crypto.wallet.report
 - Public API callable: yes
-- x402 public payment: available for search.web (0.006000 USDC maximum), sandbox.run (0.120000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum)
+- x402 public payment: available for search.web (0.006000 USDC maximum), sandbox.run (0.120000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
 - x402 owner-funded proof: settled outcomes are reported per product in the generated proof table; no customer revenue or demand is inferred
 - Commercial proof: no customer revenue or demand claimed
-- Public price: search.web (0.006000 USDC maximum), sandbox.run (0.120000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum)
+- Public price: search.web (0.006000 USDC maximum), sandbox.run (0.120000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
 - First Revenue Release ready: no
 - llms.txt is a documentation map, not a search or AI ranking claim
 
@@ -42,30 +42,37 @@ Current verified status:
 - Qualified zero-cost supply: pdata for Polymarket, Kalshi, Manifold, and Limitless. Direct venue adapters with unresolved commercial permission remain disabled.
 - Clervo returns normalized probabilities, stable market/event identities, conservative matching, durable observations, disagreement/movement signals, freshness, provenance, pdata/upstream attribution, an accurate receipt, and no-charge replay. It is not a raw pdata proxy and does not provide trading or custody.
 
+## Crypto Intelligence preview
+
+- `POST /v1/crypto/execute`: balances and token holdings cost 0.002000 USDC, transactions cost 0.003000 USDC, and the wallet report costs 0.004000 USDC on Base.
+- Supported data chains: Ethereum and Base. The report returns bounded holdings, activity, flows, counterparties, deterministic signals, freshness, coverage, evidence, and provenance.
+- Output never infers wallet identity, opaque risk, advice, custody, signing, or trading. USD valuation and Solana are unavailable. Same-key replay returns the completed result and receipt without another charge.
+
 ## Observed lifecycle state and proof level
 
-Probed from the deployed system at 2026-08-09T16:51:02.261Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
+Probed from the deployed system at 2026-08-09T18:57:11.510Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
 
 | Product | Lifecycle state | Proof level |
 |---|---|---|
 | AI | supply_paused (no_route_currently_live) | none |
-| Crypto Intelligence | unavailable (commercial_rights_blocked) | none |
-| Prediction Intelligence | live | paid_outcome_verified |
+| Crypto Intelligence | live | quote_observed_unpaid |
+| Prediction Intelligence | live | quote_observed_unpaid |
 | Multi-chain RPC | unavailable (commercial_rights_blocked) | none |
 | Secure Sandbox | live | quote_observed_unpaid |
 | Research | live | quote_observed_unpaid |
 
 ## First call
 
-No account, no API key, no wallet, no idempotency key:
+No account, no API key, no wallet:
 
 ```bash
 curl -sS https://api.clervo.dev/v1/search/free \
   -H 'content-type: application/json' \
-  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}'
+  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}' \
+  -H 'idempotency-key: clervo-first-call-0001'
 ```
 
-The free sample accepts a request with no `idempotency-key` header. The server generates one and returns it in the `idempotency-key` response header; send that value back to replay the same operation without a second execution.
+The free sample currently rejects a request with no `idempotency-key` header; supply a stable value of 8 to 128 token characters.
 
 Paid requests go to `POST https://api.clervo.dev/v1/search/paid`, which returns a 402 carrying the exact maximum charge before anything executes.
 
@@ -78,4 +85,4 @@ Paid requests go to `POST https://api.clervo.dev/v1/search/paid`, which returns 
 - [`GET https://api.clervo.dev/.well-known/x402`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.
 - `GET https://api.clervo.dev/llms.txt`: this document, served from the API host as well as the site.
 
-Model list: 21 catalogued routes, 0 sellable. Payment manifest: 3 paid resources.
+Model list: 21 catalogued routes, 0 sellable. Payment manifest: 4 paid resources.

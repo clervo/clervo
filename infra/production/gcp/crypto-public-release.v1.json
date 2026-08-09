@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "clervo.crypto-public-release.v1",
+  "state": "public_quote_verified_paid_outcome_pending",
+  "observedAt": "2026-08-09T18:57:11.510Z",
+  "project": "bloxsniper-prod",
+  "region": "us-central1",
+  "service": "clervo-api-production",
+  "releaseCommit": "671d369601e26ab7491b8fd5232e7d2942f05c51",
+  "revision": "clervo-api-production-00041-cuh",
+  "imageDigest": "sha256:e9f2eda487024708f8d27935e28103bfe88ff748b391fcdd74fcd1d246afc756",
+  "trafficPercent": 100,
+  "rollbackRevision": "clervo-api-production-00037-nid",
+  "publicOrigin": "https://api.clervo.dev/",
+  "edgeVersion": "f5680e61-5e39-4271-b6a1-c92fc23bd69b",
+  "siteVersion": "ff34a413-7501-4b41-81aa-20ce17fa0933",
+  "supply": {
+    "sourceId": "crypto.source.blockscout_pro",
+    "qualificationId": "qual_BlockscoutValueAdded20260809",
+    "credentialSecretInstalled": true,
+    "credentialSecretVersion": 1,
+    "credentialValueRecorded": false,
+    "technicalQualification": "qualified",
+    "commercialPermission": "approved_value_added",
+    "publicSellable": true,
+    "rawApiResaleAllowed": false,
+    "supplierVariableCostMicrousd": 0,
+    "termsBasis": "public_terms_and_documented_intended_use",
+    "termsUrls": [
+      "https://docs.blockscout.com/devs/pro-api",
+      "https://eaas.blockscout.com/terms-and-conditions"
+    ]
+  },
+  "productionSourceProof": {
+    "ethereum": {
+      "execution": "clervo-b9-candidate-probe-935bcc1-h2m6x",
+      "served": true,
+      "freshness": "fresh",
+      "evidenceCount": 11,
+      "resultHashValid": true
+    },
+    "base": {
+      "execution": "clervo-b9-candidate-probe-935bcc1-t6dvp",
+      "served": true,
+      "freshness": "fresh",
+      "evidenceCount": 9,
+      "resultHashValid": true
+    },
+    "sourceClass": "indexed_public_blockchain_data",
+    "thirdPartyLabelsUsed": false,
+    "transactionSubmissionCalls": 0
+  },
+  "publicOperations": [
+    { "productId": "crypto.wallet.balances", "amountAtomic": "2000" },
+    { "productId": "crypto.wallet.tokens", "amountAtomic": "2000" },
+    { "productId": "crypto.wallet.transactions", "amountAtomic": "3000" },
+    { "productId": "crypto.wallet.report", "amountAtomic": "4000" }
+  ],
+  "publicChallenge": {
+    "status": 402,
+    "network": "eip155:8453",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+    "facilitatorUrl": "https://api.cdp.coinbase.com/platform/v2/x402",
+    "bazaarEligible": true,
+    "bazaarIndexed": false,
+    "proofLevel": "quote_observed_unpaid"
+  },
+  "publicTruth": {
+    "apiAndSiteJsonSurfacesSemanticallyEqual": true,
+    "llmsByteIdentical": true,
+    "cryptoPageStatus": 200,
+    "openApiPublished": true,
+    "x402DiscoveryPublished": true,
+    "runtimeReleaseMatched": true
+  },
+  "commerce": {
+    "paymentAttempted": false,
+    "paymentEffects": 0,
+    "paidOutcomeVerified": false,
+    "ownerFundedProofPending": true,
+    "revenueEvidence": false,
+    "demandEvidence": false
+  },
+  "cleanup": {
+    "temporaryProbeJobRemoved": true,
+    "failedCandidatesNeverServedTraffic": true,
+    "rollbackRetained": true
+  }
+}

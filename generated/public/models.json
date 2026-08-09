@@ -476,8 +476,8 @@
         "lifecycleState": "supply_paused",
         "proofLevel": "none",
         "sellable": false,
-        "reason": "ai_route_unavailable",
-        "expectedReturnAt": null,
+        "reason": "upstream_completion_failed",
+        "expectedReturnAt": "2026-08-09T00:00:00Z",
         "observedPrice": null
       }
     },
@@ -500,8 +500,8 @@
         "lifecycleState": "supply_paused",
         "proofLevel": "none",
         "sellable": false,
-        "reason": "ai_route_unavailable",
-        "expectedReturnAt": null,
+        "reason": "upstream_completion_failed",
+        "expectedReturnAt": "2026-08-09T00:00:00Z",
         "observedPrice": null
       }
     },
@@ -524,8 +524,8 @@
         "lifecycleState": "supply_paused",
         "proofLevel": "none",
         "sellable": false,
-        "reason": "ai_route_unavailable",
-        "expectedReturnAt": null,
+        "reason": "upstream_completion_failed",
+        "expectedReturnAt": "2026-08-09T00:00:00Z",
         "observedPrice": null
       }
     },
@@ -630,8 +630,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T16:51:02.261Z",
-      "releaseId": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
+      "observedAt": "2026-08-09T18:57:11.510Z",
+      "releaseId": "671d369601e26ab7491b8fd5232e7d2942f05c51",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",

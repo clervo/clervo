@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.launch-state.v1",
-  "observedAt": "2026-08-04T04:44:23Z",
-  "sourceCommit": "e5e604278161b0d81c309881a894a6a6945d1a97",
+  "observedAt": "2026-08-09T18:53:15.013Z",
+  "sourceCommit": "671d369601e26ab7491b8fd5232e7d2942f05c51",
   "identity": {
     "category": "Outcome infrastructure for agents",
     "headline": "One job in. One inspectable result out.",
@@ -161,17 +161,18 @@
       "id": "crypto_intelligence",
       "label": "Crypto Intelligence",
       "operations": ["crypto.wallet.balances", "crypto.wallet.tokens", "crypto.wallet.transactions", "crypto.wallet.report"],
-      "engineeringState": "production_candidate_qualified",
-      "customerLifecycle": "deployment_pending",
-      "commercialProof": "unproven_until_paid_outcome",
-      "paymentState": "production_deploy_and_proof_pending",
+      "engineeringState": "public_production_qualified",
+      "customerLifecycle": "preview_publicly_callable",
+      "commercialProof": "quote_observed_unpaid",
+      "paymentState": "public_x402_challenge_available_paid_result_pending",
       "supplierRights": "blockscout_value_added_use_approved",
       "allowedClaims": [
-        "Crypto Intelligence has a qualified production candidate for Ethereum and Base wallet balances, tokens, transactions, flows, counterparties, and deterministic reports.",
-        "The candidate uses Blockscout only for a provider-neutral value-added application; no raw API or credential is resold.",
-        "Public prices are 0.002 USDC for balances or tokens, 0.003 for transactions, and 0.004 for the wallet report."
+        "Crypto Intelligence is publicly callable for Ethereum and Base wallet balances, tokens, transactions, flows, counterparties, and deterministic reports through exact Base USDC x402 offers.",
+        "Production qualification returned fresh hash-bound real-source output on Ethereum and Base with explicit partial/degraded coverage and no fabricated completeness.",
+        "Blockscout is used only for a provider-neutral value-added application; no raw API, response, essential service, or credential is resold.",
+        "Public prices are 0.002 USDC for balances or tokens, 0.003 for transactions, and 0.004 for the wallet report; a quote is not paid-outcome proof."
       ],
-      "prohibitedClaims": ["Publicly deployed before external proof", "Solana support", "Wallet owner identity", "Opaque risk or smart-money labels", "Custody, signing, trading, or customer demand"]
+      "prohibitedClaims": ["Paid Crypto result verified before funded proof", "Solana support", "Wallet owner identity", "Opaque risk or smart-money labels", "Custody, signing, trading, customer revenue, or demand"]
     }
   ],
   "competitors": {

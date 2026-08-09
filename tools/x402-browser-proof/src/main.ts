@@ -13,8 +13,8 @@ type ProofConfig = {
   amountDisplay: string;
   payTo: Address;
   payer: Address;
-  productId: 'search.web' | 'ai.chat' | 'prediction.markets' | 'prediction.market';
-  resource: 'https://api.clervo.dev/v1/search/paid' | 'https://api.clervo.dev/v1/ai/execute' | 'https://api.clervo.dev/v1/prediction/execute';
+  productId: 'search.web' | 'ai.chat' | 'prediction.markets' | 'prediction.market' | 'crypto.wallet.report' | 'crypto.wallet.transactions';
+  resource: 'https://api.clervo.dev/v1/search/paid' | 'https://api.clervo.dev/v1/ai/execute' | 'https://api.clervo.dev/v1/prediction/execute' | 'https://api.clervo.dev/v1/crypto/execute';
   idempotencyKey: string;
   payerBalanceCapAtomic: string;
   supplierCostCeilingAtomic: string;
@@ -66,6 +66,20 @@ function usefulPaidResult(body: any) {
       && body.result.output.market.supplyAttributions.some((item: any) => item?.sourceId === 'pdata' && item?.license === 'CC BY 4.0')
       && body?.receipt?.supplierCost?.amountAtomic === '0'
       && body?.receipt?.provenance?.some((item: any) => item?.adapterId === 'adapter_prediction.pdata_rest');
+  }
+  if (config.productId === 'crypto.wallet.report' || config.productId === 'crypto.wallet.transactions') {
+    const expectedKind = config.productId === 'crypto.wallet.report' ? 'report' : 'transactions';
+    return body?.result?.output?.kind === expectedKind
+      && body?.result?.output?.state !== 'unavailable'
+      && Array.isArray(body?.result?.output?.servedChains)
+      && body.result.output.servedChains.length > 0
+      && Array.isArray(body?.result?.output?.evidenceRefs)
+      && body.result.output.evidenceRefs.length > 0
+      && body?.result?.output?.freshness?.status === 'fresh'
+      && body?.result?.output?.provenance?.sourceClass === 'indexed_public_blockchain_data'
+      && body?.result?.output?.provenance?.thirdPartyLabelsUsed === false
+      && body?.receipt?.supplierCost?.amountAtomic === '0'
+      && body?.receipt?.provenance?.some((item: any) => item?.adapterId === 'adapter_crypto.blockscout_value_added');
   }
   return Array.isArray(body?.output?.searchResponse?.results) && body.output.searchResponse.results.length > 0;
 }

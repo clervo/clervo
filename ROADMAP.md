@@ -17,16 +17,16 @@ Update only when execution state actually changes. This is not a journal.
 
 | Field | Value |
 |---|---|
-| Current milestone | **B8 — CLOSED. Prediction is commercially launched and externally verified. B9 remains `not_started` and was not opened in this session.** |
-| Milestone status | `b8_closed_commercially_verified`. **PROVEN:** pdata's current CC BY 4.0 dataset/API license supports Clervo's attributed commercial derived-output model; the production subset remains Polymarket, Kalshi, Manifold, and Limitless, while unresolved direct adapters remain `publicSellable=false`. Migrations are applied; Cloud Run revision `clervo-api-production-00037-nid` serves 100% traffic; Prediction is public, generated discovery reports `live / paid_outcome_verified`, and CDP Bazaar reports the resource indexed and active. Two owner-funded external production operations—`prediction.markets` and `prediction.market`—each settled exactly 0.002 USDC, returned useful fresh pdata-attributed output, produced accurate durable receipts, and replayed with the same operation/result/receipt and no second authorization or charge. Managed reconciliation proved two completed operation rows, two target accounting entries, zero supplier cost, and a balanced four-entry receiver ledger. Total authorized spend was exactly 0.004 USDC. This is mechanism/commercial-usability proof, not revenue, demand, or an `externally_repeated` unrelated-customer claim. B9 is not started. |
-| Current branch | `work/b8-prediction-20260809`, based exactly on B7 checkpoint `4dee1f062eefe21232c1e8366aad12b453bd931c`; B8 start checkpoint `82096b1`; original engineering commit `96cdf43`; pdata commercial-launch engineering commit `eef4b01`. `main`, the frozen B12 visual branch, `/opt/clervo-ai`, and `ai.clervo.dev` were not modified. |
-| Latest commit | `07e0176` — `chore(b8): refresh final public truth`. This is the latest implementation/projection commit before the B8 closure evidence and ROADMAP truth update; use `git log -1` for the closure commit itself. |
-| Current production release | Cloud Run origin `clervo-api-production-00037-nid` at 100% traffic, image `sha256:f9dd5aba3ffb4bc08f98ce160be087475fbd1e41289a5d053cce3bff829c09c2`, `CLERVO_RELEASE_ID=ab0bb28b76fb8606bd854b741214961b8e1ba1d2`; API edge worker `clervo-api-edge-production` version **`32799471-2164-42b2-a256-faca8f6a85b9`**; site worker `clervo-site-production` version **`c568b072-dc9d-4890-a2aa-a9ec5ebaceac`**. All three were directly observed live on 2026-08-09. The B12 visual system was not redesigned; only B8 factual/generated visibility was deployed. |
-| Rollback targets | Immediate previous origin revision `clervo-api-production-00033-vub`; existing older revisions remain retained. The protected pre-B8 worker rollback targets remain API edge `74efc7db-d0a7-49a1-8d4e-9f20e049fb0e` and site `d9ebbe9d-2f7d-4ab8-9d23-c79928f359b2`; immediate previous paid-proof truth versions are edge `0680cd17-e079-47d8-9aef-b98c12c6c03c` and site `e7aef132-34e3-483c-9515-e4dff87e2d62`. No rollback version was deleted. |
+| Current milestone | **B9 — OPEN. Crypto Intelligence is public on Ethereum and Base with live exact-price x402 challenges; funded outcome and replay proof remain pending. B10 is not started.** |
+| Milestone status | `b9_public_quote_verified_paid_outcome_pending`. **PROVEN:** Blockscout production supply is technically qualified and commercially approved for Clervo's bounded value-added derived output; raw API, response, RPC, credential, and essential-service resale remain prohibited. Cloud Run revision `clervo-api-production-00041-cuh` serves 100% traffic from release `671d369`; Ethereum and Base returned fresh, hash-bound real-source reports with explicit coverage/provenance and no third-party labels. Four provider-neutral Crypto operations are public at 0.002–0.004 USDC, generated discovery reports `live / quote_observed_unpaid`, and the public 402 is valid and Bazaar-eligible. No B9 payment has been attempted; paid outcome, receipt, same-key replay, ledger reconciliation, revenue, and demand remain unverified. B8 remains closed. |
+| Current branch | `work/b9-crypto-20260809`, based on exact B8 closure `1bf6ab99436c36ed7580096b550506132d842c36`; B9 candidate `935bcc1`, deadline fix `e75b867`, and rate-limit hardening release `671d369`. `main`, the frozen B12 visual branch, `/opt/clervo-ai`, and `ai.clervo.dev` were not modified. |
+| Latest commit | `671d369` — `fix: pace crypto supply within qualified rate limit`; this is the immutable production runtime release. The current generated public-live/unpaid truth update is not yet committed. |
+| Current production release | Cloud Run origin `clervo-api-production-00041-cuh` at 100% traffic, image `sha256:e9f2eda487024708f8d27935e28103bfe88ff748b391fcdd74fcd1d246afc756`, `CLERVO_RELEASE_ID=671d369601e26ab7491b8fd5232e7d2942f05c51`; API edge worker `clervo-api-edge-production` version **`f5680e61-5e39-4271-b6a1-c92fc23bd69b`**; site worker `clervo-site-production` version **`ff34a413-7501-4b41-81aa-20ce17fa0933`**. All three and the public Crypto surfaces were directly observed live on 2026-08-09. The B12 visual system was not redesigned; only B9 factual/generated visibility was deployed. |
+| Rollback targets | Origin revision `clervo-api-production-00037-nid`, image `sha256:f9dd5aba3ffb4bc08f98ce160be087475fbd1e41289a5d053cce3bff829c09c2`, is retained as the immediate B9 rollback. Failed candidate revisions `00039-jol` and `00040-cih` never served traffic. Existing worker rollback versions remain retained; no rollback version was deleted. |
 | Latest externally verified customer outcome | Two bounded owner-funded calls on `https://api.clervo.dev/v1/prediction/execute`: `prediction.markets` operation `op_51ddd509c878386beec22ad406fbb0ae`, receipt `rcpt_74a0f5bed8a43523e6a0573ad51bfb7c`; and `prediction.market` operation `op_69aa12671017d53c7396e1131c23a0b1`, receipt `rcpt_0af12608e0564f8d016d9650bd3d99e2`. Each settled exactly 2000 atomic USDC on Base, returned fresh pdata/CC BY 4.0-attributed output, and replayed with the same result and receipt and no second authorization or charge. Payer and receiver deltas were exactly 4000 atomic total; managed durable reconciliation passed. `prediction` reaches `paid_outcome_verified`; no revenue, demand, or unrelated-customer repetition is claimed. |
-| Current blockers | None for B8. The pdata qualification expires at the recorded time and remains a fail-closed operating dependency, not an unproven launch blocker. B9 remains unopened. |
-| External dependencies | B8 has no remaining launch dependency. Ongoing service requires current pdata availability and requalification before `2026-08-16T11:54:10.787Z`; unresolved direct venue permissions remain excluded. |
-| Owner approvals waiting | None for B8. The exact deployment, migration, and maximum 0.004 USDC proof authorizations were consumed within their stated bounds. No further payment is authorized. |
+| Current blockers | B9 engineering, supply, deployment, public routing, and discovery have no open blocker. Commercial closure now requires separate owner authorization for exactly two bounded production payments totalling at most 0.007 USDC, followed by receipt/replay/durable reconciliation and final public-truth proof. B10 remains not started. |
+| External dependencies | B9 ongoing service requires Blockscout availability within the qualified 100,000-credit/day and 5-RPS envelope; global request pacing is 210 ms and the source fails closed. Ethereum and Base are supported. Solana remains unsupported. B8's existing pdata requalification dependency remains unchanged. |
+| Owner approvals waiting | B9 requires one bounded payment authorization: production public API, existing owner-controlled proof payer, Base native USDC, two effects (`crypto.wallet.report` at 0.004 and `crypto.wallet.transactions` at 0.003), maximum total 0.007 USDC, payer balance cap 0.032 USDC, no automatic retry, and full chain/durable/replay reconciliation. The production secret/deployment authorization was consumed without payment effects. |
 | Dates that move on their own | **PROVEN:** pdata public routing qualification expires at `2026-08-16T11:54:10.787Z`; runtime startup fails closed after that timestamp. Direct Polymarket/Kalshi technical observations expire separately but remain unsellable regardless. Competitor prices are observations, not durable promises, and must be refreshed before activation. Existing B7 and Bazaar expiry rules remain in force. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
 | B2 metrics (observed 2026-08-06T14:42:37.447Z) | Conformance defects open 0. Naive free-search rejection rate 0: `withoutIdempotencyKeyStatus` 200. Site 404 correctness: a nonexistent URL returns 404. |
@@ -35,9 +35,10 @@ Update only when execution state actually changes. This is not a journal.
 | B5 metrics (observed 2026-08-07T05:22:00Z) | Products routing through one commerce core 6 of 6 (already true before this milestone). Duplicated commerce-surface copies removed: result verifiers 2 to 1, response-envelope builders 4 to 1, request-hash builders 4 to 1, fixed-price lookups 2 to 1, provenance builders 4 to 1. Duplicate-charge incidents 0. Payment-path defect count 0. Commerce suite 18 of 18 before and after each product move; full acceptance 262 of 262, unchanged. |
 | B7 metrics (observed 2026-08-09, current engineering tree) | **PROVEN:** full acceptance 293/293; final B7-focused suite 34/34; dynamic property suite 14/14; contract validation 97 schemas/132 fixtures; lint 699 files; secret scan PASS; external calls 0 and USDC spent 0 during acceptance. Dynamic catalog has no fixed count and the legacy catalog ceiling was removed. BlockRun's direct public model API returned 91 entries; three exact GPT-5.6 comparisons were observed and recorded as refreshable data: Luna 0.2/1.2, Terra 2/12, Sol 5/30 USD per million input/output. **UNVERIFIED after evidence expiry:** those competitor values are ignored after their recorded validity window. **LIVE legacy observation only:** 21 entries, 18 live/3 paused; no dynamic live cutover claim. |
 | B8 metrics (observed 2026-08-09 at close) | **PROVEN:** full acceptance 306/306; B8-focused suite 37/37; contract validation 99 schemas/134 fixtures; lint 708 files; build, discovery generation, release freeze, clean-room boundary, site prerender/canonical-media validation, and secret scan pass. pdata campaigns retained the previously proven 39 read-only calls, API `1.17.0`, eight-venue coverage, 12/12 repeated production-venue calls, pagination/search/history/malformed/degradation checks, zero authentication, and zero supplier spend. Managed production smoke returned two repeated eight-market attributed results across Polymarket, Kalshi, Manifold, and Limitless. Production payments: 2 effects, 4000 atomic USDC total, 2 useful results, 2 accurate receipts, 2 no-charge replays, 2 completed durable operations, 2 accounting entries, zero supplier cost, balanced ledger. Public truth: 8 JSON surfaces semantically equal across API/site/generated source, 3 text surfaces byte-equal, 8 HTML pages directly loaded, 5 Prediction operations published, Bazaar indexed and active, 0 open conformance defects, and 0 additional spend during final verification. |
+| B9 metrics (observed 2026-08-09, public unpaid state) | **PROVEN:** origin revision `00041-cuh` and current edge/site versions are public; Ethereum and Base each returned fresh real-source output with 11 and 9 evidence references respectively and valid result hashes; zero transaction submissions and zero payment effects occurred. Four public operations quote 2000/2000/3000/4000 atomic USDC. Crypto's public 402 is Bazaar-valid/eligible but unindexed before settlement. API/site/generated JSON matched semantically and `llms.txt` matched byte-for-byte; the Crypto page and OpenAPI/x402 discovery are public. Final focused B9 suite 52/52; browser proof 5/5; full acceptance 307/307; contract validation 99 schemas/134 fixtures; lint 710 files; site build, discovery generation, canonical-media validation, and secret scan pass. Paid outcomes, receipts, replays, ledger entries, revenue, and demand remain zero/unverified. |
 | B6 metrics (observed 2026-08-07T06:53:00Z, at close) | Installs 2, **both from the local tarball, 0 from npm** (unpublished). Wallets created 2 — one throwaway, deleted after confirming on-chain it held nothing; one dedicated test wallet retained at `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`, `0700`/`0600`, recovery phrase never printed to any transcript, log, or commit. **Free first success: yes, and it happened before any wallet existed**, which is the ordering advantage over BlockRun. Wallets funded 0. Paid outcomes 0. Settlements 0. **USDC spent 0.** Fail-closed cycle exercised live: 1 refused operation, 1 retry blocked before signing, 1 reconciliation resolving `not_settled`. Buyer-side ceiling configured: per-operation 0.007, daily 0.01 USDC. Live catalog: 4 capabilities, 1 free, 3 payable; `search.web` quoted 0.006 USDC to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`. Package: 35 files, 40.4 kB packed, 17 installed dependencies, no TypeScript sources or wallet material. Tests: B6 suite 10 of 10; `shared-paid-operation` 5 of 5 unchanged; full contract suite 720 of 722, the 2 failures being `n13.3` and `n13.5` site tests that fail identically with all B6 work stashed and are therefore inherited from B5. Gates: lint PASS (677 files), secret scan PASS with 0 secret values printed. |
-| Exact next task | Await owner review of the B8 closure evidence. Do not start B9 until the owner explicitly instructs it after review. |
-| Files and services for that task | B8 is closed. Preserve the Prediction service/adapters, pdata license and qualification records, source/pricing policy, migrations, production revision `00037-nid`, final edge/site versions, settlement/receipt/accounting evidence, and fail-closed direct-adapter policy. |
+| Exact next task | Finish the public-live/unpaid truth commit and regression gate, then obtain the one exact owner-funded maximum-0.007-USDC authorization and execute/reconcile the two B9 production proofs. Do not start B10. |
+| Files and services for that task | Preserve B8 and the serving B9 revision, Blockscout secret binding, source qualification, rate-limit pacing, public generated truth, rollback revision, and proof tooling. Touch only B9 closure evidence and generated projections; do not modify protected AI infrastructure or the frozen B12 visual system. |
 
 ---
 
@@ -239,7 +240,7 @@ where it and this section disagree, the registry wins.
 | Sandbox | `live` | `quote_observed_unpaid` | Quotes 120000 atomic |
 | RPC | `unavailable` | `none` | Commercial rights blocked; edge remains disabled |
 | Prediction | `live` | `paid_outcome_verified` | Five operations public; two settled pdata-backed outcomes reconciled |
-| Crypto Intelligence | `unavailable` | `none` | Commercial rights blocked; edge remains disabled |
+| Crypto Intelligence | `live` | `quote_observed_unpaid` | Four Ethereum/Base operations are public; exact 2000–4000-atomic challenges are valid; paid outcome/replay proof is pending |
 
 ### AI routes — 0 `live`, 21 `supply_paused`
 
@@ -267,18 +268,21 @@ must be ≤500 characters. Declared `input` must validate against
 idle 30 days without a settlement are dropped. Validator:
 `POST https://api.cdp.coinbase.com/platform/v2/x402/validate`.
 
-Search (6000 atomic), Sandbox (120000 atomic), and Prediction (2000–3000 atomic)
-validate `true`. Search and Prediction are indexed and active; Sandbox is valid
-but not indexed. AI is not currently valid or sellable because every route is
-supply-paused.
+Search (6000 atomic), Sandbox (120000 atomic), Prediction (2000–3000 atomic),
+and Crypto Intelligence (2000–4000 atomic) validate `true`. Search and
+Prediction are indexed and active; Sandbox and Crypto are valid but not
+indexed before their first qualifying settlement. AI is not currently valid or
+sellable because every route is supply-paused.
 
 ### Public truth is generated and reconciled
 
 Registry, catalog, pricing, status, operations, OpenAPI, x402 discovery,
 `llms.txt`, skill/agent docs, and site projections are generated from the live
-registry. At B8 close, eight public JSON surfaces matched semantically across
-the API and site, three public text surfaces were byte-identical, and Prediction
-rendered `live / paid_outcome_verified` with pdata attribution everywhere.
+registry. At the B9 public-unpaid checkpoint, API, site, and generated JSON
+surfaces matched semantically, `llms.txt` was byte-identical, Prediction
+remained `live / paid_outcome_verified`, and Crypto rendered `live /
+quote_observed_unpaid` with Ethereum/Base coverage and Blockscout value-added
+provenance everywhere.
 
 ### Conformance defects on served surfaces
 
@@ -292,11 +296,11 @@ They are not one problem.
 
 - **AI** remains `supply_paused`, not removed: its 21 routes carry explicit
   commercial-permission or availability reasons.
-- **Crypto Intelligence** is built against Blockscout, whose qualification
-  passed with `restricted` terms. The runtime additionally requires a Solana
-  endpoint it does not have, which currently blocks the whole product for the
-  sake of one chain. A narrower EVM-only derived-output launch is the likely
-  first shape.
+- **Crypto Intelligence** is live on Ethereum and Base through Blockscout's
+  qualified value-added-use path. Raw-source resale is prohibited and Solana is
+  unsupported. The product remains commercially open only because its bounded
+  paid outcome, receipt, and same-key replay have not yet been funded and
+  proven.
 - **RPC** is the genuine blocker. The runtime binds one adapter against a single
   configurable Ethereum endpoint that needs a key. All 46 catalogued supply
   routes are terms-blocked or blocked. This needs supply, owned or licensed —
@@ -1170,9 +1174,9 @@ Every milestone below carries the same seventeen fields.
 ### B9 — Crypto Intelligence live
 
 1. **Milestone:** B9 — Crypto Intelligence live
-2. **Status:** `in_progress` — production candidate complete; owner-approved
-   production secret installation and zero-traffic deployment are the next
-   required actions. Public/payment proof is not yet claimed.
+2. **Status:** `in_progress` — production runtime, public edge, and generated
+   truth are live; the exact public 402 is observed. Funded outcome and replay
+   proof are the remaining commercial closure gate.
 3. **Customer-visible outcome:** Product five is externally usable: an unrelated
    customer executes a real on-chain analysis, pays, and receives a useful
    derived report with evidence and an accurate receipt.
@@ -1183,17 +1187,17 @@ Every milestone below carries the same seventeen fields.
    provider abstraction, shared x402 commerce, durable receipt/idempotency
    architecture, and B8 public truth remain intact. B9 changed only the bounded
    Crypto product slice and its generated projections.
-6. **Current evidence:** **PROVEN LOCALLY, UNVERIFIED IN PRODUCTION.** The
-   production candidate supports Ethereum and Base through a qualified
+6. **Current evidence:** **PROVEN IN PRODUCTION.** The serving release supports
+   Ethereum and Base through a qualified
    Blockscout PRO adapter and four provider-neutral operations:
    `crypto.wallet.balances`, `crypto.wallet.tokens`,
    `crypto.wallet.transactions`, and flagship `crypto.wallet.report`. The
    report returns holdings, normalized activity, native/ERC-20 flows,
    counterparties, deterministic bounded signals, freshness, coverage,
    degradation, evidence, and provenance. Solana is explicitly unsupported and
-   no longer blocks EVM startup. A real credential-backed local report returned
-   a hash-bound useful Ethereum result and explicit Base degradation; this is
-   not production proof.
+   does not block EVM startup. Zero-payment candidate executions returned fresh,
+   hash-bound useful Ethereum and Base results with 11 and 9 evidence references,
+   respectively, and no third-party labels or transaction submissions.
 7. **Research:** **PROVEN.** Current Blockscout PRO documentation and terms
    identify dapps, wallets, AI agents, analytics/research, and production
    workloads as intended uses. The selected path exposes only Clervo-normalized
@@ -1202,50 +1206,57 @@ Every milestone below carries the same seventeen fields.
    alternative but was operationally unsuitable for bounded on-demand launch.
    BlockRun Surf was observed at 0.0085 USDC/call and Nansen x402 basic wallet
    calls at 0.01 USDC, with higher intelligence calls at 0.05 USDC.
-8. **Work:** **PROVEN for the production candidate; production/external proof
-   remains UNVERIFIED.** Chain coverage, commercial permission, retention,
+8. **Work:** **PROVEN through public unpaid production.** Chain coverage,
+   commercial permission, retention,
    supplier cost, qualification expiry, call ceiling, prices, runtime mode,
    edge flag, live-registry probe, paid-proof validator, OpenAPI/discovery
    generator, and rollback-safe deployment policy are wired. Focused B9 tests
-   pass 48 of 48; contract validation passes 99 schemas and 134 fixtures. The
+   pass 52 of 52; full acceptance passes 307 of 307; contract validation passes
+   99 schemas and 134 fixtures. The
    historical Stage 12 freeze remains immutable while current B9 contracts are
-   validated independently.
-9. **Dependencies:** B5 is closed. Production requires installation of the
-    already-qualified local Blockscout credential in Secret Manager and binding
-    that exact secret to the Cloud Run candidate; those mutations require owner
-    approval.
+   validated independently. Release `671d369` globally paces Blockscout request
+   starts at 210 ms, below the qualified 5-RPS ceiling.
+9. **Dependencies:** B5 is closed. The authorized Blockscout secret is installed
+    through Secret Manager and bound to the serving revision without exposing
+    its value. Commercial closure now depends only on owner-authorized bounded
+    payment proof and reconciliation.
 10. **Parallel:** None. B10 has not started.
-11. **Launch-critical tests:** **PROVEN LOCALLY.** Normalization, partial/missing
+11. **Launch-critical tests:** **PROVEN LOCALLY AND AT CANDIDATE LEVEL.** Normalization, partial/missing
     supply, commercial gating, report math, token/native flows, counterparties,
     signals, provider replacement, price authority, settlement-after-useful-
     output, failed execution without settlement, deterministic replay, no
     double charge, SSRF/redirect bounds, declared chain coverage, and edge
-    gating pass. Full regression and external production tests remain before
-    closure.
-12. **External acceptance proof:** **UNVERIFIED.** Requires the deployed public
-    402, one owner-authorized 0.004-USDC report, one independent 0.003-USDC
+    gating pass. Candidate health, real supply, fresh/provenance-bound output,
+    402 behavior, existing product quotes, monitoring, and zero payment effects
+    passed. The final unpaid-state full regression, site build, browser-proof
+    suite, contract validation, and secret scan pass with zero payment effects.
+12. **External acceptance proof:** **PARTLY PROVEN.** The deployed public
+    402 and useful real-source candidate output are proven. Closure still requires
+    one owner-authorized 0.004-USDC report, one independent 0.003-USDC
     transactions call, useful real-source output, exact receipts, and same-key
     no-charge/no-second-upstream replay from an unrelated external environment.
-13. **Visibility shipped:** **UNVERIFIED UNTIL DEPLOYED.** The generator is
-    prepared to project runtime-observed Crypto state into registry, catalog,
-    pricing, status, OpenAPI, x402 discovery, `llms.txt`, and site truth only
-    after the public probe observes the route.
+13. **Visibility shipped:** **PROVEN.** Runtime-observed Crypto state is projected
+    into registry, catalog, pricing, status, OpenAPI, x402 discovery, `llms.txt`,
+    agent/skill docs, and site truth. Public API/site/generated JSON agree,
+    `llms.txt` is byte-identical, and the Crypto product page is public. CDP
+    Bazaar validates the resource as eligible but has not indexed it before a
+    settlement.
 14. **Metrics:** Candidate prices are 0.002 USDC for balances/tokens, 0.003 for
     transactions, and 0.004 for report. Supplier variable cost is zero inside
     the recurring 100,000-credit/day allowance; the known 0.001-USDC
-    facilitator overage is included and subsidy is disabled. Revenue, customer
-    calls, and demand remain zero/unknown until production evidence exists.
-15. **Owner approval:** **PENDING.** Install/bind the qualified free Blockscout
-    credential and authorize zero-traffic Cloud Run plus edge/site deployment.
-    No payment effect is part of that deployment approval. A separate maximum
-    0.007-USDC owner-funded proof authorization will be requested only after the
-    live 402 is observed.
-16. **Stopping condition:** **OPEN.** Local engineering and commercial supply
-    are proven; deployment, public truth, external paid outcomes, exact
+    facilitator overage is included and subsidy is disabled. Revenue and demand
+    remain zero/unknown; the public quote is not a paid outcome.
+15. **Owner approval:** **DEPLOYMENT AUTHORIZATION CONSUMED; PAYMENT APPROVAL
+    PENDING.** Secret installation, zero-traffic candidate deployment, and
+    reversible promotion completed with zero payment effects. The remaining
+    request is exactly two effects totalling at most 0.007 USDC with no automatic
+    retry and full chain/durable/replay reconciliation.
+16. **Stopping condition:** **OPEN.** Engineering, commercial supply, production,
+    public routing, and public truth are proven; external paid outcomes, exact
     receipts, replay, reconciliation, final ROADMAP evidence, and closure SHA
-    are still required.
-17. **Continuation point:** Complete B9 production and paid proof. Do not start
-    B10.
+    remain required.
+17. **Continuation point:** Obtain the exact bounded payment authorization and
+    complete B9 proof. Do not start B10.
 
 ---
 
