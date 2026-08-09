@@ -17,26 +17,27 @@ Update only when execution state actually changes. This is not a journal.
 
 | Field | Value |
 |---|---|
-| Current milestone | **B7 — INTEGRATION-READY. The next milestone remains B7 live cutover, not B8.** |
-| Milestone status | `b7_integration_ready_dynamic_qualified_supply_external_cutover_pending`. **PROVEN ENGINEERING-COMPLETE / FIXTURE-BOUND:** authenticated qualified-supply source, revision and freshness guards, stable provider-independent customer identity, equivalent-supply fallback, dynamic composition, qualification/availability lifecycle, owner-controlled commercial publication, data-driven pricing, competitor evidence input, bounded strategic overrides, zero-cost free-tier quota controls, private/public projection, discovery, and one generic `ai.clervo.dev` execution adapter. Snapshot A → B adds a normal model with no application-source edit, preserves existing IDs, updates price/lifecycle/discovery, and executes through the private runtime binding. **PROVEN legacy LIVE observation, not dynamic cutover proof:** the public endpoint returned 21 legacy entries (18 live, 3 paused) when observed on 2026-08-09; its registry evidence remains dated 2026-08-06. **EXTERNALLY BLOCKED:** the authenticated production catalog endpoint/schema is not frozen or available in this worktree, `/opt/clervo-ai` and deployment are prohibited here, and per-supply commercial permission needs owner decisions. Therefore B7 is not `CLOSED` under Rule 3 and no dynamic production cutover is claimed. B6 remains closed on owner instruction with npm publication/provenance and one funded paid proof outstanding. |
-| Current branch | `work/b7-resume-20260809`; interrupted state preserved first at `ba9d0bb`, dynamic B7 engineering at `f695850`. `main`, the frozen B12 visual branch, and `/opt/clervo-ai` were not modified. |
-| Latest commit | `f695850` — `feat(b7): compose dynamic qualified AI supply`. This is the latest engineering commit before this ROADMAP truth update; use `git log -1` for the truth-update commit itself. |
+| Current milestone | **B8 — INTEGRATION-READY. Internal Prediction engineering is complete; public commercial activation and Rule 3 proof remain external.** |
+| Milestone status | `b8_integration_ready_prediction_intelligence_external_activation_pending`. **PROVEN ENGINEERING-COMPLETE:** dynamic normalized venue domain; conservative canonical event identity and matching; agent search; derived-only public projection; truthful degradation, freshness, and provenance; PostgreSQL history with rolling retention and restart reconstruction; data-driven positive-contribution pricing; fail-closed commercial/qualification policy; and replay-safe x402 execution. **PROVEN live read-only qualification:** Polymarket and Kalshi each passed three current public calls and normalization on 2026-08-09, with no mutation or spend. **EXTERNALLY BLOCKED:** commercial reuse/derived sale/history retention approval, production migration/config/deploy, public discovery activation, and a funded outside x402 proof. Prediction therefore remains registry-truthful `unavailable` and is not `CLOSED` under Rule 3. B7 remains at its owner-supplied checkpoint `4dee1f0` and was not reopened or redesigned. |
+| Current branch | `work/b8-prediction-20260809`, based exactly on B7 checkpoint `4dee1f062eefe21232c1e8366aad12b453bd931c`; B8 start checkpoint `82096b1`; engineering commit `96cdf43`. `main`, the frozen B12 visual branch, `/opt/clervo-ai`, and `ai.clervo.dev` were not modified. |
+| Latest commit | `96cdf43` — `feat(b8): build prediction intelligence milestone`. This is the latest engineering commit before this ROADMAP truth update; use `git log -1` for the truth-update commit itself. |
 | Current production release | Cloud Run origin `clervo-api-production-00033-vub` at 100% traffic, image `sha256:7bb3211061e8cbca5abfa2f1930f7888877aaaed065fd2f54c8905aedf5422ad`, `CLERVO_RELEASE_ID=777b7c616e3e384c9a4b2b7112cef74521b7f7a5`; API edge worker `clervo-api-edge-production` version **`74efc7db-d0a7-49a1-8d4e-9f20e049fb0e`** (redeployed 2026-08-07T06:52Z for the B6 `llms.txt` install section — generated documents only, no runtime code); site worker `clervo-site-production` version **`d9ebbe9d-2f7d-4ab8-9d23-c79928f359b2`** (deployed 2026-08-07T08:0xZ in B7 to publish the refreshed discovery documents). Cloud Run and the API edge worker were **not** redeployed in B7: the catalog and registry are read by the deployed origin, `api.clervo.dev/v1/models` already served 18 live / 3 supply-paused before the site deploy, and no runtime code changed. **The site deploy did also ship the four previously-unshipped site commits including `bb473ed` (layout)**, because they were already built into `dist` and the site worker had been held back since 2026-08-06; no visual file was edited in B7. One substantive public change went out with it: the `llms.txt` "Command line" section, which told readers to run `npx @clervo/router`, is now **suppressed** until the package is actually published — the generator checks the npm registry, so a reader is never handed an install command that fails. |
 | Rollback targets | Cloud Run revision `clervo-api-production-00031-kos` (image `sha256:63ad8aaa619f46fac962f9366c26eb13c7c241dc8e3d21c773ede4f43f62f44f`, the pre-B4 origin) — roll back with `gcloud run services update-traffic clervo-api-production --project bloxsniper-prod --region us-central1 --to-revisions clervo-api-production-00031-kos=100`. The older `clervo-api-production-00028-nor` (image `sha256:78718e50a50c2a74f639a4da5a03e80988d95611014d9c310cba1fe4d5d79df9`) remains available behind it. API edge `6e17ea78-32eb-4b87-8781-72aa37f90321` (the pre-B3 edge); site `4939f9da-765d-4f3c-a96f-6f0384fe8338`. Roll a worker back with `npx wrangler rollback <version> --config apps/worker/wrangler.jsonc` or `apps/site/wrangler.jsonc`. |
 | Latest externally verified customer outcome | A settled x402 payment on `https://api.clervo.dev/v1/search/paid`: 0.006 USDC (6000 atomic) on Base mainnet `eip155:8453` to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`, operation `op_0549a567589cc87d31231376f9986602`, receipt `rcpt_582a23e6f1e066fe25984119c59c2ab0`, returning a real search result. Replaying idempotency key `idem_b4_bazaar_entry_search_01` returned the same operation with no second authorization and no second charge; the on-chain USDC delta is exactly one transfer of 6000 atomic units. `search.web` reaches `paid_outcome_verified`. The free path outcome above still holds at `externally_repeated`. |
-| Current blockers | **B7 EXTERNALLY BLOCKED only:** authenticated `ai.clervo.dev` qualified-catalog endpoint and frozen schema; production catalog token/binding; owner commercial-permission decisions for immutable supply IDs; production migration/deploy/live proof. The three legacy gateway qualifications are now expired and the other 18 expire 2026-08-14; the legacy expiry failure is truthful and is not dynamic supply authority. B6 residues remain a valid npm publish/provenance path and USDC for one paid Router proof. |
-| External dependencies | B7: authoritative `ai.clervo.dev` catalog endpoint, production binding/deploy, owner commercial permission and any subsidy/free-tier activation decision. B6: npm publication authority/provenance and funded proof wallet. Later milestones retain their own terms/supply dependencies. |
-| Owner approvals waiting | All three B6 approvals were granted 2026-08-07. **Production deploy: spent** (edge worker `74efc7db-d0a7-49a1-8d4e-9f20e049fb0e`, generated files only, verified live, no regression, no rollback needed). **Two could not be executed and need an owner action, not another approval:** (1) **npm publish of `@clervo/router` 0.1.0** — needs a valid `@clervo`-scoped write token, and a choice between publishing from CI with provenance intact or dropping `provenance: true`; the tarball is ready (35 files, 40.4 kB, shasum `852dd6105c29debf52459d45cff2bcec6df4ff94`). Until it lands, install-from-npm is unverified. (2) **One real paid operation** — send a small amount of USDC on Base mainnet to `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`, then `clervo run search.web "<query>" --key <key>`; the machine already enforces per-operation 0.007 and daily 0.01 USDC. Separately, a Bazaar keepalive settlement inside 30 days of `2026-08-06` will need approval again, as will any further Bazaar listing requiring its own settlement. |
-| Dates that move on their own | **PROVEN:** the three legacy gateway qualifications reached expiry on 2026-08-09; the other 18 reach expiry 2026-08-14. The dynamic composer fails closed on snapshot, qualification, cost, competitor-evidence, policy, and permission expiry. **30 days after any Bazaar listing:** a resource with no settlement in that window is dropped from the CDP catalog. |
+| Current blockers | **B8 external only:** owner legal/commercial decisions for Polymarket and Kalshi derived sale, attribution, rate, and retained-history use; owner approval to apply migration `0008-prediction-dynamic-venues.sql`; public runtime/edge enablement and deploy; funded external x402 settlement/replay/repeat proof. Source routing fails closed until all source and global publication fields are approved. B7's earlier integration dependencies and B6's npm/funded-Router residues remain separately recorded; B8 did not reopen them. |
+| External dependencies | B8: recorded owner commercial permission per source, production migration/config/deploy, and funded unrelated-client proof. No paid supplier commitment or subsidy is required by the current engineering proposal. B7 and B6 retain their previously recorded external dependencies. |
+| Owner approvals waiting | B8 requires: (1) commercial/retention/attribution authority for each active Prediction source; (2) production DB migration `0008`; (3) public runtime and edge activation plus deploy; (4) a tightly bounded funded external x402 proof. No free/subsidized tier is enabled, no paid supplier commitment was created, and no production mutation was made. Earlier B6/B7 owner actions remain as recorded in their milestone sections. |
+| Dates that move on their own | **PROVEN:** B8's two technical qualifications expire at `2026-08-16T10:19:47.786Z` and runtime publication fails closed after expiry. Competitor prices are observations, not durable promises, and must be refreshed before activation. Existing B7 and Bazaar expiry rules remain in force. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
 | B2 metrics (observed 2026-08-06T14:42:37.447Z) | Conformance defects open 0. Naive free-search rejection rate 0: `withoutIdempotencyKeyStatus` 200. Site 404 correctness: a nonexistent URL returns 404. |
 | B3 metrics (observed 2026-08-06T15:14:21.853Z) | Discovery surfaces live 5 of 5, including `api.models`, `api.well_known_x402`, and `api.llms_txt` at status 200. Model list entries 21 (18 sellable, 3 supply-paused with a reason). x402 manifest payable resources 3, free resources 1. |
 | B4 metrics (observed 2026-08-06T17:01:41.422Z) | Bazaar-valid resources 3 of 3. Indexed resources 1 of 3: `https://api.clervo.dev/v1/search/paid`, `index.active: true`, last crawled `2026-08-06T16:59:46.261Z`. Settlements executed 1, total 0.006 USDC. AI routes quoting below the 1000-atomic minimum 0 — the floor is applied as a minimum billable charge above the derived price, so no route is sold below cost. Days until the search listing idles out: 30 from `2026-08-06`. |
 | B5 metrics (observed 2026-08-07T05:22:00Z) | Products routing through one commerce core 6 of 6 (already true before this milestone). Duplicated commerce-surface copies removed: result verifiers 2 to 1, response-envelope builders 4 to 1, request-hash builders 4 to 1, fixed-price lookups 2 to 1, provenance builders 4 to 1. Duplicate-charge incidents 0. Payment-path defect count 0. Commerce suite 18 of 18 before and after each product move; full acceptance 262 of 262, unchanged. |
 | B7 metrics (observed 2026-08-09, current engineering tree) | **PROVEN:** full acceptance 293/293; final B7-focused suite 34/34; dynamic property suite 14/14; contract validation 97 schemas/132 fixtures; lint 699 files; secret scan PASS; external calls 0 and USDC spent 0 during acceptance. Dynamic catalog has no fixed count and the legacy catalog ceiling was removed. BlockRun's direct public model API returned 91 entries; three exact GPT-5.6 comparisons were observed and recorded as refreshable data: Luna 0.2/1.2, Terra 2/12, Sol 5/30 USD per million input/output. **UNVERIFIED after evidence expiry:** those competitor values are ignored after their recorded validity window. **LIVE legacy observation only:** 21 entries, 18 live/3 paused; no dynamic live cutover claim. |
+| B8 metrics (observed 2026-08-09, engineering tree) | **PROVEN:** normal acceptance 305/305; B8-focused suite 34/34; contract validation 99 schemas/134 fixtures; lint 707 files; release freeze/discovery/build/secret scan pass; six live read-only qualification calls, three per source, all successful; Polymarket latency observations 20/22.4/124.1 ms min/median/max and Kalshi 22.2/87.8/92.8 ms; owner spend 0 and mutations 0. These are six observations, not uptime or latency guarantees. Runtime/receipt fields make operation mix, outcome/degradation, venue/match/staleness coverage, revenue, supplier cost, margin, wallet, and multi-product accounting measurable. **UNKNOWN/zero production evidence:** Prediction production calls, revenue, wallets, and external paid outcomes were not fabricated. |
 | B6 metrics (observed 2026-08-07T06:53:00Z, at close) | Installs 2, **both from the local tarball, 0 from npm** (unpublished). Wallets created 2 — one throwaway, deleted after confirming on-chain it held nothing; one dedicated test wallet retained at `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`, `0700`/`0600`, recovery phrase never printed to any transcript, log, or commit. **Free first success: yes, and it happened before any wallet existed**, which is the ordering advantage over BlockRun. Wallets funded 0. Paid outcomes 0. Settlements 0. **USDC spent 0.** Fail-closed cycle exercised live: 1 refused operation, 1 retry blocked before signing, 1 reconciliation resolving `not_settled`. Buyer-side ceiling configured: per-operation 0.007, daily 0.01 USDC. Live catalog: 4 capabilities, 1 free, 3 payable; `search.web` quoted 0.006 USDC to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`. Package: 35 files, 40.4 kB packed, 17 installed dependencies, no TypeScript sources or wallet material. Tests: B6 suite 10 of 10; `shared-paid-operation` 5 of 5 unchanged; full contract suite 720 of 722, the 2 failures being `n13.3` and `n13.5` site tests that fail identically with all B6 work stashed and are therefore inherited from B5. Gates: lint PASS (677 files), secret scan PASS with 0 secret values printed. |
-| Exact next task | **Finish B7 live integration:** freeze and expose the authenticated qualified-supply contract from `ai.clervo.dev`; bind its immutable IDs to compatibility customer IDs; record owner commercial permission decisions; configure `CLERVO_AI_RUNTIME_MODE=qualified_catalog`, catalog URL/token, migration, and generated public model artifact; deploy under explicit approval; then prove every dynamically listed sellable route from outside. Do not open B8 until that proof passes. |
-| Files and services for that task | Permanent B7: `qualified-ai-supply.ts`, `catalog-source.ts`, `product-catalog.ts`, `product-runtime.ts`, `free-tier.ts`, `clervo-ai-gateway.ts`, `ai-dynamic-production-runtime.mjs`, `compose-qualified-ai-catalog.mjs`, dynamic policy/identity/evidence JSON, and `b7-dynamic-ai.test.mjs`. `requalify-ai-routes.mjs`, the per-provider adapters, and merge scripts are explicitly legacy/recovery-only and are not the permanent supply authority. Live external authority remains `ai.clervo.dev`; no `/opt/clervo-ai` change was made. |
+| Exact next task | Obtain and record the B8 owner commercial decisions; refresh technical/competitor evidence if expired; approve/apply migration `0008`; configure paid Prediction runtime and edge publication; deploy; then perform the unrelated-client discovery → 402 → funded execution → evidence/receipt → replay/no-double-charge → second-operation proof. Once that external sequence passes, close B8 and open B9 Crypto Intelligence. Do not start B9 in this checkpoint. |
+| Files and services for that task | Permanent B8: `services/prediction`, `adapters/prediction`, `prediction-production-runtime.mjs`, `prediction-market-store.mjs`, `prediction-public-policy.mjs`, `x402-paid-prediction.mjs`, source/pricing/competitor catalogs, migrations `0007`/`0008`, Prediction schemas/fixtures, the live qualification script, and the B8/Prediction contract and HTTP suites. Production API/edge/PostgreSQL are external activation targets; none was mutated here. |
 
 ---
 
@@ -1033,55 +1034,112 @@ Every milestone below carries the same seventeen fields.
 ### B8 — Prediction live
 
 1. **Milestone:** B8 — Prediction live
-2. **Status:** `not_started`
-3. **Customer-visible outcome:** Product four is externally usable: an unrelated
-   customer executes a real prediction-market comparison, pays, and receives a
-   useful derived result with evidence and an accurate receipt.
+2. **Status:** `integration_ready`. **PROVEN ENGINEERING-COMPLETE; EXTERNALLY
+   BLOCKED from `closed`:** source commercial/history authority, production
+   migration/config/deploy, public activation, and funded outside proof remain.
+3. **Customer-visible outcome:** **PROVEN fixture/local HTTP:** an agent can
+   search from a topic, inspect normalized market state and canonical events,
+   compare safely matched venue markets, obtain disagreement/movement/history
+   with freshness and provenance, receive an exact x402 quote and receipt, and
+   replay without a second execution or settlement. **EXTERNALLY BLOCKED:** no
+   unrelated customer has completed that sequence on the public URL, so the
+   product remains truthfully unavailable rather than advertised early.
 4. **Why it matters commercially:** Product four moves Clervo from three
    products to four and creates the first natural multi-product workflow —
    prediction analysis pairs with search and AI on the same wallet.
-5. **Preserve:** `services/prediction`, `adapters/prediction`,
-   `apps/api/src/x402-paid-prediction.mjs`, and their passing contract tests.
-   **This code works. Do not rebuild it.**
-6. **Current evidence:** Built, wired, tests pass, upstreams publicly reachable
-   and unauthenticated, edge returns 404 because
-   `CLERVO_PREDICTION_PUBLIC_ENABLED` is unset and the deploy policy has no
-   block for it.
-7. **Research:** For each upstream, the exact terms distinction between raw
-   pass-through (usually forbidden) and derived value-added output (often
-   permitted), read from the current published terms. One question: what
-   operation may we sell.
-8. **Work:** **Technical wiring alone does not complete this milestone.**
-   Establish commercially permitted use in writing and record supplier, allowed
-   operations, retention policy, price basis, and hard stop. **If current
-   supplier terms are insufficient, this milestone chooses another supplier,
-   owned infrastructure, or a narrower permitted derived-output product — it
-   does not stop at blocked.** Shape the output as comparison, disagreement, and
-   uncertainty across markets, which is our analysis, not their feed. Price with
-   positive margin. Enable the runtime mode and the public edge flag. Ship
-   discovery with it.
-9. **Dependencies:** B5 (commerce core); Track C terms decision; owner legal
-   decision.
-10. **Parallel:** Track C continues on Crypto and RPC.
-11. **Launch-critical tests:** the existing Prediction public-HTTP test, now
-    inside `npm test`; payment binding; idempotency; replay; receipt integrity;
-    SSRF protection on upstream fetches; spend limits.
+5. **Preserve:** **PROVEN COMPLETE.** Existing `services/prediction`,
+   `adapters/prediction`, `apps/api/src/x402-paid-prediction.mjs`, gateway,
+   normalization, signals, history, source clients, public HTTP path, and tests
+   were extended rather than rebuilt. Existing `pmkt_` market identity and all
+   five product IDs remain compatible.
+6. **Current evidence:** **PROVEN:** runtime production path uses PostgreSQL,
+   not the in-memory store; migrations `0007` and `0008` support durable market
+   state/history and dynamic venue IDs; source policy fails closed unless
+   technical qualification is current and commercial/public-routing flags are
+   all approved. Polymarket and Kalshi each passed three public read-only calls
+   and current normalization at `2026-08-09T10:19:47.786Z`. Edge/public registry
+   remain unavailable and no production or paid outside proof is claimed.
+7. **Research:** **PROVEN current observations recorded as data.** Direct
+   BlockRun market/search/candlestick challenges quoted 8500 atomic USDC; its
+   documented matching routes returned 404 in direct probes and therefore stay
+   `UNVERIFIED`. Predexon advertises a bounded free plan; DevDrops 5000/request;
+   BlockForecast raw feed 1000/request; PredictingAPI 250000/query; Manifold a
+   public rate-limited API with a separate commercial-AI data-license warning;
+   Opinion and Limitless serious but gated/authenticated interfaces without a
+   verified public price. Current Polymarket/Kalshi documentation proves public
+   read access, not Clervo's commercial resale/retention authority.
+8. **Work:** **PROVEN COMPLETE internally / SUPERSEDED by a stronger derived
+   implementation:**
+   - Venue-specific adapters now feed a venue-generic normalized domain; adding
+     a future venue requires adapter, qualification/config, terms decision, and
+     tests, not core comparison/history/payment rewrites.
+   - `pevt_` canonical event identity is separate from stable `pmkt_` venue
+     identity. Auto-match requires exact outcomes, close time, numeric/date and
+     polarity/cancellation anchors, resolution-authority host, exact question,
+     and at least 8500 confidence; uncertain candidates remain review/unresolved
+     or reject and cannot be compared as equivalent.
+   - `search` is a compatibility alias over `prediction.markets`, with bounded
+     multi-page venue discovery and combined cursors, not a duplicated backend.
+   - Customer output is a value-added projection: proposition, normalized
+     probabilities/overround, canonical constituents, disagreement/movement,
+     freshness and evidence. Raw description, rules text, venue prices,
+     liquidity, volume, and fees are not passed through.
+   - Partial failures yield truthful available/degraded/unavailable states; one
+     venue never fabricates cross-venue disagreement. Deadlines cancel stalled
+     upstream work.
+   - PostgreSQL history uses transaction advisory locks, monotonic sequence,
+     hash linking, deterministic replay, actual-latest reads, and rolling bounded
+     retention; restart reconstruction is proven. In-memory retention follows
+     the same rolling semantics.
+   - Source and pricing policy are data-driven and expiration-aware. Public
+     runtime startup remains deliberately blocked while commercial permission
+     is unresolved.
+9. **Dependencies:** **PROVEN COMPLETE:** B5 commerce integration and all B8
+   repository engineering. **EXTERNALLY BLOCKED:** owner source permission,
+   migration/config/deploy, and funded outside proof. No paid supplier or
+   subsidy dependency is part of the implemented launch proposal.
+10. **Parallel:** None executed in this checkpoint; B9/B10/B11 and frozen B12
+    architecture/visuals were not modified.
+11. **Launch-critical tests:** **PROVEN COMPLETE.** The existing Prediction
+    public-HTTP test remains in normal `npm test`; focused B8 acceptance also
+    covers normalization, safe canonical matching and deceptive non-matches,
+    source degradation/malformed input, durable reconstruction/retention,
+    disagreement/movement/insufficient evidence, current pricing evidence,
+    SSRF/private origins/credentials/path traversal/redirect/body/timeout/JSON,
+    bounded pagination/deadlines, quote binding, execution, receipt, idempotency,
+    replay, conflict, failure quarantine, and no second settlement.
 12. **External acceptance proof:** From an unrelated machine — discover the
     product, read its price and limits, execute a real operation, pay, receive a
     useful derived result with evidence, receive an accurate receipt, retry
     without double charge, and repeat successfully. Proof level
-    `paid_outcome_verified`.
-13. **Visibility shipped:** Registry state, catalog, pricing, status, product
-    page, quick start, curl example, `llms.txt`, `/.well-known/x402`,
-    `/v1/models`-adjacent operation listing, Connect catalog entry.
-14. **Metrics:** Prediction calls, revenue, gross margin, wallets using it,
-    multi-product wallets.
-15. **Owner approval:** **Legal and commercial decision on derived output.**
-    Production deploy; secret changes if a new supplier is chosen.
-16. **Stopping condition:** All nine finished-product conditions pass from
-    outside, with recorded commercial authority.
-17. **Continuation point:** Open B9. First task there: fix the Crypto launch
-    scope from Track C.
+    `paid_outcome_verified`. **EXTERNALLY BLOCKED / NOT CLAIMED:** no production
+    deploy, funded Prediction settlement, unrelated-client result, receipt,
+    replay, or second independent operation occurred in B8 engineering.
+13. **Visibility shipped:** **PROVEN COMPLETE as truthful internal/machine
+    readiness:** source registry, operation catalog, price catalog, internal
+    schemas, search quick-start example, x402 resource/discovery integration,
+    and normal discovery generation all agree that Prediction is unavailable.
+    No operation is publicly listed while it cannot be served. **EXTERNALLY
+    BLOCKED:** public lifecycle promotion, `llms.txt`/x402/operation listing and
+    Connect projections become visible only after approved activation/deploy.
+    The B12 product-page/visual boundary was not modified.
+14. **Metrics:** **PROVEN INSTRUMENTABLE:** product ID and outcome state expose
+    operation mix/success/degradation; venue states, events, match confidence,
+    and freshness expose coverage/match/stale rates; shared receipts/accounting
+    expose charge, supplier cost, margin, wallet, and multi-product use. No
+    production count, revenue, uptime, or wallet number is invented.
+15. **Owner approval:** (1) legal/commercial permission for derived sale,
+    retention, attribution, and rate posture per Polymarket/Kalshi source; (2)
+    production migration `0008`; (3) runtime/edge activation and deploy; (4)
+    bounded funded external x402 proof. No paid supplier commitment or subsidy
+    activation is requested by the current implementation.
+16. **Stopping condition:** **INTEGRATION-READY, not CLOSED.** Every repository
+    requirement is complete and normal acceptance passes. Closure still requires
+    all nine conditions from outside with recorded commercial authority. The
+    runtime and public truth fail closed until those external decisions/actions.
+17. **Continuation point:** After B8 activation and external proof, mark B8
+    closed and open B9. Engineering is ready for B9 Crypto Intelligence, but B9
+    was not started here.
 
 ---
 
