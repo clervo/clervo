@@ -3,6 +3,7 @@ export * from './ai-model.js';
 export * from './ai-routing.js';
 export * from './ai-execution.js';
 export * from './ai-http.js';
+export * from './qualified-ai-supply.js';
 export * from './audit.js';
 export * from './canonical-request.js';
 export * from './catalog.js';

@@ -1,0 +1,42 @@
+{
+  "schema": "qualified-ai-supply-catalog",
+  "valid": true,
+  "value": {
+    "schemaVersion": "qualified-ai-supply-catalog.v1",
+    "catalogRevision": "gateway:2026-08-09:fixture-a",
+    "generatedAt": "2026-08-09T10:05:00.000Z",
+    "sourceObservedAt": "2026-08-09T10:00:00.000Z",
+    "validUntil": "2026-08-10T10:05:00.000Z",
+    "models": [
+      {
+        "gatewaySupplyId": "aisupply_fixture_chat_alpha",
+        "runtimeModelId": "runtime/chat-alpha",
+        "marketModelId": "market/chat-alpha",
+        "display": { "name": "Chat Alpha" },
+        "modalities": ["chat"],
+        "inputTypes": ["text"],
+        "outputTypes": ["text"],
+        "capabilities": ["text_input", "text_output", "streaming"],
+        "limits": { "contextTokens": 128000, "maximumOutputTokens": 16000 },
+        "qualification": { "state": "qualified", "checkedAt": "2026-08-09T10:00:00.000Z", "expiresAt": "2026-08-12T10:00:00.000Z", "evidenceRef": "evidence://fixture/chat-alpha" },
+        "availability": { "state": "available", "reason": null, "observedAt": "2026-08-09T10:00:00.000Z" },
+        "upstreamCost": {
+          "state": "known",
+          "pricing": {
+            "currency": "USD",
+            "decimals": 6,
+            "inputTokenMicrosPerMillion": 1000000,
+            "cachedInputTokenMicrosPerMillion": 1000000,
+            "outputTokenMicrosPerMillion": 5000000,
+            "reasoningTokenMicrosPerMillion": 0,
+            "imageMicrosEach": 0,
+            "audioMicrosPerThousandCharacters": 0
+          },
+          "authorityRef": "cost://fixture/chat-alpha",
+          "observedAt": "2026-08-09T10:00:00.000Z",
+          "validUntil": "2026-08-12T10:00:00.000Z"
+        }
+      }
+    ]
+  }
+}

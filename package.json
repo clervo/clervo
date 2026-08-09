@@ -88,6 +88,7 @@
     "test:n6.3": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n6.3.test.mjs",
     "test:n6.4": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n6.4.test.mjs",
     "test:n6.5": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n6.5.test.mjs",
+    "test:b7": "node ./scripts/verify-runtime.mjs && npm run generate:discovery && node --test ./tests/contract/b7-dynamic-ai.test.mjs ./tests/contract/ai-production-runtime.test.mjs ./tests/contract/ai-public-pricing.test.mjs ./tests/contract/ai-public-http.test.mjs ./tests/contract/ai-route-integrity.test.mjs && node ./scripts/validate-contracts.mjs",
     "test:stage6:local": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n6.1.test.mjs ./tests/contract/n6.2.test.mjs ./tests/contract/n6.3.test.mjs ./tests/contract/n6.4.test.mjs ./tests/contract/n6.5.test.mjs && node ./scripts/validate-contracts.mjs && node ./scripts/check-ai-supply-readiness.mjs --report-only",
     "test:n7.1": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n7.1.test.mjs",
     "test:n7.2": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n7.2.test.mjs",
@@ -205,7 +206,9 @@
     "test": "node ./scripts/verify-runtime.mjs && node ./scripts/run-acceptance.mjs",
     "test:contracts": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/*.test.mjs",
     "ai:check-expiry": "node ./scripts/verify-runtime.mjs && node ./scripts/ai/check-qualification-expiry.mjs",
-    "ai:requalify": "node ./scripts/verify-runtime.mjs && npm run build && node ./scripts/ai/requalify-ai-routes.mjs"
+    "ai:compose-catalog": "node ./scripts/verify-runtime.mjs && npm run build && node ./scripts/ai/compose-qualified-ai-catalog.mjs",
+    "ai:requalify": "node -e \"throw new Error('direct-provider qualification is legacy recovery only; use npm run ai:requalify:legacy-recovery -- --legacy-recovery deliberately')\"",
+    "ai:requalify:legacy-recovery": "node ./scripts/verify-runtime.mjs && npm run build && node ./scripts/ai/requalify-ai-routes.mjs"
   },
   "dependencies": {
     "@kubernetes/client-node": "1.4.0",

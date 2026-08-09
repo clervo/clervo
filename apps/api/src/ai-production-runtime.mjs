@@ -8,6 +8,7 @@ import { createBoundedAiHttpTransport, OpenAiCompatibleAdapter } from '../../../
 import { VertexEmbeddingAdapter } from '../../../dist/adapters/ai/src/vertex-embedding.js';
 import { VertexGeminiAdapter } from '../../../dist/adapters/ai/src/vertex-gemini.js';
 import { createAiPublicPricing } from './ai-public-pricing.mjs';
+import { createDynamicAiProductionRuntime } from './ai-dynamic-production-runtime.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const catalogFiles = Object.freeze({
@@ -64,6 +65,8 @@ function catalogRouteId(exactModelId) {
 }
 
 export async function createAiProductionRuntime({ env = process.env, fetcher = globalThis.fetch, artifactStore, artifactStoreFactory } = {}) {
+  if (env.CLERVO_AI_RUNTIME_MODE === 'qualified_catalog') return createDynamicAiProductionRuntime({ env, fetcher, artifactStore, artifactStoreFactory });
+  if (env.CLERVO_AI_RUNTIME_MODE !== undefined && env.CLERVO_AI_RUNTIME_MODE !== 'legacy_direct_provider_recovery') throw new TypeError('ai_runtime_mode_invalid');
   const families = parseFamilies(env.CLERVO_AI_ROUTE_FAMILIES);
   if (typeof fetcher !== 'function') throw new TypeError('ai_runtime_fetcher_invalid');
   if (artifactStoreFactory !== undefined && typeof artifactStoreFactory !== 'function') throw new TypeError('ai_runtime_artifact_store_factory_invalid');
@@ -156,6 +159,7 @@ export async function createAiProductionRuntime({ env = process.env, fetcher = g
   const values = await catalogs();
   const enabledRouteIds = [...adapters.map(({ routeId }) => routeId), ...mediaRouteIds];
   return Object.freeze({
+    supplyAuthority: 'legacy_direct_provider_recovery',
     adapters: Object.freeze(adapters),
     ...(resolveArtifactStore === undefined ? {} : {
       adapterFactory(authorization) {

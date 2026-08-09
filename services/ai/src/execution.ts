@@ -22,11 +22,21 @@ export interface AiAdapterExecution {
 
 export interface AiExecutionAdapter {
   readonly routeId: string;
+  supportsRoute?(routeId: string): boolean;
   execute(input: Readonly<{
     request: AiExecutionRequest;
     exactModelId: string;
+    runtimeModelId?: string;
+    routeId?: string;
     signal: AbortSignal;
   }>): Promise<Readonly<AiAdapterExecution>>;
+}
+
+export interface AiExecutionRuntimeBinding {
+  routeId: string;
+  customerModelId: string;
+  runtimeModelId: string;
+  executionEligible: boolean;
 }
 
 export type AiExecutionFailureCode =
@@ -66,6 +76,7 @@ export async function executeAiOperation(input: {
   catalog: Readonly<AiModelCatalog>;
   routes: readonly AiRuntimeRoute[];
   adapters: readonly AiExecutionAdapter[];
+  runtimeBindings?: readonly Readonly<AiExecutionRuntimeBinding>[];
   startedAt: string;
   signal?: AbortSignal;
   clock?: () => number;
@@ -93,13 +104,16 @@ export async function executeAiOperation(input: {
   }
   const selectedRouteId = decision.selectedRouteId;
   if (selectedRouteId === undefined) throw new TypeError('ai_selected_route_missing');
-  const adapter = input.adapters.find(({ routeId }) => routeId === selectedRouteId);
+  const adapter = input.adapters.find((candidate) => candidate.routeId === selectedRouteId || candidate.supportsRoute?.(selectedRouteId) === true);
   if (adapter === undefined) {
     monitor(input.monitor, { occurredAt: input.startedAt, operationId: input.request.operationId, productId: input.request.productId, outcome: 'execution_failed', routeId: selectedRouteId });
     return failed('adapter_missing');
   }
   const runtime = input.routes.find(({ definition }) => definition.routeId === selectedRouteId);
   if (runtime === undefined) return failed('adapter_missing');
+  const binding = input.runtimeBindings?.find(({ routeId }) => routeId === selectedRouteId);
+  if (input.runtimeBindings !== undefined && (binding === undefined || !binding.executionEligible || binding.customerModelId !== decision.selectedExactModelId)) return failed('adapter_missing');
+  const runtimeModelId = binding?.runtimeModelId ?? decision.selectedExactModelId!;
   const deadlineMs = Date.parse(input.request.deadlineAt);
   const remainingMs = deadlineMs - (input.clock?.() ?? Date.now());
   if (remainingMs <= 0) return failed('deadline_exceeded');
@@ -109,8 +123,8 @@ export async function executeAiOperation(input: {
   let timer: NodeJS.Timeout | undefined;
   try {
     const timeout = new Promise<never>((_, reject) => { timer = setTimeout(() => { controller.abort(); reject(new Error('deadline_exceeded')); }, remainingMs); });
-    const execution = await Promise.race([adapter.execute({ request: input.request, exactModelId: decision.selectedExactModelId!, signal: controller.signal }), timeout]);
-    if (execution.modelIdentity !== decision.selectedExactModelId) {
+    const execution = await Promise.race([adapter.execute({ request: input.request, exactModelId: decision.selectedExactModelId!, runtimeModelId, routeId: selectedRouteId, signal: controller.signal }), timeout]);
+    if (execution.modelIdentity !== runtimeModelId) {
       monitor(input.monitor, { occurredAt: input.startedAt, operationId: input.request.operationId, productId: input.request.productId, outcome: 'execution_failed', routeId: selectedRouteId });
       return failed('model_identity_mismatch');
     }

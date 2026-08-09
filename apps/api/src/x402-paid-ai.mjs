@@ -9,7 +9,7 @@ function refuse(code, status = 503) {
   throw Object.assign(new Error(code), { status });
 }
 
-export function createX402PaidAiProcessor({ service, stateStore, publicPricing, adapters, adapterFactory, acquireExecution, monitor } = {}) {
+export function createX402PaidAiProcessor({ service, stateStore, publicPricing, adapters, adapterFactory, runtimeBindings, acquireExecution, monitor } = {}) {
   if (!publicPricing || typeof publicPricing.quote !== 'function') throw new TypeError('invalid_ai_public_pricing');
   if (!Array.isArray(adapters) || adapters.some((adapter) => typeof adapter?.routeId !== 'string' || typeof adapter?.execute !== 'function')) throw new TypeError('invalid_ai_adapters');
   if (adapterFactory !== undefined && typeof adapterFactory !== 'function') throw new TypeError('invalid_ai_adapter_factory');
@@ -50,6 +50,7 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
             catalog: prepared.quote.catalog,
             routes: prepared.quote.routes,
             adapters: executionAdapters,
+            runtimeBindings: prepared.quote.runtimeBindings ?? runtimeBindings,
             startedAt: now,
             clock: () => Date.parse(now),
             monitor,

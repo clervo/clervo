@@ -204,6 +204,7 @@ export function createSearchServer({
   aiPublicPricing,
   aiAdapters,
   aiAdapterFactory,
+  aiRuntimeBindings,
   aiArtifactAccess,
   aiMonitor,
   sandboxPublicRunnerDigest,
@@ -264,6 +265,7 @@ export function createSearchServer({
     publicPricing: aiPublicPricing,
     adapters: aiAdapters,
     adapterFactory: aiAdapterFactory,
+    runtimeBindings: aiRuntimeBindings,
     acquireExecution,
     monitor: aiMonitor,
   });

@@ -6,8 +6,9 @@ name: AI qualification expiry guard
 # a failing check with time left to requalify.
 #
 # The guard only reads the catalog. Requalification stays a deliberate action
-# (`npm run ai:requalify`) because it calls suppliers with production
-# credentials, which is not something a scheduled job should do unattended.
+# (`npm run ai:requalify:legacy-recovery -- --legacy-recovery`) because it is a
+# pre-cutover recovery tool that calls suppliers with production credentials,
+# not the permanent qualified-catalog authority and not a scheduled action.
 
 on:
   schedule:

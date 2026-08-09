@@ -74,7 +74,7 @@ process.stdout.write(`${JSON.stringify({
 }, null, 2)}\n`);
 
 if (expired.length > 0 || unreadable.length > 0) {
-  process.stderr.write(`check-qualification-expiry: FAIL ${expired.length} expired, ${unreadable.length} unreadable; requalify with scripts/ai/requalify-ai-routes.mjs\n`);
+  process.stderr.write(`check-qualification-expiry: FAIL ${expired.length} expired, ${unreadable.length} unreadable; this is the legacy fixed catalog, so use the explicit recovery workflow or complete the qualified-catalog cutover\n`);
   process.exit(1);
 }
 

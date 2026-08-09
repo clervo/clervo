@@ -43,6 +43,11 @@ const contractTests = [
   // count, so supply can change without a test forcing a dead route to stay
   // listed.
   'tests/contract/ai-route-integrity.test.mjs',
+  // B7 dynamic supply proves model-count-independent composition, stable
+  // customer identity, fail-closed pricing/lifecycle, supplier redaction, and
+  // one generic gateway binding across catalog revisions.
+  'tests/contract/b7-dynamic-ai.test.mjs',
+  'tests/contract/ai-production-runtime.test.mjs',
 ];
 
 const gates = [

@@ -1,0 +1,10 @@
+{
+  "revision": "ai-free-tier:2026-08-09:dynamic-v1",
+  "enabled": false,
+  "zeroUpstreamCostRequired": true,
+  "automaticPaidOverageAllowed": false,
+  "perWalletDailyRequests": 20,
+  "globalDailyRequests": 1000,
+  "validUntil": "2026-11-07T08:41:51.000Z",
+  "ownerDecision": "Activation remains disabled until an authoritative zero-cost qualified route and an owner-approved acquisition budget exist."
+}

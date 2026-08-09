@@ -190,7 +190,7 @@ export function createAiModelCatalog(input: {
 }): Readonly<AiModelCatalog> {
   if (!/^aicat_[A-Za-z0-9]{20,64}$/u.test(input.catalogId)) throw new TypeError('ai_catalog_id_invalid');
   milliseconds(input.evaluatedAt, 'evaluated_at');
-  if (input.routes.length === 0 || input.routes.length > 100 || new Set(input.routes.map(({ routeId }) => routeId)).size !== input.routes.length) throw new TypeError('ai_catalog_routes_invalid');
+  if (input.routes.length === 0 || new Set(input.routes.map(({ routeId }) => routeId)).size !== input.routes.length) throw new TypeError('ai_catalog_routes_invalid');
   for (const route of input.routes) validateRoute(route, input.evaluatedAt);
   const routes = [...input.routes].sort((left, right) => left.routeId.localeCompare(right.routeId, 'en-US'));
   const qualifiedSupplyFamilies = [...new Set(routes.filter(({ qualification }) => qualification.status === 'passed').map(({ supplyFamilyId }) => supplyFamilyId))].sort();

@@ -740,7 +740,7 @@ const epochSeconds = (value) => (value === null || Number.isNaN(Date.parse(value
 // observed lifecycle state, proof level, and price live under `clervo` rather
 // than being folded into the standard fields: an OpenAI client ignores them,
 // and an agent that reads them cannot mistake a priced route for a proven one.
-const modelList = {
+const legacyModelList = {
   object: 'list',
   data: liveRegistry.aiRoutes
     .filter(({ state }) => CATALOGUED_STATES.has(state))
@@ -750,8 +750,6 @@ const modelList = {
       created: epochSeconds(routeQualifiedAt.get(route.routeId) ?? null),
       owned_by: 'clervo',
       clervo: {
-        routeId: route.routeId,
-        supplyFamilyId: route.supplyFamilyId,
         productIds: route.productIds,
         capabilities: route.capabilities,
         route: '/v1/ai/execute',
@@ -779,6 +777,27 @@ const modelList = {
     note: 'Lifecycle state and proof level are separate facts. A live route at quote_observed_unpaid is offered and priced; it is not a demonstrated paid outcome. A supply_paused route stays listed with its reason and is not sellable.',
   },
 };
+
+async function dynamicModelList() {
+  const configured = process.env.CLERVO_AI_PUBLIC_MODEL_CATALOG_FILE;
+  if (configured === undefined || configured === '') return null;
+  const file = path.resolve(root, configured);
+  if (!file.startsWith(`${root}${path.sep}`)) throw new Error('dynamic_ai_public_catalog_path_invalid');
+  const value = JSON.parse(await readFile(file, 'utf8'));
+  if (value?.object !== 'list' || !Array.isArray(value.data) || value.clervo === null || typeof value.clervo !== 'object') throw new Error('dynamic_ai_public_catalog_invalid');
+  const serialized = JSON.stringify(value);
+  for (const prohibited of ['gatewaySupplyId', 'runtimeModelId', 'upstreamCost', 'supplyFamilyId', 'providerId', 'authorityRef', 'ownerDecisionRef']) if (serialized.includes(prohibited)) throw new Error(`dynamic_ai_public_catalog_private_field:${prohibited}`);
+  if (value.data.some((entry) => typeof entry?.id !== 'string' || entry.id.length === 0 || entry.object !== 'model' || entry.owned_by !== 'clervo' || entry.clervo === null || typeof entry.clervo !== 'object')) throw new Error('dynamic_ai_public_catalog_model_invalid');
+  if (new Set(value.data.map(({ id }) => id)).size !== value.data.length) throw new Error('dynamic_ai_public_catalog_identity_duplicate');
+  if (typeof value.clervo.sourceValidUntil !== 'string' || Date.parse(value.clervo.sourceValidUntil) <= Date.now()) throw new Error('dynamic_ai_public_catalog_stale');
+  return value;
+}
+
+// The legacy registry remains the live projection until the authenticated
+// ai.clervo.dev catalog endpoint is bound. At cutover, the build supplies the
+// composer's public artifact through configuration; normal catalog revisions
+// then change data, never this generator.
+const modelList = await dynamicModelList() ?? legacyModelList;
 
 // The x402 v2 discovery listing shape: `items[]`, each with the resource URL and
 // the `accepts` array the resource actually answers with. Every entry is the

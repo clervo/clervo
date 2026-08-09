@@ -16,7 +16,6 @@
     "routes": {
       "type": "array",
       "minItems": 1,
-      "maxItems": 100,
       "items": {
         "type": "object",
         "required": ["routeId", "providerId", "supplyFamilyId", "exactModelId", "productIds", "capabilities", "requiredSecretNames", "quickAiPremium", "qualification"],

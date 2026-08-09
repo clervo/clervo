@@ -26,6 +26,11 @@ const workflowFile = 'packages/catalog/private-workflows.v1.json';
 const postFreezeSchemaNames = new Set([
   'ai-http-request.schema.json',
   'ai-http-result.schema.json',
+  'qualified-ai-supply-catalog.schema.json',
+]);
+const postFreezeFixtureNames = new Set([
+  'qualified-ai-supply-catalog-valid.json',
+  'qualified-ai-supply-catalog-secret-invalid.json',
 ]);
 // A schema inside the frozen set that has legitimately been edited since the
 // freeze. The manifest keeps the hash the schema had at the freeze, because
@@ -57,6 +62,9 @@ const frozenSchemaHashes = new Map([
   ['ai-credit-backed-pricing.schema.json', 'sha256:46f824e555a0b9df42099862f323fef3b59bc4a74b800ef455f12b51aa8c3c9c'],
   ['ai-edge-free-pricing.schema.json', 'sha256:cb62ad263ad47f5120d4499fcf4ffbf61ac388155b3a9b0dab4a9f0c08cf3ce6'],
   ['ai-free-tier-pricing.schema.json', 'sha256:7964a41a938e52b5925f62f3aff8171793ef9e3303285c2136d1b710eb5e3b22'],
+  // B7 removes the historical 100-route ceiling. The schema remains internal,
+  // and the immutable Stage 12 snapshot retains the pre-B7 descriptor hash.
+  ['ai-model-catalog.schema.json', 'sha256:0fcb7d7b2aa1759f18a3217e0e010dda0c85c3f55e6f627b35ae0bbe4491797f'],
 ]);
 const priceFiles = [
   'packages/contracts/src/search-http.ts',
@@ -72,7 +80,7 @@ const visibility = JSON.parse(visibilitySource);
 const workflows = await readJson(workflowFile);
 const allSchemaNames = (await readdir(path.join(root, 'packages/contracts/schemas'))).filter((name) => name.endsWith('.schema.json'));
 const schemaNames = allSchemaNames.filter((name) => !postFreezeSchemaNames.has(name));
-const fixtureNames = (await readdir(path.join(root, 'packages/contracts/fixtures'))).filter((name) => name.endsWith('.json'));
+const fixtureNames = (await readdir(path.join(root, 'packages/contracts/fixtures'))).filter((name) => name.endsWith('.json') && !postFreezeFixtureNames.has(name));
 const schemas = await descriptors('packages/contracts/schemas', schemaNames, frozenSchemaHashes);
 const fixtures = await descriptors('packages/contracts/fixtures', fixtureNames);
 const prices = await Promise.all(priceFiles.map(async (file) => Object.freeze({ file, sha256: await sha256(file) })));
@@ -80,7 +88,8 @@ const prices = await Promise.all(priceFiles.map(async (file) => Object.freeze({ 
 const visibleFiles = new Set(visibility.schemas.map(({ file }) => file));
 if (visibleFiles.size !== allSchemaNames.length || allSchemaNames.some((name) => !visibleFiles.has(name))) throw new Error('release_freeze_schema_visibility_incomplete');
 for (const name of postFreezeSchemaNames) {
-  if (!allSchemaNames.includes(name) || visibility.schemas.find(({ file }) => file === name)?.visibility !== 'public_wire') {
+  const expectedVisibility = name === 'qualified-ai-supply-catalog.schema.json' ? 'internal_control' : 'public_wire';
+  if (!allSchemaNames.includes(name) || visibility.schemas.find(({ file }) => file === name)?.visibility !== expectedVisibility) {
     throw new Error(`release_freeze_post_freeze_schema_invalid:${name}`);
   }
 }

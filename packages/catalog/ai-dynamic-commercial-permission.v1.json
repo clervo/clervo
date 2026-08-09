@@ -1,0 +1,10 @@
+{
+  "revision": "commercial-permission:2026-08-09:dynamic-v1",
+  "defaultState": "unresolved",
+  "decisions": [],
+  "ownerDecisionLedger": [
+    "Bind an owner-reviewed commercial permission decision to each immutable gatewaySupplyId before normal public sale.",
+    "Decide whether any route may use an explicitly bounded loss-leading subsidy; the default is no subsidy.",
+    "Confirm which customer-facing compatibility IDs must be assigned when the authoritative gateway supply identities become available."
+  ]
+}

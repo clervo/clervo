@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/qualified-ai-supply-catalog.schema.json",
+  "title": "Clervo qualified AI supply catalog boundary",
+  "$defs": {
+    "pricing": {
+      "type": "object",
+      "required": ["currency", "decimals", "inputTokenMicrosPerMillion", "cachedInputTokenMicrosPerMillion", "outputTokenMicrosPerMillion", "reasoningTokenMicrosPerMillion", "imageMicrosEach", "audioMicrosPerThousandCharacters"],
+      "properties": {
+        "currency": { "const": "USD" },
+        "decimals": { "const": 6 },
+        "inputTokenMicrosPerMillion": { "$ref": "#/$defs/rate" },
+        "cachedInputTokenMicrosPerMillion": { "$ref": "#/$defs/rate" },
+        "outputTokenMicrosPerMillion": { "$ref": "#/$defs/rate" },
+        "reasoningTokenMicrosPerMillion": { "$ref": "#/$defs/rate" },
+        "imageMicrosEach": { "$ref": "#/$defs/rate" },
+        "audioMicrosPerThousandCharacters": { "$ref": "#/$defs/rate" }
+      },
+      "additionalProperties": false
+    },
+    "rate": { "type": "integer", "minimum": 0, "maximum": 1000000000000 },
+    "costKnown": {
+      "type": "object",
+      "required": ["state", "pricing", "authorityRef", "observedAt", "validUntil"],
+      "properties": {
+        "state": { "const": "known" },
+        "pricing": { "$ref": "#/$defs/pricing" },
+        "authorityRef": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "validUntil": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "costUnknown": {
+      "type": "object",
+      "required": ["state", "pricing", "authorityRef", "observedAt", "validUntil"],
+      "properties": {
+        "state": { "const": "unknown" },
+        "pricing": { "type": "null" },
+        "authorityRef": { "type": "null" },
+        "observedAt": { "type": "null" },
+        "validUntil": { "type": "null" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["schemaVersion", "catalogRevision", "generatedAt", "sourceObservedAt", "validUntil", "models"],
+  "properties": {
+    "schemaVersion": { "const": "qualified-ai-supply-catalog.v1" },
+    "catalogRevision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{7,159}$" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "sourceObservedAt": { "type": "string", "format": "date-time" },
+    "validUntil": { "type": "string", "format": "date-time" },
+    "models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gatewaySupplyId", "runtimeModelId", "display", "modalities", "inputTypes", "outputTypes", "capabilities", "limits", "qualification", "availability", "upstreamCost"],
+        "properties": {
+          "gatewaySupplyId": { "type": "string", "pattern": "^aisupply_[a-z0-9][a-z0-9._-]{7,151}$" },
+          "runtimeModelId": { "type": "string", "minLength": 1, "maxLength": 160 },
+          "marketModelId": { "type": "string", "minLength": 1, "maxLength": 160 },
+          "display": {
+            "type": "object",
+            "required": ["name"],
+            "properties": { "name": { "type": "string", "minLength": 1, "maxLength": 160 }, "description": { "type": "string", "minLength": 1, "maxLength": 2000 } },
+            "additionalProperties": false
+          },
+          "modalities": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["chat", "embedding", "image", "speech"] } },
+          "inputTypes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["text", "image", "audio"] } },
+          "outputTypes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["text", "embedding", "image", "audio"] } },
+          "capabilities": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["text_input", "text_output", "image_input", "image_output", "embedding_output", "audio_output", "streaming", "structured_output", "tool_calling", "reasoning"] } },
+          "limits": {
+            "type": "object",
+            "properties": { "contextTokens": { "type": "integer", "minimum": 1, "maximum": 20000000 }, "maximumOutputTokens": { "type": "integer", "minimum": 1, "maximum": 2000000 } },
+            "additionalProperties": false
+          },
+          "qualification": {
+            "type": "object",
+            "required": ["state", "checkedAt", "expiresAt", "evidenceRef"],
+            "properties": {
+              "state": { "enum": ["qualified", "pending", "failed"] },
+              "checkedAt": { "type": "string", "format": "date-time" },
+              "expiresAt": { "type": "string", "format": "date-time" },
+              "evidenceRef": { "type": "string", "minLength": 1, "maxLength": 512 }
+            },
+            "additionalProperties": false
+          },
+          "availability": {
+            "type": "object",
+            "required": ["state", "reason", "observedAt"],
+            "properties": {
+              "state": { "enum": ["available", "degraded", "unavailable", "withdrawn"] },
+              "reason": { "type": ["string", "null"], "minLength": 1, "maxLength": 160 },
+              "observedAt": { "type": "string", "format": "date-time" }
+            },
+            "additionalProperties": false
+          },
+          "upstreamCost": { "oneOf": [{ "$ref": "#/$defs/costKnown" }, { "$ref": "#/$defs/costUnknown" }] },
+          "quality": {
+            "type": "object",
+            "required": ["score", "evidenceRef"],
+            "properties": { "score": { "type": "number", "minimum": 0, "maximum": 1 }, "evidenceRef": { "type": "string", "minLength": 1, "maxLength": 512 } },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

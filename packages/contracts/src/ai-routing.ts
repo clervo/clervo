@@ -225,6 +225,18 @@ function aliasComparator(alias: AiAlias, usage: AiUsageBounds): (left: AiRuntime
   };
 }
 
+function equivalentSupplyComparator(usage: AiUsageBounds): (left: AiRuntimeRoute, right: AiRuntimeRoute) => number {
+  return (left, right) => {
+    const leftCost = BigInt(estimateAiSupplierCost(usage, left.pricing).amountAtomic);
+    const rightCost = BigInt(estimateAiSupplierCost(usage, right.pricing).amountAtomic);
+    const costCompare = leftCost < rightCost ? -1 : leftCost > rightCost ? 1 : 0;
+    return costCompare
+      || right.qualityScore - left.qualityScore
+      || left.latencyMsP95 - right.latencyMsP95
+      || left.definition.routeId.localeCompare(right.definition.routeId);
+  };
+}
+
 export function selectAiRoute(input: {
   catalog: Readonly<AiModelCatalog>;
   operationId: string;
@@ -260,7 +272,10 @@ export function selectAiRoute(input: {
   const failures = possible.map((route) => ({ route, failure: candidateFailure(route, { productId: input.productId, requiredCapabilities, evaluatedAtMs: decidedAtMs, maximumCostAtomic: BigInt(input.maximumSupplierCost.amountAtomic), usageBounds: input.usageBounds }) }));
   const eligible = failures.filter(({ failure }) => failure === undefined).map(({ route }) => route);
   if (eligible.length === 0) return rejectedDecision({ ...input, selectionKind, rejectionCodes: failures.map(({ failure }) => failure ?? 'route_rejected') });
-  const selected = selectionKind === 'exact' ? eligible[0] : [...eligible].sort(aliasComparator(input.requestedModel as AiAlias, input.usageBounds))[0];
+  const routeIdWasRequested = possible.length === 1 && possible[0]?.definition.routeId === input.requestedModel;
+  const selected = selectionKind === 'exact'
+    ? routeIdWasRequested ? eligible[0] : [...eligible].sort(equivalentSupplyComparator(input.usageBounds))[0]
+    : [...eligible].sort(aliasComparator(input.requestedModel as AiAlias, input.usageBounds))[0];
   if (selected === undefined) throw new TypeError('ai_route_selection_invariant');
   return selectedDecision({ ...input, selectionKind, route: selected, maximumSupplierCost: estimateAiSupplierCost(input.usageBounds, selected.pricing) });
 }

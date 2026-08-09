@@ -141,6 +141,7 @@ const server = createSearchServer({
   aiPublicPricing: aiRuntime?.publicPricing,
   aiAdapters: aiRuntime?.adapters,
   aiAdapterFactory: aiRuntime?.adapterFactory,
+  aiRuntimeBindings: aiRuntime?.runtimeBindings,
   aiArtifactAccess: aiArtifactRuntime,
   sandboxPublicRunnerDigest: sandboxPublicMode === 'paid' ? process.env.CLERVO_SANDBOX_RUNNER_DIGEST : undefined,
   rpcRuntime,

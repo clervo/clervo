@@ -7,8 +7,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.cloudflare_aura_2_en",
-        "supplyFamilyId": "supply.cloudflare_workers_ai",
         "productIds": [
           "ai.speech"
         ],
@@ -38,8 +36,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
-        "supplyFamilyId": "supply.cloudflare_workers_ai",
         "productIds": [
           "ai.chat"
         ],
@@ -72,8 +68,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.cf_nvidia_nemotron_3_120b_a12b",
-        "supplyFamilyId": "supply.cloudflare_workers_ai",
         "productIds": [
           "ai.chat"
         ],
@@ -106,8 +100,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.cf_openai_gpt_oss_120b",
-        "supplyFamilyId": "supply.cloudflare_workers_ai",
         "productIds": [
           "ai.chat"
         ],
@@ -140,8 +132,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.cf_openai_gpt_oss_20b",
-        "supplyFamilyId": "supply.cloudflare_workers_ai",
         "productIds": [
           "ai.chat"
         ],
@@ -174,8 +164,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.cf_qwen_qwen3_30b_a3b_fp8",
-        "supplyFamilyId": "supply.cloudflare_workers_ai",
         "productIds": [
           "ai.chat"
         ],
@@ -208,8 +196,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.aura_2_arcas_en",
-        "supplyFamilyId": "supply.deepgram",
         "productIds": [
           "ai.speech"
         ],
@@ -239,8 +225,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.aura_2_thalia_en",
-        "supplyFamilyId": "supply.deepgram",
         "productIds": [
           "ai.speech"
         ],
@@ -270,8 +254,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gemini_3_pro_image",
-        "supplyFamilyId": "supply.google_vertex",
         "productIds": [
           "ai.image"
         ],
@@ -301,8 +283,6 @@
       "created": 1786088410,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gemini_3_1_flash_image",
-        "supplyFamilyId": "supply.google_vertex",
         "productIds": [
           "ai.image"
         ],
@@ -332,8 +312,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gemini_3_1_flash_lite_image",
-        "supplyFamilyId": "supply.google_vertex",
         "productIds": [
           "ai.image"
         ],
@@ -363,8 +341,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gemini_3_5_flash",
-        "supplyFamilyId": "supply.google_vertex",
         "productIds": [
           "ai.chat"
         ],
@@ -396,8 +372,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gemini_3_5_flash_lite",
-        "supplyFamilyId": "supply.google_vertex",
         "productIds": [
           "ai.chat"
         ],
@@ -429,8 +403,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gemini_3_6_flash",
-        "supplyFamilyId": "supply.google_vertex",
         "productIds": [
           "ai.chat"
         ],
@@ -462,8 +434,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gemini_embedding_001",
-        "supplyFamilyId": "supply.google_vertex",
         "productIds": [
           "ai.embed"
         ],
@@ -493,8 +463,6 @@
       "created": 1785637993,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gpt_5_6_luna",
-        "supplyFamilyId": "supply.clervo_ai_gateway",
         "productIds": [
           "ai.chat"
         ],
@@ -526,8 +494,6 @@
       "created": 1785637993,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gpt_5_6_sol",
-        "supplyFamilyId": "supply.clervo_ai_gateway",
         "productIds": [
           "ai.chat"
         ],
@@ -559,8 +525,6 @@
       "created": 1785637993,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gpt_5_6_terra",
-        "supplyFamilyId": "supply.clervo_ai_gateway",
         "productIds": [
           "ai.chat"
         ],
@@ -592,8 +556,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gpt_oss_120b",
-        "supplyFamilyId": "supply.groq",
         "productIds": [
           "ai.chat"
         ],
@@ -626,8 +588,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.gpt_oss_20b",
-        "supplyFamilyId": "supply.groq",
         "productIds": [
           "ai.chat"
         ],
@@ -660,8 +620,6 @@
       "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
-        "routeId": "ai.route.qwen3_6_27b",
-        "supplyFamilyId": "supply.groq",
         "productIds": [
           "ai.chat"
         ],

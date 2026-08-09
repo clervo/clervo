@@ -389,10 +389,10 @@
       "customerPrices": [
         {
           "unit": "per 1k characters",
-          "price": 0.04
+          "price": 0.0417
         }
       ],
-      "pricingMethod": "supplier_cost_plus_12_percent_margin",
+      "pricingMethod": "category_introductory_price",
       "termsUrl": "https://deepgram.com/terms"
     },
     {
@@ -950,14 +950,14 @@
       "customerPrices": [
         {
           "unit": "per M input tokens",
-          "price": 0.3069
+          "price": 0.3
         },
         {
           "unit": "per M output tokens",
-          "price": 0.966
+          "price": 0.9445
         }
       ],
-      "pricingMethod": "supplier_cost_plus_12_percent_margin",
+      "pricingMethod": "category_introductory_price",
       "termsUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/LICENSE"
     },
     {
@@ -1251,14 +1251,14 @@
       "customerPrices": [
         {
           "unit": "per M input tokens",
-          "price": 0.5682
+          "price": 0.5556
         },
         {
           "unit": "per M output tokens",
-          "price": 1.7046
+          "price": 1.6667
         }
       ],
-      "pricingMethod": "supplier_cost_plus_12_percent_margin",
+      "pricingMethod": "category_introductory_price",
       "termsUrl": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/"
     },
     {
@@ -1282,14 +1282,14 @@
       "customerPrices": [
         {
           "unit": "per M input tokens",
-          "price": 0.3978
+          "price": 0.3889
         },
         {
           "unit": "per M output tokens",
-          "price": 0.8523
+          "price": 0.8334
         }
       ],
-      "pricingMethod": "supplier_cost_plus_12_percent_margin",
+      "pricingMethod": "category_introductory_price",
       "termsUrl": null
     },
     {
@@ -1313,14 +1313,14 @@
       "customerPrices": [
         {
           "unit": "per M input tokens",
-          "price": 0.2273
+          "price": 0.2223
         },
         {
           "unit": "per M output tokens",
-          "price": 0.341
+          "price": 0.3334
         }
       ],
-      "pricingMethod": "supplier_cost_plus_12_percent_margin",
+      "pricingMethod": "category_introductory_price",
       "termsUrl": null
     },
     {
@@ -1485,14 +1485,14 @@
       "customerPrices": [
         {
           "unit": "per M input tokens",
-          "price": 0.0579
+          "price": 0.0566
         },
         {
           "unit": "per M output tokens",
-          "price": 0.3807
+          "price": 0.3723
         }
       ],
-      "pricingMethod": "supplier_cost_plus_12_percent_margin",
+      "pricingMethod": "category_introductory_price",
       "termsUrl": null
     },
     {

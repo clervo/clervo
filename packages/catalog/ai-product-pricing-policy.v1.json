@@ -1,0 +1,38 @@
+{
+  "revision": "pricing:2026-08-09:dynamic-v1",
+  "observedAt": "2026-08-09T08:41:51.000Z",
+  "validUntil": "2026-11-07T08:41:51.000Z",
+  "defaultPolicy": {
+    "policyId": "default_sustainable",
+    "minimumMarginBasisPoints": 1000,
+    "targetMarginBasisPoints": 2500,
+    "competitorUndercutBasisPoints": 500
+  },
+  "modalityPolicies": {
+    "chat": {
+      "policyId": "chat_competitive",
+      "minimumMarginBasisPoints": 500,
+      "targetMarginBasisPoints": 1000,
+      "competitorUndercutBasisPoints": 500
+    },
+    "embedding": {
+      "policyId": "embedding_growth",
+      "minimumMarginBasisPoints": 1500,
+      "targetMarginBasisPoints": 3000,
+      "competitorUndercutBasisPoints": 1000
+    },
+    "image": {
+      "policyId": "image_balanced",
+      "minimumMarginBasisPoints": 1200,
+      "targetMarginBasisPoints": 2500,
+      "competitorUndercutBasisPoints": 500
+    },
+    "speech": {
+      "policyId": "speech_balanced",
+      "minimumMarginBasisPoints": 1200,
+      "targetMarginBasisPoints": 2800,
+      "competitorUndercutBasisPoints": 500
+    }
+  },
+  "marketModelPolicies": []
+}

@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 
-// Requalifies every catalogued AI route against live supply and rewrites
-// packages/catalog/ai-model-catalog.v1.json with what was actually observed.
+// LEGACY / RECOVERY ONLY. The permanent B7 authority is the normalized
+// qualified catalog supplied by ai.clervo.dev. This tool requalifies the
+// pre-cutover fixed route catalog against individual providers and must never
+// be used to populate or override the dynamic supply catalog.
+//
+// When explicitly invoked for recovery, it requalifies every legacy catalogued
+// AI route against live supply and rewrites ai-model-catalog.v1.json.
 //
 // Why this replaces the per-family merge scripts: those scripts carried
 // hand-transcribed check results and a frozen evidence hash, so a speech, image,
@@ -81,6 +86,8 @@ function fail(message) {
   console.error(`requalify-ai-routes: FAIL: ${message}`);
   process.exit(1);
 }
+
+if (!process.argv.includes('--legacy-recovery')) fail('direct-provider qualification is legacy recovery only; pass --legacy-recovery deliberately');
 
 // Credentials are read straight from Secret Manager into memory. They are never
 // written to disk, never logged, and never included in the report.

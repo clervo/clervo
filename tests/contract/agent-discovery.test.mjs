@@ -46,16 +46,17 @@ const get = (pathname) => worker.fetch(new Request(`https://api.clervo.dev${path
 test('the model list carries every catalogued route and no route the registry does not catalogue', async () => {
   const catalogued = registry.aiRoutes
     .filter(({ state }) => CATALOGUED_STATES.has(state))
-    .map(({ routeId }) => routeId)
+    .map(({ exactModelId }) => exactModelId)
     .sort();
-  const listed = models.data.map(({ clervo }) => clervo.routeId).sort();
+  const listed = models.data.map(({ id }) => id).sort();
   assert.deepEqual(listed, catalogued);
 
   // Every listed model must be callable by the exact identity the registry
   // observed. A list whose `id` is not the string the route accepts sends an
   // agent to a request that fails closed.
   for (const entry of models.data) {
-    const route = registry.aiRoutes.find(({ routeId }) => routeId === entry.clervo.routeId);
+    const route = registry.aiRoutes.find(({ exactModelId }) => exactModelId === entry.id);
+    assert.ok(route !== undefined, `${entry.id} must map to a catalogued customer model identity`);
     assert.equal(entry.id, route.exactModelId, `${route.routeId} must list its exact model identity`);
     assert.equal(entry.object, 'model');
     assert.equal(entry.clervo.route, '/v1/ai/execute');
@@ -67,7 +68,8 @@ test('the model list renders lifecycle state and proof level from the registry, 
   const ceiling = PROOF_LEVELS.indexOf(registry.proofCeiling.level);
   assert.ok(ceiling >= 0);
   for (const entry of models.data) {
-    const route = registry.aiRoutes.find(({ routeId }) => routeId === entry.clervo.routeId);
+    const route = registry.aiRoutes.find(({ exactModelId }) => exactModelId === entry.id);
+    assert.ok(route !== undefined, `${entry.id} must map to a catalogued customer model identity`);
     assert.equal(entry.clervo.lifecycleState, route.state, `${route.routeId} lifecycle must match the registry`);
     assert.equal(entry.clervo.proofLevel, route.proof, `${route.routeId} proof level must match the registry`);
     assert.equal(entry.clervo.sellable, route.sellable, `${route.routeId} sellability must match the registry`);
@@ -92,7 +94,8 @@ test('the model list renders lifecycle state and proof level from the registry, 
 
 test('every model price is the price the registry observed, marked as a maximum charge', () => {
   for (const entry of models.data) {
-    const route = registry.aiRoutes.find(({ routeId }) => routeId === entry.clervo.routeId);
+    const route = registry.aiRoutes.find(({ exactModelId }) => exactModelId === entry.id);
+    assert.ok(route !== undefined, `${entry.id} must map to a catalogued customer model identity`);
     if (route.observedQuote === null) {
       assert.equal(entry.clervo.observedPrice, null, `${route.routeId} must publish no price it did not observe`);
       continue;

@@ -104,7 +104,8 @@ test('screened Clervo, Vertex, Deepgram, Groq, and Cloudflare routes preserve qu
 test('live exact routes form a valid qualified and sellable internal model catalog', async () => {
   const catalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
   assert.equal(verifyAiModelCatalog(catalog), true);
-  assert.equal(catalog.routes.length, 21);
+  assert.ok(catalog.routes.length > 0);
+  assert.equal(new Set(catalog.routes.map(({ routeId }) => routeId)).size, catalog.routes.length);
   assert.ok(catalog.routes.every(({ qualification }) => qualification.status === 'passed'));
   assert.deepEqual(catalog.qualifiedSupplyFamilies, ['supply.clervo_ai_gateway', 'supply.cloudflare_workers_ai', 'supply.deepgram', 'supply.google_vertex', 'supply.groq']);
   const gatewayPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-launch-pricing.v1.json'), 'utf8'));
