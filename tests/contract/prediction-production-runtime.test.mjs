@@ -37,6 +37,10 @@ test('prediction production runtime retains both public venue results and emits 
   assert.equal(completed.result.output.events.length, 2);
   assert.equal(completed.qualificationIds.length, 2);
   assert.match(completed.result.resultHash, /^sha256:[a-f0-9]{64}$/u);
+  const insufficient = await runtime.execute({ ...request, operationId: `op_${'d'.repeat(32)}`, productId: 'prediction.signal', input: { kind: 'signal', marketRef: completed.result.output.markets[0].marketRef } });
+  assert.equal(insufficient.result.output.usable, false);
+  assert.equal(insufficient.result.output.reason, 'insufficient_evidence');
+  assert.deepEqual(insufficient.result.output.signals, []);
 });
 
 test('prediction production runtime degrades to the remaining valid venue without fabricating a second result', async () => {
