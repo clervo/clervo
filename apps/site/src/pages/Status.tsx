@@ -4,8 +4,8 @@ import {
   discovery,
   launchState,
   lifecycleLabels,
-  observedRoutes,
   observedTruth,
+  publicOperations,
   proofLabels,
   publicApiCallable,
   type ExperiencePhase,
@@ -30,7 +30,7 @@ const paused = observedTruth.products.filter(({ lifecycleState }) => lifecycleSt
 const proven = observedTruth.products.filter(
   ({ proofLevel }) => proofLevel === 'paid_outcome_verified' || proofLevel === 'externally_repeated',
 );
-const liveRoutes = observedRoutes.filter(({ lifecycleState }) => lifecycleState === 'live');
+const liveRoutes = publicOperations.filter(({ lifecycleState }) => lifecycleState === 'live');
 
 const summary: Array<{ value: string; label: string; detail: string }> = [
   {

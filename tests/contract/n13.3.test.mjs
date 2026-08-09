@@ -16,7 +16,7 @@ test('generated discovery publishes exactly the product families the registry ob
   // instead — every published operation belongs to a family the probed
   // registry observes live, and no live family is silently withheld.
   const familyOf = (productId) => ({ search: 'search', ai: 'ai', sandbox: 'sandbox', rpc: 'rpc', prediction: 'prediction', crypto: 'crypto_intelligence' })[productId.split('.')[0]];
-  const liveFamilies = new Set(registry.products.filter(({ publiclyReachable }) => publiclyReachable).map(({ id }) => id));
+  const liveFamilies = new Set(registry.products.filter(({ state }) => state === 'live').map(({ id }) => id));
   const published = discovery.products.map(({ productId }) => productId);
   assert.ok(published.includes('search.web'), 'raw Search must stay published');
   assert.ok(published.includes('search.answer'), 'Search synthesis must stay listed');
@@ -87,6 +87,25 @@ test('site ships canonical media, static routes, and hardened hosting controls',
   assert.match(redirects, /^\/docs\/x402 \/docs\/x402\/ 301$/mu);
 });
 
+test('site projects live Prediction operations, prices, attribution, and proof from generated truth', async () => {
+  const [prediction, catalog, pricing, status, home] = await Promise.all([
+    read('apps/site/dist/products/prediction/index.html'),
+    read('apps/site/dist/catalog/index.html'),
+    read('apps/site/dist/pricing/index.html'),
+    read('apps/site/dist/status/index.html'),
+    read('apps/site/dist/index.html'),
+  ]);
+  assert.match(prediction, /prediction\.markets/u);
+  assert.match(prediction, /pdata\.world \/ CC BY 4\.0/u);
+  assert.match(prediction, /public x402 challenge available paid result pending/u);
+  assert.match(catalog, /prediction\.markets/u);
+  assert.match(catalog, /pdata\.world<!-- -->, <!-- -->CC BY 4\.0/u);
+  assert.match(pricing, /prediction\.markets/u);
+  assert.match(pricing, /0\.002 USDC/u);
+  assert.match(status, /Routes answering<\/dt><dd><b>7/u);
+  assert.match(home, /Routes serving<\/dt><dd>7/u);
+});
+
 test('site keeps WebGL optional for narrow and reduced-motion clients', async () => {
   const instrument = await read('apps/site/src/components/Instrument.tsx');
   assert.match(instrument, /max-width: 900px/u);
@@ -106,7 +125,7 @@ test('site keeps WebGL optional for narrow and reduced-motion clients', async ()
   const worlds = await read('apps/site/src/components/Worlds.tsx');
   const webglWorlds = await read('apps/site/src/components/WebGLWorlds.tsx');
   assert.match(worlds, /prefers-reduced-motion: reduce/u);
-  assert.match(worlds, /Cinematic system model · not live telemetry/u);
+  assert.match(worlds, /The artwork is a system model\. The state on each card is observed\./u);
   assert.match(worlds, /MediaBoundary/u);
   assert.match(webglWorlds, /clervo-worlds\.glb/u);
   assert.match(webglWorlds, /frameloop="demand"/u);

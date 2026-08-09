@@ -42,7 +42,7 @@ export interface ObservedTruth {
   products: ObservedProduct[];
 }
 
-interface DiscoveryProduct {
+export interface DiscoveryProduct {
   productId: string;
   operationId: string;
   title: string;
@@ -61,6 +61,12 @@ interface DiscoveryProduct {
     priceVersion: string;
   };
   routes?: { freeSample?: string; paidChallenge?: string };
+  attribution?: {
+    source: string;
+    license: string;
+    licenseUrl: string;
+    transformedBy: string;
+  };
   payment: {
     challengeImplemented: boolean;
     payable: boolean;
@@ -145,6 +151,30 @@ export function familyOf(operationId: string): ObservedProduct['id'] {
   if (family === undefined) throw new Error(`observed_family_missing: ${operationId}`);
   return family;
 }
+
+export interface PublicOperation extends DiscoveryProduct {
+  familyId: ObservedProduct['id'];
+  familyLabel: string;
+  lifecycleState: LifecycleState;
+  proofLevel: ProofLevel;
+}
+
+/**
+ * Public operation projection from generated discovery plus live family truth.
+ * AI model routes remain useful supply diagnostics, but they are not the
+ * cross-product operation catalog and must not drive public counts or prices.
+ */
+export const publicOperations: PublicOperation[] = discovery.products.map((product) => {
+  const familyId = familyOf(product.operationId);
+  const family = observedProduct(familyId);
+  return {
+    ...product,
+    familyId,
+    familyLabel: family.label,
+    lifecycleState: product.publicAvailable ? family.lifecycleState : 'unavailable',
+    proofLevel: product.publicAvailable ? family.proofLevel : 'none',
+  };
+});
 
 export type LaunchProductId = 'search' | 'ai' | 'sandbox' | 'rpc' | 'prediction' | 'crypto_intelligence';
 

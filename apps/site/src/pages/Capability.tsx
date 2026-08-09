@@ -58,6 +58,7 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
   // named but not published is not the same fact as one that is callable.
   const published = discovery.products.filter((entry) => familyOf(entry.operationId) === productId);
   const publishedIds = new Set(published.map(({ operationId }) => operationId));
+  const attribution = published.find(({ attribution: value }) => value !== undefined)?.attribution;
 
   // Routes the probe saw serving this family. AI carries twenty-one of them, so
   // this section states the shape and defers the full list to /catalog rather
@@ -88,6 +89,11 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
       verified: observed.proofLevel === 'paid_outcome_verified' || observed.proofLevel === 'externally_repeated',
     },
   ];
+  if (attribution !== undefined) facts.push({
+    label: 'Supply attribution',
+    value: `${attribution.source} / ${attribution.license}`,
+    detail: attribution.transformedBy,
+  });
 
   return (
     <>

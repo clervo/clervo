@@ -371,9 +371,9 @@
     },
     {
       "id": "prediction",
-      "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable",
-      "commercialProof": "unproven",
+      "engineeringState": "public_production_qualified",
+      "customerLifecycle": "preview_publicly_callable",
+      "commercialProof": "quote_observed_unpaid",
       "lifecycleState": "live",
       "proofLevel": "quote_observed_unpaid"
     },

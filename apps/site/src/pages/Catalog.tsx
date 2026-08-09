@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import {
-  capabilityLabel,
   formatUsdc,
   lifecycleLabels,
-  observedRoutes,
   observedTruth,
+  publicOperations,
   proofLabels,
-  supplyFamilyLabel,
   type ExperiencePhase,
   type LifecycleState,
 } from '../product';
@@ -31,8 +29,8 @@ const filters: Array<{ id: Filter; label: string }> = [
   { id: 'supply_paused', label: 'Supply paused' },
 ];
 
-const liveCount = observedRoutes.filter(({ lifecycleState }) => lifecycleState === 'live').length;
-const pausedCount = observedRoutes.filter(({ lifecycleState }) => lifecycleState === 'supply_paused').length;
+const liveCount = publicOperations.filter(({ lifecycleState }) => lifecycleState === 'live').length;
+const pausedCount = publicOperations.filter(({ lifecycleState }) => lifecycleState === 'supply_paused').length;
 
 export function Catalog({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   const [filter, setFilter] = useState<Filter>('all');
@@ -40,8 +38,8 @@ export function Catalog({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
 
   const shown = useMemo(
     () => (filter === 'all'
-      ? observedRoutes
-      : observedRoutes.filter(({ lifecycleState }) => lifecycleState === filter)),
+      ? publicOperations
+      : publicOperations.filter(({ lifecycleState }) => lifecycleState === filter)),
     [filter],
   );
 
@@ -51,7 +49,7 @@ export function Catalog({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
         <p className="eyebrow">Live capability catalog</p>
         <h1>Every route, and what it costs.</h1>
         <p>
-          {liveCount} routes were observed serving and {pausedCount} are supply
+          {liveCount} operations were observed serving and {pausedCount} are supply
           paused, as probed at {observedTruth.provenance.observedAt}. Prices are
           maximum charges, quoted by the deployed system rather than published
           here.
@@ -80,60 +78,54 @@ export function Catalog({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
             ))}
           </div>
           <p className="data quiet" aria-live="polite">
-            {shown.length} of {observedRoutes.length} shown
+            {shown.length} of {publicOperations.length} shown
           </p>
         </div>
 
         <ul className="catalog-grid">
-          {shown.map((route) => (
-            <li key={route.routeId} className="panel catalog-card">
+          {shown.map((operation) => (
+            <li key={operation.productId} className="panel catalog-card">
               <div className="panel__body stack">
                 <div className="catalog-card__head">
-                  <h3 className="catalog-card__id">{route.id}</h3>
-                  <span className={`state state--${route.lifecycleState}`}>
-                    {lifecycleLabels[route.lifecycleState]}
+                  <h3 className="catalog-card__id">{operation.productId}</h3>
+                  <span className={`state state--${operation.lifecycleState}`}>
+                    {lifecycleLabels[operation.lifecycleState]}
                   </span>
                 </div>
 
-                <p className="quiet">{supplyFamilyLabel(route.supplyFamilyId)}</p>
+                <p className="quiet">{operation.familyLabel}</p>
 
                 <ul className="catalog-card__tags" aria-label="Capabilities">
-                  {route.capabilities.map((capability) => (
-                    <li key={capability}>{capabilityLabel(capability)}</li>
+                  {[...operation.deliveryModes, operation.pricing.model].map((capability) => (
+                    <li key={capability}>{capability.replaceAll('_', ' ')}</li>
                   ))}
                 </ul>
 
                 <dl className="facts">
                   <div>
-                    <dt>Operations</dt>
-                    <dd>{route.productIds.join(', ')}</dd>
+                    <dt>Operation</dt>
+                    <dd>{operation.operationId}</dd>
                   </div>
                   <div>
                     <dt>Endpoint</dt>
-                    <dd>{route.route}</dd>
+                    <dd>{operation.routes?.paidChallenge ?? operation.routes?.freeSample ?? 'not published'}</dd>
                   </div>
                   <div>
                     <dt>Maximum charge</dt>
                     <dd>
-                      {route.observedPrice === null
+                      {operation.pricing.displayPrice === null
                         ? 'not quoted'
-                        : formatUsdc(route.observedPrice.amountAtomic, route.observedPrice.decimals)}
+                        : formatUsdc(operation.pricing.displayPrice.amountAtomic, operation.pricing.displayPrice.decimals)}
                     </dd>
                   </div>
                   <div>
                     <dt>Proof</dt>
-                    <dd>{proofLabels[route.proofLevel]}</dd>
+                    <dd>{proofLabels[operation.proofLevel]}</dd>
                   </div>
-                  {route.reason === null ? null : (
+                  {operation.attribution === undefined ? null : (
                     <div>
-                      <dt>Paused because</dt>
-                      <dd>{route.reason.replaceAll('_', ' ')}</dd>
-                    </div>
-                  )}
-                  {route.expectedReturnAt === null ? null : (
-                    <div>
-                      <dt>Expected back</dt>
-                      <dd>{route.expectedReturnAt}</dd>
+                      <dt>Supply attribution</dt>
+                      <dd>{operation.attribution.source}, {operation.attribution.license}</dd>
                     </div>
                   )}
                 </dl>

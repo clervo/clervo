@@ -4,8 +4,8 @@ import {
   discovery,
   formatUsdc,
   launchState,
-  observedRoutes,
   observedTruth,
+  publicOperations,
   proofLabels,
   type ExperiencePhase,
 } from '../product';
@@ -36,10 +36,10 @@ const withheld = observedTruth.products.filter(({ publiclyReachable }) => !publi
 // Routes the probe saw quoting a ceiling, cheapest first. The full list belongs
 // on /catalog; this page states the shape of it — how many routes quote, and
 // what the cheapest and dearest ceilings actually are.
-const quotedRoutes = observedRoutes
-  .filter(({ observedPrice }) => observedPrice !== null)
+const quotedRoutes = publicOperations
+  .filter(({ publicAvailable, lifecycleState, pricing }) => publicAvailable && lifecycleState === 'live' && pricing.displayPrice !== null)
   .sort((left, right) => (
-    BigInt(left.observedPrice!.amountAtomic) < BigInt(right.observedPrice!.amountAtomic) ? -1 : 1
+    BigInt(left.pricing.displayPrice!.amountAtomic) < BigInt(right.pricing.displayPrice!.amountAtomic) ? -1 : 1
   ));
 
 const cheapest = quotedRoutes.at(0) ?? null;
@@ -51,7 +51,7 @@ const topicCopy: Record<TrustTopic, { eyebrow: string; title: string; intro: str
   pricing: {
     eyebrow: 'Pricing / what is actually quoted',
     title: 'Proof amount is not public price.',
-    intro: `Clervo publishes no price list. Every paid route quotes its own maximum charge at request time, and you see that exact number before anything runs: ${pricedFamilies}`,
+    intro: `Clervo publishes the observed maximum charge for every currently offered operation, and the live 402 remains binding for a specific request: ${pricedFamilies}`,
   },
   benchmarks: {
     eyebrow: 'Benchmarks / claim boundary',
@@ -117,18 +117,18 @@ export function Trust({ topic, onPhase }: { topic: TrustTopic; onPhase(phase: Ex
                     <div className="panel__body stack stack--tight">
                       <p className="eyebrow">Lowest quoted ceiling</p>
                       <p className="price-ledger__amount">
-                        {formatUsdc(cheapest.observedPrice!.amountAtomic, cheapest.observedPrice!.decimals)}
+                        {formatUsdc(cheapest.pricing.displayPrice!.amountAtomic, cheapest.pricing.displayPrice!.decimals)}
                       </p>
-                      <p className="price-ledger__id">{cheapest.id}</p>
+                      <p className="price-ledger__id">{cheapest.productId}</p>
                     </div>
                   </li>
                   <li className="panel">
                     <div className="panel__body stack stack--tight">
                       <p className="eyebrow">Highest quoted ceiling</p>
                       <p className="price-ledger__amount">
-                        {formatUsdc(dearest.observedPrice!.amountAtomic, dearest.observedPrice!.decimals)}
+                        {formatUsdc(dearest.pricing.displayPrice!.amountAtomic, dearest.pricing.displayPrice!.decimals)}
                       </p>
-                      <p className="price-ledger__id">{dearest.id}</p>
+                      <p className="price-ledger__id">{dearest.productId}</p>
                     </div>
                   </li>
                 </>

@@ -6,11 +6,11 @@ import {
   launchState,
   lifecycleLabels,
   observedProduct,
-  observedRoutes,
   observedTruth,
   phases,
   proofLabels,
   publicApiCallable,
+  publicOperations,
   quickStartCurl,
   quickStartNeedsNoKey,
   installExamples,
@@ -31,14 +31,14 @@ import { Link } from '../router';
 
 const liveFamilies = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live');
 const liveLabels = liveFamilies.map(({ label }) => label).join(', ');
-const liveRouteCount = observedRoutes.filter(({ lifecycleState }) => lifecycleState === 'live').length;
+const liveRouteCount = publicOperations.filter(({ lifecycleState }) => lifecycleState === 'live').length;
 const search = observedProduct('search');
 
 // The cheapest observed price across every serving route. It is a real quoted
 // ceiling, so it can be shown as one; if nothing is quoting, nothing is shown.
-const quotedPrices = observedRoutes
-  .filter(({ lifecycleState, observedPrice }) => lifecycleState === 'live' && observedPrice !== null)
-  .map(({ observedPrice }) => observedPrice!);
+const quotedPrices = publicOperations
+  .filter(({ lifecycleState, pricing }) => lifecycleState === 'live' && pricing.displayPrice !== null)
+  .map(({ pricing }) => pricing.displayPrice!);
 const cheapestQuote = quotedPrices.length === 0
   ? null
   : quotedPrices.reduce((low, price) => (BigInt(price.amountAtomic) < BigInt(low.amountAtomic) ? price : low));

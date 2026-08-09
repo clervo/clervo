@@ -33,7 +33,7 @@ test('generated launch state is evidence-bound across packages, payment, and pub
   assert.equal(generated.paymentProof.demandEvidence, false);
 });
 
-test('machine discovery publishes verified Search, AI, and Sandbox previews without overstating proof', async () => {
+test('machine discovery publishes only live Search, Sandbox, and Prediction previews without overstating proof', async () => {
   const [discovery, status, pricing, capabilities, mcp, openapi, yaml] = await Promise.all([
     json('generated/public/.well-known/clervo.json'),
     json('generated/public/status.json'),
@@ -48,15 +48,15 @@ test('machine discovery publishes verified Search, AI, and Sandbox previews with
   assert.equal(discovery.payment.privateProofVerified, true);
   assert.equal(discovery.payment.commercialProof, false);
   const ai = discovery.products.find(({ productId }) => productId === 'ai.chat');
-  assert.equal(ai.publicAvailable, true);
-  assert.equal(ai.payment.payable, true);
-  assert.equal(ai.pricing.model, 'x402_request_quote');
-  assert.equal(ai.pricing.displayPrice, null);
+  assert.equal(ai, undefined, 'supply-paused AI must not be offered as a live operation');
   const sandbox = discovery.products.find(({ productId }) => productId === 'sandbox.run');
   assert.equal(sandbox.publicAvailable, true);
   assert.equal(sandbox.payment.payable, true);
   assert.equal(sandbox.pricing.model, 'fixed_request');
   assert.equal(sandbox.pricing.displayPrice.amountAtomic, '120000');
+  const prediction = discovery.products.filter(({ productId }) => productId.startsWith('prediction.'));
+  assert.equal(prediction.length, 5);
+  assert.ok(prediction.every(({ publicAvailable, payment }) => publicAvailable && payment.payable));
   assert.equal(status.packages.state, 'published_verified');
   assert.equal(status.publicApi.customerEndpointAvailable, true);
   assert.equal(pricing.publicOfferAvailable, true);
@@ -67,8 +67,9 @@ test('machine discovery publishes verified Search, AI, and Sandbox previews with
   assert.equal(mcp.publicApiAvailable, true);
   assert.equal(mcp.paymentSigningImplemented, false);
   assert.deepEqual(yaml, openapi);
-  assert.ok(openapi.paths['/v1/ai/execute']);
+  assert.equal(openapi.paths['/v1/ai/execute'], undefined);
   assert.ok(openapi.paths['/v1/sandbox/execute']);
+  assert.ok(openapi.paths['/v1/prediction/execute']);
   assert.equal(openapi.info.contact.url, 'https://github.com/clervo/clervo');
   assert.equal(openapi.info.contact.email, 'mo@clervo.dev');
   assert.match(openapi.info['x-guidance'], /same key.*without a second charge/iu);
@@ -77,17 +78,17 @@ test('machine discovery publishes verified Search, AI, and Sandbox previews with
     price: { mode: 'fixed', currency: 'USD', amount: '0.006000' },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
   });
-  assert.deepEqual(openapi.paths['/v1/ai/execute'].post['x-payment-info'], {
-    price: { mode: 'dynamic', currency: 'USD', min: '0.000001', max: '2.621440' },
-    protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
-  });
   assert.deepEqual(openapi.paths['/v1/sandbox/execute'].post['x-payment-info'], {
     price: { mode: 'fixed', currency: 'USD', amount: '0.120000' },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
   });
+  assert.deepEqual(openapi.paths['/v1/prediction/execute'].post['x-payment-info'], {
+    price: { mode: 'request_derived_per_operation', currency: 'USD', min: '0.002000', max: '0.003000' },
+    protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
+  });
   assert.equal(openapi.paths['/v1/search/paid'].post.requestBody.content['application/json'].example.synthesize, false);
-  assert.equal(openapi.paths['/v1/ai/execute'].post.requestBody.content['application/json'].example.input.kind, 'chat');
   assert.deepEqual(openapi.paths['/v1/sandbox/execute'].post.requestBody.content['application/json'].example.command.slice(0, 2), ['node', '-e']);
+  assert.equal(openapi.paths['/v1/prediction/execute'].post.requestBody.content['application/json'].example.kind, 'markets');
   assert.doesNotMatch(JSON.stringify(openapi.paths), /"\$ref"/u);
 });
 

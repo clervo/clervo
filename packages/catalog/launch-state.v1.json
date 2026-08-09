@@ -137,13 +137,23 @@
       "id": "prediction",
       "label": "Prediction Intelligence",
       "operations": ["prediction.markets", "prediction.market", "prediction.compare", "prediction.history", "prediction.signal"],
-      "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable",
-      "commercialProof": "unproven",
-      "paymentState": "unavailable",
-      "supplierRights": "commercial_rights_blocked",
-      "allowedClaims": ["The Prediction core is privately qualified."],
-      "prohibitedClaims": ["Publicly available", "Commercial reuse approved", "Trading advice"]
+      "engineeringState": "public_production_qualified",
+      "customerLifecycle": "preview_publicly_callable",
+      "commercialProof": "quote_observed_unpaid",
+      "paymentState": "public_x402_challenge_available_paid_result_pending",
+      "supplierRights": "pdata_cc_by_4_0_derived_offer_approved",
+      "allowedClaims": [
+        "Derived Prediction Intelligence is publicly callable through exact Base USDC x402 offers from 0.002 to 0.003 USDC.",
+        "Qualified zero-cost pdata supply covers Polymarket, Kalshi, Manifold, and Limitless with CC BY 4.0 attribution and Clervo transformation.",
+        "Direct venue adapters with unresolved commercial permission remain disabled and fail closed."
+      ],
+      "prohibitedClaims": [
+        "Paid Prediction outcome verified",
+        "Customer revenue or demand",
+        "Raw pdata proxy or raw feed redistribution",
+        "Commercial permission for unresolved direct venue adapters",
+        "Trading advice, execution, or custody"
+      ]
     },
     {
       "id": "crypto_intelligence",
