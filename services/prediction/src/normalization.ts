@@ -1,7 +1,11 @@
 import { createHash } from 'node:crypto';
 
-export type PredictionVenueId = 'polymarket' | 'kalshi';
+export type PredictionVenueId = string;
 export type PredictionMarketStatus = 'open' | 'closed' | 'resolved' | 'cancelled';
+
+export function isPredictionVenueId(value: unknown): value is PredictionVenueId {
+  return typeof value === 'string' && /^[a-z][a-z0-9_]{1,63}$/u.test(value);
+}
 
 export interface VenueOutcomeSnapshot {
   venueOutcomeId: string;
@@ -116,7 +120,7 @@ function marketRef(venueId: PredictionVenueId, venueMarketId: string): string {
 }
 
 export function normalizePredictionMarket(input: Readonly<VenueMarketSnapshot>, nowMs: number): Readonly<NormalizedPredictionMarket> {
-  if (!['polymarket', 'kalshi'].includes(input.venueId) || !/^[A-Za-z0-9][A-Za-z0-9._:-]{1,159}$/u.test(input.venueMarketId) || !Number.isSafeInteger(nowMs) || nowMs < 0) throw new TypeError('prediction_identity_invalid');
+  if (!isPredictionVenueId(input.venueId) || !/^[A-Za-z0-9][A-Za-z0-9._:-]{1,159}$/u.test(input.venueMarketId) || !Number.isSafeInteger(nowMs) || nowMs < 0) throw new TypeError('prediction_identity_invalid');
   const question = text(input.question, 'question', 500);
   const description = text(input.description, 'description', 20_000);
   const category = text(input.category, 'category', 100);
@@ -181,23 +185,65 @@ function normalizedText(value: string): string {
   return value.toLocaleLowerCase('en-US').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 }
 
+function tokens(value: string): readonly string[] {
+  return Object.freeze([...new Set(normalizedText(value).split(' ').filter((item) => item.length > 1))].sort());
+}
+
+function semanticAnchors(market: Readonly<NormalizedPredictionMarket>): Readonly<{
+  numbers: readonly string[];
+  negated: boolean;
+  cancellation: boolean;
+  sourceHost: string;
+}> {
+  const text = `${market.question} ${market.resolution.rules}`.toLocaleLowerCase('en-US');
+  return Object.freeze({
+    numbers: Object.freeze([...new Set(text.match(/(?:\$|€|£)?\d+(?:[.,]\d+)*(?:%|bps?)?/gu) ?? [])].sort()),
+    negated: /\b(?:not|no|never|without|fails? to)\b/u.test(text),
+    cancellation: /\b(?:cancel(?:led|ed|lation)?|void(?:ed)?|invalid(?:ated)?)\b/u.test(text),
+    sourceHost: new URL(market.resolution.sourceUrl).hostname.toLocaleLowerCase('en-US'),
+  });
+}
+
+function tokenSimilarity(left: string, right: string): number {
+  const leftTokens = new Set(tokens(left));
+  const rightTokens = new Set(tokens(right));
+  const union = new Set([...leftTokens, ...rightTokens]);
+  if (union.size === 0) return 0;
+  let intersection = 0;
+  for (const token of leftTokens) if (rightTokens.has(token)) intersection += 1;
+  return Math.round(intersection * 10_000 / union.size);
+}
+
 export function scorePredictionMarketMatch(left: Readonly<NormalizedPredictionMarket>, right: Readonly<NormalizedPredictionMarket>): Readonly<{ scoreBasisPoints: number; decision: 'auto_match' | 'review' | 'reject'; reasons: readonly string[] }> {
   if (left.venueId === right.venueId && left.venueMarketId === right.venueMarketId) return Object.freeze({ scoreBasisPoints: 10_000, decision: 'auto_match', reasons: Object.freeze(['same_venue_identity']) });
   const reasons: string[] = [];
   let score = 0;
   const questionExact = normalizedText(left.question) === normalizedText(right.question);
-  if (questionExact) { score += 4_000; reasons.push('question_exact'); }
+  const questionSimilarity = tokenSimilarity(left.question, right.question);
+  if (questionExact) { score += 3_500; reasons.push('question_exact'); }
+  else if (questionSimilarity >= 8_500) { score += 2_000; reasons.push('question_near'); }
   const leftLabels = left.outcomes.map(({ label }) => normalizedText(label)).sort();
   const rightLabels = right.outcomes.map(({ label }) => normalizedText(label)).sort();
   const outcomesExact = JSON.stringify(leftLabels) === JSON.stringify(rightLabels);
-  if (outcomesExact) { score += 2_000; reasons.push('outcomes_exact'); }
+  if (!outcomesExact) return Object.freeze({ scoreBasisPoints: Math.min(score, 3_500), decision: 'reject', reasons: Object.freeze([...reasons, 'outcome_mismatch']) });
+  score += 1_500; reasons.push('outcomes_exact');
   const closeDelta = Math.abs(Date.parse(left.closesAt) - Date.parse(right.closesAt));
-  if (closeDelta === 0) { score += 1_500; reasons.push('close_exact'); }
-  else if (closeDelta <= 3_600_000) { score += 750; reasons.push('close_near'); }
+  if (closeDelta === 0) { score += 1_000; reasons.push('close_exact'); }
+  else if (closeDelta <= 3_600_000) { score += 500; reasons.push('close_near_review_only'); }
+  else return Object.freeze({ scoreBasisPoints: Math.min(score, 5_000), decision: 'reject', reasons: Object.freeze([...reasons, 'close_window_mismatch']) });
+  const leftAnchors = semanticAnchors(left);
+  const rightAnchors = semanticAnchors(right);
+  if (JSON.stringify(leftAnchors.numbers) !== JSON.stringify(rightAnchors.numbers)) return Object.freeze({ scoreBasisPoints: Math.min(score, 5_000), decision: 'reject', reasons: Object.freeze([...reasons, 'numeric_threshold_or_date_mismatch']) });
+  if (leftAnchors.negated !== rightAnchors.negated) return Object.freeze({ scoreBasisPoints: Math.min(score, 5_000), decision: 'reject', reasons: Object.freeze([...reasons, 'polarity_mismatch']) });
+  if (leftAnchors.cancellation !== rightAnchors.cancellation) return Object.freeze({ scoreBasisPoints: Math.min(score, 5_000), decision: 'reject', reasons: Object.freeze([...reasons, 'cancellation_rule_mismatch']) });
+  reasons.push('semantic_anchors_exact');
   const rulesExact = normalizedText(left.resolution.rules) === normalizedText(right.resolution.rules);
   if (rulesExact) { score += 1_500; reasons.push('rules_exact'); }
-  if (new URL(left.resolution.sourceUrl).hostname === new URL(right.resolution.sourceUrl).hostname) { score += 1_000; reasons.push('resolution_source_host_exact'); }
-  const decision = score >= 9_500 && questionExact && outcomesExact && rulesExact ? 'auto_match' : score >= 6_000 ? 'review' : 'reject';
+  else { score += 1_000; reasons.push('rules_semantically_bounded'); }
+  const sourceHostExact = leftAnchors.sourceHost === rightAnchors.sourceHost;
+  if (sourceHostExact) { score += 1_500; reasons.push('resolution_source_host_exact'); }
+  else reasons.push('resolution_source_host_mismatch');
+  const decision = score >= 8_500 && questionExact && closeDelta === 0 && sourceHostExact ? 'auto_match' : score >= 6_000 ? 'review' : 'reject';
   return Object.freeze({ scoreBasisPoints: score, decision, reasons: Object.freeze(reasons) });
 }
 

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "clervo.prediction-competitor-price-evidence.v1",
+  "observedAt": "2026-08-09T10:12:36.440Z",
+  "evidence": [
+    { "competitor": "BlockRun / Predexon", "capability": "market data, search and candlesticks", "priceMicrousd": 8500, "pricingUnit": "request", "sourceUrl": "https://blockrun.ai/api/v1/pm/markets/search", "evidence": "direct unpaid 402 challenge on market, search, and candlestick routes; Base USDC amount 8500", "confidence": "PROVEN" },
+    { "competitor": "BlockRun / Predexon", "capability": "cross-platform matching", "priceMicrousd": null, "pricingUnit": "documented as per request", "sourceUrl": "https://blockrun.ai/docs/api-reference/prediction-markets", "evidence": "documentation advertises matching, while direct probes of matching-markets and matching-markets/pairs returned 404", "confidence": "UNVERIFIED" },
+    { "competitor": "Predexon", "capability": "most market data", "priceMicrousd": 0, "pricingUnit": "free plan up to 1000 monthly requests at 1 request per second", "sourceUrl": "https://docs.predexon.com/", "confidence": "PROVEN" },
+    { "competitor": "DevDrops", "capability": "Polymarket and Manifold prediction feed", "priceMicrousd": 5000, "pricingUnit": "request", "sourceUrl": "https://devdrops.run/", "confidence": "PROVEN" },
+    { "competitor": "BlockForecast", "capability": "raw prediction market feed", "priceMicrousd": 1000, "pricingUnit": "request", "sourceUrl": "https://blockforecast.mintlify.app/developers/x402-overview", "confidence": "PROVEN" },
+    { "competitor": "PredictingAPI", "capability": "enriched prediction market query", "priceMicrousd": 250000, "pricingUnit": "query", "sourceUrl": "https://predictingapi.com/docs", "confidence": "PROVEN" },
+    { "competitor": "Manifold", "capability": "public search, markets and history; commercial AI training requires a separate data license", "priceMicrousd": 0, "pricingUnit": "public API request, 500 requests per minute per IP", "sourceUrl": "https://github.com/manifoldmarkets/manifold/blob/main/docs/docs/api.md", "confidence": "PROVEN" },
+    { "competitor": "Opinion", "capability": "read-only market data, orderbooks and price history with application-gated API key", "priceMicrousd": null, "pricingUnit": "not publicly stated", "sourceUrl": "https://docs.opinion.trade/developer-guide/opinion-open-api/overview", "confidence": "PROVEN" },
+    { "competitor": "Limitless", "capability": "REST and WebSocket prediction-market integration with authenticated programmatic APIs", "priceMicrousd": null, "pricingUnit": "not publicly stated", "sourceUrl": "https://docs.limitless.exchange/developers/programmatic-api", "confidence": "PROVEN" }
+  ]
+}

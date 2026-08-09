@@ -1,4 +1,4 @@
-import type { NormalizedPredictionMarket, PredictionVenueId } from './normalization.js';
+import { isPredictionVenueId, type NormalizedPredictionMarket, type PredictionVenueId } from './normalization.js';
 import { comparePredictionMarkets } from './normalization.js';
 
 export type PredictionSignal =
@@ -64,7 +64,7 @@ export function derivePredictionDisagreementSignals(left: Readonly<NormalizedPre
 
 export interface PredictionVenueResult {
   venueId: PredictionVenueId;
-  state: 'available' | 'unavailable';
+  state: 'available' | 'degraded' | 'unavailable';
   markets?: readonly Readonly<NormalizedPredictionMarket>[];
   failureCode?: string;
 }
@@ -72,17 +72,17 @@ export interface PredictionVenueResult {
 export function aggregatePredictionVenues(results: readonly Readonly<PredictionVenueResult>[]): Readonly<{
   state: 'available' | 'degraded' | 'unavailable';
   markets: readonly Readonly<NormalizedPredictionMarket>[];
-  venues: readonly Readonly<{ venueId: PredictionVenueId; state: 'available' | 'unavailable'; marketCount: number; failureCode: string | null }>[];
+  venues: readonly Readonly<{ venueId: PredictionVenueId; state: 'available' | 'degraded' | 'unavailable'; marketCount: number; failureCode: string | null }>[];
 }> {
   if (results.length < 1 || results.length > 16 || new Set(results.map(({ venueId }) => venueId)).size !== results.length) throw new TypeError('prediction_venue_results_invalid');
   const venues = results.map((result) => {
-    if (!['polymarket', 'kalshi'].includes(result.venueId)
-      || result.state === 'available' && result.markets === undefined
+    if (!isPredictionVenueId(result.venueId)
+      || ['available', 'degraded'].includes(result.state) && result.markets === undefined
       || result.state === 'unavailable' && result.markets !== undefined
       || result.failureCode !== undefined && !/^[a-z][a-z0-9_]{2,63}$/u.test(result.failureCode)) throw new TypeError('prediction_venue_results_invalid');
     return Object.freeze({ venueId: result.venueId, state: result.state, marketCount: result.markets?.length ?? 0, failureCode: result.failureCode ?? null });
   });
   const markets = Object.freeze(results.flatMap(({ markets: value }) => value === undefined ? [] : [...value]));
-  const available = venues.filter(({ state }) => state === 'available').length;
-  return Object.freeze({ state: available === results.length ? 'available' : available === 0 ? 'unavailable' : 'degraded', markets, venues: Object.freeze(venues) });
+  const usable = venues.filter(({ state }) => state !== 'unavailable').length;
+  return Object.freeze({ state: venues.every(({ state }) => state === 'available') ? 'available' : usable === 0 ? 'unavailable' : 'degraded', markets, venues: Object.freeze(venues) });
 }

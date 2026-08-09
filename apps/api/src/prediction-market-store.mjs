@@ -7,7 +7,7 @@ function canonical(value) {
 }
 function digest(value) { return createHash('sha256').update(value).digest('hex'); }
 function identity(snapshot) {
-  if (!snapshot || !/^pmkt_[a-f0-9]{32}$/u.test(snapshot.marketRef ?? '') || !['polymarket', 'kalshi'].includes(snapshot.venueId)
+  if (!snapshot || !/^pmkt_[a-f0-9]{32}$/u.test(snapshot.marketRef ?? '') || !/^[a-z][a-z0-9_]{1,63}$/u.test(snapshot.venueId ?? '')
     || typeof snapshot.venueMarketId !== 'string' || !Number.isFinite(Date.parse(snapshot.observedAt)) || new Date(Date.parse(snapshot.observedAt)).toISOString() !== snapshot.observedAt) throw new TypeError('prediction_market_store_snapshot_invalid');
 }
 
@@ -63,10 +63,10 @@ export class PostgresPredictionMarketStore {
       }
       if (last && Date.parse(last.observed_at) >= Date.parse(snapshot.observedAt)) throw new Error('prediction_history_out_of_order');
       const sequence = (last?.sequence ?? 0) + 1;
-      if (sequence > this.maximumSnapshotsPerMarket) throw new Error('prediction_history_capacity_reached');
       const previousHash = last?.record_hash ?? null;
       const recordHash = digest(canonical({ sequence, marketRef: snapshot.marketRef, venueId: snapshot.venueId, observedAt: snapshot.observedAt, previousHash, payloadHash }));
       await client.query('INSERT INTO clervo_prediction_history (market_ref, sequence, observed_at, previous_hash, payload_hash, record_hash, snapshot_json) VALUES ($1, $2, $3::timestamptz, $4, $5, $6, $7::jsonb)', [snapshot.marketRef, sequence, snapshot.observedAt, previousHash, payloadHash, recordHash, JSON.stringify(snapshot)]);
+      if (sequence > this.maximumSnapshotsPerMarket) await client.query('DELETE FROM clervo_prediction_history WHERE market_ref = $1 AND sequence <= $2', [snapshot.marketRef, sequence - this.maximumSnapshotsPerMarket]);
       await client.query('COMMIT');
       return Object.freeze({ record: Object.freeze({ sequence, marketRef: snapshot.marketRef, venueId: snapshot.venueId, observedAt: snapshot.observedAt, previousHash, payloadHash, recordHash, snapshot }), replayed: false });
     } catch (error) { await client.query('ROLLBACK'); throw error; }
@@ -76,6 +76,11 @@ export class PostgresPredictionMarketStore {
     if (!/^pmkt_[a-f0-9]{32}$/u.test(marketRef ?? '') || !Number.isSafeInteger(afterSequence) || afterSequence < 0 || !Number.isSafeInteger(limit) || limit < 1 || limit > 100) throw new TypeError('prediction_history_query_invalid');
     const result = await this.client.query('SELECT sequence, observed_at, previous_hash, payload_hash, record_hash, snapshot_json FROM clervo_prediction_history WHERE market_ref = $1 AND sequence > $2 ORDER BY sequence ASC LIMIT $3', [marketRef, afterSequence, limit]);
     return Object.freeze(result.rows.map((row) => Object.freeze({ sequence: row.sequence, marketRef, venueId: row.snapshot_json.venueId, observedAt: new Date(row.observed_at).toISOString(), previousHash: row.previous_hash, payloadHash: row.payload_hash, recordHash: row.record_hash, snapshot: row.snapshot_json })));
+  }
+  async latest(marketRef, limit = 2) {
+    if (!/^pmkt_[a-f0-9]{32}$/u.test(marketRef ?? '') || !Number.isSafeInteger(limit) || limit < 1 || limit > 100) throw new TypeError('prediction_history_query_invalid');
+    const result = await this.client.query('SELECT sequence, observed_at, previous_hash, payload_hash, record_hash, snapshot_json FROM clervo_prediction_history WHERE market_ref = $1 ORDER BY sequence DESC LIMIT $2', [marketRef, limit]);
+    return Object.freeze(result.rows.reverse().map((row) => Object.freeze({ sequence: row.sequence, marketRef, venueId: row.snapshot_json.venueId, observedAt: new Date(row.observed_at).toISOString(), previousHash: row.previous_hash, payloadHash: row.payload_hash, recordHash: row.record_hash, snapshot: row.snapshot_json })));
   }
   async close() { await this.client.end?.(); }
 }

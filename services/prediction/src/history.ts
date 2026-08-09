@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import type { NormalizedPredictionMarket, PredictionVenueId } from './normalization.js';
+import { isPredictionVenueId, type NormalizedPredictionMarket, type PredictionVenueId } from './normalization.js';
 
 export interface PredictionHistoryRecord {
   sequence: number;
@@ -30,13 +30,14 @@ function digest(value: string): string {
 }
 
 function identity(value: Readonly<NormalizedPredictionMarket>): void {
-  if (!/^pmkt_[a-f0-9]{32}$/u.test(value.marketRef) || !['polymarket', 'kalshi'].includes(value.venueId)
+  if (!/^pmkt_[a-f0-9]{32}$/u.test(value.marketRef) || !isPredictionVenueId(value.venueId)
     || !Number.isFinite(Date.parse(value.observedAt)) || new Date(Date.parse(value.observedAt)).toISOString() !== value.observedAt) throw new TypeError('prediction_history_snapshot_invalid');
 }
 
 export function verifyPredictionHistory(records: readonly Readonly<PredictionHistoryRecord>[]): boolean {
-  let previousHash: string | null = null;
+  let previousHash: string | null = records[0]?.previousHash ?? null;
   let previousObservedAt = -1;
+  const firstSequence = records[0]?.sequence ?? 1;
   for (let index = 0; index < records.length; index += 1) {
     const record = records[index]!;
     const payloadHash = digest(canonical(record.snapshot));
@@ -48,7 +49,7 @@ export function verifyPredictionHistory(records: readonly Readonly<PredictionHis
       previousHash,
       payloadHash,
     }));
-    if (record.sequence !== index + 1 || record.previousHash !== previousHash || record.payloadHash !== payloadHash || record.recordHash !== recordHash
+    if (record.sequence !== firstSequence + index || record.previousHash !== previousHash || record.payloadHash !== payloadHash || record.recordHash !== recordHash
       || record.marketRef !== record.snapshot.marketRef || record.venueId !== record.snapshot.venueId || record.observedAt !== record.snapshot.observedAt
       || Date.parse(record.observedAt) <= previousObservedAt) return false;
     previousHash = record.recordHash;
@@ -65,7 +66,7 @@ export class InMemoryPredictionHistoryStore implements PredictionHistoryStore {
   constructor(input: Readonly<{ maximumSnapshotsPerMarket: number; historyAllowedVenues: readonly PredictionVenueId[] }>) {
     if (!Number.isSafeInteger(input.maximumSnapshotsPerMarket) || input.maximumSnapshotsPerMarket < 2 || input.maximumSnapshotsPerMarket > 100_000
       || input.historyAllowedVenues.length < 1 || new Set(input.historyAllowedVenues).size !== input.historyAllowedVenues.length
-      || input.historyAllowedVenues.some((venue) => !['polymarket', 'kalshi'].includes(venue))) throw new TypeError('prediction_history_config_invalid');
+      || input.historyAllowedVenues.some((venue) => !isPredictionVenueId(venue))) throw new TypeError('prediction_history_config_invalid');
     this.#maximumSnapshotsPerMarket = input.maximumSnapshotsPerMarket;
     this.#historyAllowedVenues = new Set(input.historyAllowedVenues);
   }
@@ -81,8 +82,7 @@ export class InMemoryPredictionHistoryStore implements PredictionHistoryStore {
       return Object.freeze({ record: last, replayed: true });
     }
     if (last !== undefined && Date.parse(snapshot.observedAt) <= Date.parse(last.observedAt)) throw new Error('prediction_history_out_of_order');
-    if (current.length >= this.#maximumSnapshotsPerMarket) throw new Error('prediction_history_capacity_reached');
-    const sequence = current.length + 1;
+    const sequence = (last?.sequence ?? 0) + 1;
     const previousHash = last?.recordHash ?? null;
     const recordHash = digest(canonical({
       sequence,
@@ -93,7 +93,7 @@ export class InMemoryPredictionHistoryStore implements PredictionHistoryStore {
       payloadHash,
     }));
     const record = Object.freeze({ sequence, marketRef: snapshot.marketRef, venueId: snapshot.venueId, observedAt: snapshot.observedAt, previousHash, payloadHash, recordHash, snapshot });
-    this.#records.set(snapshot.marketRef, Object.freeze([...current, record]));
+    this.#records.set(snapshot.marketRef, Object.freeze([...current, record].slice(-this.#maximumSnapshotsPerMarket)));
     return Object.freeze({ record, replayed: false });
   }
 

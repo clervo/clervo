@@ -5,45 +5,56 @@
   "required": ["schemaVersion", "lifecycle", "customerRoutingEnabled", "sources", "ownerBlocker"],
   "properties": {
     "schemaVersion": { "const": "clervo.prediction-source-routes.v1" },
-    "lifecycle": { "const": "unavailable" },
-    "customerRoutingEnabled": { "const": false },
+    "lifecycle": { "enum": ["unavailable", "live"] },
+    "customerRoutingEnabled": { "type": "boolean" },
     "sources": {
-      "type": "array",
-      "minItems": 2,
-      "maxItems": 16,
+      "type": "array", "minItems": 1, "maxItems": 16,
       "items": {
         "type": "object",
-        "required": ["sourceId", "venueId", "accessMode", "technicalStatus", "termsStatus", "resaleStatus", "historyStatus", "quoteStatus", "orderBookStatus", "onChainVerified", "customerRoutingEnabled", "evidenceUrls"],
+        "required": ["sourceId", "venueId", "adapterId", "qualificationId", "accessMode", "technicalQualification", "technicalObservedAt", "technicalExpiresAt", "commercialPermission", "publicSellable", "outputMode", "rawPassThroughPermitted", "historyPermission", "retentionDays", "attributionRequirement", "publishedRateLimit", "customerRoutingEnabled", "evidenceUrls"],
         "properties": {
           "sourceId": { "type": "string", "pattern": "^prediction\\.source\\.[a-z0-9_]+$" },
-          "venueId": { "enum": ["polymarket", "kalshi"] },
-          "accessMode": { "const": "public_api" },
-          "technicalStatus": { "enum": ["recorded_fixture_passed", "live_passed", "failed", "not_run"] },
-          "termsStatus": { "enum": ["approved", "unreviewed", "restricted", "blocked"] },
-          "resaleStatus": { "enum": ["approved", "unreviewed", "restricted", "prohibited"] },
-          "historyStatus": { "enum": ["approved", "unreviewed", "restricted", "prohibited"] },
-          "quoteStatus": { "enum": ["recorded_only", "live_qualified", "unqualified"] },
-          "orderBookStatus": { "enum": ["recorded_only", "live_qualified", "unqualified", "unsupported"] },
-          "onChainVerified": { "type": "boolean" },
+          "venueId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" },
+          "adapterId": { "type": "string", "pattern": "^adapter_prediction\\.[a-z0-9_]+$" },
+          "qualificationId": { "type": "string", "pattern": "^qual_[A-Za-z0-9]{20,64}$" },
+          "accessMode": { "enum": ["public_api", "partner_api", "owned"] },
+          "technicalQualification": { "enum": ["qualified", "expired", "failed", "not_run"] },
+          "technicalObservedAt": { "type": "string", "format": "date-time" },
+          "technicalExpiresAt": { "type": "string", "format": "date-time" },
+          "qualificationEvidence": { "type": "object", "required": ["repeatedCalls", "successes", "failures", "latencyMs", "normalizationPassed", "freshness"], "properties": {
+            "repeatedCalls": { "type": "integer", "minimum": 1, "maximum": 10 },
+            "successes": { "type": "integer", "minimum": 0, "maximum": 10 },
+            "failures": { "type": "integer", "minimum": 0, "maximum": 10 },
+            "latencyMs": { "type": "object", "required": ["minimum", "median", "maximum"], "properties": { "minimum": { "type": "number", "minimum": 0 }, "median": { "type": "number", "minimum": 0 }, "maximum": { "type": "number", "minimum": 0 } }, "additionalProperties": false },
+            "normalizationPassed": { "type": "boolean" },
+            "freshness": { "enum": ["fresh", "stale"] }
+          }, "additionalProperties": false },
+          "commercialPermission": { "enum": ["approved", "unresolved", "restricted", "prohibited"] },
+          "publicSellable": { "type": "boolean" },
+          "outputMode": { "enum": ["derived_only", "raw_and_derived"] },
+          "rawPassThroughPermitted": { "enum": ["approved", "unknown", "prohibited"] },
+          "historyPermission": { "enum": ["approved", "unresolved", "restricted", "prohibited"] },
+          "retentionDays": { "type": ["integer", "null"], "minimum": 1, "maximum": 3650 },
+          "attributionRequirement": { "enum": ["required", "not_required", "unknown"] },
+          "publishedRateLimit": { "type": "string", "minLength": 1, "maxLength": 100 },
           "customerRoutingEnabled": { "type": "boolean" },
           "evidenceUrls": { "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": { "type": "string", "format": "uri", "pattern": "^https://" } }
         },
         "allOf": [
-          {
-            "if": {
-              "anyOf": [
-                { "properties": { "technicalStatus": { "enum": ["recorded_fixture_passed", "failed", "not_run"] } }, "required": ["technicalStatus"] },
-                { "properties": { "termsStatus": { "enum": ["unreviewed", "restricted", "blocked"] } }, "required": ["termsStatus"] },
-                { "properties": { "resaleStatus": { "enum": ["unreviewed", "restricted", "prohibited"] } }, "required": ["resaleStatus"] }
-              ]
-            },
-            "then": { "properties": { "customerRoutingEnabled": { "const": false } } }
-          }
+          { "if": { "anyOf": [
+            { "properties": { "technicalQualification": { "enum": ["expired", "failed", "not_run"] } }, "required": ["technicalQualification"] },
+            { "properties": { "commercialPermission": { "enum": ["unresolved", "restricted", "prohibited"] } }, "required": ["commercialPermission"] },
+            { "properties": { "publicSellable": { "const": false } }, "required": ["publicSellable"] }
+          ] }, "then": { "properties": { "customerRoutingEnabled": { "const": false } } } }
         ],
         "additionalProperties": false
       }
     },
-    "ownerBlocker": { "type": "string", "minLength": 1, "maxLength": 300 }
+    "ownerBlocker": { "type": "string", "minLength": 1, "maxLength": 400 }
   },
+  "allOf": [
+    { "if": { "properties": { "customerRoutingEnabled": { "const": true } }, "required": ["customerRoutingEnabled"] }, "then": { "properties": { "lifecycle": { "const": "live" } } } },
+    { "if": { "properties": { "lifecycle": { "const": "unavailable" } }, "required": ["lifecycle"] }, "then": { "properties": { "customerRoutingEnabled": { "const": false } } } }
+  ],
   "additionalProperties": false
 }

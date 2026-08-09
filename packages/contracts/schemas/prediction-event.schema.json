@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/prediction-event.schema.json",
+  "type": "object",
+  "required": ["eventRef", "proposition", "closesAt", "outcomes", "matchDecision", "matchConfidenceBasisPoints", "supportingVenueCount", "hasStaleEvidence", "constituents", "matchEvidence"],
+  "properties": {
+    "eventRef": { "type": "string", "pattern": "^pevt_[a-f0-9]{32}$" },
+    "proposition": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "closesAt": { "type": "string", "format": "date-time" },
+    "outcomes": { "type": "array", "minItems": 2, "maxItems": 100, "items": { "type": "string", "minLength": 1, "maxLength": 200 } },
+    "matchDecision": { "enum": ["auto_match", "unresolved"] },
+    "matchConfidenceBasisPoints": { "type": "integer", "minimum": 0, "maximum": 10000 },
+    "supportingVenueCount": { "type": "integer", "minimum": 1, "maximum": 16 },
+    "hasStaleEvidence": { "type": "boolean" },
+    "constituents": {
+      "type": "array", "minItems": 1, "maxItems": 16,
+      "items": { "type": "object", "required": ["marketRef", "venueId", "venueMarketId", "observedAt", "freshness", "resolutionSourceUrl"], "properties": {
+        "marketRef": { "type": "string", "pattern": "^pmkt_[a-f0-9]{32}$" },
+        "venueId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" },
+        "venueMarketId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{1,159}$" },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "freshness": { "enum": ["fresh", "stale"] },
+        "resolutionSourceUrl": { "type": "string", "format": "uri", "pattern": "^https://" }
+      }, "additionalProperties": false }
+    },
+    "matchEvidence": {
+      "type": "array", "maxItems": 120,
+      "items": { "type": "object", "required": ["leftMarketRef", "rightMarketRef", "decision", "scoreBasisPoints", "reasons"], "properties": {
+        "leftMarketRef": { "type": "string", "pattern": "^pmkt_[a-f0-9]{32}$" },
+        "rightMarketRef": { "type": "string", "pattern": "^pmkt_[a-f0-9]{32}$" },
+        "decision": { "const": "auto_match" },
+        "scoreBasisPoints": { "type": "integer", "minimum": 8500, "maximum": 10000 },
+        "reasons": { "type": "array", "minItems": 1, "maxItems": 16, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" } }
+      }, "additionalProperties": false }
+    }
+  },
+  "allOf": [
+    { "if": { "properties": { "matchDecision": { "const": "unresolved" } }, "required": ["matchDecision"] }, "then": { "properties": { "constituents": { "type": "array", "maxItems": 1 }, "matchEvidence": { "type": "array", "maxItems": 0 }, "supportingVenueCount": { "const": 1 } } } },
+    { "if": { "properties": { "matchDecision": { "const": "auto_match" } }, "required": ["matchDecision"] }, "then": { "properties": { "constituents": { "type": "array", "minItems": 2 }, "matchEvidence": { "type": "array", "minItems": 1 }, "supportingVenueCount": { "type": "integer", "minimum": 2 } } } }
+  ],
+  "additionalProperties": false
+}

@@ -26,9 +26,13 @@ const workflowFile = 'packages/catalog/private-workflows.v1.json';
 const postFreezeSchemaNames = new Set([
   'ai-http-request.schema.json',
   'ai-http-result.schema.json',
+  'prediction-derived-market.schema.json',
+  'prediction-event.schema.json',
   'qualified-ai-supply-catalog.schema.json',
 ]);
 const postFreezeFixtureNames = new Set([
+  'prediction-derived-market-valid.json',
+  'prediction-event-valid.json',
   'qualified-ai-supply-catalog-valid.json',
   'qualified-ai-supply-catalog-secret-invalid.json',
 ]);
@@ -65,6 +69,25 @@ const frozenSchemaHashes = new Map([
   // B7 removes the historical 100-route ceiling. The schema remains internal,
   // and the immutable Stage 12 snapshot retains the pre-B7 descriptor hash.
   ['ai-model-catalog.schema.json', 'sha256:0fcb7d7b2aa1759f18a3217e0e010dda0c85c3f55e6f627b35ae0bbe4491797f'],
+  // B8 strengthens the internal Prediction contracts without changing the
+  // historical Stage 12 snapshot they postdate.
+  ['prediction-market.schema.json', 'sha256:12e711f6b0f11308eb8b30c8e2e694aa6d75e2802d10be64c7ed8e9ac025d8c9'],
+  ['prediction-operation-request.schema.json', 'sha256:03088774a649e42689975e92df9d600545119378ed055080279a7ca0077f080c'],
+  ['prediction-operation-result.schema.json', 'sha256:74e0e03ab28756c94437c88db2c3da21f63f217ccdc51aaf302de4512f607d21'],
+  ['prediction-product-pricing.schema.json', 'sha256:ea4a5d41af051ef3d260f5901424e15427ecf969093b3a4c5bc883c8afcc2164'],
+  ['prediction-source-routes.schema.json', 'sha256:c559b9f8c213aa5b2d78d6b23ba81895567128a96dae888178fa0909f4e1c80a'],
+]);
+const frozenFixtureHashes = new Map([
+  ['prediction-operation-result-valid.json', 'sha256:3c98cd3bdfa4647e217a79b4206640f5dd6497061a01eef02ab4755eea48ef0f'],
+  ['prediction-product-pricing-valid.json', 'sha256:07eff84cafb2392adbe1b60ded8ee4ca6537649cd9337e1e48bf0c1dcc085877'],
+  ['prediction-source-routes-terms-bypass-invalid.json', 'sha256:f00a23e81d2bce4c63edba54dfcb20a18569f5524a4ecba423dd623f98b3accd'],
+  ['prediction-source-routes-valid.json', 'sha256:29e7609f3abca4dca6fd8d9fedb0dea056000aa9997ce351ba47c44933cf8832'],
+]);
+// Pricing policy is expected to evolve after the private-core freeze. Keep the
+// historical descriptor for any catalog revised by a later milestone instead
+// of silently reissuing the published Stage 12 interface identity.
+const frozenPriceHashes = new Map([
+  ['packages/catalog/prediction-product-pricing.v1.json', 'sha256:bc8a742b44f43704606984e876457df1f03b3f02893c63d60a247739ce5a4a0a'],
 ]);
 const priceFiles = [
   'packages/contracts/src/search-http.ts',
@@ -82,16 +105,20 @@ const allSchemaNames = (await readdir(path.join(root, 'packages/contracts/schema
 const schemaNames = allSchemaNames.filter((name) => !postFreezeSchemaNames.has(name));
 const fixtureNames = (await readdir(path.join(root, 'packages/contracts/fixtures'))).filter((name) => name.endsWith('.json') && !postFreezeFixtureNames.has(name));
 const schemas = await descriptors('packages/contracts/schemas', schemaNames, frozenSchemaHashes);
-const fixtures = await descriptors('packages/contracts/fixtures', fixtureNames);
-const prices = await Promise.all(priceFiles.map(async (file) => Object.freeze({ file, sha256: await sha256(file) })));
+const fixtures = await descriptors('packages/contracts/fixtures', fixtureNames, frozenFixtureHashes);
+const prices = await Promise.all(priceFiles.map(async (file) => Object.freeze({ file, sha256: frozenPriceHashes.get(file) ?? await sha256(file) })));
 
 const visibleFiles = new Set(visibility.schemas.map(({ file }) => file));
 if (visibleFiles.size !== allSchemaNames.length || allSchemaNames.some((name) => !visibleFiles.has(name))) throw new Error('release_freeze_schema_visibility_incomplete');
 for (const name of postFreezeSchemaNames) {
-  const expectedVisibility = name === 'qualified-ai-supply-catalog.schema.json' ? 'internal_control' : 'public_wire';
+  const expectedVisibility = name === 'ai-http-request.schema.json' || name === 'ai-http-result.schema.json' ? 'public_wire' : 'internal_control';
   if (!allSchemaNames.includes(name) || visibility.schemas.find(({ file }) => file === name)?.visibility !== expectedVisibility) {
     throw new Error(`release_freeze_post_freeze_schema_invalid:${name}`);
   }
+}
+for (const [file, frozenHash] of frozenPriceHashes) {
+  if (!priceFiles.includes(file)) throw new Error(`release_freeze_frozen_price_unknown:${file}`);
+  if (await sha256(file) === frozenHash) throw new Error(`release_freeze_frozen_price_redundant:${file}`);
 }
 // A pinned hash that no longer belongs to any schema in the frozen set is dead
 // weight that would hide the next real drift, and one that matches the file on
@@ -100,6 +127,12 @@ for (const name of postFreezeSchemaNames) {
 for (const [name, frozenHash] of frozenSchemaHashes) {
   if (!schemaNames.includes(name)) throw new Error(`release_freeze_frozen_hash_unknown_schema:${name}`);
   if (await sha256(path.posix.join('packages/contracts/schemas', name)) === frozenHash) {
+    throw new Error(`release_freeze_frozen_hash_redundant:${name}`);
+  }
+}
+for (const [name, frozenHash] of frozenFixtureHashes) {
+  if (!fixtureNames.includes(name)) throw new Error(`release_freeze_frozen_hash_unknown_fixture:${name}`);
+  if (await sha256(path.posix.join('packages/contracts/fixtures', name)) === frozenHash) {
     throw new Error(`release_freeze_frozen_hash_redundant:${name}`);
   }
 }

@@ -48,6 +48,13 @@ test('prediction history is append-only, hash-linked, replay-safe, bounded, and 
   const records = await store.list(first.marketRef);
   assert.equal(verifyPredictionHistory(records), true);
   assert.equal(records[1].previousHash, records[0].recordHash);
+  const third = market({ observedAt: '2026-08-02T12:01:00.000Z', outcomes: [{ venueOutcomeId: 'yes', label: 'Yes', price: '0.62' }, { venueOutcomeId: 'no', label: 'No', price: '0.38' }] }, '2026-08-02T12:01:10.000Z');
+  const fourth = market({ observedAt: '2026-08-02T12:01:30.000Z', outcomes: [{ venueOutcomeId: 'yes', label: 'Yes', price: '0.63' }, { venueOutcomeId: 'no', label: 'No', price: '0.37' }] }, '2026-08-02T12:01:40.000Z');
+  await store.append(third);
+  await store.append(fourth);
+  const retained = await store.list(first.marketRef);
+  assert.deepEqual(retained.map(({ sequence }) => sequence), [2, 3, 4]);
+  assert.equal(verifyPredictionHistory(retained), true);
   await assert.rejects(store.append(market({ observedAt: '2026-08-02T11:59:59.000Z' })), /out_of_order/u);
   const forbidden = market({ venueId: 'kalshi', venueMarketId: 'KXTEST' });
   await assert.rejects(store.append(forbidden), /terms_unqualified/u);

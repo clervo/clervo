@@ -1,6 +1,6 @@
 import type { PredictionHistoryStore } from './history.js';
 import type { NormalizedPredictionMarket, PredictionVenueId } from './normalization.js';
-import { comparePredictionMarkets } from './normalization.js';
+import { comparePredictionMarkets, isPredictionVenueId } from './normalization.js';
 import {
   aggregatePredictionVenues,
   derivePredictionDisagreementSignals,
@@ -32,7 +32,7 @@ export class PredictionIntelligenceGateway {
 
   constructor(input: Readonly<{ sources: readonly PredictionMarketSource[]; history?: PredictionHistoryStore }>) {
     if (input.sources.length < 1 || input.sources.length > 16 || new Set(input.sources.map(({ venueId }) => venueId)).size !== input.sources.length
-      || input.sources.some(({ venueId }) => !['polymarket', 'kalshi'].includes(venueId))) throw new TypeError('prediction_gateway_config_invalid');
+      || input.sources.some(({ venueId }) => !isPredictionVenueId(venueId))) throw new TypeError('prediction_gateway_config_invalid');
     this.#sources = Object.freeze([...input.sources]);
     this.#history = input.history ?? null;
   }
@@ -40,7 +40,7 @@ export class PredictionIntelligenceGateway {
   async discover(input: Readonly<{ query?: string; category?: string; status?: string; limit: number; cursor?: string }>, signal?: AbortSignal): Promise<Readonly<{
     state: 'available' | 'degraded' | 'unavailable';
     markets: readonly Readonly<NormalizedPredictionMarket>[];
-    venues: readonly Readonly<{ venueId: PredictionVenueId; state: 'available' | 'unavailable'; marketCount: number; failureCode: string | null }>[];
+    venues: readonly Readonly<{ venueId: PredictionVenueId; state: 'available' | 'degraded' | 'unavailable'; marketCount: number; failureCode: string | null }>[];
     nextCursors: Readonly<Partial<Record<PredictionVenueId, string>>>;
   }>> {
     discoveryInput(input);

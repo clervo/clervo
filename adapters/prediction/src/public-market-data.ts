@@ -11,7 +11,7 @@ export interface PredictionHttpTransport {
 }
 
 export interface PredictionSourceConfig {
-  sourceId: 'polymarket_gamma' | 'kalshi_market_data';
+  sourceId: string;
   origin: string;
   allowedPathPrefix: string;
   maximumResponseBytes: number;
@@ -96,7 +96,7 @@ function publicUrl(value: string): string {
 function sourceConfig(input: Readonly<PredictionSourceConfig>): Readonly<PredictionSourceConfig> {
   const origin = new URL(publicUrl(input.origin));
   if (origin.pathname !== '/' || origin.search !== '') throw new TypeError('prediction_source_config_invalid');
-  if (!/^\/[A-Za-z0-9/_-]{1,200}$/u.test(input.allowedPathPrefix)
+  if (!/^[a-z][a-z0-9_]{2,63}$/u.test(input.sourceId) || !/^\/[A-Za-z0-9/_-]{1,200}$/u.test(input.allowedPathPrefix)
     || !Number.isSafeInteger(input.maximumResponseBytes) || input.maximumResponseBytes < 1_024 || input.maximumResponseBytes > 10_485_760
     || !Number.isSafeInteger(input.timeoutMs) || input.timeoutMs < 100 || input.timeoutMs > 30_000
     || !Number.isSafeInteger(input.staleAfterMs) || input.staleAfterMs < 1_000 || input.staleAfterMs > 86_400_000) throw new TypeError('prediction_source_config_invalid');

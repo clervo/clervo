@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.clervo.dev/schemas/2026-07-29.1/prediction-derived-market.schema.json",
+  "$defs": { "probability": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000 }, "timestampOrNull": { "type": ["string", "null"], "format": "date-time" } },
+  "type": "object",
+  "required": ["marketRef", "venueId", "venueMarketId", "proposition", "category", "status", "closesAt", "resolvedAt", "resolvedOutcomeId", "resolution", "marketUrl", "outcomes", "probability", "observedAt", "freshness", "evidence"],
+  "properties": {
+    "marketRef": { "type": "string", "pattern": "^pmkt_[a-f0-9]{32}$" },
+    "venueId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" },
+    "venueMarketId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{1,159}$" },
+    "proposition": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "category": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "status": { "enum": ["open", "closed", "resolved", "cancelled"] },
+    "closesAt": { "type": "string", "format": "date-time" },
+    "resolvedAt": { "$ref": "#/$defs/timestampOrNull" },
+    "resolvedOutcomeId": { "type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$" },
+    "resolution": { "type": "object", "required": ["sourceUrl", "rulesHash"], "properties": { "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https://" }, "rulesHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } }, "additionalProperties": false },
+    "marketUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "outcomes": { "type": "array", "minItems": 2, "maxItems": 100, "items": { "type": "object", "required": ["outcomeId", "label", "normalizedProbabilityBps"], "properties": { "outcomeId": { "type": "string", "pattern": "^pout_[a-f0-9]{32}$" }, "label": { "type": "string", "minLength": 1, "maxLength": 200 }, "normalizedProbabilityBps": { "$ref": "#/$defs/probability" } }, "additionalProperties": false } },
+    "probability": { "type": "object", "required": ["method", "quotedOutcomeCount", "overroundBps"], "properties": { "method": { "const": "normalized_visible_prices_largest_remainder" }, "quotedOutcomeCount": { "type": "integer", "minimum": 0, "maximum": 100 }, "overroundBps": { "type": ["integer", "null"], "minimum": -10000, "maximum": 990000 } }, "additionalProperties": false },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "freshness": { "type": "object", "required": ["staleAfterMs", "ageMs", "status"], "properties": { "staleAfterMs": { "type": "integer", "minimum": 1000, "maximum": 86400000 }, "ageMs": { "type": "integer", "minimum": 0 }, "status": { "enum": ["fresh", "stale"] } }, "additionalProperties": false },
+    "evidence": { "type": "array", "minItems": 2, "maxItems": 16, "items": { "type": "object", "required": ["fieldGroup", "sourceUrl", "observedAt"], "properties": { "fieldGroup": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" }, "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https://" }, "observedAt": { "type": "string", "format": "date-time" } }, "additionalProperties": false } }
+  },
+  "additionalProperties": false
+}

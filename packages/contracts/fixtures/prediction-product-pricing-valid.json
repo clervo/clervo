@@ -3,17 +3,19 @@
   "valid": true,
   "value": {
     "schemaVersion": "clervo.prediction-product-pricing.v1",
-    "priceVersion": "prediction-product-2026-08-02.1",
-    "effectiveAt": "2026-08-02T12:30:00.000Z",
+    "priceVersion": "prediction-product-2026-08-09.1",
+    "effectiveAt": "2026-08-09T00:00:00.000Z",
     "currency": "USD",
     "lifecycle": "unavailable",
-    "providerNamesPublic": false,
+    "providerNamesPublic": true,
+    "minimumBillableMicrousd": 1000,
+    "subsidy": { "enabled": false, "budgetMicrousd": 0, "ownerApprovalRequired": true },
     "products": [
-      { "productId": "prediction.markets", "billingUnit": "request", "customerPriceMicrousd": 10, "listingStatus": "terms_blocked", "maximumItems": 100, "maximumResponseBytes": 10485760 },
-      { "productId": "prediction.market", "billingUnit": "request", "customerPriceMicrousd": 2, "listingStatus": "terms_blocked", "maximumItems": 1, "maximumResponseBytes": 1048576 },
-      { "productId": "prediction.compare", "billingUnit": "request", "customerPriceMicrousd": 5, "listingStatus": "terms_blocked", "maximumItems": 100, "maximumResponseBytes": 1048576 },
-      { "productId": "prediction.history", "billingUnit": "request", "customerPriceMicrousd": 5, "listingStatus": "terms_blocked", "maximumItems": 100, "maximumResponseBytes": 10485760 },
-      { "productId": "prediction.signal", "billingUnit": "request", "customerPriceMicrousd": 5, "listingStatus": "terms_blocked", "maximumItems": 201, "maximumResponseBytes": 1048576 }
+      { "productId": "prediction.markets", "billingUnit": "request", "customerPriceMicrousd": 1000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 100, "listingStatus": "commercial_permission_blocked", "maximumItems": 100, "maximumResponseBytes": 10485760 },
+      { "productId": "prediction.market", "billingUnit": "request", "customerPriceMicrousd": 1000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 100, "listingStatus": "commercial_permission_blocked", "maximumItems": 1, "maximumResponseBytes": 1048576 },
+      { "productId": "prediction.compare", "billingUnit": "request", "customerPriceMicrousd": 1000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 150, "listingStatus": "commercial_permission_blocked", "maximumItems": 100, "maximumResponseBytes": 1048576 },
+      { "productId": "prediction.history", "billingUnit": "request", "customerPriceMicrousd": 2000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 250, "listingStatus": "commercial_permission_blocked", "maximumItems": 100, "maximumResponseBytes": 10485760 },
+      { "productId": "prediction.signal", "billingUnit": "request", "customerPriceMicrousd": 2000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 250, "listingStatus": "commercial_permission_blocked", "maximumItems": 201, "maximumResponseBytes": 1048576 }
     ]
   }
 }

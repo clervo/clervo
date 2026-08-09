@@ -1,0 +1,16 @@
+{
+  "schema": "prediction-event",
+  "valid": true,
+  "value": {
+    "eventRef": "pevt_0123456789abcdef0123456789abcdef",
+    "proposition": "Will the example event happen?",
+    "closesAt": "2026-12-31T23:59:59.000Z",
+    "outcomes": ["Yes", "No"],
+    "matchDecision": "unresolved",
+    "matchConfidenceBasisPoints": 5000,
+    "supportingVenueCount": 1,
+    "hasStaleEvidence": false,
+    "constituents": [{ "marketRef": "pmkt_0123456789abcdef0123456789abcdef", "venueId": "polymarket", "venueMarketId": "market-123", "observedAt": "2026-08-02T12:00:00.000Z", "freshness": "fresh", "resolutionSourceUrl": "https://official.example/rules/123" }],
+    "matchEvidence": []
+  }
+}
