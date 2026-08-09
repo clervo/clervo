@@ -50,6 +50,7 @@ for (const [file, content] of expectations) {
     .replace(/<[^>]+>/gu, ' ')
     .replace(/\s+/gu, ' ');
   if (!text.includes(content)) throw new Error(`site_prerender_content_missing:${file}`);
+  if (text.includes('undefined')) throw new Error(`site_prerender_undefined_value:${file}`);
   if (!html.includes('rel="canonical"')) throw new Error(`site_prerender_canonical_missing:${file}`);
   if (html.includes('<div id="root"></div>')) throw new Error(`site_prerender_empty:${file}`);
 }

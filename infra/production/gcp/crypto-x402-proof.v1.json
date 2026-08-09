@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "clervo.crypto-x402-proof.v1",
+  "state": "settled_reconciled",
+  "project": "bloxsniper-prod",
+  "region": "us-central1",
+  "service": "clervo-api-production",
+  "publicOrigin": "https://api.clervo.dev/",
+  "endpoint": "https://api.clervo.dev/v1/crypto/execute",
+  "releaseCommit": "671d369601e26ab7491b8fd5232e7d2942f05c51",
+  "revision": "clervo-api-production-00041-cuh",
+  "imageDigest": "sha256:e9f2eda487024708f8d27935e28103bfe88ff748b391fcdd74fcd1d246afc756",
+  "network": "eip155:8453",
+  "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "decimals": 6,
+  "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+  "facilitatorUrl": "https://api.cdp.coinbase.com/platform/v2/x402",
+  "ownerAuthorization": {
+    "checkpoint": "a5579f734a3ba7305b80c2d454507622b3aa668a",
+    "maximumSpendAtomic": "7000",
+    "maximumExecutionCount": 2,
+    "operationsInOrder": [
+      "crypto.wallet.report",
+      "crypto.wallet.transactions"
+    ],
+    "amountAtomicByOperation": {
+      "crypto.wallet.report": "4000",
+      "crypto.wallet.transactions": "3000"
+    },
+    "payerBalanceCapAtomic": "32000",
+    "paymentEffects": 2,
+    "automaticRetry": false
+  },
+  "observedChallenge": {
+    "status": 402,
+    "amountAtomic": "4000",
+    "networkMatched": true,
+    "assetMatched": true,
+    "payToMatched": true,
+    "facilitatorMatched": true,
+    "paymentAttemptedBeforeOwnerAuthorization": false
+  },
+  "operations": [
+    {
+      "productId": "crypto.wallet.report",
+      "idempotencyKey": "idem_b9_crypto_report_funded_20260809_001",
+      "operationId": "op_34682926725ad8a6ce13a93620f0482b",
+      "requestHash": "sha256:a01334c35b61fafb72833b0b1b1f3687a6d9df7682508c9f58c6e29774b96d86",
+      "resultHash": "sha256:286365935ef3a30d67cce3bbef1658c02cfcdaa88af011615258442fa7f4fe60",
+      "receiptId": "rcpt_0e9394a4af25363cbc9160d0274e97ef",
+      "receiptHash": "sha256:a47d38409873552ea95d536b8909d532f46797ebd7d8d93103e6e5baecb58043",
+      "customerChargeAtomic": "4000",
+      "supplierCostAtomic": "0",
+      "settlementStatus": "settled",
+      "settlementReferenceHash": "sha256:c2a02192bb804784a0b20f94651e7d6a2f3adfbc49e6f6d0afed2c25271de47e",
+      "transactionHash": "0xe06758fe937bb6eabeceb2766f3589bafe6cc97becefe7905f5525f3ca79e5ca",
+      "blockNumber": 49756763,
+      "logIndex": 453,
+      "chainStatus": "confirmed",
+      "exactTransferCount": 1,
+      "usefulResult": true,
+      "resultSummary": {
+        "kind": "report",
+        "state": "degraded",
+        "freshnessState": "fresh",
+        "observedAt": "2026-08-09T19:14:25.603Z",
+        "evidenceCount": 9,
+        "servedChains": ["eip155:8453"],
+        "adapterId": "adapter_crypto.blockscout_value_added",
+        "sourceClass": "indexed_public_blockchain_data",
+        "thirdPartyLabelsUsed": false
+      },
+      "replay": {
+        "sameOperation": true,
+        "sameReceipt": true,
+        "sameResult": true,
+        "idempotencyReplayed": true,
+        "paymentHeaderSent": false,
+        "secondAuthorization": false,
+        "secondUpstreamExecution": false,
+        "secondCharge": false
+      },
+      "durable": {
+        "state": "completed",
+        "completedAt": "2026-08-09T19:14:24.110Z",
+        "operationRows": 1,
+        "accountingRows": 1,
+        "accountingEntryId": "acct_75f26d717f0db75ac4dba14349fbdb9199094531",
+        "accountingEntryHash": "sha256:ca27c919efd1871910f5556070f3bb0ecdb7fa77ba430aa3bd5543378f4222b0"
+      }
+    },
+    {
+      "productId": "crypto.wallet.transactions",
+      "idempotencyKey": "idem_b9_crypto_transactions_funded_20260809_001",
+      "operationId": "op_ed2579e7a2f102a556b60bf2775f7067",
+      "requestHash": "sha256:b1f9a5eb92523fd5a084b2ddbfc9b4bdcc817453c5dbd87bddbdcdb8ba75ab80",
+      "resultHash": "sha256:65f1b806ec8e9cdb0d822ac27040882c932815c76af29d07ada6c920ecafb1a9",
+      "receiptId": "rcpt_41e132169debee100fbfe668e0cd36dc",
+      "receiptHash": "sha256:dd417522542791d796c8a7b97de373d6808f707930d5a451e7841963da19fa65",
+      "customerChargeAtomic": "3000",
+      "supplierCostAtomic": "0",
+      "settlementStatus": "settled",
+      "settlementReferenceHash": "sha256:d347a7a95e1182aa408f03f92242d86ff6178bdef3a5c4fa42637e82cbd03cc9",
+      "transactionHash": "0x7794f8c101cd0f8d69253d46b0ed2ef0533138bd2754d72c513012cd1bd2edcb",
+      "blockNumber": 49756961,
+      "logIndex": 268,
+      "chainStatus": "confirmed",
+      "exactTransferCount": 1,
+      "usefulResult": true,
+      "resultSummary": {
+        "kind": "transactions",
+        "state": "available",
+        "freshnessState": "fresh",
+        "observedAt": "2026-08-09T19:21:06.880Z",
+        "evidenceCount": 10,
+        "servedChains": ["eip155:1"],
+        "adapterId": "adapter_crypto.blockscout_value_added",
+        "sourceClass": "indexed_public_blockchain_data",
+        "thirdPartyLabelsUsed": false
+      },
+      "replay": {
+        "sameOperation": true,
+        "sameReceipt": true,
+        "sameResult": true,
+        "idempotencyReplayed": true,
+        "paymentHeaderSent": false,
+        "secondAuthorization": false,
+        "secondUpstreamExecution": false,
+        "secondCharge": false
+      },
+      "durable": {
+        "state": "completed",
+        "completedAt": "2026-08-09T19:21:06.620Z",
+        "operationRows": 1,
+        "accountingRows": 1,
+        "accountingEntryId": "acct_721715708f55f4ed75da9fa0bf2ca7ac46d0248d",
+        "accountingEntryHash": "sha256:204062b59972a9ad35b2e0ad8eae08c9045e95e3324b147a9d64031a4626ea18"
+      }
+    }
+  ],
+  "observedBalances": {
+    "payerBeforeAtomic": "16000",
+    "payerAfterAtomic": "9000",
+    "payerDeltaAtomic": "-7000",
+    "receiverBeforeAtomic": "16000",
+    "receiverAfterAtomic": "23000",
+    "receiverDeltaAtomic": "7000"
+  },
+  "observedDurability": {
+    "execution": "clervo-production-b9-final-reconcile-hd6fl",
+    "verifiedAt": "2026-08-09T19:24:53.487Z",
+    "databaseIdentityVerified": true,
+    "operationRows": 2,
+    "accountingRowsForOperations": 2,
+    "receiverLedgerEntryCount": 6,
+    "receiverLedgerHeadHash": "sha256:204062b59972a9ad35b2e0ad8eae08c9045e95e3324b147a9d64031a4626ea18",
+    "receiverLedgerChainValid": true,
+    "receiverLedgerBalanced": true,
+    "temporaryJobRemoved": true,
+    "cloudLoggingEvidenceRetained": true,
+    "credentialsLogged": false,
+    "payerAddressLogged": false
+  },
+  "proofClassification": {
+    "proofLevel": "paid_outcome_verified",
+    "ownerFunded": true,
+    "commercialMechanismVerified": true,
+    "revenueEvidence": false,
+    "demandEvidence": false,
+    "unrelatedCustomerEvidence": false,
+    "externallyRepeatedClaimAllowed": false
+  },
+  "cleanup": {
+    "loopbackServersStopped": true,
+    "browserTunnelsStopped": true,
+    "temporaryManagedJobRemoved": true
+  }
+}

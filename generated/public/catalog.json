@@ -527,7 +527,7 @@
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
       },
-      "commercialProof": false
+      "commercialProof": true
     },
     {
       "productId": "crypto.wallet.tokens",
@@ -572,7 +572,7 @@
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
       },
-      "commercialProof": false
+      "commercialProof": true
     },
     {
       "productId": "crypto.wallet.transactions",
@@ -617,7 +617,7 @@
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
       },
-      "commercialProof": false
+      "commercialProof": true
     },
     {
       "productId": "crypto.wallet.report",
@@ -662,14 +662,14 @@
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
       },
-      "commercialProof": false
+      "commercialProof": true
     }
   ],
   "observedTruth": {
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T18:57:11.510Z",
+      "observedAt": "2026-08-09T19:27:12.736Z",
       "releaseId": "671d369601e26ab7491b8fd5232e7d2942f05c51",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -711,7 +711,7 @@
           "crypto.wallet.transactions"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -807,7 +807,7 @@
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",
-          "acceptsNaiveRequest": false
+          "acceptsNaiveRequest": true
         }
       }
     ]

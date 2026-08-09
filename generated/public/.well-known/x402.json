@@ -26,7 +26,7 @@
           }
         }
       ],
-      "lastUpdated": 1786301831,
+      "lastUpdated": 1786303632,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -69,7 +69,7 @@
           }
         }
       ],
-      "lastUpdated": 1786301831,
+      "lastUpdated": 1786303632,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -112,7 +112,7 @@
           }
         }
       ],
-      "lastUpdated": 1786301831,
+      "lastUpdated": 1786303632,
       "metadata": {
         "category": "prediction",
         "provider": "clervo",
@@ -150,12 +150,12 @@
               "amountIsBinding": false,
               "exampleRouteId": null,
               "lifecycleState": "live",
-              "proofLevel": "quote_observed_unpaid"
+              "proofLevel": "paid_outcome_verified"
             }
           }
         }
       ],
-      "lastUpdated": 1786301831,
+      "lastUpdated": 1786303632,
       "metadata": {
         "category": "crypto_intelligence",
         "provider": "clervo",
@@ -166,9 +166,9 @@
         "bazaarExtensionPresent": true,
         "bazaar": {
           "validatorAccepted": true,
-          "indexed": false,
-          "indexActive": null,
-          "indexLastCrawledAt": null,
+          "indexed": true,
+          "indexActive": true,
+          "indexLastCrawledAt": "2026-08-09T19:21:09.167Z",
           "failedChecks": []
         }
       }
@@ -183,7 +183,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T18:57:11.510Z",
+      "observedAt": "2026-08-09T19:27:12.736Z",
       "releaseId": "671d369601e26ab7491b8fd5232e7d2942f05c51",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -211,7 +211,7 @@
     "bazaar": {
       "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",
       "validator": "https://api.cdp.coinbase.com/platform/v2/x402/validate",
-      "indexedResourceCount": 2,
+      "indexedResourceCount": 3,
       "note": "Indexing triggers only on a payment settled through the CDP facilitator. A valid resource that has never been paid for is eligible and unindexed, which is not a defect."
     },
     "freeResources": [
@@ -221,7 +221,7 @@
         "method": "POST",
         "bodyType": "json",
         "paymentRequired": false,
-        "acceptsRequestWithoutIdempotencyKey": false,
+        "acceptsRequestWithoutIdempotencyKey": true,
         "operationId": "search.web",
         "lifecycleState": "live",
         "proofLevel": "quote_observed_unpaid",

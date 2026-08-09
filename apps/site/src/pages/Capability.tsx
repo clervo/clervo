@@ -4,6 +4,7 @@ import {
   capabilityLabel,
   discovery,
   familyOf,
+  attributionLabel,
   formatUsdc,
   launchState,
   lifecycleLabels,
@@ -91,7 +92,7 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
   ];
   if (attribution !== undefined) facts.push({
     label: 'Supply attribution',
-    value: `${attribution.source} / ${attribution.license}`,
+    value: attributionLabel(attribution),
     detail: attribution.transformedBy,
   });
 

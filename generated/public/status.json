@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-09T18:53:15.013Z",
+  "observedAt": "2026-08-09T19:27:12.736Z",
   "publicApi": {
     "state": "public_search_ai_sandbox_and_prediction_preview_verified",
     "endpoint": "https://api.clervo.dev",
@@ -64,7 +64,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T18:57:11.510Z",
+      "observedAt": "2026-08-09T19:27:12.736Z",
       "releaseId": "671d369601e26ab7491b8fd5232e7d2942f05c51",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -106,7 +106,7 @@
           "crypto.wallet.transactions"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -202,21 +202,12 @@
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",
-          "acceptsNaiveRequest": false
+          "acceptsNaiveRequest": true
         }
       }
     ]
   },
-  "conformanceDefectsOpen": [
-    {
-      "conformant": false,
-      "expectation": "free search succeeds without a caller-supplied idempotency-key",
-      "id": "api.search_free_accepts_naive_request",
-      "observedCode": "free_quota_exceeded",
-      "observedStatus": 429,
-      "url": "https://api.clervo.dev/v1/search/free"
-    }
-  ],
+  "conformanceDefectsOpen": [],
   "aiRoutes": {
     "counts": {
       "supply_paused": 21
@@ -394,10 +385,10 @@
     {
       "id": "crypto_intelligence",
       "engineeringState": "public_production_qualified",
-      "customerLifecycle": "preview_publicly_callable",
-      "commercialProof": "quote_observed_unpaid",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
+      "commercialProof": "owner_funded_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid"
+      "proofLevel": "paid_outcome_verified"
     }
   ]
 }

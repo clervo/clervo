@@ -63,8 +63,8 @@ export interface DiscoveryProduct {
   routes?: { freeSample?: string; paidChallenge?: string };
   attribution?: {
     source: string;
-    license: string;
-    licenseUrl: string;
+    license?: string;
+    licenseUrl?: string;
     transformedBy: string;
   };
   payment: {
@@ -132,6 +132,12 @@ export const proofLabels: Record<ProofLevel, string> = {
   paid_outcome_verified: 'paid outcome verified',
   externally_repeated: 'externally repeated',
 };
+
+export function attributionLabel(attribution: NonNullable<DiscoveryProduct['attribution']>): string {
+  return attribution.license === undefined
+    ? attribution.source
+    : `${attribution.source} / ${attribution.license}`;
+}
 
 /** True when the deployed system serves at least one publicly reachable family. */
 export const publicApiCallable = observedTruth.products.some(({ publiclyReachable }) => publiclyReachable);

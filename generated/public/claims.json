@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.launch-state.v1",
-  "observedAt": "2026-08-09T18:53:15.013Z",
-  "sourceCommit": "671d369601e26ab7491b8fd5232e7d2942f05c51",
+  "observedAt": "2026-08-09T19:27:12.736Z",
+  "sourceCommit": "a5579f734a3ba7305b80c2d454507622b3aa668a",
   "identity": {
     "category": "Outcome infrastructure for agents",
     "headline": "One job in. One inspectable result out.",
@@ -219,22 +219,25 @@
         "crypto.wallet.report"
       ],
       "engineeringState": "public_production_qualified",
-      "customerLifecycle": "preview_publicly_callable",
-      "commercialProof": "quote_observed_unpaid",
-      "paymentState": "public_x402_challenge_available_paid_result_pending",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
+      "commercialProof": "owner_funded_paid_outcome_verified",
+      "paymentState": "public_x402_two_owner_funded_settlements_and_replays_verified",
       "supplierRights": "blockscout_value_added_use_approved",
       "allowedClaims": [
         "Crypto Intelligence is publicly callable for Ethereum and Base wallet balances, tokens, transactions, flows, counterparties, and deterministic reports through exact Base USDC x402 offers.",
-        "Production qualification returned fresh hash-bound real-source output on Ethereum and Base with explicit partial/degraded coverage and no fabricated completeness.",
+        "Production qualification and funded execution returned fresh hash-bound real-source output on Ethereum and Base with explicit partial/degraded coverage and no fabricated completeness.",
         "Blockscout is used only for a provider-neutral value-added application; no raw API, response, essential service, or credential is resold.",
-        "Public prices are 0.002 USDC for balances or tokens, 0.003 for transactions, and 0.004 for the wallet report; a quote is not paid-outcome proof."
+        "Public prices are 0.002 USDC for balances or tokens, 0.003 for transactions, and 0.004 for the wallet report.",
+        "Two bounded owner-funded production operations—crypto.wallet.report at 0.004 USDC and crypto.wallet.transactions at 0.003 USDC—returned useful fresh source-backed results, settled exactly 0.007 USDC total, and replayed with the same operation, result, and receipt without another authorization, upstream execution, settlement, or charge."
       ],
       "prohibitedClaims": [
-        "Paid Crypto result verified before funded proof",
+        "Customer revenue or demand",
+        "Unrelated-customer demand or externally repeated proof",
         "Solana support",
         "Wallet owner identity",
         "Opaque risk or smart-money labels",
-        "Custody, signing, trading, customer revenue, or demand"
+        "Raw Blockscout API, response, essential-service, RPC, or credential resale",
+        "Custody, signing, or trading"
       ]
     }
   ],

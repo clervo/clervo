@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import {
   formatUsdc,
+  attributionLabel,
   lifecycleLabels,
   observedTruth,
   publicOperations,
@@ -125,7 +126,7 @@ export function Catalog({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
                   {operation.attribution === undefined ? null : (
                     <div>
                       <dt>Supply attribution</dt>
-                      <dd>{operation.attribution.source}, {operation.attribution.license}</dd>
+                      <dd>{attributionLabel(operation.attribution)}</dd>
                     </div>
                   )}
                 </dl>
