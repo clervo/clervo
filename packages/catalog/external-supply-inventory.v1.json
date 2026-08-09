@@ -1528,8 +1528,8 @@
       "category": "rpc",
       "products": [
         "rpc.solana",
-        "crypto.wallet",
-        "crypto.transaction"
+        "crypto.wallet.balances",
+        "crypto.wallet.transactions"
       ],
       "endpointOrigins": [
         "https://mainnet.helius-rpc.com"
@@ -1597,7 +1597,7 @@
       "serviceId": "supply.blockscout_pro",
       "providerId": "provider.blockscout_pro",
       "category": "blockchain_data",
-      "products": ["crypto.wallet", "crypto.token", "crypto.transaction"],
+      "products": ["crypto.wallet.balances", "crypto.wallet.tokens", "crypto.wallet.transactions", "crypto.wallet.report"],
       "endpointOrigins": ["https://api.blockscout.com"],
       "credentialNames": ["BLOCKSCOUT_API_KEY"],
       "configuredCredentialSlots": 1,
@@ -1606,14 +1606,14 @@
       "fundingClass": "recurring_free",
       "connectionStatus": "observed_working",
       "qualificationStatus": "passed",
-      "termsStatus": "restricted",
-      "resaleStatus": "restricted",
-      "publicProviderDisclosure": "hidden_model_name_only",
+      "termsStatus": "approved",
+      "resaleStatus": "allowed",
+      "publicProviderDisclosure": "attributed_source",
       "notes": [
         "The current no-card free tier advertises 100,000 credits/day, 5 RPS, all supported chains, and one multichain API across more than 100 EVM networks.",
         "Official documentation identifies dapps, wallets, AI agents, analytics, and operational tooling as intended uses. Clervo selects only normalized value-added wallet, token, and transaction products; raw RPC resale is excluded.",
-        "The dedicated key passed six normalized, read-only wallet-overview, token-balance, and transaction-history checks across Ethereum and Base using one deterministic unused address; no customer payload, transaction submission, or signed payload was used.",
-        "The provider-neutral adapter enforces chain allowlists, response validation, fixed-host requests, safe errors, bounded responses, and a hard daily call ceiling. Only normalized value-added routes are selected; raw API, RPC, and credential resale remain excluded."
+        "The B9 qualification passed 27 of 27 real read-only requests and 22 of 22 checks across Ethereum and Base, including active and empty wallets, ERC-20 balances and transfers, failed status, 100-item pagination, burst/cooldown behavior, malformed input, and normalization; no transaction was submitted or signed.",
+        "Current public terms and PRO API documentation permit the documented intended dapp, wallet, AI-agent, analytics, research, and production-workload use selected here. Clervo exposes only its bounded provider-neutral derived report with Blockscout provenance; raw API, RPC, response, service, and credential resale remain excluded."
       ]
     },
     {
@@ -1621,10 +1621,10 @@
       "providerId": "provider.zerion",
       "category": "blockchain_data",
       "products": [
-        "crypto.wallet",
-        "crypto.token",
-        "crypto.transaction",
-        "crypto.protocol"
+        "crypto.wallet.balances",
+        "crypto.wallet.tokens",
+        "crypto.wallet.transactions",
+        "crypto.wallet.report"
       ],
       "endpointOrigins": [
         "https://api.zerion.io"

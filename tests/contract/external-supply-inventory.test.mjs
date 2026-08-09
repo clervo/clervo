@@ -219,7 +219,7 @@ test('owned blockchain data is technically complete and priced without treating 
   assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
   assert.deepEqual([service.connectionStatus, service.qualificationStatus, service.termsStatus, service.resaleStatus], ['observed_working', 'failed', 'blocked', 'prohibited']);
   const routes = pricing.routes.filter(({ serviceId }) => serviceId === 'supply.zerion');
-  assert.deepEqual(routes.map(({ productId }) => productId), ['crypto.wallet', 'crypto.token', 'crypto.transaction', 'crypto.protocol']);
+  assert.deepEqual(routes.map(({ productId }) => productId), ['crypto.wallet.balances', 'crypto.wallet.tokens', 'crypto.wallet.transactions', 'crypto.wallet.report']);
   assert.ok(routes.every(({ customerPriceMicrousd, technicalQualificationStatus, listingStatus, termsStatus }) => customerPriceMicrousd > 0 && technicalQualificationStatus === 'passed' && listingStatus === 'priced_terms_blocked' && termsStatus === 'blocked'));
   assert.equal(evidence.externalCalls, 5);
   assert.equal(evidence.transactionSubmissionCalls, 0);
@@ -239,8 +239,8 @@ test('selected multichain data source is qualified for bounded value-added route
   const preflight = await json('docs/evidence/supply-foundation/blockscout-market-preflight.v1.json');
   const evidence = await json('docs/evidence/supply-foundation/blockscout-qualification.v1.json');
   const routes = pricing.routes.filter(({ serviceId }) => serviceId === 'supply.blockscout_pro');
-  assert.deepEqual([service.credentialDeployment, service.connectionStatus, service.qualificationStatus, service.termsStatus], ['current_environment', 'observed_working', 'passed', 'restricted']);
-  assert.equal(routes.length, 3);
+  assert.deepEqual([service.credentialDeployment, service.connectionStatus, service.qualificationStatus, service.termsStatus, service.resaleStatus], ['current_environment', 'observed_working', 'passed', 'approved', 'allowed']);
+  assert.equal(routes.length, 4);
   assert.ok(routes.every(({ customerPriceMicrousd, dailyDevelopmentAllowance, rateLimitRequestsPerSecond, qualityGrade, technicalQualificationStatus, listingStatus }) => customerPriceMicrousd > 0 && dailyDevelopmentAllowance === 100000 && rateLimitRequestsPerSecond === 5 && qualityGrade === 'good' && technicalQualificationStatus === 'passed' && listingStatus === 'sellable_preview'));
   assert.equal(preflight.decision.rawRpcCustomerRoutingSelected, false);
   assert.deepEqual([evidence.externalCalls, evidence.transactionSubmissionCalls, evidence.signedPayloads, evidence.ownerCashSpentUsd], [6, 0, 0, 0]);

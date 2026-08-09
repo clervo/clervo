@@ -380,9 +380,9 @@
     },
     {
       "id": "crypto_intelligence",
-      "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable",
-      "commercialProof": "unproven",
+      "engineeringState": "production_candidate_qualified",
+      "customerLifecycle": "deployment_pending",
+      "commercialProof": "unproven_until_paid_outcome",
       "lifecycleState": "unavailable",
       "proofLevel": "none"
     }

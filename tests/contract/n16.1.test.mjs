@@ -15,7 +15,7 @@ const root = new URL('../..', import.meta.url);
 const json = async (path) => JSON.parse(await readFile(new URL(path, root), 'utf8'));
 const text = async (path) => readFile(new URL(path, root), 'utf8');
 
-test('public launch policy exposes qualified Search, AI, Sandbox, and Prediction through a zero-traffic fail-closed rollout', async () => {
+test('public launch policy exposes qualified Search, AI, Sandbox, Prediction, and Crypto through a zero-traffic fail-closed rollout', async () => {
   const policy = await json('infra/production/gcp/public-launch.v1.json');
   const release = await json('infra/production/cloudflare/public-search-release.v1.json');
   const launchState = await json('packages/catalog/launch-state.v1.json');
@@ -39,6 +39,12 @@ test('public launch policy exposes qualified Search, AI, Sandbox, and Prediction
   assert.deepEqual(policy.prediction.qualifiedVenues, ['polymarket', 'kalshi', 'manifold', 'limitless']);
   assert.equal(policy.prediction.supplierCostMicrousd, 0);
   assert.equal(policy.prediction.attributionRequired, true);
+  assert.equal(policy.crypto.mode, 'paid');
+  assert.equal(policy.crypto.publicRoute, true);
+  assert.equal(policy.crypto.qualifiedAdapter, 'adapter_crypto.blockscout_value_added');
+  assert.deepEqual(policy.crypto.supportedChains, ['eip155:1', 'eip155:8453']);
+  assert.equal(policy.crypto.supplierCostMicrousd, 0);
+  assert.equal(policy.crypto.rawApiResaleAllowed, false);
   assert.equal(policy.rollout.deployTrafficPercent, 0);
   assert.equal(policy.rollout.publicAccessEnabledOnlyAfterPromotion, true);
   assert.equal(policy.rollout.publicAccessMethod, 'cloud_run_invoker_iam_check_disabled');
@@ -48,6 +54,7 @@ test('public launch policy exposes qualified Search, AI, Sandbox, and Prediction
   assert.equal(worker.vars.CLERVO_AI_PUBLIC_ENABLED, 'true');
   assert.equal(worker.vars.CLERVO_SANDBOX_PUBLIC_ENABLED, 'true');
   assert.equal(worker.vars.CLERVO_PREDICTION_PUBLIC_ENABLED, 'true');
+  assert.equal(worker.vars.CLERVO_CRYPTO_PUBLIC_ENABLED, 'true');
   assert.deepEqual(worker.routes.map(({ pattern }) => pattern), ['api.clervo.dev/', 'api.clervo.dev/*']);
   assert.equal(release.state, 'public_preview_verified');
   assert.equal(release.edge.trafficPercent, 100);
@@ -77,6 +84,9 @@ test('public release tooling keeps deployment private until all independent prom
   assert.match(source, /CLERVO_SANDBOX_LIVE_SMOKE/u);
   assert.match(source, /CLERVO_PREDICTION_LIVE_SMOKE/u);
   assert.match(source, /CLERVO_PREDICTION_MODE/u);
+  assert.match(source, /CLERVO_CRYPTO_LIVE_SMOKE/u);
+  assert.match(source, /CLERVO_CRYPTO_MODE/u);
+  assert.match(source, /CLERVO_BLOCKSCOUT_SECRET_VERSION/u);
   assert.match(source, /CLERVO_MONITORING_DELIVERY/u);
   assert.match(source, /--no-invoker-iam-check/u);
   assert.match(source, /--invoker-iam-check/u);
@@ -87,9 +97,13 @@ test('public release tooling keeps deployment private until all independent prom
   assert.match(source, /CLERVO_DEEPGRAM_SECRET_VERSION/u);
   assert.match(prober, /api\.prediction_execute/u);
   assert.match(prober, /probeIds: \{ paid: 'api\.prediction_execute' \}/u);
+  assert.match(prober, /api\.crypto_execute/u);
+  assert.match(prober, /probeIds: \{ paid: 'api\.crypto_execute' \}/u);
   assert.match(prober, /productId: 'prediction', resourcePath: '\/v1\/prediction\/execute'/u);
   assert.match(discoveryGenerator, /publicPrediction = observedLive\.prediction/u);
   assert.match(discoveryGenerator, /openapi\.paths\['\/v1\/prediction\/execute'\]/u);
+  assert.match(discoveryGenerator, /publicCrypto = observedLive\.crypto_intelligence/u);
+  assert.match(discoveryGenerator, /openapi\.paths\['\/v1\/crypto\/execute'\]/u);
   assert.match(discoveryGenerator, /priceModel: 'request_derived_per_operation'/u);
 });
 

@@ -213,24 +213,27 @@
       "id": "crypto_intelligence",
       "label": "Crypto Intelligence",
       "operations": [
-        "crypto.wallet",
-        "crypto.token",
-        "crypto.transaction",
-        "crypto.protocol",
-        "crypto.report"
+        "crypto.wallet.balances",
+        "crypto.wallet.tokens",
+        "crypto.wallet.transactions",
+        "crypto.wallet.report"
       ],
-      "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable",
-      "commercialProof": "unproven",
-      "paymentState": "unavailable",
-      "supplierRights": "commercial_rights_blocked",
+      "engineeringState": "production_candidate_qualified",
+      "customerLifecycle": "deployment_pending",
+      "commercialProof": "unproven_until_paid_outcome",
+      "paymentState": "production_deploy_and_proof_pending",
+      "supplierRights": "blockscout_value_added_use_approved",
       "allowedClaims": [
-        "The Crypto Intelligence core is privately qualified and read-only."
+        "Crypto Intelligence has a qualified production candidate for Ethereum and Base wallet balances, tokens, transactions, flows, counterparties, and deterministic reports.",
+        "The candidate uses Blockscout only for a provider-neutral value-added application; no raw API or credential is resold.",
+        "Public prices are 0.002 USDC for balances or tokens, 0.003 for transactions, and 0.004 for the wallet report."
       ],
       "prohibitedClaims": [
-        "Publicly available",
-        "Commercial reuse approved",
-        "Custody or transaction signing"
+        "Publicly deployed before external proof",
+        "Solana support",
+        "Wallet owner identity",
+        "Opaque risk or smart-money labels",
+        "Custody, signing, trading, or customer demand"
       ]
     }
   ],

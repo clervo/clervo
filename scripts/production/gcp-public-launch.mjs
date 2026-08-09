@@ -51,6 +51,7 @@ const plan = Object.freeze({
   publicOrigin: policy.publicOrigin, searchMode: policy.search.mode, synthesisEnabled: policy.search.synthesisEnabled,
   x402Mode: policy.commerce.mode, sandboxMode: policy.sandbox.mode, sandboxPublicMode: policy.sandbox.publicMode, deployTrafficPercent: 0,
   predictionMode: policy.prediction.mode, predictionQualifiedAdapter: policy.prediction.qualifiedAdapter,
+  cryptoMode: policy.crypto.mode, cryptoQualifiedAdapter: policy.crypto.qualifiedAdapter,
   publicAccessEnabledOnlyAfterPromotion: true, publicAccessMethod: policy.rollout.publicAccessMethod, protectedResources: policy.protectedResources,
 });
 
@@ -72,7 +73,7 @@ else if (action === 'observe') {
     aiClervo: version('CLERVO_AI_CLERVO_SECRET_VERSION'), groq: version('CLERVO_GROQ_SECRET_VERSION'), cloudflare: version('CLERVO_CLOUDFLARE_SECRET_VERSION'),
     aiDeepgram: version('CLERVO_DEEPGRAM_SECRET_VERSION'), r2Access: version('CLERVO_R2_ACCESS_KEY_SECRET_VERSION'),
     r2Secret: version('CLERVO_R2_SECRET_ACCESS_KEY_SECRET_VERSION'), artifactSigning: version('CLERVO_ARTIFACT_SIGNING_SECRET_VERSION'),
-    mpp: version('CLERVO_MPP_SECRET_VERSION'),
+    mpp: version('CLERVO_MPP_SECRET_VERSION'), blockscout: version('CLERVO_BLOCKSCOUT_SECRET_VERSION'),
   };
   const artifact = verifyArtifact(candidateImage);
   const before = service();
@@ -96,6 +97,7 @@ else if (action === 'observe') {
     `CLERVO_ARTIFACT_MAXIMUM_OBJECT_BYTES=${policy.ai.artifacts.maximumObjectBytes}`,
     `CLOUDFLARE_ACCOUNT_ID=${env('CLERVO_CLOUDFLARE_ACCOUNT_ID')}`,
     `CLERVO_PREDICTION_MODE=${policy.prediction.mode}`,
+    `CLERVO_CRYPTO_MODE=${policy.crypto.mode}`, `CLERVO_CRYPTO_DAILY_CALL_CEILING=${policy.crypto.dailyCallCeiling}`,
   ];
   const secrets = [
     `CLERVO_DATABASE_URL=${deployment.runtime.secretEnvironment.CLERVO_DATABASE_URL}:${versions.database}`,
@@ -116,6 +118,7 @@ else if (action === 'observe') {
     `R2_ACCESS_KEY_ID=${policy.ai.artifacts.accessKeyIdSecret}:${versions.r2Access}`,
     `R2_SECRET_ACCESS_KEY=${policy.ai.artifacts.secretAccessKeySecret}:${versions.r2Secret}`,
     `CLERVO_ARTIFACT_SIGNING_SECRET=${policy.ai.artifacts.signingSecret}:${versions.artifactSigning}`,
+    `CLERVO_BLOCKSCOUT_API_KEY=${policy.crypto.credentialSecret}:${versions.blockscout}`,
   ];
   gcloud([
     'run', 'deploy', policy.service, '--project', policy.project, '--region', policy.region, '--image', candidateImage,
@@ -146,6 +149,7 @@ else if (action === 'observe') {
   assert.equal(env('CLERVO_X402_CHALLENGE_SMOKE'), 'passed', 'x402 challenge smoke missing');
   assert.equal(env('CLERVO_SANDBOX_LIVE_SMOKE'), 'passed', 'Sandbox live smoke missing');
   assert.equal(env('CLERVO_PREDICTION_LIVE_SMOKE'), 'passed', 'Prediction live smoke missing');
+  assert.equal(env('CLERVO_CRYPTO_LIVE_SMOKE'), 'passed', 'Crypto live smoke missing');
   assert.equal(env('CLERVO_MONITORING_DELIVERY'), 'acknowledged', 'monitoring delivery missing');
   assert.equal(describedImage(candidateRevision), candidateImage, 'candidate image mismatch');
   verifyArtifact(candidateImage);

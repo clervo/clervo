@@ -381,7 +381,7 @@ export interface CryptoTransactionInput {
   evidence: readonly Readonly<CryptoEvidence>[];
 }
 
-export function normalizeCryptoTransaction(input: Readonly<CryptoTransactionInput>): Readonly<{
+export type NormalizedCryptoTransaction = Readonly<{
   chainId: CryptoChainId;
   protocol: CryptoProtocol;
   transactionId: string;
@@ -395,7 +395,9 @@ export function normalizeCryptoTransaction(input: Readonly<CryptoTransactionInpu
   deterministicType: 'native_transfer' | 'token_transfer' | 'contract_interaction' | 'program_interaction' | 'unknown';
   observedAt: string;
   evidence: readonly Readonly<CryptoEvidence>[];
-}> {
+}>;
+
+export function normalizeCryptoTransaction(input: Readonly<CryptoTransactionInput>): NormalizedCryptoTransaction {
   const chainProtocol = protocol(input.chainId);
   const transactionId = chainProtocol === 'evm'
     ? (/^0x[a-fA-F0-9]{64}$/u.test(input.transactionId) ? input.transactionId.toLowerCase() : null)

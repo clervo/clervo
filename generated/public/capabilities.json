@@ -221,14 +221,13 @@
       "id": "crypto_intelligence",
       "label": "Crypto Intelligence",
       "operations": [
-        "crypto.wallet",
-        "crypto.token",
-        "crypto.transaction",
-        "crypto.protocol",
-        "crypto.report"
+        "crypto.wallet.balances",
+        "crypto.wallet.tokens",
+        "crypto.wallet.transactions",
+        "crypto.wallet.report"
       ],
-      "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable",
+      "engineeringState": "production_candidate_qualified",
+      "customerLifecycle": "deployment_pending",
       "lifecycleState": "unavailable",
       "proofLevel": "none"
     }

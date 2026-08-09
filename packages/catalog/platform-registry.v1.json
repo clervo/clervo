@@ -36,11 +36,10 @@
     { "capabilityId": "prediction.compare", "pillarId": "prediction", "lifecycle": "unavailable", "qualification": "unqualified" },
     { "capabilityId": "prediction.history", "pillarId": "prediction", "lifecycle": "unavailable", "qualification": "unqualified" },
     { "capabilityId": "prediction.signal", "pillarId": "prediction", "lifecycle": "unavailable", "qualification": "unqualified" },
-    { "capabilityId": "crypto.wallet", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "unqualified" },
-    { "capabilityId": "crypto.token", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "unqualified" },
-    { "capabilityId": "crypto.transaction", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "unqualified" },
-    { "capabilityId": "crypto.protocol", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "unqualified" },
-    { "capabilityId": "crypto.report", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "unqualified" }
+    { "capabilityId": "crypto.wallet.balances", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "qualified" },
+    { "capabilityId": "crypto.wallet.tokens", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "qualified" },
+    { "capabilityId": "crypto.wallet.transactions", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "qualified" },
+    { "capabilityId": "crypto.wallet.report", "pillarId": "crypto_intelligence", "lifecycle": "unavailable", "qualification": "qualified" }
   ],
   "operations": [
     {
@@ -212,9 +211,9 @@
       "visibility": "internal"
     },
     {
-      "operationId": "crypto.wallet",
-      "capabilityId": "crypto.wallet",
-      "productId": "crypto.wallet",
+      "operationId": "crypto.wallet.balances",
+      "capabilityId": "crypto.wallet.balances",
+      "productId": "crypto.wallet.balances",
       "route": null,
       "deliveryModes": ["sync"],
       "accessModes": ["official_api", "bring_your_own_credentials", "partner_access", "unsupported"],
@@ -224,9 +223,9 @@
       "visibility": "internal"
     },
     {
-      "operationId": "crypto.token",
-      "capabilityId": "crypto.token",
-      "productId": "crypto.token",
+      "operationId": "crypto.wallet.tokens",
+      "capabilityId": "crypto.wallet.tokens",
+      "productId": "crypto.wallet.tokens",
       "route": null,
       "deliveryModes": ["sync"],
       "accessModes": ["official_api", "bring_your_own_credentials", "partner_access", "unsupported"],
@@ -236,9 +235,9 @@
       "visibility": "internal"
     },
     {
-      "operationId": "crypto.transaction",
-      "capabilityId": "crypto.transaction",
-      "productId": "crypto.transaction",
+      "operationId": "crypto.wallet.transactions",
+      "capabilityId": "crypto.wallet.transactions",
+      "productId": "crypto.wallet.transactions",
       "route": null,
       "deliveryModes": ["sync"],
       "accessModes": ["official_api", "bring_your_own_credentials", "partner_access", "unsupported"],
@@ -248,21 +247,9 @@
       "visibility": "internal"
     },
     {
-      "operationId": "crypto.protocol",
-      "capabilityId": "crypto.protocol",
-      "productId": "crypto.protocol",
-      "route": null,
-      "deliveryModes": ["sync"],
-      "accessModes": ["official_api", "bring_your_own_credentials", "partner_access", "unsupported"],
-      "inputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/crypto-operation-request.schema.json",
-      "outputSchema": "https://api.clervo.dev/schemas/2026-07-29.1/crypto-operation-result.schema.json",
-      "lifecycle": "unavailable",
-      "visibility": "internal"
-    },
-    {
-      "operationId": "crypto.report",
-      "capabilityId": "crypto.report",
-      "productId": "crypto.report",
+      "operationId": "crypto.wallet.report",
+      "capabilityId": "crypto.wallet.report",
+      "productId": "crypto.wallet.report",
       "route": null,
       "deliveryModes": ["sync"],
       "accessModes": ["official_api", "bring_your_own_credentials", "partner_access", "unsupported"],
@@ -443,11 +430,10 @@
     { "productId": "rpc.health", "pillarId": "rpc", "capabilityIds": ["rpc.health"], "lifecycle": "unavailable", "visibility": "internal" },
     { "productId": "rpc.archive", "pillarId": "rpc", "capabilityIds": ["rpc.archive"], "lifecycle": "unavailable", "visibility": "internal" },
     { "productId": "rpc.broadcast", "pillarId": "rpc", "capabilityIds": ["rpc.broadcast"], "lifecycle": "unavailable", "visibility": "internal" },
-    { "productId": "crypto.wallet", "pillarId": "crypto_intelligence", "capabilityIds": ["crypto.wallet"], "lifecycle": "unavailable", "visibility": "internal" },
-    { "productId": "crypto.token", "pillarId": "crypto_intelligence", "capabilityIds": ["crypto.token"], "lifecycle": "unavailable", "visibility": "internal" },
-    { "productId": "crypto.transaction", "pillarId": "crypto_intelligence", "capabilityIds": ["crypto.transaction"], "lifecycle": "unavailable", "visibility": "internal" },
-    { "productId": "crypto.protocol", "pillarId": "crypto_intelligence", "capabilityIds": ["crypto.protocol"], "lifecycle": "unavailable", "visibility": "internal" },
-    { "productId": "crypto.report", "pillarId": "crypto_intelligence", "capabilityIds": ["crypto.report"], "lifecycle": "unavailable", "visibility": "internal" },
+    { "productId": "crypto.wallet.balances", "pillarId": "crypto_intelligence", "capabilityIds": ["crypto.wallet.balances"], "lifecycle": "unavailable", "visibility": "internal" },
+    { "productId": "crypto.wallet.tokens", "pillarId": "crypto_intelligence", "capabilityIds": ["crypto.wallet.tokens"], "lifecycle": "unavailable", "visibility": "internal" },
+    { "productId": "crypto.wallet.transactions", "pillarId": "crypto_intelligence", "capabilityIds": ["crypto.wallet.transactions"], "lifecycle": "unavailable", "visibility": "internal" },
+    { "productId": "crypto.wallet.report", "pillarId": "crypto_intelligence", "capabilityIds": ["crypto.wallet.report"], "lifecycle": "unavailable", "visibility": "internal" },
     { "productId": "prediction.markets", "pillarId": "prediction", "capabilityIds": ["prediction.markets"], "lifecycle": "unavailable", "visibility": "internal" },
     { "productId": "prediction.market", "pillarId": "prediction", "capabilityIds": ["prediction.market"], "lifecycle": "unavailable", "visibility": "internal" },
     { "productId": "prediction.compare", "pillarId": "prediction", "capabilityIds": ["prediction.compare"], "lifecycle": "unavailable", "visibility": "internal" },

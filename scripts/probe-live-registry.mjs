@@ -209,6 +209,13 @@ const predictionPaidProof = await (async () => {
     return null;
   }
 })();
+const cryptoPaidProof = await (async () => {
+  try {
+    return JSON.parse(await readFile(path.join(root, 'infra/production/gcp/crypto-x402-proof.v1.json'), 'utf8'));
+  } catch {
+    return null;
+  }
+})();
 
 // ---------------------------------------------------------------------------
 // Surface probes
@@ -231,6 +238,8 @@ const surfaceProbes = await Promise.all([
     postJson({ command: ['node', '-e', "process.stdout.write('ready')"], limits: { wallTimeMs: 5_000, memoryBytes: 67_108_864 } }, `idem_probe_sandbox_${probeNonce}`)),
   observe('api.prediction_execute', `${API_ORIGIN}/v1/prediction/execute`,
     postJson({ kind: 'markets', status: 'open', limit: 3 }, `idem_probe_prediction_${probeNonce}`)),
+  observe('api.crypto_execute', `${API_ORIGIN}/v1/crypto/execute`,
+    postJson({ kind: 'report', address: '0x0000000000000000000000000000000000000000', chains: ['eip155:1', 'eip155:8453'], lookbackDays: 30, limit: 50 }, `idem_probe_crypto_${probeNonce}`)),
   observe('site.root', `${SITE_ORIGIN}/`),
   observe('site.llms_txt', `${SITE_ORIGIN}/llms.txt`),
   observe('site.sitemap', `${SITE_ORIGIN}/sitemap.xml`),
@@ -658,6 +667,97 @@ function predictionPaidProofValidation(quote) {
   };
 }
 
+function cryptoPaidProofValidation(quote) {
+  const proof = cryptoPaidProof;
+  if (proof === null) return { accepted: false, reason: 'paid_proof_absent' };
+
+  const expectedOperations = ['crypto.wallet.report', 'crypto.wallet.transactions'];
+  const expectedCharges = ['4000', '3000'];
+  const operations = Array.isArray(proof.operations) ? proof.operations : [];
+  const unique = (field) => new Set(operations.map((operation) => operation[field])).size === operations.length;
+  const invariant = proof.schemaVersion === 'clervo.crypto-x402-proof.v1'
+    && proof.state === 'settled_reconciled'
+    && proof.publicOrigin === `${API_ORIGIN}/`
+    && proof.endpoint === `${API_ORIGIN}/v1/crypto/execute`
+    && proof.releaseCommit === health.releaseId
+    && proof.network === quote?.network
+    && proof.asset === quote?.asset
+    && proof.payTo === quote?.payTo
+    && proof.observedChallenge?.status === 402
+    && proof.observedChallenge?.amountAtomic === quote?.amountAtomic
+    && proof.observedChallenge?.networkMatched === true
+    && proof.observedChallenge?.assetMatched === true
+    && proof.observedChallenge?.payToMatched === true
+    && proof.observedChallenge?.facilitatorMatched === true
+    && proof.observedChallenge?.paymentAttemptedBeforeOwnerAuthorization === false
+    && proof.ownerAuthorization?.maximumSpendAtomic === '7000'
+    && proof.ownerAuthorization?.maximumExecutionCount === 2
+    && proof.ownerAuthorization?.paymentEffects === 2
+    && proof.ownerAuthorization?.automaticRetry === false
+    && JSON.stringify(proof.ownerAuthorization?.operationsInOrder) === JSON.stringify(expectedOperations)
+    && JSON.stringify(proof.ownerAuthorization?.amountAtomicByOperation) === JSON.stringify(Object.fromEntries(expectedOperations.map((operation, index) => [operation, expectedCharges[index]])))
+    && operations.length === 2
+    && JSON.stringify(operations.map(({ productId }) => productId)) === JSON.stringify(expectedOperations)
+    && JSON.stringify(operations.map(({ customerChargeAtomic }) => customerChargeAtomic)) === JSON.stringify(expectedCharges)
+    && ['operationId', 'receiptId', 'requestHash', 'resultHash', 'transactionHash'].every(unique)
+    && operations.every((operation) => operation.supplierCostAtomic === '0'
+      && operation.settlementStatus === 'settled'
+      && operation.chainStatus === 'confirmed'
+      && operation.exactTransferCount === 1
+      && operation.usefulResult === true
+      && operation.resultSummary?.freshnessState === 'fresh'
+      && operation.resultSummary?.adapterId === 'adapter_crypto.blockscout_value_added'
+      && operation.resultSummary?.sourceClass === 'indexed_public_blockchain_data'
+      && operation.resultSummary?.thirdPartyLabelsUsed === false
+      && Array.isArray(operation.resultSummary?.servedChains)
+      && operation.resultSummary.servedChains.length >= 1
+      && operation.replay?.sameOperation === true
+      && operation.replay?.sameReceipt === true
+      && operation.replay?.sameResult === true
+      && operation.replay?.idempotencyReplayed === true
+      && operation.replay?.paymentHeaderSent === false
+      && operation.replay?.secondAuthorization === false
+      && operation.replay?.secondUpstreamExecution === false
+      && operation.replay?.secondCharge === false
+      && operation.durable?.state === 'completed'
+      && operation.durable?.operationRows === 1
+      && operation.durable?.accountingRows === 1)
+    && operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic), 0n) === 7000n
+    && proof.observedBalances?.payerDeltaAtomic === '-7000'
+    && proof.observedBalances?.receiverDeltaAtomic === '7000'
+    && proof.observedDurability?.databaseIdentityVerified === true
+    && proof.observedDurability?.operationRows === 2
+    && proof.observedDurability?.accountingRowsForOperations === 2
+    && proof.observedDurability?.receiverLedgerChainValid === true
+    && proof.observedDurability?.receiverLedgerBalanced === true
+    && proof.observedDurability?.temporaryJobRemoved === true
+    && proof.proofClassification?.proofLevel === PROOF_PAID
+    && proof.proofClassification?.ownerFunded === true
+    && proof.proofClassification?.commercialMechanismVerified === true
+    && proof.proofClassification?.revenueEvidence === false
+    && proof.proofClassification?.demandEvidence === false
+    && proof.proofClassification?.unrelatedCustomerEvidence === false
+    && proof.proofClassification?.externallyRepeatedClaimAllowed === false
+    && proof.cleanup?.temporaryManagedJobRemoved === true;
+
+  if (!invariant) return { accepted: false, reason: 'paid_proof_invariant_failed' };
+  return {
+    accepted: true,
+    reason: null,
+    proofLevel: PROOF_PAID,
+    source: 'infra/production/gcp/crypto-x402-proof.v1.json',
+    releaseCommit: proof.releaseCommit,
+    operationCount: operations.length,
+    totalChargeAtomic: '7000',
+    usefulResultCount: operations.filter(({ usefulResult }) => usefulResult).length,
+    replayNoSecondChargeCount: operations.filter(({ replay }) => replay?.secondCharge === false).length,
+    ownerFunded: true,
+    revenueEvidence: false,
+    demandEvidence: false,
+    externallyRepeated: false,
+  };
+}
+
 function productFromProbes({ id, label, operations, probeIds, freeProbeId = null, commercialBlocker = null, paidProof = null }) {
   if (commercialBlocker !== null) {
     return {
@@ -776,9 +876,9 @@ const products = [
   productFromProbes({
     id: 'crypto_intelligence',
     label: 'Crypto Intelligence',
-    operations: ['crypto.wallet', 'crypto.token', 'crypto.transaction', 'crypto.protocol', 'crypto.report'],
-    probeIds: {},
-    commercialBlocker: 'commercial_rights_blocked',
+    operations: ['crypto.wallet.balances', 'crypto.wallet.tokens', 'crypto.wallet.transactions', 'crypto.wallet.report'],
+    probeIds: { paid: 'api.crypto_execute' },
+    paidProof: cryptoPaidProofValidation,
   }),
 ].sort((left, right) => left.id.localeCompare(right.id));
 

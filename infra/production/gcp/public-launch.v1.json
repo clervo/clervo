@@ -73,12 +73,25 @@
     "supplierCostMicrousd": 0,
     "attributionRequired": true
   },
+  "crypto": {
+    "mode": "paid",
+    "publicRoute": true,
+    "sourceRegistry": "infra/crypto/source-routes.v1.json",
+    "qualifiedAdapter": "adapter_crypto.blockscout_value_added",
+    "credentialSecret": "clervo-production-blockscout-api-key",
+    "supportedChains": ["eip155:1", "eip155:8453"],
+    "dailyCallCeiling": 100000,
+    "priceVersion": "crypto-product-2026-08-09.1",
+    "supplierCostMicrousd": 0,
+    "rawApiResaleAllowed": false
+  },
   "rollout": {
     "deployTrafficPercent": 0,
     "authenticatedLiveSearchSmokeRequired": true,
     "stableChallengeRequired": true,
     "sandboxLiveSmokeRequired": true,
     "predictionLiveSmokeRequired": true,
+    "cryptoLiveSmokeRequired": true,
     "monitoringDeliveryRequired": true,
     "previousRevisionRequired": true,
     "publicAccessEnabledOnlyAfterPromotion": true,

@@ -19,6 +19,10 @@ const descriptors = async (directory, names, frozenHashes = new Map()) => Promis
 const registryFile = 'packages/catalog/platform-registry.v1.json';
 const visibilityFile = 'packages/catalog/schema-visibility.v1.json';
 const workflowFile = 'packages/catalog/private-workflows.v1.json';
+const frozenRegistrySha256 = 'sha256:bc5f174625d03ee25bb477415d9b624b391d910e1dd1fa68eaaa30e4a1265b0d';
+const frozenWorkflowSha256 = 'sha256:025d798e3f6e36f43b154bad04f3c8b7495e20e7b00f66e4f124f5441b8f93b6';
+const currentCryptoOperationIds = ['crypto.wallet.balances', 'crypto.wallet.tokens', 'crypto.wallet.transactions', 'crypto.wallet.report'];
+const frozenCryptoOperationIds = ['crypto.protocol', 'crypto.report', 'crypto.token', 'crypto.transaction', 'crypto.wallet'];
 // Stage 12 is an immutable historical snapshot. Public contracts introduced
 // after that freeze remain part of the current visibility manifest, but they
 // must not silently rewrite the frozen schema set or its historical manifest
@@ -76,6 +80,15 @@ const frozenSchemaHashes = new Map([
   ['prediction-operation-result.schema.json', 'sha256:74e0e03ab28756c94437c88db2c3da21f63f217ccdc51aaf302de4512f607d21'],
   ['prediction-product-pricing.schema.json', 'sha256:ea4a5d41af051ef3d260f5901424e15427ecf969093b3a4c5bc883c8afcc2164'],
   ['prediction-source-routes.schema.json', 'sha256:c559b9f8c213aa5b2d78d6b23ba81895567128a96dae888178fa0909f4e1c80a'],
+  // B9 replaces the historical five-operation Crypto private-core contract
+  // with the stable four-operation wallet-intelligence contract. The Stage 12
+  // snapshot remains immutable; current contracts are validated independently.
+  ['blockchain-data-supply-pricing.schema.json', 'sha256:b2a1bba04cfd76dddf6612be1fc82a744470df5af7f974596e2af423aadd3d4f'],
+  ['crypto-operation-request.schema.json', 'sha256:ba53a4b0431750290fb0ad0abb4ef17e346d478bfa3397214d9f53ab336f742a'],
+  ['crypto-operation-result.schema.json', 'sha256:92f10dae4b73c638c02bc7609df9335f739bc99014829a3d41d34e4adf9441f2'],
+  ['crypto-product-pricing.schema.json', 'sha256:971ac42d6e10b52b8fa72841685a555f14028067082abfd461ea2149e41b74d2'],
+  ['crypto-source-routes.schema.json', 'sha256:7699631024e05f1f5f0bb4efa6495c721ebdc064a8e9deb861d9952535072795'],
+  ['external-supply-inventory.schema.json', 'sha256:bee7e9944649f911d2103f447c5d3934fc0ef33b278e9680c79ce71fd8ab3070'],
 ]);
 const frozenFixtureHashes = new Map([
   ['prediction-market-valid.json', 'sha256:d1d9a5c35145c0bcab74cdef15dc22fe82ee9ab14c4bb562c731b315978ab2a8'],
@@ -83,12 +96,22 @@ const frozenFixtureHashes = new Map([
   ['prediction-product-pricing-valid.json', 'sha256:07eff84cafb2392adbe1b60ded8ee4ca6537649cd9337e1e48bf0c1dcc085877'],
   ['prediction-source-routes-terms-bypass-invalid.json', 'sha256:f00a23e81d2bce4c63edba54dfcb20a18569f5524a4ecba423dd623f98b3accd'],
   ['prediction-source-routes-valid.json', 'sha256:29e7609f3abca4dca6fd8d9fedb0dea056000aa9997ce351ba47c44933cf8832'],
+  ['crypto-operation-request-product-mismatch-invalid.json', 'sha256:8093c0915cd439a69a2ba4b0a941b619c6849abcf388ba3ceddf33ff25701db8'],
+  ['crypto-operation-request-valid.json', 'sha256:f5d5fb4cfcf36af20a3672f55cf67ab184ca883081303dc1ffddca5eea840a56'],
+  ['crypto-operation-result-valid.json', 'sha256:30b9cb466593a6795a1c6a0dc0f2b017c3ecad6370949a1593a37445814df0da'],
+  ['crypto-product-pricing-valid.json', 'sha256:389669f47657679b96e5864f99b38290466293b6002d7017e3d1b598c9d12a7c'],
+  ['crypto-source-routes-bypass-invalid.json', 'sha256:c5b93ce2684b97ecdd9c67d0d66d3747d2e8249e0a85eb0650b4aea74c2c6d88'],
+  ['crypto-source-routes-valid.json', 'sha256:3db0094f395b16faba799bc11d37bbca7e7c27f4d2cb8b1799804a68840feefe'],
+  ['private-workflow-catalog-valid.json', 'sha256:4aaf1809164bd17eaf5a7c5d98717ffc6965d252d984b9a63853ef4e06307da2'],
+  ['product-scope-invalid-live-expansion.json', 'sha256:85636e4fd4464de6589820acb7a69d6e4a41ba8931bbcf87b5de16925f38fab9'],
+  ['product-scope-valid.json', 'sha256:9560ca57ddefde47cd27cffc758f3f15fd8a67871e04088503e7baa784ee3379'],
 ]);
 // Pricing policy is expected to evolve after the private-core freeze. Keep the
 // historical descriptor for any catalog revised by a later milestone instead
 // of silently reissuing the published Stage 12 interface identity.
 const frozenPriceHashes = new Map([
   ['packages/catalog/prediction-product-pricing.v1.json', 'sha256:bc8a742b44f43704606984e876457df1f03b3f02893c63d60a247739ce5a4a0a'],
+  ['packages/catalog/crypto-product-pricing.v1.json', 'sha256:7ec207bb08e8cbeee0c6518b5cfa6148b71bfa2b38a8182c8467ae026a9ed55b'],
 ]);
 const priceFiles = [
   'packages/contracts/src/search-http.ts',
@@ -147,7 +170,12 @@ for (const operationId of publicOperationIds) {
   const operation = registry.operations.find((value) => value.operationId === operationId);
   if (operation?.lifecycle !== 'preview' || operation.route === null) throw new Error(`release_freeze_public_operation_invalid:${operationId}`);
 }
-const internalOperationIds = registry.operations.map(({ operationId }) => operationId).filter((operationId) => !publicOperationIds.includes(operationId)).sort();
+const observedCryptoOperationIds = registry.operations.map(({ operationId }) => operationId).filter((operationId) => operationId.startsWith('crypto.')).sort();
+if (JSON.stringify(observedCryptoOperationIds) !== JSON.stringify([...currentCryptoOperationIds].sort())) throw new Error('release_freeze_current_crypto_contract_unrecognized');
+const internalOperationIds = [
+  ...registry.operations.map(({ operationId }) => operationId).filter((operationId) => !publicOperationIds.includes(operationId) && !operationId.startsWith('crypto.')),
+  ...frozenCryptoOperationIds,
+].sort();
 const schemaAggregateHash = hashJson(schemas);
 const fixtureAggregateHash = hashJson(fixtures);
 const unsigned = {
@@ -156,14 +184,14 @@ const unsigned = {
   frozenAt: '2026-08-02T16:30:00.000Z',
   state: 'private_core_frozen',
   noPublicDistribution: true,
-  baseRegistry: { file: registryFile, version: registry.registryVersion, sha256: await sha256(registryFile) },
+  baseRegistry: { file: registryFile, version: registry.registryVersion, sha256: frozenRegistrySha256 },
   schemaVisibility: { file: visibilityFile, version: visibility.policyVersion, sha256: hashBytes(frozenVisibilitySource) },
-  privateWorkflowCatalog: { file: workflowFile, sha256: await sha256(workflowFile) },
+  privateWorkflowCatalog: { file: workflowFile, sha256: frozenWorkflowSha256 },
   coreQualifications: workflows.coreQualifications.map(({ pillar, privateCoreQualified, publicLifecycle }) => ({ pillar, privateCoreQualified, publicLifecycle })),
   operationSet: {
     publicOperationIds,
     internalOperationIds,
-    total: registry.operations.length,
+    total: publicOperationIds.length + internalOperationIds.length,
   },
   lifecycleProjection: registry.pillars.map(({ pillarId, lifecycle }) => ({ pillarId, lifecycle })),
   prices,

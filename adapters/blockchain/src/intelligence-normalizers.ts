@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import type { TokenOverview, WalletAddressOverview, WalletTokenBalance, WalletTransactionSummary } from './blockscout-data.js';
+import type { TokenOverview, WalletAddressOverview, WalletTokenBalance, WalletTokenTransferSummary, WalletTransactionSummary } from './blockscout-data.js';
 import {
   normalizeCryptoTransaction,
   normalizeCryptoToken,
@@ -11,6 +11,12 @@ import {
 } from '../../../services/crypto/src/normalization.js';
 
 const SOLANA_MAINNET: CryptoChainId = 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp';
+
+function blockscoutExplorer(chainId: number): string {
+  if (chainId === 1) return 'https://eth.blockscout.com';
+  if (chainId === 8453) return 'https://base.blockscout.com';
+  throw new TypeError('crypto_evm_chain_invalid');
+}
 
 function evidence(sourceUrl: string, observedAt: string, fieldGroups: readonly string[]): Readonly<CryptoEvidence> {
   const parsed = new URL(sourceUrl);
@@ -44,7 +50,7 @@ export function normalizeBlockscoutToken(input: Readonly<{
     staleAfterMs: input.staleAfterMs,
     confidenceBasisPoints: 7_000,
     confidenceBasis: ['indexed_contract_metadata', 'single_source'],
-    evidence: [evidence(`https://blockscout.com/token/${input.token.contractAddress}`, input.observedAt, ['token_metadata'])],
+    evidence: [evidence(`${blockscoutExplorer(input.chainId)}/token/${input.token.contractAddress}`, input.observedAt, ['token_metadata'])],
     risk: { level: 'unverified', classifications: Object.freeze([]), evidenceRefs: Object.freeze([]) },
   }, input.nowMs);
 }
@@ -63,9 +69,10 @@ export function normalizeBlockscoutWallet(input: Readonly<{
   observedAt: string;
   staleAfterMs: number;
   nowMs: number;
+  coverage?: readonly ('native_balance' | 'token_balances')[];
 }>): Readonly<NormalizedCryptoWallet> {
   const chainId = evmChain(input.chainId);
-  const sourceUrl = `https://blockscout.com/address/${input.overview.address}`;
+  const sourceUrl = `${blockscoutExplorer(input.chainId)}/address/${input.overview.address}`;
   return normalizeCryptoWallet({
     chainId,
     address: input.overview.address,
@@ -83,7 +90,7 @@ export function normalizeBlockscoutWallet(input: Readonly<{
     observedAt: input.observedAt,
     staleAfterMs: input.staleAfterMs,
     evidence: [evidence(sourceUrl, input.observedAt, ['native_balance', 'token_balances'])],
-    coverage: ['native_balance', 'token_balances'],
+    coverage: input.coverage ?? ['native_balance', 'token_balances'],
   }, input.nowMs);
 }
 
@@ -105,8 +112,62 @@ export function normalizeBlockscoutTransactions(input: Readonly<{
     tokenTransfers: Object.freeze([]),
     programOrContract: null,
     observedAt: input.observedAt,
-    evidence: [evidence(`https://blockscout.com/tx/${transaction.transactionHash}`, input.observedAt, ['transaction'])],
+    evidence: [evidence(`${blockscoutExplorer(input.chainId)}/tx/${transaction.transactionHash}`, input.observedAt, ['transaction'])],
   })));
+}
+
+export function normalizeBlockscoutActivity(input: Readonly<{
+  chainId: number;
+  transactions: readonly Readonly<WalletTransactionSummary>[];
+  tokenTransfers: readonly Readonly<WalletTokenTransferSummary>[];
+  observedAt: string;
+}>) {
+  const chainId = evmChain(input.chainId);
+  const explorer = blockscoutExplorer(input.chainId);
+  const transfersByTransaction = new Map<string, WalletTokenTransferSummary[]>();
+  for (const transfer of input.tokenTransfers) {
+    const values = transfersByTransaction.get(transfer.transactionHash) ?? [];
+    if (values.some(({ logIndex }) => logIndex === transfer.logIndex)) continue;
+    values.push(transfer);
+    transfersByTransaction.set(transfer.transactionHash, values);
+  }
+  const transactionByHash = new Map(input.transactions.map((transaction) => [transaction.transactionHash, transaction]));
+  const hashes = [...new Set([...input.transactions.map(({ transactionHash }) => transactionHash), ...input.tokenTransfers.map(({ transactionHash }) => transactionHash)])];
+  return Object.freeze(hashes.map((hash) => {
+    const transaction = transactionByHash.get(hash);
+    const transfers = transfersByTransaction.get(hash) ?? [];
+    const firstTransfer = transfers[0];
+    if (transaction === undefined && firstTransfer === undefined) throw new TypeError('crypto_blockscout_activity_invalid');
+    const observed = transaction ?? {
+      transactionHash: hash,
+      blockNumber: firstTransfer!.blockNumber,
+      timestamp: firstTransfer!.timestamp,
+      status: 'unknown' as const,
+      from: firstTransfer!.from,
+      to: firstTransfer!.to,
+      valueAtomic: '0',
+    };
+    return normalizeCryptoTransaction({
+      chainId,
+      transactionId: hash,
+      blockHeight: observed.blockNumber,
+      timestamp: observed.timestamp,
+      status: observed.status,
+      from: observed.from,
+      to: observed.to,
+      nativeValueAtomic: observed.valueAtomic,
+      tokenTransfers: Object.freeze(transfers.map((transfer) => Object.freeze({
+        assetAddress: transfer.contractAddress,
+        from: transfer.from,
+        to: transfer.to,
+        amountAtomic: transfer.amountAtomic,
+        decimals: transfer.decimals,
+      }))),
+      programOrContract: transfers[0]?.contractAddress ?? null,
+      observedAt: input.observedAt,
+      evidence: [evidence(`${explorer}/tx/${hash}`, input.observedAt, transfers.length > 0 ? ['transaction', 'token_transfers'] : ['transaction'])],
+    });
+  }).sort((left, right) => (right.timestamp ?? '').localeCompare(left.timestamp ?? '')));
 }
 
 function record(value: unknown): Record<string, unknown> {

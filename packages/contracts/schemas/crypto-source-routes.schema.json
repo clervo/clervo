@@ -2,35 +2,89 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://api.clervo.dev/schemas/2026-07-29.1/crypto-source-routes.schema.json",
   "type": "object",
-  "required": ["schemaVersion", "lifecycle", "customerRoutingEnabled", "sources", "ownerBlocker"],
+  "required": ["schemaVersion", "lifecycle", "customerRoutingEnabled", "supportedChains", "sources", "ownerBlocker"],
   "properties": {
     "schemaVersion": { "const": "clervo.crypto-source-routes.v1" },
-    "lifecycle": { "const": "unavailable" },
-    "customerRoutingEnabled": { "const": false },
+    "lifecycle": { "enum": ["unavailable", "live"] },
+    "customerRoutingEnabled": { "type": "boolean" },
+    "supportedChains": { "type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": true, "items": { "enum": ["eip155:1", "eip155:8453"] } },
     "sources": {
-      "type": "array",
-      "minItems": 2,
-      "maxItems": 32,
+      "type": "array", "minItems": 1, "maxItems": 16,
       "items": {
         "type": "object",
-        "required": ["sourceId", "chainCoverage", "products", "technicalStatus", "termsStatus", "resaleStatus", "customerRoutingEnabled", "fallbackStatus"],
+        "required": ["sourceId", "adapterId", "qualificationId", "chainIds", "products", "technicalQualification", "technicalObservedAt", "technicalExpiresAt", "commercialPermission", "publicSellable", "outputMode", "rawApiResaleAllowed", "retentionDays", "attributionRequirement", "costModel", "customerRoutingEnabled", "evidenceUrls"],
         "properties": {
           "sourceId": { "type": "string", "pattern": "^crypto\\.source\\.[a-z0-9_]+$" },
-          "chainCoverage": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["evm", "solana", "multichain"] } },
-          "products": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["crypto.wallet", "crypto.token", "crypto.transaction", "crypto.protocol", "crypto.report"] } },
-          "technicalStatus": { "enum": ["passed", "failed", "not_run"] },
-          "termsStatus": { "enum": ["approved", "restricted", "blocked", "unreviewed"] },
-          "resaleStatus": { "enum": ["approved", "restricted", "prohibited", "unreviewed"] },
+          "adapterId": { "type": "string", "pattern": "^adapter_crypto\\.[a-z0-9_]+$" },
+          "qualificationId": { "type": ["string", "null"], "pattern": "^qual_[A-Za-z0-9]{20,64}$" },
+          "chainIds": { "type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": { "type": "string", "minLength": 3, "maxLength": 80 } },
+          "products": { "type": "array", "minItems": 1, "maxItems": 4, "uniqueItems": true, "items": { "enum": ["crypto.wallet.balances", "crypto.wallet.tokens", "crypto.wallet.transactions", "crypto.wallet.report"] } },
+          "technicalQualification": { "enum": ["qualified", "screened", "expired", "failed", "not_run"] },
+          "technicalObservedAt": { "type": ["string", "null"], "format": "date-time" },
+          "technicalExpiresAt": { "type": ["string", "null"], "format": "date-time" },
+          "qualificationEvidence": { "$ref": "#/$defs/qualificationEvidence" },
+          "commercialPermission": { "enum": ["approved_value_added", "unresolved", "restricted", "prohibited"] },
+          "publicSellable": { "type": "boolean" },
+          "outputMode": { "enum": ["derived_only", "raw_and_derived"] },
+          "rawApiResaleAllowed": { "type": "boolean" },
+          "retentionDays": { "type": "integer", "minimum": 0, "maximum": 3650 },
+          "attributionRequirement": { "enum": ["required", "preserved_voluntarily", "unknown"] },
+          "costModel": { "type": "object", "required": ["supplierVariableCostMicrousd", "allowance", "automaticPaidUpgrade"], "properties": { "supplierVariableCostMicrousd": { "type": "integer", "minimum": 0, "maximum": 1000000 }, "allowance": { "type": "string", "minLength": 1, "maxLength": 160 }, "automaticPaidUpgrade": { "const": false } }, "additionalProperties": false },
+          "commercialRights": { "$ref": "#/$defs/commercialRights" },
           "customerRoutingEnabled": { "type": "boolean" },
-          "fallbackStatus": { "enum": ["independent_fallback_ready", "independent_fallback_missing"] }
+          "evidenceUrls": { "type": "array", "minItems": 1, "maxItems": 10, "uniqueItems": true, "items": { "type": "string", "format": "uri", "pattern": "^https://" } }
         },
         "allOf": [
-          { "if": { "anyOf": [{ "properties": { "technicalStatus": { "enum": ["failed", "not_run"] } }, "required": ["technicalStatus"] }, { "properties": { "termsStatus": { "enum": ["restricted", "blocked", "unreviewed"] } }, "required": ["termsStatus"] }, { "properties": { "resaleStatus": { "enum": ["restricted", "prohibited", "unreviewed"] } }, "required": ["resaleStatus"] }] }, "then": { "properties": { "customerRoutingEnabled": { "const": false } } } }
+          { "if": { "anyOf": [
+            { "properties": { "technicalQualification": { "enum": ["screened", "expired", "failed", "not_run"] } }, "required": ["technicalQualification"] },
+            { "properties": { "commercialPermission": { "enum": ["unresolved", "restricted", "prohibited"] } }, "required": ["commercialPermission"] },
+            { "properties": { "publicSellable": { "const": false } }, "required": ["publicSellable"] }
+          ] }, "then": { "properties": { "customerRoutingEnabled": { "const": false } } } },
+          { "if": { "properties": { "commercialPermission": { "const": "approved_value_added" } }, "required": ["commercialPermission"] }, "then": { "required": ["commercialRights", "qualificationEvidence"], "properties": { "commercialRights": true, "qualificationEvidence": true, "publicSellable": { "const": true }, "outputMode": { "const": "derived_only" }, "rawApiResaleAllowed": { "const": false } } } }
         ],
         "additionalProperties": false
       }
     },
-    "ownerBlocker": { "type": "string", "minLength": 1, "maxLength": 300 }
+    "ownerBlocker": { "type": "string", "minLength": 1, "maxLength": 500 }
   },
+  "$defs": {
+    "qualificationEvidence": {
+      "type": "object",
+      "required": ["externalCalls", "successes", "failures", "checksPassed", "paginationPassed", "emptyWalletsPassed", "highActivityPassed", "burstSuccesses", "cooldownRecovered", "latencyMs", "normalizationPassed"],
+      "properties": {
+        "externalCalls": { "type": "integer", "minimum": 1, "maximum": 1000 },
+        "successes": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "failures": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "checksPassed": { "type": "integer", "minimum": 1, "maximum": 1000 },
+        "paginationPassed": { "type": "boolean" },
+        "emptyWalletsPassed": { "type": "boolean" },
+        "highActivityPassed": { "type": "boolean" },
+        "burstSuccesses": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "cooldownRecovered": { "type": "boolean" },
+        "latencyMs": { "type": "object", "required": ["minimum", "median", "p95", "maximum"], "properties": { "minimum": { "type": "number", "minimum": 0 }, "median": { "type": "number", "minimum": 0 }, "p95": { "type": "number", "minimum": 0 }, "maximum": { "type": "number", "minimum": 0 } }, "additionalProperties": false },
+        "normalizationPassed": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "commercialRights": {
+      "type": "object",
+      "required": ["basis", "termsObservedAt", "termsUrl", "documentationUrl", "intendedUses", "scope", "restriction", "requalificationRequired"],
+      "properties": {
+        "basis": { "const": "public_terms_and_documented_intended_use" },
+        "termsObservedAt": { "type": "string", "format": "date-time" },
+        "termsUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "documentationUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "intendedUses": { "type": "array", "minItems": 2, "maxItems": 8, "uniqueItems": true, "items": { "type": "string", "minLength": 2, "maxLength": 80 } },
+        "scope": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "restriction": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "requalificationRequired": { "const": true }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    { "if": { "properties": { "customerRoutingEnabled": { "const": true } }, "required": ["customerRoutingEnabled"] }, "then": { "properties": { "lifecycle": { "const": "live" } } } },
+    { "if": { "properties": { "lifecycle": { "const": "unavailable" } }, "required": ["lifecycle"] }, "then": { "properties": { "customerRoutingEnabled": { "const": false } } } }
+  ],
   "additionalProperties": false
 }

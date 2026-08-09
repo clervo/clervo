@@ -1162,60 +1162,90 @@ Every milestone below carries the same seventeen fields.
     economics, deployment, public discovery, external execution, bounded
     payment, useful result with provenance/freshness, accurate receipt,
     no-charge replay, and a second independent successful operation.
-17. **Continuation point:** B8 is closed. B9 remains `not_started`; await an
-    explicit owner instruction after closure review before opening it.
+17. **Continuation point:** B8 is closed. The owner authorized B9 on
+    2026-08-09; B9 is now in progress and B10 remains not started.
 
 ---
 
 ### B9 — Crypto Intelligence live
 
 1. **Milestone:** B9 — Crypto Intelligence live
-2. **Status:** `not_started`
+2. **Status:** `in_progress` — production candidate complete; owner-approved
+   production secret installation and zero-traffic deployment are the next
+   required actions. Public/payment proof is not yet claimed.
 3. **Customer-visible outcome:** Product five is externally usable: an unrelated
    customer executes a real on-chain analysis, pays, and receives a useful
    derived report with evidence and an accurate receipt.
 4. **Why it matters commercially:** Crypto Intelligence is the highest-value
    derived output in the set and the strongest demonstration of the evidence and
    provenance differentiator.
-5. **Preserve:** The existing Crypto service, adapters, and
-   `apps/api/src/x402-paid-crypto.mjs`; the Blockscout qualification.
-6. **Current evidence:** Built. Blockscout qualification passed with
-   `restricted` terms. The runtime additionally requires a Solana endpoint it
-   does not have, which blocks the entire product for one chain. Edge returns
-   404 because `CLERVO_CRYPTO_PUBLIC_ENABLED` is unset.
-7. **Research:** The same raw-versus-derived terms distinction for each on-chain
-   data supplier under consideration. One question: which derived report may we
-   sell, on which chains.
-8. **Work:** **Technical wiring alone does not complete this milestone.**
-   Narrow the launch to the permitted derived output on chains we can actually
-   serve — an EVM-only first launch is the expected shape — so a missing
-   endpoint for one chain no longer blocks the product. Make chain coverage a
-   registry-declared property, so adding a chain later is a data edit. Record
-   commercial authority, allowed operations, retention, price basis, and hard
-   stop. **If terms are insufficient, choose another supplier, owned
-   infrastructure, or a narrower derived product.** Price with positive margin.
-   Enable the runtime mode and the public edge flag. Ship discovery with it.
-9. **Dependencies:** B5; Track C terms decision; the Blockscout key already in
-   the deployment environment.
-10. **Parallel:** Track C now focuses entirely on RPC supply.
-11. **Launch-critical tests:** the existing Crypto public-HTTP test, now inside
-    `npm test`; payment binding; idempotency; replay; receipt integrity; SSRF
-    and redirect protection; spend limits; declared chain coverage matches
-    served coverage.
-12. **External acceptance proof:** The nine finished-product conditions from an
-    unrelated machine, on the declared chains only, with no operation offered
-    that the runtime cannot serve.
-13. **Visibility shipped:** Registry state including exact chain coverage,
-    catalog, pricing, status, product page, quick start, curl example,
-    `llms.txt`, x402 discovery, Connect catalog entry.
-14. **Metrics:** Crypto calls, revenue, gross margin, wallets, multi-product
-    wallets.
-15. **Owner approval:** Legal and commercial decision; secret changes for any
-    new endpoint; production deploy.
-16. **Stopping condition:** All nine conditions pass from outside for the
-    declared scope, with recorded commercial authority.
-17. **Continuation point:** Open B10. First task there: pin search supplier
-    routing preference by margin.
+5. **Preserve:** **PROVEN.** The existing Crypto gateway, normalization,
+   provider abstraction, shared x402 commerce, durable receipt/idempotency
+   architecture, and B8 public truth remain intact. B9 changed only the bounded
+   Crypto product slice and its generated projections.
+6. **Current evidence:** **PROVEN LOCALLY, UNVERIFIED IN PRODUCTION.** The
+   production candidate supports Ethereum and Base through a qualified
+   Blockscout PRO adapter and four provider-neutral operations:
+   `crypto.wallet.balances`, `crypto.wallet.tokens`,
+   `crypto.wallet.transactions`, and flagship `crypto.wallet.report`. The
+   report returns holdings, normalized activity, native/ERC-20 flows,
+   counterparties, deterministic bounded signals, freshness, coverage,
+   degradation, evidence, and provenance. Solana is explicitly unsupported and
+   no longer blocks EVM startup. A real credential-backed local report returned
+   a hash-bound useful Ethereum result and explicit Base degradation; this is
+   not production proof.
+7. **Research:** **PROVEN.** Current Blockscout PRO documentation and terms
+   identify dapps, wallets, AI agents, analytics/research, and production
+   workloads as intended uses. The selected path exposes only Clervo-normalized
+   value-added output with provenance; it does not resell the API, credential,
+   raw response, RPC, or essential service. SQD was screened as an open
+   alternative but was operationally unsuitable for bounded on-demand launch.
+   BlockRun Surf was observed at 0.0085 USDC/call and Nansen x402 basic wallet
+   calls at 0.01 USDC, with higher intelligence calls at 0.05 USDC.
+8. **Work:** **PROVEN for the production candidate; production/external proof
+   remains UNVERIFIED.** Chain coverage, commercial permission, retention,
+   supplier cost, qualification expiry, call ceiling, prices, runtime mode,
+   edge flag, live-registry probe, paid-proof validator, OpenAPI/discovery
+   generator, and rollback-safe deployment policy are wired. Focused B9 tests
+   pass 48 of 48; contract validation passes 99 schemas and 134 fixtures. The
+   historical Stage 12 freeze remains immutable while current B9 contracts are
+   validated independently.
+9. **Dependencies:** B5 is closed. Production requires installation of the
+    already-qualified local Blockscout credential in Secret Manager and binding
+    that exact secret to the Cloud Run candidate; those mutations require owner
+    approval.
+10. **Parallel:** None. B10 has not started.
+11. **Launch-critical tests:** **PROVEN LOCALLY.** Normalization, partial/missing
+    supply, commercial gating, report math, token/native flows, counterparties,
+    signals, provider replacement, price authority, settlement-after-useful-
+    output, failed execution without settlement, deterministic replay, no
+    double charge, SSRF/redirect bounds, declared chain coverage, and edge
+    gating pass. Full regression and external production tests remain before
+    closure.
+12. **External acceptance proof:** **UNVERIFIED.** Requires the deployed public
+    402, one owner-authorized 0.004-USDC report, one independent 0.003-USDC
+    transactions call, useful real-source output, exact receipts, and same-key
+    no-charge/no-second-upstream replay from an unrelated external environment.
+13. **Visibility shipped:** **UNVERIFIED UNTIL DEPLOYED.** The generator is
+    prepared to project runtime-observed Crypto state into registry, catalog,
+    pricing, status, OpenAPI, x402 discovery, `llms.txt`, and site truth only
+    after the public probe observes the route.
+14. **Metrics:** Candidate prices are 0.002 USDC for balances/tokens, 0.003 for
+    transactions, and 0.004 for report. Supplier variable cost is zero inside
+    the recurring 100,000-credit/day allowance; the known 0.001-USDC
+    facilitator overage is included and subsidy is disabled. Revenue, customer
+    calls, and demand remain zero/unknown until production evidence exists.
+15. **Owner approval:** **PENDING.** Install/bind the qualified free Blockscout
+    credential and authorize zero-traffic Cloud Run plus edge/site deployment.
+    No payment effect is part of that deployment approval. A separate maximum
+    0.007-USDC owner-funded proof authorization will be requested only after the
+    live 402 is observed.
+16. **Stopping condition:** **OPEN.** Local engineering and commercial supply
+    are proven; deployment, public truth, external paid outcomes, exact
+    receipts, replay, reconciliation, final ROADMAP evidence, and closure SHA
+    are still required.
+17. **Continuation point:** Complete B9 production and paid proof. Do not start
+    B10.
 
 ---
 

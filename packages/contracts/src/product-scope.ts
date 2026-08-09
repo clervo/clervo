@@ -79,7 +79,7 @@ const currentPillars = [
   { pillarId: 'sandbox', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: true, capabilityIds: ['sandbox.run', 'sandbox.session.create', 'sandbox.session.exec', 'sandbox.artifact.get', 'sandbox.session.destroy'] },
   { pillarId: 'rpc', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: true, capabilityIds: ['rpc.call', 'rpc.batch', 'rpc.health', 'rpc.archive', 'rpc.broadcast'] },
   { pillarId: 'prediction', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: true, capabilityIds: ['prediction.markets', 'prediction.market', 'prediction.compare', 'prediction.history', 'prediction.signal'] },
-  { pillarId: 'crypto_intelligence', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: true, capabilityIds: ['crypto.wallet', 'crypto.token', 'crypto.transaction', 'crypto.protocol', 'crypto.report'] },
+  { pillarId: 'crypto_intelligence', release: 'first_revenue_release', lifecycle: 'unavailable', coreQualified: true, capabilityIds: ['crypto.wallet.balances', 'crypto.wallet.tokens', 'crypto.wallet.transactions', 'crypto.wallet.report'] },
 ] as const satisfies readonly PillarScope[];
 
 function hasExactPillarIds(required: readonly PillarId[]): boolean {

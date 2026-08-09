@@ -155,11 +155,10 @@
         "lifecycle": "unavailable",
         "coreQualified": true,
         "capabilityIds": [
-          "crypto.wallet",
-          "crypto.token",
-          "crypto.transaction",
-          "crypto.protocol",
-          "crypto.report"
+          "crypto.wallet.balances",
+          "crypto.wallet.tokens",
+          "crypto.wallet.transactions",
+          "crypto.wallet.report"
         ]
       }
     ]

@@ -18,6 +18,7 @@ const modelCatalog = JSON.parse(await readFile(path.join(root, 'packages/catalog
 const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
 const x402Proof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/x402-proof.v1.json'), 'utf8'));
 const predictionPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/prediction-product-pricing.v1.json'), 'utf8'));
+const cryptoPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/crypto-product-pricing.v1.json'), 'utf8'));
 
 function componentName(fileName) {
   return fileName
@@ -153,6 +154,15 @@ const predictionProbeSchema = Object.freeze({
     { type: 'object', required: ['kind', 'marketRef'], additionalProperties: false, properties: { kind: { const: 'signal' }, marketRef: predictionMarketRefSchema, compareMarketRef: predictionMarketRefSchema } },
   ],
 });
+const cryptoProbeExample = Object.freeze({ kind: 'report', address: '0x0000000000000000000000000000000000000000', chains: Object.freeze(['eip155:1', 'eip155:8453']), lookbackDays: 30, limit: 50 });
+const cryptoAddressSchema = Object.freeze({ type: 'string', pattern: '^0x[a-fA-F0-9]{40}$' });
+const cryptoChainsSchema = Object.freeze({ type: 'array', minItems: 1, maxItems: 2, uniqueItems: true, items: Object.freeze({ enum: Object.freeze(['eip155:1', 'eip155:8453']) }) });
+const cryptoProbeSchema = Object.freeze({
+  oneOf: [
+    ...['balances', 'tokens'].map((kind) => Object.freeze({ type: 'object', required: ['kind', 'address', 'chains'], additionalProperties: false, properties: { kind: { const: kind }, address: cryptoAddressSchema, chains: cryptoChainsSchema } })),
+    ...['transactions', 'report'].map((kind) => Object.freeze({ type: 'object', required: ['kind', 'address', 'chains', 'lookbackDays', 'limit'], additionalProperties: false, properties: { kind: { const: kind }, address: cryptoAddressSchema, chains: cryptoChainsSchema, lookbackDays: { type: 'integer', minimum: 1, maximum: 90 }, limit: { type: 'integer', minimum: 1, maximum: 50 } } })),
+  ],
+});
 
 function scannerSafeOperation(operation, { requestSchema, example, paymentInfo, free = false }) {
   const cloned = structuredClone(operation);
@@ -217,6 +227,7 @@ const publicSearch = observedLive.search;
 const publicAi = observedLive.ai;
 const publicSandbox = observedLive.sandbox;
 const publicPrediction = observedLive.prediction;
+const publicCrypto = observedLive.crypto_intelligence;
 
 // Lifecycle state and proof level are rendered as two separate fields on every
 // surface. Collapsing them into one is what previously let a quote be read as a
@@ -563,11 +574,69 @@ if (publicPrediction) {
   ];
   llms += '\n## Prediction Intelligence preview\n\n- `POST /v1/prediction/execute`: `prediction.markets`, `prediction.market`, and `prediction.compare` cost at most 0.002000 USDC; `prediction.history` and `prediction.signal` cost at most 0.003000 USDC on Base.\n- Qualified zero-cost supply: pdata for Polymarket, Kalshi, Manifold, and Limitless. Direct venue adapters with unresolved commercial permission remain disabled.\n- Clervo returns normalized probabilities, stable market/event identities, conservative matching, durable observations, disagreement/movement signals, freshness, provenance, pdata/upstream attribution, an accurate receipt, and no-charge replay. It is not a raw pdata proxy and does not provide trading or custody.\n';
 }
+if (publicCrypto) {
+  const priceByProduct = new Map(cryptoPricing.products.map((product) => [product.productId, product]));
+  const publicCryptoProducts = [
+    ['crypto.wallet.balances', 'Read wallet balances', 'Read exact native balances and bounded holding coverage across requested supported chains.'],
+    ['crypto.wallet.tokens', 'Read token holdings', 'Read bounded ERC-20 holdings with exact atomic amounts and explicit missing valuation.'],
+    ['crypto.wallet.transactions', 'Read wallet activity', 'Read bounded normalized native and ERC-20 activity with direction, status, freshness, and evidence.'],
+    ['crypto.wallet.report', 'Derive wallet intelligence', 'Derive one bounded multichain wallet report with holdings, activity, flows, counterparties, deterministic signals, coverage, freshness, and provenance.'],
+  ];
+  openapi.paths['/v1/crypto/execute'] = {
+    post: {
+      summary: 'Request or settle bounded Crypto Intelligence',
+      description: 'Returns provider-neutral observed wallet facts and deterministic Clervo derivations for Ethereum and Base. It never infers wallet identity, provides an opaque risk score, signs, trades, or resells raw upstream responses.',
+      operationId: 'cryptoExecute',
+      parameters: [{ name: 'Idempotency-Key', in: 'header', required: true, schema: { type: 'string', minLength: 8, maxLength: 128 } }],
+      requestBody: { required: true, content: { 'application/json': { schema: cryptoProbeSchema } } },
+      responses: {
+        200: { description: 'Crypto Intelligence operation completed or replayed', content: { 'application/json': { schema: publicResultSchema } } },
+        400: { description: 'Invalid bounded Crypto Intelligence request', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
+        409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        503: { description: 'Qualified supply, durable state, or settlement is unavailable', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+      },
+    },
+  };
+  openapi.paths['/v1/crypto/execute'].post = scannerSafeOperation(openapi.paths['/v1/crypto/execute'].post, {
+    requestSchema: cryptoProbeSchema,
+    example: cryptoProbeExample,
+    paymentInfo: {
+      price: { mode: 'request_derived_per_operation', currency: 'USD', min: '0.002000', max: '0.004000' },
+      protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
+    },
+  });
+  openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, ...publicCryptoProducts.map(([productId]) => productId)];
+  for (const [productId, title, summary] of publicCryptoProducts) {
+    const price = priceByProduct.get(productId);
+    if (price?.listingStatus !== 'sellable' || price.supplierCostMicrousd !== 0 || price.customerPriceMicrousd <= price.infrastructureCostAllowanceMicrousd) throw new Error(`public_crypto_price_invalid:${productId}`);
+    discovery.products.push({
+      productId, operationId: productId, title, summary,
+      lifecycle: 'preview', publicAvailable: true, deliveryModes: ['sync'],
+      selection: { chains: ['Ethereum', 'Base'], lookbackDays: { minimum: 1, maximum: 90 }, identity: 'Caller-supplied EVM address only; no wallet-owner or third-party identity labels are inferred.' },
+      pricing: { model: 'fixed_by_operation', displayPrice: { asset: 'USDC', amountAtomic: String(price.customerPriceMicrousd), decimals: 6 }, maximumChargeRequired: true, priceVersion: `${cryptoPricing.priceVersion}-${productId}` },
+      routes: { paidChallenge: '/v1/crypto/execute' },
+      payment: { challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
+      attribution: { source: 'Blockscout PRO API', transformedBy: 'Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold.' },
+      commercialProof: observed.crypto_intelligence.proof === 'paid_outcome_verified',
+    });
+  }
+  discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: [...new Set([...(discovery.runtimeRelease?.operationIds ?? ['search.web']), ...publicCryptoProducts.map(([productId]) => productId)])] };
+  discovery.limitations = [
+    'Publicly callable previews include bounded provider-neutral Crypto Intelligence for Ethereum and Base.',
+    'Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable without commercially qualified price supply.',
+    'Reports expose observed facts, deterministic signals, coverage, missing sources, freshness, evidence, and provenance; they do not infer wallet identity, risk, advice, custody, signing, or trading.',
+    'A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.',
+    'Solana and unsupported EVM chains fail closed.',
+  ];
+  llms += '\n## Crypto Intelligence preview\n\n- `POST /v1/crypto/execute`: balances and token holdings cost 0.002000 USDC, transactions cost 0.003000 USDC, and the wallet report costs 0.004000 USDC on Base.\n- Supported data chains: Ethereum and Base. The report returns bounded holdings, activity, flows, counterparties, deterministic signals, freshness, coverage, evidence, and provenance.\n- Output never infers wallet identity, opaque risk, advice, custody, signing, or trading. USD valuation and Solana are unavailable. Same-key replay returns the completed result and receipt without another charge.\n';
+}
 const liveApiFamilies = [
   publicSearch ? { title: 'Search', description: 'raw cited Search' } : null,
   publicAi ? { title: 'AI', description: 'bounded paid AI' } : null,
   publicSandbox ? { title: 'Secure Sandbox', description: 'bounded one-shot Secure Sandbox execution' } : null,
   publicPrediction ? { title: 'Prediction Intelligence', description: 'derived Prediction Intelligence' } : null,
+  publicCrypto ? { title: 'Crypto Intelligence', description: 'bounded provider-neutral Crypto Intelligence' } : null,
 ].filter(Boolean);
 if (liveApiFamilies.length > 0) {
   openapi.info.title = `Clervo ${liveApiFamilies.map(({ title }) => title).join(', ')} API`;
@@ -577,7 +646,7 @@ if (liveApiFamilies.length > 0) {
   }
 }
 const catalog = contractModule.createCatalogDocument(projection);
-if (publicAi || publicSandbox || publicPrediction) catalog.products = discovery.products;
+if (publicAi || publicSandbox || publicPrediction || publicCrypto) catalog.products = discovery.products;
 
 // The contract package still supplies the historical introductory shape of
 // llms.txt. Replace every lifecycle-sensitive summary row from the same live
@@ -948,6 +1017,7 @@ const x402Resources = [
   { productId: 'ai', path: '/v1/ai/execute', operationId: 'ai.chat', priceModel: 'request_derived_per_model', quote: aiExampleRoute?.observedQuote ?? null, exampleRouteId: aiExampleRoute?.routeId ?? null },
   { productId: 'sandbox', path: '/v1/sandbox/execute', operationId: 'sandbox.run', priceModel: 'fixed_request', quote: observed.sandbox.observedQuote, exampleRouteId: null },
   { productId: 'prediction', path: '/v1/prediction/execute', operationId: 'prediction.markets', priceModel: 'request_derived_per_operation', quote: observed.prediction.observedQuote, exampleRouteId: null },
+  { productId: 'crypto_intelligence', path: '/v1/crypto/execute', operationId: 'crypto.wallet.report', priceModel: 'request_derived_per_operation', quote: observed.crypto_intelligence.observedQuote, exampleRouteId: null },
 ]
   .filter(({ productId, quote }) => observed[productId].state === 'live' && quote !== null)
   .map(({ productId, path: resourcePath, operationId, priceModel, quote, exampleRouteId }) => {

@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "clervo.blockscout-b9-qualification.v1",
+  "evaluatedAt": "2026-08-09T17:46:06.328Z",
+  "sourceId": "crypto.source.blockscout_pro",
+  "qualificationId": "qual_BlockscoutValueAdded20260809",
+  "expiresAt": "2026-08-16T17:30:00.000Z",
+  "ownerCashSpentUsd": 0,
+  "externalCalls": 27,
+  "successfulNetworkRequests": 27,
+  "failedNetworkRequests": 0,
+  "transactionSubmissionCalls": 0,
+  "signedPayloads": 0,
+  "summary": {
+    "technicalStatus": "qualified",
+    "checksPassed": 22,
+    "checksFailed": 0,
+    "repeatedCallsCharacterized": true,
+    "paginationPassed": true,
+    "emptyWalletsPassed": true,
+    "highActivityPassed": true,
+    "malformedAndUnsupportedRejected": true,
+    "burstSuccesses": 6,
+    "burstFailures": 0,
+    "cooldownRecovered": true,
+    "latencyMs": { "minimum": 207.4, "median": 649.7, "p95": 9170, "maximum": 9862.1 },
+    "normalizationPassed": true,
+    "newestTransactionChecks": 2
+  },
+  "capability": {
+    "chains": ["eip155:1", "eip155:8453"],
+    "nativeBalances": true,
+    "erc20Balances": true,
+    "transactions": true,
+    "erc20Transfers": true,
+    "failedTransactionStatus": true,
+    "pagination": true,
+    "finality": "indexed_canonical_status_exposed_finality_not_claimed",
+    "internalTransactions": "source_exposes_but_launch_contract_does_not_claim_coverage",
+    "independentSourceAgreement": "not_available_single_production_source"
+  },
+  "commercial": {
+    "permission": "value_added_application",
+    "publicSellable": true,
+    "rawApiResale": false,
+    "credentialResale": false,
+    "attributionPreserved": true,
+    "supplierVariableCostMicrousd": 0,
+    "allowance": "100000 credits/day; 5 requests/second; no automatic paid upgrade",
+    "evidenceUrls": [
+      "https://docs.blockscout.com/devs/pro-api",
+      "https://dev.blockscout.com/",
+      "https://eaas.blockscout.com/terms-and-conditions"
+    ]
+  },
+  "checks": [
+    { "id": "ethereum.active.overview", "passed": true, "latencyMs": 462.8, "count": 1, "failureCode": null },
+    { "id": "ethereum.active.token_balances", "passed": true, "latencyMs": 220.4, "count": 176, "failureCode": null },
+    { "id": "ethereum.active.transactions", "passed": true, "latencyMs": 792.1, "count": 50, "failureCode": null },
+    { "id": "ethereum.active.token_transfers", "passed": true, "latencyMs": 499.1, "count": 50, "failureCode": null },
+    { "id": "ethereum.token_metadata", "passed": true, "latencyMs": 562.9, "count": 1, "failureCode": null },
+    { "id": "ethereum.empty.overview", "passed": true, "latencyMs": 293.6, "count": 1, "failureCode": null },
+    { "id": "ethereum.empty.token_balances", "passed": true, "latencyMs": 518.6, "count": 0, "failureCode": null },
+    { "id": "ethereum.empty.transactions", "passed": true, "latencyMs": 475.1, "count": 0, "failureCode": null },
+    { "id": "ethereum.empty.token_transfers", "passed": true, "latencyMs": 1164.9, "count": 0, "failureCode": null },
+    { "id": "ethereum.normalization", "passed": true, "latencyMs": 8.1, "count": 1, "failureCode": null },
+    { "id": "base.active.overview", "passed": true, "latencyMs": 1984.3, "count": 1, "failureCode": null },
+    { "id": "base.active.token_balances", "passed": true, "latencyMs": 383.4, "count": 0, "failureCode": null },
+    { "id": "base.active.transactions", "passed": true, "latencyMs": 5034.8, "count": 5, "failureCode": null },
+    { "id": "base.active.token_transfers", "passed": true, "latencyMs": 7258.7, "count": 12, "failureCode": null },
+    { "id": "base.token_metadata", "passed": true, "latencyMs": 2059.1, "count": 1, "failureCode": null },
+    { "id": "base.empty.overview", "passed": true, "latencyMs": 529.3, "count": 1, "failureCode": null },
+    { "id": "base.empty.token_balances", "passed": true, "latencyMs": 328.5, "count": 0, "failureCode": null },
+    { "id": "base.empty.transactions", "passed": true, "latencyMs": 207.5, "count": 0, "failureCode": null },
+    { "id": "base.empty.token_transfers", "passed": true, "latencyMs": 265.1, "count": 0, "failureCode": null },
+    { "id": "base.normalization", "passed": true, "latencyMs": 0.2, "count": 1, "failureCode": null },
+    { "id": "base.pagination_100", "passed": true, "latencyMs": 19033.9, "count": 87, "failureCode": null },
+    { "id": "base.cooldown_recovery", "passed": true, "latencyMs": 849.9, "count": 1, "failureCode": null }
+  ],
+  "localRejections": [
+    { "id": "malformed_address", "passed": true, "failureCode": "blockchain_data_address_invalid" },
+    { "id": "unsupported_chain", "passed": true, "failureCode": "blockchain_data_chain_not_allowed" },
+    { "id": "invalid_limit", "passed": true, "failureCode": "blockchain_data_transaction_limit_invalid" }
+  ],
+  "burst": {
+    "attempted": 6,
+    "networkRequests": 6,
+    "outcomes": ["success", "success", "success", "success", "success", "success"]
+  }
+}

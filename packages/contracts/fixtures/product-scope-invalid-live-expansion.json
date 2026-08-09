@@ -28,7 +28,7 @@
       { "pillarId": "sandbox", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["sandbox.run"] },
       { "pillarId": "rpc", "release": "first_revenue_release", "lifecycle": "available", "coreQualified": false, "capabilityIds": ["rpc.call"] },
       { "pillarId": "prediction", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["prediction.markets"] },
-      { "pillarId": "crypto_intelligence", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["crypto.wallet"] }
+      { "pillarId": "crypto_intelligence", "release": "first_revenue_release", "lifecycle": "unavailable", "coreQualified": false, "capabilityIds": ["crypto.wallet.report"] }
     ]
   }
 }

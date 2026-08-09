@@ -24,7 +24,7 @@
         "qualificationStatus": { "enum": ["not_run", "in_progress", "passed", "failed"] },
         "termsStatus": { "enum": ["unreviewed", "review_required", "approved", "restricted", "blocked"] },
         "resaleStatus": { "enum": ["unverified", "allowed", "restricted", "prohibited"] },
-        "publicProviderDisclosure": { "const": "hidden_model_name_only" },
+        "publicProviderDisclosure": { "enum": ["hidden_model_name_only", "attributed_source"] },
         "knownModelNames": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1, "maxLength": 160 } },
         "notes": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 500 } }
       },

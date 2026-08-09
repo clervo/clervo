@@ -8,7 +8,7 @@
     "workflows": [
       { "workflowId": "workflow.web_research_execute", "version": "2026-08-02.1", "pillars": ["search", "ai", "sandbox"], "products": ["search.web", "ai.chat", "sandbox.run"], "replaySafe": true, "maximumSupplierCostMicrousd": 205000, "publicAvailable": false },
       { "workflowId": "workflow.prediction_investigate", "version": "2026-08-02.1", "pillars": ["prediction", "ai", "sandbox"], "products": ["prediction.compare", "ai.chat", "sandbox.run"], "replaySafe": true, "maximumSupplierCostMicrousd": 205000, "publicAvailable": false },
-      { "workflowId": "workflow.wallet_explain_verify", "version": "2026-08-02.1", "pillars": ["crypto", "ai", "rpc"], "products": ["crypto.wallet", "ai.chat", "rpc.call"], "replaySafe": true, "maximumSupplierCostMicrousd": 110000, "publicAvailable": false }
+      { "workflowId": "workflow.wallet_explain_verify", "version": "2026-08-02.1", "pillars": ["crypto", "ai", "rpc"], "products": ["crypto.wallet.report", "ai.chat", "rpc.call"], "replaySafe": true, "maximumSupplierCostMicrousd": 110000, "publicAvailable": false }
     ],
     "coreQualifications": [
       { "pillar": "search", "privateCoreQualified": true, "publicLifecycle": "preview", "consolidatedTest": "test:stage4:campaign" },

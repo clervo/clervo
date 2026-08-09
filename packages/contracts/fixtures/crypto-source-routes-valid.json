@@ -3,12 +3,19 @@
   "valid": true,
   "value": {
     "schemaVersion": "clervo.crypto-source-routes.v1",
-    "lifecycle": "unavailable",
-    "customerRoutingEnabled": false,
-    "sources": [
-      { "sourceId": "crypto.source.blockscout", "chainCoverage": ["evm"], "products": ["crypto.wallet"], "technicalStatus": "passed", "termsStatus": "restricted", "resaleStatus": "restricted", "customerRoutingEnabled": false, "fallbackStatus": "independent_fallback_missing" },
-      { "sourceId": "crypto.source.helius_rpc", "chainCoverage": ["solana"], "products": ["crypto.wallet"], "technicalStatus": "passed", "termsStatus": "blocked", "resaleStatus": "prohibited", "customerRoutingEnabled": false, "fallbackStatus": "independent_fallback_missing" }
-    ],
-    "ownerBlocker": "Written commercial permission or replacement supply is required."
+    "lifecycle": "live",
+    "customerRoutingEnabled": true,
+    "supportedChains": ["eip155:1", "eip155:8453"],
+    "sources": [{
+      "sourceId": "crypto.source.blockscout_pro", "adapterId": "adapter_crypto.blockscout_value_added", "qualificationId": "qual_BlockscoutValueAdded20260809",
+      "chainIds": ["eip155:1", "eip155:8453"], "products": ["crypto.wallet.balances", "crypto.wallet.tokens", "crypto.wallet.transactions", "crypto.wallet.report"],
+      "technicalQualification": "qualified", "technicalObservedAt": "2026-08-09T17:46:06.328Z", "technicalExpiresAt": "2026-08-16T17:30:00.000Z",
+      "qualificationEvidence": { "externalCalls": 27, "successes": 27, "failures": 0, "checksPassed": 22, "paginationPassed": true, "emptyWalletsPassed": true, "highActivityPassed": true, "burstSuccesses": 6, "cooldownRecovered": true, "latencyMs": { "minimum": 207.4, "median": 649.7, "p95": 9170, "maximum": 9862.1 }, "normalizationPassed": true },
+      "commercialPermission": "approved_value_added", "publicSellable": true, "outputMode": "derived_only", "rawApiResaleAllowed": false, "retentionDays": 0, "attributionRequirement": "preserved_voluntarily",
+      "costModel": { "supplierVariableCostMicrousd": 0, "allowance": "100000 credits/day", "automaticPaidUpgrade": false },
+      "commercialRights": { "basis": "public_terms_and_documented_intended_use", "termsObservedAt": "2026-08-09T17:30:00.000Z", "termsUrl": "https://eaas.blockscout.com/terms-and-conditions", "documentationUrl": "https://docs.blockscout.com/devs/pro-api", "intendedUses": ["dapps and wallets", "analytics and research"], "scope": "Provider-neutral derived wallet intelligence.", "restriction": "No raw API or credential resale.", "requalificationRequired": true },
+      "customerRoutingEnabled": true, "evidenceUrls": ["https://docs.blockscout.com/devs/pro-api", "https://eaas.blockscout.com/terms-and-conditions"]
+    }],
+    "ownerBlocker": "Production deployment and funded proof remain owner-gated."
   }
 }

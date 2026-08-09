@@ -60,7 +60,7 @@ test('implemented Search and private unavailable product cores are instantiated 
     'ai.chat', 'ai.embed', 'ai.image', 'ai.speech',
     'sandbox.run', 'sandbox.session.create', 'sandbox.session.exec', 'sandbox.artifact.get', 'sandbox.session.destroy',
     'rpc.call', 'rpc.batch', 'rpc.health', 'rpc.archive', 'rpc.broadcast',
-    'crypto.wallet', 'crypto.token', 'crypto.transaction', 'crypto.protocol', 'crypto.report',
+    'crypto.wallet.balances', 'crypto.wallet.tokens', 'crypto.wallet.transactions', 'crypto.wallet.report',
     'prediction.markets', 'prediction.market', 'prediction.compare', 'prediction.history', 'prediction.signal',
     'search.alert.evaluate', 'search.compare', 'search.monitor', 'search.solution_pack.assemble', 'search.web', 'search.answer', 'web.fetch', 'web.extract',
   ]);
@@ -70,7 +70,7 @@ test('implemented Search and private unavailable product cores are instantiated 
     'ai.chat', 'ai.embed', 'ai.image', 'ai.speech',
     'sandbox.run', 'sandbox.session.create', 'sandbox.session.exec', 'sandbox.artifact.get', 'sandbox.session.destroy',
     'rpc.call', 'rpc.batch', 'rpc.health', 'rpc.archive', 'rpc.broadcast',
-    'crypto.wallet', 'crypto.token', 'crypto.transaction', 'crypto.protocol', 'crypto.report',
+    'crypto.wallet.balances', 'crypto.wallet.tokens', 'crypto.wallet.transactions', 'crypto.wallet.report',
     'prediction.markets', 'prediction.market', 'prediction.compare', 'prediction.history', 'prediction.signal',
     'search.web', 'search.answer', 'web.fetch', 'web.extract',
   ]);

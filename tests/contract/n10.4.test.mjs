@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { CryptoIntelligenceGateway } from '../../dist/services/crypto/src/gateway.js';
-import { normalizeCryptoToken, normalizeCryptoWallet } from '../../dist/services/crypto/src/normalization.js';
+import { normalizeCryptoToken, normalizeCryptoTransaction, normalizeCryptoWallet } from '../../dist/services/crypto/src/normalization.js';
 
 const chainId = 'eip155:1';
 const walletAddress = '0x0000000000000000000000000000000000000001';
@@ -18,6 +18,25 @@ function token(price, suffix) {
   return normalizeCryptoToken({ chainId, assetAddress: tokenAddress, symbol: 'TKN', name: 'Token', decimals: 18, totalSupplyAtomic: null, priceMicrousd: price, marketCapMicrousd: null, liquidityMicrousd: null, observedAt, staleAfterMs: 60_000, confidenceBasisPoints: 5000, confidenceBasis: ['single_source'], evidence: evidence(suffix, ['token_metadata']), risk: { level: 'unverified', classifications: [], evidenceRefs: [] } }, Date.parse(observedAt) + 1_000);
 }
 
+function transaction(status = 'confirmed', suffix = 'a') {
+  return normalizeCryptoTransaction({
+    chainId,
+    transactionId: `0x${suffix.repeat(64)}`,
+    blockHeight: 1,
+    timestamp: observedAt,
+    status,
+    from: tokenAddress,
+    to: walletAddress,
+    nativeValueAtomic: '1',
+    tokenTransfers: [],
+    programOrContract: null,
+    observedAt,
+    evidence: evidence(suffix, ['transaction']),
+  });
+}
+
+const transactionBatch = (transactions = []) => ({ transactions, coverage: ['transactions', 'token_transfers'], missing: [], truncated: false });
+
 function source(sourceRef, overrides = {}) {
   return {
     sourceRef,
@@ -25,20 +44,20 @@ function source(sourceRef, overrides = {}) {
     capabilities: ['wallet', 'token', 'transaction', 'protocol'],
     async wallet() { return wallet('100', 'a'); },
     async token() { return token(null, 'a'); },
-    async transactions() { return []; },
+    async transactions() { return transactionBatch(); },
     async protocols() { return []; },
     ...overrides,
   };
 }
 
-test('crypto gateway composes all five intelligence products without custody, signing, or trading', async () => {
+test('crypto gateway preserves provider replacement behind one stable report contract', async () => {
   const gateway = new CryptoIntelligenceGateway([source('crypto_source_0123456789abcdef')]);
   assert.equal((await gateway.wallet(chainId, walletAddress)).wallet.nativeBalance.amountAtomic, '100');
   assert.equal((await gateway.token(chainId, tokenAddress)).token.priceMicrousd, null);
   assert.deepEqual((await gateway.transactions(chainId, walletAddress, 10)).transactions, []);
   assert.deepEqual((await gateway.protocols(chainId, walletAddress)).positions, []);
   const report = await gateway.report(chainId, walletAddress, '2026-08-02T12:00:01.000Z');
-  assert.match(report.disclaimer, /no custody, signing, or trading/u);
+  assert.match(report.disclaimer, /custody assets, sign, or trade/u);
   assert.equal('trade' in gateway || 'sign' in gateway || 'sendTransaction' in gateway, false);
 });
 
@@ -59,10 +78,10 @@ test('source outages degrade independently and conflicting values remain visible
 });
 
 test('transaction conflicts are surfaced while the first deterministic record remains stable', async () => {
-  const transaction = { chainId, transactionId: `0x${'a'.repeat(64)}`, status: 'confirmed', deterministicType: 'native_transfer', timestamp: observedAt, evidence: evidence('a', ['transaction']) };
+  const first = transaction('confirmed', 'a');
   const gateway = new CryptoIntelligenceGateway([
-    source('crypto_source_0123456789abcdef', { async transactions() { return [transaction]; } }),
-    source('crypto_source_fedcba9876543210', { async transactions() { return [{ ...transaction, status: 'failed', evidence: evidence('b', ['transaction']) }]; } }),
+    source('crypto_source_0123456789abcdef', { async transactions() { return transactionBatch([first]); } }),
+    source('crypto_source_fedcba9876543210', { async transactions() { return transactionBatch([{ ...first, status: 'failed', evidence: evidence('b', ['transaction']) }]); } }),
   ]);
   const result = await gateway.transactions(chainId, walletAddress, 10);
   assert.equal(result.transactions.length, 1);

@@ -209,7 +209,7 @@ export const PRIVATE_WORKFLOW_DEFINITIONS: readonly Readonly<WorkflowDefinition>
     workflowId: 'workflow.wallet_explain_verify',
     version: '2026-08-02.1',
     steps: Object.freeze([
-      Object.freeze({ stepId: 'find_wallet_evidence', role: 'find', pillar: 'crypto', productId: 'crypto.wallet', maximumSupplierCostMicrousd: 5_000 }),
+      Object.freeze({ stepId: 'find_wallet_evidence', role: 'find', pillar: 'crypto', productId: 'crypto.wallet.report', maximumSupplierCostMicrousd: 5_000 }),
       Object.freeze({ stepId: 'understand_wallet_evidence', role: 'understand', pillar: 'ai', productId: 'ai.chat', maximumSupplierCostMicrousd: 100_000 }),
       Object.freeze({ stepId: 'act_with_read_only_rpc', role: 'act', pillar: 'rpc', productId: 'rpc.call', maximumSupplierCostMicrousd: 5_000 }),
     ]),

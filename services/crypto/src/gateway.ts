@@ -2,18 +2,19 @@ import {
   mergeCryptoTokenEvidence,
   mergeCryptoWalletEvidence,
   type CryptoChainId,
+  type NormalizedCryptoTransaction,
   type NormalizedCryptoToken,
   type NormalizedCryptoWallet,
 } from './normalization.js';
 import { buildCryptoReport } from './report.js';
 
-export type CryptoTransaction = Readonly<{
-  chainId: CryptoChainId;
-  transactionId: string;
-  status: 'confirmed' | 'failed' | 'unknown';
-  deterministicType: string;
-  timestamp: string | null;
-  evidence: readonly Readonly<{ evidenceRef: string }>[];
+export type CryptoTransaction = NormalizedCryptoTransaction;
+
+export type CryptoTransactionBatch = Readonly<{
+  transactions: readonly CryptoTransaction[];
+  coverage: readonly ('transactions' | 'token_transfers')[];
+  missing: readonly ('transactions' | 'token_transfers')[];
+  truncated: boolean;
 }>;
 
 export type CryptoProtocolPosition = Readonly<{
@@ -31,7 +32,7 @@ export interface CryptoIntelligenceSource {
   capabilities: readonly ('wallet' | 'token' | 'transaction' | 'protocol')[];
   wallet?(chainId: CryptoChainId, address: string, signal?: AbortSignal): Promise<Readonly<NormalizedCryptoWallet>>;
   token?(chainId: CryptoChainId, assetAddress: string, signal?: AbortSignal): Promise<Readonly<NormalizedCryptoToken>>;
-  transactions?(chainId: CryptoChainId, address: string, limit: number, signal?: AbortSignal): Promise<readonly CryptoTransaction[]>;
+  transactions?(chainId: CryptoChainId, address: string, limit: number, signal?: AbortSignal): Promise<CryptoTransactionBatch>;
   protocols?(chainId: CryptoChainId, address: string, signal?: AbortSignal): Promise<readonly CryptoProtocolPosition[]>;
 }
 
@@ -101,6 +102,9 @@ export class CryptoIntelligenceGateway {
     state: 'available' | 'degraded';
     transactions: readonly CryptoTransaction[];
     conflicts: readonly Readonly<{ transactionId: string; state: 'unresolved'; evidenceRefs: readonly string[] }>[];
+    coverage: readonly ('transactions' | 'token_transfers')[];
+    missing: readonly ('transactions' | 'token_transfers')[];
+    truncated: boolean;
     sources: readonly Readonly<CryptoSourceState>[];
   }>> {
     chain(chainId);
@@ -111,7 +115,7 @@ export class CryptoIntelligenceGateway {
     if (collected.values.length < 1) throw new Error('crypto_transactions_unavailable');
     const byId = new Map<string, CryptoTransaction>();
     const conflicts: { transactionId: string; state: 'unresolved'; evidenceRefs: readonly string[] }[] = [];
-    for (const transaction of collected.values.flat()) {
+    for (const transaction of collected.values.flatMap(({ transactions }) => transactions)) {
       if (transaction.chainId !== chainId) throw new Error('crypto_source_contract_invalid');
       const previous = byId.get(transaction.transactionId);
       if (previous !== undefined && JSON.stringify({ status: previous.status, type: previous.deterministicType, timestamp: previous.timestamp }) !== JSON.stringify({ status: transaction.status, type: transaction.deterministicType, timestamp: transaction.timestamp })) {
@@ -119,7 +123,17 @@ export class CryptoIntelligenceGateway {
       }
       if (previous === undefined) byId.set(transaction.transactionId, transaction);
     }
-    return Object.freeze({ state: collected.values.length === sources.length ? 'available' : 'degraded', transactions: Object.freeze([...byId.values()].slice(0, limit)), conflicts: Object.freeze(conflicts), sources: collected.sources });
+    const coverage = Object.freeze([...new Set(collected.values.flatMap((batch) => batch.coverage))] as ('transactions' | 'token_transfers')[]);
+    const missing = Object.freeze([...new Set(collected.values.flatMap((batch) => batch.missing))] as ('transactions' | 'token_transfers')[]);
+    return Object.freeze({
+      state: collected.values.length === sources.length && missing.length === 0 ? 'available' : 'degraded',
+      transactions: Object.freeze([...byId.values()].sort((left, right) => (right.timestamp ?? '').localeCompare(left.timestamp ?? '')).slice(0, limit)),
+      conflicts: Object.freeze(conflicts),
+      coverage,
+      missing,
+      truncated: collected.values.some(({ truncated }) => truncated) || byId.size > limit,
+      sources: collected.sources,
+    });
   }
 
   async protocols(chainId: string, walletAddress: string, signal?: AbortSignal): Promise<Readonly<{ state: 'available' | 'degraded'; positions: readonly CryptoProtocolPosition[]; sources: readonly Readonly<CryptoSourceState>[] }>> {
@@ -133,18 +147,18 @@ export class CryptoIntelligenceGateway {
     return Object.freeze({ state: collected.values.length === sources.length ? 'available' : 'degraded', positions: Object.freeze(positions), sources: collected.sources });
   }
 
-  async report(chainId: string, walletAddress: string, generatedAt: string, signal?: AbortSignal): Promise<ReturnType<typeof buildCryptoReport>> {
+  async report(chainId: string, walletAddress: string, generatedAt: string, options: Readonly<{ lookbackDays?: number; limit?: number }> = {}, signal?: AbortSignal): Promise<ReturnType<typeof buildCryptoReport>> {
     const walletResult = await this.wallet(chainId, walletAddress, signal);
-    const [transactions, protocols] = await Promise.all([
-      this.transactions(chainId, walletAddress, 100, signal).catch(() => null),
-      this.protocols(chainId, walletAddress, signal).catch(() => null),
-    ]);
+    const transactions = await this.transactions(chainId, walletAddress, options.limit ?? 50, signal).catch(() => null);
     return buildCryptoReport({
       wallet: walletResult.wallet,
-      tokens: Object.freeze([]),
       transactions: transactions?.transactions ?? Object.freeze([]),
-      protocols: protocols?.positions ?? Object.freeze([]),
+      transactionCoverage: transactions?.coverage ?? Object.freeze([]),
+      transactionMissing: transactions?.missing ?? Object.freeze(['transactions', 'token_transfers']),
+      transactionTruncated: transactions?.truncated ?? false,
+      sourceStates: Object.freeze([...walletResult.sources, ...(transactions?.sources ?? [])]),
       generatedAt,
+      ...(options.lookbackDays === undefined ? {} : { lookbackDays: options.lookbackDays }),
     });
   }
 }

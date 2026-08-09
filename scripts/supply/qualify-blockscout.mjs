@@ -94,7 +94,7 @@ const report = {
     intendedProductUseAllowed: true,
     valueAddedApplicationRequired: true,
     rawApiOrCredentialResaleAllowed: false,
-    selectedNormalizedProducts: ['crypto.wallet', 'crypto.token', 'crypto.transaction'],
+    selectedNormalizedProducts: ['crypto.wallet.balances', 'crypto.wallet.tokens', 'crypto.wallet.transactions', 'crypto.wallet.report'],
   },
 };
 
