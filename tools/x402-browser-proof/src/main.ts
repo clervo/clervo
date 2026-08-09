@@ -215,7 +215,7 @@ async function approveOnce() {
 }
 
 async function load() {
-  const response = await proofFetch('/config', { headers: { accept: 'application/json' } });
+  const response = await proofFetch('/config?proof=b10-20260809b', { headers: { accept: 'application/json', 'cache-control': 'no-cache' } });
   if (!response.ok) throw new Error('guarded proof configuration unavailable');
   config = await response.json();
   bounds.innerHTML = [
