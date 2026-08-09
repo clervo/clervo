@@ -17,26 +17,26 @@ Update only when execution state actually changes. This is not a journal.
 
 | Field | Value |
 |---|---|
-| Current milestone | **B7 closed 2026-08-07. Next: B8.** |
-| Milestone status | `b7_closed_18_routes_live_on_verified_supply_3_paused_unfunded` — every one of the 21 route qualifications was re-observed against the real supplier before the `2026-08-09` expiry, except the three gateway routes, which are unfunded and were therefore deferred rather than requalified (an unfunded account is indistinguishable from a dead route in the evidence, so requalifying it would have manufactured a result). **18 routes live and sellable on verified supply; 3 paused with a truthful reason.** The central finding: the registry had been marking 18 routes `live` on an edge 402 alone, with `supplyOutcome: not_probed` for four of the five supply families — and the edge quotes from the catalog and the price model, so it answers 402 whether or not the supplier can actually serve. Supply is now probed for all five families with zero-cost credential and account checks, and a route cannot reach `live` without a passed, unexpired qualification *and* an observed-healthy supplier. Two engineering defects were found and fixed rather than recorded as supplier faults: the qualification engine labelled every thrown probe error `authentication_failed`, so a rejected request, a timeout and a quota exhaustion all read as a dead credential; and the speech probe sent one hardcoded voice for both speech adapters, which fails a binding check before the call ever leaves the process, so all three speech routes appeared to fail authentication on credentials that were valid. **USDC spent across B7: 0; owner cash spent 0** (71 supplier calls, all on credit-backed or free supply). Previous B6 status, retained: closed on owner instruction so B7 opens before the 2026-08-09 expiry. **Shipped and externally verified:** `@clervo/router` 0.1.0 built and proven from outside — installed from the exact publishable tarball into an empty directory that had never seen the repository, `clervo search` returned 10 real results from `https://api.clervo.dev` with **no wallet, no key, and no funding**, and no wallet file was created. Live catalog, a live 0.006 USDC 402 quote, wallet creation at `0700`/`0600`, a live Base balance read, and `doctor` all verified there. The `llms.txt` install section is **deployed and live** on `api.clervo.dev`. One **fail-closed cycle was exercised against live infrastructure**: an unfunded paid attempt was recorded `unknown`, the next paid call was blocked before signing, and `reconcile` resolved it `not_settled` with the balance still 0. **Carried forward, not achieved:** npm publish (invalid token *and* provenance needs CI), install-from-npm verification, and one real paid settlement (test wallet holds 0 USDC). **USDC spent across B6: 0.** |
-| Current branch | `main` |
-| Latest commit | `6f287b7` — `feat(router): ClervoRouter customer path v0, free path externally verified`. Preceded by `aff57e8` closing B5. This row read `777b7c6` until 2026-08-07; that was stale by several commits, so treat the hash here as authoritative only when it matches `git log -1`. Nothing about the earlier record changed: the deployed B2 fixes were cherry-picked onto `main` without the release-only revert, so the preserved RPC, Prediction, and Crypto work is intact. |
+| Current milestone | **B7 — INTEGRATION-READY. The next milestone remains B7 live cutover, not B8.** |
+| Milestone status | `b7_integration_ready_dynamic_qualified_supply_external_cutover_pending`. **PROVEN ENGINEERING-COMPLETE / FIXTURE-BOUND:** authenticated qualified-supply source, revision and freshness guards, stable provider-independent customer identity, equivalent-supply fallback, dynamic composition, qualification/availability lifecycle, owner-controlled commercial publication, data-driven pricing, competitor evidence input, bounded strategic overrides, zero-cost free-tier quota controls, private/public projection, discovery, and one generic `ai.clervo.dev` execution adapter. Snapshot A → B adds a normal model with no application-source edit, preserves existing IDs, updates price/lifecycle/discovery, and executes through the private runtime binding. **PROVEN legacy LIVE observation, not dynamic cutover proof:** the public endpoint returned 21 legacy entries (18 live, 3 paused) when observed on 2026-08-09; its registry evidence remains dated 2026-08-06. **EXTERNALLY BLOCKED:** the authenticated production catalog endpoint/schema is not frozen or available in this worktree, `/opt/clervo-ai` and deployment are prohibited here, and per-supply commercial permission needs owner decisions. Therefore B7 is not `CLOSED` under Rule 3 and no dynamic production cutover is claimed. B6 remains closed on owner instruction with npm publication/provenance and one funded paid proof outstanding. |
+| Current branch | `work/b7-resume-20260809`; interrupted state preserved first at `ba9d0bb`, dynamic B7 engineering at `f695850`. `main`, the frozen B12 visual branch, and `/opt/clervo-ai` were not modified. |
+| Latest commit | `f695850` — `feat(b7): compose dynamic qualified AI supply`. This is the latest engineering commit before this ROADMAP truth update; use `git log -1` for the truth-update commit itself. |
 | Current production release | Cloud Run origin `clervo-api-production-00033-vub` at 100% traffic, image `sha256:7bb3211061e8cbca5abfa2f1930f7888877aaaed065fd2f54c8905aedf5422ad`, `CLERVO_RELEASE_ID=777b7c616e3e384c9a4b2b7112cef74521b7f7a5`; API edge worker `clervo-api-edge-production` version **`74efc7db-d0a7-49a1-8d4e-9f20e049fb0e`** (redeployed 2026-08-07T06:52Z for the B6 `llms.txt` install section — generated documents only, no runtime code); site worker `clervo-site-production` version **`d9ebbe9d-2f7d-4ab8-9d23-c79928f359b2`** (deployed 2026-08-07T08:0xZ in B7 to publish the refreshed discovery documents). Cloud Run and the API edge worker were **not** redeployed in B7: the catalog and registry are read by the deployed origin, `api.clervo.dev/v1/models` already served 18 live / 3 supply-paused before the site deploy, and no runtime code changed. **The site deploy did also ship the four previously-unshipped site commits including `bb473ed` (layout)**, because they were already built into `dist` and the site worker had been held back since 2026-08-06; no visual file was edited in B7. One substantive public change went out with it: the `llms.txt` "Command line" section, which told readers to run `npx @clervo/router`, is now **suppressed** until the package is actually published — the generator checks the npm registry, so a reader is never handed an install command that fails. |
 | Rollback targets | Cloud Run revision `clervo-api-production-00031-kos` (image `sha256:63ad8aaa619f46fac962f9366c26eb13c7c241dc8e3d21c773ede4f43f62f44f`, the pre-B4 origin) — roll back with `gcloud run services update-traffic clervo-api-production --project bloxsniper-prod --region us-central1 --to-revisions clervo-api-production-00031-kos=100`. The older `clervo-api-production-00028-nor` (image `sha256:78718e50a50c2a74f639a4da5a03e80988d95611014d9c310cba1fe4d5d79df9`) remains available behind it. API edge `6e17ea78-32eb-4b87-8781-72aa37f90321` (the pre-B3 edge); site `4939f9da-765d-4f3c-a96f-6f0384fe8338`. Roll a worker back with `npx wrangler rollback <version> --config apps/worker/wrangler.jsonc` or `apps/site/wrangler.jsonc`. |
 | Latest externally verified customer outcome | A settled x402 payment on `https://api.clervo.dev/v1/search/paid`: 0.006 USDC (6000 atomic) on Base mainnet `eip155:8453` to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`, operation `op_0549a567589cc87d31231376f9986602`, receipt `rcpt_582a23e6f1e066fe25984119c59c2ab0`, returning a real search result. Replaying idempotency key `idem_b4_bazaar_entry_search_01` returned the same operation with no second authorization and no second charge; the on-chain USDC delta is exactly one transfer of 6000 atomic units. `search.web` reaches `paid_outcome_verified`. The free path outcome above still holds at `externally_repeated`. |
-| Current blockers | Nothing blocks B8. **One dated risk carried out of B7:** the three gateway routes keep their original `2026-08-09` qualification expiry and cannot be requalified until funding lands, so on that date they move from "paused, unfunded" to "paused, unfunded *and* expired" unless the account is funded first. The expiry guard (`npm run ai:check-expiry`, daily workflow) reports them and will keep failing until either funding arrives or the routes are withdrawn — that failure is the intended signal, not a broken check. Three B6 residues are blocked on things only the owner holds, and all three were approved but could not be executed here: (1) a valid npm token with write access to `@clervo` — the one in `~/.npmrc` is a 40-char legacy token returning 401; (2) a provenance decision — `publishConfig.provenance: true` cannot be satisfied outside CI, and it was not silently removed; (3) USDC in the test wallet `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`, which holds 0. |
-| External dependencies | Bazaar settlements (owner funds); Prediction terms decision; Crypto resale scope; RPC supply; gateway funding. |
+| Current blockers | **B7 EXTERNALLY BLOCKED only:** authenticated `ai.clervo.dev` qualified-catalog endpoint and frozen schema; production catalog token/binding; owner commercial-permission decisions for immutable supply IDs; production migration/deploy/live proof. The three legacy gateway qualifications are now expired and the other 18 expire 2026-08-14; the legacy expiry failure is truthful and is not dynamic supply authority. B6 residues remain a valid npm publish/provenance path and USDC for one paid Router proof. |
+| External dependencies | B7: authoritative `ai.clervo.dev` catalog endpoint, production binding/deploy, owner commercial permission and any subsidy/free-tier activation decision. B6: npm publication authority/provenance and funded proof wallet. Later milestones retain their own terms/supply dependencies. |
 | Owner approvals waiting | All three B6 approvals were granted 2026-08-07. **Production deploy: spent** (edge worker `74efc7db-d0a7-49a1-8d4e-9f20e049fb0e`, generated files only, verified live, no regression, no rollback needed). **Two could not be executed and need an owner action, not another approval:** (1) **npm publish of `@clervo/router` 0.1.0** — needs a valid `@clervo`-scoped write token, and a choice between publishing from CI with provenance intact or dropping `provenance: true`; the tarball is ready (35 files, 40.4 kB, shasum `852dd6105c29debf52459d45cff2bcec6df4ff94`). Until it lands, install-from-npm is unverified. (2) **One real paid operation** — send a small amount of USDC on Base mainnet to `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`, then `clervo run search.web "<query>" --key <key>`; the machine already enforces per-operation 0.007 and daily 0.01 USDC. Separately, a Bazaar keepalive settlement inside 30 days of `2026-08-06` will need approval again, as will any further Bazaar listing requiring its own settlement. |
-| Dates that move on their own | **2026-08-09** — `ai.clervo.dev` funding resumes, and the **three unfunded gateway** route qualifications expire, same day. The other 18 were requalified in B7 and now expire **2026-08-14**, so that is the next date requalification is due. **30 days after any Bazaar listing** — a resource with no settlement in that window is dropped from the CDP catalog. |
+| Dates that move on their own | **PROVEN:** the three legacy gateway qualifications reached expiry on 2026-08-09; the other 18 reach expiry 2026-08-14. The dynamic composer fails closed on snapshot, qualification, cost, competitor-evidence, policy, and permission expiry. **30 days after any Bazaar listing:** a resource with no settlement in that window is dropped from the CDP catalog. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
 | B2 metrics (observed 2026-08-06T14:42:37.447Z) | Conformance defects open 0. Naive free-search rejection rate 0: `withoutIdempotencyKeyStatus` 200. Site 404 correctness: a nonexistent URL returns 404. |
 | B3 metrics (observed 2026-08-06T15:14:21.853Z) | Discovery surfaces live 5 of 5, including `api.models`, `api.well_known_x402`, and `api.llms_txt` at status 200. Model list entries 21 (18 sellable, 3 supply-paused with a reason). x402 manifest payable resources 3, free resources 1. |
 | B4 metrics (observed 2026-08-06T17:01:41.422Z) | Bazaar-valid resources 3 of 3. Indexed resources 1 of 3: `https://api.clervo.dev/v1/search/paid`, `index.active: true`, last crawled `2026-08-06T16:59:46.261Z`. Settlements executed 1, total 0.006 USDC. AI routes quoting below the 1000-atomic minimum 0 — the floor is applied as a minimum billable charge above the derived price, so no route is sold below cost. Days until the search listing idles out: 30 from `2026-08-06`. |
 | B5 metrics (observed 2026-08-07T05:22:00Z) | Products routing through one commerce core 6 of 6 (already true before this milestone). Duplicated commerce-surface copies removed: result verifiers 2 to 1, response-envelope builders 4 to 1, request-hash builders 4 to 1, fixed-price lookups 2 to 1, provenance builders 4 to 1. Duplicate-charge incidents 0. Payment-path defect count 0. Commerce suite 18 of 18 before and after each product move; full acceptance 262 of 262, unchanged. |
-| B7 metrics (observed 2026-08-07T07:41:10.196Z, at close) | Routes known 21, **unchanged — none added, none removed**; the requalification runner refuses to write if the route count changes, and no test pins a count. **Live and sellable 18. Paused 3**, all `supply.clervo_ai_gateway`, reason `upstream_completion_failed`, expected return `2026-08-09`. Qualifications re-observed against the real supplier 18 of 18 attempted (3 deferred, gateway unfunded); supplier calls 71; **owner cash spent 0, USDC spent 0**. Supply families probed **5 of 5** (was 1 of 5 — `supply.groq`, `supply.cloudflare_workers_ai`, `supply.google_vertex` and `supply.deepgram` all read `not_probed` before this milestone); outcome `passed` for all four cash families, `failed` for the unfunded gateway. Fresh qualifications expire `2026-08-14`; the three deferred keep their original `2026-08-09`, untouched. **Pricing changes: none** — no price was edited. All 21 routes price below supplier list at roughly 40–50%, which matches the declared stance (`positiveMarginRequiredAtLaunch: false`, `discountBasisPoints: 5000`) and is credit-backed, not owner cash; this is an **owner pricing decision to confirm, not drift**. Competitor comparison against the published list fetched directly (90 entries, up from 83 on 2026-08-02): 6 models matched by id, **1 above competitor** (`gpt-5.6-luna`), 5 at or below. **Commercial-permission failures: 0** — all 5 families permit resale, but **every one is `owner_asserted`, none `supplier_confirmed`**, now recorded per family with terms URL, conditions and open question in `packages/catalog/ai-commercial-permission.v1.json`. Tests: full acceptance **275 of 275** (was 262), including 13 new route-integrity tests; the two new assertions were mutation-checked by forcing a live route onto unverified supply and blanking a paused reason, and both failed as intended. Expiry guard added and wired to a daily schedule; it correctly reports the 3 unfunded routes as expiring and is silent on the 18 fresh ones. |
+| B7 metrics (observed 2026-08-09, current engineering tree) | **PROVEN:** full acceptance 293/293; B7-focused suite 30/30 before fallback/free-tier expansion and 14/14 dynamic property tests after expansion; contract validation 97 schemas/132 fixtures; lint 699 files; secret scan PASS; external calls 0 and USDC spent 0 during acceptance. Dynamic catalog has no fixed count and the legacy catalog ceiling was removed. BlockRun's direct public model API returned 91 entries; three exact GPT-5.6 comparisons were observed and recorded as refreshable data: Luna 0.2/1.2, Terra 2/12, Sol 5/30 USD per million input/output. **UNVERIFIED after evidence expiry:** those competitor values are ignored after their recorded validity window. **LIVE legacy observation only:** 21 entries, 18 live/3 paused; no dynamic live cutover claim. |
 | B6 metrics (observed 2026-08-07T06:53:00Z, at close) | Installs 2, **both from the local tarball, 0 from npm** (unpublished). Wallets created 2 — one throwaway, deleted after confirming on-chain it held nothing; one dedicated test wallet retained at `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`, `0700`/`0600`, recovery phrase never printed to any transcript, log, or commit. **Free first success: yes, and it happened before any wallet existed**, which is the ordering advantage over BlockRun. Wallets funded 0. Paid outcomes 0. Settlements 0. **USDC spent 0.** Fail-closed cycle exercised live: 1 refused operation, 1 retry blocked before signing, 1 reconciliation resolving `not_settled`. Buyer-side ceiling configured: per-operation 0.007, daily 0.01 USDC. Live catalog: 4 capabilities, 1 free, 3 payable; `search.web` quoted 0.006 USDC to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`. Package: 35 files, 40.4 kB packed, 17 installed dependencies, no TypeScript sources or wallet material. Tests: B6 suite 10 of 10; `shared-paid-operation` 5 of 5 unchanged; full contract suite 720 of 722, the 2 failures being `n13.3` and `n13.5` site tests that fail identically with all B6 work stashed and are therefore inherited from B5. Gates: lint PASS (677 files), secret scan PASS with 0 secret values printed. |
-| Exact next task | **Open B8.** B7 is closed: 18 routes live on verified supply, 3 paused unfunded, expiry guard in place. **Three items are carried out of B7 rather than done, and none of them blocks B8:** (1) **the free chat tier is not implemented** — `ai-free-tier-pricing.v1.json` holds 15 assets, 10 still `priced_pending_qualification`, and there is no per-wallet or global daily cap anywhere in the code. It was deliberately not shipped: a free tier that cannot refuse is uncapped cost exposure, and B7's own condition is that it must refuse rather than bill. (2) **fallback chains are not built** — no route currently has a second supplier serving the same model, so there is nothing for a fallback to record. (3) **`gpt-5.6-luna` prices above the competitor** on a matched model id (ours 0.5/3.0 vs theirs 0.2/1.2 USD per million in/out); it is one of the three paused unfunded routes, so no *live* route is above a competitor today, but the price needs an owner decision before that route returns on `2026-08-09`. The two B6 residues (npm publish, one real paid settlement) still need an owner action and remain outside engineering. |
-| Files and services for that task | Built in B7 and now the entry points for route work: `scripts/ai/requalify-ai-routes.mjs` (`npm run ai:requalify`; live requalification against production secrets read from Secret Manager into memory only — supports `--report-only` and `--route=<id>`, paces calls 12s apart because probing 21 routes back to back exhausted the shared Vertex quota and made healthy routes read as slow, and defers on a supplier 429 instead of recording a failure), `scripts/ai/check-qualification-expiry.mjs` (`npm run ai:check-expiry`, plus `.github/workflows/ai-qualification-expiry.yml` daily), `scripts/ai/route-supply-pricing.mjs` (normalises the 5 pricing-catalog shapes), `packages/catalog/ai-commercial-permission.v1.json` (per-family resale basis), `tests/contract/ai-route-integrity.test.mjs`. `scripts/probe-live-registry.mjs` now probes all five supply families and pauses a route whose qualification is not `passed`. **The three `scripts/ai/merge-*-catalog.mjs` scripts remain the root cause of the original problem and should not be used to write qualifications again** — they hardcode `status: 'passed'` with frozen `evidenceHash` constants, which is how speech, image and embed routes came to carry hand-transcribed results. For the carried-forward B6 residues: `packages/router` (the package to publish; `generated/public/llms.txt` and `generated/worker/agent-documents.js` are already deployed to the edge). Site-side `llms.txt` is produced by `scripts/site/prepare-public.mjs` during the site prebuild and is stale until the site is rebuilt in B12. The B5 commerce core `apps/api/src/x402-paid-operation.mjs` remains the single money path; `apps/api/src/x402-resource.mjs` holds the payable resource paths; the live catalog is `https://api.clervo.dev/.well-known/clervo.json`. |
+| Exact next task | **Finish B7 live integration:** freeze and expose the authenticated qualified-supply contract from `ai.clervo.dev`; bind its immutable IDs to compatibility customer IDs; record owner commercial permission decisions; configure `CLERVO_AI_RUNTIME_MODE=qualified_catalog`, catalog URL/token, migration, and generated public model artifact; deploy under explicit approval; then prove every dynamically listed sellable route from outside. Do not open B8 until that proof passes. |
+| Files and services for that task | Permanent B7: `qualified-ai-supply.ts`, `catalog-source.ts`, `product-catalog.ts`, `product-runtime.ts`, `free-tier.ts`, `clervo-ai-gateway.ts`, `ai-dynamic-production-runtime.mjs`, `compose-qualified-ai-catalog.mjs`, dynamic policy/identity/evidence JSON, and `b7-dynamic-ai.test.mjs`. `requalify-ai-routes.mjs`, the per-provider adapters, and merge scripts are explicitly legacy/recovery-only and are not the permanent supply authority. Live external authority remains `ai.clervo.dev`; no `/opt/clervo-ai` change was made. |
 
 ---
 
@@ -905,72 +905,128 @@ Every milestone below carries the same seventeen fields.
 ### B7 — AI catalog unshelved
 
 1. **Milestone:** B7 — AI catalog unshelved
-2. **Status:** `not_started`
+2. **Status:** `integration_ready` — **PROVEN ENGINEERING-COMPLETE and
+   FIXTURE-BOUND; EXTERNALLY BLOCKED for live dynamic cutover.** It is not
+   `closed`: Rule 3 still requires an outside proof against the authoritative
+   authenticated `ai.clervo.dev` catalog and runtime.
 3. **Customer-visible outcome:** **Every freshly verified, commercially
    permitted AI route is accurately priced, genuinely callable, publicly
    discoverable, and continuously monitored. Catalog size is determined by
-   verified supply, not by a fixed target.**
+   verified supply, not by a fixed target.** **EXTERNALLY BLOCKED:** the
+   customer-visible dynamic outcome has not been deployed; the public system
+   still exposes the legacy 21-entry projection.
 4. **Why it matters commercially:** AI is the highest-volume family and the one
    customers comparison-shop. Breadth is only an asset when every listed route
    works; a listed route that fails costs more trust than a small honest
    catalog.
-5. **Preserve:** `packages/catalog/ai-model-catalog.v1.json` and its evidence
-   hashes; `ai-free-tier-pricing.v1.json` and its `rateGuard`;
-   `providerNamesPublic: false` — terms are `restricted`, so we may sell but not
-   publicly name which provider backs which route.
-6. **Current evidence:** 21 routes catalogued, 18 live, 3 paused until
-   2026-08-09. All 21 qualifications expire 2026-08-09. A separate inventory
-   records further assets pending qualification and a large body of listings
-   marked `terms_blocked`, `evaluation_only`, `trial_limit`, or `no_balance` —
-   **all of those counts require re-verification in this milestone before any
-   of them is treated as sellable.**
-7. **Research:** A published competitor model list and its prices, fetched
-   directly, compared model-for-model against our verified routes. One question:
-   where are we above a competitor on a matched model id.
-8. **Work:** Requalify every route before the expiry date; **requalify the three
-   gateway routes only after funding lands, never before** — an unfunded account
-   is indistinguishable from a dead route in the evidence. Automate
-   requalification on a schedule so an expiry never again arrives unnoticed.
-   Re-verify commercial permission per route and record the basis. Qualify the
-   pending free-tier assets. Price every verified permitted route with positive
-   margin. Add fallback chains where two suppliers serve the same model. Free
-   chat tier only on zero-cost supply, hard per-wallet and global daily caps, no
-   paid overage. Continuous route health monitoring feeding the registry.
-9. **Dependencies:** B3 (`/v1/models`); B4 (pricing floor); gateway funding for
-   three routes.
+5. **Preserve:** **PROVEN COMPLETE.** The legacy
+   `packages/catalog/ai-model-catalog.v1.json`, its evidence hashes, the
+   free-tier inventory and rate guard remain preserved as historical/recovery
+   evidence. `providerNamesPublic: false` is now enforced by an explicit
+   private/public projection boundary: internal routing identity survives,
+   while public output cannot expose provider identity, gateway supply ID,
+   runtime model ID, supply-family ID, raw upstream cost, or authentication
+   material.
+6. **Current evidence:** **PROVEN legacy LIVE observation:** 21 public entries,
+   18 live and 3 paused, with registry evidence dated 2026-08-06. The three
+   gateway qualifications reached expiry on 2026-08-09; the other 18 reach
+   expiry on 2026-08-14. This legacy fixed inventory is not the permanent B7
+   authority. **PROVEN fixture-bound:** a strict normalized qualified-supply
+   snapshot can contain an open-ended number of models and drives identity,
+   category, lifecycle, pricing, discovery, and generic execution without an
+   application-source change. **UNKNOWN:** the production authenticated
+   internal catalog endpoint and final schema are not available in this
+   worktree.
+7. **Research:** **PROVEN COMPLETE as refreshable input, not permanent market
+   truth.** BlockRun's public model API exposed 91 entries when observed on
+   2026-08-09. Exact Luna, Terra, and Sol input/output prices were stored with
+   source, timestamp, confidence, and expiry in data rather than composer code.
+   The pricing engine ignores stale evidence. Future market calibration is a
+   data operation; unmatched or expired comparisons remain **UNVERIFIED**.
+8. **Work accounting:**
+   - **SUPERSEDED BY PROVEN IMPLEMENTATION — permanent qualification and route
+     health.** Direct-provider requalification remains explicit
+     legacy/recovery tooling. The permanent composer consumes qualification,
+     expiry, availability, reason, and observation time from the authoritative
+     `ai.clervo.dev` supply snapshot and fails closed when they are missing or
+     stale. The legacy scheduled expiry guard remains preserved.
+   - **PROVEN COMPLETE — stable identity and dynamic inventory.** Immutable
+     gateway supply identity maps through a durable registry to stable Clervo
+     customer model and route IDs. Snapshot A to B adds a new qualified model,
+     preserves old IDs, and updates lifecycle, price, discovery, and execution
+     with no application-source edit. Equivalent supplier routes can retain one
+     customer product identity.
+   - **PROVEN COMPLETE — commercial gate engineering.** Technical
+     qualification and owner-controlled commercial permission are separate.
+     Missing or expired permission prevents public sellability without blocking
+     identity, pricing preparation, lifecycle, or private execution binding.
+     **EXTERNALLY BLOCKED:** the owner must decide permission per real immutable
+     production supply identity; no resale permission is inferred here.
+   - **SUPERSEDED BY PROVEN IMPLEMENTATION — pricing.** The universal fixed
+     margin assumption is gone. Normalized cost flows through category/model
+     policy, minimum and target margin, fresh competitor evidence, a sustainable
+     price-to-win ceiling, and optional bounded owner-authorized subsidy. Missing
+     cost, invalid units, stale required inputs, or unauthorized negative margin
+     fail closed. Different models produce different outcomes from data.
+   - **PROVEN COMPLETE — fallback architecture.** Multiple qualified supplies
+     for an equivalent customer product remain private routes; routing selects
+     a currently eligible sustainable route and records the route that served.
+     **EXTERNALLY BLOCKED:** actual fallback breadth depends on the real gateway
+     snapshot containing equivalent qualified supply.
+   - **PROVEN COMPLETE — free-tier control.** Only zero-upstream-cost supply can
+     enter the free tier; atomic per-wallet and global daily caps refuse after
+     exhaustion and never convert to paid overage. The durable store hashes the
+     subject and locks the combined quota update. **EXTERNALLY BLOCKED:** live
+     activation requires real zero-cost qualified supply plus the owner's
+     acquisition-budget decision.
+   - **PROVEN COMPLETE — public/private projection and generic execution.** One
+     OpenAI-compatible gateway adapter accepts arbitrary composed private
+     runtime bindings while responses retain the stable public Clervo ID.
+     Supplier metadata and raw cost never enter public catalog or discovery.
+9. **Dependencies:** **PROVEN COMPLETE:** B3 discovery and B4 sustainable
+   pricing-floor machinery. **EXTERNALLY BLOCKED:** authoritative authenticated
+   catalog endpoint/schema, production token and binding, owner commercial
+   decisions, migration/deploy, and outside execution proof. Legacy gateway
+   funding is not an engineering dependency for dynamic B7 closure.
 10. **Parallel:** Track C; Track E owns the requalification schedule from here.
-11. **Launch-critical tests:** exact supplier and model identity — never
-    silently substitute; no listed route 404s; free-tier cap refuses rather than
-    billing; fallback records which route actually served; no test pins a route
-    count.
-12. **External acceptance proof:** From outside, every route `/v1/models` lists
-    returns a real result in its own modality, and the registry's live route set
-    equals the callable set with zero drift.
-13. **Visibility shipped:** `/v1/models`; per-model pages; pricing; status
-    including `supply_paused` routes with reason and expected return date.
-14. **Metrics:** Verified permitted routes; callable rate; route health; margin
-    per route; free-tier consumption against cap.
-15. **Owner approval:** Gateway funding; production deploy; any paid supply
-    commitment.
-16. **Stopping condition:** Every route the registry marks `live` is callable in
-    its declared modality, priced with positive margin, publicly discoverable,
-    and monitored. **No count is asserted; the registry reports the number.**
-    **Met on 2026-08-07 with one explicit exception and two deferrals.** Met:
-    all 18 live routes were called in their own modality against the real
-    supplier and passed all 9 mandatory checks; supply is observed for all five
-    families; every live route is discoverable at `/v1/models` and on
-    `clervo.dev`; the expiry guard runs daily. **The exception is "positive
-    margin": no route has it.** All 21 price at roughly 40–50% of supplier list,
-    which is the declared launch stance in every pricing catalog
-    (`positiveMarginRequiredAtLaunch: false`, `discountBasisPoints: 5000`
-    against a named competitor) and is funded by supplier credit rather than
-    owner cash. That contradicts this stopping condition as written, so it is
-    reported rather than resolved: changing 21 prices to satisfy a checklist is
-    an owner pricing decision, not an engineering one. **Deferred:** the free
-    chat tier (no caps implemented — a tier that cannot refuse was not shipped)
-    and fallback chains (no model currently has a second supplier).
-17. **Continuation point:** Open B8. First task there: confirm the Prediction
-    commercial basis from Track C.
+11. **Launch-critical tests:** **PROVEN COMPLETE in current engineering tree.**
+    Tests cover supply validation, revision/freshness, qualification expiry,
+    stable identity, add/remove/pause/degrade, availability and cost changes,
+    discovery updates, duplicates and runtime-binding conflicts, unsupported
+    modality and pricing units, missing cost/permission, varied pricing,
+    competitor input, strategic override bounds, negative-margin prevention,
+    free-tier refusal, supplier privacy, fallback route selection, generic
+    execution, and public projection. No test pins a route count.
+12. **External acceptance proof:** **EXTERNALLY BLOCKED.** The local public HTTP
+    path and fixture-backed quote-to-execution flow are **PROVEN**. The dynamic
+    catalog has not been deployed, so it is **UNVERIFIED** that every model
+    listed by the eventual production snapshot executes from outside with zero
+    registry drift. The previously omitted AI public-HTTP test is now part of
+    acceptance; that does not convert local proof into live proof.
+13. **Visibility shipped:** **PROVEN COMPLETE fixture-bound:** customer-safe
+    `/v1/models` and discovery projections carry price and truthful lifecycle
+    without supplier leakage. **EXTERNALLY BLOCKED:** deploy and outside proof
+    of the dynamic projection. Per-model public visual pages remain
+    **UNVERIFIED** and the frozen B12 visual branch was not modified.
+14. **Metrics:** **PROVEN AVAILABLE:** eligible/withheld models, lifecycle
+    reasons, route availability, expected margin, competitor comparison state,
+    and free-tier quota outcomes are composition/runtime data rather than fixed
+    counts. **EXTERNALLY BLOCKED:** live production telemetry starts at cutover.
+15. **Owner approval:** real-supply commercial permission; any explicit
+    below-cost/subsidized or free-tier activation budget; production migration
+    and deploy. No provider permission, loss-leading decision, or deployment is
+    asserted by engineering.
+16. **Stopping condition:** **PROVEN ENGINEERING-COMPLETE / FIXTURE-BOUND.** No
+    count is asserted. A normal new qualified model requires only a valid supply
+    revision and data/config decisions. Every published model must pass fresh
+    technical qualification, availability, stable identity, valid current cost
+    and price, and current commercial permission; otherwise it is withheld or
+    truthfully non-sellable. Generic execution uses the composed private binding
+    and public stable ID. **EXTERNALLY BLOCKED:** B7 cannot be `closed` until the
+    production gateway contract is bound, owner decisions are recorded, the
+    system is deployed, and Rule 3's outside proof passes.
+17. **Continuation point:** Finish the B7 live integration described in the
+    continuity block. Do not open B8 until that external proof closes B7.
 
 ---
 
