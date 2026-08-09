@@ -156,8 +156,8 @@
     "rollbackRevision": "clervo-api-production-00033-vub"
   },
   "publicRuntime": {
-    "status": "quote_observed_unpaid",
-    "observedAt": "2026-08-09T14:46:33.716Z",
+    "status": "paid_outcome_verified",
+    "observedAt": "2026-08-09T16:55:07.822Z",
     "runtimeRelease": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
     "revision": "clervo-api-production-00037-nid",
     "imageDigest": "sha256:f9dd5aba3ffb4bc08f98ce160be087475fbd1e41289a5d053cce3bff829c09c2",
@@ -166,18 +166,22 @@
       "rollbackVersion": "74efc7db-d0a7-49a1-8d4e-9f20e049fb0e",
       "predictionActivationVersion": "c39387eb-1291-4879-910e-77be4c12fadb",
       "generatedTruthVersion": "158b9290-03f4-4aab-8030-1f438566e894",
-      "reconciledTruthVersion": "abe8db52-23c8-42a9-a06c-6e6d410418f8"
+      "reconciledTruthVersion": "abe8db52-23c8-42a9-a06c-6e6d410418f8",
+      "paidOutcomeTruthVersion": "32799471-2164-42b2-a256-faca8f6a85b9",
+      "immediatePreviousVersion": "0680cd17-e079-47d8-9aef-b98c12c6c03c"
     },
     "site": {
       "worker": "clervo-site-production",
       "rollbackVersion": "d9ebbe9d-2f7d-4ab8-9d23-c79928f359b2",
       "generatedTruthVersion": "c5a67476-1e5d-4914-9481-9e2d3bb15cd6",
-      "reconciledTruthVersion": "f7d50013-583d-4113-aea3-27e0d8ccc679"
+      "reconciledTruthVersion": "f7d50013-583d-4113-aea3-27e0d8ccc679",
+      "paidOutcomeTruthVersion": "c568b072-dc9d-4890-a2aa-a9ec5ebaceac",
+      "immediatePreviousVersion": "e7aef132-34e3-483c-9515-e4dff87e2d62"
     },
     "prediction": {
       "endpoint": "https://api.clervo.dev/v1/prediction/execute",
       "state": "live",
-      "proofLevel": "quote_observed_unpaid",
+      "proofLevel": "paid_outcome_verified",
       "challengeStatus": 402,
       "operationId": "prediction.markets",
       "amountAtomic": "2000",
@@ -188,8 +192,10 @@
       "priceVersion": "prediction-product-2026-08-09.3-prediction.markets",
       "bazaarValidatorReachable": true,
       "bazaarValid": true,
-      "bazaarIndexed": false,
-      "paymentAttempted": false
+      "bazaarIndexed": true,
+      "bazaarIndexActive": true,
+      "bazaarLastCrawledAt": "2026-08-09T16:00:37.868Z",
+      "paymentEffects": 2
     },
     "authoritativeProjection": {
       "source": "packages/catalog/live-registry.json",
@@ -204,11 +210,14 @@
         "prediction.signal"
       ],
       "pdataAttributionPublished": true,
-      "commercialProofClaimed": false
+      "paidOutcomeProofPublished": true,
+      "customerRevenueOrDemandClaimed": false,
+      "registrySourceCommit": "cb5ee661983796c33f61e357c545c629f2a4aabd",
+      "generatedProjectionCommit": "07e017696fd405b058f92cd07e62b0e910d5b64b"
     },
     "externalAcceptance": {
-      "status": "proven_unpaid",
-      "verifiedAt": "2026-08-09T15:22:48.171Z",
+      "status": "proven_paid_and_reconciled",
+      "verifiedAt": "2026-08-09T16:55:07.822Z",
       "client": "independent public HTTPS client without origin credentials",
       "htmlPages": [
         "/",
@@ -216,41 +225,95 @@
         "/catalog/",
         "/pricing/",
         "/status/",
+        "/proof/",
+        "/trust/",
         "/docs/catalog/"
       ],
       "htmlStatus": 200,
       "predictionFactsMatched": true,
-      "machineJsonApiSiteSemanticEquality": true,
-      "llmsApiSiteByteEquality": true,
+      "machineJsonApiSiteSemanticEqualityCount": 8,
+      "textApiSiteByteEqualityCount": 3,
       "marketsChallengeStatus": 402,
       "marketChallengeStatus": 402,
       "eachChallengeAmountAtomic": "2000",
-      "paymentAttempted": false
+      "paymentHeadersSentDuringFinalVerification": 0,
+      "additionalSpendAtomic": "0",
+      "freeSearchStatus": 200,
+      "searchChallengeStatus": 402,
+      "sandboxChallengeStatus": 402,
+      "pdataAttributionVisible": true,
+      "stalePaymentProofCountsAbsent": true
     }
   },
   "payment": {
-    "status": "awaiting_exact_bounded_owner_authorization",
+    "status": "settled_reconciled",
     "readinessObservedAt": "2026-08-09T15:28:27.660Z",
     "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",
     "network": "eip155:8453",
     "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-    "operationsPrepared": [
+    "operations": [
       {
         "productId": "prediction.markets",
-        "amountAtomic": "2000"
+        "amountAtomic": "2000",
+        "operationId": "op_51ddd509c878386beec22ad406fbb0ae",
+        "receiptId": "rcpt_74a0f5bed8a43523e6a0573ad51bfb7c",
+        "requestHash": "sha256:a8b40cf4dee071cce70b5545bdbd2ac23413c4eb97f36019003e0d409aacfaea",
+        "resultHash": "sha256:5c2afb92900716f7d5e66b84b0cf64c63cbbed93372ed50baf8ece722d306c2f",
+        "receiptHash": "sha256:a831d980a0469fc774e3710031c2a32b7c94d0e3a8c4e5247169aec74709f6c3",
+        "settlementReferenceHash": "sha256:14805f0ce3533146cb06fd3e35f06dafad7e9322badd75e2bc51df343aaaebb8",
+        "transactionHash": "0xc71d0e7c994b2e0c2f2d84ba2f86368b81abdf30ebac1f2763231a797255ee9f",
+        "blockNumber": 49750730,
+        "logIndex": 245,
+        "settlement": "confirmed",
+        "supplierCostAtomic": "0",
+        "usefulResult": "three fresh pdata-attributed markets",
+        "replay": {
+          "sameOperation": true,
+          "sameReceipt": true,
+          "sameResult": true,
+          "paymentHeaderSent": false,
+          "secondAuthorization": false,
+          "secondCharge": false,
+          "secondProviderExecution": "not_directly_instrumented"
+        }
       },
       {
         "productId": "prediction.market",
-        "amountAtomic": "2000"
+        "amountAtomic": "2000",
+        "operationId": "op_69aa12671017d53c7396e1131c23a0b1",
+        "receiptId": "rcpt_0af12608e0564f8d016d9650bd3d99e2",
+        "requestHash": "sha256:4fec24673e7f5f156775c4d05249091158e581ee9998d2ae1c81402c53a34d76",
+        "resultHash": "sha256:6a264f9bc752060fb74cd3e2865b0ca74f8aec6275e7150a73991db5af403fbf",
+        "receiptHash": "sha256:d04d82cbb4c96ca106216e8e70f62c9fd4bc50fd0b0779b25fcbec6014d0fa55",
+        "settlementReferenceHash": "sha256:070f82afdc02120b26be65b09b4cb094e5c45297dac7cc9bacb4fd3b5ad86273",
+        "transactionHash": "0xba73b38729d894b230bbd67d5caedd743bd2a3a279dc99a9b8ad188a3063e683",
+        "blockNumber": 49750946,
+        "logIndex": 96,
+        "settlement": "confirmed",
+        "supplierCostAtomic": "0",
+        "usefulResult": "fresh pdata-attributed Polymarket market pmkt_0527730107d822de06c8f43b38ead657",
+        "replay": {
+          "sameOperation": true,
+          "sameReceipt": true,
+          "sameResult": true,
+          "paymentHeaderSent": false,
+          "secondAuthorization": false,
+          "secondCharge": false,
+          "secondProviderExecution": "not_directly_instrumented"
+        }
       }
     ],
     "maximumSpendAtomic": "4000",
     "maximumSpendUsdc": 0.004,
-    "payerBalanceAtomic": "20000",
+    "payerBalanceBeforeAtomic": "20000",
+    "payerBalanceAfterAtomic": "16000",
+    "payerBalanceDeltaAtomic": "-4000",
     "payerBalanceWithinCap": true,
     "payerAddressPrinted": false,
     "receiverBalanceBeforeAtomic": "12000",
+    "receiverBalanceAfterAtomic": "16000",
+    "receiverBalanceDeltaAtomic": "4000",
     "browserSigner": "owner_controlled_metamask",
     "boundedProofUtility": {
       "build": "passed",
@@ -264,9 +327,35 @@
     },
     "automaticPaymentRetry": false,
     "replayRequiresNoSecondSignature": true,
-    "signaturesRequested": 0,
-    "paymentHeadersSent": 0,
-    "ownerSpendUsdc": 0
+    "signaturesAuthorized": 2,
+    "paymentHeadersSent": 2,
+    "paymentEffects": 2,
+    "ownerSpendAtomic": "4000",
+    "ownerSpendUsdc": 0.004,
+    "authorizationCeilingRespected": true,
+    "reconciliation": {
+      "execution": "clervo-production-b8-payment-reconcile-f7dgd",
+      "verifiedAt": "2026-08-09T16:07:33.044Z",
+      "exactProductionImage": "sha256:f9dd5aba3ffb4bc08f98ce160be087475fbd1e41289a5d053cce3bff829c09c2",
+      "databaseIdentityVerified": true,
+      "operationRowsCompleted": 2,
+      "accountingEntriesForOperations": 2,
+      "fullAccountingChainEntries": 4,
+      "fullAccountingChainHeadHash": "sha256:1272444d65377139efad84e177efc3af5c58b0f02cfbccdd13c991aefb102d99",
+      "balanced": true,
+      "temporaryJobRemoved": true,
+      "cloudLoggingEvidenceRetained": true,
+      "credentialsLogged": false,
+      "payerAddressLogged": false
+    },
+    "proofClassification": {
+      "level": "paid_outcome_verified",
+      "ownerFunded": true,
+      "revenueEvidence": false,
+      "demandEvidence": false,
+      "unrelatedCustomerEvidence": false,
+      "externallyRepeatedClaimed": false
+    }
   },
-  "b8Closure": "open"
+  "b8Closure": "closed"
 }

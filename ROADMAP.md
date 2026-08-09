@@ -17,16 +17,16 @@ Update only when execution state actually changes. This is not a journal.
 
 | Field | Value |
 |---|---|
-| Current milestone | **B8 — OPEN. Prediction is not commercially launched and no handoff to B9 is permitted.** |
-| Milestone status | `b8_open_launch_prepared_owner_approval_required`. **PROVEN:** pdata's current published CC BY 4.0 dataset/API license permits commercial reuse, adaptation, and redistribution with attribution; no separate competing-service restriction, authentication requirement, rate card, or numeric rate limit was published on the inspected pdata surfaces. Multiple live conformance campaigns exercised all eight venues, repeated calls, pagination, search, history, malformed rows, freshness, latency, intermittent failure, and degradation with zero spend or mutation. The production subset is conservatively limited to Polymarket, Kalshi, Manifold, and Limitless; unstable/stale venue rows remain excluded. The pdata adapter preserves Clervo normalization, stable identities, conservative matching, durable observations, derived signals, freshness/provenance, and pdata/upstream attribution. Direct Polymarket/Kalshi adapters remain `publicSellable=false`. Prices are 2000 microusd for markets/market/compare and 3000 for history/signal; each retains positive contribution after zero data-supply cost, current Cloud Run/edge allowance, and Coinbase's published 1000-microusd settlement overage after its first 1000 monthly transactions. Runtime, edge, probe-generated visibility, exact-target migration, and zero-traffic rollout are prepared. **NOT CLOSED:** production migration/deploy, public discovery regeneration from the deployed probe, funded x402 result, receipt/replay proof, and second independent outside operation have not occurred. B9 is not started. |
+| Current milestone | **B8 — CLOSED. Prediction is commercially launched and externally verified. B9 remains `not_started` and was not opened in this session.** |
+| Milestone status | `b8_closed_commercially_verified`. **PROVEN:** pdata's current CC BY 4.0 dataset/API license supports Clervo's attributed commercial derived-output model; the production subset remains Polymarket, Kalshi, Manifold, and Limitless, while unresolved direct adapters remain `publicSellable=false`. Migrations are applied; Cloud Run revision `clervo-api-production-00037-nid` serves 100% traffic; Prediction is public, generated discovery reports `live / paid_outcome_verified`, and CDP Bazaar reports the resource indexed and active. Two owner-funded external production operations—`prediction.markets` and `prediction.market`—each settled exactly 0.002 USDC, returned useful fresh pdata-attributed output, produced accurate durable receipts, and replayed with the same operation/result/receipt and no second authorization or charge. Managed reconciliation proved two completed operation rows, two target accounting entries, zero supplier cost, and a balanced four-entry receiver ledger. Total authorized spend was exactly 0.004 USDC. This is mechanism/commercial-usability proof, not revenue, demand, or an `externally_repeated` unrelated-customer claim. B9 is not started. |
 | Current branch | `work/b8-prediction-20260809`, based exactly on B7 checkpoint `4dee1f062eefe21232c1e8366aad12b453bd931c`; B8 start checkpoint `82096b1`; original engineering commit `96cdf43`; pdata commercial-launch engineering commit `eef4b01`. `main`, the frozen B12 visual branch, `/opt/clervo-ai`, and `ai.clervo.dev` were not modified. |
-| Latest commit | `eef4b01` — `feat(b8): qualify pdata and prepare commercial launch`. This is the latest engineering commit before this ROADMAP truth update; use `git log -1` for the truth-update commit itself. |
-| Current production release | Cloud Run origin `clervo-api-production-00033-vub` at 100% traffic, image `sha256:7bb3211061e8cbca5abfa2f1930f7888877aaaed065fd2f54c8905aedf5422ad`, `CLERVO_RELEASE_ID=777b7c616e3e384c9a4b2b7112cef74521b7f7a5`; API edge worker `clervo-api-edge-production` version **`74efc7db-d0a7-49a1-8d4e-9f20e049fb0e`** (redeployed 2026-08-07T06:52Z for the B6 `llms.txt` install section — generated documents only, no runtime code); site worker `clervo-site-production` version **`d9ebbe9d-2f7d-4ab8-9d23-c79928f359b2`** (deployed 2026-08-07T08:0xZ in B7 to publish the refreshed discovery documents). Cloud Run and the API edge worker were **not** redeployed in B7: the catalog and registry are read by the deployed origin, `api.clervo.dev/v1/models` already served 18 live / 3 supply-paused before the site deploy, and no runtime code changed. **The site deploy did also ship the four previously-unshipped site commits including `bb473ed` (layout)**, because they were already built into `dist` and the site worker had been held back since 2026-08-06; no visual file was edited in B7. One substantive public change went out with it: the `llms.txt` "Command line" section, which told readers to run `npx @clervo/router`, is now **suppressed** until the package is actually published — the generator checks the npm registry, so a reader is never handed an install command that fails. |
-| Rollback targets | Cloud Run revision `clervo-api-production-00031-kos` (image `sha256:63ad8aaa619f46fac962f9366c26eb13c7c241dc8e3d21c773ede4f43f62f44f`, the pre-B4 origin) — roll back with `gcloud run services update-traffic clervo-api-production --project bloxsniper-prod --region us-central1 --to-revisions clervo-api-production-00031-kos=100`. The older `clervo-api-production-00028-nor` (image `sha256:78718e50a50c2a74f639a4da5a03e80988d95611014d9c310cba1fe4d5d79df9`) remains available behind it. API edge `6e17ea78-32eb-4b87-8781-72aa37f90321` (the pre-B3 edge); site `4939f9da-765d-4f3c-a96f-6f0384fe8338`. Roll a worker back with `npx wrangler rollback <version> --config apps/worker/wrangler.jsonc` or `apps/site/wrangler.jsonc`. |
-| Latest externally verified customer outcome | A settled x402 payment on `https://api.clervo.dev/v1/search/paid`: 0.006 USDC (6000 atomic) on Base mainnet `eip155:8453` to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`, operation `op_0549a567589cc87d31231376f9986602`, receipt `rcpt_582a23e6f1e066fe25984119c59c2ab0`, returning a real search result. Replaying idempotency key `idem_b4_bazaar_entry_search_01` returned the same operation with no second authorization and no second charge; the on-chain USDC delta is exactly one transfer of 6000 atomic units. `search.web` reaches `paid_outcome_verified`. The free path outcome above still holds at `externally_repeated`. |
-| Current blockers | **Exact owner action now required:** authorize the prepared managed production migration through `0008-prediction-dynamic-venues.sql` and the protected zero-traffic Prediction candidate deployment. After candidate smoke and promotion, a separate tightly bounded real x402 payment authorization is required for commercial proof. No supplier credential, paid supplier, or supplier budget is required. Source routing remains expiration-aware and fail-closed. |
-| External dependencies | B8: owner-authorized production migration/deploy and funded unrelated-client proof. The zero-cost pdata supply path and its explicit commercial derived-output rights are qualified. Paid supply is not the default and owner supply budget is $0. B7 and B6 retain their previously recorded external dependencies. |
-| Owner approvals waiting | (1) Apply the exact managed migration set ending at `0008-prediction-dynamic-venues.sql` and deploy the prepared Prediction-enabled origin at zero traffic, smoke it, promote it, then deploy the prepared edge flag; (2) after public 402 verification, authorize one tightly bounded real Prediction x402 payment plus replay and a second independent operation. No pdata account or credential is needed. Earlier B6/B7 owner actions remain as recorded in their milestone sections. |
+| Latest commit | `07e0176` — `chore(b8): refresh final public truth`. This is the latest implementation/projection commit before the B8 closure evidence and ROADMAP truth update; use `git log -1` for the closure commit itself. |
+| Current production release | Cloud Run origin `clervo-api-production-00037-nid` at 100% traffic, image `sha256:f9dd5aba3ffb4bc08f98ce160be087475fbd1e41289a5d053cce3bff829c09c2`, `CLERVO_RELEASE_ID=ab0bb28b76fb8606bd854b741214961b8e1ba1d2`; API edge worker `clervo-api-edge-production` version **`32799471-2164-42b2-a256-faca8f6a85b9`**; site worker `clervo-site-production` version **`c568b072-dc9d-4890-a2aa-a9ec5ebaceac`**. All three were directly observed live on 2026-08-09. The B12 visual system was not redesigned; only B8 factual/generated visibility was deployed. |
+| Rollback targets | Immediate previous origin revision `clervo-api-production-00033-vub`; existing older revisions remain retained. The protected pre-B8 worker rollback targets remain API edge `74efc7db-d0a7-49a1-8d4e-9f20e049fb0e` and site `d9ebbe9d-2f7d-4ab8-9d23-c79928f359b2`; immediate previous paid-proof truth versions are edge `0680cd17-e079-47d8-9aef-b98c12c6c03c` and site `e7aef132-34e3-483c-9515-e4dff87e2d62`. No rollback version was deleted. |
+| Latest externally verified customer outcome | Two bounded owner-funded calls on `https://api.clervo.dev/v1/prediction/execute`: `prediction.markets` operation `op_51ddd509c878386beec22ad406fbb0ae`, receipt `rcpt_74a0f5bed8a43523e6a0573ad51bfb7c`; and `prediction.market` operation `op_69aa12671017d53c7396e1131c23a0b1`, receipt `rcpt_0af12608e0564f8d016d9650bd3d99e2`. Each settled exactly 2000 atomic USDC on Base, returned fresh pdata/CC BY 4.0-attributed output, and replayed with the same result and receipt and no second authorization or charge. Payer and receiver deltas were exactly 4000 atomic total; managed durable reconciliation passed. `prediction` reaches `paid_outcome_verified`; no revenue, demand, or unrelated-customer repetition is claimed. |
+| Current blockers | None for B8. The pdata qualification expires at the recorded time and remains a fail-closed operating dependency, not an unproven launch blocker. B9 remains unopened. |
+| External dependencies | B8 has no remaining launch dependency. Ongoing service requires current pdata availability and requalification before `2026-08-16T11:54:10.787Z`; unresolved direct venue permissions remain excluded. |
+| Owner approvals waiting | None for B8. The exact deployment, migration, and maximum 0.004 USDC proof authorizations were consumed within their stated bounds. No further payment is authorized. |
 | Dates that move on their own | **PROVEN:** pdata public routing qualification expires at `2026-08-16T11:54:10.787Z`; runtime startup fails closed after that timestamp. Direct Polymarket/Kalshi technical observations expire separately but remain unsellable regardless. Competitor prices are observations, not durable promises, and must be refreshed before activation. Existing B7 and Bazaar expiry rules remain in force. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
 | B2 metrics (observed 2026-08-06T14:42:37.447Z) | Conformance defects open 0. Naive free-search rejection rate 0: `withoutIdempotencyKeyStatus` 200. Site 404 correctness: a nonexistent URL returns 404. |
@@ -34,10 +34,10 @@ Update only when execution state actually changes. This is not a journal.
 | B4 metrics (observed 2026-08-06T17:01:41.422Z) | Bazaar-valid resources 3 of 3. Indexed resources 1 of 3: `https://api.clervo.dev/v1/search/paid`, `index.active: true`, last crawled `2026-08-06T16:59:46.261Z`. Settlements executed 1, total 0.006 USDC. AI routes quoting below the 1000-atomic minimum 0 — the floor is applied as a minimum billable charge above the derived price, so no route is sold below cost. Days until the search listing idles out: 30 from `2026-08-06`. |
 | B5 metrics (observed 2026-08-07T05:22:00Z) | Products routing through one commerce core 6 of 6 (already true before this milestone). Duplicated commerce-surface copies removed: result verifiers 2 to 1, response-envelope builders 4 to 1, request-hash builders 4 to 1, fixed-price lookups 2 to 1, provenance builders 4 to 1. Duplicate-charge incidents 0. Payment-path defect count 0. Commerce suite 18 of 18 before and after each product move; full acceptance 262 of 262, unchanged. |
 | B7 metrics (observed 2026-08-09, current engineering tree) | **PROVEN:** full acceptance 293/293; final B7-focused suite 34/34; dynamic property suite 14/14; contract validation 97 schemas/132 fixtures; lint 699 files; secret scan PASS; external calls 0 and USDC spent 0 during acceptance. Dynamic catalog has no fixed count and the legacy catalog ceiling was removed. BlockRun's direct public model API returned 91 entries; three exact GPT-5.6 comparisons were observed and recorded as refreshable data: Luna 0.2/1.2, Terra 2/12, Sol 5/30 USD per million input/output. **UNVERIFIED after evidence expiry:** those competitor values are ignored after their recorded validity window. **LIVE legacy observation only:** 21 entries, 18 live/3 paused; no dynamic live cutover claim. |
-| B8 metrics (observed 2026-08-09, current engineering tree) | **PROVEN:** full acceptance 305/305; latest B8-focused suite 36/36; contract validation 99 schemas/134 fixtures; launch/migration checks 8/8; lint 708 files; build, discovery generation, release freeze, clean-room boundary, and secret scan pass. Latest pdata campaign: 39 read-only external calls, API `1.17.0`, all five legal/terms surfaces reachable, 12/12 repeated calls across the four production venues successful, search/pagination/history/malformed rejection pass, no authentication, no rate headers observed, owner spend 0, mutations 0. Exact per-venue latency/freshness is emitted by `scripts/prediction/qualify-pdata-supply.mjs`; the full production runtime returned eight attributed markets—two per enabled venue—with truthful `degraded` state for one malformed Limitless row and one exact pdata adapter binding. These observations are not uptime guarantees. **LIVE prelaunch truth:** `/v1/prediction/execute` returns 404 and public status reports `unavailable` / proof `none`; production remains revision `clervo-api-production-00033-vub`. **UNKNOWN/zero production evidence:** Prediction production calls, revenue, wallets, and external paid outcomes were not fabricated. |
+| B8 metrics (observed 2026-08-09 at close) | **PROVEN:** full acceptance 306/306; B8-focused suite 37/37; contract validation 99 schemas/134 fixtures; lint 708 files; build, discovery generation, release freeze, clean-room boundary, site prerender/canonical-media validation, and secret scan pass. pdata campaigns retained the previously proven 39 read-only calls, API `1.17.0`, eight-venue coverage, 12/12 repeated production-venue calls, pagination/search/history/malformed/degradation checks, zero authentication, and zero supplier spend. Managed production smoke returned two repeated eight-market attributed results across Polymarket, Kalshi, Manifold, and Limitless. Production payments: 2 effects, 4000 atomic USDC total, 2 useful results, 2 accurate receipts, 2 no-charge replays, 2 completed durable operations, 2 accounting entries, zero supplier cost, balanced ledger. Public truth: 8 JSON surfaces semantically equal across API/site/generated source, 3 text surfaces byte-equal, 8 HTML pages directly loaded, 5 Prediction operations published, Bazaar indexed and active, 0 open conformance defects, and 0 additional spend during final verification. |
 | B6 metrics (observed 2026-08-07T06:53:00Z, at close) | Installs 2, **both from the local tarball, 0 from npm** (unpublished). Wallets created 2 — one throwaway, deleted after confirming on-chain it held nothing; one dedicated test wallet retained at `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`, `0700`/`0600`, recovery phrase never printed to any transcript, log, or commit. **Free first success: yes, and it happened before any wallet existed**, which is the ordering advantage over BlockRun. Wallets funded 0. Paid outcomes 0. Settlements 0. **USDC spent 0.** Fail-closed cycle exercised live: 1 refused operation, 1 retry blocked before signing, 1 reconciliation resolving `not_settled`. Buyer-side ceiling configured: per-operation 0.007, daily 0.01 USDC. Live catalog: 4 capabilities, 1 free, 3 payable; `search.web` quoted 0.006 USDC to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`. Package: 35 files, 40.4 kB packed, 17 installed dependencies, no TypeScript sources or wallet material. Tests: B6 suite 10 of 10; `shared-paid-operation` 5 of 5 unchanged; full contract suite 720 of 722, the 2 failures being `n13.3` and `n13.5` site tests that fail identically with all B6 work stashed and are therefore inherited from B5. Gates: lint PASS (677 files), secret scan PASS with 0 secret values printed. |
-| Exact next task | Obtain exact owner authorization for the managed production migrations through `0008-prediction-dynamic-venues.sql` and the prepared zero-traffic Prediction candidate deployment. Then smoke the real pdata-backed runtime, promote origin and edge only after the checks pass, probe the deployed route, regenerate every public visibility surface from that probe, and request the separate bounded-payment authorization for external receipt/replay/two-operation proof. Do not start B9 until B8 is commercially closed. |
-| Files and services for that task | Permanent B8: `services/prediction`, `adapters/prediction`, `prediction-production-runtime.mjs`, `prediction-market-store.mjs`, `prediction-public-policy.mjs`, `x402-paid-prediction.mjs`, source/pricing/competitor catalogs, migrations `0007`/`0008`, Prediction schemas/fixtures, the live qualification script, and the B8/Prediction contract and HTTP suites. Production API/edge/PostgreSQL are external activation targets; none was mutated here. |
+| Exact next task | Await owner review of the B8 closure evidence. Do not start B9 until the owner explicitly instructs it after review. |
+| Files and services for that task | B8 is closed. Preserve the Prediction service/adapters, pdata license and qualification records, source/pricing policy, migrations, production revision `00037-nid`, final edge/site versions, settlement/receipt/accounting evidence, and fail-closed direct-adapter policy. |
 
 ---
 
@@ -222,9 +222,11 @@ the proof level support.
 
 ## 4. Measured current state
 
-Established by probing the deployed system on 2026-08-06 with
-`scripts/probe-live-registry.mjs`. No payment was sent; paid routes answered
-with a 402 quote and nothing settled. Read
+Established by probing the deployed system on 2026-08-09 with
+`scripts/probe-live-registry.mjs`. The live probe itself sends no payment; paid
+routes answer with a 402. A proof level above `quote_observed_unpaid` additionally
+requires a settled proof record that passes current-release, current-quote,
+receipt, replay, result, provenance, balance, and durable-accounting checks. Read
 `packages/catalog/live-registry.json` for the current machine-readable version —
 where it and this section disagree, the registry wins.
 
@@ -232,18 +234,18 @@ where it and this section disagree, the registry wins.
 
 | Family | Lifecycle | Proof | Why |
 |---|---|---|---|
-| Search | `live` | `externally_repeated` free, `quote_observed_unpaid` paid | Free path returns real cited results; paid path quotes 6000 atomic |
-| AI | `live` | `quote_observed_unpaid` | Quotes and serves all four modalities |
+| Search | `live` | `quote_observed_unpaid` in current registry | Free path returns real cited results; paid path quotes 6000 atomic; earlier settled Search proof remains a separate historical record |
+| AI | `supply_paused` | `none` | All 21 routes remain catalogued with explicit commercial/supply reasons |
 | Sandbox | `live` | `quote_observed_unpaid` | Quotes 120000 atomic |
-| RPC | `unavailable` | `none` | Edge returns 404; `CLERVO_RPC_PUBLIC_ENABLED` unset |
-| Prediction | `unavailable` | `none` | Edge returns 404; `CLERVO_PREDICTION_PUBLIC_ENABLED` unset |
-| Crypto Intelligence | `unavailable` | `none` | Edge returns 404; `CLERVO_CRYPTO_PUBLIC_ENABLED` unset |
+| RPC | `unavailable` | `none` | Commercial rights blocked; edge remains disabled |
+| Prediction | `live` | `paid_outcome_verified` | Five operations public; two settled pdata-backed outcomes reconciled |
+| Crypto Intelligence | `unavailable` | `none` | Commercial rights blocked; edge remains disabled |
 
-### AI routes — 18 `live`, 3 `supply_paused`
+### AI routes — 0 `live`, 21 `supply_paused`
 
-Only `gpt-5.6-luna`, `gpt-5.6-terra`, and `gpt-5.6-sol` are paused, reason
-`upstream_authentication_unavailable` (provider error code `auth_unavailable`),
-expected return **2026-08-09**. They stay in the catalog.
+All routes stay in the catalog. Current reasons are 15
+`commercial_permission_restricted`, 3 `commercial_permission_unresolved`, and 3
+`ai_route_unavailable`. A probe failure never removes a route.
 
 **Recorded so it is not repeated:** an earlier probe reported 11 live and 10
 paused. That was a defect in the prober, not in the runtime. It sent a
@@ -265,46 +267,31 @@ must be ≤500 characters. Declared `input` must validate against
 idle 30 days without a settlement are dropped. Validator:
 `POST https://api.cdp.coinbase.com/platform/v2/x402/validate`.
 
-Search (6000 atomic) and Sandbox (120000 atomic) already validate `true`.
-**15 of the 18 live AI routes quote below the 1000 atomic minimum** — chat,
-embedding, and speech routes quote between 2 and 563 atomic. Only the three
-image routes (75000, 35000, 15000) clear it. This is wider than previously
-recorded, which described it as an AI-wide 113-atomic problem.
+Search (6000 atomic), Sandbox (120000 atomic), and Prediction (2000–3000 atomic)
+validate `true`. Search and Prediction are indexed and active; Sandbox is valid
+but not indexed. AI is not currently valid or sellable because every route is
+supply-paused.
 
-### Public truth is broken in the conservative direction
+### Public truth is generated and reconciled
 
-`clervo.dev/llms.txt` states "Public API callable: no" and "x402 public payment:
-unavailable" while `/v1/ai/execute` and `/v1/sandbox/execute` return real
-payment challenges. Deployed `catalog.json` marks five families `unavailable`.
-
-The generator is not at fault. `generated/public/llms.txt` is already truthful.
-The stale copy sits in `apps/site/public/`, because
-`scripts/site/prepare-public.mjs` throws `site_public_projection_unsafe` unless
-`noPublicDistribution === true` and `publicAvailable === false`. That is a
-frozen-status gate — Rule 2's disease — living in the publish path rather than
-in a test. It is the single reason the site contradicts the API.
+Registry, catalog, pricing, status, operations, OpenAPI, x402 discovery,
+`llms.txt`, skill/agent docs, and site projections are generated from the live
+registry. At B8 close, eight public JSON surfaces matched semantically across
+the API and site, three public text surfaces were byte-identical, and Prediction
+rendered `live / paid_outcome_verified` with pdata attribution everywhere.
 
 ### Conformance defects on served surfaces
 
-- `/v1/search/free` returns 400 when `idempotency-key` is absent, so a
-  first-time caller is rejected.
-- The site returns 200 for every nonexistent URL
-  (`not_found_handling: single-page-application` in `apps/site/wrangler.jsonc`).
-  A crawler will not index a site that answers yes to everything.
-- `api.clervo.dev` serves no `/v1/models`, no `/llms.txt`, no
-  `/.well-known/x402`. `skill.md` and `agent.md` return the SPA shell.
+- None open in the current live registry. Keyless free Search, real site 404s,
+  models, `llms.txt`, x402 discovery, `skill.md`, and `agent.md` are directly
+  served.
 
-### The three unavailable products, accurately
+### The remaining non-live products, accurately
 
 They are not one problem.
 
-- **Prediction** is largely built. `services/prediction`, `adapters/prediction`,
-  and `apps/api/src/x402-paid-prediction.mjs` exist, are wired, and pass their
-  contract tests. Upstreams (Polymarket Gamma, Kalshi) are publicly reachable
-  and unauthenticated. It is off because `CLERVO_PREDICTION_MODE` defaults to
-  `disabled` and `infra/production/gcp/public-launch.v1.json` has no block for
-  it. **What is missing is a commercial-terms decision and external proof, not
-  code.**
+- **AI** remains `supply_paused`, not removed: its 21 routes carry explicit
+  commercial-permission or availability reasons.
 - **Crypto Intelligence** is built against Blockscout, whose qualification
   passed with `restricted` terms. The runtime additionally requires a Solana
   endpoint it does not have, which currently blocks the whole product for the
@@ -325,20 +312,15 @@ only its duplication is the defect.**
 
 ### Test inventory
 
-`npm test` runs 14 gates and about 231 tests from a hardcoded filename list in
-`scripts/run-acceptance.mjs`. The full `tests/contract/` directory holds roughly
-686 tests, with 6 currently failing. The public-HTTP tests for AI, RPC,
-Prediction, and Crypto exist and are simply absent from that list. **They are
-excluded by an omission in a filename array, not by a policy decision.** The
-smallest safe correction is to add those four files and triage the 6 failures —
-not to launch a 686-test cleanup programme.
+`npm test` runs the release gates and 306 acceptance tests, including the public
+HTTP contracts for AI, RPC, Prediction, and Crypto. At B8 close all 306 passed;
+contract validation passed 99 schemas and 134 fixtures.
 
 ### Uncommitted work
 
-`scripts/probe-live-registry.mjs` and `packages/catalog/live-registry.json` are
-untracked on `main`. They are reviewed, the modality defect is fixed, and they
-are the input to B1. **Do not discard them.** No real payment and no deployment
-has been performed for this work.
+At B8 close the branch contains no B8-related uncommitted residue. The unrelated
+owner files `apps/site/wrangler.preview.jsonc` and `main` remain untracked and
+untouched.
 
 ---
 
@@ -1045,18 +1027,20 @@ Every milestone below carries the same seventeen fields.
 ### B8 — Prediction live
 
 1. **Milestone:** B8 — Prediction live
-2. **Status:** `open_launch_prepared_owner_approval_required`. Integration-ready
-   is not completion under Rule 4. **PROVEN:** zero-cost commercially licensed
-   supply, adapter/runtime, pricing, attribution, migration, activation, public
-   visibility generation, and rollout preparation. **REMAINS:** production
-   migration/deploy, probe-derived public activation, and funded outside proof.
-3. **Customer-visible outcome:** **PROVEN fixture/local HTTP:** an agent can
-   search from a topic, inspect normalized market state and canonical events,
-   compare safely matched venue markets, obtain disagreement/movement/history
-   with freshness and provenance, receive an exact x402 quote and receipt, and
-   replay without a second execution or settlement. **EXTERNALLY BLOCKED:** no
-   unrelated customer has completed that sequence on the public URL, so the
-   product remains truthfully unavailable rather than advertised early.
+2. **Status:** `closed_commercially_verified` — closed 2026-08-09 under Rule 4.
+   **PROVEN:** zero-cost commercially licensed pdata supply; production
+   adapter/runtime and durable storage; sustainable pricing; public deployment;
+   generated visibility; two exact owner-funded settlements; useful fresh
+   pdata-backed results; accurate receipts; no-charge replay; durable accounting;
+   and a second independent operation. Owner funding proves commercial usability
+   of the mechanism, not revenue, demand, or unrelated-customer repetition.
+3. **Customer-visible outcome:** **PROVEN FROM THE PUBLIC URL:** an external
+   client can discover five Prediction operations and their exact price limits,
+   obtain a valid 402, authorize a bounded Base USDC payment, receive normalized
+   pdata-backed market intelligence with freshness/provenance, inspect an
+   accurate receipt, replay without another authorization or charge, and execute
+   a second independent operation. The current proof level is
+   `paid_outcome_verified`.
 4. **Why it matters commercially:** Product four moves Clervo from three
    products to four and creates the first natural multi-product workflow —
    prediction analysis pairs with search and AI on the same wallet.
@@ -1074,8 +1058,8 @@ Every milestone below carries the same seventeen fields.
    Current bounded campaigns covered all eight advertised venues; the production
    subset is Polymarket, Kalshi, Manifold, and Limitless. Direct Polymarket and
    Kalshi adapters remain unsellable while their own commercial permission is
-   unresolved. Edge/public registry remain unavailable and no production or paid
-   outside proof is claimed.
+   unresolved. The pdata route is deployed and public; unresolved sources still
+   fail closed.
 7. **Research:** **PROVEN current observations recorded as data.** pdata API
    `1.17.0` exposes eight venues without authentication or rate cards, stable
    pdata URLs, source market URLs, history, search, pagination, and approximately
@@ -1097,7 +1081,7 @@ Every milestone below carries the same seventeen fields.
    month and then $0.001 each; current Cloud Run and Cloudflare rates are linked.
    Pricing uses the post-free-tier facilitator cost, not the temporary free
    allowance, and remains below the proven 8500-microusd BlockRun search quote.
-8. **Work:** **PROVEN COMPLETE internally / SUPERSEDED by a stronger derived
+8. **Work:** **PROVEN COMPLETE AND DEPLOYED / SUPERSEDED by a stronger derived
    implementation:**
    - Venue-specific adapters now feed a venue-generic normalized domain; adding
      a future venue requires adapter, qualification/config, terms decision, and
@@ -1123,58 +1107,63 @@ Every milestone below carries the same seventeen fields.
    - Source and pricing policy are data-driven and expiration-aware. Only the
      pdata route is public-sellable; unresolved direct adapters fail closed.
    - The production launcher enables Prediction only with settlement and
-     PostgreSQL state; the edge route is independently gated. Live probing—not
-     hand-maintained copy—drives catalog, pricing, status, OpenAPI, x402, agent
-     discovery, and `llms.txt` publication after deploy.
+     PostgreSQL state; the edge route is independently gated. Live probing plus
+     fail-closed settled-proof ingestion—not hand-maintained copy—drives catalog,
+     pricing, status, OpenAPI, x402, agent discovery, and `llms.txt`.
 9. **Dependencies:** **PROVEN COMPLETE:** B5 commerce integration, qualified
-   zero-cost pdata supply, commercial license basis, and all reversible B8
-   engineering. **EXTERNALLY BLOCKED:** owner-approved migration/deploy and
-   funded outside proof. No paid supplier, credential, or subsidy dependency is
-   part of the launch.
+   zero-cost pdata supply, commercial license basis, managed migrations,
+   production deployment, and funded public proof. No paid supplier, supplier
+   credential, or subsidy dependency is part of the launch. Ongoing pdata
+   qualification expires at the recorded fail-closed timestamp.
 10. **Parallel:** None executed in this checkpoint; B9/B10/B11 and frozen B12
     architecture/visuals were not modified.
-11. **Launch-critical tests:** **PROVEN COMPLETE.** The existing Prediction
-    public-HTTP test remains in normal `npm test`; focused B8 acceptance also
+11. **Launch-critical tests:** **PROVEN COMPLETE.** Full acceptance is 306/306,
+    B8-focused acceptance is 37/37, and contract validation is 99 schemas/134
+    fixtures. The existing Prediction public-HTTP test remains in normal
+    `npm test`; focused B8 acceptance also
     covers normalization, safe canonical matching and deceptive non-matches,
     source degradation/malformed input, durable reconstruction/retention,
     disagreement/movement/insufficient evidence, current pricing evidence,
     SSRF/private origins/credentials/path traversal/redirect/body/timeout/JSON,
     bounded pagination/deadlines, quote binding, execution, receipt, idempotency,
     replay, conflict, failure quarantine, and no second settlement.
-12. **External acceptance proof:** From an unrelated machine — discover the
-    product, read its price and limits, execute a real operation, pay, receive a
-    useful derived result with evidence, receive an accurate receipt, retry
-    without double charge, and repeat successfully. Proof level
-    `paid_outcome_verified`. **EXTERNALLY BLOCKED / NOT CLAIMED:** no production
-    deploy, funded Prediction settlement, unrelated-client result, receipt,
-    replay, or second independent operation occurred in B8 engineering.
-13. **Visibility shipped:** **PREPARED, NOT YET SHIPPED.** The live prober now
-    challenges `/v1/prediction/execute`; only an observed deployed 402 promotes
-    Prediction. That same generated observation drives registry, catalog, five
-    operation prices, status, OpenAPI, x402 discovery, agent discovery, and
-    `llms.txt`, including pdata/CC BY attribution. The current public artifacts
-    correctly remain unavailable until deployment. The B12 product-page/visual
-    boundary was not modified.
-14. **Metrics:** **PROVEN INSTRUMENTABLE:** product ID and outcome state expose
-    operation mix/success/degradation; venue states, events, match confidence,
-    and freshness expose coverage/match/stale rates; shared receipts/accounting
-    expose charge, supplier cost, margin, wallet, and multi-product use. No
-    production count, revenue, uptime, or wallet number is invented.
-15. **Owner approval:** (1) authorize the exact managed production migration set
-    ending at `0008-prediction-dynamic-venues.sql` and the prepared zero-traffic
-    Prediction candidate deploy/promotion/edge rollout; (2) after the live 402
-    is verified, authorize one tightly bounded funded Prediction x402 proof plus
-    replay and a second independent operation. No pdata credential, paid supplier
-    commitment, or subsidy activation is requested.
-16. **Stopping condition:** **OPEN, not CLOSED.** Repository readiness, licensed
-    supply, and passing local/live-read-only qualification do not close B8.
-    Closure requires Rule 4 and the nine customer conditions from outside: public
-    discovery, accurate price, one real payment, useful upstream-backed result,
-    provenance/freshness, accurate receipt, no-charge replay, and a second
-    independent successful operation usable by an actual customer.
-17. **Continuation point:** After B8 activation and external proof, mark B8
-    closed and open B9. Engineering is ready for B9 Crypto Intelligence, but B9
-    was not started here.
+12. **External acceptance proof:** **PROVEN.** `prediction.markets` operation
+    `op_51ddd509c878386beec22ad406fbb0ae` and `prediction.market` operation
+    `op_69aa12671017d53c7396e1131c23a0b1` each settled exactly 2000 atomic USDC
+    on Base through the approved CDP facilitator, returned useful fresh
+    pdata/CC BY 4.0-attributed output, and produced receipts
+    `rcpt_74a0f5bed8a43523e6a0573ad51bfb7c` and
+    `rcpt_0af12608e0564f8d016d9650bd3d99e2`. Same-key replay returned the same
+    result/operation/receipt with no second authorization or charge. Payer and
+    receiver balance deltas were exactly 4000 atomic total; managed PostgreSQL
+    reconciliation proved both completed rows and a balanced ledger. No further
+    spend is authorized.
+13. **Visibility shipped:** **PROVEN.** Registry, catalog, pricing, status,
+    operation listing, OpenAPI, x402 discovery, `llms.txt`, skill/agent docs,
+    site pages, and CDP Bazaar agree that Prediction is `live /
+    paid_outcome_verified`, expose five operations at 0.002–0.003 USDC, and
+    preserve pdata/CC BY 4.0 attribution. Eight public JSON surfaces match
+    semantically across API/site/generated source, three text surfaces are
+    byte-identical, and eight HTML pages loaded directly. No stale manual proof
+    count remains. The frozen B12 visual design was not changed.
+14. **Metrics:** **PROVEN AT CLOSE:** two paid effects; 4000 atomic USDC total;
+    two useful results; two receipts; two no-charge replays; two completed
+    durable operations; two target accounting entries; zero supplier cost;
+    balanced ledger; five published Prediction operations; Bazaar indexed and
+    active; 0 open conformance defects. These are owner-funded proof effects,
+    not revenue, demand, or an uptime series.
+15. **Owner approval:** **CONSUMED WITHIN BOUNDS.** Managed migrations,
+    zero-traffic candidate/promotion, public edge/site rollout, and exactly two
+    0.002-USDC operations were explicitly authorized. Total spend was 0.004
+    USDC, equal to and not above the approved ceiling. No pdata credential or
+    paid-supplier commitment was required.
+16. **Stopping condition:** **CLOSED.** Rule 4 and the applicable nine customer
+    conditions are directly proven: technical completion, commercial supply,
+    economics, deployment, public discovery, external execution, bounded
+    payment, useful result with provenance/freshness, accurate receipt,
+    no-charge replay, and a second independent successful operation.
+17. **Continuation point:** B8 is closed. B9 remains `not_started`; await an
+    explicit owner instruction after closure review before opening it.
 
 ---
 
