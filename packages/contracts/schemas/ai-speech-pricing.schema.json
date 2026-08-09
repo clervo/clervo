@@ -3,62 +3,192 @@
   "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-speech-pricing.schema.json",
   "title": "Clervo internal credit-backed speech and transcription pricing",
   "type": "object",
-  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "providerVisibility", "policy", "creditGuard", "competitorReference", "speechRoutes", "transcriptionRoutes"],
+  "required": [
+    "schemaVersion",
+    "priceVersion",
+    "evaluatedAt",
+    "currency",
+    "providerVisibility",
+    "policy",
+    "creditGuard",
+    "competitorReference",
+    "speechRoutes",
+    "transcriptionRoutes"
+  ],
   "$defs": {
     "minutePrice": {
       "type": "object",
-      "required": ["streaming", "prerecorded"],
+      "required": [
+        "streaming",
+        "prerecorded"
+      ],
       "properties": {
-        "streaming": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
-        "prerecorded": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+        "streaming": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "prerecorded": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        }
       },
       "additionalProperties": false
     }
   },
   "properties": {
-    "schemaVersion": { "const": "clervo.ai-speech-pricing.v1" },
-    "priceVersion": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$" },
-    "evaluatedAt": { "type": "string", "format": "date-time" },
-    "currency": { "const": "USD" },
-    "providerVisibility": { "const": "internal_only" },
+    "schemaVersion": {
+      "const": "clervo.ai-speech-pricing.v1"
+    },
+    "priceVersion": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$"
+    },
+    "evaluatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "currency": {
+      "const": "USD"
+    },
+    "providerVisibility": {
+      "const": "internal_only"
+    },
     "policy": {
       "type": "object",
-      "required": ["customerFreeByDefault", "positiveMarginRequiredAtLaunch", "unknownSupplierDebitBlocksSale", "providerPassThroughAccessAllowed", "exactModelSubstitution"],
+      "required": [
+        "customerFreeByDefault",
+        "positiveMarginRequiredAtLaunch",
+        "unknownSupplierDebitBlocksSale",
+        "providerPassThroughAccessAllowed",
+        "exactModelSubstitution",
+        "grossMarginTarget",
+        "creditsJustifyBelowCostPricing",
+        "pricingBasis"
+      ],
       "properties": {
-        "customerFreeByDefault": { "const": false },
-        "positiveMarginRequiredAtLaunch": { "const": false },
-        "unknownSupplierDebitBlocksSale": { "const": false },
-        "providerPassThroughAccessAllowed": { "const": false },
-        "exactModelSubstitution": { "const": "prohibited" }
+        "customerFreeByDefault": {
+          "const": false
+        },
+        "positiveMarginRequiredAtLaunch": {
+          "const": true
+        },
+        "unknownSupplierDebitBlocksSale": {
+          "const": false
+        },
+        "providerPassThroughAccessAllowed": {
+          "const": false
+        },
+        "exactModelSubstitution": {
+          "const": "prohibited"
+        },
+        "grossMarginTarget": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "creditsJustifyBelowCostPricing": {
+          "const": false
+        },
+        "pricingBasis": {
+          "const": "verified_supplier_standard_tier_list_cost"
+        }
       },
       "additionalProperties": false
     },
     "creditGuard": {
       "type": "object",
-      "required": ["ownerReportedBalanceUsd", "speechAllocationUsd", "transcriptionAllocationUsd", "reserveUsd", "maximumDailyShadowDebitUsd", "hardStopRemainingShadowUsd", "applicationLedgerRequiredBeforeCustomerTraffic", "automaticTopUpStatus", "ownerCashOverageAllowed", "denyWhenUsageUnknown"],
+      "required": [
+        "ownerReportedBalanceUsd",
+        "speechAllocationUsd",
+        "transcriptionAllocationUsd",
+        "reserveUsd",
+        "maximumDailyShadowDebitUsd",
+        "hardStopRemainingShadowUsd",
+        "applicationLedgerRequiredBeforeCustomerTraffic",
+        "automaticTopUpStatus",
+        "ownerCashOverageAllowed",
+        "denyWhenUsageUnknown"
+      ],
       "properties": {
-        "ownerReportedBalanceUsd": { "const": 200 },
-        "speechAllocationUsd": { "type": "number", "minimum": 0 },
-        "transcriptionAllocationUsd": { "type": "number", "minimum": 0 },
-        "reserveUsd": { "type": "number", "minimum": 0 },
-        "maximumDailyShadowDebitUsd": { "type": "number", "exclusiveMinimum": 0, "maximum": 200 },
-        "hardStopRemainingShadowUsd": { "type": "number", "minimum": 0, "maximum": 200 },
-        "applicationLedgerRequiredBeforeCustomerTraffic": { "const": true },
-        "automaticTopUpStatus": { "const": "owner_confirmed_disabled" },
-        "ownerCashOverageAllowed": { "const": false },
-        "denyWhenUsageUnknown": { "const": true }
+        "ownerReportedBalanceUsd": {
+          "const": 200
+        },
+        "speechAllocationUsd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "transcriptionAllocationUsd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "reserveUsd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maximumDailyShadowDebitUsd": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 200
+        },
+        "hardStopRemainingShadowUsd": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 200
+        },
+        "applicationLedgerRequiredBeforeCustomerTraffic": {
+          "const": true
+        },
+        "automaticTopUpStatus": {
+          "const": "owner_confirmed_disabled"
+        },
+        "ownerCashOverageAllowed": {
+          "const": false
+        },
+        "denyWhenUsageUnknown": {
+          "const": true
+        }
       },
       "additionalProperties": false
     },
     "competitorReference": {
       "type": "object",
-      "required": ["sourceUrl", "checkedAt", "catalogRecords", "speechPriceRangeUsdPerThousandCharacters", "transcriptionRoutesObserved"],
+      "required": [
+        "sourceUrl",
+        "checkedAt",
+        "catalogRecords",
+        "speechPriceRangeUsdPerThousandCharacters",
+        "transcriptionRoutesObserved"
+      ],
       "properties": {
-        "sourceUrl": { "const": "https://blockrun.ai/api/v1/models" },
-        "checkedAt": { "type": "string", "format": "date-time" },
-        "catalogRecords": { "const": 83 },
-        "speechPriceRangeUsdPerThousandCharacters": { "type": "array", "minItems": 2, "maxItems": 2, "prefixItems": [{ "const": 0.05 }, { "const": 0.3 }], "items": false },
-        "transcriptionRoutesObserved": { "const": 0 }
+        "sourceUrl": {
+          "const": "https://blockrun.ai/api/v1/models"
+        },
+        "checkedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "catalogRecords": {
+          "const": 83
+        },
+        "speechPriceRangeUsdPerThousandCharacters": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "prefixItems": [
+            {
+              "const": 0.05
+            },
+            {
+              "const": 0.3
+            }
+          ],
+          "items": false
+        },
+        "transcriptionRoutesObserved": {
+          "const": 0
+        }
       },
       "additionalProperties": false
     },
@@ -68,15 +198,62 @@
       "maxItems": 2,
       "items": {
         "type": "object",
-        "required": ["modelId", "listingStatus", "positioning", "customerUsdPerThousandCharacters", "shadowUsdPerThousandCharacters", "maximumInputCharacters", "outputFormats"],
+        "required": [
+          "modelId",
+          "listingStatus",
+          "positioning",
+          "customerUsdPerThousandCharacters",
+          "shadowUsdPerThousandCharacters",
+          "maximumInputCharacters",
+          "outputFormats"
+        ],
         "properties": {
-          "modelId": { "enum": ["aura-2-thalia-en", "aura-2-arcas-en"] },
-          "listingStatus": { "const": "sellable" },
-          "positioning": { "enum": ["best_overall_clear_english", "best_overall_natural_english"] },
-          "customerUsdPerThousandCharacters": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
-          "shadowUsdPerThousandCharacters": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
-          "maximumInputCharacters": { "type": "integer", "minimum": 1, "maximum": 100000 },
-          "outputFormats": { "type": "array", "minItems": 6, "maxItems": 6, "uniqueItems": true, "items": { "enum": ["mp3", "opus", "aac", "flac", "wav", "pcm"] } }
+          "modelId": {
+            "enum": [
+              "aura-2-thalia-en",
+              "aura-2-arcas-en"
+            ]
+          },
+          "listingStatus": {
+            "const": "sellable"
+          },
+          "positioning": {
+            "enum": [
+              "best_overall_clear_english",
+              "best_overall_natural_english"
+            ]
+          },
+          "customerUsdPerThousandCharacters": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1
+          },
+          "shadowUsdPerThousandCharacters": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1
+          },
+          "maximumInputCharacters": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "outputFormats": {
+            "type": "array",
+            "minItems": 6,
+            "maxItems": 6,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "mp3",
+                "opus",
+                "aac",
+                "flac",
+                "wav",
+                "pcm"
+              ]
+            }
+          }
         },
         "additionalProperties": false
       }
@@ -87,16 +264,55 @@
       "maxItems": 1,
       "items": {
         "type": "object",
-        "required": ["modelId", "listingStatus", "positioning", "customerUsdPerMinute", "shadowUsdPerMinute", "keytermCustomerUsdPerMinute", "keytermShadowUsdPerMinute", "knownLimitation"],
+        "required": [
+          "modelId",
+          "listingStatus",
+          "positioning",
+          "customerUsdPerMinute",
+          "shadowUsdPerMinute",
+          "keytermCustomerUsdPerMinute",
+          "keytermShadowUsdPerMinute",
+          "knownLimitation"
+        ],
         "properties": {
-          "modelId": { "const": "nova-3" },
-          "listingStatus": { "enum": ["priced_qualified_integration_pending", "priced_qualified_adapter_ready_contract_pending", "qualified_adapter_ready_contract_pending", "sellable"] },
-          "positioning": { "enum": ["best_general_english", "best_funded_general_english"] },
-          "customerUsdPerMinute": { "$ref": "#/$defs/minutePrice" },
-          "shadowUsdPerMinute": { "$ref": "#/$defs/minutePrice" },
-          "keytermCustomerUsdPerMinute": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
-          "keytermShadowUsdPerMinute": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
-          "knownLimitation": { "type": "string", "minLength": 1, "maxLength": 500 }
+          "modelId": {
+            "const": "nova-3"
+          },
+          "listingStatus": {
+            "enum": [
+              "priced_qualified_integration_pending",
+              "priced_qualified_adapter_ready_contract_pending",
+              "qualified_adapter_ready_contract_pending",
+              "sellable"
+            ]
+          },
+          "positioning": {
+            "enum": [
+              "best_general_english",
+              "best_funded_general_english"
+            ]
+          },
+          "customerUsdPerMinute": {
+            "$ref": "#/$defs/minutePrice"
+          },
+          "shadowUsdPerMinute": {
+            "$ref": "#/$defs/minutePrice"
+          },
+          "keytermCustomerUsdPerMinute": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1
+          },
+          "keytermShadowUsdPerMinute": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1
+          },
+          "knownLimitation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
         },
         "additionalProperties": false
       }

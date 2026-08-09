@@ -30,10 +30,25 @@ test('credit-backed multimodal prices are paid, competitive, bounded, and honest
   assert.ok(pricing.embeddingRoutes.every(({ listingStatus }) => listingStatus === 'sellable'));
   assert.ok(pricing.imageRoutes.every(({ listingStatus }) => listingStatus === 'sellable'));
   assert.equal(pricing.videoRoutes.find(({ modelId }) => modelId.includes('lite'))?.listingStatus, 'priced_preview_unqualified');
-  assert.ok(pricing.imageRoutes.every((route) => route.customerUsdPerImage < route.shadowUsdPerImage));
+  // Reversed on 2026-08-07: these previously required customer price BELOW
+  // supplier cost, which pinned the launch subsidy into the test suite. The
+  // owner-approved policy is a positive gross margin against verified supplier
+  // standard-tier list cost, so selling below cost is now the failure.
+  assert.ok(pricing.imageRoutes.every((route) => route.customerUsdPerImage > route.shadowUsdPerImage));
   assert.ok(pricing.videoRoutes.every((route) => route.customerUsdPerSecond < route.shadowUsdPerSecond));
-  assert.ok(pricing.imageRoutes[0].customerUsdPerImage <= pricing.competitorReference.imagePriceRangeUsd[0]);
+  // No longer asserts undercutting the competitor floor: sustainable margin
+  // outranks being cheapest, and the cheapest competitor route may itself be
+  // priced below our supplier cost.
+  assert.ok(pricing.imageRoutes.every((route) => route.customerUsdPerImage > 0));
   assert.ok(pricing.videoRoutes.find(({ listingStatus }) => listingStatus === 'sellable').customerUsdPerSecond < pricing.competitorReference.videoPriceRangeUsdPerSecond[0]);
-  assert.ok(pricing.embeddingRoutes.every((route) => route.customerUsdPerMillionInputTokens < route.shadowUsdPerMillionInputTokens));
+  assert.ok(pricing.embeddingRoutes.every((route) => route.customerUsdPerMillionInputTokens > route.shadowUsdPerMillionInputTokens));
+  // Chat routes were the largest subsidy: every dimension must now clear cost.
+  for (const route of pricing.chatRoutes) {
+    for (const key of ['input', 'cachedInput', 'output', 'reasoning']) {
+      assert.ok(route.customerPriceUsdPerMillion[key] > route.shadowPriceUsdPerMillion[key], `${route.modelId} ${key} prices at or below supplier cost`);
+    }
+  }
+  assert.equal(pricing.policy.positiveMarginRequiredAtLaunch, true);
+  assert.equal(pricing.policy.creditsJustifyBelowCostPricing, false);
   assert.equal(pricing.competitorReference.embeddingRoutesObserved, 0);
 });

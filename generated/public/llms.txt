@@ -9,10 +9,10 @@ Current verified status:
 - Frozen release candidate: clervo-private-core-2026-08-02.2
 - Frozen interface hash: sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622
 - Six product cores: privately qualified and compatibility-frozen
-- Public lifecycle: raw cited Search and bounded paid AI chat are callable; synthesized Search, AI media, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable
-- Projected operation IDs: search.web, search.answer, ai.chat
+- Public lifecycle: raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable
+- Projected operation IDs: search.web, search.answer
 - Public API callable: yes
-- x402 public payment: available for search.web at a maximum charge of 0.006 USDC and for ai.chat through an exact request-derived maximum-charge quote on Base
+- x402 public payment: available for search.web at a maximum charge of 0.006 USDC on Base
 - x402 private proof: one owner-funded useful result settled and replayed without a second charge
 - Commercial proof: no customer revenue or demand claimed
 - Public price: search.web maximum charge is 0.006 USDC; search.answer has no public offer
@@ -38,11 +38,11 @@ Current verified status:
 
 ## Observed lifecycle state and proof level
 
-Probed from the deployed system at 2026-08-06T17:01:41.422Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
+Probed from the deployed system at 2026-08-07T09:06:22.253Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
 
 | Product | Lifecycle state | Proof level |
 |---|---|---|
-| AI | live | quote_observed_unpaid |
+| AI | supply_paused (no_route_currently_live) | none |
 | Crypto Intelligence | unavailable (commercial_rights_blocked) | none |
 | Prediction Intelligence | unavailable (commercial_rights_blocked) | none |
 | Multi-chain RPC | unavailable (commercial_rights_blocked) | none |
@@ -66,34 +66,10 @@ Paid requests go to `POST https://api.clervo.dev/v1/search/paid`, which returns 
 - [Agent skill](/skill.md): when to use Clervo and how to make the first call.
 - [Agent reference](/agent.md): identity, observed state, idempotency contract, and boundaries.
 
-## Command line
-
-One install, and a real result before a wallet exists:
-
-```bash
-npx @clervo/router search "who is shipping x402 in production"
-```
-
-No account, no API key, no wallet, no funding. The free path above is what that command calls.
-
-Paid use is opt-in and comes later, in this order:
-
-```bash
-clervo catalog                      # what is being served right now
-clervo quote search.web "<query>"   # the exact price, without paying it
-clervo wallet create                # a dedicated wallet, only when you want a paid product
-clervo wallet address               # fund it with USDC on Base mainnet
-clervo run search.web "<query>"     # pay for one call, with the price shown first
-clervo replay <key>                 # the same result again, never a second charge
-clervo doctor                       # check the machine end to end
-```
-
-`clervo wallet create` never overwrites an existing wallet, and `clervo wallet restore` refuses if the wallet it would replace holds a balance. Payment is a signed USDC authorization on Base, so no gas is paid from that wallet. If a call fails after the authorization was sent, the settlement is unknown: the client records it, refuses to spend again, and resolves it with `clervo reconcile`.
-
 ## Agent discovery
 
 - [`GET https://api.clervo.dev/v1/models`](/models.json): every catalogued AI route with its exact model identity, lifecycle state, proof level, and observed price. OpenAI list shape.
 - [`GET https://api.clervo.dev/.well-known/x402`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.
 - `GET https://api.clervo.dev/llms.txt`: this document, served from the API host as well as the site.
 
-Model list: 21 catalogued routes, 18 sellable. Payment manifest: 3 paid resources.
+Model list: 21 catalogued routes, 0 sellable. Payment manifest: 2 paid resources.

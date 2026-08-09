@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `packages/catalog/live-registry.json`, probed at 2026-08-06T17:01:41.422Z. Release: `777b7c616e3e384c9a4b2b7112cef74521b7f7a5`.
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-07T09:06:22.253Z. Release: `777b7c616e3e384c9a4b2b7112cef74521b7f7a5`.
 
 ## Identity
 
@@ -17,7 +17,7 @@ Source: `packages/catalog/live-registry.json`, probed at 2026-08-06T17:01:41.422
 
 | Product | ID | Lifecycle state | Proof level |
 |---|---|---|---|
-| AI | `ai` | live | quote_observed_unpaid |
+| AI | `ai` | supply_paused (no_route_currently_live) | none |
 | Crypto Intelligence | `crypto_intelligence` | unavailable (commercial_rights_blocked) | none |
 | Prediction Intelligence | `prediction` | unavailable (commercial_rights_blocked) | none |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
@@ -66,7 +66,7 @@ curl -sS https://api.clervo.dev/v1/search/free \
 
 ## Model selection
 
-- 21 catalogued routes; 18 sellable now.
+- 21 catalogued routes; 0 sellable now.
 - Send `clervo.routeId`'s exact model identity as `model` on `POST /v1/ai/execute`.
 - A route with `clervo.lifecycleState: supply_paused` is listed with its reason and is not sellable. Do not select it; it stays listed because the supply is owned and returning.
 - `clervo.observedPrice` is the quote observed at the probe above. The 402 returned for your own request is the binding one.

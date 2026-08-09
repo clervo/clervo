@@ -37,6 +37,12 @@ const contractTests = [
   // all. This suite binds them to the probed registry so a document can never
   // list supply the deployed system does not serve.
   'tests/contract/agent-discovery.test.mjs',
+  // Route integrity: a listed route must sell the exact model it names, must not
+  // reach `live` on an edge quote alone or on an expired qualification, and must
+  // stay visible with a true reason when it is paused. Nothing here pins a route
+  // count, so supply can change without a test forcing a dead route to stay
+  // listed.
+  'tests/contract/ai-route-integrity.test.mjs',
 ];
 
 const gates = [

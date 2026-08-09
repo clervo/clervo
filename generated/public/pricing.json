@@ -38,14 +38,6 @@
       "priceVersion": "search-answer-candidate-2"
     },
     {
-      "productId": "ai.chat",
-      "publicAvailable": true,
-      "model": "x402_request_quote",
-      "displayPrice": null,
-      "maximumChargeRequired": true,
-      "priceVersion": "qualified-route-request-derived"
-    },
-    {
       "productId": "sandbox.run",
       "publicAvailable": true,
       "model": "fixed_request",

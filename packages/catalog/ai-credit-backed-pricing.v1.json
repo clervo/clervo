@@ -1,16 +1,19 @@
 {
   "schemaVersion": "clervo.ai-credit-backed-pricing.v1",
-  "priceVersion": "2026-08-02.2",
-  "evaluatedAt": "2026-08-02T07:59:28.668Z",
+  "priceVersion": "2026-08-07.1",
+  "evaluatedAt": "2026-08-07T09:30:00.000Z",
   "currency": "USD",
   "providerVisibility": "internal_only",
   "policy": {
     "customerFreeByDefault": false,
-    "positiveMarginRequiredAtLaunch": false,
+    "positiveMarginRequiredAtLaunch": true,
     "unknownSupplierDebitBlocksSale": false,
-    "qualifiedRoutesAreSellable": true,
+    "qualifiedRoutesAreSellable": false,
     "exactRouteSubstitution": "prohibited",
-    "previewMustBeDisclosed": true
+    "previewMustBeDisclosed": true,
+    "grossMarginTarget": 0.12,
+    "pricingBasis": "verified_supplier_standard_tier_list_cost",
+    "creditsJustifyBelowCostPricing": false
   },
   "creditGuard": {
     "ownerReportedBalanceUsd": 1700,
@@ -31,8 +34,14 @@
     "sourceUrl": "https://blockrun.ai/api/v1/models",
     "checkedAt": "2026-08-02T02:40:00.000Z",
     "catalogRecords": 83,
-    "imagePriceRangeUsd": [0.015, 0.1],
-    "videoPriceRangeUsdPerSecond": [0.05, 0.319],
+    "imagePriceRangeUsd": [
+      0.015,
+      0.1
+    ],
+    "videoPriceRangeUsdPerSecond": [
+      0.05,
+      0.319
+    ],
     "embeddingRoutesObserved": 0
   },
   "chatRoutes": [
@@ -40,8 +49,18 @@
       "modelId": "gemini-3.5-flash-lite",
       "listingStatus": "sellable",
       "positioning": "best_value",
-      "customerPriceUsdPerMillion": { "input": 0.1, "cachedInput": 0.01, "output": 0.75, "reasoning": 0.75 },
-      "shadowPriceUsdPerMillion": { "input": 0.3, "cachedInput": 0.03, "output": 2.5, "reasoning": 2.5 },
+      "customerPriceUsdPerMillion": {
+        "input": 0.341,
+        "cachedInput": 0.0341,
+        "output": 2.841,
+        "reasoning": 2.841
+      },
+      "shadowPriceUsdPerMillion": {
+        "input": 0.3,
+        "cachedInput": 0.03,
+        "output": 2.5,
+        "reasoning": 2.5
+      },
       "contextTokens": 1048576,
       "maximumOutputTokens": 65536
     },
@@ -49,8 +68,18 @@
       "modelId": "gemini-3.6-flash",
       "listingStatus": "sellable",
       "positioning": "best_overall",
-      "customerPriceUsdPerMillion": { "input": 0.75, "cachedInput": 0.075, "output": 3.75, "reasoning": 3.75 },
-      "shadowPriceUsdPerMillion": { "input": 1.5, "cachedInput": 0.15, "output": 7.5, "reasoning": 7.5 },
+      "customerPriceUsdPerMillion": {
+        "input": 1.7046,
+        "cachedInput": 0.1705,
+        "output": 8.5228,
+        "reasoning": 8.5228
+      },
+      "shadowPriceUsdPerMillion": {
+        "input": 1.5,
+        "cachedInput": 0.15,
+        "output": 7.5,
+        "reasoning": 7.5
+      },
       "contextTokens": 1048576,
       "maximumOutputTokens": 65536
     },
@@ -58,8 +87,18 @@
       "modelId": "gemini-3.5-flash",
       "listingStatus": "sellable",
       "positioning": "fallback",
-      "customerPriceUsdPerMillion": { "input": 0.75, "cachedInput": 0.075, "output": 4.5, "reasoning": 4.5 },
-      "shadowPriceUsdPerMillion": { "input": 1.5, "cachedInput": 0.15, "output": 9, "reasoning": 9 },
+      "customerPriceUsdPerMillion": {
+        "input": 1.7046,
+        "cachedInput": 0.1705,
+        "output": 10.2273,
+        "reasoning": 10.2273
+      },
+      "shadowPriceUsdPerMillion": {
+        "input": 1.5,
+        "cachedInput": 0.15,
+        "output": 9,
+        "reasoning": 9
+      },
       "contextTokens": 1048576,
       "maximumOutputTokens": 65536
     }
@@ -69,7 +108,7 @@
       "modelId": "gemini-embedding-001",
       "listingStatus": "sellable",
       "positioning": "best_overall",
-      "customerUsdPerMillionInputTokens": 0.05,
+      "customerUsdPerMillionInputTokens": 0.1705,
       "shadowUsdPerMillionInputTokens": 0.15,
       "defaultDimensions": 3072,
       "maximumDimensions": 3072,
@@ -77,16 +116,70 @@
     }
   ],
   "imageRoutes": [
-    { "modelId": "gemini-3.1-flash-lite-image", "listingStatus": "sellable", "positioning": "fastest_value", "resolution": "1K", "customerUsdPerImage": 0.015, "shadowUsdPerImage": 0.034 },
-    { "modelId": "gemini-3.1-flash-image", "listingStatus": "sellable", "positioning": "balanced", "resolution": "1K", "customerUsdPerImage": 0.035, "shadowUsdPerImage": 0.067 },
-    { "modelId": "gemini-3-pro-image", "listingStatus": "sellable", "positioning": "best_quality", "resolution": "1K", "customerUsdPerImage": 0.075, "shadowUsdPerImage": 0.134 }
+    {
+      "modelId": "gemini-3.1-flash-lite-image",
+      "listingStatus": "sellable",
+      "positioning": "fastest_value",
+      "resolution": "1K",
+      "customerUsdPerImage": 0.04,
+      "shadowUsdPerImage": 0.034
+    },
+    {
+      "modelId": "gemini-3.1-flash-image",
+      "listingStatus": "sellable",
+      "positioning": "balanced",
+      "resolution": "1K",
+      "customerUsdPerImage": 0.08,
+      "shadowUsdPerImage": 0.067
+    },
+    {
+      "modelId": "gemini-3-pro-image",
+      "listingStatus": "sellable",
+      "positioning": "best_quality",
+      "resolution": "1K",
+      "customerUsdPerImage": 0.16,
+      "shadowUsdPerImage": 0.134
+    }
   ],
   "videoRoutes": [
-    { "modelId": "veo-3.1-lite-generate-001", "listingStatus": "priced_preview_unqualified", "positioning": "lowest_cost_preview", "resolution": "720p", "audioIncluded": false, "customerUsdPerSecond": 0.02, "shadowUsdPerSecond": 0.03 },
-    { "modelId": "veo-3.1-fast-generate-001", "listingStatus": "sellable", "positioning": "best_value", "resolution": "720p", "audioIncluded": false, "customerUsdPerSecond": 0.04, "shadowUsdPerSecond": 0.08 },
-    { "modelId": "veo-3.1-generate-001", "listingStatus": "sellable", "positioning": "best_quality", "resolution": "720p", "audioIncluded": false, "customerUsdPerSecond": 0.1, "shadowUsdPerSecond": 0.2 }
+    {
+      "modelId": "veo-3.1-lite-generate-001",
+      "listingStatus": "priced_preview_unqualified",
+      "positioning": "lowest_cost_preview",
+      "resolution": "720p",
+      "audioIncluded": false,
+      "customerUsdPerSecond": 0.02,
+      "shadowUsdPerSecond": 0.03
+    },
+    {
+      "modelId": "veo-3.1-fast-generate-001",
+      "listingStatus": "sellable",
+      "positioning": "best_value",
+      "resolution": "720p",
+      "audioIncluded": false,
+      "customerUsdPerSecond": 0.04,
+      "shadowUsdPerSecond": 0.08
+    },
+    {
+      "modelId": "veo-3.1-generate-001",
+      "listingStatus": "sellable",
+      "positioning": "best_quality",
+      "resolution": "720p",
+      "audioIncluded": false,
+      "customerUsdPerSecond": 0.1,
+      "shadowUsdPerSecond": 0.2
+    }
   ],
   "musicRoutes": [
-    { "modelId": "lyria-002", "listingStatus": "qualified_adapter_ready_contract_pending", "positioning": "best_value", "durationSeconds": 30, "instrumentalOnly": true, "customerUsdPerClip": 0.1, "shadowUsdPerClip": 0.06, "qualityGrade": "unranked" }
+    {
+      "modelId": "lyria-002",
+      "listingStatus": "qualified_adapter_ready_contract_pending",
+      "positioning": "best_value",
+      "durationSeconds": 30,
+      "instrumentalOnly": true,
+      "customerUsdPerClip": 0.1,
+      "shadowUsdPerClip": 0.06,
+      "qualityGrade": "unranked"
+    }
   ]
 }

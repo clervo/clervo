@@ -1,17 +1,19 @@
 {
   "schemaVersion": "clervo.ai-edge-free-pricing.v1",
-  "priceVersion": "2026-08-02.7",
-  "evaluatedAt": "2026-08-02T08:37:20.822Z",
+  "priceVersion": "2026-08-07.1",
+  "evaluatedAt": "2026-08-07T09:30:00.000Z",
   "currency": "USD",
   "providerVisibility": "internal_only",
   "policy": {
     "customerFreeByDefault": false,
-    "positiveMarginRequiredAtLaunch": false,
+    "positiveMarginRequiredAtLaunch": true,
     "unknownSupplierDebitBlocksPricing": false,
-    "qualifiedRoutesAreSellable": true,
+    "qualifiedRoutesAreSellable": false,
     "paidPlanAssetsSellable": false,
     "providerPassThroughAllowed": false,
-    "thirdPartyModelTermsRequired": true
+    "thirdPartyModelTermsRequired": true,
+    "grossMarginTarget": 0.12,
+    "creditsJustifyBelowCostPricing": false
   },
   "freeGuard": {
     "dailyNeurons": 10000,
@@ -387,10 +389,10 @@
       "customerPrices": [
         {
           "unit": "per 1k characters",
-          "price": 0.012
+          "price": 0.04
         }
       ],
-      "pricingMethod": "introductory_40_percent_shadow",
+      "pricingMethod": "supplier_cost_plus_12_percent_margin",
       "termsUrl": "https://deepgram.com/terms"
     },
     {
@@ -948,14 +950,14 @@
       "customerPrices": [
         {
           "unit": "per M input tokens",
-          "price": 0.108
+          "price": 0.3069
         },
         {
           "unit": "per M output tokens",
-          "price": 0.34
+          "price": 0.966
         }
       ],
-      "pricingMethod": "introductory_40_percent_shadow",
+      "pricingMethod": "supplier_cost_plus_12_percent_margin",
       "termsUrl": "https://github.com/meta-llama/llama-models/blob/main/models/llama4/LICENSE"
     },
     {
@@ -1249,14 +1251,14 @@
       "customerPrices": [
         {
           "unit": "per M input tokens",
-          "price": 0.2
+          "price": 0.5682
         },
         {
           "unit": "per M output tokens",
-          "price": 0.6
+          "price": 1.7046
         }
       ],
-      "pricingMethod": "introductory_40_percent_shadow",
+      "pricingMethod": "supplier_cost_plus_12_percent_margin",
       "termsUrl": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/"
     },
     {
@@ -1280,14 +1282,14 @@
       "customerPrices": [
         {
           "unit": "per M input tokens",
-          "price": 0.14
+          "price": 0.3978
         },
         {
           "unit": "per M output tokens",
-          "price": 0.3
+          "price": 0.8523
         }
       ],
-      "pricingMethod": "introductory_40_percent_shadow",
+      "pricingMethod": "supplier_cost_plus_12_percent_margin",
       "termsUrl": null
     },
     {
@@ -1311,14 +1313,14 @@
       "customerPrices": [
         {
           "unit": "per M input tokens",
-          "price": 0.08
+          "price": 0.2273
         },
         {
           "unit": "per M output tokens",
-          "price": 0.12
+          "price": 0.341
         }
       ],
-      "pricingMethod": "introductory_40_percent_shadow",
+      "pricingMethod": "supplier_cost_plus_12_percent_margin",
       "termsUrl": null
     },
     {
@@ -1483,14 +1485,14 @@
       "customerPrices": [
         {
           "unit": "per M input tokens",
-          "price": 0.02036
+          "price": 0.0579
         },
         {
           "unit": "per M output tokens",
-          "price": 0.134
+          "price": 0.3807
         }
       ],
-      "pricingMethod": "introductory_40_percent_shadow",
+      "pricingMethod": "supplier_cost_plus_12_percent_margin",
       "termsUrl": null
     },
     {

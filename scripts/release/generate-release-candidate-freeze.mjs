@@ -42,8 +42,21 @@ const postFreezeSchemaNames = new Set([
 // widening constrains the same fields to the value sets the catalog reports and
 // removes no requirement. The wire contract is unchanged, so the frozen
 // interface is unchanged, and the frozen hash stands.
+//
+// The four AI pricing schemas were edited again on 2026-08-07 for the B7
+// commercial repricing. Each had `priceVersion` pinned as a `const`, which made
+// it impossible to revise a price without editing the schema, and each pinned
+// `positiveMarginRequiredAtLaunch: false` / `qualifiedRoutesAreSellable: true`
+// -- the launch subsidy stance, now reversed by owner decision. priceVersion is
+// now a dated pattern, the two policy pins are inverted, and grossMarginTarget
+// plus creditsJustifyBelowCostPricing were added as required fields. These are
+// internal pricing catalogs, not wire contracts: no request or response shape
+// changes, so the frozen interface is unchanged and the frozen hashes stand.
 const frozenSchemaHashes = new Map([
   ['ai-speech-pricing.schema.json', 'sha256:b290584d94341427b2fcb4d01ca77f23f4172ab507317ea670c18794ef364ed2'],
+  ['ai-credit-backed-pricing.schema.json', 'sha256:46f824e555a0b9df42099862f323fef3b59bc4a74b800ef455f12b51aa8c3c9c'],
+  ['ai-edge-free-pricing.schema.json', 'sha256:cb62ad263ad47f5120d4499fcf4ffbf61ac388155b3a9b0dab4a9f0c08cf3ce6'],
+  ['ai-free-tier-pricing.schema.json', 'sha256:7964a41a938e52b5925f62f3aff8171793ef9e3303285c2136d1b710eb5e3b22'],
 ]);
 const priceFiles = [
   'packages/contracts/src/search-http.ts',

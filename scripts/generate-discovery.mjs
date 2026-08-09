@@ -669,7 +669,25 @@ if (quickStartCurl !== null) {
 // The command-line client, described only when the free path it opens with is
 // actually being served. A reader must not be told to install something whose
 // first command would fail against the deployed system.
-if (freeEntryRoute !== null && publicBaseUrl !== null) {
+//
+// Serving the free route is necessary but not sufficient: `npx @clervo/router`
+// resolves against the npm registry, so until the package is actually published
+// that first command fails for every reader no matter how healthy the route is.
+// The section is therefore also gated on the published package, which is why it
+// is absent while publication remains outstanding.
+const routerPublished = await (async () => {
+  try {
+    const response = await fetch('https://registry.npmjs.org/@clervo/router', { redirect: 'error', signal: AbortSignal.timeout(15_000) });
+    if (!response.ok) return false;
+    const document = await response.json();
+    return Object.keys(document?.versions ?? {}).length > 0;
+  } catch {
+    // An unreachable registry is not evidence of publication.
+    return false;
+  }
+})();
+
+if (freeEntryRoute !== null && publicBaseUrl !== null && routerPublished) {
   llms += [
     '',
     '## Command line',

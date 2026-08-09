@@ -3,71 +3,233 @@
   "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-free-tier-pricing.schema.json",
   "title": "Clervo internal recurring-free AI asset pricing",
   "type": "object",
-  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "providerVisibility", "policy", "rateGuard", "assets"],
+  "required": [
+    "schemaVersion",
+    "priceVersion",
+    "evaluatedAt",
+    "currency",
+    "providerVisibility",
+    "policy",
+    "rateGuard",
+    "assets"
+  ],
   "$defs": {
-    "nullablePrice": { "type": ["number", "null"], "exclusiveMinimum": 0, "maximum": 100 },
+    "nullablePrice": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "exclusiveMinimum": 0,
+      "maximum": 100
+    },
     "asset": {
       "type": "object",
-      "required": ["modelId", "assetType", "lifecycle", "listingStatus", "qualityGrade", "positioning", "customerUnit", "customerPrice", "shadowPrice", "supplierPriceKnown"],
+      "required": [
+        "modelId",
+        "assetType",
+        "lifecycle",
+        "listingStatus",
+        "qualityGrade",
+        "positioning",
+        "customerUnit",
+        "customerPrice",
+        "shadowPrice",
+        "supplierPriceKnown"
+      ],
       "properties": {
-        "modelId": { "type": "string", "minLength": 1, "maxLength": 160 },
-        "assetType": { "enum": ["chat", "moderation", "speech", "transcription"] },
-        "lifecycle": { "enum": ["production", "preview"] },
-        "listingStatus": { "enum": ["sellable", "sellable_preview", "priced_pending_qualification"] },
-        "qualityGrade": { "enum": ["best", "good", "poor", "unranked"] },
-        "positioning": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" },
-        "customerUnit": { "enum": ["USD_per_million_tokens", "USD_per_thousand_characters", "USD_per_minute"] },
+        "modelId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "assetType": {
+          "enum": [
+            "chat",
+            "moderation",
+            "speech",
+            "transcription"
+          ]
+        },
+        "lifecycle": {
+          "enum": [
+            "production",
+            "preview"
+          ]
+        },
+        "listingStatus": {
+          "enum": [
+            "sellable",
+            "sellable_preview",
+            "priced_pending_qualification"
+          ]
+        },
+        "qualityGrade": {
+          "enum": [
+            "best",
+            "good",
+            "poor",
+            "unranked"
+          ]
+        },
+        "positioning": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{2,63}$"
+        },
+        "customerUnit": {
+          "enum": [
+            "USD_per_million_tokens",
+            "USD_per_thousand_characters",
+            "USD_per_minute"
+          ]
+        },
         "customerPrice": {
           "type": "object",
-          "required": ["input", "output"],
-          "properties": { "input": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 }, "output": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 } },
+          "required": [
+            "input",
+            "output"
+          ],
+          "properties": {
+            "input": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 100
+            },
+            "output": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 100
+            }
+          },
           "additionalProperties": false
         },
         "shadowPrice": {
           "type": "object",
-          "required": ["input", "output"],
-          "properties": { "input": { "$ref": "#/$defs/nullablePrice" }, "output": { "$ref": "#/$defs/nullablePrice" } },
+          "required": [
+            "input",
+            "output"
+          ],
+          "properties": {
+            "input": {
+              "$ref": "#/$defs/nullablePrice"
+            },
+            "output": {
+              "$ref": "#/$defs/nullablePrice"
+            }
+          },
           "additionalProperties": false
         },
-        "supplierPriceKnown": { "type": "boolean" }
+        "supplierPriceKnown": {
+          "type": "boolean"
+        }
       },
       "additionalProperties": false
     }
   },
   "properties": {
-    "schemaVersion": { "const": "clervo.ai-free-tier-pricing.v1" },
-    "priceVersion": { "const": "2026-08-02.2" },
-    "evaluatedAt": { "type": "string", "format": "date-time" },
-    "currency": { "const": "USD" },
-    "providerVisibility": { "const": "internal_only" },
+    "schemaVersion": {
+      "const": "clervo.ai-free-tier-pricing.v1"
+    },
+    "priceVersion": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$"
+    },
+    "evaluatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "currency": {
+      "const": "USD"
+    },
+    "providerVisibility": {
+      "const": "internal_only"
+    },
     "policy": {
       "type": "object",
-      "required": ["customerFreeByDefault", "positiveMarginRequiredAtLaunch", "unknownSupplierDebitBlocksPricing", "unknownSupplierDebitBlocksSale", "qualifiedRoutesAreSellable", "providerPassThroughAllowed", "multiAccountLimitBypassAllowed", "previewMustBeDisclosed"],
+      "required": [
+        "customerFreeByDefault",
+        "positiveMarginRequiredAtLaunch",
+        "unknownSupplierDebitBlocksPricing",
+        "unknownSupplierDebitBlocksSale",
+        "qualifiedRoutesAreSellable",
+        "providerPassThroughAllowed",
+        "multiAccountLimitBypassAllowed",
+        "previewMustBeDisclosed",
+        "grossMarginTarget",
+        "creditsJustifyBelowCostPricing"
+      ],
       "properties": {
-        "customerFreeByDefault": { "const": false },
-        "positiveMarginRequiredAtLaunch": { "const": false },
-        "unknownSupplierDebitBlocksPricing": { "const": false },
-        "unknownSupplierDebitBlocksSale": { "const": false },
-        "qualifiedRoutesAreSellable": { "const": true },
-        "providerPassThroughAllowed": { "const": false },
-        "multiAccountLimitBypassAllowed": { "const": false },
-        "previewMustBeDisclosed": { "const": true }
+        "customerFreeByDefault": {
+          "const": false
+        },
+        "positiveMarginRequiredAtLaunch": {
+          "const": true
+        },
+        "unknownSupplierDebitBlocksPricing": {
+          "const": false
+        },
+        "unknownSupplierDebitBlocksSale": {
+          "const": false
+        },
+        "qualifiedRoutesAreSellable": {
+          "const": false
+        },
+        "providerPassThroughAllowed": {
+          "const": false
+        },
+        "multiAccountLimitBypassAllowed": {
+          "const": false
+        },
+        "previewMustBeDisclosed": {
+          "const": true
+        },
+        "grossMarginTarget": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "creditsJustifyBelowCostPricing": {
+          "const": false
+        }
       },
       "additionalProperties": false
     },
     "rateGuard": {
       "type": "object",
-      "required": ["freeTierHardCap", "automaticPaidOverageAllowed", "perModelLimitsRequired", "queueAndBackpressureRequired", "customerAllowanceMustFitSupplierLimit"],
+      "required": [
+        "freeTierHardCap",
+        "automaticPaidOverageAllowed",
+        "perModelLimitsRequired",
+        "queueAndBackpressureRequired",
+        "customerAllowanceMustFitSupplierLimit"
+      ],
       "properties": {
-        "freeTierHardCap": { "const": true },
-        "automaticPaidOverageAllowed": { "const": false },
-        "perModelLimitsRequired": { "const": true },
-        "queueAndBackpressureRequired": { "const": true },
-        "customerAllowanceMustFitSupplierLimit": { "const": true }
+        "freeTierHardCap": {
+          "const": true
+        },
+        "automaticPaidOverageAllowed": {
+          "const": false
+        },
+        "perModelLimitsRequired": {
+          "const": true
+        },
+        "queueAndBackpressureRequired": {
+          "const": true
+        },
+        "customerAllowanceMustFitSupplierLimit": {
+          "const": true
+        }
       },
       "additionalProperties": false
     },
-    "assets": { "type": "array", "minItems": 15, "maxItems": 15, "uniqueItems": true, "items": { "$ref": "#/$defs/asset" } }
+    "assets": {
+      "type": "array",
+      "minItems": 15,
+      "maxItems": 15,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/asset"
+      }
+    }
   },
   "additionalProperties": false
 }

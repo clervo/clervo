@@ -1,0 +1,52 @@
+name: AI qualification expiry guard
+
+# All 21 route qualifications shared one expiry date, and nothing would have
+# reported that until the routes had already gone stale. This runs the guard
+# daily and on every change to the catalog, so an approaching expiry shows up as
+# a failing check with time left to requalify.
+#
+# The guard only reads the catalog. Requalification stays a deliberate action
+# (`npm run ai:requalify`) because it calls suppliers with production
+# credentials, which is not something a scheduled job should do unattended.
+
+on:
+  schedule:
+    # 06:14 UTC — off the hour, so this does not pile onto the top-of-hour peak.
+    - cron: '14 6 * * *'
+  pull_request:
+    paths:
+      - 'packages/catalog/ai-model-catalog.v1.json'
+      - 'scripts/ai/check-qualification-expiry.mjs'
+      - '.github/workflows/ai-qualification-expiry.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/catalog/ai-model-catalog.v1.json'
+      - 'scripts/ai/check-qualification-expiry.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-qualification-expiry-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  expiry:
+    name: Check route qualification expiry
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Use pinned Node.js runtime
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Check qualification expiry
+        run: node ./scripts/ai/check-qualification-expiry.mjs

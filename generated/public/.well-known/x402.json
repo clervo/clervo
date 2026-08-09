@@ -26,7 +26,7 @@
           }
         }
       ],
-      "lastUpdated": 1786035701,
+      "lastUpdated": 1786093582,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -42,50 +42,6 @@
           "indexLastCrawledAt": "2026-08-06T16:59:46.261Z",
           "failedChecks": []
         }
-      }
-    },
-    {
-      "resource": "https://api.clervo.dev/v1/ai/execute",
-      "type": "http",
-      "x402Version": 2,
-      "accepts": [
-        {
-          "scheme": "exact",
-          "network": "eip155:8453",
-          "amount": "1000",
-          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-          "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-          "maxTimeoutSeconds": 60,
-          "extra": {
-            "clervo": {
-              "operationId": "ai.chat",
-              "priceModel": "request_derived_per_model",
-              "priceVersion": "ai-2026-08-02.7-ai.route.cf_meta_llama_4_scout_17b_16e_instruct-min1000",
-              "amountIsBinding": false,
-              "exampleRouteId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
-              "lifecycleState": "live",
-              "proofLevel": "quote_observed_unpaid"
-            }
-          }
-        }
-      ],
-      "lastUpdated": 1786035701,
-      "metadata": {
-        "category": "ai",
-        "provider": "clervo",
-        "description": "Bounded ai.chat execution",
-        "method": "POST",
-        "bodyType": "json",
-        "idempotency": "idempotency-key header; the same key with the same body replays without a second charge",
-        "bazaarExtensionPresent": true,
-        "bazaar": {
-          "validatorAccepted": true,
-          "indexed": false,
-          "indexActive": null,
-          "indexLastCrawledAt": null,
-          "failedChecks": []
-        },
-        "modelList": "https://api.clervo.dev/v1/models"
       }
     },
     {
@@ -113,7 +69,7 @@
           }
         }
       ],
-      "lastUpdated": 1786035701,
+      "lastUpdated": 1786093582,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -133,15 +89,15 @@
     }
   ],
   "pagination": {
-    "limit": 3,
+    "limit": 2,
     "offset": 0,
-    "total": 3
+    "total": 2
   },
   "clervo": {
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-06T17:01:41.422Z",
+      "observedAt": "2026-08-07T09:06:22.253Z",
       "releaseId": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",

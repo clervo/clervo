@@ -63,7 +63,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-06T17:01:41.422Z",
+      "observedAt": "2026-08-07T09:06:22.253Z",
       "releaseId": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -87,17 +87,12 @@
           "ai.image",
           "ai.speech"
         ],
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "reason": "no_route_currently_live",
         "expectedReturnAt": null,
         "publiclyReachable": true,
-        "observedPrice": {
-          "amountAtomic": "1000",
-          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-          "network": "eip155:8453",
-          "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en-min1000"
-        },
+        "observedPrice": null,
         "freeEntry": null
       },
       {
@@ -205,27 +200,134 @@
   "conformanceDefectsOpen": [],
   "aiRoutes": {
     "counts": {
-      "live": 18,
-      "supply_paused": 3
+      "supply_paused": 21
     },
     "paused": [
       {
+        "routeId": "ai.route.aura_2_arcas_en",
+        "exactModelId": "aura-2-arcas-en",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.aura_2_thalia_en",
+        "exactModelId": "aura-2-thalia-en",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
+        "exactModelId": "@cf/meta/llama-4-scout-17b-16e-instruct",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.cf_nvidia_nemotron_3_120b_a12b",
+        "exactModelId": "@cf/nvidia/nemotron-3-120b-a12b",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.cf_openai_gpt_oss_120b",
+        "exactModelId": "@cf/openai/gpt-oss-120b",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.cf_openai_gpt_oss_20b",
+        "exactModelId": "@cf/openai/gpt-oss-20b",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.cf_qwen_qwen3_30b_a3b_fp8",
+        "exactModelId": "@cf/qwen/qwen3-30b-a3b-fp8",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.cloudflare_aura_2_en",
+        "exactModelId": "@cf/deepgram/aura-2-en",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.gemini_3_1_flash_image",
+        "exactModelId": "gemini-3.1-flash-image",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.gemini_3_1_flash_lite_image",
+        "exactModelId": "gemini-3.1-flash-lite-image",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.gemini_3_5_flash",
+        "exactModelId": "gemini-3.5-flash",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.gemini_3_5_flash_lite",
+        "exactModelId": "gemini-3.5-flash-lite",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.gemini_3_6_flash",
+        "exactModelId": "gemini-3.6-flash",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.gemini_3_pro_image",
+        "exactModelId": "gemini-3-pro-image",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.gemini_embedding_001",
+        "exactModelId": "gemini-embedding-001",
+        "reason": "commercial_permission_restricted",
+        "expectedReturnAt": null
+      },
+      {
         "routeId": "ai.route.gpt_5_6_luna",
         "exactModelId": "gpt-5.6-luna",
-        "reason": "upstream_completion_failed",
+        "reason": "upstream_authentication_unavailable",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
       },
       {
         "routeId": "ai.route.gpt_5_6_sol",
         "exactModelId": "gpt-5.6-sol",
-        "reason": "upstream_completion_failed",
+        "reason": "upstream_authentication_unavailable",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
       },
       {
         "routeId": "ai.route.gpt_5_6_terra",
         "exactModelId": "gpt-5.6-terra",
-        "reason": "upstream_completion_failed",
+        "reason": "upstream_authentication_unavailable",
         "expectedReturnAt": "2026-08-09T00:00:00Z"
+      },
+      {
+        "routeId": "ai.route.gpt_oss_120b",
+        "exactModelId": "openai/gpt-oss-120b",
+        "reason": "commercial_permission_unresolved",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.gpt_oss_20b",
+        "exactModelId": "openai/gpt-oss-20b",
+        "reason": "commercial_permission_unresolved",
+        "expectedReturnAt": null
+      },
+      {
+        "routeId": "ai.route.qwen3_6_27b",
+        "exactModelId": "qwen/qwen3.6-27b",
+        "reason": "commercial_permission_unresolved",
+        "expectedReturnAt": null
       }
     ]
   },
@@ -243,8 +345,8 @@
       "engineeringState": "public_production_origin_qualified",
       "customerLifecycle": "preview_publicly_callable",
       "commercialProof": "unproven",
-      "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid"
+      "lifecycleState": "supply_paused",
+      "proofLevel": "none"
     },
     {
       "id": "sandbox",

@@ -20,8 +20,12 @@ test('funded speech assets are competitively priced, bounded, and honest about i
   assert.equal(pricing.policy.customerFreeByDefault, false);
   assert.equal(pricing.policy.unknownSupplierDebitBlocksSale, false);
   assert.ok(pricing.speechRoutes.every(({ listingStatus }) => listingStatus === 'sellable'));
-  assert.ok(pricing.speechRoutes.every((route) => route.customerUsdPerThousandCharacters < pricing.competitorReference.speechPriceRangeUsdPerThousandCharacters[0]));
-  assert.ok(pricing.speechRoutes.every((route) => route.customerUsdPerThousandCharacters < route.shadowUsdPerThousandCharacters));
+  // Reversed on 2026-08-07 with the credit-backed suite: a speech route must
+  // now clear supplier cost rather than undercut it. Undercutting the cheapest
+  // competitor is no longer required, though these routes still do.
+  assert.ok(pricing.speechRoutes.every((route) => route.customerUsdPerThousandCharacters > route.shadowUsdPerThousandCharacters));
+  assert.equal(pricing.policy.positiveMarginRequiredAtLaunch, true);
+  assert.equal(pricing.policy.creditsJustifyBelowCostPricing, false);
   const transcription = pricing.transcriptionRoutes[0];
   // The listing status moves as the route is qualified and integrated, so it is
   // read from the schema's own enum rather than frozen here — pinning it made

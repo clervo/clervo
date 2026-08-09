@@ -68,6 +68,32 @@ async function localEnvironment() {
   }
 }
 
+// Supplier credentials are not in the local `.env`, so reading only that file
+// would leave every family `not_probed` and verify nothing. These are read from
+// the same Secret Manager entries the production runtime uses, so a probe
+// observes the credential that actually serves customer traffic.
+//
+// The value is held in memory for the length of the run and never logged,
+// written to the registry, or included in any reason string.
+const secretNames = Object.freeze({
+  GROQ_API_KEY: 'clervo-production-groq-api-key',
+  CLOUDFLARE_AI_TOKEN: 'clervo-production-cloudflare-ai-token',
+  DEEPGRAM_API_KEY: 'clervo-production-deepgram-api-key',
+});
+
+function productionSecret(key) {
+  const local = process.env[key] ?? environment[key];
+  if (typeof local === 'string' && local.length >= 8) return local;
+  const secret = secretNames[key];
+  if (secret === undefined) return undefined;
+  try {
+    const value = execFileSync('gcloud', ['secrets', 'versions', 'access', 'latest', `--secret=${secret}`], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    return value.length >= 8 && !/[\r\n]/u.test(value) ? value : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 // Every network observation funnels through here so the registry can never
 // contain a claim that was not produced by an actual request.
 async function attemptObserve(id, url, init = {}) {
@@ -162,6 +188,17 @@ try {
 }
 
 const catalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
+// Commercial permission gates sellability alongside technical qualification.
+// If the document is unreadable the gate fails closed rather than open: every
+// route pauses as `commercial_permission_unrecorded`.
+const permission = await (async () => {
+  try {
+    return JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-commercial-permission.v1.json'), 'utf8'));
+  } catch {
+    return null;
+  }
+})();
+const permissionByFamily = Object.fromEntries((permission?.families ?? []).map((family) => [family.supplyFamilyId, family]));
 
 // ---------------------------------------------------------------------------
 // Surface probes
@@ -249,7 +286,109 @@ async function probeClervoGateway() {
   };
 }
 
-const supplyProbes = [await probeClervoGateway()];
+// The other four families are probed the same way, and for the same reason: an
+// edge 402 proves only that we offer and price a route. It is produced from the
+// catalog and the price model, and it would keep being produced after a supplier
+// credential was revoked or an account stopped serving. Until every family is
+// probed, `live` means "offered", not "callable".
+//
+// Each probe below is a zero-cost credential and account check against the
+// supplier's own listing or verification endpoint — never an inference call, so
+// nothing here consumes an allocation or a credit. Only status codes and failure
+// classes are recorded. Where no credential is present the outcome is
+// `not_probed`, which never downgrades a route on its own.
+
+function classifySupplyFailure(status) {
+  if (status === 401 || status === 403) return 'upstream_authentication_unavailable';
+  if (status === 402) return 'upstream_payment_required';
+  if (status === 429) return 'upstream_rate_limited';
+  return `upstream_status_${status}`;
+}
+
+async function probeCredentialedSupply({ supplyFamilyId, credential, url, id, headers, modelsFrom }) {
+  if (typeof credential !== 'string' || credential.length < 8) {
+    return { supplyFamilyId, outcome: 'not_probed', reason: 'credential_absent_in_this_environment' };
+  }
+  const probe = await observe(id, url, { headers });
+  if (probe.status === 200) {
+    return { supplyFamilyId, outcome: 'passed', catalogueStatus: probe.status, modelIdsAdvertised: modelsFrom?.(probe) ?? [] };
+  }
+  return {
+    supplyFamilyId,
+    outcome: probe.reachable ? 'failed' : 'failed',
+    reason: probe.reachable ? classifySupplyFailure(probe.status) : 'upstream_unreachable',
+    providerErrorCode: problemCode(probe),
+    catalogueStatus: probe.status,
+    modelIdsAdvertised: [],
+  };
+}
+
+function probeGroq() {
+  const credential = productionSecret('GROQ_API_KEY');
+  return probeCredentialedSupply({
+    supplyFamilyId: 'supply.groq',
+    credential,
+    id: 'supply.groq.models',
+    url: 'https://api.groq.com/openai/v1/models',
+    headers: { authorization: `Bearer ${credential}` },
+    modelsFrom: (probe) => (Array.isArray(probe.body?.data) ? probe.body.data.map((entry) => entry.id).sort() : []),
+  });
+}
+
+function probeCloudflare() {
+  const credential = productionSecret('CLOUDFLARE_AI_TOKEN');
+  // The token verify endpoint reports whether the credential is still active
+  // without touching the inference API or any allocation.
+  return probeCredentialedSupply({
+    supplyFamilyId: 'supply.cloudflare_workers_ai',
+    credential,
+    id: 'supply.cloudflare_workers_ai.token',
+    url: 'https://api.cloudflare.com/client/v4/user/tokens/verify',
+    headers: { authorization: `Bearer ${credential}` },
+  });
+}
+
+function probeDeepgram() {
+  const credential = productionSecret('DEEPGRAM_API_KEY');
+  return probeCredentialedSupply({
+    supplyFamilyId: 'supply.deepgram',
+    credential,
+    id: 'supply.deepgram.projects',
+    url: 'https://api.deepgram.com/v1/projects',
+    headers: { authorization: `Token ${credential}` },
+  });
+}
+
+// Vertex authenticates with the service account this process already runs as,
+// so there is no credential to read. Reachability is established by listing the
+// publisher model the routes name, which costs nothing.
+async function probeVertex() {
+  const projectId = process.env.CLERVO_VERTEX_PROJECT_ID ?? environment.CLERVO_VERTEX_PROJECT_ID ?? 'bloxsniper-prod';
+  let token;
+  try {
+    token = execFileSync('gcloud', ['auth', 'print-access-token'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  } catch {
+    return { supplyFamilyId: 'supply.google_vertex', outcome: 'not_probed', reason: 'application_credentials_absent_in_this_environment' };
+  }
+  if (token.length < 8) return { supplyFamilyId: 'supply.google_vertex', outcome: 'not_probed', reason: 'application_credentials_absent_in_this_environment' };
+  // A GET on the publisher model path returns 404 even for models that serve
+  // traffic, so it cannot be used to tell a revoked credential from a healthy
+  // one. Listing the project's own Vertex endpoints exercises the same
+  // credential and project against a resource that really does respond, and
+  // costs nothing because it is a list call rather than inference.
+  const probe = await observe('supply.google_vertex.endpoints', `https://us-central1-aiplatform.googleapis.com/v1/projects/${encodeURIComponent(projectId)}/locations/us-central1/endpoints?pageSize=1`, { headers: { authorization: `Bearer ${token}` } });
+  if (probe.status === 200) return { supplyFamilyId: 'supply.google_vertex', outcome: 'passed', catalogueStatus: probe.status, modelIdsAdvertised: [] };
+  return {
+    supplyFamilyId: 'supply.google_vertex',
+    outcome: 'failed',
+    reason: probe.reachable ? classifySupplyFailure(probe.status) : 'upstream_unreachable',
+    providerErrorCode: problemCode(probe),
+    catalogueStatus: probe.status,
+    modelIdsAdvertised: [],
+  };
+}
+
+const supplyProbes = await Promise.all([probeClervoGateway(), probeGroq(), probeCloudflare(), probeDeepgram(), probeVertex()]);
 const supplyByFamily = Object.fromEntries(supplyProbes.map((probe) => [probe.supplyFamilyId, probe]));
 
 // ---------------------------------------------------------------------------
@@ -302,7 +441,10 @@ function classifyRoute(route) {
     supplyReason: supply?.reason ?? null,
     qualificationExpiresAt: expiresAt,
     qualificationExpired,
+    qualificationStatus: qualification?.status ?? 'absent',
     resaleAllowed: qualification?.resaleAllowed === true,
+    permissionBasis: permissionByFamily[route.supplyFamilyId]?.permissionBasis ?? 'unrecorded',
+    permissionRestricted: (permissionByFamily[route.supplyFamilyId]?.restrictionFound ?? null) !== null,
   };
 
   // A supplier-level failure pauses every route on that supply family. This is
@@ -329,6 +471,32 @@ function classifyRoute(route) {
 
   if (qualification?.resaleAllowed !== true) {
     return { state: STATE_PAUSED, reason: 'resale_not_permitted', expectedReturnAt: null, quote, proof: 'none', evidence };
+  }
+
+  // Only expiry and resale were consulted here, so a route whose qualification
+  // had actually failed its checks still went live on the strength of an edge
+  // 402 — and the edge quotes from the catalogue and the price model, so it
+  // answers 402 whether or not the supplier can serve the call. A failed
+  // qualification is a truthful pause, not a sellable route.
+  if (qualification?.status !== undefined && qualification.status !== 'passed') {
+    return { state: STATE_PAUSED, reason: `qualification_${qualification.status}`, expectedReturnAt: null, quote, proof: 'none', evidence };
+  }
+
+  // Commercial gate. Technical qualification proves the route works; it says
+  // nothing about whether we are permitted to sell it. Selling on unresolved
+  // permission is the failure mode this closes, so an unresolved or restricted
+  // family pauses regardless of how healthy its routes are. `resaleAllowed` is
+  // an owner operating decision and is deliberately NOT accepted as evidence
+  // of supplier permission.
+  const permissionRecord = permissionByFamily[route.supplyFamilyId] ?? null;
+  if (permissionRecord === null) {
+    return { state: STATE_PAUSED, reason: 'commercial_permission_unrecorded', expectedReturnAt: null, quote, proof: 'none', evidence };
+  }
+  if (permissionRecord.restrictionFound !== null && permissionRecord.documentedException !== true) {
+    return { state: STATE_PAUSED, reason: 'commercial_permission_restricted', expectedReturnAt: null, quote, proof: 'none', evidence };
+  }
+  if (permissionRecord.permissionBasis !== 'supplier_confirmed' && permissionRecord.permissionBasis !== 'owner_operated_documented') {
+    return { state: STATE_PAUSED, reason: 'commercial_permission_unresolved', expectedReturnAt: null, quote, proof: 'none', evidence };
   }
 
   if (probe.status === 402 && quote !== null) {

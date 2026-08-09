@@ -3,69 +3,241 @@
   "$id": "https://api.clervo.dev/schemas/2026-07-29.1/ai-credit-backed-pricing.schema.json",
   "title": "Clervo internal credit-backed multimodal AI pricing",
   "type": "object",
-  "required": ["schemaVersion", "priceVersion", "evaluatedAt", "currency", "providerVisibility", "policy", "creditGuard", "competitorReference", "chatRoutes", "embeddingRoutes", "imageRoutes", "videoRoutes", "musicRoutes"],
+  "required": [
+    "schemaVersion",
+    "priceVersion",
+    "evaluatedAt",
+    "currency",
+    "providerVisibility",
+    "policy",
+    "creditGuard",
+    "competitorReference",
+    "chatRoutes",
+    "embeddingRoutes",
+    "imageRoutes",
+    "videoRoutes",
+    "musicRoutes"
+  ],
   "$defs": {
     "tokenPrice": {
       "type": "object",
-      "required": ["input", "cachedInput", "output", "reasoning"],
+      "required": [
+        "input",
+        "cachedInput",
+        "output",
+        "reasoning"
+      ],
       "properties": {
-        "input": { "type": "number", "minimum": 0, "maximum": 1000 },
-        "cachedInput": { "type": "number", "minimum": 0, "maximum": 1000 },
-        "output": { "type": "number", "minimum": 0, "maximum": 1000 },
-        "reasoning": { "type": "number", "minimum": 0, "maximum": 1000 }
+        "input": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "cachedInput": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "output": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "reasoning": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000
+        }
       },
       "additionalProperties": false
     }
   },
   "properties": {
-    "schemaVersion": { "const": "clervo.ai-credit-backed-pricing.v1" },
-    "priceVersion": { "const": "2026-08-02.2" },
-    "evaluatedAt": { "type": "string", "format": "date-time" },
-    "currency": { "const": "USD" },
-    "providerVisibility": { "const": "internal_only" },
+    "schemaVersion": {
+      "const": "clervo.ai-credit-backed-pricing.v1"
+    },
+    "priceVersion": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$"
+    },
+    "evaluatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "currency": {
+      "const": "USD"
+    },
+    "providerVisibility": {
+      "const": "internal_only"
+    },
     "policy": {
       "type": "object",
-      "required": ["customerFreeByDefault", "positiveMarginRequiredAtLaunch", "unknownSupplierDebitBlocksSale", "qualifiedRoutesAreSellable", "exactRouteSubstitution", "previewMustBeDisclosed"],
+      "required": [
+        "customerFreeByDefault",
+        "positiveMarginRequiredAtLaunch",
+        "unknownSupplierDebitBlocksSale",
+        "qualifiedRoutesAreSellable",
+        "exactRouteSubstitution",
+        "previewMustBeDisclosed",
+        "grossMarginTarget",
+        "creditsJustifyBelowCostPricing",
+        "pricingBasis"
+      ],
       "properties": {
-        "customerFreeByDefault": { "const": false },
-        "positiveMarginRequiredAtLaunch": { "const": false },
-        "unknownSupplierDebitBlocksSale": { "const": false },
-        "qualifiedRoutesAreSellable": { "const": true },
-        "exactRouteSubstitution": { "const": "prohibited" },
-        "previewMustBeDisclosed": { "const": true }
+        "customerFreeByDefault": {
+          "const": false
+        },
+        "positiveMarginRequiredAtLaunch": {
+          "const": true
+        },
+        "unknownSupplierDebitBlocksSale": {
+          "const": false
+        },
+        "qualifiedRoutesAreSellable": {
+          "const": false
+        },
+        "exactRouteSubstitution": {
+          "const": "prohibited"
+        },
+        "previewMustBeDisclosed": {
+          "const": true
+        },
+        "grossMarginTarget": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "creditsJustifyBelowCostPricing": {
+          "const": false
+        },
+        "pricingBasis": {
+          "const": "verified_supplier_standard_tier_list_cost"
+        }
       },
       "additionalProperties": false
     },
     "creditGuard": {
       "type": "object",
-      "required": ["ownerReportedBalanceUsd", "chatAllocationUsd", "embeddingAllocationUsd", "imageAllocationUsd", "videoAllocationUsd", "musicAllocationUsd", "reserveUsd", "maximumDailyShadowDebitUsd", "hardStopRemainingShadowUsd", "applicationLedgerRequiredBeforeCustomerTraffic", "cloudBudgetIsHardCap", "ownerCashOverageAllowed", "denyWhenUsageUnknown"],
+      "required": [
+        "ownerReportedBalanceUsd",
+        "chatAllocationUsd",
+        "embeddingAllocationUsd",
+        "imageAllocationUsd",
+        "videoAllocationUsd",
+        "musicAllocationUsd",
+        "reserveUsd",
+        "maximumDailyShadowDebitUsd",
+        "hardStopRemainingShadowUsd",
+        "applicationLedgerRequiredBeforeCustomerTraffic",
+        "cloudBudgetIsHardCap",
+        "ownerCashOverageAllowed",
+        "denyWhenUsageUnknown"
+      ],
       "properties": {
-        "ownerReportedBalanceUsd": { "const": 1700 },
-        "chatAllocationUsd": { "type": "number", "minimum": 0 },
-        "embeddingAllocationUsd": { "type": "number", "minimum": 0 },
-        "imageAllocationUsd": { "type": "number", "minimum": 0 },
-        "videoAllocationUsd": { "type": "number", "minimum": 0 },
-        "musicAllocationUsd": { "type": "number", "minimum": 0 },
-        "reserveUsd": { "type": "number", "minimum": 0 },
-        "maximumDailyShadowDebitUsd": { "type": "number", "exclusiveMinimum": 0, "maximum": 1700 },
-        "hardStopRemainingShadowUsd": { "type": "number", "minimum": 0, "maximum": 1700 },
-        "applicationLedgerRequiredBeforeCustomerTraffic": { "const": true },
-        "cloudBudgetIsHardCap": { "const": false },
-        "ownerCashOverageAllowed": { "const": false },
-        "denyWhenUsageUnknown": { "const": true }
+        "ownerReportedBalanceUsd": {
+          "const": 1700
+        },
+        "chatAllocationUsd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "embeddingAllocationUsd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "imageAllocationUsd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "videoAllocationUsd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "musicAllocationUsd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "reserveUsd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maximumDailyShadowDebitUsd": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1700
+        },
+        "hardStopRemainingShadowUsd": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1700
+        },
+        "applicationLedgerRequiredBeforeCustomerTraffic": {
+          "const": true
+        },
+        "cloudBudgetIsHardCap": {
+          "const": false
+        },
+        "ownerCashOverageAllowed": {
+          "const": false
+        },
+        "denyWhenUsageUnknown": {
+          "const": true
+        }
       },
       "additionalProperties": false
     },
     "competitorReference": {
       "type": "object",
-      "required": ["sourceUrl", "checkedAt", "catalogRecords", "imagePriceRangeUsd", "videoPriceRangeUsdPerSecond", "embeddingRoutesObserved"],
+      "required": [
+        "sourceUrl",
+        "checkedAt",
+        "catalogRecords",
+        "imagePriceRangeUsd",
+        "videoPriceRangeUsdPerSecond",
+        "embeddingRoutesObserved"
+      ],
       "properties": {
-        "sourceUrl": { "const": "https://blockrun.ai/api/v1/models" },
-        "checkedAt": { "type": "string", "format": "date-time" },
-        "catalogRecords": { "const": 83 },
-        "imagePriceRangeUsd": { "type": "array", "minItems": 2, "maxItems": 2, "prefixItems": [{ "const": 0.015 }, { "const": 0.1 }], "items": false },
-        "videoPriceRangeUsdPerSecond": { "type": "array", "minItems": 2, "maxItems": 2, "prefixItems": [{ "const": 0.05 }, { "const": 0.319 }], "items": false },
-        "embeddingRoutesObserved": { "const": 0 }
+        "sourceUrl": {
+          "const": "https://blockrun.ai/api/v1/models"
+        },
+        "checkedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "catalogRecords": {
+          "const": 83
+        },
+        "imagePriceRangeUsd": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "prefixItems": [
+            {
+              "const": 0.015
+            },
+            {
+              "const": 0.1
+            }
+          ],
+          "items": false
+        },
+        "videoPriceRangeUsdPerSecond": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "prefixItems": [
+            {
+              "const": 0.05
+            },
+            {
+              "const": 0.319
+            }
+          ],
+          "items": false
+        },
+        "embeddingRoutesObserved": {
+          "const": 0
+        }
       },
       "additionalProperties": false
     },
@@ -75,15 +247,45 @@
       "maxItems": 3,
       "items": {
         "type": "object",
-        "required": ["modelId", "listingStatus", "positioning", "customerPriceUsdPerMillion", "shadowPriceUsdPerMillion", "contextTokens", "maximumOutputTokens"],
+        "required": [
+          "modelId",
+          "listingStatus",
+          "positioning",
+          "customerPriceUsdPerMillion",
+          "shadowPriceUsdPerMillion",
+          "contextTokens",
+          "maximumOutputTokens"
+        ],
         "properties": {
-          "modelId": { "enum": ["gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.5-flash"] },
-          "listingStatus": { "const": "sellable" },
-          "positioning": { "enum": ["best_value", "best_overall", "fallback"] },
-          "customerPriceUsdPerMillion": { "$ref": "#/$defs/tokenPrice" },
-          "shadowPriceUsdPerMillion": { "$ref": "#/$defs/tokenPrice" },
-          "contextTokens": { "const": 1048576 },
-          "maximumOutputTokens": { "const": 65536 }
+          "modelId": {
+            "enum": [
+              "gemini-3.5-flash-lite",
+              "gemini-3.6-flash",
+              "gemini-3.5-flash"
+            ]
+          },
+          "listingStatus": {
+            "const": "sellable"
+          },
+          "positioning": {
+            "enum": [
+              "best_value",
+              "best_overall",
+              "fallback"
+            ]
+          },
+          "customerPriceUsdPerMillion": {
+            "$ref": "#/$defs/tokenPrice"
+          },
+          "shadowPriceUsdPerMillion": {
+            "$ref": "#/$defs/tokenPrice"
+          },
+          "contextTokens": {
+            "const": 1048576
+          },
+          "maximumOutputTokens": {
+            "const": 65536
+          }
         },
         "additionalProperties": false
       }
@@ -94,16 +296,43 @@
       "maxItems": 1,
       "items": {
         "type": "object",
-        "required": ["modelId", "listingStatus", "positioning", "customerUsdPerMillionInputTokens", "shadowUsdPerMillionInputTokens", "defaultDimensions", "maximumDimensions", "maximumInputsPerOperation"],
+        "required": [
+          "modelId",
+          "listingStatus",
+          "positioning",
+          "customerUsdPerMillionInputTokens",
+          "shadowUsdPerMillionInputTokens",
+          "defaultDimensions",
+          "maximumDimensions",
+          "maximumInputsPerOperation"
+        ],
         "properties": {
-          "modelId": { "const": "gemini-embedding-001" },
-          "listingStatus": { "const": "sellable" },
-          "positioning": { "const": "best_overall" },
-          "customerUsdPerMillionInputTokens": { "const": 0.05 },
-          "shadowUsdPerMillionInputTokens": { "const": 0.15 },
-          "defaultDimensions": { "const": 3072 },
-          "maximumDimensions": { "const": 3072 },
-          "maximumInputsPerOperation": { "const": 250 }
+          "modelId": {
+            "const": "gemini-embedding-001"
+          },
+          "listingStatus": {
+            "const": "sellable"
+          },
+          "positioning": {
+            "const": "best_overall"
+          },
+          "customerUsdPerMillionInputTokens": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000
+          },
+          "shadowUsdPerMillionInputTokens": {
+            "const": 0.15
+          },
+          "defaultDimensions": {
+            "const": 3072
+          },
+          "maximumDimensions": {
+            "const": 3072
+          },
+          "maximumInputsPerOperation": {
+            "const": 250
+          }
         },
         "additionalProperties": false
       }
@@ -114,14 +343,45 @@
       "maxItems": 3,
       "items": {
         "type": "object",
-        "required": ["modelId", "listingStatus", "positioning", "resolution", "customerUsdPerImage", "shadowUsdPerImage"],
+        "required": [
+          "modelId",
+          "listingStatus",
+          "positioning",
+          "resolution",
+          "customerUsdPerImage",
+          "shadowUsdPerImage"
+        ],
         "properties": {
-          "modelId": { "enum": ["gemini-3.1-flash-lite-image", "gemini-3.1-flash-image", "gemini-3-pro-image"] },
-          "listingStatus": { "const": "sellable" },
-          "positioning": { "enum": ["fastest_value", "balanced", "best_quality"] },
-          "resolution": { "const": "1K" },
-          "customerUsdPerImage": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
-          "shadowUsdPerImage": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+          "modelId": {
+            "enum": [
+              "gemini-3.1-flash-lite-image",
+              "gemini-3.1-flash-image",
+              "gemini-3-pro-image"
+            ]
+          },
+          "listingStatus": {
+            "const": "sellable"
+          },
+          "positioning": {
+            "enum": [
+              "fastest_value",
+              "balanced",
+              "best_quality"
+            ]
+          },
+          "resolution": {
+            "const": "1K"
+          },
+          "customerUsdPerImage": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1
+          },
+          "shadowUsdPerImage": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1
+          }
         },
         "additionalProperties": false
       }
@@ -132,15 +392,52 @@
       "maxItems": 3,
       "items": {
         "type": "object",
-        "required": ["modelId", "listingStatus", "positioning", "resolution", "audioIncluded", "customerUsdPerSecond", "shadowUsdPerSecond"],
+        "required": [
+          "modelId",
+          "listingStatus",
+          "positioning",
+          "resolution",
+          "audioIncluded",
+          "customerUsdPerSecond",
+          "shadowUsdPerSecond"
+        ],
         "properties": {
-          "modelId": { "enum": ["veo-3.1-lite-generate-001", "veo-3.1-fast-generate-001", "veo-3.1-generate-001"] },
-          "listingStatus": { "enum": ["sellable", "priced_preview_unqualified"] },
-          "positioning": { "enum": ["lowest_cost_preview", "best_value", "best_quality"] },
-          "resolution": { "const": "720p" },
-          "audioIncluded": { "const": false },
-          "customerUsdPerSecond": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
-          "shadowUsdPerSecond": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 }
+          "modelId": {
+            "enum": [
+              "veo-3.1-lite-generate-001",
+              "veo-3.1-fast-generate-001",
+              "veo-3.1-generate-001"
+            ]
+          },
+          "listingStatus": {
+            "enum": [
+              "sellable",
+              "priced_preview_unqualified"
+            ]
+          },
+          "positioning": {
+            "enum": [
+              "lowest_cost_preview",
+              "best_value",
+              "best_quality"
+            ]
+          },
+          "resolution": {
+            "const": "720p"
+          },
+          "audioIncluded": {
+            "const": false
+          },
+          "customerUsdPerSecond": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 10
+          },
+          "shadowUsdPerSecond": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 10
+          }
         },
         "additionalProperties": false
       }
@@ -151,16 +448,41 @@
       "maxItems": 1,
       "items": {
         "type": "object",
-        "required": ["modelId", "listingStatus", "positioning", "durationSeconds", "instrumentalOnly", "customerUsdPerClip", "shadowUsdPerClip", "qualityGrade"],
+        "required": [
+          "modelId",
+          "listingStatus",
+          "positioning",
+          "durationSeconds",
+          "instrumentalOnly",
+          "customerUsdPerClip",
+          "shadowUsdPerClip",
+          "qualityGrade"
+        ],
         "properties": {
-          "modelId": { "const": "lyria-002" },
-          "listingStatus": { "const": "qualified_adapter_ready_contract_pending" },
-          "positioning": { "const": "best_value" },
-          "durationSeconds": { "const": 30 },
-          "instrumentalOnly": { "const": true },
-          "customerUsdPerClip": { "const": 0.1 },
-          "shadowUsdPerClip": { "const": 0.06 },
-          "qualityGrade": { "const": "unranked" }
+          "modelId": {
+            "const": "lyria-002"
+          },
+          "listingStatus": {
+            "const": "qualified_adapter_ready_contract_pending"
+          },
+          "positioning": {
+            "const": "best_value"
+          },
+          "durationSeconds": {
+            "const": 30
+          },
+          "instrumentalOnly": {
+            "const": true
+          },
+          "customerUsdPerClip": {
+            "const": 0.1
+          },
+          "shadowUsdPerClip": {
+            "const": 0.06
+          },
+          "qualityGrade": {
+            "const": "unranked"
+          }
         },
         "additionalProperties": false
       }

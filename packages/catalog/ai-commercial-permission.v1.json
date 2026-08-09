@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "ai-commercial-permission.v1",
+  "documentId": "ai-commercial-permission.v1",
+  "checkedAt": "2026-08-07T09:00:00.000Z",
+  "purpose": "Records why each supply family is treated as permitted for resale, so route-level termsStatus is traceable to something rather than being an unexplained constant.",
+  "howToRead": {
+    "permissionBasis": "The only three values are supplier_confirmed (the supplier's own governing document permits this resale model, or the supplier confirmed it in writing), owner_operated_documented (we operate the supply ourselves and the basis is recorded here), and unresolved (the governing document was not obtained, is silent, or restricts resale). unresolved is not a soft yes.",
+    "resaleAllowed": "This is the OWNER'S OPERATING DECISION to sell the route and carry the commercial risk. It is NOT a statement that the supplier has permitted resale. Read permissionBasis for that. A family may be resaleAllowed true and permissionBasis unresolved at the same time; that combination means the owner is selling without established supplier permission.",
+    "restrictionFound": "A clause in the governing document that on its face restricts what we are doing. Quoted rather than summarised. Non-null means an owner decision is required.",
+    "notLegalAdvice": "Every reading here is a plain reading of a public self-serve document retrieved on the recorded date. None is a legal opinion. A negotiated or enterprise agreement held by the owner may say something different and would supersede these readings.",
+    "providerNamesPublic": "false across every family: we may sell these routes but must not publicly name which supplier backs which route, so no public surface may render supplierTermsUrl or providerId."
+  },
+  "summary": {
+    "supplierConfirmed": 0,
+    "ownerOperatedDocumented": 1,
+    "unresolved": 4,
+    "familiesWithExplicitRestriction": 3,
+    "liveRoutesOnUnresolvedPermission": 0,
+    "liveRoutesOnUnresolvedPermissionNote": "0 because the commercial gate now pauses them. Before the gate, 18 routes were live on unresolved permission; that is the condition the gate closed.",
+    "ownerDecisionRequired": true
+  },
+  "families": [
+    {
+      "supplyFamilyId": "supply.cloudflare_workers_ai",
+      "permissionBasis": "unresolved",
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "resaleDetermination": "owner_asserted",
+      "liveRouteCount": 6,
+      "governingDocuments": [
+        { "url": "https://www.cloudflare.com/service-specific-terms-developer-platform/", "retrievedAt": "2026-08-07T09:00:00.000Z", "role": "service_specific", "silentOnResale": true },
+        { "url": "https://www.cloudflare.com/terms/", "retrievedAt": "2026-08-07T09:00:00.000Z", "role": "master_agreement", "silentOnResale": false }
+      ],
+      "restrictionFound": "Master agreement section 2.2.1: unless otherwise expressly permitted in writing by Cloudflare, the customer may not 'rent, lease, loan, export, or sell access to the Services to any third party'. Selling metered API access to Workers AI inference is on its face selling access to the Services to a third party.",
+      "conditions": [
+        "third-party model terms apply per model in addition to the platform terms, and are not individually recorded",
+        "exact model identity must be preserved; substitution is prohibited",
+        "supplier must not be publicly named as the backing provider for a route"
+      ],
+      "openQuestion": "No express written permission from the supplier to sell access. The service-specific terms confirm we retain rights in Outputs, but the master agreement restricts selling access to the Service that produces them. These are not the same question and only the second one is blocking.",
+      "resolutionPath": "Obtain express written permission to resell, or move these six routes to supply we operate."
+    },
+    {
+      "supplyFamilyId": "supply.deepgram",
+      "permissionBasis": "unresolved",
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "resaleDetermination": "owner_asserted",
+      "liveRouteCount": 2,
+      "governingDocuments": [
+        { "url": "https://deepgram.com/terms", "retrievedAt": "2026-08-07T09:00:00.000Z", "role": "master_agreement", "silentOnResale": false }
+      ],
+      "restrictionFound": "Section 2.4(d) prohibits 'Resell, redistribute, or make available any portion of our Services on a stand-alone basis', with a carve-out permitting integration into the customer's own Application 'provided that your Application contributes material independent functionality beyond our Services'. Our ai.speech route is a metered pass-through to synthesis and does not currently contribute material independent functionality, so it reads as the prohibited stand-alone case rather than the carve-out. Section 2.4(i) separately bars use of Output for benchmarking or competitive analysis.",
+      "conditions": [
+        "voice identity must match the route exactly; substitution is prohibited",
+        "output must not be represented as human-created, and AI-generation notices may be required",
+        "supplier must not be publicly named as the backing provider for a route"
+      ],
+      "openQuestion": "Whether the carve-out applies is a judgment call the text leaves open, and section 2.4(f)(iv) lets the supplier deem uses objectionable at its discretion. Supplier confirmation would settle it.",
+      "resolutionPath": "Either add material independent functionality above raw synthesis, obtain written confirmation, or pause the two routes."
+    },
+    {
+      "supplyFamilyId": "supply.groq",
+      "permissionBasis": "unresolved",
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "resaleDetermination": "owner_asserted",
+      "liveRouteCount": 3,
+      "governingDocuments": [
+        { "url": "https://groq.com/terms-and-conditions/", "retrievedAt": "2026-08-07T09:00:00.000Z", "role": "website_terms_only", "silentOnResale": true, "isGoverning": false },
+        { "url": "https://groq.com/terms-of-use/", "retrievedAt": "2026-08-07T09:45:00.000Z", "role": "website_terms_only", "silentOnResale": true, "isGoverning": false },
+        { "url": "https://groq.com/terms-of-sale/", "retrievedAt": "2026-08-07T09:45:00.000Z", "role": "not_found", "httpStatus": 404, "isGoverning": false }
+      ],
+      "restrictionFound": null,
+      "correctionFromPreviousRecord": "The URL previously recorded here as the supplier terms is the website terms, which state 'These Terms do not apply to you in connection with your use of Groq's cloud services' and route service use to the Groq Services Agreement. The earlier record cited a document that does not govern our use.",
+      "conditions": [
+        "exact model identity must be preserved; substitution is prohibited",
+        "supplier must not be publicly named as the backing provider for a route"
+      ],
+      "openQuestion": "The governing document is the Groq Services Agreement, which is not publicly retrievable. Three candidate URLs were tried on 2026-08-07: terms-and-conditions and terms-of-use are both website-scoped and expressly disclaim cloud service use, and terms-of-sale returns 404. A web search for the agreement returned no results. Permission is therefore not established in either direction: no restriction has been read, and no permission has been read.",
+      "resolutionPath": "The agreement is most likely inside the GroqCloud console under the account, or obtainable from Groq directly. This needs an owner with account access; it is not retrievable by engineering from public sources.",
+      "blocker": "not_publicly_retrievable_requires_account_access"
+    },
+    {
+      "supplyFamilyId": "supply.google_vertex",
+      "permissionBasis": "unresolved",
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "resaleDetermination": "owner_asserted",
+      "liveRouteCount": 7,
+      "governingDocuments": [
+        { "url": "https://cloud.google.com/terms/", "retrievedAt": "2026-08-07T09:45:00.000Z", "role": "master_agreement", "silentOnResale": false },
+        { "url": "https://cloud.google.com/terms/service-terms", "retrievedAt": "2026-08-07T09:45:00.000Z", "role": "service_specific", "retrievalIncomplete": true }
+      ],
+      "restrictionFound": "Master agreement section 3.3(c): Customer will not 'sell, resell, sublicense, transfer, or distribute any or all of the Services'. A metered pass-through endpoint to a Vertex model is selling the Service.",
+      "documentedExceptionCandidate": "Section 1.1 expressly permits integrating GCP Services 'into any Customer Application that has material value independent of the Services'. This is a real contractual carve-out, not an inference, and it is the path by which these routes could become permitted. It does not apply to a thin pass-through, which is what the current ai.chat / ai.image / ai.embed routes are.",
+      "conditions": [
+        "generative AI service-specific terms apply, including the prohibited use policy",
+        "section 3.3(d)(iii) prohibits structuring usage to avoid fees or circumvent service quotas, so multi-project fan-out to widen limits is not available",
+        "section 3.1 makes us liable for end-user compliance with the AUP",
+        "exact model identity must be preserved; substitution is prohibited",
+        "supplier must not be publicly named as the backing provider for a route"
+      ],
+      "openQuestion": "Whether our product clears the 'material value independent of the Services' test in section 1.1. As a metered pass-through it does not. The Service Specific Terms section 'Handling of Prompts and Generated Output', which governs what may be done with generated output, could not be retrieved: the page truncates before the AI sections on every attempt.",
+      "resolutionPath": "Either build material independent functionality above raw inference so section 1.1 applies, or obtain written confirmation. Retrieving 'Handling of Prompts and Generated Output' from the Service Specific Terms remains outstanding and is a hard blocker on a clean yes."
+    },
+    {
+      "supplyFamilyId": "supply.clervo_ai_gateway",
+      "permissionBasis": "owner_operated_documented",
+      "termsStatus": "restricted",
+      "resaleAllowed": true,
+      "resaleDetermination": "owner_operated",
+      "liveRouteCount": 0,
+      "governingDocuments": [],
+      "restrictionFound": null,
+      "conditions": [
+        "owner-operated gateway; the upstream model terms behind it still govern each route",
+        "exact model identity must be preserved; substitution is prohibited"
+      ],
+      "openQuestion": "The gateway itself is ours to operate, so no supplier grants permission for the gateway layer. The upstream model terms behind it are not individually recorded, so the model layer of these routes is not established.",
+      "resolutionPath": "Record the upstream model terms behind each gateway route before any of them returns to live.",
+      "note": "All three routes on this family are currently paused for unfunded supply, so no route is being sold on this basis today."
+    }
+  ],
+  "unresolved": "No family is supplier_confirmed. Four of five are unresolved, and three of those carry an explicit restriction on their face: Cloudflare master agreement 2.2.1, Deepgram 2.4(d), and Google Cloud master agreement 3.3(c). Only Groq has no restriction read against it, and only because its governing agreement could not be obtained at all. A consistent pattern emerged across all four suppliers: reselling raw inference as a metered pass-through is restricted, while integrating it into a product with material independent value is permitted or carved out. Google 1.1 and Deepgram 2.4(d) state that carve-out in nearly identical language. That makes this a product-shape question as much as a paperwork question: the current routes are thin pass-throughs, which is the restricted form under every agreement we have read. All eighteen routes are therefore paused on the commercial gate, none is sellable, and no engineering check was weakened to avoid that outcome. resaleAllowed remains an owner operating decision and is not read anywhere as evidence of supplier permission.",
+  "resolutionPassOutcome": {
+    "performedAt": "2026-08-07T09:45:00.000Z",
+    "scope": "supply.google_vertex and supply.groq, 10 routes",
+    "result": "neither resolved to permitted",
+    "vertex": "A restriction was found rather than a permission: master agreement 3.3(c) prohibits reselling the Services. Section 1.1 carves out integration into an application with material value independent of the Services, which is a genuine contractual path but does not cover a pass-through. The Service Specific Terms section governing generated output could not be retrieved after four attempts; the page truncates before the AI sections every time.",
+    "groq": "Blocked, not resolved. The governing Groq Services Agreement is not publicly retrievable: two candidate URLs are website-scoped and expressly exclude cloud service use, one 404s, and a web search returned nothing. Requires owner account access.",
+    "engineeringCanProceedFurther": false
+  }
+}

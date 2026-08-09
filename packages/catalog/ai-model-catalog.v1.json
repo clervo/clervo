@@ -2,7 +2,7 @@
   "contractVersion": "2026-07-29.1",
   "schemaVersion": "ai-model-catalog.v1",
   "catalogId": "aicat_01K0CLERVOAURAFALLBACK1",
-  "evaluatedAt": "2026-08-02T08:07:20.497Z",
+  "evaluatedAt": "2026-08-07T07:40:10.810Z",
   "routes": [
     {
       "routeId": "ai.route.aura_2_arcas_en",
@@ -31,8 +31,8 @@
         "productIds": [
           "ai.speech"
         ],
-        "checkedAt": "2026-08-02T03:08:58.000Z",
-        "expiresAt": "2026-08-09T03:08:58.000Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -40,60 +40,56 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "evidenceHash": "sha256:08e9767ec2c228bd4dcc296d67678081df53b62c8921fbcb14e70b8f7cc1906e"
           },
           {
             "name": "input_dependence",
             "status": "passed",
-            "code": "synthetic_roundtrip_dependence",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_audio_valid",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "code": "bounded_audio_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "character_usage_reported",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "evidenceHash": "sha256:b7648a32a32e3b3317659c533bb8223fd85c309d7ab55d68cbbafe58fdcb28ab"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "evidenceHash": "sha256:77e15cfd257ef2da24ee67e7ac40c66437ad091ffd5aa2afd8434919ae6c4a08"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "value_added_use_restricted",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "code": "resale_terms_confirmed"
           }
         ],
         "observed": {
           "modelIdentity": "aura-2-arcas-en",
-          "latencyMsP95": 1787.38,
+          "latencyMsP95": 1283.54,
           "maximumSupplierCost": {
             "asset": "USD",
             "amountAtomic": "60000",
@@ -101,7 +97,7 @@
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:5a330f5b4f9b6be2c53567a9d1f4dba38c32cf89ab40d31b4566734cd0080b71"
+        "qualificationHash": "sha256:09b1417e1ae40e836f99b6a9d773bb49dff7e7085921561f1e05776e9c718c35"
       }
     },
     {
@@ -131,8 +127,8 @@
         "productIds": [
           "ai.speech"
         ],
-        "checkedAt": "2026-08-02T03:08:58.000Z",
-        "expiresAt": "2026-08-09T03:08:58.000Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -140,60 +136,56 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "evidenceHash": "sha256:8ec94971735305ba3aca5aad019248faf68456c1c790568f1c76217dd34261c2"
           },
           {
             "name": "input_dependence",
             "status": "passed",
-            "code": "synthetic_roundtrip_dependence",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_audio_valid",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "code": "bounded_audio_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "character_usage_reported",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "evidenceHash": "sha256:26e539e71b4c4e430fb1ed7b43e6048a4c42714bf8ac25689b6f04cca6b67ec6"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "evidenceHash": "sha256:77e15cfd257ef2da24ee67e7ac40c66437ad091ffd5aa2afd8434919ae6c4a08"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "value_added_use_restricted",
-            "evidenceHash": "sha256:bb895d9521e42f9da3323388f7b98512e047c6a5378e345a84d3c92285e8ebd7"
+            "code": "resale_terms_confirmed"
           }
         ],
         "observed": {
           "modelIdentity": "aura-2-thalia-en",
-          "latencyMsP95": 1684.72,
+          "latencyMsP95": 1302.54,
           "maximumSupplierCost": {
             "asset": "USD",
             "amountAtomic": "60000",
@@ -201,7 +193,7 @@
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:bc5ce1fad144075e5b350f5ee78750d5acf919acd832c26519251009e356b309"
+        "qualificationHash": "sha256:8c628f4f0e5d122eb67d71a5e3112005aa5b6538e73a0b284f0ec84b227b92bb"
       }
     },
     {
@@ -234,8 +226,8 @@
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T06:29:49.120Z",
-        "expiresAt": "2026-08-09T06:29:49.120Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -255,7 +247,7 @@
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
@@ -271,7 +263,7 @@
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:eab4bb6d2c2f506ce4d400a2aaefa24b89452e1fff01e17e8721d1e099da480f"
+            "evidenceHash": "sha256:24f4c6bdad036792fd90225ac86a9a161ecc7b25fae4006840a7128383d4abfd"
           },
           {
             "name": "failure_handling",
@@ -302,15 +294,15 @@
         ],
         "observed": {
           "modelIdentity": "@cf/meta/llama-4-scout-17b-16e-instruct",
-          "latencyMsP95": 347.92,
+          "latencyMsP95": 672.66,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "10000",
+            "amountAtomic": "20000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:09fc1647229ff27d70704a9248f6894fe3c56a2066083d230f91767c2bb1cb89"
+        "qualificationHash": "sha256:8ca16935d3a79122a9a78d33e70c9b27dd6d8f9c11ebfff50cd540dc3d265ae4"
       }
     },
     {
@@ -343,8 +335,8 @@
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T06:29:49.120Z",
-        "expiresAt": "2026-08-09T06:29:49.120Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -364,7 +356,7 @@
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
@@ -380,7 +372,7 @@
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:e93e8afc3a91ec67ca53eda8f19b6c8b442fe2aa1380ab1fdf6dc7921f051376"
+            "evidenceHash": "sha256:6d98562decb055eb462d731ea18e491b21baccd3d670e59a419051e5914df6d7"
           },
           {
             "name": "failure_handling",
@@ -391,7 +383,7 @@
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:fd9d2b0e205a7cdbcabe6a0a83eed31a841ce3c12670576c5f9fe0602c00b851"
+            "evidenceHash": "sha256:0b87905c4c8e0866f9fdb10d51cfd75ae6560e67064a77202155e0dd38ebe191"
           },
           {
             "name": "terms",
@@ -411,15 +403,15 @@
         ],
         "observed": {
           "modelIdentity": "@cf/nvidia/nemotron-3-120b-a12b",
-          "latencyMsP95": 6970.98,
+          "latencyMsP95": 2586.35,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "10000",
+            "amountAtomic": "20000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:bca7d0af31b652992284268e96fd3bf2cfb3cab6946f8e7dec06e0d4f99e04ec"
+        "qualificationHash": "sha256:5c2d76a6bb2821e8df03e86159eb6df168ea3c843b846351c00613238f850011"
       }
     },
     {
@@ -452,8 +444,8 @@
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T06:29:49.120Z",
-        "expiresAt": "2026-08-09T06:29:49.120Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -473,7 +465,7 @@
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
@@ -489,7 +481,7 @@
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:180c0ec8681d570fcdaac22d1b9116b84c87729c812bdf0a5ec494668364f752"
+            "evidenceHash": "sha256:f9ca961b2fea6db7478476db2c47b35ce32712beeeea5864bdc7182ac704d329"
           },
           {
             "name": "failure_handling",
@@ -500,7 +492,7 @@
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:de3cc06284a2dfbf6ce4ba7904950c042dcecc6f70a0a50d3accefdf22b44b98"
+            "evidenceHash": "sha256:f0a93ea23ca831b7714a56445241c041c810390d04d11983b3387c3f51e1d01c"
           },
           {
             "name": "terms",
@@ -520,15 +512,15 @@
         ],
         "observed": {
           "modelIdentity": "@cf/openai/gpt-oss-120b",
-          "latencyMsP95": 730.42,
+          "latencyMsP95": 1452.52,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "10000",
+            "amountAtomic": "20000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:d9400999ee64ed4f513863ab48d1a537d93db46777785072fc3936d875d6f5ee"
+        "qualificationHash": "sha256:0d8c01f35598381061dfc8f7f1490b382d44f42d86b2a9f7ad42d6397171978d"
       }
     },
     {
@@ -561,8 +553,8 @@
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T06:29:49.120Z",
-        "expiresAt": "2026-08-09T06:29:49.120Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -582,7 +574,7 @@
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
@@ -598,7 +590,7 @@
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:0f0820e5b01618d1038d69c9b71723114333976cf5367aec989cefc17e6aeec7"
+            "evidenceHash": "sha256:0490d26cfb17e2b26b5d766878ffb8f8738fff16bf7f2befd147a57dc1b6fbe3"
           },
           {
             "name": "failure_handling",
@@ -609,7 +601,7 @@
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:8c4cd3d17ac5996ce4dc4ee50dd451d51b7c5649eaeb847da9f20f6823f2b653"
+            "evidenceHash": "sha256:5e83c0fc71a61001ae980fb6cbc68db6f505508e8f8d4832a96fa645d79e5778"
           },
           {
             "name": "terms",
@@ -629,15 +621,15 @@
         ],
         "observed": {
           "modelIdentity": "@cf/openai/gpt-oss-20b",
-          "latencyMsP95": 1044.7,
+          "latencyMsP95": 692.91,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "10000",
+            "amountAtomic": "20000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:b2837af103add84948a09f009eb00bd703210ebcb5824cefa0d0c771024d4967"
+        "qualificationHash": "sha256:46b48acb08f08bff5347569385a8d293d8097a0c5c576f8893866174859f1bc6"
       }
     },
     {
@@ -670,8 +662,8 @@
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T06:29:49.120Z",
-        "expiresAt": "2026-08-09T06:29:49.120Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -691,7 +683,7 @@
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:f39c77f32870601134b6e974f78ed91900a420806bfe6beb9c9acc8cffa825e1"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
@@ -707,7 +699,7 @@
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:2b92c225939b1dd0a56f877341425b38f5d7d27e1e9e3662e3acc9c7436e1fa9"
+            "evidenceHash": "sha256:3083828860a84b67af1f9fefc340c1b71aae1ddfdd7e7f321672d4c8db55014b"
           },
           {
             "name": "failure_handling",
@@ -718,7 +710,7 @@
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:295795c4d6d3df10c79e4d7730010fc91d0d44dca145272f8b8c22dbdbfe41b4"
+            "evidenceHash": "sha256:3ae48d2b8dc4639923f98f6477ae8a96ea293da1e48becbe571129ed58315e6c"
           },
           {
             "name": "terms",
@@ -738,15 +730,15 @@
         ],
         "observed": {
           "modelIdentity": "@cf/qwen/qwen3-30b-a3b-fp8",
-          "latencyMsP95": 3535.8,
+          "latencyMsP95": 3585.78,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "10000",
+            "amountAtomic": "20000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:eb335eba5569729f0f90ba66d65573bfbd5f0bac0453d317411cc0e3c9a21bcd"
+        "qualificationHash": "sha256:2d714de4bf27abfa340c15eb4b419edb3cf7b6f65ae7e57ebe903ea0ba140782"
       }
     },
     {
@@ -776,8 +768,8 @@
         "productIds": [
           "ai.speech"
         ],
-        "checkedAt": "2026-08-02T08:07:20.497Z",
-        "expiresAt": "2026-08-09T08:07:20.497Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -785,60 +777,56 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
-            "code": "immutable_exact_model_endpoint_response_unlabeled",
-            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+            "code": "exact_identity_observed",
+            "evidenceHash": "sha256:985f09e0c0d491b11220fb33b09279d59898258576d40d7f888a9d9a97847b4c"
           },
           {
             "name": "input_dependence",
             "status": "passed",
-            "code": "independent_synthetic_roundtrip_passed",
-            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+            "code": "input_dependence_observed",
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_mp3_valid",
-            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+            "code": "bounded_audio_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "deterministic_character_accounting",
-            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+            "evidenceHash": "sha256:b7c23a133e233f938872add65a2732a5072a9e6b225ed141de4a20af8443b20a"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "adapter_fail_closed_contract_passed",
-            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
-            "code": "free_allocation_hard_stop_and_shadow_cost_ceiling",
-            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+            "code": "cost_within_ceiling",
+            "evidenceHash": "sha256:77e15cfd257ef2da24ee67e7ac40c66437ad091ffd5aa2afd8434919ae6c4a08"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "value_added_use_restricted",
-            "evidenceHash": "sha256:ca16f156f22cb453400b644cd588d03f022867431c020f1b7aa725b8936701a5"
+            "code": "resale_terms_confirmed"
           }
         ],
         "observed": {
           "modelIdentity": "@cf/deepgram/aura-2-en",
-          "latencyMsP95": 2415,
+          "latencyMsP95": 1174.67,
           "maximumSupplierCost": {
             "asset": "USD",
             "amountAtomic": "60000",
@@ -846,7 +834,7 @@
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:705ce297ca157f247f5484edad23333f12018df4ba73bddf38ff93f13cd8dbe2"
+        "qualificationHash": "sha256:270c90d24fc270e9417874e46dc551b42fe886ba1650e456a63e1f75cea44f3d"
       }
     },
     {
@@ -874,8 +862,8 @@
         "productIds": [
           "ai.image"
         ],
-        "checkedAt": "2026-08-02T02:54:31.000Z",
-        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "checkedAt": "2026-08-07T07:40:10.810Z",
+        "expiresAt": "2026-08-14T07:40:10.810Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -883,68 +871,64 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:3857609ef39b7a414d439edcb5db9ac7dcc54d50372886dfbf9766ae91da4f67"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_image_valid",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "bounded_image_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:5c68410c8e9d4e7a971d84904c37732ed1ed6650669c4ca84a651ab06dc10cfe"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:0b5c53819434e4631713e7dd8caabd9d1ab71a5b0292d8326e70577c18284bfb"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "resale_terms_confirmed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "resale_terms_confirmed"
           }
         ],
         "observed": {
           "modelIdentity": "gemini-3.1-flash-image",
-          "latencyMsP95": 9245.2,
+          "latencyMsP95": 12471.66,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "400000",
+            "amountAtomic": "800000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:306a85215c5402cd09d670b724735af26cec2835bdedd5dfb5c2415654afdbde"
+        "qualificationHash": "sha256:36614fe9d6c82d9fa51f47a713faf3ca08590aa909722ee935c66241d131fabb"
       }
     },
     {
@@ -972,8 +956,8 @@
         "productIds": [
           "ai.image"
         ],
-        "checkedAt": "2026-08-02T02:54:31.000Z",
-        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -981,68 +965,64 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:52e21b2de3cc9fa1390f1b2eef253af776d7f54d25a500a7d53b2f395d57c047"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_image_valid",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "bounded_image_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:da009becb5f9db895529a7dd429b8d6453c6db698dea30882386af704e86b918"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:3775b2545db94999687a72a9bc3253ef61b26cb7b37c6a3ca97a5ba29d48d06c"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "resale_terms_confirmed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "resale_terms_confirmed"
           }
         ],
         "observed": {
           "modelIdentity": "gemini-3.1-flash-lite-image",
-          "latencyMsP95": 2751.83,
+          "latencyMsP95": 3149.49,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "200000",
+            "amountAtomic": "800000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:278761af3c872dff68484dc2d4d7e5959b343801240768322f8553fefe75ead1"
+        "qualificationHash": "sha256:9e0cce84cf150587bbd830f6cf817ba976a96316f3a6585b4236fa3f155b13e8"
       }
     },
     {
@@ -1072,8 +1052,8 @@
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T02:54:31.000Z",
-        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -1081,74 +1061,69 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:aa428b1ab515ad1ca9e6314495579adae149bd9f0e420231a10aeb5f98903e8c"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_text_valid",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "bounded_text_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:f62cfc76944da637186a106b8772b6a75513cf85fa397869acc87e0d2bdd9781"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:25addfabe17a0c9f3e6630c19b009354178286f7ee57d25ca60bfe8ba12cf280"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "resale_terms_confirmed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "resale_terms_confirmed"
           },
           {
             "name": "structured_output",
             "status": "passed",
-            "code": "structured_output_valid",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "structured_output_valid"
           }
         ],
         "observed": {
           "modelIdentity": "gemini-3.5-flash",
-          "latencyMsP95": 3151.89,
+          "latencyMsP95": 3239.9,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "1000000",
+            "amountAtomic": "20000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:4fa324f5504e866332243846d27f131905ae497b0b5c70a968b6274a622ff7a2"
+        "qualificationHash": "sha256:ec3d063699f16683b63e8988a904bf0d5fddeccfadcb4ac990849a9a7bab5589"
       }
     },
     {
@@ -1178,8 +1153,8 @@
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T02:54:31.000Z",
-        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -1187,74 +1162,69 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:fe9e817021d1accf700388202d7784fa6dea638a303839a2115a15c8847e583a"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_text_valid",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "bounded_text_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:2eea142a5c1bce185e848230ad7dc127a04419797623a023ae29716c3a30aecf"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:5ae3e5e9841c12cca75fd7009c8480e5cd47f0726cf66081148193c4504f99d1"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "resale_terms_confirmed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "resale_terms_confirmed"
           },
           {
             "name": "structured_output",
             "status": "passed",
-            "code": "structured_output_valid",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "structured_output_valid"
           }
         ],
         "observed": {
           "modelIdentity": "gemini-3.5-flash-lite",
-          "latencyMsP95": 852.01,
+          "latencyMsP95": 604.28,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "1000000",
+            "amountAtomic": "20000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:1b2af35e68221e51d2108908aea5c21f19fc8b9c13f6d050970e210db1f507d3"
+        "qualificationHash": "sha256:bef09c4667b42406aa40751169d03e9bb43e3a8e86a04d60ea4bbbb99a91da42"
       }
     },
     {
@@ -1284,8 +1254,8 @@
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T02:54:31.000Z",
-        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -1293,74 +1263,69 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:0aef48b6af88e39b7cc5025001421ea6a079263c622d07cd1b1a8a4b9aac5c11"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_text_valid",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "bounded_text_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:8146f0c190daeb7993dd6367b0f556eb571e5ef072e92ce9d51631fd67a25b16"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:b368b242c2d3088355dcdfcbc11b779d25113e487fa12c5bf04cbeeab75ebb9d"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "resale_terms_confirmed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "resale_terms_confirmed"
           },
           {
             "name": "structured_output",
             "status": "passed",
-            "code": "structured_output_valid",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "structured_output_valid"
           }
         ],
         "observed": {
           "modelIdentity": "gemini-3.6-flash",
-          "latencyMsP95": 2265.68,
+          "latencyMsP95": 6864.27,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "1000000",
+            "amountAtomic": "20000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:ae7085509de9116ae7e41c482376d0302fef5b16b53f9302a9aeaef247290362"
+        "qualificationHash": "sha256:4534915e12c2e0fb5efd1851c830ffd16fda9bea008b6debfb46b8ff09b49aca"
       }
     },
     {
@@ -1388,8 +1353,8 @@
         "productIds": [
           "ai.image"
         ],
-        "checkedAt": "2026-08-02T02:54:31.000Z",
-        "expiresAt": "2026-08-09T02:54:31.000Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -1397,60 +1362,56 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:2022273197ff8af06b8876b85e6f6ba64369227ed84a1ab49dcc262ebf7644bc"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_image_valid",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "bounded_image_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:92c59995a6cb5bed1cbc5d9358724e231425e31dd3be7328c1910990cc5568ea"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "evidenceHash": "sha256:5410980229db44db97bf76784a41456c9ff547e9e9ae0f25dde1641420cd5a80"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "resale_terms_confirmed",
-            "evidenceHash": "sha256:8bd5db628199e7d62fa207f27fddce050e24b8c1687ae5fcd572f5f8e6a98daf"
+            "code": "resale_terms_confirmed"
           }
         ],
         "observed": {
           "modelIdentity": "gemini-3-pro-image",
-          "latencyMsP95": 17615.65,
+          "latencyMsP95": 18702.47,
           "maximumSupplierCost": {
             "asset": "USD",
             "amountAtomic": "800000",
@@ -1458,7 +1419,7 @@
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:9e3e03b98d07042cf3f4319a4445d535870eb125923ec696c64de393aad7bbd0"
+        "qualificationHash": "sha256:706490244bd97d32be44c869b817c3688dedd45b8b293ebea29f958a278e2ae4"
       }
     },
     {
@@ -1486,8 +1447,8 @@
         "productIds": [
           "ai.embed"
         ],
-        "checkedAt": "2026-08-02T03:18:00.000Z",
-        "expiresAt": "2026-08-09T03:18:00.000Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -1495,60 +1456,56 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+            "evidenceHash": "sha256:848422cea8a88d1f8a66c80f999f7da640ca54cb1cbf45d711b7fa7e24797636"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_embedding_valid",
-            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+            "code": "bounded_embedding_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+            "evidenceHash": "sha256:35ed1f5b6a46a6e0b0cd20e8ccbd4cf86f136cf033f0cf0a6b159e413932d07e"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+            "evidenceHash": "sha256:157fd0fcda19c0a09a77553bf5368874edd6e9aa9e4e23a98b5356b5c523705a"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "resale_terms_confirmed",
-            "evidenceHash": "sha256:d0e4963d40f077929e93a2f1401a80d11994976ccfb238627714305e969e2b18"
+            "code": "resale_terms_confirmed"
           }
         ],
         "observed": {
           "modelIdentity": "gemini-embedding-001",
-          "latencyMsP95": 1089.9,
+          "latencyMsP95": 180.64,
           "maximumSupplierCost": {
             "asset": "USD",
             "amountAtomic": "100000",
@@ -1556,7 +1513,7 @@
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:f0f672ac01ea24dd9b8061d285fb0c706b05dbdf8931aad14a8e1ab755de025a"
+        "qualificationHash": "sha256:6f34a31dbf958f622af53db6a2e54050083758b7d7cd0280629066e3696c1e69"
       }
     },
     {
@@ -1913,8 +1870,8 @@
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T03:29:20.759Z",
-        "expiresAt": "2026-08-09T03:29:20.759Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -1922,80 +1879,74 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:9ebd1c755f2e43fdff0318e48eaf274d5da1e72bba2b798be4f5db0afbe84a3c"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_text_valid",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "bounded_text_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:23dc93df65b9dce4a096f07fc1be9dedc3462bb38fdcfddf4070dad74fc388d2"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:f3e9b98a2839dcf0307944ba3e2d56f79f2ce697b65fe5688af68a2dd902fd0a"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "value_added_use_restricted",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "resale_terms_confirmed"
           },
           {
             "name": "streaming",
             "status": "passed",
-            "code": "stream_terminal_usage_valid",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "stream_terminal_usage_valid"
           },
           {
             "name": "structured_output",
             "status": "passed",
-            "code": "structured_output_valid",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "structured_output_valid"
           }
         ],
         "observed": {
           "modelIdentity": "openai/gpt-oss-120b",
-          "latencyMsP95": 274.16,
+          "latencyMsP95": 286.21,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "10000",
+            "amountAtomic": "20000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:7641b9cfab22c75f43235d7b6197f3917bc947fefd4f885091f52bb2c8afa08b"
+        "qualificationHash": "sha256:f8688076fcfa34276dbda9207c80cae230f5448fda9e1837f3f2f0cd1b3b9a7e"
       }
     },
     {
@@ -2028,8 +1979,8 @@
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T03:29:20.759Z",
-        "expiresAt": "2026-08-09T03:29:20.759Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -2037,80 +1988,74 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:467dee799ba5af5bf0c3f27000bdf2ea9aa1328f908ccfd30f023eae9458f2ce"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_text_valid",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "bounded_text_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:a7e3d0bd58db128f232a833443afc379b3ad249c8fad6472ffc4bd3066db8dce"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:08dea34b9b00754ac90c95be6f947b5512ffdf2b568d2ef9e649bb640b1f3006"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "value_added_use_restricted",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "resale_terms_confirmed"
           },
           {
             "name": "streaming",
             "status": "passed",
-            "code": "stream_terminal_usage_valid",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "stream_terminal_usage_valid"
           },
           {
             "name": "structured_output",
             "status": "passed",
-            "code": "structured_output_valid",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "structured_output_valid"
           }
         ],
         "observed": {
           "modelIdentity": "openai/gpt-oss-20b",
-          "latencyMsP95": 257.58,
+          "latencyMsP95": 435.17,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "10000",
+            "amountAtomic": "20000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:efc975d621c1a6edb78bca8520f25c23cec737678ca8ab79ef948d5d5b72dcbf"
+        "qualificationHash": "sha256:27e7048aa12de2190d56d5f5d58fe1837718498722d319eda4a0f8b405ab5b44"
       }
     },
     {
@@ -2143,8 +2088,8 @@
         "productIds": [
           "ai.chat"
         ],
-        "checkedAt": "2026-08-02T03:29:20.759Z",
-        "expiresAt": "2026-08-09T03:29:20.759Z",
+        "checkedAt": "2026-08-07T07:33:58.841Z",
+        "expiresAt": "2026-08-14T07:33:58.841Z",
         "termsStatus": "restricted",
         "resaleAllowed": true,
         "checks": [
@@ -2152,80 +2097,74 @@
             "name": "authentication",
             "status": "passed",
             "code": "credential_accepted",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:e285b090d4c47670fda0bf509ba961815f7fbc0b591ed60ed1010297f7c37f34"
           },
           {
             "name": "exact_identity",
             "status": "passed",
             "code": "exact_identity_observed",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:0a6c497596a7c43ae21022236853f4fe885a074f42cbaf4152a7bf57993fe23e"
           },
           {
             "name": "input_dependence",
             "status": "passed",
             "code": "input_dependence_observed",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:2db3d2045ff89dedb32642886ad934ab7cde2a37fd48c50f2f9f44dd8bc715ac"
           },
           {
             "name": "output_shape",
             "status": "passed",
-            "code": "bounded_text_valid",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "bounded_text_valid"
           },
           {
             "name": "usage_reporting",
             "status": "passed",
-            "code": "usage_reported",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "usage_reported"
           },
           {
             "name": "latency",
             "status": "passed",
             "code": "latency_within_ceiling",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:078c24c63440828df8feac2082fa2370a3f96a8e7e83b216b107b5aef9b0ad0a"
           },
           {
             "name": "failure_handling",
             "status": "passed",
-            "code": "invalid_model_failed_safely",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "invalid_model_failed_safely"
           },
           {
             "name": "cost_ceiling",
             "status": "passed",
             "code": "cost_within_ceiling",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "evidenceHash": "sha256:3331401cd14accac35a1ab192976de1ef4edfbf9ac7f7f895a490ada1211b16b"
           },
           {
             "name": "terms",
             "status": "passed",
-            "code": "value_added_use_restricted",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "resale_terms_confirmed"
           },
           {
             "name": "streaming",
             "status": "passed",
-            "code": "stream_terminal_usage_valid",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "stream_terminal_usage_valid"
           },
           {
             "name": "structured_output",
             "status": "passed",
-            "code": "structured_output_valid",
-            "evidenceHash": "sha256:c38264133e60878bb4c0dc65e6a323350a1ddf0f75cf3f24e73ef64b734432d0"
+            "code": "structured_output_valid"
           }
         ],
         "observed": {
           "modelIdentity": "qwen/qwen3.6-27b",
-          "latencyMsP95": 847.17,
+          "latencyMsP95": 137.19,
           "maximumSupplierCost": {
             "asset": "USD",
-            "amountAtomic": "10000",
+            "amountAtomic": "20000",
             "decimals": 6
           }
         },
         "status": "passed",
-        "qualificationHash": "sha256:0d6295d178c38db9997be0ad13cbaad76f3688eacea4305b770d9fcc5def27a1"
+        "qualificationHash": "sha256:763fd1c60f12bd4c4e1bfa6ee5d8448925c69e629ca59f61d58be328a3fe86cb"
       }
     }
   ],
@@ -2236,5 +2175,5 @@
     "supply.google_vertex",
     "supply.groq"
   ],
-  "catalogHash": "sha256:7c255949407fa99f89969ce09741216404c8425a119d941a54a67f6605027588"
+  "catalogHash": "sha256:e179326f95365bd96c230d96e482a477d1d86d7a0eb91eee71b020896d7c9e20"
 }

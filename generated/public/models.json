@@ -4,7 +4,7 @@
     {
       "id": "@cf/deepgram/aura-2-en",
       "object": "model",
-      "created": 1785658040,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.cloudflare_aura_2_en",
@@ -17,10 +17,10 @@
           "text_input"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -35,7 +35,7 @@
     {
       "id": "@cf/meta/llama-4-scout-17b-16e-instruct",
       "object": "model",
-      "created": 1785652189,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
@@ -51,10 +51,10 @@
           "text_output"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -69,7 +69,7 @@
     {
       "id": "@cf/nvidia/nemotron-3-120b-a12b",
       "object": "model",
-      "created": 1785652189,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.cf_nvidia_nemotron_3_120b_a12b",
@@ -85,10 +85,10 @@
           "text_output"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -103,7 +103,7 @@
     {
       "id": "@cf/openai/gpt-oss-120b",
       "object": "model",
-      "created": 1785652189,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.cf_openai_gpt_oss_120b",
@@ -119,10 +119,10 @@
           "text_output"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -137,7 +137,7 @@
     {
       "id": "@cf/openai/gpt-oss-20b",
       "object": "model",
-      "created": 1785652189,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.cf_openai_gpt_oss_20b",
@@ -153,10 +153,10 @@
           "text_output"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -171,7 +171,7 @@
     {
       "id": "@cf/qwen/qwen3-30b-a3b-fp8",
       "object": "model",
-      "created": 1785652189,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.cf_qwen_qwen3_30b_a3b_fp8",
@@ -187,10 +187,10 @@
           "text_output"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -205,7 +205,7 @@
     {
       "id": "aura-2-arcas-en",
       "object": "model",
-      "created": 1785640138,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.aura_2_arcas_en",
@@ -218,10 +218,10 @@
           "text_input"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -236,7 +236,7 @@
     {
       "id": "aura-2-thalia-en",
       "object": "model",
-      "created": 1785640138,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.aura_2_thalia_en",
@@ -249,10 +249,10 @@
           "text_input"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -267,7 +267,7 @@
     {
       "id": "gemini-3-pro-image",
       "object": "model",
-      "created": 1785639271,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.gemini_3_pro_image",
@@ -280,10 +280,10 @@
           "text_input"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "75000",
@@ -298,7 +298,7 @@
     {
       "id": "gemini-3.1-flash-image",
       "object": "model",
-      "created": 1785639271,
+      "created": 1786088410,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.gemini_3_1_flash_image",
@@ -311,10 +311,10 @@
           "text_input"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "35000",
@@ -329,7 +329,7 @@
     {
       "id": "gemini-3.1-flash-lite-image",
       "object": "model",
-      "created": 1785639271,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.gemini_3_1_flash_lite_image",
@@ -342,10 +342,10 @@
           "text_input"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "15000",
@@ -360,7 +360,7 @@
     {
       "id": "gemini-3.5-flash",
       "object": "model",
-      "created": 1785639271,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.gemini_3_5_flash",
@@ -375,10 +375,10 @@
           "text_output"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -393,7 +393,7 @@
     {
       "id": "gemini-3.5-flash-lite",
       "object": "model",
-      "created": 1785639271,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.gemini_3_5_flash_lite",
@@ -408,10 +408,10 @@
           "text_output"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -426,7 +426,7 @@
     {
       "id": "gemini-3.6-flash",
       "object": "model",
-      "created": 1785639271,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.gemini_3_6_flash",
@@ -441,10 +441,10 @@
           "text_output"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -459,7 +459,7 @@
     {
       "id": "gemini-embedding-001",
       "object": "model",
-      "created": 1785640680,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.gemini_embedding_001",
@@ -472,10 +472,10 @@
           "text_input"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_restricted",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -508,7 +508,7 @@
         "lifecycleState": "supply_paused",
         "proofLevel": "none",
         "sellable": false,
-        "reason": "upstream_completion_failed",
+        "reason": "upstream_authentication_unavailable",
         "expectedReturnAt": "2026-08-09T00:00:00Z",
         "observedPrice": {
           "amountAtomic": "1000",
@@ -541,7 +541,7 @@
         "lifecycleState": "supply_paused",
         "proofLevel": "none",
         "sellable": false,
-        "reason": "upstream_completion_failed",
+        "reason": "upstream_authentication_unavailable",
         "expectedReturnAt": "2026-08-09T00:00:00Z",
         "observedPrice": {
           "amountAtomic": "1000",
@@ -574,7 +574,7 @@
         "lifecycleState": "supply_paused",
         "proofLevel": "none",
         "sellable": false,
-        "reason": "upstream_completion_failed",
+        "reason": "upstream_authentication_unavailable",
         "expectedReturnAt": "2026-08-09T00:00:00Z",
         "observedPrice": {
           "amountAtomic": "1000",
@@ -589,7 +589,7 @@
     {
       "id": "openai/gpt-oss-120b",
       "object": "model",
-      "created": 1785641360,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.gpt_oss_120b",
@@ -605,10 +605,10 @@
           "text_output"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_unresolved",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -623,7 +623,7 @@
     {
       "id": "openai/gpt-oss-20b",
       "object": "model",
-      "created": 1785641360,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.gpt_oss_20b",
@@ -639,10 +639,10 @@
           "text_output"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_unresolved",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -657,7 +657,7 @@
     {
       "id": "qwen/qwen3.6-27b",
       "object": "model",
-      "created": 1785641360,
+      "created": 1786088038,
       "owned_by": "clervo",
       "clervo": {
         "routeId": "ai.route.qwen3_6_27b",
@@ -673,10 +673,10 @@
           "text_output"
         ],
         "route": "/v1/ai/execute",
-        "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
-        "sellable": true,
-        "reason": null,
+        "lifecycleState": "supply_paused",
+        "proofLevel": "none",
+        "sellable": false,
+        "reason": "commercial_permission_unresolved",
         "expectedReturnAt": null,
         "observedPrice": {
           "amountAtomic": "1000",
@@ -693,7 +693,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-06T17:01:41.422Z",
+      "observedAt": "2026-08-07T09:06:22.253Z",
       "releaseId": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -719,8 +719,7 @@
       "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
     },
     "counts": {
-      "live": 18,
-      "supply_paused": 3
+      "supply_paused": 21
     },
     "note": "Lifecycle state and proof level are separate facts. A live route at quote_observed_unpaid is offered and priced; it is not a demonstrated paid outcome. A supply_paused route stays listed with its reason and is not sellable."
   }

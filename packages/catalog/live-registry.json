@@ -10,10 +10,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T03:08:58.000Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "aura-2-arcas-en",
@@ -31,11 +34,11 @@
       "productIds": [
         "ai.speech"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.aura_2_arcas_en",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.deepgram"
     },
     {
@@ -48,10 +51,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T03:08:58.000Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "aura-2-thalia-en",
@@ -69,11 +75,11 @@
       "productIds": [
         "ai.speech"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.aura_2_thalia_en",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.deepgram"
     },
     {
@@ -89,10 +95,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T06:29:49.120Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "@cf/meta/llama-4-scout-17b-16e-instruct",
@@ -110,11 +119,11 @@
       "productIds": [
         "ai.chat"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.cloudflare_workers_ai"
     },
     {
@@ -130,10 +139,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T06:29:49.120Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "@cf/nvidia/nemotron-3-120b-a12b",
@@ -151,11 +163,11 @@
       "productIds": [
         "ai.chat"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.cf_nvidia_nemotron_3_120b_a12b",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.cloudflare_workers_ai"
     },
     {
@@ -171,10 +183,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T06:29:49.120Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "@cf/openai/gpt-oss-120b",
@@ -192,11 +207,11 @@
       "productIds": [
         "ai.chat"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.cf_openai_gpt_oss_120b",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.cloudflare_workers_ai"
     },
     {
@@ -212,10 +227,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T06:29:49.120Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "@cf/openai/gpt-oss-20b",
@@ -233,11 +251,11 @@
       "productIds": [
         "ai.chat"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.cf_openai_gpt_oss_20b",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.cloudflare_workers_ai"
     },
     {
@@ -253,10 +271,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T06:29:49.120Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "@cf/qwen/qwen3-30b-a3b-fp8",
@@ -274,11 +295,11 @@
       "productIds": [
         "ai.chat"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.cf_qwen_qwen3_30b_a3b_fp8",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.cloudflare_workers_ai"
     },
     {
@@ -291,10 +312,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T08:07:20.497Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "@cf/deepgram/aura-2-en",
@@ -312,11 +336,11 @@
       "productIds": [
         "ai.speech"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.cloudflare_aura_2_en",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.cloudflare_workers_ai"
     },
     {
@@ -329,10 +353,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "qualificationExpiresAt": "2026-08-14T07:40:10.810Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "gemini-3.1-flash-image",
@@ -350,11 +377,11 @@
       "productIds": [
         "ai.image"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.gemini_3_1_flash_image",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.google_vertex"
     },
     {
@@ -367,10 +394,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "gemini-3.1-flash-lite-image",
@@ -388,11 +418,11 @@
       "productIds": [
         "ai.image"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.gemini_3_1_flash_lite_image",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.google_vertex"
     },
     {
@@ -407,10 +437,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "gemini-3.5-flash",
@@ -428,11 +461,11 @@
       "productIds": [
         "ai.chat"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.gemini_3_5_flash",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.google_vertex"
     },
     {
@@ -447,10 +480,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "gemini-3.5-flash-lite",
@@ -468,11 +504,11 @@
       "productIds": [
         "ai.chat"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.gemini_3_5_flash_lite",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.google_vertex"
     },
     {
@@ -487,10 +523,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "gemini-3.6-flash",
@@ -508,11 +547,11 @@
       "productIds": [
         "ai.chat"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.gemini_3_6_flash",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.google_vertex"
     },
     {
@@ -525,10 +564,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T02:54:31.000Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "gemini-3-pro-image",
@@ -546,11 +588,11 @@
       "productIds": [
         "ai.image"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.gemini_3_pro_image",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.google_vertex"
     },
     {
@@ -563,10 +605,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": true,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T03:18:00.000Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "gemini-embedding-001",
@@ -584,11 +629,11 @@
       "productIds": [
         "ai.embed"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_restricted",
       "routeId": "ai.route.gemini_embedding_001",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.google_vertex"
     },
     {
@@ -603,11 +648,14 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "owner_operated_documented",
+        "permissionRestricted": false,
         "qualificationExpired": false,
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_completion_failed"
+        "supplyReason": "upstream_authentication_unavailable"
       },
       "exactModelId": "gpt-5.6-luna",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
@@ -625,7 +673,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_completion_failed",
+      "reason": "upstream_authentication_unavailable",
       "routeId": "ai.route.gpt_5_6_luna",
       "sellable": false,
       "state": "supply_paused",
@@ -643,11 +691,14 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "owner_operated_documented",
+        "permissionRestricted": false,
         "qualificationExpired": false,
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_completion_failed"
+        "supplyReason": "upstream_authentication_unavailable"
       },
       "exactModelId": "gpt-5.6-sol",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
@@ -665,7 +716,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_completion_failed",
+      "reason": "upstream_authentication_unavailable",
       "routeId": "ai.route.gpt_5_6_sol",
       "sellable": false,
       "state": "supply_paused",
@@ -683,11 +734,14 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "owner_operated_documented",
+        "permissionRestricted": false,
         "qualificationExpired": false,
         "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
         "supplyOutcome": "failed",
-        "supplyReason": "upstream_completion_failed"
+        "supplyReason": "upstream_authentication_unavailable"
       },
       "exactModelId": "gpt-5.6-terra",
       "expectedReturnAt": "2026-08-09T00:00:00Z",
@@ -705,7 +759,7 @@
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_completion_failed",
+      "reason": "upstream_authentication_unavailable",
       "routeId": "ai.route.gpt_5_6_terra",
       "sellable": false,
       "state": "supply_paused",
@@ -724,10 +778,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": false,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T03:29:20.759Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "openai/gpt-oss-120b",
@@ -745,11 +802,11 @@
       "productIds": [
         "ai.chat"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_unresolved",
       "routeId": "ai.route.gpt_oss_120b",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.groq"
     },
     {
@@ -765,10 +822,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": false,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T03:29:20.759Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "openai/gpt-oss-20b",
@@ -786,11 +846,11 @@
       "productIds": [
         "ai.chat"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_unresolved",
       "routeId": "ai.route.gpt_oss_20b",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.groq"
     },
     {
@@ -806,10 +866,13 @@
         "edgeCode": null,
         "edgeQuoted": true,
         "edgeStatus": 402,
+        "permissionBasis": "unresolved",
+        "permissionRestricted": false,
         "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-09T03:29:20.759Z",
+        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
+        "qualificationStatus": "passed",
         "resaleAllowed": true,
-        "supplyOutcome": "not_probed",
+        "supplyOutcome": "passed",
         "supplyReason": null
       },
       "exactModelId": "qwen/qwen3.6-27b",
@@ -827,11 +890,11 @@
       "productIds": [
         "ai.chat"
       ],
-      "proof": "quote_observed_unpaid",
-      "reason": null,
+      "proof": "none",
+      "reason": "commercial_permission_unresolved",
       "routeId": "ai.route.qwen3_6_27b",
-      "sellable": true,
-      "state": "live",
+      "sellable": false,
+      "state": "supply_paused",
       "supplyFamilyId": "supply.groq"
     }
   ],
@@ -947,15 +1010,14 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-06T17:01:41.422Z",
+  "observedAt": "2026-08-07T09:06:22.253Z",
   "products": [
     {
       "evidence": {
-        "liveRouteCount": 18,
+        "liveRouteCount": 0,
         "probed": true,
         "routeStates": {
-          "live": 18,
-          "supply_paused": 3
+          "supply_paused": 21
         },
         "totalRouteCount": 21
       },
@@ -963,26 +1025,17 @@
       "freeEntry": null,
       "id": "ai",
       "label": "AI",
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-02.2-ai.route.aura_2_arcas_en-min1000",
-        "resourceDescription": "Bounded ai.speech execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "operations": [
         "ai.chat",
         "ai.embed",
         "ai.image",
         "ai.speech"
       ],
-      "proof": "quote_observed_unpaid",
+      "proof": "none",
       "publiclyReachable": true,
-      "reason": null,
-      "state": "live"
+      "reason": "no_route_currently_live",
+      "state": "supply_paused"
     },
     {
       "evidence": {
@@ -1132,7 +1185,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "777b7c616e3e384c9a4b2b7112cef74521b7f7a5",
+  "sourceCommit": "e211ad78f64bd13b3d01905d0f69e9dec0d737b9",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -1140,8 +1193,7 @@
   },
   "summary": {
     "aiRoutes": {
-      "live": 18,
-      "supply_paused": 3
+      "supply_paused": 21
     },
     "bazaarIndexedResources": 1,
     "bazaarValidResources": 3,
@@ -1150,7 +1202,8 @@
       "live": 5
     },
     "products": {
-      "live": 3,
+      "live": 2,
+      "supply_paused": 1,
       "unavailable": 3
     }
   },
@@ -1167,9 +1220,57 @@
         "gpt-5.6-terra"
       ],
       "outcome": "failed",
-      "providerErrorCode": "internal_server_error",
-      "reason": "upstream_completion_failed",
+      "providerErrorCode": "auth_unavailable",
+      "reason": "upstream_authentication_unavailable",
       "supplyFamilyId": "supply.clervo_ai_gateway"
+    },
+    {
+      "expectedReturnAt": null,
+      "modelIdsAdvertised": [],
+      "outcome": "passed",
+      "providerErrorCode": null,
+      "reason": null,
+      "supplyFamilyId": "supply.cloudflare_workers_ai"
+    },
+    {
+      "expectedReturnAt": null,
+      "modelIdsAdvertised": [],
+      "outcome": "passed",
+      "providerErrorCode": null,
+      "reason": null,
+      "supplyFamilyId": "supply.deepgram"
+    },
+    {
+      "expectedReturnAt": null,
+      "modelIdsAdvertised": [],
+      "outcome": "passed",
+      "providerErrorCode": null,
+      "reason": null,
+      "supplyFamilyId": "supply.google_vertex"
+    },
+    {
+      "expectedReturnAt": null,
+      "modelIdsAdvertised": [
+        "allam-2-7b",
+        "canopylabs/orpheus-arabic-saudi",
+        "canopylabs/orpheus-v1-english",
+        "groq/compound",
+        "groq/compound-mini",
+        "llama-3.1-8b-instant",
+        "llama-3.3-70b-versatile",
+        "meta-llama/llama-prompt-guard-2-22m",
+        "meta-llama/llama-prompt-guard-2-86m",
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+        "openai/gpt-oss-safeguard-20b",
+        "qwen/qwen3.6-27b",
+        "whisper-large-v3",
+        "whisper-large-v3-turbo"
+      ],
+      "outcome": "passed",
+      "providerErrorCode": null,
+      "reason": null,
+      "supplyFamilyId": "supply.groq"
     }
   ]
 }

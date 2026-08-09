@@ -1,15 +1,18 @@
 {
   "schemaVersion": "clervo.ai-speech-pricing.v1",
-  "priceVersion": "2026-08-02.2",
-  "evaluatedAt": "2026-08-02T08:13:37.260Z",
+  "priceVersion": "2026-08-07.1",
+  "evaluatedAt": "2026-08-07T09:30:00.000Z",
   "currency": "USD",
   "providerVisibility": "internal_only",
   "policy": {
     "customerFreeByDefault": false,
-    "positiveMarginRequiredAtLaunch": false,
+    "positiveMarginRequiredAtLaunch": true,
     "unknownSupplierDebitBlocksSale": false,
     "providerPassThroughAccessAllowed": false,
-    "exactModelSubstitution": "prohibited"
+    "exactModelSubstitution": "prohibited",
+    "grossMarginTarget": 0.12,
+    "pricingBasis": "verified_supplier_standard_tier_list_cost",
+    "creditsJustifyBelowCostPricing": false
   },
   "creditGuard": {
     "ownerReportedBalanceUsd": 200,
@@ -27,7 +30,10 @@
     "sourceUrl": "https://blockrun.ai/api/v1/models",
     "checkedAt": "2026-08-02T03:04:00.000Z",
     "catalogRecords": 83,
-    "speechPriceRangeUsdPerThousandCharacters": [0.05, 0.3],
+    "speechPriceRangeUsdPerThousandCharacters": [
+      0.05,
+      0.3
+    ],
     "transcriptionRoutesObserved": 0
   },
   "speechRoutes": [
@@ -35,19 +41,33 @@
       "modelId": "aura-2-thalia-en",
       "listingStatus": "sellable",
       "positioning": "best_overall_clear_english",
-      "customerUsdPerThousandCharacters": 0.015,
+      "customerUsdPerThousandCharacters": 0.04,
       "shadowUsdPerThousandCharacters": 0.03,
       "maximumInputCharacters": 2000,
-      "outputFormats": ["mp3", "opus", "aac", "flac", "wav", "pcm"]
+      "outputFormats": [
+        "mp3",
+        "opus",
+        "aac",
+        "flac",
+        "wav",
+        "pcm"
+      ]
     },
     {
       "modelId": "aura-2-arcas-en",
       "listingStatus": "sellable",
       "positioning": "best_overall_natural_english",
-      "customerUsdPerThousandCharacters": 0.015,
+      "customerUsdPerThousandCharacters": 0.04,
       "shadowUsdPerThousandCharacters": 0.03,
       "maximumInputCharacters": 2000,
-      "outputFormats": ["mp3", "opus", "aac", "flac", "wav", "pcm"]
+      "outputFormats": [
+        "mp3",
+        "opus",
+        "aac",
+        "flac",
+        "wav",
+        "pcm"
+      ]
     }
   ],
   "transcriptionRoutes": [
@@ -55,8 +75,14 @@
       "modelId": "nova-3",
       "listingStatus": "priced_qualified_adapter_ready_contract_pending",
       "positioning": "best_funded_general_english",
-      "customerUsdPerMinute": { "streaming": 0.003, "prerecorded": 0.004 },
-      "shadowUsdPerMinute": { "streaming": 0.0048, "prerecorded": 0.0077 },
+      "customerUsdPerMinute": {
+        "streaming": 0.003,
+        "prerecorded": 0.004
+      },
+      "shadowUsdPerMinute": {
+        "streaming": 0.0048,
+        "prerecorded": 0.0077
+      },
       "keytermCustomerUsdPerMinute": 0.0007,
       "keytermShadowUsdPerMinute": 0.0013,
       "knownLimitation": "The bounded synthetic round-trip transcribed four of five target terms; idempotency remained misrecognized even with keyterm prompting."

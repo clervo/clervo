@@ -203,7 +203,9 @@
     "staging:live-smoke": "node ./scripts/verify-runtime.mjs && node ./scripts/staging-live-smoke.mjs",
     "staging:gcp": "./scripts/gcp-staging.sh",
     "test": "node ./scripts/verify-runtime.mjs && node ./scripts/run-acceptance.mjs",
-    "test:contracts": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/*.test.mjs"
+    "test:contracts": "node ./scripts/verify-runtime.mjs && node --test ./tests/contract/*.test.mjs",
+    "ai:check-expiry": "node ./scripts/verify-runtime.mjs && node ./scripts/ai/check-qualification-expiry.mjs",
+    "ai:requalify": "node ./scripts/verify-runtime.mjs && npm run build && node ./scripts/ai/requalify-ai-routes.mjs"
   },
   "dependencies": {
     "@kubernetes/client-node": "1.4.0",
