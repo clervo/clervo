@@ -4,6 +4,7 @@ import test from 'node:test';
 import {
   PredictionPublicMarketClient,
   parseKalshiMarket,
+  parsePdataMarket,
   parsePolymarketGammaMarket,
 } from '../../dist/adapters/prediction/src/public-market-data.js';
 import { normalizePredictionMarket } from '../../dist/services/prediction/src/normalization.js';
@@ -113,4 +114,27 @@ test('source parsing fails closed on missing rules, crossed prices, invalid reso
   assert.throws(() => parseKalshiMarket(base, { sourceUrl: 'https://api.elections.kalshi.com/trade-api/v2/markets/KXTEST-26', observedAt, staleAfterMs: 60_000 }), /response_invalid/u);
   assert.throws(() => parseKalshiMarket({ ...base, yes_bid_dollars: '0.50', yes_ask_dollars: '0.60' }, { sourceUrl: 'http://127.0.0.1/market', observedAt, staleAfterMs: 60_000 }), /endpoint_invalid/u);
   assert.throws(() => parseKalshiMarket({ ...base, status: 'settled', yes_bid_dollars: '0.50', yes_ask_dollars: '0.60', result: 'void', settlement_ts: observedAt }, { sourceUrl: 'https://api.elections.kalshi.com/trade-api/v2/markets/KXTEST-26', observedAt, staleAfterMs: 60_000 }), /response_invalid/u);
+});
+
+test('pdata fixtures preserve all eight venue identities, actual freshness, upstream provenance, and CC BY attribution without raw pass-through', () => {
+  const base = {
+    id: 'market-123', event_id: 'event-123', question: 'Will the example launch happen?', description: 'Resolves Yes if https://official.example/launch confirms the launch.',
+    outcomes: ['Yes', 'No'], outcome_prices: [0.55, 0.45], active: true, closed: false,
+    start_date: '2026-01-01T00:00:00Z', end_date: '2026-12-31T23:59:59Z', closed_time: null,
+    volume: 4567.89, liquidity: 123.456789, categories: ['Technology'], fetched_at: observedAt,
+    url: 'https://upstream.example/market-123',
+  };
+  for (const source of ['polymarket', 'kalshi', 'manifold', 'myriad', 'limitless', 'predict', 'opinion', 'gemini']) {
+    const normalized = normalizePredictionMarket(parsePdataMarket({ ...base, source }, { apiUrl: `https://api.pdata.world/api/v1/markets?source=${source}`, staleAfterMs: 3_600_000 }), Date.parse('2026-08-02T12:30:00.000Z'));
+    assert.equal(normalized.venueId, source);
+    assert.equal(normalized.observedAt, observedAt);
+    assert.equal(normalized.marketUrl, `https://pdata.world/markets/${source}/market-123`);
+    assert.equal(normalized.resolution.sourceUrl, 'https://official.example/launch');
+    assert.equal(normalized.supplyAttributions[0].license, 'CC BY 4.0');
+    assert.equal(normalized.supplyAttributions[0].modified, true);
+    assert.match(normalized.supplyAttributions[0].notice, /Normalized and transformed by Clervo/u);
+    assert.ok(normalized.provenance.some(({ fieldGroup, sourceUrl }) => fieldGroup === 'licensed_supply_attribution' && sourceUrl === 'https://pdata.world/data'));
+    if (source === 'manifold') assert.equal(normalized.volumeMicrousd, null);
+  }
+  assert.throws(() => parsePdataMarket({ ...base, source: 'unknown' }, { apiUrl: 'https://api.pdata.world/api/v1/markets', staleAfterMs: 3_600_000 }), /response_invalid/u);
 });

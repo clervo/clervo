@@ -44,6 +44,11 @@ async function apply(records) {
     `apply:${target}`,
     'production database migration confirmation mismatch',
   );
+  const requestedTarget = process.env.CLERVO_DATABASE_MIGRATION_TARGET;
+  assert.match(requestedTarget ?? '', /^\d{4}-[a-z0-9-]+\.sql$/u, 'exact production migration target is required');
+  const targetIndex = records.findIndex(({ name }) => name === requestedTarget);
+  assert.notEqual(targetIndex, -1, 'production migration target is not present in the image');
+  const selectedRecords = records.slice(0, targetIndex + 1);
   const rawUrl = urlFromStdin ? await readStdin() : process.env.CLERVO_DATABASE_URL;
   const pool = new Pool({
     connectionString: normalizeProductionDatabaseUrl(rawUrl),
@@ -63,7 +68,7 @@ async function apply(records) {
       sha256 text NOT NULL CHECK (sha256 ~ '^[a-f0-9]{64}$'),
       applied_at timestamptz NOT NULL DEFAULT clock_timestamp()
     )`);
-    for (const record of records) {
+    for (const record of selectedRecords) {
       const client = await pool.connect();
       try {
         await client.query('BEGIN');
@@ -94,7 +99,7 @@ async function apply(records) {
   } finally {
     await pool.end();
   }
-  return { action: 'applied', target, applied, skipped };
+  return { action: 'applied', target, targetMigration: requestedTarget, applied, skipped };
 }
 
 const records = await migrations();

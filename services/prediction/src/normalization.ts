@@ -13,6 +13,18 @@ export interface VenueOutcomeSnapshot {
   price: string | null;
 }
 
+export interface PredictionSupplyAttribution {
+  sourceId: string;
+  sourceName: string;
+  sourceUrl: string;
+  upstreamVenueId: string;
+  upstreamMarketUrl: string;
+  license: string;
+  licenseUrl: string;
+  notice: string;
+  modified: boolean;
+}
+
 export interface VenueMarketSnapshot {
   venueId: PredictionVenueId;
   venueMarketId: string;
@@ -33,6 +45,7 @@ export interface VenueMarketSnapshot {
   feeBps: number | null;
   observedAt: string;
   staleAfterMs: number;
+  supplyAttributions?: readonly PredictionSupplyAttribution[];
 }
 
 export interface NormalizedPredictionOutcome {
@@ -65,6 +78,7 @@ export interface NormalizedPredictionMarket {
   observedAt: string;
   freshness: Readonly<{ staleAfterMs: number; ageMs: number; status: 'fresh' | 'stale' }>;
   provenance: readonly Readonly<{ fieldGroup: string; sourceUrl: string; observedAt: string }>[];
+  supplyAttributions: readonly Readonly<PredictionSupplyAttribution>[];
 }
 
 function timestamp(value: string | null, name: string): number | null {
@@ -89,6 +103,27 @@ function text(value: string, name: string, maximum: number): string {
 
 function nullableInteger(value: number | null, name: string, maximum: number): void {
   if (value !== null && (!Number.isSafeInteger(value) || value < 0 || value > maximum)) throw new TypeError(`prediction_${name}_invalid`);
+}
+
+function supplyAttributions(value: readonly PredictionSupplyAttribution[] | undefined, venueId: string): readonly Readonly<PredictionSupplyAttribution>[] {
+  if (value === undefined) return Object.freeze([]);
+  if (!Array.isArray(value) || value.length < 1 || value.length > 8) throw new TypeError('prediction_supply_attribution_invalid');
+  return Object.freeze(value.map((item) => {
+    if (!/^[a-z][a-z0-9_]{1,63}$/u.test(item.sourceId) || text(item.sourceName, 'supply_attribution', 100) !== item.sourceName
+      || item.upstreamVenueId !== venueId || text(item.license, 'supply_attribution', 100) !== item.license
+      || text(item.notice, 'supply_attribution', 1_000) !== item.notice || item.modified !== true) throw new TypeError('prediction_supply_attribution_invalid');
+    return Object.freeze({
+      sourceId: item.sourceId,
+      sourceName: item.sourceName,
+      sourceUrl: publicUrl(item.sourceUrl, 'supply_attribution'),
+      upstreamVenueId: item.upstreamVenueId,
+      upstreamMarketUrl: publicUrl(item.upstreamMarketUrl, 'supply_attribution'),
+      license: item.license,
+      licenseUrl: publicUrl(item.licenseUrl, 'supply_attribution'),
+      notice: item.notice,
+      modified: true,
+    });
+  }));
 }
 
 function price(value: string | null): number | null {
@@ -153,6 +188,7 @@ export function normalizePredictionMarket(input: Readonly<VenueMarketSnapshot>, 
   const quoted = prices.filter((value): value is number => value !== null);
   const rawTotalMicrousd = quoted.length === prices.length ? quoted.reduce((sum, value) => sum + value, 0) : null;
   const ageMs = nowMs - observedMs;
+  const normalizedAttributions = supplyAttributions(input.supplyAttributions, input.venueId);
   return Object.freeze({
     marketRef: marketRef(input.venueId, input.venueMarketId),
     venueId: input.venueId,
@@ -177,7 +213,9 @@ export function normalizePredictionMarket(input: Readonly<VenueMarketSnapshot>, 
     provenance: Object.freeze([
       Object.freeze({ fieldGroup: 'identity_and_rules', sourceUrl: resolutionSourceUrl, observedAt: input.observedAt }),
       Object.freeze({ fieldGroup: 'market_state_prices_liquidity', sourceUrl: marketUrl, observedAt: input.observedAt }),
+      ...normalizedAttributions.map(({ sourceUrl }) => Object.freeze({ fieldGroup: 'licensed_supply_attribution', sourceUrl, observedAt: input.observedAt })),
     ]),
+    supplyAttributions: normalizedAttributions,
   });
 }
 

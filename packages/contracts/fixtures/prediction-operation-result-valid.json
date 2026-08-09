@@ -16,7 +16,8 @@
       "signals": [
         { "kind": "venue_disagreement", "label": "Yes", "disagreementBps": 500, "leftProbabilityBps": 5500, "rightProbabilityBps": 6000 }
       ],
-      "provenance": [{ "venueId": "polymarket", "marketRef": "pmkt_0123456789abcdef0123456789abcdef", "observedAt": "2026-08-02T12:00:00.000Z", "sourceUrls": ["https://official.example/rules/123"] }]
+      "provenance": [{ "venueId": "polymarket", "marketRef": "pmkt_0123456789abcdef0123456789abcdef", "observedAt": "2026-08-02T12:00:00.000Z", "sourceUrls": ["https://official.example/rules/123"] }],
+      "supplyAttributions": []
     },
     "resultHash": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
   }

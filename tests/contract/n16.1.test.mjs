@@ -15,7 +15,7 @@ const root = new URL('../..', import.meta.url);
 const json = async (path) => JSON.parse(await readFile(new URL(path, root), 'utf8'));
 const text = async (path) => readFile(new URL(path, root), 'utf8');
 
-test('public launch policy exposes qualified Search, AI, and Sandbox through a zero-traffic fail-closed rollout', async () => {
+test('public launch policy exposes qualified Search, AI, Sandbox, and Prediction through a zero-traffic fail-closed rollout', async () => {
   const policy = await json('infra/production/gcp/public-launch.v1.json');
   const release = await json('infra/production/cloudflare/public-search-release.v1.json');
   const launchState = await json('packages/catalog/launch-state.v1.json');
@@ -33,6 +33,12 @@ test('public launch policy exposes qualified Search, AI, and Sandbox through a z
   assert.equal(policy.ai.artifacts.mode, 'r2');
   assert.equal(policy.ai.artifacts.bucket, 'clervo-artifacts');
   assert.equal(policy.ai.artifacts.retentionSeconds, 604800);
+  assert.equal(policy.prediction.mode, 'paid');
+  assert.equal(policy.prediction.publicRoute, true);
+  assert.equal(policy.prediction.qualifiedAdapter, 'adapter_prediction.pdata_rest');
+  assert.deepEqual(policy.prediction.qualifiedVenues, ['polymarket', 'kalshi', 'manifold', 'limitless']);
+  assert.equal(policy.prediction.supplierCostMicrousd, 0);
+  assert.equal(policy.prediction.attributionRequired, true);
   assert.equal(policy.rollout.deployTrafficPercent, 0);
   assert.equal(policy.rollout.publicAccessEnabledOnlyAfterPromotion, true);
   assert.equal(policy.rollout.publicAccessMethod, 'cloud_run_invoker_iam_check_disabled');
@@ -41,6 +47,7 @@ test('public launch policy exposes qualified Search, AI, and Sandbox through a z
   assert.deepEqual(worker.secrets.required, ['CLERVO_EDGE_AUTHORIZATION']);
   assert.equal(worker.vars.CLERVO_AI_PUBLIC_ENABLED, 'true');
   assert.equal(worker.vars.CLERVO_SANDBOX_PUBLIC_ENABLED, 'true');
+  assert.equal(worker.vars.CLERVO_PREDICTION_PUBLIC_ENABLED, 'true');
   assert.deepEqual(worker.routes.map(({ pattern }) => pattern), ['api.clervo.dev/', 'api.clervo.dev/*']);
   assert.equal(release.state, 'public_preview_verified');
   assert.equal(release.edge.trafficPercent, 100);
@@ -61,11 +68,15 @@ test('public launch policy exposes qualified Search, AI, and Sandbox through a z
 
 test('public release tooling keeps deployment private until all independent promotion checks pass', async () => {
   const source = await text('scripts/production/gcp-public-launch.mjs');
+  const prober = await text('scripts/probe-live-registry.mjs');
+  const discoveryGenerator = await text('scripts/generate-discovery.mjs');
   assert.match(source, /--no-allow-unauthenticated/u);
   assert.match(source, /--no-traffic/u);
   assert.match(source, /CLERVO_LIVE_SEARCH_SMOKE/u);
   assert.match(source, /CLERVO_X402_CHALLENGE_SMOKE/u);
   assert.match(source, /CLERVO_SANDBOX_LIVE_SMOKE/u);
+  assert.match(source, /CLERVO_PREDICTION_LIVE_SMOKE/u);
+  assert.match(source, /CLERVO_PREDICTION_MODE/u);
   assert.match(source, /CLERVO_MONITORING_DELIVERY/u);
   assert.match(source, /--no-invoker-iam-check/u);
   assert.match(source, /--invoker-iam-check/u);
@@ -74,6 +85,12 @@ test('public release tooling keeps deployment private until all independent prom
   assert.match(source, /CLERVO_ARTIFACT_SIGNING_SECRET_VERSION/u);
   assert.match(source, /CLERVO_R2_SECRET_ACCESS_KEY_SECRET_VERSION/u);
   assert.match(source, /CLERVO_DEEPGRAM_SECRET_VERSION/u);
+  assert.match(prober, /api\.prediction_execute/u);
+  assert.match(prober, /probeIds: \{ paid: 'api\.prediction_execute' \}/u);
+  assert.match(prober, /productId: 'prediction', resourcePath: '\/v1\/prediction\/execute'/u);
+  assert.match(discoveryGenerator, /publicPrediction = observedLive\.prediction/u);
+  assert.match(discoveryGenerator, /openapi\.paths\['\/v1\/prediction\/execute'\]/u);
+  assert.match(discoveryGenerator, /priceModel: 'request_derived_per_operation'/u);
 });
 
 test('API edge publishes enabled products while blocking private control and disabled public products', async () => {

@@ -111,12 +111,12 @@ export function createX402PaidPredictionProcessor({ service, stateStore, runtime
           return Object.freeze({
             output: completed.result,
             supplierCost: pricing.supplierCost,
-            provenance: qualifiedProvenance({
-              adapterId: 'adapter_prediction.qualified_source',
-              qualificationIds: completed.qualificationIds,
+            provenance: Object.freeze(completed.sourceBindings.flatMap(({ adapterId, qualificationId }) => qualifiedProvenance({
+              adapterId,
+              qualificationIds: [qualificationId],
               providerReferenceHash: completed.result.resultHash,
               code: 'prediction_runtime_result_invalid',
-            }),
+            }))),
           });
         },
         createResponse({ output, receipt }) {

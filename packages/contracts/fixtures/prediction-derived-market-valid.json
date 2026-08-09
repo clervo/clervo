@@ -6,6 +6,7 @@
     "resolution": { "sourceUrl": "https://official.example/rules/123", "rulesHash": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" }, "marketUrl": "https://markets.example/market-123",
     "outcomes": [{ "outcomeId": "pout_0123456789abcdef0123456789abcdef", "label": "Yes", "normalizedProbabilityBps": 5500 }, { "outcomeId": "pout_fedcba9876543210fedcba9876543210", "label": "No", "normalizedProbabilityBps": 4500 }],
     "probability": { "method": "normalized_visible_prices_largest_remainder", "quotedOutcomeCount": 2, "overroundBps": 0 }, "observedAt": "2026-08-02T12:00:00.000Z", "freshness": { "staleAfterMs": 60000, "ageMs": 30000, "status": "fresh" },
-    "evidence": [{ "fieldGroup": "identity_and_rules", "sourceUrl": "https://official.example/rules/123", "observedAt": "2026-08-02T12:00:00.000Z" }, { "fieldGroup": "market_state_prices_liquidity", "sourceUrl": "https://markets.example/market-123", "observedAt": "2026-08-02T12:00:00.000Z" }]
+    "evidence": [{ "fieldGroup": "identity_and_rules", "sourceUrl": "https://official.example/rules/123", "observedAt": "2026-08-02T12:00:00.000Z" }, { "fieldGroup": "market_state_prices_liquidity", "sourceUrl": "https://markets.example/market-123", "observedAt": "2026-08-02T12:00:00.000Z" }],
+    "supplyAttributions": []
   }
 }

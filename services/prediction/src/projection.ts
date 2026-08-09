@@ -19,6 +19,7 @@ export interface DerivedPredictionMarket {
   observedAt: string;
   freshness: Readonly<{ staleAfterMs: number; ageMs: number; status: 'fresh' | 'stale' }>;
   evidence: readonly Readonly<{ fieldGroup: string; sourceUrl: string; observedAt: string }>[];
+  supplyAttributions: Readonly<NormalizedPredictionMarket['supplyAttributions']>;
 }
 
 export function projectDerivedPredictionMarket(market: Readonly<NormalizedPredictionMarket>): Readonly<DerivedPredictionMarket> {
@@ -40,5 +41,6 @@ export function projectDerivedPredictionMarket(market: Readonly<NormalizedPredic
     observedAt: market.observedAt,
     freshness: market.freshness,
     evidence: market.provenance,
+    supplyAttributions: market.supplyAttributions,
   });
 }

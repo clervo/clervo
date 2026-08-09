@@ -4,10 +4,19 @@
   "$defs": {
     "timestampOrNull": { "type": ["string", "null"], "format": "date-time" },
     "microusdOrNull": { "type": ["integer", "null"], "minimum": 0, "maximum": 9007199254740991 },
-    "probabilityOrNull": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000 }
+    "probabilityOrNull": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000 },
+    "supplyAttribution": {
+      "type": "object", "required": ["sourceId", "sourceName", "sourceUrl", "upstreamVenueId", "upstreamMarketUrl", "license", "licenseUrl", "notice", "modified"],
+      "properties": {
+        "sourceId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" }, "sourceName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https://" }, "upstreamVenueId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" },
+        "upstreamMarketUrl": { "type": "string", "format": "uri", "pattern": "^https://" }, "license": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "licenseUrl": { "type": "string", "format": "uri", "pattern": "^https://" }, "notice": { "type": "string", "minLength": 1, "maxLength": 1000 }, "modified": { "const": true }
+      }, "additionalProperties": false
+    }
   },
   "type": "object",
-  "required": ["marketRef", "venueId", "venueMarketId", "question", "description", "category", "status", "openedAt", "closesAt", "resolvedAt", "resolvedOutcomeId", "resolution", "marketUrl", "outcomes", "probability", "liquidityMicrousd", "volumeMicrousd", "feeBps", "observedAt", "freshness", "provenance"],
+  "required": ["marketRef", "venueId", "venueMarketId", "question", "description", "category", "status", "openedAt", "closesAt", "resolvedAt", "resolvedOutcomeId", "resolution", "marketUrl", "outcomes", "probability", "liquidityMicrousd", "volumeMicrousd", "feeBps", "observedAt", "freshness", "provenance", "supplyAttributions"],
   "properties": {
     "marketRef": { "type": "string", "pattern": "^pmkt_[a-f0-9]{32}$" },
     "venueId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" },
@@ -86,7 +95,8 @@
         },
         "additionalProperties": false
       }
-    }
+    },
+    "supplyAttributions": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/supplyAttribution" } }
   },
   "additionalProperties": false
 }

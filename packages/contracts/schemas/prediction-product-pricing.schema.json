@@ -11,6 +11,19 @@
     "lifecycle": { "enum": ["unavailable", "live"] },
     "providerNamesPublic": { "type": "boolean" },
     "minimumBillableMicrousd": { "type": "integer", "minimum": 1000, "maximum": 1000000 },
+    "costBasis": {
+      "type": "object",
+      "required": ["observedAt", "zeroCostDataSupply", "facilitatorFreeSettlementsPerMonth", "facilitatorOverageMicrousdPerSettlement", "postFreeTierCostIncluded", "evidenceUrls"],
+      "properties": {
+        "observedAt": { "type": "string", "format": "date-time" },
+        "zeroCostDataSupply": { "const": true },
+        "facilitatorFreeSettlementsPerMonth": { "type": "integer", "minimum": 0, "maximum": 1000000 },
+        "facilitatorOverageMicrousdPerSettlement": { "type": "integer", "minimum": 0, "maximum": 1000000 },
+        "postFreeTierCostIncluded": { "const": true },
+        "evidenceUrls": { "type": "array", "minItems": 3, "maxItems": 8, "uniqueItems": true, "items": { "type": "string", "format": "uri", "pattern": "^https://" } }
+      },
+      "additionalProperties": false
+    },
     "subsidy": { "type": "object", "required": ["enabled", "budgetMicrousd", "ownerApprovalRequired"], "properties": { "enabled": { "const": false }, "budgetMicrousd": { "const": 0 }, "ownerApprovalRequired": { "const": true } }, "additionalProperties": false },
     "products": {
       "type": "array", "minItems": 5, "maxItems": 5,
@@ -31,5 +44,6 @@
       }
     }
   },
+  "allOf": [{ "if": { "properties": { "lifecycle": { "const": "live" } }, "required": ["lifecycle"] }, "then": { "properties": { "costBasis": {} }, "required": ["costBasis"] } }],
   "additionalProperties": false
 }

@@ -17,6 +17,7 @@ const liveRegistry = JSON.parse(await readFile(path.join(root, 'packages/catalog
 const modelCatalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
 const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
 const x402Proof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/x402-proof.v1.json'), 'utf8'));
+const predictionPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/prediction-product-pricing.v1.json'), 'utf8'));
 
 function componentName(fileName) {
   return fileName
@@ -134,6 +135,24 @@ const sandboxProbeSchema = Object.freeze({
     },
   },
 });
+const predictionProbeExample = Object.freeze({ kind: 'markets', status: 'open', limit: 3 });
+const predictionMarketRefSchema = Object.freeze({ type: 'string', pattern: '^pmkt_[a-f0-9]{32}$' });
+const predictionProbeSchema = Object.freeze({
+  oneOf: [
+    {
+      type: 'object', required: ['kind'], additionalProperties: false,
+      properties: {
+        kind: { enum: ['search', 'markets'], default: 'markets' }, query: { type: 'string', minLength: 1, maxLength: 500 }, category: { type: 'string', minLength: 1, maxLength: 100 },
+        status: { enum: ['open', 'closed', 'resolved', 'cancelled'], default: 'open' }, venues: { type: 'array', minItems: 1, maxItems: 16, uniqueItems: true, items: { enum: ['polymarket', 'kalshi', 'manifold', 'limitless'] } },
+        limit: { type: 'integer', minimum: 1, maximum: 100, default: 3 }, cursor: { type: 'string', minLength: 1, maxLength: 2048 },
+      },
+    },
+    { type: 'object', required: ['kind', 'marketRef'], additionalProperties: false, properties: { kind: { const: 'market' }, marketRef: predictionMarketRefSchema } },
+    { type: 'object', required: ['kind', 'marketRefs'], additionalProperties: false, properties: { kind: { const: 'compare' }, marketRefs: { type: 'array', minItems: 2, maxItems: 2, uniqueItems: true, items: predictionMarketRefSchema } } },
+    { type: 'object', required: ['kind', 'marketRef'], additionalProperties: false, properties: { kind: { const: 'history' }, marketRef: predictionMarketRefSchema, afterSequence: { type: 'integer', minimum: 0 }, limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 } } },
+    { type: 'object', required: ['kind', 'marketRef'], additionalProperties: false, properties: { kind: { const: 'signal' }, marketRef: predictionMarketRefSchema, compareMarketRef: predictionMarketRefSchema } },
+  ],
+});
 
 function scannerSafeOperation(operation, { requestSchema, example, paymentInfo, free = false }) {
   const cloned = structuredClone(operation);
@@ -197,6 +216,7 @@ const publicApiFlags = [
 const publicSearch = observedLive.search;
 const publicAi = observedLive.ai;
 const publicSandbox = observedLive.sandbox;
+const publicPrediction = observedLive.prediction;
 
 // Lifecycle state and proof level are rendered as two separate fields on every
 // surface. Collapsing them into one is what previously let a quote be read as a
@@ -482,8 +502,69 @@ if (publicSandbox) {
   ];
   llms += '\n## Secure Sandbox preview\n\n- `POST /v1/sandbox/execute`: fixed maximum charge 0.120000 USDC on Base for one bounded Node.js gVisor execution.\n- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.\n';
 }
+if (publicPrediction) {
+  const priceByProduct = new Map(predictionPricing.products.map((product) => [product.productId, product]));
+  const publicPredictionProducts = [
+    ['prediction.markets', 'Discover normalized markets', 'Search and paginate fresh normalized markets and conservative canonical events.'],
+    ['prediction.market', 'Inspect one normalized market', 'Read one stable Clervo market identity with normalized probabilities, freshness, evidence, and supply attribution.'],
+    ['prediction.compare', 'Compare equivalent markets', 'Compare two conservatively matched markets and return normalized disagreement evidence.'],
+    ['prediction.history', 'Read durable market history', 'Read a bounded hash-linked history of Clervo normalized observations.'],
+    ['prediction.signal', 'Derive market signals', 'Derive bounded movement or disagreement signals only when the evidence is sufficient.'],
+  ];
+  openapi.info.title = 'Clervo Search, AI, Secure Sandbox, and Prediction Intelligence API';
+  openapi.info.description = 'Public raw Search plus bounded paid AI, Sandbox, and derived Prediction Intelligence. Prediction supply is normalized and transformed by Clervo, attributed to pdata and each upstream venue, and never exposed as a raw pdata proxy.';
+  openapi.paths['/v1/prediction/execute'] = {
+    post: {
+      summary: 'Request or settle a bounded Prediction Intelligence operation',
+      description: 'Discovers or analyzes prediction markets through stable Clervo identities, conservative matching, durable normalized observations, freshness, provenance, attribution, receipts, and no-charge replay.',
+      operationId: 'predictionExecute',
+      parameters: [{ name: 'Idempotency-Key', in: 'header', required: true, schema: { type: 'string', minLength: 8, maxLength: 128 } }],
+      requestBody: { required: true, content: { 'application/json': { schema: predictionProbeSchema } } },
+      responses: {
+        200: { description: 'Prediction operation completed or replayed', content: { 'application/json': { schema: publicResultSchema } } },
+        400: { description: 'Invalid bounded Prediction request', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
+        404: { description: 'Requested stable market identity was not found', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        503: { description: 'Qualified supply, durable state, or settlement is unavailable', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+      },
+    },
+  };
+  openapi.paths['/v1/prediction/execute'].post = scannerSafeOperation(openapi.paths['/v1/prediction/execute'].post, {
+    requestSchema: predictionProbeSchema,
+    example: predictionProbeExample,
+    paymentInfo: {
+      price: { mode: 'request_derived_per_operation', currency: 'USD', min: '0.002000', max: '0.003000' },
+      protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
+    },
+  });
+  openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, ...publicPredictionProducts.map(([productId]) => productId)];
+  for (const [productId, title, summary] of publicPredictionProducts) {
+    const price = priceByProduct.get(productId);
+    if (price?.listingStatus !== 'sellable' || price.supplierCostMicrousd !== 0) throw new Error(`public_prediction_price_invalid:${productId}`);
+    discovery.products.push({
+      productId, operationId: productId, title, summary,
+      lifecycle: 'preview', publicAvailable: true, deliveryModes: ['sync'],
+      selection: { venues: ['polymarket', 'kalshi', 'manifold', 'limitless'], identity: 'Stable Clervo market and event identities with conservative equivalent-event matching.' },
+      pricing: { model: 'fixed_by_operation', displayPrice: { asset: 'USDC', amountAtomic: String(price.customerPriceMicrousd), decimals: 6 }, maximumChargeRequired: true, priceVersion: `${predictionPricing.priceVersion}-${productId}` },
+      routes: { paidChallenge: '/v1/prediction/execute' },
+      payment: { challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
+      attribution: { source: 'pdata.world', license: 'CC BY 4.0', licenseUrl: 'https://creativecommons.org/licenses/by/4.0/', transformedBy: 'Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance.' },
+      commercialProof: false,
+    });
+  }
+  discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: [...new Set([...(discovery.runtimeRelease?.operationIds ?? ['search.web']), ...publicPredictionProducts.map(([productId]) => productId)])] };
+  discovery.limitations = [
+    'Raw cited Search, bounded paid AI chat, one-shot Secure Sandbox execution, and derived Prediction Intelligence are publicly callable previews.',
+    'Prediction uses the qualified pdata supply path for Polymarket, Kalshi, Manifold, and Limitless; unresolved direct venue adapters remain disabled.',
+    'Prediction output is transformed and attributed under CC BY 4.0; Clervo does not redistribute the raw pdata feed or provide trading execution or custody.',
+    'A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.',
+    'RPC and Crypto Intelligence remain publicly unavailable.',
+  ];
+  llms += '\n## Prediction Intelligence preview\n\n- `POST /v1/prediction/execute`: `prediction.markets`, `prediction.market`, and `prediction.compare` cost at most 0.002000 USDC; `prediction.history` and `prediction.signal` cost at most 0.003000 USDC on Base.\n- Qualified zero-cost supply: pdata for Polymarket, Kalshi, Manifold, and Limitless. Direct venue adapters with unresolved commercial permission remain disabled.\n- Clervo returns normalized probabilities, stable market/event identities, conservative matching, durable observations, disagreement/movement signals, freshness, provenance, pdata/upstream attribution, an accurate receipt, and no-charge replay. It is not a raw pdata proxy and does not provide trading or custody.\n';
+}
 const catalog = contractModule.createCatalogDocument(projection);
-if (publicAi || publicSandbox) catalog.products = discovery.products;
+if (publicAi || publicSandbox || publicPrediction) catalog.products = discovery.products;
 // Every surface carries the observed lifecycle state and proof level side by
 // side, sourced from the probed registry rather than from any prose.
 discovery.observedTruth = { provenance: observedProvenance, products: observedTruth };
@@ -818,6 +899,7 @@ const x402Resources = [
   { productId: 'search', path: '/v1/search/paid', operationId: 'search.web', priceModel: 'fixed_request', quote: observed.search.observedQuote, exampleRouteId: null },
   { productId: 'ai', path: '/v1/ai/execute', operationId: 'ai.chat', priceModel: 'request_derived_per_model', quote: aiExampleRoute?.observedQuote ?? null, exampleRouteId: aiExampleRoute?.routeId ?? null },
   { productId: 'sandbox', path: '/v1/sandbox/execute', operationId: 'sandbox.run', priceModel: 'fixed_request', quote: observed.sandbox.observedQuote, exampleRouteId: null },
+  { productId: 'prediction', path: '/v1/prediction/execute', operationId: 'prediction.markets', priceModel: 'request_derived_per_operation', quote: observed.prediction.observedQuote, exampleRouteId: null },
 ]
   .filter(({ productId, quote }) => observed[productId].state === 'live' && quote !== null)
   .map(({ productId, path: resourcePath, operationId, priceModel, quote, exampleRouteId }) => {

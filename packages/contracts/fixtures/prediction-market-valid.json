@@ -28,6 +28,7 @@
     "provenance": [
       { "fieldGroup": "identity_and_rules", "sourceUrl": "https://official.example/rules/123", "observedAt": "2026-08-02T12:00:00.000Z" },
       { "fieldGroup": "market_state_prices_liquidity", "sourceUrl": "https://markets.example/market-123", "observedAt": "2026-08-02T12:00:00.000Z" }
-    ]
+    ],
+    "supplyAttributions": []
   }
 }

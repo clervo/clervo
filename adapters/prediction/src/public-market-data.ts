@@ -19,6 +19,23 @@ export interface PredictionSourceConfig {
   staleAfterMs: number;
 }
 
+export interface PredictionSupplyAttribution {
+  sourceId: string;
+  sourceName: string;
+  sourceUrl: string;
+  upstreamVenueId: string;
+  upstreamMarketUrl: string;
+  license: string;
+  licenseUrl: string;
+  notice: string;
+  modified: boolean;
+}
+
+export const PDATA_VENUE_IDS = Object.freeze(['polymarket', 'kalshi', 'manifold', 'myriad', 'limitless', 'predict', 'opinion', 'gemini'] as const);
+const pdataVenueIds = new Set<string>(PDATA_VENUE_IDS);
+const PDATA_DATA_URL = 'https://pdata.world/data';
+const PDATA_LICENSE_URL = 'https://creativecommons.org/licenses/by/4.0/';
+
 export function createBoundedPredictionHttpTransport(fetcher: typeof globalThis.fetch = globalThis.fetch): PredictionHttpTransport {
   return Object.freeze({
     async request(input: Parameters<PredictionHttpTransport['request']>[0]): Promise<Readonly<PredictionHttpResponse>> {
@@ -149,6 +166,84 @@ function jsonStringArray(value: unknown): readonly string[] {
   }
   if (!Array.isArray(parsed) || parsed.length < 2 || parsed.length > 100 || parsed.some((item) => typeof item !== 'string')) throw new Error('prediction_source_response_invalid');
   return parsed.map((item) => requiredString(item, 200));
+}
+
+function stringArray(value: unknown): readonly string[] {
+  if (!Array.isArray(value) || value.length < 2 || value.length > 100 || value.some((item) => typeof item !== 'string')) throw new Error('prediction_source_response_invalid');
+  return value.map((item) => requiredString(item, 200));
+}
+
+function probabilityArray(value: unknown, length: number): readonly (string | null)[] {
+  if (!Array.isArray(value) || value.length !== length) throw new Error('prediction_source_response_invalid');
+  return value.map((item) => item === null ? null : probabilityText(decimalMicrousd(item, 1_000_000)!));
+}
+
+function firstPublicUrl(value: string, fallback: string): string {
+  for (const match of value.match(/https:\/\/[^\s<>"']+/gu) ?? []) {
+    try { return publicUrl(match.replace(/[),.;!?]+$/u, '')); }
+    catch { /* Continue to the next URL embedded in the rules. */ }
+  }
+  return publicUrl(fallback);
+}
+
+function pdataStatus(value: Record<string, unknown>, outcomes: readonly VenueOutcomeSnapshot[]): Readonly<{ status: PredictionMarketStatus; resolvedAt: string | null; resolvedOutcomeId: string | null }> {
+  if (value.active === true && value.closed !== true) return Object.freeze({ status: 'open', resolvedAt: null, resolvedOutcomeId: null });
+  if (value.closed !== true) throw new Error('prediction_source_response_invalid');
+  const resolvedAt = isoTimestamp(value.closed_time, false);
+  const winner = outcomes.find(({ price }) => price === '1');
+  const resolved = resolvedAt !== null && winner !== undefined && outcomes.every(({ price }) => price === '0' || price === '1');
+  return resolved
+    ? Object.freeze({ status: 'resolved', resolvedAt, resolvedOutcomeId: winner.venueOutcomeId })
+    : Object.freeze({ status: 'closed', resolvedAt: null, resolvedOutcomeId: null });
+}
+
+export function parsePdataMarket(raw: unknown, context: Readonly<{ apiUrl: string; staleAfterMs: number }>): Readonly<VenueMarketSnapshot> {
+  const value = object(raw);
+  publicUrl(context.apiUrl);
+  const venueId = requiredString(value.source, 64);
+  if (!pdataVenueIds.has(venueId)) throw new Error('prediction_source_response_invalid');
+  const venueMarketId = requiredString(value.id, 160);
+  const question = requiredString(value.question, 500);
+  const description = optionalString(value.description, 20_000) ?? question;
+  const upstreamMarketUrl = publicUrl(requiredString(value.url, 2_048));
+  const labels = stringArray(value.outcomes);
+  const prices = probabilityArray(value.outcome_prices, labels.length);
+  const outcomes = Object.freeze(labels.map((label, index) => Object.freeze({ venueOutcomeId: String(index), label, price: prices[index]! })));
+  const state = pdataStatus(value, outcomes);
+  const observedAt = isoTimestamp(value.fetched_at)!;
+  const categoryValues = Array.isArray(value.categories) ? value.categories.filter((item): item is string => typeof item === 'string' && item.trim().length > 0) : [];
+  const canonicalMarketUrl = publicUrl(`https://pdata.world/markets/${encodeURIComponent(venueId)}/${encodeURIComponent(venueMarketId)}`);
+  const attribution: PredictionSupplyAttribution = Object.freeze({
+    sourceId: 'pdata', sourceName: 'pdata', sourceUrl: PDATA_DATA_URL,
+    upstreamVenueId: venueId, upstreamMarketUrl, license: 'CC BY 4.0', licenseUrl: PDATA_LICENSE_URL,
+    notice: `pdata, “Cross-platform prediction-market data,” pdata.world; upstream venue: ${venueId}. Normalized and transformed by Clervo; raw feed content is not redistributed.`,
+    modified: true,
+  });
+  return Object.freeze({
+    venueId,
+    venueMarketId,
+    question,
+    description,
+    category: categoryValues.length > 0 ? requiredString(categoryValues[0], 100) : 'Uncategorized',
+    status: state.status,
+    openedAt: isoTimestamp(value.start_date, false),
+    closesAt: isoTimestamp(value.end_date)!,
+    resolvedAt: state.resolvedAt,
+    resolvedOutcomeId: state.resolvedOutcomeId,
+    resolutionRules: description,
+    resolutionSourceUrl: firstPublicUrl(description, upstreamMarketUrl),
+    marketUrl: canonicalMarketUrl,
+    outcomes,
+    // Manifold volume is play-money mana. Other pdata venues document these
+    // fields as USD or USD-equivalent, but public Clervo projection still omits
+    // raw liquidity and volume.
+    liquidityMicrousd: venueId === 'manifold' ? null : decimalMicrousd(value.liquidity, Number.MAX_SAFE_INTEGER),
+    volumeMicrousd: venueId === 'manifold' ? null : decimalMicrousd(value.volume, Number.MAX_SAFE_INTEGER),
+    feeBps: null,
+    observedAt,
+    staleAfterMs: context.staleAfterMs,
+    supplyAttributions: Object.freeze([attribution]),
+  });
 }
 
 function polymarketStatus(value: Record<string, unknown>): PredictionMarketStatus {

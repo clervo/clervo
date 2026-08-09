@@ -1,9 +1,20 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://api.clervo.dev/schemas/2026-07-29.1/prediction-derived-market.schema.json",
-  "$defs": { "probability": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000 }, "timestampOrNull": { "type": ["string", "null"], "format": "date-time" } },
+  "$defs": {
+    "probability": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000 }, "timestampOrNull": { "type": ["string", "null"], "format": "date-time" },
+    "supplyAttribution": {
+      "type": "object", "required": ["sourceId", "sourceName", "sourceUrl", "upstreamVenueId", "upstreamMarketUrl", "license", "licenseUrl", "notice", "modified"],
+      "properties": {
+        "sourceId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" }, "sourceName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https://" }, "upstreamVenueId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" },
+        "upstreamMarketUrl": { "type": "string", "format": "uri", "pattern": "^https://" }, "license": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "licenseUrl": { "type": "string", "format": "uri", "pattern": "^https://" }, "notice": { "type": "string", "minLength": 1, "maxLength": 1000 }, "modified": { "const": true }
+      }, "additionalProperties": false
+    }
+  },
   "type": "object",
-  "required": ["marketRef", "venueId", "venueMarketId", "proposition", "category", "status", "closesAt", "resolvedAt", "resolvedOutcomeId", "resolution", "marketUrl", "outcomes", "probability", "observedAt", "freshness", "evidence"],
+  "required": ["marketRef", "venueId", "venueMarketId", "proposition", "category", "status", "closesAt", "resolvedAt", "resolvedOutcomeId", "resolution", "marketUrl", "outcomes", "probability", "observedAt", "freshness", "evidence", "supplyAttributions"],
   "properties": {
     "marketRef": { "type": "string", "pattern": "^pmkt_[a-f0-9]{32}$" },
     "venueId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" },
@@ -20,7 +31,8 @@
     "probability": { "type": "object", "required": ["method", "quotedOutcomeCount", "overroundBps"], "properties": { "method": { "const": "normalized_visible_prices_largest_remainder" }, "quotedOutcomeCount": { "type": "integer", "minimum": 0, "maximum": 100 }, "overroundBps": { "type": ["integer", "null"], "minimum": -10000, "maximum": 990000 } }, "additionalProperties": false },
     "observedAt": { "type": "string", "format": "date-time" },
     "freshness": { "type": "object", "required": ["staleAfterMs", "ageMs", "status"], "properties": { "staleAfterMs": { "type": "integer", "minimum": 1000, "maximum": 86400000 }, "ageMs": { "type": "integer", "minimum": 0 }, "status": { "enum": ["fresh", "stale"] } }, "additionalProperties": false },
-    "evidence": { "type": "array", "minItems": 2, "maxItems": 16, "items": { "type": "object", "required": ["fieldGroup", "sourceUrl", "observedAt"], "properties": { "fieldGroup": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" }, "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https://" }, "observedAt": { "type": "string", "format": "date-time" } }, "additionalProperties": false } }
+    "evidence": { "type": "array", "minItems": 2, "maxItems": 16, "items": { "type": "object", "required": ["fieldGroup", "sourceUrl", "observedAt"], "properties": { "fieldGroup": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" }, "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https://" }, "observedAt": { "type": "string", "format": "date-time" } }, "additionalProperties": false } },
+    "supplyAttributions": { "type": "array", "maxItems": 8, "items": { "$ref": "#/$defs/supplyAttribution" } }
   },
   "additionalProperties": false
 }

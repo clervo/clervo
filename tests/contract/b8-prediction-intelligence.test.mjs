@@ -112,10 +112,13 @@ test('PostgreSQL history reconstructs after restart, retains a verifiable bounde
   assert.equal((await restarted.append(snapshots[2])).replayed, true);
 });
 
-test('source and public policy fail closed while commercial permission is unresolved', () => {
-  assert.throws(() => sellablePredictionSources({ schemaVersion: 'clervo.prediction-source-routes.v1', customerRoutingEnabled: false, sources: [{ venueId: 'polymarket', technicalQualification: 'qualified', commercialPermission: 'unresolved', publicSellable: false, customerRoutingEnabled: false }] }), /unapproved/u);
-  assert.throws(() => sellablePredictionSources({ schemaVersion: 'clervo.prediction-source-routes.v1', customerRoutingEnabled: true, sources: [{ venueId: 'polymarket', technicalQualification: 'qualified', technicalObservedAt: '2026-08-01T00:00:00.000Z', technicalExpiresAt: '2026-08-08T00:00:00.000Z', commercialPermission: 'approved', publicSellable: true, customerRoutingEnabled: true }] }, Date.parse('2026-08-09T00:00:00.000Z')), /unapproved/u);
-  assert.throws(() => createPredictionProductionRuntime({ store: { durable: true, ready() {}, put() {}, get() {}, append() {}, list() {} } }), /unapproved/u);
+test('source and runtime policy fail closed for unresolved or expired commercial supply', () => {
+  const unresolved = { schemaVersion: 'clervo.prediction-source-routes.v1', customerRoutingEnabled: false, sources: [{ venueId: 'polymarket', technicalQualification: 'qualified', commercialPermission: 'unresolved', publicSellable: false, customerRoutingEnabled: false }] };
+  const expired = { schemaVersion: 'clervo.prediction-source-routes.v1', customerRoutingEnabled: true, sources: [{ venueId: 'polymarket', technicalQualification: 'qualified', technicalObservedAt: '2026-08-01T00:00:00.000Z', technicalExpiresAt: '2026-08-08T00:00:00.000Z', commercialPermission: 'approved', publicSellable: true, customerRoutingEnabled: true }] };
+  const store = { durable: true, ready() {}, put() {}, get() {}, append() {}, list() {} };
+  assert.throws(() => sellablePredictionSources(unresolved), /unapproved/u);
+  assert.throws(() => sellablePredictionSources(expired, Date.parse('2026-08-09T00:00:00.000Z')), /unapproved/u);
+  assert.throws(() => createPredictionProductionRuntime({ store, sourceRegistry: unresolved }), /unapproved/u);
 });
 
 test('search is a compatibility alias for prediction.markets and every public amount follows the sustainable floor', () => {

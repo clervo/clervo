@@ -1,17 +1,29 @@
 {
   "schemaVersion": "clervo.prediction-product-pricing.v1",
-  "priceVersion": "prediction-product-2026-08-09.1",
+  "priceVersion": "prediction-product-2026-08-09.3",
   "effectiveAt": "2026-08-09T00:00:00.000Z",
   "currency": "USD",
-  "lifecycle": "unavailable",
+  "lifecycle": "live",
   "providerNamesPublic": true,
-  "minimumBillableMicrousd": 1000,
+  "minimumBillableMicrousd": 2000,
+  "costBasis": {
+    "observedAt": "2026-08-09T12:06:44.000Z",
+    "zeroCostDataSupply": true,
+    "facilitatorFreeSettlementsPerMonth": 1000,
+    "facilitatorOverageMicrousdPerSettlement": 1000,
+    "postFreeTierCostIncluded": true,
+    "evidenceUrls": [
+      "https://docs.cdp.coinbase.com/x402/core-concepts/facilitator",
+      "https://cloud.google.com/run/pricing",
+      "https://developers.cloudflare.com/workers/platform/pricing/"
+    ]
+  },
   "subsidy": { "enabled": false, "budgetMicrousd": 0, "ownerApprovalRequired": true },
   "products": [
-    { "productId": "prediction.markets", "billingUnit": "request", "customerPriceMicrousd": 1000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 100, "listingStatus": "commercial_permission_blocked", "maximumItems": 100, "maximumResponseBytes": 10485760 },
-    { "productId": "prediction.market", "billingUnit": "request", "customerPriceMicrousd": 1000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 100, "listingStatus": "commercial_permission_blocked", "maximumItems": 1, "maximumResponseBytes": 1048576 },
-    { "productId": "prediction.compare", "billingUnit": "request", "customerPriceMicrousd": 1000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 150, "listingStatus": "commercial_permission_blocked", "maximumItems": 100, "maximumResponseBytes": 1048576 },
-    { "productId": "prediction.history", "billingUnit": "request", "customerPriceMicrousd": 2000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 250, "listingStatus": "commercial_permission_blocked", "maximumItems": 100, "maximumResponseBytes": 10485760 },
-    { "productId": "prediction.signal", "billingUnit": "request", "customerPriceMicrousd": 2000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 250, "listingStatus": "commercial_permission_blocked", "maximumItems": 201, "maximumResponseBytes": 1048576 }
+    { "productId": "prediction.markets", "billingUnit": "request", "customerPriceMicrousd": 2000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 1250, "listingStatus": "sellable", "maximumItems": 100, "maximumResponseBytes": 10485760 },
+    { "productId": "prediction.market", "billingUnit": "request", "customerPriceMicrousd": 2000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 1100, "listingStatus": "sellable", "maximumItems": 1, "maximumResponseBytes": 1048576 },
+    { "productId": "prediction.compare", "billingUnit": "request", "customerPriceMicrousd": 2000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 1100, "listingStatus": "sellable", "maximumItems": 100, "maximumResponseBytes": 1048576 },
+    { "productId": "prediction.history", "billingUnit": "request", "customerPriceMicrousd": 3000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 1250, "listingStatus": "sellable", "maximumItems": 100, "maximumResponseBytes": 10485760 },
+    { "productId": "prediction.signal", "billingUnit": "request", "customerPriceMicrousd": 3000, "supplierCostMicrousd": 0, "infrastructureCostAllowanceMicrousd": 1250, "listingStatus": "sellable", "maximumItems": 201, "maximumResponseBytes": 1048576 }
   ]
 }

@@ -78,6 +78,7 @@ const frozenSchemaHashes = new Map([
   ['prediction-source-routes.schema.json', 'sha256:c559b9f8c213aa5b2d78d6b23ba81895567128a96dae888178fa0909f4e1c80a'],
 ]);
 const frozenFixtureHashes = new Map([
+  ['prediction-market-valid.json', 'sha256:d1d9a5c35145c0bcab74cdef15dc22fe82ee9ab14c4bb562c731b315978ab2a8'],
   ['prediction-operation-result-valid.json', 'sha256:3c98cd3bdfa4647e217a79b4206640f5dd6497061a01eef02ab4755eea48ef0f'],
   ['prediction-product-pricing-valid.json', 'sha256:07eff84cafb2392adbe1b60ded8ee4ca6537649cd9337e1e48bf0c1dcc085877'],
   ['prediction-source-routes-terms-bypass-invalid.json', 'sha256:f00a23e81d2bce4c63edba54dfcb20a18569f5524a4ecba423dd623f98b3accd'],

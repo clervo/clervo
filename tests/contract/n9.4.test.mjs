@@ -6,22 +6,39 @@ import test from 'node:test';
 const root = process.cwd();
 const read = async (name) => JSON.parse(await readFile(path.join(root, name), 'utf8'));
 
-test('prediction source registry keeps recorded adapters unavailable until commercial and history rights are qualified', async () => {
+test('prediction source registry enables only explicitly licensed supply and keeps unresolved direct adapters fail closed', async () => {
   const registry = await read('infra/prediction/source-routes.v1.json');
-  assert.equal(registry.lifecycle, 'unavailable');
-  assert.equal(registry.customerRoutingEnabled, false);
-  assert.equal(registry.sources.length, 2);
-  assert.deepEqual(new Set(registry.sources.map(({ venueId }) => venueId)), new Set(['polymarket', 'kalshi']));
+  assert.equal(registry.lifecycle, 'live');
+  assert.equal(registry.customerRoutingEnabled, true);
+  assert.equal(registry.sources.length, 3);
   assert.ok(registry.sources.every(({ technicalQualification }) => technicalQualification === 'qualified'));
-  assert.ok(registry.sources.every(({ commercialPermission, publicSellable, historyPermission, customerRoutingEnabled }) => commercialPermission === 'unresolved' && publicSellable === false && historyPermission === 'unresolved' && customerRoutingEnabled === false));
+  const direct = registry.sources.filter(({ adapterId }) => adapterId !== 'adapter_prediction.pdata_rest');
+  assert.deepEqual(new Set(direct.map(({ venueId }) => venueId)), new Set(['polymarket', 'kalshi']));
+  assert.ok(direct.every(({ commercialPermission, publicSellable, historyPermission, customerRoutingEnabled }) => commercialPermission === 'unresolved' && publicSellable === false && historyPermission === 'unresolved' && customerRoutingEnabled === false));
+  const pdata = registry.sources.find(({ adapterId }) => adapterId === 'adapter_prediction.pdata_rest');
+  assert.deepEqual(pdata.venueIds, ['polymarket', 'kalshi', 'manifold', 'limitless']);
+  assert.equal(pdata.commercialPermission, 'approved');
+  assert.equal(pdata.publicSellable, true);
+  assert.equal(pdata.historyPermission, 'approved');
+  assert.equal(pdata.customerRoutingEnabled, true);
+  assert.deepEqual(
+    { licenseId: pdata.commercialRights.licenseId, commercialUse: pdata.commercialRights.commercialUse, adaptation: pdata.commercialRights.adaptation, redistribution: pdata.commercialRights.redistribution, apiReuse: pdata.commercialRights.apiReuse },
+    { licenseId: 'CC BY 4.0', commercialUse: true, adaptation: true, redistribution: true, apiReuse: true },
+  );
+  const enabledVenues = registry.sources.filter(({ customerRoutingEnabled }) => customerRoutingEnabled).flatMap(({ venueIds, venueId }) => venueIds ?? [venueId]);
+  assert.equal(new Set(enabledVenues).size, enabledVenues.length);
 });
 
-test('all five unavailable prediction products have positive competitive prices and hard response/item ceilings', async () => {
+test('all five sellable prediction products recover bounded infrastructure cost with zero supplier spend', async () => {
   const pricing = await read('packages/catalog/prediction-product-pricing.v1.json');
-  assert.equal(pricing.lifecycle, 'unavailable');
+  assert.equal(pricing.lifecycle, 'live');
   assert.equal(pricing.providerNamesPublic, true);
+  assert.equal(pricing.costBasis.zeroCostDataSupply, true);
+  assert.equal(pricing.costBasis.facilitatorOverageMicrousdPerSettlement, 1000);
+  assert.equal(pricing.costBasis.postFreeTierCostIncluded, true);
+  assert.ok(pricing.costBasis.evidenceUrls.every((url) => url.startsWith('https://')));
   assert.deepEqual(pricing.products.map(({ productId }) => productId), ['prediction.markets', 'prediction.market', 'prediction.compare', 'prediction.history', 'prediction.signal']);
-  assert.ok(pricing.products.every(({ customerPriceMicrousd, supplierCostMicrousd, infrastructureCostAllowanceMicrousd, listingStatus, maximumItems, maximumResponseBytes }) => customerPriceMicrousd >= pricing.minimumBillableMicrousd && customerPriceMicrousd > supplierCostMicrousd + infrastructureCostAllowanceMicrousd && listingStatus === 'commercial_permission_blocked' && maximumItems <= 201 && maximumResponseBytes <= 10_485_760));
+  assert.ok(pricing.products.every(({ customerPriceMicrousd, supplierCostMicrousd, infrastructureCostAllowanceMicrousd, listingStatus, maximumItems, maximumResponseBytes }) => customerPriceMicrousd >= pricing.minimumBillableMicrousd && supplierCostMicrousd === 0 && infrastructureCostAllowanceMicrousd > pricing.costBasis.facilitatorOverageMicrousdPerSettlement && customerPriceMicrousd > supplierCostMicrousd + infrastructureCostAllowanceMicrousd && listingStatus === 'sellable' && maximumItems <= 201 && maximumResponseBytes <= 10_485_760));
   assert.deepEqual(pricing.subsidy, { enabled: false, budgetMicrousd: 0, ownerApprovalRequired: true });
 });
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.prediction-source-routes.v1",
-  "lifecycle": "unavailable",
-  "customerRoutingEnabled": false,
+  "lifecycle": "live",
+  "customerRoutingEnabled": true,
   "sources": [
     {
       "sourceId": "prediction.source.polymarket_gamma",
@@ -54,7 +54,49 @@
         "https://docs.kalshi.com/getting_started/orderbook_responses",
         "https://kalshi.com/terms"
       ]
+    },
+    {
+      "sourceId": "prediction.source.pdata_rest",
+      "venueIds": ["polymarket", "kalshi", "manifold", "limitless"],
+      "adapterId": "adapter_prediction.pdata_rest",
+      "qualificationId": "qual_PdataCommercialSupply20260809",
+      "accessMode": "public_api",
+      "technicalQualification": "qualified",
+      "technicalObservedAt": "2026-08-09T11:54:10.787Z",
+      "technicalExpiresAt": "2026-08-16T11:54:10.787Z",
+      "qualificationEvidence": { "repeatedCalls": 12, "successes": 12, "failures": 0, "latencyMs": { "minimum": 219.1, "median": 476.2, "maximum": 1613.7 }, "normalizationPassed": true, "freshness": "fresh" },
+      "commercialPermission": "approved",
+      "publicSellable": true,
+      "outputMode": "derived_only",
+      "rawPassThroughPermitted": "approved",
+      "historyPermission": "approved",
+      "retentionDays": 30,
+      "attributionRequirement": "required",
+      "publishedRateLimit": "no numeric limit published; bounded polite use",
+      "commercialRights": {
+        "basis": "explicit_public_license",
+        "licenseId": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "commercialUse": true,
+        "adaptation": true,
+        "redistribution": true,
+        "apiReuse": true,
+        "competingServiceRestriction": "none_published",
+        "upstreamProvenance": "pdata identifies each named upstream venue and underlying market URL; Clervo preserves both and does not present pdata as the venue.",
+        "termsObservedAt": "2026-08-09T11:54:10.787Z",
+        "attributionNotice": "Credit pdata and the named upstream venue, link pdata's dataset page and CC BY 4.0, and do not imply endorsement.",
+        "changesNotice": "State that Clervo normalized and transformed the data and does not redistribute the raw feed."
+      },
+      "customerRoutingEnabled": true,
+      "evidenceUrls": [
+        "https://pdata.world/data",
+        "https://pdata.world/agents.md",
+        "https://pdata.world/about",
+        "https://pdata.world/methodology",
+        "https://api.pdata.world/openapi.json",
+        "https://creativecommons.org/licenses/by/4.0/"
+      ]
     }
   ],
-  "ownerBlocker": "Commercial reuse, derived-output sale, attribution, and retained-history permission remain owner legal/commercial decisions; technical qualification alone cannot enable routing."
+  "ownerBlocker": "pdata supply is commercially and technically qualified for four fresh venues. Public Prediction still requires owner-approved production migration/deploy and bounded real-payment proof; unresolved direct adapters remain disabled."
 }

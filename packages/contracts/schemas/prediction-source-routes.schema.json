@@ -11,10 +11,11 @@
       "type": "array", "minItems": 1, "maxItems": 16,
       "items": {
         "type": "object",
-        "required": ["sourceId", "venueId", "adapterId", "qualificationId", "accessMode", "technicalQualification", "technicalObservedAt", "technicalExpiresAt", "commercialPermission", "publicSellable", "outputMode", "rawPassThroughPermitted", "historyPermission", "retentionDays", "attributionRequirement", "publishedRateLimit", "customerRoutingEnabled", "evidenceUrls"],
+        "required": ["sourceId", "adapterId", "qualificationId", "accessMode", "technicalQualification", "technicalObservedAt", "technicalExpiresAt", "commercialPermission", "publicSellable", "outputMode", "rawPassThroughPermitted", "historyPermission", "retentionDays", "attributionRequirement", "publishedRateLimit", "customerRoutingEnabled", "evidenceUrls"],
         "properties": {
           "sourceId": { "type": "string", "pattern": "^prediction\\.source\\.[a-z0-9_]+$" },
           "venueId": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" },
+          "venueIds": { "type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" } },
           "adapterId": { "type": "string", "pattern": "^adapter_prediction\\.[a-z0-9_]+$" },
           "qualificationId": { "type": "string", "pattern": "^qual_[A-Za-z0-9]{20,64}$" },
           "accessMode": { "enum": ["public_api", "partner_api", "owned"] },
@@ -22,9 +23,9 @@
           "technicalObservedAt": { "type": "string", "format": "date-time" },
           "technicalExpiresAt": { "type": "string", "format": "date-time" },
           "qualificationEvidence": { "type": "object", "required": ["repeatedCalls", "successes", "failures", "latencyMs", "normalizationPassed", "freshness"], "properties": {
-            "repeatedCalls": { "type": "integer", "minimum": 1, "maximum": 10 },
-            "successes": { "type": "integer", "minimum": 0, "maximum": 10 },
-            "failures": { "type": "integer", "minimum": 0, "maximum": 10 },
+            "repeatedCalls": { "type": "integer", "minimum": 1, "maximum": 1000 },
+            "successes": { "type": "integer", "minimum": 0, "maximum": 1000 },
+            "failures": { "type": "integer", "minimum": 0, "maximum": 1000 },
             "latencyMs": { "type": "object", "required": ["minimum", "median", "maximum"], "properties": { "minimum": { "type": "number", "minimum": 0 }, "median": { "type": "number", "minimum": 0 }, "maximum": { "type": "number", "minimum": 0 } }, "additionalProperties": false },
             "normalizationPassed": { "type": "boolean" },
             "freshness": { "enum": ["fresh", "stale"] }
@@ -37,15 +38,39 @@
           "retentionDays": { "type": ["integer", "null"], "minimum": 1, "maximum": 3650 },
           "attributionRequirement": { "enum": ["required", "not_required", "unknown"] },
           "publishedRateLimit": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "commercialRights": {
+            "type": "object",
+            "required": ["basis", "licenseId", "licenseUrl", "commercialUse", "adaptation", "redistribution", "apiReuse", "competingServiceRestriction", "upstreamProvenance", "termsObservedAt", "attributionNotice", "changesNotice"],
+            "properties": {
+              "basis": { "enum": ["explicit_public_license", "owner_written_approval"] },
+              "licenseId": { "type": "string", "minLength": 1, "maxLength": 100 },
+              "licenseUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+              "commercialUse": { "const": true },
+              "adaptation": { "const": true },
+              "redistribution": { "const": true },
+              "apiReuse": { "const": true },
+              "competingServiceRestriction": { "enum": ["none_published", "owner_waived"] },
+              "upstreamProvenance": { "type": "string", "minLength": 1, "maxLength": 300 },
+              "termsObservedAt": { "type": "string", "format": "date-time" },
+              "attributionNotice": { "type": "string", "minLength": 1, "maxLength": 500 },
+              "changesNotice": { "type": "string", "minLength": 1, "maxLength": 500 }
+            },
+            "additionalProperties": false
+          },
           "customerRoutingEnabled": { "type": "boolean" },
           "evidenceUrls": { "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": { "type": "string", "format": "uri", "pattern": "^https://" } }
         },
+        "oneOf": [
+          { "required": ["venueId"], "properties": { "venueId": true }, "not": { "required": ["venueIds"], "properties": { "venueIds": true } } },
+          { "required": ["venueIds"], "properties": { "venueIds": true }, "not": { "required": ["venueId"], "properties": { "venueId": true } } }
+        ],
         "allOf": [
           { "if": { "anyOf": [
             { "properties": { "technicalQualification": { "enum": ["expired", "failed", "not_run"] } }, "required": ["technicalQualification"] },
             { "properties": { "commercialPermission": { "enum": ["unresolved", "restricted", "prohibited"] } }, "required": ["commercialPermission"] },
             { "properties": { "publicSellable": { "const": false } }, "required": ["publicSellable"] }
-          ] }, "then": { "properties": { "customerRoutingEnabled": { "const": false } } } }
+          ] }, "then": { "properties": { "customerRoutingEnabled": { "const": false } } } },
+          { "if": { "properties": { "commercialPermission": { "const": "approved" } }, "required": ["commercialPermission"] }, "then": { "required": ["commercialRights"], "properties": { "commercialRights": true, "attributionRequirement": { "enum": ["required", "not_required"] } } } }
         ],
         "additionalProperties": false
       }

@@ -50,6 +50,7 @@ const plan = Object.freeze({
   action: 'plan', state: policy.state, project: policy.project, region: policy.region, service: policy.service,
   publicOrigin: policy.publicOrigin, searchMode: policy.search.mode, synthesisEnabled: policy.search.synthesisEnabled,
   x402Mode: policy.commerce.mode, sandboxMode: policy.sandbox.mode, sandboxPublicMode: policy.sandbox.publicMode, deployTrafficPercent: 0,
+  predictionMode: policy.prediction.mode, predictionQualifiedAdapter: policy.prediction.qualifiedAdapter,
   publicAccessEnabledOnlyAfterPromotion: true, publicAccessMethod: policy.rollout.publicAccessMethod, protectedResources: policy.protectedResources,
 });
 
@@ -94,6 +95,7 @@ else if (action === 'observe') {
     `R2_BUCKET_NAME=${policy.ai.artifacts.bucket}`, `CLERVO_ARTIFACT_RETENTION_SECONDS=${policy.ai.artifacts.retentionSeconds}`,
     `CLERVO_ARTIFACT_MAXIMUM_OBJECT_BYTES=${policy.ai.artifacts.maximumObjectBytes}`,
     `CLOUDFLARE_ACCOUNT_ID=${env('CLERVO_CLOUDFLARE_ACCOUNT_ID')}`,
+    `CLERVO_PREDICTION_MODE=${policy.prediction.mode}`,
   ];
   const secrets = [
     `CLERVO_DATABASE_URL=${deployment.runtime.secretEnvironment.CLERVO_DATABASE_URL}:${versions.database}`,
@@ -143,6 +145,7 @@ else if (action === 'observe') {
   assert.equal(env('CLERVO_LIVE_SEARCH_SMOKE'), 'passed', 'live search smoke missing');
   assert.equal(env('CLERVO_X402_CHALLENGE_SMOKE'), 'passed', 'x402 challenge smoke missing');
   assert.equal(env('CLERVO_SANDBOX_LIVE_SMOKE'), 'passed', 'Sandbox live smoke missing');
+  assert.equal(env('CLERVO_PREDICTION_LIVE_SMOKE'), 'passed', 'Prediction live smoke missing');
   assert.equal(env('CLERVO_MONITORING_DELIVERY'), 'acknowledged', 'monitoring delivery missing');
   assert.equal(describedImage(candidateRevision), candidateImage, 'candidate image mismatch');
   verifyArtifact(candidateImage);

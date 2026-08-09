@@ -219,6 +219,8 @@ const surfaceProbes = await Promise.all([
     postJson({ query: 'clervo live registry probe', maxResults: 1, synthesize: false }, `idem_probe_paid_${probeNonce}`)),
   observe('api.sandbox_execute', `${API_ORIGIN}/v1/sandbox/execute`,
     postJson({ command: ['node', '-e', "process.stdout.write('ready')"], limits: { wallTimeMs: 5_000, memoryBytes: 67_108_864 } }, `idem_probe_sandbox_${probeNonce}`)),
+  observe('api.prediction_execute', `${API_ORIGIN}/v1/prediction/execute`,
+    postJson({ kind: 'markets', status: 'open', limit: 3 }, `idem_probe_prediction_${probeNonce}`)),
   observe('site.root', `${SITE_ORIGIN}/`),
   observe('site.llms_txt', `${SITE_ORIGIN}/llms.txt`),
   observe('site.sitemap', `${SITE_ORIGIN}/sitemap.xml`),
@@ -644,8 +646,7 @@ const products = [
     id: 'prediction',
     label: 'Prediction Intelligence',
     operations: ['prediction.markets', 'prediction.market', 'prediction.compare', 'prediction.history', 'prediction.signal'],
-    probeIds: {},
-    commercialBlocker: 'commercial_rights_blocked',
+    probeIds: { paid: 'api.prediction_execute' },
   }),
   productFromProbes({
     id: 'crypto_intelligence',
@@ -728,12 +729,13 @@ const bazaarResourcePaths = [
   { productId: 'search', resourcePath: '/v1/search/paid' },
   { productId: 'ai', resourcePath: '/v1/ai/execute' },
   { productId: 'sandbox', resourcePath: '/v1/sandbox/execute' },
+  { productId: 'prediction', resourcePath: '/v1/prediction/execute' },
 ];
 
 // The receiver is read from the quote the deployed system actually returned,
 // never from configuration, so the merchant lookup can only ever ask about the
 // address production is really advertising.
-const observedPayTo = [surfaceById['api.search_paid'], surfaceById['api.sandbox_execute'], ...routeProbes]
+const observedPayTo = [surfaceById['api.search_paid'], surfaceById['api.sandbox_execute'], surfaceById['api.prediction_execute'], ...routeProbes]
   .map((probe) => quoteFrom(probe)?.payTo)
   .find((value) => typeof value === 'string' && /^0x[a-fA-F0-9]{40}$/u.test(value)) ?? null;
 

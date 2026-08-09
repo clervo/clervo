@@ -21,6 +21,24 @@ function sourceRegistry() {
   ] };
 }
 
+function pdataRegistry() {
+  return { customerRoutingEnabled: true, schemaVersion: 'clervo.prediction-source-routes.v1', sources: [{
+    sourceId: 'prediction.source.pdata_rest', adapterId: 'adapter_prediction.pdata_rest', venueIds: ['polymarket', 'kalshi'],
+    qualificationId: 'qual_PdataCommercialSupply20260809', technicalQualification: 'qualified', technicalObservedAt: '2026-08-01T00:00:00.000Z', technicalExpiresAt: '2026-08-16T00:00:00.000Z',
+    commercialPermission: 'approved', publicSellable: true, customerRoutingEnabled: true, historyPermission: 'approved',
+  }] };
+}
+
+function pdataMarket(overrides = {}) {
+  return {
+    source: 'polymarket', id: 'pdata-123', event_id: 'event-123', question: 'Will the example launch happen?',
+    description: 'Resolves Yes if https://official.example/launch confirms the launch.', outcomes: ['Yes', 'No'], outcome_prices: [0.55, 0.45],
+    active: true, closed: false, start_date: '2026-01-01T00:00:00Z', end_date: '2026-12-31T23:59:59Z', closed_time: null,
+    volume: 4567.89, liquidity: 123.45, categories: ['Technology'], fetched_at: '2026-08-04T11:50:00.000Z',
+    url: 'https://upstream.example/market-123', ...overrides,
+  };
+}
+
 test('prediction production runtime retains both public venue results and emits a hash-bound result', async () => {
   const runtime = createPredictionProductionRuntime({
     store: store(), now: () => nowMs, sourceRegistry: sourceRegistry(),
@@ -60,4 +78,32 @@ test('prediction production runtime reports partial malformed source data as deg
   assert.equal(completed.result.output.state, 'degraded');
   assert.equal(completed.result.output.markets.length, 1);
   assert.deepEqual(completed.result.output.venues[0], { venueId: 'polymarket', state: 'degraded', marketCount: 1, failureCode: 'partial_malformed_source' });
+});
+
+test('pdata runtime isolates bounded per-venue pagination, preserves attribution, and binds the exact adapter', async () => {
+  let calls = 0;
+  const runtime = createPredictionProductionRuntime({ store: store(), now: () => nowMs, sourceRegistry: pdataRegistry(), async fetcher(input) {
+    calls += 1;
+    const url = new URL(input);
+    assert.equal(url.origin, 'https://api.pdata.world');
+    assert.equal(url.pathname, '/api/v1/markets');
+    const source = url.searchParams.get('source');
+    assert.ok(['polymarket', 'kalshi'].includes(source));
+    assert.equal(url.searchParams.get('search'), 'example launch');
+    const page = Number(url.searchParams.get('page'));
+    return Response.json({
+      items: page === 1
+        ? [pdataMarket({ source, id: `${source}-unrelated`, question: 'Unrelated market?', description: 'Unrelated market rules.', url: `https://upstream.example/${source}-unrelated` })]
+        : [pdataMarket({ source, id: source === 'kalshi' ? 'KX-PDATA-123' : 'pdata-123', url: source === 'kalshi' ? 'https://kalshi.com/markets/example' : 'https://upstream.example/market-123' })],
+      meta: { page, page_size: 20, total: 21, total_pages: 2 },
+      _meta: { attribution: 'pdata.world — aggregated prediction-market data across 8 platforms', as_of: '2026-08-04T12:00:00.000Z' },
+    });
+  } });
+  const completed = await runtime.execute({ contractVersion: CONTRACT_VERSION, schemaVersion: PREDICTION_REQUEST_SCHEMA_VERSION, operationId: `op_${'e'.repeat(32)}`, productId: 'prediction.markets', input: { kind: 'markets', query: 'example launch', limit: 2 }, maximumCharge: { asset: 'USD', amountAtomic: '1000', decimals: 6 }, deadlineAt: '2026-08-04T12:00:30.000Z' });
+  assert.equal(calls, 4);
+  assert.equal(completed.result.output.markets.length, 2);
+  assert.deepEqual(completed.result.output.markets.map(({ venueId }) => venueId), ['polymarket', 'kalshi']);
+  assert.ok(completed.result.output.markets.every(({ supplyAttributions }) => supplyAttributions[0].license === 'CC BY 4.0'));
+  assert.deepEqual(completed.adapterIds, ['adapter_prediction.pdata_rest']);
+  assert.deepEqual(completed.qualificationIds, ['qual_PdataCommercialSupply20260809']);
 });

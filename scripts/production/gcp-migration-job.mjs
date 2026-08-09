@@ -49,7 +49,7 @@ function deploy(exactImage) {
     '--image', exactImage, '--service-account', policy.serviceAccount,
     '--set-cloudsql-instances', policy.cloudSqlConnection,
     '--set-secrets', `CLERVO_DATABASE_URL=${policy.databaseSecret}:${policy.databaseSecretVersion}`,
-    '--set-env-vars', `CLERVO_ENV=production,CLERVO_DATABASE_MIGRATION_CONFIRM=apply:clervo-production-postgres,CLERVO_CLOUD_SQL_CONNECTION=${policy.cloudSqlConnection}`,
+    '--set-env-vars', `CLERVO_ENV=production,CLERVO_DATABASE_MIGRATION_CONFIRM=apply:clervo-production-postgres,CLERVO_DATABASE_MIGRATION_TARGET=${policy.targetMigration},CLERVO_CLOUD_SQL_CONNECTION=${policy.cloudSqlConnection}`,
     '--tasks', String(policy.taskCount), '--max-retries', String(policy.maximumRetries),
     '--task-timeout', `${policy.taskTimeoutSeconds}s`, '--cpu', '1', '--memory', '512Mi', '--quiet',
   ]);
