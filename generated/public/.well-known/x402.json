@@ -26,7 +26,7 @@
           }
         }
       ],
-      "lastUpdated": 1786292826,
+      "lastUpdated": 1786294262,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -69,7 +69,7 @@
           }
         }
       ],
-      "lastUpdated": 1786292826,
+      "lastUpdated": 1786294262,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -112,7 +112,7 @@
           }
         }
       ],
-      "lastUpdated": 1786292826,
+      "lastUpdated": 1786294262,
       "metadata": {
         "category": "prediction",
         "provider": "clervo",
@@ -140,7 +140,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T16:27:06.404Z",
+      "observedAt": "2026-08-09T16:51:02.261Z",
       "releaseId": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",

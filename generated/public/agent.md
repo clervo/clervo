@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `packages/catalog/live-registry.json`, probed at 2026-08-09T16:27:06.404Z. Release: `ab0bb28b76fb8606bd854b741214961b8e1ba1d2`.
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-09T16:51:02.261Z. Release: `ab0bb28b76fb8606bd854b741214961b8e1ba1d2`.
 
 ## Identity
 
