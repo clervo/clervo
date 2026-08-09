@@ -15,6 +15,8 @@ type ProofConfig = {
   payer?: Address;
   productId: 'search.web' | 'sandbox.run' | 'ai.chat' | 'prediction.markets' | 'prediction.market' | 'crypto.wallet.report' | 'crypto.wallet.transactions';
   resource: 'https://api.clervo.dev/v1/search/paid' | 'https://api.clervo.dev/v1/ai/execute' | 'https://api.clervo.dev/v1/prediction/execute' | 'https://api.clervo.dev/v1/crypto/execute';
+  route?: string;
+  targetOrigin?: string;
   idempotencyKey: string;
   payerBalanceCapAtomic: string;
   supplierCostCeilingAtomic: string;
@@ -34,7 +36,12 @@ let paymentAttempted = false;
 const proofBase = /^\/proof\/b10-(?:search|sandbox)(?:\/|$)/u.test(window.location.pathname)
   ? window.location.pathname.replace(/\/$/u, '')
   : '';
-const proofFetch = (path: string, init?: RequestInit) => fetch(`${proofBase}${path}`, init);
+const proofFetch = (path: string, init?: RequestInit) => {
+  if (config !== undefined && path === '/api/paid-operation' && config.route !== undefined && config.targetOrigin !== undefined) {
+    return fetch(`${config.targetOrigin}${config.route}`, init);
+  }
+  return fetch(`${proofBase}${path}`, init);
+};
 
 function show(message: string) { status.textContent = message; }
 function sameAddress(left: string, right: string) { return left.toLowerCase() === right.toLowerCase(); }

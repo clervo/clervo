@@ -6,8 +6,8 @@
   "workers_dev": false,
   "preview_urls": false,
   "routes": [
-    { "pattern": "clervo.dev/proof/*", "zone_name": "clervo.dev" },
-    { "pattern": "www.clervo.dev/proof/*", "zone_name": "clervo.dev" }
+    { "pattern": "clervo.dev/proof*", "zone_name": "clervo.dev" },
+    { "pattern": "www.clervo.dev/proof*", "zone_name": "clervo.dev" }
   ],
   "assets": { "directory": "./assets", "binding": "ASSETS" },
   "observability": { "enabled": true, "head_sampling_rate": 1 }

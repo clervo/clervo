@@ -35,7 +35,7 @@ async function readBody(request) {
 }
 
 function configFor(value) {
-  return Object.freeze({ network: NETWORK, chainIdHex: '0x2105', asset: ASSET, amountAtomic: value.amountAtomic, amountDisplay: value.amountDisplay, payTo: RECEIVER, payerBalanceCapAtomic: '32000', supplierCostCeilingAtomic: value.supplierCostCeilingAtomic, productId: value.productId, resource: value.resource, idempotencyKey: value.idempotencyKey, request: value.request });
+  return Object.freeze({ network: NETWORK, chainIdHex: '0x2105', asset: ASSET, amountAtomic: value.amountAtomic, amountDisplay: value.amountDisplay, payTo: RECEIVER, payerBalanceCapAtomic: '32000', supplierCostCeilingAtomic: value.supplierCostCeilingAtomic, productId: value.productId, resource: value.resource, route: value.route, targetOrigin: 'https://api.clervo.dev', idempotencyKey: value.idempotencyKey, request: value.request });
 }
 
 export default {
