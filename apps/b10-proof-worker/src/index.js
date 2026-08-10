@@ -30,6 +30,11 @@ function basePath(pathname) {
 
 function equalJson(left, right) { return JSON.stringify(left) === JSON.stringify(right); }
 function equalAddress(left, right) { return typeof left === 'string' && left.toLowerCase() === right.toLowerCase(); }
+function isRetiredB6Path(pathname) {
+  return pathname === '/proof/b6-router-fund' ||
+    pathname.startsWith('/proof/b6-router-fund/') ||
+    pathname === '/proof-assets/b6-router-fund.js';
+}
 
 function paymentPayer(value) {
   try {
@@ -52,10 +57,14 @@ function configFor(value) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (isRetiredB6Path(url.pathname)) return new Response('Not found', { status: 404 });
     const prefix = basePath(url.pathname);
     const value = profile(url.pathname);
     if (prefix === undefined || value === undefined) return env.ASSETS.fetch(request);
     if (request.method === 'GET' && url.pathname === `${prefix}/config`) return Response.json(configFor(value), { headers: { 'cache-control': 'no-store' } });
+    if (request.method === 'GET' && (url.pathname === prefix || url.pathname === `${prefix}/`)) {
+      return env.ASSETS.fetch(new Request(new URL(`${prefix}/index.html`, url.origin), request));
+    }
     if (request.method !== 'POST' || url.pathname !== `${prefix}/api/paid-operation`) return new Response('Not found', { status: 404 });
     try {
       const key = request.headers.get('idempotency-key');

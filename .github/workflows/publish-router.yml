@@ -7,15 +7,8 @@ on:
         description: Exact 40-character commit SHA from main to publish
         required: true
         type: string
-      release_mode:
-        description: Use bootstrap once for the first package creation; trusted thereafter
-        required: true
-        type: choice
-        options:
-          - trusted
-          - bootstrap
       confirmation:
-        description: Confirm the exact package, commit, and release mode
+        description: Confirm the exact package and immutable release commit
         required: true
         type: string
 
@@ -39,7 +32,6 @@ jobs:
       id-token: write
     env:
       RELEASE_COMMIT: ${{ inputs.release_commit }}
-      RELEASE_MODE: ${{ inputs.release_mode }}
       RELEASE_CONFIRMATION: ${{ inputs.confirmation }}
     steps:
       - name: Check out the exact requested commit
@@ -54,8 +46,7 @@ jobs:
           test "${#RELEASE_COMMIT}" -eq 40
           test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT"
           git merge-base --is-ancestor "$RELEASE_COMMIT" origin/main
-          test "$RELEASE_MODE" = trusted -o "$RELEASE_MODE" = bootstrap
-          expected="publish @clervo/router@0.1.0 from $RELEASE_COMMIT via $RELEASE_MODE"
+          expected="publish @clervo/router@0.1.0 from $RELEASE_COMMIT via trusted"
           test "$RELEASE_CONFIRMATION" = "$expected"
           test -z "$(git status --short)"
 
@@ -137,24 +128,16 @@ jobs:
           npm install --global npm@11.18.0
           test "$(npm --version)" = 11.18.0
 
-      - name: Publish the one-time first version from GitHub with provenance
-        if: inputs.release_mode == 'bootstrap'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_ROUTER_BOOTSTRAP_TOKEN }}
-        run: |
-          test -n "$NODE_AUTH_TOKEN"
-          npm publish "$ROUTER_ARCHIVE" --access public --provenance
-
       - name: Publish through npm trusted publishing with provenance
-        if: inputs.release_mode == 'trusted'
         run: npm publish "$ROUTER_ARCHIVE" --access public --provenance
 
       - name: Verify the public registry result
         run: |
-          for attempt in 1 2 3 4 5 6; do
+          for attempt in $(seq 1 30); do
             status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://registry.npmjs.org/%40clervo%2Frouter/0.1.0)"
-            test "$status" = 200 && break
-            test "$attempt" -lt 6
-            sleep 5
+            published_version="$(npm view @clervo/router@0.1.0 version --registry=https://registry.npmjs.org 2>/dev/null || true)"
+            test "$status" = 200 -a "$published_version" = 0.1.0 && break
+            test "$attempt" -lt 30
+            sleep 10
           done
           test "$(npm view @clervo/router@0.1.0 version --registry=https://registry.npmjs.org)" = 0.1.0

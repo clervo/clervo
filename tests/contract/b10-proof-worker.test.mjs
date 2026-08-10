@@ -16,6 +16,7 @@ const assets = { ASSETS: { fetch: () => { throw new Error('assets_not_expected')
 
 test('B10 hosted proof pins the payer, facilitator, proxy boundary, and reconciled key', async () => {
   assert.deepEqual(workerConfiguration.compatibility_flags, ['global_fetch_strictly_public']);
+  assert.equal(workerConfiguration.assets.run_worker_first, true);
   const response = await worker.fetch(request('/config'), assets);
   assert.equal(response.status, 200);
   assert.equal(response.headers.get('cache-control'), 'no-store');
@@ -35,6 +36,22 @@ test('B10 hosted proof pins the payer, facilitator, proxy boundary, and reconcil
     idempotencyKey: 'idem_b10_search_proof_20260810f',
     request: searchRequest,
   });
+});
+
+test('B10 hosted proof retires only the temporary B6 funding assets', async () => {
+  let assetCalls = 0;
+  const environment = { ASSETS: { fetch: async () => {
+    assetCalls += 1;
+    return new Response('preserved', { status: 200 });
+  } } };
+  const page = await worker.fetch(new Request('https://clervo.dev/proof/b10-search/'), environment);
+  const retiredPage = await worker.fetch(new Request('https://clervo.dev/proof/b6-router-fund/'), environment);
+  const retiredScript = await worker.fetch(new Request('https://clervo.dev/proof-assets/b6-router-fund.js'), environment);
+  assert.equal(page.status, 200);
+  assert.equal(await page.text(), 'preserved');
+  assert.equal(retiredPage.status, 404);
+  assert.equal(retiredScript.status, 404);
+  assert.equal(assetCalls, 1);
 });
 
 test('B10 hosted Sandbox proof pins the repaired SHORT request and fresh post-failure key', async () => {

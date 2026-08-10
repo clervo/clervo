@@ -80,6 +80,30 @@ Paid requests go to `POST https://api.clervo.dev/v1/search/paid`, which returns 
 - [Agent skill](/skill.md): when to use Clervo and how to make the first call.
 - [Agent reference](/agent.md): identity, observed state, idempotency contract, and boundaries.
 
+## Command line
+
+One install, and a real result before a wallet exists:
+
+```bash
+npx @clervo/router search "World Wide Web"
+```
+
+No account, no API key, no wallet, no funding. The free path above is what that command calls.
+
+Paid use is opt-in and comes later, in this order:
+
+```bash
+clervo catalog                      # what is being served right now
+clervo quote search.web "<query>"   # the exact price, without paying it
+clervo wallet create                # a dedicated wallet, only when you want a paid product
+clervo wallet address               # fund it with USDC on Base mainnet
+clervo run search.web "<query>"     # pay for one call, with the price shown first
+clervo replay <key>                 # the same result again, never a second charge
+clervo doctor                       # check the machine end to end
+```
+
+`clervo wallet create` never overwrites an existing wallet, and `clervo wallet restore` refuses if the wallet it would replace holds a balance. Payment is a signed USDC authorization on Base, so no gas is paid from that wallet. If a call fails after the authorization was sent, the settlement is unknown: the client records it, refuses to spend again, and resolves it with `clervo reconcile`.
+
 ## Agent discovery
 
 - [`GET https://api.clervo.dev/v1/models`](/models.json): every catalogued AI route with its exact model identity, lifecycle state, proof level, and observed price. OpenAI list shape.

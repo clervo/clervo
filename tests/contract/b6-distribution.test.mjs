@@ -49,10 +49,14 @@ test('B6 Router release workflow is package-specific, immutable, OIDC-capable, a
   assert.match(workflow, /@clervo\/router@0\.1\.0/u);
   assert.match(workflow, /Verify Router behavior and payment safety[\s\S]*?npm run build\s+npm run test:b6\s+node --test \.\/tests\/contract\/shared-paid-operation\.test\.mjs/u);
   assert.match(workflow, /npm publish "\$ROUTER_ARCHIVE" --access public --provenance/u);
+  assert.doesNotMatch(workflow, /NPM_ROUTER_BOOTSTRAP_TOKEN|NODE_AUTH_TOKEN|release_mode|inputs\.release_mode/u);
+  assert.match(workflow, /via trusted/u);
   assert.match(workflow, /packageMetadata\.license !== 'MIT'/u);
   assert.match(workflow, /package\/LICENSE/u);
   assert.match(workflow, /registry\.npmjs\.org\/%40clervo%2Frouter\/0\.1\.0/u);
   assert.doesNotMatch(workflow, /%2Frouter%2F0\.1\.0/u);
+  assert.match(workflow, /for attempt in \$\(seq 1 30\)/u);
+  assert.match(workflow, /published_version="\$\(npm view @clervo\/router@0\.1\.0 version/u);
   assert.doesNotMatch(workflow, /@clervo\/sdk|@clervo\/mcp|clervo-sdk/u);
 });
 
