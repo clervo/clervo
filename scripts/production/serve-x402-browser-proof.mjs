@@ -6,6 +6,7 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { decodePaymentResponseHeader } from '@x402/core/http';
 import { getAddress, isAddress } from 'viem';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -167,11 +168,17 @@ const proofConfig = Object.freeze({
   payerBalanceCapAtomic: '300000', supplierCostCeilingAtomic: profile.supplierCostCeilingAtomic,
   request: profile.request,
 });
+let completedProof = null;
 
 const server = createServer(async (request, response) => {
   try {
     const url = new URL(request.url ?? '/', 'http://127.0.0.1');
     if (request.method === 'GET' && url.pathname === '/config') return json(response, 200, proofConfig);
+    if (request.method === 'GET' && url.pathname === '/proof-result') {
+      return completedProof === null
+        ? json(response, 409, { state: 'pending', paymentAuthorized: false })
+        : json(response, 200, completedProof);
+    }
     if (request.method === 'POST' && url.pathname === '/api/paid-operation') {
       const incoming = await body(request);
       assert.deepEqual(JSON.parse(incoming.toString('utf8')), proofConfig.request, 'request body drift');
@@ -190,6 +197,37 @@ const server = createServer(async (request, response) => {
       assert.equal(upstream.status >= 300 && upstream.status < 400, false, 'redirect refused');
       const returned = Buffer.from(await upstream.arrayBuffer());
       assert.equal(returned.length <= 512 * 1024, true, 'response too large');
+      const returnedBody = JSON.parse(returned.toString('utf8'));
+      if (payment !== undefined && upstream.status === 200) {
+        const encodedSettlement = upstream.headers.get('payment-response');
+        assert.ok(encodedSettlement, 'paid response settlement evidence missing');
+        const settlement = decodePaymentResponseHeader(encodedSettlement);
+        assert.equal(settlement.success, true, 'paid response settlement failed');
+        assert.equal(settlement.network, proofConfig.network, 'paid response network drift');
+        assert.match(settlement.transaction, /^0x[a-fA-F0-9]{64}$/u, 'paid response transaction invalid');
+        if (settlement.payer !== undefined && payer !== null) assert.equal(getAddress(settlement.payer), payer, 'paid response payer drift');
+        if (settlement.amount !== undefined) assert.equal(settlement.amount, profile.amountAtomic, 'paid response amount drift');
+        assert.equal(returnedBody.productId, productId, 'paid response product drift');
+        assert.equal(returnedBody.receipt?.customerCharge?.amountAtomic, profile.amountAtomic, 'paid response charge drift');
+        assert.equal(returnedBody.receipt?.settlement?.status, 'settled', 'paid response receipt not settled');
+        completedProof = Object.freeze({
+          state: 'settled_pending_replay', productId, idempotencyKey, operationId: returnedBody.operationId,
+          receiptId: returnedBody.receipt.receiptId, receiptHash: returnedBody.receipt.receiptHash,
+          requestHash: returnedBody.requestHash, resultHash: returnedBody.result?.resultHash,
+          transactionHash: settlement.transaction.toLowerCase(), network: settlement.network,
+          customerChargeAtomic: returnedBody.receipt.customerCharge.amountAtomic,
+          supplierCostAtomic: returnedBody.receipt.supplierCost.amountAtomic,
+          settlementStatus: returnedBody.receipt.settlement.status,
+          replay: { verified: false, paymentHeaderSent: false, secondAuthorization: false, secondCharge: false },
+        });
+      } else if (payment === undefined && upstream.status === 200 && upstream.headers.get('idempotency-replayed') === 'true' && completedProof !== null) {
+        assert.equal(returnedBody.operationId, completedProof.operationId, 'replay operation drift');
+        assert.equal(returnedBody.receipt?.receiptId, completedProof.receiptId, 'replay receipt drift');
+        completedProof = Object.freeze({
+          ...completedProof, state: 'settled_replayed',
+          replay: { verified: true, paymentHeaderSent: false, secondAuthorization: false, secondCharge: false },
+        });
+      }
       const outputHeaders = { 'content-type': upstream.headers.get('content-type') ?? 'application/json', 'content-length': returned.length, 'cache-control': 'no-store' };
       for (const name of ['payment-required', 'payment-response', 'idempotency-replayed']) {
         const value = upstream.headers.get(name);

@@ -1,5 +1,6 @@
 import { x402Client, x402HTTPClient } from '@x402/fetch';
 import { registerExactEvmScheme } from '@x402/evm/exact/client';
+import { decodePaymentResponseHeader } from '@x402/core/http';
 import type { PaymentRequired } from '@x402/core/types';
 import { base } from 'viem/chains';
 import { createWalletClient, custom, getAddress } from 'viem';
@@ -219,14 +220,21 @@ async function approveOnce() {
   if (!usefulPaidResult(paidBody)) throw new Error('paid response is not a useful exact-product result; reconcile');
   if (paidBody?.receipt?.customerCharge?.amountAtomic !== config.amountAtomic) throw new Error('paid receipt amount mismatch; reconcile');
   if (paidBody?.receipt?.settlement?.status !== 'settled') throw new Error('settlement is not confirmed; reconcile');
-  if (!paid.headers.get('payment-response')) throw new Error('PAYMENT-RESPONSE is missing; reconcile');
+  const encodedSettlement = paid.headers.get('payment-response');
+  if (!encodedSettlement) throw new Error('PAYMENT-RESPONSE is missing; reconcile');
+  const settlement = decodePaymentResponseHeader(encodedSettlement);
+  if (settlement.success !== true
+    || settlement.network !== config.network
+    || !/^0x[a-fA-F0-9]{64}$/u.test(settlement.transaction)
+    || (settlement.payer !== undefined && !sameAddress(settlement.payer, payer))
+    || (settlement.amount !== undefined && settlement.amount !== config.amountAtomic)) throw new Error('PAYMENT-RESPONSE settlement evidence mismatch; reconcile');
 
   const replay = await proofFetch('/api/paid-operation', requestInit());
   if (!replay.ok || replay.headers.get('idempotency-replayed') !== 'true') throw new Error('no-charge replay was not proven; reconcile');
   const replayBody = await replay.json();
   if (replayBody?.replayed !== true || replayBody?.operationId !== paidBody?.operationId || replayBody?.receipt?.receiptId !== paidBody?.receipt?.receiptId) throw new Error('replay identity mismatch; reconcile');
 
-  show(`PROOF COMPLETE\n\nOperation: ${paidBody.operationId}\nReceipt: ${paidBody.receipt?.receiptId ?? 'recorded'}\nCharge: ${config.amountDisplay}\nSettlement: confirmed\nReplay: same result, no second authorization\n\nDo not sign again.`);
+  show(`PROOF COMPLETE\n\nOperation: ${paidBody.operationId}\nReceipt: ${paidBody.receipt?.receiptId ?? 'recorded'}\nTransaction: ${settlement.transaction}\nCharge: ${config.amountDisplay}\nSettlement: confirmed\nReplay: same result, no second authorization\n\nDo not sign again.`);
 }
 
 async function load() {

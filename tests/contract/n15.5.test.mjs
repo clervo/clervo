@@ -59,6 +59,8 @@ test('browser proof refuses drift and allows exactly one authorization attempt',
   assert.match(browser, /receipt\?\.receiptId !== paidBody\?\.receipt\?\.receiptId/u);
   assert.match(browser, /paymentAttempted = true/u);
   assert.match(browser, /client\.createPaymentPayload\(verifiedPaymentRequired\)/u);
+  assert.match(browser, /decodePaymentResponseHeader\(encodedSettlement\)/u);
+  assert.match(browser, /PAYMENT-RESPONSE settlement evidence mismatch/u);
   assert.match(browser, /proofFetch\('\/api\/paid-operation', \{ \.\.\.paidRequest, headers \}\)/u);
   assert.doesNotMatch(browser, /wrapFetchWithPayment/u);
   assert.match(browser, /Do not sign or retry again/u);
@@ -78,6 +80,9 @@ test('local proof proxy is loopback-only, exact-route, bounded, and credential-r
   assert.match(proxy, /idempotency key drift/u);
   assert.match(proxy, /payer and receiver must differ/u);
   assert.match(proxy, /wallet values: not printed; payment: not authorized/u);
+  assert.match(proxy, /url\.pathname === '\/proof-result'/u);
+  assert.match(proxy, /state: 'settled_replayed'/u);
+  assert.match(proxy, /decodePaymentResponseHeader\(encodedSettlement\)/u);
   assert.doesNotMatch(proxy, /console\.(?:log|error)|payment-signature.*stdout/u);
 });
 
