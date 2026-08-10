@@ -161,3 +161,8 @@ OpenAI-compatible surface are separate work and are not in this package.
 - Payments are USDC on Base mainnet via x402. The amount you approve is the
   maximum that can be taken for that call.
 - Receipts and operation records are stored locally, under `CLERVO_HOME`.
+
+## License
+
+The distributed `@clervo/router` client package is MIT licensed. Use of
+Clervo's hosted services remains subject to the applicable service terms.

@@ -89,7 +89,7 @@ jobs:
           if (packageMetadata.repository?.url !== expected.repository || packageMetadata.repository?.directory !== 'packages/router') throw new Error('router_repository_identity_mismatch');
           if (packageMetadata.homepage !== expected.homepage || packageMetadata.bugs?.url !== 'https://github.com/clervo/clervo/issues') throw new Error('router_public_metadata_mismatch');
           if (packageMetadata.publishConfig?.access !== 'public' || packageMetadata.publishConfig?.provenance !== true || packageMetadata.publishConfig?.registry !== 'https://registry.npmjs.org/') throw new Error('router_publish_config_mismatch');
-          if (packageMetadata.license === 'UNLICENSED') throw new Error('router_customer_use_rights_unresolved');
+          if (packageMetadata.license !== 'MIT') throw new Error('router_customer_use_rights_mismatch');
           NODE
           test "$(curl --fail --silent --show-error --output /dev/null --write-out '%{http_code}' https://github.com/clervo/clervo/tree/main/packages/router)" = 200
           test "$(curl --fail --silent --show-error --output /dev/null --write-out '%{http_code}' https://github.com/clervo/clervo/issues)" = 200
@@ -101,12 +101,13 @@ jobs:
           archive_name="$(npm pack ./packages/router --ignore-scripts --pack-destination "$RUNNER_TEMP/router-release" --silent)"
           ROUTER_ARCHIVE="$RUNNER_TEMP/router-release/$archive_name"
           test "$archive_name" = clervo-router-0.1.0.tgz
-          test "$(tar -tzf "$ROUTER_ARCHIVE" | wc -l)" -eq 35
+          test "$(tar -tzf "$ROUTER_ARCHIVE" | wc -l)" -eq 36
           tar -tzf "$ROUTER_ARCHIVE" > "$RUNNER_TEMP/router-release/contents.txt"
           grep -qx 'package/dist/cli.js' "$RUNNER_TEMP/router-release/contents.txt"
           grep -qx 'package/dist/index.js' "$RUNNER_TEMP/router-release/contents.txt"
           grep -qx 'package/dist/index.d.ts' "$RUNNER_TEMP/router-release/contents.txt"
           grep -qx 'package/README.md' "$RUNNER_TEMP/router-release/contents.txt"
+          grep -qx 'package/LICENSE' "$RUNNER_TEMP/router-release/contents.txt"
           if grep -Eiq '(^|/)(src|wallet\.json|\.env|\.npmrc|[^/]*\.(pem|key))($|/)' "$RUNNER_TEMP/router-release/contents.txt"; then exit 1; fi
           stat --format='router archive bytes: %s' "$ROUTER_ARCHIVE"
           sha1sum "$ROUTER_ARCHIVE"
@@ -126,7 +127,7 @@ jobs:
 
       - name: Refuse an already-published immutable version
         run: |
-          status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://registry.npmjs.org/%40clervo%2Frouter%2F0.1.0)"
+          status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://registry.npmjs.org/%40clervo%2Frouter/0.1.0)"
           test "$status" = 404
 
       - name: Select an OIDC-capable npm release client
@@ -149,7 +150,7 @@ jobs:
       - name: Verify the public registry result
         run: |
           for attempt in 1 2 3 4 5 6; do
-            status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://registry.npmjs.org/%40clervo%2Frouter%2F0.1.0)"
+            status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://registry.npmjs.org/%40clervo%2Frouter/0.1.0)"
             test "$status" = 200 && break
             test "$attempt" -lt 6
             sleep 5

@@ -2,7 +2,7 @@
   "name": "@clervo/router",
   "version": "0.1.0",
   "description": "Free-first Clervo CLI for x402 payments, receipts, replay, and local spend controls on Base.",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "module",
   "keywords": [
     "clervo",
@@ -26,7 +26,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "bin": {
     "clervo": "./dist/cli.js"

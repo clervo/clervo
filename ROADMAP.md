@@ -18,15 +18,15 @@ Update only when execution state actually changes. This is not a journal.
 | Field | Value |
 |---|---|
 | Current milestone | **B6 — REOPENED FOR EXTERNAL DISTRIBUTION CLOSURE. B10 remains closed; B11 is not started.** |
-| Milestone status | `b6_reopened_distribution_closure_owner_license_decision_required`. **PROVEN 2026-08-10:** `@clervo/router` remains absent from the public npm registry. The unchanged intended 0.1.0 runtime plus the minimum release hardening now builds, passes the focused wallet/payment suite, packs 35 files with no source or wallet material, clean-installs from its candidate archive, exports, and exposes a working CLI. A Router-only GitHub-hosted release workflow is prepared with exact-commit/identity confirmation, npm 11.18.0, OIDC permissions, provenance, fail-closed unpublished-version checks, and a one-time token-authenticated first-package bootstrap mode. The workflow refuses publication while package customer-use rights remain `UNLICENSED`. The declared homepage was a live 404 and now targets the public source README. The live quote remains exactly 0.006 USDC; the dedicated wallet remains 0 USDC with `0700`/`0600`, 0 unreconciled operations, and 0.007/0.01 USDC limits. A real public free Search returned a receipted result; advertised first-call queries were narrowed to directly verified Wikimedia/Crossref coverage. Publication, install-from-npm, and the paid Router leg remain UNPROVEN. |
+| Milestone status | `b6_release_candidate_ready_first_publication_bootstrap_required`. **PROVEN 2026-08-10:** the owner approved MIT for the distributed `@clervo/router` package only. The exact 0.1.0 candidate contains the standard MIT license, builds, passes the focused wallet/payment suite, packs 36 files with no source or wallet material, clean-installs from its candidate archive, exports, and exposes a working CLI. A Router-only GitHub-hosted release workflow is prepared with exact-commit/identity confirmation, npm 11.18.0, OIDC permissions, provenance, fail-closed unpublished-version checks, and a one-time token-authenticated first-package bootstrap mode. `@clervo/router` remains absent from npm, and npm requires the package to exist before a trusted publisher can be attached. The declared homepage was a live 404 and now targets the public source README. The live quote remains exactly 0.006 USDC; the dedicated wallet remains 0 USDC with `0700`/`0600`, 0 unreconciled operations, and 0.007/0.01 USDC limits. A real public free Search returned a receipted result; advertised first-call queries were narrowed to directly verified Wikimedia/Crossref coverage. Publication, install-from-npm, and the paid Router leg remain UNPROVEN. |
 | Current branch | `work/b10-search-sandbox-20260809`, based on exact B9 closure `0697f62`; B10 production release `3dfe8a6` and the hosted proof recovery commits through `564ed0f` are preserved. `main`, the frozen B12 visual branch, `/opt/clervo-ai`, and `ai.clervo.dev` were not modified. |
 | Latest commit | B10 closure commit; use `git log -1` for the exact checkpoint SHA after closure. |
 | Current production release | Cloud Run origin `clervo-api-production-sandboxfix-20260810` at 100% traffic, unchanged API image `sha256:73fcc7d64a2b3bc1c7010210bbb78133f276148fc8195f75d53ae90260031e4c`, unchanged `CLERVO_RELEASE_ID=3dfe8a629d724f72f41174aad5ace8f5e7eb8927`, Sandbox runner `sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a`, and database secret `clervo-production-database-url:3`; API edge worker version **`5e38e897-b0d9-4d15-9f65-d8b89c7795a6`**; site worker **`95411621-bb99-41ba-ab6d-d7c8462fdb9d`**; guarded proof worker **`e08efb49-a53b-48af-929c-7e80d5b14af0`**. |
 | Rollback targets | Credential-safe API recovery is revision `clervo-api-production-sandboxfix-20260810` or a new zero-traffic revision of the same retained image bound to secret version `3`; revisions bound to destroyed database-secret version `2` must not be restored. No rollback version was deleted. |
 | Latest externally verified customer outcome | B10 Search operation `op_553529bd92403f8bfe16b3c1ae82df3c`, receipt `rcpt_3f185f8ddb2cfe8349b5dcf66a0b326b`, exactly 0.006 USDC, and corrected Sandbox SHORT operation `op_99abcbe82ce886227475a5e0544d79e9`, receipt `rcpt_aed44093ada8b439088a81344a57a51d`, exactly 0.010 USDC. Both returned useful exact-product output, settled once on Base, and replayed with the same operation/result/receipt and no second authorization, execution, settlement, or charge. No revenue, demand, or unrelated-customer repetition is claimed. |
-| Current blockers | B6 publication cannot proceed while `@clervo/router` declares `UNLICENSED` and no customer terms grant the intended install/use right. This is the exact current owner decision. After it is resolved, first-package npm bootstrap and wallet funding/payment approval are later owner-only gates. |
+| Current blockers | Because `@clervo/router` does not yet exist on npm, npm cannot attach a trusted publisher to it. The exact first release requires a one-day granular npm token limited to read/write on the `@clervo` package scope with bypass-2FA enabled, stored only as the `package-release` GitHub environment secret `NPM_ROUTER_BOOTSTRAP_TOKEN`, followed by one exact `bootstrap` workflow dispatch. After registry proof, the token must be revoked and the package bound to the prepared OIDC publisher. The later paid proof remains blocked on wallet funding and a fully specified payment approval. |
 | External dependencies | B9 ongoing service requires Blockscout availability within the qualified 100,000-credit/day and 5-RPS envelope and requalification before `2026-08-16T17:30:00.000Z`; global request pacing is 210 ms and the source fails closed. Ethereum and Base are supported. Solana remains unsupported. B8's existing pdata requalification dependency remains unchanged. |
-| Owner approvals waiting | **B6 customer-use rights:** choose the intended package license or approve an exact customer-use grant. No license is inferred. No B6 payment or signature is currently authorized. B10 remains fully consumed with no further B10 payment authorized. |
+| Owner approvals waiting | **B6 first-publication bootstrap:** create/store the narrowly scoped one-day npm token and dispatch the exact Router-only workflow once; no token is to be shared with an agent. MIT rights for the distributed client package are approved and implemented. No B6 payment or signature is currently authorized. B10 remains fully consumed with no further B10 payment authorized. |
 | Dates that move on their own | **PROVEN:** B9's Blockscout commercial qualification expires at `2026-08-16T17:30:00.000Z` and fails closed; pdata public routing qualification expires at `2026-08-16T11:54:10.787Z` and fails closed. Direct Polymarket/Kalshi observations remain unsellable regardless. Competitor prices are observations, not durable promises, and must be refreshed before activation. Existing B7 and Bazaar expiry rules remain in force. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
 | B2 metrics (observed 2026-08-06T14:42:37.447Z) | Conformance defects open 0. Naive free-search rejection rate 0: `withoutIdempotencyKeyStatus` 200. Site 404 correctness: a nonexistent URL returns 404. |
@@ -38,8 +38,8 @@ Update only when execution state actually changes. This is not a journal.
 | B9 metrics (observed 2026-08-09 at close) | **PROVEN:** origin revision `00041-cuh` and final edge/site versions are public. Ethereum and Base candidate proofs returned fresh real-source output with 11 and 9 evidence references; funded Base report and Ethereum transactions results returned 9 and 10 evidence references. Four public operations quote 2000/2000/3000/4000 atomic USDC. Payment proof: 2 effects, 7000 atomic USDC total, 2 useful results, 2 accurate receipts, 2 same-key no-charge/no-upstream-execution replays, 2 completed durable operations, 2 accounting entries, zero supplier cost, balanced six-entry receiver ledger, payer/receiver deltas -7000/+7000. Crypto is Bazaar-valid, indexed, and active. API/site/generated JSON matched semantically, `llms.txt` matched byte-for-byte, and the Crypto/catalog pages expose no undefined attribution. Focused B9 suite 52/52; browser proof 5/5; full acceptance 307/307; contract validation 99 schemas/134 fixtures; lint 710 files; site build, discovery generation, canonical-media validation, clean-room boundary, and secret scan pass. Revenue, demand, and unrelated-customer repetition remain unclaimed. |
 | B10 metrics (observed 2026-08-10 at close) | **PROVEN:** Search 6000 atomic and two Sandbox SHORT effects of 10000 atomic each, total exactly 26000 atomic USDC. Useful results 2 of 3; the failed first Sandbox result remains disclosed. All three effects have confirmed Base transfers and one AuthorizationUsed event each; payer/receiver deltas are -26000/+26000 atomic. Three durable accounting rows extend the valid balanced receiver ledger to nine entries. Corrected Sandbox used gVisor runner `sha256:07685aab...d025a`, exact SHORT limits, exit 0, expected output, destroyed cleanup, and zero residual claims/templates/pods. Search and Sandbox publish `paid_outcome_verified`; API/site registry, catalog, pricing, status, x402, `llms.txt`, and OpenAPI reconcile. Focused suite 21/21; secret scan PASS. Owner-funded proof is not revenue or demand. |
 | B6 metrics (observed 2026-08-07T06:53:00Z, at close) | Installs 2, **both from the local tarball, 0 from npm** (unpublished). Wallets created 2 — one throwaway, deleted after confirming on-chain it held nothing; one dedicated test wallet retained at `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`, `0700`/`0600`, recovery phrase never printed to any transcript, log, or commit. **Free first success: yes, and it happened before any wallet existed**, which is the ordering advantage over BlockRun. Wallets funded 0. Paid outcomes 0. Settlements 0. **USDC spent 0.** Fail-closed cycle exercised live: 1 refused operation, 1 retry blocked before signing, 1 reconciliation resolving `not_settled`. Buyer-side ceiling configured: per-operation 0.007, daily 0.01 USDC. Live catalog: 4 capabilities, 1 free, 3 payable; `search.web` quoted 0.006 USDC to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`. Package: 35 files, 40.4 kB packed, 17 installed dependencies, no TypeScript sources or wallet material. Tests: B6 suite 10 of 10; `shared-paid-operation` 5 of 5 unchanged; full contract suite 720 of 722, the 2 failures being `n13.3` and `n13.5` site tests that fail identically with all B6 work stashed and are therefore inherited from B5. Gates: lint PASS (677 files), secret scan PASS with 0 secret values printed. |
-| B6 closure recovery (observed 2026-08-10) | Public npm versions 0; registry returns 404. Candidate 0.1.0 pack: 35 files, 40,424 bytes, shasum `c63f7c259e642fbfcb3bb43bb957ea51d4c91d4d`, integrity `sha512-UHdZJ/zsbrPWt1ZUSUMAVLOB6D5yPYTls8JlTAI352x4Jjs/gSrSZBz4yQbO7Ni3IYzF/p46Z3UT59X9d+zGkQ==`; final values must be re-recorded from the exact licensed release commit. Focused B6 13/13, shared commerce 5/5, lint 717 files, secret scan PASS. Candidate archive clean-install/export/CLI PASS. Public free Search 200 with a receipted result. Live catalog 12 capabilities, 1 free and 11 payable. Search quote 6000 atomic USDC on Base to the existing receiver. Wallet `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`: 0 USDC, 0 native, `0700`/`0600`, 0 unreconciled operations, limits 7000/10000 atomic. npm publication, registry install, provenance, and Router paid outcome remain UNPROVEN. |
-| Exact next task | **OWNER DECISION REQUIRED:** specify the intended license for the publicly distributed `@clervo/router`, or approve exact customer terms that grant unrelated customers the intended install/use right while retaining `UNLICENSED`. No broader legal review is requested. |
+| B6 closure recovery (observed 2026-08-10) | Public npm versions 0; registry returns 404. Owner-approved package-only MIT rights are implemented. Exact candidate 0.1.0 pack: 36 files, 41,169 bytes, shasum `f3c6fff2215e7a903e9806c35b993a59bf4980d5`, integrity `sha512-wIaDB1rs3HQ2J4kQMrD2s+ddjnRKFG8sJfFmGhntEb4TD2AJaL7rf5iLCt8uP3/QOz469wCCawVfeBsozN9rKA==`; embedded LICENSE exactly matches the source. Focused B6 13/13, shared commerce 5/5, lint 717 files, secret scan PASS. Candidate archive clean-install/export/CLI PASS. Public free Search 200 with a receipted result. Live catalog 12 capabilities, 1 free and 11 payable. Search quote 6000 atomic USDC on Base to the existing receiver. Wallet `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`: 0 USDC, 0 native, `0700`/`0600`, 0 unreconciled operations, limits 7000/10000 atomic. npm publication, registry install, provenance, and Router paid outcome remain UNPROVEN. |
+| Exact next task | **OWNER ACTION REQUIRED:** create a one-day npm granular token with bypass 2FA and read/write access only to the `@clervo` package scope; store it as `NPM_ROUTER_BOOTSTRAP_TOKEN` in GitHub environment `package-release`; dispatch `publish-router.yml` once in `bootstrap` mode for the exact release SHA. Do not share the token with an agent. |
 | Files and services for that task | `packages/router`, `.github/workflows/publish-router.yml`, generated public agent documents, and `ROADMAP.md`. Preserve the B10 release, database secret version `3`, destroyed version `2`, protected AI infrastructure, and unrelated owner residue. |
 
 ---
@@ -682,12 +682,13 @@ Every milestone below carries the same seventeen fields.
 ### B6 — Clervo Connect v0
 
 1. **Milestone:** B6 — Clervo Connect v0 (ClervoRouter customer path v0)
-2. **Status:** `reopened_distribution_closure_owner_license_decision_required` —
+2. **Status:** `release_candidate_ready_first_publication_bootstrap_required` —
    the historical 2026-08-07 instruction closed B6 with the paid leg and npm
    publication explicitly carried as residue. The owner reopened B6 on
    2026-08-10 under the full external customer-path standard. Publication,
-   install-from-npm, and one Router-paid outcome remain UNPROVEN; the exact
-   current blocker is the package customer-use/license decision.
+   install-from-npm, and one Router-paid outcome remain UNPROVEN. Package-only
+   MIT rights are approved and implemented; the exact current blocker is the
+   one-time first-package npm bootstrap required before OIDC can be attached.
 3. **Customer-visible outcome:** From a clean machine: install, a local wallet
    is created, the live catalog loads, a free operation succeeds, the wallet is
    funded, a paid operation succeeds, the receipt is correct, and a retry does
@@ -704,9 +705,12 @@ Every milestone below carries the same seventeen fields.
    release hardening corrected standard CLI help/version exit behavior, replaced
    the broken homepage with the public source README, pinned the public npm
    registry, and narrowed public first-call examples to directly proven current
-   Search coverage. A package-specific GitHub Actions release path is prepared
-   and fails closed while the package remains `UNLICENSED`. The historical
-   evidence below remains preserved rather than promoted into registry proof.
+   Search coverage. The owner approved MIT for the distributed Router package
+   only; the standard license text is present in the 36-file archive and the
+   README keeps hosted-service terms separate. A package-specific GitHub Actions
+   release path is prepared and fails closed unless that license and the exact
+   package identity remain intact. The historical evidence below remains
+   preserved rather than promoted into registry proof.
 
    `@clervo/router` 0.1.0 exists at `packages/router` and
    is proven from outside. Verified 2026-08-07 by packing a real tarball
@@ -869,8 +873,16 @@ Every milestone below carries the same seventeen fields.
     `search-web-usdc-2026-08-03.1`. The funnel is instrumented only as far as the
     free step. One fail-closed cycle was exercised live: 1 refused operation, 1
     blocked retry, 1 reconciliation resolving `not_settled`.
-15. **Owner approval:** All three were granted on 2026-08-07. One was spent; two
-    are blocked on credentials or funds that do not exist on this machine.
+15. **Owner approval:** **Current 2026-08-10:** package-only MIT rights are
+    approved and implemented. The one-time first-publication action is pending:
+    the owner must create a one-day granular npm token with bypass 2FA and
+    read/write access only to the `@clervo` package scope, store it only as the
+    `package-release` GitHub environment secret
+    `NPM_ROUTER_BOOTSTRAP_TOKEN`, and dispatch `publish-router.yml` once in
+    `bootstrap` mode for the exact release commit. No payment or signature is
+    currently authorized. The 2026-08-07 approval history is preserved below;
+    its earlier provenance and token blockers are superseded by the prepared
+    Router-only workflow and this exact bootstrap action.
     - **Production deploy — SPENT and verified.** See field 13.
     - **npm publish of `@clervo/router` 0.1.0 — BLOCKED, two separate causes.**
       (a) `publishConfig.provenance: true` requires a CI OIDC provider; from a
@@ -892,17 +904,14 @@ Every milestone below carries the same seventeen fields.
       publish succeeds.
     - **One real paid operation — BLOCKED on funds.** The dedicated wallet exists
       and holds 0 USDC; see field 12. The authorized ceiling is configured.
-16. **Stopping condition:** **Not met, and B6 is closed anyway on owner
-    instruction** ("Close B6 in ROADMAP, commit, and immediately stop B6",
-    2026-08-07), because B7 is time-critical: all 21 AI route qualifications
-    expire 2026-08-09. Everything within this environment's power is done and
-    verified from outside. Three things are not, each blocked on something only
-    the owner holds — a valid npm token, a CI publish or a provenance decision,
-    and USDC in the test wallet. They carry forward as B6 residue rather than
-    being restated as achievements: **npm publish**, **install-from-npm
-    verification**, and **one real paid settlement with receipt and replay**.
-    Anyone reading this later should treat the paid leg as unproven against live
-    settlement, however complete the rest of the milestone looks.
+16. **Stopping condition:** **Not met.** The owner reopened B6 on 2026-08-10;
+    the historical 2026-08-07 owner-directed close no longer controls current
+    status. Publication, public-registry install/discovery, and one real Router
+    settlement with receipt, replay, and zero duplicate charge remain required.
+    The exact present pause is only the one-time first-publication npm bootstrap
+    in field 15. After publication is externally proven, OIDC must be attached,
+    public install/free-path proof completed, and the separate funding/payment
+    gate prepared under the current bounded-payment rules.
 17. **Continuation point:** Open B7. First task there: requalify routes and
     re-verify which supply is commercially permitted.
 
