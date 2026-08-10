@@ -3,7 +3,7 @@ const PAYER = '0x1ada6E2EACb799f16bfC1A395c06D7fb52369207';
 const ASSET = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const NETWORK = 'eip155:8453';
 const FACILITATOR = 'https://api.cdp.coinbase.com/platform/v2/x402';
-const QUARANTINED_PREFIXES = new Set(['/proof/b7-ai-image']);
+const QUARANTINED_PREFIXES = new Set(['/proof/b7-ai-chat', '/proof/b7-ai-image']);
 const profiles = Object.freeze({
   '/proof/b10-search': Object.freeze({
     productId: 'search.web', route: '/v1/search/paid', resource: 'https://api.clervo.dev/v1/search/paid',
@@ -20,7 +20,7 @@ const profiles = Object.freeze({
   '/proof/b7-ai-chat': Object.freeze({
     productId: 'ai.chat', route: '/v1/ai/execute', resource: 'https://api.clervo.dev/v1/ai/execute',
     amountAtomic: '1000', amountDisplay: '0.001 USDC', supplierCostCeilingAtomic: '0',
-    idempotencyKey: 'idem_b7_ai_paid_chat_20260810c7a41e92',
+    idempotencyKey: 'idem_b7_ai_paid_chat_20260810d10d693c7',
     request: Object.freeze({
       model: 'clervo/gpt-5.6-luna',
       input: Object.freeze({ kind: 'chat', messages: Object.freeze([Object.freeze({ role: 'user', content: 'Reply with the single word ready.' })]), responseFormat: 'text', stream: false }),
@@ -30,7 +30,7 @@ const profiles = Object.freeze({
   '/proof/b7-ai-image': Object.freeze({
     productId: 'ai.image', route: '/v1/ai/execute', resource: 'https://api.clervo.dev/v1/ai/execute',
     amountAtomic: '25500', amountDisplay: '0.0255 USDC', supplierCostCeilingAtomic: '0',
-    idempotencyKey: 'idem_b7_ai_paid_image_20260810f3b82d65',
+    idempotencyKey: 'idem_b7_ai_paid_image_20260810gbde2285e',
     request: Object.freeze({
       model: 'clervo/gemini-3.1-flash-lite-image',
       input: Object.freeze({ kind: 'image', prompt: 'A plain red square on a white background.', size: '1024x1024', quality: 'low', count: 1 }),
