@@ -46,6 +46,60 @@ export interface ClervoRequestOptions {
   signal?: AbortSignal;
 }
 
+export interface ClervoAiRequest {
+  model: string;
+  input: Record<string, unknown>;
+  maximumOutputTokens?: number;
+  maximumReasoningTokens?: number;
+}
+
+export interface ClervoAiRequestOptions {
+  idempotencyKey?: string;
+  paymentSignature?: string;
+  paymentAuthorization?: string;
+  signal?: AbortSignal;
+}
+
+export interface ClervoAiResult {
+  contractVersion: typeof CLERVO_CONTRACT_VERSION;
+  operationId: string;
+  operation: 'ai.execute';
+  productId: string;
+  model: string;
+  exactModelId: string;
+  state: 'COMPLETED' | 'RECEIPTED';
+  replayed: boolean;
+  fundingMode: 'free' | 'paid';
+  requestHash: string;
+  result: Record<string, unknown>;
+  receipt?: Record<string, unknown>;
+}
+
+export interface ClervoAiModel {
+  id: string;
+  object: 'model';
+  owned_by: 'clervo';
+  clervo: {
+    identityKind: 'canonical' | 'alias';
+    aliasFor?: string;
+    productIds: string[];
+    capabilities: string[];
+    availability: string;
+    health: string;
+    publicSellable: boolean;
+    billingMode: 'free' | 'metered';
+    customerPricing: Record<string, unknown> | null;
+    commerce: Record<string, unknown>;
+    [key: string]: unknown;
+  };
+}
+
+export interface ClervoAiModelList {
+  object: 'list';
+  data: ClervoAiModel[];
+  clervo: { catalogRevision: string; sourceValidUntil: string; inventory: { canonicalModels: number; aliases: number; callableIds: number }; [key: string]: unknown };
+}
+
 export interface ClervoClientOptions {
   baseUrl: string;
   fetch?: typeof fetch;
@@ -234,6 +288,8 @@ export class ClervoClient {
     web: (request: ClervoSearchRequest, options?: ClervoRequestOptions) => Promise<ClervoSearchResult>;
     answer: (request: ClervoSearchRequest, options?: ClervoRequestOptions) => Promise<ClervoSearchResult>;
   };
+  readonly models: { list: (options?: { signal?: AbortSignal }) => Promise<ClervoAiModelList> };
+  readonly ai: { execute: (request: ClervoAiRequest, options?: ClervoAiRequestOptions) => Promise<ClervoAiResult> };
 
   constructor(options: ClervoClientOptions) {
     if (options === null || typeof options !== 'object') throw new TypeError('invalid_clervo_client_options');
@@ -246,6 +302,41 @@ export class ClervoClient {
       web: (request, requestOptions) => this.#execute('search.web', request, requestOptions),
       answer: (request, requestOptions) => this.#execute('search.answer', request, requestOptions),
     });
+    this.models = Object.freeze({ list: (requestOptions) => this.#listModels(requestOptions) });
+    this.ai = Object.freeze({ execute: (request, requestOptions) => this.#executeAi(request, requestOptions) });
+  }
+
+  async #listModels(options: { signal?: AbortSignal } = {}): Promise<ClervoAiModelList> {
+    let response: Response;
+    try { response = await this.#fetch(`${this.#baseUrl}/v1/models`, { method: 'GET', headers: { accept: 'application/json', 'x-clervo-client': '@clervo/sdk/0.3.0' }, redirect: 'error', ...(options.signal === undefined ? {} : { signal: options.signal }) }); }
+    catch (error) { throw new ClervoTransportError('clervo_transport_failed', { cause: error }); }
+    const value = parseJsonObject(await readResponseText(response, this.#maxResponseBytes));
+    if (!response.ok) throw new ClervoProblemError(response.status, value);
+    const data = Array.isArray(value.data) ? value.data as Record<string, unknown>[] : undefined;
+    const metadata = value.clervo as Record<string, unknown> | undefined;
+    const inventory = metadata?.inventory as Record<string, unknown> | undefined;
+    if (value.object !== 'list' || data === undefined || metadata === undefined || inventory === undefined || data.some((entry) => typeof entry.id !== 'string' || entry.object !== 'model' || entry.owned_by !== 'clervo' || entry.clervo === null || typeof entry.clervo !== 'object') || Number(inventory.callableIds) !== data.length) throw new ClervoProtocolError('clervo_model_catalog_contract_mismatch');
+    return value as unknown as ClervoAiModelList;
+  }
+
+  async #executeAi(request: ClervoAiRequest, options: ClervoAiRequestOptions = {}): Promise<ClervoAiResult> {
+    if (request === null || typeof request !== 'object' || typeof request.model !== 'string' || request.model.length < 1 || request.model.length > 160 || request.input === null || typeof request.input !== 'object' || Array.isArray(request.input)) throw new TypeError('invalid_ai_request');
+    if (options.paymentSignature !== undefined && options.paymentAuthorization !== undefined) throw new TypeError('ambiguous_ai_payment_authorization');
+    const key = options.idempotencyKey ?? idempotencyKey();
+    if (!/^[\x21-\x7E]{8,128}$/u.test(key)) throw new TypeError('invalid_idempotency_key');
+    const headers: Record<string, string> = { accept: 'application/json, application/problem+json', 'content-type': 'application/json', 'idempotency-key': key, 'x-clervo-client': '@clervo/sdk/0.3.0' };
+    if (options.paymentSignature !== undefined) headers['payment-signature'] = options.paymentSignature;
+    if (options.paymentAuthorization !== undefined) headers.authorization = options.paymentAuthorization;
+    let response: Response;
+    try { response = await this.#fetch(`${this.#baseUrl}/v1/ai/execute`, { method: 'POST', headers, body: JSON.stringify(request), redirect: 'error', ...(options.signal === undefined ? {} : { signal: options.signal }) }); }
+    catch (error) { throw new ClervoTransportError('clervo_transport_failed', { cause: error }); }
+    const value = parseJsonObject(await readResponseText(response, this.#maxResponseBytes));
+    if (response.status === 402) throw new ClervoPaymentRequiredError(value, response.headers.get('payment-required'));
+    if (!response.ok) throw new ClervoProblemError(response.status, value);
+    const free = value.fundingMode === 'free' && value.state === 'COMPLETED' && value.receipt === undefined;
+    const paid = value.fundingMode === 'paid' && value.state === 'RECEIPTED' && value.receipt !== undefined;
+    if (value.contractVersion !== CLERVO_CONTRACT_VERSION || value.operation !== 'ai.execute' || typeof value.operationId !== 'string' || typeof value.model !== 'string' || typeof value.exactModelId !== 'string' || typeof value.requestHash !== 'string' || typeof value.replayed !== 'boolean' || value.result === null || typeof value.result !== 'object' || (!free && !paid)) throw new ClervoProtocolError('clervo_ai_result_contract_mismatch');
+    return value as unknown as ClervoAiResult;
   }
 
   async #execute(

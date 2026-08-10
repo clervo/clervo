@@ -1,0 +1,604 @@
+{
+  "revision": "b7permission_176a80fbd7ff6e46bdc7fd9c",
+  "defaultState": "unresolved",
+  "decisions": [
+    {
+      "gatewaySupplyId": "aisupply_b7_ff226c1c89dfe35ee569d08b",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_d922609aa667d5b75558f09d",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0f3aeb55d2163f442b20dd42",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_504aaf8060c051d2dad29cc9",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0b8d8ac6176b5a1b14c626f0",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1b77502a591255fbac7846a5",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b71a56fbec68be09c15a5521",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_7d24fa0671fbae57927bd175",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_958674ad81f54d8bb06fa521",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_3f8e05b89059d601ac311987",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_4935ffa4087a0f4a8e8b6335",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_6bfd518ce44671a63c8904c6",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_119c87ff01c9b357e8dc22a0",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5f0a97185fe5ed0c95671bde",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1e053c32e8a29514267e660e",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_def160d47a75fb615a2dc852",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_74c36e274e1d2cf903ec34a0",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1f677cf189dfe7333a70dcf5",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cb49536b60a08eca79176a35",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b32957d930dabd144df1e472",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_4bd416a5a9786407ffbffd48",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_73006408915403a6327b0fea",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_9aacd1a3a0989442f4bdcd76",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b296ac5bacec770377dda635",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_9bba8a3a9598678ff0a57045",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_3e11926c74d3d6a19b06cd43",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ed14d9db92a6b3a602523efd",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f7cd8e779fc085fe65b5b6e6",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1cd373d37eef16ade3ad4d9a",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_c9d8f8818e4a274e0576b84e",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0f230d98f450a687658db098",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ffc5e82cb775de7573d8705a",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5e74af9e399528ca7d2c7626",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b84d39d948b0ee0ef20c06d2",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_fcc903dd606aa55acc129d63",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_721a61b3c64f4ffaf0eab3b5",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_d1012c9d5347b20f6a25ffab",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_47a0ee1c59bacc6db82a112b",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_4baad7deaa853c628322a011",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_240d11aba0c71c572a1bbc16",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cda4da3910ec15d3745b537f",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_84f4076bbd3cb3283b24c833",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f27526c99724acdde804b372",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1d0a5fe5c2cb2722fc228c97",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_59eca11af977d4bb593adaf8",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_65f9838f55bd2d12b0234221",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_3f862cc3a03a9c0e6a31ed2d",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_69e322d57b45e3fed0b89f05",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f9bc5060687575046a5f9769",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_130f9e1009746fcb665b70b2",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_338c1ba2150e150ea565d157",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_789527d2644c23aa9cbc9cca",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_9a9849307e69b128ae4a49d0",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_8fa0fe569cd42b9c62d35e06",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ad682381eb18e86b92d26156",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f29a580db7030e8aa6af6c4b",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1acaf9e4d74ae1b6bb92a9d3",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ec1bfcd85dcafef63a7aa07c",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_90ae8a1318beb25c70924b39",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_776fe3bbe8b4b322dd9e7b22",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b3375d1de6ca3ba3128ccac1",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_783a862c5b35325f4b4ac79f",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_d61b986cc245745aac1f5916",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ac16fdde5e9b228968084048",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_41845a1b93f3cf86b27730bb",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cf4908a93e948fae3282fa7b",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5bbbf86fc38a690166dadb2a",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_36873b93c4c60ce8cb2bacfe",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_68380fed6da14d105e918ed7",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_a2a4e9b37c4b07e562b7d4e7",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1ca095330fe584a85df76b29",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_7acaea69570fe841a37fc3ab",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_453cc9e882b5d65b34697a34",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_369f63921bf4367d574d36c2",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f791d6ba3e8514ef4e1bca18",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5faeac1e6e63d4f9e12e0b9b",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_7b5bb896699ea216a6d7b1d3",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cae531eef86f28e2dd4d34f1",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_dc14d425235bb04db8c63bcc",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0a27457d7329552f371e12e2",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_baa288685701dd7168604370",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_50a6c82acd122b5f425c210f",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_a04058fb17151237105fe63c",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0edbd24738bbf6b4c53f44ea",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b7d2ff5e7218ccd5f9fa4c47",
+      "state": "approved",
+      "ownerDecisionRef": "owner://instruction/2026-08-10/b7-frozen-production-commercialization",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2027-08-10T19:09:36.000Z"
+    }
+  ],
+  "ownerDecisionLedger": [
+    "owner://instruction/2026-08-10/b7-frozen-production-commercialization"
+  ]
+}

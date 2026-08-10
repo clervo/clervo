@@ -42,7 +42,7 @@ const PLAIN_TEXT_DOCUMENTS = new Map([
 const MAXIMUM_REQUEST_BYTES = Object.freeze({
   '/v1/search/free': 16_384,
   '/v1/search/paid': 16_384,
-  '/v1/ai/execute': 262_144,
+  '/v1/ai/execute': 10_485_760,
   '/v1/sandbox/execute': 1_500_000,
   '/v1/rpc/execute': 262_144,
   '/v1/prediction/execute': 262_144,

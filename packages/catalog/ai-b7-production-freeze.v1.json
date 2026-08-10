@@ -1,0 +1,803 @@
+{
+  "schemaVersion": "ai-b7-production-freeze.v1",
+  "source": "https://ai.clervo.dev/v1/models",
+  "observedAt": "2026-08-10T19:09:36.000Z",
+  "frozenForMilestone": "B7",
+  "inventory": {
+    "canonicalModels": 85,
+    "aliases": 4,
+    "callableModelIds": 89,
+    "idFingerprint": "sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895",
+    "catalogFingerprint": "sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+  },
+  "canonicalModels": [
+    {
+      "id": "clervo/allam-2-7b",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/claude-haiku-4-5-20251001",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/claude-opus-4-6",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/claude-opus-4-7",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/claude-opus-4-8",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/claude-opus-5",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/claude-sonnet-4-6",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/claude-sonnet-5",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/deepseek-r1",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true,
+      "reasoning": true
+    },
+    {
+      "id": "clervo/deepseek-v3",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/deepseek-v3.1-terminus",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/deepseek-v3.2-exp",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/deepseek-v4-pro",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-2.5-flash",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-2.5-flash-image",
+      "capability": "image",
+      "endpoints": [
+        "/v1/images/generations"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-2.5-flash-lite-preview-tts",
+      "capability": "tts",
+      "endpoints": [
+        "/v1/audio/speech"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-2.5-flash-tts",
+      "capability": "tts",
+      "endpoints": [
+        "/v1/audio/speech"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-2.5-pro-tts",
+      "capability": "tts",
+      "endpoints": [
+        "/v1/audio/speech"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-3-pro-image",
+      "capability": "image",
+      "endpoints": [
+        "/v1/images/generations"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-3.1-flash-image",
+      "capability": "image",
+      "endpoints": [
+        "/v1/images/generations"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-3.1-flash-lite-image",
+      "capability": "image",
+      "endpoints": [
+        "/v1/images/generations"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-3.1-flash-tts-preview",
+      "capability": "tts",
+      "endpoints": [
+        "/v1/audio/speech"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-3.5-flash-lite",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-embedding-001",
+      "capability": "embedding",
+      "endpoints": [
+        "/v1/embeddings"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemini-omni-flash-preview",
+      "capability": "video",
+      "endpoints": [
+        "/v1/videos/generations"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemma-4-12b-it",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemma-4-26b-a4b-it",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gemma-4-31b-it",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/glm-4.5-air",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/glm-5.2",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gpt-5.6-luna",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gpt-5.6-sol",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gpt-5.6-terra",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/gpt-oss-120b",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true,
+      "reasoning": true
+    },
+    {
+      "id": "clervo/gpt-oss-20b",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true,
+      "reasoning": true
+    },
+    {
+      "id": "clervo/gpt-oss-safeguard-20b",
+      "capability": "safety",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/hunyuan-a13b-instruct",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/hy3",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/kimi-k2.5",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/kimi-k2.6",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/kimi-k2.7-code",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/kimi-k3",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/laguna-s-2.1",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/ling-flash-2.0",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/llama-3.1-70b-instruct",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/llama-3.1-8b-instruct",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/llama-3.1-nemoguard-8b-content-safety",
+      "capability": "safety",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/llama-3.1-nemotron-nano-vl-8b-v1",
+      "capability": "vlm",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/llama-3.1-nemotron-safety-guard-8b-v3",
+      "capability": "safety",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/llama-3.2-11b-vision-instruct",
+      "capability": "vlm",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/llama-3.3-70b-instruct",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/longcat-2.0",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/lyria-3-clip-preview",
+      "capability": "music",
+      "endpoints": [
+        "/v1/music/generations"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/lyria-3-pro-preview",
+      "capability": "music",
+      "endpoints": [
+        "/v1/music/generations"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/minimax-m2.5",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/minimax-m3",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/mistral-medium-2505",
+      "capability": "vlm",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/mistral-medium-2508",
+      "capability": "vlm",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/multimodalembedding-001",
+      "capability": "embedding",
+      "endpoints": [
+        "/v1/embeddings"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/nemotron-3-embed-1b",
+      "capability": "embedding",
+      "endpoints": [
+        "/v1/embeddings"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "capability": "vlm",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true,
+      "reasoning": true
+    },
+    {
+      "id": "clervo/nemotron-3.5-content-safety",
+      "capability": "safety",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/nex-n2-pro",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/nv-embed-v1",
+      "capability": "embedding",
+      "endpoints": [
+        "/v1/embeddings"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/qwen2.5-72b-instruct",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/qwen3-14b",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/qwen3-30b-a3b-instruct-2507",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/qwen3-32b",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/qwen3-8b",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/qwen3-coder-30b-a3b-instruct",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/qwen3-vl-30b-a3b-instruct",
+      "capability": "vlm",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/qwen3-vl-30b-a3b-thinking",
+      "capability": "vlm",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true,
+      "reasoning": true
+    },
+    {
+      "id": "clervo/qwen3-vl-32b-instruct",
+      "capability": "vlm",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/qwen3-vl-32b-thinking",
+      "capability": "vlm",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true,
+      "reasoning": true
+    },
+    {
+      "id": "clervo/qwen3-vl-8b-instruct",
+      "capability": "vlm",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/qwen3.5-397b-a17b",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/qwen3.6-27b",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/seed-oss-36b-instruct",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/text-embedding-005",
+      "capability": "embedding",
+      "endpoints": [
+        "/v1/embeddings"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/text-embedding-large-exp-03-07",
+      "capability": "embedding",
+      "endpoints": [
+        "/v1/embeddings"
+      ],
+      "canonical": true,
+      "lifecycle": "experimental"
+    },
+    {
+      "id": "clervo/text-multilingual-embedding-002",
+      "capability": "embedding",
+      "endpoints": [
+        "/v1/embeddings"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/veo-3.1-fast-generate-001",
+      "capability": "video",
+      "endpoints": [
+        "/v1/videos/generations"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/veo-3.1-generate-001",
+      "capability": "video",
+      "endpoints": [
+        "/v1/videos/generations"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/veo-3.1-lite-generate-001",
+      "capability": "video",
+      "endpoints": [
+        "/v1/videos/generations"
+      ],
+      "canonical": true
+    },
+    {
+      "id": "clervo/virtual-try-on-001",
+      "capability": "virtual_try_on",
+      "endpoints": [
+        "/v1/virtual-try-on"
+      ],
+      "canonical": true
+    }
+  ],
+  "aliases": [
+    {
+      "id": "clervo/code",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": false
+    },
+    {
+      "id": "clervo/deep",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": false
+    },
+    {
+      "id": "clervo/fast",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": false
+    },
+    {
+      "id": "clervo/smart",
+      "capability": "text",
+      "endpoints": [
+        "/v1/chat/completions",
+        "/v1/responses"
+      ],
+      "canonical": false
+    }
+  ]
+}

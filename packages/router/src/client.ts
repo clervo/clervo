@@ -45,6 +45,25 @@ export interface FreeOutcome {
   readonly replayed: boolean;
 }
 
+export async function callAiFree({ registry, body, idempotencyKey, env = process.env, fetchImpl = fetch, timeoutMs = 600_000 }: { registry: Registry; body: Record<string, unknown>; idempotencyKey?: string; env?: NodeJS.ProcessEnv; fetchImpl?: typeof fetch; timeoutMs?: number }): Promise<FreeOutcome> {
+  const key = idempotencyKey === undefined ? newIdempotencyKey() : assertIdempotencyKey(idempotencyKey);
+  const resource = `${registry.origin}/v1/ai/execute`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  let response: Response;
+  try {
+    response = await fetchImpl(resource, { method: 'POST', headers: { accept: 'application/json, application/problem+json', 'content-type': 'application/json', 'idempotency-key': key, 'user-agent': CLERVO_ROUTER_USER_AGENT }, body: JSON.stringify(body), redirect: 'error', signal: controller.signal });
+  } catch (error) {
+    throw new RouterError('transport_failed', `could not reach ${resource}`, (error as Error)?.name);
+  } finally { clearTimeout(timer); }
+  const value = await readJsonResponse(response);
+  if (!response.ok) throw new RouterError(typeof value.code === 'string' ? value.code : `http_${response.status}`, typeof value.detail === 'string' ? value.detail : `the API returned ${response.status}`, value);
+  if (value.state !== 'COMPLETED' || value.fundingMode !== 'free' || value.operation !== 'ai.execute') throw new RouterError('free_result_contract_mismatch', 'the free AI result did not match the published contract');
+  const completedAt = new Date().toISOString();
+  writeOperation({ schemaVersion: OPERATION_SCHEMA_VERSION, idempotencyKey: key, productId: 'ai.chat', resource, requestBodyHash: requestBodyHash(body), requestBody: body, state: 'free', startedAt: completedAt, completedAt, quotedAtomic: '0', chargedAtomic: '0', operationId: typeof value.operationId === 'string' ? value.operationId : null, receiptId: null, settlementReferenceHash: null, replayed: value.replayed === true, reason: null }, env);
+  return Object.freeze({ funding: 'free', productId: 'ai.chat', operationId: typeof value.operationId === 'string' ? value.operationId : '', requestHash: typeof value.requestHash === 'string' ? value.requestHash : '', result: value, replayed: value.replayed === true });
+}
+
 /*
  * The free call. No wallet, no key, no funding, no signature.
  *

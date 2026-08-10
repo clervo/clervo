@@ -10,7 +10,7 @@ import {
 export interface AiExecutionMonitoringEvent {
   occurredAt: string;
   operationId: string;
-  productId: 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech';
+  productId: 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech' | 'ai.video' | 'ai.music' | 'ai.virtual_try_on';
   outcome: 'completed' | 'routing_rejected' | 'execution_failed';
   routeId?: string;
   rejectionCodes?: readonly string[];

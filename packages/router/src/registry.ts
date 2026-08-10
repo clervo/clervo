@@ -64,6 +64,28 @@ export interface Registry {
   readonly fetchedAt: string;
 }
 
+export interface AiCatalogModel {
+  readonly id: string;
+  readonly identityKind: 'canonical' | 'alias';
+  readonly aliasFor: string | null;
+  readonly productIds: readonly string[];
+  readonly capabilities: readonly string[];
+  readonly availability: string;
+  readonly health: string;
+  readonly publicSellable: boolean;
+  readonly billingMode: 'free' | 'metered';
+  readonly customerPricing: Readonly<Record<string, unknown>> | null;
+  readonly commerce: Readonly<Record<string, unknown>>;
+}
+
+export interface AiModelCatalog {
+  readonly origin: string;
+  readonly revision: string;
+  readonly sourceValidUntil: string;
+  readonly inventory: Readonly<{ canonicalModels: number; aliases: number; callableIds: number }>;
+  readonly models: readonly AiCatalogModel[];
+}
+
 /* Pricing models whose advertised amount is a per-call figure rather than
  * something derived from the request. Observed live: `x402_exact` and
  * `fixed_request` carry a `displayPrice`; `x402_request_quote` does not price
@@ -191,4 +213,34 @@ export function capabilityFor(registry: Registry, productId: string): RegistryCa
   const capability = registry.capabilities.find((entry) => entry.productId === productId);
   if (capability === undefined) throw new RegistryError('capability_not_in_registry', `${productId} is not in the live catalog`);
   return capability;
+}
+
+export async function loadAiModelCatalog({ env = process.env, fetchImpl = fetch }: { env?: NodeJS.ProcessEnv; fetchImpl?: typeof fetch } = {}): Promise<AiModelCatalog> {
+  const origin = apiOrigin(env);
+  const response = await fetchImpl(`${origin}/v1/models`, { method: 'GET', headers: { accept: 'application/json', 'user-agent': CLERVO_ROUTER_USER_AGENT }, redirect: 'error' });
+  if (!response.ok) throw new RegistryError('ai_catalog_status_unexpected', `${origin}/v1/models returned ${response.status}`);
+  const value = await readJson(response, MAXIMUM_DISCOVERY_BYTES) as Record<string, unknown>;
+  const data = Array.isArray(value.data) ? value.data as Record<string, unknown>[] : undefined;
+  const metadata = value.clervo as Record<string, unknown> | undefined;
+  const inventory = metadata?.inventory as Record<string, unknown> | undefined;
+  if (value.object !== 'list' || data === undefined || metadata === undefined || inventory === undefined) throw new RegistryError('ai_catalog_shape_unexpected');
+  const models = data.map((entry): AiCatalogModel => {
+    const clervo = entry.clervo as Record<string, unknown> | undefined;
+    if (typeof entry.id !== 'string' || entry.object !== 'model' || entry.owned_by !== 'clervo' || clervo === undefined || !Array.isArray(clervo.productIds) || !Array.isArray(clervo.capabilities) || !['canonical', 'alias'].includes(String(clervo.identityKind)) || !['free', 'metered'].includes(String(clervo.billingMode))) throw new RegistryError('ai_catalog_model_invalid');
+    return Object.freeze({
+      id: entry.id,
+      identityKind: clervo.identityKind as 'canonical' | 'alias',
+      aliasFor: typeof clervo.aliasFor === 'string' ? clervo.aliasFor : null,
+      productIds: Object.freeze(clervo.productIds.map(String)),
+      capabilities: Object.freeze(clervo.capabilities.map(String)),
+      availability: String(clervo.availability ?? 'unavailable'),
+      health: String(clervo.health ?? 'unavailable'),
+      publicSellable: clervo.publicSellable === true,
+      billingMode: clervo.billingMode as 'free' | 'metered',
+      customerPricing: clervo.customerPricing !== null && typeof clervo.customerPricing === 'object' ? Object.freeze({ ...(clervo.customerPricing as Record<string, unknown>) }) : null,
+      commerce: clervo.commerce !== null && typeof clervo.commerce === 'object' ? Object.freeze({ ...(clervo.commerce as Record<string, unknown>) }) : Object.freeze({}),
+    });
+  });
+  if (new Set(models.map(({ id }) => id)).size !== models.length || Number(inventory.callableIds) !== models.length) throw new RegistryError('ai_catalog_inventory_mismatch');
+  return Object.freeze({ origin, revision: String(metadata.catalogRevision ?? ''), sourceValidUntil: String(metadata.sourceValidUntil ?? ''), inventory: Object.freeze({ canonicalModels: Number(inventory.canonicalModels), aliases: Number(inventory.aliases), callableIds: Number(inventory.callableIds) }), models: Object.freeze(models) });
 }

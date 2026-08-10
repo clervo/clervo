@@ -175,6 +175,24 @@ class ClientTests(unittest.TestCase):
                 )
         self.assertIsNone(recovery_action_for("unrelated_failure"))
 
+    def test_models_and_free_ai_share_the_public_contract(self) -> None:
+        calls = []
+        model_list = {"object": "list", "data": [{"id": "clervo/gpt-oss-20b", "object": "model", "owned_by": "clervo", "clervo": {"identityKind": "canonical", "billingMode": "free"}}], "clervo": {"inventory": {"canonicalModels": 1, "aliases": 0, "callableIds": 1}}}
+        ai_result = {"contractVersion": CLERVO_CONTRACT_VERSION, "operationId": "op_ai_fixture", "operation": "ai.execute", "productId": "ai.chat", "model": "clervo/gpt-oss-20b", "exactModelId": "clervo/gpt-oss-20b", "state": "COMPLETED", "replayed": False, "fundingMode": "free", "requestHash": f"sha256:{'b' * 64}", "result": {"output": {"kind": "chat", "content": "ready"}}}
+
+        def transport(method, url, headers, body, _timeout, _maximum_bytes):
+            calls.append((method, url, headers, body))
+            value = model_list if method == "GET" else ai_result
+            return HttpResponse(200, {"content-type": "application/json"}, json.dumps(value).encode())
+
+        client = Clervo(base_url="https://api.clervo.dev", transport=transport)
+        self.assertEqual(client.models.list()["clervo"]["inventory"]["callableIds"], 1)
+        result_value = client.ai.execute(model="clervo/gpt-oss-20b", input={"kind": "chat", "messages": [{"role": "user", "content": "ready"}], "responseFormat": "text", "stream": False}, idempotency_key="idem_ai_python")
+        self.assertEqual(result_value["fundingMode"], "free")
+        self.assertTrue(calls[0][1].endswith("/v1/models"))
+        self.assertTrue(calls[1][1].endswith("/v1/ai/execute"))
+        self.assertEqual(calls[1][2]["idempotency-key"], "idem_ai_python")
+
 
 if __name__ == "__main__":
     unittest.main()

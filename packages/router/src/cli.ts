@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import { createInterface } from 'node:readline/promises';
-import { RouterError, callFree, callPaid, newIdempotencyKey, reconcileOperation, replayPaid, requestQuote } from './client.js';
+import { RouterError, callAiFree, callFree, callPaid, newIdempotencyKey, reconcileOperation, replayPaid, requestQuote } from './client.js';
 import { diagnose } from './doctor.js';
 import { formatUsdc, fundingGuidance, readWalletBalance } from './chain.js';
 import { LimitError, loadLimits, saveLimits, usdcToAtomic } from './limits.js';
 import { clervoPaths } from './paths.js';
-import { capabilityFor, loadRegistry, type Registry } from './registry.js';
+import { capabilityFor, loadAiModelCatalog, loadRegistry, type Registry } from './registry.js';
 import { listOperations, readOperation, readReceipt, spentTodayAtomic, unreconciledOperations } from './store.js';
 import { CLERVO_ROUTER_VERSION } from './version.js';
 import { createWallet, loadWalletFile, replaceWallet, walletExists } from './wallet.js';
@@ -174,7 +174,15 @@ async function commandSearch(args: Args, registry: Registry): Promise<number> {
   return 0;
 }
 
-function commandCatalog(args: Args, registry: Registry): number {
+async function commandCatalog(args: Args, registry: Registry): Promise<number> {
+  if (args.flags.get('models') === true) {
+    const catalog = await loadAiModelCatalog();
+    if (wantsJson(args)) { printJson(catalog); return 0; }
+    print(`${catalog.inventory.callableIds} callable AI IDs — ${catalog.inventory.canonicalModels} canonical, ${catalog.inventory.aliases} aliases`);
+    print();
+    for (const model of catalog.models) print(`  ${model.id.padEnd(48)} ${model.billingMode.padEnd(7)} ${model.health.padEnd(11)} ${model.aliasFor === null ? model.productIds.join(',') : `→ ${model.aliasFor}`}`);
+    return 0;
+  }
   if (wantsJson(args)) {
     printJson({
       origin: registry.origin,
@@ -235,6 +243,18 @@ async function commandRun(args: Args, registry: Registry): Promise<number> {
   }
   const rest: Args = { ...args, rest: args.rest.slice(1) };
   const body = requestBodyFor(productId, rest);
+  if (productId === 'ai.chat') {
+    const modelId = typeof body.model === 'string' ? body.model : '';
+    const catalog = await loadAiModelCatalog();
+    const model = catalog.models.find(({ id }) => id === modelId);
+    if (model === undefined || !model.publicSellable) throw new RouterError('model_unavailable', `${modelId} is not a sellable model in the live catalog`);
+    if (model.billingMode === 'free') {
+      const outcome = await callAiFree({ registry, body, ...(flagString(args, 'key') === undefined ? {} : { idempotencyKey: flagString(args, 'key') as string }) });
+      if (wantsJson(args)) printJson(outcome.result);
+      else { print(`Completed free AI call${outcome.replayed ? ' (replayed — no second execution)' : ''}.`); print(`  operation ${outcome.operationId}`); print(); printJson(outcome.result.result ?? outcome.result); }
+      return 0;
+    }
+  }
   const assumeYes = args.flags.get('yes') === true;
   const outcome = await callPaid({
     registry,

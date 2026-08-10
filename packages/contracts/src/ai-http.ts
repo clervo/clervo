@@ -16,7 +16,7 @@ export const AI_HTTP_REQUEST_SCHEMA_VERSION = 'ai-http-request.v1' as const;
 export const AI_HTTP_RESULT_SCHEMA_VERSION = 'ai-http-result.v1' as const;
 export const AI_OPERATION_ID = 'ai.execute' as const;
 export const AI_PAID_PATH = '/v1/ai/execute' as const;
-export const AI_MAX_BODY_BYTES = 262_144;
+export const AI_MAX_BODY_BYTES = 10_485_760;
 export const AI_DEFAULT_MAXIMUM_OUTPUT_TOKENS = 1_024;
 export const AI_MAXIMUM_OUTPUT_TOKENS = 65_536;
 
@@ -59,14 +59,22 @@ export interface AiHttpResult {
   receipt: OperationReceipt;
 }
 
+export type AiFreeHttpResult = Omit<AiHttpResult, 'state' | 'fundingMode' | 'receipt'> & {
+  state: 'COMPLETED';
+  fundingMode: 'free';
+};
+
 const productByKind: Readonly<Record<AiExecutionInput['kind'], AiProductId>> = Object.freeze({
   chat: 'ai.chat',
   embedding: 'ai.embed',
   image: 'ai.image',
   speech: 'ai.speech',
+  video: 'ai.video',
+  music: 'ai.music',
+  virtual_try_on: 'ai.virtual_try_on',
 });
 
-const zeroUsage = Object.freeze({ inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: 0 });
+const zeroUsage = Object.freeze({ inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: 0, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 });
 
 function assertMaximum(value: unknown, name: string): number | undefined {
   if (value === undefined) return undefined;
@@ -78,6 +86,12 @@ function byteLength(values: readonly string[]): number {
   return values.reduce((total, value) => total + new TextEncoder().encode(value).byteLength, 0);
 }
 
+function chatContentBytes(input: Extract<AiExecutionInput, { kind: 'chat' }>): number {
+  return input.messages.reduce((total, { content }) => total + (typeof content === 'string'
+    ? byteLength([content])
+    : byteLength(content.flatMap((part) => part.type === 'text' ? [part.text] : [part.image_url.url]))), 0);
+}
+
 function usageBounds(input: AiExecutionInput, maximumOutputTokens: number | undefined, maximumReasoningTokens: number | undefined): AiUsageBounds {
   if (input.kind !== 'chat' && (maximumOutputTokens !== undefined || maximumReasoningTokens !== undefined)) throw new TypeError('ai_http_token_limits_product_invalid');
   if (input.kind === 'chat') {
@@ -85,11 +99,14 @@ function usageBounds(input: AiExecutionInput, maximumOutputTokens: number | unde
     const reasoningTokens = maximumReasoningTokens ?? outputTokens;
     if (outputTokens < 1) throw new TypeError('ai_http_maximum_output_tokens_invalid');
     const evidence = input.evidence?.flatMap((item) => [item.quote, item.canonicalUrl]) ?? [];
-    return Object.freeze({ ...zeroUsage, inputTokens: byteLength([...input.messages.map(({ content }) => content), ...evidence]), outputTokens, reasoningTokens });
+    return Object.freeze({ ...zeroUsage, inputTokens: chatContentBytes(input) + byteLength(evidence), outputTokens, reasoningTokens });
   }
   if (input.kind === 'embedding') return Object.freeze({ ...zeroUsage, inputTokens: byteLength(input.inputs) });
   if (input.kind === 'image') return Object.freeze({ ...zeroUsage, inputTokens: byteLength([input.prompt]), images: input.count });
-  return Object.freeze({ ...zeroUsage, audioCharacters: input.input.length });
+  if (input.kind === 'speech') return Object.freeze({ ...zeroUsage, audioCharacters: input.input.length });
+  if (input.kind === 'video') return Object.freeze({ ...zeroUsage, inputTokens: byteLength([input.prompt]), videoSeconds: input.durationSeconds });
+  if (input.kind === 'music') return Object.freeze({ ...zeroUsage, inputTokens: byteLength([input.prompt]), musicGenerations: 1 });
+  return Object.freeze({ ...zeroUsage, images: 2, virtualTryOnImages: 1 });
 }
 
 function cloneInput(value: unknown): AiExecutionInput {
@@ -190,6 +207,37 @@ export function createAiHttpResult(input: {
     requestHash: input.requestHash,
     result,
     receipt,
+  });
+}
+
+export function createAiFreeHttpResult(input: {
+  request: Readonly<AiExecutionRequest>;
+  requestHash: string;
+  result: Readonly<AiExecutionResult>;
+}): Readonly<AiFreeHttpResult> {
+  if (input.result.operationId !== input.request.operationId || input.result.productId !== input.request.productId || input.result.requestedModel !== input.request.requestedModel) throw new TypeError('ai_free_http_result_binding_invalid');
+  const { resultHash, ...unsignedResult } = input.result;
+  if (resultHash !== hashJson(unsignedResult as unknown as JsonValue) || input.result.supplierCost.amountAtomic !== '0') throw new TypeError('ai_free_http_result_invalid');
+  return Object.freeze({
+    contractVersion: CONTRACT_VERSION,
+    schemaVersion: AI_HTTP_RESULT_SCHEMA_VERSION,
+    operationId: input.request.operationId,
+    operation: AI_OPERATION_ID,
+    productId: input.request.productId,
+    model: input.request.requestedModel,
+    exactModelId: input.result.exactModelId,
+    state: 'COMPLETED',
+    replayed: false,
+    fundingMode: 'free',
+    requestHash: input.requestHash,
+    result: Object.freeze({
+      requestedModel: input.result.requestedModel,
+      exactModelId: input.result.exactModelId,
+      completedAt: input.result.completedAt,
+      usage: input.result.usage,
+      output: input.result.output,
+      resultHash: input.result.resultHash,
+    }),
   });
 }
 

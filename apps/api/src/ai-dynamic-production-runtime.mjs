@@ -8,6 +8,7 @@ import {
   AuthenticatedQualifiedAiSupplyCatalogSource,
   InMemoryQualifiedAiSupplyRevisionStateStore,
   RevisionGuardedQualifiedAiSupplyCatalogSource,
+  StaticQualifiedAiSupplyCatalogSource,
 } from '../../../dist/services/ai/src/catalog-source.js';
 import { composeAiProductCatalog } from '../../../dist/services/ai/src/product-catalog.js';
 import { createAiProductRuntimeProjection, createDynamicAiPublicPricing } from '../../../dist/services/ai/src/product-runtime.js';
@@ -33,6 +34,7 @@ export async function createDynamicAiProductionRuntime({
   competitorEvidence,
   commercialPermissions,
   strategicOverrides,
+  commercialPricingAuthority,
   artifactStore,
   artifactStoreFactory,
   clock = () => new Date().toISOString(),
@@ -44,22 +46,25 @@ export async function createDynamicAiProductionRuntime({
   const runtimeSecretName = typeof env.CLERVO_AI_GATEWAY_TOKEN === 'string' ? 'CLERVO_AI_GATEWAY_TOKEN' : 'CLERVO_AI_API_KEY';
   required(env, runtimeSecretName);
   const source = catalogSource ?? new RevisionGuardedQualifiedAiSupplyCatalogSource(
-    new AuthenticatedQualifiedAiSupplyCatalogSource({
-      endpoint: required(env, 'CLERVO_AI_CATALOG_URL'),
-      allowedHosts: ['ai.clervo.dev'],
-      credential: async () => required(env, 'CLERVO_AI_CATALOG_TOKEN'),
-      fetcher,
-    }),
+    env.CLERVO_AI_CATALOG_URL === undefined
+      ? new StaticQualifiedAiSupplyCatalogSource(await catalogJson('ai-b7-qualified-supply.v1.json'))
+      : new AuthenticatedQualifiedAiSupplyCatalogSource({
+        endpoint: required(env, 'CLERVO_AI_CATALOG_URL'),
+        allowedHosts: ['ai.clervo.dev'],
+        credential: async () => required(env, 'CLERVO_AI_CATALOG_TOKEN'),
+        fetcher,
+      }),
     new InMemoryQualifiedAiSupplyRevisionStateStore(),
   );
   if (typeof source?.load !== 'function') throw new TypeError('ai_dynamic_runtime_catalog_source_invalid');
-  const [supplyCatalog, registry, policies, competitorCatalog, commercialCatalog, strategicCatalog] = await Promise.all([
+  const [supplyCatalog, registry, policies, competitorCatalog, commercialCatalog, strategicCatalog, pricingAuthority] = await Promise.all([
     source.load(),
-    identityRegistry ?? catalogJson('ai-customer-identity-registry.v1.json'),
+    identityRegistry ?? catalogJson('ai-b7-customer-identity-registry.v1.json'),
     pricingPolicies ?? catalogJson('ai-product-pricing-policy.v1.json'),
     competitorEvidence === undefined ? catalogJson('ai-competitor-price-evidence.v1.json') : { evidence: competitorEvidence },
-    commercialPermissions === undefined ? catalogJson('ai-dynamic-commercial-permission.v1.json') : { decisions: commercialPermissions },
-    strategicOverrides === undefined ? catalogJson('ai-strategic-pricing-overrides.v1.json') : { overrides: strategicOverrides },
+    commercialPermissions === undefined ? catalogJson('ai-b7-commercial-permission.v1.json') : { decisions: commercialPermissions },
+    strategicOverrides === undefined ? catalogJson('ai-b7-strategic-pricing-overrides.v1.json') : { overrides: strategicOverrides },
+    commercialPricingAuthority ?? catalogJson('ai-b7-commercial-pricing.v1.json'),
   ]);
   const composedAt = clock();
   const productCatalog = composeAiProductCatalog({
@@ -71,26 +76,48 @@ export async function createDynamicAiProductionRuntime({
     strategicOverrides: strategicCatalog.overrides,
     composedAt,
   });
-  const mediaSellable = productCatalog.internalModels.some(({ publicSellable, productIds }) => publicSellable && productIds.some((productId) => ['ai.image', 'ai.speech'].includes(productId)));
+  const mediaSellable = productCatalog.internalModels.some(({ publicSellable, productIds }) => publicSellable && productIds.some((productId) => ['ai.image', 'ai.speech', 'ai.video', 'ai.music', 'ai.virtual_try_on'].includes(productId)));
   const resolveArtifactStore = artifactStoreFactory ?? (artifactStore === undefined ? undefined : () => artifactStore);
   if (mediaSellable && resolveArtifactStore === undefined) throw new TypeError('ai_dynamic_runtime_artifact_store_required');
   const projection = createAiProductRuntimeProjection(productCatalog);
   const transport = createBoundedAiHttpTransport(fetcher);
   const makeAdapter = (artifacts) => new ClervoAiGatewayAdapter({
-    config: { baseUrl: baseUrl.href, allowedHosts: ['ai.clervo.dev'], secretName: runtimeSecretName, maximumResponseBytes: 20_000_000 },
+    config: { baseUrl: baseUrl.href, allowedHosts: ['ai.clervo.dev'], secretName: runtimeSecretName, maximumResponseBytes: 80_000_000 },
     transport,
     secret: async (name) => required(env, name),
     ...(artifacts === undefined ? {} : { artifacts }),
     clock,
   });
   const adapters = Object.freeze([makeAdapter(artifactStore)]);
+  const freeTierPolicy = Object.freeze({
+    revision: pricingAuthority.revision,
+    enabled: pricingAuthority.freeTier.enabled,
+    zeroUpstreamCostRequired: true,
+    automaticPaidOverageAllowed: false,
+    perWalletDailyRequests: pricingAuthority.freeTier.perWalletDailyRequests,
+    globalDailyRequests: pricingAuthority.freeTier.globalDailyRequests,
+    validUntil: pricingAuthority.validUntil,
+  });
   return Object.freeze({
     supplyAuthority: 'qualified_ai_supply_catalog',
     sourceRevision: productCatalog.sourceRevision,
     productCatalog,
     runtimeBindings: projection.runtimeBindings,
     publicPricing: createDynamicAiPublicPricing(projection),
+    freeTierPolicy,
     adapters,
+    async ready() {
+      try {
+        const response = await fetcher(new URL('models', baseUrl).href, {
+          method: 'GET',
+          headers: { accept: 'application/json', authorization: `Bearer ${required(env, runtimeSecretName)}` },
+          redirect: 'error',
+          signal: AbortSignal.timeout(5_000),
+        });
+        await response.body?.cancel();
+        return response.status === 200;
+      } catch { return false; }
+    },
     ...(resolveArtifactStore === undefined ? {} : {
       adapterFactory(authorization) {
         const store = resolveArtifactStore(authorization);

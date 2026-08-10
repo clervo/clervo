@@ -12,7 +12,10 @@
         "outputTokens": { "type": "integer", "minimum": 0, "maximum": 1000000 },
         "reasoningTokens": { "type": "integer", "minimum": 0, "maximum": 1000000 },
         "images": { "type": "integer", "minimum": 0, "maximum": 16 },
-        "audioCharacters": { "type": "integer", "minimum": 0, "maximum": 100000 }
+        "audioCharacters": { "type": "integer", "minimum": 0, "maximum": 100000 },
+        "videoSeconds": { "type": "integer", "minimum": 0, "maximum": 120 },
+        "musicGenerations": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "virtualTryOnImages": { "type": "integer", "minimum": 0, "maximum": 4 }
       },
       "additionalProperties": false
     },
@@ -32,6 +35,15 @@
         "quote": { "type": "string", "minLength": 1, "maxLength": 4000 }
       },
       "additionalProperties": false
+    },
+    "chatContent": {
+      "oneOf": [
+        { "type": "string", "minLength": 1, "maxLength": 100000 },
+        { "type": "array", "minItems": 1, "maxItems": 32, "items": { "oneOf": [
+          { "type": "object", "required": ["type", "text"], "properties": { "type": { "const": "text" }, "text": { "type": "string", "minLength": 1, "maxLength": 100000 } }, "additionalProperties": false },
+          { "type": "object", "required": ["type", "image_url"], "properties": { "type": { "const": "image_url" }, "image_url": { "type": "object", "required": ["url"], "properties": { "url": { "type": "string", "pattern": "^data:image/(?:png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}$", "maxLength": 8000000 } }, "additionalProperties": false } }, "additionalProperties": false }
+        ] } }
+      ]
     }
   },
   "type": "object",
@@ -40,7 +52,7 @@
     "contractVersion": { "const": "2026-07-29.1" },
     "schemaVersion": { "const": "ai-execution-request.v1" },
     "operationId": { "type": "string", "pattern": "^op_[A-Za-z0-9]{20,64}$" },
-    "productId": { "enum": ["ai.chat", "ai.embed", "ai.image", "ai.speech"] },
+    "productId": { "enum": ["ai.chat", "ai.embed", "ai.image", "ai.speech", "ai.video", "ai.music", "ai.virtual_try_on"] },
     "requestedModel": { "type": "string", "minLength": 1, "maxLength": 160 },
     "input": {
       "oneOf": [
@@ -48,7 +60,7 @@
           "type": "object", "required": ["kind", "messages", "responseFormat", "stream"],
           "properties": {
             "kind": { "const": "chat" },
-            "messages": { "type": "array", "minItems": 1, "maxItems": 128, "items": { "type": "object", "required": ["role", "content"], "properties": { "role": { "enum": ["system", "user", "assistant", "tool"] }, "content": { "type": "string", "minLength": 1, "maxLength": 100000 } }, "additionalProperties": false } },
+            "messages": { "type": "array", "minItems": 1, "maxItems": 128, "items": { "type": "object", "required": ["role", "content"], "properties": { "role": { "enum": ["system", "user", "assistant", "tool"] }, "content": { "$ref": "#/$defs/chatContent" } }, "additionalProperties": false } },
             "responseFormat": { "enum": ["text", "json_object"] },
             "stream": { "type": "boolean" },
             "evidence": { "type": "array", "minItems": 1, "maxItems": 100, "items": { "$ref": "#/$defs/evidence" } }
@@ -68,6 +80,18 @@
           "type": "object", "required": ["kind", "input", "voice", "responseFormat"],
           "properties": { "kind": { "const": "speech" }, "input": { "type": "string", "minLength": 1, "maxLength": 100000 }, "voice": { "type": "string", "minLength": 1, "maxLength": 64 }, "responseFormat": { "enum": ["mp3", "opus", "aac", "flac", "wav", "pcm"] } },
           "additionalProperties": false
+        },
+        {
+          "type": "object", "required": ["kind", "prompt", "durationSeconds", "aspectRatio", "resolution"],
+          "properties": { "kind": { "const": "video" }, "prompt": { "type": "string", "minLength": 1, "maxLength": 32000 }, "durationSeconds": { "type": "integer", "minimum": 3, "maximum": 8 }, "aspectRatio": { "enum": ["16:9", "9:16"] }, "resolution": { "enum": ["720p", "1080p"] } }, "additionalProperties": false
+        },
+        {
+          "type": "object", "required": ["kind", "prompt", "durationSeconds", "instrumental"],
+          "properties": { "kind": { "const": "music" }, "prompt": { "type": "string", "minLength": 1, "maxLength": 32000 }, "durationSeconds": { "type": "integer", "minimum": 5, "maximum": 180 }, "instrumental": { "type": "boolean" } }, "additionalProperties": false
+        },
+        {
+          "type": "object", "required": ["kind", "personImageBase64", "productImageBase64"],
+          "properties": { "kind": { "const": "virtual_try_on" }, "personImageBase64": { "type": "string", "pattern": "^[A-Za-z0-9+/]+={0,2}$", "maxLength": 5000000 }, "productImageBase64": { "type": "string", "pattern": "^[A-Za-z0-9+/]+={0,2}$", "maxLength": 5000000 } }, "additionalProperties": false
         }
       ]
     },

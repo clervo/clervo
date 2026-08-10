@@ -78,7 +78,7 @@ export interface OpenAiCompatibleAdapterConfig {
   allowedHosts: readonly string[];
   secretName: string;
   exactModelId: string;
-  productId: 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech';
+  productId: 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech' | 'ai.video' | 'ai.music' | 'ai.virtual_try_on';
   maximumResponseBytes: number;
   reasoningEffort?: 'none' | 'low' | 'medium' | 'high';
   reasoningFormat?: 'hidden';
@@ -115,6 +115,9 @@ function usageFrom(value: unknown, request: AiExecutionRequest): AiUsage {
     reasoningTokens: integer(completionDetails.reasoning_tokens ?? 0, 'reasoning_tokens'),
     images: request.input.kind === 'image' ? request.input.count : 0,
     audioCharacters: request.input.kind === 'speech' ? request.input.input.length : 0,
+    videoSeconds: request.input.kind === 'video' ? request.input.durationSeconds : 0,
+    musicGenerations: request.input.kind === 'music' ? 1 : 0,
+    virtualTryOnImages: request.input.kind === 'virtual_try_on' ? 1 : 0,
   };
 }
 
@@ -180,7 +183,13 @@ function parseChatStream(bytes: Uint8Array, request: AiExecutionRequest): { mode
 function endpoint(config: OpenAiCompatibleAdapterConfig): URL {
   const base = new URL(config.baseUrl);
   if (base.protocol !== 'https:' || base.username !== '' || base.password !== '' || base.search !== '' || base.hash !== '' || !config.allowedHosts.includes(base.hostname) || /^(?:localhost|127\.|10\.|192\.168\.|169\.254\.|\[?::1\]?$)/u.test(base.hostname)) throw new TypeError('ai_provider_base_url_invalid');
-  const suffix = config.productId === 'ai.chat' ? 'chat/completions' : config.productId === 'ai.embed' ? 'embeddings' : config.productId === 'ai.image' ? 'images/generations' : 'audio/speech';
+  const suffix = config.productId === 'ai.chat' ? 'chat/completions'
+    : config.productId === 'ai.embed' ? 'embeddings'
+      : config.productId === 'ai.image' ? 'images/generations'
+        : config.productId === 'ai.speech' ? 'audio/speech'
+          : config.productId === 'ai.video' ? 'videos/generations'
+            : config.productId === 'ai.music' ? 'music/generations'
+              : 'virtual-try-on';
   return new URL(suffix, base.href.endsWith('/') ? base : `${base.href}/`);
 }
 
@@ -198,10 +207,22 @@ function requestPayload(request: AiExecutionRequest, config: Readonly<OpenAiComp
   };
   if (request.input.kind === 'embedding') return { model, input: request.input.inputs as unknown as JsonValue, ...(request.input.dimensions === undefined ? {} : { dimensions: request.input.dimensions }) };
   if (request.input.kind === 'image') return { model, prompt: request.input.prompt, size: request.input.size, quality: request.input.quality, n: request.input.count, response_format: 'b64_json' };
-  return { model, input: request.input.input, voice: request.input.voice, response_format: request.input.responseFormat };
+  if (request.input.kind === 'speech') return { model, input: request.input.input, voice: request.input.voice, response_format: request.input.responseFormat };
+  if (request.input.kind === 'video') return { model, prompt: request.input.prompt, duration_seconds: request.input.durationSeconds, aspect_ratio: request.input.aspectRatio, resolution: request.input.resolution };
+  if (request.input.kind === 'music') return { model, prompt: request.input.prompt, duration_seconds: request.input.durationSeconds, instrumental: request.input.instrumental };
+  return { model, person_image: { b64_json: request.input.personImageBase64 }, product_image: { b64_json: request.input.productImageBase64 } };
 }
 
 function sha256(bytes: Uint8Array): string { return `sha256:${createHash('sha256').update(bytes).digest('hex')}`; }
+
+function decodedMedia(value: unknown, maximumBytes: number): Readonly<{ bytes: Uint8Array; mimeType: string }> {
+  const item = record(value);
+  const encoded = string(item.b64_json, 'media_data', maximumBytes * 2);
+  if (encoded.length % 4 !== 0 || !/^[A-Za-z0-9+/]+={0,2}$/u.test(encoded)) throw new TypeError('ai_provider_media_encoding_invalid');
+  const bytes = Uint8Array.from(Buffer.from(encoded, 'base64'));
+  if (bytes.byteLength === 0 || bytes.byteLength > maximumBytes) throw new TypeError('ai_provider_media_bytes_invalid');
+  return Object.freeze({ bytes, mimeType: string(item.mime_type ?? item.mimeType, 'media_mime', 80).toLowerCase() });
+}
 
 export class OpenAiCompatibleAdapter implements AiExecutionAdapter {
   readonly routeId: string;
@@ -219,7 +240,7 @@ export class OpenAiCompatibleAdapter implements AiExecutionAdapter {
     artifacts?: AiArtifactStore;
     clock?: () => string;
   }) {
-    if (!/^ai\.route\.[a-z0-9_]+$/u.test(input.config.routeId) || !/^[A-Z][A-Z0-9_]{2,63}$/u.test(input.config.secretName) || input.config.exactModelId.length === 0 || !Number.isInteger(input.config.maximumResponseBytes) || input.config.maximumResponseBytes < 1 || input.config.maximumResponseBytes > 20_000_000 || ((input.config.reasoningEffort !== undefined || input.config.reasoningFormat !== undefined) && input.config.productId !== 'ai.chat')) throw new TypeError('ai_provider_config_invalid');
+    if (!/^ai\.route\.[a-z0-9_]+$/u.test(input.config.routeId) || !/^[A-Z][A-Z0-9_]{2,63}$/u.test(input.config.secretName) || input.config.exactModelId.length === 0 || !Number.isInteger(input.config.maximumResponseBytes) || input.config.maximumResponseBytes < 1 || input.config.maximumResponseBytes > 80_000_000 || ((input.config.reasoningEffort !== undefined || input.config.reasoningFormat !== undefined) && input.config.productId !== 'ai.chat')) throw new TypeError('ai_provider_config_invalid');
     this.#endpoint = endpoint(input.config);
     this.routeId = input.config.routeId;
     this.#config = Object.freeze({ ...input.config, allowedHosts: Object.freeze([...input.config.allowedHosts]) });
@@ -277,16 +298,30 @@ export class OpenAiCompatibleAdapter implements AiExecutionAdapter {
         const height = dimensions[1];
         if (width === undefined || height === undefined) throw new TypeError('ai_provider_image_dimensions_invalid');
         const artifacts = await Promise.all(parsed.data.map(async (value) => {
-          const encoded = string(record(value).b64_json, 'image_data', this.#config.maximumResponseBytes * 2);
-          if (encoded.length % 4 !== 0 || !/^[A-Za-z0-9+/]+={0,2}$/u.test(encoded)) throw new TypeError('ai_provider_image_encoding_invalid');
-          const bytes = Uint8Array.from(Buffer.from(encoded, 'base64'));
-          if (bytes.byteLength === 0 || bytes.byteLength > this.#config.maximumResponseBytes) throw new TypeError('ai_provider_image_bytes_invalid');
-          const stored = await this.#artifacts!.put({ bytes, mimeType: 'image/png' });
-          if (stored.sha256 !== sha256(bytes)) throw new TypeError('ai_provider_artifact_hash_invalid');
-          return Object.freeze({ ...stored, mimeType: 'image/png' as const, width, height });
+          const media = decodedMedia(value, this.#config.maximumResponseBytes);
+          if (!['image/png', 'image/jpeg', 'image/webp'].includes(media.mimeType)) throw new TypeError('ai_provider_image_mime_invalid');
+          const stored = await this.#artifacts!.put({ bytes: media.bytes, mimeType: media.mimeType });
+          if (stored.sha256 !== sha256(media.bytes)) throw new TypeError('ai_provider_artifact_hash_invalid');
+          return Object.freeze({ ...stored, mimeType: media.mimeType as 'image/png' | 'image/jpeg' | 'image/webp', width, height });
         }));
         const usageValue = parsed.usage ?? { input_tokens: 0, output_tokens: 0 };
         return Object.freeze({ modelIdentity: string(parsed.model, 'model', 160), completedAt: this.#clock(), usage: Object.freeze(usageFrom(usageValue, input.request)), output: Object.freeze({ kind: 'image', artifacts: Object.freeze(artifacts) }) });
+      }
+      if (input.request.input.kind === 'video' || input.request.input.kind === 'music' || input.request.input.kind === 'virtual_try_on') {
+        const parsed = parseJson(response.body);
+        if (!Array.isArray(parsed.data) || parsed.data.length !== 1) throw new TypeError('ai_provider_media_invalid');
+        const media = decodedMedia(parsed.data[0], this.#config.maximumResponseBytes);
+        const expected = input.request.input.kind === 'video' ? ['video/mp4']
+          : input.request.input.kind === 'music' ? ['audio/mpeg', 'audio/mp3', 'audio/wav']
+            : ['image/png', 'image/jpeg', 'image/webp'];
+        if (!expected.includes(media.mimeType)) throw new TypeError('ai_provider_media_mime_invalid');
+        const normalizedMime = media.mimeType === 'audio/mp3' ? 'audio/mpeg' : media.mimeType;
+        const stored = await this.#artifacts.put({ bytes: media.bytes, mimeType: normalizedMime });
+        if (stored.sha256 !== sha256(media.bytes)) throw new TypeError('ai_provider_artifact_hash_invalid');
+        const baseUsage = { inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: 0, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 };
+        if (input.request.input.kind === 'video') return Object.freeze({ modelIdentity: string(parsed.model, 'model', 160), completedAt: this.#clock(), usage: Object.freeze({ ...baseUsage, videoSeconds: input.request.input.durationSeconds }), output: Object.freeze({ kind: 'video', artifact: Object.freeze({ ...stored, mimeType: 'video/mp4', bytes: media.bytes.byteLength, durationSeconds: input.request.input.durationSeconds }) }) });
+        if (input.request.input.kind === 'music') return Object.freeze({ modelIdentity: string(parsed.model, 'model', 160), completedAt: this.#clock(), usage: Object.freeze({ ...baseUsage, musicGenerations: 1 }), output: Object.freeze({ kind: 'music', artifact: Object.freeze({ ...stored, mimeType: normalizedMime as 'audio/mpeg' | 'audio/wav', bytes: media.bytes.byteLength, durationSeconds: input.request.input.durationSeconds }) }) });
+        return Object.freeze({ modelIdentity: string(parsed.model, 'model', 160), completedAt: this.#clock(), usage: Object.freeze({ ...baseUsage, images: 2, virtualTryOnImages: 1 }), output: Object.freeze({ kind: 'virtual_try_on', artifact: Object.freeze({ ...stored, mimeType: normalizedMime as 'image/png' | 'image/jpeg' | 'image/webp', bytes: media.bytes.byteLength }) }) });
       }
       const mime = response.contentType.split(';')[0]?.trim();
       const mimeByFormat = { mp3: 'audio/mpeg', opus: 'audio/ogg', aac: 'audio/aac', flac: 'audio/flac', wav: 'audio/wav', pcm: 'audio/pcm' } as const;
@@ -294,7 +329,7 @@ export class OpenAiCompatibleAdapter implements AiExecutionAdapter {
       if (mime !== expectedMime) throw new TypeError('ai_provider_speech_mime_invalid');
       const stored = await this.#artifacts.put({ bytes: response.body, mimeType: expectedMime });
       if (stored.sha256 !== sha256(response.body)) throw new TypeError('ai_provider_artifact_hash_invalid');
-      return Object.freeze({ modelIdentity: input.exactModelId, completedAt: this.#clock(), usage: Object.freeze({ ...({ inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0 }), audioCharacters: input.request.input.input.length }), output: Object.freeze({ kind: 'speech', artifact: Object.freeze({ ...stored, mimeType: expectedMime, bytes: response.body.byteLength }) }) });
+      return Object.freeze({ modelIdentity: input.exactModelId, completedAt: this.#clock(), usage: Object.freeze({ ...({ inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 }), audioCharacters: input.request.input.input.length }), output: Object.freeze({ kind: 'speech', artifact: Object.freeze({ ...stored, mimeType: expectedMime, bytes: response.body.byteLength }) }) });
     } catch { throw new TypeError('ai_provider_response_invalid'); }
   }
 }

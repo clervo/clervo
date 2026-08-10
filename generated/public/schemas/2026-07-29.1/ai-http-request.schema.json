@@ -31,6 +31,69 @@
         }
       },
       "additionalProperties": false
+    },
+    "chatContent": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100000
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "text"
+                ],
+                "properties": {
+                  "type": {
+                    "const": "text"
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100000
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "image_url"
+                ],
+                "properties": {
+                  "type": {
+                    "const": "image_url"
+                  },
+                  "image_url": {
+                    "type": "object",
+                    "required": [
+                      "url"
+                    ],
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "pattern": "^data:image/(?:png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}$",
+                        "maxLength": 8000000
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      ]
     }
   },
   "type": "object",
@@ -88,9 +151,7 @@
                     ]
                   },
                   "content": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100000
+                    "$ref": "#/$defs/chatContent"
                   }
                 },
                 "additionalProperties": false
@@ -215,6 +276,96 @@
                 "wav",
                 "pcm"
               ]
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "prompt",
+            "durationSeconds",
+            "aspectRatio",
+            "resolution"
+          ],
+          "properties": {
+            "kind": {
+              "const": "video"
+            },
+            "prompt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32000
+            },
+            "durationSeconds": {
+              "type": "integer",
+              "minimum": 3,
+              "maximum": 8
+            },
+            "aspectRatio": {
+              "enum": [
+                "16:9",
+                "9:16"
+              ]
+            },
+            "resolution": {
+              "enum": [
+                "720p",
+                "1080p"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "prompt",
+            "durationSeconds",
+            "instrumental"
+          ],
+          "properties": {
+            "kind": {
+              "const": "music"
+            },
+            "prompt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32000
+            },
+            "durationSeconds": {
+              "type": "integer",
+              "minimum": 5,
+              "maximum": 180
+            },
+            "instrumental": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "personImageBase64",
+            "productImageBase64"
+          ],
+          "properties": {
+            "kind": {
+              "const": "virtual_try_on"
+            },
+            "personImageBase64": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9+/]+={0,2}$",
+              "maxLength": 5000000
+            },
+            "productImageBase64": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9+/]+={0,2}$",
+              "maxLength": 5000000
             }
           },
           "additionalProperties": false

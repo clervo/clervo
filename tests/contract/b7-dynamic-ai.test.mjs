@@ -232,7 +232,7 @@ test('catalog validation rejects duplicate supply, conflicting runtime binding, 
   const alpha = model();
   assert.throws(() => parseQualifiedAiSupplyCatalog(snapshot([alpha, alpha])), /qualified_ai_supply_identity_duplicate/u);
   assert.throws(() => parseQualifiedAiSupplyCatalog(snapshot([alpha, model({ gatewaySupplyId: 'aisupply_gateway_model_beta' })])), /qualified_ai_runtime_binding_conflict/u);
-  assert.throws(() => parseQualifiedAiSupplyCatalog(snapshot([model({ modalities: ['video'] })])), /qualified_ai_supply_modalities_invalid/u);
+  assert.throws(() => parseQualifiedAiSupplyCatalog(snapshot([model({ modalities: ['unsupported'] })])), /qualified_ai_supply_modalities_invalid/u);
   assert.throws(() => parseQualifiedAiSupplyCatalog(snapshot([model({ upstreamCost: { ...alpha.upstreamCost, pricing: { ...alpha.upstreamCost.pricing, currency: 'EUR' } } })])), /qualified_ai_supply_pricing_currency_invalid/u);
   assert.throws(() => parseQualifiedAiSupplyCatalog(snapshot([{ ...alpha, providerCredential: 'must-not-enter-contract' }])), /qualified_ai_supply_model_additional_property/u);
 });
@@ -324,6 +324,13 @@ test('generated public model discovery omits legacy supplier family and raw rout
     assert.equal(Object.hasOwn(entry.clervo, 'supplyFamilyId'), false);
     assert.equal(Object.hasOwn(entry.clervo, 'routeId'), false);
   }
+});
+
+test('B7 exact-market token prices use atomic micro-USD per million tokens', async () => {
+  const pricing = JSON.parse(await readFile(new URL('../../packages/catalog/ai-b7-commercial-pricing.v1.json', import.meta.url), 'utf8'));
+  const opus = pricing.models.find(({ modelId }) => modelId === 'clervo/claude-opus-4-6');
+  assert.equal(opus.customerPricing.inputTokenMicrosPerMillion, 2_500_000);
+  assert.equal(opus.customerPricing.outputTokenMicrosPerMillion, 12_500_000);
 });
 
 test('static and authenticated catalog sources validate snapshots and keep credentials out of the contract', async () => {

@@ -87,7 +87,7 @@ export class VertexEmbeddingAdapter implements AiExecutionAdapter {
     return Object.freeze({
       modelIdentity: input.exactModelId,
       completedAt: this.#clock(),
-      usage: Object.freeze({ inputTokens, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: 0 }),
+      usage: Object.freeze({ inputTokens, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: 0, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 }),
       output: Object.freeze({ kind: 'embedding', vectors: Object.freeze(vectors) }),
     });
   }

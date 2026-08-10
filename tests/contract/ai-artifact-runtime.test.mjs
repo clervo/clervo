@@ -44,6 +44,15 @@ test('AI artifacts are payer-isolated, signed, expiring, and integrity checked',
   await assert.rejects(runtime.retrieve(url.pathname), /artifact_access_expired/u);
 });
 
+test('AI artifact runtime preserves the bounded video media type', async () => {
+  const memory = transportStore();
+  const runtime = createAiArtifactRuntime({ env: { ...env, CLERVO_ARTIFACT_MAXIMUM_OBJECT_BYTES: '80000000' }, fetcher: memory.fetch });
+  const artifact = await runtime.forAuthorization({ verification: { payer: `0x${'b'.repeat(40)}` } }).put({ bytes: new TextEncoder().encode('video'), mimeType: 'video/mp4' });
+  const retrieved = await runtime.retrieve(new URL(artifact.artifactUri).pathname);
+  assert.equal(retrieved.mimeType, 'video/mp4');
+  assert.equal(new TextDecoder().decode(retrieved.bytes), 'video');
+});
+
 test('AI artifact runtime rejects missing payer identity and unsafe storage configuration', async () => {
   const memory = transportStore();
   const runtime = createAiArtifactRuntime({ env, fetcher: memory.fetch });

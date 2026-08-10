@@ -27,6 +27,7 @@ import {
 import { InMemorySearchStateStore } from './search-state-store.mjs';
 import { createX402PaidSearchProcessor, x402SearchPricing } from './x402-paid-search.mjs';
 import { createX402PaidAiProcessor } from './x402-paid-ai.mjs';
+import { createFreeAiOperationProcessor } from './ai-free-operation.mjs';
 import {
   SANDBOX_DISCOVERY,
   SANDBOX_MAX_BODY_BYTES as SANDBOX_PUBLIC_MAX_BODY_BYTES,
@@ -205,6 +206,8 @@ export function createSearchServer({
   aiAdapters,
   aiAdapterFactory,
   aiRuntimeBindings,
+  aiReady,
+  aiFreeTier,
   aiArtifactAccess,
   aiMonitor,
   sandboxPublicRunnerDigest,
@@ -227,8 +230,10 @@ export function createSearchServer({
   if (edgeAuthorization !== undefined && (typeof edgeAuthorization !== 'string' || edgeAuthorization.length < 32 || edgeAuthorization.length > 512)) throw new TypeError('invalid edge authorization');
   if ((aiPublicPricing === undefined) !== (aiAdapters === undefined)) throw new TypeError('AI pricing and adapters must be configured together');
   if (aiPublicPricing !== undefined && x402Service === undefined) throw new TypeError('public AI requires x402 commerce');
+  if (aiFreeTier !== undefined && (aiPublicPricing === undefined || !aiFreeTier.policy || !aiFreeTier.store)) throw new TypeError('invalid AI free-tier configuration');
   if (aiAdapterFactory !== undefined && (aiPublicPricing === undefined || typeof aiAdapterFactory !== 'function')) throw new TypeError('invalid AI adapter factory');
   if (aiArtifactAccess !== undefined && (typeof aiArtifactAccess.matches !== 'function' || typeof aiArtifactAccess.retrieve !== 'function')) throw new TypeError('invalid AI artifact access');
+  if (aiReady !== undefined && (aiPublicPricing === undefined || typeof aiReady !== 'function')) throw new TypeError('invalid AI readiness probe');
   if (sandboxPublicRunnerDigest !== undefined && (sandboxGateway === undefined || x402Service === undefined)) throw new TypeError('public Sandbox requires private execution and x402 commerce');
   if (rpcRuntime !== undefined && x402Service === undefined) throw new TypeError('public RPC requires x402 commerce');
   if (predictionRuntime !== undefined && x402Service === undefined) throw new TypeError('public Prediction requires x402 commerce');
@@ -265,6 +270,16 @@ export function createSearchServer({
     publicPricing: aiPublicPricing,
     adapters: aiAdapters,
     adapterFactory: aiAdapterFactory,
+    runtimeBindings: aiRuntimeBindings,
+    acquireExecution,
+    monitor: aiMonitor,
+  });
+  const freeAiProcessor = aiFreeTier === undefined ? undefined : createFreeAiOperationProcessor({
+    stateStore: searchState,
+    quotaStore: aiFreeTier.store,
+    policy: aiFreeTier.policy,
+    publicPricing: aiPublicPricing,
+    adapters: aiAdapters,
     runtimeBindings: aiRuntimeBindings,
     acquireExecution,
     monitor: aiMonitor,
@@ -371,6 +386,7 @@ export function createSearchServer({
           && await searchState.ready()
           && (x402StateStore === undefined || await x402StateStore.ready())
           && (sandboxGateway === undefined || await sandboxGateway.ready())
+          && (aiReady === undefined || await aiReady())
           && (rpcRuntime === undefined || await rpcRuntime.ready())
           && (predictionRuntime === undefined || await predictionRuntime.ready())
           && (cryptoRuntime === undefined || await cryptoRuntime.ready());
@@ -459,17 +475,37 @@ export function createSearchServer({
       }
       let aiOperationId;
       try {
-        const keyHeader = request.headers['idempotency-key'];
+        const observedAt = now();
+        const suppliedKey = request.headers['idempotency-key'];
         const authorizationHeader = mppAuthorization(request.headers.authorization);
-        if (typeof keyHeader !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined) {
-          const challenge = await discoveryPaymentChallenge(AI_PAID_PATH, now());
+        if (typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined && [undefined, '0'].includes(request.headers['content-length']) && request.headers['transfer-encoding'] === undefined) {
+          const challenge = await discoveryPaymentChallenge(AI_PAID_PATH, observedAt);
           send(response, challenge.status, challenge.body, challenge.headers);
           return;
         }
-        if (typeof keyHeader !== 'string') throw Object.assign(new Error('idempotency_key_required'), { status: 400 });
-        validateIdempotencyKey(keyHeader);
         const normalized = normalizeAiHttpRequest(await readJson(request, AI_MAX_BODY_BYTES));
         const requestHash = aiHttpRequestHash(normalized);
+        const classificationId = identifier('op', `classify:${requestHash}`);
+        const billingMode = aiPublicPricing.quote({ normalized, operationId: classificationId, now: observedAt }).pricing.billingMode;
+        if (billingMode === 'free') {
+          if (freeAiProcessor === undefined) throw Object.assign(new Error('ai_free_tier_unavailable'), { status: 503 });
+          const keyGenerated = typeof suppliedKey !== 'string';
+          const keyHeader = keyGenerated ? generatedIdempotencyKey() : suppliedKey;
+          validateIdempotencyKey(keyHeader);
+          aiOperationId = identifier('op', `${keyHeader}:${requestHash}`);
+          const edgeSubject = request.headers['x-clervo-quota-subject'];
+          if (edgeAuthorization !== undefined && (typeof edgeSubject !== 'string' || edgeSubject.length < 1 || edgeSubject.length > 200)) throw Object.assign(new Error('ai_quota_subject_required'), { status: 503 });
+          const subject = typeof edgeSubject === 'string' && edgeSubject.length >= 1 && edgeSubject.length <= 200
+            ? edgeSubject
+            : request.socket.remoteAddress ?? 'loopback-unknown';
+          const free = await freeAiProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId: aiOperationId, normalized, subject, now: observedAt });
+          send(response, free.status, free.body, { ...free.headers, ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}) });
+          return;
+        }
+        const keyGenerated = typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined;
+        const keyHeader = keyGenerated ? `srv.ai.${randomUUID().replaceAll('-', '')}` : suppliedKey;
+        if (typeof keyHeader !== 'string') throw Object.assign(new Error('idempotency_key_required'), { status: 400 });
+        validateIdempotencyKey(keyHeader);
         aiOperationId = identifier('op', `${keyHeader}:${requestHash}`);
         const paid = await x402AiProcessor.process({
           idempotencyKey: keyHeader,
@@ -478,9 +514,9 @@ export function createSearchServer({
           normalized,
           paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
           authorizationHeader,
-          now: now(),
+          now: observedAt,
         });
-        send(response, paid.status, paid.body, paid.headers);
+        send(response, paid.status, paid.body, { ...paid.headers, ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}) });
       } catch (error) {
         const code = errorCode(error);
         const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;

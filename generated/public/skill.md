@@ -60,7 +60,7 @@ The free sample currently requires a caller-supplied `idempotency-key` header. S
 
 - `/.well-known/clervo.json` — discovery, products, and observed truth.
 - `/.well-known/x402` — x402 v2 payment manifest with the exact quote each paid resource returns.
-- `/v1/models` — catalogued AI routes with lifecycle state, proof level, and observed price.
+- `/v1/models` — authoritative AI catalog with stable IDs, aliases, capabilities, price, free/paid state, availability, health, and commerce contract.
 - `/openapi.json` — request and response contracts.
 - `/status.json` — current lifecycle state, proof level, and open conformance defects.
 - `/pricing.json` — the public offer boundary.

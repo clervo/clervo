@@ -5,6 +5,7 @@ import {
   estimateAiSupplierCost,
   hashJson,
   selectAiRoute,
+  type AiAlias,
   type AiCapability,
   type AiModelCatalog,
   type AiRoutePricing,
@@ -24,6 +25,9 @@ const maximumUsageBounds: Readonly<AiUsageBounds> = Object.freeze({
   reasoningTokens: 1_000_000,
   images: 16,
   audioCharacters: 100_000,
+  videoSeconds: 120,
+  musicGenerations: 4,
+  virtualTryOnImages: 4,
 });
 const minimumChargeAtomic = 1_000n;
 
@@ -45,6 +49,7 @@ export interface AiProductRuntimeProjection {
   catalog: Readonly<AiModelCatalog> | null;
   routes: readonly Readonly<AiRuntimeRoute & { customerPricing: Readonly<AiRoutePricing>; priceVersion: string }>[];
   runtimeBindings: ComposedAiProductCatalog['privateRuntimeBindings'];
+  aliasTargets: Readonly<Partial<Record<AiAlias, string>>>;
 }
 
 export function createAiProductRuntimeProjection(catalog: Readonly<ComposedAiProductCatalog>): Readonly<AiProductRuntimeProjection> {
@@ -99,12 +104,13 @@ export function createAiProductRuntimeProjection(catalog: Readonly<ComposedAiPro
       qualityScore: model.supply.quality?.score ?? 0.5,
     });
   });
-  return Object.freeze({ catalog: modelCatalog, routes: Object.freeze(routes), runtimeBindings: catalog.privateRuntimeBindings });
+  const aliasTargets = Object.freeze(Object.fromEntries(catalog.publicModels.flatMap((model) => model.aliases.map((alias) => [alias, model.modelId]))) as Partial<Record<AiAlias, string>>);
+  return Object.freeze({ catalog: modelCatalog, routes: Object.freeze(routes), runtimeBindings: catalog.privateRuntimeBindings, aliasTargets });
 }
 
 export function createDynamicAiPublicPricing(projection: Readonly<AiProductRuntimeProjection>) {
   return Object.freeze({
-    quote({ normalized, operationId, now }: { normalized: Readonly<{ model: string; productId: 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech'; usageBounds: AiUsageBounds }>; operationId: string; now: string }) {
+    quote({ normalized, operationId, now }: { normalized: Readonly<{ model: string; productId: 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech' | 'ai.video' | 'ai.music' | 'ai.virtual_try_on'; usageBounds: AiUsageBounds }>; operationId: string; now: string }) {
       if (projection.catalog === null) throw Object.assign(new Error('ai_route_unavailable'), { status: 503, rejectionCodes: ['commercial_supply_unavailable'] });
       const decision = selectAiRoute({
         catalog: projection.catalog,
@@ -119,6 +125,7 @@ export function createDynamicAiPublicPricing(projection: Readonly<AiProductRunti
           return right > left ? route.pricing : highest;
         }, projection.routes[0]!.pricing)).amountAtomic, decimals: 6 },
         routes: projection.routes,
+        aliasTargets: projection.aliasTargets,
         decidedAt: now,
       });
       if (decision.outcome !== 'selected') throw Object.assign(new Error('ai_route_unavailable'), { status: 503, rejectionCodes: decision.rejectionCodes });
@@ -126,15 +133,18 @@ export function createDynamicAiPublicPricing(projection: Readonly<AiProductRunti
       if (selected === undefined || decision.maximumSupplierCost === undefined) throw new TypeError('ai_dynamic_route_selection_invalid');
       const customer = estimateAiSupplierCost(normalized.usageBounds, selected.customerPricing);
       const atomic = BigInt(customer.amountAtomic);
+      const billingMode = Object.entries(selected.customerPricing).every(([key, value]) => ['currency', 'decimals'].includes(key) || value === 0) ? 'free' : 'metered';
       return Object.freeze({
         catalog: projection.catalog,
         routes: projection.routes,
         runtimeBindings: projection.runtimeBindings,
+        aliasTargets: projection.aliasTargets,
         decision,
         selected,
         pricing: Object.freeze({
           priceVersion: `ai-dynamic-${selected.priceVersion}`.slice(0, 128),
-          maximumCharge: Object.freeze({ asset: 'USDC', amountAtomic: (atomic > minimumChargeAtomic ? atomic : minimumChargeAtomic).toString(), decimals: 6 }),
+          billingMode,
+          maximumCharge: Object.freeze({ asset: 'USDC', amountAtomic: billingMode === 'free' ? '0' : (atomic > minimumChargeAtomic ? atomic : minimumChargeAtomic).toString(), decimals: 6 }),
           supplierCost: Object.freeze({ asset: 'usd', amountAtomic: decision.maximumSupplierCost.amountAtomic, decimals: 6 }),
         }),
       });

@@ -4,6 +4,7 @@ import {
   reconcileAiSupplierCost,
   selectAiRoute,
   type AiExecutionOutput,
+  type AiAlias,
   type AiExecutionRequest,
   type AiExecutionResult,
   type AiModelCatalog,
@@ -55,12 +56,16 @@ function requiredCapabilities(request: AiExecutionRequest) {
   if (request.input.kind === 'chat') return [
     'text_input' as const,
     'text_output' as const,
+    ...(request.input.messages.some(({ content }) => Array.isArray(content) && content.some((part) => part.type === 'image_url')) ? ['image_input' as const] : []),
     ...(request.input.stream ? ['streaming' as const] : []),
     ...(request.input.responseFormat === 'json_object' ? ['structured_output' as const] : []),
   ];
   if (request.input.kind === 'embedding') return ['text_input' as const, 'embedding_output' as const];
   if (request.input.kind === 'image') return ['text_input' as const, 'image_output' as const];
-  return ['text_input' as const, 'audio_output' as const];
+  if (request.input.kind === 'speech') return ['text_input' as const, 'audio_output' as const];
+  if (request.input.kind === 'video') return ['text_input' as const, 'video_output' as const];
+  if (request.input.kind === 'music') return ['text_input' as const, 'audio_output' as const, 'music_output' as const];
+  return ['image_input' as const, 'image_output' as const];
 }
 
 function failed(failureCode: AiExecutionFailureCode): Readonly<AiOperationOutcome> {
@@ -77,6 +82,7 @@ export async function executeAiOperation(input: {
   routes: readonly AiRuntimeRoute[];
   adapters: readonly AiExecutionAdapter[];
   runtimeBindings?: readonly Readonly<AiExecutionRuntimeBinding>[];
+  aliasTargets?: Readonly<Partial<Record<AiAlias, string>>>;
   startedAt: string;
   signal?: AbortSignal;
   clock?: () => number;
@@ -96,6 +102,7 @@ export async function executeAiOperation(input: {
     usageBounds: input.request.usageBounds,
     maximumSupplierCost: input.request.maximumSupplierCost,
     routes: input.routes,
+    ...(input.aliasTargets === undefined ? {} : { aliasTargets: input.aliasTargets }),
     decidedAt: input.startedAt,
   });
   if (decision.outcome !== 'selected') {

@@ -1,0 +1,849 @@
+{
+  "schemaVersion": "ai-b7-market-price-evidence.v1",
+  "revision": "b7market_8f8c114222539d758d98aada",
+  "observedAt": "2026-08-10T19:09:36.000Z",
+  "validUntil": "2026-09-09T19:09:36.000Z",
+  "evidence": [
+    {
+      "evidenceId": "market_02ad40dd55e913de003a",
+      "competitor": "Official market source",
+      "marketModelId": "clervo/lyria-3-pro-preview",
+      "source": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "musicMicrosPerGeneration": 80000
+      }
+    },
+    {
+      "evidenceId": "market_0437982b72c15a88f457",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen3-vl-8b-instruct",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 117000,
+        "outputTokenMicrosPerMillion": 455000
+      }
+    },
+    {
+      "evidenceId": "market_10fd69bfa3b9e5183e6e",
+      "competitor": "Official market source",
+      "marketModelId": "clervo/gemini-2.5-flash-image",
+      "source": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "imageMicrosEach": 39000
+      }
+    },
+    {
+      "evidenceId": "market_13f73688cb2b85adc2ae",
+      "competitor": "OpenRouter",
+      "marketModelId": "moonshotai/kimi-k2.7-code",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 700000,
+        "outputTokenMicrosPerMillion": 3500000
+      }
+    },
+    {
+      "evidenceId": "market_1be4e2b7317b64ea85bf",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen3-vl-30b-a3b-instruct",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 150000,
+        "outputTokenMicrosPerMillion": 600000
+      }
+    },
+    {
+      "evidenceId": "market_2576d26f53ae906e49e6",
+      "competitor": "OpenRouter",
+      "marketModelId": "openai/gpt-5.6-luna",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 100000,
+        "outputTokenMicrosPerMillion": 600000
+      }
+    },
+    {
+      "evidenceId": "market_25fd6318eb57612d9d49",
+      "competitor": "OpenRouter",
+      "marketModelId": "anthropic/claude-opus-4.7",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 5000000,
+        "outputTokenMicrosPerMillion": 25000000
+      }
+    },
+    {
+      "evidenceId": "market_2b9dce07b85b4536a12f",
+      "competitor": "Official market source",
+      "marketModelId": "clervo/gemini-3.1-flash-lite-image",
+      "source": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "imageMicrosEach": 34000
+      }
+    },
+    {
+      "evidenceId": "market_3287aa9cad2d5bd8a99a",
+      "competitor": "OpenRouter",
+      "marketModelId": "anthropic/claude-sonnet-5",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 2000000,
+        "outputTokenMicrosPerMillion": 10000000
+      }
+    },
+    {
+      "evidenceId": "market_357245b8b165ac20bc33",
+      "competitor": "Official market source",
+      "marketModelId": "clervo/veo-3.1-lite-generate-001",
+      "source": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "videoMicrosPerSecond": 50000
+      }
+    },
+    {
+      "evidenceId": "market_35e829d707f0ba7b435e",
+      "competitor": "OpenRouter",
+      "marketModelId": "moonshotai/kimi-k2.6",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 579500,
+        "outputTokenMicrosPerMillion": 2440000
+      }
+    },
+    {
+      "evidenceId": "market_384feb5fc7b4547003e1",
+      "competitor": "Official market source",
+      "marketModelId": "clervo/gemini-3-pro-image",
+      "source": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "imageMicrosEach": 134000
+      }
+    },
+    {
+      "evidenceId": "market_3beedf23a42442c9d993",
+      "competitor": "OpenRouter",
+      "marketModelId": "nex-agi/nex-n2-pro",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 250000,
+        "outputTokenMicrosPerMillion": 1000000
+      }
+    },
+    {
+      "evidenceId": "market_4085dbdf50ad5574fd5c",
+      "competitor": "OpenRouter",
+      "marketModelId": "google/gemini-3.5-flash-lite",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 300000,
+        "outputTokenMicrosPerMillion": 2500000
+      }
+    },
+    {
+      "evidenceId": "market_437075b3bd6c191f32cb",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen3-8b",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 117000,
+        "outputTokenMicrosPerMillion": 455000
+      }
+    },
+    {
+      "evidenceId": "market_4505c5d507476def0f1d",
+      "competitor": "OpenRouter",
+      "marketModelId": "z-ai/glm-5.2",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 530600,
+        "outputTokenMicrosPerMillion": 1667600
+      }
+    },
+    {
+      "evidenceId": "market_47881d73bcdaa9b48eb5",
+      "competitor": "OpenRouter",
+      "marketModelId": "moonshotai/kimi-k3",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 3000000,
+        "outputTokenMicrosPerMillion": 15000000
+      }
+    },
+    {
+      "evidenceId": "market_47c3d99abd4526fef92b",
+      "competitor": "OpenRouter",
+      "marketModelId": "deepseek/deepseek-v3.2-exp",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 270000,
+        "outputTokenMicrosPerMillion": 410000
+      }
+    },
+    {
+      "evidenceId": "market_4b294064479b2ec04097",
+      "competitor": "Official market source",
+      "marketModelId": "clervo/veo-3.1-generate-001",
+      "source": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "videoMicrosPerSecond": 400000
+      }
+    },
+    {
+      "evidenceId": "market_4eacb1a1a38741d6ce29",
+      "competitor": "OpenRouter",
+      "marketModelId": "google/gemma-4-31b-it",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 100000,
+        "outputTokenMicrosPerMillion": 340000
+      }
+    },
+    {
+      "evidenceId": "market_4f4584bb466ac2b191b1",
+      "competitor": "OpenRouter",
+      "marketModelId": "deepseek/deepseek-v4-pro",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 435000,
+        "outputTokenMicrosPerMillion": 870000
+      }
+    },
+    {
+      "evidenceId": "market_4f89aba1fd88330ce627",
+      "competitor": "OpenRouter",
+      "marketModelId": "meta-llama/llama-3.3-70b-instruct",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 100000,
+        "outputTokenMicrosPerMillion": 320000
+      }
+    },
+    {
+      "evidenceId": "market_4fc628b2ddba0f61094a",
+      "competitor": "OpenRouter",
+      "marketModelId": "google/gemini-2.5-flash",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 300000,
+        "outputTokenMicrosPerMillion": 2500000
+      }
+    },
+    {
+      "evidenceId": "market_4fcb5ae427234a1aa7c9",
+      "competitor": "OpenRouter",
+      "marketModelId": "openai/gpt-oss-safeguard-20b",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 75000,
+        "outputTokenMicrosPerMillion": 300000
+      }
+    },
+    {
+      "evidenceId": "market_51a043e469b666b63b3e",
+      "competitor": "OpenRouter",
+      "marketModelId": "openai/gpt-5.6-terra",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 1000000,
+        "outputTokenMicrosPerMillion": 6000000
+      }
+    },
+    {
+      "evidenceId": "market_57a7179e61237861ea03",
+      "competitor": "OpenRouter",
+      "marketModelId": "minimax/minimax-m2.5",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 220000,
+        "outputTokenMicrosPerMillion": 900000
+      }
+    },
+    {
+      "evidenceId": "market_5a60e739abce736d1e74",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen-2.5-72b-instruct",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 360000,
+        "outputTokenMicrosPerMillion": 400000
+      }
+    },
+    {
+      "evidenceId": "market_64d0f0ef83fdc11b4386",
+      "competitor": "OpenRouter",
+      "marketModelId": "moonshotai/kimi-k2.5",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 570000,
+        "outputTokenMicrosPerMillion": 2850000
+      }
+    },
+    {
+      "evidenceId": "market_72f11672da30673cc461",
+      "competitor": "OpenRouter",
+      "marketModelId": "anthropic/claude-opus-4.6",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 5000000,
+        "outputTokenMicrosPerMillion": 25000000
+      }
+    },
+    {
+      "evidenceId": "market_7ae852455d7029bde8e2",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen3-14b",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 120000,
+        "outputTokenMicrosPerMillion": 240000
+      }
+    },
+    {
+      "evidenceId": "market_838e82f7e0fa81d3d671",
+      "competitor": "OpenRouter",
+      "marketModelId": "anthropic/claude-opus-4.8",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 5000000,
+        "outputTokenMicrosPerMillion": 25000000
+      }
+    },
+    {
+      "evidenceId": "market_83d922df701ea7cd12e8",
+      "competitor": "OpenRouter",
+      "marketModelId": "google/gemma-4-26b-a4b-it",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 120000,
+        "outputTokenMicrosPerMillion": 400000
+      }
+    },
+    {
+      "evidenceId": "market_86725263ee227dd754ca",
+      "competitor": "OpenRouter",
+      "marketModelId": "meituan/longcat-2.0",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 300000,
+        "outputTokenMicrosPerMillion": 1200000
+      }
+    },
+    {
+      "evidenceId": "market_87f0d483024603b51669",
+      "competitor": "OpenRouter",
+      "marketModelId": "tencent/hy3",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 132000,
+        "outputTokenMicrosPerMillion": 528000
+      }
+    },
+    {
+      "evidenceId": "market_8fe6882b5971db9e00fd",
+      "competitor": "OpenRouter",
+      "marketModelId": "anthropic/claude-opus-5",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 5000000,
+        "outputTokenMicrosPerMillion": 25000000
+      }
+    },
+    {
+      "evidenceId": "market_93d1ba132ddbba7823c6",
+      "competitor": "OpenRouter",
+      "marketModelId": "meta-llama/llama-3.1-8b-instruct",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 50000,
+        "outputTokenMicrosPerMillion": 80000
+      }
+    },
+    {
+      "evidenceId": "market_9745ffc0f7c6b046b46b",
+      "competitor": "OpenRouter",
+      "marketModelId": "openai/gpt-oss-120b",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 37000,
+        "outputTokenMicrosPerMillion": 170000
+      }
+    },
+    {
+      "evidenceId": "market_991d59e440a6aeadb3cc",
+      "competitor": "OpenRouter",
+      "marketModelId": "poolside/laguna-s-2.1",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 180000
+      }
+    },
+    {
+      "evidenceId": "market_a10e3e153fd92adb73b5",
+      "competitor": "OpenRouter",
+      "marketModelId": "openai/gpt-oss-20b",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 30000,
+        "outputTokenMicrosPerMillion": 130000
+      }
+    },
+    {
+      "evidenceId": "market_aed092baa088e189f359",
+      "competitor": "OpenRouter",
+      "marketModelId": "anthropic/claude-sonnet-4.6",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 3000000,
+        "outputTokenMicrosPerMillion": 15000000
+      }
+    },
+    {
+      "evidenceId": "market_aedee32da985a77575d4",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen3-vl-32b-instruct",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 104000,
+        "outputTokenMicrosPerMillion": 416000
+      }
+    },
+    {
+      "evidenceId": "market_b71e6a6fd17b85ac4520",
+      "competitor": "Official market source",
+      "marketModelId": "clervo/gemini-omni-flash-preview",
+      "source": "https://blockrun.ai/docs/api-reference/video-generation",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "videoMicrosPerSecond": 50000
+      }
+    },
+    {
+      "evidenceId": "market_ba331a5c0319bc753f1f",
+      "competitor": "Official market source",
+      "marketModelId": "clervo/virtual-try-on-001",
+      "source": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "virtualTryOnMicrosPerImage": 60000
+      }
+    },
+    {
+      "evidenceId": "market_bad22a4742b796631273",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen3-vl-30b-a3b-thinking",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 200000,
+        "outputTokenMicrosPerMillion": 2400000
+      }
+    },
+    {
+      "evidenceId": "market_c300c4f86a19239f7107",
+      "competitor": "Official market source",
+      "marketModelId": "clervo/lyria-3-clip-preview",
+      "source": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "musicMicrosPerGeneration": 40000
+      }
+    },
+    {
+      "evidenceId": "market_c3fae3e0852478a12930",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen3.5-397b-a17b",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 390000,
+        "outputTokenMicrosPerMillion": 2340000
+      }
+    },
+    {
+      "evidenceId": "market_c7239caa1348eca9cfd2",
+      "competitor": "OpenRouter",
+      "marketModelId": "z-ai/glm-4.5-air",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 130000,
+        "outputTokenMicrosPerMillion": 850000
+      }
+    },
+    {
+      "evidenceId": "market_c98a38a63b213f8c2663",
+      "competitor": "Official market source",
+      "marketModelId": "clervo/veo-3.1-fast-generate-001",
+      "source": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "videoMicrosPerSecond": 100000
+      }
+    },
+    {
+      "evidenceId": "market_cddcae523b229c34add8",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen3-32b",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 80000,
+        "outputTokenMicrosPerMillion": 280000
+      }
+    },
+    {
+      "evidenceId": "market_cec2e8151a46d6f1396c",
+      "competitor": "OpenRouter",
+      "marketModelId": "meta-llama/llama-3.1-70b-instruct",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 400000,
+        "outputTokenMicrosPerMillion": 400000
+      }
+    },
+    {
+      "evidenceId": "market_d3aaf9b56ae2f50b9978",
+      "competitor": "OpenRouter",
+      "marketModelId": "openai/gpt-5.6-sol",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 5000000,
+        "outputTokenMicrosPerMillion": 30000000
+      }
+    },
+    {
+      "evidenceId": "market_d4006d20c4dc3ca9a73f",
+      "competitor": "OpenRouter",
+      "marketModelId": "tencent/hunyuan-a13b-instruct",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 140000,
+        "outputTokenMicrosPerMillion": 570000
+      }
+    },
+    {
+      "evidenceId": "market_dd81940188f7f92fcb6e",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen3.6-27b",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 600000,
+        "outputTokenMicrosPerMillion": 3600000
+      }
+    },
+    {
+      "evidenceId": "market_e09090d6e5081c0357ec",
+      "competitor": "Official market source",
+      "marketModelId": "clervo/gemini-3.1-flash-image",
+      "source": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "imageMicrosEach": 67000
+      }
+    },
+    {
+      "evidenceId": "market_e6d830650eba2e2e6595",
+      "competitor": "OpenRouter",
+      "marketModelId": "deepseek/deepseek-v3.1-terminus",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 270000,
+        "outputTokenMicrosPerMillion": 1000000
+      }
+    },
+    {
+      "evidenceId": "market_ea9717f48a5073035684",
+      "competitor": "OpenRouter",
+      "marketModelId": "minimax/minimax-m3",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 300000,
+        "outputTokenMicrosPerMillion": 1200000
+      }
+    },
+    {
+      "evidenceId": "market_ed6f0e189870466a64ba",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen3-coder-30b-a3b-instruct",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 70000,
+        "outputTokenMicrosPerMillion": 280000
+      }
+    },
+    {
+      "evidenceId": "market_fb8366c1da55169e01d1",
+      "competitor": "OpenRouter",
+      "marketModelId": "deepseek/deepseek-r1",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 700000,
+        "outputTokenMicrosPerMillion": 2500000
+      }
+    },
+    {
+      "evidenceId": "market_ff3b888af13c835bcef7",
+      "competitor": "OpenRouter",
+      "marketModelId": "qwen/qwen3-30b-a3b-instruct-2507",
+      "source": "https://openrouter.ai/api/v1/models",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 48150,
+        "outputTokenMicrosPerMillion": 193050
+      }
+    },
+    {
+      "evidenceId": "market_official_embedding_20260810",
+      "competitor": "Official market source",
+      "marketModelId": "embedding-market-floor",
+      "source": "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 100000
+      }
+    },
+    {
+      "evidenceId": "market_tts_floor_20260810",
+      "competitor": "Durable market floor",
+      "marketModelId": "tts-market-floor",
+      "source": "https://www.blockrun.ai/docs/api-reference/text-to-speech",
+      "observedAt": "2026-08-10T19:09:36.000Z",
+      "validUntil": "2026-09-09T19:09:36.000Z",
+      "pricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "audioMicrosPerThousandCharacters": 50000
+      }
+    }
+  ]
+}

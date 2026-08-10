@@ -136,3 +136,16 @@ test('TypeScript recovery actions match all six shared onboarding classes', () =
   }
   assert.equal(recoveryActionFor('unrelated_failure'), undefined);
 });
+
+test('TypeScript client lists the authoritative AI catalog and executes free AI without payment', async () => {
+  const observed = [];
+  const modelList = { object: 'list', data: [{ id: 'clervo/gpt-oss-20b', object: 'model', owned_by: 'clervo', clervo: { identityKind: 'canonical', productIds: ['ai.chat'], capabilities: ['text_input', 'text_output'], availability: 'available', health: 'healthy', publicSellable: true, billingMode: 'free', customerPricing: {}, commerce: {} } }], clervo: { catalogRevision: 'b7:test', sourceValidUntil: '2026-09-01T00:00:00.000Z', inventory: { canonicalModels: 1, aliases: 0, callableIds: 1 } } };
+  const aiResult = { contractVersion: CLERVO_CONTRACT_VERSION, operationId: 'op_ai_fixture', operation: 'ai.execute', productId: 'ai.chat', model: 'clervo/gpt-oss-20b', exactModelId: 'clervo/gpt-oss-20b', state: 'COMPLETED', replayed: false, fundingMode: 'free', requestHash: `sha256:${'b'.repeat(64)}`, result: { output: { kind: 'chat', content: 'ready' } } };
+  const client = new ClervoClient({ baseUrl: 'https://api.clervo.dev', fetch: async (url, init) => { observed.push({ url, init }); return Response.json(init.method === 'GET' ? modelList : aiResult); } });
+  assert.equal((await client.models.list()).clervo.inventory.callableIds, 1);
+  const result = await client.ai.execute({ model: 'clervo/gpt-oss-20b', input: { kind: 'chat', messages: [{ role: 'user', content: 'ready' }], responseFormat: 'text', stream: false } }, { idempotencyKey: 'idem_ai_sdk' });
+  assert.equal(result.fundingMode, 'free');
+  assert.equal(result.exactModelId, 'clervo/gpt-oss-20b');
+  assert.deepEqual(observed.map(({ url }) => new URL(url).pathname), ['/v1/models', '/v1/ai/execute']);
+  assert.equal(observed[1].init.headers['idempotency-key'], 'idem_ai_sdk');
+});

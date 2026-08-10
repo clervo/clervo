@@ -56,7 +56,7 @@ curl -sS https://api.clervo.dev/v1/search/free \
 
 - `/.well-known/clervo.json`
 - `/.well-known/x402` — x402 v2 payment manifest; each item carries the exact quote its resource returns.
-- `/v1/models` — every catalogued AI route, OpenAI list shape, with lifecycle state, proof level, and observed price.
+- `/v1/models` — authoritative AI catalog, OpenAI list shape, including stable canonical IDs and aliases plus capability, price, availability, health, and commerce metadata.
 - `/openapi.json`
 - `/catalog.json`
 - `/capabilities.json`
@@ -67,10 +67,10 @@ curl -sS https://api.clervo.dev/v1/search/free \
 
 ## Model selection
 
-- 21 catalogued routes; 0 sellable now.
-- Send `clervo.routeId`'s exact model identity as `model` on `POST /v1/ai/execute`.
-- A route with `clervo.lifecycleState: supply_paused` is listed with its reason and is not sellable. Do not select it; it stays listed because the supply is owned and returning.
-- `clervo.observedPrice` is the quote observed at the probe above. The 402 returned for your own request is the binding one.
+- 89 callable IDs: 85 canonical and 4 stable aliases; 89 sellable now.
+- Send a canonical `id`, or an alias whose `clervo.aliasFor` contract you accept, as `model` on `POST /v1/ai/execute`.
+- Use `clervo.availability`, `clervo.health`, and `clervo.publicSellable` before selection. Canonical IDs never substitute another model.
+- Use `clervo.customerPricing` and `clervo.billingMode` for discovery. A paid request's 402 is the binding maximum charge.
 
 ## Boundaries
 

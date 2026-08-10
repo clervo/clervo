@@ -11,6 +11,7 @@ const MIME_CODES = Object.freeze({
   'image/png': 'png',
   'image/jpeg': 'jpg',
   'image/webp': 'webp',
+  'video/mp4': 'mp4',
   'audio/mpeg': 'mp3',
   'audio/ogg': 'ogg',
   'audio/aac': 'aac',
@@ -58,7 +59,7 @@ export function createAiArtifactRuntime({ env = process.env, fetcher = globalThi
   if (publicOrigin.protocol !== 'https:' || publicOrigin.pathname !== '/' || publicOrigin.search || publicOrigin.hash || publicOrigin.hostname === 'ai.clervo.dev') throw new TypeError('ai_artifact_public_origin_invalid');
   if (typeof fetcher !== 'function' || typeof now !== 'function') throw new TypeError('ai_artifact_runtime_invalid');
   const retentionSeconds = integer(env.CLERVO_ARTIFACT_RETENTION_SECONDS ?? DEFAULT_RETENTION_SECONDS, 'retention_seconds', 300, DEFAULT_RETENTION_SECONDS);
-  const maximumObjectBytes = integer(env.CLERVO_ARTIFACT_MAXIMUM_OBJECT_BYTES ?? 20_000_000, 'maximum_object_bytes', 1_024, 20_000_000);
+  const maximumObjectBytes = integer(env.CLERVO_ARTIFACT_MAXIMUM_OBJECT_BYTES ?? 80_000_000, 'maximum_object_bytes', 1_024, 80_000_000);
   const store = new R2ObjectStore({
     endpoint,
     bucket,

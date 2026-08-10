@@ -296,6 +296,75 @@ class _Search:
         )
 
 
+class _Models:
+    def __init__(self, client: Clervo) -> None:
+        self._client = client
+
+    def list(self, *, timeout: float | None = None) -> dict[str, Any]:
+        value = self._client._json_call("GET", "/v1/models", {}, None, timeout)
+        data = value.get("data")
+        metadata = value.get("clervo")
+        if (
+            value.get("object") != "list"
+            or not isinstance(data, list)
+            or not isinstance(metadata, dict)
+            or not isinstance(metadata.get("inventory"), dict)
+            or metadata["inventory"].get("callableIds") != len(data)
+            or any(not isinstance(item, dict) or item.get("object") != "model" or item.get("owned_by") != "clervo" or not isinstance(item.get("id"), str) or not isinstance(item.get("clervo"), dict) for item in data)
+        ):
+            raise ClervoProtocolError("clervo_model_catalog_contract_mismatch")
+        return value
+
+
+class _Ai:
+    def __init__(self, client: Clervo) -> None:
+        self._client = client
+
+    def execute(
+        self,
+        *,
+        model: str,
+        input: Mapping[str, Any],
+        maximum_output_tokens: int | None = None,
+        maximum_reasoning_tokens: int | None = None,
+        idempotency_key: str | None = None,
+        payment_signature: str | None = None,
+        payment_authorization: str | None = None,
+        timeout: float | None = None,
+    ) -> dict[str, Any]:
+        if not isinstance(model, str) or not 1 <= len(model) <= 160 or not isinstance(input, Mapping):
+            raise TypeError("invalid_ai_request")
+        if payment_signature is not None and payment_authorization is not None:
+            raise TypeError("ambiguous_ai_payment_authorization")
+        key = idempotency_key or f"clervo_{uuid.uuid4()}"
+        if re.fullmatch(r"[\x21-\x7e]{8,128}", key) is None:
+            raise TypeError("invalid_idempotency_key")
+        body = {
+            "model": model,
+            "input": dict(input),
+            **({} if maximum_output_tokens is None else {"maximumOutputTokens": maximum_output_tokens}),
+            **({} if maximum_reasoning_tokens is None else {"maximumReasoningTokens": maximum_reasoning_tokens}),
+        }
+        headers = {
+            "content-type": "application/json",
+            "idempotency-key": key,
+            **({} if payment_signature is None else {"payment-signature": payment_signature}),
+            **({} if payment_authorization is None else {"authorization": payment_authorization}),
+        }
+        value = self._client._json_call("POST", "/v1/ai/execute", headers, body, timeout)
+        free = value.get("fundingMode") == "free" and value.get("state") == "COMPLETED" and "receipt" not in value
+        paid = value.get("fundingMode") == "paid" and value.get("state") == "RECEIPTED" and isinstance(value.get("receipt"), dict)
+        if (
+            value.get("contractVersion") != CLERVO_CONTRACT_VERSION
+            or value.get("operation") != "ai.execute"
+            or not isinstance(value.get("operationId"), str)
+            or not isinstance(value.get("exactModelId"), str)
+            or not isinstance(value.get("result"), dict)
+            or not (free or paid)
+        ):
+            raise ClervoProtocolError("clervo_ai_result_contract_mismatch")
+        return value
+
 class Clervo:
     def __init__(
         self,
@@ -320,6 +389,37 @@ class Clervo:
         self._timeout = float(timeout)
         self._max_response_bytes = max_response_bytes
         self.search = _Search(self)
+        self.models = _Models(self)
+        self.ai = _Ai(self)
+
+    def _json_call(
+        self,
+        method: str,
+        target: str,
+        extra_headers: Mapping[str, str],
+        body_value: Mapping[str, Any] | None,
+        timeout: float | None,
+    ) -> dict[str, Any]:
+        request_timeout = self._timeout if timeout is None else timeout
+        if not isinstance(request_timeout, (int, float)) or isinstance(request_timeout, bool) or request_timeout <= 0:
+            raise TypeError("invalid_clervo_timeout")
+        headers = {"accept": "application/json, application/problem+json", "x-clervo-client": "clervo-sdk/0.3.0", **dict(extra_headers)}
+        body = b"" if body_value is None else json.dumps(body_value, separators=(",", ":")).encode("utf-8")
+        try:
+            response = self._transport(method, f"{self._base_url}{target}", headers, body, float(request_timeout), self._max_response_bytes)
+        except (ClervoProtocolError, ClervoTransportError):
+            raise
+        except Exception as error:
+            raise ClervoTransportError("clervo_transport_failed") from error
+        if len(response.body) > self._max_response_bytes:
+            raise ClervoProtocolError("clervo_response_too_large")
+        normalized_headers = {key.lower(): item for key, item in response.headers.items()}
+        value = _json_object(response.body)
+        if response.status == 402:
+            raise ClervoPaymentRequiredError(value, normalized_headers.get("payment-required"))
+        if not 200 <= response.status < 300:
+            raise ClervoProblemError(response.status, value)
+        return value
 
     def _execute(
         self,

@@ -19,6 +19,9 @@ export const aiPricingRateKeys = [
   'reasoningTokenMicrosPerMillion',
   'imageMicrosEach',
   'audioMicrosPerThousandCharacters',
+  'videoMicrosPerSecond',
+  'musicMicrosPerGeneration',
+  'virtualTryOnMicrosPerImage',
 ] as const;
 export type AiPricingRateKey = (typeof aiPricingRateKeys)[number];
 
@@ -88,6 +91,9 @@ export interface AiInternalProductModel {
 
 export interface AiPublicProductModel {
   modelId: string;
+  identityKind: 'canonical' | 'alias';
+  aliasFor?: string;
+  reasoningEffort?: 'low' | 'medium' | 'high';
   aliases: readonly string[];
   name: string;
   description?: string;
@@ -97,11 +103,20 @@ export interface AiPublicProductModel {
   outputTypes: readonly string[];
   limits: Readonly<{ contextTokens?: number; maximumOutputTokens?: number }>;
   lifecycle: 'available' | 'degraded' | 'paused' | 'withdrawn';
+  availability: 'available' | 'degraded' | 'unavailable' | 'withdrawn';
+  health: 'healthy' | 'degraded' | 'unavailable';
   publicSellable: boolean;
   publicationBlockers: readonly string[];
   customerPricing: Readonly<AiRoutePricing> | null;
   pricingMethod: string | null;
   competitiveComparison: 'undercut' | 'matched' | 'cost_constrained' | 'unverified' | null;
+  billingMode: 'free' | 'metered';
+  commerce: Readonly<{
+    executionPath: '/v1/ai/execute';
+    payment: 'none' | 'x402_or_mpp';
+    resultAccounting: 'usage' | 'usage_and_settled_receipt';
+    replaySafe: true;
+  }>;
 }
 
 export interface AiProductPricingDecision {
@@ -134,7 +149,7 @@ export interface AiPublicModelList {
     owned_by: 'clervo';
     clervo: Omit<AiPublicProductModel, 'modelId'>;
   }>[];
-  clervo: Readonly<{ catalogRevision: string; composedAt: string; sourceValidUntil: string }>;
+  clervo: Readonly<{ catalogRevision: string; composedAt: string; sourceValidUntil: string; inventory: Readonly<{ canonicalModels: number; aliases: number; callableIds: number }> }>;
 }
 
 export interface AiPublicDiscoveryProjection {
@@ -143,7 +158,7 @@ export interface AiPublicDiscoveryProjection {
   generatedAt: string;
   modelsPath: '/v1/models';
   executionPath: '/v1/ai/execute';
-  inventory: Readonly<{ catalogued: number; sellable: number; byProduct: Readonly<Record<AiProductId, number>> }>;
+  inventory: Readonly<{ catalogued: number; sellable: number; canonicalModels: number; aliases: number; callableIds: number; byProduct: Readonly<Record<AiProductId, number>> }>;
 }
 
 function freezeDeep<T>(value: T): Readonly<T> {
@@ -167,6 +182,10 @@ function timestamp(value: string, code: string): number {
 function validatePricing(pricing: Readonly<AiRoutePricing>, code: string): void {
   if (pricing.currency !== 'USD' || pricing.decimals !== 6) throw new TypeError(code);
   for (const key of aiPricingRateKeys) if (!Number.isSafeInteger(pricing[key]) || pricing[key] < 0 || pricing[key] > 1_000_000_000_000) throw new TypeError(code);
+}
+
+function normalizedPricing(pricing: Readonly<AiRoutePricing>): Readonly<AiRoutePricing> {
+  return fullPricing(Object.fromEntries(aiPricingRateKeys.map((key) => [key, pricing[key] ?? 0])) as Record<AiPricingRateKey, number>);
 }
 
 function validateCompetitorPricing(pricing: Readonly<AiCompetitorPriceEvidence['pricing']>): void {
@@ -288,15 +307,17 @@ function pricingDecision(input: {
   if (overrideMatches.length > 1) throw new TypeError('ai_strategic_override_duplicate');
   const override = overrideMatches[0];
   if (override !== undefined) {
-    validatePricing(override.customerPricing, 'ai_strategic_override_pricing_invalid');
-    validatePricing(override.maximumSubsidy, 'ai_strategic_override_subsidy_invalid');
+    const overrideCustomerPricing = normalizedPricing(override.customerPricing);
+    const overrideMaximumSubsidy = normalizedPricing(override.maximumSubsidy);
+    validatePricing(overrideCustomerPricing, 'ai_strategic_override_pricing_invalid');
+    validatePricing(overrideMaximumSubsidy, 'ai_strategic_override_subsidy_invalid');
     const startsAt = timestamp(override.startsAt, 'ai_strategic_override_starts_at_invalid');
     const expiresAt = timestamp(override.expiresAt, 'ai_strategic_override_expires_at_invalid');
     if (expiresAt <= startsAt || override.ownerAuthorizationRef.length === 0 || override.budgetRef.length === 0) throw new TypeError('ai_strategic_override_authority_invalid');
     if (startsAt <= input.now && input.now < expiresAt) {
-      const withinBoundary = aiPricingRateKeys.every((key) => override.customerPricing[key] >= cost.pricing![key] || cost.pricing![key] - override.customerPricing[key] <= override.maximumSubsidy[key]);
+      const withinBoundary = aiPricingRateKeys.every((key) => overrideCustomerPricing[key] >= cost.pricing![key] || cost.pricing![key] - overrideCustomerPricing[key] <= overrideMaximumSubsidy[key]);
       if (!withinBoundary) return freezeDeep({ state: 'invalid_strategic_override', policyId: policy.policyId, method: null, upstreamCost: cost.pricing, customerPricing: null, grossMarginBasisPoints: null, competitor, competitiveComparison: comparison });
-      for (const key of aiPricingRateKeys) prices[key] = override.customerPricing[key];
+      for (const key of aiPricingRateKeys) prices[key] = overrideCustomerPricing[key];
       method = 'strategic_override';
     }
   }
@@ -324,8 +345,12 @@ function commercialDecision(input: {
 }
 
 function publicProjection(model: Readonly<AiInternalProductModel>): Readonly<AiPublicProductModel> {
+  const billingMode = model.pricing.customerPricing !== null && aiPricingRateKeys.every((key) => model.pricing.customerPricing![key] === 0) ? 'free' as const : 'metered' as const;
+  const availability = model.lifecycle === 'paused' ? 'unavailable' as const : model.lifecycle;
+  const health = model.lifecycle === 'available' ? 'healthy' as const : model.lifecycle === 'degraded' ? 'degraded' as const : 'unavailable' as const;
   return freezeDeep({
     modelId: model.identity.customerModelId,
+    identityKind: 'canonical' as const,
     aliases: model.identity.aliases,
     name: model.supply.display.name,
     ...(model.supply.display.description === undefined ? {} : { description: model.supply.display.description }),
@@ -335,11 +360,20 @@ function publicProjection(model: Readonly<AiInternalProductModel>): Readonly<AiP
     outputTypes: model.supply.outputTypes,
     limits: model.supply.limits,
     lifecycle: model.lifecycle,
+    availability,
+    health,
     publicSellable: model.publicSellable,
     publicationBlockers: model.publicationBlockers,
     customerPricing: model.pricing.customerPricing,
     pricingMethod: model.pricing.method,
     competitiveComparison: model.pricing.competitiveComparison,
+    billingMode,
+    commerce: {
+      executionPath: '/v1/ai/execute' as const,
+      payment: billingMode === 'free' ? 'none' as const : 'x402_or_mpp' as const,
+      resultAccounting: billingMode === 'free' ? 'usage' as const : 'usage_and_settled_receipt' as const,
+      replaySafe: true as const,
+    },
   });
 }
 
@@ -436,21 +470,41 @@ export function composeAiProductCatalog(input: {
 }
 
 export function createAiPublicModelList(catalog: Readonly<ComposedAiProductCatalog>): Readonly<AiPublicModelList> {
+  const canonical = catalog.publicModels.map(({ modelId, ...clervo }) => ({ id: modelId, object: 'model' as const, owned_by: 'clervo' as const, clervo }));
+  const reasoningByAlias = Object.freeze({ 'clervo/fast': 'low', 'clervo/smart': 'medium', 'clervo/code': 'medium', 'clervo/deep': 'high' } as const);
+  const aliases = catalog.publicModels.flatMap((model) => model.aliases.map((alias) => {
+    const { modelId, aliases: _aliases, ...target } = model;
+    return {
+      id: alias,
+      object: 'model' as const,
+      owned_by: 'clervo' as const,
+      clervo: {
+        ...target,
+        identityKind: 'alias' as const,
+        aliasFor: modelId,
+        reasoningEffort: reasoningByAlias[alias as keyof typeof reasoningByAlias],
+        aliases: [] as string[],
+        name: `${alias} service alias`,
+        description: `Stable Clervo service alias for ${modelId}. Canonical requests are never silently substituted.`,
+        pricingMethod: 'alias_contract',
+      },
+    };
+  }));
   return freezeDeep({
     object: 'list' as const,
-    data: catalog.publicModels.map(({ modelId, ...clervo }) => ({ id: modelId, object: 'model' as const, owned_by: 'clervo' as const, clervo })),
-    clervo: { catalogRevision: catalog.catalogRevision, composedAt: catalog.composedAt, sourceValidUntil: catalog.sourceValidUntil },
+    data: [...canonical, ...aliases].sort((left, right) => left.id.localeCompare(right.id)),
+    clervo: { catalogRevision: catalog.catalogRevision, composedAt: catalog.composedAt, sourceValidUntil: catalog.sourceValidUntil, inventory: { canonicalModels: canonical.length, aliases: aliases.length, callableIds: canonical.length + aliases.length } },
   });
 }
 
 export function createAiPublicDiscoveryProjection(catalog: Readonly<ComposedAiProductCatalog>): Readonly<AiPublicDiscoveryProjection> {
-  const byProduct = Object.fromEntries((['ai.chat', 'ai.embed', 'ai.image', 'ai.speech'] as const).map((productId) => [productId, catalog.publicModels.filter(({ productIds }) => productIds.includes(productId)).length])) as Record<AiProductId, number>;
+  const byProduct = Object.fromEntries((['ai.chat', 'ai.embed', 'ai.image', 'ai.speech', 'ai.video', 'ai.music', 'ai.virtual_try_on'] as const).map((productId) => [productId, catalog.publicModels.filter(({ productIds }) => productIds.includes(productId)).length])) as Record<AiProductId, number>;
   return freezeDeep({
     schemaVersion: 'clervo-ai-discovery.v1' as const,
     catalogRevision: catalog.catalogRevision,
     generatedAt: catalog.composedAt,
     modelsPath: '/v1/models' as const,
     executionPath: '/v1/ai/execute' as const,
-    inventory: { catalogued: catalog.publicModels.length, sellable: catalog.publicModels.filter(({ publicSellable }) => publicSellable).length, byProduct },
+    inventory: { catalogued: catalog.publicModels.length, sellable: catalog.publicModels.filter(({ publicSellable }) => publicSellable).length, canonicalModels: catalog.publicModels.length, aliases: catalog.publicModels.reduce((total, model) => total + model.aliases.length, 0), callableIds: catalog.publicModels.length + catalog.publicModels.reduce((total, model) => total + model.aliases.length, 0), byProduct },
   });
 }

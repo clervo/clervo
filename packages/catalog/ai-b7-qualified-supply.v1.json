@@ -1,0 +1,4882 @@
+{
+  "schemaVersion": "qualified-ai-supply-catalog.v1",
+  "catalogRevision": "b7supply_8b0e0a557a3ef3c94f891565",
+  "generatedAt": "2026-08-10T19:09:36.000Z",
+  "sourceObservedAt": "2026-08-10T19:09:36.000Z",
+  "validUntil": "2026-09-09T19:09:36.000Z",
+  "models": [
+    {
+      "gatewaySupplyId": "aisupply_b7_ff226c1c89dfe35ee569d08b",
+      "runtimeModelId": "clervo/allam-2-7b",
+      "marketModelId": "clervo/allam-2-7b",
+      "display": {
+        "name": "Allam 2 7b",
+        "description": "Allam 2 7b through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_d922609aa667d5b75558f09d",
+      "runtimeModelId": "clervo/claude-haiku-4-5-20251001",
+      "marketModelId": "clervo/claude-haiku-4-5-20251001",
+      "display": {
+        "name": "Claude Haiku 4 5 20251001",
+        "description": "Claude Haiku 4 5 20251001 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0f3aeb55d2163f442b20dd42",
+      "runtimeModelId": "clervo/claude-opus-4-6",
+      "marketModelId": "clervo/claude-opus-4-6",
+      "display": {
+        "name": "Claude Opus 4 6",
+        "description": "Claude Opus 4 6 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_504aaf8060c051d2dad29cc9",
+      "runtimeModelId": "clervo/claude-opus-4-7",
+      "marketModelId": "clervo/claude-opus-4-7",
+      "display": {
+        "name": "Claude Opus 4 7",
+        "description": "Claude Opus 4 7 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0b8d8ac6176b5a1b14c626f0",
+      "runtimeModelId": "clervo/claude-opus-4-8",
+      "marketModelId": "clervo/claude-opus-4-8",
+      "display": {
+        "name": "Claude Opus 4 8",
+        "description": "Claude Opus 4 8 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1b77502a591255fbac7846a5",
+      "runtimeModelId": "clervo/claude-opus-5",
+      "marketModelId": "clervo/claude-opus-5",
+      "display": {
+        "name": "Claude Opus 5",
+        "description": "Claude Opus 5 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b71a56fbec68be09c15a5521",
+      "runtimeModelId": "clervo/claude-sonnet-4-6",
+      "marketModelId": "clervo/claude-sonnet-4-6",
+      "display": {
+        "name": "Claude Sonnet 4 6",
+        "description": "Claude Sonnet 4 6 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_7d24fa0671fbae57927bd175",
+      "runtimeModelId": "clervo/claude-sonnet-5",
+      "marketModelId": "clervo/claude-sonnet-5",
+      "display": {
+        "name": "Claude Sonnet 5",
+        "description": "Claude Sonnet 5 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_958674ad81f54d8bb06fa521",
+      "runtimeModelId": "clervo/deepseek-r1",
+      "marketModelId": "clervo/deepseek-r1",
+      "display": {
+        "name": "Deepseek R1",
+        "description": "Deepseek R1 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "reasoning"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.9,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_3f8e05b89059d601ac311987",
+      "runtimeModelId": "clervo/deepseek-v3",
+      "marketModelId": "clervo/deepseek-v3",
+      "display": {
+        "name": "Deepseek V3",
+        "description": "Deepseek V3 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_4935ffa4087a0f4a8e8b6335",
+      "runtimeModelId": "clervo/deepseek-v3.1-terminus",
+      "marketModelId": "clervo/deepseek-v3.1-terminus",
+      "display": {
+        "name": "Deepseek V3.1 Terminus",
+        "description": "Deepseek V3.1 Terminus through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_6bfd518ce44671a63c8904c6",
+      "runtimeModelId": "clervo/deepseek-v3.2-exp",
+      "marketModelId": "clervo/deepseek-v3.2-exp",
+      "display": {
+        "name": "Deepseek V3.2 Exp",
+        "description": "Deepseek V3.2 Exp through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_119c87ff01c9b357e8dc22a0",
+      "runtimeModelId": "clervo/deepseek-v4-pro",
+      "marketModelId": "clervo/deepseek-v4-pro",
+      "display": {
+        "name": "Deepseek V4 Pro",
+        "description": "Deepseek V4 Pro through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5f0a97185fe5ed0c95671bde",
+      "runtimeModelId": "clervo/gemini-2.5-flash",
+      "marketModelId": "clervo/gemini-2.5-flash",
+      "display": {
+        "name": "Gemini 2.5 Flash",
+        "description": "Gemini 2.5 Flash through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1e053c32e8a29514267e660e",
+      "runtimeModelId": "clervo/gemini-2.5-flash-image",
+      "marketModelId": "clervo/gemini-2.5-flash-image",
+      "display": {
+        "name": "Gemini 2.5 Flash Image",
+        "description": "Gemini 2.5 Flash Image through Clervo's normalized image contract."
+      },
+      "modalities": [
+        "image"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "image"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_def160d47a75fb615a2dc852",
+      "runtimeModelId": "clervo/gemini-2.5-flash-lite-preview-tts",
+      "marketModelId": "clervo/gemini-2.5-flash-lite-preview-tts",
+      "display": {
+        "name": "Gemini 2.5 Flash Lite Preview Tts",
+        "description": "Gemini 2.5 Flash Lite Preview Tts through Clervo's normalized speech contract."
+      },
+      "modalities": [
+        "speech"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "audio"
+      ],
+      "capabilities": [
+        "text_input",
+        "audio_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_74c36e274e1d2cf903ec34a0",
+      "runtimeModelId": "clervo/gemini-2.5-flash-tts",
+      "marketModelId": "clervo/gemini-2.5-flash-tts",
+      "display": {
+        "name": "Gemini 2.5 Flash Tts",
+        "description": "Gemini 2.5 Flash Tts through Clervo's normalized speech contract."
+      },
+      "modalities": [
+        "speech"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "audio"
+      ],
+      "capabilities": [
+        "text_input",
+        "audio_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1f677cf189dfe7333a70dcf5",
+      "runtimeModelId": "clervo/gemini-2.5-pro-tts",
+      "marketModelId": "clervo/gemini-2.5-pro-tts",
+      "display": {
+        "name": "Gemini 2.5 Pro Tts",
+        "description": "Gemini 2.5 Pro Tts through Clervo's normalized speech contract."
+      },
+      "modalities": [
+        "speech"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "audio"
+      ],
+      "capabilities": [
+        "text_input",
+        "audio_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cb49536b60a08eca79176a35",
+      "runtimeModelId": "clervo/gemini-3-pro-image",
+      "marketModelId": "clervo/gemini-3-pro-image",
+      "display": {
+        "name": "Gemini 3 Pro Image",
+        "description": "Gemini 3 Pro Image through Clervo's normalized image contract."
+      },
+      "modalities": [
+        "image"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "image"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b32957d930dabd144df1e472",
+      "runtimeModelId": "clervo/gemini-3.1-flash-image",
+      "marketModelId": "clervo/gemini-3.1-flash-image",
+      "display": {
+        "name": "Gemini 3.1 Flash Image",
+        "description": "Gemini 3.1 Flash Image through Clervo's normalized image contract."
+      },
+      "modalities": [
+        "image"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "image"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_4bd416a5a9786407ffbffd48",
+      "runtimeModelId": "clervo/gemini-3.1-flash-lite-image",
+      "marketModelId": "clervo/gemini-3.1-flash-lite-image",
+      "display": {
+        "name": "Gemini 3.1 Flash Lite Image",
+        "description": "Gemini 3.1 Flash Lite Image through Clervo's normalized image contract."
+      },
+      "modalities": [
+        "image"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "image"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_73006408915403a6327b0fea",
+      "runtimeModelId": "clervo/gemini-3.1-flash-tts-preview",
+      "marketModelId": "clervo/gemini-3.1-flash-tts-preview",
+      "display": {
+        "name": "Gemini 3.1 Flash Tts Preview",
+        "description": "Gemini 3.1 Flash Tts Preview through Clervo's normalized speech contract."
+      },
+      "modalities": [
+        "speech"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "audio"
+      ],
+      "capabilities": [
+        "text_input",
+        "audio_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_9aacd1a3a0989442f4bdcd76",
+      "runtimeModelId": "clervo/gemini-3.5-flash-lite",
+      "marketModelId": "clervo/gemini-3.5-flash-lite",
+      "display": {
+        "name": "Gemini 3.5 Flash Lite",
+        "description": "Gemini 3.5 Flash Lite through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b296ac5bacec770377dda635",
+      "runtimeModelId": "clervo/gemini-embedding-001",
+      "marketModelId": "clervo/gemini-embedding-001",
+      "display": {
+        "name": "Gemini Embedding 001",
+        "description": "Gemini Embedding 001 through Clervo's normalized embedding contract."
+      },
+      "modalities": [
+        "embedding"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "embedding"
+      ],
+      "capabilities": [
+        "text_input",
+        "embedding_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_9bba8a3a9598678ff0a57045",
+      "runtimeModelId": "clervo/gemini-omni-flash-preview",
+      "marketModelId": "clervo/gemini-omni-flash-preview",
+      "display": {
+        "name": "Gemini Omni Flash Preview",
+        "description": "Gemini Omni Flash Preview through Clervo's normalized video contract."
+      },
+      "modalities": [
+        "video"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "video"
+      ],
+      "capabilities": [
+        "text_input",
+        "video_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_3e11926c74d3d6a19b06cd43",
+      "runtimeModelId": "clervo/gemma-4-12b-it",
+      "marketModelId": "clervo/gemma-4-12b-it",
+      "display": {
+        "name": "Gemma 4 12b It",
+        "description": "Gemma 4 12b It through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ed14d9db92a6b3a602523efd",
+      "runtimeModelId": "clervo/gemma-4-26b-a4b-it",
+      "marketModelId": "clervo/gemma-4-26b-a4b-it",
+      "display": {
+        "name": "Gemma 4 26b A4b It",
+        "description": "Gemma 4 26b A4b It through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f7cd8e779fc085fe65b5b6e6",
+      "runtimeModelId": "clervo/gemma-4-31b-it",
+      "marketModelId": "clervo/gemma-4-31b-it",
+      "display": {
+        "name": "Gemma 4 31b It",
+        "description": "Gemma 4 31b It through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1cd373d37eef16ade3ad4d9a",
+      "runtimeModelId": "clervo/glm-4.5-air",
+      "marketModelId": "clervo/glm-4.5-air",
+      "display": {
+        "name": "Glm 4.5 Air",
+        "description": "Glm 4.5 Air through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_c9d8f8818e4a274e0576b84e",
+      "runtimeModelId": "clervo/glm-5.2",
+      "marketModelId": "clervo/glm-5.2",
+      "display": {
+        "name": "Glm 5.2",
+        "description": "Glm 5.2 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0f230d98f450a687658db098",
+      "runtimeModelId": "clervo/gpt-5.6-luna",
+      "marketModelId": "clervo/gpt-5.6-luna",
+      "display": {
+        "name": "Gpt 5.6 Luna",
+        "description": "Gpt 5.6 Luna through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ffc5e82cb775de7573d8705a",
+      "runtimeModelId": "clervo/gpt-5.6-sol",
+      "marketModelId": "clervo/gpt-5.6-sol",
+      "display": {
+        "name": "Gpt 5.6 Sol",
+        "description": "Gpt 5.6 Sol through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5e74af9e399528ca7d2c7626",
+      "runtimeModelId": "clervo/gpt-5.6-terra",
+      "marketModelId": "clervo/gpt-5.6-terra",
+      "display": {
+        "name": "Gpt 5.6 Terra",
+        "description": "Gpt 5.6 Terra through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b84d39d948b0ee0ef20c06d2",
+      "runtimeModelId": "clervo/gpt-oss-120b",
+      "marketModelId": "clervo/gpt-oss-120b",
+      "display": {
+        "name": "Gpt Oss 120b",
+        "description": "Gpt Oss 120b through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "reasoning"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.9,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_fcc903dd606aa55acc129d63",
+      "runtimeModelId": "clervo/gpt-oss-20b",
+      "marketModelId": "clervo/gpt-oss-20b",
+      "display": {
+        "name": "Gpt Oss 20b",
+        "description": "Gpt Oss 20b through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output",
+        "reasoning"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.9,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_721a61b3c64f4ffaf0eab3b5",
+      "runtimeModelId": "clervo/gpt-oss-safeguard-20b",
+      "marketModelId": "clervo/gpt-oss-safeguard-20b",
+      "display": {
+        "name": "Gpt Oss Safeguard 20b",
+        "description": "Gpt Oss Safeguard 20b through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_d1012c9d5347b20f6a25ffab",
+      "runtimeModelId": "clervo/hunyuan-a13b-instruct",
+      "marketModelId": "clervo/hunyuan-a13b-instruct",
+      "display": {
+        "name": "Hunyuan A13b Instruct",
+        "description": "Hunyuan A13b Instruct through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_47a0ee1c59bacc6db82a112b",
+      "runtimeModelId": "clervo/hy3",
+      "marketModelId": "clervo/hy3",
+      "display": {
+        "name": "Hy3",
+        "description": "Hy3 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_4baad7deaa853c628322a011",
+      "runtimeModelId": "clervo/kimi-k2.5",
+      "marketModelId": "clervo/kimi-k2.5",
+      "display": {
+        "name": "Kimi K2.5",
+        "description": "Kimi K2.5 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_240d11aba0c71c572a1bbc16",
+      "runtimeModelId": "clervo/kimi-k2.6",
+      "marketModelId": "clervo/kimi-k2.6",
+      "display": {
+        "name": "Kimi K2.6",
+        "description": "Kimi K2.6 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cda4da3910ec15d3745b537f",
+      "runtimeModelId": "clervo/kimi-k2.7-code",
+      "marketModelId": "clervo/kimi-k2.7-code",
+      "display": {
+        "name": "Kimi K2.7 Code",
+        "description": "Kimi K2.7 Code through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_84f4076bbd3cb3283b24c833",
+      "runtimeModelId": "clervo/kimi-k3",
+      "marketModelId": "clervo/kimi-k3",
+      "display": {
+        "name": "Kimi K3",
+        "description": "Kimi K3 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f27526c99724acdde804b372",
+      "runtimeModelId": "clervo/laguna-s-2.1",
+      "marketModelId": "clervo/laguna-s-2.1",
+      "display": {
+        "name": "Laguna S 2.1",
+        "description": "Laguna S 2.1 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1d0a5fe5c2cb2722fc228c97",
+      "runtimeModelId": "clervo/ling-flash-2.0",
+      "marketModelId": "clervo/ling-flash-2.0",
+      "display": {
+        "name": "Ling Flash 2.0",
+        "description": "Ling Flash 2.0 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_59eca11af977d4bb593adaf8",
+      "runtimeModelId": "clervo/llama-3.1-70b-instruct",
+      "marketModelId": "clervo/llama-3.1-70b-instruct",
+      "display": {
+        "name": "Llama 3.1 70b Instruct",
+        "description": "Llama 3.1 70b Instruct through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_65f9838f55bd2d12b0234221",
+      "runtimeModelId": "clervo/llama-3.1-8b-instruct",
+      "marketModelId": "clervo/llama-3.1-8b-instruct",
+      "display": {
+        "name": "Llama 3.1 8b Instruct",
+        "description": "Llama 3.1 8b Instruct through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_3f862cc3a03a9c0e6a31ed2d",
+      "runtimeModelId": "clervo/llama-3.1-nemoguard-8b-content-safety",
+      "marketModelId": "clervo/llama-3.1-nemoguard-8b-content-safety",
+      "display": {
+        "name": "Llama 3.1 Nemoguard 8b Content Safety",
+        "description": "Llama 3.1 Nemoguard 8b Content Safety through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_69e322d57b45e3fed0b89f05",
+      "runtimeModelId": "clervo/llama-3.1-nemotron-nano-vl-8b-v1",
+      "marketModelId": "clervo/llama-3.1-nemotron-nano-vl-8b-v1",
+      "display": {
+        "name": "Llama 3.1 Nemotron Nano Vl 8b V1",
+        "description": "Llama 3.1 Nemotron Nano Vl 8b V1 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text",
+        "image"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f9bc5060687575046a5f9769",
+      "runtimeModelId": "clervo/llama-3.1-nemotron-safety-guard-8b-v3",
+      "marketModelId": "clervo/llama-3.1-nemotron-safety-guard-8b-v3",
+      "display": {
+        "name": "Llama 3.1 Nemotron Safety Guard 8b V3",
+        "description": "Llama 3.1 Nemotron Safety Guard 8b V3 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_130f9e1009746fcb665b70b2",
+      "runtimeModelId": "clervo/llama-3.2-11b-vision-instruct",
+      "marketModelId": "clervo/llama-3.2-11b-vision-instruct",
+      "display": {
+        "name": "Llama 3.2 11b Vision Instruct",
+        "description": "Llama 3.2 11b Vision Instruct through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text",
+        "image"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_338c1ba2150e150ea565d157",
+      "runtimeModelId": "clervo/llama-3.3-70b-instruct",
+      "marketModelId": "clervo/llama-3.3-70b-instruct",
+      "display": {
+        "name": "Llama 3.3 70b Instruct",
+        "description": "Llama 3.3 70b Instruct through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_789527d2644c23aa9cbc9cca",
+      "runtimeModelId": "clervo/longcat-2.0",
+      "marketModelId": "clervo/longcat-2.0",
+      "display": {
+        "name": "Longcat 2.0",
+        "description": "Longcat 2.0 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_9a9849307e69b128ae4a49d0",
+      "runtimeModelId": "clervo/lyria-3-clip-preview",
+      "marketModelId": "clervo/lyria-3-clip-preview",
+      "display": {
+        "name": "Lyria 3 Clip Preview",
+        "description": "Lyria 3 Clip Preview through Clervo's normalized music contract."
+      },
+      "modalities": [
+        "music"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "audio"
+      ],
+      "capabilities": [
+        "text_input",
+        "audio_output",
+        "music_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_8fa0fe569cd42b9c62d35e06",
+      "runtimeModelId": "clervo/lyria-3-pro-preview",
+      "marketModelId": "clervo/lyria-3-pro-preview",
+      "display": {
+        "name": "Lyria 3 Pro Preview",
+        "description": "Lyria 3 Pro Preview through Clervo's normalized music contract."
+      },
+      "modalities": [
+        "music"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "audio"
+      ],
+      "capabilities": [
+        "text_input",
+        "audio_output",
+        "music_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ad682381eb18e86b92d26156",
+      "runtimeModelId": "clervo/minimax-m2.5",
+      "marketModelId": "clervo/minimax-m2.5",
+      "display": {
+        "name": "Minimax M2.5",
+        "description": "Minimax M2.5 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f29a580db7030e8aa6af6c4b",
+      "runtimeModelId": "clervo/minimax-m3",
+      "marketModelId": "clervo/minimax-m3",
+      "display": {
+        "name": "Minimax M3",
+        "description": "Minimax M3 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1acaf9e4d74ae1b6bb92a9d3",
+      "runtimeModelId": "clervo/mistral-medium-2505",
+      "marketModelId": "clervo/mistral-medium-2505",
+      "display": {
+        "name": "Mistral Medium 2505",
+        "description": "Mistral Medium 2505 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text",
+        "image"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ec1bfcd85dcafef63a7aa07c",
+      "runtimeModelId": "clervo/mistral-medium-2508",
+      "marketModelId": "clervo/mistral-medium-2508",
+      "display": {
+        "name": "Mistral Medium 2508",
+        "description": "Mistral Medium 2508 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text",
+        "image"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_90ae8a1318beb25c70924b39",
+      "runtimeModelId": "clervo/multimodalembedding-001",
+      "marketModelId": "clervo/multimodalembedding-001",
+      "display": {
+        "name": "Multimodalembedding 001",
+        "description": "Multimodalembedding 001 through Clervo's normalized embedding contract."
+      },
+      "modalities": [
+        "embedding"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "embedding"
+      ],
+      "capabilities": [
+        "text_input",
+        "embedding_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_776fe3bbe8b4b322dd9e7b22",
+      "runtimeModelId": "clervo/nemotron-3-embed-1b",
+      "marketModelId": "clervo/nemotron-3-embed-1b",
+      "display": {
+        "name": "Nemotron 3 Embed 1b",
+        "description": "Nemotron 3 Embed 1b through Clervo's normalized embedding contract."
+      },
+      "modalities": [
+        "embedding"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "embedding"
+      ],
+      "capabilities": [
+        "text_input",
+        "embedding_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b3375d1de6ca3ba3128ccac1",
+      "runtimeModelId": "clervo/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "marketModelId": "clervo/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "display": {
+        "name": "Nemotron 3 Nano Omni 30b A3b Reasoning",
+        "description": "Nemotron 3 Nano Omni 30b A3b Reasoning through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text",
+        "image"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_input",
+        "text_output",
+        "reasoning"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.9,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_783a862c5b35325f4b4ac79f",
+      "runtimeModelId": "clervo/nemotron-3.5-content-safety",
+      "marketModelId": "clervo/nemotron-3.5-content-safety",
+      "display": {
+        "name": "Nemotron 3.5 Content Safety",
+        "description": "Nemotron 3.5 Content Safety through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_d61b986cc245745aac1f5916",
+      "runtimeModelId": "clervo/nex-n2-pro",
+      "marketModelId": "clervo/nex-n2-pro",
+      "display": {
+        "name": "Nex N2 Pro",
+        "description": "Nex N2 Pro through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ac16fdde5e9b228968084048",
+      "runtimeModelId": "clervo/nv-embed-v1",
+      "marketModelId": "clervo/nv-embed-v1",
+      "display": {
+        "name": "Nv Embed V1",
+        "description": "Nv Embed V1 through Clervo's normalized embedding contract."
+      },
+      "modalities": [
+        "embedding"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "embedding"
+      ],
+      "capabilities": [
+        "text_input",
+        "embedding_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_41845a1b93f3cf86b27730bb",
+      "runtimeModelId": "clervo/qwen2.5-72b-instruct",
+      "marketModelId": "clervo/qwen2.5-72b-instruct",
+      "display": {
+        "name": "Qwen2.5 72b Instruct",
+        "description": "Qwen2.5 72b Instruct through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cf4908a93e948fae3282fa7b",
+      "runtimeModelId": "clervo/qwen3-14b",
+      "marketModelId": "clervo/qwen3-14b",
+      "display": {
+        "name": "Qwen3 14b",
+        "description": "Qwen3 14b through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5bbbf86fc38a690166dadb2a",
+      "runtimeModelId": "clervo/qwen3-30b-a3b-instruct-2507",
+      "marketModelId": "clervo/qwen3-30b-a3b-instruct-2507",
+      "display": {
+        "name": "Qwen3 30b A3b Instruct 2507",
+        "description": "Qwen3 30b A3b Instruct 2507 through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_36873b93c4c60ce8cb2bacfe",
+      "runtimeModelId": "clervo/qwen3-32b",
+      "marketModelId": "clervo/qwen3-32b",
+      "display": {
+        "name": "Qwen3 32b",
+        "description": "Qwen3 32b through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_68380fed6da14d105e918ed7",
+      "runtimeModelId": "clervo/qwen3-8b",
+      "marketModelId": "clervo/qwen3-8b",
+      "display": {
+        "name": "Qwen3 8b",
+        "description": "Qwen3 8b through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_a2a4e9b37c4b07e562b7d4e7",
+      "runtimeModelId": "clervo/qwen3-coder-30b-a3b-instruct",
+      "marketModelId": "clervo/qwen3-coder-30b-a3b-instruct",
+      "display": {
+        "name": "Qwen3 Coder 30b A3b Instruct",
+        "description": "Qwen3 Coder 30b A3b Instruct through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1ca095330fe584a85df76b29",
+      "runtimeModelId": "clervo/qwen3-vl-30b-a3b-instruct",
+      "marketModelId": "clervo/qwen3-vl-30b-a3b-instruct",
+      "display": {
+        "name": "Qwen3 Vl 30b A3b Instruct",
+        "description": "Qwen3 Vl 30b A3b Instruct through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text",
+        "image"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_7acaea69570fe841a37fc3ab",
+      "runtimeModelId": "clervo/qwen3-vl-30b-a3b-thinking",
+      "marketModelId": "clervo/qwen3-vl-30b-a3b-thinking",
+      "display": {
+        "name": "Qwen3 Vl 30b A3b Thinking",
+        "description": "Qwen3 Vl 30b A3b Thinking through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text",
+        "image"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_input",
+        "text_output",
+        "reasoning"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.9,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_453cc9e882b5d65b34697a34",
+      "runtimeModelId": "clervo/qwen3-vl-32b-instruct",
+      "marketModelId": "clervo/qwen3-vl-32b-instruct",
+      "display": {
+        "name": "Qwen3 Vl 32b Instruct",
+        "description": "Qwen3 Vl 32b Instruct through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text",
+        "image"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_369f63921bf4367d574d36c2",
+      "runtimeModelId": "clervo/qwen3-vl-32b-thinking",
+      "marketModelId": "clervo/qwen3-vl-32b-thinking",
+      "display": {
+        "name": "Qwen3 Vl 32b Thinking",
+        "description": "Qwen3 Vl 32b Thinking through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text",
+        "image"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_input",
+        "text_output",
+        "reasoning"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.9,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f791d6ba3e8514ef4e1bca18",
+      "runtimeModelId": "clervo/qwen3-vl-8b-instruct",
+      "marketModelId": "clervo/qwen3-vl-8b-instruct",
+      "display": {
+        "name": "Qwen3 Vl 8b Instruct",
+        "description": "Qwen3 Vl 8b Instruct through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text",
+        "image"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "image_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5faeac1e6e63d4f9e12e0b9b",
+      "runtimeModelId": "clervo/qwen3.5-397b-a17b",
+      "marketModelId": "clervo/qwen3.5-397b-a17b",
+      "display": {
+        "name": "Qwen3.5 397b A17b",
+        "description": "Qwen3.5 397b A17b through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_7b5bb896699ea216a6d7b1d3",
+      "runtimeModelId": "clervo/qwen3.6-27b",
+      "marketModelId": "clervo/qwen3.6-27b",
+      "display": {
+        "name": "Qwen3.6 27b",
+        "description": "Qwen3.6 27b through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cae531eef86f28e2dd4d34f1",
+      "runtimeModelId": "clervo/seed-oss-36b-instruct",
+      "marketModelId": "clervo/seed-oss-36b-instruct",
+      "display": {
+        "name": "Seed Oss 36b Instruct",
+        "description": "Seed Oss 36b Instruct through Clervo's normalized chat contract."
+      },
+      "modalities": [
+        "chat"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "text"
+      ],
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_dc14d425235bb04db8c63bcc",
+      "runtimeModelId": "clervo/text-embedding-005",
+      "marketModelId": "clervo/text-embedding-005",
+      "display": {
+        "name": "Text Embedding 005",
+        "description": "Text Embedding 005 through Clervo's normalized embedding contract."
+      },
+      "modalities": [
+        "embedding"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "embedding"
+      ],
+      "capabilities": [
+        "text_input",
+        "embedding_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0a27457d7329552f371e12e2",
+      "runtimeModelId": "clervo/text-embedding-large-exp-03-07",
+      "marketModelId": "clervo/text-embedding-large-exp-03-07",
+      "display": {
+        "name": "Text Embedding Large Exp 03 07",
+        "description": "Text Embedding Large Exp 03 07 through Clervo's normalized embedding contract."
+      },
+      "modalities": [
+        "embedding"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "embedding"
+      ],
+      "capabilities": [
+        "text_input",
+        "embedding_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_baa288685701dd7168604370",
+      "runtimeModelId": "clervo/text-multilingual-embedding-002",
+      "marketModelId": "clervo/text-multilingual-embedding-002",
+      "display": {
+        "name": "Text Multilingual Embedding 002",
+        "description": "Text Multilingual Embedding 002 through Clervo's normalized embedding contract."
+      },
+      "modalities": [
+        "embedding"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "embedding"
+      ],
+      "capabilities": [
+        "text_input",
+        "embedding_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_50a6c82acd122b5f425c210f",
+      "runtimeModelId": "clervo/veo-3.1-fast-generate-001",
+      "marketModelId": "clervo/veo-3.1-fast-generate-001",
+      "display": {
+        "name": "Veo 3.1 Fast Generate 001",
+        "description": "Veo 3.1 Fast Generate 001 through Clervo's normalized video contract."
+      },
+      "modalities": [
+        "video"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "video"
+      ],
+      "capabilities": [
+        "text_input",
+        "video_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_a04058fb17151237105fe63c",
+      "runtimeModelId": "clervo/veo-3.1-generate-001",
+      "marketModelId": "clervo/veo-3.1-generate-001",
+      "display": {
+        "name": "Veo 3.1 Generate 001",
+        "description": "Veo 3.1 Generate 001 through Clervo's normalized video contract."
+      },
+      "modalities": [
+        "video"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "video"
+      ],
+      "capabilities": [
+        "text_input",
+        "video_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0edbd24738bbf6b4c53f44ea",
+      "runtimeModelId": "clervo/veo-3.1-lite-generate-001",
+      "marketModelId": "clervo/veo-3.1-lite-generate-001",
+      "display": {
+        "name": "Veo 3.1 Lite Generate 001",
+        "description": "Veo 3.1 Lite Generate 001 through Clervo's normalized video contract."
+      },
+      "modalities": [
+        "video"
+      ],
+      "inputTypes": [
+        "text"
+      ],
+      "outputTypes": [
+        "video"
+      ],
+      "capabilities": [
+        "text_input",
+        "video_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b7d2ff5e7218ccd5f9fa4c47",
+      "runtimeModelId": "clervo/virtual-try-on-001",
+      "marketModelId": "clervo/virtual-try-on-001",
+      "display": {
+        "name": "Virtual Try On 001",
+        "description": "Virtual Try On 001 through Clervo's normalized virtual try on contract."
+      },
+      "modalities": [
+        "virtual_try_on"
+      ],
+      "inputTypes": [
+        "image"
+      ],
+      "outputTypes": [
+        "image"
+      ],
+      "capabilities": [
+        "image_input",
+        "image_output"
+      ],
+      "limits": {},
+      "qualification": {
+        "state": "qualified",
+        "checkedAt": "2026-08-10T19:09:36.000Z",
+        "expiresAt": "2026-09-09T19:09:36.000Z",
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
+      },
+      "availability": {
+        "state": "available",
+        "reason": null,
+        "observedAt": "2026-08-10T19:09:36.000Z"
+      },
+      "upstreamCost": {
+        "state": "known",
+        "pricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0
+        },
+        "authorityRef": "owner://instruction/2026-08-10/b7-low-zero-current-supply-cost",
+        "observedAt": "2026-08-10T19:09:36.000Z",
+        "validUntil": "2026-09-09T19:09:36.000Z"
+      },
+      "quality": {
+        "score": 0.8,
+        "evidenceRef": "production://ai.clervo.dev/catalog/sha256:90e7424e336967fff5dde09942ff3a77e2ba4652c3ec4a830a74bc565c6c9573"
+      }
+    }
+  ]
+}

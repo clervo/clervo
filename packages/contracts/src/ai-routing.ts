@@ -21,6 +21,9 @@ export interface AiUsageBounds {
   reasoningTokens: number;
   images: number;
   audioCharacters: number;
+  videoSeconds: number;
+  musicGenerations: number;
+  virtualTryOnImages: number;
 }
 
 export interface AiRoutePricing {
@@ -32,6 +35,9 @@ export interface AiRoutePricing {
   reasoningTokenMicrosPerMillion: number;
   imageMicrosEach: number;
   audioMicrosPerThousandCharacters: number;
+  videoMicrosPerSecond: number;
+  musicMicrosPerGeneration: number;
+  virtualTryOnMicrosPerImage: number;
 }
 
 export interface AiRuntimeRoute {
@@ -97,9 +103,15 @@ function assertUsage(bounds: AiUsageBounds): void {
     reasoningTokens: 1_000_000,
     images: 16,
     audioCharacters: 100_000,
+    videoSeconds: 120,
+    musicGenerations: 4,
+    virtualTryOnImages: 4,
   };
+  const optionalLegacyAdditions = new Set<keyof AiUsageBounds>(['videoSeconds', 'musicGenerations', 'virtualTryOnImages']);
   for (const [name, maximum] of Object.entries(maxima) as [keyof AiUsageBounds, number][]) {
-    if (!Number.isSafeInteger(bounds[name]) || bounds[name] < 0 || bounds[name] > maximum) throw new TypeError(`ai_usage_${name}_invalid`);
+    const value = bounds[name];
+    if (value === undefined && optionalLegacyAdditions.has(name)) continue;
+    if (!Number.isSafeInteger(value) || value < 0 || value > maximum) throw new TypeError(`ai_usage_${name}_invalid`);
   }
   if (bounds.cachedInputTokens > bounds.inputTokens) throw new TypeError('ai_cached_input_exceeds_input');
 }
@@ -109,6 +121,9 @@ function assertPricing(pricing: AiRoutePricing): void {
   for (const [name, value] of Object.entries(pricing)) {
     if (name === 'currency' || name === 'decimals') continue;
     if (!Number.isSafeInteger(value) || value < 0 || value > 1_000_000_000_000) throw new TypeError(`ai_pricing_${name}_invalid`);
+  }
+  for (const name of ['inputTokenMicrosPerMillion', 'cachedInputTokenMicrosPerMillion', 'outputTokenMicrosPerMillion', 'reasoningTokenMicrosPerMillion', 'imageMicrosEach', 'audioMicrosPerThousandCharacters'] as const) {
+    if (!Number.isSafeInteger(pricing[name])) throw new TypeError(`ai_pricing_${name}_invalid`);
   }
 }
 
@@ -126,7 +141,10 @@ export function estimateAiSupplierCost(bounds: AiUsageBounds, pricing: AiRoutePr
     + ceilUnits(bounds.outputTokens, pricing.outputTokenMicrosPerMillion, 1_000_000n)
     + ceilUnits(bounds.reasoningTokens, pricing.reasoningTokenMicrosPerMillion, 1_000_000n)
     + BigInt(bounds.images) * BigInt(pricing.imageMicrosEach)
-    + ceilUnits(bounds.audioCharacters, pricing.audioMicrosPerThousandCharacters, 1_000n);
+    + ceilUnits(bounds.audioCharacters, pricing.audioMicrosPerThousandCharacters, 1_000n)
+    + BigInt(bounds.videoSeconds ?? 0) * BigInt(pricing.videoMicrosPerSecond ?? 0)
+    + BigInt(bounds.musicGenerations ?? 0) * BigInt(pricing.musicMicrosPerGeneration ?? 0)
+    + BigInt(bounds.virtualTryOnImages ?? 0) * BigInt(pricing.virtualTryOnMicrosPerImage ?? 0);
   return Object.freeze({ asset: 'USD', amountAtomic: micros.toString(), decimals: 6 });
 }
 
@@ -246,6 +264,7 @@ export function selectAiRoute(input: {
   usageBounds: AiUsageBounds;
   maximumSupplierCost: AssetAmount;
   routes: readonly AiRuntimeRoute[];
+  aliasTargets?: Readonly<Partial<Record<AiAlias, string>>>;
   decidedAt: string;
 }): Readonly<AiRouteDecision> {
   if (!verifyAiModelCatalog(input.catalog)) throw new TypeError('ai_catalog_invalid');
@@ -262,12 +281,13 @@ export function selectAiRoute(input: {
     const catalogRoute = catalogRoutes.get(route.definition.routeId);
     if (catalogRoute === undefined || JSON.stringify(catalogRoute) !== JSON.stringify(route.definition)) throw new TypeError('ai_runtime_route_catalog_mismatch');
   }
-  const requiredCapabilities = selectionKind === 'alias'
+  const aliasTarget = selectionKind === 'alias' ? input.aliasTargets?.[input.requestedModel as AiAlias] : undefined;
+  const requiredCapabilities = selectionKind === 'alias' && aliasTarget === undefined
     ? [...new Set([...aliasCapabilities[input.requestedModel as AiAlias], ...input.requiredCapabilities])]
     : input.requiredCapabilities;
   const possible = [...(selectionKind === 'exact'
     ? input.routes.filter(({ definition }) => definition.routeId === input.requestedModel || definition.exactModelId === input.requestedModel)
-    : input.routes)].sort((left, right) => left.definition.routeId < right.definition.routeId ? -1 : left.definition.routeId > right.definition.routeId ? 1 : 0);
+    : aliasTarget === undefined ? input.routes : input.routes.filter(({ definition }) => definition.exactModelId === aliasTarget))].sort((left, right) => left.definition.routeId < right.definition.routeId ? -1 : left.definition.routeId > right.definition.routeId ? 1 : 0);
   if (possible.length === 0) return rejectedDecision({ ...input, selectionKind, rejectionCodes: ['model_not_found'] });
   const failures = possible.map((route) => ({ route, failure: candidateFailure(route, { productId: input.productId, requiredCapabilities, evaluatedAtMs: decidedAtMs, maximumCostAtomic: BigInt(input.maximumSupplierCost.amountAtomic), usageBounds: input.usageBounds }) }));
   const eligible = failures.filter(({ failure }) => failure === undefined).map(({ route }) => route);

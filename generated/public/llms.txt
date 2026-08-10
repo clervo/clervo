@@ -106,8 +106,8 @@ clervo doctor                       # check the machine end to end
 
 ## Agent discovery
 
-- [`GET https://api.clervo.dev/v1/models`](/models.json): every catalogued AI route with its exact model identity, lifecycle state, proof level, and observed price. OpenAI list shape.
+- [`GET https://api.clervo.dev/v1/models`](/models.json): the authoritative canonical AI catalog and stable aliases, with capability, availability, health, free/paid state, pricing, and commerce contract. OpenAI list shape.
 - [`GET https://api.clervo.dev/.well-known/x402`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.
 - `GET https://api.clervo.dev/llms.txt`: this document, served from the API host as well as the site.
 
-Model list: 21 catalogued routes, 0 sellable. Payment manifest: 4 paid resources.
+Model list: 89 callable IDs (85 canonical, 4 aliases), 89 sellable. Payment manifest: 4 paid resources.

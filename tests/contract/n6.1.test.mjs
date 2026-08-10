@@ -113,8 +113,8 @@ test('catalog derives independent qualified families and detects tampering', () 
   assert.equal(verifyAiModelCatalog(tampered), false);
 });
 
-test('prohibited identities and non-GPT QuickAI routes cannot enter the catalog', () => {
-  assert.throws(() => createAiModelCatalog({ catalogId: 'aicat_01K0AICATALOG0000000002', evaluatedAt: '2026-08-02T00:00:00.000Z', routes: [route({ suffix: 'CLAUDE', exactModelId: 'claude-prohibited' })] }), /route_prohibited/u);
+test('prohibited supply families and non-GPT QuickAI routes cannot enter the catalog', () => {
+  assert.throws(() => createAiModelCatalog({ catalogId: 'aicat_01K0AICATALOG0000000002', evaluatedAt: '2026-08-02T00:00:00.000Z', routes: [route({ suffix: 'RETIRED', providerId: 'provider.tongkhokr', supplyFamilyId: 'supply.tongkhokr', exactModelId: 'retired-model' })] }), /route_prohibited/u);
   assert.throws(() => createAiModelCatalog({ catalogId: 'aicat_01K0AICATALOG0000000003', evaluatedAt: '2026-08-02T00:00:00.000Z', routes: [route({ suffix: 'QUICK', providerId: 'provider.quickai', exactModelId: 'generic-premium', quickAiPremium: true })] }), /quickai_route_invalid/u);
 });
 

@@ -21,6 +21,10 @@ import { createRpcProductionRuntime } from './rpc-production-runtime.mjs';
 import { createPredictionProductionRuntime } from './prediction-production-runtime.mjs';
 import { createPostgresPredictionMarketStoreFromEnvironment } from './prediction-market-store.mjs';
 import { createCryptoProductionRuntime } from './crypto-production-runtime.mjs';
+import {
+  InMemoryAiFreeTierQuotaStore,
+  PostgresAiFreeTierQuotaStore,
+} from '../../../dist/services/ai/src/free-tier.js';
 
 const environment = process.env.CLERVO_ENV ?? 'staging';
 const releaseId = process.env.CLERVO_RELEASE_ID;
@@ -107,6 +111,12 @@ const executor = searchMode === 'open_federation'
     }) : createRecordedSearchExecutor();
 const aiArtifactRuntime = aiArtifactMode === 'r2' ? createAiArtifactRuntime() : undefined;
 const aiRuntime = aiMode === 'paid' ? await createAiProductionRuntime({ artifactStoreFactory: aiArtifactRuntime?.forAuthorization }) : undefined;
+const aiFreeTier = aiRuntime === undefined ? undefined : Object.freeze({
+  policy: aiRuntime.freeTierPolicy,
+  store: stateStore.kind === 'postgres'
+    ? new PostgresAiFreeTierQuotaStore(stateStore.client, stateStore.environmentNamespace)
+    : new InMemoryAiFreeTierQuotaStore(),
+});
 const rpcRuntime = rpcMode === 'paid' ? createRpcProductionRuntime({ ethereumEndpoint: process.env.CLERVO_RPC_ETHEREUM_ENDPOINT }) : undefined;
 const predictionStore = predictionMode === 'paid' ? await createPostgresPredictionMarketStoreFromEnvironment() : undefined;
 const predictionRuntime = predictionMode === 'paid' ? createPredictionProductionRuntime({ store: predictionStore }) : undefined;
@@ -146,6 +156,8 @@ const server = createSearchServer({
   aiAdapters: aiRuntime?.adapters,
   aiAdapterFactory: aiRuntime?.adapterFactory,
   aiRuntimeBindings: aiRuntime?.runtimeBindings,
+  aiReady: aiRuntime?.ready,
+  aiFreeTier,
   aiArtifactAccess: aiArtifactRuntime,
   sandboxPublicRunnerDigest: sandboxPublicMode === 'paid' ? process.env.CLERVO_SANDBOX_RUNNER_DIGEST : undefined,
   rpcRuntime,
@@ -196,6 +208,7 @@ server.listen(port, host, () => {
     sandboxPrivateEnabled: sandboxMode === 'private',
     aiPaidEnabled: aiMode === 'paid',
     aiRouteFamilies: aiRuntime?.families ?? [],
+    aiCatalogRevision: aiRuntime?.productCatalog.catalogRevision,
     sandboxPaidEnabled: sandboxPublicMode === 'paid',
     rpcPaidEnabled: rpcMode === 'paid',
     predictionPaidEnabled: predictionMode === 'paid',

@@ -15,6 +15,9 @@ const onboarding = JSON.parse(await readFile(path.join(root, 'packages/distribut
 const launchState = JSON.parse(await readFile(path.join(root, 'packages/catalog/launch-state.v1.json'), 'utf8'));
 const liveRegistry = JSON.parse(await readFile(path.join(root, 'packages/catalog/live-registry.json'), 'utf8'));
 const modelCatalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
+const b7Freeze = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-b7-production-freeze.v1.json'), 'utf8'));
+const b7Pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-b7-commercial-pricing.v1.json'), 'utf8'));
+const b7Inventory = Object.freeze({ canonicalModels: b7Freeze.inventory.canonicalModels, aliases: b7Freeze.inventory.aliases, callableIds: b7Freeze.inventory.callableModelIds });
 const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
 const b10Proof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/search-sandbox-x402-proof.v1.json'), 'utf8'));
 const b10SearchProof = b10Proof.operations.find(({ productId }) => productId === 'search.web');
@@ -241,6 +244,7 @@ const publicApiFlags = [
 ];
 const publicSearch = observedLive.search;
 const publicAi = observedLive.ai;
+const aiOperationIds = Object.freeze(['ai.chat', 'ai.embed', 'ai.image', 'ai.speech', 'ai.video', 'ai.music', 'ai.virtual_try_on']);
 const publicSandbox = observedLive.sandbox;
 const publicPrediction = observedLive.prediction;
 const publicCrypto = observedLive.crypto_intelligence;
@@ -429,19 +433,20 @@ if (publicSearch) {
 }
 if (publicAi) {
   openapi.info.title = 'Clervo Search and AI API';
-  openapi.info.description = 'Public Search and bounded paid AI preview. AI quotes are request-derived from current qualified exact-model routes; unsupported modalities fail closed.';
+  openapi.info.description = `Public Search and provider-neutral AI across ${b7Inventory.canonicalModels} canonical models and ${b7Inventory.aliases} stable aliases. The authoritative model catalog publishes capability, availability, health, free/paid state, and request-derived pricing; unsupported model-capability combinations fail closed.`;
   openapi.paths['/v1/ai/execute'] = {
     post: {
-      summary: 'Request or settle a bounded AI operation',
-      description: 'Returns an exact x402 quote for a qualified AI request. A completed idempotency key replays the same result and receipt without another charge.',
+      summary: 'Execute a provider-neutral Clervo AI model',
+      description: 'Free models execute without payment within the published quota. Paid models return an exact request-bound x402 or MPP quote before execution. A completed idempotency key replays the same result and, when paid, the same receipt without another charge.',
       operationId: 'aiExecute',
-      parameters: [{ name: 'Idempotency-Key', in: 'header', required: true, schema: { type: 'string', minLength: 8, maxLength: 128 } }],
+      parameters: [{ name: 'Idempotency-Key', in: 'header', required: false, description: 'Stable replay key. When omitted before payment, the service generates one and returns it in the response headers.', schema: { type: 'string', minLength: 8, maxLength: 128 } }],
       requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/AiHttpRequest' } } } },
       responses: {
-        200: { description: 'AI operation completed or replayed', content: { 'application/json': { schema: { $ref: '#/components/schemas/AiHttpResult' } } } },
+        200: { description: 'Free or paid AI operation completed or replayed; paid results include truthful usage and settlement receipt', content: { 'application/json': { schema: { $ref: '#/components/schemas/AiHttpResult' } } } },
         400: { description: 'Invalid bounded AI request', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
         402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
         409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
+        429: { description: 'Published free-tier quota exhausted; the request is not silently converted into a paid operation', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
         503: { description: 'No qualified route, capacity, or settlement path is available', content: { 'application/problem+json': { schema: { $ref: '#/components/schemas/Problem' } } } },
       },
     },
@@ -454,31 +459,31 @@ if (publicAi) {
       protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
     },
   });
-  openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, 'ai.chat'];
+  openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, ...aiOperationIds];
   openapi['x-clervo-status'].runtimeRelease = launchState.sourceCommit;
-  discovery.description = 'Machine-readable public Search and paid AI preview. Raw Search and qualified bounded AI chat requests are callable; unsupported AI modalities and the remaining product cores fail closed. No external customer revenue or demand is claimed.';
+  discovery.description = `Machine-readable public Search and complete provider-neutral AI catalog. ${b7Inventory.callableIds} stable model IDs are discoverable and callable through one normalized free-or-paid contract without exposing suppliers. No external customer revenue or demand is claimed.`;
   discovery.products.push({
-    productId: 'ai.chat', operationId: 'ai.chat', title: 'Qualified AI chat',
-    summary: 'Bounded provider-neutral chat with exact returned model identity, usage, receipt, and no-charge replay.',
-    lifecycle: 'preview', publicAvailable: true, deliveryModes: ['sync'],
-    selection: { model: 'Exact qualified model ID or supported Clervo alias.' },
-    pricing: { model: 'x402_request_quote', displayPrice: null, maximumChargeRequired: true, priceVersion: 'qualified-route-request-derived' },
-    routes: { paidChallenge: '/v1/ai/execute' },
-    payment: { challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
-    commercialProof: false,
+    productId: 'ai', operationId: 'ai.execute', operationIds: aiOperationIds, title: 'Clervo AI model catalog',
+    summary: 'Provider-neutral chat, embeddings, image, speech, video, music, and virtual try-on with stable identities, normalized results, truthful usage, paid receipts, and no-charge replay.',
+    lifecycle: observed.ai.proof === 'paid_outcome_verified' ? 'production' : 'preview', publicAvailable: true, deliveryModes: ['sync'],
+    selection: { model: 'Stable canonical Clervo model ID or a published alias contract.', catalog: '/v1/models' },
+    pricing: { model: 'authoritative_per_model_usage_pricing', displayPrice: null, freeAndPaid: true, maximumChargeRequiredForPaid: true, priceVersion: b7Pricing.revision },
+    routes: { catalog: '/v1/models', execute: '/v1/ai/execute' },
+    payment: { freeModelsRequirePayment: false, paidModels: ['x402', 'mpp'], challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
+    commercialProof: observed.ai.proof === 'paid_outcome_verified',
   });
-  discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: ['search.web', 'ai.chat'] };
+  discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: ['search.web', ...aiOperationIds] };
   discovery.limitations = [
-    'Raw cited Search and bounded paid AI chat are publicly callable previews; Search synthesis and AI media remain unavailable.',
-    'AI prices are exact per-request maximum-charge quotes, not one fixed model price.',
-    'The AI production origin and stable challenge are verified; an owner-signed paid AI result remains pending.',
+    `The catalog contains ${b7Inventory.canonicalModels} frozen canonical models and ${b7Inventory.aliases} aliases; it is not an open-ended promise to add or substitute models.`,
+    'AI catalog prices are authoritative usage rates; a paid request returns the binding request-specific maximum charge before settlement.',
+    observed.ai.proof === 'paid_outcome_verified' ? 'A bounded owner-funded paid AI outcome, receipt, accounting record, and no-charge replay are verified; no unrelated-customer demand is claimed.' : 'The AI production catalog and payment challenge are verified; an owner-signed paid AI result remains pending.',
     'Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain publicly unavailable.',
     'No external customer payment, revenue, or demand is claimed.',
   ];
   llms = llms
-    .replace('raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable', 'raw cited Search and bounded paid AI chat are callable; synthesized Search, AI media, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable')
-    .replace('Projected operation IDs: search.web, search.answer', 'Projected operation IDs: search.web, search.answer, ai.chat')
-    .replace('x402 public payment: available for search.web at a maximum charge of 0.006 USDC on Base', 'x402 public payment: available for search.web at a maximum charge of 0.006 USDC and for ai.chat through an exact request-derived maximum-charge quote on Base');
+    .replace('raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable', 'raw cited Search and the complete provider-neutral Clervo AI catalog are callable; synthesized Search, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable')
+    .replace('Projected operation IDs: search.web, search.answer', `Projected operation IDs: search.web, search.answer, ${aiOperationIds.join(', ')}`)
+    .replace('x402 public payment: available for search.web at a maximum charge of 0.006 USDC on Base', 'x402 public payment: available for search.web at a maximum charge of 0.006 USDC and for paid AI requests through an exact request-derived maximum-charge quote on Base; published free AI models require no payment');
 }
 if (publicSandbox) {
   openapi.info.title = 'Clervo Search, AI, and Secure Sandbox API';
@@ -993,8 +998,8 @@ const legacyModelList = {
 };
 
 async function dynamicModelList() {
-  const configured = process.env.CLERVO_AI_PUBLIC_MODEL_CATALOG_FILE;
-  if (configured === undefined || configured === '') return null;
+  const configured = process.env.CLERVO_AI_PUBLIC_MODEL_CATALOG_FILE ?? 'generated/b7-ai/public/models.json';
+  if (configured === '') return null;
   const file = path.resolve(root, configured);
   if (!file.startsWith(`${root}${path.sep}`)) throw new Error('dynamic_ai_public_catalog_path_invalid');
   const value = JSON.parse(await readFile(file, 'utf8'));
@@ -1007,11 +1012,13 @@ async function dynamicModelList() {
   return value;
 }
 
-// The legacy registry remains the live projection until the authenticated
-// ai.clervo.dev catalog endpoint is bound. At cutover, the build supplies the
-// composer's public artifact through configuration; normal catalog revisions
-// then change data, never this generator.
+// B7's frozen commercial catalog is now the default public AI authority. An
+// explicit empty setting retains the legacy probe projection for historical
+// validation only; normal catalog revisions change data, never this generator.
 const modelList = await dynamicModelList() ?? legacyModelList;
+const sellableModelCount = modelList.data.filter(({ clervo }) => clervo.publicSellable === true || clervo.sellable === true).length;
+const modelInventory = modelList.clervo.inventory ?? { canonicalModels: modelList.data.length, aliases: 0, callableIds: modelList.data.length };
+const dynamicModelAuthority = modelList.clervo.inventory !== undefined;
 
 // The x402 v2 discovery listing shape: `items[]`, each with the resource URL and
 // the `accepts` array the resource actually answers with. Every entry is the
@@ -1101,18 +1108,32 @@ const x402Manifest = {
     // A free path is not an x402 item — it carries no payment requirement — but
     // an agent that finds this manifest first should not have to pay to try the
     // service. It is advertised alongside, clearly separated.
-    freeResources: observed.search.freeEntry === null ? [] : [{
-      resource: observed.search.freeEntry.route,
-      type: 'http',
-      method: 'POST',
-      bodyType: 'json',
-      paymentRequired: false,
-      acceptsRequestWithoutIdempotencyKey: observed.search.freeEntry.acceptsNaiveRequest,
-      operationId: 'search.web',
-      lifecycleState: observed.search.state,
-      proofLevel: observed.search.proof,
-      quota: 'Capped per caller and globally. Over the cap the route answers 429 free_quota_exceeded rather than executing.',
-    }],
+    freeResources: [
+      ...(observed.search.freeEntry === null ? [] : [{
+        resource: observed.search.freeEntry.route,
+        type: 'http',
+        method: 'POST',
+        bodyType: 'json',
+        paymentRequired: false,
+        acceptsRequestWithoutIdempotencyKey: observed.search.freeEntry.acceptsNaiveRequest,
+        operationId: 'search.web',
+        lifecycleState: observed.search.state,
+        proofLevel: observed.search.proof,
+        quota: 'Capped per caller and globally. Over the cap the route answers 429 free_quota_exceeded rather than executing.',
+      }]),
+      ...(modelList.data.some(({ clervo }) => clervo.billingMode === 'free' && clervo.publicSellable === true) ? [{
+        resource: '/v1/ai/execute',
+        type: 'http',
+        method: 'POST',
+        bodyType: 'json',
+        paymentRequired: false,
+        acceptsRequestWithoutIdempotencyKey: true,
+        operationId: 'ai.execute',
+        modelIds: modelList.data.filter(({ clervo }) => clervo.billingMode === 'free' && clervo.publicSellable === true).map(({ id }) => id),
+        lifecycleState: 'available',
+        quota: 'Capped per privacy-preserving caller subject and globally. Over the cap the route answers 429 ai_free_quota_exceeded and never converts to a paid call.',
+      }] : []),
+    ],
     documents: { models: `${publicBaseUrl}/v1/models`, reference: `${publicBaseUrl}/llms.txt`, discovery: `${publicBaseUrl}/.well-known/clervo.json`, openapi: `${publicBaseUrl}/openapi.json` },
   },
 };
@@ -1122,11 +1143,11 @@ if (publicBaseUrl !== null) {
     '',
     '## Agent discovery',
     '',
-    `- [\`GET ${publicBaseUrl}/v1/models\`](/models.json): every catalogued AI route with its exact model identity, lifecycle state, proof level, and observed price. OpenAI list shape.`,
+    `- [\`GET ${publicBaseUrl}/v1/models\`](/models.json): ${dynamicModelAuthority ? 'the authoritative canonical AI catalog and stable aliases, with capability, availability, health, free/paid state, pricing, and commerce contract' : 'every catalogued AI route with its exact model identity, lifecycle state, proof level, and observed price'}. OpenAI list shape.`,
     `- [\`GET ${publicBaseUrl}/.well-known/x402\`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.`,
     `- \`GET ${publicBaseUrl}/llms.txt\`: this document, served from the API host as well as the site.`,
     '',
-    `Model list: ${modelList.data.length} catalogued routes, ${modelList.data.filter(({ clervo }) => clervo.sellable).length} sellable. Payment manifest: ${x402Resources.length} paid resources.`,
+    `Model list: ${modelInventory.callableIds} callable IDs (${modelInventory.canonicalModels} canonical, ${modelInventory.aliases} aliases), ${sellableModelCount} sellable. Payment manifest: ${x402Resources.length} paid resources.`,
     '',
   ].join('\n');
 }
@@ -1199,7 +1220,7 @@ const skillDocument = [
   '',
   '- `/.well-known/clervo.json` — discovery, products, and observed truth.',
   '- `/.well-known/x402` — x402 v2 payment manifest with the exact quote each paid resource returns.',
-  '- `/v1/models` — catalogued AI routes with lifecycle state, proof level, and observed price.',
+  `- \`/v1/models\` — ${dynamicModelAuthority ? 'authoritative AI catalog with stable IDs, aliases, capabilities, price, free/paid state, availability, health, and commerce contract' : 'catalogued AI routes with lifecycle state, proof level, and observed price'}.`,
   '- `/openapi.json` — request and response contracts.',
   '- `/status.json` — current lifecycle state, proof level, and open conformance defects.',
   '- `/pricing.json` — the public offer boundary.',
@@ -1260,7 +1281,7 @@ const agentDocument = [
   '',
   '- `/.well-known/clervo.json`',
   '- `/.well-known/x402` — x402 v2 payment manifest; each item carries the exact quote its resource returns.',
-  '- `/v1/models` — every catalogued AI route, OpenAI list shape, with lifecycle state, proof level, and observed price.',
+  `- \`/v1/models\` — ${dynamicModelAuthority ? 'authoritative AI catalog, OpenAI list shape, including stable canonical IDs and aliases plus capability, price, availability, health, and commerce metadata' : 'every catalogued AI route, OpenAI list shape, with lifecycle state, proof level, and observed price'}.`,
   '- `/openapi.json`',
   '- `/catalog.json`',
   '- `/capabilities.json`',
@@ -1271,10 +1292,10 @@ const agentDocument = [
   '',
   '## Model selection',
   '',
-  `- ${modelList.data.length} catalogued routes; ${modelList.data.filter(({ clervo }) => clervo.sellable).length} sellable now.`,
-  '- Send `clervo.routeId`\'s exact model identity as `model` on `POST /v1/ai/execute`.',
-  '- A route with `clervo.lifecycleState: supply_paused` is listed with its reason and is not sellable. Do not select it; it stays listed because the supply is owned and returning.',
-  '- `clervo.observedPrice` is the quote observed at the probe above. The 402 returned for your own request is the binding one.',
+  `- ${modelInventory.callableIds} callable IDs: ${modelInventory.canonicalModels} canonical and ${modelInventory.aliases} stable aliases; ${sellableModelCount} sellable now.`,
+  `- ${dynamicModelAuthority ? 'Send a canonical `id`, or an alias whose `clervo.aliasFor` contract you accept, as `model` on `POST /v1/ai/execute`.' : 'Send `clervo.routeId`\'s exact model identity as `model` on `POST /v1/ai/execute`.'}`,
+  `- ${dynamicModelAuthority ? 'Use `clervo.availability`, `clervo.health`, and `clervo.publicSellable` before selection. Canonical IDs never substitute another model.' : 'A route with `clervo.lifecycleState: supply_paused` is listed with its reason and is not sellable. Do not select it; it stays listed because the supply is owned and returning.'}`,
+  `- ${dynamicModelAuthority ? 'Use `clervo.customerPricing` and `clervo.billingMode` for discovery. A paid request\'s 402 is the binding maximum charge.' : '`clervo.observedPrice` is the quote observed at the probe above. The 402 returned for your own request is the binding one.'}`,
   '',
   '## Boundaries',
   '',

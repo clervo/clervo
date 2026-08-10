@@ -226,6 +226,23 @@
         "lifecycleState": "live",
         "proofLevel": "paid_outcome_verified",
         "quota": "Capped per caller and globally. Over the cap the route answers 429 free_quota_exceeded rather than executing."
+      },
+      {
+        "resource": "/v1/ai/execute",
+        "type": "http",
+        "method": "POST",
+        "bodyType": "json",
+        "paymentRequired": false,
+        "acceptsRequestWithoutIdempotencyKey": true,
+        "operationId": "ai.execute",
+        "modelIds": [
+          "clervo/gemma-4-26b-a4b-it",
+          "clervo/gpt-oss-20b",
+          "clervo/laguna-s-2.1",
+          "clervo/nemotron-3-nano-omni-30b-a3b-reasoning"
+        ],
+        "lifecycleState": "available",
+        "quota": "Capped per privacy-preserving caller subject and globally. Over the cap the route answers 429 ai_free_quota_exceeded and never converts to a paid call."
       }
     ],
     "documents": {

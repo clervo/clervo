@@ -1,0 +1,693 @@
+{
+  "schemaVersion": "ai-customer-identity-registry.v1",
+  "revision": "b7identity_a79e5bedb98615df3f505516",
+  "entries": [
+    {
+      "gatewaySupplyId": "aisupply_b7_ff226c1c89dfe35ee569d08b",
+      "customerModelId": "clervo/allam-2-7b",
+      "routeId": "ai.route.dynamic_ff226c1c89dfe35ee569",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_d922609aa667d5b75558f09d",
+      "customerModelId": "clervo/claude-haiku-4-5-20251001",
+      "routeId": "ai.route.dynamic_d922609aa667d5b75558",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0f3aeb55d2163f442b20dd42",
+      "customerModelId": "clervo/claude-opus-4-6",
+      "routeId": "ai.route.dynamic_0f3aeb55d2163f442b20",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_504aaf8060c051d2dad29cc9",
+      "customerModelId": "clervo/claude-opus-4-7",
+      "routeId": "ai.route.dynamic_504aaf8060c051d2dad2",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0b8d8ac6176b5a1b14c626f0",
+      "customerModelId": "clervo/claude-opus-4-8",
+      "routeId": "ai.route.dynamic_0b8d8ac6176b5a1b14c6",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1b77502a591255fbac7846a5",
+      "customerModelId": "clervo/claude-opus-5",
+      "routeId": "ai.route.dynamic_1b77502a591255fbac78",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b71a56fbec68be09c15a5521",
+      "customerModelId": "clervo/claude-sonnet-4-6",
+      "routeId": "ai.route.dynamic_b71a56fbec68be09c15a",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_7d24fa0671fbae57927bd175",
+      "customerModelId": "clervo/claude-sonnet-5",
+      "routeId": "ai.route.dynamic_7d24fa0671fbae57927b",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_958674ad81f54d8bb06fa521",
+      "customerModelId": "clervo/deepseek-r1",
+      "routeId": "ai.route.dynamic_958674ad81f54d8bb06f",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_3f8e05b89059d601ac311987",
+      "customerModelId": "clervo/deepseek-v3",
+      "routeId": "ai.route.dynamic_3f8e05b89059d601ac31",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_4935ffa4087a0f4a8e8b6335",
+      "customerModelId": "clervo/deepseek-v3.1-terminus",
+      "routeId": "ai.route.dynamic_4935ffa4087a0f4a8e8b",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_6bfd518ce44671a63c8904c6",
+      "customerModelId": "clervo/deepseek-v3.2-exp",
+      "routeId": "ai.route.dynamic_6bfd518ce44671a63c89",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_119c87ff01c9b357e8dc22a0",
+      "customerModelId": "clervo/deepseek-v4-pro",
+      "routeId": "ai.route.dynamic_119c87ff01c9b357e8dc",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5f0a97185fe5ed0c95671bde",
+      "customerModelId": "clervo/gemini-2.5-flash",
+      "routeId": "ai.route.dynamic_5f0a97185fe5ed0c9567",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1e053c32e8a29514267e660e",
+      "customerModelId": "clervo/gemini-2.5-flash-image",
+      "routeId": "ai.route.dynamic_1e053c32e8a29514267e",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_def160d47a75fb615a2dc852",
+      "customerModelId": "clervo/gemini-2.5-flash-lite-preview-tts",
+      "routeId": "ai.route.dynamic_def160d47a75fb615a2d",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_74c36e274e1d2cf903ec34a0",
+      "customerModelId": "clervo/gemini-2.5-flash-tts",
+      "routeId": "ai.route.dynamic_74c36e274e1d2cf903ec",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1f677cf189dfe7333a70dcf5",
+      "customerModelId": "clervo/gemini-2.5-pro-tts",
+      "routeId": "ai.route.dynamic_1f677cf189dfe7333a70",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cb49536b60a08eca79176a35",
+      "customerModelId": "clervo/gemini-3-pro-image",
+      "routeId": "ai.route.dynamic_cb49536b60a08eca7917",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b32957d930dabd144df1e472",
+      "customerModelId": "clervo/gemini-3.1-flash-image",
+      "routeId": "ai.route.dynamic_b32957d930dabd144df1",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_4bd416a5a9786407ffbffd48",
+      "customerModelId": "clervo/gemini-3.1-flash-lite-image",
+      "routeId": "ai.route.dynamic_4bd416a5a9786407ffbf",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_73006408915403a6327b0fea",
+      "customerModelId": "clervo/gemini-3.1-flash-tts-preview",
+      "routeId": "ai.route.dynamic_73006408915403a6327b",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_9aacd1a3a0989442f4bdcd76",
+      "customerModelId": "clervo/gemini-3.5-flash-lite",
+      "routeId": "ai.route.dynamic_9aacd1a3a0989442f4bd",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b296ac5bacec770377dda635",
+      "customerModelId": "clervo/gemini-embedding-001",
+      "routeId": "ai.route.dynamic_b296ac5bacec770377dd",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_9bba8a3a9598678ff0a57045",
+      "customerModelId": "clervo/gemini-omni-flash-preview",
+      "routeId": "ai.route.dynamic_9bba8a3a9598678ff0a5",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_3e11926c74d3d6a19b06cd43",
+      "customerModelId": "clervo/gemma-4-12b-it",
+      "routeId": "ai.route.dynamic_3e11926c74d3d6a19b06",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ed14d9db92a6b3a602523efd",
+      "customerModelId": "clervo/gemma-4-26b-a4b-it",
+      "routeId": "ai.route.dynamic_ed14d9db92a6b3a60252",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f7cd8e779fc085fe65b5b6e6",
+      "customerModelId": "clervo/gemma-4-31b-it",
+      "routeId": "ai.route.dynamic_f7cd8e779fc085fe65b5",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1cd373d37eef16ade3ad4d9a",
+      "customerModelId": "clervo/glm-4.5-air",
+      "routeId": "ai.route.dynamic_1cd373d37eef16ade3ad",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_c9d8f8818e4a274e0576b84e",
+      "customerModelId": "clervo/glm-5.2",
+      "routeId": "ai.route.dynamic_c9d8f8818e4a274e0576",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0f230d98f450a687658db098",
+      "customerModelId": "clervo/gpt-5.6-luna",
+      "routeId": "ai.route.dynamic_0f230d98f450a687658d",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": [
+        "clervo/fast"
+      ]
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ffc5e82cb775de7573d8705a",
+      "customerModelId": "clervo/gpt-5.6-sol",
+      "routeId": "ai.route.dynamic_ffc5e82cb775de7573d8",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": [
+        "clervo/code",
+        "clervo/deep"
+      ]
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5e74af9e399528ca7d2c7626",
+      "customerModelId": "clervo/gpt-5.6-terra",
+      "routeId": "ai.route.dynamic_5e74af9e399528ca7d2c",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": [
+        "clervo/smart"
+      ]
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b84d39d948b0ee0ef20c06d2",
+      "customerModelId": "clervo/gpt-oss-120b",
+      "routeId": "ai.route.dynamic_b84d39d948b0ee0ef20c",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_fcc903dd606aa55acc129d63",
+      "customerModelId": "clervo/gpt-oss-20b",
+      "routeId": "ai.route.dynamic_fcc903dd606aa55acc12",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_721a61b3c64f4ffaf0eab3b5",
+      "customerModelId": "clervo/gpt-oss-safeguard-20b",
+      "routeId": "ai.route.dynamic_721a61b3c64f4ffaf0ea",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_d1012c9d5347b20f6a25ffab",
+      "customerModelId": "clervo/hunyuan-a13b-instruct",
+      "routeId": "ai.route.dynamic_d1012c9d5347b20f6a25",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_47a0ee1c59bacc6db82a112b",
+      "customerModelId": "clervo/hy3",
+      "routeId": "ai.route.dynamic_47a0ee1c59bacc6db82a",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_4baad7deaa853c628322a011",
+      "customerModelId": "clervo/kimi-k2.5",
+      "routeId": "ai.route.dynamic_4baad7deaa853c628322",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_240d11aba0c71c572a1bbc16",
+      "customerModelId": "clervo/kimi-k2.6",
+      "routeId": "ai.route.dynamic_240d11aba0c71c572a1b",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cda4da3910ec15d3745b537f",
+      "customerModelId": "clervo/kimi-k2.7-code",
+      "routeId": "ai.route.dynamic_cda4da3910ec15d3745b",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_84f4076bbd3cb3283b24c833",
+      "customerModelId": "clervo/kimi-k3",
+      "routeId": "ai.route.dynamic_84f4076bbd3cb3283b24",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f27526c99724acdde804b372",
+      "customerModelId": "clervo/laguna-s-2.1",
+      "routeId": "ai.route.dynamic_f27526c99724acdde804",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1d0a5fe5c2cb2722fc228c97",
+      "customerModelId": "clervo/ling-flash-2.0",
+      "routeId": "ai.route.dynamic_1d0a5fe5c2cb2722fc22",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_59eca11af977d4bb593adaf8",
+      "customerModelId": "clervo/llama-3.1-70b-instruct",
+      "routeId": "ai.route.dynamic_59eca11af977d4bb593a",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_65f9838f55bd2d12b0234221",
+      "customerModelId": "clervo/llama-3.1-8b-instruct",
+      "routeId": "ai.route.dynamic_65f9838f55bd2d12b023",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_3f862cc3a03a9c0e6a31ed2d",
+      "customerModelId": "clervo/llama-3.1-nemoguard-8b-content-safety",
+      "routeId": "ai.route.dynamic_3f862cc3a03a9c0e6a31",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_69e322d57b45e3fed0b89f05",
+      "customerModelId": "clervo/llama-3.1-nemotron-nano-vl-8b-v1",
+      "routeId": "ai.route.dynamic_69e322d57b45e3fed0b8",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f9bc5060687575046a5f9769",
+      "customerModelId": "clervo/llama-3.1-nemotron-safety-guard-8b-v3",
+      "routeId": "ai.route.dynamic_f9bc5060687575046a5f",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_130f9e1009746fcb665b70b2",
+      "customerModelId": "clervo/llama-3.2-11b-vision-instruct",
+      "routeId": "ai.route.dynamic_130f9e1009746fcb665b",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_338c1ba2150e150ea565d157",
+      "customerModelId": "clervo/llama-3.3-70b-instruct",
+      "routeId": "ai.route.dynamic_338c1ba2150e150ea565",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_789527d2644c23aa9cbc9cca",
+      "customerModelId": "clervo/longcat-2.0",
+      "routeId": "ai.route.dynamic_789527d2644c23aa9cbc",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_9a9849307e69b128ae4a49d0",
+      "customerModelId": "clervo/lyria-3-clip-preview",
+      "routeId": "ai.route.dynamic_9a9849307e69b128ae4a",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_8fa0fe569cd42b9c62d35e06",
+      "customerModelId": "clervo/lyria-3-pro-preview",
+      "routeId": "ai.route.dynamic_8fa0fe569cd42b9c62d3",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ad682381eb18e86b92d26156",
+      "customerModelId": "clervo/minimax-m2.5",
+      "routeId": "ai.route.dynamic_ad682381eb18e86b92d2",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f29a580db7030e8aa6af6c4b",
+      "customerModelId": "clervo/minimax-m3",
+      "routeId": "ai.route.dynamic_f29a580db7030e8aa6af",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1acaf9e4d74ae1b6bb92a9d3",
+      "customerModelId": "clervo/mistral-medium-2505",
+      "routeId": "ai.route.dynamic_1acaf9e4d74ae1b6bb92",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ec1bfcd85dcafef63a7aa07c",
+      "customerModelId": "clervo/mistral-medium-2508",
+      "routeId": "ai.route.dynamic_ec1bfcd85dcafef63a7a",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_90ae8a1318beb25c70924b39",
+      "customerModelId": "clervo/multimodalembedding-001",
+      "routeId": "ai.route.dynamic_90ae8a1318beb25c7092",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_776fe3bbe8b4b322dd9e7b22",
+      "customerModelId": "clervo/nemotron-3-embed-1b",
+      "routeId": "ai.route.dynamic_776fe3bbe8b4b322dd9e",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b3375d1de6ca3ba3128ccac1",
+      "customerModelId": "clervo/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "routeId": "ai.route.dynamic_b3375d1de6ca3ba3128c",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_783a862c5b35325f4b4ac79f",
+      "customerModelId": "clervo/nemotron-3.5-content-safety",
+      "routeId": "ai.route.dynamic_783a862c5b35325f4b4a",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_d61b986cc245745aac1f5916",
+      "customerModelId": "clervo/nex-n2-pro",
+      "routeId": "ai.route.dynamic_d61b986cc245745aac1f",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_ac16fdde5e9b228968084048",
+      "customerModelId": "clervo/nv-embed-v1",
+      "routeId": "ai.route.dynamic_ac16fdde5e9b22896808",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_41845a1b93f3cf86b27730bb",
+      "customerModelId": "clervo/qwen2.5-72b-instruct",
+      "routeId": "ai.route.dynamic_41845a1b93f3cf86b277",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cf4908a93e948fae3282fa7b",
+      "customerModelId": "clervo/qwen3-14b",
+      "routeId": "ai.route.dynamic_cf4908a93e948fae3282",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5bbbf86fc38a690166dadb2a",
+      "customerModelId": "clervo/qwen3-30b-a3b-instruct-2507",
+      "routeId": "ai.route.dynamic_5bbbf86fc38a690166da",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_36873b93c4c60ce8cb2bacfe",
+      "customerModelId": "clervo/qwen3-32b",
+      "routeId": "ai.route.dynamic_36873b93c4c60ce8cb2b",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_68380fed6da14d105e918ed7",
+      "customerModelId": "clervo/qwen3-8b",
+      "routeId": "ai.route.dynamic_68380fed6da14d105e91",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_a2a4e9b37c4b07e562b7d4e7",
+      "customerModelId": "clervo/qwen3-coder-30b-a3b-instruct",
+      "routeId": "ai.route.dynamic_a2a4e9b37c4b07e562b7",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_1ca095330fe584a85df76b29",
+      "customerModelId": "clervo/qwen3-vl-30b-a3b-instruct",
+      "routeId": "ai.route.dynamic_1ca095330fe584a85df7",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_7acaea69570fe841a37fc3ab",
+      "customerModelId": "clervo/qwen3-vl-30b-a3b-thinking",
+      "routeId": "ai.route.dynamic_7acaea69570fe841a37f",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_453cc9e882b5d65b34697a34",
+      "customerModelId": "clervo/qwen3-vl-32b-instruct",
+      "routeId": "ai.route.dynamic_453cc9e882b5d65b3469",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_369f63921bf4367d574d36c2",
+      "customerModelId": "clervo/qwen3-vl-32b-thinking",
+      "routeId": "ai.route.dynamic_369f63921bf4367d574d",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_f791d6ba3e8514ef4e1bca18",
+      "customerModelId": "clervo/qwen3-vl-8b-instruct",
+      "routeId": "ai.route.dynamic_f791d6ba3e8514ef4e1b",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_5faeac1e6e63d4f9e12e0b9b",
+      "customerModelId": "clervo/qwen3.5-397b-a17b",
+      "routeId": "ai.route.dynamic_5faeac1e6e63d4f9e12e",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_7b5bb896699ea216a6d7b1d3",
+      "customerModelId": "clervo/qwen3.6-27b",
+      "routeId": "ai.route.dynamic_7b5bb896699ea216a6d7",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_cae531eef86f28e2dd4d34f1",
+      "customerModelId": "clervo/seed-oss-36b-instruct",
+      "routeId": "ai.route.dynamic_cae531eef86f28e2dd4d",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_dc14d425235bb04db8c63bcc",
+      "customerModelId": "clervo/text-embedding-005",
+      "routeId": "ai.route.dynamic_dc14d425235bb04db8c6",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0a27457d7329552f371e12e2",
+      "customerModelId": "clervo/text-embedding-large-exp-03-07",
+      "routeId": "ai.route.dynamic_0a27457d7329552f371e",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_baa288685701dd7168604370",
+      "customerModelId": "clervo/text-multilingual-embedding-002",
+      "routeId": "ai.route.dynamic_baa288685701dd716860",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_50a6c82acd122b5f425c210f",
+      "customerModelId": "clervo/veo-3.1-fast-generate-001",
+      "routeId": "ai.route.dynamic_50a6c82acd122b5f425c",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_a04058fb17151237105fe63c",
+      "customerModelId": "clervo/veo-3.1-generate-001",
+      "routeId": "ai.route.dynamic_a04058fb17151237105f",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_0edbd24738bbf6b4c53f44ea",
+      "customerModelId": "clervo/veo-3.1-lite-generate-001",
+      "routeId": "ai.route.dynamic_0edbd24738bbf6b4c53f",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    },
+    {
+      "gatewaySupplyId": "aisupply_b7_b7d2ff5e7218ccd5f9fa4c47",
+      "customerModelId": "clervo/virtual-try-on-001",
+      "routeId": "ai.route.dynamic_b7d2ff5e7218ccd5f9fa",
+      "assignedAt": "2026-08-10T19:09:36.000Z",
+      "assignment": "owner_assigned",
+      "aliases": []
+    }
+  ]
+}

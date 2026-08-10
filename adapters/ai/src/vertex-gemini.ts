@@ -115,6 +115,9 @@ function usageFrom(response: JsonRecord): AiUsage {
     reasoningTokens: integer(usage.thoughtsTokenCount ?? 0, 'reasoning_tokens'),
     images: 0,
     audioCharacters: 0,
+    videoSeconds: 0,
+    musicGenerations: 0,
+    virtualTryOnImages: 0,
   };
 }
 
@@ -249,7 +252,7 @@ export class VertexGeminiAdapter implements AiExecutionAdapter {
     return Object.freeze({
       modelIdentity: input.exactModelId,
       completedAt: this.#clock(),
-      usage: Object.freeze({ inputTokens, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: artifacts.length, audioCharacters: 0 }),
+      usage: Object.freeze({ inputTokens, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: artifacts.length, audioCharacters: 0, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 }),
       output: Object.freeze({ kind: 'image', artifacts: Object.freeze(artifacts) }),
     });
   }

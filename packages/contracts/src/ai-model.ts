@@ -5,12 +5,15 @@ import { CONTRACT_VERSION } from './types.js';
 export const AI_ROUTE_QUALIFICATION_SCHEMA_VERSION = 'ai-route-qualification.v1' as const;
 export const AI_MODEL_CATALOG_SCHEMA_VERSION = 'ai-model-catalog.v1' as const;
 
-export const aiProductIds = ['ai.chat', 'ai.embed', 'ai.image', 'ai.speech'] as const;
+export const aiProductIds = [
+  'ai.chat', 'ai.embed', 'ai.image', 'ai.speech', 'ai.video', 'ai.music', 'ai.virtual_try_on',
+] as const;
 export type AiProductId = (typeof aiProductIds)[number];
 
 export const aiCapabilities = [
   'text_input', 'text_output', 'image_input', 'image_output', 'embedding_output',
-  'audio_output', 'streaming', 'structured_output', 'tool_calling', 'reasoning',
+  'audio_output', 'video_output', 'music_output', 'streaming', 'structured_output',
+  'tool_calling', 'reasoning',
 ] as const;
 export type AiCapability = (typeof aiCapabilities)[number];
 
@@ -176,7 +179,7 @@ function validateRoute(route: AiRouteDefinition, evaluatedAt: string): void {
   if (route.routeId !== route.qualification.routeId || route.providerId !== route.qualification.providerId || route.supplyFamilyId !== route.qualification.supplyFamilyId || route.exactModelId !== route.qualification.exactModelId || JSON.stringify(route.productIds) !== JSON.stringify(route.qualification.productIds)) throw new TypeError(`ai_route_qualification_mismatch:${route.routeId}`);
   if (JSON.stringify(route.capabilities) !== JSON.stringify(uniqueCanonical(route.capabilities, aiCapabilities, 'capabilities'))) throw new TypeError(`ai_route_capabilities_not_canonical:${route.routeId}`);
   if (new Set(route.requiredSecretNames).size !== route.requiredSecretNames.length || route.requiredSecretNames.some((name) => !/^[A-Z][A-Z0-9_]{2,63}$/u.test(name))) throw new TypeError(`ai_route_secret_names_invalid:${route.routeId}`);
-  const prohibited = /claude|tongkhokr|mwapi/iu.test(`${route.providerId}/${route.exactModelId}`);
+  const prohibited = /tongkhokr|mwapi/iu.test(`${route.providerId}/${route.supplyFamilyId}`);
   if (prohibited) throw new TypeError(`ai_route_prohibited:${route.routeId}`);
   if (route.quickAiPremium && (route.providerId !== 'provider.quickai' || !/gpt/iu.test(route.exactModelId))) throw new TypeError(`ai_quickai_route_invalid:${route.routeId}`);
   if (milliseconds(route.qualification.checkedAt, 'checked_at') > milliseconds(evaluatedAt, 'evaluated_at')) throw new TypeError(`ai_route_qualification_from_future:${route.routeId}`);

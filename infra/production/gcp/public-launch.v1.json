@@ -43,18 +43,15 @@
   },
   "ai": {
     "mode": "paid",
-    "routeFamilies": "clervo_gateway,groq,cloudflare,vertex,deepgram",
+    "runtimeMode": "qualified_catalog",
+    "routeFamilies": "qualified_ai_supply_catalog",
     "baseUrl": "https://ai.clervo.dev/v1/",
-    "vertexProjectId": "bloxsniper-prod",
     "clervoSecret": "clervo-production-ai-api-key",
-    "groqSecret": "clervo-production-groq-api-key",
-    "cloudflareSecret": "clervo-production-cloudflare-ai-token",
-    "deepgramSecret": "clervo-production-deepgram-api-key",
     "artifacts": {
       "mode": "r2",
       "bucket": "clervo-artifacts",
       "retentionSeconds": 604800,
-      "maximumObjectBytes": 20000000,
+      "maximumObjectBytes": 80000000,
       "accessKeyIdSecret": "clervo-production-r2-access-key-id",
       "secretAccessKeySecret": "clervo-production-r2-secret-access-key",
       "signingSecret": "clervo-production-artifact-signing-secret"

@@ -23,8 +23,18 @@ function productForRequest(request: Readonly<AiExecutionRequest>): AiProductId {
   if (request.input.kind === 'chat') return 'ai.chat';
   if (request.input.kind === 'embedding') return 'ai.embed';
   if (request.input.kind === 'image') return 'ai.image';
-  return 'ai.speech';
+  if (request.input.kind === 'speech') return 'ai.speech';
+  if (request.input.kind === 'video') return 'ai.video';
+  if (request.input.kind === 'music') return 'ai.music';
+  return 'ai.virtual_try_on';
 }
+
+const aliasReasoningEffort = Object.freeze({
+  'clervo/fast': 'low',
+  'clervo/smart': 'medium',
+  'clervo/code': 'medium',
+  'clervo/deep': 'high',
+} as const);
 
 export class ClervoAiGatewayAdapter implements AiExecutionAdapter {
   readonly routeId = 'ai.route.dynamic_gateway';
@@ -69,6 +79,7 @@ export class ClervoAiGatewayAdapter implements AiExecutionAdapter {
         exactModelId: input.runtimeModelId,
         productId: productForRequest(input.request),
         maximumResponseBytes: this.#config.maximumResponseBytes,
+        ...(input.request.requestedModel in aliasReasoningEffort ? { reasoningEffort: aliasReasoningEffort[input.request.requestedModel as keyof typeof aliasReasoningEffort] } : {}),
       },
       transport: this.#transport,
       secret: this.#secret,

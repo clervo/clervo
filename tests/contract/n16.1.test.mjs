@@ -30,10 +30,12 @@ test('public launch policy exposes qualified Search, AI, Sandbox, Prediction, an
   assert.match(policy.sandbox.runnerDigest, /^sha256:[a-f0-9]{64}$/u);
   assert.equal(policy.sandbox.minimumChargeAtomic, '10000');
   assert.equal(policy.sandbox.maximumChargeAtomic, '60000');
-  assert.match(policy.ai.routeFamilies, /deepgram/u);
+  assert.equal(policy.ai.runtimeMode, 'qualified_catalog');
+  assert.equal(policy.ai.routeFamilies, 'qualified_ai_supply_catalog');
   assert.equal(policy.ai.artifacts.mode, 'r2');
   assert.equal(policy.ai.artifacts.bucket, 'clervo-artifacts');
   assert.equal(policy.ai.artifacts.retentionSeconds, 604800);
+  assert.equal(policy.ai.artifacts.maximumObjectBytes, 80000000);
   assert.equal(policy.prediction.mode, 'paid');
   assert.equal(policy.prediction.publicRoute, true);
   assert.equal(policy.prediction.qualifiedAdapter, 'adapter_prediction.pdata_rest');
@@ -69,9 +71,9 @@ test('public launch policy exposes qualified Search, AI, Sandbox, Prediction, an
   assert.equal(launchState.distribution.publicApi.publicTraffic, true);
   assert.equal(launchState.paymentProof.publicCustomerPaymentAvailable, true);
   assert.equal(launchState.paymentProof.revenueEvidence, false);
-  assert.equal(launchState.products.find(({ id }) => id === 'search').customerLifecycle, 'preview_publicly_callable');
+  assert.equal(launchState.products.find(({ id }) => id === 'search').customerLifecycle, 'publicly_callable_paid_outcome_verified');
   assert.equal(launchState.products.find(({ id }) => id === 'ai').customerLifecycle, 'preview_publicly_callable');
-  assert.equal(launchState.products.find(({ id }) => id === 'sandbox').customerLifecycle, 'preview_publicly_callable');
+  assert.equal(launchState.products.find(({ id }) => id === 'sandbox').customerLifecycle, 'publicly_callable_paid_outcome_verified');
 });
 
 test('public release tooling keeps deployment private until all independent promotion checks pass', async () => {
@@ -95,7 +97,8 @@ test('public release tooling keeps deployment private until all independent prom
   assert.match(source, /CLERVO_EDGE_AUTHORIZATION_SECRET_VERSION/u);
   assert.match(source, /CLERVO_ARTIFACT_SIGNING_SECRET_VERSION/u);
   assert.match(source, /CLERVO_R2_SECRET_ACCESS_KEY_SECRET_VERSION/u);
-  assert.match(source, /CLERVO_DEEPGRAM_SECRET_VERSION/u);
+  assert.match(source, /CLERVO_AI_RUNTIME_MODE/u);
+  assert.doesNotMatch(source, /CLERVO_DEEPGRAM_SECRET_VERSION/u);
   assert.match(prober, /api\.prediction_execute/u);
   assert.match(prober, /probeIds: \{ paid: 'api\.prediction_execute' \}/u);
   assert.match(prober, /api\.crypto_execute/u);
@@ -138,7 +141,7 @@ test('API edge publishes enabled products while blocking private control and dis
   assert.match(aiPreflight.headers.get('access-control-expose-headers') ?? '', /www-authenticate/u);
   const oversizedAi = await worker.fetch(new Request('https://api.clervo.dev/v1/ai/execute', {
     method: 'POST',
-    headers: { 'content-length': '262145' },
+    headers: { 'content-length': '10485761' },
   }), { CLERVO_AI_PUBLIC_ENABLED: 'true' });
   assert.equal(oversizedAi.status, 413);
   const disabledSandbox = await worker.fetch(new Request('https://api.clervo.dev/v1/sandbox/execute', { method: 'OPTIONS' }), { CLERVO_AI_PUBLIC_ENABLED: 'true' });

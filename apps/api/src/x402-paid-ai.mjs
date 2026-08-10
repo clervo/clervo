@@ -32,11 +32,12 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
         overloadCode: 'ai_overloaded',
         prepare() {
           const quote = publicPricing.quote({ normalized, operationId, now });
+          const deadlineMs = ['ai.video', 'ai.music', 'ai.virtual_try_on'].includes(normalized.productId) ? 600_000 : 120_000;
           const request = createAiExecutionRequest({
             normalized,
             operationId,
             maximumSupplierCost: quote.decision.maximumSupplierCost,
-            deadlineAt: new Date(Date.parse(now) + 120_000).toISOString(),
+            deadlineAt: new Date(Date.parse(now) + deadlineMs).toISOString(),
           });
           prepared = Object.freeze({ quote, request });
           return Object.freeze({ pricing: quote.pricing, executionInput: request });
@@ -51,6 +52,7 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
             routes: prepared.quote.routes,
             adapters: executionAdapters,
             runtimeBindings: prepared.quote.runtimeBindings ?? runtimeBindings,
+            aliasTargets: prepared.quote.aliasTargets,
             startedAt: now,
             clock: () => Date.parse(now),
             monitor,

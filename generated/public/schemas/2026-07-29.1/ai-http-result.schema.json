@@ -37,6 +37,18 @@
         "audioCharacters": {
           "type": "integer",
           "minimum": 0
+        },
+        "videoSeconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "musicGenerations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "virtualTryOnImages": {
+          "type": "integer",
+          "minimum": 0
         }
       },
       "additionalProperties": false
@@ -237,6 +249,143 @@
             }
           },
           "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "artifact"
+          ],
+          "properties": {
+            "kind": {
+              "const": "video"
+            },
+            "artifact": {
+              "type": "object",
+              "required": [
+                "artifactUri",
+                "sha256",
+                "mimeType",
+                "bytes",
+                "durationSeconds"
+              ],
+              "properties": {
+                "artifactUri": {
+                  "type": "string",
+                  "pattern": "^artifact://[A-Za-z0-9._/-]{8,256}$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                },
+                "mimeType": {
+                  "const": "video/mp4"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "durationSeconds": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "artifact"
+          ],
+          "properties": {
+            "kind": {
+              "const": "music"
+            },
+            "artifact": {
+              "type": "object",
+              "required": [
+                "artifactUri",
+                "sha256",
+                "mimeType",
+                "bytes",
+                "durationSeconds"
+              ],
+              "properties": {
+                "artifactUri": {
+                  "type": "string",
+                  "pattern": "^artifact://[A-Za-z0-9._/-]{8,256}$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                },
+                "mimeType": {
+                  "enum": [
+                    "audio/mpeg",
+                    "audio/wav"
+                  ]
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "durationSeconds": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "artifact"
+          ],
+          "properties": {
+            "kind": {
+              "const": "virtual_try_on"
+            },
+            "artifact": {
+              "type": "object",
+              "required": [
+                "artifactUri",
+                "sha256",
+                "mimeType",
+                "bytes"
+              ],
+              "properties": {
+                "artifactUri": {
+                  "type": "string",
+                  "pattern": "^artifact://[A-Za-z0-9._/-]{8,256}$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                },
+                "mimeType": {
+                  "enum": [
+                    "image/png",
+                    "image/jpeg",
+                    "image/webp"
+                  ]
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
         }
       ]
     }
@@ -254,8 +403,7 @@
     "replayed",
     "fundingMode",
     "requestHash",
-    "result",
-    "receipt"
+    "result"
   ],
   "properties": {
     "contractVersion": {
@@ -276,7 +424,10 @@
         "ai.chat",
         "ai.embed",
         "ai.image",
-        "ai.speech"
+        "ai.speech",
+        "ai.video",
+        "ai.music",
+        "ai.virtual_try_on"
       ]
     },
     "model": {
@@ -290,13 +441,19 @@
       "maxLength": 160
     },
     "state": {
-      "const": "RECEIPTED"
+      "enum": [
+        "RECEIPTED",
+        "COMPLETED"
+      ]
     },
     "replayed": {
       "type": "boolean"
     },
     "fundingMode": {
-      "const": "paid"
+      "enum": [
+        "paid",
+        "free"
+      ]
     },
     "requestHash": {
       "type": "string",
@@ -344,5 +501,53 @@
       "$ref": "operation-receipt.schema.json"
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "fundingMode": {
+            "const": "paid"
+          }
+        },
+        "required": [
+          "fundingMode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "state": {
+            "const": "RECEIPTED"
+          }
+        },
+        "required": [
+          "receipt"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "fundingMode": {
+            "const": "free"
+          }
+        },
+        "required": [
+          "fundingMode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "state": {
+            "const": "COMPLETED"
+          }
+        },
+        "not": {
+          "required": [
+            "receipt"
+          ]
+        }
+      }
+    }
+  ],
   "additionalProperties": false
 }

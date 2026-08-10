@@ -105,7 +105,7 @@ export class CloudflareAuraSpeechAdapter implements AiExecutionAdapter {
       // This identity is endpoint-bound. Workers AI does not echo a model label.
       modelIdentity: exactModelId,
       completedAt: this.#clock(),
-      usage: Object.freeze({ inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: input.request.input.input.length }),
+      usage: Object.freeze({ inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: input.request.input.input.length, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 }),
       output: Object.freeze({ kind: 'speech', artifact: Object.freeze({ ...stored, mimeType: 'audio/mpeg', bytes: audio.byteLength }) }),
     });
   }

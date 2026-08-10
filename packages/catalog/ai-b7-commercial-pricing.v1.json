@@ -1,0 +1,1950 @@
+{
+  "schemaVersion": "ai-b7-commercial-pricing.v1",
+  "revision": "b7price_258467e861fcb20f04e91d20",
+  "effectiveAt": "2026-08-10T19:09:36.000Z",
+  "validUntil": "2026-09-09T19:09:36.000Z",
+  "currency": "USDC",
+  "decimals": 6,
+  "minimumBillableAtomic": "1000",
+  "providerNamesPublic": false,
+  "policy": {
+    "strategicDiscountBasisPoints": 5000,
+    "normalDiscountBasisPoints": 2500,
+    "extremelyCheapDiscountBasisPoints": 1000,
+    "internalSupplierCostDeterminesCustomerPrice": false,
+    "freeRequiresExactMarketEvidenceAndZeroCurrentSupplyCost": true
+  },
+  "freeTier": {
+    "enabled": true,
+    "perWalletDailyRequests": 20,
+    "globalDailyRequests": 2000,
+    "automaticPaidOverageAllowed": false
+  },
+  "models": [
+    {
+      "modelId": "clervo/allam-2-7b",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "economy_market_basket_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 360000,
+        "reasoningTokenMicrosPerMillion": 360000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/claude-haiku-4-5-20251001",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "advanced_market_basket_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 750000,
+        "cachedInputTokenMicrosPerMillion": 750000,
+        "outputTokenMicrosPerMillion": 3000000,
+        "reasoningTokenMicrosPerMillion": 3000000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/claude-opus-4-6",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_72f11672da30673cc461"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 2500000,
+        "cachedInputTokenMicrosPerMillion": 2500000,
+        "outputTokenMicrosPerMillion": 12500000,
+        "reasoningTokenMicrosPerMillion": 12500000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/claude-opus-4-7",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_25fd6318eb57612d9d49"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 2500000,
+        "cachedInputTokenMicrosPerMillion": 2500000,
+        "outputTokenMicrosPerMillion": 12500000,
+        "reasoningTokenMicrosPerMillion": 12500000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/claude-opus-4-8",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_838e82f7e0fa81d3d671"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 2500000,
+        "cachedInputTokenMicrosPerMillion": 2500000,
+        "outputTokenMicrosPerMillion": 12500000,
+        "reasoningTokenMicrosPerMillion": 12500000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/claude-opus-5",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_8fe6882b5971db9e00fd"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 2500000,
+        "cachedInputTokenMicrosPerMillion": 2500000,
+        "outputTokenMicrosPerMillion": 12500000,
+        "reasoningTokenMicrosPerMillion": 12500000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/claude-sonnet-4-6",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_aed092baa088e189f359"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 1500000,
+        "cachedInputTokenMicrosPerMillion": 1500000,
+        "outputTokenMicrosPerMillion": 7500000,
+        "reasoningTokenMicrosPerMillion": 7500000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/claude-sonnet-5",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_3287aa9cad2d5bd8a99a"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 1000000,
+        "cachedInputTokenMicrosPerMillion": 1000000,
+        "outputTokenMicrosPerMillion": 5000000,
+        "reasoningTokenMicrosPerMillion": 5000000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/deepseek-r1",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_fb8366c1da55169e01d1"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 525000,
+        "cachedInputTokenMicrosPerMillion": 525000,
+        "outputTokenMicrosPerMillion": 1875000,
+        "reasoningTokenMicrosPerMillion": 1875000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/deepseek-v3",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "standard_market_basket_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 225000,
+        "cachedInputTokenMicrosPerMillion": 225000,
+        "outputTokenMicrosPerMillion": 900000,
+        "reasoningTokenMicrosPerMillion": 900000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/deepseek-v3.1-terminus",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_e6d830650eba2e2e6595"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 202500,
+        "cachedInputTokenMicrosPerMillion": 202500,
+        "outputTokenMicrosPerMillion": 750000,
+        "reasoningTokenMicrosPerMillion": 750000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/deepseek-v3.2-exp",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_47c3d99abd4526fef92b"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 202500,
+        "cachedInputTokenMicrosPerMillion": 202500,
+        "outputTokenMicrosPerMillion": 307500,
+        "reasoningTokenMicrosPerMillion": 307500,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/deepseek-v4-pro",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_4f4584bb466ac2b191b1"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 217500,
+        "cachedInputTokenMicrosPerMillion": 217500,
+        "outputTokenMicrosPerMillion": 435000,
+        "reasoningTokenMicrosPerMillion": 435000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-2.5-flash",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_4fc628b2ddba0f61094a"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 225000,
+        "cachedInputTokenMicrosPerMillion": 225000,
+        "outputTokenMicrosPerMillion": 1875000,
+        "reasoningTokenMicrosPerMillion": 1875000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-2.5-flash-image",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_1k_image",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_10fd69bfa3b9e5183e6e"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 29250,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-2.5-flash-lite-preview-tts",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "durable_tts_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_tts_floor_20260810"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 37500,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-2.5-flash-tts",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "durable_tts_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_tts_floor_20260810"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 37500,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-2.5-pro-tts",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "durable_tts_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_tts_floor_20260810"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 37500,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-3-pro-image",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_1k_image",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_384feb5fc7b4547003e1"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 100500,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-3.1-flash-image",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_1k_image",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_e09090d6e5081c0357ec"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 50250,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-3.1-flash-lite-image",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_1k_image",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_2b9dce07b85b4536a12f"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 25500,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-3.1-flash-tts-preview",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "durable_tts_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_tts_floor_20260810"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 37500,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-3.5-flash-lite",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_4085dbdf50ad5574fd5c"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 225000,
+        "cachedInputTokenMicrosPerMillion": 225000,
+        "outputTokenMicrosPerMillion": 1875000,
+        "reasoningTokenMicrosPerMillion": 1875000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-embedding-001",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "official_embedding_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_official_embedding_20260810"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 135000,
+        "cachedInputTokenMicrosPerMillion": 135000,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemini-omni-flash-preview",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "durable_market_video_second_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_b71e6a6fd17b85ac4520"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 37500,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemma-4-12b-it",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "economy_market_basket_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 360000,
+        "reasoningTokenMicrosPerMillion": 360000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemma-4-26b-a4b-it",
+      "billingMode": "free",
+      "pricingClass": "durable_market_free",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 10000,
+      "evidenceRefs": [
+        "market_83d922df701ea7cd12e8"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gemma-4-31b-it",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_4eacb1a1a38741d6ce29"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 306000,
+        "reasoningTokenMicrosPerMillion": 306000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/glm-4.5-air",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_c7239caa1348eca9cfd2"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 97500,
+        "cachedInputTokenMicrosPerMillion": 97500,
+        "outputTokenMicrosPerMillion": 637500,
+        "reasoningTokenMicrosPerMillion": 637500,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/glm-5.2",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_4505c5d507476def0f1d"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 265300,
+        "cachedInputTokenMicrosPerMillion": 265300,
+        "outputTokenMicrosPerMillion": 833800,
+        "reasoningTokenMicrosPerMillion": 833800,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gpt-5.6-luna",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_2576d26f53ae906e49e6"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 50000,
+        "cachedInputTokenMicrosPerMillion": 50000,
+        "outputTokenMicrosPerMillion": 300000,
+        "reasoningTokenMicrosPerMillion": 300000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gpt-5.6-sol",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_d3aaf9b56ae2f50b9978"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 2500000,
+        "cachedInputTokenMicrosPerMillion": 2500000,
+        "outputTokenMicrosPerMillion": 15000000,
+        "reasoningTokenMicrosPerMillion": 15000000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gpt-5.6-terra",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_51a043e469b666b63b3e"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 500000,
+        "cachedInputTokenMicrosPerMillion": 500000,
+        "outputTokenMicrosPerMillion": 3000000,
+        "reasoningTokenMicrosPerMillion": 3000000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gpt-oss-120b",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_9745ffc0f7c6b046b46b"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 33300,
+        "cachedInputTokenMicrosPerMillion": 33300,
+        "outputTokenMicrosPerMillion": 153000,
+        "reasoningTokenMicrosPerMillion": 153000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gpt-oss-20b",
+      "billingMode": "free",
+      "pricingClass": "durable_market_free",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 10000,
+      "evidenceRefs": [
+        "market_a10e3e153fd92adb73b5"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/gpt-oss-safeguard-20b",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_4fcb5ae427234a1aa7c9"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 67500,
+        "cachedInputTokenMicrosPerMillion": 67500,
+        "outputTokenMicrosPerMillion": 270000,
+        "reasoningTokenMicrosPerMillion": 270000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/hunyuan-a13b-instruct",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_d4006d20c4dc3ca9a73f"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 105000,
+        "cachedInputTokenMicrosPerMillion": 105000,
+        "outputTokenMicrosPerMillion": 427500,
+        "reasoningTokenMicrosPerMillion": 427500,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/hy3",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_87f0d483024603b51669"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 99000,
+        "cachedInputTokenMicrosPerMillion": 99000,
+        "outputTokenMicrosPerMillion": 396000,
+        "reasoningTokenMicrosPerMillion": 396000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/kimi-k2.5",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_64d0f0ef83fdc11b4386"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 427500,
+        "cachedInputTokenMicrosPerMillion": 427500,
+        "outputTokenMicrosPerMillion": 2137500,
+        "reasoningTokenMicrosPerMillion": 2137500,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/kimi-k2.6",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_35e829d707f0ba7b435e"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 434625,
+        "cachedInputTokenMicrosPerMillion": 434625,
+        "outputTokenMicrosPerMillion": 1830000,
+        "reasoningTokenMicrosPerMillion": 1830000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/kimi-k2.7-code",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_13f73688cb2b85adc2ae"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 525000,
+        "cachedInputTokenMicrosPerMillion": 525000,
+        "outputTokenMicrosPerMillion": 2625000,
+        "reasoningTokenMicrosPerMillion": 2625000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/kimi-k3",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_47881d73bcdaa9b48eb5"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 1500000,
+        "cachedInputTokenMicrosPerMillion": 1500000,
+        "outputTokenMicrosPerMillion": 7500000,
+        "reasoningTokenMicrosPerMillion": 7500000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/laguna-s-2.1",
+      "billingMode": "free",
+      "pricingClass": "durable_market_free",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 10000,
+      "evidenceRefs": [
+        "market_991d59e440a6aeadb3cc"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/ling-flash-2.0",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "economy_market_basket_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 360000,
+        "reasoningTokenMicrosPerMillion": 360000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/llama-3.1-70b-instruct",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_cec2e8151a46d6f1396c"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 300000,
+        "cachedInputTokenMicrosPerMillion": 300000,
+        "outputTokenMicrosPerMillion": 300000,
+        "reasoningTokenMicrosPerMillion": 300000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/llama-3.1-8b-instruct",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_93d1ba132ddbba7823c6"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 45000,
+        "cachedInputTokenMicrosPerMillion": 45000,
+        "outputTokenMicrosPerMillion": 72000,
+        "reasoningTokenMicrosPerMillion": 72000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/llama-3.1-nemoguard-8b-content-safety",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "economy_market_basket_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 360000,
+        "reasoningTokenMicrosPerMillion": 360000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/llama-3.1-nemotron-nano-vl-8b-v1",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "economy_market_basket_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 360000,
+        "reasoningTokenMicrosPerMillion": 360000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/llama-3.1-nemotron-safety-guard-8b-v3",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "economy_market_basket_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 360000,
+        "reasoningTokenMicrosPerMillion": 360000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/llama-3.2-11b-vision-instruct",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "advanced_market_basket_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 750000,
+        "cachedInputTokenMicrosPerMillion": 750000,
+        "outputTokenMicrosPerMillion": 3000000,
+        "reasoningTokenMicrosPerMillion": 3000000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/llama-3.3-70b-instruct",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_4f89aba1fd88330ce627"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 288000,
+        "reasoningTokenMicrosPerMillion": 288000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/longcat-2.0",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_86725263ee227dd754ca"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 225000,
+        "cachedInputTokenMicrosPerMillion": 225000,
+        "outputTokenMicrosPerMillion": 900000,
+        "reasoningTokenMicrosPerMillion": 900000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/lyria-3-clip-preview",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_30_second_clip",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_c300c4f86a19239f7107"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 30000,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/lyria-3-pro-preview",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_full_song",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_02ad40dd55e913de003a"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 60000,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/minimax-m2.5",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_57a7179e61237861ea03"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 110000,
+        "cachedInputTokenMicrosPerMillion": 110000,
+        "outputTokenMicrosPerMillion": 450000,
+        "reasoningTokenMicrosPerMillion": 450000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/minimax-m3",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_ea9717f48a5073035684"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 225000,
+        "cachedInputTokenMicrosPerMillion": 225000,
+        "outputTokenMicrosPerMillion": 900000,
+        "reasoningTokenMicrosPerMillion": 900000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/mistral-medium-2505",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "standard_market_basket_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 225000,
+        "cachedInputTokenMicrosPerMillion": 225000,
+        "outputTokenMicrosPerMillion": 900000,
+        "reasoningTokenMicrosPerMillion": 900000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/mistral-medium-2508",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "standard_market_basket_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 225000,
+        "cachedInputTokenMicrosPerMillion": 225000,
+        "outputTokenMicrosPerMillion": 900000,
+        "reasoningTokenMicrosPerMillion": 900000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/multimodalembedding-001",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "official_embedding_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_official_embedding_20260810"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 720000,
+        "cachedInputTokenMicrosPerMillion": 720000,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/nemotron-3-embed-1b",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "official_embedding_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_official_embedding_20260810"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "billingMode": "free",
+      "pricingClass": "durable_market_free",
+      "marketBasis": "economy_market_basket_floor",
+      "discountBasisPoints": 10000,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/nemotron-3.5-content-safety",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "economy_market_basket_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 360000,
+        "reasoningTokenMicrosPerMillion": 360000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/nex-n2-pro",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_3beedf23a42442c9d993"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 187500,
+        "cachedInputTokenMicrosPerMillion": 187500,
+        "outputTokenMicrosPerMillion": 750000,
+        "reasoningTokenMicrosPerMillion": 750000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/nv-embed-v1",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "official_embedding_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_official_embedding_20260810"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen2.5-72b-instruct",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_5a60e739abce736d1e74"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 270000,
+        "cachedInputTokenMicrosPerMillion": 270000,
+        "outputTokenMicrosPerMillion": 300000,
+        "reasoningTokenMicrosPerMillion": 300000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3-14b",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_7ae852455d7029bde8e2"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 180000,
+        "reasoningTokenMicrosPerMillion": 180000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3-30b-a3b-instruct-2507",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_ff3b888af13c835bcef7"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 43335,
+        "cachedInputTokenMicrosPerMillion": 43335,
+        "outputTokenMicrosPerMillion": 173745,
+        "reasoningTokenMicrosPerMillion": 173745,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3-32b",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_cddcae523b229c34add8"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 72000,
+        "cachedInputTokenMicrosPerMillion": 72000,
+        "outputTokenMicrosPerMillion": 252000,
+        "reasoningTokenMicrosPerMillion": 252000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3-8b",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_437075b3bd6c191f32cb"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 87750,
+        "cachedInputTokenMicrosPerMillion": 87750,
+        "outputTokenMicrosPerMillion": 341250,
+        "reasoningTokenMicrosPerMillion": 341250,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3-coder-30b-a3b-instruct",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_ed6f0e189870466a64ba"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 63000,
+        "cachedInputTokenMicrosPerMillion": 63000,
+        "outputTokenMicrosPerMillion": 252000,
+        "reasoningTokenMicrosPerMillion": 252000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3-vl-30b-a3b-instruct",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_1be4e2b7317b64ea85bf"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 112500,
+        "cachedInputTokenMicrosPerMillion": 112500,
+        "outputTokenMicrosPerMillion": 450000,
+        "reasoningTokenMicrosPerMillion": 450000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3-vl-30b-a3b-thinking",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_bad22a4742b796631273"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 150000,
+        "cachedInputTokenMicrosPerMillion": 150000,
+        "outputTokenMicrosPerMillion": 1800000,
+        "reasoningTokenMicrosPerMillion": 1800000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3-vl-32b-instruct",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_aedee32da985a77575d4"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 78000,
+        "cachedInputTokenMicrosPerMillion": 78000,
+        "outputTokenMicrosPerMillion": 312000,
+        "reasoningTokenMicrosPerMillion": 312000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3-vl-32b-thinking",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "standard_market_basket_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 225000,
+        "cachedInputTokenMicrosPerMillion": 225000,
+        "outputTokenMicrosPerMillion": 900000,
+        "reasoningTokenMicrosPerMillion": 900000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3-vl-8b-instruct",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_0437982b72c15a88f457"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 87750,
+        "cachedInputTokenMicrosPerMillion": 87750,
+        "outputTokenMicrosPerMillion": 341250,
+        "reasoningTokenMicrosPerMillion": 341250,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3.5-397b-a17b",
+      "billingMode": "metered",
+      "pricingClass": "strategic_half_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 5000,
+      "evidenceRefs": [
+        "market_c3fae3e0852478a12930"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 195000,
+        "cachedInputTokenMicrosPerMillion": 195000,
+        "outputTokenMicrosPerMillion": 1170000,
+        "reasoningTokenMicrosPerMillion": 1170000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/qwen3.6-27b",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_durable_market_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_dd81940188f7f92fcb6e"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 450000,
+        "cachedInputTokenMicrosPerMillion": 450000,
+        "outputTokenMicrosPerMillion": 2700000,
+        "reasoningTokenMicrosPerMillion": 2700000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/seed-oss-36b-instruct",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "standard_market_basket_floor",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 225000,
+        "cachedInputTokenMicrosPerMillion": 225000,
+        "outputTokenMicrosPerMillion": 900000,
+        "reasoningTokenMicrosPerMillion": 900000,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/text-embedding-005",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "official_embedding_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_official_embedding_20260810"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/text-embedding-large-exp-03-07",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "official_embedding_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_official_embedding_20260810"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/text-multilingual-embedding-002",
+      "billingMode": "metered",
+      "pricingClass": "extremely_cheap_sensible_undercut",
+      "marketBasis": "official_embedding_market_floor",
+      "discountBasisPoints": 1000,
+      "evidenceRefs": [
+        "market_official_embedding_20260810"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 90000,
+        "cachedInputTokenMicrosPerMillion": 90000,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/veo-3.1-fast-generate-001",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_720p_video_with_audio_second",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_c98a38a63b213f8c2663"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 75000,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/veo-3.1-generate-001",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_720p_video_with_audio_second",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_4b294064479b2ec04097"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 300000,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/veo-3.1-lite-generate-001",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_720p_video_with_audio_second",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_357245b8b165ac20bc33"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 37500,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 0
+      }
+    },
+    {
+      "modelId": "clervo/virtual-try-on-001",
+      "billingMode": "metered",
+      "pricingClass": "normal_quarter_below_market",
+      "marketBasis": "exact_model_image",
+      "discountBasisPoints": 2500,
+      "evidenceRefs": [
+        "market_ba331a5c0319bc753f1f"
+      ],
+      "customerPricing": {
+        "currency": "USD",
+        "decimals": 6,
+        "inputTokenMicrosPerMillion": 0,
+        "cachedInputTokenMicrosPerMillion": 0,
+        "outputTokenMicrosPerMillion": 0,
+        "reasoningTokenMicrosPerMillion": 0,
+        "imageMicrosEach": 0,
+        "audioMicrosPerThousandCharacters": 0,
+        "videoMicrosPerSecond": 0,
+        "musicMicrosPerGeneration": 0,
+        "virtualTryOnMicrosPerImage": 45000
+      }
+    }
+  ]
+}

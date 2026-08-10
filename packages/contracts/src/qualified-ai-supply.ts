@@ -6,13 +6,13 @@ import type { JsonValue } from './types.js';
 export const QUALIFIED_AI_SUPPLY_CATALOG_SCHEMA_VERSION = 'qualified-ai-supply-catalog.v1' as const;
 export const AI_CUSTOMER_IDENTITY_REGISTRY_SCHEMA_VERSION = 'ai-customer-identity-registry.v1' as const;
 
-export const aiSupplyModalities = ['chat', 'embedding', 'image', 'speech'] as const;
+export const aiSupplyModalities = ['chat', 'embedding', 'image', 'speech', 'video', 'music', 'virtual_try_on'] as const;
 export type AiSupplyModality = (typeof aiSupplyModalities)[number];
 
 export const aiSupplyInputTypes = ['text', 'image', 'audio'] as const;
 export type AiSupplyInputType = (typeof aiSupplyInputTypes)[number];
 
-export const aiSupplyOutputTypes = ['text', 'embedding', 'image', 'audio'] as const;
+export const aiSupplyOutputTypes = ['text', 'embedding', 'image', 'audio', 'video'] as const;
 export type AiSupplyOutputType = (typeof aiSupplyOutputTypes)[number];
 
 export interface QualifiedAiSupplyModel {
@@ -84,6 +84,9 @@ const modalityProduct: Readonly<Record<AiSupplyModality, AiProductId>> = Object.
   embedding: 'ai.embed',
   image: 'ai.image',
   speech: 'ai.speech',
+  video: 'ai.video',
+  music: 'ai.music',
+  virtual_try_on: 'ai.virtual_try_on',
 });
 
 function freezeDeep<T>(value: T): Readonly<T> {
@@ -133,14 +136,20 @@ function uniqueEnum<T extends string>(value: unknown, allowed: readonly T[], cod
 
 function pricing(value: unknown): Readonly<AiRoutePricing> {
   const input = record(value, 'qualified_ai_supply_pricing_invalid');
-  const keys = ['currency', 'decimals', 'inputTokenMicrosPerMillion', 'cachedInputTokenMicrosPerMillion', 'outputTokenMicrosPerMillion', 'reasoningTokenMicrosPerMillion', 'imageMicrosEach', 'audioMicrosPerThousandCharacters'];
+  const keys = ['currency', 'decimals', 'inputTokenMicrosPerMillion', 'cachedInputTokenMicrosPerMillion', 'outputTokenMicrosPerMillion', 'reasoningTokenMicrosPerMillion', 'imageMicrosEach', 'audioMicrosPerThousandCharacters', 'videoMicrosPerSecond', 'musicMicrosPerGeneration', 'virtualTryOnMicrosPerImage'];
+  const addedRates = new Set(['videoMicrosPerSecond', 'musicMicrosPerGeneration', 'virtualTryOnMicrosPerImage']);
   exactKeys(input, keys, 'qualified_ai_supply_pricing_additional_property');
   if (input.currency !== 'USD' || input.decimals !== 6) throw new TypeError('qualified_ai_supply_pricing_currency_invalid');
   for (const key of keys.slice(2)) {
-    const amount = input[key];
+    const amount = input[key] ?? (addedRates.has(key) ? 0 : undefined);
     if (!Number.isSafeInteger(amount) || (amount as number) < 0 || (amount as number) > 1_000_000_000_000) throw new TypeError('qualified_ai_supply_pricing_amount_invalid');
   }
-  return freezeDeep(structuredClone(input) as unknown as AiRoutePricing);
+  return freezeDeep({
+    ...structuredClone(input),
+    videoMicrosPerSecond: input.videoMicrosPerSecond ?? 0,
+    musicMicrosPerGeneration: input.musicMicrosPerGeneration ?? 0,
+    virtualTryOnMicrosPerImage: input.virtualTryOnMicrosPerImage ?? 0,
+  } as unknown as AiRoutePricing);
 }
 
 function parseModel(value: unknown): Readonly<QualifiedAiSupplyModel> {
@@ -166,6 +175,9 @@ function parseModel(value: unknown): Readonly<QualifiedAiSupplyModel> {
   if (modalities.includes('embedding') && !capabilities.includes('embedding_output')) throw new TypeError('qualified_ai_supply_embedding_capabilities_invalid');
   if (modalities.includes('image') && !capabilities.includes('image_output')) throw new TypeError('qualified_ai_supply_image_capabilities_invalid');
   if (modalities.includes('speech') && !capabilities.includes('audio_output')) throw new TypeError('qualified_ai_supply_speech_capabilities_invalid');
+  if (modalities.includes('video') && !capabilities.includes('video_output')) throw new TypeError('qualified_ai_supply_video_capabilities_invalid');
+  if (modalities.includes('music') && (!capabilities.includes('audio_output') || !capabilities.includes('music_output'))) throw new TypeError('qualified_ai_supply_music_capabilities_invalid');
+  if (modalities.includes('virtual_try_on') && (!capabilities.includes('image_input') || !capabilities.includes('image_output'))) throw new TypeError('qualified_ai_supply_virtual_try_on_capabilities_invalid');
 
   const limitsInput = record(input.limits, 'qualified_ai_supply_limits_invalid');
   exactKeys(limitsInput, ['contextTokens', 'maximumOutputTokens'], 'qualified_ai_supply_limits_additional_property');
