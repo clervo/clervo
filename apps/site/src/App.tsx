@@ -10,7 +10,6 @@ import { Build } from './pages/Build';
 import { Capability } from './pages/Capability';
 import { Catalog } from './pages/Catalog';
 import { Changelog } from './pages/Changelog';
-import { Compare } from './pages/Compare';
 import { Home } from './pages/Home';
 import { Guide, type GuideTopic } from './pages/Guide';
 import { Proof } from './pages/Proof';
@@ -61,14 +60,14 @@ export function App() {
     else if (pathname.startsWith('/product') || pathname === '/platform') setPhase('qualified');
     else if (pathname.startsWith('/build')) setPhase('approval');
     else if (pathname === '/pricing') setPhase('approval');
-    else if (pathname.startsWith('/status') || pathname === '/research' || pathname === '/changelog' || pathname === '/compare/blockrun') setPhase('verified');
+    else if (pathname.startsWith('/status') || pathname === '/research' || pathname === '/changelog') setPhase('verified');
     else if (['/benchmarks', '/security', '/legal'].includes(pathname)) setPhase('verified');
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [activation.receiptInspected, pathname]);
 
   useEffect(() => {
     const exactTitles: Record<string, string> = {
-      '/': 'Outcome infrastructure for agents',
+      '/': 'Outcome infrastructure for AI agents',
       '/start': 'Set up Clervo',
       '/catalog': 'Live capability catalog',
       '/research': 'Research outcome',
@@ -89,7 +88,6 @@ export function App() {
       '/legal': 'Legal boundaries',
       '/status': 'Product status',
       '/changelog': 'Changelog',
-      '/compare/blockrun': 'Clervo and BlockRun',
       '/products/search': 'Research product core',
       '/products/ai': 'AI product core',
       '/products/sandbox': 'Secure Sandbox product core',
@@ -113,7 +111,7 @@ export function App() {
     }
     canonical.href = `https://clervo.dev${pathname === '/' ? '/' : `${pathname}/`}`;
     const description = pathname === '/'
-      ? 'Clervo is outcome infrastructure for agents: one bounded job in, one inspectable result out.'
+      ? 'Clervo is outcome infrastructure for AI agents. Give your agent a task. Get a verified result.'
       : `${routeTitle} from Clervo, with engineering state, customer lifecycle, and commercial proof kept separate.`;
     let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (meta !== null) meta.content = description;
@@ -167,7 +165,6 @@ export function App() {
     }
     if (pathname === '/status') return <Status onPhase={updatePhase} />;
     if (pathname === '/changelog') return <Changelog onPhase={updatePhase} />;
-    if (pathname === '/compare/blockrun') return <Compare onPhase={updatePhase} />;
     if (pathname === '/trust') return <TrustOverview onPhase={updatePhase} />;
     const trustTopic = pathname.slice(1) as TrustTopic;
     if (['pricing', 'benchmarks', 'security', 'legal'].includes(trustTopic)) {
