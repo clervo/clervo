@@ -33,7 +33,7 @@ jobs:
     env:
       RELEASE_COMMIT: ${{ inputs.release_commit }}
       RELEASE_CONFIRMATION: ${{ inputs.confirmation }}
-      EXPECTED_CONFIRMATION: publish @clervo/sdk@0.3.0 @clervo/mcp@0.3.0 clervo-sdk@0.2.0
+      EXPECTED_CONFIRMATION: publish @clervo/sdk@0.4.0 @clervo/mcp@0.4.0 clervo-sdk@0.3.0
     steps:
       - name: Check out the exact requested commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -80,9 +80,9 @@ jobs:
           npm install --global npm@11.18.0
           test "$(npm --version)" = "11.18.0"
       - name: Publish TypeScript SDK with provenance
-        run: npm publish release-artifacts/npm/clervo-sdk-0.3.0.tgz --access public
+        run: npm publish release-artifacts/npm/clervo-sdk-0.4.0.tgz --access public
       - name: Publish MCP after its exact SDK dependency
-        run: npm publish release-artifacts/npm/clervo-mcp-0.3.0.tgz --access public
+        run: npm publish release-artifacts/npm/clervo-mcp-0.4.0.tgz --access public
       - name: Publish Python distributions with provenance
         uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
         with:

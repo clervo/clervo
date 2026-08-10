@@ -1,34 +1,32 @@
 # `@clervo/mcp`
 
-Local stdio MCP server for Clervo's frozen distribution candidate.
+Stdio MCP server for the live Clervo API. It exposes four bounded tools:
 
-It exposes exactly two tools:
-
-- `search_web` → `search.web`
-- `search_answer` → `search.answer`
-
-Set `CLERVO_BASE_URL` to an explicitly selected Clervo preview endpoint. No
-public deployment is assumed. The tools never sign, pay, retry payment, or
-convert a non-payable `402` challenge into success.
+- `search_web` → raw cited Search;
+- `search_answer` → cited synthesis;
+- `models_list` → the authoritative provider-neutral AI catalog;
+- `ai_execute` → normalized free execution or an exact paid challenge.
 
 ```json
 {
   "mcpServers": {
     "clervo": {
       "command": "npx",
-      "args": ["-y", "@clervo/mcp"],
-      "env": {
-        "CLERVO_BASE_URL": "http://127.0.0.1:8080"
-      }
+      "args": ["-y", "@clervo/mcp"]
     }
   }
 }
 ```
 
-The package writes protocol messages to stdout and operational failures to
-stderr only.
+The default origin is `https://api.clervo.dev`. Set `CLERVO_BASE_URL` only for
+another HTTPS deployment or loopback development.
 
-Known future payment failures include the same single recovery action as both
-SDKs. The server never performs that action, signs, pays, or retries on the
-agent's behalf. Unknown settlement and payment timeouts remain blocked until
-the original idempotency key is reconciled.
+`models_list` publishes stable IDs, capabilities, health, availability,
+free/paid state, pricing, and commerce metadata. `ai_execute` can run a free
+model. For a paid model it returns the exact `402` challenge as an MCP error; it
+never creates a wallet, signs, pays, or retries a payment on the agent's behalf.
+Use a stable idempotency key for safe recovery.
+
+The package writes MCP protocol messages to stdout and operational failures to
+stderr only. This client code is MIT licensed; use of the hosted Clervo service
+remains subject to its service terms.

@@ -46,7 +46,7 @@ jobs:
           test "${#RELEASE_COMMIT}" -eq 40
           test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT"
           git merge-base --is-ancestor "$RELEASE_COMMIT" origin/main
-          expected="publish @clervo/router@0.1.0 from $RELEASE_COMMIT via trusted"
+          expected="publish @clervo/router@0.2.0 from $RELEASE_COMMIT via trusted"
           test "$RELEASE_CONFIRMATION" = "$expected"
           test -z "$(git status --short)"
 
@@ -74,7 +74,7 @@ jobs:
           const packageMetadata = JSON.parse(await readFile('packages/router/package.json', 'utf8'));
           const expected = {
             name: '@clervo/router',
-            version: '0.1.0',
+            version: '0.2.0',
             repository: 'git+https://github.com/clervo/clervo.git',
             homepage: 'https://github.com/clervo/clervo/tree/main/packages/router#readme',
           };
@@ -93,7 +93,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/router-release"
           archive_name="$(npm pack ./packages/router --ignore-scripts --pack-destination "$RUNNER_TEMP/router-release" --silent)"
           ROUTER_ARCHIVE="$RUNNER_TEMP/router-release/$archive_name"
-          test "$archive_name" = clervo-router-0.1.0.tgz
+          test "$archive_name" = clervo-router-0.2.0.tgz
           test "$(tar -tzf "$ROUTER_ARCHIVE" | wc -l)" -eq 36
           tar -tzf "$ROUTER_ARCHIVE" > "$RUNNER_TEMP/router-release/contents.txt"
           grep -qx 'package/dist/cli.js' "$RUNNER_TEMP/router-release/contents.txt"
@@ -114,13 +114,13 @@ jobs:
           cd "$consumer"
           npm init --yes >/dev/null
           npm install --ignore-scripts "$ROUTER_ARCHIVE"
-          test "$(node --input-type=module -e "import('@clervo/router').then((module) => process.stdout.write(module.CLERVO_ROUTER_VERSION))")" = 0.1.0
-          test "$(./node_modules/.bin/clervo --version)" = 0.1.0
+          test "$(node --input-type=module -e "import('@clervo/router').then((module) => process.stdout.write(module.CLERVO_ROUTER_VERSION))")" = 0.2.0
+          test "$(./node_modules/.bin/clervo --version)" = 0.2.0
           ./node_modules/.bin/clervo --help | grep -q 'A real search result. Free, no wallet, no signup.'
 
       - name: Refuse an already-published immutable version
         run: |
-          status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://registry.npmjs.org/%40clervo%2Frouter/0.1.0)"
+          status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://registry.npmjs.org/%40clervo%2Frouter/0.2.0)"
           test "$status" = 404
 
       - name: Select an OIDC-capable npm release client
@@ -134,10 +134,10 @@ jobs:
       - name: Verify the public registry result
         run: |
           for attempt in $(seq 1 30); do
-            status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://registry.npmjs.org/%40clervo%2Frouter/0.1.0)"
-            published_version="$(npm view @clervo/router@0.1.0 version --registry=https://registry.npmjs.org 2>/dev/null || true)"
-            test "$status" = 200 -a "$published_version" = 0.1.0 && break
+            status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://registry.npmjs.org/%40clervo%2Frouter/0.2.0)"
+            published_version="$(npm view @clervo/router@0.2.0 version --registry=https://registry.npmjs.org 2>/dev/null || true)"
+            test "$status" = 200 -a "$published_version" = 0.2.0 && break
             test "$attempt" -lt 30
             sleep 10
           done
-          test "$(npm view @clervo/router@0.1.0 version --registry=https://registry.npmjs.org)" = 0.1.0
+          test "$(npm view @clervo/router@0.2.0 version --registry=https://registry.npmjs.org)" = 0.2.0

@@ -1,8 +1,8 @@
 {
   "name": "@clervo/mcp",
-  "version": "0.3.0",
-  "description": "Clervo MCP server generated from the frozen two-operation distribution candidate.",
-  "license": "UNLICENSED",
+  "version": "0.4.0",
+  "description": "MCP tools for live Clervo Search and provider-neutral AI.",
+  "license": "MIT",
   "type": "module",
   "keywords": [
     "clervo",
@@ -24,7 +24,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "bin": {
     "clervo-mcp": "./dist/run.js"
@@ -40,7 +41,7 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@clervo/sdk": "0.3.0",
+    "@clervo/sdk": "0.4.0",
     "@modelcontextprotocol/sdk": "1.30.0",
     "zod": "4.4.3"
   },

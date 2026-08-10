@@ -12,6 +12,7 @@ const targets = JSON.parse(await readFile(
   path.join(root, 'packages/distribution/release-targets.v1.json'),
   'utf8',
 ));
+const releasePackages = targets.nextRelease?.packages ?? targets.packages;
 const freeze = JSON.parse(await readFile(
   path.join(root, 'packages/catalog/release-candidate-freeze.v1.json'),
   'utf8',
@@ -35,7 +36,7 @@ try {
   run('npm', ['run', 'build', '--workspace', '@clervo/mcp']);
 
   const npmTarballs = [];
-  for (const target of targets.packages.filter(({ registry }) => registry === 'npm')) {
+  for (const target of releasePackages.filter(({ registry }) => registry === 'npm')) {
     const packed = JSON.parse(run('npm', [
       'pack',
       path.join(root, target.path),
@@ -71,9 +72,9 @@ try {
     "import { ClervoClient, CLERVO_RELEASE_CANDIDATE_ID } from '@clervo/sdk';",
     "import { CLERVO_MCP_TOOLS } from '@clervo/mcp';",
     `if (CLERVO_RELEASE_CANDIDATE_ID !== ${JSON.stringify(freeze.releaseCandidateId)}) throw new Error('candidate_identity_mismatch');`,
-    "if (CLERVO_MCP_TOOLS.map(({ name }) => name).join(',') !== 'search_web,search_answer') throw new Error('mcp_tools_invalid');",
+    "if (CLERVO_MCP_TOOLS.map(({ name }) => name).join(',') !== 'search_web,search_answer,models_list,ai_execute') throw new Error('mcp_tools_invalid');",
     "const client = new ClervoClient({ baseUrl: 'http://127.0.0.1:8080' });",
-    "if (!client.search.web || !client.search.answer) throw new Error('sdk_methods_missing');",
+    "if (!client.search.web || !client.search.answer || !client.models.list || !client.ai.execute) throw new Error('sdk_methods_missing');",
     '',
   ].join('\n'));
   run(process.execPath, ['verify.mjs'], { cwd: nodeConsumer });
@@ -129,6 +130,8 @@ try {
       "client = Clervo(base_url='http://127.0.0.1:8080')",
       'assert callable(client.search.web)',
       'assert callable(client.search.answer)',
+      'assert callable(client.models.list)',
+      'assert callable(client.ai.execute)',
     ].join('; '),
   ]);
 

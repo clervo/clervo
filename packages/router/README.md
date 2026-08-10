@@ -40,7 +40,7 @@ Node 20 or newer.
 
 ```
 clervo search "World Wide Web"
-clervo catalog
+clervo catalog --models
 clervo quote search.web "World Wide Web"
 ```
 
@@ -79,6 +79,18 @@ Then buy one call:
 ```
 clervo run search.web "World Wide Web"
 ```
+
+Provider-neutral AI uses the same quote, receipt, history, replay, and spend
+controls. Select only a stable ID published by the live catalog:
+
+```
+clervo catalog --models
+clervo run ai.chat "Reply with ready" --model clervo/gpt-5.6-luna
+```
+
+The catalog includes chat, embedding, image, speech, video, music, and virtual
+try-on capabilities for SDK callers. This CLI version executes chat; it never
+silently substitutes one canonical model ID for another.
 
 You see the quoted price and confirm before anything is signed. What comes back
 is the result plus a receipt.
@@ -147,10 +159,11 @@ one.
 
 Add `--json` to any command for machine-readable output.
 
-## What this version is not
+## Other clients
 
-This is the command-line path only. The MCP server, the language SDKs, and the
-OpenAI-compatible surface are separate work and are not in this package.
+Use `@clervo/sdk`, `clervo-sdk`, or `@clervo/mcp` when you need the normalized
+multi-modality contract programmatically. All clients consume the same live
+catalog and quote authority.
 
 ## Security
 

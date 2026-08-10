@@ -1,8 +1,8 @@
 {
   "name": "@clervo/sdk",
-  "version": "0.3.0",
-  "description": "Typed Clervo client generated from the frozen distribution candidate.",
-  "license": "UNLICENSED",
+  "version": "0.4.0",
+  "description": "Typed client for live Clervo Search and provider-neutral AI.",
+  "license": "MIT",
   "type": "module",
   "sideEffects": false,
   "keywords": [
@@ -25,7 +25,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "exports": {
     ".": {

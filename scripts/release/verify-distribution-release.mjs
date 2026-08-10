@@ -11,6 +11,7 @@ const publishedMode = process.argv.includes('--published');
 assert.equal(registryMode && publishedMode, false, 'registry preflight and published verification are mutually exclusive');
 const targetPath = path.join(root, 'packages/distribution/release-targets.v1.json');
 const targets = JSON.parse(await readFile(targetPath, 'utf8'));
+const releasePackages = publishedMode ? targets.packages : (targets.nextRelease?.packages ?? targets.packages);
 const expectedRepository = 'https://github.com/clervo/clervo';
 const expectedGitUrl = 'git+https://github.com/clervo/clervo.git';
 
@@ -56,17 +57,19 @@ assert.deepEqual(targets.workflow, {
   environment: 'package-release',
 });
 if (publishedMode) {
-  assert.deepEqual(targets.publication, {
-    state: 'published_verified',
-    sourceCommit: 'd299f08ae70a0a19390050583e14a512f9751172',
-    githubRunId: 30858517518,
-    verifiedAt: '2026-08-03T22:28:10Z',
-  });
+  assert.equal(targets.publication.state, 'published_verified');
+  assert.match(targets.publication.sourceCommit, /^[a-f0-9]{40}$/u);
+  assert.ok(Number.isSafeInteger(targets.publication.githubRunId) && targets.publication.githubRunId > 0);
+  assert.ok(Number.isFinite(Date.parse(targets.publication.verifiedAt)));
+} else {
+  assert.equal(targets.publication.state, 'published_verified');
+  assert.match(targets.publication.sourceCommit, /^[a-f0-9]{40}$/u);
+  assert.equal(targets.nextRelease?.state, 'release_prepared');
 }
 assert.equal(targets.tooling.buildNpmVersion, '10.9.8');
 assert.equal(targets.tooling.publishNpmVersion, '11.18.0');
 assert.equal(targets.tooling.pythonBuildVersion, '1.5.0');
-assert.equal(targets.packages.length, 3);
+assert.equal(releasePackages.length, 3);
 
 const sdk = await json('packages/sdk-typescript/package.json');
 const mcp = await json('packages/mcp/package.json');
@@ -76,7 +79,7 @@ const manifests = new Map([
   ['@clervo/mcp', mcp],
 ]);
 
-for (const target of targets.packages) {
+for (const target of releasePackages) {
   numericVersion(target.version);
   assert.equal(typeof target.path, 'string');
   if (target.registry === 'npm') {
@@ -84,7 +87,7 @@ for (const target of targets.packages) {
     assert.ok(manifest, `unknown npm release target: ${target.name}`);
     assert.equal(manifest.name, target.name);
     assert.equal(manifest.version, target.version);
-    assert.equal(manifest.license, 'UNLICENSED');
+    assert.equal(manifest.license, 'MIT');
     assert.equal(manifest.repository.url, expectedGitUrl);
     assert.equal(manifest.repository.directory, target.path);
     assert.equal(manifest.bugs.url, `${expectedRepository}/issues`);
@@ -120,10 +123,12 @@ for (const staleClaim of [
 ]) {
   assert.doesNotMatch(publicPackageCopy, staleClaim, `stale public package claim: ${staleClaim}`);
 }
-assert.match(publicPackageCopy, /no\s+public(?: API)? deployment is\s+(?:currently )?(?:verified|assumed)/iu);
+assert.match(publicPackageCopy, /live Clervo API/iu);
+assert.match(publicPackageCopy, /provider-neutral AI catalog/iu);
+assert.doesNotMatch(publicPackageCopy, /upstream provider|supplier identity/iu);
 
 if (registryMode || publishedMode) {
-  for (const target of targets.packages) {
+  for (const target of releasePackages) {
     if (target.registry === 'npm') {
       const packument = await fetchJson(`https://registry.npmjs.org/${encodeURIComponent(target.name)}`);
       const versions = Object.keys(packument.versions ?? {});
@@ -135,6 +140,8 @@ if (registryMode || publishedMode) {
       } else {
         const published = packument.versions?.[target.version];
         assert.ok(published, `${target.name}@${target.version} is not published`);
+        assert.match(target.integrity, /^sha512-/u, `${target.name} frozen integrity missing`);
+        assert.equal(target.provenancePredicate, 'https://slsa.dev/provenance/v1', `${target.name} frozen provenance missing`);
         assert.equal(packument['dist-tags']?.latest, target.version, `${target.name} latest tag drift`);
         assert.equal(published.dist?.integrity, target.integrity, `${target.name} registry integrity drift`);
         assert.equal(published.dist?.attestations?.provenance?.predicateType, target.provenancePredicate, `${target.name} provenance drift`);
@@ -150,6 +157,7 @@ if (registryMode || publishedMode) {
         assert.equal(typeof latest, 'string', `${target.name} has no latest registry version`);
         assert.ok(compareVersions(target.version, latest) > 0, `${target.name}==${target.version} does not advance ${latest}`);
       } else {
+        assert.ok(Array.isArray(target.files) && target.files.length === 2, `${target.name} frozen files missing`);
         assert.equal(project.info?.version, target.version, `${target.name} latest version drift`);
         const observedFiles = published
           .map(({ filename, digests }) => ({ filename, sha256: digests?.sha256 }))
@@ -178,4 +186,4 @@ if (publishedMode) {
 }
 
 const registryState = registryMode ? 'unpublished_checked' : publishedMode ? 'published_verified' : 'skipped';
-console.log(`distribution release verification: PASS (${targets.packages.length} packages, registry=${registryState})`);
+console.log(`distribution release verification: PASS (${releasePackages.length} packages, registry=${registryState})`);

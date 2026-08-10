@@ -369,7 +369,7 @@ class Clervo:
     def __init__(
         self,
         *,
-        base_url: str,
+        base_url: str = "https://api.clervo.dev",
         transport: Transport | None = None,
         timeout: float = 30.0,
         max_response_bytes: int = 2_097_152,
@@ -456,7 +456,7 @@ class Clervo:
             "accept": "application/json, application/problem+json",
             "content-type": "application/json",
             "idempotency-key": idempotency_key or f"clervo_{uuid.uuid4()}",
-            "x-clervo-client": "clervo-sdk/0.2.0",
+            "x-clervo-client": "clervo-sdk/0.3.0",
         }
         try:
             response = self._transport(

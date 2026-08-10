@@ -1,36 +1,47 @@
 # `@clervo/sdk`
 
-Typed client for Clervo's frozen distribution candidate.
-
-Current scope is deliberately narrow:
-
-- `search.web` and `search.answer`;
-- repository-local preview execution;
-- typed non-payable `402` challenges;
-- idempotency and request cancellation;
-- no wallet, signer, payment retry, or public-service assumption.
-
-The client requires an explicit `baseUrl` because no public API deployment is
-currently verified.
+Typed client for the live Clervo API. It exposes cited Search plus the complete
+provider-neutral AI catalog and normalized AI execution contract.
 
 ```ts
 import { ClervoClient } from '@clervo/sdk';
 
-const clervo = new ClervoClient({ baseUrl: 'http://127.0.0.1:8080' });
-const result = await clervo.search.web({ query: 'payment idempotency' });
+const clervo = new ClervoClient(); // https://api.clervo.dev
+const catalog = await clervo.models.list();
+const free = catalog.data.find((model) =>
+  model.clervo.publicSellable && model.clervo.billingMode === 'free'
+);
+if (!free) throw new Error('no free model is currently available');
+
+const result = await clervo.ai.execute({
+  model: free.id,
+  input: {
+    kind: 'chat',
+    messages: [{ role: 'user', content: 'Reply with the single word ready.' }],
+    responseFormat: 'text',
+    stream: false,
+  },
+  maximumOutputTokens: 16,
+}, { idempotencyKey: 'my-stable-request-0001' });
 ```
 
-`search.answer` sets synthesis explicitly. Callers cannot silently change the
-product identity through the request body.
+`models.list()` returns stable canonical Clervo IDs and explicit alias
+contracts, capabilities, health, availability, free/paid state, pricing, and
+commerce metadata. `ai.execute()` accepts the normalized chat, embedding,
+image, speech, video, music, and virtual-try-on inputs published by OpenAPI.
+Canonical IDs are never silently substituted.
 
-Known future payment failures can be reduced to one bounded next action without
-triggering a payment or retry:
+Paid models throw `ClervoPaymentRequiredError` with the server's exact
+`PAYMENT-REQUIRED` challenge. The SDK never creates a wallet, signs, pays, or
+retries a payment automatically. A caller may deliberately pass an approved
+`paymentSignature` or `paymentAuthorization`; same-key replay returns the same
+receipted result without another authorization.
 
-```ts
-import { recoveryActionFor } from '@clervo/sdk';
+Search remains available through `clervo.search.web()` and
+`clervo.search.answer()`. Known failures can be reduced to a bounded recovery
+action with `recoveryActionFor(error)`. Unknown settlement and payment timeout
+states prohibit retry until the original idempotency key is reconciled.
 
-const recovery = recoveryActionFor(error);
-```
-
-Unknown settlement and payment-timeout actions prohibit retry until the
-existing idempotency key is reconciled.
+Set `baseUrl` only for another HTTPS deployment or loopback development. This
+client code is MIT licensed; use of the hosted Clervo service remains subject
+to its service terms.

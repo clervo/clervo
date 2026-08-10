@@ -10,29 +10,32 @@ const pythonProject = await readFile('packages/sdk-python/pyproject.toml', 'utf8
 const verifyWorkflow = await readFile('.github/workflows/verify-distribution.yml', 'utf8');
 const publishWorkflow = await readFile('.github/workflows/publish-packages.yml', 'utf8');
 
-test('release targets bind the canonical repository, exact public versions, and observed provenance', () => {
+test('release targets preserve current registry truth and bind exact next public versions', () => {
   assert.deepEqual(targets.repository, {
     owner: 'clervo',
     name: 'clervo',
     url: 'https://github.com/clervo/clervo',
   });
   assert.deepEqual(
-    targets.packages.map(({ registry, name, version }) => ({ registry, name, version })),
+    targets.nextRelease.packages.map(({ registry, name, version }) => ({ registry, name, version })),
     [
-      { registry: 'npm', name: '@clervo/sdk', version: '0.3.0' },
-      { registry: 'npm', name: '@clervo/mcp', version: '0.3.0' },
-      { registry: 'pypi', name: 'clervo-sdk', version: '0.2.0' },
+      { registry: 'npm', name: '@clervo/sdk', version: '0.4.0' },
+      { registry: 'npm', name: '@clervo/mcp', version: '0.4.0' },
+      { registry: 'pypi', name: 'clervo-sdk', version: '0.3.0' },
     ],
   );
-  assert.deepEqual(targets.publication, {
-    state: 'published_verified',
-    sourceCommit: 'd299f08ae70a0a19390050583e14a512f9751172',
-    githubRunId: 30858517518,
-    verifiedAt: '2026-08-03T22:28:10Z',
-  });
+  assert.equal(targets.publication.state, 'published_verified');
+  assert.match(targets.publication.sourceCommit, /^[a-f0-9]{40}$/u);
+  assert.ok(Number.isSafeInteger(targets.publication.githubRunId) && targets.publication.githubRunId > 0);
+  assert.ok(Number.isFinite(Date.parse(targets.publication.verifiedAt)));
+  assert.equal(targets.nextRelease.state, 'release_prepared');
+  assert.ok(targets.nextRelease.packages.filter(({ registry }) => registry === 'npm').every(({ integrity, provenancePredicate }) => integrity === undefined && provenancePredicate === undefined));
+  assert.equal(targets.nextRelease.packages.find(({ registry }) => registry === 'pypi').files, undefined);
   assert.ok(targets.packages.filter(({ registry }) => registry === 'npm').every(({ integrity, provenancePredicate }) =>
     /^sha512-/u.test(integrity) && provenancePredicate === 'https://slsa.dev/provenance/v1'));
   assert.equal(targets.packages.find(({ registry }) => registry === 'pypi').files.length, 2);
+  assert.equal(sdk.license, 'MIT');
+  assert.equal(mcp.license, 'MIT');
   assert.equal(sdk.repository.url, 'git+https://github.com/clervo/clervo.git');
   assert.equal(mcp.repository.url, 'git+https://github.com/clervo/clervo.git');
   assert.equal(mcp.dependencies['@clervo/sdk'], sdk.version);
@@ -59,8 +62,8 @@ test('package publishing is manual, commit-bound, environment-protected, and tok
     assert.match(reference[1], /^[a-f0-9]{40}$/u);
   }
 
-  const sdkPublish = publishWorkflow.indexOf('npm publish release-artifacts/npm/clervo-sdk-0.3.0.tgz');
-  const mcpPublish = publishWorkflow.indexOf('npm publish release-artifacts/npm/clervo-mcp-0.3.0.tgz');
+  const sdkPublish = publishWorkflow.indexOf('npm publish release-artifacts/npm/clervo-sdk-0.4.0.tgz');
+  const mcpPublish = publishWorkflow.indexOf('npm publish release-artifacts/npm/clervo-mcp-0.4.0.tgz');
   const pythonPublish = publishWorkflow.indexOf('pypa/gh-action-pypi-publish@');
   assert.ok(sdkPublish > 0 && mcpPublish > sdkPublish && pythonPublish > mcpPublish);
 });

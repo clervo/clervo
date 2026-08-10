@@ -1,6 +1,6 @@
 {
   "name": "@clervo/router",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Free-first Clervo CLI for x402 payments, receipts, replay, and local spend controls on Base.",
   "license": "MIT",
   "type": "module",

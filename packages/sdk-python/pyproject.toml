@@ -4,9 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "clervo-sdk"
-version = "0.2.0"
-description = "Typed Clervo client generated from the frozen distribution candidate."
+version = "0.3.0"
+description = "Typed client for live Clervo Search and provider-neutral AI."
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.10"
 authors = [{ name = "Clervo" }]
 keywords = ["clervo", "agent", "search", "sdk"]
@@ -26,6 +27,9 @@ Repository = "https://github.com/clervo/clervo"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools]
+license-files = ["LICENSE"]
 
 [tool.setuptools.package-data]
 clervo = ["py.typed"]

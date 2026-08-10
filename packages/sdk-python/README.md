@@ -1,30 +1,48 @@
 # `clervo-sdk`
 
-Dependency-free Python client for Clervo's frozen distribution candidate.
-
-The current package exposes only `search.web` and `search.answer`, requires an
-explicit base URL, preserves idempotency, and returns typed non-payable `402`
-errors. It does not contain a wallet, signer, payment retry, or public deployment
-assumption.
+Dependency-free Python client for the live Clervo API. It exposes cited Search
+plus the complete provider-neutral AI catalog and normalized AI execution
+contract.
 
 ```python
 from clervo import Clervo
 
-client = Clervo(base_url="http://127.0.0.1:8080")
-result = client.search.web(query="payment idempotency")
+client = Clervo()  # https://api.clervo.dev
+catalog = client.models.list()
+free = next(
+    model for model in catalog["data"]
+    if model["clervo"]["publicSellable"]
+    and model["clervo"]["billingMode"] == "free"
+)
+result = client.ai.execute(
+    model=free["id"],
+    input={
+        "kind": "chat",
+        "messages": [{"role": "user", "content": "Reply with ready."}],
+        "responseFormat": "text",
+        "stream": False,
+    },
+    maximum_output_tokens=16,
+    idempotency_key="my-stable-request-0001",
+)
 ```
 
-`search.answer` fixes synthesis to the answer product. The caller cannot change
-that product identity through arbitrary request fields.
+The catalog carries stable canonical Clervo IDs and explicit alias contracts,
+capabilities, health, availability, free/paid state, pricing, and commerce
+metadata. `client.ai.execute()` accepts the normalized chat, embedding, image,
+speech, video, music, and virtual-try-on inputs published by OpenAPI. Canonical
+IDs are never silently substituted.
 
-Known future payment failures can be reduced to one bounded next action without
-triggering a payment or retry:
+Paid models raise `ClervoPaymentRequiredError` with the exact payment
+challenge. The SDK never creates a wallet, signs, pays, or retries a payment
+automatically. Deliberately supplied payment credentials remain bound to the
+same idempotency key; replay sends no new authorization.
 
-```python
-from clervo import recovery_action_for
+Search remains available through `client.search.web()` and
+`client.search.answer()`. `recovery_action_for(error)` returns one safe next
+action for known failures. Unknown settlement and timeout states prohibit retry
+until reconciliation.
 
-recovery = recovery_action_for(error)
-```
-
-Unknown settlement and payment-timeout actions prohibit retry until the
-existing idempotency key is reconciled.
+Pass `base_url` only for another HTTPS deployment or loopback development. This
+client code is MIT licensed; use of the hosted Clervo service remains subject
+to its service terms.
