@@ -2,8 +2,8 @@
 
 ## Authority
 
-`ROADMAP.md` at this repository root is the single planning authority. Read it
-first and follow it in order.
+`ROADMAP.md` at this repository root is the single and only planning authority.
+Read it first and follow it in order.
 
 No other document in this repository defines current status, scope, order,
 gates, or readiness. If another file disagrees with `ROADMAP.md`, the roadmap

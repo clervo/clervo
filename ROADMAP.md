@@ -17,30 +17,30 @@ Update only when execution state actually changes. This is not a journal.
 
 | Field | Value |
 |---|---|
-| Current milestone | **B6 — CLOSED by direct external customer-path proof. B10 remains closed; B11 is not started.** |
-| Milestone status | `b6_closed_external_customer_path_proven`. **PROVEN 2026-08-10:** public `@clervo/router@0.1.0`, package-only MIT rights, GitHub Actions provenance bound to source commit `68d997456e48bda29ce5465674528072b60c3cfb`, public npm page/README/metadata, clean registry-only npx/install/export/CLI, useful free Search before any wallet, live catalog and 0.006-USDC quote, dedicated `0700`/`0600` Router wallet, one real 0.006-USDC Router settlement, useful cited result, accurate receipt/local history, same-key no-authorization replay, exactly one Base settlement, balanced payer/receiver delta, and clean reconciliation are all directly proven. npm trusted publishing is attached to the exact Router workflow; the bootstrap token was revoked and its GitHub environment secret deleted. |
-| Current branch | `work/b10-search-sandbox-20260809`, based on exact B9 closure `0697f62`; B10 production release `3dfe8a6` and the hosted proof recovery commits through `564ed0f` are preserved. The exact B6 closure commit is mirrored to `main`; the frozen B12 visual branch, `/opt/clervo-ai`, and `ai.clervo.dev` were not modified. |
-| Latest commit | B6 closure commit; use `git log -1` for its exact immutable SHA. |
-| Current production release | Cloud Run origin `clervo-api-production-b6cred-20260810` at 100% traffic, unchanged API image `sha256:73fcc7d64a2b3bc1c7010210bbb78133f276148fc8195f75d53ae90260031e4c`, unchanged `CLERVO_RELEASE_ID=3dfe8a629d724f72f41174aad5ace8f5e7eb8927`, Sandbox runner `sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a`, and database secret `clervo-production-database-url:4`; API edge worker version **`4c608ca7-6686-45ad-b1f1-c83572fd1a54`**; site worker **`95411621-bb99-41ba-ab6d-d7c8462fdb9d`**; guarded proof worker **`9e8cc7f4-c0fa-477a-a22c-d08c2c02ea86`**. |
+| Current milestone | **B7 — AI catalog commercial closure. B6, B8, B9, and B10 remain closed; B11 is not started.** |
+| Milestone status | `b7_public_clients_verified_pending_owner_paid_proof`. **PROVEN 2026-08-10:** the frozen production catalog has 89 stable IDs (85 canonical and 4 aliases), 88 sellable and one truthfully degraded; public API discovery and normalized free execution are live; paid chat and image quotes are exact and unpaid; provider identity stays private; `@clervo/sdk@0.4.1`, `@clervo/mcp@0.4.1`, `clervo-sdk==0.3.1`, and `@clervo/router@0.2.0` are public with trusted provenance where supported and pass clean registry-only clients. **OPEN:** protected `ai.clervo.dev` normalized routes and exactly two bounded owner-funded B7 settlements have not been approved or executed. |
+| Current branch | `work/b10-search-sandbox-20260809`, merged with and mirrored to `main`. B7 client release source is `a303c589ce4a0c0fc5e6891e02fe11837369d9d4`; current release authority and public projections are later commits on the same branch. The frozen B12 visual branch, `/opt/clervo-ai`, and protected `ai.clervo.dev` routes were not modified. |
+| Latest commit | Current B7 release/projection commit; use `git log -1` for its exact immutable SHA. |
+| Current production release | The current B7 API runtime is served through API edge worker **`987a3f92-e927-4529-b0cd-805cf1c11c30`** at 100% traffic; the public site is worker **`5c47b116-ccc6-492d-8496-82a36f274604`** at 100%; the guarded proof worker remains separate. The retained Sandbox runner is `sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a` and the active database secret is `clervo-production-database-url:4`. Protected `ai.clervo.dev` route ownership is unchanged pending approval. |
 | Rollback targets | Credential-safe API recovery is revision `clervo-api-production-b6cred-20260810` or a new zero-traffic revision of the same retained image bound to secret version `4`. Database-secret version `3` is disabled and its password is invalid; version `2` is destroyed. Revisions bound to either must not be restored. No production image or Worker version was deleted. |
 | Latest externally verified customer outcome | B6 public-npm Router Search operation `op_2bc39218e1e40ed38ed99789d8b5cd66`, receipt `rcpt_c9bda45c792df39386bcbc2151c776a0`, exactly 0.006 USDC, Base transaction `0xde39798f04c63157a8ebfbc1dc8bbc58b684b9f33249832a8de2f53a1527a97d`. It returned six results and six citations through qualified Wikimedia provenance, replayed with the same operation/result/receipt and no payment authorization, and left exactly one settlement and a clean Router state. No revenue, demand, or unrelated-customer repetition is claimed. |
-| Current blockers | None for B6. B11 is not started. |
+| Current blockers | One owner-only boundary: approve the exact guarded `ai.clervo.dev` normalized-route projection and exactly two owner-funded Base USDC B7 proofs (chat 1000 atomic and image 25500 atomic; total ceiling 26500). No payment or protected-host mutation is authorized yet. |
 | External dependencies | B9 ongoing service requires Blockscout availability within the qualified 100,000-credit/day and 5-RPS envelope and requalification before `2026-08-16T17:30:00.000Z`; global request pacing is 210 ms and the source fails closed. Ethereum and Base are supported. Solana remains unsupported. B8's existing pdata requalification dependency remains unchanged. |
-| Owner approvals waiting | None for B6. The package-only MIT decision, first-publication bootstrap, bounded wallet funding, and one exact Router payment were approved and consumed. No additional B6 or B10 payment is authorized. |
+| Owner approvals waiting | **B7 only:** explicit approval for the guarded protected-host route projection and exactly two bounded owner-funded payments described under B7. Package publication, public API/site deployment, and no-payment verification are complete. No additional B6, B8, B9, or B10 payment is authorized. |
 | Dates that move on their own | **PROVEN:** B9's Blockscout commercial qualification expires at `2026-08-16T17:30:00.000Z` and fails closed; pdata public routing qualification expires at `2026-08-16T11:54:10.787Z` and fails closed. Direct Polymarket/Kalshi observations remain unsellable regardless. Competitor prices are observations, not durable promises, and must be refreshed before activation. Existing B7 and Bazaar expiry rules remain in force. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
 | B2 metrics (observed 2026-08-06T14:42:37.447Z) | Conformance defects open 0. Naive free-search rejection rate 0: `withoutIdempotencyKeyStatus` 200. Site 404 correctness: a nonexistent URL returns 404. |
 | B3 metrics (observed 2026-08-06T15:14:21.853Z) | Discovery surfaces live 5 of 5, including `api.models`, `api.well_known_x402`, and `api.llms_txt` at status 200. Model list entries 21 (18 sellable, 3 supply-paused with a reason). x402 manifest payable resources 3, free resources 1. |
 | B4 metrics (observed 2026-08-06T17:01:41.422Z) | Bazaar-valid resources 3 of 3. Indexed resources 1 of 3: `https://api.clervo.dev/v1/search/paid`, `index.active: true`, last crawled `2026-08-06T16:59:46.261Z`. Settlements executed 1, total 0.006 USDC. AI routes quoting below the 1000-atomic minimum 0 — the floor is applied as a minimum billable charge above the derived price, so no route is sold below cost. Days until the search listing idles out: 30 from `2026-08-06`. |
 | B5 metrics (observed 2026-08-07T05:22:00Z) | Products routing through one commerce core 6 of 6 (already true before this milestone). Duplicated commerce-surface copies removed: result verifiers 2 to 1, response-envelope builders 4 to 1, request-hash builders 4 to 1, fixed-price lookups 2 to 1, provenance builders 4 to 1. Duplicate-charge incidents 0. Payment-path defect count 0. Commerce suite 18 of 18 before and after each product move; full acceptance 262 of 262, unchanged. |
-| B7 metrics (observed 2026-08-09, current engineering tree) | **PROVEN:** full acceptance 293/293; final B7-focused suite 34/34; dynamic property suite 14/14; contract validation 97 schemas/132 fixtures; lint 699 files; secret scan PASS; external calls 0 and USDC spent 0 during acceptance. Dynamic catalog has no fixed count and the legacy catalog ceiling was removed. BlockRun's direct public model API returned 91 entries; three exact GPT-5.6 comparisons were observed and recorded as refreshable data: Luna 0.2/1.2, Terra 2/12, Sol 5/30 USD per million input/output. **UNVERIFIED after evidence expiry:** those competitor values are ignored after their recorded validity window. **LIVE legacy observation only:** 21 entries, 18 live/3 paused; no dynamic live cutover claim. |
+| B7 metrics (observed 2026-08-10, current production and engineering tree) | **PROVEN:** production catalog 89 IDs = 85 canonical + 4 aliases; 88 sellable and one degraded; seven modalities priced by one authority; B7-focused suite 47/47; contract validation 99 schemas/135 fixtures; lint 732 files; secret scan PASS. Clean public-registry clients proved TypeScript catalog/free execution/replay, MCP four-tool projection, Python default-origin catalog access, and Router 0.2.0. Final B7 work spent 0 USDC so far. Market comparisons remain refreshable evidence and are ignored after expiry. |
 | B8 metrics (observed 2026-08-09 at close) | **PROVEN:** full acceptance 306/306; B8-focused suite 37/37; contract validation 99 schemas/134 fixtures; lint 708 files; build, discovery generation, release freeze, clean-room boundary, site prerender/canonical-media validation, and secret scan pass. pdata campaigns retained the previously proven 39 read-only calls, API `1.17.0`, eight-venue coverage, 12/12 repeated production-venue calls, pagination/search/history/malformed/degradation checks, zero authentication, and zero supplier spend. Managed production smoke returned two repeated eight-market attributed results across Polymarket, Kalshi, Manifold, and Limitless. Production payments: 2 effects, 4000 atomic USDC total, 2 useful results, 2 accurate receipts, 2 no-charge replays, 2 completed durable operations, 2 accounting entries, zero supplier cost, balanced ledger. Public truth: 8 JSON surfaces semantically equal across API/site/generated source, 3 text surfaces byte-equal, 8 HTML pages directly loaded, 5 Prediction operations published, Bazaar indexed and active, 0 open conformance defects, and 0 additional spend during final verification. |
 | B9 metrics (observed 2026-08-09 at close) | **PROVEN:** origin revision `00041-cuh` and final edge/site versions are public. Ethereum and Base candidate proofs returned fresh real-source output with 11 and 9 evidence references; funded Base report and Ethereum transactions results returned 9 and 10 evidence references. Four public operations quote 2000/2000/3000/4000 atomic USDC. Payment proof: 2 effects, 7000 atomic USDC total, 2 useful results, 2 accurate receipts, 2 same-key no-charge/no-upstream-execution replays, 2 completed durable operations, 2 accounting entries, zero supplier cost, balanced six-entry receiver ledger, payer/receiver deltas -7000/+7000. Crypto is Bazaar-valid, indexed, and active. API/site/generated JSON matched semantically, `llms.txt` matched byte-for-byte, and the Crypto/catalog pages expose no undefined attribution. Focused B9 suite 52/52; browser proof 5/5; full acceptance 307/307; contract validation 99 schemas/134 fixtures; lint 710 files; site build, discovery generation, canonical-media validation, clean-room boundary, and secret scan pass. Revenue, demand, and unrelated-customer repetition remain unclaimed. |
 | B10 metrics (observed 2026-08-10 at close) | **PROVEN:** Search 6000 atomic and two Sandbox SHORT effects of 10000 atomic each, total exactly 26000 atomic USDC. Useful results 2 of 3; the failed first Sandbox result remains disclosed. All three effects have confirmed Base transfers and one AuthorizationUsed event each; payer/receiver deltas are -26000/+26000 atomic. Three durable accounting rows extend the valid balanced receiver ledger to nine entries. Corrected Sandbox used gVisor runner `sha256:07685aab...d025a`, exact SHORT limits, exit 0, expected output, destroyed cleanup, and zero residual claims/templates/pods. Search and Sandbox publish `paid_outcome_verified`; API/site registry, catalog, pricing, status, x402, `llms.txt`, and OpenAPI reconcile. Focused suite 21/21; secret scan PASS. Owner-funded proof is not revenue or demand. |
 | B6 metrics (observed 2026-08-07T06:53:00Z, at close) | Installs 2, **both from the local tarball, 0 from npm** (unpublished). Wallets created 2 — one throwaway, deleted after confirming on-chain it held nothing; one dedicated test wallet retained at `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`, `0700`/`0600`, recovery phrase never printed to any transcript, log, or commit. **Free first success: yes, and it happened before any wallet existed**, which is the ordering advantage over BlockRun. Wallets funded 0. Paid outcomes 0. Settlements 0. **USDC spent 0.** Fail-closed cycle exercised live: 1 refused operation, 1 retry blocked before signing, 1 reconciliation resolving `not_settled`. Buyer-side ceiling configured: per-operation 0.007, daily 0.01 USDC. Live catalog: 4 capabilities, 1 free, 3 payable; `search.web` quoted 0.006 USDC to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`. Package: 35 files, 40.4 kB packed, 17 installed dependencies, no TypeScript sources or wallet material. Tests: B6 suite 10 of 10; `shared-paid-operation` 5 of 5 unchanged; full contract suite 720 of 722, the 2 failures being `n13.3` and `n13.5` site tests that fail identically with all B6 work stashed and are therefore inherited from B5. Gates: lint PASS (677 files), secret scan PASS with 0 secret values printed. |
 | B6 closure recovery (observed 2026-08-10) | **CLOSED.** npm 0.1.0 is public from source `68d997456e48bda29ce5465674528072b60c3cfb`: 36 files, 41,169 bytes, shasum `f3c6fff2215e7a903e9806c35b993a59bf4980d5`, integrity `sha512-wIaDB1rs3HQ2J4kQMrD2s+ddjnRKFG8sJfFmGhntEb4TD2AJaL7rf5iLCt8uP3/QOz469wCCawVfeBsozN9rKA==`, two public npm attestations, exact MIT LICENSE, no wallet/source/secret material. Public npm search/page/README/metadata, registry-only npx/install/export/CLI, free Search, catalog, quote, doctor, and no-wallet ordering are proven. Paid operation `op_2bc39218e1e40ed38ed99789d8b5cd66`, receipt `rcpt_c9bda45c792df39386bcbc2151c776a0`, settlement `0xde39798f04c63157a8ebfbc1dc8bbc58b684b9f33249832a8de2f53a1527a97d`: one 6000-atomic Router debit and receiver credit, six results/citations, one durable accounting effect, same-key replay, zero duplicate authorization/settlement/charge, 0 unreconciled. Wallet `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef` remains `0700`/`0600`; limits are 7000/10000 atomic with 6000 spent today. |
-| Exact next task | Begin B11 only under a new owner instruction; preserve the closed B6 distribution and payment evidence. |
-| Files and services for that task | B11 scope is not started. Preserve `@clervo/router@0.1.0`, its source/provenance identity, the B10 release, active database secret version `4`, disabled version `3`, destroyed version `2`, protected AI infrastructure, and unrelated owner residue. |
+| Exact next task | After explicit owner approval, apply the exact guarded protected-host route projection, execute only the two bounded B7 proofs, reconcile chain/receipt/accounting/replay, externally verify all public surfaces, and close B7. |
+| Files and services for that task | Preserve current public packages, API/site releases, active database secret version `4`, disabled version `3`, destroyed version `2`, the protected `/`, `/v1/models`, and `/v1/chat/completions` behavior on `ai.clervo.dev`, all unrelated infrastructure, and owner residue. The route guard may add only its six enumerated normalized/discovery paths. |
 
 ---
 
@@ -1000,16 +1000,16 @@ Every milestone below carries the same seventeen fields.
 ### B7 — AI catalog unshelved
 
 1. **Milestone:** B7 — AI catalog unshelved
-2. **Status:** `integration_ready` — **PROVEN ENGINEERING-COMPLETE and
-   FIXTURE-BOUND; EXTERNALLY BLOCKED for live dynamic cutover.** It is not
-   `closed`: Rule 3 still requires an outside proof against the authoritative
-   authenticated `ai.clervo.dev` catalog and runtime.
+2. **Status:** `public_clients_verified_pending_owner_paid_proof` — **PROVEN
+   LIVE except for the final protected-host and paid-proof boundary.** It is not
+   `closed`: the exact owner-approved route projection and two representative
+   paid executions still require outside reconciliation proof.
 3. **Customer-visible outcome:** **Every freshly verified, commercially
    permitted AI route is accurately priced, genuinely callable, publicly
    discoverable, and continuously monitored. Catalog size is determined by
-   verified supply, not by a fixed target.** **EXTERNALLY BLOCKED:** the
-   customer-visible dynamic outcome has not been deployed; the public system
-   still exposes the legacy 21-entry projection.
+   verified supply, not by a fixed target.** **PROVEN LIVE:** public discovery
+   currently exposes the frozen 89-ID production set (85 canonical, 4 aliases),
+   with truthful price, capability, availability, health, and commerce data.
 4. **Why it matters commercially:** AI is the highest-volume family and the one
    customers comparison-shop. Breadth is only an asset when every listed route
    works; a listed route that fails costs more trust than a small honest
@@ -1022,16 +1022,14 @@ Every milestone below carries the same seventeen fields.
    while public output cannot expose provider identity, gateway supply ID,
    runtime model ID, supply-family ID, raw upstream cost, or authentication
    material.
-6. **Current evidence:** **PROVEN legacy LIVE observation:** 21 public entries,
-   18 live and 3 paused, with registry evidence dated 2026-08-06. The three
-   gateway qualifications reached expiry on 2026-08-09; the other 18 reach
-   expiry on 2026-08-14. This legacy fixed inventory is not the permanent B7
-   authority. **PROVEN fixture-bound:** a strict normalized qualified-supply
-   snapshot can contain an open-ended number of models and drives identity,
-   category, lifecycle, pricing, discovery, and generic execution without an
-   application-source change. **UNKNOWN:** the production authenticated
-   internal catalog endpoint and final schema are not available in this
-   worktree.
+6. **Current evidence:** **PROVEN LIVE 2026-08-10:** one authoritative frozen
+   snapshot produces 89 stable public IDs: 85 canonical and 4 explicit aliases;
+   88 are sellable and `clervo/gpt-oss-20b` remains listed as degraded rather
+   than being silently removed. The same catalog is live on the public API and
+   site. A clean registry-installed TypeScript client executed
+   `clervo/gemma-4-26b-a4b-it` for free and replayed the same idempotency key;
+   clean MCP, Python, and Router installs consumed the same authority. Supplier
+   identities and private bindings were absent from every public projection.
 7. **Research:** **PROVEN COMPLETE as refreshable input, not permanent market
    truth.** BlockRun's public model API exposed 91 entries when observed on
    2026-08-09. Exact Luna, Terra, and Sol input/output prices were stored with
@@ -1055,8 +1053,8 @@ Every milestone below carries the same seventeen fields.
      qualification and owner-controlled commercial permission are separate.
      Missing or expired permission prevents public sellability without blocking
      identity, pricing preparation, lifecycle, or private execution binding.
-     **EXTERNALLY BLOCKED:** the owner must decide permission per real immutable
-     production supply identity; no resale permission is inferred here.
+     **PROVEN LIVE:** the frozen set carries recorded permission for each
+     sellable immutable supply identity; no permission is inferred at runtime.
    - **SUPERSEDED BY PROVEN IMPLEMENTATION — pricing.** The universal fixed
      margin assumption is gone. Normalized cost flows through category/model
      policy, minimum and target margin, fresh competitor evidence, a sustainable
@@ -1066,23 +1064,23 @@ Every milestone below carries the same seventeen fields.
    - **PROVEN COMPLETE — fallback architecture.** Multiple qualified supplies
      for an equivalent customer product remain private routes; routing selects
      a currently eligible sustainable route and records the route that served.
-     **EXTERNALLY BLOCKED:** actual fallback breadth depends on the real gateway
-     snapshot containing equivalent qualified supply.
+     Current fallback breadth is whatever the frozen production snapshot
+     truthfully records; no extra breadth is claimed.
    - **PROVEN COMPLETE — free-tier control.** Only zero-upstream-cost supply can
      enter the free tier; atomic per-wallet and global daily caps refuse after
      exhaustion and never convert to paid overage. The durable store hashes the
-     subject and locks the combined quota update. **EXTERNALLY BLOCKED:** live
-     activation requires real zero-cost qualified supply plus the owner's
-     acquisition-budget decision.
+     subject and locks the combined quota update. **PROVEN LIVE:** exact
+     zero-cost free supply executed from clean clients and same-key replay did
+     not produce a payment or receipt.
    - **PROVEN COMPLETE — public/private projection and generic execution.** One
      OpenAI-compatible gateway adapter accepts arbitrary composed private
      runtime bindings while responses retain the stable public Clervo ID.
      Supplier metadata and raw cost never enter public catalog or discovery.
-9. **Dependencies:** **PROVEN COMPLETE:** B3 discovery and B4 sustainable
-   pricing-floor machinery. **EXTERNALLY BLOCKED:** authoritative authenticated
-   catalog endpoint/schema, production token and binding, owner commercial
-   decisions, migration/deploy, and outside execution proof. Legacy gateway
-   funding is not an engineering dependency for dynamic B7 closure.
+9. **Dependencies:** **PROVEN COMPLETE:** discovery, pricing authority,
+   production catalog binding, provider-neutral runtime, public deployment, and
+   registry clients. **OWNER-ONLY REMAINING:** protected-host route approval and
+   two bounded Base USDC payment authorizations. Legacy gateway funding is not
+   an engineering dependency for B7 closure.
 10. **Parallel:** Track C; Track E owns the requalification schedule from here.
 11. **Launch-critical tests:** **PROVEN COMPLETE in current engineering tree.**
     Tests cover supply validation, revision/freshness, qualification expiry,
@@ -1092,36 +1090,41 @@ Every milestone below carries the same seventeen fields.
     competitor input, strategic override bounds, negative-margin prevention,
     free-tier refusal, supplier privacy, fallback route selection, generic
     execution, and public projection. No test pins a route count.
-12. **External acceptance proof:** **EXTERNALLY BLOCKED.** The local public HTTP
-    path and fixture-backed quote-to-execution flow are **PROVEN**. The dynamic
-    catalog has not been deployed, so it is **UNVERIFIED** that every model
-    listed by the eventual production snapshot executes from outside with zero
-    registry drift. The previously omitted AI public-HTTP test is now part of
-    acceptance; that does not convert local proof into live proof.
-13. **Visibility shipped:** **PROVEN COMPLETE fixture-bound:** customer-safe
-    `/v1/models` and discovery projections carry price and truthful lifecycle
-    without supplier leakage. **EXTERNALLY BLOCKED:** deploy and outside proof
-    of the dynamic projection. Per-model public visual pages remain
-    **UNVERIFIED** and the frozen B12 visual branch was not modified.
+12. **External acceptance proof:** **PROVEN for discovery and free execution;
+    OPEN for paid settlement.** Clean registry-only TypeScript and Python
+    clients listed all 89 IDs. TypeScript executed the exact free canonical ID
+    and same-key replay returned it again without a receipt or payment. Paid
+    chat and image requests return exact request-bound quotes, but no B7 payment
+    has been signed or spent. The minimum remaining proof is exactly one chat
+    and one materially distinct image settlement plus no-charge replay and
+    durable reconciliation.
+13. **Visibility shipped:** **PROVEN LIVE:** `/v1/models`, OpenAPI, discovery,
+    catalog, status, pricing, public docs, and published clients carry the
+    provider-neutral IDs and current package versions. `@clervo/sdk@0.4.1`,
+    `@clervo/mcp@0.4.1`, `clervo-sdk==0.3.1`, and
+    `@clervo/router@0.2.0` pass clean registry-only installation. Per-model
+    visual pages remain outside B7 and the frozen B12 visual branch was not
+    modified.
 14. **Metrics:** **PROVEN AVAILABLE:** eligible/withheld models, lifecycle
     reasons, route availability, expected margin, competitor comparison state,
     and free-tier quota outcomes are composition/runtime data rather than fixed
-    counts. **EXTERNALLY BLOCKED:** live production telemetry starts at cutover.
-15. **Owner approval:** real-supply commercial permission; any explicit
-    below-cost/subsidized or free-tier activation budget; production migration
-    and deploy. No provider permission, loss-leading decision, or deployment is
-    asserted by engineering.
-16. **Stopping condition:** **PROVEN ENGINEERING-COMPLETE / FIXTURE-BOUND.** No
-    count is asserted. A normal new qualified model requires only a valid supply
-    revision and data/config decisions. Every published model must pass fresh
-    technical qualification, availability, stable identity, valid current cost
-    and price, and current commercial permission; otherwise it is withheld or
-    truthfully non-sellable. Generic execution uses the composed private binding
-    and public stable ID. **EXTERNALLY BLOCKED:** B7 cannot be `closed` until the
-    production gateway contract is bound, owner decisions are recorded, the
-    system is deployed, and Rule 3's outside proof passes.
-17. **Continuation point:** Finish the B7 live integration described in the
-    continuity block. Do not open B8 until that external proof closes B7.
+    counts. **PROVEN LIVE:** catalog availability and health are served from the
+    frozen production revision; paid settlement telemetry begins only after the
+    owner-approved representative proofs.
+15. **Owner approval:** one exact remaining approval covers only: adding the six
+    guarded normalized/discovery routes to `ai.clervo.dev` while preserving its
+    protected root and compatibility routes; one 1000-atomic chat proof; and one
+    25500-atomic image proof, total ceiling 26500 atomic USDC. No automatic retry
+    or further payment is authorized by that approval.
+16. **Stopping condition:** No count target exists. A normal new qualified model
+    remains a data/config operation and canonical IDs never silently substitute.
+    B7 closes only after the guarded routes verify externally, both exact paid
+    effects reconcile on Base and in durable accounting, their useful results
+    and receipts bind the advertised model and amount, and same-key replay shows
+    no second authorization, execution, settlement, or charge.
+17. **Continuation point:** Await only the exact approval in item 15, then run
+    the guarded route apply and two-proof reconciliation. Do not open B11 until
+    B7 is closed. B8 is already closed and is not a dependency to redo.
 
 ---
 
