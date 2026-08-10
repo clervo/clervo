@@ -68,6 +68,10 @@ const gates = [
   // reports PASS on a release that cannot build.
   ['release-candidate freeze', node, ['scripts/release/generate-release-candidate-freeze.mjs', '--check']],
   ['discovery generation', node, ['scripts/generate-discovery.mjs']],
+  // The consistency tests compare the generated public truth with the exact
+  // files the site serves. A clean checkout has no projected site files until
+  // this existing build step runs, so acceptance must project before testing.
+  ['site public projection', node, ['scripts/site/prepare-public.mjs']],
   ['Stage 4 exit verification', node, ['scripts/verify-stage4-exit.mjs']],
   ['contract tests', node, ['--test', '--test-concurrency=1', ...contractTests]],
 ];
