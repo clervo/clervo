@@ -89,7 +89,7 @@ const searchProbeSchema = Object.freeze({
   additionalProperties: false,
 });
 const aiProbeExample = Object.freeze({
-  model: 'gpt-5.6-luna',
+  model: 'clervo/gpt-5.6-luna',
   input: {
     kind: 'chat',
     messages: [{ role: 'user', content: 'Reply with the single word ready.' }],
@@ -102,7 +102,7 @@ const aiChatProbeSchema = Object.freeze({
   type: 'object',
   required: ['model', 'input', 'maximumOutputTokens'],
   properties: {
-    model: { type: 'string', enum: ['gpt-5.6-luna'], default: aiProbeExample.model },
+    model: { type: 'string', enum: ['clervo/gpt-5.6-luna'], default: aiProbeExample.model },
     input: {
       type: 'object',
       required: ['kind', 'messages', 'responseFormat', 'stream'],
@@ -457,6 +457,7 @@ if (publicAi) {
       summary: 'List the authoritative provider-neutral Clervo AI catalog',
       description: `Returns ${b7Inventory.canonicalModels} frozen canonical model IDs and ${b7Inventory.aliases} stable aliases with capabilities, availability, health, free/paid state, pricing, and commerce metadata. Canonical IDs never silently substitute another model.`,
       operationId: 'aiListModels',
+      security: [],
       responses: {
         200: {
           description: 'OpenAI-compatible model list with authoritative Clervo commercial metadata',

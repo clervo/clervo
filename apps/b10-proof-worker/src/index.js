@@ -3,7 +3,7 @@ const PAYER = '0x1ada6E2EACb799f16bfC1A395c06D7fb52369207';
 const ASSET = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const NETWORK = 'eip155:8453';
 const FACILITATOR = 'https://api.cdp.coinbase.com/platform/v2/x402';
-const QUARANTINED_PREFIXES = new Set(['/proof/b7-ai-chat', '/proof/b7-ai-image']);
+const QUARANTINED_PREFIXES = new Set();
 const profiles = Object.freeze({
   '/proof/b10-search': Object.freeze({
     productId: 'search.web', route: '/v1/search/paid', resource: 'https://api.clervo.dev/v1/search/paid',

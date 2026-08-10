@@ -82,6 +82,7 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(openapi.info.contact.email, 'mo@clervo.dev');
   assert.match(openapi.info['x-guidance'], /same key.*without a second charge/iu);
   assert.deepEqual(openapi.paths['/v1/search/free'].post.security, []);
+  assert.deepEqual(openapi.paths['/v1/models'].get.security, []);
   assert.deepEqual(openapi.paths['/v1/search/paid'].post['x-payment-info'], {
     price: { mode: 'fixed', currency: 'USD', amount: '0.006000' },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
@@ -90,6 +91,10 @@ test('machine discovery publishes every live public product without overstating 
     price: { mode: 'dynamic', currency: 'USD', min: '0.000001', max: '2.621440' },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
   });
+  const aiProbe = openapi.paths['/v1/ai/execute'].post.requestBody.content['application/json'];
+  assert.equal(aiProbe.example.model, 'clervo/gpt-5.6-luna');
+  assert.deepEqual(aiProbe.schema.properties.model.enum, ['clervo/gpt-5.6-luna']);
+  assert.equal(aiProbe.schema.properties.model.default, 'clervo/gpt-5.6-luna');
   assert.deepEqual(openapi.paths['/v1/sandbox/execute'].post['x-payment-info'], {
     price: { mode: 'dynamic_class', currency: 'USD', minimum: '0.010000', maximum: '0.060000' },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
