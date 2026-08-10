@@ -46,6 +46,7 @@ test('B6 Router release workflow is package-specific, immutable, OIDC-capable, a
   assert.match(workflow, /runs-on: ubuntu-latest/u);
   assert.match(workflow, /npm@11\.18\.0/u);
   assert.match(workflow, /@clervo\/router@0\.1\.0/u);
+  assert.match(workflow, /Verify Router behavior and payment safety[\s\S]*?npm run build\s+npm run test:b6\s+node --test \.\/tests\/contract\/shared-paid-operation\.test\.mjs/u);
   assert.match(workflow, /npm publish "\$ROUTER_ARCHIVE" --access public --provenance/u);
   assert.match(workflow, /packageMetadata\.license !== 'MIT'/u);
   assert.match(workflow, /package\/LICENSE/u);
