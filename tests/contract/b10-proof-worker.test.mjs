@@ -32,7 +32,7 @@ test('B10 hosted proof pins the payer, facilitator, proxy boundary, and reconcil
     supplierCostCeilingAtomic: '0',
     productId: 'search.web',
     resource: 'https://api.clervo.dev/v1/search/paid',
-    idempotencyKey: 'idem_b10_search_proof_20260810c',
+    idempotencyKey: 'idem_b10_search_proof_20260810d',
     request: searchRequest,
   });
 });
@@ -50,14 +50,14 @@ test('B10 hosted proof forwards an unsigned challenge as an exact guarded POST',
   try {
     const response = await worker.fetch(request('/api/paid-operation', {
       method: 'POST',
-      headers: { 'content-type': 'application/json', 'idempotency-key': 'idem_b10_search_proof_20260810c' },
+      headers: { 'content-type': 'application/json', 'idempotency-key': 'idem_b10_search_proof_20260810d' },
       body: JSON.stringify(searchRequest),
     }), assets);
     assert.equal(response.status, 402);
     assert.equal(response.headers.get('payment-required'), 'bounded');
     assert.equal(observed.url, 'https://api.clervo.dev/v1/search/paid');
     assert.equal(observed.method, 'POST');
-    assert.equal(observed.headers.get('idempotency-key'), 'idem_b10_search_proof_20260810c');
+    assert.equal(observed.headers.get('idempotency-key'), 'idem_b10_search_proof_20260810d');
     assert.deepEqual(await observed.json(), searchRequest);
   } finally {
     globalThis.fetch = original;
@@ -79,7 +79,7 @@ test('B10 hosted proof refuses a signed payload from any payer except the approv
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        'idempotency-key': 'idem_b10_search_proof_20260810c',
+        'idempotency-key': 'idem_b10_search_proof_20260810d',
         'payment-signature': payment,
       },
       body: JSON.stringify(searchRequest),
