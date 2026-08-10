@@ -1,5 +1,6 @@
-import { x402Client, wrapFetchWithPayment } from '@x402/fetch';
+import { x402Client, x402HTTPClient } from '@x402/fetch';
 import { registerExactEvmScheme } from '@x402/evm/exact/client';
+import type { PaymentRequired } from '@x402/core/types';
 import { base } from 'viem/chains';
 import { createWalletClient, custom, getAddress } from 'viem';
 
@@ -12,11 +13,10 @@ type ProofConfig = {
   amountAtomic: string;
   amountDisplay: string;
   payTo: Address;
-  payer?: Address;
+  payer: Address;
+  facilitator: 'https://api.cdp.coinbase.com/platform/v2/x402';
   productId: 'search.web' | 'sandbox.run' | 'ai.chat' | 'prediction.markets' | 'prediction.market' | 'crypto.wallet.report' | 'crypto.wallet.transactions';
-  resource: 'https://api.clervo.dev/v1/search/paid' | 'https://api.clervo.dev/v1/ai/execute' | 'https://api.clervo.dev/v1/prediction/execute' | 'https://api.clervo.dev/v1/crypto/execute';
-  route?: string;
-  targetOrigin?: string;
+  resource: 'https://api.clervo.dev/v1/search/paid' | 'https://api.clervo.dev/v1/sandbox/execute' | 'https://api.clervo.dev/v1/ai/execute' | 'https://api.clervo.dev/v1/prediction/execute' | 'https://api.clervo.dev/v1/crypto/execute';
   idempotencyKey: string;
   payerBalanceCapAtomic: string;
   supplierCostCeilingAtomic: string;
@@ -32,16 +32,13 @@ let config: ProofConfig;
 let provider: EthereumProvider;
 let payer: Address;
 let challengeIdentity = '';
+let verifiedPaymentRequired: PaymentRequired;
+let verifiedQuoteExpiresAt = '';
 let paymentAttempted = false;
 const proofBase = /^\/proof\/b10-(?:search|sandbox)(?:\/|$)/u.test(window.location.pathname)
   ? window.location.pathname.replace(/\/$/u, '')
   : '';
-const proofFetch = (path: string, init?: RequestInit) => {
-  if (config !== undefined && path === '/api/paid-operation' && config.route !== undefined && config.targetOrigin !== undefined) {
-    return fetch(`${config.targetOrigin}${config.route}`, init);
-  }
-  return fetch(`${proofBase}${path}`, init);
-};
+const proofFetch = (path: string, init?: RequestInit) => fetch(`${proofBase}${path}`, init);
 
 function show(message: string) { status.textContent = message; }
 function sameAddress(left: string, right: string) { return left.toLowerCase() === right.toLowerCase(); }
@@ -123,7 +120,11 @@ function validateChallenge(response: Response, body: any) {
   if (!Number.isFinite(expiresAt) || expiresAt <= Date.now() || expiresAt - Date.now() > 10 * 60_000) throw new Error('quote expiry outside bounded window');
   const clervo = requirement.extra?.clervo;
   if (!clervo?.quoteHash || !clervo?.requestHash || !clervo?.operationId || clervo.quoteExpiresAt !== body.quote.expiresAt) throw new Error('challenge binding missing');
-  return JSON.stringify({ requirement, quoteHash: clervo.quoteHash, requestHash: clervo.requestHash, operationId: clervo.operationId });
+  return Object.freeze({
+    identity: JSON.stringify({ requirement, quoteHash: clervo.quoteHash, requestHash: clervo.requestHash, operationId: clervo.operationId }),
+    paymentRequired: decoded as PaymentRequired,
+    quoteExpiresAt: body.quote.expiresAt as string,
+  });
 }
 
 const requestInit = () => ({
@@ -135,7 +136,10 @@ const requestInit = () => ({
 async function getChallenge() {
   const response = await proofFetch('/api/paid-operation', requestInit());
   const body = await response.clone().json();
-  challengeIdentity = validateChallenge(response, body);
+  const verified = validateChallenge(response, body);
+  challengeIdentity = verified.identity;
+  verifiedPaymentRequired = verified.paymentRequired;
+  verifiedQuoteExpiresAt = verified.quoteExpiresAt;
   approveButton.disabled = false;
   show(`Challenge verified.\n\nReceiver: ${config.payTo}\nMaximum: ${config.amountDisplay}\nNetwork: Base mainnet\n\nNo signature has been requested.`);
 }
@@ -151,7 +155,7 @@ async function connect() {
   const accounts = await provider.request({ method: 'eth_requestAccounts' });
   if (!Array.isArray(accounts) || typeof accounts[0] !== 'string') throw new Error('MetaMask returned no account');
   payer = getAddress(accounts[0]);
-  if (config.payer !== undefined && !sameAddress(payer, config.payer)) throw new Error('connected account is not the approved payer');
+  if (!sameAddress(payer, config.payer)) throw new Error('connected account is not the approved payer');
   if (sameAddress(payer, config.payTo)) throw new Error('payer and receiver must be different');
   const rawBalance = await provider.request({
     method: 'eth_call',
@@ -187,18 +191,16 @@ async function approveOnce() {
     item.amount === config.amountAtomic
   ));
 
-  const boundedFetch: typeof fetch = async (input, init) => {
-    const response = await proofFetch('/api/paid-operation', init);
-    if (response.status === 402) {
-      const body = await response.clone().json();
-      const observed = validateChallenge(response, body);
-      if (observed !== challengeIdentity) throw new Error('challenge changed after approval review');
-    }
-    return response;
-  };
-  const paidFetch = wrapFetchWithPayment(boundedFetch, client);
+  if (verifiedPaymentRequired === undefined || challengeIdentity.length === 0) throw new Error('verified challenge is missing');
+  if (Date.parse(verifiedQuoteExpiresAt) <= Date.now()) throw new Error('verified challenge expired; stop and reconcile before using another key');
+
   show('Waiting for one bounded MetaMask signature…');
-  const paid = await paidFetch('/api/paid-operation', requestInit());
+  const paymentPayload = await client.createPaymentPayload(verifiedPaymentRequired);
+  const paymentHeaders = new x402HTTPClient(client).encodePaymentSignatureHeader(paymentPayload);
+  const paidRequest = requestInit();
+  const headers = new Headers(paidRequest.headers);
+  for (const [name, value] of Object.entries(paymentHeaders)) headers.set(name, value);
+  const paid = await proofFetch('/api/paid-operation', { ...paidRequest, headers });
   if (!paid.ok) throw new Error(`paid request failed with ${paid.status}; reconcile before any retry`);
   const paidBody = await paid.json();
   if (!usefulPaidResult(paidBody)) throw new Error('paid response is not a useful exact-product result; reconcile');
@@ -215,12 +217,12 @@ async function approveOnce() {
 }
 
 async function load() {
-  const response = await proofFetch('/config?proof=b10-20260809b', { headers: { accept: 'application/json', 'cache-control': 'no-cache' } });
+  const response = await proofFetch('/config?proof=b10-20260810c', { headers: { accept: 'application/json', 'cache-control': 'no-cache' } });
   if (!response.ok) throw new Error('guarded proof configuration unavailable');
   config = await response.json();
   bounds.innerHTML = [
     ['Network', 'Base mainnet (8453)'], ['Asset', 'Native USDC'], ['Maximum', config.amountDisplay],
-    ['Product', config.productId], ['Receiver', config.payTo], ['Payer', config.payer ?? 'Selected MetaMask account (shown after connect)'],
+    ['Product', config.productId], ['Receiver', config.payTo], ['Payer', config.payer], ['Facilitator', config.facilitator],
     ['Payer cap', `${config.payerBalanceCapAtomic} atomic USDC`],
     ['Supplier ceiling', `${config.supplierCostCeilingAtomic} atomic USD`],
     ['Execution', 'one authorization; replay must be free'],

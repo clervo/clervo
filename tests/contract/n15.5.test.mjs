@@ -25,7 +25,7 @@ test('browser proof refuses drift and allows exactly one authorization attempt',
     'payer and receiver must be different',
     'USDC EIP-712 domain mismatch',
     'quote expiry outside bounded window',
-    'challenge changed after approval review',
+    'verified challenge expired; stop and reconcile before using another key',
     'payment was already attempted; reconcile instead of retrying',
     "replay.headers.get('idempotency-replayed') !== 'true'",
   ]) assert.ok(browser.includes(guard), `missing browser guard: ${guard}`);
@@ -54,6 +54,9 @@ test('browser proof refuses drift and allows exactly one authorization attempt',
   assert.match(browser, /approved payer balance exceeds the bounded proof cap/u);
   assert.match(browser, /receipt\?\.receiptId !== paidBody\?\.receipt\?\.receiptId/u);
   assert.match(browser, /paymentAttempted = true/u);
+  assert.match(browser, /client\.createPaymentPayload\(verifiedPaymentRequired\)/u);
+  assert.match(browser, /proofFetch\('\/api\/paid-operation', \{ \.\.\.paidRequest, headers \}\)/u);
+  assert.doesNotMatch(browser, /wrapFetchWithPayment/u);
   assert.match(browser, /Do not sign or retry again/u);
   assert.match(browser, /adapter_prediction\.pdata_rest/u);
   assert.match(browser, /item\?\.sourceId === 'pdata' && item\?\.license === 'CC BY 4\.0'/u);
