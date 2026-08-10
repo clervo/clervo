@@ -1,39 +1,37 @@
 # Clervo
 
-Clervo is outcome infrastructure for agents: **Find → Understand → Act**.
+**Outcome infrastructure for AI agents.**
 
-This repository contains the clean-room Clervo platform, frozen distribution
-candidate, TypeScript and Python clients, MCP server, and the repository-local
-V6 product experience.
+> Give your agent a task. Get a verified result.
 
-## Current public boundary
+Clervo is being built as a unified execution layer for agents that need to discover capabilities, route work, execute through providers, handle paid execution when supported, and receive results with clear execution evidence.
 
-The distribution candidate exposes two frozen operations:
+**Buy outcomes. Not integrations.**
+
+Instead of wiring every model, search provider, sandbox, RPC, or paid tool independently, agent builders can work toward one coherent capability layer. Clervo's product direction spans AI, Search, Secure Sandbox, Prediction, Crypto Intelligence, Multi-chain RPC, and the routing infrastructure that connects them.
+
+## Current public availability
+
+Today, this repository exposes two preview operations:
 
 - `search.web`
 - `search.answer`
 
-They are repository-local preview surfaces. No public callable deployment or
-payable route is currently verified. The SDKs require an explicit base URL, and
-they never sign, pay, or retry a payment automatically.
+These are repository-local preview surfaces. **No public callable deployment or payable route is currently verified.** The SDKs require an explicit base URL, and they never sign, pay, or retry a payment automatically.
 
-The other Clervo product cores and combined workflows are implemented and
-qualified privately. Their customer lifecycle and public availability remain
-controlled by the canonical registry and current evidence; source code or a
-package archive does not make a capability production-ready.
+Other Clervo product cores and combined workflows are implemented and qualified privately. Their customer lifecycle and public availability remain controlled by the canonical registry and current evidence; source code or a package archive does not make a capability production-ready.
 
-## Packages
+## For developers
+
+The public repository includes:
 
 - [`@clervo/sdk`](packages/sdk-typescript) — typed TypeScript client
 - [`clervo-sdk`](packages/sdk-python) — dependency-free Python client
 - [`@clervo/mcp`](packages/mcp) — stdio MCP server backed by the TypeScript SDK
 
-The current versions are published with registry provenance: `@clervo/sdk` and
-`@clervo/mcp` at `0.3.0`, and `clervo-sdk` at `0.2.0`. Older registry versions
-are preserved as history and carry deprecation guidance where their claims are
-stale. Package publication does not make the API publicly callable.
+The current versions are published with registry provenance: `@clervo/sdk` and `@clervo/mcp` at `0.3.0`, and `clervo-sdk` at `0.2.0`. Older registry versions are preserved as history and carry deprecation guidance where their claims are stale. Package publication does not make the API publicly callable.
 
-## Local verification
+## Try the repository locally
 
 The repository is pinned to Node.js `24.18.1` and npm `10.9.8`.
 
@@ -43,19 +41,16 @@ npm run test:stage13:clients
 npm run test:stage13:site
 ```
 
-The site can then be previewed locally:
+Then preview the site locally:
 
 ```sh
 npm run site:preview
 ```
 
-## Security and product truth
+## Why trust the boundary
 
-Product contracts and lifecycle records are the source of truth. Never place
-credentials, wallet material, customer payloads, or authentication files in
-issues or commits. Security concerns can be reported through the repository's
-private security-reporting channel once the canonical GitHub repository is
-public.
+Clervo separates implemented capability from public availability. Product contracts and lifecycle records are the source of truth, and public claims should follow current evidence rather than source-code presence alone.
 
-This source is currently unlicensed (`UNLICENSED`). No permission to copy,
-modify, or redistribute is granted unless Clervo publishes separate terms.
+Never place credentials, wallet material, customer payloads, or authentication files in issues or commits. Security concerns can be reported through the repository's private security-reporting channel.
+
+This source is currently unlicensed (`UNLICENSED`). No permission to copy, modify, or redistribute is granted unless Clervo publishes separate terms.
