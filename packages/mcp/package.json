@@ -1,11 +1,13 @@
 {
   "name": "@clervo/mcp",
   "version": "0.3.0",
-  "description": "Clervo MCP server generated from the frozen two-operation distribution candidate.",
+  "description": "MCP server exposing Clervo's currently published public operations to AI agents.",
   "license": "UNLICENSED",
   "type": "module",
   "keywords": [
     "clervo",
+    "ai-agents",
+    "agent-infrastructure",
     "mcp",
     "model-context-protocol",
     "search"
