@@ -1,6 +1,6 @@
 # `clervo-sdk`
 
-Dependency-free Python client for Clervo's frozen distribution candidate.
+Dependency-free Python client for Clervo's repository-local preview interface.
 
 The current package exposes only `search.web` and `search.answer`, requires an
 explicit base URL, preserves idempotency, and returns typed non-payable `402`
