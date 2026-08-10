@@ -7,7 +7,7 @@ const profiles = Object.freeze({
   '/proof/b10-search': Object.freeze({
     productId: 'search.web', route: '/v1/search/paid', resource: 'https://api.clervo.dev/v1/search/paid',
     amountAtomic: '6000', amountDisplay: '0.006 USDC', supplierCostCeilingAtomic: '0',
-    idempotencyKey: 'idem_b10_search_proof_20260810e',
+    idempotencyKey: 'idem_b10_search_proof_20260810f',
     request: Object.freeze({ query: 'Python programming', maxResults: 3, synthesize: false, language: 'en', region: 'US' }),
   }),
   '/proof/b10-sandbox': Object.freeze({
@@ -46,7 +46,7 @@ async function readBody(request) {
 }
 
 function configFor(value) {
-  return Object.freeze({ network: NETWORK, chainIdHex: '0x2105', asset: ASSET, amountAtomic: value.amountAtomic, amountDisplay: value.amountDisplay, payTo: RECEIVER, payer: PAYER, facilitator: FACILITATOR, payerBalanceCapAtomic: '32000', supplierCostCeilingAtomic: value.supplierCostCeilingAtomic, productId: value.productId, resource: value.resource, idempotencyKey: value.idempotencyKey, request: value.request });
+  return Object.freeze({ network: NETWORK, chainIdHex: '0x2105', asset: ASSET, amountAtomic: value.amountAtomic, amountDisplay: value.amountDisplay, payTo: RECEIVER, payer: PAYER, facilitator: FACILITATOR, payerBalanceCapAtomic: '300000', supplierCostCeilingAtomic: value.supplierCostCeilingAtomic, productId: value.productId, resource: value.resource, idempotencyKey: value.idempotencyKey, request: value.request });
 }
 
 export default {

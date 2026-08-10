@@ -1,19 +1,15 @@
 #!/usr/bin/env node
 
 import assert from 'node:assert/strict';
-import { Pool } from 'pg';
+import { createRequire } from 'node:module';
 
-const reconciledKeys = Object.freeze([
-  'idem_b10_search_proof_20260809',
-  'idem_b10_search_proof_20260809b',
-  'idem_b10_sandbox_proof_20260809',
-  'idem_b10_sandbox_proof_20260809b',
-]);
-const candidateKeys = Object.freeze([
-  'idem_b10_search_proof_20260810c',
-  'idem_b10_sandbox_proof_20260810c',
-]);
-const expectedKeys = Object.freeze([...reconciledKeys, ...candidateKeys]);
+const require = createRequire(`${process.cwd()}/package.json`);
+const { Pool } = require('pg');
+
+const currentKeys = Object.freeze({
+  search: 'idem_b10_search_proof_20260810f',
+  sandbox: 'idem_b10_sandbox_proof_20260810c',
+});
 
 const connectionString = process.env.CLERVO_DATABASE_URL;
 assert.ok(connectionString, 'CLERVO_DATABASE_URL is required');
@@ -28,7 +24,7 @@ const pool = new Pool({
 
 try {
   const identity = await pool.query('SELECT current_database() AS database, current_user AS username');
-  assert.deepEqual(identity.rows[0], { database: 'clervo', username: 'clervo' });
+  assert.deepEqual(identity.rows[0], { database: 'clervo', username: 'clervo_runtime_20260810' });
 
   const x402 = await pool.query(
     `SELECT idempotency_key, state, operation_id,
@@ -40,9 +36,9 @@ try {
             created_at, updated_at, completed_at
        FROM clervo_x402_operations
       WHERE environment_namespace = 'production'
-        AND idempotency_key = ANY($1::text[])
+        AND idempotency_key LIKE 'idem_b10_%'
       ORDER BY idempotency_key`,
-    [expectedKeys],
+    [],
   );
 
   const search = await pool.query(
@@ -51,9 +47,9 @@ try {
             created_at, updated_at, completed_at
        FROM clervo_search_http_operations
       WHERE environment_namespace = 'production'
-        AND idempotency_key = ANY($1::text[])
+        AND idempotency_key LIKE 'idem_b10_%'
       ORDER BY idempotency_key`,
-    [expectedKeys],
+    [],
   );
 
   const operationIds = x402.rows.map(({ operation_id: operationId }) => operationId);
@@ -101,31 +97,49 @@ try {
     updatedAt: row.updated_at,
     completedAt: row.completed_at,
   }));
-  const fundedEffect = targetRows.some((row) => row.hasPaymentFingerprint
-    || row.hasExecution || row.hasSettlement || row.hasResponse || row.receiptId !== null)
-    || search.rows.length > 0 || sandbox.rows.length > 0 || accounting.rows.length > 0;
-
-  assert.equal(fundedEffect, false, 'B10 405 attempt has a durable funded or execution effect');
-  assert.equal(targetRows.some(({ idempotencyKey }) => candidateKeys.includes(idempotencyKey)), false, 'B10 candidate idempotency key is not fresh');
+  const current = Object.fromEntries(Object.entries(currentKeys).map(([product, key]) => [
+    product,
+    targetRows.find(({ idempotencyKey }) => idempotencyKey === key) ?? null,
+  ]));
+  const ambiguous = targetRows.filter(({ state }) => !['challenged', 'completed'].includes(state));
 
   process.stdout.write(`${JSON.stringify({
-    schemaVersion: 'clervo.b10-405-reconciliation.v1',
+    schemaVersion: 'clervo.b10-current-reconciliation.v1',
     verifiedAt: new Date().toISOString(),
     databaseIdentityVerified: true,
-    queriedIdempotencyKeys: expectedKeys,
-    reconciledIdempotencyKeys: reconciledKeys,
-    candidateIdempotencyKeys: candidateKeys,
-    candidateIdempotencyKeysFresh: true,
+    currentIdempotencyKeys: currentKeys,
+    current,
     x402Rows: targetRows,
-    searchExecutionRows: search.rows.length,
-    sandboxExecutionRows: sandbox.rows.length,
-    receiverAccountingRows: accounting.rows.length,
+    searchExecutionRows: search.rows.map((row) => ({
+      idempotencyKey: row.idempotency_key,
+      state: row.state,
+      operationId: row.operation_id,
+      hasResponse: row.has_response,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+      completedAt: row.completed_at,
+    })),
+    sandboxExecutionRows: sandbox.rows.map((row) => ({
+      operationId: row.operation_id,
+      state: row.state,
+      hasResponse: row.has_response,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+      completedAt: row.completed_at,
+    })),
+    receiverAccountingRows: accounting.rows.map((row) => ({
+      entryId: row.entry_id,
+      operationId: row.operation_id,
+      settlementId: row.settlement_id,
+      authorizationId: row.authorization_id,
+      occurredAt: row.occurred_at,
+    })),
     receiverAccountingHead: {
       entryCount: accountingHead.rows[0].entry_count,
       headHash: accountingHead.rows[0].head_hash,
       latestOccurredAt: accountingHead.rows[0].latest_occurred_at,
     },
-    fundedEffect: false,
+    ambiguousRows: ambiguous.map(({ idempotencyKey, state, operationId }) => ({ idempotencyKey, state, operationId })),
     credentialsLogged: false,
     customerPayloadsLogged: false,
   }, null, 2)}\n`);

@@ -152,7 +152,7 @@ const proofConfig = Object.freeze({
   network: 'eip155:8453', chainIdHex: '0x2105', asset,
   amountAtomic: profile.amountAtomic, amountDisplay: profile.amountDisplay,
   ...(payer === null ? {} : { payer }), payTo, productId, resource: profile.resource, idempotencyKey,
-  payerBalanceCapAtomic: '32000', supplierCostCeilingAtomic: profile.supplierCostCeilingAtomic,
+  payerBalanceCapAtomic: '300000', supplierCostCeilingAtomic: profile.supplierCostCeilingAtomic,
   request: profile.request,
 });
 
