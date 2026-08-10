@@ -1,18 +1,12 @@
 name: AI qualification expiry guard
 
-# All 21 route qualifications shared one expiry date, and nothing would have
-# reported that until the routes had already gone stale. This runs the guard
-# daily and on every change to the catalog, so an approaching expiry shows up as
-# a failing check with time left to requalify.
-#
-# The guard only reads the catalog. Requalification stays a deliberate action
-# (`npm run ai:requalify:legacy-recovery -- --legacy-recovery`) because it is a
-# pre-cutover recovery tool that calls suppliers with production credentials,
-# not the permanent qualified-catalog authority and not a scheduled action.
+# Check catalog qualification freshness before routes become stale.
+# This workflow is read-only; requalification remains a deliberate action and
+# is not scheduled here.
 
 on:
   schedule:
-    # 06:14 UTC — off the hour, so this does not pile onto the top-of-hour peak.
+    # Run daily off the top-of-hour peak.
     - cron: '14 6 * * *'
   pull_request:
     paths:
@@ -49,5 +43,7 @@ jobs:
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
-      - name: Check qualification expiry
-        run: node ./scripts/ai/check-qualification-expiry.mjs
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+      - name: Check qualification expiry horizon
+        run: npm run ai:qualification:expiry-check
