@@ -22,6 +22,10 @@ const DISCOVERY_DOCUMENTS = new Map([
   // they cannot advertise supply the deployed system does not serve.
   ['/.well-known/x402', x402Manifest],
   ['/v1/models', models],
+  // Public alias reserved for the protected ai.clervo.dev hostname. Its
+  // existing /v1/models path belongs to the authenticated VM gateway and must
+  // not be shadowed when the normalized product route is attached there.
+  ['/v1/catalog', models],
   ['/openapi.json', openapi],
   ['/catalog.json', catalog],
   ['/capabilities.json', capabilities],

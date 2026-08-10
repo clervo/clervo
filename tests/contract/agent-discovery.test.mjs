@@ -204,10 +204,11 @@ test('the API edge serves all three agent documents, and llms.txt byte-identical
   // The Worker has no filesystem, so llms.txt is compiled into a module. Two
   // hosts serving two versions of the same reference is the drift this guards.
   assert.equal(await llmsResponse.text(), await text('generated/public/llms.txt'));
+  assert.deepEqual(await (await get('/v1/catalog')).json(), models);
 });
 
 test('the agent documents are read-only and reachable without a credential', async () => {
-  for (const pathname of ['/v1/models', '/.well-known/x402', '/llms.txt']) {
+  for (const pathname of ['/v1/models', '/v1/catalog', '/.well-known/x402', '/llms.txt']) {
     const posted = await worker.fetch(new Request(`https://api.clervo.dev${pathname}`, { method: 'POST' }), environment);
     assert.equal(posted.status, 405, `${pathname} must reject a non-GET method`);
   }
