@@ -7,7 +7,7 @@ import { InMemoryX402OperationStore } from '../../apps/api/src/x402-operation-st
 import { InMemoryAiFreeTierQuotaStore } from '../../dist/services/ai/src/free-tier.js';
 import { normalizeAiHttpRequest } from '../../dist/packages/contracts/src/index.js';
 
-const observedAt = '2026-08-10T19:10:00.000Z';
+const observedAt = '2026-08-10T20:11:00.000Z';
 
 test('one AI endpoint executes free models without payment and challenges paid models from the same catalog', async (context) => {
   let executions = 0;
@@ -64,7 +64,7 @@ test('one AI endpoint executes free models without payment and challenges paid m
     'x-clervo-edge-authorization': 'Bearer edge-authorization-at-least-32-characters',
     'x-clervo-quota-subject': `sha256:${'1'.repeat(64)}`,
   };
-  const freeBody = JSON.stringify({ model: 'clervo/gpt-oss-20b', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 16 });
+  const freeBody = JSON.stringify({ model: 'clervo/gemma-4-26b-a4b-it', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 16 });
 
   const free = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers: edgeHeaders, body: freeBody });
   const freeText = await free.text();
@@ -93,5 +93,15 @@ test('one AI endpoint executes free models without payment and challenges paid m
   assert.match(paid.headers.get('idempotency-key'), /^srv\.ai\./u);
   assert.ok(BigInt((await paid.json()).quote.maximumCharge.amountAtomic) > 0n);
   assert.equal(challenges, 1);
+  assert.equal(executions, 1);
+
+  const image = Buffer.from('bounded-test-image').toString('base64');
+  const virtualTryOn = await fetch(`${origin}/v1/ai/execute`, {
+    method: 'POST', headers: edgeHeaders,
+    body: JSON.stringify({ model: 'clervo/virtual-try-on-001', input: { kind: 'virtual_try_on', personImageBase64: image, productImageBase64: image } }),
+  });
+  assert.equal(virtualTryOn.status, 402);
+  assert.equal((await virtualTryOn.json()).quote.productId, 'ai.virtual_try_on');
+  assert.equal(challenges, 2);
   assert.equal(executions, 1);
 });

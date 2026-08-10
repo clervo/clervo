@@ -245,7 +245,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
     }) {
       if (typeof execute !== 'function' || typeof createResponse !== 'function') throw new TypeError('invalid_x402_operation_handler');
       if (prepare !== undefined && typeof prepare !== 'function') throw new TypeError('invalid_x402_operation_prepare');
-      if (!/^[a-z][a-z0-9]*(?:\.[a-z][a-z0-9]*)+$/u.test(productId ?? '')) throw new TypeError('invalid_x402_product_id');
+      if (!/^[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)+$/u.test(productId ?? '')) throw new TypeError('invalid_x402_product_id');
       const effectiveResourcePath = resourcePath ?? (productId.startsWith('ai.') ? '/v1/ai/execute' : '/v1/search/paid');
       if (!payableResourcePaths.has(effectiveResourcePath)) throw new TypeError('invalid_x402_operation_resource');
       const base = { idempotencyKey, requestHash, operationId, now };

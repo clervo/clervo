@@ -237,7 +237,6 @@
         "operationId": "ai.execute",
         "modelIds": [
           "clervo/gemma-4-26b-a4b-it",
-          "clervo/gpt-oss-20b",
           "clervo/laguna-s-2.1",
           "clervo/nemotron-3-nano-omni-30b-a3b-reasoning"
         ],

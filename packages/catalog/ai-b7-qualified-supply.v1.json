@@ -1,7 +1,7 @@
 {
   "schemaVersion": "qualified-ai-supply-catalog.v1",
-  "catalogRevision": "b7supply_8b0e0a557a3ef3c94f891565",
-  "generatedAt": "2026-08-10T19:09:36.000Z",
+  "catalogRevision": "b7supply_8b0e0a557a3ef3c94f891565_health1",
+  "generatedAt": "2026-08-10T20:10:30.000Z",
   "sourceObservedAt": "2026-08-10T19:09:36.000Z",
   "validUntil": "2026-09-09T19:09:36.000Z",
   "models": [
@@ -1975,9 +1975,9 @@
         "evidenceRef": "production://ai.clervo.dev/catalog/sha256:8b0e0a557a3ef3c94f89156580f573c4e8f8b6f54dbc164e0d69e7fc4b3cb895"
       },
       "availability": {
-        "state": "available",
-        "reason": null,
-        "observedAt": "2026-08-10T19:09:36.000Z"
+        "state": "degraded",
+        "reason": "integrated_execution_failed",
+        "observedAt": "2026-08-10T20:10:30.000Z"
       },
       "upstreamCost": {
         "state": "known",

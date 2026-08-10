@@ -110,4 +110,4 @@ clervo doctor                       # check the machine end to end
 - [`GET https://api.clervo.dev/.well-known/x402`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.
 - `GET https://api.clervo.dev/llms.txt`: this document, served from the API host as well as the site.
 
-Model list: 89 callable IDs (85 canonical, 4 aliases), 89 sellable. Payment manifest: 4 paid resources.
+Model list: 89 callable IDs (85 canonical, 4 aliases), 88 sellable. Payment manifest: 4 paid resources.

@@ -6,6 +6,7 @@ import path from 'node:path';
 
 const root = path.resolve(new URL('../..', import.meta.url).pathname);
 const observedAt = '2026-08-10T19:09:36.000Z';
+const catalogGeneratedAt = '2026-08-10T20:10:30.000Z';
 const validUntil = '2026-09-09T19:09:36.000Z';
 const permissionValidUntil = '2027-08-10T19:09:36.000Z';
 const ownerDecisionRef = 'owner://instruction/2026-08-10/b7-frozen-production-commercialization';
@@ -34,6 +35,12 @@ const aliasContracts = Object.freeze({
   'clervo/gpt-5.6-luna': ['clervo/fast'],
   'clervo/gpt-5.6-terra': ['clervo/smart'],
   'clervo/gpt-5.6-sol': ['clervo/code', 'clervo/deep'],
+});
+
+// Minimum post-integration production checks may refine health without
+// changing the frozen B7 identity set or repeating model qualification.
+const availabilityOverrides = Object.freeze({
+  'clervo/gpt-oss-20b': Object.freeze({ state: 'degraded', reason: 'integrated_execution_failed', observedAt: '2026-08-10T20:10:30.000Z' }),
 });
 
 const officialMediaFloors = Object.freeze({
@@ -194,7 +201,7 @@ for (const model of freeze.canonicalModels) {
     modalities: [shape.modality], inputTypes: shape.inputTypes, outputTypes: shape.outputTypes, capabilities: shape.capabilities,
     limits: {},
     qualification: { state: 'qualified', checkedAt: observedAt, expiresAt: validUntil, evidenceRef: `production://ai.clervo.dev/catalog/${freeze.inventory.idFingerprint}` },
-    availability: { state: 'available', reason: null, observedAt },
+    availability: availabilityOverrides[model.id] ?? { state: 'available', reason: null, observedAt },
     upstreamCost: { state: 'known', pricing: cost, authorityRef: 'owner://instruction/2026-08-10/b7-low-zero-current-supply-cost', observedAt, validUntil },
     quality: { score: model.reasoning === true ? 0.9 : 0.8, evidenceRef: `production://ai.clervo.dev/catalog/${freeze.inventory.catalogFingerprint}` },
   });
@@ -210,7 +217,7 @@ evidence.push(
 const outputs = Object.freeze({
   'ai-b7-market-price-evidence.v1.json': { schemaVersion: 'ai-b7-market-price-evidence.v1', revision: `b7market_${hash(stable(evidence)).slice(0, 24)}`, observedAt, validUntil, evidence: evidence.sort((left, right) => left.evidenceId.localeCompare(right.evidenceId)) },
   'ai-b7-commercial-pricing.v1.json': { schemaVersion: 'ai-b7-commercial-pricing.v1', revision: `b7price_${hash(stable(authorityModels)).slice(0, 24)}`, effectiveAt: observedAt, validUntil, currency: 'USDC', decimals: 6, minimumBillableAtomic: '1000', providerNamesPublic: false, policy: { strategicDiscountBasisPoints: 5_000, normalDiscountBasisPoints: 2_500, extremelyCheapDiscountBasisPoints: 1_000, internalSupplierCostDeterminesCustomerPrice: false, freeRequiresExactMarketEvidenceAndZeroCurrentSupplyCost: true }, freeTier: { enabled: true, perWalletDailyRequests: 20, globalDailyRequests: 2_000, automaticPaidOverageAllowed: false }, models: authorityModels.sort((left, right) => left.modelId.localeCompare(right.modelId)) },
-  'ai-b7-qualified-supply.v1.json': { schemaVersion: 'qualified-ai-supply-catalog.v1', catalogRevision: `b7supply_${freeze.inventory.idFingerprint.slice('sha256:'.length, 'sha256:'.length + 24)}`, generatedAt: observedAt, sourceObservedAt: observedAt, validUntil, models: supplyModels },
+  'ai-b7-qualified-supply.v1.json': { schemaVersion: 'qualified-ai-supply-catalog.v1', catalogRevision: `b7supply_${freeze.inventory.idFingerprint.slice('sha256:'.length, 'sha256:'.length + 24)}_health1`, generatedAt: catalogGeneratedAt, sourceObservedAt: observedAt, validUntil, models: supplyModels },
   'ai-b7-customer-identity-registry.v1.json': { schemaVersion: 'ai-customer-identity-registry.v1', revision: `b7identity_${hash(stable(identities)).slice(0, 24)}`, entries: identities },
   'ai-b7-commercial-permission.v1.json': { revision: `b7permission_${hash(stable(permissions)).slice(0, 24)}`, defaultState: 'unresolved', decisions: permissions, ownerDecisionLedger: [ownerDecisionRef] },
   'ai-b7-strategic-pricing-overrides.v1.json': { revision: `b7override_${hash(stable(overrides)).slice(0, 24)}`, overrides },

@@ -1964,11 +1964,13 @@
           "text"
         ],
         "limits": {},
-        "lifecycle": "available",
-        "availability": "available",
-        "health": "healthy",
-        "publicSellable": true,
-        "publicationBlockers": [],
+        "lifecycle": "degraded",
+        "availability": "degraded",
+        "health": "degraded",
+        "publicSellable": false,
+        "publicationBlockers": [
+          "availability_degraded"
+        ],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4674,7 +4676,7 @@
     }
   ],
   "clervo": {
-    "catalogRevision": "b7:b7supply_8b0e0a557a3ef3c94f891565:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1",
+    "catalogRevision": "b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1",
     "composedAt": "2026-08-10T19:10:00.000Z",
     "sourceValidUntil": "2026-09-09T19:09:36.000Z",
     "inventory": {
