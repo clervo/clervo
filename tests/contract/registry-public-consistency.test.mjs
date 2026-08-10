@@ -134,10 +134,10 @@ test('public status publishes every open conformance defect and every paused rou
   // Paused supply stays visible with its reason. Hiding it would erase supply
   // we own and would make the catalog look smaller than it is.
   assert.deepEqual(
-    status.aiRoutes.paused.map(({ routeId }) => routeId).sort(),
-    registry.aiRoutes.filter(({ state }) => state === 'supply_paused').map(({ routeId }) => routeId).sort(),
+    status.aiRoutes.paused.map(({ modelId }) => modelId).sort(),
+    registry.aiCatalog.models.filter(({ state }) => state === 'supply_paused').map(({ modelId }) => modelId).sort(),
   );
-  assert.deepEqual(status.aiRoutes.counts, registry.summary.aiRoutes);
+  assert.deepEqual(status.aiRoutes.counts, registry.aiCatalog.counts);
 });
 
 test('no public surface offers an operation the registry does not serve', async () => {

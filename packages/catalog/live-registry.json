@@ -1086,7 +1086,7 @@
     "apiOrigin": "https://api.clervo.dev",
     "environment": "production",
     "paidExecutionEnabled": true,
-    "releaseId": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
+    "releaseId": "6d928ea623e21d0cda8aa737b748e74d8ecaf552",
     "sandboxPaidEnabled": true,
     "siteOrigin": "https://clervo.dev",
     "stateBackend": "postgres",
@@ -1136,32 +1136,51 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-10T15:17:56.255Z",
+  "observedAt": "2026-08-10T20:46:34.442Z",
   "products": [
     {
-      "evidence": {
-        "liveRouteCount": 0,
-        "probed": true,
-        "routeStates": {
-          "supply_paused": 21
-        },
-        "totalRouteCount": 21
-      },
-      "expectedReturnAt": null,
-      "freeEntry": null,
       "id": "ai",
       "label": "AI",
-      "observedQuote": null,
       "operations": [
         "ai.chat",
         "ai.embed",
         "ai.image",
-        "ai.speech"
+        "ai.speech",
+        "ai.video",
+        "ai.music",
+        "ai.virtual_try_on"
       ],
-      "proof": "none",
+      "state": "live",
+      "reason": null,
+      "expectedReturnAt": null,
       "publiclyReachable": true,
-      "reason": "no_route_currently_live",
-      "state": "supply_paused"
+      "proof": "quote_observed_unpaid",
+      "observedQuote": {
+        "amountAtomic": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "freeEntry": {
+        "route": "https://api.clervo.dev/v1/ai/execute",
+        "modelId": "clervo/gemma-4-26b-a4b-it",
+        "replayVerified": true,
+        "paymentRequired": false
+      },
+      "evidence": {
+        "probed": true,
+        "releaseId": "6d928ea623e21d0cda8aa737b748e74d8ecaf552",
+        "frozenCanonicalModels": 85,
+        "aliases": 4,
+        "callableIds": 89,
+        "sellableIds": 88,
+        "representativeModalities": 7,
+        "freeOutcomeObserved": true
+      }
     },
     {
       "evidence": {
@@ -1370,7 +1389,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "faa1633561d0e45b465170fdde1ab389a49064eb",
+  "sourceCommit": "6d928ea623e21d0cda8aa737b748e74d8ecaf552",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -1390,6 +1409,10 @@
       "live": 4,
       "supply_paused": 1,
       "unavailable": 1
+    },
+    "aiCatalog": {
+      "live": 88,
+      "supply_paused": 1
     }
   },
   "supplyFamilies": [
@@ -1539,5 +1562,1138 @@
       "reason": null,
       "supplyFamilyId": "supply.groq"
     }
-  ]
+  ],
+  "aiCatalog": {
+    "authority": "packages/catalog/ai-b7-qualified-supply.v1.json",
+    "catalogRevision": "b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1",
+    "frozenInventory": {
+      "canonicalModels": 85,
+      "aliases": 4,
+      "callableIds": 89
+    },
+    "counts": {
+      "live": 88,
+      "supply_paused": 1
+    },
+    "representativeChallenges": [
+      {
+        "kind": "chat",
+        "model": "clervo/fast",
+        "amountAtomic": "1000",
+        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi"
+      },
+      {
+        "kind": "embedding",
+        "model": "clervo/gemini-embedding-001",
+        "amountAtomic": "1000",
+        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:embedding_gr"
+      },
+      {
+        "kind": "image",
+        "model": "clervo/gemini-3.1-flash-lite-image",
+        "amountAtomic": "25500",
+        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:image_balanc"
+      },
+      {
+        "kind": "speech",
+        "model": "clervo/gemini-2.5-flash-lite-preview-tts",
+        "amountAtomic": "1000",
+        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:speech_balan"
+      },
+      {
+        "kind": "video",
+        "model": "clervo/veo-3.1-lite-generate-001",
+        "amountAtomic": "112500",
+        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:default_sust"
+      },
+      {
+        "kind": "music",
+        "model": "clervo/lyria-3-clip-preview",
+        "amountAtomic": "30000",
+        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:default_sust"
+      },
+      {
+        "kind": "virtual_try_on",
+        "model": "clervo/virtual-try-on-001",
+        "amountAtomic": "45000",
+        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:default_sust"
+      }
+    ],
+    "freeReplay": {
+      "model": "clervo/gemma-4-26b-a4b-it",
+      "status": 200,
+      "replayed": true,
+      "noPayment": true
+    },
+    "models": [
+      {
+        "modelId": "clervo/allam-2-7b",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/claude-haiku-4-5-20251001",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/claude-opus-4-6",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/claude-opus-4-7",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/claude-opus-4-8",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/claude-opus-5",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/claude-sonnet-4-6",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/claude-sonnet-5",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/code",
+        "identityKind": "alias",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/deep",
+        "identityKind": "alias",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/deepseek-r1",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/deepseek-v3",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/deepseek-v3.1-terminus",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/deepseek-v3.2-exp",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/deepseek-v4-pro",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/fast",
+        "identityKind": "alias",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-2.5-flash",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-2.5-flash-image",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.image"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-2.5-flash-lite-preview-tts",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.speech"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-2.5-flash-tts",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.speech"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-2.5-pro-tts",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.speech"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-3-pro-image",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.image"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-3.1-flash-image",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.image"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-3.1-flash-lite-image",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.image"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-3.1-flash-tts-preview",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.speech"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-3.5-flash-lite",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-embedding-001",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.embed"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemini-omni-flash-preview",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.video"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemma-4-12b-it",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemma-4-26b-a4b-it",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gemma-4-31b-it",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/glm-4.5-air",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/glm-5.2",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gpt-5.6-luna",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gpt-5.6-sol",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gpt-5.6-terra",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gpt-oss-120b",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/gpt-oss-20b",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "supply_paused",
+        "reason": "availability_degraded",
+        "sellable": false,
+        "availability": "degraded",
+        "health": "degraded"
+      },
+      {
+        "modelId": "clervo/gpt-oss-safeguard-20b",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/hunyuan-a13b-instruct",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/hy3",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/kimi-k2.5",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/kimi-k2.6",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/kimi-k2.7-code",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/kimi-k3",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/laguna-s-2.1",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/ling-flash-2.0",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/llama-3.1-70b-instruct",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/llama-3.1-8b-instruct",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/llama-3.1-nemoguard-8b-content-safety",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/llama-3.1-nemotron-nano-vl-8b-v1",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/llama-3.1-nemotron-safety-guard-8b-v3",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/llama-3.2-11b-vision-instruct",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/llama-3.3-70b-instruct",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/longcat-2.0",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/lyria-3-clip-preview",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.music"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/lyria-3-pro-preview",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.music"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/minimax-m2.5",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/minimax-m3",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/mistral-medium-2505",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/mistral-medium-2508",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/multimodalembedding-001",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.embed"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/nemotron-3-embed-1b",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.embed"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/nemotron-3-nano-omni-30b-a3b-reasoning",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/nemotron-3.5-content-safety",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/nex-n2-pro",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/nv-embed-v1",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.embed"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen2.5-72b-instruct",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3-14b",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3-30b-a3b-instruct-2507",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3-32b",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3-8b",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3-coder-30b-a3b-instruct",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3-vl-30b-a3b-instruct",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3-vl-30b-a3b-thinking",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3-vl-32b-instruct",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3-vl-32b-thinking",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3-vl-8b-instruct",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3.5-397b-a17b",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/qwen3.6-27b",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/seed-oss-36b-instruct",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/smart",
+        "identityKind": "alias",
+        "productIds": [
+          "ai.chat"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/text-embedding-005",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.embed"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/text-embedding-large-exp-03-07",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.embed"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/text-multilingual-embedding-002",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.embed"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/veo-3.1-fast-generate-001",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.video"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/veo-3.1-generate-001",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.video"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/veo-3.1-lite-generate-001",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.video"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      },
+      {
+        "modelId": "clervo/virtual-try-on-001",
+        "identityKind": "canonical",
+        "productIds": [
+          "ai.virtual_try_on"
+        ],
+        "state": "live",
+        "reason": null,
+        "sellable": true,
+        "availability": "available",
+        "health": "healthy"
+      }
+    ]
+  }
 }

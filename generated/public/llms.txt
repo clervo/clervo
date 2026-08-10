@@ -9,13 +9,13 @@ Current verified status:
 - Frozen release candidate: clervo-private-core-2026-08-02.2
 - Frozen interface hash: sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4
 - Six product cores: privately qualified and compatibility-frozen
-- Public lifecycle: live: Crypto Intelligence, Prediction Intelligence, Secure Sandbox, Research; supply_paused: AI; unavailable: Multi-chain RPC
-- Public operation IDs: search.web, sandbox.run, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal, crypto.wallet.balances, crypto.wallet.tokens, crypto.wallet.transactions, crypto.wallet.report
+- Public lifecycle: live: AI, Crypto Intelligence, Prediction Intelligence, Secure Sandbox, Research; unavailable: Multi-chain RPC
+- Public operation IDs: search.web, ai.chat, ai.embed, ai.image, ai.speech, ai.video, ai.music, ai.virtual_try_on, sandbox.run, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal, crypto.wallet.balances, crypto.wallet.tokens, crypto.wallet.transactions, crypto.wallet.report
 - Public API callable: yes
-- x402 public payment: available for search.web (0.006000 USDC maximum), sandbox.run (0.010000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
+- x402 public payment: available for search.web (0.006000 USDC maximum), ai (request-derived quote), sandbox.run (0.010000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
 - x402 owner-funded proof: settled outcomes are reported per product in the generated proof table; no customer revenue or demand is inferred
 - Commercial proof: no customer revenue or demand claimed
-- Public price: search.web (0.006000 USDC maximum), sandbox.run (0.010000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
+- Public price: search.web (0.006000 USDC maximum), ai (request-derived quote), sandbox.run (0.010000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
 - First Revenue Release ready: no
 - llms.txt is a documentation map, not a search or AI ranking claim
 
@@ -51,11 +51,11 @@ Current verified status:
 
 ## Observed lifecycle state and proof level
 
-Probed from the deployed system at 2026-08-10T15:17:56.255Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
+Probed from the deployed system at 2026-08-10T20:46:34.442Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
 
 | Product | Lifecycle state | Proof level |
 |---|---|---|
-| AI | supply_paused (no_route_currently_live) | none |
+| AI | live | quote_observed_unpaid |
 | Crypto Intelligence | live | quote_observed_unpaid |
 | Prediction Intelligence | live | quote_observed_unpaid |
 | Multi-chain RPC | unavailable (commercial_rights_blocked) | none |
@@ -110,4 +110,4 @@ clervo doctor                       # check the machine end to end
 - [`GET https://api.clervo.dev/.well-known/x402`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.
 - `GET https://api.clervo.dev/llms.txt`: this document, served from the API host as well as the site.
 
-Model list: 89 callable IDs (85 canonical, 4 aliases), 88 sellable. Payment manifest: 4 paid resources.
+Model list: 89 callable IDs (85 canonical, 4 aliases), 88 sellable. Payment manifest: 5 paid resources.

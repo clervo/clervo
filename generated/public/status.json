@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-10T15:17:56.255Z",
+  "observedAt": "2026-08-10T20:46:34.442Z",
   "publicApi": {
     "state": "public_search_ai_sandbox_and_prediction_preview_verified",
     "endpoint": "https://api.clervo.dev",
@@ -64,8 +64,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-10T15:17:56.255Z",
-      "releaseId": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
+      "observedAt": "2026-08-10T20:46:34.442Z",
+      "releaseId": "6d928ea623e21d0cda8aa737b748e74d8ecaf552",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -86,15 +86,25 @@
           "ai.chat",
           "ai.embed",
           "ai.image",
-          "ai.speech"
+          "ai.speech",
+          "ai.video",
+          "ai.music",
+          "ai.virtual_try_on"
         ],
-        "lifecycleState": "supply_paused",
-        "proofLevel": "none",
-        "reason": "no_route_currently_live",
+        "lifecycleState": "live",
+        "proofLevel": "quote_observed_unpaid",
+        "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
-        "observedPrice": null,
-        "freeEntry": null
+        "observedPrice": {
+          "amountAtomic": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi"
+        },
+        "freeEntry": {
+          "route": "https://api.clervo.dev/v1/ai/execute"
+        }
       },
       {
         "id": "crypto_intelligence",
@@ -219,134 +229,15 @@
   ],
   "aiRoutes": {
     "counts": {
-      "supply_paused": 21
+      "live": 88,
+      "supply_paused": 1
     },
     "paused": [
       {
-        "routeId": "ai.route.aura_2_arcas_en",
-        "exactModelId": "aura-2-arcas-en",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.aura_2_thalia_en",
-        "exactModelId": "aura-2-thalia-en",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
-        "exactModelId": "@cf/meta/llama-4-scout-17b-16e-instruct",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.cf_nvidia_nemotron_3_120b_a12b",
-        "exactModelId": "@cf/nvidia/nemotron-3-120b-a12b",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.cf_openai_gpt_oss_120b",
-        "exactModelId": "@cf/openai/gpt-oss-120b",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.cf_openai_gpt_oss_20b",
-        "exactModelId": "@cf/openai/gpt-oss-20b",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.cf_qwen_qwen3_30b_a3b_fp8",
-        "exactModelId": "@cf/qwen/qwen3-30b-a3b-fp8",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.cloudflare_aura_2_en",
-        "exactModelId": "@cf/deepgram/aura-2-en",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.gemini_3_1_flash_image",
-        "exactModelId": "gemini-3.1-flash-image",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.gemini_3_1_flash_lite_image",
-        "exactModelId": "gemini-3.1-flash-lite-image",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.gemini_3_5_flash",
-        "exactModelId": "gemini-3.5-flash",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.gemini_3_5_flash_lite",
-        "exactModelId": "gemini-3.5-flash-lite",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.gemini_3_6_flash",
-        "exactModelId": "gemini-3.6-flash",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.gemini_3_pro_image",
-        "exactModelId": "gemini-3-pro-image",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.gemini_embedding_001",
-        "exactModelId": "gemini-embedding-001",
-        "reason": "commercial_permission_restricted",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.gpt_5_6_luna",
-        "exactModelId": "gpt-5.6-luna",
-        "reason": "upstream_completion_failed",
-        "expectedReturnAt": "2026-08-09T00:00:00Z"
-      },
-      {
-        "routeId": "ai.route.gpt_5_6_sol",
-        "exactModelId": "gpt-5.6-sol",
-        "reason": "upstream_completion_failed",
-        "expectedReturnAt": "2026-08-09T00:00:00Z"
-      },
-      {
-        "routeId": "ai.route.gpt_5_6_terra",
-        "exactModelId": "gpt-5.6-terra",
-        "reason": "upstream_completion_failed",
-        "expectedReturnAt": "2026-08-09T00:00:00Z"
-      },
-      {
-        "routeId": "ai.route.gpt_oss_120b",
-        "exactModelId": "openai/gpt-oss-120b",
-        "reason": "commercial_permission_unresolved",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.gpt_oss_20b",
-        "exactModelId": "openai/gpt-oss-20b",
-        "reason": "commercial_permission_unresolved",
-        "expectedReturnAt": null
-      },
-      {
-        "routeId": "ai.route.qwen3_6_27b",
-        "exactModelId": "qwen/qwen3.6-27b",
-        "reason": "commercial_permission_unresolved",
-        "expectedReturnAt": null
+        "modelId": "clervo/gpt-oss-20b",
+        "reason": "availability_degraded",
+        "availability": "degraded",
+        "health": "degraded"
       }
     ]
   },
@@ -364,8 +255,8 @@
       "engineeringState": "public_production_origin_qualified",
       "customerLifecycle": "preview_publicly_callable",
       "commercialProof": "unproven",
-      "lifecycleState": "supply_paused",
-      "proofLevel": "none"
+      "lifecycleState": "live",
+      "proofLevel": "quote_observed_unpaid"
     },
     {
       "id": "sandbox",

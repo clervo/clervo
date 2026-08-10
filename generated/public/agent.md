@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `packages/catalog/live-registry.json`, probed at 2026-08-10T15:17:56.255Z. Release: `3dfe8a629d724f72f41174aad5ace8f5e7eb8927`.
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-10T20:46:34.442Z. Release: `6d928ea623e21d0cda8aa737b748e74d8ecaf552`.
 
 ## Identity
 
@@ -17,7 +17,7 @@ Source: `packages/catalog/live-registry.json`, probed at 2026-08-10T15:17:56.255
 
 | Product | ID | Lifecycle state | Proof level |
 |---|---|---|---|
-| AI | `ai` | supply_paused (no_route_currently_live) | none |
+| AI | `ai` | live | quote_observed_unpaid |
 | Crypto Intelligence | `crypto_intelligence` | live | quote_observed_unpaid |
 | Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
@@ -74,7 +74,7 @@ curl -sS https://api.clervo.dev/v1/search/free \
 
 ## Boundaries
 
-- Publicly callable previews: raw cited Search, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.
+- Publicly callable previews: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.
 - Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable without commercially qualified price supply.
 - Reports expose observed facts, deterministic signals, coverage, missing sources, freshness, evidence, and provenance; they do not infer wallet identity, risk, advice, custody, signing, or trading.
 - A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.

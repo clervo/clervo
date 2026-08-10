@@ -34,7 +34,9 @@ const CATALOGUED_STATES = new Set(['live', 'supply_paused']);
 
 const registry = await json('packages/catalog/live-registry.json');
 const models = await json('generated/public/models.json');
+const b7Models = await json('generated/b7-ai/public/models.json');
 const manifest = await json('generated/public/.well-known/x402.json');
+const catalogModelById = new Map(registry.aiCatalog.models.map((model) => [model.modelId, model]));
 
 const environment = {
   CLERVO_AI_PUBLIC_ENABLED: 'true',
@@ -44,67 +46,53 @@ const environment = {
 const get = (pathname) => worker.fetch(new Request(`https://api.clervo.dev${pathname}`), environment);
 
 test('the model list carries every catalogued route and no route the registry does not catalogue', async () => {
-  const catalogued = registry.aiRoutes
+  const catalogued = registry.aiCatalog.models
     .filter(({ state }) => CATALOGUED_STATES.has(state))
-    .map(({ exactModelId }) => exactModelId)
+    .map(({ modelId }) => modelId)
     .sort();
   const listed = models.data.map(({ id }) => id).sort();
   assert.deepEqual(listed, catalogued);
+  assert.deepEqual(models.clervo.inventory, registry.aiCatalog.frozenInventory);
 
-  // Every listed model must be callable by the exact identity the registry
-  // observed. A list whose `id` is not the string the route accepts sends an
-  // agent to a request that fails closed.
+  // Every listed model is a provider-neutral customer identity from the frozen
+  // B7 catalog. A list that falls back to a supplier route ID breaks the
+  // public contract and leaks an implementation detail.
   for (const entry of models.data) {
-    const route = registry.aiRoutes.find(({ exactModelId }) => exactModelId === entry.id);
-    assert.ok(route !== undefined, `${entry.id} must map to a catalogued customer model identity`);
-    assert.equal(entry.id, route.exactModelId, `${route.routeId} must list its exact model identity`);
+    const catalogModel = catalogModelById.get(entry.id);
+    assert.ok(catalogModel !== undefined, `${entry.id} must map to a frozen customer model identity`);
+    assert.equal(entry.clervo.identityKind, catalogModel.identityKind);
     assert.equal(entry.object, 'model');
-    assert.equal(entry.clervo.route, '/v1/ai/execute');
+    assert.equal(entry.owned_by, 'clervo');
+    assert.equal(entry.clervo.commerce.executionPath, '/v1/ai/execute');
   }
   assert.equal(models.object, 'list');
 });
 
 test('the model list renders lifecycle state and proof level from the registry, never above it', () => {
-  const ceiling = PROOF_LEVELS.indexOf(registry.proofCeiling.level);
-  assert.ok(ceiling >= 0);
   for (const entry of models.data) {
-    const route = registry.aiRoutes.find(({ exactModelId }) => exactModelId === entry.id);
-    assert.ok(route !== undefined, `${entry.id} must map to a catalogued customer model identity`);
-    assert.equal(entry.clervo.lifecycleState, route.state, `${route.routeId} lifecycle must match the registry`);
-    assert.equal(entry.clervo.proofLevel, route.proof, `${route.routeId} proof level must match the registry`);
-    assert.equal(entry.clervo.sellable, route.sellable, `${route.routeId} sellability must match the registry`);
-    assert.ok(LIFECYCLE_STATES.has(entry.clervo.lifecycleState));
-    assert.ok(
-      PROOF_LEVELS.indexOf(entry.clervo.proofLevel) <= ceiling,
-      `${route.routeId} claims ${entry.clervo.proofLevel}, above the probe ceiling`,
-    );
-    // A route that is not sellable must carry the reason it is not, so an agent
-    // can tell temporarily-unfunded supply from supply that never existed.
-    if (!entry.clervo.sellable) {
-      assert.equal(typeof entry.clervo.reason, 'string', `${route.routeId} must publish why it is not sellable`);
-      assert.ok(entry.clervo.reason.length > 0);
-    }
-    assert.equal(entry.clervo.reason, route.reason);
-    assert.equal(entry.clervo.expectedReturnAt, route.expectedReturnAt);
+    const catalogModel = catalogModelById.get(entry.id);
+    assert.ok(catalogModel !== undefined, `${entry.id} must map to a frozen customer model identity`);
+    assert.equal(entry.clervo.availability, catalogModel.availability, `${entry.id} availability must match the live catalog`);
+    assert.equal(entry.clervo.health, catalogModel.health, `${entry.id} health must match the live catalog`);
+    assert.equal(entry.clervo.publicSellable, catalogModel.sellable, `${entry.id} sellability must match the live catalog`);
+    if (!entry.clervo.publicSellable) assert.ok(entry.clervo.publicationBlockers.includes(catalogModel.reason));
   }
-  assert.deepEqual(models.clervo.counts, registry.summary.aiRoutes);
-  assert.equal(models.clervo.provenance.observedAt, registry.observedAt);
-  assert.equal(models.clervo.provenance.source, 'packages/catalog/live-registry.json');
+  assert.deepEqual(registry.aiCatalog.counts, {
+    live: models.data.filter(({ clervo }) => clervo.publicSellable).length,
+    supply_paused: models.data.filter(({ clervo }) => !clervo.publicSellable).length,
+  });
 });
 
-test('every model price is the price the registry observed, marked as a maximum charge', () => {
+test('every model price is projected byte-for-byte from the coherent B7 pricing authority', () => {
+  assert.deepEqual(models, b7Models);
   for (const entry of models.data) {
-    const route = registry.aiRoutes.find(({ exactModelId }) => exactModelId === entry.id);
-    assert.ok(route !== undefined, `${entry.id} must map to a catalogued customer model identity`);
-    if (route.observedQuote === null) {
-      assert.equal(entry.clervo.observedPrice, null, `${route.routeId} must publish no price it did not observe`);
-      continue;
-    }
-    assert.equal(entry.clervo.observedPrice.amountAtomic, route.observedQuote.amountAtomic);
-    assert.equal(entry.clervo.observedPrice.asset, route.observedQuote.asset);
-    assert.equal(entry.clervo.observedPrice.network, route.observedQuote.network);
-    assert.equal(entry.clervo.observedPrice.priceVersion, route.observedQuote.priceVersion);
-    assert.equal(entry.clervo.observedPrice.maximumCharge, true);
+    const rates = Object.entries(entry.clervo.customerPricing)
+      .filter(([field]) => !['currency', 'decimals'].includes(field))
+      .map(([, value]) => value);
+    assert.ok(rates.every((value) => Number.isInteger(value) && value >= 0), `${entry.id} rates must be non-negative atomic integers`);
+    const free = rates.every((value) => value === 0);
+    assert.equal(entry.clervo.billingMode, free ? 'free' : 'metered');
+    assert.equal(entry.clervo.commerce.payment, free ? 'none' : 'x402_or_mpp');
   }
 });
 
@@ -143,16 +131,12 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
       assert.equal(offer.extra.clervo.priceVersion, product.observedQuote.priceVersion);
       assert.equal(offer.extra.clervo.exampleRouteId, null);
     } else if (family === 'ai') {
-      const example = registry.aiRoutes.find(({ routeId }) => routeId === offer.extra.clervo.exampleRouteId);
-      assert.ok(example !== undefined, 'an example price must name the route that produced it');
-      assert.ok(
-        example.productIds.includes(offer.extra.clervo.operationId),
-        `the example route must serve ${offer.extra.clervo.operationId}`,
-      );
-      assert.equal(example.state, registry.aiRoutes.find(({ routeId }) => routeId === example.routeId).state);
-      assert.equal(example.sellable, true, 'an example price must come from a sellable route');
-      assert.equal(offer.amount, example.observedQuote.amountAtomic);
-      assert.equal(offer.extra.clervo.priceVersion, example.observedQuote.priceVersion);
+      assert.equal(offer.extra.clervo.exampleRouteId, null);
+      assert.equal(offer.extra.clervo.operationId, 'ai.chat');
+      assert.equal(offer.extra.clervo.priceModel, 'request_derived_per_model');
+      assert.equal(offer.amount, product.observedQuote.amountAtomic);
+      assert.equal(offer.extra.clervo.priceVersion, product.observedQuote.priceVersion);
+      assert.equal(item.metadata.modelList, 'https://api.clervo.dev/v1/models');
     } else {
       const exampleOperationByFamily = {
         prediction: 'prediction.markets',

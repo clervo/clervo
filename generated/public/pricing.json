@@ -38,6 +38,15 @@
       "priceVersion": "search-answer-candidate-2"
     },
     {
+      "productId": "ai",
+      "publicAvailable": true,
+      "model": "authoritative_per_model_usage_pricing",
+      "displayPrice": null,
+      "freeAndPaid": true,
+      "maximumChargeRequiredForPaid": true,
+      "priceVersion": "b7price_258467e861fcb20f04e91d20"
+    },
+    {
       "productId": "sandbox.run",
       "publicAvailable": true,
       "model": "class_derived_quote",

@@ -26,7 +26,7 @@
           }
         }
       ],
-      "lastUpdated": 1786375076,
+      "lastUpdated": 1786394794,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -42,6 +42,183 @@
           "indexLastCrawledAt": "2026-08-10T13:36:24.537Z",
           "failedChecks": []
         }
+      }
+    },
+    {
+      "resource": "https://api.clervo.dev/v1/ai/execute",
+      "type": "http",
+      "x402Version": 2,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+          "maxTimeoutSeconds": 60,
+          "extra": {
+            "clervo": {
+              "operationId": "ai.chat",
+              "priceModel": "request_derived_per_model",
+              "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi",
+              "amountIsBinding": false,
+              "exampleRouteId": null,
+              "lifecycleState": "live",
+              "proofLevel": "quote_observed_unpaid"
+            }
+          }
+        }
+      ],
+      "lastUpdated": 1786394794,
+      "metadata": {
+        "category": "ai",
+        "provider": "clervo",
+        "description": "Bounded ai.chat execution",
+        "method": "POST",
+        "bodyType": "json",
+        "idempotency": "idempotency-key header; the same key with the same body replays without a second charge",
+        "bazaarExtensionPresent": true,
+        "bazaar": {
+          "validatorAccepted": false,
+          "indexed": false,
+          "indexActive": null,
+          "indexLastCrawledAt": null,
+          "failedChecks": [
+            {
+              "actual": null,
+              "check": "accepts[0].amount",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "accepts[0].asset",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "accepts[0].maxTimeoutSeconds",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "accepts[0].network",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "accepts[0].payTo",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "accepts[0].scheme",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "accepts[0].shape",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "bazaar.info",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "bazaar.info.input",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "bazaar.info.input.method",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "bazaar.info.input.type",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "bazaar.info.output",
+              "expected": null,
+              "severity": "advisory"
+            },
+            {
+              "actual": null,
+              "check": "bazaar.info.output.example",
+              "expected": null,
+              "severity": "advisory"
+            },
+            {
+              "actual": null,
+              "check": "bazaar.schema",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "has_accepts",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "has_bazaar_extension",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "has_resource",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "parse",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "payment_required_header",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": "503",
+              "check": "returns_402",
+              "expected": "402",
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "valid_json",
+              "expected": null,
+              "severity": "required"
+            },
+            {
+              "actual": null,
+              "check": "x402_version",
+              "expected": null,
+              "severity": "required"
+            }
+          ]
+        },
+        "modelList": "https://api.clervo.dev/v1/models"
       }
     },
     {
@@ -69,7 +246,7 @@
           }
         }
       ],
-      "lastUpdated": 1786375076,
+      "lastUpdated": 1786394794,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -112,7 +289,7 @@
           }
         }
       ],
-      "lastUpdated": 1786375076,
+      "lastUpdated": 1786394794,
       "metadata": {
         "category": "prediction",
         "provider": "clervo",
@@ -155,7 +332,7 @@
           }
         }
       ],
-      "lastUpdated": 1786375076,
+      "lastUpdated": 1786394794,
       "metadata": {
         "category": "crypto_intelligence",
         "provider": "clervo",
@@ -175,16 +352,16 @@
     }
   ],
   "pagination": {
-    "limit": 4,
+    "limit": 5,
     "offset": 0,
-    "total": 4
+    "total": 5
   },
   "clervo": {
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-10T15:17:56.255Z",
-      "releaseId": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
+      "observedAt": "2026-08-10T20:46:34.442Z",
+      "releaseId": "6d928ea623e21d0cda8aa737b748e74d8ecaf552",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",

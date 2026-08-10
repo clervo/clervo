@@ -2,9 +2,9 @@
   "openapi": "3.1.1",
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
-    "title": "Clervo Search, Secure Sandbox, Prediction Intelligence, Crypto Intelligence API",
+    "title": "Clervo Search, AI, Secure Sandbox, Prediction Intelligence, Crypto Intelligence API",
     "version": "2026-07-29.1",
-    "description": "Publicly callable previews: raw cited Search, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence. Lifecycle and proof state are generated from the probed live registry; unavailable operations fail closed.",
+    "description": "Publicly callable previews: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence. Lifecycle and proof state are generated from the probed live registry; unavailable operations fail closed.",
     "contact": {
       "name": "Clervo",
       "email": "mo@clervo.dev",
@@ -475,6 +475,360 @@
               }
             }
           ]
+        }
+      }
+    },
+    "/v1/ai/execute": {
+      "post": {
+        "summary": "Execute a provider-neutral Clervo AI model",
+        "description": "Free models execute without payment within the published quota. Paid models return an exact request-bound x402 or MPP quote before execution. A completed idempotency key replays the same result and, when paid, the same receipt without another charge.",
+        "operationId": "aiExecute",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "description": "Stable replay key. When omitted before payment, the service generates one and returns it in the response headers.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "default": "x402scan-clervo-probe"
+            },
+            "example": "x402scan-clervo-probe"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "input",
+                  "maximumOutputTokens"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "gpt-5.6-luna"
+                    ],
+                    "default": "gpt-5.6-luna"
+                  },
+                  "input": {
+                    "type": "object",
+                    "required": [
+                      "kind",
+                      "messages",
+                      "responseFormat",
+                      "stream"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "chat",
+                        "default": "chat"
+                      },
+                      "messages": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 128,
+                        "default": [
+                          {
+                            "role": "user",
+                            "content": "Reply with the single word ready."
+                          }
+                        ],
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "role",
+                            "content"
+                          ],
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "user"
+                              ],
+                              "default": "user"
+                            },
+                            "content": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100000,
+                              "default": "Reply with the single word ready."
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "responseFormat": {
+                        "type": "string",
+                        "enum": [
+                          "text"
+                        ],
+                        "default": "text"
+                      },
+                      "stream": {
+                        "type": "boolean",
+                        "const": false,
+                        "default": false
+                      }
+                    },
+                    "additionalProperties": false,
+                    "default": {
+                      "kind": "chat",
+                      "messages": [
+                        {
+                          "role": "user",
+                          "content": "Reply with the single word ready."
+                        }
+                      ],
+                      "responseFormat": "text",
+                      "stream": false
+                    }
+                  },
+                  "maximumOutputTokens": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 16384,
+                    "default": 16
+                  }
+                },
+                "additionalProperties": false
+              },
+              "example": {
+                "model": "gpt-5.6-luna",
+                "input": {
+                  "kind": "chat",
+                  "messages": [
+                    {
+                      "role": "user",
+                      "content": "Reply with the single word ready."
+                    }
+                  ],
+                  "responseFormat": "text",
+                  "stream": false
+                },
+                "maximumOutputTokens": 16
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Free or paid AI operation completed or replayed; paid results include truthful usage and settlement receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "operationId",
+                    "state",
+                    "replayed",
+                    "requestHash"
+                  ],
+                  "properties": {
+                    "operationId": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "const": "RECEIPTED"
+                    },
+                    "replayed": {
+                      "type": "boolean"
+                    },
+                    "requestHash": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "receipt": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "route": {
+                          "type": "object",
+                          "required": [
+                            "routeId",
+                            "qualificationId",
+                            "servingAdapters",
+                            "degraded",
+                            "fallback",
+                            "cost"
+                          ],
+                          "properties": {
+                            "routeId": {
+                              "type": "string"
+                            },
+                            "qualificationId": {
+                              "type": "string"
+                            },
+                            "servingAdapters": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "degraded": {
+                              "type": "boolean"
+                            },
+                            "fallback": {
+                              "type": "boolean"
+                            },
+                            "cost": {
+                              "type": "object",
+                              "additionalProperties": true
+                            }
+                          },
+                          "additionalProperties": true
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "execution": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bounded AI request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "x402 or MPP payment required",
+            "headers": {
+              "PAYMENT-REQUIRED": {
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency or quote conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Published free-tier quota exhausted; the request is not silently converted into a paid operation",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No qualified route, capacity, or settlement path is available",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "x-payment-info": {
+          "price": {
+            "mode": "dynamic",
+            "currency": "USD",
+            "min": "0.000001",
+            "max": "2.621440"
+          },
+          "protocols": [
+            {
+              "x402": {}
+            },
+            {
+              "mpp": {
+                "method": "evm",
+                "intent": "charge",
+                "currency": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "/v1/models": {
+      "get": {
+        "summary": "List the authoritative provider-neutral Clervo AI catalog",
+        "description": "Returns 85 frozen canonical model IDs and 4 stable aliases with capabilities, availability, health, free/paid state, pricing, and commerce metadata. Canonical IDs never silently substitute another model.",
+        "operationId": "aiListModels",
+        "responses": {
+          "200": {
+            "description": "OpenAI-compatible model list with authoritative Clervo commercial metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "object",
+                    "data",
+                    "clervo"
+                  ],
+                  "properties": {
+                    "object": {
+                      "const": "list"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "object",
+                          "owned_by",
+                          "clervo"
+                        ]
+                      }
+                    },
+                    "clervo": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -4897,6 +5251,13 @@
     "interfaceHash": "sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4",
     "operationIds": [
       "search.web",
+      "ai.chat",
+      "ai.embed",
+      "ai.image",
+      "ai.speech",
+      "ai.video",
+      "ai.music",
+      "ai.virtual_try_on",
       "sandbox.run",
       "prediction.markets",
       "prediction.market",
@@ -4908,7 +5269,7 @@
       "crypto.wallet.transactions",
       "crypto.wallet.report"
     ],
-    "runtimeRelease": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927"
+    "runtimeRelease": "6d928ea623e21d0cda8aa737b748e74d8ecaf552"
   },
   "servers": [
     {

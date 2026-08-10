@@ -152,7 +152,7 @@ test('llms.txt matches the generator and states public status truthfully', async
   const discovery = await json('.well-known/clervo.json');
   const expectedPublicOperations = discovery.products
     .filter(({ publicAvailable }) => publicAvailable)
-    .map(({ productId }) => productId);
+    .flatMap(({ operationId, operationIds }) => operationIds ?? [operationId]);
   const operationLine = llms.split('\n').find((line) => line.startsWith('- Public operation IDs: '));
   assert.ok(operationLine !== undefined, 'llms.txt must publish its operation identities');
   assert.deepEqual(operationLine.slice('- Public operation IDs: '.length).split(', '), expectedPublicOperations);

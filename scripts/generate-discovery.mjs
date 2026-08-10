@@ -18,6 +18,7 @@ const modelCatalog = JSON.parse(await readFile(path.join(root, 'packages/catalog
 const b7Freeze = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-b7-production-freeze.v1.json'), 'utf8'));
 const b7Pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-b7-commercial-pricing.v1.json'), 'utf8'));
 const b7Inventory = Object.freeze({ canonicalModels: b7Freeze.inventory.canonicalModels, aliases: b7Freeze.inventory.aliases, callableIds: b7Freeze.inventory.callableModelIds });
+const b7PublicModels = JSON.parse(await readFile(path.join(root, 'generated/b7-ai/public/models.json'), 'utf8'));
 const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
 const b10Proof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/search-sandbox-x402-proof.v1.json'), 'utf8'));
 const b10SearchProof = b10Proof.operations.find(({ productId }) => productId === 'search.web');
@@ -451,6 +452,31 @@ if (publicAi) {
       },
     },
   };
+  openapi.paths['/v1/models'] = {
+    get: {
+      summary: 'List the authoritative provider-neutral Clervo AI catalog',
+      description: `Returns ${b7Inventory.canonicalModels} frozen canonical model IDs and ${b7Inventory.aliases} stable aliases with capabilities, availability, health, free/paid state, pricing, and commerce metadata. Canonical IDs never silently substitute another model.`,
+      operationId: 'aiListModels',
+      responses: {
+        200: {
+          description: 'OpenAI-compatible model list with authoritative Clervo commercial metadata',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['object', 'data', 'clervo'],
+                properties: {
+                  object: { const: 'list' },
+                  data: { type: 'array', items: { type: 'object', required: ['id', 'object', 'owned_by', 'clervo'] } },
+                  clervo: { type: 'object' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  };
   openapi.paths['/v1/ai/execute'].post = scannerSafeOperation(openapi.paths['/v1/ai/execute'].post, {
     requestSchema: aiChatProbeSchema,
     example: aiProbeExample,
@@ -681,7 +707,7 @@ const lifecycleSummary = ['live', 'supply_paused', 'unavailable']
   .filter(Boolean)
   .join('; ');
 const publicProducts = discovery.products.filter(({ publicAvailable }) => publicAvailable === true);
-const publicOperationIds = publicProducts.map(({ operationId }) => operationId);
+const publicOperationIds = [...new Set(publicProducts.flatMap(({ operationId, operationIds }) => operationIds ?? [operationId]))];
 if (!/^[a-f0-9]{40}$/u.test(observedProvenance.releaseId ?? '')) throw new Error('live_registry_release_id_invalid');
 discovery.description = `Machine-readable public preview for ${liveApiFamilies.map(({ title }) => title).join(', ')}. Lifecycle, proof, routes, and prices are generated from direct deployed-system observations; unavailable operations fail closed.`;
 discovery.runtimeRelease = {
@@ -775,19 +801,19 @@ await writeFile(path.join(outputDirectory, 'pricing.json'), stableJson(publicSea
 }));
 await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
   schemaVersion: 'clervo.public-status.v1',
-  observedAt: launchState.observedAt,
+  observedAt: liveRegistry.observedAt,
   publicApi: launchState.distribution.publicApi,
   packages: launchState.distribution.packages,
   paymentProof: launchState.paymentProof,
   observedTruth: { provenance: observedProvenance, products: observedTruth },
   conformanceDefectsOpen: liveRegistry.conformance.filter(({ conformant }) => !conformant),
   aiRoutes: {
-    counts: liveRegistry.summary.aiRoutes,
-    // A paused route stays visible with its reason and expected return date.
-    // Hiding it would erase supply we own.
-    paused: liveRegistry.aiRoutes
-      .filter(({ state }) => state === 'supply_paused')
-      .map(({ routeId, exactModelId, reason, expectedReturnAt }) => ({ routeId, exactModelId, reason, expectedReturnAt })),
+    counts: liveRegistry.summary.aiCatalog ?? liveRegistry.summary.aiRoutes,
+    // B7 status uses only stable customer model identities. Legacy route and
+    // supplier identifiers never enter a public projection.
+    paused: b7PublicModels.data
+      .filter(({ clervo }) => clervo.publicSellable !== true)
+      .map(({ id, clervo }) => ({ modelId: id, reason: clervo.publicationBlockers.join(','), availability: clervo.availability, health: clervo.health })),
   },
   products: launchState.products.map(({ id, engineeringState, customerLifecycle, commercialProof }) => ({
     id,
@@ -1034,10 +1060,12 @@ const dynamicModelAuthority = modelList.clervo.inventory !== undefined;
 const aiExampleRoute = liveRegistry.aiRoutes.find((route) => route.state === 'live'
   && route.productIds.includes('ai.chat')
   && route.observedQuote !== null) ?? null;
+const aiExampleQuote = dynamicModelAuthority ? observed.ai.observedQuote : aiExampleRoute?.observedQuote ?? null;
+const aiExampleRouteId = dynamicModelAuthority ? null : aiExampleRoute?.routeId ?? null;
 
 const x402Resources = [
   { productId: 'search', path: '/v1/search/paid', operationId: 'search.web', priceModel: 'fixed_request', quote: observed.search.observedQuote, exampleRouteId: null },
-  { productId: 'ai', path: '/v1/ai/execute', operationId: 'ai.chat', priceModel: 'request_derived_per_model', quote: aiExampleRoute?.observedQuote ?? null, exampleRouteId: aiExampleRoute?.routeId ?? null },
+  { productId: 'ai', path: '/v1/ai/execute', operationId: 'ai.chat', priceModel: 'request_derived_per_model', quote: aiExampleQuote, exampleRouteId: aiExampleRouteId },
   { productId: 'sandbox', path: '/v1/sandbox/execute', operationId: 'sandbox.run', priceModel: 'class_derived_quote', quote: observed.sandbox.observedQuote, exampleRouteId: null },
   { productId: 'prediction', path: '/v1/prediction/execute', operationId: 'prediction.markets', priceModel: 'request_derived_per_operation', quote: observed.prediction.observedQuote, exampleRouteId: null },
   { productId: 'crypto_intelligence', path: '/v1/crypto/execute', operationId: 'crypto.wallet.report', priceModel: 'request_derived_per_operation', quote: observed.crypto_intelligence.observedQuote, exampleRouteId: null },
