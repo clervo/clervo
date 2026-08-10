@@ -1,12 +1,12 @@
 {
   "schemaVersion": "clervo.capabilities.v1",
-  "observedAt": "2026-08-09T19:27:12.736Z",
+  "observedAt": "2026-08-10T15:17:56.255Z",
   "publicCallable": true,
   "observedTruth": {
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T21:00:29.384Z",
+      "observedAt": "2026-08-10T15:17:56.255Z",
       "releaseId": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -48,7 +48,7 @@
           "crypto.wallet.transactions"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
+        "proofLevel": "quote_observed_unpaid",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -112,7 +112,7 @@
           "sandbox.session.exec"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -132,7 +132,7 @@
           "search.web"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -144,7 +144,7 @@
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",
-          "acceptsNaiveRequest": true
+          "acceptsNaiveRequest": false
         }
       }
     ]
@@ -158,9 +158,9 @@
         "search.answer"
       ],
       "engineeringState": "public_production_qualified",
-      "customerLifecycle": "preview_publicly_callable",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid"
+      "proofLevel": "paid_outcome_verified"
     },
     {
       "id": "ai",
@@ -187,9 +187,9 @@
         "sandbox.session.destroy"
       ],
       "engineeringState": "public_production_qualified_single_node",
-      "customerLifecycle": "preview_publicly_callable",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid"
+      "proofLevel": "paid_outcome_verified"
     },
     {
       "id": "rpc",
@@ -233,7 +233,7 @@
       "engineeringState": "public_production_qualified",
       "customerLifecycle": "publicly_callable_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified"
+      "proofLevel": "quote_observed_unpaid"
     }
   ]
 }

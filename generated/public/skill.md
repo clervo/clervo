@@ -4,7 +4,7 @@ Clervo sells bounded outcomes over HTTP: one request in, one verified result
 and one receipt out. Payment, when required, uses x402 or MPP over USDC on
 Base and is always quoted before execution.
 
-Generated from `packages/catalog/live-registry.json`, probed at 2026-08-09T21:00:29.384Z. Every row below is observed from the deployed system, never asserted.
+Generated from `packages/catalog/live-registry.json`, probed at 2026-08-10T15:17:56.255Z. Every row below is observed from the deployed system, never asserted.
 
 ## When to use this skill
 
@@ -17,11 +17,11 @@ Generated from `packages/catalog/live-registry.json`, probed at 2026-08-09T21:00
 | Product | ID | Lifecycle state | Proof level |
 |---|---|---|---|
 | AI | `ai` | supply_paused (no_route_currently_live) | none |
-| Crypto Intelligence | `crypto_intelligence` | live | paid_outcome_verified |
+| Crypto Intelligence | `crypto_intelligence` | live | quote_observed_unpaid |
 | Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
-| Secure Sandbox | `sandbox` | live | quote_observed_unpaid |
-| Research | `search` | live | quote_observed_unpaid |
+| Secure Sandbox | `sandbox` | live | paid_outcome_verified |
+| Research | `search` | live | paid_outcome_verified |
 
 Lifecycle state is what the runtime serves right now. Proof level is what has
 actually been demonstrated: `quote_observed_unpaid` means a price and a valid
@@ -30,15 +30,16 @@ as a proven paid outcome.
 
 ## First call
 
-No key, no account, no wallet:
+No account, no wallet:
 
 ```bash
 curl -sS https://api.clervo.dev/v1/search/free \
   -H 'content-type: application/json' \
-  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}'
+  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}' \
+  -H 'idempotency-key: clervo-first-call-0001'
 ```
 
-The free sample accepts a request with no `idempotency-key`. The server mints one and returns it in the `idempotency-key` response header; send that value back to replay the same operation without re-executing it.
+The free sample currently requires a caller-supplied `idempotency-key` header. Send a stable value of 8 to 128 token characters.
 
 ## Paid call
 

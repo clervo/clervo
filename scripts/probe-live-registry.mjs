@@ -216,6 +216,13 @@ const cryptoPaidProof = await (async () => {
     return null;
   }
 })();
+const searchSandboxPaidProof = await (async () => {
+  try {
+    return JSON.parse(await readFile(path.join(root, 'infra/production/gcp/search-sandbox-x402-proof.v1.json'), 'utf8'));
+  } catch {
+    return null;
+  }
+})();
 
 // ---------------------------------------------------------------------------
 // Surface probes
@@ -236,6 +243,8 @@ const surfaceProbes = await Promise.all([
     postJson({ query: 'clervo live registry probe', maxResults: 1, synthesize: false }, `idem_probe_paid_${probeNonce}`)),
   observe('api.sandbox_execute', `${API_ORIGIN}/v1/sandbox/execute`,
     postJson({ command: ['node', '-e', "process.stdout.write('ready')"], limits: { wallTimeMs: 5_000, memoryBytes: 67_108_864 } }, `idem_probe_sandbox_${probeNonce}`)),
+  observe('api.sandbox_short_execute', `${API_ORIGIN}/v1/sandbox/execute`,
+    postJson({ command: ['node', '-e', "process.stdout.write('ready')"], limits: { cpuMillis: 5_000, memoryBytes: 268_435_456, processes: 16, diskBytes: 67_108_864, outputBytes: 65_536, artifactBytes: 1_048_576, wallTimeMs: 10_000 } }, `idem_probe_sandbox_short_${probeNonce}`)),
   observe('api.prediction_execute', `${API_ORIGIN}/v1/prediction/execute`,
     postJson({ kind: 'markets', status: 'open', limit: 3 }, `idem_probe_prediction_${probeNonce}`)),
   observe('api.crypto_execute', `${API_ORIGIN}/v1/crypto/execute`,
@@ -569,6 +578,169 @@ const PROOF_NONE = 'none';
 const PROOF_QUOTED = 'quote_observed_unpaid';
 const PROOF_PAID = 'paid_outcome_verified';
 
+function b10ProofBaseInvariant(proof) {
+  const operations = Array.isArray(proof?.operations) ? proof.operations : [];
+  return proof?.schemaVersion === 'clervo.search-sandbox-x402-proof.v1'
+    && proof.state === 'settled_reconciled'
+    && proof.publicOrigin === `${API_ORIGIN}/`
+    && proof.releaseCommit === health.releaseId
+    && proof.network === 'eip155:8453'
+    && proof.asset === '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
+    && proof.payTo === '0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28'
+    && proof.facilitatorUrl === 'https://api.cdp.coinbase.com/platform/v2/x402'
+    && proof.ownerAuthorization?.originalMaximumSpendAtomic === '16000'
+    && proof.ownerAuthorization?.additionalSandboxMaximumSpendAtomic === '10000'
+    && proof.ownerAuthorization?.cumulativeMaximumSpendAtomic === '26000'
+    && proof.ownerAuthorization?.maximumExecutionCount === 3
+    && proof.ownerAuthorization?.paymentEffects === 3
+    && proof.ownerAuthorization?.automaticRetry === false
+    && operations.length === 3
+    && new Set(operations.map(({ operationId }) => operationId)).size === 3
+    && new Set(operations.map(({ receiptId }) => receiptId)).size === 3
+    && new Set(operations.map(({ transactionHash }) => transactionHash)).size === 3
+    && operations.every((operation) => operation.settlementStatus === 'settled'
+      && operation.chainStatus === 'confirmed'
+      && operation.exactTransferCount === 1
+      && operation.replay?.sameOperation === true
+      && operation.replay?.sameReceipt === true
+      && operation.replay?.sameResult === true
+      && operation.replay?.idempotencyReplayed === true
+      && operation.replay?.paymentHeaderSent === false
+      && operation.replay?.secondAuthorization === false
+      && operation.replay?.secondUpstreamExecution === false
+      && operation.replay?.secondSettlement === false
+      && operation.replay?.secondCharge === false
+      && operation.durable?.state === 'completed'
+      && operation.durable?.operationRows === 1
+      && operation.durable?.accountingRows === 1)
+    && operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic), 0n) === 26000n
+    && proof.challengeOnly?.state === 'challenged'
+    && proof.challengeOnly?.paymentFingerprint === false
+    && proof.challengeOnly?.execution === false
+    && proof.challengeOnly?.settlement === false
+    && proof.challengeOnly?.response === false
+    && proof.challengeOnly?.accountingRows === 0
+    && proof.observedBalances?.payerDeltaAtomic === '-26000'
+    && proof.observedBalances?.receiverDeltaAtomic === '26000'
+    && proof.observedDurability?.databaseIdentityVerified === true
+    && proof.observedDurability?.fundedOperationRows === 3
+    && proof.observedDurability?.accountingRowsForOperations === 3
+    && proof.observedDurability?.receiverLedgerEntryCount === 9
+    && proof.observedDurability?.receiverLedgerChainValid === true
+    && proof.observedDurability?.receiverLedgerBalanced === true
+    && proof.observedDurability?.ambiguousRows === 0
+    && proof.observedDurability?.temporaryJobRemoved === true
+    && proof.observedDurability?.credentialsLogged === false
+    && proof.observedDurability?.customerPayloadsLogged === false
+    && proof.proofClassification?.proofLevel === PROOF_PAID
+    && proof.proofClassification?.ownerFunded === true
+    && proof.proofClassification?.commercialMechanismVerified === true
+    && proof.proofClassification?.revenueEvidence === false
+    && proof.proofClassification?.demandEvidence === false
+    && proof.proofClassification?.unrelatedCustomerEvidence === false
+    && proof.proofClassification?.externallyRepeatedClaimAllowed === false;
+}
+
+function searchPaidProofValidation(quote) {
+  const proof = searchSandboxPaidProof;
+  const operation = proof?.operations?.find(({ productId }) => productId === 'search.web');
+  const challenge = proof?.observedChallenges?.search;
+  const accepted = b10ProofBaseInvariant(proof)
+    && challenge?.endpoint === `${API_ORIGIN}/v1/search/paid`
+    && challenge?.status === 402
+    && challenge?.amountAtomic === quote?.amountAtomic
+    && proof.network === quote?.network
+    && proof.asset === quote?.asset
+    && proof.payTo === quote?.payTo
+    && challenge?.networkMatched === true
+    && challenge?.assetMatched === true
+    && challenge?.payToMatched === true
+    && challenge?.facilitatorMatched === true
+    && operation?.operationId === 'op_553529bd92403f8bfe16b3c1ae82df3c'
+    && operation?.receiptId === 'rcpt_3f185f8ddb2cfe8349b5dcf66a0b326b'
+    && operation?.customerChargeAtomic === '6000'
+    && operation?.supplierCostAtomic === '2000'
+    && operation?.usefulResult === true
+    && operation?.resultSummary?.resultCount >= 1
+    && operation?.resultSummary?.citationCount >= 1
+    && /^clervo\.search\./u.test(operation?.resultSummary?.routeId ?? '')
+    && /^qual_[A-Za-z0-9]{20,64}$/u.test(operation?.resultSummary?.qualificationId ?? '')
+    && operation?.resultSummary?.degraded === false
+    && operation?.resultSummary?.fallback === false;
+  if (!accepted) return { accepted: false, reason: proof === null ? 'paid_proof_absent' : 'paid_proof_invariant_failed' };
+  return {
+    accepted: true, reason: null, proofLevel: PROOF_PAID,
+    source: 'infra/production/gcp/search-sandbox-x402-proof.v1.json',
+    releaseCommit: proof.releaseCommit, operationCount: 1, totalChargeAtomic: '6000',
+    usefulResultCount: 1, replayNoSecondChargeCount: 1, ownerFunded: true,
+    revenueEvidence: false, demandEvidence: false, externallyRepeated: false,
+  };
+}
+
+function sandboxPaidProofValidation() {
+  const proof = searchSandboxPaidProof;
+  const shortQuote = quoteFrom(surfaceById['api.sandbox_short_execute']);
+  const sandbox = proof?.operations?.filter(({ productId }) => productId === 'sandbox.run') ?? [];
+  const failed = sandbox.find(({ outcome }) => outcome === 'finished_product_rejected');
+  const useful = sandbox.find(({ outcome }) => outcome === 'useful');
+  const challenge = proof?.observedChallenges?.sandboxShort;
+  const limits = useful?.resultSummary?.requestedLimits;
+  const accepted = b10ProofBaseInvariant(proof)
+    && surfaceById['api.sandbox_short_execute']?.status === 402
+    && shortQuote?.amountAtomic === '10000'
+    && shortQuote?.network === proof.network
+    && shortQuote?.asset === proof.asset
+    && shortQuote?.payTo === proof.payTo
+    && challenge?.endpoint === `${API_ORIGIN}/v1/sandbox/execute`
+    && challenge?.classId === 'sandbox.short'
+    && challenge?.status === 402
+    && challenge?.amountAtomic === shortQuote?.amountAtomic
+    && challenge?.supplierCostCeilingAtomic === '8000'
+    && challenge?.networkMatched === true
+    && challenge?.assetMatched === true
+    && challenge?.payToMatched === true
+    && challenge?.facilitatorMatched === true
+    && sandbox.length === 2
+    && failed?.operationId === 'op_c73a903173d645b136425e6fe5a3314f'
+    && failed?.customerChargeAtomic === '10000'
+    && failed?.supplierCostAtomic === '8000'
+    && failed?.usefulResult === false
+    && failed?.resultSummary?.classId === 'sandbox.short'
+    && failed?.resultSummary?.exitCode === 134
+    && failed?.resultSummary?.cleanupState === 'destroyed'
+    && useful?.operationId === 'op_99abcbe82ce886227475a5e0544d79e9'
+    && useful?.receiptId === 'rcpt_aed44093ada8b439088a81344a57a51d'
+    && useful?.customerChargeAtomic === '10000'
+    && useful?.supplierCostAtomic === '8000'
+    && useful?.usefulResult === true
+    && useful?.resultSummary?.kind === 'execution'
+    && useful?.resultSummary?.classId === 'sandbox.short'
+    && useful?.resultSummary?.exitCode === 0
+    && useful?.resultSummary?.stdoutBase64 === 'QjEwIHNhbmRib3ggcHJvb2Y='
+    && useful?.resultSummary?.sessionState === 'destroyed'
+    && useful?.resultSummary?.cleanupState === 'destroyed'
+    && useful?.resultSummary?.runtimeIsolation === 'gvisor'
+    && useful?.resultSummary?.runtimeImageDigest === 'sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a'
+    && JSON.stringify(limits) === JSON.stringify({ artifactBytes: 1048576, cpuMillis: 5000, diskBytes: 67108864, memoryBytes: 268435456, outputBytes: 65536, processes: 16, wallTimeMs: 10000 })
+    && proof.apiReplayEvidence?.paidExecutionCount === 1
+    && proof.apiReplayEvidence?.replayCount === 1
+    && proof.apiReplayEvidence?.sandboxExecutionRows === 1
+    && proof.apiReplayEvidence?.settlementRows === 1
+    && proof.apiReplayEvidence?.accountingRows === 1
+    && proof.cleanup?.sandboxClaimCount === 0
+    && proof.cleanup?.sandboxTemplateCount === 0
+    && proof.cleanup?.podCount === 0
+    && proof.cleanup?.temporaryManagedJobRemoved === true;
+  if (!accepted) return { accepted: false, reason: proof === null ? 'paid_proof_absent' : 'paid_proof_invariant_failed' };
+  return {
+    accepted: true, reason: null, proofLevel: PROOF_PAID,
+    source: 'infra/production/gcp/search-sandbox-x402-proof.v1.json',
+    releaseCommit: proof.releaseCommit, operationCount: 2, totalChargeAtomic: '20000',
+    usefulResultCount: 1, replayNoSecondChargeCount: 2, ownerFunded: true,
+    revenueEvidence: false, demandEvidence: false, externallyRepeated: false,
+  };
+}
+
 function predictionPaidProofValidation(quote) {
   const proof = predictionPaidProof;
   if (proof === null) return { accepted: false, reason: 'paid_proof_absent' };
@@ -851,6 +1023,7 @@ const products = [
     operations: ['search.web', 'search.answer'],
     probeIds: { paid: 'api.search_paid' },
     freeProbeId: 'api.search_free_keyed',
+    paidProof: searchPaidProofValidation,
   }),
   aiProductRecord,
   productFromProbes({
@@ -858,6 +1031,7 @@ const products = [
     label: 'Secure Sandbox',
     operations: ['sandbox.run', 'sandbox.session.create', 'sandbox.session.exec', 'sandbox.artifact.get', 'sandbox.session.destroy'],
     probeIds: { paid: 'api.sandbox_execute' },
+    paidProof: sandboxPaidProofValidation,
   }),
   productFromProbes({
     id: 'rpc',

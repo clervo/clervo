@@ -52,8 +52,9 @@ test('machine discovery publishes only live Search, Sandbox, and Prediction prev
   const sandbox = discovery.products.find(({ productId }) => productId === 'sandbox.run');
   assert.equal(sandbox.publicAvailable, true);
   assert.equal(sandbox.payment.payable, true);
-  assert.equal(sandbox.pricing.model, 'fixed_request');
-  assert.equal(sandbox.pricing.displayPrice.amountAtomic, '120000');
+  assert.equal(sandbox.pricing.model, 'class_derived_quote');
+  assert.equal(sandbox.pricing.displayPrice.amountAtomic, '10000');
+  assert.deepEqual(sandbox.pricing.priceRange, { minimumAtomic: '10000', maximumAtomic: '60000' });
   const prediction = discovery.products.filter(({ productId }) => productId.startsWith('prediction.'));
   assert.equal(prediction.length, 5);
   assert.ok(prediction.every(({ publicAvailable, payment }) => publicAvailable && payment.payable));
@@ -79,7 +80,7 @@ test('machine discovery publishes only live Search, Sandbox, and Prediction prev
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
   });
   assert.deepEqual(openapi.paths['/v1/sandbox/execute'].post['x-payment-info'], {
-    price: { mode: 'fixed', currency: 'USD', amount: '0.120000' },
+    price: { mode: 'dynamic_class', currency: 'USD', minimum: '0.010000', maximum: '0.060000' },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
   });
   assert.deepEqual(openapi.paths['/v1/prediction/execute'].post['x-payment-info'], {

@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `packages/catalog/live-registry.json`, probed at 2026-08-09T21:00:29.384Z. Release: `3dfe8a629d724f72f41174aad5ace8f5e7eb8927`.
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-10T15:17:56.255Z. Release: `3dfe8a629d724f72f41174aad5ace8f5e7eb8927`.
 
 ## Identity
 
@@ -18,11 +18,11 @@ Source: `packages/catalog/live-registry.json`, probed at 2026-08-09T21:00:29.384
 | Product | ID | Lifecycle state | Proof level |
 |---|---|---|---|
 | AI | `ai` | supply_paused (no_route_currently_live) | none |
-| Crypto Intelligence | `crypto_intelligence` | live | paid_outcome_verified |
+| Crypto Intelligence | `crypto_intelligence` | live | quote_observed_unpaid |
 | Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
-| Secure Sandbox | `sandbox` | live | quote_observed_unpaid |
-| Research | `search` | live | quote_observed_unpaid |
+| Secure Sandbox | `sandbox` | live | paid_outcome_verified |
+| Research | `search` | live | paid_outcome_verified |
 
 These are two independent facts. A `live` product with proof level
 `quote_observed_unpaid` is offered and priced; it is not a demonstrated paid
@@ -31,7 +31,7 @@ outcome. Report it that way if you cite it.
 ## Free entry point
 
 - `POST https://api.clervo.dev/v1/search/free`
-- Accepts a request with no idempotency key: yes
+- Accepts a request with no idempotency key: no
 - Quota headers: `ratelimit-limit`, `ratelimit-remaining`, `ratelimit-reset`.
 - Over the cap the route answers `429 free_quota_exceeded` rather than executing. Do not treat 429 as a transport error.
 
@@ -40,7 +40,8 @@ outcome. Report it that way if you cite it.
 ```bash
 curl -sS https://api.clervo.dev/v1/search/free \
   -H 'content-type: application/json' \
-  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}'
+  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}' \
+  -H 'idempotency-key: clervo-first-call-0001'
 ```
 
 ## Idempotency contract

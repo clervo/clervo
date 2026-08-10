@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.launch-state.v1",
-  "observedAt": "2026-08-09T19:27:12.736Z",
-  "sourceCommit": "a5579f734a3ba7305b80c2d454507622b3aa668a",
+  "observedAt": "2026-08-10T15:17:56.255Z",
+  "sourceCommit": "faa1633561d0e45b465170fdde1ab389a49064eb",
   "identity": {
     "category": "Outcome infrastructure for agents",
     "headline": "One job in. One inspectable result out.",
@@ -52,7 +52,7 @@
     }
   },
   "paymentProof": {
-    "state": "owner_funded_private_proof",
+    "state": "owner_funded_public_proof",
     "productId": "search.web",
     "network": "Base",
     "asset": "USDC",
@@ -68,10 +68,10 @@
     "publicCustomerPaymentAvailable": true,
     "revenueEvidence": false,
     "demandEvidence": false,
-    "transactionUrl": "https://basescan.org/tx/0xf4a2c7d5568745ad7ce11157306d5899faaf4def041519e51527c76134eca720",
+    "transactionUrl": "https://basescan.org/tx/0x22a537342614b14eb676b1cb3ccb51acdec98bb56811d152e650b3985a0403cb",
     "evidence": [
-      "infra/production/gcp/x402-proof.v1.json",
-      "tests/contract/n15.5.test.mjs"
+      "infra/production/gcp/search-sandbox-x402-proof.v1.json",
+      "tests/contract/b10-proof-worker.test.mjs"
     ]
   },
   "products": [
@@ -83,14 +83,14 @@
         "search.answer"
       ],
       "engineeringState": "public_production_qualified",
-      "customerLifecycle": "preview_publicly_callable",
-      "commercialProof": "owner_funded_plumbing_proof_only",
-      "paymentState": "public_x402_available_private_settlement_and_replay_verified",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
+      "commercialProof": "owner_funded_paid_outcome_verified",
+      "paymentState": "public_x402_owner_funded_settlement_and_replay_verified",
       "supplierRights": "value_added_public_offer_approved",
       "allowedClaims": [
         "Raw cited Search is publicly callable through a bounded free sample and an exact 0.006 USDC Base x402 offer.",
         "The production edge returned live normalized results and citations while direct product access to the origin remained denied.",
-        "The private Search path returned one useful result after one bounded owner-funded x402 settlement.",
+        "The production Search path returned one useful cited result after one bounded 0.006 USDC owner-funded x402 settlement.",
         "An exact replay returned the same receipt without another authorization, execution, or charge."
       ],
       "prohibitedClaims": [
@@ -138,13 +138,14 @@
         "sandbox.session.destroy"
       ],
       "engineeringState": "public_production_qualified_single_node",
-      "customerLifecycle": "preview_publicly_callable",
-      "commercialProof": "unproven",
-      "paymentState": "public_x402_challenge_available_paid_result_pending",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
+      "commercialProof": "owner_funded_paid_outcome_verified",
+      "paymentState": "public_x402_owner_funded_short_settlement_and_replay_verified",
       "supplierRights": "not_applicable",
       "allowedClaims": [
-        "Bounded one-shot Node.js execution is publicly callable through an exact 0.12 USDC Base x402 or MPP offer.",
-        "The production origin executed useful output in the qualified gVisor runner, replayed the same result without another execution, and left no runtime resources.",
+        "Bounded one-shot Node.js execution is publicly callable through class-derived 0.010 to 0.060 USDC Base x402 offers.",
+        "The first 0.010 USDC owner-funded SHORT attempt settled and cleaned up but was rejected as a finished result after the isolated Node process exited 134 with empty output.",
+        "After the qualified runner correction, one 0.010 USDC owner-funded SHORT execution returned the expected useful output in gVisor, replayed without another authorization, execution, settlement, or charge, and left no runtime resources.",
         "The current release is intentionally single-node and fails closed when its bounded capacity is unavailable."
       ],
       "prohibitedClaims": [
@@ -152,7 +153,6 @@
         "Unlimited scale",
         "Public sessions or artifact retrieval",
         "Arbitrary container images or network access",
-        "Paid Sandbox result verified",
         "Customer revenue or demand"
       ]
     },

@@ -17,16 +17,16 @@ Update only when execution state actually changes. This is not a journal.
 
 | Field | Value |
 |---|---|
-| Current milestone | **B10 — IN PROGRESS. Search and Sandbox are deployed; corrected Search is preflighted and waiting for its one owner MetaMask signature. B10 will remain open only for the Sandbox SHORT funded proof. B11 is not started.** |
-| Milestone status | `b10_search_deployed_preflight_signature_pending_sandbox_only_blocker`. **PROVEN 2026-08-10:** approved Worker `147b9277-6caf-4a74-8985-55710ec87d36` is live at 100% on both proof routes. Both public pages load 200 on `clervo.dev` and `www.clervo.dev`; guarded configs pin the approved payer/receiver, Base 8453, native USDC, CDP facilitator, Search 6000 atomic (`0.006 USDC`) with fresh key `20260810e`, and Sandbox SHORT 10000 atomic (`0.010 USDC`) with key `20260810c`. An unsigned Search request returns the exact x402 v2 402 and no payment signature. API health is 200. Base RPC at block `49784908` shows unchanged 9000/23000-atomic payer/receiver balances and no funded B10 effect. The prior signed `20260810d` refusal remains reconciled as **PROVEN UNFUNDED**; no payment retry has occurred. |
+| Current milestone | **B10 — CLOSED. Search and Sandbox are externally funded, useful-result, settlement, receipt, accounting, cleanup, and replay proven. B11 is not started.** |
+| Milestone status | `b10_closed_search_and_sandbox_paid_outcomes_verified`. **PROVEN 2026-08-10:** Search operation `op_553529bd92403f8bfe16b3c1ae82df3c` settled exactly 0.006 USDC and returned one useful cited result. The first Sandbox SHORT operation `op_c73a903173d645b136425e6fe5a3314f` settled 0.010 USDC but was transparently rejected as a finished result after exit 134; after the qualified runner correction, operation `op_99abcbe82ce886227475a5e0544d79e9` settled exactly 0.010 USDC, returned `B10 sandbox proof` at exit 0 inside gVisor, and destroyed all resources. Every funded key replayed without a second authorization, execution, settlement, or charge. Direct database, accounting, Base, API-log, and execution-namespace reconciliation passed. Cumulative owner-funded B10 spend is exactly 0.026 USDC; this is plumbing proof, not revenue or demand. |
 | Current branch | `work/b10-search-sandbox-20260809`, based on exact B9 closure `0697f62`; B10 production release `3dfe8a6` and the hosted proof recovery commits through `564ed0f` are preserved. `main`, the frozen B12 visual branch, `/opt/clervo-ai`, and `ai.clervo.dev` were not modified. |
-| Latest commit | B10 x402 v2 signed-payer parser candidate plus authoritative checkpoint; use `git log -1` for the checkpoint SHA. Candidate Worker source is exact commit `9b5d01968a088addac4a93c20278b218dd413841`. |
-| Current production release | Cloud Run origin `clervo-api-production-dbcred-20260810` at 100% traffic, unchanged image `sha256:73fcc7d64a2b3bc1c7010210bbb78133f276148fc8195f75d53ae90260031e4c`, unchanged `CLERVO_RELEASE_ID=3dfe8a629d724f72f41174aad5ace8f5e7eb8927`, and replacement DB secret `clervo-production-database-url:3`; API edge worker `clervo-api-edge-production` version **`7a562b61-1d66-4468-9896-c457e99914d7`**; site worker **`a9f8b31c-eda2-401d-a274-4c2b2969aba8`**; guarded proof worker **`147b9277-6caf-4a74-8985-55710ec87d36`** at 100%. The API image, release, edge/site workers, payment configuration, product behavior, pricing, and DNS are unchanged. |
-| Rollback targets | Credential-safe API recovery is revision `clervo-api-production-dbcred-20260810` or a new zero-traffic revision of the same retained image bound to secret version `3`; revisions bound to destroyed database-secret version `2` must not be restored. If candidate `147b9277-6caf-4a74-8985-55710ec87d36` is deployed, proof-Worker rollback is the current live `72ae1994-d204-4925-9749-3e0217cf4ac5`; it fails closed with the reconciled signed-payer parsing defect. No rollback version was deleted. |
-| Latest externally verified customer outcome | Two bounded owner-funded calls on `https://api.clervo.dev/v1/crypto/execute`: `crypto.wallet.report` operation `op_34682926725ad8a6ce13a93620f0482b`, receipt `rcpt_0e9394a4af25363cbc9160d0274e97ef`, exactly 4000 atomic USDC; and `crypto.wallet.transactions` operation `op_ed2579e7a2f102a556b60bf2775f7067`, receipt `rcpt_41e132169debee100fbfe668e0cd36dc`, exactly 3000 atomic USDC. Each returned fresh evidence-backed output, settled once on Base, and replayed with the same operation/result/receipt and no second authorization, upstream execution, settlement, or charge. Payer/receiver deltas were exactly -7000/+7000 atomic; managed durable reconciliation passed. `crypto_intelligence` reaches `paid_outcome_verified`; no revenue, demand, or unrelated-customer repetition is claimed. |
-| Current blockers | Owner MetaMask signature is required for the one 6000-atomic Search proof. After Search is proven, exactly one blocker remains: the owner-authorized 10000-atomic (`0.010 USDC`) Sandbox SHORT funded proof. |
+| Latest commit | B10 closure commit; use `git log -1` for the exact checkpoint SHA after closure. |
+| Current production release | Cloud Run origin `clervo-api-production-sandboxfix-20260810` at 100% traffic, unchanged API image `sha256:73fcc7d64a2b3bc1c7010210bbb78133f276148fc8195f75d53ae90260031e4c`, unchanged `CLERVO_RELEASE_ID=3dfe8a629d724f72f41174aad5ace8f5e7eb8927`, Sandbox runner `sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a`, and database secret `clervo-production-database-url:3`; API edge worker version **`5e38e897-b0d9-4d15-9f65-d8b89c7795a6`**; site worker **`95411621-bb99-41ba-ab6d-d7c8462fdb9d`**; guarded proof worker **`e08efb49-a53b-48af-929c-7e80d5b14af0`**. |
+| Rollback targets | Credential-safe API recovery is revision `clervo-api-production-sandboxfix-20260810` or a new zero-traffic revision of the same retained image bound to secret version `3`; revisions bound to destroyed database-secret version `2` must not be restored. No rollback version was deleted. |
+| Latest externally verified customer outcome | B10 Search operation `op_553529bd92403f8bfe16b3c1ae82df3c`, receipt `rcpt_3f185f8ddb2cfe8349b5dcf66a0b326b`, exactly 0.006 USDC, and corrected Sandbox SHORT operation `op_99abcbe82ce886227475a5e0544d79e9`, receipt `rcpt_aed44093ada8b439088a81344a57a51d`, exactly 0.010 USDC. Both returned useful exact-product output, settled once on Base, and replayed with the same operation/result/receipt and no second authorization, execution, settlement, or charge. No revenue, demand, or unrelated-customer repetition is claimed. |
+| Current blockers | None for B10. B11 is not started. |
 | External dependencies | B9 ongoing service requires Blockscout availability within the qualified 100,000-credit/day and 5-RPS envelope and requalification before `2026-08-16T17:30:00.000Z`; global request pacing is 210 ms and the source fails closed. Ethereum and Base are supported. Solana remains unsupported. B8's existing pdata requalification dependency remains unchanged. |
-| Owner approvals waiting | Open `https://clervo.dev/proof/b10-search/` for the single Search MetaMask signature. Do not sign a replay. After Search closure, no further B10 owner action is needed until Sandbox funding is available. |
+| Owner approvals waiting | None for B10. No further B10 payment or signature is authorized. |
 | Dates that move on their own | **PROVEN:** B9's Blockscout commercial qualification expires at `2026-08-16T17:30:00.000Z` and fails closed; pdata public routing qualification expires at `2026-08-16T11:54:10.787Z` and fails closed. Direct Polymarket/Kalshi observations remain unsellable regardless. Competitor prices are observations, not durable promises, and must be refreshed before activation. Existing B7 and Bazaar expiry rules remain in force. |
 | B1 metrics baseline (observed 2026-08-06T11:40:50.003Z) | Live products 3 of 6; live AI routes 18 of 21; supply-paused AI routes 3; AI routes quoting below the Bazaar 1000-atomic minimum 18; conformance defects open 2 (`api.search_free_accepts_naive_request`, `site.not_found_is_404`). |
 | B2 metrics (observed 2026-08-06T14:42:37.447Z) | Conformance defects open 0. Naive free-search rejection rate 0: `withoutIdempotencyKeyStatus` 200. Site 404 correctness: a nonexistent URL returns 404. |
@@ -36,9 +36,10 @@ Update only when execution state actually changes. This is not a journal.
 | B7 metrics (observed 2026-08-09, current engineering tree) | **PROVEN:** full acceptance 293/293; final B7-focused suite 34/34; dynamic property suite 14/14; contract validation 97 schemas/132 fixtures; lint 699 files; secret scan PASS; external calls 0 and USDC spent 0 during acceptance. Dynamic catalog has no fixed count and the legacy catalog ceiling was removed. BlockRun's direct public model API returned 91 entries; three exact GPT-5.6 comparisons were observed and recorded as refreshable data: Luna 0.2/1.2, Terra 2/12, Sol 5/30 USD per million input/output. **UNVERIFIED after evidence expiry:** those competitor values are ignored after their recorded validity window. **LIVE legacy observation only:** 21 entries, 18 live/3 paused; no dynamic live cutover claim. |
 | B8 metrics (observed 2026-08-09 at close) | **PROVEN:** full acceptance 306/306; B8-focused suite 37/37; contract validation 99 schemas/134 fixtures; lint 708 files; build, discovery generation, release freeze, clean-room boundary, site prerender/canonical-media validation, and secret scan pass. pdata campaigns retained the previously proven 39 read-only calls, API `1.17.0`, eight-venue coverage, 12/12 repeated production-venue calls, pagination/search/history/malformed/degradation checks, zero authentication, and zero supplier spend. Managed production smoke returned two repeated eight-market attributed results across Polymarket, Kalshi, Manifold, and Limitless. Production payments: 2 effects, 4000 atomic USDC total, 2 useful results, 2 accurate receipts, 2 no-charge replays, 2 completed durable operations, 2 accounting entries, zero supplier cost, balanced ledger. Public truth: 8 JSON surfaces semantically equal across API/site/generated source, 3 text surfaces byte-equal, 8 HTML pages directly loaded, 5 Prediction operations published, Bazaar indexed and active, 0 open conformance defects, and 0 additional spend during final verification. |
 | B9 metrics (observed 2026-08-09 at close) | **PROVEN:** origin revision `00041-cuh` and final edge/site versions are public. Ethereum and Base candidate proofs returned fresh real-source output with 11 and 9 evidence references; funded Base report and Ethereum transactions results returned 9 and 10 evidence references. Four public operations quote 2000/2000/3000/4000 atomic USDC. Payment proof: 2 effects, 7000 atomic USDC total, 2 useful results, 2 accurate receipts, 2 same-key no-charge/no-upstream-execution replays, 2 completed durable operations, 2 accounting entries, zero supplier cost, balanced six-entry receiver ledger, payer/receiver deltas -7000/+7000. Crypto is Bazaar-valid, indexed, and active. API/site/generated JSON matched semantically, `llms.txt` matched byte-for-byte, and the Crypto/catalog pages expose no undefined attribution. Focused B9 suite 52/52; browser proof 5/5; full acceptance 307/307; contract validation 99 schemas/134 fixtures; lint 710 files; site build, discovery generation, canonical-media validation, clean-room boundary, and secret scan pass. Revenue, demand, and unrelated-customer repetition remain unclaimed. |
+| B10 metrics (observed 2026-08-10 at close) | **PROVEN:** Search 6000 atomic and two Sandbox SHORT effects of 10000 atomic each, total exactly 26000 atomic USDC. Useful results 2 of 3; the failed first Sandbox result remains disclosed. All three effects have confirmed Base transfers and one AuthorizationUsed event each; payer/receiver deltas are -26000/+26000 atomic. Three durable accounting rows extend the valid balanced receiver ledger to nine entries. Corrected Sandbox used gVisor runner `sha256:07685aab...d025a`, exact SHORT limits, exit 0, expected output, destroyed cleanup, and zero residual claims/templates/pods. Search and Sandbox publish `paid_outcome_verified`; API/site registry, catalog, pricing, status, x402, `llms.txt`, and OpenAPI reconcile. Focused suite 21/21; secret scan PASS. Owner-funded proof is not revenue or demand. |
 | B6 metrics (observed 2026-08-07T06:53:00Z, at close) | Installs 2, **both from the local tarball, 0 from npm** (unpublished). Wallets created 2 — one throwaway, deleted after confirming on-chain it held nothing; one dedicated test wallet retained at `0x6B10DDcD5AB0e00a87d02C7F11188F55474bB1Ef`, `0700`/`0600`, recovery phrase never printed to any transcript, log, or commit. **Free first success: yes, and it happened before any wallet existed**, which is the ordering advantage over BlockRun. Wallets funded 0. Paid outcomes 0. Settlements 0. **USDC spent 0.** Fail-closed cycle exercised live: 1 refused operation, 1 retry blocked before signing, 1 reconciliation resolving `not_settled`. Buyer-side ceiling configured: per-operation 0.007, daily 0.01 USDC. Live catalog: 4 capabilities, 1 free, 3 payable; `search.web` quoted 0.006 USDC to `0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28`. Package: 35 files, 40.4 kB packed, 17 installed dependencies, no TypeScript sources or wallet material. Tests: B6 suite 10 of 10; `shared-paid-operation` 5 of 5 unchanged; full contract suite 720 of 722, the 2 failures being `n13.3` and `n13.5` site tests that fail identically with all B6 work stashed and are therefore inherited from B5. Gates: lint PASS (677 files), secret scan PASS with 0 secret values printed. |
-| Exact next task | **STOP FOR OWNER SEARCH SIGNATURE.** Open `https://clervo.dev/proof/b10-search/`; after the one approved Search signature, prove settlement, result, receipt, accounting, chain evidence, and same-key no-charge replay. Do not ask for a replay signature. Then complete non-Sandbox closure work and leave only the 0.010-USDC Sandbox SHORT proof blocker. |
-| Files and services for that task | Only temporary proof Worker `clervo-b10-proof-temporary` and its existing `clervo.dev/proof*` / `www.clervo.dev/proof*` routes are in deployment scope. Preserve API revision `clervo-api-production-dbcred-20260810`, database secret version `3`, destroyed version `2`, Sandbox key `20260810c`, pricing, DNS, protected AI infrastructure, and the frozen B12 visual system. |
+| Exact next task | **STOP. B10 is closed. B11 is not started.** Await explicit owner instruction before any B11 work. |
+| Files and services for that task | None. Preserve the B10 release, database secret version `3`, destroyed version `2`, protected AI infrastructure, and unrelated owner residue. |
 
 ---
 
@@ -1265,7 +1266,7 @@ Every milestone below carries the same seventeen fields.
 ### B10 — Search and Sandbox hardened
 
 1. **Milestone:** B10 — Search and Sandbox hardened
-2. **Status:** `in_progress` — Search is externally funded and proven. The first
+2. **Status:** `closed` — Search is externally funded and proven. The first
    funded Sandbox SHORT attempt settled exactly 0.010 USDC and cleaned up, but
    correctly failed finished-product acceptance because its isolated Node
    process exited 134 with empty output. The runner's `RLIMIT_NPROC` had counted
@@ -1275,9 +1276,8 @@ Every milestone below carries the same seventeen fields.
    customer ceiling; exact SHORT internal execution, replay, cleanup, supply
    chain, and ten-probe gVisor containment all pass. API revision
    `clervo-api-production-sandboxfix-20260810` and guarded Worker
-   `870b3aee-997c-4c94-a96c-e3c63cd0795e` are live at 100%. A fresh Sandbox
-   funded proof requires a new explicit owner spending cap because the original
-   0.016-USDC B10 maximum is fully consumed.
+   `e08efb49-a53b-48af-929c-7e80d5b14af0` are live. The corrected funded
+   Sandbox SHORT proof is useful, settled, reconciled, replay-safe, and clean.
 3. **Customer-visible outcome:** The two oldest products return the full Clervo
    promise — result, evidence, provenance, true cost, replay-safe receipt — not
    just a result.
@@ -1297,11 +1297,17 @@ Every milestone below carries the same seventeen fields.
    `rcpt_7c8fb39233b22e52fb5687f5185dbd0f` settled 0.010 USDC in transaction
    `0xbd498bb83d6b322c494d38fb81de47abd555c70c2fda173c5ab2905a1c9dbeef`;
    its durable result records exit 134, empty stdout, SHORT bounds, destroyed
-   cleanup, and a free same-key replay. Fresh Sandbox key `20260810d` is
+   cleanup, and a free same-key replay. Sandbox key `20260810d` remains
    challenge-only as `op_52554a58250d2e9d5fc122ac40b43a8b`, with no funded
-   effect. The receiver ledger has eight balanced entries; payer/receiver
-   balances are 284000/39000 atomic USDC. Database secret version `3` remains
-   deployed; destroyed version `2` was not restored.
+   effect. Corrected Sandbox operation `op_99abcbe82ce886227475a5e0544d79e9`
+   and receipt `rcpt_aed44093ada8b439088a81344a57a51d` settled 0.010 USDC in
+   transaction `0x7f32a9808e3e9948843b597099264c5a849474f49fc8ce4ad372a35b0d034f8c`,
+   returned the expected output at exit 0 under exact SHORT bounds, recorded
+   qualified gVisor provenance, destroyed cleanup, and replayed without another
+   authorization, execution, settlement, or charge. The receiver ledger has
+   nine linked balanced entries; payer/receiver balances are 274000/49000 atomic
+   USDC. Database secret version `3` remains deployed; destroyed version `2` was
+   not restored.
 7. **Research:** What a competitor returns per call versus what we return. One
    question: which part of the evidence payload is a buying reason rather than
    noise.
@@ -1321,20 +1327,15 @@ Every milestone below carries the same seventeen fields.
 13. **Visibility shipped:** Updated product pages, pricing, and receipt
     documentation.
 14. **Metrics:** Gross margin per product; routing distribution; fallback rate.
-15. **Owner approval:** The original exact 0.006 Search plus 0.010 Sandbox B10
-    payment cap is fully consumed. No additional payment is authorized. A new
-    exact maximum is required before another Sandbox signature; production
-    deployment of the runner correction is complete.
-16. **Stopping condition:** Search meets the finished-product conditions. The
-    corrected Sandbox runtime is qualified, but B10 remains open until one new
-    owner-authorized funded SHORT result is useful and its settlement,
-    accounting, cleanup, provenance, and no-charge replay are directly proven.
-17. **Continuation point:** Stop for explicit owner authorization of one
-    additional 0.010-USDC production Sandbox SHORT payment, which would raise
-    cumulative B10 funded spend to 0.026 USDC. Then rotate from challenge-only
-    key `20260810d` if its quote has expired, reconcile, obtain exactly one
-    MetaMask signature, prove the result and replay, close B10, and stop. B11
-    remains not started.
+15. **Owner approval:** The original 0.016-USDC cap plus the explicitly approved
+    additional 0.010-USDC Sandbox SHORT payment produced exactly 0.026 USDC of
+    cumulative B10 funded spend. The authorization is fully consumed. No
+    additional payment or signature is authorized.
+16. **Stopping condition:** Met. Search and corrected Sandbox each returned a
+    useful funded result whose settlement, receipt, accounting, chain evidence,
+    provenance, replay safety, and cleanup were directly proven.
+17. **Continuation point:** Stop. B10 is closed. B11 remains not started and may
+    begin only after explicit owner instruction.
 
 ---
 

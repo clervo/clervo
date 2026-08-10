@@ -16,7 +16,8 @@ const launchState = JSON.parse(await readFile(path.join(root, 'packages/catalog/
 const liveRegistry = JSON.parse(await readFile(path.join(root, 'packages/catalog/live-registry.json'), 'utf8'));
 const modelCatalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
 const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
-const x402Proof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/x402-proof.v1.json'), 'utf8'));
+const b10Proof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/search-sandbox-x402-proof.v1.json'), 'utf8'));
+const b10SearchProof = b10Proof.operations.find(({ productId }) => productId === 'search.web');
 const predictionPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/prediction-product-pricing.v1.json'), 'utf8'));
 const cryptoPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/crypto-product-pricing.v1.json'), 'utf8'));
 
@@ -359,14 +360,14 @@ if (
   // the API is publicly callable, and this asserts the hand-written record has
   // not silently disagreed with it.
   || publicApiFlags.some((value) => value !== publicSearch)
-  || launchState.paymentProof.state !== 'owner_funded_private_proof'
-  || launchState.paymentProof.productId !== x402Proof.productId
-  || launchState.paymentProof.amountAtomic !== x402Proof.observedSettlement.customerChargeAtomic
-  || launchState.paymentProof.settlementConfirmed !== (x402Proof.state === 'settled_reconciled')
-  || launchState.paymentProof.replaySameReceipt !== x402Proof.observedReplay.sameReceipt
-  || launchState.paymentProof.secondCharge !== x402Proof.observedReplay.secondCharge
-  || launchState.paymentProof.revenueEvidence !== x402Proof.observedSettlement.revenueEvidence
-  || launchState.paymentProof.demandEvidence !== x402Proof.observedSettlement.demandEvidence
+  || launchState.paymentProof.state !== 'owner_funded_public_proof'
+  || launchState.paymentProof.productId !== b10SearchProof?.productId
+  || launchState.paymentProof.amountAtomic !== b10SearchProof?.customerChargeAtomic
+  || launchState.paymentProof.settlementConfirmed !== (b10SearchProof?.settlementStatus === 'settled')
+  || launchState.paymentProof.replaySameReceipt !== b10SearchProof?.replay?.sameReceipt
+  || launchState.paymentProof.secondCharge !== b10SearchProof?.replay?.secondCharge
+  || launchState.paymentProof.revenueEvidence !== b10Proof.proofClassification.revenueEvidence
+  || launchState.paymentProof.demandEvidence !== b10Proof.proofClassification.demandEvidence
   || launchState.products.length !== 6
   || launchState.products.some(({ id }) => !registry.pillars.some(({ pillarId }) => pillarId === id))
 ) throw new Error('launch_state_invalid');

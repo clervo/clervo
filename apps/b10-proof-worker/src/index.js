@@ -13,7 +13,7 @@ const profiles = Object.freeze({
   '/proof/b10-sandbox': Object.freeze({
     productId: 'sandbox.run', route: '/v1/sandbox/execute', resource: 'https://api.clervo.dev/v1/sandbox/execute',
     amountAtomic: '10000', amountDisplay: '0.010 USDC', supplierCostCeilingAtomic: '8000',
-    idempotencyKey: 'idem_b10_sandbox_proof_20260810d',
+    idempotencyKey: 'idem_b10_sandbox_proof_20260810e',
     request: Object.freeze({ command: Object.freeze(['node', '-e', 'process.stdout.write("B10 sandbox proof")']), limits: Object.freeze({ cpuMillis: 5000, memoryBytes: 268435456, processes: 16, diskBytes: 67108864, outputBytes: 65536, artifactBytes: 1048576, wallTimeMs: 10000 }) }),
   }),
 });

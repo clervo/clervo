@@ -630,7 +630,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T21:00:29.384Z",
+      "observedAt": "2026-08-10T15:17:56.255Z",
       "releaseId": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",

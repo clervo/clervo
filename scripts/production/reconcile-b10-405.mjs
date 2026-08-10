@@ -8,9 +8,10 @@ const { Pool } = require('pg');
 
 const currentKeys = Object.freeze({
   search: 'idem_b10_search_proof_20260810f',
-  sandbox: 'idem_b10_sandbox_proof_20260810d',
+  sandbox: 'idem_b10_sandbox_proof_20260810e',
 });
 const priorFailedSandboxKey = 'idem_b10_sandbox_proof_20260810c';
+const priorExpiredSandboxKey = 'idem_b10_sandbox_proof_20260810d';
 
 const connectionString = process.env.CLERVO_DATABASE_URL;
 assert.ok(connectionString, 'CLERVO_DATABASE_URL is required');
@@ -69,13 +70,23 @@ try {
   const accounting = operationIds.length === 0
     ? { rows: [] }
     : await pool.query(
-      `SELECT entry_id, operation_id, settlement_id, authorization_id, occurred_at
+      `SELECT entry_id, operation_id, settlement_id, authorization_id,
+              entry_hash, previous_entry_hash, entry_json #> '{postings}' AS postings,
+              occurred_at
          FROM clervo_receiver_accounting_entries
         WHERE environment_namespace = 'production'
           AND operation_id = ANY($1::text[])
         ORDER BY operation_id`,
       [operationIds],
     );
+
+  const receiverLedger = await pool.query(
+    `SELECT entry_id, entry_hash, previous_entry_hash,
+            entry_json #> '{postings}' AS postings
+       FROM clervo_receiver_accounting_entries
+      WHERE environment_namespace = 'production'
+      ORDER BY occurred_at, entry_id`,
+  );
 
   const accountingHead = await pool.query(
     `SELECT COUNT(*)::integer AS entry_count,
@@ -110,7 +121,32 @@ try {
       WHERE environment_namespace = 'production'
         AND idempotency_key = ANY($1::text[])
       ORDER BY idempotency_key`,
-    [[priorFailedSandboxKey, currentKeys.sandbox]],
+    [[priorFailedSandboxKey, priorExpiredSandboxKey, currentKeys.sandbox]],
+  );
+
+  const fundedProofs = await pool.query(
+    `SELECT idempotency_key, request_hash, operation_id,
+            response_json #>> '{requestHash}' AS response_request_hash,
+            response_json #>> '{receipt,receiptId}' AS receipt_id,
+            response_json #>> '{receipt,receiptHash}' AS receipt_hash,
+            response_json #>> '{receipt,resultHash}' AS receipt_result_hash,
+            response_json #>> '{receipt,settlement,status}' AS settlement_status,
+            response_json #>> '{receipt,settlement,referenceHash}' AS settlement_reference_hash,
+            response_json #>> '{receipt,customerCharge,amountAtomic}' AS charge_atomic,
+            response_json #>> '{receipt,supplierCost,amountAtomic}' AS supplier_cost_atomic,
+            response_json #>> '{result,resultHash}' AS runtime_result_hash,
+            response_json #>> '{output,route,routeId}' AS search_route_id,
+            response_json #>> '{output,route,qualificationId}' AS search_qualification_id,
+            response_json #>> '{output,route,degraded}' AS search_degraded,
+            response_json #>> '{output,route,fallback}' AS search_fallback,
+            response_json #>> '{output,searchResponse,generatedAt}' AS search_generated_at,
+            COALESCE(jsonb_array_length(response_json #> '{output,searchResponse,results}'), 0) AS search_result_count,
+            COALESCE(jsonb_array_length(response_json #> '{output,searchResponse,citations}'), 0) AS search_citation_count
+       FROM clervo_x402_operations
+      WHERE environment_namespace = 'production'
+        AND idempotency_key = ANY($1::text[])
+      ORDER BY idempotency_key`,
+    [[currentKeys.search, currentKeys.sandbox]],
   );
 
   const targetRows = x402.rows.map((row) => ({
@@ -131,6 +167,20 @@ try {
     targetRows.find(({ idempotencyKey }) => idempotencyKey === key) ?? null,
   ]));
   const ambiguous = targetRows.filter(({ state }) => !['challenged', 'completed'].includes(state));
+  const postingsBalanced = (postings) => {
+    const totals = new Map();
+    for (const posting of postings ?? []) {
+      const key = `${posting.amount.asset}:${posting.amount.decimals}`;
+      const current = totals.get(key) ?? { debit: 0n, credit: 0n };
+      current[posting.direction] += BigInt(posting.amount.amountAtomic);
+      totals.set(key, current);
+    }
+    return totals.size > 0 && [...totals.values()].every(({ debit, credit }) => debit === credit);
+  };
+  const receiverLedgerChainValid = receiverLedger.rows.every((row, index, rows) => (
+    index === 0 ? row.previous_entry_hash === null : row.previous_entry_hash === rows[index - 1].entry_hash
+  ));
+  const receiverLedgerBalanced = receiverLedger.rows.every((row) => postingsBalanced(row.postings));
 
   const currentAccounting = await pool.query(
     `SELECT entry_id, operation_id, settlement_id, authorization_id,
@@ -173,6 +223,9 @@ try {
       headHash: accountingHead.rows[0].head_hash,
       latestOccurredAt: accountingHead.rows[0].latest_occurred_at,
     },
+    b10AccountingRows: accounting.rows.length,
+    receiverLedgerChainValid,
+    receiverLedgerBalanced,
     ambiguousRows: ambiguous.map(({ idempotencyKey, state, operationId }) => ({ idempotencyKey, state, operationId })),
     credentialsLogged: false,
     customerPayloadsLogged: false,
@@ -193,6 +246,10 @@ try {
       postings: row.postings,
       occurredAt: row.occurred_at,
     })),
+  }));
+  console.log(JSON.stringify({
+    section: 'funded-proofs',
+    rows: fundedProofs.rows,
   }));
 } finally {
   await pool.end();

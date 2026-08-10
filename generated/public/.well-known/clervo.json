@@ -558,7 +558,7 @@
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
       },
-      "commercialProof": true
+      "commercialProof": false
     },
     {
       "productId": "crypto.wallet.tokens",
@@ -603,7 +603,7 @@
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
       },
-      "commercialProof": true
+      "commercialProof": false
     },
     {
       "productId": "crypto.wallet.transactions",
@@ -648,7 +648,7 @@
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
       },
-      "commercialProof": true
+      "commercialProof": false
     },
     {
       "productId": "crypto.wallet.report",
@@ -693,7 +693,7 @@
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
       },
-      "commercialProof": true
+      "commercialProof": false
     }
   ],
   "limitations": [
@@ -723,7 +723,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T21:00:29.384Z",
+      "observedAt": "2026-08-10T15:17:56.255Z",
       "releaseId": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -765,7 +765,7 @@
           "crypto.wallet.transactions"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
+        "proofLevel": "quote_observed_unpaid",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -829,7 +829,7 @@
           "sandbox.session.exec"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -849,7 +849,7 @@
           "search.web"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -861,7 +861,7 @@
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",
-          "acceptsNaiveRequest": true
+          "acceptsNaiveRequest": false
         }
       }
     ]

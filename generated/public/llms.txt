@@ -51,28 +51,29 @@ Current verified status:
 
 ## Observed lifecycle state and proof level
 
-Probed from the deployed system at 2026-08-09T21:00:29.384Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
+Probed from the deployed system at 2026-08-10T15:17:56.255Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
 
 | Product | Lifecycle state | Proof level |
 |---|---|---|
 | AI | supply_paused (no_route_currently_live) | none |
-| Crypto Intelligence | live | paid_outcome_verified |
+| Crypto Intelligence | live | quote_observed_unpaid |
 | Prediction Intelligence | live | quote_observed_unpaid |
 | Multi-chain RPC | unavailable (commercial_rights_blocked) | none |
-| Secure Sandbox | live | quote_observed_unpaid |
-| Research | live | quote_observed_unpaid |
+| Secure Sandbox | live | paid_outcome_verified |
+| Research | live | paid_outcome_verified |
 
 ## First call
 
-No account, no API key, no wallet, no idempotency key:
+No account, no API key, no wallet:
 
 ```bash
 curl -sS https://api.clervo.dev/v1/search/free \
   -H 'content-type: application/json' \
-  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}'
+  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}' \
+  -H 'idempotency-key: clervo-first-call-0001'
 ```
 
-The free sample accepts a request with no `idempotency-key` header. The server generates one and returns it in the `idempotency-key` response header; send that value back to replay the same operation without a second execution.
+The free sample currently rejects a request with no `idempotency-key` header; supply a stable value of 8 to 128 token characters.
 
 Paid requests go to `POST https://api.clervo.dev/v1/search/paid`, which returns a 402 carrying the exact maximum charge before anything executes.
 

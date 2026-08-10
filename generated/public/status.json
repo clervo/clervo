@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-09T19:27:12.736Z",
+  "observedAt": "2026-08-10T15:17:56.255Z",
   "publicApi": {
     "state": "public_search_ai_sandbox_and_prediction_preview_verified",
     "endpoint": "https://api.clervo.dev",
@@ -38,7 +38,7 @@
     ]
   },
   "paymentProof": {
-    "state": "owner_funded_private_proof",
+    "state": "owner_funded_public_proof",
     "productId": "search.web",
     "network": "Base",
     "asset": "USDC",
@@ -54,17 +54,17 @@
     "publicCustomerPaymentAvailable": true,
     "revenueEvidence": false,
     "demandEvidence": false,
-    "transactionUrl": "https://basescan.org/tx/0xf4a2c7d5568745ad7ce11157306d5899faaf4def041519e51527c76134eca720",
+    "transactionUrl": "https://basescan.org/tx/0x22a537342614b14eb676b1cb3ccb51acdec98bb56811d152e650b3985a0403cb",
     "evidence": [
-      "infra/production/gcp/x402-proof.v1.json",
-      "tests/contract/n15.5.test.mjs"
+      "infra/production/gcp/search-sandbox-x402-proof.v1.json",
+      "tests/contract/b10-proof-worker.test.mjs"
     ]
   },
   "observedTruth": {
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T21:00:29.384Z",
+      "observedAt": "2026-08-10T15:17:56.255Z",
       "releaseId": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -106,7 +106,7 @@
           "crypto.wallet.transactions"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
+        "proofLevel": "quote_observed_unpaid",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -170,7 +170,7 @@
           "sandbox.session.exec"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -190,7 +190,7 @@
           "search.web"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -202,12 +202,21 @@
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",
-          "acceptsNaiveRequest": true
+          "acceptsNaiveRequest": false
         }
       }
     ]
   },
-  "conformanceDefectsOpen": [],
+  "conformanceDefectsOpen": [
+    {
+      "conformant": false,
+      "expectation": "free search succeeds without a caller-supplied idempotency-key",
+      "id": "api.search_free_accepts_naive_request",
+      "observedCode": "free_quota_exceeded",
+      "observedStatus": 429,
+      "url": "https://api.clervo.dev/v1/search/free"
+    }
+  ],
   "aiRoutes": {
     "counts": {
       "supply_paused": 21
@@ -345,10 +354,10 @@
     {
       "id": "search",
       "engineeringState": "public_production_qualified",
-      "customerLifecycle": "preview_publicly_callable",
-      "commercialProof": "owner_funded_plumbing_proof_only",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
+      "commercialProof": "owner_funded_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid"
+      "proofLevel": "paid_outcome_verified"
     },
     {
       "id": "ai",
@@ -361,10 +370,10 @@
     {
       "id": "sandbox",
       "engineeringState": "public_production_qualified_single_node",
-      "customerLifecycle": "preview_publicly_callable",
-      "commercialProof": "unproven",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
+      "commercialProof": "owner_funded_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid"
+      "proofLevel": "paid_outcome_verified"
     },
     {
       "id": "rpc",
@@ -388,7 +397,7 @@
       "customerLifecycle": "publicly_callable_paid_outcome_verified",
       "commercialProof": "owner_funded_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified"
+      "proofLevel": "quote_observed_unpaid"
     }
   ]
 }

@@ -21,12 +21,12 @@
               "amountIsBinding": true,
               "exampleRouteId": null,
               "lifecycleState": "live",
-              "proofLevel": "quote_observed_unpaid"
+              "proofLevel": "paid_outcome_verified"
             }
           }
         }
       ],
-      "lastUpdated": 1786309229,
+      "lastUpdated": 1786375076,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -39,7 +39,7 @@
           "validatorAccepted": true,
           "indexed": true,
           "indexActive": true,
-          "indexLastCrawledAt": "2026-08-06T16:59:46.261Z",
+          "indexLastCrawledAt": "2026-08-10T13:36:24.537Z",
           "failedChecks": []
         }
       }
@@ -64,12 +64,12 @@
               "amountIsBinding": false,
               "exampleRouteId": null,
               "lifecycleState": "live",
-              "proofLevel": "quote_observed_unpaid"
+              "proofLevel": "paid_outcome_verified"
             }
           }
         }
       ],
-      "lastUpdated": 1786309229,
+      "lastUpdated": 1786375076,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -80,9 +80,9 @@
         "bazaarExtensionPresent": true,
         "bazaar": {
           "validatorAccepted": true,
-          "indexed": false,
-          "indexActive": null,
-          "indexLastCrawledAt": null,
+          "indexed": true,
+          "indexActive": true,
+          "indexLastCrawledAt": "2026-08-10T14:56:26.837Z",
           "failedChecks": []
         }
       }
@@ -112,7 +112,7 @@
           }
         }
       ],
-      "lastUpdated": 1786309229,
+      "lastUpdated": 1786375076,
       "metadata": {
         "category": "prediction",
         "provider": "clervo",
@@ -150,12 +150,12 @@
               "amountIsBinding": false,
               "exampleRouteId": null,
               "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "proofLevel": "quote_observed_unpaid"
             }
           }
         }
       ],
-      "lastUpdated": 1786309229,
+      "lastUpdated": 1786375076,
       "metadata": {
         "category": "crypto_intelligence",
         "provider": "clervo",
@@ -183,7 +183,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-09T21:00:29.384Z",
+      "observedAt": "2026-08-10T15:17:56.255Z",
       "releaseId": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -211,7 +211,7 @@
     "bazaar": {
       "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",
       "validator": "https://api.cdp.coinbase.com/platform/v2/x402/validate",
-      "indexedResourceCount": 3,
+      "indexedResourceCount": 4,
       "note": "Indexing triggers only on a payment settled through the CDP facilitator. A valid resource that has never been paid for is eligible and unindexed, which is not a defect."
     },
     "freeResources": [
@@ -221,10 +221,10 @@
         "method": "POST",
         "bodyType": "json",
         "paymentRequired": false,
-        "acceptsRequestWithoutIdempotencyKey": true,
+        "acceptsRequestWithoutIdempotencyKey": false,
         "operationId": "search.web",
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "quota": "Capped per caller and globally. Over the cap the route answers 429 free_quota_exceeded rather than executing."
       }
     ],
