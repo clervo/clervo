@@ -7,7 +7,7 @@ Current verified status:
 - Developer distribution: public TypeScript, MCP, and Python packages are registry-verified
 - Customer API: public preview at https://api.clervo.dev; live families are derived from the deployed registry
 - Frozen release candidate: clervo-private-core-2026-08-02.2
-- Frozen interface hash: sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622
+- Frozen interface hash: sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4
 - Six product cores: privately qualified and compatibility-frozen
 - Public lifecycle: live: Crypto Intelligence, Prediction Intelligence, Secure Sandbox, Research; supply_paused: AI; unavailable: Multi-chain RPC
 - Public operation IDs: search.web, sandbox.run, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal, crypto.wallet.balances, crypto.wallet.tokens, crypto.wallet.transactions, crypto.wallet.report

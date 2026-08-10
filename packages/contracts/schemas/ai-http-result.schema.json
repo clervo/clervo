@@ -170,8 +170,8 @@
     "receipt": { "$ref": "operation-receipt.schema.json" }
   },
   "allOf": [
-    { "if": { "properties": { "fundingMode": { "const": "paid" } }, "required": ["fundingMode"] }, "then": { "properties": { "state": { "const": "RECEIPTED" } }, "required": ["receipt"] } },
-    { "if": { "properties": { "fundingMode": { "const": "free" } }, "required": ["fundingMode"] }, "then": { "properties": { "state": { "const": "COMPLETED" } }, "not": { "required": ["receipt"] } } }
+    { "if": { "properties": { "fundingMode": { "const": "paid" } }, "required": ["fundingMode"] }, "then": { "properties": { "receipt": {}, "state": { "const": "RECEIPTED" } }, "required": ["receipt"] } },
+    { "if": { "properties": { "fundingMode": { "const": "free" } }, "required": ["fundingMode"] }, "then": { "properties": { "state": { "const": "COMPLETED" } }, "not": { "properties": { "receipt": {} }, "required": ["receipt"] } } }
   ],
   "additionalProperties": false
 }

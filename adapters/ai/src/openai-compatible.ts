@@ -108,11 +108,16 @@ function usageFrom(value: unknown, request: AiExecutionRequest): AiUsage {
   const source = record(value);
   const details = source.prompt_tokens_details === undefined ? {} : record(source.prompt_tokens_details);
   const completionDetails = source.completion_tokens_details === undefined ? {} : record(source.completion_tokens_details);
+  const reasoningTokens = integer(completionDetails.reasoning_tokens ?? 0, 'reasoning_tokens');
+  const totalCompletionTokens = integer(source.completion_tokens ?? source.output_tokens ?? 0, 'output_tokens');
+  if (reasoningTokens > totalCompletionTokens) throw new TypeError('ai_provider_reasoning_tokens_invalid');
   return {
     inputTokens: integer(source.prompt_tokens ?? source.input_tokens, 'input_tokens'),
     cachedInputTokens: integer(details.cached_tokens ?? 0, 'cached_input_tokens'),
-    outputTokens: integer(source.completion_tokens ?? source.output_tokens ?? 0, 'output_tokens'),
-    reasoningTokens: integer(completionDetails.reasoning_tokens ?? 0, 'reasoning_tokens'),
+    // OpenAI-compatible completion_tokens includes hidden reasoning. Clervo
+    // prices and bounds visible output and reasoning separately.
+    outputTokens: totalCompletionTokens - reasoningTokens,
+    reasoningTokens,
     images: request.input.kind === 'image' ? request.input.count : 0,
     audioCharacters: request.input.kind === 'speech' ? request.input.input.length : 0,
     videoSeconds: request.input.kind === 'video' ? request.input.durationSeconds : 0,

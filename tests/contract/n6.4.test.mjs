@@ -45,9 +45,17 @@ test('OpenAI-compatible chat binds endpoint, credential, exact model, usage, and
   assert.equal(capture.value.url, 'https://api.example.test/openai/v1/chat/completions');
   assert.equal(capture.value.headers.authorization, 'Bearer opaque-test-credential');
   assert.deepEqual(JSON.parse(new TextDecoder().decode(capture.value.body)), { model: 'chat-v1', messages: req.input.messages, stream: false, max_completion_tokens: 600 });
-  assert.deepEqual(result.usage, { inputTokens: 10, cachedInputTokens: 1, outputTokens: 2, reasoningTokens: 0, images: 0, audioCharacters: 0 });
+  assert.deepEqual(result.usage, { inputTokens: 10, cachedInputTokens: 1, outputTokens: 2, reasoningTokens: 0, images: 0, audioCharacters: 0, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 });
   assert.deepEqual(result.output, { kind: 'chat', content: 'Hello.', finishReason: 'stop' });
   assert.equal(JSON.stringify(result).includes('opaque-test-credential'), false);
+});
+
+test('OpenAI-compatible usage separates hidden reasoning from total completion tokens', async () => {
+  const { value } = adapter('ai.chat', 'CHAT', response({ model: 'chat-v1', choices: [{ message: { role: 'assistant', content: 'Ready.' }, finish_reason: 'stop' }], usage: { prompt_tokens: 10, completion_tokens: 14, completion_tokens_details: { reasoning_tokens: 12 } } }));
+  const req = request('ai.chat', { kind: 'chat', messages: [{ role: 'user', content: 'Ready?' }], responseFormat: 'text', stream: false }, 'CHAT');
+  const result = await value.execute({ request: req, exactModelId: 'chat-v1', signal: new AbortController().signal });
+  assert.equal(result.usage.outputTokens, 2);
+  assert.equal(result.usage.reasoningTokens, 12);
 });
 
 test('OpenAI-compatible chat applies bounded provider reasoning controls without exposing them to non-chat products', async () => {
@@ -97,7 +105,7 @@ test('image and speech bytes enter only an integrity-checking artifact store', a
   const artifacts = { put: async ({ bytes, mimeType }) => { const sha256 = `sha256:${createHash('sha256').update(bytes).digest('hex')}`; stored.push({ bytes: [...bytes], mimeType, sha256 }); return { artifactUri: `artifact://ai/generated/${stored.length.toString().padStart(4, '0')}`, sha256 }; } };
   const imageBytes = new Uint8Array([137, 80, 78, 71]);
   const imageReq = request('ai.image', { kind: 'image', prompt: 'A prism', size: '1024x1024', quality: 'low', count: 1 }, 'IMAGE');
-  const imageAdapter = adapter('ai.image', 'IMAGE', response({ model: 'image-v1', data: [{ b64_json: Buffer.from(imageBytes).toString('base64') }], usage: { input_tokens: 2, output_tokens: 0 } }), { artifacts }).value;
+  const imageAdapter = adapter('ai.image', 'IMAGE', response({ model: 'image-v1', data: [{ b64_json: Buffer.from(imageBytes).toString('base64'), mime_type: 'image/png' }], usage: { input_tokens: 2, output_tokens: 0 } }), { artifacts }).value;
   const image = await imageAdapter.execute({ request: imageReq, exactModelId: 'image-v1', signal: new AbortController().signal });
   assert.equal(image.output.artifacts[0].artifactUri, 'artifact://ai/generated/0001');
   assert.deepEqual(stored[0].bytes, [...imageBytes]);

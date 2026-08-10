@@ -12,7 +12,7 @@ import { assertProductScope, createProductScopeDocument, type ProductScopeDocume
 
 export const DISCOVERY_VERSION = '2026-08-02.2' as const;
 export const RELEASE_CANDIDATE_ID = 'clervo-private-core-2026-08-02.2' as const;
-export const RELEASE_CANDIDATE_INTERFACE_HASH = 'sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622' as const;
+export const RELEASE_CANDIDATE_INTERFACE_HASH = 'sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4' as const;
 
 export interface DistributionProjection {
   releaseCandidateId: string;

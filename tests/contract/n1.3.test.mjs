@@ -42,7 +42,7 @@ test('generated OpenAPI is deterministic, schema-complete, and exposes only regi
   assert.deepEqual(paths, [...declaredPublicPaths].sort(), 'OpenAPI paths must equal the generated public product routes');
   const status = document['x-clervo-status'];
   assert.equal(status.releaseCandidateId, 'clervo-private-core-2026-08-02.2');
-  assert.equal(status.interfaceHash, 'sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622');
+  assert.equal(status.interfaceHash, 'sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4');
   assert.ok(['preview', 'available'].includes(status.lifecycle), `unexpected lifecycle ${status.lifecycle}`);
   assert.equal(status.publicCallable, launchState.distribution.publicApi.publicCallable === true);
   assert.equal(status.paymentImplemented, launchState.paymentProof.publicCustomerPaymentAvailable === true);
@@ -75,7 +75,7 @@ test('discovery is bound to the frozen private core and agrees with launch state
   // the generator calls it with the live projection and then adds per-product
   // entries, so a no-argument call reproduces only the private-candidate default.
   assert.equal(discovery.distribution.releaseCandidateId, 'clervo-private-core-2026-08-02.2');
-  assert.equal(discovery.distribution.interfaceHash, 'sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622');
+  assert.equal(discovery.distribution.interfaceHash, 'sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4');
   assert.equal(discovery.distribution.callable, launchState.distribution.publicApi.publicCallable === true);
   assert.equal(discovery.payment.implemented, launchState.paymentProof.publicCustomerPaymentAvailable === true);
   const productIds = discovery.products.map(({ productId }) => productId);
