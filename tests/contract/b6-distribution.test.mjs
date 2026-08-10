@@ -44,6 +44,7 @@ test('B6 Router release workflow is package-specific, immutable, OIDC-capable, a
   assert.match(workflow, /git merge-base --is-ancestor "\$RELEASE_COMMIT" origin\/main/u);
   assert.match(workflow, /id-token: write/u);
   assert.match(workflow, /runs-on: ubuntu-latest/u);
+  assert.match(workflow, /registry-url: https:\/\/registry\.npmjs\.org\//u);
   assert.match(workflow, /npm@11\.18\.0/u);
   assert.match(workflow, /@clervo\/router@0\.1\.0/u);
   assert.match(workflow, /Verify Router behavior and payment safety[\s\S]*?npm run build\s+npm run test:b6\s+node --test \.\/tests\/contract\/shared-paid-operation\.test\.mjs/u);
