@@ -76,6 +76,16 @@ test('B10 hosted Sandbox proof pins the repaired SHORT request and fresh post-fa
   });
 });
 
+test('temporary hosted proof quarantines both B7 payment surfaces while reconciliation is pending', async () => {
+  for (const path of ['/proof/b7-ai-chat', '/proof/b7-ai-image']) {
+    for (const suffix of ['/config', '/api/paid-operation']) {
+      const response = await worker.fetch(new Request(`https://clervo.dev${path}${suffix}`, { method: suffix.startsWith('/api/') ? 'POST' : 'GET' }), assets);
+      assert.equal(response.status, 423);
+      assert.deepEqual(await response.json(), { code: 'proof_quarantined', recovery: 'reconcile_without_retry' });
+    }
+  }
+});
+
 test('B10 hosted proof forwards an unsigned challenge as an exact guarded POST', async () => {
   const original = globalThis.fetch;
   let observed;

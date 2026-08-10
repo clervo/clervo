@@ -58,7 +58,16 @@ test('public launch policy exposes qualified Search, AI, Sandbox, Prediction, an
   assert.equal(worker.vars.CLERVO_SANDBOX_PUBLIC_ENABLED, 'true');
   assert.equal(worker.vars.CLERVO_PREDICTION_PUBLIC_ENABLED, 'true');
   assert.equal(worker.vars.CLERVO_CRYPTO_PUBLIC_ENABLED, 'true');
-  assert.deepEqual(worker.routes.map(({ pattern }) => pattern), ['api.clervo.dev/', 'api.clervo.dev/*']);
+  assert.deepEqual(worker.routes.map(({ pattern }) => pattern), [
+    'api.clervo.dev/',
+    'api.clervo.dev/*',
+    'ai.clervo.dev/v1/ai/execute',
+    'ai.clervo.dev/v1/catalog',
+    'ai.clervo.dev/.well-known/clervo.json',
+    'ai.clervo.dev/.well-known/x402',
+    'ai.clervo.dev/openapi.json',
+    'ai.clervo.dev/llms.txt',
+  ]);
   assert.equal(release.state, 'public_preview_verified');
   assert.equal(release.edge.trafficPercent, 100);
   assert.equal(release.origin.directProductAccessStatus, 401);

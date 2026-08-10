@@ -36,7 +36,7 @@ let challengeIdentity = '';
 let verifiedPaymentRequired: PaymentRequired;
 let verifiedQuoteExpiresAt = '';
 let paymentAttempted = false;
-const proofBase = /^\/proof\/b10-(?:search|sandbox)(?:\/|$)/u.test(window.location.pathname)
+const proofBase = /^\/proof\/(?:b10-(?:search|sandbox)|b7-ai-(?:chat|image))(?:\/|$)/u.test(window.location.pathname)
   ? window.location.pathname.replace(/\/$/u, '')
   : '';
 const proofFetch = (path: string, init?: RequestInit) => fetch(`${proofBase}${path}`, init);
@@ -238,7 +238,7 @@ async function approveOnce() {
 }
 
 async function load() {
-  const response = await proofFetch('/config?proof=b10-20260810e', { headers: { accept: 'application/json', 'cache-control': 'no-cache' } });
+  const response = await proofFetch('/config?proof=bounded-owner-approved', { headers: { accept: 'application/json', 'cache-control': 'no-cache' } });
   if (!response.ok) throw new Error('guarded proof configuration unavailable');
   config = await response.json();
   bounds.innerHTML = [

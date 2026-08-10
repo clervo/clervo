@@ -19,6 +19,11 @@ export const AI_PAID_PATH = '/v1/ai/execute' as const;
 export const AI_MAX_BODY_BYTES = 10_485_760;
 export const AI_DEFAULT_MAXIMUM_OUTPUT_TOKENS = 1_024;
 export const AI_MAXIMUM_OUTPUT_TOKENS = 65_536;
+// Chat gateways add role framing, safety instructions, and other protocol
+// envelope tokens that are included in truthful upstream usage even though
+// they are not present in the caller's message text. Keep that bounded here so
+// quote, execution validation, and receipt usage share the same authority.
+export const AI_CHAT_INPUT_ENVELOPE_TOKENS = 1_024;
 
 export interface AiHttpRequest {
   model: string;
@@ -99,7 +104,7 @@ function usageBounds(input: AiExecutionInput, maximumOutputTokens: number | unde
     const reasoningTokens = maximumReasoningTokens ?? outputTokens;
     if (outputTokens < 1) throw new TypeError('ai_http_maximum_output_tokens_invalid');
     const evidence = input.evidence?.flatMap((item) => [item.quote, item.canonicalUrl]) ?? [];
-    return Object.freeze({ ...zeroUsage, inputTokens: chatContentBytes(input) + byteLength(evidence), outputTokens, reasoningTokens });
+    return Object.freeze({ ...zeroUsage, inputTokens: AI_CHAT_INPUT_ENVELOPE_TOKENS + chatContentBytes(input) + byteLength(evidence), outputTokens, reasoningTokens });
   }
   if (input.kind === 'embedding') return Object.freeze({ ...zeroUsage, inputTokens: byteLength(input.inputs) });
   if (input.kind === 'image') return Object.freeze({ ...zeroUsage, inputTokens: byteLength([input.prompt]), images: input.count });
