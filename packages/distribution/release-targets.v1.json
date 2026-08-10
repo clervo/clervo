@@ -11,70 +11,46 @@
   },
   "publication": {
     "state": "published_verified",
-    "sourceCommit": "9b3d165f84477b0c84278827d9ed5e0a1fb34c6c",
-    "githubRunId": 31433101429,
-    "verifiedAt": "2026-08-10T21:19:17Z"
+    "sourceCommit": "a303c589ce4a0c0fc5e6891e02fe11837369d9d4",
+    "githubRunId": 31433674358,
+    "verifiedAt": "2026-08-10T21:27:40Z"
   },
   "tooling": {
     "buildNpmVersion": "10.9.8",
     "publishNpmVersion": "11.18.0",
     "pythonBuildVersion": "1.5.0"
   },
-  "nextRelease": {
-    "state": "release_prepared",
-    "packages": [
-      {
-        "registry": "npm",
-        "name": "@clervo/sdk",
-        "version": "0.4.1",
-        "path": "packages/sdk-typescript"
-      },
-      {
-        "registry": "npm",
-        "name": "@clervo/mcp",
-        "version": "0.4.1",
-        "path": "packages/mcp"
-      },
-      {
-        "registry": "pypi",
-        "name": "clervo-sdk",
-        "version": "0.3.1",
-        "path": "packages/sdk-python",
-        "trustedPublisher": "publish-packages.yml on clervo/clervo"
-      }
-    ]
-  },
   "packages": [
     {
       "registry": "npm",
       "name": "@clervo/sdk",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "path": "packages/sdk-typescript",
-      "integrity": "sha512-c/Bm58cfTky3yOAyMdon2kqIVpz7AkBouzcYC/iebMIGBqLm/GhOp9QGzpDIQBpnd/7ynzWzDcXNNb3gG2vdIg==",
+      "integrity": "sha512-XwITTKZFuQpM/lM5KQcsiCT7usoyScXnYOg47jCr1XK5vIxpYlOq1NYfjNJyo9uJVvEu4+44/rjJEpvrqZ9jww==",
       "provenancePredicate": "https://slsa.dev/provenance/v1"
     },
     {
       "registry": "npm",
       "name": "@clervo/mcp",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "path": "packages/mcp",
-      "integrity": "sha512-uk/EszwzV/bvsKbvykgjnT/RM0SlzgESUnmSir1r/FIlFoY5JnbBwtlRwT8afVCbuyij6S17mMLg2DVhSb9tGg==",
+      "integrity": "sha512-A2P3Ize2x+XZgovueDwguN3vGu89XLfeDJ/cF6Lw6pZgSwNj9A1lPDMySBHvvfXfiSNv/aRq4eXQmt7Lhxe+hA==",
       "provenancePredicate": "https://slsa.dev/provenance/v1"
     },
     {
       "registry": "pypi",
       "name": "clervo-sdk",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "path": "packages/sdk-python",
       "trustedPublisher": "publish-packages.yml on clervo/clervo",
       "files": [
         {
-          "filename": "clervo_sdk-0.3.0-py3-none-any.whl",
-          "sha256": "cf6a72c09dd2f063aa917f74ccdb133f1d3a21b28cb605605a7b81bfa360ef7e"
+          "filename": "clervo_sdk-0.3.1-py3-none-any.whl",
+          "sha256": "ed8c0d2d603358993f5c309d21edc4ea81c34b015e05e2488868c5e2eb91c6bf"
         },
         {
-          "filename": "clervo_sdk-0.3.0.tar.gz",
-          "sha256": "1ea393080de76a6f23f0625f2d5e3d70af5d6907ea3d3433a7cf6cff1ce57a8e"
+          "filename": "clervo_sdk-0.3.1.tar.gz",
+          "sha256": "543c6e9e07b1d71d81c1f2a9b57c3eb6e10ea871d7c1b4563d1a27e4fdf42a83"
         }
       ]
     }

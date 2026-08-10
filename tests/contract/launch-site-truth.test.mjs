@@ -69,7 +69,7 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(pricing.publicPrice.amountAtomic, '6000');
   assert.equal(capabilities.products.length, 6);
   assert.equal(mcp.name, '@clervo/mcp');
-  assert.equal(mcp.version, '0.4.0');
+  assert.equal(mcp.version, '0.4.1');
   assert.equal(mcp.publicApiAvailable, true);
   assert.deepEqual(mcp.configurationRequired, []);
   assert.deepEqual(mcp.configurationOptional, ['CLERVO_BASE_URL']);
