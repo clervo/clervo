@@ -3,6 +3,7 @@
   "name": "clervo-b10-proof-temporary",
   "main": "./src/index.js",
   "compatibility_date": "2026-08-04",
+  "compatibility_flags": ["global_fetch_strictly_public"],
   "workers_dev": false,
   "preview_urls": false,
   "routes": [

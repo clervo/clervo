@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import worker from '../../apps/b10-proof-worker/src/index.js';
 
 const searchRequest = Object.freeze({ query: 'Python programming', maxResults: 3, synthesize: false, language: 'en', region: 'US' });
 const searchPath = 'https://clervo.dev/proof/b10-search';
 const payer = '0x1ada6E2EACb799f16bfC1A395c06D7fb52369207';
+const workerConfiguration = JSON.parse(await readFile('apps/b10-proof-worker/wrangler.jsonc', 'utf8'));
 
 function request(path, options = {}) {
   return new Request(`${searchPath}${path}`, options);
@@ -13,6 +15,7 @@ function request(path, options = {}) {
 const assets = { ASSETS: { fetch: () => { throw new Error('assets_not_expected'); } } };
 
 test('B10 hosted proof pins the payer, facilitator, proxy boundary, and reconciled key', async () => {
+  assert.deepEqual(workerConfiguration.compatibility_flags, ['global_fetch_strictly_public']);
   const response = await worker.fetch(request('/config'), assets);
   assert.equal(response.status, 200);
   assert.equal(response.headers.get('cache-control'), 'no-store');
