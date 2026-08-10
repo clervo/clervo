@@ -8,7 +8,7 @@
   "serviceAccount": "clervo-api-production@bloxsniper-prod.iam.gserviceaccount.com",
   "cloudSqlConnection": "bloxsniper-prod:us-central1:clervo-production-postgres",
   "databaseSecret": "clervo-production-database-url",
-  "databaseSecretVersion": 2,
+  "databaseSecretVersion": 4,
   "targetMigration": "0008-prediction-dynamic-venues.sql",
   "expectedPendingMigrations": [
     "0007-prediction-market-state.sql",
