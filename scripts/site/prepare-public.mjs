@@ -77,7 +77,6 @@ const siteRoutes = [
   '/legal',
   '/status',
   '/changelog/',
-  '/compare/blockrun/',
   '/trust/',
 ];
 

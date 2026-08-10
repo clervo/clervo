@@ -60,7 +60,7 @@ test('site ships canonical media, static routes, and hardened hosting controls',
   assert.equal(worlds.runtimeAsset, 'apps/site/public-assets/clervo-worlds.glb');
 
   const staticRoutes = [
-    ['apps/site/dist/index.html', 'One job in.'],
+    ['apps/site/dist/index.html', 'Give your agent a task.'],
     ['apps/site/dist/product/index.html', 'One platform.'],
     ['apps/site/dist/proof-lab/index.html', 'Inspect the mechanism.'],
     ['apps/site/dist/docs/typescript/index.html', 'TypeScript'],
@@ -97,13 +97,13 @@ test('site projects live Prediction operations, prices, attribution, and proof f
   ]);
   assert.match(prediction, /prediction\.markets/u);
   assert.match(prediction, /pdata\.world \/ CC BY 4\.0/u);
-  assert.match(prediction, /public x402 challenge available paid result pending/u);
+  assert.match(prediction, /quote observed, unpaid/u);
   assert.match(catalog, /prediction\.markets/u);
-  assert.match(catalog, /pdata\.world<!-- -->, <!-- -->CC BY 4\.0/u);
+  assert.match(catalog, /pdata\.world \/ CC BY 4\.0/u);
   assert.match(pricing, /prediction\.markets/u);
   assert.match(pricing, /0\.002 USDC/u);
-  assert.match(status, /Routes answering<\/dt><dd><b>7/u);
-  assert.match(home, /Routes serving<\/dt><dd>7/u);
+  assert.match(status, /Routes answering<\/dt><dd><b>12/u);
+  assert.match(home, /Routes serving<\/dt><dd>12/u);
 });
 
 test('site keeps WebGL optional for narrow and reduced-motion clients', async () => {
