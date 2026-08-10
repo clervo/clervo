@@ -1,74 +1,71 @@
 # Clervo builder authority
 
-This file guides site, documentation, agent, motion, and product-copy work. The
-master plan defines product scope; this guide makes no production-readiness
-claim.
+This file guides site, documentation, agent, motion, and product-copy work. It
+does not define product readiness; current lifecycle and availability come from
+observed behavior and the canonical registry.
 
 ## Product story
 
-Clervo is **outcome infrastructure for agents**. The permanent expansion
-narrative is **Find → Understand → Act**.
+Clervo is **outcome infrastructure for AI agents**.
 
-The First Revenue Release is the all-six **Clervo Platform**. Its required
-product cores are:
+**Give your agent a task. Get a verified result.**
 
-- Live Intelligence/Search: **Discover → Retrieve → Structure → Verify →
-  Monitor**;
-- AI: **Understand → Analyze → Score → Explain → Report**;
-- Secure Sandbox: **Transform → Execute → Automate → Export**;
-- RPC;
-- Prediction; and
-- Crypto Intelligence.
+The product direction is a coherent capability layer spanning:
 
-Product status is not asserted in this file. It is observed from the deployed
-system and read from the live registry. See `ROADMAP.md`. Never copy a
-lifecycle label out of a document into public copy; read it from the registry
-at build time.
+- AI;
+- Search;
+- Secure Sandbox;
+- Prediction;
+- Crypto Intelligence;
+- Multi-chain RPC; and
+- the routing, payment, receipt, and verification infrastructure that connects
+  these capabilities.
+
+The company tagline is **Buy outcomes. Not integrations.**
+
+Public copy should explain the permanent user journey in concrete terms: an
+agent identifies an appropriate capability, understands cost and limits,
+executes deliberately, and receives a result with evidence appropriate to that
+operation.
 
 Preserve stable capability identifiers and interfaces throughout.
 
-The company tagline is **Buy outcomes. Not integrations.** Preserve
-**Install → Ask → Fund → Approve → Result → Receipt**.
-
 ## Truth and claims
 
-Before the commercial benchmark gate passes, use **Clervo-owned live Web
-retrieval**. After it passes, **Advanced live intelligence for agents** is
-permitted. Any superiority claim names the exact workflow, comparison, corpus,
-date, environment, and metric.
+Product status is not asserted in this file. It is observed from deployed
+behavior and read from the canonical registry. Never copy a lifecycle label from
+a planning document into public copy.
 
-Lifecycle labels are read from the live registry, never written here. Any
-superiority claim names the exact workflow, comparison, corpus, date,
-environment, and metric.
+Public copy may describe a capability as available only when the deployed
+system proves it is externally reachable in that lifecycle state. Source code,
+a package archive, or a completed internal milestone is not availability proof.
 
-Public copy may describe only what the deployed system currently does. A
-capability that is not externally reachable is not described as available,
-regardless of how complete its implementation is.
+Any superiority claim must name the exact workflow, comparison, corpus, date,
+environment, and metric that supports it.
 
 Never invent prices, providers, commands, screenshots, customers, agents,
-testimonials, metrics, transactions, revenue, accuracy, or results. Never
-claim the entire Web, unrestricted closed-platform access, better than Google,
-or best Web search without exact published evidence.
+testimonials, metrics, transactions, revenue, accuracy, or results. Do not make
+blanket market-leadership or unrestricted-access claims without published
+evidence that supports the exact wording.
 
 ## Visual and interaction constraints
 
-Preserve a near-black cinematic canvas, precise white typography, red for
-incoming request/risk/unresolved state, green for verified state, yellow for
-degraded state, and the prism/beam language. Motion clarifies the
-request-to-receipt journey, respects reduced motion, and never simulates proof.
-Generated atmosphere remains visibly distinct from real product evidence.
+Preserve the current Clervo brand system: near-black canvas, precise light
+typography, restrained high-contrast status colors, and motion that clarifies
+the request-to-result journey. Motion must respect reduced-motion preferences
+and must never simulate evidence or proof. Generated atmosphere stays visibly
+distinct from real product evidence.
 
 ## Content hierarchy
 
-1. The all-six Clervo Platform release scope and exact lifecycle of every
-   pillar.
-2. A concrete evidence-backed job, access mode, source boundary, and
-   limitation.
-3. Real executable guides and request/result demonstrations only when proven.
-4. Pricing, receipts, provenance, citations, safety, status, and recovery.
-5. The Stage 12 freeze and subsequent single shared-surface pass, clearly
-   labeled as unavailable until proven.
+1. What Clervo is and the outcome it produces for an agent.
+2. What capabilities are currently available, preview, private, or unavailable.
+3. A concrete evidence-backed job, access mode, source boundary, and limitation.
+4. Real executable guides and request/result demonstrations only when proven.
+5. Pricing, receipts, provenance, citations, safety, status, and recovery.
+6. Broader product direction only when clearly distinguished from current
+   public availability.
 
-The five packs are Commerce and Marketplace Intelligence; Property and
-Local-Market Intelligence; Company and Competitive Intelligence; Research and
-Evidence; and Developer and Agent Context. Commerce is not the whole company.
+Prefer concrete technical language over startup filler. Public surfaces should
+feel like one infrastructure company, not a collection of historical projects
+or internal milestones.
