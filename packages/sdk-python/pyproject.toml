@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "clervo-sdk"
 version = "0.2.0"
-description = "Typed Clervo client generated from the frozen distribution candidate."
+description = "Typed Python client for Clervo's public agent outcome interfaces."
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Clervo" }]
-keywords = ["clervo", "agent", "search", "sdk"]
+keywords = ["clervo", "ai-agents", "agent-infrastructure", "search", "sdk"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
