@@ -1,21 +1,31 @@
 # Clervo — agent instructions
 
-## Authority
+## Authority and current truth
 
-`ROADMAP.md` at this repository root is the single planning authority. Read it
-first and follow it in order.
+This repository is public. Do not use public documentation as a place to store
+private operational continuity.
 
-No other document in this repository defines current status, scope, order,
-gates, or readiness. If another file disagrees with `ROADMAP.md`, the roadmap
-wins. If the roadmap disagrees with directly observed behavior of a deployed
-system, **observed behavior wins and the roadmap is corrected.**
+Current product lifecycle and availability are established from **directly
+observed deployed behavior** and the canonical catalog/launch-state data in this
+repository. Those sources outrank planning prose, old screenshots, archived
+proof, chat history, and memory.
 
-Files under `docs/` are an archived research and history library. Use them for
-facts and historical context, not as current directives. Material outside this
-repository is not project authority unless the owner explicitly makes it so.
+`ROADMAP.md` is a public product-direction document. It is **not** an internal
+operations log, deployment runbook, recovery authority, payment ledger, or
+private milestone tracker.
 
-Do not create parallel planning, status, gate, authority, or readiness
-documents. When plan or status changes, edit `ROADMAP.md`.
+Work selection comes from the owner's explicit instruction and the concrete
+issue, pull request, branch, or scoped task being worked on. Do not infer a new
+production operation merely because historical roadmap material mentions one.
+
+Files under `docs/` are research and history unless a current task explicitly
+names one as input. They do not override observed behavior or the canonical
+registry.
+
+Do not create new public planning/status files containing deployment IDs,
+secret versions, wallet material, rollback targets, private branch recovery
+state, internal spending authorizations, supplier credentials, or other
+operational details that do not need to be public.
 
 ## Truth
 
@@ -27,9 +37,13 @@ A step is complete only when the evidence required by that step exists. Public
 availability claims require external proof from a clean client; a passing local
 test alone is not evidence that a public capability is available.
 
+If an operation requires private production context that is not available in
+the current task, stop before the production-sensitive action rather than
+reconstructing private state from historical public artifacts.
+
 ## Safety boundaries
 
-These are permanent and are not subject to the roadmap.
+These are permanent.
 
 - Never expose secrets, credentials, wallet material, customer payloads, or
   authentication files in chat, source, logs, commits, reports, or test output.
