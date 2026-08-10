@@ -1,6 +1,6 @@
 {
   "name": "@clervo/sdk",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Typed client for live Clervo Search and provider-neutral AI.",
   "license": "MIT",
   "type": "module",

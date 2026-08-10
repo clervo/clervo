@@ -1,6 +1,6 @@
 {
   "name": "@clervo/mcp",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "MCP tools for live Clervo Search and provider-neutral AI.",
   "license": "MIT",
   "type": "module",
@@ -43,7 +43,7 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@clervo/sdk": "0.4.0",
+    "@clervo/sdk": "0.4.1",
     "@modelcontextprotocol/sdk": "1.30.0",
     "zod": "4.4.3"
   },

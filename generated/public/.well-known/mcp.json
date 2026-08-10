@@ -1,12 +1,13 @@
 {
   "schemaVersion": "clervo.mcp-discovery.v1",
   "name": "@clervo/mcp",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "registryUrl": "https://www.npmjs.com/package/@clervo/mcp",
   "transport": "stdio",
   "publicApiAvailable": true,
   "publicApiBaseUrl": "https://api.clervo.dev",
-  "configurationRequired": [
+  "configurationRequired": [],
+  "configurationOptional": [
     "CLERVO_BASE_URL"
   ],
   "paymentSigningImplemented": false,

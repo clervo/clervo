@@ -157,7 +157,7 @@ export function createClervoMcpServer(options: {
 } = {}): McpServer {
   const baseUrl = options.baseUrl ?? process.env.CLERVO_BASE_URL ?? 'https://api.clervo.dev';
   const client = options.client ?? new ClervoClient({ baseUrl });
-  const server = new McpServer({ name: 'clervo', version: '0.4.0' });
+  const server = new McpServer({ name: 'clervo', version: '0.4.1' });
   const handlers = createToolHandlers(client);
 
   server.registerTool(

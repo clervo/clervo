@@ -403,7 +403,12 @@ class Clervo:
         request_timeout = self._timeout if timeout is None else timeout
         if not isinstance(request_timeout, (int, float)) or isinstance(request_timeout, bool) or request_timeout <= 0:
             raise TypeError("invalid_clervo_timeout")
-        headers = {"accept": "application/json, application/problem+json", "x-clervo-client": "clervo-sdk/0.3.0", **dict(extra_headers)}
+        headers = {
+            "accept": "application/json, application/problem+json",
+            "user-agent": "clervo-sdk/0.3.1",
+            "x-clervo-client": "clervo-sdk/0.3.1",
+            **dict(extra_headers),
+        }
         body = b"" if body_value is None else json.dumps(body_value, separators=(",", ":")).encode("utf-8")
         try:
             response = self._transport(method, f"{self._base_url}{target}", headers, body, float(request_timeout), self._max_response_bytes)
@@ -456,7 +461,8 @@ class Clervo:
             "accept": "application/json, application/problem+json",
             "content-type": "application/json",
             "idempotency-key": idempotency_key or f"clervo_{uuid.uuid4()}",
-            "x-clervo-client": "clervo-sdk/0.3.0",
+            "user-agent": "clervo-sdk/0.3.1",
+            "x-clervo-client": "clervo-sdk/0.3.1",
         }
         try:
             response = self._transport(

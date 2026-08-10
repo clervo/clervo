@@ -33,7 +33,7 @@ test('generated launch state is evidence-bound across packages, payment, and pub
   assert.equal(generated.paymentProof.demandEvidence, false);
 });
 
-test('machine discovery publishes only live Search, Sandbox, and Prediction previews without overstating proof', async () => {
+test('machine discovery publishes every live public product without overstating proof', async () => {
   const [discovery, status, pricing, capabilities, mcp, openapi, yaml] = await Promise.all([
     json('generated/public/.well-known/clervo.json'),
     json('generated/public/status.json'),
@@ -47,8 +47,12 @@ test('machine discovery publishes only live Search, Sandbox, and Prediction prev
   assert.equal(discovery.payment.publicAvailable, true);
   assert.equal(discovery.payment.privateProofVerified, true);
   assert.equal(discovery.payment.commercialProof, false);
-  const ai = discovery.products.find(({ productId }) => productId === 'ai.chat');
-  assert.equal(ai, undefined, 'supply-paused AI must not be offered as a live operation');
+  const ai = discovery.products.find(({ productId }) => productId === 'ai');
+  assert.equal(ai.publicAvailable, true);
+  assert.equal(ai.payment.payable, true);
+  assert.deepEqual(ai.payment.paidModels, ['x402', 'mpp']);
+  assert.equal(ai.pricing.model, 'authoritative_per_model_usage_pricing');
+  assert.equal(ai.pricing.freeAndPaid, true);
   const sandbox = discovery.products.find(({ productId }) => productId === 'sandbox.run');
   assert.equal(sandbox.publicAvailable, true);
   assert.equal(sandbox.payment.payable, true);
@@ -65,10 +69,13 @@ test('machine discovery publishes only live Search, Sandbox, and Prediction prev
   assert.equal(pricing.publicPrice.amountAtomic, '6000');
   assert.equal(capabilities.products.length, 6);
   assert.equal(mcp.name, '@clervo/mcp');
+  assert.equal(mcp.version, '0.4.0');
   assert.equal(mcp.publicApiAvailable, true);
+  assert.deepEqual(mcp.configurationRequired, []);
+  assert.deepEqual(mcp.configurationOptional, ['CLERVO_BASE_URL']);
   assert.equal(mcp.paymentSigningImplemented, false);
   assert.deepEqual(yaml, openapi);
-  assert.equal(openapi.paths['/v1/ai/execute'], undefined);
+  assert.ok(openapi.paths['/v1/ai/execute']);
   assert.ok(openapi.paths['/v1/sandbox/execute']);
   assert.ok(openapi.paths['/v1/prediction/execute']);
   assert.equal(openapi.info.contact.url, 'https://github.com/clervo/clervo');
@@ -77,6 +84,10 @@ test('machine discovery publishes only live Search, Sandbox, and Prediction prev
   assert.deepEqual(openapi.paths['/v1/search/free'].post.security, []);
   assert.deepEqual(openapi.paths['/v1/search/paid'].post['x-payment-info'], {
     price: { mode: 'fixed', currency: 'USD', amount: '0.006000' },
+    protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
+  });
+  assert.deepEqual(openapi.paths['/v1/ai/execute'].post['x-payment-info'], {
+    price: { mode: 'dynamic', currency: 'USD', min: '0.000001', max: '2.621440' },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
   });
   assert.deepEqual(openapi.paths['/v1/sandbox/execute'].post['x-payment-info'], {

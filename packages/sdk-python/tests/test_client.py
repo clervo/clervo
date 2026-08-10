@@ -190,7 +190,9 @@ class ClientTests(unittest.TestCase):
         result_value = client.ai.execute(model="clervo/gpt-oss-20b", input={"kind": "chat", "messages": [{"role": "user", "content": "ready"}], "responseFormat": "text", "stream": False}, idempotency_key="idem_ai_python")
         self.assertEqual(result_value["fundingMode"], "free")
         self.assertTrue(calls[0][1].endswith("/v1/models"))
+        self.assertEqual(calls[0][2]["user-agent"], "clervo-sdk/0.3.1")
         self.assertTrue(calls[1][1].endswith("/v1/ai/execute"))
+        self.assertEqual(calls[1][2]["user-agent"], "clervo-sdk/0.3.1")
         self.assertEqual(calls[1][2]["idempotency-key"], "idem_ai_python")
 
 

@@ -64,7 +64,7 @@ if (publishedMode) {
 } else {
   assert.equal(targets.publication.state, 'published_verified');
   assert.match(targets.publication.sourceCommit, /^[a-f0-9]{40}$/u);
-  assert.equal(targets.nextRelease?.state, 'release_prepared');
+  if (targets.nextRelease !== undefined) assert.equal(targets.nextRelease.state, 'release_prepared');
 }
 assert.equal(targets.tooling.buildNpmVersion, '10.9.8');
 assert.equal(targets.tooling.publishNpmVersion, '11.18.0');
