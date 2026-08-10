@@ -217,7 +217,7 @@
     "pg-boss": "12.26.3"
   },
   "devDependencies": {
-    "@axe-core/playwright": "4.11.2",
+    "@axe-core/playwright": "4.12.1",
     "@types/node": "24.3.0",
     "ajv": "8.20.0",
     "ajv-formats": "3.0.1",
