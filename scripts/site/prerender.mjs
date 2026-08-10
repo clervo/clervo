@@ -10,7 +10,7 @@ const template = await readFile(path.join(dist, 'index.html'), 'utf8');
 const { render } = await import(serverBundle);
 
 const routes = [
-  ['/', 'Outcome infrastructure for agents'],
+  ['/', 'Outcome infrastructure for AI agents'],
   ['/start', 'Set up Clervo'],
   ['/catalog', 'Live capability catalog'],
   ['/research', 'Research outcome'],
@@ -42,7 +42,6 @@ const routes = [
   ['/legal', 'Legal boundaries'],
   ['/status', 'Product status'],
   ['/changelog', 'Changelog'],
-  ['/compare/blockrun', 'Clervo and BlockRun'],
   ['/trust', 'Trust center'],
 ];
 
