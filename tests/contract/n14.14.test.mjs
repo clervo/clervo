@@ -42,7 +42,7 @@ test('managed migration and zero-traffic Sandbox candidate passed live with dura
 });
 
 test('managed migration job injects its pinned secret without reading it on the VM and always cleans up', () => {
-  assert.equal(policy.databaseSecretVersion, 2);
+  assert.equal(policy.databaseSecretVersion, 4);
   assert.equal(policy.state, 'prepared_owner_approval');
   assert.equal(policy.targetMigration, '0008-prediction-dynamic-venues.sql');
   assert.deepEqual(policy.expectedPendingMigrations, ['0007-prediction-market-state.sql', '0008-ai-free-tier-quota.sql', '0008-prediction-dynamic-venues.sql']);
