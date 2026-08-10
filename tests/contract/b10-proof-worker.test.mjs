@@ -32,7 +32,7 @@ test('B10 hosted proof pins the payer, facilitator, proxy boundary, and reconcil
     supplierCostCeilingAtomic: '0',
     productId: 'search.web',
     resource: 'https://api.clervo.dev/v1/search/paid',
-    idempotencyKey: 'idem_b10_search_proof_20260810d',
+    idempotencyKey: 'idem_b10_search_proof_20260810e',
     request: searchRequest,
   });
 });
@@ -50,14 +50,14 @@ test('B10 hosted proof forwards an unsigned challenge as an exact guarded POST',
   try {
     const response = await worker.fetch(request('/api/paid-operation', {
       method: 'POST',
-      headers: { 'content-type': 'application/json', 'idempotency-key': 'idem_b10_search_proof_20260810d' },
+      headers: { 'content-type': 'application/json', 'idempotency-key': 'idem_b10_search_proof_20260810e' },
       body: JSON.stringify(searchRequest),
     }), assets);
     assert.equal(response.status, 402);
     assert.equal(response.headers.get('payment-required'), 'bounded');
     assert.equal(observed.url, 'https://api.clervo.dev/v1/search/paid');
     assert.equal(observed.method, 'POST');
-    assert.equal(observed.headers.get('idempotency-key'), 'idem_b10_search_proof_20260810d');
+    assert.equal(observed.headers.get('idempotency-key'), 'idem_b10_search_proof_20260810e');
     assert.deepEqual(await observed.json(), searchRequest);
   } finally {
     globalThis.fetch = original;
@@ -70,8 +70,7 @@ test('B10 hosted proof refuses a signed payload from any payer except the approv
   globalThis.fetch = async () => { upstreamCalls += 1; return new Response('{}'); };
   const payment = Buffer.from(JSON.stringify({
     x402Version: 2,
-    scheme: 'exact',
-    network: 'eip155:8453',
+    accepted: { scheme: 'exact', network: 'eip155:8453' },
     payload: { authorization: { from: '0x0000000000000000000000000000000000000001' } },
   }), 'utf8').toString('base64');
   try {
@@ -79,7 +78,7 @@ test('B10 hosted proof refuses a signed payload from any payer except the approv
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        'idempotency-key': 'idem_b10_search_proof_20260810d',
+        'idempotency-key': 'idem_b10_search_proof_20260810e',
         'payment-signature': payment,
       },
       body: JSON.stringify(searchRequest),
@@ -87,6 +86,40 @@ test('B10 hosted proof refuses a signed payload from any payer except the approv
     assert.equal(response.status, 400);
     assert.deepEqual(await response.json(), { code: 'payment_payer_refused' });
     assert.equal(upstreamCalls, 0);
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test('B10 hosted proof forwards the actual x402 v2 signed-header shape for the approved payer', async () => {
+  const original = globalThis.fetch;
+  let observed;
+  globalThis.fetch = async (input, init) => {
+    observed = new Request(input, init);
+    return new Response(JSON.stringify({ operationId: 'op_test' }), {
+      status: 200,
+      headers: { 'content-type': 'application/json', 'payment-response': 'bounded' },
+    });
+  };
+  const payment = Buffer.from(JSON.stringify({
+    x402Version: 2,
+    accepted: { scheme: 'exact', network: 'eip155:8453' },
+    payload: { authorization: { from: payer }, signature: '0xtest' },
+  }), 'utf8').toString('base64');
+  try {
+    const response = await worker.fetch(request('/api/paid-operation', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'idempotency-key': 'idem_b10_search_proof_20260810e',
+        'payment-signature': payment,
+      },
+      body: JSON.stringify(searchRequest),
+    }), assets);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('payment-response'), 'bounded');
+    assert.equal(observed.headers.get('payment-signature'), payment);
+    assert.equal(observed.headers.get('idempotency-key'), 'idem_b10_search_proof_20260810e');
   } finally {
     globalThis.fetch = original;
   }

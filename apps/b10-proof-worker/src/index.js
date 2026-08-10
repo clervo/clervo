@@ -7,7 +7,7 @@ const profiles = Object.freeze({
   '/proof/b10-search': Object.freeze({
     productId: 'search.web', route: '/v1/search/paid', resource: 'https://api.clervo.dev/v1/search/paid',
     amountAtomic: '6000', amountDisplay: '0.006 USDC', supplierCostCeilingAtomic: '0',
-    idempotencyKey: 'idem_b10_search_proof_20260810d',
+    idempotencyKey: 'idem_b10_search_proof_20260810e',
     request: Object.freeze({ query: 'Python programming', maxResults: 3, synthesize: false, language: 'en', region: 'US' }),
   }),
   '/proof/b10-sandbox': Object.freeze({
@@ -34,7 +34,7 @@ function equalAddress(left, right) { return typeof left === 'string' && left.toL
 function paymentPayer(value) {
   try {
     const decoded = JSON.parse(atob(value));
-    if (decoded?.x402Version !== 2 || decoded?.scheme !== 'exact' || decoded?.network !== NETWORK) return undefined;
+    if (decoded?.x402Version !== 2 || decoded?.accepted?.scheme !== 'exact' || decoded?.accepted?.network !== NETWORK) return undefined;
     return decoded?.payload?.authorization?.from;
   } catch { return undefined; }
 }
