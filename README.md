@@ -4,34 +4,54 @@
 
 > Give your agent a task. Get a verified result.
 
-Clervo is being built as a unified execution layer for agents that need to discover capabilities, route work, execute through providers, handle paid execution when supported, and receive results with clear execution evidence.
+Clervo is an execution layer for agents that need to discover capabilities, route work, execute through external infrastructure, handle paid execution when supported, and receive results with explicit evidence and cost boundaries.
 
 **Buy outcomes. Not integrations.**
 
-Instead of wiring every model, search provider, sandbox, RPC, or paid tool independently, agent builders can work toward one coherent capability layer. Clervo's product direction spans AI, Search, Secure Sandbox, Prediction, Crypto Intelligence, Multi-chain RPC, and the routing infrastructure that connects them.
+Instead of wiring every model, search provider, sandbox, data source, RPC, or paid tool independently, agent builders can work through one coherent capability layer. Clervo's product direction spans AI, Search, Secure Sandbox, Prediction, Crypto Intelligence, Multi-chain RPC, and the routing infrastructure that connects them.
 
-## Current public availability
+## Current public state
 
-Today, this repository exposes two preview operations:
+Clervo keeps product direction separate from observed availability. The canonical launch state currently records:
 
-- `search.web`
-- `search.answer`
+| Capability | Public state |
+| --- | --- |
+| Search | Publicly callable; bounded free entry and paid Base USDC execution verified |
+| AI | Preview-callable; qualified routes can expose an exact Base USDC quote; paid-result proof remains pending |
+| Secure Sandbox | Publicly callable paid one-shot execution verified; intentionally bounded single-node release |
+| Prediction Intelligence | Publicly callable paid outcomes verified |
+| Crypto Intelligence | Publicly callable paid outcomes verified for Ethereum and Base |
+| Multi-chain RPC | Private core qualified; public availability and commercial rights remain blocked |
 
-These are repository-local preview surfaces. **No public callable deployment or payable route is currently verified.** The SDKs require an explicit base URL, and they never sign, pay, or retry a payment automatically.
+Paid-outcome evidence currently comes from bounded owner-funded production proof. **No customer revenue, market demand, or external-customer payment is claimed.** Lifecycle state is generated from the canonical registry and current evidence rather than inferred from source-code presence.
 
-Other Clervo product cores and combined workflows are implemented and qualified privately. Their customer lifecycle and public availability remain controlled by the canonical registry and current evidence; source code or a package archive does not make a capability production-ready.
+Public endpoint: `https://api.clervo.dev`
 
 ## For developers
 
 The public repository includes:
 
-- [`@clervo/sdk`](packages/sdk-typescript) — typed TypeScript client
-- [`clervo-sdk`](packages/sdk-python) — dependency-free Python client
+- [`@clervo/sdk`](packages/sdk-typescript) — typed TypeScript client for the current Search client surface
+- [`clervo-sdk`](packages/sdk-python) — dependency-free Python client for the current Search client surface
 - [`@clervo/mcp`](packages/mcp) — stdio MCP server backed by the TypeScript SDK
+- machine-readable discovery, capability, pricing, status, onboarding, and OpenAPI artifacts generated from the product registry
 
-The current versions are published with registry provenance: `@clervo/sdk` and `@clervo/mcp` at `0.3.0`, and `clervo-sdk` at `0.2.0`. Older registry versions are preserved as history and carry deprecation guidance where their claims are stale. Package publication does not make the API publicly callable.
+The published client packages remain narrower than the complete public capability catalog: package support does not imply every public operation is exposed through every client.
 
-## Try the repository locally
+## Try Clervo
+
+The current TypeScript client requires an explicit base URL:
+
+```ts
+import { ClervoClient } from '@clervo/sdk';
+
+const clervo = new ClervoClient({ baseUrl: 'https://api.clervo.dev' });
+const result = await clervo.search.web({ query: 'agent payment idempotency' });
+```
+
+For the exact operations, prices, payment boundary, lifecycle state, and failure contracts that are serving now, use the generated public catalog and OpenAPI artifacts rather than a hard-coded marketing claim.
+
+## Work with the repository
 
 The repository is pinned to Node.js `24.18.1` and npm `10.9.8`.
 
@@ -49,8 +69,8 @@ npm run site:preview
 
 ## Why trust the boundary
 
-Clervo separates implemented capability from public availability. Product contracts and lifecycle records are the source of truth, and public claims should follow current evidence rather than source-code presence alone.
+Clervo separates implementation, qualification, public availability, commercial proof, and market proof. A capability is not presented as live merely because code exists, and owner-funded proof is not presented as customer adoption.
 
-Never place credentials, wallet material, customer payloads, or authentication files in issues or commits. Security concerns can be reported through the repository's private security-reporting channel.
+Never place credentials, wallet material, customer payloads, or authentication files in issues or commits. Security concerns should use the repository's private vulnerability-reporting channel.
 
 This source is currently unlicensed (`UNLICENSED`). No permission to copy, modify, or redistribute is granted unless Clervo publishes separate terms.
