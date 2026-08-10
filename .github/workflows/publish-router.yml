@@ -1,0 +1,157 @@
+name: Publish Clervo Router
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_commit:
+        description: Exact 40-character commit SHA from main to publish
+        required: true
+        type: string
+      release_mode:
+        description: Use bootstrap once for the first package creation; trusted thereafter
+        required: true
+        type: choice
+        options:
+          - trusted
+          - bootstrap
+      confirmation:
+        description: Confirm the exact package, commit, and release mode
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: clervo-router-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Verify and publish only @clervo/router
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: package-release
+      url: https://www.npmjs.com/package/@clervo/router
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      RELEASE_COMMIT: ${{ inputs.release_commit }}
+      RELEASE_MODE: ${{ inputs.release_mode }}
+      RELEASE_CONFIRMATION: ${{ inputs.confirmation }}
+    steps:
+      - name: Check out the exact requested commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.release_commit }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Fail closed unless source and confirmation are exact
+        run: |
+          test "${#RELEASE_COMMIT}" -eq 40
+          test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT"
+          git merge-base --is-ancestor "$RELEASE_COMMIT" origin/main
+          test "$RELEASE_MODE" = trusted -o "$RELEASE_MODE" = bootstrap
+          expected="publish @clervo/router@0.1.0 from $RELEASE_COMMIT via $RELEASE_MODE"
+          test "$RELEASE_CONFIRMATION" = "$expected"
+          test -z "$(git status --short)"
+
+      - name: Use the repository runtime
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Verify Router behavior and payment safety
+        run: |
+          npm run test:b6
+          node --test ./tests/contract/shared-paid-operation.test.mjs
+          npm run scan:secrets
+
+      - name: Verify exact package metadata and customer-use rights
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFile } from 'node:fs/promises';
+          const packageMetadata = JSON.parse(await readFile('packages/router/package.json', 'utf8'));
+          const expected = {
+            name: '@clervo/router',
+            version: '0.1.0',
+            repository: 'git+https://github.com/clervo/clervo.git',
+            homepage: 'https://github.com/clervo/clervo/tree/main/packages/router#readme',
+          };
+          if (packageMetadata.name !== expected.name || packageMetadata.version !== expected.version) throw new Error('router_package_identity_mismatch');
+          if (packageMetadata.repository?.url !== expected.repository || packageMetadata.repository?.directory !== 'packages/router') throw new Error('router_repository_identity_mismatch');
+          if (packageMetadata.homepage !== expected.homepage || packageMetadata.bugs?.url !== 'https://github.com/clervo/clervo/issues') throw new Error('router_public_metadata_mismatch');
+          if (packageMetadata.publishConfig?.access !== 'public' || packageMetadata.publishConfig?.provenance !== true || packageMetadata.publishConfig?.registry !== 'https://registry.npmjs.org/') throw new Error('router_publish_config_mismatch');
+          if (packageMetadata.license === 'UNLICENSED') throw new Error('router_customer_use_rights_unresolved');
+          NODE
+          test "$(curl --fail --silent --show-error --output /dev/null --write-out '%{http_code}' https://github.com/clervo/clervo/tree/main/packages/router)" = 200
+          test "$(curl --fail --silent --show-error --output /dev/null --write-out '%{http_code}' https://github.com/clervo/clervo/issues)" = 200
+
+      - name: Build and inspect the immutable Router archive
+        run: |
+          npm run build:router
+          mkdir -p "$RUNNER_TEMP/router-release"
+          archive_name="$(npm pack ./packages/router --ignore-scripts --pack-destination "$RUNNER_TEMP/router-release" --silent)"
+          ROUTER_ARCHIVE="$RUNNER_TEMP/router-release/$archive_name"
+          test "$archive_name" = clervo-router-0.1.0.tgz
+          test "$(tar -tzf "$ROUTER_ARCHIVE" | wc -l)" -eq 35
+          tar -tzf "$ROUTER_ARCHIVE" > "$RUNNER_TEMP/router-release/contents.txt"
+          grep -qx 'package/dist/cli.js' "$RUNNER_TEMP/router-release/contents.txt"
+          grep -qx 'package/dist/index.js' "$RUNNER_TEMP/router-release/contents.txt"
+          grep -qx 'package/dist/index.d.ts' "$RUNNER_TEMP/router-release/contents.txt"
+          grep -qx 'package/README.md' "$RUNNER_TEMP/router-release/contents.txt"
+          if grep -Eiq '(^|/)(src|wallet\.json|\.env|\.npmrc|[^/]*\.(pem|key))($|/)' "$RUNNER_TEMP/router-release/contents.txt"; then exit 1; fi
+          stat --format='router archive bytes: %s' "$ROUTER_ARCHIVE"
+          sha1sum "$ROUTER_ARCHIVE"
+          sha512sum "$ROUTER_ARCHIVE"
+          echo "ROUTER_ARCHIVE=$ROUTER_ARCHIVE" >> "$GITHUB_ENV"
+
+      - name: Prove clean archive install, export, and CLI binary
+        run: |
+          consumer="$RUNNER_TEMP/router-consumer"
+          mkdir -p "$consumer"
+          cd "$consumer"
+          npm init --yes >/dev/null
+          npm install --ignore-scripts "$ROUTER_ARCHIVE"
+          test "$(node --input-type=module -e "import('@clervo/router').then((module) => process.stdout.write(module.CLERVO_ROUTER_VERSION))")" = 0.1.0
+          test "$(./node_modules/.bin/clervo --version)" = 0.1.0
+          ./node_modules/.bin/clervo --help | grep -q 'A real search result. Free, no wallet, no signup.'
+
+      - name: Refuse an already-published immutable version
+        run: |
+          status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://registry.npmjs.org/%40clervo%2Frouter%2F0.1.0)"
+          test "$status" = 404
+
+      - name: Select an OIDC-capable npm release client
+        run: |
+          npm install --global npm@11.18.0
+          test "$(npm --version)" = 11.18.0
+
+      - name: Publish the one-time first version from GitHub with provenance
+        if: inputs.release_mode == 'bootstrap'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ROUTER_BOOTSTRAP_TOKEN }}
+        run: |
+          test -n "$NODE_AUTH_TOKEN"
+          npm publish "$ROUTER_ARCHIVE" --access public --provenance
+
+      - name: Publish through npm trusted publishing with provenance
+        if: inputs.release_mode == 'trusted'
+        run: npm publish "$ROUTER_ARCHIVE" --access public --provenance
+
+      - name: Verify the public registry result
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            status="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://registry.npmjs.org/%40clervo%2Frouter%2F0.1.0)"
+            test "$status" = 200 && break
+            test "$attempt" -lt 6
+            sleep 5
+          done
+          test "$(npm view @clervo/router@0.1.0 version --registry=https://registry.npmjs.org)" = 0.1.0

@@ -1,7 +1,7 @@
 {
   "name": "@clervo/router",
   "version": "0.1.0",
-  "description": "ClervoRouter — one command from install to a paid, receipted machine outcome over x402 on Base.",
+  "description": "Free-first Clervo CLI for x402 payments, receipts, replay, and local spend controls on Base.",
   "license": "UNLICENSED",
   "type": "module",
   "keywords": [
@@ -12,7 +12,7 @@
     "base",
     "usdc"
   ],
-  "homepage": "https://clervo.dev/docs/router",
+  "homepage": "https://github.com/clervo/clervo/tree/main/packages/router#readme",
   "bugs": {
     "url": "https://github.com/clervo/clervo/issues"
   },
@@ -49,6 +49,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "provenance": true
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/"
   }
 }

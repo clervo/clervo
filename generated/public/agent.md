@@ -40,7 +40,7 @@ outcome. Report it that way if you cite it.
 ```bash
 curl -sS https://api.clervo.dev/v1/search/free \
   -H 'content-type: application/json' \
-  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}' \
+  -d '{"query":"World Wide Web","maxResults":3,"synthesize":false}' \
   -H 'idempotency-key: clervo-first-call-0001'
 ```
 

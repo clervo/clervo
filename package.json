@@ -147,7 +147,7 @@
     "test:stage12:local": "node ./scripts/verify-runtime.mjs && npm run build && node ./scripts/release/generate-release-candidate-freeze.mjs --check && node --test ./tests/contract/n12.1.test.mjs && node ./scripts/validate-contracts.mjs",
     "test:stage13:clients": "node ./scripts/verify-runtime.mjs && npm run build && npm run build --workspace @clervo/mcp && node --test ./tests/contract/n13.1.test.mjs ./tests/contract/n13.2.test.mjs && PYTHONPATH=packages/sdk-python/src python3 -m unittest discover -s packages/sdk-python/tests -v",
     "build:router": "node ./scripts/verify-runtime.mjs && npm run build --workspace @clervo/router",
-    "test:b6": "node ./scripts/verify-runtime.mjs && npm run build:router && node --test ./tests/contract/b6.test.mjs",
+    "test:b6": "node ./scripts/verify-runtime.mjs && npm run build:router && node --test ./tests/contract/b6.test.mjs ./tests/contract/b6-distribution.test.mjs",
     "verify:distribution-release": "node ./scripts/verify-runtime.mjs && node ./scripts/release/verify-distribution-release.mjs",
     "verify:distribution-release:registry": "node ./scripts/verify-runtime.mjs && node ./scripts/release/verify-distribution-release.mjs --registry",
     "verify:distribution-release:published": "node ./scripts/verify-runtime.mjs && node ./scripts/release/verify-distribution-release.mjs --published",

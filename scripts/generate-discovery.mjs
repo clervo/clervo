@@ -839,7 +839,7 @@ const quickStartCurl = publicBaseUrl === null
   : [
     `curl -sS ${publicBaseUrl}/v1/search/free \\`,
     "  -H 'content-type: application/json' \\",
-    `  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}'${naiveFreeAccepted ? '' : ' \\'}`,
+    `  -d '{"query":"World Wide Web","maxResults":3,"synthesize":false}'${naiveFreeAccepted ? '' : ' \\'}`,
     ...(naiveFreeAccepted ? [] : ["  -H 'idempotency-key: clervo-first-call-0001'"]),
   ].join('\n');
 
@@ -909,7 +909,7 @@ if (freeEntryRoute !== null && publicBaseUrl !== null && routerPublished) {
     'One install, and a real result before a wallet exists:',
     '',
     '```bash',
-    'npx @clervo/router search "who is shipping x402 in production"',
+    'npx @clervo/router search "World Wide Web"',
     '```',
     '',
     'No account, no API key, no wallet, no funding. The free path above is what that command calls.',

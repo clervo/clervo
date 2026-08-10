@@ -548,13 +548,17 @@ const NEEDS_REGISTRY = Object.freeze(new Set(['search', 'catalog', 'quote', 'run
 
 export async function main(argv: readonly string[]): Promise<number> {
   const args = parseArgs(argv);
-  if (args.command === '' || args.command === 'help' || args.flags.get('help') === true) {
-    print(USAGE);
-    return args.command === '' ? 2 : 0;
-  }
   if (args.command === 'version' || args.flags.get('version') === true) {
     print(CLERVO_ROUTER_VERSION);
     return 0;
+  }
+  if (args.command === 'help' || args.flags.get('help') === true) {
+    print(USAGE);
+    return 0;
+  }
+  if (args.command === '') {
+    print(USAGE);
+    return 2;
   }
 
   const registry = NEEDS_REGISTRY.has(args.command) ? await loadRegistry() : undefined;

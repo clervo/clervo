@@ -4,7 +4,7 @@ Buy verified machine work from the command line. One install, one command, a rea
 result before you create a wallet or spend anything.
 
 ```
-npx @clervo/router search "who is shipping x402 in production"
+npx @clervo/router search "World Wide Web"
 ```
 
 That returns real search results. No signup, no API key, no wallet, no funding.
@@ -39,9 +39,9 @@ Node 20 or newer.
 ## A free result first
 
 ```
-clervo search "base usdc settlement latency"
+clervo search "World Wide Web"
 clervo catalog
-clervo quote search.web "base usdc settlement latency"
+clervo quote search.web "World Wide Web"
 ```
 
 `catalog` and `quote` read the deployed system, not a list baked into this
@@ -77,7 +77,7 @@ facilitator submits, so no gas is paid from your wallet.
 Then buy one call:
 
 ```
-clervo run search.web "base usdc settlement latency"
+clervo run search.web "World Wide Web"
 ```
 
 You see the quoted price and confirm before anything is signed. What comes back
