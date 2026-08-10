@@ -1,6 +1,6 @@
 # `@clervo/mcp`
 
-Local stdio MCP server for Clervo's frozen distribution candidate.
+Local stdio MCP server for Clervo's repository-local preview interface.
 
 It exposes exactly two tools:
 
