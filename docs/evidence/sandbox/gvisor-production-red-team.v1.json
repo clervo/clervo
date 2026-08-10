@@ -1,9 +1,9 @@
 {
   "schemaVersion": "clervo.sandbox-red-team-report.v1",
-  "evaluatedAt": "2026-08-03T12:25:18.821Z",
+  "evaluatedAt": "2026-08-10T14:25:43.440Z",
   "status": "passed",
   "probeCount": 10,
-  "imageDigest": "sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
+  "imageDigest": "sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a",
   "observations": [
     {
       "probeId": "sandbox.escape.kernel.v1",
@@ -212,7 +212,7 @@
     "runnerStdoutBytes": 0,
     "runnerStderrBytes": 49,
     "forkDenied": true,
-    "maximumProcessesObserved": 14,
+    "maximumProcessesObserved": 32,
     "remainingSleeps": 0,
     "diskBytesObserved": 1048576
   },
@@ -224,5 +224,5 @@
     "namespace": "clervo-sandbox-network-qualification"
   },
   "cleanupVerified": true,
-  "reportSha256": "sha256:1b12e86151e22e09874a154abd156e5027ff7d035a5c2c4d74ed80f06ee94da4"
+  "reportSha256": "sha256:ee22f5f17706b5394cd72c03558fc5588e90ea5553854ae7915109b4ef01b6fd"
 }

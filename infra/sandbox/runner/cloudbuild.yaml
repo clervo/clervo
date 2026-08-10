@@ -3,10 +3,10 @@ steps:
     args:
       - build
       - --pull=false
-      - --tag=us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/runner:verified-alpine-process-boundary-20260803
+      - --tag=us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/runner:b10-supervisor-reserve-20260810
       - .
 images:
-  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/runner:verified-alpine-process-boundary-20260803
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/runner:b10-supervisor-reserve-20260810
 options:
   requestedVerifyOption: VERIFIED
   logging: CLOUD_LOGGING_ONLY

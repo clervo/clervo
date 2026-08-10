@@ -1,8 +1,9 @@
 {
   "schemaVersion": "clervo.sandbox-runner-supply-chain.v1",
-  "evaluatedAt": "2026-08-03T12:20:38.838Z",
-  "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-sandbox/runner@sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
-  "digest": "sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
+  "component": "runner",
+  "evaluatedAt": "2026-08-10T14:04:11.564Z",
+  "image": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-sandbox/runner@sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a",
+  "digest": "sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a",
   "build": {
     "status": "passed",
     "builder": "google-cloud-build",
@@ -19,7 +20,7 @@
   "malwareScan": {
     "status": "passed",
     "scanner": "clamav",
-    "version": "ClamAV 1.5.2/28081/Mon Aug  3 06:25:52 2026",
+    "version": "ClamAV 1.5.2/28088/Mon Aug 10 06:24:15 2026",
     "databaseDownloadedBeforeIsolation": true,
     "scanNetwork": "none",
     "filesScanned": 622,
@@ -30,8 +31,8 @@
     "format": "SPDX-2.3",
     "generator": "syft-1.44.0",
     "path": "docs/evidence/sandbox/runner-sbom.spdx.json",
-    "sha256": "sha256:325b8174f3d94e0f7790e09639307b513ba20180e8581368f4c41ebbd108755d",
-    "packageCount": 22,
+    "sha256": "sha256:1d18c36379fde2d02c8bacf552ec6d6a630a8db17620d973bbebe9bff163956c",
+    "packageCount": 20,
     "generatorImage": "anchore/syft@sha256:86fde6445b483d902fe011dd9f68c4987dd94e07da1e9edc004e3c2422650de6"
   },
   "isolation": {

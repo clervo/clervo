@@ -29,11 +29,33 @@ test('B10 hosted proof pins the payer, facilitator, proxy boundary, and reconcil
     payer,
     facilitator: 'https://api.cdp.coinbase.com/platform/v2/x402',
     payerBalanceCapAtomic: '300000',
-    supplierCostCeilingAtomic: '0',
+    supplierCostCeilingAtomic: '2000',
     productId: 'search.web',
     resource: 'https://api.clervo.dev/v1/search/paid',
     idempotencyKey: 'idem_b10_search_proof_20260810f',
     request: searchRequest,
+  });
+});
+
+test('B10 hosted Sandbox proof pins the repaired SHORT request and fresh post-failure key', async () => {
+  const response = await worker.fetch(new Request('https://clervo.dev/proof/b10-sandbox/config'), assets);
+  assert.equal(response.status, 200);
+  const config = await response.json();
+  assert.deepEqual({
+    productId: config.productId,
+    amountAtomic: config.amountAtomic,
+    supplierCostCeilingAtomic: config.supplierCostCeilingAtomic,
+    idempotencyKey: config.idempotencyKey,
+    request: config.request,
+  }, {
+    productId: 'sandbox.run',
+    amountAtomic: '10000',
+    supplierCostCeilingAtomic: '8000',
+    idempotencyKey: 'idem_b10_sandbox_proof_20260810d',
+    request: {
+      command: ['node', '-e', 'process.stdout.write("B10 sandbox proof")'],
+      limits: { cpuMillis: 5000, memoryBytes: 268435456, processes: 16, diskBytes: 67108864, outputBytes: 65536, artifactBytes: 1048576, wallTimeMs: 10000 },
+    },
   });
 });
 

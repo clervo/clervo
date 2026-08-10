@@ -69,7 +69,7 @@
   },
   "runner": {
     "repository": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-sandbox/runner",
-    "imageDigest": "sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
+    "imageDigest": "sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a",
     "signatureVerified": true,
     "provenanceVerified": true,
     "vulnerabilityScan": "passed",
@@ -114,9 +114,9 @@
     "requiredCrdsPresent": true,
     "publicWorkload": false,
     "failedZoneAttemptRemoved": true,
-    "runnerBuildId": "9bec50dd-2857-4751-9bfb-1847472a312c",
+    "runnerBuildId": "f9d07aef-1ed6-4eb7-b9df-8f54c39869cd",
     "runnerSupplyChainReport": "docs/evidence/sandbox/runner-supply-chain.v5.json",
     "runnerRedTeamReport": "docs/evidence/sandbox/gvisor-production-red-team.v1.json",
-    "runnerRedTeamReportSha256": "sha256:1b12e86151e22e09874a154abd156e5027ff7d035a5c2c4d74ed80f06ee94da4"
+    "runnerRedTeamReportSha256": "sha256:ee22f5f17706b5394cd72c03558fc5588e90ea5553854ae7915109b4ef01b6fd"
   }
 }

@@ -19,7 +19,7 @@ const profiles = Object.freeze({
     resource: 'https://api.clervo.dev/v1/search/paid',
     amountAtomic: '6000',
     amountDisplay: '0.006 USDC',
-    supplierCostCeilingAtomic: '0',
+    supplierCostCeilingAtomic: '2000',
     request: { query: 'Python programming', maxResults: 3, synthesize: false, language: 'en', region: 'US' },
   }),
   'sandbox.run': Object.freeze({

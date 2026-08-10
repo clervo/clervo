@@ -11,6 +11,7 @@
 #include <sys/prctl.h>
 #include <sys/ptrace.h>
 #include <sys/resource.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <time.h>
@@ -72,6 +73,35 @@ static rlim_t bounded(const char *name, rlim_t minimum, rlim_t maximum) {
   return (rlim_t)value;
 }
 
+/* RLIMIT_NPROC is charged to the real uid, so it includes the long-lived
+ * session supervisor and the per-request runner even though neither belongs
+ * to the customer's traced process tree. Reserve the tasks that already
+ * exist for this uid; ptrace and the independent /proc monitor below still
+ * enforce the customer's exact requested ceiling. */
+static rlim_t existing_uid_tasks(void) {
+  uid_t uid = getuid(); rlim_t count = 0;
+  DIR *processes = opendir("/proc"); if (processes == NULL) return 0;
+  struct dirent *process;
+  while ((process = readdir(processes)) != NULL) {
+    char *end = NULL; long pid = strtol(process->d_name, &end, 10);
+    if (end == process->d_name || *end != '\0' || pid <= 0) continue;
+    char process_path[64];
+    if (snprintf(process_path, sizeof(process_path), "/proc/%ld", pid) < 0) continue;
+    struct stat metadata; if (stat(process_path, &metadata) != 0 || metadata.st_uid != uid) continue;
+    char task_path[80];
+    if (snprintf(task_path, sizeof(task_path), "/proc/%ld/task", pid) < 0) continue;
+    DIR *tasks = opendir(task_path); if (tasks == NULL) continue;
+    struct dirent *task;
+    while ((task = readdir(tasks)) != NULL) {
+      char *task_end = NULL; long tid = strtol(task->d_name, &task_end, 10);
+      if (task_end != task->d_name && *task_end == '\0' && tid > 0) count += 1;
+    }
+    closedir(tasks);
+  }
+  closedir(processes);
+  return count;
+}
+
 static void limit(int resource, rlim_t value) {
   struct rlimit limits = { value, value }; if (setrlimit(resource, &limits) != 0) { fprintf(stderr, "sandbox_limit_unavailable\n"); _exit(125); }
 }
@@ -85,7 +115,9 @@ int main(int argc, char **argv) {
   if (child == 0) {
     if (setpgid(0, 0) != 0 || prctl(PR_SET_PDEATHSIG, SIGKILL) != 0 || ptrace(PTRACE_TRACEME, 0, NULL, NULL) != 0) _exit(125);
     if (raise(SIGSTOP) != 0) _exit(125);
-    limit(RLIMIT_NPROC, processes); limit(RLIMIT_CPU, (cpu_millis + 999) / 1000); limit(RLIMIT_FSIZE, file_bytes); limit(RLIMIT_CORE, 0); limit(RLIMIT_NOFILE, 128);
+    rlim_t supervisor_tasks = existing_uid_tasks();
+    if (supervisor_tasks > 4096 || processes > RLIM_INFINITY - supervisor_tasks) _exit(125);
+    limit(RLIMIT_NPROC, supervisor_tasks + processes); limit(RLIMIT_CPU, (cpu_millis + 999) / 1000); limit(RLIMIT_FSIZE, file_bytes); limit(RLIMIT_CORE, 0); limit(RLIMIT_NOFILE, 128);
     if (prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0) != 0) _exit(125);
     execvp(argv[1], &argv[1]); _exit(errno == ENOENT ? 127 : 126);
   }

@@ -54,7 +54,7 @@ function publicResources(token) {
     {
       apiVersion: 'apps/v1', kind: 'Deployment', metadata: { name: policy.deployment, namespace: policy.systemNamespace, labels: appLabels },
       spec: {
-        replicas: policy.replicas, strategy: { type: 'RollingUpdate', rollingUpdate: { maxUnavailable: 0, maxSurge: 1 } }, selector: { matchLabels: appLabels },
+        replicas: policy.replicas, strategy: { type: 'RollingUpdate', rollingUpdate: { maxUnavailable: 1, maxSurge: 0 } }, selector: { matchLabels: appLabels },
         template: {
           metadata: { labels: appLabels },
           spec: {
@@ -192,8 +192,8 @@ async function smoke() {
     const nonce = randomBytes(16).toString('hex');
     const request = {
       contractVersion: '2026-07-29.1', schemaVersion: 'sandbox-operation-request.v1', operationId: `op_${nonce}`,
-      productId: 'sandbox.run', input: { kind: 'run', executionId: `exec_${nonce}`, imageDigest: policy.runnerDigest, command: ['node', '-e', 'process.stdout.write("sandbox-control-live")'], limits: { cpuMillis: 5_000, memoryBytes: 268_435_456, processes: 64, diskBytes: 10_485_760, outputBytes: 65_536, artifactBytes: 4_096, wallTimeMs: 10_000 } },
-      maximumCharge: { asset: 'USD', amountAtomic: '1000', decimals: 6 }, deadlineAt: new Date(Date.now() + 180_000).toISOString(),
+      productId: 'sandbox.run', input: { kind: 'run', executionId: `exec_${nonce}`, imageDigest: policy.runnerDigest, command: ['node', '-e', 'process.stdout.write("sandbox-control-live")'], limits: { cpuMillis: 5_000, memoryBytes: 268_435_456, processes: 16, diskBytes: 67_108_864, outputBytes: 65_536, artifactBytes: 1_048_576, wallTimeMs: 10_000 } },
+      maximumCharge: { asset: 'USD', amountAtomic: '8000', decimals: 6 }, deadlineAt: new Date(Date.now() + 180_000).toISOString(),
     };
     const invoke = () => fetch('http://127.0.0.1:18976/internal/v1/sandbox/run', { method: 'POST', headers: { authorization: `Bearer ${token}`, 'x-clervo-tenant-id': `tenant_${nonce}`, 'content-type': 'application/json' }, body: JSON.stringify(request), signal: AbortSignal.timeout(150_000) });
     const first = await invoke();

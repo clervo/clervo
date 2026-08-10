@@ -1265,18 +1265,19 @@ Every milestone below carries the same seventeen fields.
 ### B10 — Search and Sandbox hardened
 
 1. **Milestone:** B10 — Search and Sandbox hardened
-2. **Status:** `in_progress` — production Search/Sandbox hardening is deployed on
-   release `3dfe8a6`. Both the 2026-08-09 browser 405 and the 2026-08-10
-   Cloudflare 1033 challenge refusal are directly reconciled with zero funded or
-   execution effect. Guarded Worker `147b9277-6caf-4a74-8985-55710ec87d36` is
-   live at 100%. One owner-signed Search request previously failed locally at
-   the old Worker with HTTP 400 because its payer guard parsed the wrong x402 v2
-   fields; direct API, durable-accounting, ledger, Blockscout-history, and
-   Base-balance checks prove that attempt unfunded. The corrected Worker now
-   returns the exact unsigned Search 402, with no payment signature sent.
-   A subsequently exposed database credential was replaced and revoked without
-   a payment effect. Search funded proof is waiting for the owner signature;
-   Sandbox funded proof is the only remaining blocker after Search.
+2. **Status:** `in_progress` — Search is externally funded and proven. The first
+   funded Sandbox SHORT attempt settled exactly 0.010 USDC and cleaned up, but
+   correctly failed finished-product acceptance because its isolated Node
+   process exited 134 with empty output. The runner's `RLIMIT_NPROC` had counted
+   supervisor threads against the customer's 16-task ceiling. Qualified runner
+   `sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a`
+   now reserves supervisor tasks separately while retaining the traced 16-task
+   customer ceiling; exact SHORT internal execution, replay, cleanup, supply
+   chain, and ten-probe gVisor containment all pass. API revision
+   `clervo-api-production-sandboxfix-20260810` and guarded Worker
+   `870b3aee-997c-4c94-a96c-e3c63cd0795e` are live at 100%. A fresh Sandbox
+   funded proof requires a new explicit owner spending cap because the original
+   0.016-USDC B10 maximum is fully consumed.
 3. **Customer-visible outcome:** The two oldest products return the full Clervo
    promise — result, evidence, provenance, true cost, replay-safe receipt — not
    just a result.
@@ -1286,18 +1287,21 @@ Every milestone below carries the same seventeen fields.
    operate the runtime rather than reselling someone else's.
 5. **Preserve:** Sandbox resource ceilings and isolation — these are never
    weakened for price; the search citation, authority, and freshness pipeline.
-6. **Current evidence:** Search free path is `externally_repeated`; both paid
-   paths validate for Bazaar. The deployed B10 API quotes Search at 0.006 USDC
-   and Sandbox SHORT at 0.010 USDC with receipt route/evidence/cost fields. The
-   repaired browser route returns the exact Search 402. Reconciled Search key
-   `20260810d` remains challenge-only as operation `op_5bc289925dedb076cd87e19aa9412ab8`; fresh key `20260810e` returns the same unsigned challenge and has no payment fingerprint, accepted x402 authorization, execution, settlement, response, accounting, receipt, charge, or Base transfer. One owner wallet signature was produced under the old key, but its malformed Worker guard rejected the header before API/facilitator contact. The six-entry receiver ledger and 9000/23000-atomic payer/receiver balances remain unchanged from B9. API revision
-   `clervo-api-production-dbcred-20260810` serves the unchanged release/image
-   from replacement database secret version `3`; exposed version `2` is
-   destroyed and its login is disabled. Candidate Worker
-   `147b9277-6caf-4a74-8985-55710ec87d36` from exact source commit
-   `9b5d01968a088addac4a93c20278b218dd413841` corrects the x402 v2 payer parser
-   and changes only Search from reconciled key `20260810d` to fresh key
-   `20260810e`; Sandbox remains on fresh key `20260810c`.
+6. **Current evidence:** Search operation
+   `op_553529bd92403f8bfe16b3c1ae82df3c` and receipt
+   `rcpt_3f185f8ddb2cfe8349b5dcf66a0b326b` returned a useful cited Wikimedia
+   result, settled 0.006 USDC in Base transaction
+   `0x22a537342614b14eb676b1cb3ccb51acdec98bb56811d152e650b3985a0403cb`,
+   and replays without authorization, execution, settlement, or charge. Failed
+   Sandbox operation `op_c73a903173d645b136425e6fe5a3314f` and receipt
+   `rcpt_7c8fb39233b22e52fb5687f5185dbd0f` settled 0.010 USDC in transaction
+   `0xbd498bb83d6b322c494d38fb81de47abd555c70c2fda173c5ab2905a1c9dbeef`;
+   its durable result records exit 134, empty stdout, SHORT bounds, destroyed
+   cleanup, and a free same-key replay. Fresh Sandbox key `20260810d` is
+   challenge-only as `op_52554a58250d2e9d5fc122ac40b43a8b`, with no funded
+   effect. The receiver ledger has eight balanced entries; payer/receiver
+   balances are 284000/39000 atomic USDC. Database secret version `3` remains
+   deployed; destroyed version `2` was not restored.
 7. **Research:** What a competitor returns per call versus what we return. One
    question: which part of the evidence payload is a buying reason rather than
    noise.
@@ -1317,13 +1321,20 @@ Every milestone below carries the same seventeen fields.
 13. **Visibility shipped:** Updated product pages, pricing, and receipt
     documentation.
 14. **Metrics:** Gross margin per product; routing distribution; fallback rate.
-15. **Owner approval:** Production deploy; any supplier contract.
-16. **Stopping condition:** Both products meet all nine finished-product
-    conditions with evidence and provenance in the receipt.
-17. **Continuation point:** Stop for the owner Search MetaMask signature at the
-    public Search proof page. After one externally proven funded Search outcome,
-    preserve it, complete all non-Sandbox closure work, and record B10 as
-    waiting only for the Sandbox funded proof. B11 remains not started.
+15. **Owner approval:** The original exact 0.006 Search plus 0.010 Sandbox B10
+    payment cap is fully consumed. No additional payment is authorized. A new
+    exact maximum is required before another Sandbox signature; production
+    deployment of the runner correction is complete.
+16. **Stopping condition:** Search meets the finished-product conditions. The
+    corrected Sandbox runtime is qualified, but B10 remains open until one new
+    owner-authorized funded SHORT result is useful and its settlement,
+    accounting, cleanup, provenance, and no-charge replay are directly proven.
+17. **Continuation point:** Stop for explicit owner authorization of one
+    additional 0.010-USDC production Sandbox SHORT payment, which would raise
+    cumulative B10 funded spend to 0.026 USDC. Then rotate from challenge-only
+    key `20260810d` if its quote has expired, reconcile, obtain exactly one
+    MetaMask signature, prove the result and replay, close B10, and stop. B11
+    remains not started.
 
 ---
 

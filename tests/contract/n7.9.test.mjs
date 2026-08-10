@@ -13,5 +13,7 @@ test('sandbox runner uses immutable bases, non-root identity, no shell execution
   assert.match(runner, /clearTimeout\(timer\); clearInterval\(processTimer\); killProcessGroup\(\);/u);
   assert.match(runner, /processTreeSize\(\)/u); assert.match(runner, /observed > limits\.processes/u);
   for (const control of ['RLIMIT_NPROC', 'RLIMIT_CPU', 'RLIMIT_FSIZE', 'RLIMIT_CORE', 'RLIMIT_NOFILE', 'PR_SET_NO_NEW_PRIVS']) assert.match(launcher, new RegExp(control, 'u'));
+  assert.match(launcher, /existing_uid_tasks\(\)/u); assert.match(launcher, /supervisor_tasks \+ processes/u);
+  assert.match(launcher, /\.root = child, \.limit = processes/u);
   assert.match(cloudbuild, /requestedVerifyOption: VERIFIED/u); assert.match(cloudbuild, /images:\n\s+- us-central1-docker\.pkg\.dev\/\$PROJECT_ID\/clervo-sandbox\/runner/u); assert.match(dockerfile, /node@sha256:c2cc26d8/u);
 });

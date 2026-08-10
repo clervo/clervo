@@ -1,12 +1,12 @@
 {
   "schemaVersion": "clervo.sandbox-runner-image-qualification.v1",
-  "evaluatedAt": "2026-08-03T12:25:18.821Z",
+  "evaluatedAt": "2026-08-10T14:25:43.440Z",
   "imageId": "sandbox.nodejs-24",
-  "digest": "sha256:743a17e4776809782f511badb7f11a60992544ccf2e61ad901353387dffe8b38",
+  "digest": "sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a",
   "build": {
     "status": "passed",
     "builder": "google-cloud-build",
-    "buildId": "9bec50dd-2857-4751-9bfb-1847472a312c",
+    "buildId": "f9d07aef-1ed6-4eb7-b9df-8f54c39869cd",
     "slsaBuildLevel": 3,
     "provenanceAttestations": 2
   },
@@ -22,7 +22,7 @@
     "status": "passed",
     "scanner": "clamav",
     "scannerVersion": "1.5.2",
-    "databaseVersion": 28081,
+    "databaseVersion": 28088,
     "databaseDownloadedBeforeIsolation": true,
     "scanNetwork": "none",
     "filesScanned": 622,
@@ -34,8 +34,8 @@
     "generator": "syft-1.44.0",
     "generatorImageDigest": "sha256:86fde6445b483d902fe011dd9f68c4987dd94e07da1e9edc004e3c2422650de6",
     "path": "docs/evidence/sandbox/runner-sbom.spdx.json",
-    "sha256": "sha256:325b8174f3d94e0f7790e09639307b513ba20180e8581368f4c41ebbd108755d",
-    "packageCount": 22
+    "sha256": "sha256:1d18c36379fde2d02c8bacf552ec6d6a630a8db17620d973bbebe9bff163956c",
+    "packageCount": 20
   },
   "runtimeChecks": {
     "mode": "persistent-production",
@@ -45,15 +45,15 @@
     "liveRedTeamStatus": "passed",
     "liveRedTeamProbeCount": 10,
     "forkDenied": true,
-    "maximumProcessesObserved": 14,
+    "maximumProcessesObserved": 32,
     "orphanProcessesObserved": 0,
     "cleanupVerified": true,
     "liveRedTeamReport": "docs/evidence/sandbox/gvisor-production-red-team.v1.json",
-    "liveRedTeamReportSha256": "sha256:1b12e86151e22e09874a154abd156e5027ff7d035a5c2c4d74ed80f06ee94da4"
+    "liveRedTeamReportSha256": "sha256:ee22f5f17706b5394cd72c03558fc5588e90ea5553854ae7915109b4ef01b6fd"
   },
   "supplyChainReport": {
     "path": "docs/evidence/sandbox/runner-supply-chain.v5.json",
-    "sha256": "sha256:f3081deb089b3b2db1577bc38197bdb3b87b0518d09cdc3b3122cfc8e2ec554f"
+    "sha256": "sha256:f699b091988a9bdbf07586da40589785b8ac045b1ac42ca64564e0290f3ae402"
   },
   "decision": "qualified",
   "productAvailability": "unavailable"
