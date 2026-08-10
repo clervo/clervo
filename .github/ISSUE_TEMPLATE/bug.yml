@@ -1,0 +1,72 @@
+name: Bug report
+description: Report reproducible behavior in a public Clervo surface.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Please describe what you directly observed. Do not include credentials, wallet material, payment authorization, customer data, or other secrets.
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Affected surface
+      options:
+        - GitHub repository or documentation
+        - TypeScript SDK
+        - Python SDK
+        - MCP server
+        - Public website
+        - Public API or capability
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: observed
+    attributes:
+      label: What happened?
+      description: Describe the behavior you directly observed.
+      placeholder: Include the exact error, response, or visible behavior where useful.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      placeholder: Describe the expected behavior.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal reproduction
+      description: Give the smallest safe sequence that reproduces the issue. Redact secrets.
+      placeholder: Commands, request shape, package version, URL, and steps.
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Package version, commit SHA, or date observed if applicable.
+      placeholder: e.g. @clervo/sdk 0.3.0
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Runtime, OS, client, network, or other context that materially affects reproduction.
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I have removed credentials, wallet material, payment authorization, customer data, and other secrets from this report.
+          required: true
+        - label: This is not a vulnerability report. Security issues should use GitHub private vulnerability reporting instead of a public issue.
+          required: true

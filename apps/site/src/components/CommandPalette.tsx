@@ -30,7 +30,6 @@ const destinations = [
   { title: 'Legal boundaries', path: '/legal', terms: 'terms resale privacy retention rights' },
   { title: 'Product status', path: '/status', terms: 'availability preview unavailable release candidate deployment' },
   { title: 'Changelog', path: '/changelog', terms: 'release changes packages payment proof' },
-  { title: 'Compare BlockRun', path: '/compare/blockrun', terms: 'competitor mechanism source dated comparison' },
   { title: 'Trust center', path: '/trust', terms: 'proof security pricing benchmarks rights status' },
   { title: 'Error: request rejected', path: '/docs#errors', terms: '400 schema invalid request error' },
   { title: 'Error: payment required', path: '/pricing', terms: '402 payment quote non payable error' },

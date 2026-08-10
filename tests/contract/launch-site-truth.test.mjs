@@ -115,7 +115,6 @@ test('launch pages and discovery surfaces exist without forbidden or stale claim
     'trust/index.html',
     'status/index.html',
     'changelog/index.html',
-    'compare/blockrun/index.html',
   ];
   const pages = await Promise.all(requiredPages.map((file) => read(`apps/site/dist/${file}`)));
   assert.ok(pages.every((html) => html.includes('rel="canonical"')));

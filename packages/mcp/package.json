@@ -6,6 +6,8 @@
   "type": "module",
   "keywords": [
     "clervo",
+    "ai-agents",
+    "agent-infrastructure",
     "mcp",
     "model-context-protocol",
     "search"

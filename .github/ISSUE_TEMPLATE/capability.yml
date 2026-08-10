@@ -1,0 +1,45 @@
+name: Capability or developer-experience request
+description: Propose a concrete agent capability, integration, or developer-experience improvement.
+title: "[Request] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Clervo tracks product availability from observed evidence rather than roadmap language. A request here is a proposal, not a promise that the capability exists or will ship.
+
+  - type: textarea
+    id: job
+    attributes:
+      label: What job should an agent be able to complete?
+      description: Describe the outcome, not only a provider or API name.
+      placeholder: "An agent needs to ... and should receive ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-friction
+    attributes:
+      label: What is difficult today?
+      description: Explain the integration, routing, execution, payment, reliability, or verification problem this would remove.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Useful references
+      description: Optional public specs, provider docs, protocols, examples, or comparable implementations.
+
+  - type: textarea
+    id: contract
+    attributes:
+      label: What should a successful result contain?
+      description: Describe the output, evidence, receipt, provenance, or failure behavior that would make the result useful to an agent.
+
+  - type: checkboxes
+    id: truth
+    attributes:
+      label: Request scope
+      options:
+        - label: I understand this issue is a request and does not establish current Clervo availability or a shipping commitment.
+          required: true
