@@ -1,13 +1,14 @@
 {
   "name": "@clervo/sdk",
   "version": "0.3.0",
-  "description": "Typed Clervo client generated from the frozen distribution candidate.",
+  "description": "Typed TypeScript client for Clervo's public agent outcome interfaces.",
   "license": "UNLICENSED",
   "type": "module",
   "sideEffects": false,
   "keywords": [
     "clervo",
-    "agent",
+    "ai-agents",
+    "agent-infrastructure",
     "search",
     "sdk"
   ],
