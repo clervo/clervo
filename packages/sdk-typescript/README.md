@@ -1,6 +1,6 @@
 # `@clervo/sdk`
 
-Typed client for Clervo's frozen distribution candidate.
+Typed client for Clervo's repository-local preview interface.
 
 Current scope is deliberately narrow:
 
