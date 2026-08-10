@@ -7,6 +7,7 @@ const searchRequest = Object.freeze({ query: 'Python programming', maxResults: 3
 const searchPath = 'https://clervo.dev/proof/b10-search';
 const payer = '0x1ada6E2EACb799f16bfC1A395c06D7fb52369207';
 const workerConfiguration = JSON.parse(await readFile('apps/b10-proof-worker/wrangler.jsonc', 'utf8'));
+const workerSource = await readFile('apps/b10-proof-worker/src/index.js', 'utf8');
 
 function request(path, options = {}) {
   return new Request(`${searchPath}${path}`, options);
@@ -77,6 +78,10 @@ test('B10 hosted Sandbox proof pins the repaired SHORT request and fresh post-fa
 });
 
 test('temporary hosted proof quarantines both B7 payment surfaces while reconciliation is pending', async () => {
+  assert.match(workerSource, /idem_b7_ai_paid_chat_20260810c7a41e92/u);
+  assert.match(workerSource, /idem_b7_ai_paid_image_20260810f3b82d65/u);
+  assert.doesNotMatch(workerSource, /idem_b7_ai_paid_chat_20260810b1c7d4f2/u);
+  assert.doesNotMatch(workerSource, /idem_b7_ai_paid_image_20260810e9b2c6d1/u);
   for (const path of ['/proof/b7-ai-chat', '/proof/b7-ai-image']) {
     for (const suffix of ['/config', '/api/paid-operation']) {
       const response = await worker.fetch(new Request(`https://clervo.dev${path}${suffix}`, { method: suffix.startsWith('/api/') ? 'POST' : 'GET' }), assets);

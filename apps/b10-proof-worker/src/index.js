@@ -20,7 +20,7 @@ const profiles = Object.freeze({
   '/proof/b7-ai-chat': Object.freeze({
     productId: 'ai.chat', route: '/v1/ai/execute', resource: 'https://api.clervo.dev/v1/ai/execute',
     amountAtomic: '1000', amountDisplay: '0.001 USDC', supplierCostCeilingAtomic: '0',
-    idempotencyKey: 'idem_b7_ai_paid_chat_20260810b1c7d4f2',
+    idempotencyKey: 'idem_b7_ai_paid_chat_20260810c7a41e92',
     request: Object.freeze({
       model: 'clervo/gpt-5.6-luna',
       input: Object.freeze({ kind: 'chat', messages: Object.freeze([Object.freeze({ role: 'user', content: 'Reply with the single word ready.' })]), responseFormat: 'text', stream: false }),
@@ -30,7 +30,7 @@ const profiles = Object.freeze({
   '/proof/b7-ai-image': Object.freeze({
     productId: 'ai.image', route: '/v1/ai/execute', resource: 'https://api.clervo.dev/v1/ai/execute',
     amountAtomic: '25500', amountDisplay: '0.0255 USDC', supplierCostCeilingAtomic: '0',
-    idempotencyKey: 'idem_b7_ai_paid_image_20260810e9b2c6d1',
+    idempotencyKey: 'idem_b7_ai_paid_image_20260810f3b82d65',
     request: Object.freeze({
       model: 'clervo/gemini-3.1-flash-lite-image',
       input: Object.freeze({ kind: 'image', prompt: 'A plain red square on a white background.', size: '1024x1024', quality: 'low', count: 1 }),
