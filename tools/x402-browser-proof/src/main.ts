@@ -15,7 +15,7 @@ type ProofConfig = {
   payTo: Address;
   payer: Address;
   facilitator: 'https://api.cdp.coinbase.com/platform/v2/x402';
-  productId: 'search.web' | 'sandbox.run' | 'ai.chat' | 'prediction.markets' | 'prediction.market' | 'crypto.wallet.report' | 'crypto.wallet.transactions';
+  productId: 'search.web' | 'sandbox.run' | 'ai.chat' | 'ai.image' | 'prediction.markets' | 'prediction.market' | 'crypto.wallet.report' | 'crypto.wallet.transactions';
   resource: 'https://api.clervo.dev/v1/search/paid' | 'https://api.clervo.dev/v1/sandbox/execute' | 'https://api.clervo.dev/v1/ai/execute' | 'https://api.clervo.dev/v1/prediction/execute' | 'https://api.clervo.dev/v1/crypto/execute';
   idempotencyKey: string;
   payerBalanceCapAtomic: string;
@@ -53,10 +53,23 @@ function balanceOfData(address: Address) {
 function usefulPaidResult(body: any) {
   if (body?.productId !== config.productId || body?.receipt?.productId !== config.productId) return false;
   if (config.productId === 'ai.chat') {
-    return body?.exactModelId === 'gpt-5.6-luna'
+    return body?.model === 'clervo/gpt-5.6-luna'
+      && body?.exactModelId === 'clervo/gpt-5.6-luna'
       && body?.result?.output?.kind === 'chat'
       && typeof body?.result?.output?.content === 'string'
       && body.result.output.content.trim().length > 0;
+  }
+  if (config.productId === 'ai.image') {
+    return body?.model === 'clervo/gemini-3.1-flash-lite-image'
+      && body?.exactModelId === 'clervo/gemini-3.1-flash-lite-image'
+      && body?.result?.output?.kind === 'image'
+      && Array.isArray(body.result.output.artifacts)
+      && body.result.output.artifacts.length === 1
+      && body.result.output.artifacts.every((artifact: any) => /^artifact:\/\//u.test(artifact?.artifactUri ?? '')
+        && /^sha256:[a-f0-9]{64}$/u.test(artifact?.sha256 ?? '')
+        && artifact?.width === 1024
+        && artifact?.height === 1024)
+      && body?.result?.usage?.images === 1;
   }
   if (config.productId === 'prediction.markets') {
     return body?.result?.output?.kind === 'markets'

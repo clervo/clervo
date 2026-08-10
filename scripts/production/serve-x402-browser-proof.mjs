@@ -11,6 +11,7 @@ import { getAddress, isAddress } from 'viem';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const dist = path.join(root, 'tools/x402-browser-proof/dist');
 const asset = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
+const facilitator = 'https://api.cdp.coinbase.com/platform/v2/x402';
 const productId = String(process.env.CLERVO_X402_PROOF_PRODUCT ?? 'search.web');
 const predictionMarketRef = String(process.env.CLERVO_X402_PROOF_PREDICTION_MARKET_REF ?? '');
 const profiles = Object.freeze({
@@ -40,9 +41,20 @@ const profiles = Object.freeze({
     amountDisplay: '0.001 USDC',
     supplierCostCeilingAtomic: '225',
     request: {
-      model: 'gpt-5.6-luna',
+      model: 'clervo/gpt-5.6-luna',
       input: { kind: 'chat', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], responseFormat: 'text', stream: false },
       maximumOutputTokens: 16,
+    },
+  }),
+  'ai.image': Object.freeze({
+    route: '/v1/ai/execute',
+    resource: 'https://api.clervo.dev/v1/ai/execute',
+    amountAtomic: '25500',
+    amountDisplay: '0.0255 USDC',
+    supplierCostCeilingAtomic: '0',
+    request: {
+      model: 'clervo/gemini-3.1-flash-lite-image',
+      input: { kind: 'image', prompt: 'A plain red square on a white background.', size: '1024x1024', quality: 'low', count: 1 },
     },
   }),
   'prediction.markets': Object.freeze({
@@ -149,7 +161,7 @@ async function staticFile(response, pathname) {
 }
 
 const proofConfig = Object.freeze({
-  network: 'eip155:8453', chainIdHex: '0x2105', asset,
+  network: 'eip155:8453', chainIdHex: '0x2105', asset, facilitator,
   amountAtomic: profile.amountAtomic, amountDisplay: profile.amountDisplay,
   ...(payer === null ? {} : { payer }), payTo, productId, resource: profile.resource, idempotencyKey,
   payerBalanceCapAtomic: '300000', supplierCostCeilingAtomic: profile.supplierCostCeilingAtomic,
