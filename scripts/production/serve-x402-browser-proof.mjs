@@ -39,7 +39,7 @@ const profiles = Object.freeze({
     resource: 'https://api.clervo.dev/v1/ai/execute',
     amountAtomic: '1000',
     amountDisplay: '0.001 USDC',
-    supplierCostCeilingAtomic: '225',
+    supplierCostCeilingAtomic: '0',
     request: {
       model: 'clervo/gpt-5.6-luna',
       input: { kind: 'chat', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], responseFormat: 'text', stream: false },
