@@ -1,0 +1,773 @@
+{
+  "schemaVersion": "clervo.b12-recovery.route-archetypes.v1",
+  "source": "docs/evidence/site/B12-RECOVERY/phase-0/production/forensic-audit.json.gz",
+  "total": 153,
+  "unassigned": 0,
+  "routes": [
+    {
+      "route": "/",
+      "routeKind": "fixed",
+      "archetype": "HOME"
+    },
+    {
+      "route": "/start",
+      "routeKind": "fixed",
+      "archetype": "START_CONNECT"
+    },
+    {
+      "route": "/catalog",
+      "routeKind": "fixed",
+      "archetype": "MODELS_CATALOG"
+    },
+    {
+      "route": "/research",
+      "routeKind": "fixed",
+      "archetype": "COMPARE_RESEARCH_BENCHMARK"
+    },
+    {
+      "route": "/platform",
+      "routeKind": "fixed",
+      "archetype": "PRODUCT_OVERVIEW"
+    },
+    {
+      "route": "/product",
+      "routeKind": "fixed",
+      "archetype": "PRODUCT_OVERVIEW"
+    },
+    {
+      "route": "/products/search",
+      "routeKind": "fixed",
+      "archetype": "PRODUCT_FAMILY"
+    },
+    {
+      "route": "/products/ai",
+      "routeKind": "fixed",
+      "archetype": "PRODUCT_FAMILY"
+    },
+    {
+      "route": "/products/sandbox",
+      "routeKind": "fixed",
+      "archetype": "PRODUCT_FAMILY"
+    },
+    {
+      "route": "/products/rpc",
+      "routeKind": "fixed",
+      "archetype": "PRODUCT_FAMILY"
+    },
+    {
+      "route": "/products/prediction",
+      "routeKind": "fixed",
+      "archetype": "PRODUCT_FAMILY"
+    },
+    {
+      "route": "/products/crypto",
+      "routeKind": "fixed",
+      "archetype": "PRODUCT_FAMILY"
+    },
+    {
+      "route": "/build",
+      "routeKind": "fixed",
+      "archetype": "ACTIVATION_COMPATIBILITY"
+    },
+    {
+      "route": "/proof",
+      "routeKind": "fixed",
+      "archetype": "PROOF"
+    },
+    {
+      "route": "/proof-lab",
+      "routeKind": "fixed",
+      "archetype": "PROOF_LAB_DEMO"
+    },
+    {
+      "route": "/docs",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/quickstart",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/http",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/typescript",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/python",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/mcp",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/cli",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/openai",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/receipts",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/replay",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/failures",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/x402",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/docs/catalog",
+      "routeKind": "fixed",
+      "archetype": "DOCS_DEVELOPER_PORTAL"
+    },
+    {
+      "route": "/pricing",
+      "routeKind": "fixed",
+      "archetype": "PRICING"
+    },
+    {
+      "route": "/benchmarks",
+      "routeKind": "fixed",
+      "archetype": "COMPARE_RESEARCH_BENCHMARK"
+    },
+    {
+      "route": "/security",
+      "routeKind": "fixed",
+      "archetype": "TRUST_SECURITY_LEGAL"
+    },
+    {
+      "route": "/legal",
+      "routeKind": "fixed",
+      "archetype": "TRUST_SECURITY_LEGAL"
+    },
+    {
+      "route": "/status",
+      "routeKind": "fixed",
+      "archetype": "STATUS"
+    },
+    {
+      "route": "/changelog",
+      "routeKind": "fixed",
+      "archetype": "CHANGELOG"
+    },
+    {
+      "route": "/trust",
+      "routeKind": "fixed",
+      "archetype": "TRUST_SECURITY_LEGAL"
+    },
+    {
+      "route": "/operations/ai.chat",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/ai.embed",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/ai.execute",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/ai.image",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/ai.music",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/ai.speech",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/ai.video",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/ai.virtual_try_on",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/crypto.wallet.balances",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/crypto.wallet.report",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/crypto.wallet.tokens",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/crypto.wallet.transactions",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/prediction.compare",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/prediction.history",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/prediction.market",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/prediction.markets",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/prediction.signal",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/rpc.archive",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/rpc.batch",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/rpc.broadcast",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/rpc.call",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/rpc.health",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/sandbox.artifact.get",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/sandbox.run",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/sandbox.session.create",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/sandbox.session.destroy",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/sandbox.session.exec",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/search.answer",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/operations/search.web",
+      "routeKind": "operation",
+      "archetype": "OPERATION_DETAIL"
+    },
+    {
+      "route": "/models/allam-2-7b",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/claude-haiku-4-5-20251001",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/claude-opus-4-6",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/claude-opus-4-7",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/claude-opus-4-8",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/claude-opus-5",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/claude-sonnet-4-6",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/claude-sonnet-5",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/code",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/deep",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/deepseek-r1",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/deepseek-v3",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/deepseek-v3.1-terminus",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/deepseek-v3.2-exp",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/deepseek-v4-pro",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/fast",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-2.5-flash",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-2.5-flash-image",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-2.5-flash-lite-preview-tts",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-2.5-flash-tts",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-2.5-pro-tts",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-3-pro-image",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-3.1-flash-image",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-3.1-flash-lite-image",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-3.1-flash-tts-preview",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-3.5-flash-lite",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-embedding-001",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemini-omni-flash-preview",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemma-4-12b-it",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemma-4-26b-a4b-it",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gemma-4-31b-it",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/glm-4.5-air",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/glm-5.2",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gpt-5.6-luna",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gpt-5.6-sol",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gpt-5.6-terra",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gpt-oss-120b",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gpt-oss-20b",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/gpt-oss-safeguard-20b",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/hunyuan-a13b-instruct",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/hy3",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/kimi-k2.5",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/kimi-k2.6",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/kimi-k2.7-code",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/kimi-k3",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/laguna-s-2.1",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/ling-flash-2.0",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/llama-3.1-70b-instruct",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/llama-3.1-8b-instruct",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/llama-3.1-nemoguard-8b-content-safety",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/llama-3.1-nemotron-nano-vl-8b-v1",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/llama-3.1-nemotron-safety-guard-8b-v3",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/llama-3.2-11b-vision-instruct",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/llama-3.3-70b-instruct",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/longcat-2.0",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/lyria-3-clip-preview",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/lyria-3-pro-preview",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/minimax-m2.5",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/minimax-m3",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/mistral-medium-2505",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/mistral-medium-2508",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/multimodalembedding-001",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/nemotron-3-embed-1b",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/nemotron-3.5-content-safety",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/nex-n2-pro",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/nv-embed-v1",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen2.5-72b-instruct",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3-14b",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3-30b-a3b-instruct-2507",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3-32b",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3-8b",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3-coder-30b-a3b-instruct",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3-vl-30b-a3b-instruct",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3-vl-30b-a3b-thinking",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3-vl-32b-instruct",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3-vl-32b-thinking",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3-vl-8b-instruct",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3.5-397b-a17b",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/qwen3.6-27b",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/seed-oss-36b-instruct",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/smart",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/text-embedding-005",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/text-embedding-large-exp-03-07",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/text-multilingual-embedding-002",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/veo-3.1-fast-generate-001",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/veo-3.1-generate-001",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/veo-3.1-lite-generate-001",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    },
+    {
+      "route": "/models/virtual-try-on-001",
+      "routeKind": "model",
+      "archetype": "MODEL_DETAIL"
+    }
+  ]
+}

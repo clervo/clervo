@@ -1,0 +1,1 @@
+site accessibility: PASS (18 page loads, WCAG 2.2 AA rule set, 44px target minimum)
