@@ -62,7 +62,10 @@ test('embedded and published schemas compile under Draft 2020-12 with resolved r
   for (const fileName of await readdir(path.join(generated, 'schemas', CONTRACT_VERSION))) {
     const published = JSON.parse(await readFile(path.join(generated, 'schemas', CONTRACT_VERSION, fileName), 'utf8'));
     const internal = JSON.parse(await readFile(path.join(root, 'packages/contracts/schemas', fileName), 'utf8'));
-    if (fileName === 'search-http-result.schema.json') {
+    if (fileName === 'search-http-request.schema.json') {
+      assert.equal(published.properties.synthesize.default, false);
+      assert.deepEqual({ ...published, properties: { ...published.properties, synthesize: internal.properties.synthesize } }, internal);
+    } else if (fileName === 'search-http-result.schema.json') {
       assert.deepEqual(published.properties.productId.enum, ['search.web']);
       assert.deepEqual({ ...published, properties: { ...published.properties, productId: internal.properties.productId } }, internal);
     } else assert.deepEqual(published, internal);

@@ -450,6 +450,10 @@ for (const fileName of projectedSchemaFiles) {
     schema.properties.productId.enum = ['search.web'];
     schema.properties.productId.description = 'Callable public Search operation identity. search.answer remains a released-client compatibility identifier but is not callable.';
   }
+  if (fileName === 'search-http-request.schema.json') {
+    schema.properties.synthesize.default = false;
+    schema.properties.synthesize.description = 'Public HTTP omission selects false. true is accepted only as a released-client compatibility input and returns search_synthesis_unavailable.';
+  }
   schemas[componentName(fileName)] = schema;
   await writeFile(path.join(outputDirectory, 'schemas', contractModule.CONTRACT_VERSION, fileName), stableJson(schema));
 }

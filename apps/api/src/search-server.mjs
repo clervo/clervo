@@ -736,7 +736,14 @@ export function createSearchServer({
       // A caller who supplied no key is told which one was used, so a
       // deliberate replay of this exact operation is still possible.
       const keyHeaders = keyGenerated ? { 'idempotency-key': keyHeader } : {};
-      const normalized = normalizeSearchHttpRequest(await readJson(request, SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType: url.pathname === SEARCH_FREE_PATH }));
+      const decoded = await readJson(request, SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType: url.pathname === SEARCH_FREE_PATH });
+      // Released clients send synthesize explicitly. At the public HTTP edge,
+      // omission selects the supported raw Search operation so a clean caller
+      // does not accidentally opt into the non-callable compatibility mode.
+      const publicRequest = decoded !== null && typeof decoded === 'object' && !Array.isArray(decoded) && !Object.hasOwn(decoded, 'synthesize')
+        ? { ...decoded, synthesize: false }
+        : decoded;
+      const normalized = normalizeSearchHttpRequest(publicRequest);
       if (normalized.synthesize && !synthesisEnabled) {
         send(response, 422, problem(422, 'search_synthesis_unavailable', 'Search synthesis unavailable', 'Live cited synthesis is not implemented on this release. Retry with synthesize=false for raw results.', url.pathname), {}, PROBLEM_TYPE);
         return;

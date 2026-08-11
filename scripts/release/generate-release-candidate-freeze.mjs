@@ -94,6 +94,10 @@ const frozenSchemaHashes = new Map([
   // controls. The immutable Stage 12 snapshot retains its original wire and
   // internal-control descriptors.
   ['operation-receipt.schema.json', 'sha256:8d46892c4e4d05ecc48be73d0589048fbf62c38362d04d68fe3387f219fbb6c4'],
+  // The public remediation normalized the legacy file's final newline while
+  // preserving its released default=true contract. Keep that formatting-only
+  // change from reissuing the frozen interface identity.
+  ['search-http-request.schema.json', 'sha256:0c483a9b40af6d5409f68d8379dbeaceab2478fe559723b82bdd1b7c00fa94f7'],
   ['search-response.schema.json', 'sha256:005e86142d685ca00cec1caab53a5bc7cfe0359f72d0b78c0230035dff8be07a'],
   ['search-supply-pricing.schema.json', 'sha256:95bcf7954804cd5ff42148e41ad9bc4b7bd680c88f81484c3ebf9aba0b52031a'],
 ]);
