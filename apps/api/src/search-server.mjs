@@ -28,6 +28,7 @@ import { InMemorySearchStateStore } from './search-state-store.mjs';
 import { createX402PaidSearchProcessor, x402SearchPricing } from './x402-paid-search.mjs';
 import { createX402PaidAiProcessor } from './x402-paid-ai.mjs';
 import { createFreeAiOperationProcessor } from './ai-free-operation.mjs';
+import { createAiDiscoveryContract } from './ai-discovery.mjs';
 import {
   SANDBOX_DISCOVERY,
   SANDBOX_MAX_BODY_BYTES as SANDBOX_PUBLIC_MAX_BODY_BYTES,
@@ -292,48 +293,13 @@ export function createSearchServer({
     let discovery;
     if (pathname === AI_PAID_PATH) {
       if (typeof aiPublicPricing?.discoveryRequest !== 'function') throw new TypeError('ai_discovery_contract_unavailable');
-      const input = aiPublicPricing.discoveryRequest();
+      const input = aiPublicPricing.discoveryRequest(observedAt);
       const normalized = normalizeAiHttpRequest(input);
       productId = normalized.productId;
       requestHash = aiHttpRequestHash(normalized);
       const operationId = identifier('op', `discovery:${pathname}:${requestHash}`);
       pricing = aiPublicPricing.quote({ normalized, operationId, now: observedAt }).pricing;
-      discovery = Object.freeze({
-        method: 'POST',
-        bodyType: 'json',
-        input,
-        inputSchema: Object.freeze({
-          type: 'object', required: ['model', 'input', 'maximumOutputTokens'], additionalProperties: false,
-          properties: {
-            model: { type: 'string', const: input.model },
-            input: {
-              type: 'object', required: ['kind', 'messages', 'responseFormat', 'stream'], additionalProperties: false,
-              properties: {
-                kind: { const: 'chat' },
-                messages: { type: 'array', minItems: 1, items: { type: 'object', required: ['role', 'content'], additionalProperties: false, properties: { role: { enum: ['user'] }, content: { type: 'string', minLength: 1 } } } },
-                responseFormat: { const: 'text' }, stream: { const: false },
-              },
-            },
-            maximumOutputTokens: { type: 'integer', minimum: 1, maximum: 65_536 },
-          },
-        }),
-        output: Object.freeze({
-          example: Object.freeze({ productId: 'ai.chat', state: 'RECEIPTED', replayed: false, exactModelId: input.model, result: { output: { kind: 'chat', content: 'Idempotency prevents a retry from becoming a second logical operation or charge.' } }, receipt: { settlement: { status: 'settled' } } }),
-          schema: Object.freeze({
-            type: 'object',
-            required: ['productId', 'state', 'replayed', 'exactModelId', 'result', 'receipt'],
-            properties: {
-              productId: { const: 'ai.chat' },
-              state: { type: 'string' },
-              replayed: { type: 'boolean' },
-              exactModelId: { type: 'string', const: input.model },
-              result: { type: 'object' },
-              receipt: { type: 'object' },
-            },
-            additionalProperties: true,
-          }),
-        }),
-      });
+      discovery = createAiDiscoveryContract(input);
     } else if (pathname === SANDBOX_PAID_PATH) {
       const normalized = normalizeSandboxHttpRequest(SANDBOX_DISCOVERY.input);
       productId = 'sandbox.run';
