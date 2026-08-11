@@ -65,7 +65,7 @@ function noUnlicensedPageFetch(): never {
   throw new Error('open_search_unlicensed_page_fetch_refused');
 }
 
-const queryStopWords = new Set(['a', 'an', 'and', 'are', 'about', 'for', 'from', 'how', 'is', 'latest', 'of', 'on', 'the', 'to', 'what', 'where', 'which', 'with']);
+const queryStopWords = new Set(['a', 'an', 'and', 'are', 'about', 'current', 'documentation', 'for', 'from', 'how', 'is', 'latest', 'of', 'on', 'the', 'to', 'what', 'where', 'which', 'with']);
 function primaryQuery(value: string): string {
   const tokens = value.normalize('NFKC').match(/[\p{L}\p{N}]+(?:[-_.][\p{L}\p{N}]+)*/gu) ?? [];
   const meaningful = tokens.filter((token) => token.length > 1 && !queryStopWords.has(token.toLocaleLowerCase('en-US')));
