@@ -344,7 +344,7 @@
         "packages/catalog/search-supply-pricing.v1.json"
       ],
       "quality": "good",
-      "termsStatus": "approved",
+      "termsStatus": "allowed",
       "quotaRunway": "Open no-fee APIs are selected under explicit license/metadata permissions with hard per-process call ceilings, polite identity, maxlag, and no paid overage. Brave and Serper remain technical-only because current resale terms are not approved.",
       "healthMethod": [
         "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
@@ -354,7 +354,7 @@
         "tests/contract/b10-search-sandbox.test.mjs"
       ],
       "secretLocations": [
-        "none:open_data_route"
+        "none:OPEN_DATA_ROUTE"
       ],
       "replacementPlan": "Keep the open licensed/metadata route bounded and attribution-preserving. Re-evaluate a paid general-web supplier only after written commercial permission and owner approval."
     },

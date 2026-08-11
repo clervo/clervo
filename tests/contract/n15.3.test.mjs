@@ -24,7 +24,15 @@ function executor() {
         maxResults: 1,
         evidence: [{ resultId: 'sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P', sourceId: 'adapter_search.recorded_release_candidate', url: 'https://example.com/payment-proof', title: 'Payment proof', snippet: evidenceText, evidenceText, retrievedAt: now, authorityScore: 90, relevanceScore: 95 }],
         citations: [{ citationId: 'cite_01JZ8Q5Y4QFD48Q24H6M5F4K9P', resultId: 'sr_01JZ8Q5Y4QFD48Q24H6M5F4K9P', canonicalUrl: 'https://example.com/payment-proof', quote: evidenceText, startOffset: 0, endOffset: evidenceText.length }],
-      }) };
+      }), route: {
+        routeId: 'clervo.search.test.recorded.v1',
+        qualificationId: 'qual_01JZ8Q5Y4QFD48Q24H6M5F4K9P',
+        servingAdapters: ['adapter_search.recorded_release_candidate'],
+        degraded: false,
+        fallback: false,
+        observedAt: now,
+        cost: { semantics: 'documented_cost_basis', basisId: 'search-test-cost-2026-08-09', amount: { asset: 'usd', amountAtomic: '2000', decimals: 6 } },
+      } };
     },
   };
 }

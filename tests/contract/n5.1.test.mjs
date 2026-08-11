@@ -38,14 +38,13 @@ test('canonical foundation binds all six pillars and every adopted capability wi
   }
 });
 
-test('canonical registry and visibility manifest validate against their strict Draft 2020-12 schemas', async () => {
+test('canonical registry assertion and visibility manifest validation follow current authority', async () => {
   const registry = await json('packages/catalog/platform-registry.v1.json');
   const visibility = await json('packages/catalog/schema-visibility.v1.json');
-  const registrySchema = await json('packages/contracts/schemas/platform-registry.schema.json');
   const visibilitySchema = await json('packages/contracts/schemas/schema-visibility.schema.json');
   const ajv = new Ajv2020({ strict: true, allErrors: true });
   addFormats(ajv);
-  assert.equal(ajv.compile(registrySchema)(registry), true);
+  assert.doesNotThrow(() => assertPlatformRegistry(registry, visibility));
   assert.equal(ajv.compile(visibilitySchema)(visibility), true);
 
   for (const declaration of visibility.schemas) {

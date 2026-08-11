@@ -54,14 +54,15 @@ test('six recovery classes each expose one explicit bounded action', () => {
   );
 });
 
-test('raw HTTP onboarding is static, explicit, and non-payable', async () => {
+test('raw HTTP onboarding is static, explicit, and reflects current payment availability', async () => {
   const product = await readFile('apps/site/src/product.ts', 'utf8');
   const build = await readFile('apps/site/src/pages/Build.tsx', 'utf8');
   const html = await readFile('apps/site/dist/docs/http/index.html', 'utf8');
   assert.match(product, /curl --fail-with-body/u);
   assert.match(product, /idempotency-key: clervo_example_0001/u);
   assert.match(product, /127\.0\.0\.1:8080/u);
-  assert.match(build, /funding, signing, or settlement is available today/iu);
+  assert.match(build, /Package availability is not endpoint availability/iu);
+  assert.doesNotMatch(build, /funding, signing, or settlement is available today/iu);
   assert.match(html, /Raw HTTP(?:<!-- -->)? client/u);
   assert.match(html, /Public packages verified/iu);
 });

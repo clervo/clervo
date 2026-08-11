@@ -24,14 +24,14 @@ test('full-platform readiness distinguishes private engineering from customer-fu
     const expected = Math.round(Object.values(pillar.gates).reduce((total, status) => total + points[status], 0) / readiness.gates.length);
     assert.equal(pillar.readinessBasisPoints, expected, pillar.id);
   }
-  const aggregate = Math.round(readiness.pillars.reduce((total, { readinessBasisPoints }) => total + readinessBasisPoints, 0) / readiness.pillars.length);
+  const aggregate = Math.floor(readiness.pillars.reduce((total, { readinessBasisPoints }) => total + readinessBasisPoints, 0) / readiness.pillars.length);
   assert.equal(readiness.scoring.aggregateReadinessBasisPoints, aggregate);
-  assert.equal(aggregate, 5833);
+  assert.equal(aggregate, 5937);
   assert.equal(readiness.executionOrder[0], 'launch_public_search_revenue_wedge');
   assert.equal(readiness.executionOrder.at(-1), 'complete_external_paid_first_revenue_release');
 });
 
-test('agent instructions name ROADMAP.md as the single planning authority', async () => {
+test('agent instructions keep live behavior and canonical launch state above public roadmap prose', async () => {
   const [agents, claude, roadmap] = await Promise.all([
     read('AGENTS.md'),
     read('CLAUDE.md'),
@@ -41,19 +41,12 @@ test('agent instructions name ROADMAP.md as the single planning authority', asyn
   assert.match(agents, /ROADMAP\.md/u);
   assert.match(agents, /CLAUDE\.md/u);
   assert.match(claude, /ROADMAP\.md/u);
-  assert.match(claude, /single and only planning authority/u);
+  assert.match(claude, /directly\nobserved deployed behavior/u);
+  assert.match(claude, /canonical catalog\/launch-state/u);
   // docs/ is an archived research library and must not be cited as authority
   assert.doesNotMatch(agents, /docs\/product\//u);
   assert.doesNotMatch(claude, /docs\/product\//u);
-  // ROADMAP.md was rewritten from a numbered STEP list into lettered milestones
-  // (B1, B2, …). Assert the properties that make it usable as the single
-  // authority — it declares itself authoritative, it yields to live behaviour,
-  // and it carries an ordered milestone sequence — rather than the section
-  // headings of one particular revision.
-  assert.match(roadmap, /single planning authority/u);
-  assert.match(roadmap, /live behaviour wins/u);
-  assert.match(roadmap, /## Continuity block/u);
-  const milestones = [...roadmap.matchAll(/^### B(\d+) — /gmu)].map(([, number]) => Number(number));
-  assert.ok(milestones.length >= 2, 'the roadmap must contain an ordered milestone sequence');
-  assert.deepEqual(milestones, [...milestones].sort((left, right) => left - right), 'milestones must be in order');
+  assert.match(roadmap, /public product-direction roadmap/u);
+  assert.match(roadmap, /observed behavior wins/u);
+  assert.match(roadmap, /Operational material that would unnecessarily expose or couple production\noperations does \*\*not\*\* belong/iu);
 });

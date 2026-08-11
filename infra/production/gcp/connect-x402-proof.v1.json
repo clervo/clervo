@@ -1,0 +1,387 @@
+{
+  "schemaVersion": "clervo.connect-x402-proof.v1",
+  "state": "closed",
+  "milestone": "B11",
+  "closedAt": "2026-08-11T13:13:16.318Z",
+  "publicOrigin": "https://api.clervo.dev/",
+  "source": {
+    "authoritativeBranch": "main",
+    "connectSourceCommit": "e4087b0b48ce0e4f9697b35c02eb5d5974b0ec9f",
+    "routerReleaseCommit": "6362d9a65fc5068fc6b467ffe0c71e037b2e4193",
+    "connectPackagesReleaseCommit": "bae9342f9fc5034349c4bbe25a74b368b9da903a",
+    "productionRuntimeReleaseCommit": "802527f49f87b1aa9323c329bf52c07ffce6d659"
+  },
+  "production": {
+    "project": "bloxsniper-prod",
+    "region": "us-central1",
+    "service": "clervo-api-production",
+    "revision": "clervo-api-production-00059-zam",
+    "imageDigest": "sha256:163004dfc3d177c2a8c0871e057dbbef4bf54cb2fb813a79abb5287c6b1a5ed0",
+    "healthReleaseId": "802527f49f87b1aa9323c329bf52c07ffce6d659",
+    "runtimeChangedForB11": false,
+    "runtimeTruth": {
+      "stateBackend": "postgres",
+      "durableState": true,
+      "paidExecutionEnabled": true,
+      "aiPaidEnabled": true,
+      "predictionPaidEnabled": true,
+      "cryptoPaidEnabled": true,
+      "rpcPaidEnabled": false
+    }
+  },
+  "packages": [
+    {
+      "name": "@clervo/router",
+      "registry": "npm",
+      "version": "0.3.1",
+      "integrity": "sha512-KDwoQJhl+w/hgvGCcmKxbJAn1AuCToQMecqghnw9kEDbdNebKfELMJI0Gncf6O0CKwJTqAcg7CLXjeeuiQlrdg==",
+      "shasum": "b1f10180d7096441e742072bf9877631a12a4f59",
+      "publishRun": "https://github.com/clervo/clervo/actions/runs/31490120955",
+      "provenance": "slsa_v1_verified"
+    },
+    {
+      "name": "@clervo/sdk",
+      "registry": "npm",
+      "version": "0.5.2",
+      "integrity": "sha512-GiKLl50J0otpXivPD0X+oB9FXIuSe4S6B1MZVarAi/0p/ZVryc2YOBlVmCWZX4MNfRS2wgdfyEahaubjHkaesw==",
+      "shasum": "5b48bbe6cef23e26f397b172ef0f291689a61935",
+      "publishRun": "https://github.com/clervo/clervo/actions/runs/31490359812",
+      "provenance": "slsa_v1_verified"
+    },
+    {
+      "name": "@clervo/mcp",
+      "registry": "npm",
+      "version": "0.5.2",
+      "integrity": "sha512-Y+GCeJCVOqSg9hDSpDm9uf6si2pas1+tUhTiOylC6sPE7E8m/f4EfP2gP0Dl4hTTdBRsnOEjgmwsEmMZ1ie80Q==",
+      "shasum": "82b73c08e0a1af9a0f31ed1e26f0c85c78722ece",
+      "publishRun": "https://github.com/clervo/clervo/actions/runs/31490359812",
+      "provenance": "slsa_v1_verified"
+    },
+    {
+      "name": "clervo-sdk",
+      "registry": "pypi",
+      "version": "0.4.2",
+      "wheelSha256": "d6741b241c4e4bc60b1d30d5589612a076bb3333eefe439d8730c056e9655cda",
+      "sdistSha256": "da013f2018314560f67c914846e63505384ca25b6aff3f9eb2d426a33afa7f3a",
+      "publishRun": "https://github.com/clervo/clervo/actions/runs/31490359812",
+      "provenance": "pypi_trusted_publisher_verified"
+    }
+  ],
+  "distribution": {
+    "mcpRegistry": {
+      "name": "io.github.clervo/connect",
+      "version": "0.5.2",
+      "registryPackage": "@clervo/mcp@0.5.2",
+      "transport": "stdio",
+      "observedPublishedAt": "2026-08-11T12:17:23Z",
+      "active": true
+    },
+    "documentation": {
+      "public": true,
+      "routes": [
+        "/docs/quickstart/",
+        "/docs/typescript/",
+        "/docs/python/",
+        "/docs/mcp/",
+        "/docs/x402/",
+        "/docs/receipts/",
+        "/docs/replay/",
+        "/docs/failures/"
+      ]
+    },
+    "wellKnownMcpVersion": "0.5.2"
+  },
+  "cleanMachine": {
+    "sourceTreeConsumed": false,
+    "root": "/workspace/clervo-b11-proof-private.cAEJne",
+    "registryOnly": true,
+    "installed": {
+      "router": "0.3.1",
+      "typescriptSdk": "0.5.2",
+      "mcp": "0.5.2",
+      "pythonSdk": "0.4.2",
+      "openAiClient": "7.4.0"
+    },
+    "freeFirst": {
+      "walletBefore": false,
+      "usefulResult": true,
+      "walletAfter": false,
+      "fundingRequired": false,
+      "paymentAuthorizationCreated": false,
+      "operationId": "op_d840e0212520b67ba475c0b9d36b8a38"
+    },
+    "walletCreatedWithPublishedRouter": true,
+    "sameWalletAcrossSurfaces": true,
+    "surfaces": [
+      "router_cli",
+      "mcp",
+      "typescript_sdk",
+      "python_sdk",
+      "openai_proxy"
+    ],
+    "openAiCompatibility": {
+      "modelsEndpoint": true,
+      "nonStreaming": true,
+      "sseStreaming": true,
+      "standardClientSourceModified": false,
+      "onlyBaseUrlAndPlaceholderKeyConfigured": true
+    }
+  },
+  "wallet": {
+    "address": "0x08B5C1acd0bD572CcfEc9536ecA1d518d4C62184",
+    "network": "eip155:8453",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "decimals": 6,
+    "permissions": "0600",
+    "directoryPermissions": "0700",
+    "funding": {
+      "source": "0x1ada6E2EACb799f16bfC1A395c06D7fb52369207",
+      "transactionHash": "0x0ed0c8eeaae8eb061e995dc264d80331e317a376847121c6180eeceec102205a",
+      "blockNumber": 49831474,
+      "amountAtomic": "5000",
+      "destinationBalanceAfterAtomic": "5000"
+    },
+    "startingProofBalanceAtomic": "5000",
+    "endingProofBalanceAtomic": "0",
+    "privateKeyRetainedLocally": true,
+    "privateKeyLogged": false,
+    "recoveryPhraseLogged": false
+  },
+  "spendControls": {
+    "perOperationAtomic": "2000",
+    "dailyAtomic": "5000",
+    "settledTodayAtomic": "5000",
+    "unreconciledCount": 0,
+    "limitRefusal": {
+      "surface": "mcp",
+      "idempotencyKey": "b11_final_limit_refusal_01",
+      "code": "spend_limit_per_operation_exceeded",
+      "authorizationCreated": false,
+      "operationRecordsBefore": 5,
+      "operationRecordsAfter": 5
+    }
+  },
+  "commerce": {
+    "network": "eip155:8453",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+    "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",
+    "maximumApprovedAtomic": "5000",
+    "paymentEffects": 3,
+    "automaticBlindRetry": false
+  },
+  "operations": [
+    {
+      "surface": "mcp",
+      "package": "@clervo/mcp@0.5.2",
+      "productId": "prediction.markets",
+      "idempotencyKey": "b11_mcp_paid_final_01",
+      "operationId": "op_9d1d5eec52199d3c5fecd5517a3d8427",
+      "requestHash": "sha256:eb7fdeaf759df4d913caa900708085dc6530536b6347787f1e493cc6d0f685a1",
+      "resultHash": "sha256:0eb0ec659a6a6d8de62b6f7f8d0a8a99cea3fad3338563f2b307165a1d3e2c95",
+      "receiptId": "rcpt_2f9ff416afc8b65ccfebda239c1b80b7",
+      "receiptHash": "sha256:10d4dcaabac263549710d54c94e5249f21dd4784202dec61b47d1ee2bc9203f7",
+      "settlementReferenceHash": "sha256:80a86e2cc0eeb8586dc7a766591c15925bda23e4b6530354e7328d0ed3d4aa04",
+      "transactionHash": "0x77738a107da22ab1e9be485d53aa53ac84ebf955615cbf1c255e2f7fceec2f62",
+      "blockNumber": 49831589,
+      "logIndex": 26,
+      "customerChargeAtomic": "2000",
+      "supplierCostAtomic": "0",
+      "usefulResult": {
+        "kind": "markets",
+        "marketCount": 3,
+        "adapterId": "adapter_prediction.pdata_rest"
+      },
+      "replay": {
+        "sameOperation": true,
+        "sameReceipt": true,
+        "sameResult": true,
+        "paymentHeaderSent": false,
+        "secondAuthorization": false,
+        "secondSettlement": false,
+        "secondCharge": false
+      }
+    },
+    {
+      "surface": "typescript",
+      "package": "@clervo/sdk@0.5.2",
+      "productId": "crypto.wallet.balances",
+      "idempotencyKey": "b11_sdk_reconcile_final_01",
+      "operationId": "op_cbd205843b945cc136652ac0fcb19285",
+      "requestHash": "sha256:1c857e3085c715c3a749e0267bca60030892420efa1e68eb60a91f77fb81bc77",
+      "resultHash": "sha256:392b02930e17aa01a9ea7ddb2f0d78833b980fb68bca229497171142737d09ad",
+      "receiptId": "rcpt_d4d46c6e0793cf150cbc300008fb1d02",
+      "receiptHash": "sha256:2d45101f5dd8728fddfdf0ab02b3389188e0a0e947c90885c75f6641544bf166",
+      "settlementReferenceHash": "sha256:8c56e82163292402f99de2c3eea2e753852f074afb898a42990dc7a648bbb5b3",
+      "transactionHash": "0xff4c9f6aa824b8a81c0209ba6bbe6bbc3865b9c794f7ad2da4a444ec63944578",
+      "blockNumber": 49831616,
+      "logIndex": 337,
+      "customerChargeAtomic": "2000",
+      "supplierCostAtomic": "0",
+      "usefulResult": {
+        "kind": "balances",
+        "state": "available",
+        "servedChains": ["eip155:8453"],
+        "adapterId": "adapter_crypto.blockscout_value_added"
+      },
+      "replay": {
+        "sameOperation": true,
+        "sameReceipt": true,
+        "sameResult": true,
+        "paymentHeaderSent": false,
+        "secondAuthorization": false,
+        "secondSettlement": false,
+        "secondCharge": false
+      }
+    },
+    {
+      "surface": "openai",
+      "package": "@clervo/router@0.3.1",
+      "compatibilityClient": "openai@7.4.0",
+      "productId": "ai.chat",
+      "idempotencyKey": "b11_openai_paid_final_02",
+      "operationId": "op_80634441d452f7252a76300446a6517d",
+      "requestHash": "sha256:6247a35abfe7ffa4aa89585cdb832f70e78db2c25bf5dba5d417a575fc02cd5b",
+      "resultHash": "sha256:32c5cdf10098118afe2d5a7de144d3cc616ae73a65344f30ad726a6466a45e2b",
+      "receiptId": "rcpt_59243cf1f7be91f8c00354af131d4310",
+      "receiptHash": "sha256:47747bd42ba690b293cecfeb6b9a07878dbf0a7b12d15422b7e2026dc061da55",
+      "settlementReferenceHash": "sha256:040e1f97b7368916f2544995685700cc50216836a9ae95b7c5094b0bb4905a69",
+      "transactionHash": "0xb39ac4856c4af6e903e8169c33bcb76f4f4b90ef7ad3ae0869309f1bfd9f1553",
+      "blockNumber": 49831750,
+      "logIndex": 413,
+      "customerChargeAtomic": "1000",
+      "supplierCostAtomic": "0",
+      "usefulResult": {
+        "kind": "chat",
+        "model": "clervo/gpt-5.6-luna",
+        "exactModelId": "clervo/gpt-5.6-luna",
+        "canonicalModelSubstituted": false,
+        "content": "Clervo Connect paid proxy works."
+      },
+      "nonStreaming": true,
+      "sseStreaming": {
+        "chunks": 3,
+        "contentMatched": true
+      },
+      "replay": {
+        "sameOperation": true,
+        "sameReceipt": true,
+        "sameResult": true,
+        "paymentHeaderSent": false,
+        "secondAuthorization": false,
+        "secondSettlement": false,
+        "secondCharge": false
+      }
+    }
+  ],
+  "reconciliation": {
+    "settledResponseLoss": {
+      "surface": "typescript",
+      "idempotencyKey": "b11_sdk_reconcile_final_01",
+      "observedState": "settlement_unknown",
+      "retryAttempted": false,
+      "retrievalPaymentHeaderSent": false,
+      "resolved": "settled",
+      "sameOperation": true,
+      "sameReceipt": true,
+      "secondSettlement": false
+    },
+    "sharedFreeze": {
+      "idempotencyKey": "b11_freeze_no_send_final_01",
+      "authorizationCreated": true,
+      "authorizationSent": false,
+      "settlementEffect": false,
+      "observedState": "unknown",
+      "blockedSurfaces": [
+        "router_cli",
+        "mcp",
+        "typescript_sdk",
+        "python_sdk",
+        "openai_proxy"
+      ],
+      "commonCode": "unreconciled_operation_blocks_spend",
+      "retrievalPaymentHeaderSent": false,
+      "resolved": "not_settled",
+      "chargedAtomic": "0",
+      "unreconciledAfter": 0
+    }
+  },
+  "accounting": {
+    "payerBeforeAtomic": "5000",
+    "payerAfterAtomic": "0",
+    "payerDeltaAtomic": "-5000",
+    "receiverBeforeAtomic": "81500",
+    "receiverAfterAtomic": "86500",
+    "receiverDeltaAtomic": "5000",
+    "localSettledAtomic": "5000",
+    "durableSettlementAtomic": "5000",
+    "chainTransferAtomic": "5000",
+    "chainTransferCount": 3,
+    "exactTransferPerTransaction": true,
+    "duplicateCharges": 0,
+    "unexplainedEffectsAtomic": "0",
+    "localUsage": {
+      "calls": 9,
+      "free": 5,
+      "paid": 4,
+      "authorizedAtomic": "6000",
+      "settledAtomic": "5000",
+      "currentDaySpendAtomic": "5000",
+      "unreconciledCount": 0,
+      "authorizationDifferenceExplanation": "one 1000-atomic freeze-probe authorization was stopped before network send and reconciled as not settled"
+    },
+    "durableReconciliation": {
+      "execution": "clervo-b11-connect-reconcile-20260811-r99jx",
+      "verifiedAt": "2026-08-11T13:13:16.318Z",
+      "databaseIdentityVerified": true,
+      "operationRows": 3,
+      "accountingRows": 3,
+      "receiverLedgerEntryCount": 15,
+      "receiverLedgerHeadHash": "sha256:14f9242f311b3f1fd057c6674f07ea2f3d00620e96b7d78dcc7afaecb30e2c3e",
+      "receiverLedgerChainValid": true,
+      "receiverLedgerBalanced": true,
+      "ambiguousOperations": 0,
+      "readOnly": true,
+      "paymentEffects": 0,
+      "temporaryJobRemoved": true
+    }
+  },
+  "proofWorker": {
+    "temporaryFundingVersion": "b2e93cef-8632-4071-ab8f-2308c9c709e2",
+    "retiredVersion": "54afa73d-2847-4c78-900e-7a96b4e5e4f3",
+    "preProofRollbackVersion": "92b99b13-879c-45fa-a101-6f5f7ee650f3",
+    "fundingRouteRetired": true,
+    "cacheBustedRouteStatus": 404,
+    "staleUnversionedAssetGuardedByNonzeroDestination": true
+  },
+  "gates": {
+    "fullRepositoryTests": { "status": "passed", "tests": 319, "failed": 0, "skipped": 0 },
+    "fullContractSuite": { "status": "passed", "tests": 816, "failed": 0, "skipped": 0 },
+    "closureEvidenceTests": { "status": "passed", "tests": 4, "failed": 0, "skipped": 0 },
+    "lint": { "status": "passed", "files": 745 },
+    "contracts": { "status": "passed", "schemas": 99, "fixtures": 135 },
+    "releaseFreeze": { "status": "passed", "schemas": 94, "examples": 130, "operations": 31 },
+    "b11Focused": { "status": "passed", "nodeTests": 11, "pythonTests": 10 },
+    "siteBuild": { "status": "passed", "staticRoutes": 33 },
+    "publishedPackageVerification": { "status": "passed" },
+    "cleanNpmConsumer": { "status": "passed" },
+    "cleanPyPiConsumer": { "status": "passed" },
+    "mcpPublishedStart": { "status": "passed" },
+    "secretScan": { "status": "passed" }
+  },
+  "rollback": {
+    "backendRuntime": "clervo-api-production-00055-mij",
+    "apiEdgeVersion": "cc31f76c-947f-412f-8ba4-b104062e9155",
+    "siteVersion": "9e8c7745-a14a-4ddd-99d7-46ff2de3f0a3",
+    "proofWorkerVersion": "92b99b13-879c-45fa-a101-6f5f7ee650f3"
+  },
+  "proofClassification": {
+    "level": "paid_outcome_verified",
+    "ownerFunded": true,
+    "commercialMechanismVerified": true,
+    "revenueEvidence": false,
+    "demandEvidence": false,
+    "unrelatedCustomerEvidence": false
+  },
+  "continuation": "B12"
+}

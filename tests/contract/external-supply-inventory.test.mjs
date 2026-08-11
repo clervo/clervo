@@ -86,7 +86,7 @@ test('external supply inventory is strict, redacted, commercial, and failover-aw
   assert.equal(/(?:sk-|ghp_|AIza|Bearer\s|-----BEGIN|api[_-]?key["']?\s*:\s*["'][^"']+)/iu.test(serialized), false);
 });
 
-test('owned search supply has a best primary, independent fallback, positive pricing, and hard no-overage ceilings', async () => {
+test('owned search supply preserves qualified and sellable routes, independent fallback, positive pricing, and hard no-overage ceilings', async () => {
   const pricing = await json('packages/catalog/search-supply-pricing.v1.json');
   const schema = await json('packages/contracts/schemas/search-supply-pricing.schema.json');
   const evidence = await json('docs/evidence/supply-foundation/serper-qualification.v1.json');
@@ -95,10 +95,11 @@ test('owned search supply has a best primary, independent fallback, positive pri
   addFormats(ajv);
   const validate = ajv.compile(schema);
   assert.equal(validate(pricing), true, ajv.errorsText(validate.errors));
-  assert.equal(pricing.routes.length, 2);
+  assert.equal(pricing.routes.length, 4);
   assert.ok(pricing.routes.every(({ customerPriceMicrousd }) => customerPriceMicrousd > 0));
   assert.equal(pricing.routes[0].customerPriceMicrousd, 1000);
-  assert.ok(pricing.routes.every(({ listingStatus, fallbackStatus }) => listingStatus === 'qualified_adapter_ready' && fallbackStatus === 'independent_fallback_ready'));
+  assert.deepEqual(new Set(pricing.routes.map(({ listingStatus }) => listingStatus)), new Set(['qualified_adapter_ready', 'sellable_preview']));
+  assert.ok(pricing.routes.every(({ fallbackStatus }) => fallbackStatus === 'independent_fallback_ready'));
   assert.ok(pricing.routes.every(({ allowance }) => allowance.automaticPaidOverageAllowed === false && allowance.hardCallCeiling > 0));
   assert.equal(pricing.policy.singleAccountOnly, true);
   assert.equal(evidence.externalCalls, 5);
@@ -373,9 +374,9 @@ test('final supply matrix covers every priced asset, preserves provider secrecy,
   assert.equal(validate(matrix), true, ajv.errorsText(validate.errors));
   assert.deepEqual(matrix.policy, { providerNamesPublic: false, exactModelSubstitutionAllowed: false, automaticPaidOverageAllowed: false, customerFreeByDefault: false, pricingIsReferencedNotDuplicated: true });
   assert.equal(matrix.catalogCoverage.length, 13);
-  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.assetCount, 0), 797);
-  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.positiveCustomerPriceCount, 0), 797);
-  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 30);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.assetCount, 0), 800);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.positiveCustomerPriceCount, 0), 800);
+  assert.equal(matrix.catalogCoverage.reduce((sum, row) => sum + row.sellableCount, 0), 33);
   assert.equal(new Set(matrix.capabilities.map(({ capabilityId }) => capabilityId)).size, matrix.capabilities.length);
   assert.ok(matrix.capabilities.every(({ publicAssets, pricingCatalogs, healthMethod, secretLocations, replacementPlan }) => publicAssets.length > 0 && pricingCatalogs.length > 0 && healthMethod.length > 0 && secretLocations.length > 0 && replacementPlan.length > 12));
   assert.ok(matrix.capabilities.every(({ publicAssets }) => publicAssets.every((asset) => !asset.startsWith('@cf/') && !/^(?:openai|qwen)\//u.test(asset))));

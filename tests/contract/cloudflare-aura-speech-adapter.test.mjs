@@ -44,7 +44,7 @@ test('Cloudflare Aura binds one immutable model endpoint and stores validated MP
   assert.equal(sent.headers.authorization, 'Bearer opaque-cloudflare-test-token');
   assert.deepEqual(JSON.parse(new TextDecoder().decode(sent.body)), { text: phrase, speaker: 'thalia', encoding: 'mp3' });
   assert.equal(result.modelIdentity, '@cf/deepgram/aura-2-en');
-  assert.deepEqual(result.usage, { inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: phrase.length });
+  assert.deepEqual(result.usage, { inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: phrase.length, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 });
   assert.deepEqual(result.output.artifact, { artifactUri: 'artifact://ai/speech/cloudflare-aura-0001', sha256: hash, mimeType: 'audio/mpeg', bytes: audio.length });
 });
 

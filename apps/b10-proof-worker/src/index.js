@@ -56,6 +56,13 @@ function isRetiredB6Path(pathname) {
     pathname === '/proof-assets/b6-router-fund.js';
 }
 
+function isRetiredB11FundingPath(pathname) {
+  return pathname === '/proof/b11-connect-fund' ||
+    pathname === '/proof/b11-connect-fund/' ||
+    pathname === '/proof/b11-connect-fund/index.html' ||
+    pathname === '/proof-assets/b11-connect-fund.js';
+}
+
 function paymentPayer(value) {
   try {
     const decoded = JSON.parse(atob(value));
@@ -78,6 +85,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (isRetiredB6Path(url.pathname)) return new Response('Not found', { status: 404 });
+    if (isRetiredB11FundingPath(url.pathname)) return new Response('Not found', { status: 404 });
     const prefix = basePath(url.pathname);
     const value = profile(url.pathname);
     if (prefix === undefined || value === undefined) return env.ASSETS.fetch(request);

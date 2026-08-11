@@ -4,7 +4,7 @@ import test from 'node:test';
 import { VertexGeminiAdapter } from '../../dist/adapters/ai/src/vertex-gemini.js';
 import { AI_EXECUTION_REQUEST_SCHEMA_VERSION, CONTRACT_VERSION } from '../../dist/packages/contracts/src/index.js';
 
-const zeroUsage = { inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: 0 };
+const zeroUsage = { inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: 0, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 };
 
 function request(productId, requestedModel, input, usageBounds) {
   return {
@@ -60,7 +60,7 @@ test('Vertex chat binds the fixed endpoint, exact identity, JSON mode, and nativ
   const req = request('ai.chat', 'gemini-3.6-flash', { kind: 'chat', messages: [{ role: 'system', content: 'Be exact.' }, { role: 'user', content: 'Return 42.' }], responseFormat: 'json_object', stream: false }, { ...zeroUsage, inputTokens: 100, outputTokens: 100, reasoningTokens: 100 });
   const result = await adapter.execute({ request: req, exactModelId: 'gemini-3.6-flash', signal: AbortSignal.timeout(1_000) });
   assert.equal(result.modelIdentity, 'gemini-3.6-flash');
-  assert.deepEqual(result.usage, { inputTokens: 7, cachedInputTokens: 2, outputTokens: 4, reasoningTokens: 3, images: 0, audioCharacters: 0 });
+  assert.deepEqual(result.usage, { inputTokens: 7, cachedInputTokens: 2, outputTokens: 4, reasoningTokens: 3, images: 0, audioCharacters: 0, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 });
   assert.deepEqual(result.output, { kind: 'chat', content: '{"answer":42}', finishReason: 'stop' });
   assert.equal(payload.generationConfig.responseMimeType, 'application/json');
   assert.equal(payload.systemInstruction.parts[0].text.includes('Be exact.'), true);

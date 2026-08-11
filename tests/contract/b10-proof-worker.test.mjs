@@ -39,7 +39,7 @@ test('B10 hosted proof pins the payer, facilitator, proxy boundary, and reconcil
   });
 });
 
-test('B10 hosted proof retires only the temporary B6 funding assets', async () => {
+test('hosted proof retires the completed B6 and B11 funding assets', async () => {
   let assetCalls = 0;
   const environment = { ASSETS: { fetch: async () => {
     assetCalls += 1;
@@ -48,10 +48,14 @@ test('B10 hosted proof retires only the temporary B6 funding assets', async () =
   const page = await worker.fetch(new Request('https://clervo.dev/proof/b10-search/'), environment);
   const retiredPage = await worker.fetch(new Request('https://clervo.dev/proof/b6-router-fund/'), environment);
   const retiredScript = await worker.fetch(new Request('https://clervo.dev/proof-assets/b6-router-fund.js'), environment);
+  const retiredB11Page = await worker.fetch(new Request('https://clervo.dev/proof/b11-connect-fund/'), environment);
+  const retiredB11Script = await worker.fetch(new Request('https://clervo.dev/proof-assets/b11-connect-fund.js'), environment);
   assert.equal(page.status, 200);
   assert.equal(await page.text(), 'preserved');
   assert.equal(retiredPage.status, 404);
   assert.equal(retiredScript.status, 404);
+  assert.equal(retiredB11Page.status, 404);
+  assert.equal(retiredB11Script.status, 404);
   assert.equal(assetCalls, 1);
 });
 

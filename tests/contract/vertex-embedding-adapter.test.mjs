@@ -37,7 +37,7 @@ test('Vertex embedding uses a fixed publisher endpoint, disables truncation, pre
   assert.ok(seen.every(({ url }) => new URL(url).hostname === 'us-central1-aiplatform.googleapis.com' && url.endsWith('/gemini-embedding-001:predict')));
   assert.deepEqual(seen.map(({ body }) => JSON.parse(new TextDecoder().decode(body))), inputs.map((content) => ({ instances: [{ content }], parameters: { autoTruncate: false, outputDimensionality: 3 } })));
   assert.equal(result.modelIdentity, 'gemini-embedding-001');
-  assert.deepEqual(result.usage, { inputTokens: 8, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: 0 });
+  assert.deepEqual(result.usage, { inputTokens: 8, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: 0, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 });
   assert.deepEqual(result.output.vectors, [{ index: 0, embedding: [0.1, 0.2, 0.3] }, { index: 1, embedding: [0.4, 0.5, 0.6] }]);
 });
 

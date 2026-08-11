@@ -46,7 +46,7 @@ test('Deepgram speech binds exact voice, opts out of model improvement, validate
   assert.equal(sent.headers.authorization, 'Token opaque-deepgram-test-key');
   assert.deepEqual(JSON.parse(new TextDecoder().decode(sent.body)), { text: phrase });
   assert.equal(result.modelIdentity, 'aura-2-thalia-en');
-  assert.deepEqual(result.usage, { inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: phrase.length });
+  assert.deepEqual(result.usage, { inputTokens: 0, cachedInputTokens: 0, outputTokens: 0, reasoningTokens: 0, images: 0, audioCharacters: phrase.length, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 });
   assert.deepEqual(result.output.artifact, { artifactUri: 'artifact://ai/speech/deepgram-0001', sha256: hash, mimeType: 'audio/wav', bytes: bytes.length });
 });
 

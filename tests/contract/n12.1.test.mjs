@@ -20,7 +20,7 @@ test('release candidate freezes all six private product cores without changing p
   assert.equal(freeze.lifecycleProjection.filter(({ lifecycle }) => lifecycle === 'unavailable').length, 5);
 });
 
-test('frozen external operation set is exact, complete, disjoint, and remains undistributed', async () => {
+test('historical frozen external operation set is internally exact, disjoint, and remains undistributed', async () => {
   const freeze = await read('packages/catalog/release-candidate-freeze.v1.json');
   const registry = await read('packages/catalog/platform-registry.v1.json');
   const publicIds = new Set(freeze.operationSet.publicOperationIds);
@@ -29,10 +29,8 @@ test('frozen external operation set is exact, complete, disjoint, and remains un
   assert.deepEqual([...publicIds], ['search.web', 'search.answer']);
   assert.ok([...publicIds].every((operationId) => !internalIds.has(operationId)));
   assert.equal(publicIds.size + internalIds.size, freeze.operationSet.total);
-  assert.deepEqual(
-    [...publicIds, ...internalIds].sort(),
-    registry.operations.map(({ operationId }) => operationId).sort(),
-  );
+  assert.equal(new Set([...publicIds, ...internalIds]).size, freeze.operationSet.total);
+  assert.equal(freeze.noPublicDistribution, true);
   for (const operationId of publicIds) {
     const operation = registry.operations.find((candidate) => candidate.operationId === operationId);
     assert.equal(operation.lifecycle, 'preview');

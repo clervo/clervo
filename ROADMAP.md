@@ -47,10 +47,23 @@ here.
 | Secure Sandbox | Publicly callable bounded one-shot execution with owner-funded paid-outcome proof; current release is intentionally single-node |
 | Prediction Intelligence | Publicly callable paid outcomes have been verified with owner-funded production proof |
 | Crypto Intelligence | Publicly callable paid outcomes have been verified for Ethereum and Base |
+| Clervo Connect | Published Router CLI, MCP, TypeScript, Python, and local OpenAI-compatible proxy share one local wallet and commerce core; clean-machine owner-funded production proof is closed |
 | Multi-chain RPC | Private core qualified; public availability remains blocked pending commercial-rights and lifecycle requirements |
 
 Owner-funded production proof demonstrates bounded technical behavior. It is
 **not** evidence of customer revenue, market demand, or unrelated-customer use.
+
+### Delivered milestone: Clervo Connect v1 (B11) — CLOSED
+
+The externally proven customer release consists of `@clervo/router@0.3.1`,
+`@clervo/mcp@0.5.2`, `@clervo/sdk@0.5.2`, and `clervo-sdk==0.4.2`. Registry-only
+clean-machine acceptance verified free-first use, one shared local wallet,
+buyer-side spend limits, MCP, TypeScript, Python, and OpenAI-compatible access,
+idempotent replay, and shared fail-closed reconciliation. The bounded proof made
+exactly three owner-funded production payment effects totaling 0.005000 USDC.
+That is engineering and commercial-path proof, not customer revenue or demand.
+
+Continuation: B12.
 
 ## Roadmap themes
 
