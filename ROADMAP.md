@@ -63,7 +63,22 @@ idempotent replay, and shared fail-closed reconciliation. The bounded proof made
 exactly three owner-funded production payment effects totaling 0.005000 USDC.
 That is engineering and commercial-path proof, not customer revenue or demand.
 
-Continuation: B12.
+Continuation: B13.
+
+### Delivered milestone: Clervo final website / distribution launch (B12) — CLOSED
+
+The final public Clervo experience is deployed at <https://clervo.dev> with
+the held B12 visual direction preserved and surgically completed across the
+homepage, product families, model catalog, generated model pages, B11 customer
+interfaces, proof surfaces, documentation, status, trust, and responsive
+templates. The site is generated from the canonical catalog and launch-state,
+ships a consistent Hollow Apex identity pack, and exposes sitemap, robots,
+schema, OpenGraph, llms, RSS, MCP, and x402 discovery surfaces. Current model
+inventory and availability remain generated facts rather than frozen roadmap
+copy. Detailed release evidence is recorded outside this public direction
+document.
+
+Continuation: B13.
 
 ### Planned milestone: 10,000-Wallet Connect Scale Qualification (B15)
 
