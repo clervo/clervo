@@ -30,6 +30,7 @@ test('public AI request normalization derives conservative bounded usage and a s
   const normalized = normalizeAiHttpRequest(source);
   assert.equal(normalized.productId, 'ai.chat');
   assert.equal(normalized.usageBounds.inputTokens, AI_CHAT_INPUT_ENVELOPE_TOKENS + 12);
+  assert.ok(AI_CHAT_INPUT_ENVELOPE_TOKENS >= 8_192, 'gateway-owned prompt overhead must be reserved before quoting');
   assert.equal(normalized.usageBounds.outputTokens, 500);
   assert.equal(normalized.usageBounds.reasoningTokens, 500);
   assert.match(aiHttpRequestHash(normalized), /^sha256:[a-f0-9]{64}$/u);

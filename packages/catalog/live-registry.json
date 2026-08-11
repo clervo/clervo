@@ -929,7 +929,7 @@
         "aliasRepresentativeStatus": null,
         "freeRepresentative": true,
         "freeRepresentativeAccepted": true,
-        "freeRepresentativeStatus": 200,
+        "freeRepresentativeStatus": 429,
         "paidRepresentative": false,
         "paidRepresentativeStatus": 402,
         "publicCatalogContractMatched": true,
@@ -2861,8 +2861,8 @@
       "conformant": true,
       "expectation": "free search accepts a valid request without a caller-supplied idempotency-key; success still depends on quota",
       "id": "api.search_free_accepts_naive_request",
-      "observedCode": "free_quota_exceeded",
-      "observedStatus": 429,
+      "observedCode": null,
+      "observedStatus": 200,
       "url": "https://api.clervo.dev/v1/search/free"
     },
     {
@@ -2878,7 +2878,7 @@
     "apiOrigin": "https://api.clervo.dev",
     "environment": "production",
     "paidExecutionEnabled": true,
-    "releaseId": "fa9570d898cac044f3a9326a2186dbf68e49fe34",
+    "releaseId": "763601c4688fd9b2e3eedb4c7829b4586b329368",
     "sandboxPaidEnabled": true,
     "siteOrigin": "https://clervo.dev",
     "stateBackend": "postgres",
@@ -2928,7 +2928,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-11T22:58:57.000Z",
+  "observedAt": "2026-08-11T23:08:33.338Z",
   "products": [
     {
       "evidence": {
@@ -2969,7 +2969,7 @@
         "accepted": true,
         "acceptsRequestWithoutPayment": true,
         "modelId": "clervo/gemma-4-26b-a4b-it",
-        "observedStatus": 200,
+        "observedStatus": 429,
         "route": "https://api.clervo.dev/v1/ai/execute"
       },
       "id": "ai",
@@ -3000,12 +3000,23 @@
     },
     {
       "evidence": {
-        "edgeAttempts": 2,
+        "edgeAttempts": 1,
         "edgeCode": null,
         "edgeStatus": 402,
         "paidOutcome": {
-          "accepted": false,
-          "reason": "paid_proof_invariant_failed"
+          "accepted": true,
+          "demandEvidence": false,
+          "externallyRepeated": false,
+          "operationCount": 2,
+          "ownerFunded": true,
+          "proofLevel": "paid_outcome_verified",
+          "reason": null,
+          "releaseCommit": "671d369601e26ab7491b8fd5232e7d2942f05c51",
+          "replayNoSecondChargeCount": 2,
+          "revenueEvidence": false,
+          "source": "infra/production/gcp/crypto-x402-proof.v1.json",
+          "totalChargeAtomic": "7000",
+          "usefulResultCount": 2
         },
         "probed": true
       },
@@ -3029,7 +3040,7 @@
         "crypto.wallet.tokens",
         "crypto.wallet.transactions"
       ],
-      "proof": "quote_observed_unpaid",
+      "proof": "paid_outcome_verified",
       "publiclyReachable": true,
       "reason": null,
       "state": "live"
@@ -3173,11 +3184,11 @@
       "expectedReturnAt": null,
       "freeEntry": {
         "acceptsNaiveRequest": true,
-        "freeOutcomeObserved": false,
+        "freeOutcomeObserved": true,
         "naiveRejectionCode": null,
         "route": "https://api.clervo.dev/v1/search/free",
-        "withIdempotencyKeyStatus": 429,
-        "withoutIdempotencyKeyStatus": 429
+        "withIdempotencyKeyStatus": 200,
+        "withoutIdempotencyKeyStatus": 200
       },
       "id": "search",
       "label": "Research",
@@ -3211,7 +3222,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "1934dfd1dda400bbf7e77187041a645f5354ea7b",
+  "sourceCommit": "763601c4688fd9b2e3eedb4c7829b4586b329368",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",

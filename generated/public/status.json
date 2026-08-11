@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-11T22:58:57.000Z",
+  "observedAt": "2026-08-11T23:08:33.338Z",
   "publicApi": {
     "state": "public_search_ai_sandbox_prediction_and_crypto_verified",
     "endpoint": "https://api.clervo.dev",
@@ -66,8 +66,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T22:58:57.000Z",
-      "releaseId": "fa9570d898cac044f3a9326a2186dbf68e49fe34",
+      "observedAt": "2026-08-11T23:08:33.338Z",
+      "releaseId": "763601c4688fd9b2e3eedb4c7829b4586b329368",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -118,7 +118,7 @@
           "crypto.wallet.transactions"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -240,7 +240,7 @@
     {
       "id": "crypto_intelligence",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid",
+      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
