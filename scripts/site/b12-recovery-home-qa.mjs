@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { createServer } from 'node:http';
+import { execFileSync } from 'node:child_process';
 import { mkdir, readFile, rename, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -14,6 +15,7 @@ const output = path.resolve(process.argv.find((value) => value.startsWith('--out
 const captures = path.join(output, 'screenshots');
 const interactions = path.join(output, 'interactions');
 const motion = path.join(output, 'motion');
+const sourceCommit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
 const mime = {
   '.css': 'text/css; charset=utf-8', '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8',
@@ -97,6 +99,13 @@ try {
   const interactionContext = await browser.newContext({ viewport: { width: 1280, height: 900 }, permissions: ['clipboard-read', 'clipboard-write'] });
   const interactionPage = await interactionContext.newPage();
   await interactionPage.goto(`${base}/`, { waitUntil: 'networkidle' });
+  const lifecycleStates = ['request', 'qualify', 'execute', 'verify', 'prove'];
+  for (const [index, lifecycleState] of lifecycleStates.entries()) {
+    await interactionPage.locator('.home-journey button').nth(index).click();
+    assert(await interactionPage.locator('.recovery-home').getAttribute('data-state') === lifecycleState, `lifecycle_direct_state:${lifecycleState}`);
+    await interactionPage.screenshot({ path: path.join(interactions, `lifecycle-${lifecycleState}.png`) });
+  }
+  await interactionPage.locator('.home-journey button').first().click();
   await interactionPage.getByRole('button', { name: 'Trace the contract' }).click();
   await interactionPage.waitForFunction(() => document.querySelector('.recovery-home')?.getAttribute('data-state') === 'prove');
   await interactionPage.screenshot({ path: path.join(interactions, 'lifecycle-proved.png') });
@@ -107,6 +116,8 @@ try {
   assert((await interactionPage.evaluate(() => navigator.clipboard.readText())).startsWith('curl -sS https://api.clervo.dev/'), 'copy_payload_wrong');
   results.interactions.lifecycle = 'PASS_REQUEST_QUALIFY_EXECUTE_VERIFY_PROVE';
   results.interactions.copy = 'PASS_CANONICAL_FREE_CALL';
+  await interactionPage.locator('.site-header__cta').focus();
+  await interactionPage.screenshot({ path: path.join(interactions, 'header-desktop-focus.png') });
   await interactionContext.close();
 
   const reducedContext = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
@@ -127,7 +138,7 @@ try {
     await trigger.tap();
     assert(await page.getByRole('dialog', { name: 'Clervo navigation' }).isVisible(), `mobile_menu_not_open:${width}`);
     await page.screenshot({ path: path.join(interactions, `mobile-${width}-menu.png`) });
-    const close = page.getByRole('button', { name: 'Close menu' });
+    const close = page.locator('.mobile-nav__close');
     assert(await close.evaluate((element) => document.activeElement === element), `mobile_menu_initial_focus:${width}`);
     await page.keyboard.press('Shift+Tab');
     assert(await page.locator('.mobile-nav__cta').evaluate((element) => document.activeElement === element), `mobile_menu_focus_trap:${width}`);
@@ -228,6 +239,7 @@ try {
   const report = {
     schemaVersion: 'clervo.b12-recovery.home-evidence.v1',
     generatedAt: new Date().toISOString(),
+    sourceCommit,
     source: 'production build / 153 prerendered routes',
     ...results,
     consoleErrors: errors,
