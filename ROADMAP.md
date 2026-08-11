@@ -65,6 +65,24 @@ That is engineering and commercial-path proof, not customer revenue or demand.
 
 Continuation: B12.
 
+### Planned milestone: 10,000-Wallet Connect Scale Qualification (B15)
+
+B15 will measure Clervo Connect with 10,000 synthetic, independently generated
+self-custody wallets. The benchmark must report attempted and successful wallet
+counts, the measured success rate, address uniqueness, permission safety,
+free-first behavior, five-surface wallet identity, paid settlement and replay
+results, reconciliation, throughput, latency, resource use, and every terminal
+failure class. It must not describe synthetic wallets as customers, users,
+revenue, adoption, or demand.
+
+Local wallet qualification requires no USDC, ETH, funding, or production calls.
+Any paid-production phase remains separately owner-authorized and progressively
+ramped. Its planning budget, current price basis, facilitator-fee assumptions,
+gas reference, safety gates, and required pre-run revalidation are recorded in
+[`packages/catalog/connect-wallet-scale-benchmark-plan.v1.json`](packages/catalog/connect-wallet-scale-benchmark-plan.v1.json).
+B15 remains planned and unexecuted until canonical evidence records the actual
+numerators, denominators, costs, settlement effects, and accounting result.
+
 ## Roadmap themes
 
 ### Broaden reliable capability coverage
