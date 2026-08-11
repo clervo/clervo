@@ -3011,7 +3011,7 @@
     "apiOrigin": "https://api.clervo.dev",
     "environment": "production",
     "paidExecutionEnabled": true,
-    "releaseId": "802527f49f87b1aa9323c329bf52c07ffce6d659",
+    "releaseId": "0d9307859da94c229eaa2f5e3e96dbb2cc847f1b",
     "sandboxPaidEnabled": true,
     "siteOrigin": "https://clervo.dev",
     "stateBackend": "postgres",
@@ -3061,7 +3061,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-11T18:48:00.042Z",
+  "observedAt": "2026-08-11T19:37:53.830Z",
   "products": [
     {
       "evidence": {
@@ -3074,19 +3074,8 @@
         "freeProbeAccepted": true,
         "freeRepresentativeModel": "clervo/gemma-4-26b-a4b-it",
         "paidOutcome": {
-          "accepted": true,
-          "demandEvidence": false,
-          "externallyRepeated": false,
-          "operationCount": 2,
-          "ownerFunded": true,
-          "proofLevel": "paid_outcome_verified",
-          "reason": null,
-          "releaseCommit": "802527f49f87b1aa9323c329bf52c07ffce6d659",
-          "replayNoSecondChargeCount": 2,
-          "revenueEvidence": false,
-          "source": "infra/production/gcp/ai-x402-proof.v1.json",
-          "totalChargeAtomic": "26500",
-          "usefulResultCount": 2
+          "accepted": false,
+          "reason": "paid_proof_invariant_failed"
         },
         "paidProbeAccepted": true,
         "paidRepresentativeModel": "clervo/allam-2-7b",
@@ -3126,7 +3115,7 @@
         "ai.video",
         "ai.virtual_try_on"
       ],
-      "proof": "paid_outcome_verified",
+      "proof": "quote_observed_unpaid",
       "publiclyReachable": true,
       "reason": null,
       "state": "live"
@@ -3301,8 +3290,8 @@
     }
   ],
   "proofCeiling": {
-    "level": "paid_outcome_verified",
-    "reason": "the live probe itself never pays; paid_outcome_verified additionally requires a settled proof record validated against the current release and current quote; externally_repeated still requires unrelated-customer evidence"
+    "level": "quote_observed_unpaid",
+    "reason": "this prober never pays and no current-release settled proof record was accepted, so it cannot establish a paid or externally repeated proof level"
   },
   "proofLevels": {
     "externally_repeated": "an unrelated party did it, more than once",
@@ -3311,7 +3300,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "ce022d4efb5e9c58a664462d249db573896251c7",
+  "sourceCommit": "0d9307859da94c229eaa2f5e3e96dbb2cc847f1b",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
