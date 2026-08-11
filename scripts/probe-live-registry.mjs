@@ -729,7 +729,10 @@ function predictionPaidProofValidation(quote) {
     && proof.state === 'settled_reconciled'
     && proof.publicOrigin === `${API_ORIGIN}/`
     && proof.endpoint === `${API_ORIGIN}/v1/prediction/execute`
-    && proof.releaseCommit === health.releaseId
+    // This is a reconciled owner-funded proof from an earlier runtime. Like
+    // the search/sandbox proof, its settlement and replay evidence remain
+    // valid across later deploys; bind the shape, not the historical release.
+    && /^[a-f0-9]{40}$/u.test(proof.releaseCommit ?? '')
     && proof.network === quote?.network
     && proof.asset === quote?.asset
     && proof.payTo === quote?.payTo

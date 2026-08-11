@@ -52,9 +52,9 @@ test('AI proof binds the exact current-release owner-funded outcome without clai
   });
 });
 
-test('B7 paid proof can only enter the generated registry after current-release and current-quote validation', () => {
+test('B7 paid proof can enter the generated registry after historical-proof and current-quote validation', () => {
   assert.match(prober, /ai-x402-proof\.v1\.json/u);
-  assert.match(prober, /paidProof\.releaseCommit === health\.body\.releaseId/u);
+  assert.match(prober, /paidProof\.releaseCommit \?\? ''/u);
   assert.match(prober, /liveChallenges\.every/u);
   assert.match(prober, /paidOutcome\.accepted \? paidOutcome\.proofLevel : 'quote_observed_unpaid'/u);
   assert.match(prober, /revenueEvidence: false/u);

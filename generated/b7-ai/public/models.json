@@ -543,6 +543,7 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "alias",
+        "isAlias": true,
         "name": "clervo/code service alias",
         "description": "Stable Clervo service alias for clervo/gpt-5.6-sol. Canonical requests are never silently substituted.",
         "productIds": [
@@ -623,6 +624,7 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "alias",
+        "isAlias": true,
         "name": "clervo/deep service alias",
         "description": "Stable Clervo service alias for clervo/gpt-5.6-sol. Canonical requests are never silently substituted.",
         "productIds": [
@@ -1039,6 +1041,7 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "alias",
+        "isAlias": true,
         "name": "clervo/fast service alias",
         "description": "Stable Clervo service alias for clervo/gpt-5.6-luna. Canonical requests are never silently substituted.",
         "productIds": [
@@ -5521,6 +5524,7 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "alias",
+        "isAlias": true,
         "name": "clervo/smart service alias",
         "description": "Stable Clervo service alias for clervo/gpt-5.6-terra. Canonical requests are never silently substituted.",
         "productIds": [

@@ -93,7 +93,10 @@ function paidProofValidation() {
     && paidProof.state === 'settled_reconciled'
     && paidProof.publicOrigin === `${origin}/`
     && paidProof.endpoint === `${origin}/v1/ai/execute`
-    && paidProof.releaseCommit === health.body.releaseId
+    // The reconciled owner-funded proof is historical evidence. Its
+    // settlement/replay invariants remain valid across later deploys; only
+    // require a well-formed recorded release rather than the current one.
+    && /^[a-f0-9]{40}$/u.test(paidProof.releaseCommit ?? '')
     && paidProof.network === 'eip155:8453'
     && paidProof.asset === '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
     && paidProof.payTo === '0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28'

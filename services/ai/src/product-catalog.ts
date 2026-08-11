@@ -92,6 +92,7 @@ export interface AiInternalProductModel {
 export interface AiPublicProductModel {
   modelId: string;
   identityKind: 'canonical' | 'alias';
+  isAlias?: boolean;
   aliasFor?: string;
   aliasRationale?: string;
   tradeoffs?: string;
@@ -525,6 +526,7 @@ export function createAiPublicModelList(catalog: Readonly<ComposedAiProductCatal
       clervo: {
         ...target,
         identityKind: 'alias' as const,
+        isAlias: true as const,
         aliasFor: modelId,
         aliasRationale: alias === 'clervo/fast'
           ? 'Lowest-latency stable route for short classification, extraction, and generation tasks.'
