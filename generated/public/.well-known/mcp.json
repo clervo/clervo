@@ -8,8 +8,10 @@
   "publicApiBaseUrl": "https://api.clervo.dev",
   "configurationRequired": [],
   "configurationOptional": [
-    "CLERVO_BASE_URL"
+    "CLERVO_BASE_URL",
+    "CLERVO_HOME",
+    "CLERVO_AUTO_PAY"
   ],
-  "paymentSigningImplemented": false,
+  "paymentSigningImplemented": true,
   "automaticPaymentRetry": false
 }

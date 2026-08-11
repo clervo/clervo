@@ -72,8 +72,8 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(mcp.version, '0.5.2');
   assert.equal(mcp.publicApiAvailable, true);
   assert.deepEqual(mcp.configurationRequired, []);
-  assert.deepEqual(mcp.configurationOptional, ['CLERVO_BASE_URL']);
-  assert.equal(mcp.paymentSigningImplemented, false);
+  assert.deepEqual(mcp.configurationOptional, ['CLERVO_BASE_URL', 'CLERVO_HOME', 'CLERVO_AUTO_PAY']);
+  assert.equal(mcp.paymentSigningImplemented, true);
   assert.deepEqual(yaml, openapi);
   assert.ok(openapi.paths['/v1/ai/execute']);
   assert.ok(openapi.paths['/v1/sandbox/execute']);

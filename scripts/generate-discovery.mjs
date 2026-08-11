@@ -836,8 +836,8 @@ await writeFile(path.join(outputDirectory, '.well-known', 'mcp.json'), stableJso
   publicApiAvailable: publicSearch,
   ...(publicSearch ? { publicApiBaseUrl: projection.publicBaseUrl } : {}),
   configurationRequired: [],
-  configurationOptional: ['CLERVO_BASE_URL'],
-  paymentSigningImplemented: false,
+  configurationOptional: ['CLERVO_BASE_URL', 'CLERVO_HOME', 'CLERVO_AUTO_PAY'],
+  paymentSigningImplemented: true,
   automaticPaymentRetry: false,
 }));
 await writeFile(path.join(outputDirectory, '.well-known', 'security.txt'), [
