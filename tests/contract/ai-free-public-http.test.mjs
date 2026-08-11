@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { request as httpRequest } from 'node:http';
 import test from 'node:test';
 import Ajv2020 from 'ajv/dist/2020.js';
 
@@ -73,6 +74,23 @@ test('one AI endpoint executes free models without payment and challenges paid m
   });
   assert.equal(discoveryResponse.status, 402);
   assert.equal(discoveryChallenges.length, 1);
+  const chunkedEmptyStatus = await new Promise((resolve, reject) => {
+    const request = httpRequest(`${origin}/v1/ai/execute`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'transfer-encoding': 'chunked',
+        'x-clervo-edge-authorization': 'Bearer edge-authorization-at-least-32-characters',
+      },
+    }, (response) => {
+      response.resume();
+      response.on('end', () => resolve(response.statusCode));
+    });
+    request.on('error', reject);
+    request.end();
+  });
+  assert.equal(chunkedEmptyStatus, 402);
+  assert.equal(discoveryChallenges.length, 2);
   const [declared] = discoveryChallenges;
   assert.equal(declared.method, 'POST');
   assert.equal(declared.bodyType, 'json');
@@ -95,7 +113,7 @@ test('one AI endpoint executes free models without payment and challenges paid m
   assert.equal(freeResult.fundingMode, 'free');
   assert.equal(freeResult.result.output.content, 'Free useful output.');
   assert.equal(executions, 1);
-  assert.equal(challenges, 1);
+  assert.equal(challenges, 2);
 
   const replay = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers: { ...edgeHeaders, 'idempotency-key': idempotencyKey }, body: freeBody });
   assert.equal(replay.status, 200);
@@ -112,7 +130,7 @@ test('one AI endpoint executes free models without payment and challenges paid m
   assert.equal(paid.status, 402);
   assert.match(paid.headers.get('idempotency-key'), /^srv\.ai\./u);
   assert.ok(BigInt((await paid.json()).quote.maximumCharge.amountAtomic) > 0n);
-  assert.equal(challenges, 2);
+  assert.equal(challenges, 3);
   assert.equal(executions, 1);
 
   const unknown = await fetch(`${origin}/v1/ai/execute`, {
@@ -131,7 +149,7 @@ test('one AI endpoint executes free models without payment and challenges paid m
   assert.equal((await unavailable.json()).code, 'ai_model_unavailable');
   const malformed = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers: edgeHeaders, body: '{}' });
   assert.equal(malformed.status, 400);
-  assert.equal(challenges, 2);
+  assert.equal(challenges, 3);
   assert.equal(executions, 1);
 
   const image = Buffer.from('bounded-test-image').toString('base64');
@@ -141,6 +159,6 @@ test('one AI endpoint executes free models without payment and challenges paid m
   });
   assert.equal(virtualTryOn.status, 402);
   assert.equal((await virtualTryOn.json()).quote.productId, 'ai.virtual_try_on');
-  assert.equal(challenges, 3);
+  assert.equal(challenges, 4);
   assert.equal(executions, 1);
 });

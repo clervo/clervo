@@ -138,13 +138,12 @@ function send(response, status, body, headers = {}, contentType = JSON_TYPE) {
 // therefore consume a caller's own free quota and nothing else.
 const NAIVE_CONTENT_TYPES = new Set(['application/json', 'text/plain', 'application/x-www-form-urlencoded', 'multipart/form-data']);
 
-async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType = false } = {}) {
+async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType = false, allowEmpty = false } = {}) {
   const contentType = request.headers['content-type'];
   const declaredType = typeof contentType === 'string' ? contentType.split(';', 1)[0].trim().toLowerCase() : '';
   const acceptable = acceptNaiveContentType
     ? declaredType === '' || NAIVE_CONTENT_TYPES.has(declaredType)
     : declaredType === 'application/json';
-  if (!acceptable) throw Object.assign(new Error('unsupported_media_type'), { status: 415 });
   const declared = Number(request.headers['content-length']);
   if (Number.isFinite(declared) && declared > maximumBytes) throw Object.assign(new Error('request_body_too_large'), { status: 413 });
   const chunks = [];
@@ -154,6 +153,8 @@ async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES, { acceptN
     if (bytes > maximumBytes) throw Object.assign(new Error('request_body_too_large'), { status: 413 });
     chunks.push(chunk);
   }
+  if (bytes === 0 && allowEmpty) return undefined;
+  if (!acceptable) throw Object.assign(new Error('unsupported_media_type'), { status: 415 });
   try { return JSON.parse(Buffer.concat(chunks).toString('utf8')); } catch { throw Object.assign(new Error('invalid_json'), { status: 400 }); }
 }
 
@@ -472,12 +473,14 @@ export function createSearchServer({
         const observedAt = now();
         const suppliedKey = request.headers['idempotency-key'];
         const authorizationHeader = mppAuthorization(request.headers.authorization);
-        if (typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined && [undefined, '0'].includes(request.headers['content-length']) && request.headers['transfer-encoding'] === undefined) {
+        const discoveryEligible = typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined;
+        const aiBody = await readJson(request, AI_MAX_BODY_BYTES, { allowEmpty: discoveryEligible });
+        if (aiBody === undefined) {
           const challenge = await discoveryPaymentChallenge(AI_PAID_PATH, observedAt);
           send(response, challenge.status, challenge.body, challenge.headers);
           return;
         }
-        const normalized = normalizeAiHttpRequest(await readJson(request, AI_MAX_BODY_BYTES));
+        const normalized = normalizeAiHttpRequest(aiBody);
         const requestHash = aiHttpRequestHash(normalized);
         const classificationId = identifier('op', `classify:${requestHash}`);
         const billingMode = aiPublicPricing.quote({ normalized, operationId: classificationId, now: observedAt }).pricing.billingMode;
