@@ -1,16 +1,18 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-10T20:46:34.442Z",
+  "observedAt": "2026-08-11T08:48:34.576Z",
   "publicApi": {
-    "state": "public_search_ai_sandbox_and_prediction_preview_verified",
+    "state": "public_search_ai_sandbox_prediction_and_crypto_verified",
     "endpoint": "https://api.clervo.dev",
     "publicCallable": true,
     "publicTraffic": true,
     "customerEndpointAvailable": true,
     "evidence": [
       "infra/production/cloudflare/public-search-release.v1.json",
+      "infra/production/gcp/ai-x402-proof.v1.json",
       "infra/production/gcp/sandbox-public-release.v1.json",
-      "infra/production/gcp/prediction-x402-proof.v1.json"
+      "infra/production/gcp/prediction-x402-proof.v1.json",
+      "infra/production/gcp/crypto-x402-proof.v1.json"
     ]
   },
   "packages": {
@@ -64,8 +66,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-10T20:46:34.442Z",
-      "releaseId": "6d928ea623e21d0cda8aa737b748e74d8ecaf552",
+      "observedAt": "2026-08-11T08:48:34.576Z",
+      "releaseId": "802527f49f87b1aa9323c329bf52c07ffce6d659",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -92,7 +94,7 @@
           "ai.virtual_try_on"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -252,11 +254,11 @@
     },
     {
       "id": "ai",
-      "engineeringState": "public_production_origin_qualified",
-      "customerLifecycle": "preview_publicly_callable",
-      "commercialProof": "unproven",
+      "engineeringState": "public_production_qualified",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
+      "commercialProof": "owner_funded_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid"
+      "proofLevel": "paid_outcome_verified"
     },
     {
       "id": "sandbox",

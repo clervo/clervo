@@ -26,7 +26,7 @@
           }
         }
       ],
-      "lastUpdated": 1786394794,
+      "lastUpdated": 1786438114,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -64,12 +64,12 @@
               "amountIsBinding": false,
               "exampleRouteId": null,
               "lifecycleState": "live",
-              "proofLevel": "quote_observed_unpaid"
+              "proofLevel": "paid_outcome_verified"
             }
           }
         }
       ],
-      "lastUpdated": 1786394794,
+      "lastUpdated": 1786438114,
       "metadata": {
         "category": "ai",
         "provider": "clervo",
@@ -246,7 +246,7 @@
           }
         }
       ],
-      "lastUpdated": 1786394794,
+      "lastUpdated": 1786438114,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -289,7 +289,7 @@
           }
         }
       ],
-      "lastUpdated": 1786394794,
+      "lastUpdated": 1786438114,
       "metadata": {
         "category": "prediction",
         "provider": "clervo",
@@ -332,7 +332,7 @@
           }
         }
       ],
-      "lastUpdated": 1786394794,
+      "lastUpdated": 1786438114,
       "metadata": {
         "category": "crypto_intelligence",
         "provider": "clervo",
@@ -360,8 +360,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-10T20:46:34.442Z",
-      "releaseId": "6d928ea623e21d0cda8aa737b748e74d8ecaf552",
+      "observedAt": "2026-08-11T08:48:34.576Z",
+      "releaseId": "802527f49f87b1aa9323c329bf52c07ffce6d659",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",

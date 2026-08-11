@@ -17,7 +17,7 @@ Clervo keeps product direction separate from observed availability. The canonica
 | Capability | Public state |
 | --- | --- |
 | Search | Publicly callable; bounded free entry and paid Base USDC execution verified |
-| AI | Preview-callable; qualified routes can expose an exact Base USDC quote; paid-result proof remains pending |
+| AI | Publicly callable with 89 callable IDs (85 canonical models and 4 aliases), 88 currently sellable; owner-funded paid outcomes are verified for chat and image |
 | Secure Sandbox | Publicly callable paid one-shot execution verified; intentionally bounded single-node release |
 | Prediction Intelligence | Publicly callable paid outcomes verified |
 | Crypto Intelligence | Publicly callable paid outcomes verified for Ethereum and Base |

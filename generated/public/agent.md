@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `packages/catalog/live-registry.json`, probed at 2026-08-10T20:46:34.442Z. Release: `6d928ea623e21d0cda8aa737b748e74d8ecaf552`.
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-11T08:48:34.576Z. Release: `802527f49f87b1aa9323c329bf52c07ffce6d659`.
 
 ## Identity
 
@@ -17,7 +17,7 @@ Source: `packages/catalog/live-registry.json`, probed at 2026-08-10T20:46:34.442
 
 | Product | ID | Lifecycle state | Proof level |
 |---|---|---|---|
-| AI | `ai` | live | quote_observed_unpaid |
+| AI | `ai` | live | paid_outcome_verified |
 | Crypto Intelligence | `crypto_intelligence` | live | quote_observed_unpaid |
 | Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |

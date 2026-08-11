@@ -81,7 +81,7 @@ test('public launch policy exposes qualified Search, AI, Sandbox, Prediction, an
   assert.equal(launchState.paymentProof.publicCustomerPaymentAvailable, true);
   assert.equal(launchState.paymentProof.revenueEvidence, false);
   assert.equal(launchState.products.find(({ id }) => id === 'search').customerLifecycle, 'publicly_callable_paid_outcome_verified');
-  assert.equal(launchState.products.find(({ id }) => id === 'ai').customerLifecycle, 'preview_publicly_callable');
+  assert.equal(launchState.products.find(({ id }) => id === 'ai').customerLifecycle, 'publicly_callable_paid_outcome_verified');
   assert.equal(launchState.products.find(({ id }) => id === 'sandbox').customerLifecycle, 'publicly_callable_paid_outcome_verified');
 });
 

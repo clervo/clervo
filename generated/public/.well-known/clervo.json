@@ -267,7 +267,7 @@
       ],
       "title": "Clervo AI model catalog",
       "summary": "Provider-neutral chat, embeddings, image, speech, video, music, and virtual try-on with stable identities, normalized results, truthful usage, paid receipts, and no-charge replay.",
-      "lifecycle": "preview",
+      "lifecycle": "production",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -297,7 +297,7 @@
         "payable": true,
         "mockExecutionAvailableByInjectionOnly": false
       },
-      "commercialProof": false
+      "commercialProof": true
     },
     {
       "productId": "sandbox.run",
@@ -750,7 +750,7 @@
     "Solana and unsupported EVM chains fail closed."
   ],
   "runtimeRelease": {
-    "sourceCommit": "6d928ea623e21d0cda8aa737b748e74d8ecaf552",
+    "sourceCommit": "802527f49f87b1aa9323c329bf52c07ffce6d659",
     "operationIds": [
       "search.web",
       "ai.chat",
@@ -776,8 +776,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-10T20:46:34.442Z",
-      "releaseId": "6d928ea623e21d0cda8aa737b748e74d8ecaf552",
+      "observedAt": "2026-08-11T08:48:34.576Z",
+      "releaseId": "802527f49f87b1aa9323c329bf52c07ffce6d659",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -804,7 +804,7 @@
           "ai.virtual_try_on"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
