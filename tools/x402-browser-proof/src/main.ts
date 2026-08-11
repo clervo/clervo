@@ -54,8 +54,9 @@ function balanceOfData(address: Address) {
 function usefulPaidResult(body: any) {
   if (body?.productId !== config.productId || body?.receipt?.productId !== config.productId) return false;
   if (config.productId === 'ai.chat') {
-    return body?.model === 'clervo/gpt-5.6-luna'
-      && body?.exactModelId === 'clervo/gpt-5.6-luna'
+    return typeof config.request.model === 'string'
+      && body?.model === config.request.model
+      && body?.exactModelId === config.request.model
       && body?.result?.output?.kind === 'chat'
       && typeof body?.result?.output?.content === 'string'
       && body.result.output.content.trim().length > 0;
