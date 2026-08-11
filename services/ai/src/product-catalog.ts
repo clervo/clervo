@@ -94,6 +94,15 @@ export interface AiPublicProductModel {
   identityKind: 'canonical' | 'alias';
   aliasFor?: string;
   reasoningEffort?: 'low' | 'medium' | 'high';
+  aliasKind?: 'fixed_canonical';
+  selectionPolicy?: Readonly<{
+    kind: 'fixed_canonical';
+    optimizationGoal: 'not_applicable_fixed_mapping';
+    tradeoffs: string;
+    dynamicallyRouted: false;
+    resolvedCanonicalResultField: 'exactModelId';
+    pricingSemantics: 'inherits_fixed_canonical_customer_pricing';
+  }>;
   aliases: readonly string[];
   name: string;
   description?: string;
@@ -102,6 +111,12 @@ export interface AiPublicProductModel {
   inputTypes: readonly string[];
   outputTypes: readonly string[];
   limits: Readonly<{ contextTokens?: number; maximumOutputTokens?: number }>;
+  modelCreator: null;
+  modelCreatorStatus: 'unknown';
+  executionSupplier: 'Clervo AI Gateway';
+  upstreamExecutionSupplier: null;
+  upstreamExecutionSupplierStatus: 'not_publicly_disclosed';
+  ownedBySemantics: 'Clervo customer-facing identifier namespace; not a model-creator claim';
   lifecycle: 'available' | 'degraded' | 'paused' | 'withdrawn';
   availability: 'available' | 'degraded' | 'unavailable' | 'withdrawn';
   health: 'healthy' | 'degraded' | 'unavailable';
@@ -359,6 +374,15 @@ function publicProjection(model: Readonly<AiInternalProductModel>): Readonly<AiP
     inputTypes: model.supply.inputTypes,
     outputTypes: model.supply.outputTypes,
     limits: model.supply.limits,
+    // Current supply qualification does not authoritatively identify upstream
+    // model creators or the gateway's upstream executor. Publish explicit
+    // unknown/undisclosed states instead of guessing from model names.
+    modelCreator: null,
+    modelCreatorStatus: 'unknown' as const,
+    executionSupplier: 'Clervo AI Gateway' as const,
+    upstreamExecutionSupplier: null,
+    upstreamExecutionSupplierStatus: 'not_publicly_disclosed' as const,
+    ownedBySemantics: 'Clervo customer-facing identifier namespace; not a model-creator claim' as const,
     lifecycle: model.lifecycle,
     availability,
     health,
@@ -482,6 +506,15 @@ export function createAiPublicModelList(catalog: Readonly<ComposedAiProductCatal
         ...target,
         identityKind: 'alias' as const,
         aliasFor: modelId,
+        aliasKind: 'fixed_canonical' as const,
+        selectionPolicy: {
+          kind: 'fixed_canonical' as const,
+          optimizationGoal: 'not_applicable_fixed_mapping' as const,
+          tradeoffs: 'The alias adds naming stability only; capabilities, availability, and customer pricing are inherited from its fixed canonical target.',
+          dynamicallyRouted: false as const,
+          resolvedCanonicalResultField: 'exactModelId' as const,
+          pricingSemantics: 'inherits_fixed_canonical_customer_pricing' as const,
+        },
         reasoningEffort: reasoningByAlias[alias as keyof typeof reasoningByAlias],
         aliases: [] as string[],
         name: `${alias} service alias`,

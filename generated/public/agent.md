@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `packages/catalog/live-registry.json`, probed at 2026-08-11T08:48:34.576Z. Release: `802527f49f87b1aa9323c329bf52c07ffce6d659`.
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-11T18:48:00.042Z. Release: `802527f49f87b1aa9323c329bf52c07ffce6d659`.
 
 ## Identity
 
@@ -21,8 +21,8 @@ Source: `packages/catalog/live-registry.json`, probed at 2026-08-11T08:48:34.576
 | Crypto Intelligence | `crypto_intelligence` | live | quote_observed_unpaid |
 | Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
-| Secure Sandbox | `sandbox` | live | paid_outcome_verified |
-| Research | `search` | live | paid_outcome_verified |
+| Secure Sandbox | `sandbox` | live | quote_observed_unpaid |
+| Research | `search` | live | quote_observed_unpaid |
 
 These are two independent facts. A `live` product with proof level
 `quote_observed_unpaid` is offered and priced; it is not a demonstrated paid
@@ -31,7 +31,7 @@ outcome. Report it that way if you cite it.
 ## Free entry point
 
 - `POST https://api.clervo.dev/v1/search/free`
-- Accepts a request with no idempotency key: no
+- Accepts a request with no idempotency key: yes
 - Quota headers: `ratelimit-limit`, `ratelimit-remaining`, `ratelimit-reset`.
 - Over the cap the route answers `429 free_quota_exceeded` rather than executing. Do not treat 429 as a transport error.
 
@@ -40,8 +40,7 @@ outcome. Report it that way if you cite it.
 ```bash
 curl -sS https://api.clervo.dev/v1/search/free \
   -H 'content-type: application/json' \
-  -d '{"query":"World Wide Web","maxResults":3,"synthesize":false}' \
-  -H 'idempotency-key: clervo-first-call-0001'
+  -d '{"query":"World Wide Web","maxResults":3,"synthesize":false}'
 ```
 
 ## Idempotency contract

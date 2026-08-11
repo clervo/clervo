@@ -180,5 +180,5 @@ export function modelExample(model: AiModel): string {
     'ai.music': `input: { kind: 'music', prompt: 'A restrained instrumental signal', durationSeconds: 30, instrumental: true }`,
     'ai.virtual_try_on': `input: { kind: 'virtual_try_on', personImageBase64, productImageBase64 }`,
   };
-  return `import { ClervoClient } from '@clervo/sdk';\n\nconst clervo = new ClervoClient();\nconst result = await clervo.ai.execute({\n  model: '${model.id}',\n  ${inputs[product] ?? inputs['ai.chat']}\n}, { idempotencyKey: 'stable-request-0001' });`;
+  return `import { ClervoClient } from '@clervo/sdk';\n\nconst clervo = new ClervoClient();\nconst result = await clervo.ai.execute({\n  model: '${model.id}',\n  ${inputs[product] ?? inputs['ai.chat']}\n}); // the client generates a fresh key for this logical operation`;
 }

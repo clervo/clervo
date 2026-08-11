@@ -57,22 +57,6 @@ interface StatusDocument {
     verifiedAt: string;
     items: Array<{ registry: 'npm' | 'pypi'; name: string; version: string; url: string }>;
   };
-  paymentProof: {
-    state: string;
-    productId: string;
-    network: string;
-    asset: string;
-    amountDisplay: string;
-    settlementConfirmed: boolean;
-    usefulResult: boolean;
-    replaySameReceipt: boolean;
-    secondAuthorization: boolean;
-    secondExecution: boolean;
-    secondCharge: boolean;
-    publicCustomerPaymentAvailable: boolean;
-    revenueEvidence: boolean;
-    demandEvidence: boolean;
-  };
 }
 
 interface CatalogDocument {
@@ -169,7 +153,7 @@ export function operationContract(operationId: string) {
   const method = publicRoute === null ? undefined : openapi.paths?.[publicRoute]?.post;
   const operationRoutes = observedRoutes.filter((route) => route.productIds.includes(operationId));
   const relatedOperationIds = family.operations.filter((id) => id !== operationId);
-  const exactPrivateProof = status.paymentProof.productId === operationId ? status.paymentProof : null;
+  const exactPrivateProof = launchState.paymentProof.productId === operationId ? launchState.paymentProof : null;
   const exactPublicPrice = pricing.publicPrice?.productId === operationId ? pricing.publicPrice : null;
   const idempotencyRequired = method?.parameters?.some((parameter) =>
     parameter.name?.toLowerCase() === 'idempotency-key' && parameter.required === true,

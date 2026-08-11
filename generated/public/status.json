@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-11T08:48:34.576Z",
+  "observedAt": "2026-08-11T18:48:00.042Z",
   "publicApi": {
     "state": "public_search_ai_sandbox_prediction_and_crypto_verified",
     "endpoint": "https://api.clervo.dev",
@@ -39,34 +39,11 @@
       }
     ]
   },
-  "paymentProof": {
-    "state": "owner_funded_public_proof",
-    "productId": "search.web",
-    "network": "Base",
-    "asset": "USDC",
-    "amountAtomic": "6000",
-    "decimals": 6,
-    "amountDisplay": "0.006 USDC",
-    "settlementConfirmed": true,
-    "usefulResult": true,
-    "replaySameReceipt": true,
-    "secondAuthorization": false,
-    "secondExecution": false,
-    "secondCharge": false,
-    "publicCustomerPaymentAvailable": true,
-    "revenueEvidence": false,
-    "demandEvidence": false,
-    "transactionUrl": "https://basescan.org/tx/0x22a537342614b14eb676b1cb3ccb51acdec98bb56811d152e650b3985a0403cb",
-    "evidence": [
-      "infra/production/gcp/search-sandbox-x402-proof.v1.json",
-      "tests/contract/b10-proof-worker.test.mjs"
-    ]
-  },
   "observedTruth": {
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T08:48:34.576Z",
+      "observedAt": "2026-08-11T18:48:00.042Z",
       "releaseId": "802527f49f87b1aa9323c329bf52c07ffce6d659",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -88,9 +65,9 @@
           "ai.chat",
           "ai.embed",
           "ai.image",
+          "ai.music",
           "ai.speech",
           "ai.video",
-          "ai.music",
           "ai.virtual_try_on"
         ],
         "lifecycleState": "live",
@@ -175,14 +152,10 @@
         "id": "sandbox",
         "label": "Secure Sandbox",
         "operations": [
-          "sandbox.artifact.get",
-          "sandbox.run",
-          "sandbox.session.create",
-          "sandbox.session.destroy",
-          "sandbox.session.exec"
+          "sandbox.run"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
+        "proofLevel": "quote_observed_unpaid",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -198,11 +171,10 @@
         "id": "search",
         "label": "Research",
         "operations": [
-          "search.answer",
           "search.web"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
+        "proofLevel": "quote_observed_unpaid",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -214,21 +186,12 @@
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",
-          "acceptsNaiveRequest": false
+          "acceptsNaiveRequest": true
         }
       }
     ]
   },
-  "conformanceDefectsOpen": [
-    {
-      "conformant": false,
-      "expectation": "free search succeeds without a caller-supplied idempotency-key",
-      "id": "api.search_free_accepts_naive_request",
-      "observedCode": "free_quota_exceeded",
-      "observedStatus": 429,
-      "url": "https://api.clervo.dev/v1/search/free"
-    }
-  ],
+  "conformanceDefectsOpen": [],
   "aiRoutes": {
     "counts": {
       "live": 88,
@@ -245,52 +208,46 @@
   },
   "products": [
     {
-      "id": "search",
-      "engineeringState": "public_production_qualified",
-      "customerLifecycle": "publicly_callable_paid_outcome_verified",
-      "commercialProof": "owner_funded_paid_outcome_verified",
-      "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified"
-    },
-    {
       "id": "ai",
-      "engineeringState": "public_production_qualified",
-      "customerLifecycle": "publicly_callable_paid_outcome_verified",
-      "commercialProof": "owner_funded_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified"
-    },
-    {
-      "id": "sandbox",
-      "engineeringState": "public_production_qualified_single_node",
-      "customerLifecycle": "publicly_callable_paid_outcome_verified",
-      "commercialProof": "owner_funded_paid_outcome_verified",
-      "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified"
-    },
-    {
-      "id": "rpc",
-      "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable",
-      "commercialProof": "unproven",
-      "lifecycleState": "unavailable",
-      "proofLevel": "none"
-    },
-    {
-      "id": "prediction",
-      "engineeringState": "public_production_qualified",
-      "customerLifecycle": "publicly_callable_paid_outcome_verified",
-      "commercialProof": "owner_funded_paid_outcome_verified",
-      "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid"
+      "proofLevel": "paid_outcome_verified",
+      "reason": null,
+      "publiclyReachable": true
     },
     {
       "id": "crypto_intelligence",
-      "engineeringState": "public_production_qualified",
-      "customerLifecycle": "publicly_callable_paid_outcome_verified",
-      "commercialProof": "owner_funded_paid_outcome_verified",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid"
+      "proofLevel": "quote_observed_unpaid",
+      "reason": null,
+      "publiclyReachable": true
+    },
+    {
+      "id": "prediction",
+      "lifecycleState": "live",
+      "proofLevel": "quote_observed_unpaid",
+      "reason": null,
+      "publiclyReachable": true
+    },
+    {
+      "id": "rpc",
+      "lifecycleState": "unavailable",
+      "proofLevel": "none",
+      "reason": "commercial_rights_blocked",
+      "publiclyReachable": false
+    },
+    {
+      "id": "sandbox",
+      "lifecycleState": "live",
+      "proofLevel": "quote_observed_unpaid",
+      "reason": null,
+      "publiclyReachable": true
+    },
+    {
+      "id": "search",
+      "lifecycleState": "live",
+      "proofLevel": "quote_observed_unpaid",
+      "reason": null,
+      "publiclyReachable": true
     }
   ]
 }

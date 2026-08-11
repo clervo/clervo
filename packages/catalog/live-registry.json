@@ -2,109 +2,23 @@
   "aiRoutes": [
     {
       "capabilities": [
-        "audio_output",
-        "text_input"
-      ],
-      "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
-      },
-      "exactModelId": "aura-2-arcas-en",
-      "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1040",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.aura_2_arcas_en-min1000",
-        "resourceDescription": "Bounded ai.speech execution",
-        "scheme": "exact"
-      },
-      "productIds": [
-        "ai.speech"
-      ],
-      "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.aura_2_arcas_en",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.deepgram"
-    },
-    {
-      "capabilities": [
-        "audio_output",
-        "text_input"
-      ],
-      "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
-      },
-      "exactModelId": "aura-2-thalia-en",
-      "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1040",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.aura_2_thalia_en-min1000",
-        "resourceDescription": "Bounded ai.speech execution",
-        "scheme": "exact"
-      },
-      "productIds": [
-        "ai.speech"
-      ],
-      "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.aura_2_thalia_en",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.deepgram"
-    },
-    {
-      "capabilities": [
-        "reasoning",
-        "streaming",
-        "structured_output",
         "text_input",
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": true,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "@cf/meta/llama-4-scout-17b-16e-instruct",
+      "exactModelId": "clervo/allam-2-7b",
       "expectedReturnAt": null,
       "observedQuote": {
         "amountAtomic": "1000",
@@ -112,236 +26,525 @@
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.cf_meta_llama_4_scout_17b_16e_instruct-min1000",
+        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
       "productIds": [
         "ai.chat"
       ],
-      "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.cf_meta_llama_4_scout_17b_16e_instruct",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.cloudflare_workers_ai"
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "clervo/allam-2-7b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
-        "reasoning",
-        "streaming",
-        "structured_output",
         "text_input",
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "@cf/nvidia/nemotron-3-120b-a12b",
+      "exactModelId": "clervo/claude-haiku-4-5-20251001",
       "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.cf_nvidia_nemotron_3_120b_a12b-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.cf_nvidia_nemotron_3_120b_a12b",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.cloudflare_workers_ai"
+      "reason": null,
+      "routeId": "clervo/claude-haiku-4-5-20251001",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
-        "reasoning",
-        "streaming",
-        "structured_output",
         "text_input",
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "@cf/openai/gpt-oss-120b",
+      "exactModelId": "clervo/claude-opus-4-6",
       "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.cf_openai_gpt_oss_120b-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.cf_openai_gpt_oss_120b",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.cloudflare_workers_ai"
+      "reason": null,
+      "routeId": "clervo/claude-opus-4-6",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
-        "reasoning",
-        "streaming",
-        "structured_output",
         "text_input",
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "@cf/openai/gpt-oss-20b",
+      "exactModelId": "clervo/claude-opus-4-7",
       "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.cf_openai_gpt_oss_20b-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.cf_openai_gpt_oss_20b",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.cloudflare_workers_ai"
+      "reason": null,
+      "routeId": "clervo/claude-opus-4-7",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
-        "reasoning",
-        "streaming",
-        "structured_output",
         "text_input",
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "@cf/qwen/qwen3-30b-a3b-fp8",
+      "exactModelId": "clervo/claude-opus-4-8",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/claude-opus-4-8",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/claude-opus-5",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/claude-opus-5",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/claude-sonnet-4-6",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/claude-sonnet-4-6",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/claude-sonnet-5",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/claude-sonnet-5",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": true,
+        "aliasRepresentativeAccepted": true,
+        "aliasRepresentativeStatus": 402,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gpt-5.6-sol",
       "expectedReturnAt": null,
       "observedQuote": {
-        "amountAtomic": "1000",
+        "amountAtomic": "3123",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
         "bazaarExtensionPresent": true,
         "network": "eip155:8453",
         "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.cf_qwen_qwen3_30b_a3b_fp8-min1000",
+        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi",
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
       "productIds": [
         "ai.chat"
       ],
-      "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.cf_qwen_qwen3_30b_a3b_fp8",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.cloudflare_workers_ai"
+      "proof": "quote_observed_unpaid",
+      "reason": null,
+      "routeId": "clervo/code",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
-        "audio_output",
-        "text_input"
+        "text_input",
+        "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "@cf/deepgram/aura-2-en",
+      "exactModelId": "clervo/gpt-5.6-sol",
       "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1085",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.cloudflare_aura_2_en-min1000",
-        "resourceDescription": "Bounded ai.speech execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "productIds": [
-        "ai.speech"
+        "ai.chat"
       ],
       "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.cloudflare_aura_2_en",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.cloudflare_workers_ai"
+      "reason": null,
+      "routeId": "clervo/deep",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/deepseek-r1",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/deepseek-r1",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/deepseek-v3",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/deepseek-v3",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/deepseek-v3.1-terminus",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/deepseek-v3.1-terminus",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/deepseek-v3.2-exp",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/deepseek-v3.2-exp",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/deepseek-v4-pro",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/deepseek-v4-pro",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gpt-5.6-luna",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/fast",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gemini-2.5-flash",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gemini-2.5-flash",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
@@ -349,40 +552,123 @@
         "text_input"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:40:10.810Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "gemini-3.1-flash-image",
+      "exactModelId": "clervo/gemini-2.5-flash-image",
       "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "80000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_1_flash_image-min1000",
-        "resourceDescription": "Bounded ai.image execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "productIds": [
         "ai.image"
       ],
       "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.gemini_3_1_flash_image",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.google_vertex"
+      "reason": null,
+      "routeId": "clervo/gemini-2.5-flash-image",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "audio_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gemini-2.5-flash-lite-preview-tts",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.speech"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gemini-2.5-flash-lite-preview-tts",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "audio_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gemini-2.5-flash-tts",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.speech"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gemini-2.5-flash-tts",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "audio_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gemini-2.5-pro-tts",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.speech"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gemini-2.5-pro-tts",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
@@ -390,169 +676,30 @@
         "text_input"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "gemini-3.1-flash-lite-image",
+      "exactModelId": "clervo/gemini-3-pro-image",
       "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "40000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_1_flash_lite_image-min1000",
-        "resourceDescription": "Bounded ai.image execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "productIds": [
         "ai.image"
       ],
       "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.gemini_3_1_flash_lite_image",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.google_vertex"
-    },
-    {
-      "capabilities": [
-        "reasoning",
-        "structured_output",
-        "text_input",
-        "text_output"
-      ],
-      "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
-      },
-      "exactModelId": "gemini-3.5-flash",
-      "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_5_flash-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
-      "productIds": [
-        "ai.chat"
-      ],
-      "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.gemini_3_5_flash",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.google_vertex"
-    },
-    {
-      "capabilities": [
-        "reasoning",
-        "structured_output",
-        "text_input",
-        "text_output"
-      ],
-      "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
-      },
-      "exactModelId": "gemini-3.5-flash-lite",
-      "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_5_flash_lite-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
-      "productIds": [
-        "ai.chat"
-      ],
-      "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.gemini_3_5_flash_lite",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.google_vertex"
-    },
-    {
-      "capabilities": [
-        "reasoning",
-        "structured_output",
-        "text_input",
-        "text_output"
-      ],
-      "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
-      },
-      "exactModelId": "gemini-3.6-flash",
-      "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_6_flash-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
-      "productIds": [
-        "ai.chat"
-      ],
-      "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.gemini_3_6_flash",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.google_vertex"
+      "reason": null,
+      "routeId": "clervo/gemini-3-pro-image",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
@@ -560,40 +707,123 @@
         "text_input"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "gemini-3-pro-image",
+      "exactModelId": "clervo/gemini-3.1-flash-image",
       "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "160000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_3_pro_image-min1000",
-        "resourceDescription": "Bounded ai.image execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "productIds": [
         "ai.image"
       ],
       "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.gemini_3_pro_image",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.google_vertex"
+      "reason": null,
+      "routeId": "clervo/gemini-3.1-flash-image",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gemini-3.1-flash-lite-image",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.image"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gemini-3.1-flash-lite-image",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "audio_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gemini-3.1-flash-tts-preview",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.speech"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gemini-3.1-flash-tts-preview",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gemini-3.5-flash-lite",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gemini-3.5-flash-lite",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
@@ -601,274 +831,1969 @@
         "text_input"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": true,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "gemini-embedding-001",
+      "exactModelId": "clervo/gemini-embedding-001",
       "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.gemini_embedding_001-min1000",
-        "resourceDescription": "Bounded ai.embed execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "productIds": [
         "ai.embed"
       ],
       "proof": "none",
-      "reason": "commercial_permission_restricted",
-      "routeId": "ai.route.gemini_embedding_001",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.google_vertex"
+      "reason": null,
+      "routeId": "clervo/gemini-embedding-001",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
-        "streaming",
-        "structured_output",
+        "text_input",
+        "video_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gemini-omni-flash-preview",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.video"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gemini-omni-flash-preview",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
         "text_input",
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 3,
-        "edgeCode": "ai_route_unavailable",
-        "edgeQuoted": false,
-        "edgeStatus": 503,
-        "permissionBasis": "owner_operated_documented",
-        "permissionRestricted": false,
-        "qualificationExpired": true,
-        "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "failed",
-        "supplyReason": "upstream_completion_failed"
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "gpt-5.6-luna",
-      "expectedReturnAt": "2026-08-09T00:00:00Z",
+      "exactModelId": "clervo/gemma-4-12b-it",
+      "expectedReturnAt": null,
       "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_completion_failed",
-      "routeId": "ai.route.gpt_5_6_luna",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.clervo_ai_gateway"
+      "reason": null,
+      "routeId": "clervo/gemma-4-12b-it",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
-        "streaming",
-        "structured_output",
         "text_input",
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 3,
-        "edgeCode": "ai_route_unavailable",
-        "edgeQuoted": false,
-        "edgeStatus": 503,
-        "permissionBasis": "owner_operated_documented",
-        "permissionRestricted": false,
-        "qualificationExpired": true,
-        "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "failed",
-        "supplyReason": "upstream_completion_failed"
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": true,
+        "freeRepresentativeAccepted": true,
+        "freeRepresentativeStatus": 200,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "gpt-5.6-sol",
-      "expectedReturnAt": "2026-08-09T00:00:00Z",
+      "exactModelId": "clervo/gemma-4-26b-a4b-it",
+      "expectedReturnAt": null,
       "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_completion_failed",
-      "routeId": "ai.route.gpt_5_6_sol",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.clervo_ai_gateway"
+      "reason": null,
+      "routeId": "clervo/gemma-4-26b-a4b-it",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
-        "streaming",
-        "structured_output",
         "text_input",
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 3,
-        "edgeCode": "ai_route_unavailable",
-        "edgeQuoted": false,
-        "edgeStatus": 503,
-        "permissionBasis": "owner_operated_documented",
-        "permissionRestricted": false,
-        "qualificationExpired": true,
-        "qualificationExpiresAt": "2026-08-09T02:33:13.833Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "failed",
-        "supplyReason": "upstream_completion_failed"
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "gpt-5.6-terra",
-      "expectedReturnAt": "2026-08-09T00:00:00Z",
+      "exactModelId": "clervo/gemma-4-31b-it",
+      "expectedReturnAt": null,
       "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "upstream_completion_failed",
-      "routeId": "ai.route.gpt_5_6_terra",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.clervo_ai_gateway"
+      "reason": null,
+      "routeId": "clervo/gemma-4-31b-it",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
-        "reasoning",
-        "streaming",
-        "structured_output",
         "text_input",
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": false,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "openai/gpt-oss-120b",
+      "exactModelId": "clervo/glm-4.5-air",
       "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.gpt_oss_120b-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "commercial_permission_unresolved",
-      "routeId": "ai.route.gpt_oss_120b",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.groq"
+      "reason": null,
+      "routeId": "clervo/glm-4.5-air",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
-        "reasoning",
-        "streaming",
-        "structured_output",
         "text_input",
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": false,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "openai/gpt-oss-20b",
+      "exactModelId": "clervo/glm-5.2",
       "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.gpt_oss_20b-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "commercial_permission_unresolved",
-      "routeId": "ai.route.gpt_oss_20b",
-      "sellable": false,
-      "state": "supply_paused",
-      "supplyFamilyId": "supply.groq"
+      "reason": null,
+      "routeId": "clervo/glm-5.2",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     },
     {
       "capabilities": [
-        "reasoning",
-        "streaming",
-        "structured_output",
         "text_input",
         "text_output"
       ],
       "evidence": {
-        "edgeAttempts": 1,
-        "edgeCode": null,
-        "edgeQuoted": true,
-        "edgeStatus": 402,
-        "permissionBasis": "unresolved",
-        "permissionRestricted": false,
-        "qualificationExpired": false,
-        "qualificationExpiresAt": "2026-08-14T07:33:58.841Z",
-        "qualificationStatus": "passed",
-        "resaleAllowed": true,
-        "supplyOutcome": "passed",
-        "supplyReason": null
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
       },
-      "exactModelId": "qwen/qwen3.6-27b",
+      "exactModelId": "clervo/gpt-5.6-luna",
       "expectedReturnAt": null,
-      "observedQuote": {
-        "amountAtomic": "1000",
-        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-        "bazaarExtensionPresent": true,
-        "network": "eip155:8453",
-        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
-        "priceVersion": "ai-2026-08-07.1-ai.route.qwen3_6_27b-min1000",
-        "resourceDescription": "Bounded ai.chat execution",
-        "scheme": "exact"
-      },
+      "observedQuote": null,
       "productIds": [
         "ai.chat"
       ],
       "proof": "none",
-      "reason": "commercial_permission_unresolved",
-      "routeId": "ai.route.qwen3_6_27b",
+      "reason": null,
+      "routeId": "clervo/gpt-5.6-luna",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gpt-5.6-sol",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gpt-5.6-sol",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gpt-5.6-terra",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gpt-5.6-terra",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gpt-oss-120b",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gpt-oss-120b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "reasoning",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gpt-oss-20b",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": "availability_degraded",
+      "routeId": "clervo/gpt-oss-20b",
       "sellable": false,
       "state": "supply_paused",
-      "supplyFamilyId": "supply.groq"
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gpt-oss-safeguard-20b",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/gpt-oss-safeguard-20b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/hunyuan-a13b-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/hunyuan-a13b-instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/hy3",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/hy3",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/kimi-k2.5",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/kimi-k2.5",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/kimi-k2.6",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/kimi-k2.6",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/kimi-k2.7-code",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/kimi-k2.7-code",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/kimi-k3",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/kimi-k3",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/laguna-s-2.1",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/laguna-s-2.1",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/ling-flash-2.0",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/ling-flash-2.0",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/llama-3.1-70b-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/llama-3.1-70b-instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/llama-3.1-8b-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/llama-3.1-8b-instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/llama-3.1-nemoguard-8b-content-safety",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/llama-3.1-nemoguard-8b-content-safety",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_input",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/llama-3.1-nemotron-nano-vl-8b-v1",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/llama-3.1-nemotron-nano-vl-8b-v1",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/llama-3.1-nemotron-safety-guard-8b-v3",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/llama-3.1-nemotron-safety-guard-8b-v3",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_input",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/llama-3.2-11b-vision-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/llama-3.2-11b-vision-instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/llama-3.3-70b-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/llama-3.3-70b-instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/longcat-2.0",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/longcat-2.0",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "audio_output",
+        "music_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/lyria-3-clip-preview",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.music"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/lyria-3-clip-preview",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "audio_output",
+        "music_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/lyria-3-pro-preview",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.music"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/lyria-3-pro-preview",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/minimax-m2.5",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/minimax-m2.5",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/minimax-m3",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/minimax-m3",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_input",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/mistral-medium-2505",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/mistral-medium-2505",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_input",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/mistral-medium-2508",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/mistral-medium-2508",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "embedding_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/multimodalembedding-001",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.embed"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/multimodalembedding-001",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "embedding_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/nemotron-3-embed-1b",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.embed"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/nemotron-3-embed-1b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_input",
+        "reasoning",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/nemotron-3.5-content-safety",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/nemotron-3.5-content-safety",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/nex-n2-pro",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/nex-n2-pro",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "embedding_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/nv-embed-v1",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.embed"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/nv-embed-v1",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen2.5-72b-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen2.5-72b-instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3-14b",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3-14b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3-30b-a3b-instruct-2507",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3-30b-a3b-instruct-2507",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3-32b",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3-32b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3-8b",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3-8b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3-coder-30b-a3b-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3-coder-30b-a3b-instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_input",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3-vl-30b-a3b-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3-vl-30b-a3b-instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_input",
+        "reasoning",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3-vl-30b-a3b-thinking",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3-vl-30b-a3b-thinking",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_input",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3-vl-32b-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3-vl-32b-instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_input",
+        "reasoning",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3-vl-32b-thinking",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3-vl-32b-thinking",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_input",
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3-vl-8b-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3-vl-8b-instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3.5-397b-a17b",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3.5-397b-a17b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/qwen3.6-27b",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/qwen3.6-27b",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/seed-oss-36b-instruct",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/seed-oss-36b-instruct",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "text_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/gpt-5.6-terra",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.chat"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/smart",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "embedding_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/text-embedding-005",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.embed"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/text-embedding-005",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "embedding_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/text-embedding-large-exp-03-07",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.embed"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/text-embedding-large-exp-03-07",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "embedding_output",
+        "text_input"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/text-multilingual-embedding-002",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.embed"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/text-multilingual-embedding-002",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "video_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/veo-3.1-fast-generate-001",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.video"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/veo-3.1-fast-generate-001",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "video_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/veo-3.1-generate-001",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.video"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/veo-3.1-generate-001",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "text_input",
+        "video_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/veo-3.1-lite-generate-001",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.video"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/veo-3.1-lite-generate-001",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
+    },
+    {
+      "capabilities": [
+        "image_input",
+        "image_output"
+      ],
+      "evidence": {
+        "aliasRepresentative": false,
+        "aliasRepresentativeAccepted": null,
+        "aliasRepresentativeStatus": null,
+        "freeRepresentative": false,
+        "freeRepresentativeAccepted": null,
+        "freeRepresentativeStatus": null,
+        "paidRepresentative": false,
+        "paidRepresentativeStatus": 402,
+        "publicCatalogContractMatched": true,
+        "publicCatalogObserved": true,
+        "source": "generated/b7-ai/public/models.json + GET /v1/models"
+      },
+      "exactModelId": "clervo/virtual-try-on-001",
+      "expectedReturnAt": null,
+      "observedQuote": null,
+      "productIds": [
+        "ai.virtual_try_on"
+      ],
+      "proof": "none",
+      "reason": null,
+      "routeId": "clervo/virtual-try-on-001",
+      "sellable": true,
+      "state": "live",
+      "supplyFamilyId": "supply.not_publicly_disclosed"
     }
   ],
   "bazaar": {
@@ -995,7 +2920,7 @@
             "severity": "required"
           },
           {
-            "actual": "503",
+            "actual": "400",
             "check": "returns_402",
             "expected": "402",
             "severity": "required"
@@ -1024,7 +2949,7 @@
       {
         "failedChecks": [],
         "indexActive": true,
-        "indexLastCrawledAt": "2026-08-09T19:21:09.167Z",
+        "indexLastCrawledAt": "2026-08-11T12:49:38.432Z",
         "indexed": true,
         "productId": "crypto_intelligence",
         "resource": "https://api.clervo.dev/v1/crypto/execute",
@@ -1034,7 +2959,7 @@
       {
         "failedChecks": [],
         "indexActive": true,
-        "indexLastCrawledAt": "2026-08-09T16:00:37.868Z",
+        "indexLastCrawledAt": "2026-08-11T12:48:44.069Z",
         "indexed": true,
         "productId": "prediction",
         "resource": "https://api.clervo.dev/v1/prediction/execute",
@@ -1054,7 +2979,7 @@
       {
         "failedChecks": [],
         "indexActive": true,
-        "indexLastCrawledAt": "2026-08-10T13:36:24.537Z",
+        "indexLastCrawledAt": "2026-08-10T18:30:16.17Z",
         "indexed": true,
         "productId": "search",
         "resource": "https://api.clervo.dev/v1/search/paid",
@@ -1066,8 +2991,8 @@
   },
   "conformance": [
     {
-      "conformant": false,
-      "expectation": "free search succeeds without a caller-supplied idempotency-key",
+      "conformant": true,
+      "expectation": "free search accepts a valid request without a caller-supplied idempotency-key; success still depends on quota",
       "id": "api.search_free_accepts_naive_request",
       "observedCode": "free_quota_exceeded",
       "observedStatus": 429,
@@ -1136,25 +3061,52 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-11T08:48:34.576Z",
+  "observedAt": "2026-08-11T18:48:00.042Z",
   "products": [
     {
+      "evidence": {
+        "aliasProbeAccepted": true,
+        "aliasRepresentativeModel": "clervo/code",
+        "aliases": 4,
+        "authority": "generated/b7-ai/public/models.json + GET /v1/models",
+        "callableIds": 89,
+        "canonicalModels": 85,
+        "freeProbeAccepted": true,
+        "freeRepresentativeModel": "clervo/gemma-4-26b-a4b-it",
+        "paidOutcome": {
+          "accepted": true,
+          "demandEvidence": false,
+          "externallyRepeated": false,
+          "operationCount": 2,
+          "ownerFunded": true,
+          "proofLevel": "paid_outcome_verified",
+          "reason": null,
+          "releaseCommit": "802527f49f87b1aa9323c329bf52c07ffce6d659",
+          "replayNoSecondChargeCount": 2,
+          "revenueEvidence": false,
+          "source": "infra/production/gcp/ai-x402-proof.v1.json",
+          "totalChargeAtomic": "26500",
+          "usefulResultCount": 2
+        },
+        "paidProbeAccepted": true,
+        "paidRepresentativeModel": "clervo/allam-2-7b",
+        "probed": true,
+        "routeStates": {
+          "live": 88,
+          "supply_paused": 1
+        },
+        "sellableIds": 88
+      },
+      "expectedReturnAt": null,
+      "freeEntry": {
+        "accepted": true,
+        "acceptsRequestWithoutPayment": true,
+        "modelId": "clervo/gemma-4-26b-a4b-it",
+        "observedStatus": 200,
+        "route": "https://api.clervo.dev/v1/ai/execute"
+      },
       "id": "ai",
       "label": "AI",
-      "operations": [
-        "ai.chat",
-        "ai.embed",
-        "ai.image",
-        "ai.speech",
-        "ai.video",
-        "ai.music",
-        "ai.virtual_try_on"
-      ],
-      "state": "live",
-      "reason": null,
-      "expectedReturnAt": null,
-      "publiclyReachable": true,
-      "proof": "paid_outcome_verified",
       "observedQuote": {
         "amountAtomic": "1000",
         "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
@@ -1165,37 +3117,19 @@
         "resourceDescription": "Bounded ai.chat execution",
         "scheme": "exact"
       },
-      "freeEntry": {
-        "route": "https://api.clervo.dev/v1/ai/execute",
-        "modelId": "clervo/gemma-4-26b-a4b-it",
-        "replayVerified": true,
-        "paymentRequired": false
-      },
-      "evidence": {
-        "probed": true,
-        "releaseId": "802527f49f87b1aa9323c329bf52c07ffce6d659",
-        "frozenCanonicalModels": 85,
-        "aliases": 4,
-        "callableIds": 89,
-        "sellableIds": 88,
-        "representativeModalities": 7,
-        "freeOutcomeObserved": true,
-        "paidOutcome": {
-          "accepted": true,
-          "reason": null,
-          "proofLevel": "paid_outcome_verified",
-          "source": "infra/production/gcp/ai-x402-proof.v1.json",
-          "releaseCommit": "802527f49f87b1aa9323c329bf52c07ffce6d659",
-          "operationCount": 2,
-          "totalChargeAtomic": "26500",
-          "usefulResultCount": 2,
-          "replayNoSecondChargeCount": 2,
-          "ownerFunded": true,
-          "revenueEvidence": false,
-          "demandEvidence": false,
-          "externallyRepeated": false
-        }
-      }
+      "operations": [
+        "ai.chat",
+        "ai.embed",
+        "ai.image",
+        "ai.music",
+        "ai.speech",
+        "ai.video",
+        "ai.virtual_try_on"
+      ],
+      "proof": "paid_outcome_verified",
+      "publiclyReachable": true,
+      "reason": null,
+      "state": "live"
     },
     {
       "evidence": {
@@ -1298,19 +3232,8 @@
         "edgeCode": null,
         "edgeStatus": 402,
         "paidOutcome": {
-          "accepted": true,
-          "demandEvidence": false,
-          "externallyRepeated": false,
-          "operationCount": 2,
-          "ownerFunded": true,
-          "proofLevel": "paid_outcome_verified",
-          "reason": null,
-          "releaseCommit": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
-          "replayNoSecondChargeCount": 2,
-          "revenueEvidence": false,
-          "source": "infra/production/gcp/search-sandbox-x402-proof.v1.json",
-          "totalChargeAtomic": "20000",
-          "usefulResultCount": 1
+          "accepted": false,
+          "reason": "paid_proof_invariant_failed"
         },
         "probed": true
       },
@@ -1329,13 +3252,9 @@
         "scheme": "exact"
       },
       "operations": [
-        "sandbox.artifact.get",
-        "sandbox.run",
-        "sandbox.session.create",
-        "sandbox.session.destroy",
-        "sandbox.session.exec"
+        "sandbox.run"
       ],
-      "proof": "paid_outcome_verified",
+      "proof": "quote_observed_unpaid",
       "publiclyReachable": true,
       "reason": null,
       "state": "live"
@@ -1346,27 +3265,16 @@
         "edgeCode": null,
         "edgeStatus": 402,
         "paidOutcome": {
-          "accepted": true,
-          "demandEvidence": false,
-          "externallyRepeated": false,
-          "operationCount": 1,
-          "ownerFunded": true,
-          "proofLevel": "paid_outcome_verified",
-          "reason": null,
-          "releaseCommit": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
-          "replayNoSecondChargeCount": 1,
-          "revenueEvidence": false,
-          "source": "infra/production/gcp/search-sandbox-x402-proof.v1.json",
-          "totalChargeAtomic": "6000",
-          "usefulResultCount": 1
+          "accepted": false,
+          "reason": "paid_proof_invariant_failed"
         },
         "probed": true
       },
       "expectedReturnAt": null,
       "freeEntry": {
-        "acceptsNaiveRequest": false,
+        "acceptsNaiveRequest": true,
         "freeOutcomeObserved": false,
-        "naiveRejectionCode": "free_quota_exceeded",
+        "naiveRejectionCode": null,
         "route": "https://api.clervo.dev/v1/search/free",
         "withIdempotencyKeyStatus": 429,
         "withoutIdempotencyKeyStatus": 429
@@ -1384,10 +3292,9 @@
         "scheme": "exact"
       },
       "operations": [
-        "search.answer",
         "search.web"
       ],
-      "proof": "paid_outcome_verified",
+      "proof": "quote_observed_unpaid",
       "publiclyReachable": true,
       "reason": null,
       "state": "live"
@@ -1404,7 +3311,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "802527f49f87b1aa9323c329bf52c07ffce6d659",
+  "sourceCommit": "ce022d4efb5e9c58a664462d249db573896251c7",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -1412,22 +3319,18 @@
   },
   "summary": {
     "aiRoutes": {
-      "supply_paused": 21
+      "live": 88,
+      "supply_paused": 1
     },
     "bazaarIndexedResources": 4,
     "bazaarValidResources": 4,
-    "conformanceDefectsOpen": 1,
+    "conformanceDefectsOpen": 0,
     "discoverySurfaces": {
       "live": 5
     },
     "products": {
-      "live": 4,
-      "supply_paused": 1,
+      "live": 5,
       "unavailable": 1
-    },
-    "aiCatalog": {
-      "live": 88,
-      "supply_paused": 1
     }
   },
   "supplyFamilies": [
@@ -1577,1153 +3480,5 @@
       "reason": null,
       "supplyFamilyId": "supply.groq"
     }
-  ],
-  "aiCatalog": {
-    "authority": "packages/catalog/ai-b7-qualified-supply.v1.json",
-    "catalogRevision": "b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1",
-    "frozenInventory": {
-      "canonicalModels": 85,
-      "aliases": 4,
-      "callableIds": 89
-    },
-    "counts": {
-      "live": 88,
-      "supply_paused": 1
-    },
-    "representativeChallenges": [
-      {
-        "kind": "chat",
-        "model": "clervo/gpt-5.6-luna",
-        "amountAtomic": "1000",
-        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi"
-      },
-      {
-        "kind": "embedding",
-        "model": "clervo/gemini-embedding-001",
-        "amountAtomic": "1000",
-        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:embedding_gr"
-      },
-      {
-        "kind": "image",
-        "model": "clervo/gemini-3.1-flash-lite-image",
-        "amountAtomic": "25500",
-        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:image_balanc"
-      },
-      {
-        "kind": "speech",
-        "model": "clervo/gemini-2.5-flash-lite-preview-tts",
-        "amountAtomic": "1000",
-        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:speech_balan"
-      },
-      {
-        "kind": "video",
-        "model": "clervo/veo-3.1-lite-generate-001",
-        "amountAtomic": "112500",
-        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:default_sust"
-      },
-      {
-        "kind": "music",
-        "model": "clervo/lyria-3-clip-preview",
-        "amountAtomic": "30000",
-        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:default_sust"
-      },
-      {
-        "kind": "virtual_try_on",
-        "model": "clervo/virtual-try-on-001",
-        "amountAtomic": "45000",
-        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:default_sust"
-      }
-    ],
-    "freeReplay": {
-      "model": "clervo/gemma-4-26b-a4b-it",
-      "status": 200,
-      "replayed": true,
-      "noPayment": true
-    },
-    "paidOutcome": {
-      "accepted": true,
-      "reason": null,
-      "proofLevel": "paid_outcome_verified",
-      "source": "infra/production/gcp/ai-x402-proof.v1.json",
-      "releaseCommit": "802527f49f87b1aa9323c329bf52c07ffce6d659",
-      "operationCount": 2,
-      "totalChargeAtomic": "26500",
-      "usefulResultCount": 2,
-      "replayNoSecondChargeCount": 2,
-      "ownerFunded": true,
-      "revenueEvidence": false,
-      "demandEvidence": false,
-      "externallyRepeated": false
-    },
-    "models": [
-      {
-        "modelId": "clervo/allam-2-7b",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/claude-haiku-4-5-20251001",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/claude-opus-4-6",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/claude-opus-4-7",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/claude-opus-4-8",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/claude-opus-5",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/claude-sonnet-4-6",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/claude-sonnet-5",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/code",
-        "identityKind": "alias",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/deep",
-        "identityKind": "alias",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/deepseek-r1",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/deepseek-v3",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/deepseek-v3.1-terminus",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/deepseek-v3.2-exp",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/deepseek-v4-pro",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/fast",
-        "identityKind": "alias",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-2.5-flash",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-2.5-flash-image",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.image"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-2.5-flash-lite-preview-tts",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.speech"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-2.5-flash-tts",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.speech"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-2.5-pro-tts",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.speech"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-3-pro-image",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.image"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-3.1-flash-image",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.image"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-3.1-flash-lite-image",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.image"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-3.1-flash-tts-preview",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.speech"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-3.5-flash-lite",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-embedding-001",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.embed"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemini-omni-flash-preview",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.video"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemma-4-12b-it",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemma-4-26b-a4b-it",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gemma-4-31b-it",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/glm-4.5-air",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/glm-5.2",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gpt-5.6-luna",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gpt-5.6-sol",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gpt-5.6-terra",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gpt-oss-120b",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/gpt-oss-20b",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "supply_paused",
-        "reason": "availability_degraded",
-        "sellable": false,
-        "availability": "degraded",
-        "health": "degraded"
-      },
-      {
-        "modelId": "clervo/gpt-oss-safeguard-20b",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/hunyuan-a13b-instruct",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/hy3",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/kimi-k2.5",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/kimi-k2.6",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/kimi-k2.7-code",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/kimi-k3",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/laguna-s-2.1",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/ling-flash-2.0",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/llama-3.1-70b-instruct",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/llama-3.1-8b-instruct",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/llama-3.1-nemoguard-8b-content-safety",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/llama-3.1-nemotron-nano-vl-8b-v1",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/llama-3.1-nemotron-safety-guard-8b-v3",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/llama-3.2-11b-vision-instruct",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/llama-3.3-70b-instruct",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/longcat-2.0",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/lyria-3-clip-preview",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.music"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/lyria-3-pro-preview",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.music"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/minimax-m2.5",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/minimax-m3",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/mistral-medium-2505",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/mistral-medium-2508",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/multimodalembedding-001",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.embed"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/nemotron-3-embed-1b",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.embed"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/nemotron-3-nano-omni-30b-a3b-reasoning",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/nemotron-3.5-content-safety",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/nex-n2-pro",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/nv-embed-v1",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.embed"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen2.5-72b-instruct",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3-14b",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3-30b-a3b-instruct-2507",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3-32b",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3-8b",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3-coder-30b-a3b-instruct",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3-vl-30b-a3b-instruct",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3-vl-30b-a3b-thinking",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3-vl-32b-instruct",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3-vl-32b-thinking",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3-vl-8b-instruct",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3.5-397b-a17b",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/qwen3.6-27b",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/seed-oss-36b-instruct",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/smart",
-        "identityKind": "alias",
-        "productIds": [
-          "ai.chat"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/text-embedding-005",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.embed"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/text-embedding-large-exp-03-07",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.embed"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/text-multilingual-embedding-002",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.embed"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/veo-3.1-fast-generate-001",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.video"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/veo-3.1-generate-001",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.video"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/veo-3.1-lite-generate-001",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.video"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      },
-      {
-        "modelId": "clervo/virtual-try-on-001",
-        "identityKind": "canonical",
-        "productIds": [
-          "ai.virtual_try_on"
-        ],
-        "state": "live",
-        "reason": null,
-        "sellable": true,
-        "availability": "available",
-        "health": "healthy"
-      }
-    ]
-  }
+  ]
 }

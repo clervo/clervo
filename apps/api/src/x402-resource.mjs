@@ -39,9 +39,9 @@ const RESOURCE_TAGS = Object.freeze({
 });
 const SEARCH_DISCOVERY_INPUT = Object.freeze({ query: 'current x402 protocol documentation', maxResults: 3, synthesize: false, language: 'en', region: 'US' });
 const AI_DISCOVERY_INPUT = Object.freeze({
-  model: 'gpt-5.6-luna',
-  input: Object.freeze({ kind: 'chat', messages: Object.freeze([Object.freeze({ role: 'user', content: 'Reply with the single word ready.' })]), responseFormat: 'text', stream: false }),
-  maximumOutputTokens: 16,
+  model: 'clervo/gpt-5.6-luna',
+  input: Object.freeze({ kind: 'chat', messages: Object.freeze([Object.freeze({ role: 'user', content: 'Explain in one sentence why idempotency matters for paid API retries.' })]), responseFormat: 'text', stream: false }),
+  maximumOutputTokens: 64,
 });
 
 function defaultDiscovery(resourcePath) {
@@ -50,7 +50,7 @@ function defaultDiscovery(resourcePath) {
   const inputSchema = ai ? {
     type: 'object', required: ['model', 'input', 'maximumOutputTokens'], additionalProperties: false,
     properties: {
-      model: { type: 'string', enum: ['gpt-5.6-luna'] },
+      model: { type: 'string', enum: ['clervo/gpt-5.6-luna'] },
       input: {
         type: 'object', required: ['kind', 'messages', 'responseFormat', 'stream'], additionalProperties: false,
         properties: {
@@ -69,11 +69,11 @@ function defaultDiscovery(resourcePath) {
     },
   };
   const outputExample = ai
-    ? { productId: 'ai.chat', state: 'RECEIPTED', replayed: false, exactModelId: 'gpt-5.6-luna', result: { output: { kind: 'chat', content: 'ready' } }, receipt: { settlement: { status: 'settled' } } }
+    ? { productId: 'ai.chat', state: 'RECEIPTED', replayed: false, exactModelId: 'clervo/gpt-5.6-luna', result: { output: { kind: 'chat', content: 'Idempotency prevents a retry from becoming a second logical operation or charge.' } }, receipt: { settlement: { status: 'settled' } } }
     : { productId: 'search.web', state: 'RECEIPTED', replayed: false, output: { searchResponse: { results: [], citations: [] } }, receipt: { settlement: { status: 'settled' } } };
   return Object.freeze({
     method: 'POST', bodyType: 'json', input, inputSchema,
-    output: { example: outputExample, schema: { additionalProperties: true } },
+    output: { example: outputExample, schema: { type: 'object', additionalProperties: true } },
   });
 }
 

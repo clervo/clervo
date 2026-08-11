@@ -95,7 +95,7 @@
       "paymentState": "public_x402_two_owner_funded_settlements_and_replays_verified",
       "supplierRights": "qualified_resale_allowed_selected_routes",
       "allowedClaims": [
-        "The frozen public AI catalog contains 85 canonical models and 4 stable aliases; 88 of 89 callable IDs are currently sellable.",
+        "Current canonical, alias, callable, and sellable model counts are derived from the public AI catalog and published by /v1/models.",
         "Qualified AI requests expose exact request-derived Base USDC x402 quotes through the protected production edge.",
         "Two bounded owner-funded production operations—ai.chat at 0.001 USDC and ai.image at 0.0255 USDC—returned useful exact-model results and settled for exactly 0.0265 USDC total with zero supplier cost.",
         "Both paid operations replayed with the same operation, result, and receipt without another payment header, authorization, upstream execution, settlement, or charge.",

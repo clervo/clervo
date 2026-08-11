@@ -41,15 +41,16 @@ test('generated OpenAPI is deterministic, schema-complete, and exposes only regi
     .flatMap(({ routes }) => Object.values(routes)));
   assert.deepEqual(paths, [...declaredPublicPaths].sort(), 'OpenAPI paths must equal the generated public product routes');
   const status = document['x-clervo-status'];
-  assert.equal(status.releaseCandidateId, 'clervo-private-core-2026-08-02.2');
-  assert.equal(status.interfaceHash, 'sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4');
+  assert.equal(status.releaseCandidateId, undefined);
+  assert.equal(status.interfaceHash, undefined);
   assert.ok(['preview', 'available'].includes(status.lifecycle), `unexpected lifecycle ${status.lifecycle}`);
   assert.equal(status.publicCallable, launchState.distribution.publicApi.publicCallable === true);
   assert.equal(status.paymentImplemented, launchState.paymentProof.publicCustomerPaymentAvailable === true);
   assert.ok(status.operationIds.includes('search.web'), 'search.web must stay published');
   const schemaFiles = (await readdir(path.join(root, 'packages/contracts/schemas'))).filter((name) => name.endsWith('.schema.json'));
   const visibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
-  assert.equal(Object.keys(document.components.schemas).length, publicSchemaFiles(visibility, schemaFiles).length);
+  assert.equal(Object.keys(document.components.schemas).length, publicSchemaFiles(visibility, schemaFiles).filter((name) => name !== 'product-scope.schema.json').length);
+  assert.equal(document.components.schemas.ProductScope, undefined);
 });
 
 test('embedded and published schemas compile under Draft 2020-12 with resolved references', async () => {
@@ -59,28 +60,27 @@ test('embedded and published schemas compile under Draft 2020-12 with resolved r
   for (const schema of Object.values(document.components.schemas)) ajv.addSchema(schema);
   for (const schema of Object.values(document.components.schemas)) assert.ok(ajv.getSchema(schema.$id));
   for (const fileName of await readdir(path.join(generated, 'schemas', CONTRACT_VERSION))) {
-    assert.deepEqual(
-      JSON.parse(await readFile(path.join(generated, 'schemas', CONTRACT_VERSION, fileName), 'utf8')),
-      JSON.parse(await readFile(path.join(root, 'packages/contracts/schemas', fileName), 'utf8')),
-    );
+    const published = JSON.parse(await readFile(path.join(generated, 'schemas', CONTRACT_VERSION, fileName), 'utf8'));
+    const internal = JSON.parse(await readFile(path.join(root, 'packages/contracts/schemas', fileName), 'utf8'));
+    if (fileName === 'search-http-result.schema.json') {
+      assert.deepEqual(published.properties.productId.enum, ['search.web']);
+      assert.deepEqual({ ...published, properties: { ...published.properties, productId: internal.properties.productId } }, internal);
+    } else assert.deepEqual(published, internal);
   }
 });
 
-test('discovery is bound to the frozen private core and agrees with launch state', async () => {
+test('public discovery excludes private release bookkeeping and agrees with live launch state', async () => {
   const discovery = await json('.well-known/clervo.json');
-  // Same reasoning as the OpenAPI test above: the binding to the frozen core is
-  // permanent and still asserted exactly; the availability fields move forward
-  // as products launch and are checked against launch state instead of a
-  // snapshot. createDiscoveryDocument() is not compared byte-for-byte because
-  // the generator calls it with the live projection and then adds per-product
-  // entries, so a no-argument call reproduces only the private-candidate default.
-  assert.equal(discovery.distribution.releaseCandidateId, 'clervo-private-core-2026-08-02.2');
-  assert.equal(discovery.distribution.interfaceHash, 'sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4');
+  assert.equal(discovery.distribution.releaseCandidateId, undefined);
+  assert.equal(discovery.distribution.interfaceHash, undefined);
+  assert.equal(discovery.releaseScope, undefined);
   assert.equal(discovery.distribution.callable, launchState.distribution.publicApi.publicCallable === true);
-  assert.equal(discovery.payment.implemented, launchState.paymentProof.publicCustomerPaymentAvailable === true);
+  assert.equal(discovery.payment.publicAvailable, launchState.paymentProof.publicCustomerPaymentAvailable === true);
+  assert.equal(discovery.payment.network, 'eip155:8453');
+  assert.equal(discovery.payment.asset, 'USDC');
   const productIds = discovery.products.map(({ productId }) => productId);
   assert.ok(productIds.includes('search.web'), 'search.web must stay published');
-  assert.ok(productIds.includes('search.answer'), 'search.answer must stay published');
+  assert.equal(productIds.includes('search.answer'), false, 'non-callable search.answer must stay out of public inventory');
   // Anything advertised as payable must carry a real price, never a mock
   // fixture. displayPrice is null for request-derived quotes such as ai.chat,
   // where the exact maximum charge is computed per request.
@@ -90,40 +90,17 @@ test('discovery is bound to the frozen private core and agrees with launch state
     if (product.pricing.displayPrice === null) continue;
     assert.match(String(product.pricing.displayPrice.amountAtomic), /^\d+$/u, `${product.productId}: payable product needs an atomic amount`);
   }
-  // The description must not overstate. Revenue and demand remain separate
-  // from an owner-funded paid-outcome proof and are carried in structured
-  // fields instead of requiring one frozen sentence to survive every launch.
   assert.doesNotMatch(discovery.description, /live service|available now|production-ready/iu);
-  assert.equal(discovery.payment.privateProofVerified, true);
-  assert.equal(discovery.payment.commercialProof, false);
-  // catalog.json is a projection of the discovery document, including the
-  // observed truth block the generator renders from the probed live registry.
+  assert.equal(discovery.payment.privateProofVerified, undefined);
+  assert.equal(discovery.payment.commercialProof, undefined);
   assert.deepEqual(await json('catalog.json'), {
     contractVersion: CONTRACT_VERSION,
     catalogVersion: discovery.discoveryVersion,
     distribution: discovery.distribution,
-    releaseScope: discovery.releaseScope,
     products: discovery.products,
     observedTruth: discovery.observedTruth,
   });
   assert.equal(discovery.discoveryVersion, '2026-08-02.2');
-  assert.equal(discovery.releaseScope.scopeVersion, '2026-08-01.3');
-  assert.equal(discovery.releaseScope.firstRevenueRelease.productName, 'Clervo Platform');
-  assert.deepEqual(discovery.releaseScope.firstRevenueRelease.requiredPillars, ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence']);
-  assert.equal(discovery.releaseScope.firstRevenueRelease.ready, false);
-  assert.deepEqual(discovery.releaseScope.productCore, {
-    requiredPillars: ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence'],
-    interfacesFrozen: true,
-    compatibilityVerified: true,
-    ready: true,
-  });
-  // Lifecycle values advance as products launch; assert they are valid and
-  // agree with launch state rather than freezing a snapshot in the test.
-  const lifecycles = discovery.releaseScope.pillars.map(({ lifecycle }) => lifecycle);
-  assert.equal(lifecycles.length, 6);
-  for (const lifecycle of lifecycles) assert.ok(['preview', 'unavailable', 'available'].includes(lifecycle), `unexpected lifecycle ${lifecycle}`);
-  assert.deepEqual(discovery.releaseScope.pillars.map(({ coreQualified }) => coreQualified), [true, true, true, true, true, true]);
-  assert.ok(discovery.releaseScope.pillars.every(({ release }) => release === 'first_revenue_release'));
 });
 
 test('llms.txt matches the generator and states public status truthfully', async () => {

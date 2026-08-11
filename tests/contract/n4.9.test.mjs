@@ -238,7 +238,7 @@ test('a raw-only release refuses synthesis before quota, execution, or payment c
   const executor = recordedExecutor();
   await withServer({ executor, now: () => now, synthesisEnabled: false, retrievalMode: 'live_external' }, async (origin) => {
     const response = await post(origin, SEARCH_PAID_PATH, 'idem_n49_synthesis_off', { query: 'live answer', synthesize: true });
-    assert.equal(response.status, 503);
+    assert.equal(response.status, 422);
     assert.equal((await response.json()).code, 'search_synthesis_unavailable');
     assert.equal(executor.calls, 0);
   });

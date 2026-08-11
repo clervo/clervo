@@ -285,12 +285,12 @@ export function Docs({
             <dd>{discovery.contractVersion}</dd>
           </div>
           <div>
-            <dt>Release candidate</dt>
-            <dd>{discovery.distribution.releaseCandidateId}</dd>
+            <dt>Observed runtime revision</dt>
+            <dd>{discovery.runtimeRelease.sourceCommit.slice(0, 12)}</dd>
           </div>
           <div>
-            <dt>Interface hash</dt>
-            <dd>{discovery.distribution.interfaceHash}</dd>
+            <dt>Callable operation IDs</dt>
+            <dd>{discovery.runtimeRelease.operationIds.length}</dd>
           </div>
           <div>
             <dt>Observed API origin</dt>

@@ -251,7 +251,6 @@ function ProofPage() {
   const [selected, setSelected] = useState<ProofClass>('owner');
   const current = proofClassCopy[selected];
   const runtimeQuotes = observedTruth.products.filter(({ proofLevel }) => proofLevel === 'quote_observed_unpaid').length;
-  const engineering = discovery.releaseScope.productCore;
 
   return (
     <>
@@ -285,7 +284,7 @@ function ProofPage() {
               </>
             ) : null}
             {selected === 'runtime' ? <div className="s6-record-grid"><div><span>Observed at</span><strong>{observedTruth.provenance.observedAt}</strong></div><div><span>Serving families</span><strong>{liveFamilies.length}</strong></div><div><span>Live routes</span><strong>{liveRoutes.length}</strong></div><div><span>Quote-observed families</span><strong>{runtimeQuotes}</strong></div><div><span>Source</span><strong>{observedTruth.provenance.source}</strong></div><div><span>Paid outcome claim</span><strong>not implied</strong></div></div> : null}
-            {selected === 'engineering' ? <div className="s6-record-grid"><div><span>Interfaces frozen</span><strong>{String(engineering.interfacesFrozen)}</strong></div><div><span>Compatibility verified</span><strong>{String(engineering.compatibilityVerified)}</strong></div><div><span>Core ready</span><strong>{String(engineering.ready)}</strong></div><div><span>Customer readiness</span><strong>{discovery.releaseScope.firstRevenueRelease.ready ? 'ready' : 'not ready'}</strong></div></div> : null}
+            {selected === 'engineering' ? <div className="s6-record-grid"><div><span>Contract version</span><strong>{discovery.contractVersion}</strong></div><div><span>Observed revision</span><strong>{discovery.runtimeRelease.sourceCommit.slice(0, 12)}</strong></div><div><span>Callable operations</span><strong>{discovery.runtimeRelease.operationIds.length}</strong></div><div><span>Public distribution</span><strong>{discovery.distribution.callable ? 'callable' : 'unavailable'}</strong></div></div> : null}
             {selected === 'fixture' ? <div className="s6-fixture-box"><span className="s6-fixture"><i />Structural fixture</span><p>Approval, refusal, unresolved settlement, replay, and evidence layouts may be demonstrated without creating or implying a real transaction, wallet state, or receipt.</p></div> : null}
             {selected === 'unproven' ? <ul className="s6-claim-list"><li>No external customer count or customer revenue claim is bound.</li><li>No public comparative benchmark result is bound.</li><li>No uptime/SLA series is bound.</li><li>No independent audit or security certification is claimed.</li></ul> : null}
           </article>
@@ -389,7 +388,7 @@ function StatusPage() {
       <Section eyebrow="Incidents and limitations" title="No history feed means no invented history." copy="A current probe is not an uptime series. Without a canonical incident/history source, this page cannot truthfully say “zero incidents” or “all systems operational.”">
         <div className="s6-two-col">
           <article className="s6-panel s6-panel--unbound"><span className="s6-state">not bound</span><h3>No canonical incident/history feed.</h3><p>The frontend has no authoritative incident chronology, uptime percentage, SLA window, or maintenance feed to publish. Nothing is inferred from absence.</p></article>
-          <article className="s6-panel"><span className="s6-state s6-state--unresolved">current limitations</span><h3>Observed constraints remain visible.</h3><p>{unavailableFamilies.length} families are currently unavailable in observed truth; {pausedRoutes.length} routes are supply paused; First Revenue Release readiness is {discovery.releaseScope.firstRevenueRelease.ready ? 'ready' : 'not ready'}.</p></article>
+          <article className="s6-panel"><span className="s6-state s6-state--unresolved">current limitations</span><h3>Observed constraints remain visible.</h3><p>{unavailableFamilies.length} families are currently unavailable in observed truth; {pausedRoutes.length} routes are supply paused; no external demand is inferred from owner-funded technical proof.</p></article>
         </div>
       </Section>
     </>

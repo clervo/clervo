@@ -57,12 +57,7 @@
   <url><loc>https://clervo.dev/operations/rpc.broadcast/</loc></url>
   <url><loc>https://clervo.dev/operations/rpc.call/</loc></url>
   <url><loc>https://clervo.dev/operations/rpc.health/</loc></url>
-  <url><loc>https://clervo.dev/operations/sandbox.artifact.get/</loc></url>
   <url><loc>https://clervo.dev/operations/sandbox.run/</loc></url>
-  <url><loc>https://clervo.dev/operations/sandbox.session.create/</loc></url>
-  <url><loc>https://clervo.dev/operations/sandbox.session.destroy/</loc></url>
-  <url><loc>https://clervo.dev/operations/sandbox.session.exec/</loc></url>
-  <url><loc>https://clervo.dev/operations/search.answer/</loc></url>
   <url><loc>https://clervo.dev/operations/search.web/</loc></url>
   <url><loc>https://clervo.dev/models/allam-2-7b/</loc></url>
   <url><loc>https://clervo.dev/models/claude-haiku-4-5-20251001/</loc></url>

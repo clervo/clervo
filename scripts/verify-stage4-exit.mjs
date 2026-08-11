@@ -251,8 +251,8 @@ export async function loadStage4ExitInputs(root = repositoryRoot) {
     readJson('generated/public/openapi.json'),
   ]);
   const sourceBinding = await validateStage4SourceBindings(root, evidence);
-  const products = discovery.products.filter((value) => value.productId === 'search.web' || value.productId === 'search.answer');
-  assert.equal(products.length, 2, 'search.web and search.answer discovery products are required');
+  const products = discovery.products.filter((value) => value.productId === 'search.web');
+  assert.equal(products.length, 1, 'the current public raw Search discovery product is required');
   return {
     evidence,
     actualSourceState: {
@@ -260,7 +260,7 @@ export async function loadStage4ExitInputs(root = repositoryRoot) {
       stagingPublic: staging.public,
       stagingUsesMockProvidersByDefault: staging.mockProvidersByDefault,
       discoveryLifecycle: discovery.lifecycle,
-      discoveryPaymentImplemented: discovery.payment.implemented,
+      discoveryPaymentImplemented: discovery.payment.publicAvailable,
       discoveryPaidRoutePayable: products.some((product) => product.payment.payable),
       openApiDeploymentVerified: openapi['x-clervo-status'].deploymentVerified,
       openApiPaymentImplemented: openapi['x-clervo-status'].paymentImplemented,

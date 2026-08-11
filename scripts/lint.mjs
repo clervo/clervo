@@ -13,7 +13,10 @@ async function filesBelow(relative) {
   const output = [];
   for (const entry of await readdir(path.join(root, relative), { withFileTypes: true })) {
     const child = path.join(relative, entry.name);
-    if (entry.isDirectory()) output.push(...await filesBelow(child));
+    // Workspace package managers may materialize dependency trees below an
+    // individual package. Those are third-party artifacts, not repository
+    // source, and must never enter the source-style lint contract.
+    if (entry.isDirectory() && entry.name !== 'node_modules') output.push(...await filesBelow(child));
     else if (extensions.has(path.extname(entry.name))) output.push(child);
   }
   return output;

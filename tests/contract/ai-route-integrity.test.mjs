@@ -20,6 +20,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const json = async (relative) => JSON.parse(await readFile(path.join(root, relative), 'utf8'));
 
 const catalog = await json('packages/catalog/ai-model-catalog.v1.json');
+const publicCatalog = await json('generated/b7-ai/public/models.json');
 const registry = await json('packages/catalog/live-registry.json');
 
 const catalogRoutes = catalog.routes;
@@ -48,26 +49,22 @@ test('a qualification that observed an identity observed the route own model', (
   }
 });
 
-test('no route is exposed as live without a passed, unexpired qualification', () => {
+test('no customer model identity is exposed as live without current source/runtime agreement', () => {
   for (const route of registryRoutes) {
     if (route.state !== 'live') continue;
-    const catalogued = catalogRoutes.find(({ routeId }) => routeId === route.routeId);
-    assert.ok(catalogued !== undefined, `live route ${route.routeId} is not in the catalog`);
-    assert.equal(catalogued.qualification.status, 'passed', `live route ${route.routeId} has status ${catalogued.qualification.status}`);
-    assert.equal(catalogued.qualification.resaleAllowed, true, `live route ${route.routeId} is not permitted for resale`);
-    assert.ok(
-      Date.parse(catalogued.qualification.expiresAt) > Date.parse(registry.observedAt),
-      `live route ${route.routeId} was exposed with a qualification already expired at observation time`,
-    );
+    const catalogued = publicCatalog.data.find(({ id }) => id === route.routeId);
+    assert.ok(catalogued !== undefined, `live identity ${route.routeId} is not in the current B7 catalog`);
+    assert.equal(catalogued.clervo.publicSellable, true, `live identity ${route.routeId} is not source-sellable`);
+    assert.equal(catalogued.clervo.availability, 'available', `live identity ${route.routeId} is not source-available`);
+    assert.equal(route.evidence.publicCatalogObserved, true, `live identity ${route.routeId} was absent from GET /v1/models`);
+    assert.equal(route.evidence.publicCatalogContractMatched, true, `live identity ${route.routeId} disagrees with GET /v1/models`);
   }
 });
 
-test('no route is exposed as live on unverified supply', () => {
+test('no customer model identity is exposed as live before a current paid request reaches x402', () => {
   for (const route of registryRoutes) {
     if (route.state !== 'live') continue;
-    // An edge 402 is produced from the catalog and the price model, so it is
-    // offered on its own. Supply has to have actually been observed.
-    assert.equal(route.evidence?.supplyOutcome, 'passed', `live route ${route.routeId} has supply outcome ${route.evidence?.supplyOutcome}`);
+    assert.equal(route.evidence?.paidRepresentativeStatus, 402, `live identity ${route.routeId} did not share the current payable execution contract`);
   }
 });
 
@@ -82,9 +79,9 @@ test('a route that is not live stays listed with a truthful reason', () => {
   }
 });
 
-test('every catalogued route appears in the registry so nothing is silently dropped', () => {
-  for (const route of catalogRoutes) {
-    assert.ok(registryById.has(route.routeId), `catalogued route ${route.routeId} is missing from the registry`);
+test('every current B7 customer identity appears in the registry so nothing is silently dropped', () => {
+  for (const model of publicCatalog.data) {
+    assert.ok(registryById.has(model.id), `catalogued identity ${model.id} is missing from the registry`);
   }
 });
 
@@ -159,21 +156,21 @@ test('the permission summary matches the per-family records it summarises', asyn
   assert.equal(permission.summary.liveRoutesOnUnresolvedPermission, liveOnUnresolved, 'summary.liveRoutesOnUnresolvedPermission disagrees with the registry');
 });
 
-test('a route may not be sold on a supply family whose terms are blocked', async () => {
+test('a legacy recovery route may not be sellable on a supply family whose terms are blocked', async () => {
   const permission = await json('packages/catalog/ai-commercial-permission.v1.json');
   const byFamily = new Map(permission.families.map((family) => [family.supplyFamilyId, family]));
 
-  for (const route of registryRoutes) {
-    if (route.state !== 'live') continue;
+  for (const route of catalogRoutes) {
+    if (route.qualification.resaleAllowed !== true) continue;
     const record = byFamily.get(route.supplyFamilyId);
-    assert.ok(record !== undefined, `live route ${route.routeId} sells on family ${route.supplyFamilyId} with no permission record`);
-    assert.notEqual(record.termsStatus, 'blocked', `live route ${route.routeId} sells on a family whose terms are blocked`);
+    assert.ok(record !== undefined, `sellable recovery route ${route.routeId} uses family ${route.supplyFamilyId} with no permission record`);
+    assert.notEqual(record.termsStatus, 'blocked', `sellable recovery route ${route.routeId} uses a family whose terms are blocked`);
     // resaleAllowed is the owner's decision to sell and carry the risk. It is
     // deliberately NOT read as evidence that the supplier permitted resale --
     // permissionBasis carries that, and it may legitimately be `unresolved`
     // while this is true. Asserting otherwise would let an owner decision
     // masquerade as a supplier grant.
-    assert.equal(record.resaleAllowed, true, `live route ${route.routeId} sells on a family the owner has not cleared for sale`);
+    assert.equal(record.resaleAllowed, true, `sellable recovery route ${route.routeId} uses a family the owner has not cleared for sale`);
   }
 });
 

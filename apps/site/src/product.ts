@@ -1,5 +1,5 @@
 import discoverySource from '../../../generated/public/.well-known/clervo.json';
-import launchStateSource from '../../../generated/public/claims.json';
+import launchStateSource from '../../../packages/catalog/launch-state.v1.json';
 import modelsSource from '../../../generated/public/models.json';
 import onboardingSource from '../../../generated/public/onboarding.json';
 
@@ -74,13 +74,6 @@ export interface DiscoveryProduct {
   };
 }
 
-interface DiscoveryPillar {
-  pillarId: 'search' | 'ai' | 'sandbox' | 'rpc' | 'prediction' | 'crypto_intelligence';
-  lifecycle: PillarLifecycle;
-  coreQualified: true;
-  capabilityIds: string[];
-}
-
 interface Discovery {
   discoveryVersion: string;
   contractVersion: string;
@@ -89,21 +82,11 @@ interface Discovery {
     state: string;
     publicAvailable: boolean;
     callable: boolean;
-    noPublicDistribution: boolean;
-    releaseCandidateId: string;
-    interfaceHash: string;
   };
   products: DiscoveryProduct[];
-  releaseScope: {
-    productCore: {
-      interfacesFrozen: true;
-      compatibilityVerified: true;
-      ready: true;
-    };
-    firstRevenueRelease: {
-      ready: boolean;
-    };
-    pillars: DiscoveryPillar[];
+  runtimeRelease: {
+    sourceCommit: string;
+    operationIds: string[];
   };
   observedTruth: ObservedTruth;
 }
@@ -264,8 +247,6 @@ export interface OnboardingRecovery {
 }
 
 interface Onboarding {
-  releaseCandidateId: string;
-  interfaceHash: string;
   publicCallable: boolean;
   paymentImplemented: boolean;
   journey: Array<{
@@ -396,7 +377,7 @@ export function capabilityLabel(capability: string): string {
   return capability.replaceAll('_', ' ');
 }
 
-export const pillarLabels: Record<DiscoveryPillar['pillarId'], string> = {
+export const pillarLabels: Record<ObservedProduct['id'], string> = {
   search: 'Search',
   ai: 'AI',
   sandbox: 'Secure Sandbox',
@@ -477,13 +458,14 @@ const observedFreeRoute = observedTruth.products.find(({ id }) => id === 'search
 export const quickStartCurl = observedFreeRoute === null
   ? null
   : [
+    ...(observedFreeRoute.acceptsNaiveRequest ? [] : ['CLERVO_IDEMPOTENCY_KEY="$(uuidgen)"', '']),
     `curl -sS ${observedFreeRoute.route} \\`,
     "  -H 'content-type: application/json' \\",
     `  -d '{"query":"what is the x402 payment protocol","maxResults":3,"synthesize":false}'${observedFreeRoute.acceptsNaiveRequest ? '' : ' \\'}`,
     // While the free route still demands a caller key, the published example
     // shows one. Publishing the shorter command before the runtime accepts it
     // would hand every first-time caller a 400.
-    ...(observedFreeRoute.acceptsNaiveRequest ? [] : ["  -H 'idempotency-key: clervo-first-call-0001'"]),
+    ...(observedFreeRoute.acceptsNaiveRequest ? [] : ['  -H "idempotency-key: $CLERVO_IDEMPOTENCY_KEY"']),
   ].join('\n');
 
 /** True when the published curl needs no idempotency key, as observed. */
@@ -508,7 +490,6 @@ export const installExamples = {
 curl --fail-with-body \\
   --request POST "$CLERVO_BASE_URL/v1/search/free" \\
   --header "content-type: application/json" \\
-  --header "idempotency-key: clervo_example_0001" \\
   --data '{
     "query": "payment idempotency",
     "maxResults": 5,

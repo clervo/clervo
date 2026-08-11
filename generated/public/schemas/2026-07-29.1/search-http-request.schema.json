@@ -20,7 +20,7 @@
     },
     "synthesize": {
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "language": {
       "type": "string",

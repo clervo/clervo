@@ -178,7 +178,7 @@ test('challenge service binds AI payments to the exact public AI resource', asyn
   const result = await service.challenge({ quote, description: 'Bounded ai.chat execution', now: issuedAt, resourcePath: '/v1/ai/execute' });
   assert.equal(result.body.resource.url, 'https://api.clervo.dev/v1/ai/execute');
   assert.equal(result.body.extensions.bazaar.info.input.body.input.kind, 'chat');
-  assert.equal(result.body.extensions.bazaar.info.output.example.exactModelId, 'gpt-5.6-luna');
+  assert.equal(result.body.extensions.bazaar.info.output.example.exactModelId, 'clervo/gpt-5.6-luna');
   assert.equal(validateDiscoveryExtension(result.body.extensions.bazaar).valid, true);
   await assert.rejects(
     service.challenge({ quote, description: 'Invalid route', now: issuedAt, resourcePath: '/v1/unknown' }),

@@ -216,10 +216,10 @@
   "dependencies": {
     "@kubernetes/client-node": "1.4.0",
     "@sentry/node": "10.69.0",
-    "@x402/core": "2.20.0",
-    "@x402/evm": "2.20.0",
-    "@x402/extensions": "2.20.0",
-    "@x402/fetch": "2.20.0",
+    "@x402/core": "2.21.0",
+    "@x402/evm": "2.21.0",
+    "@x402/extensions": "2.21.0",
+    "@x402/fetch": "2.21.0",
     "mppx": "^0.8.15",
     "pg": "8.22.0",
     "pg-boss": "12.26.3"

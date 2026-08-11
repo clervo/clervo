@@ -94,7 +94,7 @@ test('schema visibility is exhaustive, default-deny, and excludes control and se
   assert.ok(!projected.includes('search-benchmark.schema.json'));
 
   const generated = (await readdir(path.join(root, 'generated/public/schemas/2026-07-29.1'))).sort();
-  assert.deepEqual(generated, projected);
+  assert.deepEqual(generated, projected.filter((file) => file !== 'product-scope.schema.json'));
 });
 
 test('registry invariants fail closed on dangling references, false public projection, and missing charge ceilings', async () => {

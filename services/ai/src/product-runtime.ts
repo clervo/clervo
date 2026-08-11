@@ -17,6 +17,7 @@ import type {
   AiInternalProductModel,
   ComposedAiProductCatalog,
 } from './product-catalog.js';
+import { aiPricingRateKeys } from './product-catalog.js';
 
 const maximumUsageBounds: Readonly<AiUsageBounds> = Object.freeze({
   inputTokens: 5_000_000,
@@ -50,6 +51,7 @@ export interface AiProductRuntimeProjection {
   routes: readonly Readonly<AiRuntimeRoute & { customerPricing: Readonly<AiRoutePricing>; priceVersion: string }>[];
   runtimeBindings: ComposedAiProductCatalog['privateRuntimeBindings'];
   aliasTargets: Readonly<Partial<Record<AiAlias, string>>>;
+  modelStates: ReadonlyMap<string, Readonly<{ publicSellable: boolean; productIds: readonly string[]; availability: string }>>;
 }
 
 export function createAiProductRuntimeProjection(catalog: Readonly<ComposedAiProductCatalog>): Readonly<AiProductRuntimeProjection> {
@@ -105,12 +107,35 @@ export function createAiProductRuntimeProjection(catalog: Readonly<ComposedAiPro
     });
   });
   const aliasTargets = Object.freeze(Object.fromEntries(catalog.publicModels.flatMap((model) => model.aliases.map((alias) => [alias, model.modelId]))) as Partial<Record<AiAlias, string>>);
-  return Object.freeze({ catalog: modelCatalog, routes: Object.freeze(routes), runtimeBindings: catalog.privateRuntimeBindings, aliasTargets });
+  const modelStates = new Map<string, Readonly<{ publicSellable: boolean; productIds: readonly string[]; availability: string }>>();
+  for (const model of catalog.publicModels) {
+    const state = Object.freeze({ publicSellable: model.publicSellable, productIds: model.productIds, availability: model.availability });
+    modelStates.set(model.modelId, state);
+    for (const alias of model.aliases) modelStates.set(alias, state);
+  }
+  return Object.freeze({ catalog: modelCatalog, routes: Object.freeze(routes), runtimeBindings: catalog.privateRuntimeBindings, aliasTargets, modelStates });
 }
 
 export function createDynamicAiPublicPricing(projection: Readonly<AiProductRuntimeProjection>) {
   return Object.freeze({
+    discoveryRequest() {
+      const selected = projection.routes
+        .filter(({ definition, customerPricing }) => definition.productIds.includes('ai.chat')
+          && aiPricingRateKeys.some((key) => customerPricing[key] > 0))
+        .sort((left, right) => left.definition.exactModelId.localeCompare(right.definition.exactModelId))[0];
+      if (selected === undefined) throw Object.assign(new Error('ai_paid_discovery_model_unavailable'), { status: 503 });
+      return Object.freeze({
+        model: selected.definition.exactModelId,
+        input: Object.freeze({ kind: 'chat' as const, messages: Object.freeze([Object.freeze({ role: 'user' as const, content: 'Explain in one sentence why idempotency matters for paid API retries.' })]), responseFormat: 'text' as const, stream: false as const }),
+        maximumOutputTokens: 64,
+      });
+    },
     quote({ normalized, operationId, now }: { normalized: Readonly<{ model: string; productId: 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech' | 'ai.video' | 'ai.music' | 'ai.virtual_try_on'; usageBounds: AiUsageBounds }>; operationId: string; now: string }) {
+      const modelState = projection.modelStates.get(normalized.model);
+      if (modelState === undefined) throw Object.assign(new Error('ai_model_not_found'), { status: 404 });
+      if (!modelState.publicSellable || modelState.availability !== 'available' || !modelState.productIds.includes(normalized.productId)) {
+        throw Object.assign(new Error('ai_model_unavailable'), { status: 422 });
+      }
       if (projection.catalog === null) throw Object.assign(new Error('ai_route_unavailable'), { status: 503, rejectionCodes: ['commercial_supply_unavailable'] });
       const decision = selectAiRoute({
         catalog: projection.catalog,

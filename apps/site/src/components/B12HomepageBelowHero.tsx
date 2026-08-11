@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { discovery } from '../product';
+import { discovery, observedTruth } from '../product';
 import { Link } from '../router';
 
 type ProofState = 'rest' | 'request' | 'qualify' | 'execute' | 'verify' | 'prove';
@@ -180,7 +180,7 @@ const familyDisplayNames = {
   crypto_intelligence: 'Crypto Intelligence',
 } as const;
 
-const canonicalFamilies = discovery.releaseScope.pillars.map(({ pillarId }) => ({ id: pillarId, label: familyDisplayNames[pillarId], ...familyPresentation[pillarId] }));
+const canonicalFamilies = observedTruth.products.map(({ id }) => ({ id, label: familyDisplayNames[id], ...familyPresentation[id] }));
 const familyCountWord = canonicalFamilies.length === 6 ? 'six' : String(canonicalFamilies.length);
 const familyCountTitle = canonicalFamilies.length === 6 ? 'Six' : String(canonicalFamilies.length);
 

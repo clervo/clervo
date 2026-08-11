@@ -1,7 +1,5 @@
 {
   "schemaVersion": "clervo.distribution-onboarding.v1",
-  "releaseCandidateId": "clervo-private-core-2026-08-02.2",
-  "interfaceHash": "sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4",
   "publicCallable": true,
   "paymentImplemented": true,
   "journey": [

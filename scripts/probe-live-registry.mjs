@@ -190,18 +190,32 @@ try {
   sourceCommit = null;
 }
 
-const catalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
-// Commercial permission gates sellability alongside technical qualification.
-// If the document is unreadable the gate fails closed rather than open: every
-// route pauses as `commercial_permission_unrecorded`.
-const permission = await (async () => {
-  try {
-    return JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-commercial-permission.v1.json'), 'utf8'));
-  } catch {
-    return null;
-  }
-})();
-const permissionByFamily = Object.fromEntries((permission?.families ?? []).map((family) => [family.supplyFamilyId, family]));
+// B7's provider-neutral model list is the current released customer contract.
+// The older direct-provider route catalog remains recovery history and must not
+// drive current production discovery or probes.
+const b7PublicModels = JSON.parse(await readFile(path.join(root, 'generated/b7-ai/public/models.json'), 'utf8'));
+if (b7PublicModels?.object !== 'list' || !Array.isArray(b7PublicModels.data)) fail('current B7 public model catalog is invalid');
+const currentPaidAiModel = b7PublicModels.data
+  .filter(({ clervo }) => clervo.identityKind === 'canonical'
+    && clervo.publicSellable === true
+    && clervo.availability === 'available'
+    && clervo.billingMode === 'metered'
+    && clervo.productIds.includes('ai.chat'))
+  .sort((left, right) => left.id.localeCompare(right.id))[0];
+const currentFreeAiModel = b7PublicModels.data
+  .filter(({ clervo }) => clervo.identityKind === 'canonical'
+    && clervo.publicSellable === true
+    && clervo.availability === 'available'
+    && clervo.billingMode === 'free'
+    && clervo.productIds.includes('ai.chat'))
+  .sort((left, right) => left.id.localeCompare(right.id))[0];
+const currentAliasAiModel = b7PublicModels.data
+  .filter(({ clervo }) => clervo.identityKind === 'alias'
+    && clervo.publicSellable === true
+    && clervo.availability === 'available'
+    && clervo.productIds.includes('ai.chat'))
+  .sort((left, right) => left.id.localeCompare(right.id))[0];
+if (currentPaidAiModel === undefined || currentFreeAiModel === undefined || currentAliasAiModel === undefined) fail('current paid/free/alias AI probe identities are missing');
 const predictionPaidProof = await (async () => {
   try {
     return JSON.parse(await readFile(path.join(root, 'infra/production/gcp/prediction-x402-proof.v1.json'), 'utf8'));
@@ -223,6 +237,13 @@ const searchSandboxPaidProof = await (async () => {
     return null;
   }
 })();
+const aiPaidProof = await (async () => {
+  try {
+    return JSON.parse(await readFile(path.join(root, 'infra/production/gcp/ai-x402-proof.v1.json'), 'utf8'));
+  } catch {
+    return null;
+  }
+})();
 
 // ---------------------------------------------------------------------------
 // Surface probes
@@ -230,11 +251,22 @@ const searchSandboxPaidProof = await (async () => {
 
 const probeNonce = observedAt.replace(/[^0-9]/gu, '');
 
+function currentAiProbeBody(entry) {
+  const productId = entry.clervo.productIds[0];
+  if (productId === 'ai.embed') return { model: entry.id, input: { kind: 'embedding', inputs: ['clervo live registry probe'] } };
+  if (productId === 'ai.image') return { model: entry.id, input: { kind: 'image', prompt: 'a plain red square', size: '1024x1024', quality: 'low', count: 1 } };
+  if (productId === 'ai.speech') return { model: entry.id, input: { kind: 'speech', input: 'clervo live registry probe', voice: 'arcas', responseFormat: 'mp3' } };
+  return { model: entry.id, input: { kind: 'chat', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 16 };
+}
+
 const surfaceProbes = await Promise.all([
   observe('api.health', `${API_ORIGIN}/v1/health`),
   observe('api.well_known_x402', `${API_ORIGIN}/.well-known/x402`),
   observe('api.llms_txt', `${API_ORIGIN}/llms.txt`),
   observe('api.models', `${API_ORIGIN}/v1/models`),
+  observe('api.ai_paid_current', `${API_ORIGIN}/v1/ai/execute`, postJson(currentAiProbeBody(currentPaidAiModel), `idem_probe_ai_paid_${probeNonce}`)),
+  observe('api.ai_free_current', `${API_ORIGIN}/v1/ai/execute`, postJson(currentAiProbeBody(currentFreeAiModel), `idem_probe_ai_free_${probeNonce}`)),
+  observe('api.ai_alias_current', `${API_ORIGIN}/v1/ai/execute`, postJson(currentAiProbeBody(currentAliasAiModel), `idem_probe_ai_alias_${probeNonce}`)),
   observe('api.search_free_naive', `${API_ORIGIN}/v1/search/free`,
     postJson({ query: 'clervo live registry probe', maxResults: 1, synthesize: false })),
   observe('api.search_free_keyed', `${API_ORIGIN}/v1/search/free`,
@@ -421,142 +453,78 @@ async function probeVertex() {
 }
 
 const supplyProbes = await Promise.all([probeClervoGateway(), probeGroq(), probeCloudflare(), probeDeepgram(), probeVertex()]);
-const supplyByFamily = Object.fromEntries(supplyProbes.map((probe) => [probe.supplyFamilyId, probe]));
 
 // ---------------------------------------------------------------------------
 // AI route probes
 // ---------------------------------------------------------------------------
 
-// A route is probed with the input shape its own product declares. Probing
-// every route as chat is wrong: the contract rejects a chat body on an image,
-// embedding, or speech route, and the rejection looks identical to paused
-// supply. Each route gets the shape it actually accepts.
-function probeBodyFor(route) {
-  const model = route.exactModelId;
-  if (route.productIds.includes('ai.embed')) {
-    return { model, input: { kind: 'embedding', inputs: ['clervo live registry probe'] } };
-  }
-  if (route.productIds.includes('ai.image')) {
-    return { model, input: { kind: 'image', prompt: 'a plain red square', size: '1024x1024', quality: 'low', count: 1 } };
-  }
-  if (route.productIds.includes('ai.speech')) {
-    return { model, input: { kind: 'speech', input: 'clervo live registry probe', voice: 'arcas', responseFormat: 'mp3' } };
-  }
+// Probe the current released contract, not the superseded direct-provider
+// route catalog. `/v1/models` supplies per-identity lifecycle and sellability;
+// one paid canonical ID, one free canonical ID, and one stable alias complete
+// the bounded invocation round trip without paying or exhausting every model.
+const routeProbes = [
+  surfaceById['api.ai_paid_current'],
+  surfaceById['api.ai_free_current'],
+  surfaceById['api.ai_alias_current'],
+];
+const livePublicModelList = surfaceById['api.models'].body;
+const livePublicModelById = new Map(Array.isArray(livePublicModelList?.data)
+  ? livePublicModelList.data.map((entry) => [entry.id, entry])
+  : []);
+const paidAiProbe = surfaceById['api.ai_paid_current'];
+const freeAiProbe = surfaceById['api.ai_free_current'];
+const aliasAiProbe = surfaceById['api.ai_alias_current'];
+const paidAiQuote = quoteFrom(paidAiProbe);
+const paidProbeAccepted = paidAiProbe.status === 402 && paidAiQuote !== null;
+const freeProbeAccepted = freeAiProbe.status === 200
+  || (freeAiProbe.status === 429 && problemCode(freeAiProbe) === 'ai_free_quota_exceeded');
+const aliasProbeAccepted = aliasAiProbe.status === 402 && quoteFrom(aliasAiProbe) !== null;
+
+const aiRoutes = b7PublicModels.data.map((entry) => {
+  const deployed = livePublicModelById.get(entry.id);
+  const deployedSellable = deployed?.clervo?.publicSellable === true
+    && deployed?.clervo?.availability === 'available';
+  const sourceSellable = entry.clervo.publicSellable === true
+    && entry.clervo.availability === 'available';
+  const sourceAndRuntimeAgree = deployed !== undefined
+    && deployed.clervo.identityKind === entry.clervo.identityKind
+    && deployed.clervo.billingMode === entry.clervo.billingMode
+    && JSON.stringify(deployed.clervo.productIds) === JSON.stringify(entry.clervo.productIds);
+  const live = sourceSellable && deployedSellable && sourceAndRuntimeAgree && paidProbeAccepted;
+  const isPaidRepresentative = entry.id === currentPaidAiModel.id;
+  const isFreeRepresentative = entry.id === currentFreeAiModel.id;
+  const isAliasRepresentative = entry.id === currentAliasAiModel.id;
+  let reason = null;
+  if (!sourceSellable) reason = entry.clervo.publicationBlockers?.[0] ?? `catalog_${entry.clervo.availability}`;
+  else if (deployed === undefined) reason = 'public_model_not_served';
+  else if (!sourceAndRuntimeAgree) reason = 'public_model_contract_mismatch';
+  else if (!deployedSellable) reason = deployed.clervo.publicationBlockers?.[0] ?? `runtime_${deployed.clervo.availability}`;
+  else if (!paidProbeAccepted) reason = problemCode(paidAiProbe) ?? `paid_probe_status_${paidAiProbe.status}`;
   return {
-    model,
-    input: { kind: 'chat', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], responseFormat: 'text', stream: false },
-    maximumOutputTokens: 16,
-  };
-}
-
-const routeProbes = [];
-for (const route of catalog.routes) {
-  const key = `idem_probe_ai_${route.routeId.replace(/[^a-zA-Z0-9]/gu, '_')}_${probeNonce}`;
-  routeProbes.push(await observe(`ai.route.${route.routeId}`, `${API_ORIGIN}/v1/ai/execute`, postJson(probeBodyFor(route), key)));
-}
-const routeProbeById = Object.fromEntries(routeProbes.map((probe, index) => [catalog.routes[index].routeId, probe]));
-
-function classifyRoute(route) {
-  const probe = routeProbeById[route.routeId];
-  const qualification = route.qualification ?? null;
-  const supply = supplyByFamily[route.supplyFamilyId] ?? null;
-  const quote = quoteFrom(probe);
-  const expiresAt = qualification?.expiresAt ?? null;
-  const qualificationExpired = expiresAt !== null && Date.parse(expiresAt) <= Date.parse(observedAt);
-
-  const evidence = {
-    edgeStatus: probe.status,
-    edgeCode: problemCode(probe),
-    edgeQuoted: quote !== null,
-    edgeAttempts: probe.attempts ?? 1,
-    supplyOutcome: supply?.outcome ?? 'not_probed',
-    supplyReason: supply?.reason ?? null,
-    qualificationExpiresAt: expiresAt,
-    qualificationExpired,
-    qualificationStatus: qualification?.status ?? 'absent',
-    resaleAllowed: qualification?.resaleAllowed === true,
-    permissionBasis: permissionByFamily[route.supplyFamilyId]?.permissionBasis ?? 'unrecorded',
-    permissionRestricted: (permissionByFamily[route.supplyFamilyId]?.restrictionFound ?? null) !== null,
-  };
-
-  // A supplier-level failure pauses every route on that supply family. This is
-  // the case the three gateway routes are in: qualified and owned, temporarily
-  // unfunded. They stay in the catalog.
-  if (supply?.outcome === 'failed') {
-    return { state: STATE_PAUSED, reason: supply.reason, expectedReturnAt: supply.expectedReturnAt ?? null, quote, proof: 'none', evidence };
-  }
-
-  if (!probe.reachable) {
-    return { state: STATE_PAUSED, reason: 'edge_unreachable', expectedReturnAt: null, quote, proof: 'none', evidence };
-  }
-
-  // The edge answers 503 ai_route_unavailable for a catalogued route it does
-  // not currently serve. That is paused supply, not a route that stopped
-  // existing — removal here would erase supply we own.
-  if (probe.status === 503) {
-    return { state: STATE_PAUSED, reason: problemCode(probe) ?? 'edge_route_unavailable', expectedReturnAt: null, quote, proof: 'none', evidence };
-  }
-
-  if (qualificationExpired) {
-    return { state: STATE_PAUSED, reason: 'qualification_expired', expectedReturnAt: null, quote, proof: 'none', evidence };
-  }
-
-  if (qualification?.resaleAllowed !== true) {
-    return { state: STATE_PAUSED, reason: 'resale_not_permitted', expectedReturnAt: null, quote, proof: 'none', evidence };
-  }
-
-  // Only expiry and resale were consulted here, so a route whose qualification
-  // had actually failed its checks still went live on the strength of an edge
-  // 402 — and the edge quotes from the catalogue and the price model, so it
-  // answers 402 whether or not the supplier can serve the call. A failed
-  // qualification is a truthful pause, not a sellable route.
-  if (qualification?.status !== undefined && qualification.status !== 'passed') {
-    return { state: STATE_PAUSED, reason: `qualification_${qualification.status}`, expectedReturnAt: null, quote, proof: 'none', evidence };
-  }
-
-  // Commercial gate. Technical qualification proves the route works; it says
-  // nothing about whether we are permitted to sell it. Selling on unresolved
-  // permission is the failure mode this closes, so an unresolved or restricted
-  // family pauses regardless of how healthy its routes are. `resaleAllowed` is
-  // an owner operating decision and is deliberately NOT accepted as evidence
-  // of supplier permission.
-  const permissionRecord = permissionByFamily[route.supplyFamilyId] ?? null;
-  if (permissionRecord === null) {
-    return { state: STATE_PAUSED, reason: 'commercial_permission_unrecorded', expectedReturnAt: null, quote, proof: 'none', evidence };
-  }
-  if (permissionRecord.restrictionFound !== null && permissionRecord.documentedException !== true) {
-    return { state: STATE_PAUSED, reason: 'commercial_permission_restricted', expectedReturnAt: null, quote, proof: 'none', evidence };
-  }
-  if (permissionRecord.permissionBasis !== 'supplier_confirmed' && permissionRecord.permissionBasis !== 'owner_operated_documented') {
-    return { state: STATE_PAUSED, reason: 'commercial_permission_unresolved', expectedReturnAt: null, quote, proof: 'none', evidence };
-  }
-
-  if (probe.status === 402 && quote !== null) {
-    // A 402 is a real, request-derived quote from the deployed system. It
-    // proves the route is offered and priced. It does not prove a paid result,
-    // because probing never pays — `proof` records that distinction so no
-    // rendered surface can overstate it.
-    return { state: STATE_LIVE, reason: null, expectedReturnAt: null, quote, proof: 'quote_observed_unpaid', evidence };
-  }
-
-  return { state: STATE_PAUSED, reason: `edge_unexpected_status_${probe.status}`, expectedReturnAt: null, quote, proof: 'none', evidence };
-}
-
-const aiRoutes = catalog.routes.map((route) => {
-  const classification = classifyRoute(route);
-  return {
-    routeId: route.routeId,
-    exactModelId: route.exactModelId,
-    supplyFamilyId: route.supplyFamilyId,
-    productIds: [...route.productIds].sort(),
-    capabilities: [...(route.capabilities ?? [])].sort(),
-    state: classification.state,
-    reason: classification.reason,
-    expectedReturnAt: classification.expectedReturnAt,
-    sellable: classification.state === STATE_LIVE,
-    proof: classification.proof,
-    observedQuote: classification.quote,
-    evidence: classification.evidence,
+    routeId: entry.id,
+    exactModelId: entry.clervo.aliasFor ?? entry.id,
+    supplyFamilyId: 'supply.not_publicly_disclosed',
+    productIds: [...entry.clervo.productIds].sort(),
+    capabilities: [...entry.clervo.capabilities].sort(),
+    state: live ? STATE_LIVE : STATE_PAUSED,
+    reason,
+    expectedReturnAt: null,
+    sellable: live,
+    proof: (isPaidRepresentative && paidProbeAccepted) || (isAliasRepresentative && aliasProbeAccepted) ? 'quote_observed_unpaid' : 'none',
+    observedQuote: isPaidRepresentative ? paidAiQuote : isAliasRepresentative ? quoteFrom(aliasAiProbe) : null,
+    evidence: {
+      source: 'generated/b7-ai/public/models.json + GET /v1/models',
+      publicCatalogObserved: deployed !== undefined,
+      publicCatalogContractMatched: sourceAndRuntimeAgree,
+      paidRepresentative: isPaidRepresentative,
+      paidRepresentativeStatus: paidAiProbe.status,
+      freeRepresentative: isFreeRepresentative,
+      freeRepresentativeStatus: isFreeRepresentative ? freeAiProbe.status : null,
+      freeRepresentativeAccepted: isFreeRepresentative ? freeProbeAccepted : null,
+      aliasRepresentative: isAliasRepresentative,
+      aliasRepresentativeStatus: isAliasRepresentative ? aliasAiProbe.status : null,
+      aliasRepresentativeAccepted: isAliasRepresentative ? aliasProbeAccepted : null,
+    },
   };
 }).sort((left, right) => left.routeId.localeCompare(right.routeId));
 
@@ -951,6 +919,8 @@ function productFromProbes({ id, label, operations, probeIds, freeProbeId = null
   const quote = quoteFrom(paid);
   const free = freeProbeId === null ? null : surfaceById[freeProbeId];
   const naive = freeProbeId === null ? null : surfaceById[`${freeProbeId}`.replace('_keyed', '_naive')];
+  const naiveAccepted = naive?.status === 200
+    || (naive?.status === 429 && problemCode(naive) === 'free_quota_exceeded');
 
   let state = STATE_PAUSED;
   let reason = paid.reachable ? `edge_unexpected_status_${paid.status}` : 'edge_unreachable';
@@ -980,8 +950,12 @@ function productFromProbes({ id, label, operations, probeIds, freeProbeId = null
       route: free.url,
       withIdempotencyKeyStatus: free.status,
       withoutIdempotencyKeyStatus: naive?.status ?? null,
-      acceptsNaiveRequest: naive?.status === 200,
-      naiveRejectionCode: naive?.status === 200 ? null : problemCode(naive ?? {}),
+      // A 429 reached quota enforcement, so request parsing and the optional
+      // idempotency contract both succeeded. Treating that as a missing-key
+      // rejection conflates quota with idempotency and republishes a false
+      // caller requirement.
+      acceptsNaiveRequest: naiveAccepted,
+      naiveRejectionCode: naiveAccepted ? null : problemCode(naive ?? {}),
       // An observed 200 on a free path is a real free outcome from a public
       // URL. It is recorded as an observation, never promoted into a paid
       // proof level.
@@ -1002,25 +976,115 @@ function productFromProbes({ id, label, operations, probeIds, freeProbeId = null
 // never unavailable, because the routes stay in the catalog either way.
 const aiRouteStates = aiRoutes.reduce((counts, route) => ({ ...counts, [route.state]: (counts[route.state] ?? 0) + 1 }), {});
 const aiLiveRoutes = aiRoutes.filter((route) => route.state === STATE_LIVE);
+function aiPaidProofValidation(quote) {
+  const proof = aiPaidProof;
+  const operations = Array.isArray(proof?.operations) ? proof.operations : [];
+  const totalCharge = operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic ?? '0'), 0n);
+  const invariant = proof?.schemaVersion === 'clervo.ai-x402-proof.v1'
+    && proof.state === 'settled_reconciled'
+    && proof.releaseCommit === health.releaseId
+    && proof.publicOrigin === `${API_ORIGIN}/`
+    && proof.endpoint === `${API_ORIGIN}/v1/ai/execute`
+    && proof.network === quote?.network
+    && proof.asset === quote?.asset
+    && proof.payTo === quote?.payTo
+    && proof.facilitatorUrl === 'https://api.cdp.coinbase.com/platform/v2/x402'
+    && operations.length >= 1
+    && new Set(operations.map(({ operationId }) => operationId)).size === operations.length
+    && new Set(operations.map(({ receiptId }) => receiptId)).size === operations.length
+    && new Set(operations.map(({ transactionHash }) => transactionHash)).size === operations.length
+    && operations.every((operation) => operation.settlementStatus === 'settled'
+      && operation.chainStatus === 'confirmed'
+      && operation.exactTransferCount === 1
+      && operation.usefulResult === true
+      && operation.replay?.sameOperation === true
+      && operation.replay?.sameReceipt === true
+      && operation.replay?.sameResult === true
+      && operation.replay?.idempotencyReplayed === true
+      && operation.replay?.paymentHeaderSent === false
+      && operation.replay?.secondAuthorization === false
+      && operation.replay?.secondUpstreamExecution === false
+      && operation.replay?.secondSettlement === false
+      && operation.replay?.secondCharge === false)
+    && BigInt(proof.ownerAuthorization?.maximumSpendAtomic ?? '-1') === totalCharge
+    && proof.ownerAuthorization?.maximumExecutionCount === operations.length
+    && proof.ownerAuthorization?.paymentEffects === operations.length
+    && proof.ownerAuthorization?.automaticRetry === false
+    && proof.observedBalances?.payerDeltaAtomic === `-${totalCharge}`
+    && proof.observedBalances?.receiverDeltaAtomic === `${totalCharge}`
+    && proof.observedDurability?.databaseIdentityVerified === true
+    && proof.observedDurability?.operationRows === operations.length
+    && proof.observedDurability?.accountingRowsForOperations === operations.length
+    && proof.observedDurability?.receiverLedgerChainValid === true
+    && proof.observedDurability?.receiverLedgerBalanced === true
+    && proof.proofClassification?.proofLevel === PROOF_PAID
+    && proof.proofClassification?.ownerFunded === true
+    && proof.proofClassification?.commercialMechanismVerified === true
+    && proof.proofClassification?.revenueEvidence === false
+    && proof.proofClassification?.demandEvidence === false
+    && proof.proofClassification?.unrelatedCustomerEvidence === false
+    && proof.proofClassification?.externallyRepeatedClaimAllowed === false;
+  if (!invariant) return { accepted: false, reason: 'paid_proof_invariant_failed' };
+  return {
+    accepted: true,
+    reason: null,
+    proofLevel: PROOF_PAID,
+    source: 'infra/production/gcp/ai-x402-proof.v1.json',
+    releaseCommit: proof.releaseCommit,
+    operationCount: operations.length,
+    totalChargeAtomic: `${totalCharge}`,
+    usefulResultCount: operations.filter(({ usefulResult }) => usefulResult).length,
+    replayNoSecondChargeCount: operations.filter(({ replay }) => replay?.secondCharge === false).length,
+    ownerFunded: true,
+    revenueEvidence: false,
+    demandEvidence: false,
+    externallyRepeated: false,
+  };
+}
+const aiPaidOutcome = aiPaidProofValidation(paidAiQuote);
 const aiProductRecord = {
   id: 'ai',
   label: 'AI',
-  operations: ['ai.chat', 'ai.embed', 'ai.image', 'ai.speech'].sort(),
+  operations: [...new Set(aiRoutes.filter(({ state }) => state === STATE_LIVE).flatMap(({ productIds }) => productIds))].sort(),
   state: aiLiveRoutes.length > 0 ? STATE_LIVE : STATE_PAUSED,
   reason: aiLiveRoutes.length > 0 ? null : 'no_route_currently_live',
   expectedReturnAt: null,
   publiclyReachable: surfaceById['api.health'].reachable,
-  proof: aiLiveRoutes.length > 0 ? PROOF_QUOTED : PROOF_NONE,
-  observedQuote: aiLiveRoutes[0]?.observedQuote ?? null,
-  freeEntry: null,
-  evidence: { probed: true, routeStates: aiRouteStates, liveRouteCount: aiLiveRoutes.length, totalRouteCount: aiRoutes.length },
+  proof: aiLiveRoutes.length > 0 ? aiPaidOutcome.accepted ? PROOF_PAID : PROOF_QUOTED : PROOF_NONE,
+  observedQuote: paidAiQuote,
+  freeEntry: {
+    route: `${API_ORIGIN}/v1/ai/execute`,
+    modelId: currentFreeAiModel.id,
+    acceptsRequestWithoutPayment: true,
+    observedStatus: freeAiProbe.status,
+    accepted: freeProbeAccepted,
+  },
+  evidence: {
+    probed: true,
+    authority: 'generated/b7-ai/public/models.json + GET /v1/models',
+    routeStates: aiRouteStates,
+    canonicalModels: b7PublicModels.clervo.inventory.canonicalModels,
+    aliases: b7PublicModels.clervo.inventory.aliases,
+    callableIds: b7PublicModels.clervo.inventory.callableIds,
+    sellableIds: aiLiveRoutes.length,
+    paidRepresentativeModel: currentPaidAiModel.id,
+    freeRepresentativeModel: currentFreeAiModel.id,
+    aliasRepresentativeModel: currentAliasAiModel.id,
+    paidProbeAccepted,
+    freeProbeAccepted,
+    aliasProbeAccepted,
+    paidOutcome: aiPaidOutcome,
+  },
 };
 
 const products = [
   productFromProbes({
     id: 'search',
     label: 'Research',
-    operations: ['search.web', 'search.answer'],
+    // search.answer remains a compatibility identifier in released clients,
+    // but synthesize=true is not implemented and therefore is not callable
+    // discovery inventory.
+    operations: ['search.web'],
     probeIds: { paid: 'api.search_paid' },
     freeProbeId: 'api.search_free_keyed',
     paidProof: searchPaidProofValidation,
@@ -1029,7 +1093,7 @@ const products = [
   productFromProbes({
     id: 'sandbox',
     label: 'Secure Sandbox',
-    operations: ['sandbox.run', 'sandbox.session.create', 'sandbox.session.exec', 'sandbox.artifact.get', 'sandbox.session.destroy'],
+    operations: ['sandbox.run'],
     probeIds: { paid: 'api.sandbox_execute' },
     paidProof: sandboxPaidProofValidation,
   }),
@@ -1085,6 +1149,8 @@ const discoverySurfaces = [
 // are not lifecycle states and deliberately do not use the three-state vocabulary.
 const soft404 = surfaceById['site.unknown_route'];
 const naiveFree = surfaceById['api.search_free_naive'];
+const naiveFreeAccepted = naiveFree.status === 200
+  || (naiveFree.status === 429 && problemCode(naiveFree) === 'free_quota_exceeded');
 const conformance = [
   {
     id: 'site.not_found_is_404',
@@ -1096,10 +1162,10 @@ const conformance = [
   {
     id: 'api.search_free_accepts_naive_request',
     url: naiveFree.url,
-    expectation: 'free search succeeds without a caller-supplied idempotency-key',
+    expectation: 'free search accepts a valid request without a caller-supplied idempotency-key; success still depends on quota',
     observedStatus: naiveFree.status,
     observedCode: problemCode(naiveFree),
-    conformant: naiveFree.status === 200,
+    conformant: naiveFreeAccepted,
   },
 ].sort((left, right) => left.id.localeCompare(right.id));
 
@@ -1254,7 +1320,7 @@ const registry = sortedKeys({
 
 await writeFile(outputPath, `${JSON.stringify(registry, null, 2)}\n`, 'utf8');
 
-const removed = catalog.routes.length - aiRoutes.length;
+const removed = b7PublicModels.data.length - aiRoutes.length;
 if (removed !== 0) fail(`the prober dropped ${removed} catalogued routes; a probe failure must never remove a route`);
 
 console.log(`probe-live-registry: wrote ${path.relative(root, outputPath)}`);

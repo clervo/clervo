@@ -117,7 +117,11 @@ export function normalizeSearchHttpRequest(value: unknown): Readonly<Required<Se
   if (query.length < 1 || query.length > SEARCH_MAX_QUERY_CHARACTERS || /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/u.test(query)) throw new TypeError('invalid_search_query');
   const maxResults = record.maxResults ?? SEARCH_MAX_RESULTS;
   if (!Number.isInteger(maxResults) || (maxResults as number) < 1 || (maxResults as number) > SEARCH_MAX_RESULTS) throw new TypeError('invalid_search_max_results');
-  const synthesize = record.synthesize ?? true;
+  // B11's free-first entry is raw cited Search. Older released clients already
+  // send this field explicitly, while a new caller that omits it should reach
+  // the supported operation rather than the intentionally unavailable future
+  // synthesis product.
+  const synthesize = record.synthesize ?? false;
   if (typeof synthesize !== 'boolean') throw new TypeError('invalid_search_synthesize');
   const locale = normalizeSearchLocaleOptions({ language: record.language, region: record.region });
   return Object.freeze({ query, maxResults: maxResults as number, synthesize, ...locale });

@@ -36,7 +36,7 @@ const registry = await json('packages/catalog/live-registry.json');
 const models = await json('generated/public/models.json');
 const b7Models = await json('generated/b7-ai/public/models.json');
 const manifest = await json('generated/public/.well-known/x402.json');
-const catalogModelById = new Map(registry.aiCatalog.models.map((model) => [model.modelId, model]));
+const catalogModelById = new Map(registry.aiRoutes.map((model) => [model.routeId, model]));
 
 const environment = {
   CLERVO_AI_PUBLIC_ENABLED: 'true',
@@ -46,13 +46,13 @@ const environment = {
 const get = (pathname) => worker.fetch(new Request(`https://api.clervo.dev${pathname}`), environment);
 
 test('the model list carries every catalogued route and no route the registry does not catalogue', async () => {
-  const catalogued = registry.aiCatalog.models
+  const catalogued = registry.aiRoutes
     .filter(({ state }) => CATALOGUED_STATES.has(state))
-    .map(({ modelId }) => modelId)
+    .map(({ routeId }) => routeId)
     .sort();
   const listed = models.data.map(({ id }) => id).sort();
   assert.deepEqual(listed, catalogued);
-  assert.deepEqual(models.clervo.inventory, registry.aiCatalog.frozenInventory);
+  assert.deepEqual(models.clervo.inventory, b7Models.clervo.inventory);
 
   // Every listed model is a provider-neutral customer identity from the frozen
   // B7 catalog. A list that falls back to a supplier route ID breaks the
@@ -60,10 +60,24 @@ test('the model list carries every catalogued route and no route the registry do
   for (const entry of models.data) {
     const catalogModel = catalogModelById.get(entry.id);
     assert.ok(catalogModel !== undefined, `${entry.id} must map to a frozen customer model identity`);
-    assert.equal(entry.clervo.identityKind, catalogModel.identityKind);
+    const authoritative = b7Models.data.find(({ id }) => id === entry.id);
+    assert.equal(entry.clervo.identityKind, authoritative.clervo.identityKind);
     assert.equal(entry.object, 'model');
     assert.equal(entry.owned_by, 'clervo');
+    assert.equal(entry.clervo.modelCreator, null);
+    assert.equal(entry.clervo.modelCreatorStatus, 'unknown');
+    assert.equal(entry.clervo.executionSupplier, 'Clervo AI Gateway');
+    assert.equal(entry.clervo.upstreamExecutionSupplier, null);
+    assert.equal(entry.clervo.upstreamExecutionSupplierStatus, 'not_publicly_disclosed');
+    assert.match(entry.clervo.ownedBySemantics, /not a model-creator claim/u);
     assert.equal(entry.clervo.commerce.executionPath, '/v1/ai/execute');
+    if (entry.clervo.identityKind === 'alias') {
+      assert.equal(entry.clervo.aliasKind, 'fixed_canonical');
+      assert.equal(entry.clervo.selectionPolicy.kind, 'fixed_canonical');
+      assert.equal(entry.clervo.selectionPolicy.dynamicallyRouted, false);
+      assert.equal(entry.clervo.selectionPolicy.resolvedCanonicalResultField, 'exactModelId');
+      assert.ok(models.data.some(({ id, clervo }) => id === entry.clervo.aliasFor && clervo.identityKind === 'canonical'));
+    }
   }
   assert.equal(models.object, 'list');
 });
@@ -72,12 +86,13 @@ test('the model list renders lifecycle state and proof level from the registry, 
   for (const entry of models.data) {
     const catalogModel = catalogModelById.get(entry.id);
     assert.ok(catalogModel !== undefined, `${entry.id} must map to a frozen customer model identity`);
-    assert.equal(entry.clervo.availability, catalogModel.availability, `${entry.id} availability must match the live catalog`);
-    assert.equal(entry.clervo.health, catalogModel.health, `${entry.id} health must match the live catalog`);
+    const authoritative = b7Models.data.find(({ id }) => id === entry.id);
+    assert.equal(entry.clervo.availability, authoritative.clervo.availability, `${entry.id} availability must match the catalog authority`);
+    assert.equal(entry.clervo.health, authoritative.clervo.health, `${entry.id} health must match the catalog authority`);
     assert.equal(entry.clervo.publicSellable, catalogModel.sellable, `${entry.id} sellability must match the live catalog`);
     if (!entry.clervo.publicSellable) assert.ok(entry.clervo.publicationBlockers.includes(catalogModel.reason));
   }
-  assert.deepEqual(registry.aiCatalog.counts, {
+  assert.deepEqual(registry.summary.aiRoutes, {
     live: models.data.filter(({ clervo }) => clervo.publicSellable).length,
     supply_paused: models.data.filter(({ clervo }) => !clervo.publicSellable).length,
   });

@@ -156,7 +156,6 @@ export function Guide({ topic, onPhase }: { topic: GuideTopic; onPhase(phase: Ex
           </ul>
           <p className="cluster machine-links">
             <a className="text-link" href="/capabilities.json">Capabilities JSON</a>
-            <a className="text-link" href="/claims.json">Claims JSON</a>
             <a className="text-link" href="/.well-known/clervo.json">Clervo discovery</a>
             <a className="text-link" href="/models.json">Observed routes</a>
           </p>
@@ -187,12 +186,12 @@ export function Guide({ topic, onPhase }: { topic: GuideTopic; onPhase(phase: Ex
         </div>
         <dl className="facts">
           <div>
-            <dt>Release candidate</dt>
-            <dd>{discovery.distribution.releaseCandidateId}</dd>
+            <dt>Observed runtime revision</dt>
+            <dd>{discovery.runtimeRelease.sourceCommit.slice(0, 12)}</dd>
           </div>
           <div>
-            <dt>Interface hash</dt>
-            <dd>{discovery.distribution.interfaceHash}</dd>
+            <dt>Callable operation IDs</dt>
+            <dd>{discovery.runtimeRelease.operationIds.length}</dd>
           </div>
           <div>
             <dt>Public callable</dt>

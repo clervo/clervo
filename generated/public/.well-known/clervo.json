@@ -5,185 +5,28 @@
   "description": "Machine-readable public preview for Search, AI, Secure Sandbox, Prediction Intelligence, Crypto Intelligence. Lifecycle, proof, routes, and prices are generated from direct deployed-system observations; unavailable operations fail closed.",
   "lifecycle": "preview",
   "distribution": {
-    "state": "public_preview",
+    "state": "public",
     "publicAvailable": true,
-    "callable": true,
-    "noPublicDistribution": false,
-    "releaseCandidateId": "clervo-private-core-2026-08-02.2",
-    "interfaceHash": "sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4"
+    "callable": true
   },
   "payment": {
-    "protocol": "x402",
-    "implemented": true,
-    "settlementVerified": true,
+    "protocols": [
+      "x402",
+      "mpp"
+    ],
     "publicAvailable": true,
-    "privateProofVerified": true,
-    "commercialProof": false
-  },
-  "releaseScope": {
-    "scopeVersion": "2026-08-01.3",
-    "company": {
-      "name": "Clervo",
-      "identity": "outcome infrastructure for agents",
-      "permanentNarrative": [
-        "find",
-        "understand",
-        "act"
-      ]
-    },
-    "productCore": {
-      "requiredPillars": [
-        "search",
-        "ai",
-        "sandbox",
-        "rpc",
-        "prediction",
-        "crypto_intelligence"
-      ],
-      "interfacesFrozen": true,
-      "compatibilityVerified": true,
-      "ready": true
-    },
-    "firstRevenueRelease": {
-      "productId": "clervo.platform",
-      "productName": "Clervo Platform",
-      "requiredPillars": [
-        "search",
-        "ai",
-        "sandbox",
-        "rpc",
-        "prediction",
-        "crypto_intelligence"
-      ],
-      "requirements": [
-        {
-          "requirementId": "machine_readable_api",
-          "verified": false
-        },
-        {
-          "requirementId": "mcp_sdk_access",
-          "verified": false
-        },
-        {
-          "requirementId": "bounded_pricing_receipts",
-          "verified": false
-        },
-        {
-          "requirementId": "tested_onboarding",
-          "verified": false
-        },
-        {
-          "requirementId": "unified_public_experience_distribution",
-          "verified": false
-        },
-        {
-          "requirementId": "production_deployment",
-          "verified": false
-        },
-        {
-          "requirementId": "real_demonstrations",
-          "verified": false
-        },
-        {
-          "requirementId": "bounded_real_settlement",
-          "verified": false
-        },
-        {
-          "requirementId": "external_useful_paid_result",
-          "verified": false
-        }
-      ],
-      "ready": false
-    },
-    "pillars": [
-      {
-        "pillarId": "search",
-        "release": "first_revenue_release",
-        "lifecycle": "preview",
-        "coreQualified": true,
-        "capabilityIds": [
-          "search.web",
-          "search.answer",
-          "web.fetch",
-          "web.extract",
-          "research.report"
-        ]
-      },
-      {
-        "pillarId": "ai",
-        "release": "first_revenue_release",
-        "lifecycle": "unavailable",
-        "coreQualified": true,
-        "capabilityIds": [
-          "ai.chat",
-          "ai.embed",
-          "ai.image",
-          "ai.speech"
-        ]
-      },
-      {
-        "pillarId": "sandbox",
-        "release": "first_revenue_release",
-        "lifecycle": "unavailable",
-        "coreQualified": true,
-        "capabilityIds": [
-          "sandbox.run",
-          "sandbox.session.create",
-          "sandbox.session.exec",
-          "sandbox.artifact.get",
-          "sandbox.session.destroy"
-        ]
-      },
-      {
-        "pillarId": "rpc",
-        "release": "first_revenue_release",
-        "lifecycle": "unavailable",
-        "coreQualified": true,
-        "capabilityIds": [
-          "rpc.call",
-          "rpc.batch",
-          "rpc.health",
-          "rpc.archive",
-          "rpc.broadcast"
-        ]
-      },
-      {
-        "pillarId": "prediction",
-        "release": "first_revenue_release",
-        "lifecycle": "unavailable",
-        "coreQualified": true,
-        "capabilityIds": [
-          "prediction.markets",
-          "prediction.market",
-          "prediction.compare",
-          "prediction.history",
-          "prediction.signal"
-        ]
-      },
-      {
-        "pillarId": "crypto_intelligence",
-        "release": "first_revenue_release",
-        "lifecycle": "unavailable",
-        "coreQualified": true,
-        "capabilityIds": [
-          "crypto.wallet.balances",
-          "crypto.wallet.tokens",
-          "crypto.wallet.transactions",
-          "crypto.wallet.report"
-        ]
-      }
-    ]
+    "network": "eip155:8453",
+    "asset": "USDC"
   },
   "artifacts": {
     "openapi": "/openapi.json",
     "catalog": "/catalog.json",
     "onboarding": "/onboarding.json",
-    "claims": "/claims.json",
     "capabilities": "/capabilities.json",
     "pricing": "/pricing.json",
     "status": "/status.json",
     "llms": "/llms.txt",
-    "schemas": "/schemas/2026-07-29.1/",
+    "schemas": "/openapi.json",
     "skill": "/skill.md",
     "agent": "/agent.md",
     "models": "/v1/models",
@@ -221,35 +64,6 @@
       "payment": {
         "challengeImplemented": true,
         "payable": true,
-        "mockExecutionAvailableByInjectionOnly": false
-      }
-    },
-    {
-      "productId": "search.answer",
-      "operationId": "search.answer",
-      "title": "Search answer",
-      "summary": "Evidence-grounded synthesized answer with citations.",
-      "lifecycle": "preview",
-      "publicAvailable": false,
-      "deliveryModes": [
-        "sync"
-      ],
-      "selection": {
-        "synthesize": true
-      },
-      "pricing": {
-        "model": "unavailable",
-        "displayPrice": null,
-        "maximumChargeRequired": true,
-        "priceVersion": "search-answer-candidate-2"
-      },
-      "routes": {
-        "freeSample": "/v1/search/free",
-        "paidChallenge": "/v1/search/paid"
-      },
-      "payment": {
-        "challengeImplemented": false,
-        "payable": false,
         "mockExecutionAvailableByInjectionOnly": false
       }
     },
@@ -296,8 +110,7 @@
         "challengeImplemented": true,
         "payable": true,
         "mockExecutionAvailableByInjectionOnly": false
-      },
-      "commercialProof": true
+      }
     },
     {
       "productId": "sandbox.run",
@@ -333,8 +146,7 @@
         "challengeImplemented": true,
         "payable": true,
         "mockExecutionAvailableByInjectionOnly": false
-      },
-      "commercialProof": false
+      }
     },
     {
       "productId": "prediction.markets",
@@ -378,8 +190,7 @@
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
         "transformedBy": "Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance."
-      },
-      "commercialProof": false
+      }
     },
     {
       "productId": "prediction.market",
@@ -423,8 +234,7 @@
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
         "transformedBy": "Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance."
-      },
-      "commercialProof": false
+      }
     },
     {
       "productId": "prediction.compare",
@@ -468,8 +278,7 @@
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
         "transformedBy": "Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance."
-      },
-      "commercialProof": false
+      }
     },
     {
       "productId": "prediction.history",
@@ -513,8 +322,7 @@
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
         "transformedBy": "Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance."
-      },
-      "commercialProof": false
+      }
     },
     {
       "productId": "prediction.signal",
@@ -558,8 +366,7 @@
         "license": "CC BY 4.0",
         "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
         "transformedBy": "Clervo normalization, stable identity, conservative matching, durable observations, signals, freshness, and provenance."
-      },
-      "commercialProof": false
+      }
     },
     {
       "productId": "crypto.wallet.balances",
@@ -603,8 +410,7 @@
       "attribution": {
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
-      },
-      "commercialProof": false
+      }
     },
     {
       "productId": "crypto.wallet.tokens",
@@ -648,8 +454,7 @@
       "attribution": {
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
-      },
-      "commercialProof": false
+      }
     },
     {
       "productId": "crypto.wallet.transactions",
@@ -693,8 +498,7 @@
       "attribution": {
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
-      },
-      "commercialProof": false
+      }
     },
     {
       "productId": "crypto.wallet.report",
@@ -738,8 +542,7 @@
       "attribution": {
         "source": "Blockscout PRO API",
         "transformedBy": "Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold."
-      },
-      "commercialProof": false
+      }
     }
   ],
   "limitations": [
@@ -776,7 +579,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T08:48:34.576Z",
+      "observedAt": "2026-08-11T18:48:00.042Z",
       "releaseId": "802527f49f87b1aa9323c329bf52c07ffce6d659",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -798,9 +601,9 @@
           "ai.chat",
           "ai.embed",
           "ai.image",
+          "ai.music",
           "ai.speech",
           "ai.video",
-          "ai.music",
           "ai.virtual_try_on"
         ],
         "lifecycleState": "live",
@@ -885,14 +688,10 @@
         "id": "sandbox",
         "label": "Secure Sandbox",
         "operations": [
-          "sandbox.artifact.get",
-          "sandbox.run",
-          "sandbox.session.create",
-          "sandbox.session.destroy",
-          "sandbox.session.exec"
+          "sandbox.run"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
+        "proofLevel": "quote_observed_unpaid",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -908,11 +707,10 @@
         "id": "search",
         "label": "Research",
         "operations": [
-          "search.answer",
           "search.web"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
+        "proofLevel": "quote_observed_unpaid",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -924,7 +722,7 @@
         },
         "freeEntry": {
           "route": "https://api.clervo.dev/v1/search/free",
-          "acceptsNaiveRequest": false
+          "acceptsNaiveRequest": true
         }
       }
     ]

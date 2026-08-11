@@ -197,4 +197,4 @@ if (projectionMismatches.length > 0) {
   throw new Error(`site_public_projection_differs_from_generated: ${projectionMismatches.join('; ')}`);
 }
 
-console.log(`site public projection: PASS (${discovery.distribution.releaseCandidateId})`);
+console.log(`site public projection: PASS (${discovery.runtimeRelease.sourceCommit})`);

@@ -19,7 +19,7 @@ test('generated discovery publishes exactly the product families the registry ob
   const liveFamilies = new Set(registry.products.filter(({ state }) => state === 'live').map(({ id }) => id));
   const published = discovery.products.map(({ productId }) => productId);
   assert.ok(published.includes('search.web'), 'raw Search must stay published');
-  assert.ok(published.includes('search.answer'), 'Search synthesis must stay listed');
+  assert.equal(published.includes('search.answer'), false, 'non-callable Search synthesis must stay out of public inventory');
   for (const productId of published) {
     assert.ok(liveFamilies.has(familyOf(productId)), `${productId} is published but its family is not observed live`);
   }
@@ -30,7 +30,7 @@ test('generated discovery publishes exactly the product families the registry ob
   // Distribution flags follow the registry rather than a frozen snapshot.
   assert.equal(discovery.distribution.callable, liveFamilies.size > 0);
   assert.equal(discovery.distribution.publicAvailable, liveFamilies.size > 0);
-  assert.equal(discovery.distribution.noPublicDistribution, liveFamilies.size === 0);
+  assert.equal(discovery.distribution.noPublicDistribution, undefined);
 
   // Only an operation with an observed price may be advertised as payable.
   for (const product of discovery.products) {

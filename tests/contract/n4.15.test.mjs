@@ -20,7 +20,7 @@ function response(language = 'en', region = 'US') {
 }
 
 test('search locale options default deterministically and preserve canonical explicit values', () => {
-  assert.deepEqual(normalizeSearchHttpRequest({ query: ' evidence ' }), { query: 'evidence', maxResults: 10, synthesize: true, language: 'en', region: 'US' });
+  assert.deepEqual(normalizeSearchHttpRequest({ query: ' evidence ' }), { query: 'evidence', maxResults: 10, synthesize: false, language: 'en', region: 'US' });
   assert.deepEqual(normalizeSearchLocaleOptions({ language: 'fr-CA', region: 'CA' }), { language: 'fr-CA', region: 'CA' });
 });
 

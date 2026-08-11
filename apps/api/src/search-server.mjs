@@ -70,16 +70,6 @@ const PROBLEM_TYPE = 'application/problem+json; charset=utf-8';
 const MOCK_PAYMENT_HEADER = 'x-clervo-mock-payment';
 const SANDBOX_PRIVATE_PATH = '/internal/v1/sandbox/run';
 const SANDBOX_MAX_BODY_BYTES = 1_500_000;
-const AI_DISCOVERY_PROBE_REQUEST = Object.freeze({
-  model: 'gpt-5.6-luna',
-  input: Object.freeze({
-    kind: 'chat',
-    messages: Object.freeze([Object.freeze({ role: 'user', content: 'Reply with the single word ready.' })]),
-    responseFormat: 'text',
-    stream: false,
-  }),
-  maximumOutputTokens: 16,
-});
 const SEARCH_DISCOVERY_PROBE_REQUEST = Object.freeze({
   query: 'current x402 protocol documentation',
   maxResults: 3,
@@ -301,11 +291,49 @@ export function createSearchServer({
     let pricing;
     let discovery;
     if (pathname === AI_PAID_PATH) {
-      const normalized = normalizeAiHttpRequest(AI_DISCOVERY_PROBE_REQUEST);
+      if (typeof aiPublicPricing?.discoveryRequest !== 'function') throw new TypeError('ai_discovery_contract_unavailable');
+      const input = aiPublicPricing.discoveryRequest();
+      const normalized = normalizeAiHttpRequest(input);
       productId = normalized.productId;
       requestHash = aiHttpRequestHash(normalized);
       const operationId = identifier('op', `discovery:${pathname}:${requestHash}`);
       pricing = aiPublicPricing.quote({ normalized, operationId, now: observedAt }).pricing;
+      discovery = Object.freeze({
+        method: 'POST',
+        bodyType: 'json',
+        input,
+        inputSchema: Object.freeze({
+          type: 'object', required: ['model', 'input', 'maximumOutputTokens'], additionalProperties: false,
+          properties: {
+            model: { type: 'string', const: input.model },
+            input: {
+              type: 'object', required: ['kind', 'messages', 'responseFormat', 'stream'], additionalProperties: false,
+              properties: {
+                kind: { const: 'chat' },
+                messages: { type: 'array', minItems: 1, items: { type: 'object', required: ['role', 'content'], additionalProperties: false, properties: { role: { enum: ['user'] }, content: { type: 'string', minLength: 1 } } } },
+                responseFormat: { const: 'text' }, stream: { const: false },
+              },
+            },
+            maximumOutputTokens: { type: 'integer', minimum: 1, maximum: 65_536 },
+          },
+        }),
+        output: Object.freeze({
+          example: Object.freeze({ productId: 'ai.chat', state: 'RECEIPTED', replayed: false, exactModelId: input.model, result: { output: { kind: 'chat', content: 'Idempotency prevents a retry from becoming a second logical operation or charge.' } }, receipt: { settlement: { status: 'settled' } } }),
+          schema: Object.freeze({
+            type: 'object',
+            required: ['productId', 'state', 'replayed', 'exactModelId', 'result', 'receipt'],
+            properties: {
+              productId: { const: 'ai.chat' },
+              state: { type: 'string' },
+              replayed: { type: 'boolean' },
+              exactModelId: { type: 'string', const: input.model },
+              result: { type: 'object' },
+              receipt: { type: 'object' },
+            },
+            additionalProperties: true,
+          }),
+        }),
+      });
     } else if (pathname === SANDBOX_PAID_PATH) {
       const normalized = normalizeSandboxHttpRequest(SANDBOX_DISCOVERY.input);
       productId = 'sandbox.run';
@@ -520,8 +548,8 @@ export function createSearchServer({
       } catch (error) {
         const code = errorCode(error);
         const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;
-        const title = status === 400 ? 'Invalid AI request' : status === 409 ? 'AI operation conflict' : 'AI execution unavailable';
-        const detail = status === 400 ? 'The request did not satisfy the bounded AI HTTP contract.' : 'The AI operation failed closed without an additional customer charge.';
+        const title = status === 400 ? 'Invalid AI request' : status === 404 ? 'AI model not found' : status === 409 ? 'AI operation conflict' : status === 422 ? 'AI model unavailable' : 'AI execution unavailable';
+        const detail = status === 400 ? 'The request did not satisfy the bounded AI HTTP contract.' : status === 404 ? 'The requested model ID is not present in the current Clervo catalog.' : status === 422 ? 'The requested model is known but is not currently sellable for this input kind.' : 'The AI operation failed closed without an additional customer charge.';
         send(response, status, problem(status, code, title, detail, url.pathname, aiOperationId), status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
       }
       return;
@@ -710,7 +738,7 @@ export function createSearchServer({
       const keyHeaders = keyGenerated ? { 'idempotency-key': keyHeader } : {};
       const normalized = normalizeSearchHttpRequest(await readJson(request, SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType: url.pathname === SEARCH_FREE_PATH }));
       if (normalized.synthesize && !synthesisEnabled) {
-        send(response, 503, problem(503, 'search_synthesis_unavailable', 'Search synthesis unavailable', 'Live cited synthesis is not enabled on this release. Retry with synthesize=false for raw results.', url.pathname), { 'retry-after': '300' }, PROBLEM_TYPE);
+        send(response, 422, problem(422, 'search_synthesis_unavailable', 'Search synthesis unavailable', 'Live cited synthesis is not implemented on this release. Retry with synthesize=false for raw results.', url.pathname), {}, PROBLEM_TYPE);
         return;
       }
       const requestHash = searchHttpRequestHash(normalized, url.pathname);
