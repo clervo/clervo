@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useCapsuleSheen } from './capsule';
 import { Instrument } from './components/Instrument';
-import { LifecycleRail } from './components/Navigation';
 import { SiteFooter, SiteHeader } from './components/Shell';
 import { useActivation } from './experience';
 import { modelFromSlug } from './models';
@@ -193,10 +192,9 @@ export function App() {
   })();
 
   return (
-    <div className={`app app--${phase} ${pathname === '/' ? 'app--home' : 'app--internal'}`}>
+    <div className={`app app--${phase} ${pathname === '/' ? 'app--home' : 'app--internal app--legacy-instrument'}`}>
       <SiteHeader />
-      <Instrument phase={phase} />
-      <LifecycleRail phase={phase} />
+      {pathname === '/' ? null : <Instrument phase={phase} />}
       <main id="main-content">{route}</main>
       <SiteFooter note={footerNote} />
     </div>

@@ -22,6 +22,7 @@ const primaryNav = [
 ];
 
 const secondaryNav = [
+  { to: '/trust', label: 'Trust center' },
   { to: '/proof', label: 'Proof' },
   { to: '/security', label: 'Security' },
   { to: '/benchmarks', label: 'Benchmarks' },
@@ -36,8 +37,13 @@ export function SiteHeader() {
   const panelRef = useRef<HTMLDivElement>(null);
   const pathname = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/u, '');
 
-  const isActive = (to: string) => pathname === to
-    || (to !== '/' && pathname.startsWith(`${to}/`));
+  const isActive = (to: string) => {
+    if (to === '/product') {
+      return pathname === '/product' || pathname === '/platform' || pathname.startsWith('/products/');
+    }
+    if (to === '/catalog') return pathname === '/catalog' || pathname.startsWith('/models/');
+    return pathname === to || (to !== '/' && pathname.startsWith(`${to}/`));
+  };
 
   // Route change closes the panel. Without this, tapping a link on mobile
   // navigates behind an overlay that is still covering the page.
@@ -154,7 +160,12 @@ export function SiteHeader() {
           </div>
           <nav className="mobile-nav__links" aria-label="All pages">
             {[...primaryNav, ...secondaryNav].map(({ to, label }) => (
-              <Link key={to} to={to} aria-current={isActive(to) ? 'page' : undefined}>
+              <Link
+                key={to}
+                to={to}
+                className={isActive(to) ? 'is-active' : undefined}
+                aria-current={isActive(to) ? 'page' : undefined}
+              >
                 {label}
               </Link>
             ))}
@@ -194,6 +205,7 @@ export function SiteFooter({ note }: { note: string }) {
           </section>
           <section>
             <h2>Trust</h2>
+            <Link to="/trust">Trust center</Link>
             <Link to="/proof">Proof</Link>
             <Link to="/status">Status</Link>
             <Link to="/security">Security</Link>
