@@ -34,7 +34,14 @@ for (const { route, title, description: routeDescription } of routes) {
     .replace(/<meta property="og:description" content="[^"]*" \/>/u, `<meta property="og:description" content="${description.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}" />`)
     .replace(/<meta property="og:url" content="[^"]*" \/>/u, `<meta property="og:url" content="https://clervo.dev${canonical}" />`)
     .replace(/<meta name="twitter:title" content="[^"]*" \/>/u, `<meta name="twitter:title" content="${title.replaceAll('&', '&amp;').replaceAll('"', '&quot;')} — Clervo" />`)
-    .replace(/<meta name="twitter:description" content="[^"]*" \/>/u, `<meta name="twitter:description" content="${description.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}" />`);
+    .replace(/<meta name="twitter:description" content="[^"]*" \/>/u, `<meta name="twitter:description" content="${description.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}" />`)
+    // Keep the two evidence surfaces as explicit, independently addressable
+    // assets in the Workers static manifest. This marker is non-visible and
+    // makes a route-specific content revision whenever the proof templates
+    // change, avoiding stale edge asset mappings for these critical paths.
+    .replace('</head>', () => (route === '/proof' || route === '/proof-lab')
+      ? `<!-- b12-evidence-surface-v1:${route.slice(1)} -->\n</head>`
+      : '</head>');
   const destination = route === '/'
     ? path.join(dist, 'index.html')
     : path.join(dist, route.slice(1), 'index.html');
