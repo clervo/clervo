@@ -163,7 +163,7 @@ export function Home({ onPhase: _onPhase }: { onPhase(phase: ExperiencePhase): v
         </section>
       </section>
 
-      <div className="b12-rail shell" aria-label="Capability families">
+      <div className="b12-rail shell" aria-label="Capability families" tabIndex={0}>
         <span>Search</span><i>·</i><span>AI</span><i>·</i><span>Secure Sandbox</span><i>·</i>
         <span>Multi-chain RPC</span><i>·</i><span>Prediction</span><i>·</i><span>Crypto Intelligence</span>
       </div>

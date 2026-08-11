@@ -3,64 +3,23 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { canonicalPath, siteRouteInventory } from './site-route-inventory.mjs';
+
 const root = path.resolve(import.meta.dirname, '../..');
 const dist = path.join(root, 'apps/site/dist');
 const serverBundle = path.join(root, 'apps/site/dist-server/entry-server.js');
 const template = await readFile(path.join(dist, 'index.html'), 'utf8');
 const { render } = await import(serverBundle);
 
-const routes = [
-  ['/', 'Outcome infrastructure for AI agents'],
-  ['/start', 'Set up Clervo'],
-  ['/catalog', 'Live capability catalog'],
-  ['/research', 'Research outcome'],
-  ['/platform', 'Clervo Platform'],
-  ['/product', 'Product and capabilities'],
-  ['/products/search', 'Research product core'],
-  ['/products/ai', 'AI product core'],
-  ['/products/sandbox', 'Secure Sandbox product core'],
-  ['/products/rpc', 'Multi-chain RPC product core'],
-  ['/products/prediction', 'Prediction Intelligence product core'],
-  ['/products/crypto', 'Crypto Intelligence product core'],
-  ['/build', 'Build with Clervo'],
-  ['/proof', 'Payment and replay proof'],
-  ['/proof-lab', 'Proof Lab'],
-  ['/docs', 'Developer docs'],
-  ['/docs/quickstart', 'Developer quickstart'],
-  ['/docs/http', 'Raw HTTP developer docs'],
-  ['/docs/typescript', 'TypeScript developer docs'],
-  ['/docs/python', 'Python developer docs'],
-  ['/docs/mcp', 'MCP developer docs'],
-  ['/docs/receipts', 'Receipt contract guide'],
-  ['/docs/replay', 'Replay contract guide'],
-  ['/docs/failures', 'Failure recovery guide'],
-  ['/docs/x402', 'x402 contract guide'],
-  ['/docs/catalog', 'Capability catalog guide'],
-  ['/pricing', 'Pricing truth'],
-  ['/benchmarks', 'Benchmark truth'],
-  ['/security', 'Security controls'],
-  ['/legal', 'Legal boundaries'],
-  ['/status', 'Product status'],
-  ['/changelog', 'Changelog'],
-  ['/trust', 'Trust center'],
-];
+const routes = await siteRouteInventory(root);
 
-// Operation pages are derived from the generated canonical public catalog so
-// prerendering cannot create handmade operation identities that the product
-// authority does not know about.
-const catalog = JSON.parse(await readFile(path.join(root, 'generated/public/catalog.json'), 'utf8'));
-const operationIds = new Set();
-for (const family of catalog.observedTruth?.products ?? []) {
-  for (const operationId of family.operations ?? []) operationIds.add(operationId);
-}
-for (const product of catalog.products ?? []) operationIds.add(product.operationId);
-for (const operationId of [...operationIds].sort()) {
-  routes.push([`/operations/${operationId}`, `Operation ${operationId}`]);
-}
-
-for (const [route, title] of routes) {
+for (const { route, title, description: routeDescription } of routes) {
   const content = render(`https://clervo.dev${route}`);
-  const canonical = route === '/' ? '/' : `${route}/`;
+  const canonical = canonicalPath(route);
+  const description = routeDescription
+    ?? (route === '/'
+      ? 'Give your agent a task. Get a verified result. Clervo connects models, data, and secure execution through one inspectable outcome contract.'
+      : `${title} from Clervo, with current lifecycle, product behavior, and evidence boundaries kept explicit.`);
   // Use a replacement callback: rendered contract/schema text can legitimately
   // contain `$&`, which has special meaning in String.replace replacement
   // strings and would otherwise inject a second empty root into the HTML.
@@ -69,7 +28,13 @@ for (const [route, title] of routes) {
     .replace(
       /<title>.*?<\/title>/u,
       `<title>${title} — Clervo</title><link rel="canonical" href="https://clervo.dev${canonical}">`,
-    );
+    )
+    .replace(/<meta name="description" content="[^"]*" \/>/u, `<meta name="description" content="${description.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}" />`)
+    .replace(/<meta property="og:title" content="[^"]*" \/>/u, `<meta property="og:title" content="${title.replaceAll('&', '&amp;').replaceAll('"', '&quot;')} — Clervo" />`)
+    .replace(/<meta property="og:description" content="[^"]*" \/>/u, `<meta property="og:description" content="${description.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}" />`)
+    .replace(/<meta property="og:url" content="[^"]*" \/>/u, `<meta property="og:url" content="https://clervo.dev${canonical}" />`)
+    .replace(/<meta name="twitter:title" content="[^"]*" \/>/u, `<meta name="twitter:title" content="${title.replaceAll('&', '&amp;').replaceAll('"', '&quot;')} — Clervo" />`)
+    .replace(/<meta name="twitter:description" content="[^"]*" \/>/u, `<meta name="twitter:description" content="${description.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}" />`);
   const destination = route === '/'
     ? path.join(dist, 'index.html')
     : path.join(dist, route.slice(1), 'index.html');

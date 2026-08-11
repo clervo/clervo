@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 export interface ActivationState {
   proofCompleted: boolean;
   receiptInspected: boolean;
-  selectedClient: 'http' | 'typescript' | 'python' | 'mcp' | null;
+  selectedClient: 'cli' | 'http' | 'typescript' | 'python' | 'mcp' | 'openai' | null;
 }
 
 const initialState: ActivationState = {
@@ -22,7 +22,7 @@ function read(): ActivationState {
     return {
       proofCompleted: value.proofCompleted === true,
       receiptInspected: value.receiptInspected === true,
-      selectedClient: ['http', 'typescript', 'python', 'mcp'].includes(value.selectedClient ?? '')
+      selectedClient: ['cli', 'http', 'typescript', 'python', 'mcp', 'openai'].includes(value.selectedClient ?? '')
         ? value.selectedClient as ActivationState['selectedClient']
         : null,
     };

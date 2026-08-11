@@ -1,0 +1,267 @@
+# Clervo
+
+> Clervo is outcome infrastructure for agents: Find, Understand, Act.
+
+Current verified status:
+
+- Developer distribution: public TypeScript, MCP, and Python packages are registry-verified
+- Customer API: public preview at https://api.clervo.dev; live families are derived from the deployed registry
+- Frozen release candidate: clervo-private-core-2026-08-02.2
+- Frozen interface hash: sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4
+- Six product cores: privately qualified and compatibility-frozen
+- Public lifecycle: live: AI, Crypto Intelligence, Prediction Intelligence, Secure Sandbox, Research; unavailable: Multi-chain RPC
+- Public operation IDs: search.web, ai.chat, ai.embed, ai.image, ai.speech, ai.video, ai.music, ai.virtual_try_on, sandbox.run, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal, crypto.wallet.balances, crypto.wallet.tokens, crypto.wallet.transactions, crypto.wallet.report
+- Public API callable: yes
+- x402 public payment: available for search.web (0.006000 USDC maximum), ai (request-derived quote), sandbox.run (0.010000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
+- x402 owner-funded proof: settled outcomes are reported per product in the generated proof table; no customer revenue or demand is inferred
+- Commercial proof: no customer revenue or demand claimed
+- Public price: search.web (0.006000 USDC maximum), ai (request-derived quote), sandbox.run (0.010000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
+- First Revenue Release ready: no
+- llms.txt is a documentation map, not a search or AI ranking claim
+
+## Repository-generated contracts
+
+- [OpenAPI contract](/openapi.json): repository-local preview and non-payable challenge routes.
+- [Catalog](/catalog.json): exact projected operations and lifecycle limitations.
+- [Onboarding and recovery](/onboarding.json): exact candidate journey state and six bounded recovery actions.
+- [Launch claims](/claims.json): separate engineering state, customer lifecycle, and commercial proof.
+- [Capability state](/capabilities.json): exact lifecycle and operation identities.
+- [Pricing state](/pricing.json): public-offer boundary, private proof amount, and fixture amounts.
+- [Status](/status.json): current packages, API, payment proof, and product states.
+- [Discovery document](/.well-known/clervo.json): release-candidate binding and distribution status.
+- [JSON Schemas](/schemas/2026-07-29.1/): projected public-wire contracts.
+
+## Secure Sandbox preview
+
+- `POST /v1/sandbox/execute`: class-derived 0.010000–0.060000 USDC quote on Base for one bounded Node.js gVisor execution.
+- The short class is capped at 5 CPU seconds, 256 MiB, 16 processes, 64 MiB disk, 64 KiB output, 1 MiB artifacts, and 10 seconds wall time; larger requests use the standard class without weaker ceilings.
+- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.
+
+## Prediction Intelligence preview
+
+- `POST /v1/prediction/execute`: `prediction.markets`, `prediction.market`, and `prediction.compare` cost at most 0.002000 USDC; `prediction.history` and `prediction.signal` cost at most 0.003000 USDC on Base.
+- Qualified zero-cost supply: pdata for Polymarket, Kalshi, Manifold, and Limitless. Direct venue adapters with unresolved commercial permission remain disabled.
+- Clervo returns normalized probabilities, stable market/event identities, conservative matching, durable observations, disagreement/movement signals, freshness, provenance, pdata/upstream attribution, an accurate receipt, and no-charge replay. It is not a raw pdata proxy and does not provide trading or custody.
+
+## Crypto Intelligence preview
+
+- `POST /v1/crypto/execute`: balances and token holdings cost 0.002000 USDC, transactions cost 0.003000 USDC, and the wallet report costs 0.004000 USDC on Base.
+- Supported data chains: Ethereum and Base. The report returns bounded holdings, activity, flows, counterparties, deterministic signals, freshness, coverage, evidence, and provenance.
+- Output never infers wallet identity, opaque risk, advice, custody, signing, or trading. USD valuation and Solana are unavailable. Same-key replay returns the completed result and receipt without another charge.
+
+## Observed lifecycle state and proof level
+
+Probed from the deployed system at 2026-08-11T08:48:34.576Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
+
+| Product | Lifecycle state | Proof level |
+|---|---|---|
+| AI | live | paid_outcome_verified |
+| Crypto Intelligence | live | quote_observed_unpaid |
+| Prediction Intelligence | live | quote_observed_unpaid |
+| Multi-chain RPC | unavailable (commercial_rights_blocked) | none |
+| Secure Sandbox | live | paid_outcome_verified |
+| Research | live | paid_outcome_verified |
+
+## First call
+
+No account, no API key, no wallet:
+
+```bash
+curl -sS https://api.clervo.dev/v1/search/free \
+  -H 'content-type: application/json' \
+  -d '{"query":"World Wide Web","maxResults":3,"synthesize":false}' \
+  -H 'idempotency-key: clervo-first-call-0001'
+```
+
+The free sample currently rejects a request with no `idempotency-key` header; supply a stable value of 8 to 128 token characters.
+
+Paid requests go to `POST https://api.clervo.dev/v1/search/paid`, which returns a 402 carrying the exact maximum charge before anything executes.
+
+- [Agent skill](/skill.md): when to use Clervo and how to make the first call.
+- [Agent reference](/agent.md): identity, observed state, idempotency contract, and boundaries.
+
+## Command line
+
+One install, and a real result before a wallet exists:
+
+```bash
+npx @clervo/router search "World Wide Web"
+```
+
+No account, no API key, no wallet, no funding. The free path above is what that command calls.
+
+Paid use is opt-in and comes later, in this order:
+
+```bash
+clervo catalog                      # what is being served right now
+clervo quote search.web "<query>"   # the exact price, without paying it
+clervo wallet create                # a dedicated wallet, only when you want a paid product
+clervo wallet address               # fund it with USDC on Base mainnet
+clervo run search.web "<query>"     # pay for one call, with the price shown first
+clervo replay <key>                 # the same result again, never a second charge
+clervo doctor                       # check the machine end to end
+```
+
+`clervo wallet create` never overwrites an existing wallet, and `clervo wallet restore` refuses if the wallet it would replace holds a balance. Payment is a signed USDC authorization on Base, so no gas is paid from that wallet. If a call fails after the authorization was sent, the settlement is unknown: the client records it, refuses to spend again, and resolves it with `clervo reconcile`.
+
+## Agent discovery
+
+- [`GET https://api.clervo.dev/v1/models`](/models.json): the authoritative canonical AI catalog and stable aliases, with capability, availability, health, free/paid state, pricing, and commerce contract. OpenAI list shape.
+- [`GET https://api.clervo.dev/.well-known/x402`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.
+- `GET https://api.clervo.dev/llms.txt`: this document, served from the API host as well as the site.
+
+Model list: 89 callable IDs (85 canonical, 4 aliases), 88 sellable. Payment manifest: 5 paid resources.
+
+## Complete autonomous-caller guide
+
+# Clervo for agents
+
+This document is written for an autonomous caller. It states what is callable,
+what it costs, and what has actually been proven. It contains no marketing
+claim and no capability that the deployed system does not serve.
+
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-11T08:48:34.576Z. Release: `802527f49f87b1aa9323c329bf52c07ffce6d659`.
+
+## Identity
+
+- API origin: https://api.clervo.dev
+- Site origin: https://clervo.dev
+- Payment protocols: x402 and MPP EVM charge intents, USDC on Base.
+- Authentication: none. The free sample needs no credential; paid routes need a payment, not an account.
+
+## Observed state
+
+| Product | ID | Lifecycle state | Proof level |
+|---|---|---|---|
+| AI | `ai` | live | paid_outcome_verified |
+| Crypto Intelligence | `crypto_intelligence` | live | quote_observed_unpaid |
+| Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
+| Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
+| Secure Sandbox | `sandbox` | live | paid_outcome_verified |
+| Research | `search` | live | paid_outcome_verified |
+
+These are two independent facts. A `live` product with proof level
+`quote_observed_unpaid` is offered and priced; it is not a demonstrated paid
+outcome. Report it that way if you cite it.
+
+## Free entry point
+
+- `POST https://api.clervo.dev/v1/search/free`
+- Accepts a request with no idempotency key: no
+- Quota headers: `ratelimit-limit`, `ratelimit-remaining`, `ratelimit-reset`.
+- Over the cap the route answers `429 free_quota_exceeded` rather than executing. Do not treat 429 as a transport error.
+
+## Minimum viable request
+
+```bash
+curl -sS https://api.clervo.dev/v1/search/free \
+  -H 'content-type: application/json' \
+  -d '{"query":"World Wide Web","maxResults":3,"synthesize":false}' \
+  -H 'idempotency-key: clervo-first-call-0001'
+```
+
+## Idempotency contract
+
+- A key is 8 to 128 visible ASCII token characters.
+- The same key with the same body replays the stored result and sets `idempotency-replayed: true`. No second execution, no second charge.
+- The same key with a different body returns `409 idempotency_conflict`.
+- If the free sample generates a key for you, it is returned in the `idempotency-key` response header. Keep it if you may need to replay.
+- On an unknown settlement state, retry with the same key only. A new key authorizes a new charge.
+
+## Discovery paths
+
+- `/.well-known/clervo.json`
+- `/.well-known/x402` — x402 v2 payment manifest; each item carries the exact quote its resource returns.
+- `/v1/models` — authoritative AI catalog, OpenAI list shape, including stable canonical IDs and aliases plus capability, price, availability, health, and commerce metadata.
+- `/openapi.json`
+- `/catalog.json`
+- `/capabilities.json`
+- `/pricing.json`
+- `/status.json`
+- `/onboarding.json`
+- `/llms.txt`
+
+## Model selection
+
+- 89 callable IDs: 85 canonical and 4 stable aliases; 88 sellable now.
+- Send a canonical `id`, or an alias whose `clervo.aliasFor` contract you accept, as `model` on `POST /v1/ai/execute`.
+- Use `clervo.availability`, `clervo.health`, and `clervo.publicSellable` before selection. Canonical IDs never substitute another model.
+- Use `clervo.customerPricing` and `clervo.billingMode` for discovery. A paid request's 402 is the binding maximum charge.
+
+## Boundaries
+
+- Publicly callable previews: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.
+- Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable without commercially qualified price supply.
+- Reports expose observed facts, deterministic signals, coverage, missing sources, freshness, evidence, and provenance; they do not infer wallet identity, risk, advice, custody, signing, or trading.
+- A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.
+- Solana and unsupported EVM chains fail closed.
+
+## Installable skill interface
+
+# Clervo skill
+
+Clervo sells bounded outcomes over HTTP: one request in, one verified result
+and one receipt out. Payment, when required, uses x402 or MPP over USDC on
+Base and is always quoted before execution.
+
+Generated from `packages/catalog/live-registry.json`, probed at 2026-08-11T08:48:34.576Z. Every row below is observed from the deployed system, never asserted.
+
+## When to use this skill
+
+- You need current cited web evidence for a question and want the sources with the answer.
+- You want to pay per request instead of holding an account or an API key.
+- You need the same request to be safely retryable without being charged twice.
+
+## Observed capability
+
+| Product | ID | Lifecycle state | Proof level |
+|---|---|---|---|
+| AI | `ai` | live | paid_outcome_verified |
+| Crypto Intelligence | `crypto_intelligence` | live | quote_observed_unpaid |
+| Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
+| Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
+| Secure Sandbox | `sandbox` | live | paid_outcome_verified |
+| Research | `search` | live | paid_outcome_verified |
+
+Lifecycle state is what the runtime serves right now. Proof level is what has
+actually been demonstrated: `quote_observed_unpaid` means a price and a valid
+payment challenge were returned and nothing more. Do not treat a priced route
+as a proven paid outcome.
+
+## First call
+
+No account, no wallet:
+
+```bash
+curl -sS https://api.clervo.dev/v1/search/free \
+  -H 'content-type: application/json' \
+  -d '{"query":"World Wide Web","maxResults":3,"synthesize":false}' \
+  -H 'idempotency-key: clervo-first-call-0001'
+```
+
+The free sample currently requires a caller-supplied `idempotency-key` header. Send a stable value of 8 to 128 token characters.
+
+## Paid call
+
+1. `POST https://api.clervo.dev/v1/search/paid` with the same body and your own `idempotency-key`.
+2. Read the 402 response: `accepts[0]` carries the exact maximum charge, asset, network, and expiry.
+3. Approve deliberately, then resend with `PAYMENT-SIGNATURE` (x402) or `Authorization: Payment` (MPP).
+4. Reuse the same key to replay the completed result. A replay never charges again.
+
+## Failure behaviour
+
+- `400` the request was rejected before execution; fix it and resend.
+- `402` payment is required; the body carries the exact quote.
+- `409` the key is bound to a different request body; use a new key.
+- `429` the free quota is exhausted; wait for the window in `ratelimit-reset`.
+- `5xx` the operation failed closed. Retry the same key. Never retry a payment of unknown settlement state with a new key.
+
+## Machine-readable contracts
+
+- `/.well-known/clervo.json` — discovery, products, and observed truth.
+- `/.well-known/x402` — x402 v2 payment manifest with the exact quote each paid resource returns.
+- `/v1/models` — authoritative AI catalog with stable IDs, aliases, capabilities, price, free/paid state, availability, health, and commerce contract.
+- `/openapi.json` — request and response contracts.
+- `/status.json` — current lifecycle state, proof level, and open conformance defects.
+- `/pricing.json` — the public offer boundary.
+- `/llms.txt` — this service as a documentation map.

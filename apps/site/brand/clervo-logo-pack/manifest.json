@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "clervo.logo-pack.v1",
+  "identity": "clervo.hollow-apex",
+  "identityVersion": "1.0.0",
+  "generatedBy": "scripts/site/build-identity.mjs",
+  "assets": [
+    {
+      "name": "clervo-apex-master.svg",
+      "bytes": 554,
+      "sha256": "825ecd305dafb13adfdc87aa6f2fc9974e34166736f37dece7229b5beb750308"
+    },
+    {
+      "name": "clervo-apex-symbol.svg",
+      "bytes": 284,
+      "sha256": "32ad4da3758f0c779bdf1b073be2e2afbf07607bc76fa9cc4b506d1ebf78ffd3"
+    },
+    {
+      "name": "clervo-apex-mono-light.svg",
+      "bytes": 397,
+      "sha256": "cd074a5fd72ea2e04da51629c090e0485e7299fae2c578a11b99abedb8aa874e"
+    },
+    {
+      "name": "clervo-apex-mono-dark.svg",
+      "bytes": 395,
+      "sha256": "8863794fd791c08692ea86b017bd70497118eb7e1578d93f76b5bb312c056509"
+    },
+    {
+      "name": "favicon.svg",
+      "bytes": 606,
+      "sha256": "ce4202b74af934ff6f97454a5c6b85f90fd826f77841c40f12e78f8b33fcd3a4"
+    },
+    {
+      "name": "clervo-app-icon.svg",
+      "bytes": 610,
+      "sha256": "850aeb02e3d4baeee16fe120749c7410e852665132c6bef89b134c9d74cfc6bf"
+    },
+    {
+      "name": "clervo-social-avatar.svg",
+      "bytes": 620,
+      "sha256": "7b63aca2493513ee982d7a98883c2c43cbcad44be9f39823620279fd79e7d48f"
+    },
+    {
+      "name": "clervo-registry-dark.svg",
+      "bytes": 618,
+      "sha256": "930f6e1128bdda123a5ee8dc33968cf835f9d5618bd7062c2ba80722387dadd1"
+    },
+    {
+      "name": "clervo-registry-light.svg",
+      "bytes": 620,
+      "sha256": "5df10a7735cea9405449c82952331016345a879c716270e0b39fe26abb04c227"
+    },
+    {
+      "name": "clervo-lockup-horizontal.svg",
+      "bytes": 1421,
+      "sha256": "1fd29b88b40787868b4c62e6f916c28e55ac3e9c719a9ca704225f4c329cd740"
+    },
+    {
+      "name": "clervo-lockup-horizontal-mono-dark.svg",
+      "bytes": 1278,
+      "sha256": "5b32a717e52225c2df825fac7ffd2d6cfb34a44ba60394909b980cc0539dae71"
+    },
+    {
+      "name": "clervo-lockup-compact.svg",
+      "bytes": 1435,
+      "sha256": "7cd9c4dde8463482ef87800d1c2ef39b3acd1d88486d574ed585cc85f8023829"
+    },
+    {
+      "name": "clervo-social-card.svg",
+      "bytes": 2011,
+      "sha256": "043d213a40b611ea4a2920a8e70c1add37fca898ba799a558a7a76c3a37592b4"
+    },
+    {
+      "name": "clervo-social-card.png",
+      "bytes": 14734,
+      "sha256": "cb0e1d226d16e5767719d150963346c0c70270c4890320d11dc69ebb5832b770"
+    },
+    {
+      "name": "identity.json",
+      "bytes": 3027,
+      "sha256": "4bbf45a6a36b0e8d40afe9374107439d5ed0ff66c19552485ea99863ea6664fd"
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import { Instrument } from './components/Instrument';
 import { LifecycleRail } from './components/Navigation';
 import { SiteFooter, SiteHeader } from './components/Shell';
 import { useActivation } from './experience';
+import { modelFromSlug } from './models';
 import { isCanonicalOperationId } from './operation';
 import { Docs } from './pages/Docs';
 import { Build } from './pages/Build';
@@ -12,6 +13,7 @@ import { Capability } from './pages/Capability';
 import { Catalog } from './pages/Catalog';
 import { Home } from './pages/Home';
 import { Guide, type GuideTopic } from './pages/Guide';
+import { ModelPage } from './pages/Model';
 import { Operation } from './pages/Operation';
 import { ProofLab } from './pages/ProofLab';
 import { Product } from './pages/Product';
@@ -58,7 +60,7 @@ export function App() {
     if (pathname === '/') return;
     if (pathname.startsWith('/proof-lab')) return;
     else if (pathname === '/proof') setPhase('receipt');
-    else if (pathname.startsWith('/operations/')) setPhase('qualified');
+    else if (pathname.startsWith('/operations/') || pathname.startsWith('/models/')) setPhase('qualified');
     else if (pathname.startsWith('/docs')) setPhase(activation.receiptInspected ? 'receipt' : 'qualified');
     else if (pathname.startsWith('/products/')) setPhase(pathname === '/products/search' ? 'qualified' : 'risk');
     else if (pathname.startsWith('/product') || pathname === '/platform') setPhase('qualified');
@@ -73,7 +75,7 @@ export function App() {
     const exactTitles: Record<string, string> = {
       '/': 'Outcome infrastructure for agents',
       '/start': 'Set up Clervo',
-      '/catalog': 'Live capability catalog',
+      '/catalog': 'AI model catalog',
       '/research': 'Research outcome',
       '/platform': 'Clervo Platform',
       '/product': 'Product and capabilities',
@@ -86,6 +88,8 @@ export function App() {
       '/docs/typescript': 'TypeScript developer docs',
       '/docs/python': 'Python developer docs',
       '/docs/mcp': 'MCP developer docs',
+      '/docs/cli': 'Router and CLI developer docs',
+      '/docs/openai': 'OpenAI-compatible client docs',
       '/pricing': 'Pricing truth',
       '/benchmarks': 'Benchmark truth',
       '/security': 'Security controls',
@@ -106,7 +110,10 @@ export function App() {
       '/trust': 'Trust center',
     };
     const operationMatch = pathname.match(/^\/operations\/([^/]+)$/u);
+    const modelMatch = pathname.match(/^\/models\/([^/]+)$/u);
+    const model = modelMatch?.[1] === undefined ? null : modelFromSlug(modelMatch[1]);
     const routeTitle = exactTitles[pathname]
+      ?? (model === null ? undefined : `${model.name} API`)
       ?? (operationMatch?.[1] !== undefined && isCanonicalOperationId(operationMatch[1]) ? `Operation ${operationMatch[1]}` : 'Route not found');
     document.title = `${routeTitle} — Clervo`;
     let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
@@ -128,6 +135,11 @@ export function App() {
     if (pathname === '/start') return <Start onPhase={updatePhase} />;
     if (pathname === '/catalog') return <Catalog onPhase={updatePhase} />;
     if (pathname === '/research') return <Research onPhase={updatePhase} />;
+    const modelMatch = pathname.match(/^\/models\/([^/]+)$/u);
+    if (modelMatch?.[1] !== undefined) {
+      const model = modelFromSlug(modelMatch[1]);
+      if (model !== null) return <ModelPage model={model} onPhase={updatePhase} />;
+    }
     const operationMatch = pathname.match(/^\/operations\/([^/]+)$/u);
     if (operationMatch?.[1] !== undefined && isCanonicalOperationId(operationMatch[1])) {
       return <Operation operationId={operationMatch[1]} onPhase={updatePhase} />;
@@ -163,7 +175,7 @@ export function App() {
       );
     }
     const docsMatch = pathname.match(/^\/docs\/([^/]+)$/u);
-    if (docsMatch?.[1] !== undefined && ['http', 'typescript', 'python', 'mcp'].includes(docsMatch[1])) {
+    if (docsMatch?.[1] !== undefined && ['cli', 'http', 'typescript', 'python', 'mcp', 'openai'].includes(docsMatch[1])) {
       return (
         <Docs
           client={docsMatch[1]}

@@ -2,6 +2,7 @@
 
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { siteRouteInventory } from './site-route-inventory.mjs';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const dist = path.join(root, 'apps/site/dist');
@@ -10,7 +11,7 @@ const expectations = [
   // successful prerender proves the intended page body, not only an empty root.
   ['index.html', 'Give your agent a task.'],
   ['start/index.html', 'Set up Clervo'],
-  ['catalog/index.html', 'What does your agent need to do?'],
+  ['catalog/index.html', 'AI model catalog'],
   ['research/index.html', 'Ask now.'],
   ['platform/index.html', 'One task in.'],
   ['product/index.html', 'One task in.'],
@@ -29,6 +30,8 @@ const expectations = [
   ['docs/typescript/index.html', 'TypeScript client'],
   ['docs/python/index.html', 'Python client'],
   ['docs/mcp/index.html', 'MCP client'],
+  ['docs/cli/index.html', 'Router / CLI client'],
+  ['docs/openai/index.html', 'OpenAI-compatible client'],
   ['docs/receipts/index.html', 'The result keeps its boundary.'],
   ['docs/replay/index.html', 'Same request. No second effect.'],
   ['docs/failures/index.html', 'One failure. One bounded action.'],
@@ -43,18 +46,13 @@ const expectations = [
   ['trust/index.html', 'Inspect the mechanism.'],
 ];
 
-// Validate every canonical operation route generated from the public catalog.
-// The operation identifier itself is the stable minimum content assertion:
-// published human copy may evolve, but the route must never render a different
-// contract identity or an empty shell.
-const catalog = JSON.parse(await readFile(path.join(root, 'generated/public/catalog.json'), 'utf8'));
-const operationIds = new Set();
-for (const family of catalog.observedTruth?.products ?? []) {
-  for (const operationId of family.operations ?? []) operationIds.add(operationId);
-}
-for (const product of catalog.products ?? []) operationIds.add(product.operationId);
-for (const operationId of [...operationIds].sort()) {
-  expectations.push([`operations/${operationId}/index.html`, operationId]);
+// Generated operation and model routes are checked from the same inventory
+// used by prerendering and sitemap generation. This prevents a hand-maintained
+// route count from silently drifting away from the canonical catalog.
+const inventory = await siteRouteInventory(root);
+for (const item of inventory.filter(({ kind }) => kind !== 'fixed')) {
+  const relative = `${item.route.replace(/^\//u, '').replace(/\/$/u, '')}/index.html`;
+  expectations.push([relative, item.kind === 'model' ? item.modelId : item.route.slice('/operations/'.length)]);
 }
 
 for (const [file, content] of expectations) {
@@ -64,6 +62,7 @@ for (const [file, content] of expectations) {
     .replace(/<[^>]+>/gu, ' ')
     .replace(/\s+/gu, ' ');
   if (!text.includes(content)) throw new Error(`site_prerender_content_missing:${file}`);
+  if (text.includes('undefined')) throw new Error(`site_prerender_undefined_value:${file}`);
   if (!html.includes('rel="canonical"')) throw new Error(`site_prerender_canonical_missing:${file}`);
   if (html.includes('<div id="root"></div>')) throw new Error(`site_prerender_empty:${file}`);
 }

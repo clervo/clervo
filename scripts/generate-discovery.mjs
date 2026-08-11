@@ -1333,8 +1333,22 @@ const agentDocument = [
   '',
 ].join('\n');
 
+const llmsFull = [
+  llms.trimEnd(),
+  '',
+  '## Complete autonomous-caller guide',
+  '',
+  agentDocument.trim(),
+  '',
+  '## Installable skill interface',
+  '',
+  skillDocument.trim(),
+  '',
+].join('\n');
+
 await writeFile(path.join(outputDirectory, 'skill.md'), skillDocument);
 await writeFile(path.join(outputDirectory, 'agent.md'), agentDocument);
+await writeFile(path.join(outputDirectory, 'llms-full.txt'), llmsFull);
 
 // The API edge is a Worker with no filesystem, so it cannot read these
 // documents at request time. They are emitted as a module it imports, from the

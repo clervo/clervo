@@ -1,0 +1,186 @@
+{
+  "schemaVersion": "clervo.model-creators.v1",
+  "reviewedAt": "2026-08-11",
+  "catalogAuthority": "generated/public/models.json",
+  "principle": "Creator identity is reviewed separately from private or public execution supply. An unassigned model renders no creator rather than an inferred one.",
+  "creators": [
+    {
+      "id": "anthropic",
+      "name": "Anthropic",
+      "officialUrl": "https://www.anthropic.com/",
+      "brandSourceUrl": "https://www.anthropic.com/news",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "The official newsroom offers a press kit, but no third-party logo file is copied until its exact asset terms are retained with the file."
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI",
+      "officialUrl": "https://openai.com/",
+      "brandSourceUrl": "https://openai.com/brand/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Official guidelines require supplied, unmodified artwork and prohibit implying endorsement. Typography is used until an approved downloaded asset is retained verbatim."
+    },
+    {
+      "id": "google",
+      "name": "Google",
+      "officialUrl": "https://about.google/",
+      "brandSourceUrl": "https://about.google/brand-resource-center/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Official guidance is use-specific and may require approval. The company name is rendered without a copied or recolored mark."
+    },
+    {
+      "id": "meta",
+      "name": "Meta",
+      "officialUrl": "https://ai.meta.com/llama/",
+      "brandSourceUrl": "https://about.meta.com/brand/resources/meta/company-brand/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Company name only pending a retained official asset and its usage terms."
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "officialUrl": "https://www.deepseek.com/",
+      "brandSourceUrl": "https://www.deepseek.com/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Company name only; no logo is approximated from the product UI."
+    },
+    {
+      "id": "mistral",
+      "name": "Mistral AI",
+      "officialUrl": "https://mistral.ai/",
+      "brandSourceUrl": "https://mistral.ai/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Company name only pending a retained official asset and its usage terms."
+    },
+    {
+      "id": "alibaba-qwen",
+      "name": "Alibaba / Qwen",
+      "officialUrl": "https://qwen.ai/",
+      "brandSourceUrl": "https://qwen.ai/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Company and model-family name only; no unofficial icon-pack mark is used."
+    },
+    {
+      "id": "nvidia",
+      "name": "NVIDIA",
+      "officialUrl": "https://www.nvidia.com/",
+      "brandSourceUrl": "https://www.nvidia.com/en-us/about-nvidia/legal-info/logo-brand-usage/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Official logo use is governed by NVIDIA guidance; typography avoids recoloring or redrawing it."
+    },
+    {
+      "id": "moonshot",
+      "name": "Moonshot AI",
+      "officialUrl": "https://www.moonshot.cn/",
+      "brandSourceUrl": "https://www.moonshot.cn/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Company name only; no mark is inferred from Kimi product artwork."
+    },
+    {
+      "id": "minimax",
+      "name": "MiniMax",
+      "officialUrl": "https://www.minimax.io/",
+      "brandSourceUrl": "https://www.minimax.io/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Company name only pending a retained official asset and usage terms."
+    },
+    {
+      "id": "z-ai",
+      "name": "Z.ai",
+      "officialUrl": "https://z.ai/",
+      "brandSourceUrl": "https://z.ai/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Company name only; the creator is not confused with the serving route."
+    },
+    {
+      "id": "tencent",
+      "name": "Tencent",
+      "officialUrl": "https://hunyuan.tencent.com/",
+      "brandSourceUrl": "https://hunyuan.tencent.com/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Company name only for reviewed Hunyuan identities."
+    },
+    {
+      "id": "sdaia",
+      "name": "SDAIA",
+      "officialUrl": "https://sdaia.gov.sa/",
+      "brandSourceUrl": "https://sdaia.gov.sa/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Organization name only for ALLaM; no government mark is copied."
+    },
+    {
+      "id": "meituan",
+      "name": "Meituan",
+      "officialUrl": "https://about.meituan.com/",
+      "brandSourceUrl": "https://github.com/meituan-longcat",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Company name only; the official LongCat organization is retained as source."
+    },
+    {
+      "id": "bytedance",
+      "name": "ByteDance",
+      "officialUrl": "https://seed.bytedance.com/",
+      "brandSourceUrl": "https://seed.bytedance.com/",
+      "logoAsset": null,
+      "logoDecision": "typography_fallback",
+      "usageNotes": "Company name only for reviewed Seed identities."
+    }
+  ],
+  "assignments": [
+    { "prefix": "clervo/allam-", "creatorId": "sdaia" },
+    { "prefix": "clervo/claude-", "creatorId": "anthropic" },
+    { "prefix": "clervo/deepseek-", "creatorId": "deepseek" },
+    { "prefix": "clervo/gemini-", "creatorId": "google" },
+    { "prefix": "clervo/gemma-", "creatorId": "google" },
+    { "prefix": "clervo/veo-", "creatorId": "google" },
+    { "prefix": "clervo/lyria-", "creatorId": "google" },
+    { "prefix": "clervo/multimodalembedding-", "creatorId": "google" },
+    { "prefix": "clervo/text-embedding-", "creatorId": "google" },
+    { "prefix": "clervo/text-multilingual-embedding-", "creatorId": "google" },
+    { "prefix": "clervo/virtual-try-on-", "creatorId": "google" },
+    { "prefix": "clervo/gpt-", "creatorId": "openai" },
+    { "prefix": "clervo/glm-", "creatorId": "z-ai" },
+    { "prefix": "clervo/hunyuan-", "creatorId": "tencent" },
+    { "prefix": "clervo/kimi-", "creatorId": "moonshot" },
+    { "prefix": "clervo/longcat-", "creatorId": "meituan" },
+    { "prefix": "clervo/minimax-", "creatorId": "minimax" },
+    { "prefix": "clervo/mistral-", "creatorId": "mistral" },
+    { "prefix": "clervo/nemotron-", "creatorId": "nvidia" },
+    { "prefix": "clervo/nv-", "creatorId": "nvidia" },
+    { "prefix": "clervo/qwen", "creatorId": "alibaba-qwen" },
+    { "prefix": "clervo/seed-", "creatorId": "bytedance" }
+  ],
+  "exactAssignments": [
+    { "modelId": "clervo/llama-3.1-nemoguard-8b-content-safety", "creatorId": "nvidia" },
+    { "modelId": "clervo/llama-3.1-nemotron-nano-vl-8b-v1", "creatorId": "nvidia" },
+    { "modelId": "clervo/llama-3.1-nemotron-safety-guard-8b-v3", "creatorId": "nvidia" },
+    { "modelId": "clervo/llama-3.1-70b-instruct", "creatorId": "meta" },
+    { "modelId": "clervo/llama-3.1-8b-instruct", "creatorId": "meta" },
+    { "modelId": "clervo/llama-3.2-11b-vision-instruct", "creatorId": "meta" },
+    { "modelId": "clervo/llama-3.3-70b-instruct", "creatorId": "meta" }
+  ],
+  "unassignedModelIds": [
+    "clervo/code",
+    "clervo/deep",
+    "clervo/fast",
+    "clervo/smart",
+    "clervo/hy3",
+    "clervo/laguna-s-2.1",
+    "clervo/ling-flash-2.0",
+    "clervo/nex-n2-pro"
+  ]
+}

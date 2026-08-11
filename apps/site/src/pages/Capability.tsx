@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import {
   capabilityLabel,
+  attributionLabel,
   discovery,
   familyOf,
   formatUsdc,
@@ -91,6 +92,19 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
             <Link className="b12-button b12-button-secondary b12-liquid" to="/catalog">Open observed catalog</Link>
           </article>
         </div>
+
+        <section className="s4-family-operations" aria-labelledby="s4-family-published-title">
+          <div className="s4-catalog-head"><h2 id="s4-family-published-title">Published operation identities</h2><span>{published.length} in the current contract</span></div>
+          <div className="s4-operation-list s4-published-operations">
+            {published.map((entry) => (
+              <article className="s4-operation-card" key={entry.operationId}>
+                <div className="s4-op-title"><div className="s4-op-top"><span className="s4-live-label">Canonical contract</span></div><h3>{entry.operationId}</h3><p>{entry.summary}</p></div>
+                <div className="s4-op-description"><div className="s4-op-meta"><div><small>Published maximum</small><strong>{entry.pricing.displayPrice === null ? 'request-time quote' : formatUsdc(entry.pricing.displayPrice.amountAtomic, entry.pricing.displayPrice.decimals)}</strong></div><div><small>Attribution</small><strong>{entry.attribution === undefined ? 'not published' : attributionLabel(entry.attribution)}</strong></div><div><small>Observed family</small><strong>{lifecycleLabels[observed.lifecycleState]}</strong></div></div></div>
+                <div className="s4-op-action"><Link className="b12-button b12-button-secondary b12-liquid" to={`/operations/${entry.operationId}`}>Inspect</Link></div>
+              </article>
+            ))}
+          </div>
+        </section>
 
         <section className="s4-family-operations" aria-labelledby="s4-family-operations-title">
           <div className="s4-catalog-head"><h2 id="s4-family-operations-title">Operations in this family</h2><span>{routes.length} observed {routes.length === 1 ? 'route' : 'routes'}</span></div>

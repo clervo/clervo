@@ -15,7 +15,7 @@ import { Link, useRouter } from '../router';
 
 const primaryNav = [
   { to: '/product', label: 'Product' },
-  { to: '/catalog', label: 'Catalog' },
+  { to: '/catalog', label: 'Models' },
   { to: '/pricing', label: 'Pricing' },
   { to: '/docs', label: 'Docs' },
   { to: '/status', label: 'Status' },
@@ -181,7 +181,7 @@ export function SiteFooter({ note }: { note: string }) {
           <section>
             <h2>Product</h2>
             <Link to="/product">Overview</Link>
-            <Link to="/catalog">Live catalog</Link>
+            <Link to="/catalog">Models</Link>
             <Link to="/pricing">Pricing</Link>
             <Link to="/start">Set up Clervo</Link>
           </section>

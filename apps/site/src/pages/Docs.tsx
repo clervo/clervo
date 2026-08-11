@@ -17,6 +17,7 @@ import {
   type ExperiencePhase,
 } from '../product';
 import { Link } from '../router';
+import routerPackage from '../../../../packages/router/package.json';
 
 /*
  * /docs and /docs/:client — the developer quickstart.
@@ -33,7 +34,31 @@ import { Link } from '../router';
  * rather than the discovery document's own lifecycle string.
  */
 
-type ClientId = keyof typeof installExamples;
+const clientExamples = {
+  ...installExamples,
+  cli: `npm install --global @clervo/router
+
+clervo search "World Wide Web"
+clervo catalog --models
+clervo doctor`,
+  openai: `npm install openai
+
+clervo proxy
+
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  baseURL: 'http://127.0.0.1:8402/v1',
+  apiKey: 'local-placeholder'
+});
+
+const result = await openai.chat.completions.create({
+  model: 'clervo/fast',
+  messages: [{ role: 'user', content: 'Reply with ready.' }]
+});`,
+} as const;
+
+type ClientId = keyof typeof clientExamples;
 
 const searchObserved = observedProduct('search');
 
@@ -43,10 +68,12 @@ function packageVersion(name: string): string {
 }
 
 const clients: Array<{ id: ClientId; label: string; packageName: string; version: string }> = [
+  { id: 'cli', label: 'Router / CLI', packageName: '@clervo/router', version: `${routerPackage.version} published` },
   { id: 'http', label: 'Raw HTTP', packageName: 'OpenAPI 3.1.1', version: 'published contract' },
   { id: 'typescript', label: 'TypeScript', packageName: '@clervo/sdk', version: packageVersion('@clervo/sdk') },
   { id: 'python', label: 'Python', packageName: 'clervo-sdk', version: packageVersion('clervo-sdk') },
   { id: 'mcp', label: 'MCP', packageName: '@clervo/mcp', version: packageVersion('@clervo/mcp') },
+  { id: 'openai', label: 'OpenAI-compatible', packageName: 'localhost proxy', version: `@clervo/router ${routerPackage.version}` },
 ];
 
 // Typed failures, in the order a caller meets them. The middle column is the
@@ -71,7 +98,7 @@ export function Docs({
   updateActivation(next: Partial<ActivationState>): void;
   onPhase(phase: ExperiencePhase): void;
 }) {
-  const validClient = ['http', 'typescript', 'python', 'mcp'].includes(client);
+  const validClient = ['cli', 'http', 'typescript', 'python', 'mcp', 'openai'].includes(client);
   const clientId = (validClient ? client : 'typescript') as ClientId;
   const selected = clients.find(({ id }) => id === clientId) ?? clients[0]!;
   useEffect(() => {
@@ -143,7 +170,7 @@ export function Docs({
         </nav>
         <CodeBlock
           label={`${selected.label} client`}
-          code={installExamples[clientId]}
+          code={clientExamples[clientId]}
           onCopy={() => updateActivation({ selectedClient: clientId })}
         />
       </section>
@@ -165,6 +192,27 @@ export function Docs({
           (ordinary and SSE), and embeddings. Canonical model IDs are exact or
           fail. Usage comes from durable operation and receipt records; it is
           never a hand-written financial counter.
+        </p>
+      </section>
+
+      <section className="band band--ruled docs-body" aria-labelledby="docs-wallet-recovery">
+        <div className="section-head">
+          <p className="eyebrow">Wallet / limits / recovery</p>
+          <h2 id="docs-wallet-recovery">The commands for every paid-use state.</h2>
+          <p className="lede">
+            Create or restore one local payment wallet, fund its address with
+            USDC on Base, set buyer-side limits, and inspect durable records.
+            Recovery never starts with a blind retry.
+          </p>
+        </div>
+        <CodeBlock label="Wallet and funding" code={'clervo wallet create\n# Store the recovery phrase offline.\n\nclervo wallet restore "<recovery phrase>"\nclervo wallet address\nclervo wallet balance\n# Send USDC on Base mainnet to the displayed address.'} />
+        <CodeBlock label="Limits and automatic payment opt-in" code={'clervo limits\nclervo limits set --per-operation 0.05 --daily 1.00\n\n# Automatic payment remains off by default.\nclervo proxy --auto-pay'} />
+        <CodeBlock label="Inspect, replay, reconcile, diagnose" code={'clervo receipt <receipt-id-or-key>\nclervo replay <idempotency-key>\nclervo reconcile\nclervo usage\nclervo doctor'} />
+        <p className="quiet docs-note">
+          <code>wallet create</code> never overwrites an existing wallet.
+          <code> wallet restore</code> refuses to replace a wallet that holds a
+          balance. If settlement is unknown, <code>reconcile</code> performs a
+          retrieval-only check with no new authorization and paid work stays frozen.
         </p>
       </section>
 

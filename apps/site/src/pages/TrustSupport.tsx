@@ -331,9 +331,11 @@ function DocsPage() {
             <p className="s6-label">Documentation</p>
             <Link to="/docs/quickstart">Quickstart</Link>
             <Link to="/start">Skill setup</Link>
+            <Link to="/docs/cli">Router / CLI</Link>
             <Link to="/docs/mcp">MCP</Link>
             <Link to="/docs/typescript">TypeScript SDK</Link>
             <Link to="/docs/python">Python SDK</Link>
+            <Link to="/docs/openai">OpenAI-compatible</Link>
             <Link to="/docs/http">HTTP / OpenAPI</Link>
             <Link to="/docs/catalog">Catalog discovery</Link>
             <Link to="/docs/x402">Quotes and payment</Link>
