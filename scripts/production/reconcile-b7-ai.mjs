@@ -55,10 +55,15 @@ if (action === 'plan') {
   }, null, 2)}\n`);
   process.exit(0);
 }
-assert.ok(['preflight', 'verify'].includes(action), 'usage: reconcile-b7-ai.mjs plan|preflight|verify');
+assert.ok(['preflight', 'verify-chat', 'verify-image', 'verify'].includes(action), 'usage: reconcile-b7-ai.mjs plan|preflight|verify-chat|verify-image|verify');
 
 const connectionString = normalizeProductionDatabaseUrl(process.env.CLERVO_DATABASE_URL);
-const identities = expected.map(identityInput);
+const verificationTargets = action === 'verify-chat'
+  ? expected.filter(({ slot }) => slot === 'chat')
+  : action === 'verify-image'
+    ? expected.filter(({ slot }) => slot === 'image')
+    : expected;
+const identities = (action === 'preflight' ? expected : verificationTargets).map(identityInput);
 assert.equal(new Set(identities.map(({ idempotencyKey }) => idempotencyKey)).size, identities.length, 'proof keys must differ');
 
 if (action === 'preflight') {
@@ -95,7 +100,7 @@ if (action === 'preflight') {
   process.exit(0);
 }
 
-const proofs = expected.map(proofInput);
+const proofs = verificationTargets.map(proofInput);
 assert.equal(new Set(proofs.map(({ transactionHash }) => transactionHash)).size, proofs.length, 'proof transactions must differ');
 
 const pool = new Pool({ connectionString, max: 1, connectionTimeoutMillis: 10_000, idleTimeoutMillis: 1_000, allowExitOnIdle: true });
@@ -184,7 +189,8 @@ try {
   }
   process.stdout.write(`${JSON.stringify({
     schemaVersion: 'clervo.b7-ai-reconciliation.v1', verifiedAt: new Date().toISOString(),
-    databaseIdentityVerified: true, operations: reconciled, totalChargeAtomic: reconciled.reduce((sum, item) => sum + BigInt(item.customerChargeAtomic), 0n).toString(),
+    scope: reconciled.map(({ slot }) => slot), databaseIdentityVerified: true, operations: reconciled,
+    totalChargeAtomic: reconciled.reduce((sum, item) => sum + BigInt(item.customerChargeAtomic), 0n).toString(),
     receiverLedgerChainValid: true, receiverLedgerBalanced: true, ambiguousOperations: 0,
     credentialsLogged: false, customerPayloadsLogged: false, readOnly: true, paymentEffects: 0,
   }, null, 2)}\n`);
