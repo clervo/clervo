@@ -77,7 +77,7 @@ test('B10 hosted Sandbox proof pins the repaired SHORT request and fresh post-fa
   });
 });
 
-test('temporary hosted proof quarantines reconciled chat and exposes only the authorized image identity', async () => {
+test('temporary hosted proof quarantines both B7 identities after the bounded proof attempts', async () => {
   assert.match(workerSource, /idem_b7_ai_paid_chat_20260810d10d693c7/u);
   assert.match(workerSource, /idem_b7_ai_paid_image_20260810gbde2285e/u);
   assert.doesNotMatch(workerSource, /idem_b7_ai_paid_chat_20260810c7a41e92/u);
@@ -87,16 +87,9 @@ test('temporary hosted proof quarantines reconciled chat and exposes only the au
   const chat = await worker.fetch(new Request('https://clervo.dev/proof/b7-ai-chat/config'), assets);
   const image = await worker.fetch(new Request('https://clervo.dev/proof/b7-ai-image/config'), assets);
   assert.equal(chat.status, 423);
-  assert.equal(image.status, 200);
+  assert.equal(image.status, 423);
   assert.deepEqual(await chat.json(), { code: 'proof_quarantined', recovery: 'reconcile_without_retry' });
-  assert.deepEqual(await image.json(), {
-    network: 'eip155:8453', chainIdHex: '0x2105', asset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-    amountAtomic: '25500', amountDisplay: '0.0255 USDC', payTo: '0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28',
-    payer, facilitator: 'https://api.cdp.coinbase.com/platform/v2/x402', payerBalanceCapAtomic: '300000',
-    supplierCostCeilingAtomic: '0', productId: 'ai.image', resource: 'https://api.clervo.dev/v1/ai/execute',
-    idempotencyKey: 'idem_b7_ai_paid_image_20260810gbde2285e',
-    request: { model: 'clervo/gemini-3.1-flash-lite-image', input: { kind: 'image', prompt: 'A plain red square on a white background.', size: '1024x1024', quality: 'low', count: 1 } },
-  });
+  assert.deepEqual(await image.json(), { code: 'proof_quarantined', recovery: 'reconcile_without_retry' });
 });
 
 test('B10 hosted proof forwards an unsigned challenge as an exact guarded POST', async () => {
