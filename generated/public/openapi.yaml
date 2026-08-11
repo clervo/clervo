@@ -4974,7 +4974,7 @@
       "crypto.wallet.transactions",
       "crypto.wallet.report"
     ],
-    "runtimeRelease": "0d9307859da94c229eaa2f5e3e96dbb2cc847f1b"
+    "runtimeRelease": "b2a4a3e0b13995bd700d3c3ba344b28b056faabb"
   },
   "servers": [
     {
