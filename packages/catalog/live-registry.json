@@ -2878,7 +2878,7 @@
     "apiOrigin": "https://api.clervo.dev",
     "environment": "production",
     "paidExecutionEnabled": true,
-    "releaseId": "b2a4a3e0b13995bd700d3c3ba344b28b056faabb",
+    "releaseId": "ee42886fb693177a688e34d9f479d27ed90aca5b",
     "sandboxPaidEnabled": true,
     "siteOrigin": "https://clervo.dev",
     "stateBackend": "postgres",
@@ -2928,7 +2928,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-11T21:10:57.320Z",
+  "observedAt": "2026-08-11T21:29:33.060Z",
   "products": [
     {
       "evidence": {
@@ -3189,7 +3189,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "b2a4a3e0b13995bd700d3c3ba344b28b056faabb",
+  "sourceCommit": "ee42886fb693177a688e34d9f479d27ed90aca5b",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
