@@ -1,6 +1,7 @@
 {
   "name": "@clervo/mcp",
   "version": "0.5.2",
+  "mcpName": "io.github.clervo/connect",
   "description": "Clervo Connect MCP profiles with one local wallet, live served products, bounded x402, reconciliation, usage, and diagnostics.",
   "license": "MIT",
   "type": "module",

@@ -6,6 +6,7 @@ const targets = JSON.parse(await readFile('packages/distribution/release-targets
 const legacy = JSON.parse(await readFile('packages/distribution/legacy-release-policy.v1.json', 'utf8'));
 const sdk = JSON.parse(await readFile('packages/sdk-typescript/package.json', 'utf8'));
 const mcp = JSON.parse(await readFile('packages/mcp/package.json', 'utf8'));
+const mcpRegistry = JSON.parse(await readFile('packages/mcp/server.json', 'utf8'));
 const pythonProject = await readFile('packages/sdk-python/pyproject.toml', 'utf8');
 const verifyWorkflow = await readFile('.github/workflows/verify-distribution.yml', 'utf8');
 const publishWorkflow = await readFile('.github/workflows/publish-packages.yml', 'utf8');
@@ -37,6 +38,11 @@ test('release targets preserve current registry truth and bind the exact release
   assert.equal(sdk.repository.url, 'git+https://github.com/clervo/clervo.git');
   assert.equal(mcp.repository.url, 'git+https://github.com/clervo/clervo.git');
   assert.equal(mcp.dependencies['@clervo/sdk'], sdk.version);
+  assert.equal(mcp.mcpName, 'io.github.clervo/connect');
+  assert.equal(mcpRegistry.name, mcp.mcpName);
+  assert.equal(mcpRegistry.version, mcp.version);
+  assert.equal(mcpRegistry.packages[0].identifier, mcp.name);
+  assert.equal(mcpRegistry.packages[0].version, mcp.version);
   assert.match(pythonProject, /^Repository = "https:\/\/github\.com\/clervo\/clervo"$/mu);
 });
 
@@ -55,6 +61,8 @@ test('package publishing is manual, commit-bound, environment-protected, and tok
   assert.match(publishWorkflow, /git merge-base --is-ancestor/u);
   assert.match(publishWorkflow, /verify:distribution-release:registry/u);
   assert.doesNotMatch(publishWorkflow, /secrets\.|NODE_AUTH_TOKEN|API_TOKEN/u);
+  assert.match(publishWorkflow, /mcp-publisher" login github-oidc/u);
+  assert.match(publishWorkflow, /registry\.modelcontextprotocol\.io\/v0\.1\/servers/u);
 
   for (const reference of publishWorkflow.matchAll(/uses: [^@\n]+@([^\s#]+)/gu)) {
     assert.match(reference[1], /^[a-f0-9]{40}$/u);

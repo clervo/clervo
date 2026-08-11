@@ -8,15 +8,23 @@
       "integrity": "sha512-HYwEaUtFRM+UrNd09HEN3Z8xg1vcMI3s1Qv3vpB9mprCNcemUYTxp04N+ZG2MRlxqVFnlCo7zSoPAHiOuOebfw==",
       "provenancePredicate": "https://slsa.dev/provenance/v1",
       "state": "published_verified"
+    },
+    {
+      "version": "0.3.0",
+      "sourceCommit": "6aa1fb5cca7fa037005df1dc9a6711ceacd1cb1b",
+      "githubRunId": 31488516730,
+      "integrity": "sha512-qe2pnFIj/nKTNPEgqQKyOcvtPXejeevSHuRMh205rZ5sc+lFcsp3VEqsMalCdo6PsqQIp5BW3+VT9mx/y8TyyQ==",
+      "provenancePredicate": "https://slsa.dev/provenance/v1",
+      "state": "published_verified"
     }
   ],
   "currentRelease": {
-    "version": "0.3.0",
-    "sourceCommit": "6aa1fb5cca7fa037005df1dc9a6711ceacd1cb1b",
-    "githubRunId": 31488516730,
-    "integrity": "sha512-qe2pnFIj/nKTNPEgqQKyOcvtPXejeevSHuRMh205rZ5sc+lFcsp3VEqsMalCdo6PsqQIp5BW3+VT9mx/y8TyyQ==",
+    "version": "0.3.1",
+    "sourceCommit": "6362d9a65fc5068fc6b467ffe0c71e037b2e4193",
+    "githubRunId": 31490120955,
+    "integrity": "sha512-KDwoQJhl+w/hgvGCcmKxbJAn1AuCToQMecqghnw9kEDbdNebKfELMJI0Gncf6O0CKwJTqAcg7CLXjeeuiQlrdg==",
     "provenancePredicate": "https://slsa.dev/provenance/v1",
     "state": "published_verified",
-    "verifiedAt": "2026-08-11T11:57:05Z"
+    "verifiedAt": "2026-08-11T12:14:17Z"
   }
 }

@@ -21,6 +21,15 @@ test('B6 Router public package metadata names one truthful immutable distributio
     provenancePredicate: 'https://slsa.dev/provenance/v1',
     state: 'published_verified',
   });
+  assert.deepEqual(releaseHistory.releases[1], {
+    version: '0.3.0',
+    sourceCommit: '6aa1fb5cca7fa037005df1dc9a6711ceacd1cb1b',
+    githubRunId: 31488516730,
+    integrity: 'sha512-qe2pnFIj/nKTNPEgqQKyOcvtPXejeevSHuRMh205rZ5sc+lFcsp3VEqsMalCdo6PsqQIp5BW3+VT9mx/y8TyyQ==',
+    provenancePredicate: 'https://slsa.dev/provenance/v1',
+    state: 'published_verified',
+  });
+  assert.equal(releaseHistory.currentRelease.version, '0.3.1');
   assert.equal(packageMetadata.license, 'MIT');
   assert.ok(packageMetadata.files.includes('LICENSE'));
   assert.equal(packageMetadata.publishConfig.access, 'public');

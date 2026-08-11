@@ -91,3 +91,23 @@ jobs:
         with:
           packages-dir: release-artifacts/pypi
           skip-existing: false
+      - name: Install the pinned official MCP Registry publisher
+        run: |
+          curl --fail --location --silent --show-error \
+            https://github.com/modelcontextprotocol/registry/releases/download/v1.8.1/mcp-publisher_linux_amd64.tar.gz \
+            --output "$RUNNER_TEMP/mcp-publisher.tar.gz"
+          echo 'a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc  '"$RUNNER_TEMP/mcp-publisher.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/mcp-publisher.tar.gz" -C "$RUNNER_TEMP" mcp-publisher
+          "$RUNNER_TEMP/mcp-publisher" --help >/dev/null
+      - name: Publish Clervo Connect to the official MCP Registry through GitHub OIDC
+        working-directory: packages/mcp
+        run: |
+          "$RUNNER_TEMP/mcp-publisher" validate
+          "$RUNNER_TEMP/mcp-publisher" login github-oidc
+          "$RUNNER_TEMP/mcp-publisher" publish
+          for attempt in $(seq 1 30); do
+            published_version="$(curl --fail --silent --show-error 'https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.clervo%2Fconnect' | jq -r '.servers[]?.server | select(.name == "io.github.clervo/connect") | .version' | head -n 1)"
+            test "$published_version" = 0.5.2 && break
+            test "$attempt" -lt 30
+            sleep 10
+          done

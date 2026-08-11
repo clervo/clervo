@@ -14,9 +14,9 @@ GitHub run `31489320038` published the exact source commit
   source distribution; and
 - all three install and import from their public registries in clean consumers.
 
-Router run `31488516730` published `@clervo/router@0.3.0` from commit
-`6aa1fb5cca7fa037005df1dc9a6711ceacd1cb1b` with npm SLSA provenance. The prior
-`0.2.0` identity remains frozen in
+Router run `31490120955` published `@clervo/router@0.3.1` from commit
+`6362d9a65fc5068fc6b467ffe0c71e037b2e4193` with npm SLSA provenance. The
+prior `0.2.0` and `0.3.0` identities remain frozen in
 `packages/router/release-history.v1.json`.
 
 `npm run verify:distribution-release:published` rechecks the observed immutable
