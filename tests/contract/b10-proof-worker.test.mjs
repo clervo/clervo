@@ -81,7 +81,7 @@ test('B10 hosted Sandbox proof pins the repaired SHORT request and fresh post-fa
   });
 });
 
-test('temporary hosted proof enables only the owner-approved bounded AI discovery payment', async () => {
+test('temporary hosted proof preserves and quarantines the completed AI discovery payment identity', async () => {
   assert.match(workerSource, /idem_b12_ai_discovery_3a4c08108c9442859ceccf249c67d293/u);
   assert.match(workerSource, /model: 'clervo\/allam-2-7b'/u);
   assert.match(workerSource, /idem_b7_ai_paid_image_20260810gbde2285e/u);
@@ -91,12 +91,9 @@ test('temporary hosted proof enables only the owner-approved bounded AI discover
   assert.doesNotMatch(workerSource, /idem_b7_ai_paid_image_20260810e9b2c6d1/u);
   const chat = await worker.fetch(new Request('https://clervo.dev/proof/b7-ai-chat/config'), assets);
   const image = await worker.fetch(new Request('https://clervo.dev/proof/b7-ai-image/config'), assets);
-  assert.equal(chat.status, 200);
+  assert.equal(chat.status, 423);
   assert.equal(image.status, 423);
-  const chatConfig = await chat.json();
-  assert.equal(chatConfig.productId, 'ai.chat');
-  assert.equal(chatConfig.amountAtomic, '1000');
-  assert.equal(chatConfig.request.model, 'clervo/allam-2-7b');
+  assert.deepEqual(await chat.json(), { code: 'proof_quarantined', recovery: 'reconcile_without_retry' });
   assert.deepEqual(await image.json(), { code: 'proof_quarantined', recovery: 'reconcile_without_retry' });
 });
 
