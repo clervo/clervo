@@ -6,13 +6,16 @@ lifecycle.
 
 ## Current verified release
 
-GitHub run `31489320038` published the exact source commit
-`eea4941ae52d00fb5030b18ab5fefc33cca979c5` through trusted publishing:
+GitHub run `31490359812` published the exact source commit
+`bae9342f9fc5034349c4bbe25a74b368b9da903a` through trusted publishing:
 
-- `@clervo/sdk@0.5.1` and `@clervo/mcp@0.5.1` have npm SLSA provenance;
-- `clervo-sdk==0.4.1` has PyPI trusted-publisher attestations for its wheel and
+- `@clervo/sdk@0.5.2` and `@clervo/mcp@0.5.2` have npm SLSA provenance;
+- `clervo-sdk==0.4.2` has PyPI trusted-publisher attestations for its wheel and
   source distribution; and
 - all three install and import from their public registries in clean consumers.
+
+The same protected run published `io.github.clervo/connect@0.5.2` to the
+official MCP Registry through GitHub OIDC and verified its active public record.
 
 Router run `31490120955` published `@clervo/router@0.3.1` from commit
 `6362d9a65fc5068fc6b467ffe0c71e037b2e4193` with npm SLSA provenance. The
