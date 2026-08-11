@@ -2878,7 +2878,7 @@
     "apiOrigin": "https://api.clervo.dev",
     "environment": "production",
     "paidExecutionEnabled": true,
-    "releaseId": "ee42886fb693177a688e34d9f479d27ed90aca5b",
+    "releaseId": "fa9570d898cac044f3a9326a2186dbf68e49fe34",
     "sandboxPaidEnabled": true,
     "siteOrigin": "https://clervo.dev",
     "stateBackend": "postgres",
@@ -2928,7 +2928,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-11T21:29:33.060Z",
+  "observedAt": "2026-08-11T21:52:46.314Z",
   "products": [
     {
       "evidence": {
@@ -2941,8 +2941,19 @@
         "freeProbeAccepted": true,
         "freeRepresentativeModel": "clervo/gemma-4-26b-a4b-it",
         "paidOutcome": {
-          "accepted": false,
-          "reason": "paid_proof_invariant_failed"
+          "accepted": true,
+          "demandEvidence": false,
+          "externallyRepeated": false,
+          "operationCount": 1,
+          "ownerFunded": true,
+          "proofLevel": "paid_outcome_verified",
+          "reason": null,
+          "releaseCommit": "0d9307859da94c229eaa2f5e3e96dbb2cc847f1b",
+          "replayNoSecondChargeCount": 1,
+          "revenueEvidence": false,
+          "source": "infra/production/gcp/ai-x402-proof.v1.json",
+          "totalChargeAtomic": "1000",
+          "usefulResultCount": 1
         },
         "paidProbeAccepted": true,
         "paidRepresentativeModel": "clervo/allam-2-7b",
@@ -2982,7 +2993,7 @@
         "ai.video",
         "ai.virtual_try_on"
       ],
-      "proof": "quote_observed_unpaid",
+      "proof": "paid_outcome_verified",
       "publiclyReachable": true,
       "reason": null,
       "state": "live"
@@ -3189,7 +3200,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "ee42886fb693177a688e34d9f479d27ed90aca5b",
+  "sourceCommit": "fa9570d898cac044f3a9326a2186dbf68e49fe34",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",

@@ -81,7 +81,7 @@
       ],
       "title": "Clervo AI model catalog",
       "summary": "Provider-neutral chat, embeddings, image, speech, video, music, and virtual try-on with stable identities, normalized results, truthful usage, paid receipts, and no-charge replay.",
-      "lifecycle": "preview",
+      "lifecycle": "production",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -554,7 +554,7 @@
   ],
   "catalogVersion": "2026-08-11.1",
   "runtimeRelease": {
-    "sourceCommit": "ee42886fb693177a688e34d9f479d27ed90aca5b",
+    "sourceCommit": "fa9570d898cac044f3a9326a2186dbf68e49fe34",
     "operationIds": [
       "search.web",
       "ai.chat",
@@ -580,8 +580,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T21:29:33.060Z",
-      "releaseId": "ee42886fb693177a688e34d9f479d27ed90aca5b",
+      "observedAt": "2026-08-11T21:52:46.314Z",
+      "releaseId": "fa9570d898cac044f3a9326a2186dbf68e49fe34",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -608,7 +608,7 @@
           "ai.virtual_try_on"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
