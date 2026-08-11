@@ -1,6 +1,5 @@
 import {
   ClervoConnect as SharedClervoConnect,
-  RouterError,
   type ConnectExecution,
   type ConnectStatus,
   type Diagnosis,
@@ -302,6 +301,14 @@ export class ClervoPaymentRequiredError extends ClervoProblemError {
   }
 }
 
+function throwConnectError(error: unknown): never {
+  const code = error instanceof Error && typeof (error as Error & { code?: unknown }).code === 'string'
+    ? (error as Error & { code: string }).code
+    : undefined;
+  if (code !== undefined) throw new ClervoProblemError(code === 'settlement_unknown' || code === 'unreconciled_operation_blocks_spend' ? 409 : code === 'payment_approval_required' ? 402 : 400, { code, detail: error instanceof Error ? error.message : code });
+  throw error;
+}
+
 export class ClervoClient {
   readonly #baseUrl: string;
   readonly #fetch: typeof fetch;
@@ -372,7 +379,7 @@ export class ClervoClient {
 
   async #listModels(options: { signal?: AbortSignal } = {}): Promise<ClervoAiModelList> {
     let response: Response;
-    try { response = await this.#fetch(`${this.#baseUrl}/v1/models`, { method: 'GET', headers: { accept: 'application/json', 'x-clervo-client': '@clervo/sdk/0.5.0' }, redirect: 'error', ...(options.signal === undefined ? {} : { signal: options.signal }) }); }
+    try { response = await this.#fetch(`${this.#baseUrl}/v1/models`, { method: 'GET', headers: { accept: 'application/json', 'x-clervo-client': '@clervo/sdk/0.5.1' }, redirect: 'error', ...(options.signal === undefined ? {} : { signal: options.signal }) }); }
     catch (error) { throw new ClervoTransportError('clervo_transport_failed', { cause: error }); }
     const value = parseJsonObject(await readResponseText(response, this.#maxResponseBytes));
     if (!response.ok) throw new ClervoProblemError(response.status, value);
@@ -393,15 +400,14 @@ export class ClervoClient {
       try {
         execution = await this.#connect.execute((request.input.kind === 'embedding' ? 'ai.embed' : request.input.kind === 'image' ? 'ai.image' : request.input.kind === 'speech' ? 'ai.speech' : request.input.kind === 'video' ? 'ai.video' : request.input.kind === 'music' ? 'ai.music' : request.input.kind === 'virtual_try_on' ? 'ai.virtual_try_on' : 'ai.chat'), request as unknown as Record<string, unknown>, key);
       } catch (error) {
-        if (error instanceof RouterError) throw new ClervoProblemError(error.code === 'settlement_unknown' ? 409 : 400, { code: error.code, detail: error.message });
-        throw error;
+        throwConnectError(error);
       }
       if (execution.status === 'payment_required') {
         throw new ClervoPaymentRequiredError({ code: 'payment_required', payable: true, quote: execution.quote, accepts: execution.quote.challenge.accepts }, null);
       }
       return execution.outcome.result as unknown as ClervoAiResult;
     }
-    const headers: Record<string, string> = { accept: 'application/json, application/problem+json', 'content-type': 'application/json', 'idempotency-key': key, 'x-clervo-client': '@clervo/sdk/0.5.0' };
+    const headers: Record<string, string> = { accept: 'application/json, application/problem+json', 'content-type': 'application/json', 'idempotency-key': key, 'x-clervo-client': '@clervo/sdk/0.5.1' };
     if (options.paymentSignature !== undefined) headers['payment-signature'] = options.paymentSignature;
     if (options.paymentAuthorization !== undefined) headers.authorization = options.paymentAuthorization;
     let response: Response;
@@ -441,8 +447,7 @@ export class ClervoClient {
       try {
         execution = await this.#connect.execute(productId, body, requestIdempotencyKey, { paid: mode === 'challenge' });
       } catch (error) {
-        if (error instanceof RouterError) throw new ClervoProblemError(error.code === 'settlement_unknown' || error.code === 'unreconciled_operation_blocks_spend' ? 409 : 400, { code: error.code, detail: error.message });
-        throw error;
+        throwConnectError(error);
       }
       if (execution.status === 'payment_required') throw new ClervoPaymentRequiredError({ code: 'payment_required', payable: true, quote: execution.quote, accepts: execution.quote.challenge.accepts }, null);
       return validateResult(execution.outcome.result, productId, fundingMode);
@@ -455,7 +460,7 @@ export class ClervoClient {
           accept: 'application/json, application/problem+json',
           'content-type': 'application/json',
           'idempotency-key': requestIdempotencyKey,
-          'x-clervo-client': '@clervo/sdk/0.5.0',
+          'x-clervo-client': '@clervo/sdk/0.5.1',
         },
         body: JSON.stringify(body),
         redirect: 'error',

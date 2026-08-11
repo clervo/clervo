@@ -84,9 +84,12 @@ function text(value: unknown): ToolResult {
 
 function failure(error: unknown): ToolResult {
   const recovery = recoveryActionFor(error);
-  if (error instanceof RouterError) {
+  const localCode = error instanceof RouterError || error instanceof Error && typeof (error as Error & { code?: unknown }).code === 'string'
+    ? (error as Error & { code: string }).code
+    : undefined;
+  if (localCode !== undefined) {
     return {
-      content: [{ type: 'text', text: JSON.stringify({ error: error.code, detail: error.message, ...(recovery === undefined ? {} : { recovery }) }) }],
+      content: [{ type: 'text', text: JSON.stringify({ error: localCode, detail: error instanceof Error ? error.message : localCode, ...(recovery === undefined ? {} : { recovery }) }) }],
       isError: true,
     };
   }
@@ -236,7 +239,7 @@ export function createClervoMcpServer(options: {
   const client = options.client ?? new ClervoClient({ baseUrl });
   const connectEnv = options.env ?? { ...process.env, CLERVO_API_ORIGIN: baseUrl };
   const connect = new ClervoConnect({ surface: 'mcp', autoPay: options.autoPay === true, env: connectEnv });
-  const server = new McpServer({ name: `clervo-${profile}`, version: '0.5.0' });
+  const server = new McpServer({ name: `clervo-${profile}`, version: '0.5.1' });
   const handlers = createConnectToolHandlers(client, connect, profile);
 
   if (PROFILE_FAMILIES[profile].includes('search')) server.registerTool(

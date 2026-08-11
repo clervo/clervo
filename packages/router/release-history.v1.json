@@ -10,8 +10,13 @@
       "state": "published_verified"
     }
   ],
-  "nextRelease": {
+  "currentRelease": {
     "version": "0.3.0",
-    "state": "release_prepared"
+    "sourceCommit": "6aa1fb5cca7fa037005df1dc9a6711ceacd1cb1b",
+    "githubRunId": 31488516730,
+    "integrity": "sha512-qe2pnFIj/nKTNPEgqQKyOcvtPXejeevSHuRMh205rZ5sc+lFcsp3VEqsMalCdo6PsqQIp5BW3+VT9mx/y8TyyQ==",
+    "provenancePredicate": "https://slsa.dev/provenance/v1",
+    "state": "published_verified",
+    "verifiedAt": "2026-08-11T11:57:05Z"
   }
 }

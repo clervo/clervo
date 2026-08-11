@@ -23,7 +23,7 @@ import {
   writeOperation,
 } from '../../packages/router/dist/index.js';
 import { createConnectToolHandlers } from '../../packages/mcp/dist/server.js';
-import { ClervoClient } from '../../packages/sdk-typescript/dist/index.js';
+import { ClervoClient, ClervoProblemError } from '../../packages/sdk-typescript/dist/index.js';
 
 const USDC = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 const PAY_TO = '0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28';
@@ -161,6 +161,12 @@ test('B11 TypeScript and OpenAI paid entry points reach the shared limit before 
   };
   const sdk = new ClervoClient({ fetch: fetchImpl, connect: { autoPay: true, env } });
   await assert.rejects(sdk.commerce.execute('prediction.markets', { operation: 'prediction.markets' }, 'typescript_entry_01'), (error) => error.code === 'spend_limit_per_operation_exceeded');
+  await assert.rejects(sdk.ai.execute({ model: 'clervo/exact', input: { kind: 'chat', messages: [{ role: 'user', content: 'ready' }] } }, { idempotencyKey: 'typescript_ai_entry_01' }), (error) => error instanceof ClervoProblemError && error.problem.code === 'spend_limit_per_operation_exceeded');
+
+  const mcpHandlers = createConnectToolHandlers({ search: { web: async () => ({}), answer: async () => ({}) }, models: { list: async () => modelList({ billingMode: 'metered' }) }, ai: { execute: async () => ({}) } }, new ClervoConnect({ surface: 'mcp', autoPay: true, env, fetch: fetchImpl }), 'prediction');
+  const mcpLimit = await mcpHandlers.clervo_execute({ productId: 'prediction.markets', body: { operation: 'prediction.markets' }, idempotencyKey: 'mcp_limit_entry_01' });
+  assert.equal(mcpLimit.isError, true);
+  assert.equal(JSON.parse(mcpLimit.content[0].text).error, 'spend_limit_per_operation_exceeded');
 
   const proxy = await startOpenAiProxy({ port: 0, autoPay: true, env, fetch: fetchImpl });
   try {

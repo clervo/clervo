@@ -190,9 +190,9 @@ class ClientTests(unittest.TestCase):
         result_value = client.ai.execute(model="clervo/gpt-oss-20b", input={"kind": "chat", "messages": [{"role": "user", "content": "ready"}], "responseFormat": "text", "stream": False}, idempotency_key="idem_ai_python")
         self.assertEqual(result_value["fundingMode"], "free")
         self.assertTrue(calls[0][1].endswith("/v1/models"))
-        self.assertEqual(calls[0][2]["user-agent"], "clervo-sdk/0.4.0")
+        self.assertEqual(calls[0][2]["user-agent"], "clervo-sdk/0.4.1")
         self.assertTrue(calls[1][1].endswith("/v1/ai/execute"))
-        self.assertEqual(calls[1][2]["user-agent"], "clervo-sdk/0.4.0")
+        self.assertEqual(calls[1][2]["user-agent"], "clervo-sdk/0.4.1")
         self.assertEqual(calls[1][2]["idempotency-key"], "idem_ai_python")
 
     def test_auto_pay_requires_the_shared_local_connect_core(self) -> None:
@@ -237,7 +237,7 @@ class ClientTests(unittest.TestCase):
         self.assertEqual(result_value["exactModelId"], "clervo/exact-model")
         self.assertTrue(calls[0][1].startswith("http://127.0.0.1:8402/clervo/"))
         self.assertEqual(calls[1][3]["productId"], "ai.chat")
-        self.assertEqual(calls[1][2]["user-agent"], "clervo-sdk/0.4.0")
+        self.assertEqual(calls[1][2]["user-agent"], "clervo-sdk/0.4.1")
         self.assertEqual(calls[1][2]["x-clervo-surface"], "python")
 
 

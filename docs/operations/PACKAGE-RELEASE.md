@@ -6,17 +6,17 @@ lifecycle.
 
 ## Current verified release
 
-GitHub run `31433674358` published the exact source commit
-`a303c589ce4a0c0fc5e6891e02fe11837369d9d4` through trusted publishing:
+GitHub run `31488737496` published the exact source commit
+`6aa1fb5cca7fa037005df1dc9a6711ceacd1cb1b` through trusted publishing:
 
-- `@clervo/sdk@0.4.1` and `@clervo/mcp@0.4.1` have npm SLSA provenance;
-- `clervo-sdk==0.3.1` has PyPI trusted-publisher attestations for its wheel and
+- `@clervo/sdk@0.5.0` and `@clervo/mcp@0.5.0` have npm SLSA provenance;
+- `clervo-sdk==0.4.0` has PyPI trusted-publisher attestations for its wheel and
   source distribution; and
 - all three install and import from their public registries in clean consumers.
 
-The separately published `@clervo/router@0.2.0` remains frozen in
-`packages/router/release-history.v1.json`. Its successor is published first
-because the Connect SDK and MCP packages depend on the exact Router version.
+Router run `31488516730` published `@clervo/router@0.3.0` from the same source
+with npm SLSA provenance. The prior `0.2.0` identity remains frozen in
+`packages/router/release-history.v1.json`.
 
 `npm run verify:distribution-release:published` rechecks the observed immutable
 integrities in `packages/distribution/release-targets.v1.json`. While a
