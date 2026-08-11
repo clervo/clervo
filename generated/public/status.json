@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-11T19:37:53.830Z",
+  "observedAt": "2026-08-11T20:20:35.624Z",
   "publicApi": {
     "state": "public_search_ai_sandbox_prediction_and_crypto_verified",
     "endpoint": "https://api.clervo.dev",
@@ -43,7 +43,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T19:37:53.830Z",
+      "observedAt": "2026-08-11T20:20:35.624Z",
       "releaseId": "0d9307859da94c229eaa2f5e3e96dbb2cc847f1b",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -71,7 +71,7 @@
           "ai.virtual_try_on"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -210,7 +210,7 @@
     {
       "id": "ai",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid",
+      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
