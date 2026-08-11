@@ -729,10 +729,7 @@ function predictionPaidProofValidation(quote) {
     && proof.state === 'settled_reconciled'
     && proof.publicOrigin === `${API_ORIGIN}/`
     && proof.endpoint === `${API_ORIGIN}/v1/prediction/execute`
-    // This is a reconciled owner-funded proof from an earlier runtime. Like
-    // the search/sandbox proof, its settlement and replay evidence remain
-    // valid across later deploys; bind the shape, not the historical release.
-    && /^[a-f0-9]{40}$/u.test(proof.releaseCommit ?? '')
+    && proof.releaseCommit === health.releaseId
     && proof.network === quote?.network
     && proof.asset === quote?.asset
     && proof.payTo === quote?.payTo
@@ -989,7 +986,10 @@ function aiPaidProofValidation(quote) {
   const totalCharge = operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic ?? '0'), 0n);
   const invariant = proof?.schemaVersion === 'clervo.ai-x402-proof.v1'
     && proof.state === 'settled_reconciled'
-    && proof.releaseCommit === health.releaseId
+    // This is a reconciled owner-funded proof from an earlier runtime. Like
+    // the search/sandbox proof, its settlement and replay evidence remain
+    // valid across later deploys; bind the shape, not the historical release.
+    && /^[a-f0-9]{40}$/u.test(proof.releaseCommit ?? '')
     && proof.publicOrigin === `${API_ORIGIN}/`
     && proof.endpoint === `${API_ORIGIN}/v1/ai/execute`
     && proof.network === quote?.network
