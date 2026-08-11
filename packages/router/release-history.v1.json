@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "releases": [
+    {
+      "version": "0.2.0",
+      "sourceCommit": "9b3d165f84477b0c84278827d9ed5e0a1fb34c6c",
+      "githubRunId": 31433103276,
+      "integrity": "sha512-HYwEaUtFRM+UrNd09HEN3Z8xg1vcMI3s1Qv3vpB9mprCNcemUYTxp04N+ZG2MRlxqVFnlCo7zSoPAHiOuOebfw==",
+      "provenancePredicate": "https://slsa.dev/provenance/v1",
+      "state": "published_verified"
+    }
+  ],
+  "nextRelease": {
+    "version": "0.3.0",
+    "state": "release_prepared"
+  }
+}

@@ -4,19 +4,25 @@ The candidate package archives are built from the frozen Stage 12 interface.
 This procedure publishes no API deployment and does not change capability
 lifecycle.
 
-## Current release
+## Current verified release
 
-GitHub run `30858517518` published the exact source commit
-`d299f08ae70a0a19390050583e14a512f9751172` through trusted publishing:
+GitHub run `31433674358` published the exact source commit
+`a303c589ce4a0c0fc5e6891e02fe11837369d9d4` through trusted publishing:
 
-- `@clervo/sdk@0.3.0` and `@clervo/mcp@0.3.0` have npm SLSA provenance;
-- `clervo-sdk==0.2.0` has PyPI trusted-publisher attestations for its wheel and
+- `@clervo/sdk@0.4.1` and `@clervo/mcp@0.4.1` have npm SLSA provenance;
+- `clervo-sdk==0.3.1` has PyPI trusted-publisher attestations for its wheel and
   source distribution; and
 - all three install and import from their public registries in clean consumers.
 
+The separately published `@clervo/router@0.2.0` remains frozen in
+`packages/router/release-history.v1.json`. Its successor is published first
+because the Connect SDK and MCP packages depend on the exact Router version.
+
 `npm run verify:distribution-release:published` rechecks the observed immutable
-integrities in `packages/distribution/release-targets.v1.json`. Do not rerun the
-completed workflow for these versions.
+integrities in `packages/distribution/release-targets.v1.json`. While a
+`nextRelease` block exists, the ordinary and registry preflight modes validate
+that candidate; published mode continues to validate the frozen current
+release. Do not rerun a completed workflow for an immutable version.
 
 ## One-time account setup
 
@@ -41,16 +47,21 @@ record.
 
 ## Release
 
-Before dispatch, run:
+Before a Connect release, run:
 
 ```sh
+npm run test:b6
+npm run test:b11
 npm run test:stage13:distribution
 npm run verify:distribution-release:registry
 ```
 
-Dispatch `Publish verified packages` from the default branch. Enter the exact
-40-character main-branch commit and the confirmation string shown by the
-workflow, then approve the protected environment.
+Dispatch `Publish Clervo Router` from the default branch first, using its exact
+40-character main-branch commit and confirmation string, and verify the public
+registry provenance. Then dispatch `Publish verified packages` for that same
+main-branch source and approve the protected environment. The second workflow
+fails closed unless the exact Router dependency is already public with SLSA
+provenance.
 
 The workflow verifies that all three versions are unpublished before the first
 publish. It publishes the TypeScript SDK, then the MCP package that depends on

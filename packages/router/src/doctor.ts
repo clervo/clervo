@@ -1,4 +1,4 @@
-import { statSync } from 'node:fs';
+import { readdirSync, statSync } from 'node:fs';
 import { clervoPaths } from './paths.js';
 import { loadLimits } from './limits.js';
 import { loadRegistry, apiOrigin, type Registry } from './registry.js';
@@ -6,6 +6,7 @@ import { readWalletBalance, baseRpcUrl, formatUsdc } from './chain.js';
 import { loadWalletFile, walletExists, walletPermissionsSecure } from './wallet.js';
 import { spentTodayAtomic, unreconciledOperations } from './store.js';
 import { CLERVO_ROUTER_VERSION } from './version.js';
+import { commerceLockStatus } from './lock.js';
 
 export type CheckStatus = 'ok' | 'warn' | 'fail';
 
@@ -43,7 +44,13 @@ export async function diagnose({
   checkBalance = true,
 }: { env?: NodeJS.ProcessEnv; fetchImpl?: typeof fetch; now?: () => string; checkBalance?: boolean } = {}): Promise<Diagnosis> {
   const checks: Check[] = [];
-  const paths = clervoPaths(env);
+  let paths: ReturnType<typeof clervoPaths>;
+  try {
+    paths = clervoPaths(env);
+    checks.push(check('home.path', 'ok', paths.home));
+  } catch (error) {
+    return Object.freeze({ routerVersion: CLERVO_ROUTER_VERSION, checkedAt: now(), checks: Object.freeze([check('home.path', 'fail', (error as Error).message, 'set CLERVO_HOME to an absolute private directory')]), healthy: false });
+  }
 
   checks.push(check('runtime.node', Number(process.versions.node.split('.')[0]) >= 20 ? 'ok' : 'fail',
     `Node ${process.versions.node}`,
@@ -56,6 +63,13 @@ export async function diagnose({
       : check('home.permissions', 'warn', `${paths.home} is accessible to other local accounts (mode ${mode.toString(8)})`, `chmod 700 ${paths.home}`));
   } catch {
     checks.push(check('home.permissions', 'warn', `${paths.home} does not exist yet`, 'run `clervo wallet create` when you are ready to pay'));
+  }
+
+  for (const [id, path] of [['operations.permissions', paths.operations], ['receipts.permissions', paths.receipts]] as const) {
+    try {
+      const mode = statSync(path).mode & 0o777;
+      checks.push(process.platform === 'win32' || (mode & 0o077) === 0 ? check(id, 'ok', `${path} is private`) : check(id, 'fail', `${path} mode ${mode.toString(8)} is not private`, `chmod 700 ${path}`));
+    } catch { checks.push(check(id, 'ok', `${path} has not been created yet`)); }
   }
 
   let origin: string;
@@ -116,6 +130,29 @@ export async function diagnose({
   checks.push(open.length < 1
     ? check('settlement.reconciled', 'ok', 'no operation is in an unknown settlement state')
     : check('settlement.reconciled', 'fail', `${open.length} operation(s) have an unresolved settlement: ${open.map((record) => record.idempotencyKey).join(', ')}`, 'run `clervo reconcile` — paid calls are blocked until this clears'));
+
+  const commerceLock = commerceLockStatus(env);
+  checks.push(!commerceLock.exists
+    ? check('commerce.lock', 'ok', 'no payment reservation is held')
+    : commerceLock.ownerAlive === true
+      ? check('commerce.lock', 'warn', `a live local process holds the payment reservation${commerceLock.createdAt === null ? '' : ` since ${commerceLock.createdAt}`}`, 'wait for the active call to finish')
+      : check('commerce.lock', 'fail', `a stale payment reservation blocks spending${commerceLock.createdAt === null ? '' : ` since ${commerceLock.createdAt}`}`, 'run `clervo reconcile`; the lock is removed only after no settlement remains unknown'));
+
+  const operations = (() => { try { return readdirSync(paths.operations).filter((name) => name.endsWith('.json')).length; } catch { return 0; } })();
+  const receipts = (() => { try { return readdirSync(paths.receipts).filter((name) => name.endsWith('.json')).length; } catch { return 0; } })();
+  checks.push(check('history.state', 'ok', `${operations} operation record(s), ${receipts} receipt(s)`));
+
+  const proxyOrigin = env.CLERVO_PROXY_URL ?? 'http://127.0.0.1:8402';
+  try {
+    const parsed = new URL(proxyOrigin);
+    const loopback = ['localhost', '127.0.0.1', '[::1]'].includes(parsed.hostname);
+    if (parsed.protocol !== 'http:' || !loopback || parsed.username || parsed.password) throw new Error('proxy URL must be loopback HTTP');
+    const response = await fetchImpl(`${parsed.origin}/v1/models`, { method: 'GET', headers: { accept: 'application/json' }, signal: AbortSignal.timeout(1_500), redirect: 'error' });
+    checks.push(response.ok ? check('proxy.readiness', 'ok', `${parsed.origin}/v1 is ready`) : check('proxy.readiness', 'warn', `${parsed.origin} returned ${response.status}`, 'run `clervo proxy` and retry'));
+  } catch (error) {
+    checks.push(check('proxy.readiness', 'warn', `${proxyOrigin} is not currently ready: ${(error as Error).message}`, 'run `clervo proxy`; add `--auto-pay` only after reviewing limits'));
+  }
+  checks.push(check('clients.versions', 'ok', `Router ${CLERVO_ROUTER_VERSION}; expected Connect clients @clervo/sdk 0.5.0, @clervo/mcp 0.5.0, clervo-sdk 0.4.0`));
 
   return Object.freeze({
     routerVersion: CLERVO_ROUTER_VERSION,

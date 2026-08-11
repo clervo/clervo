@@ -24,6 +24,7 @@ export interface ClervoPaths {
   readonly limits: string;
   readonly receipts: string;
   readonly operations: string;
+  readonly commerceLock: string;
 }
 
 export function clervoPaths(env: NodeJS.ProcessEnv = process.env): ClervoPaths {
@@ -34,5 +35,6 @@ export function clervoPaths(env: NodeJS.ProcessEnv = process.env): ClervoPaths {
     limits: join(home, 'limits.json'),
     receipts: join(home, 'receipts'),
     operations: join(home, 'operations'),
+    commerceLock: join(home, 'commerce.lock'),
   });
 }

@@ -10,8 +10,14 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
 test('MCP projects Search plus provider-neutral AI discovery and execution', () => {
-  assert.deepEqual(CLERVO_MCP_TOOLS.map(({ operationId }) => operationId), ['search.web', 'search.answer', 'ai.catalog', 'ai.execute']);
-  assert.deepEqual(CLERVO_MCP_TOOLS.map(({ name }) => name), ['search_web', 'search_answer', 'models_list', 'ai_execute']);
+  assert.deepEqual(CLERVO_MCP_TOOLS.map(({ operationId }) => operationId), [
+    'search.web', 'ai.catalog', 'ai.execute', 'connect.execute', 'connect.status',
+    'connect.limits', 'connect.usage', 'connect.reconcile', 'connect.doctor',
+  ]);
+  assert.deepEqual(CLERVO_MCP_TOOLS.map(({ name }) => name), [
+    'search_web', 'models_list', 'ai_execute', 'clervo_execute', 'connect_status',
+    'spend_limits', 'local_usage', 'reconcile', 'doctor',
+  ]);
 });
 
 function fixtureClient(search) {
@@ -112,7 +118,10 @@ test('stdio server negotiates MCP and lists only the bounded tools', async () =>
   try {
     await client.connect(transport);
     const listed = await client.listTools();
-    assert.deepEqual(listed.tools.map(({ name }) => name).sort(), ['ai_execute', 'models_list', 'search_answer', 'search_web']);
+    assert.deepEqual(listed.tools.map(({ name }) => name).sort(), [
+      'ai_execute', 'clervo_execute', 'connect_status', 'doctor', 'local_usage',
+      'models_list', 'reconcile', 'search_web', 'spend_limits',
+    ]);
   } finally {
     await client.close();
   }

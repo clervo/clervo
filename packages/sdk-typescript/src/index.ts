@@ -1,8 +1,25 @@
+import {
+  ClervoConnect as SharedClervoConnect,
+  RouterError,
+  type ConnectExecution,
+  type ConnectStatus,
+  type Diagnosis,
+  type LocalUsage,
+  type Quote,
+  type Registry,
+  type SpendLimits,
+} from '@clervo/router';
+
 export const CLERVO_CONTRACT_VERSION = '2026-07-29.1' as const;
 export const CLERVO_RELEASE_CANDIDATE_ID = 'clervo-private-core-2026-08-02.2' as const;
 export const CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH = 'sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4' as const;
 
-export type ClervoProductId = 'search.web' | 'search.answer';
+export type ClervoProductId =
+  | 'search.web' | 'search.answer'
+  | 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech' | 'ai.video' | 'ai.music' | 'ai.virtual_try_on'
+  | 'sandbox.run'
+  | 'prediction.markets' | 'prediction.market' | 'prediction.compare' | 'prediction.history' | 'prediction.signal'
+  | 'crypto.wallet.balances' | 'crypto.wallet.tokens' | 'crypto.wallet.transactions' | 'crypto.wallet.report';
 export type ClervoExecutionMode = 'preview' | 'challenge';
 
 export interface ClervoSearchRequest {
@@ -104,6 +121,12 @@ export interface ClervoClientOptions {
   baseUrl?: string;
   fetch?: typeof fetch;
   maxResponseBytes?: number;
+  connect?: {
+    /** Automatic payment is off unless this is literally true. Router limits
+     * and the global reconciliation freeze still apply when it is enabled. */
+    autoPay?: boolean;
+    env?: NodeJS.ProcessEnv;
+  };
 }
 
 export type ClervoRecoveryCode =
@@ -283,6 +306,7 @@ export class ClervoClient {
   readonly #baseUrl: string;
   readonly #fetch: typeof fetch;
   readonly #maxResponseBytes: number;
+  readonly #connect: SharedClervoConnect | undefined;
 
   readonly search: {
     web: (request: ClervoSearchRequest, options?: ClervoRequestOptions) => Promise<ClervoSearchResult>;
@@ -290,6 +314,21 @@ export class ClervoClient {
   };
   readonly models: { list: (options?: { signal?: AbortSignal }) => Promise<ClervoAiModelList> };
   readonly ai: { execute: (request: ClervoAiRequest, options?: ClervoAiRequestOptions) => Promise<ClervoAiResult> };
+  readonly catalog: { list: () => Promise<Registry> };
+  readonly commerce: {
+    quote: (productId: ClervoProductId, body: Record<string, unknown>, idempotencyKey?: string) => Promise<Quote>;
+    execute: (productId: ClervoProductId, body: Record<string, unknown>, idempotencyKey?: string, options?: { paid?: boolean }) => Promise<ConnectExecution>;
+    reconcile: () => Promise<readonly unknown[]>;
+  };
+  readonly wallet: {
+    status: () => ConnectStatus['wallet'];
+    create: () => ReturnType<SharedClervoConnect['createWallet']>;
+    backup: (confirmSecretExposure: boolean) => ReturnType<SharedClervoConnect['backupWallet']>;
+    restore: (recoveryPhrase: string) => ReturnType<SharedClervoConnect['restoreWallet']>;
+  };
+  readonly limits: { get: () => SpendLimits; set: (values: { perOperationAtomic?: string; dailyAtomic?: string }) => SpendLimits };
+  readonly usage: { get: () => LocalUsage };
+  readonly diagnostics: { doctor: () => Promise<Diagnosis>; status: () => ConnectStatus };
 
   constructor(options: ClervoClientOptions = {}) {
     if (options === null || typeof options !== 'object') throw new TypeError('invalid_clervo_client_options');
@@ -298,17 +337,42 @@ export class ClervoClient {
     if (typeof this.#fetch !== 'function') throw new TypeError('clervo_fetch_unavailable');
     this.#maxResponseBytes = options.maxResponseBytes ?? 2_097_152;
     if (!Number.isInteger(this.#maxResponseBytes) || this.#maxResponseBytes < 1_024 || this.#maxResponseBytes > 16_777_216) throw new TypeError('invalid_clervo_response_limit');
+    this.#connect = options.connect === undefined ? undefined : new SharedClervoConnect({
+      surface: 'typescript',
+      autoPay: options.connect.autoPay === true,
+      fetch: this.#fetch,
+      ...(options.connect.env === undefined ? {} : { env: options.connect.env }),
+    });
     this.search = Object.freeze({
       web: (request, requestOptions) => this.#execute('search.web', request, requestOptions),
       answer: (request, requestOptions) => this.#execute('search.answer', request, requestOptions),
     });
     this.models = Object.freeze({ list: (requestOptions) => this.#listModels(requestOptions) });
     this.ai = Object.freeze({ execute: (request, requestOptions) => this.#executeAi(request, requestOptions) });
+    const requireConnect = (): SharedClervoConnect => {
+      if (this.#connect === undefined) throw new TypeError('clervo_connect_not_enabled');
+      return this.#connect;
+    };
+    this.catalog = Object.freeze({ list: () => requireConnect().registry() });
+    this.commerce = Object.freeze({
+      quote: (productId, body, key) => requireConnect().quote(productId, body, key),
+      execute: (productId, body, key, executionOptions) => requireConnect().execute(productId, body, key, executionOptions),
+      reconcile: () => requireConnect().reconcile(),
+    });
+    this.wallet = Object.freeze({
+      status: () => requireConnect().wallet(),
+      create: () => requireConnect().createWallet(),
+      backup: (confirmSecretExposure) => requireConnect().backupWallet(confirmSecretExposure),
+      restore: (recoveryPhrase) => requireConnect().restoreWallet(recoveryPhrase),
+    });
+    this.limits = Object.freeze({ get: () => requireConnect().limits(), set: (values) => requireConnect().setLimits(values) });
+    this.usage = Object.freeze({ get: () => requireConnect().usage() });
+    this.diagnostics = Object.freeze({ doctor: () => requireConnect().doctor(), status: () => requireConnect().status() });
   }
 
   async #listModels(options: { signal?: AbortSignal } = {}): Promise<ClervoAiModelList> {
     let response: Response;
-    try { response = await this.#fetch(`${this.#baseUrl}/v1/models`, { method: 'GET', headers: { accept: 'application/json', 'x-clervo-client': '@clervo/sdk/0.4.1' }, redirect: 'error', ...(options.signal === undefined ? {} : { signal: options.signal }) }); }
+    try { response = await this.#fetch(`${this.#baseUrl}/v1/models`, { method: 'GET', headers: { accept: 'application/json', 'x-clervo-client': '@clervo/sdk/0.5.0' }, redirect: 'error', ...(options.signal === undefined ? {} : { signal: options.signal }) }); }
     catch (error) { throw new ClervoTransportError('clervo_transport_failed', { cause: error }); }
     const value = parseJsonObject(await readResponseText(response, this.#maxResponseBytes));
     if (!response.ok) throw new ClervoProblemError(response.status, value);
@@ -324,7 +388,20 @@ export class ClervoClient {
     if (options.paymentSignature !== undefined && options.paymentAuthorization !== undefined) throw new TypeError('ambiguous_ai_payment_authorization');
     const key = options.idempotencyKey ?? idempotencyKey();
     if (!/^[\x21-\x7E]{8,128}$/u.test(key)) throw new TypeError('invalid_idempotency_key');
-    const headers: Record<string, string> = { accept: 'application/json, application/problem+json', 'content-type': 'application/json', 'idempotency-key': key, 'x-clervo-client': '@clervo/sdk/0.4.1' };
+    if (this.#connect !== undefined && options.paymentSignature === undefined && options.paymentAuthorization === undefined) {
+      let execution: ConnectExecution;
+      try {
+        execution = await this.#connect.execute((request.input.kind === 'embedding' ? 'ai.embed' : request.input.kind === 'image' ? 'ai.image' : request.input.kind === 'speech' ? 'ai.speech' : request.input.kind === 'video' ? 'ai.video' : request.input.kind === 'music' ? 'ai.music' : request.input.kind === 'virtual_try_on' ? 'ai.virtual_try_on' : 'ai.chat'), request as unknown as Record<string, unknown>, key);
+      } catch (error) {
+        if (error instanceof RouterError) throw new ClervoProblemError(error.code === 'settlement_unknown' ? 409 : 400, { code: error.code, detail: error.message });
+        throw error;
+      }
+      if (execution.status === 'payment_required') {
+        throw new ClervoPaymentRequiredError({ code: 'payment_required', payable: true, quote: execution.quote, accepts: execution.quote.challenge.accepts }, null);
+      }
+      return execution.outcome.result as unknown as ClervoAiResult;
+    }
+    const headers: Record<string, string> = { accept: 'application/json, application/problem+json', 'content-type': 'application/json', 'idempotency-key': key, 'x-clervo-client': '@clervo/sdk/0.5.0' };
     if (options.paymentSignature !== undefined) headers['payment-signature'] = options.paymentSignature;
     if (options.paymentAuthorization !== undefined) headers.authorization = options.paymentAuthorization;
     let response: Response;
@@ -359,6 +436,17 @@ export class ClervoClient {
       ...(request.language === undefined ? {} : { language: request.language }),
       ...(request.region === undefined ? {} : { region: request.region }),
     };
+    if (this.#connect !== undefined && productId === 'search.web') {
+      let execution: ConnectExecution;
+      try {
+        execution = await this.#connect.execute(productId, body, requestIdempotencyKey, { paid: mode === 'challenge' });
+      } catch (error) {
+        if (error instanceof RouterError) throw new ClervoProblemError(error.code === 'settlement_unknown' || error.code === 'unreconciled_operation_blocks_spend' ? 409 : 400, { code: error.code, detail: error.message });
+        throw error;
+      }
+      if (execution.status === 'payment_required') throw new ClervoPaymentRequiredError({ code: 'payment_required', payable: true, quote: execution.quote, accepts: execution.quote.challenge.accepts }, null);
+      return validateResult(execution.outcome.result, productId, fundingMode);
+    }
     let response: Response;
     try {
       response = await this.#fetch(`${this.#baseUrl}${target}`, {
@@ -367,7 +455,7 @@ export class ClervoClient {
           accept: 'application/json, application/problem+json',
           'content-type': 'application/json',
           'idempotency-key': requestIdempotencyKey,
-          'x-clervo-client': '@clervo/sdk/0.4.1',
+          'x-clervo-client': '@clervo/sdk/0.5.0',
         },
         body: JSON.stringify(body),
         redirect: 'error',

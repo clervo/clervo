@@ -35,7 +35,18 @@ try {
   run('npm', ['run', 'build', '--workspace', '@clervo/sdk']);
   run('npm', ['run', 'build', '--workspace', '@clervo/mcp']);
 
-  const npmTarballs = [];
+  run('npm', ['run', 'build', '--workspace', '@clervo/router']);
+  const routerPack = JSON.parse(run('npm', [
+    'pack',
+    path.join(root, 'packages/router'),
+    '--ignore-scripts',
+    '--json',
+    '--pack-destination',
+    artifacts,
+  ]));
+  assert.equal(routerPack[0]?.name, '@clervo/router');
+  assert.equal(routerPack[0]?.version, '0.3.0');
+  const npmTarballs = [path.join(artifacts, routerPack[0].filename)];
   for (const target of releasePackages.filter(({ registry }) => registry === 'npm')) {
     const packed = JSON.parse(run('npm', [
       'pack',
@@ -71,10 +82,12 @@ try {
   await writeFile(path.join(nodeConsumer, 'verify.mjs'), [
     "import { ClervoClient, CLERVO_RELEASE_CANDIDATE_ID } from '@clervo/sdk';",
     "import { CLERVO_MCP_TOOLS } from '@clervo/mcp';",
+    "import { CLERVO_ROUTER_VERSION, ClervoConnect } from '@clervo/router';",
     `if (CLERVO_RELEASE_CANDIDATE_ID !== ${JSON.stringify(freeze.releaseCandidateId)}) throw new Error('candidate_identity_mismatch');`,
-    "if (CLERVO_MCP_TOOLS.map(({ name }) => name).join(',') !== 'search_web,search_answer,models_list,ai_execute') throw new Error('mcp_tools_invalid');",
+    "if (CLERVO_MCP_TOOLS.map(({ name }) => name).join(',') !== 'search_web,models_list,ai_execute,clervo_execute,connect_status,spend_limits,local_usage,reconcile,doctor') throw new Error('mcp_tools_invalid');",
+    "if (CLERVO_ROUTER_VERSION !== '0.3.0' || typeof ClervoConnect !== 'function') throw new Error('connect_core_invalid');",
     "const client = new ClervoClient({ baseUrl: 'http://127.0.0.1:8080' });",
-    "if (!client.search.web || !client.search.answer || !client.models.list || !client.ai.execute) throw new Error('sdk_methods_missing');",
+    "if (!client.search.web || !client.search.answer || !client.models.list || !client.ai.execute || !client.catalog.list || !client.commerce.execute || !client.diagnostics.status) throw new Error('sdk_methods_missing');",
     '',
   ].join('\n'));
   run(process.execPath, ['verify.mjs'], { cwd: nodeConsumer });
@@ -132,6 +145,8 @@ try {
       'assert callable(client.search.answer)',
       'assert callable(client.models.list)',
       'assert callable(client.ai.execute)',
+      'assert callable(client.connect.status)',
+      'assert callable(client.connect.execute)',
     ].join('; '),
   ]);
 

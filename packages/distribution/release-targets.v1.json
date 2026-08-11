@@ -20,6 +20,29 @@
     "publishNpmVersion": "11.18.0",
     "pythonBuildVersion": "1.5.0"
   },
+  "nextRelease": {
+    "state": "release_prepared",
+    "packages": [
+      {
+        "registry": "npm",
+        "name": "@clervo/sdk",
+        "version": "0.5.0",
+        "path": "packages/sdk-typescript"
+      },
+      {
+        "registry": "npm",
+        "name": "@clervo/mcp",
+        "version": "0.5.0",
+        "path": "packages/mcp"
+      },
+      {
+        "registry": "pypi",
+        "name": "clervo-sdk",
+        "version": "0.4.0",
+        "path": "packages/sdk-python"
+      }
+    ]
+  },
   "packages": [
     {
       "registry": "npm",

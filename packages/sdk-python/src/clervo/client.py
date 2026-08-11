@@ -316,6 +316,58 @@ class _Models:
         return value
 
 
+class _Connect:
+    """Local bridge to the shipped ``clervo proxy`` process.
+
+    The bridge deliberately contains no wallet or signing implementation.  All
+    paid calls cross loopback into the Router Connect core, so Python observes
+    the same limits, operation records, ambiguity freeze, receipts and wallet as
+    the CLI, MCP, TypeScript and OpenAI surfaces.
+    """
+
+    def __init__(self, client: Clervo) -> None:
+        self._client = client
+
+    def _call(self, method: str, target: str, value: Mapping[str, Any] | None = None, timeout: float | None = None) -> dict[str, Any]:
+        return self._client._connect_call(method, target, value, timeout)
+
+    def status(self, *, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("GET", "/clervo/status", timeout=timeout)
+
+    def catalog(self, *, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("GET", "/clervo/catalog", timeout=timeout)
+
+    def quote(self, *, product_id: str, body: Mapping[str, Any], idempotency_key: str | None = None, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("POST", "/clervo/quote", {"productId": product_id, "body": dict(body), **({} if idempotency_key is None else {"idempotencyKey": idempotency_key})}, timeout)
+
+    def execute(self, *, product_id: str, body: Mapping[str, Any], idempotency_key: str | None = None, paid: bool = False, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("POST", "/clervo/execute", {"productId": product_id, "body": dict(body), "paid": paid, **({} if idempotency_key is None else {"idempotencyKey": idempotency_key})}, timeout)
+
+    def reconcile(self, *, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("POST", "/clervo/reconcile", {}, timeout)
+
+    def usage(self, *, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("GET", "/clervo/usage", timeout=timeout)
+
+    def limits(self, *, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("GET", "/clervo/limits", timeout=timeout)
+
+    def set_limits(self, *, per_operation_atomic: str | None = None, daily_atomic: str | None = None, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("POST", "/clervo/limits", {**({} if per_operation_atomic is None else {"perOperationAtomic": per_operation_atomic}), **({} if daily_atomic is None else {"dailyAtomic": daily_atomic})}, timeout)
+
+    def doctor(self, *, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("GET", "/clervo/doctor", timeout=timeout)
+
+    def create_wallet(self, *, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("POST", "/clervo/wallet/create", {}, timeout)
+
+    def backup_wallet(self, *, confirm_secret_exposure: bool = False, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("POST", "/clervo/wallet/backup", {"confirm": confirm_secret_exposure}, timeout)
+
+    def restore_wallet(self, *, recovery_phrase: str, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("POST", "/clervo/wallet/restore", {"recoveryPhrase": recovery_phrase}, timeout)
+
+
 class _Ai:
     def __init__(self, client: Clervo) -> None:
         self._client = client
@@ -345,6 +397,19 @@ class _Ai:
             **({} if maximum_output_tokens is None else {"maximumOutputTokens": maximum_output_tokens}),
             **({} if maximum_reasoning_tokens is None else {"maximumReasoningTokens": maximum_reasoning_tokens}),
         }
+        if self._client._auto_pay:
+            kind = input.get("kind")
+            product_id = {
+                "embedding": "ai.embed", "image": "ai.image", "speech": "ai.speech",
+                "video": "ai.video", "music": "ai.music", "virtual_try_on": "ai.virtual_try_on",
+            }.get(kind, "ai.chat")
+            execution = self._client.connect.execute(product_id=product_id, body=body, idempotency_key=key, timeout=timeout)
+            if execution.get("status") == "payment_required":
+                raise ClervoPaymentRequiredError({"code": "payment_required", "payable": True, "quote": execution.get("quote")}, None)
+            outcome = execution.get("outcome")
+            if not isinstance(outcome, dict) or not isinstance(outcome.get("result"), dict):
+                raise ClervoProtocolError("clervo_connect_result_contract_mismatch")
+            return outcome["result"]
         headers = {
             "content-type": "application/json",
             "idempotency-key": key,
@@ -373,6 +438,8 @@ class Clervo:
         transport: Transport | None = None,
         timeout: float = 30.0,
         max_response_bytes: int = 2_097_152,
+        connect_url: str | None = None,
+        auto_pay: bool = False,
     ) -> None:
         self._base_url = _base_url(base_url)
         self._transport = transport or _urllib_transport
@@ -388,9 +455,33 @@ class Clervo:
             raise TypeError("invalid_clervo_response_limit")
         self._timeout = float(timeout)
         self._max_response_bytes = max_response_bytes
+        if not isinstance(auto_pay, bool):
+            raise TypeError("invalid_clervo_auto_pay")
+        if auto_pay and connect_url is None:
+            raise TypeError("clervo_auto_pay_requires_local_connect")
+        self._connect_url = None if connect_url is None else _base_url(connect_url)
+        self._auto_pay = auto_pay
         self.search = _Search(self)
         self.models = _Models(self)
         self.ai = _Ai(self)
+        self.connect = _Connect(self)
+
+    def _connect_call(
+        self,
+        method: str,
+        target: str,
+        body_value: Mapping[str, Any] | None,
+        timeout: float | None,
+    ) -> dict[str, Any]:
+        if self._connect_url is None:
+            raise TypeError("clervo_connect_not_enabled")
+        request_timeout = self._timeout if timeout is None else timeout
+        body = b"" if body_value is None else json.dumps(body_value, separators=(",", ":")).encode("utf-8")
+        response = self._transport(method, f"{self._connect_url}{target}", {"accept": "application/json", "content-type": "application/json", "user-agent": "clervo-sdk/0.4.0", "x-clervo-surface": "python"}, body, float(request_timeout), self._max_response_bytes)
+        value = _json_object(response.body)
+        if not 200 <= response.status < 300:
+            raise ClervoProblemError(response.status, value.get("error", value) if isinstance(value, dict) else value)
+        return value
 
     def _json_call(
         self,
@@ -405,8 +496,8 @@ class Clervo:
             raise TypeError("invalid_clervo_timeout")
         headers = {
             "accept": "application/json, application/problem+json",
-            "user-agent": "clervo-sdk/0.3.1",
-            "x-clervo-client": "clervo-sdk/0.3.1",
+            "user-agent": "clervo-sdk/0.4.0",
+            "x-clervo-client": "clervo-sdk/0.4.0",
             **dict(extra_headers),
         }
         body = b"" if body_value is None else json.dumps(body_value, separators=(",", ":")).encode("utf-8")
@@ -451,18 +542,33 @@ class Clervo:
             or request_timeout <= 0
         ):
             raise TypeError("invalid_clervo_timeout")
+        request_value = _request_body(product_id, query, max_results, language, region)
+        if self._connect_url is not None and product_id == "search.web" and (mode == "preview" or self._auto_pay):
+            execution = self.connect.execute(
+                product_id=product_id,
+                body=request_value,
+                idempotency_key=idempotency_key,
+                paid=mode == "challenge",
+                timeout=timeout,
+            )
+            if execution.get("status") == "payment_required":
+                raise ClervoPaymentRequiredError({"code": "payment_required", "payable": True, "quote": execution.get("quote")}, None)
+            outcome = execution.get("outcome")
+            if not isinstance(outcome, dict) or not isinstance(outcome.get("result"), dict):
+                raise ClervoProtocolError("clervo_connect_result_contract_mismatch")
+            return _result(outcome["result"], product_id, "free" if mode == "preview" else "paid")
         target = "/v1/search/free" if mode == "preview" else "/v1/search/paid"
         funding_mode = "free" if mode == "preview" else "paid"
         body = json.dumps(
-            _request_body(product_id, query, max_results, language, region),
+            request_value,
             separators=(",", ":"),
         ).encode("utf-8")
         headers = {
             "accept": "application/json, application/problem+json",
             "content-type": "application/json",
             "idempotency-key": idempotency_key or f"clervo_{uuid.uuid4()}",
-            "user-agent": "clervo-sdk/0.3.1",
-            "x-clervo-client": "clervo-sdk/0.3.1",
+            "user-agent": "clervo-sdk/0.4.0",
+            "x-clervo-client": "clervo-sdk/0.4.0",
         }
         try:
             response = self._transport(

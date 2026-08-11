@@ -33,10 +33,23 @@ metadata. `client.ai.execute()` accepts the normalized chat, embedding, image,
 speech, video, music, and virtual-try-on inputs published by OpenAPI. Canonical
 IDs are never silently substituted.
 
-Paid models raise `ClervoPaymentRequiredError` with the exact payment
-challenge. The SDK never creates a wallet, signs, pays, or retries a payment
-automatically. Deliberately supplied payment credentials remain bound to the
-same idempotency key; replay sends no new authorization.
+Paid models raise `ClervoPaymentRequiredError` with the exact payment challenge
+by default. Python deliberately contains no second wallet or signing
+implementation. Start the shipped local core with `clervo proxy --auto-pay`,
+then opt in from Python:
+
+```python
+client = Clervo(
+    connect_url="http://127.0.0.1:8402",
+    auto_pay=True,
+)
+```
+
+`client.connect` exposes the live catalog, quotes, generic execution, the shared
+wallet address, limits, durable usage, doctor and retrieval-only reconciliation.
+All paid work crosses loopback into the Router core, so the same ceilings,
+idempotency records, receipts and unknown-settlement freeze apply to Python.
+Neither wallet key material nor a placeholder OpenAI key leaves the machine.
 
 Search remains available through `client.search.web()` and
 `client.search.answer()`. `recovery_action_for(error)` returns one safe next

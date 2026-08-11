@@ -157,7 +157,7 @@ export async function loadRegistry({
     if (typeof family.id === 'string') familyState.set(family.id, family);
   }
 
-  const capabilities = products.map((product): RegistryCapability => {
+  const capabilities = products.flatMap((product): readonly RegistryCapability[] => {
     const productId = typeof product.productId === 'string' ? product.productId : '';
     const family = familyOf(productId);
     const observedFamily = familyState.get(family);
@@ -170,16 +170,22 @@ export async function loadRegistry({
     const freeRoute = typeof routes.freeSample === 'string' ? routes.freeSample : null;
     const paidRoute = typeof routes.paidChallenge === 'string' ? routes.paidChallenge : null;
     const priceAtomic = typeof displayPrice?.amountAtomic === 'string' ? displayPrice.amountAtomic : null;
-    return Object.freeze({
-      productId,
+    const operationIds = productId === 'ai' && Array.isArray(product.operationIds)
+      ? product.operationIds.filter((value): value is string => typeof value === 'string')
+      : [productId];
+    const aiExecute = productId === 'ai' && typeof routes.execute === 'string' ? routes.execute : null;
+    const productPaidRoute = paidRoute ?? aiExecute;
+    const productFreeRoute = freeRoute ?? aiExecute;
+    return Object.freeze(operationIds.map((operationId) => Object.freeze({
+      productId: operationId,
       family,
       title: typeof product.title === 'string' ? product.title : productId,
       summary: typeof product.summary === 'string' ? product.summary : '',
       lifecycleState,
       proofLevel: typeof observedFamily?.proofLevel === 'string' ? observedFamily.proofLevel : 'none',
       reason: typeof observedFamily?.reason === 'string' ? observedFamily.reason : null,
-      freeRoute,
-      paidRoute,
+      freeRoute: productFreeRoute,
+      paidRoute: productPaidRoute,
       priceAtomic,
       priceVersion: typeof pricing.priceVersion === 'string' ? pricing.priceVersion : null,
       /* A displayed price is only worth showing as a number for a product the
@@ -193,9 +199,9 @@ export async function loadRegistry({
        * `priceVersion` is observed to lag the live quote's, which is exactly why
        * this value is never used to authorize a payment. */
       priceIsBinding: priceAtomic !== null && FIXED_PRICE_MODELS.has(pricing.model as string),
-      paidCallable: familyReachable && product.publicAvailable === true && payment.payable === true && paidRoute !== null,
-      freeCallable: familyReachable && freeRoute !== null && product.publicAvailable === true,
-    });
+      paidCallable: familyReachable && product.publicAvailable === true && payment.payable === true && productPaidRoute !== null,
+      freeCallable: familyReachable && productFreeRoute !== null && product.publicAvailable === true,
+    })));
   }).filter((capability) => capability.productId.length > 0);
 
   return Object.freeze({

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "clervo-sdk"
-version = "0.3.1"
-description = "Typed client for live Clervo Search and provider-neutral AI."
+version = "0.4.0"
+description = "Clervo Connect Python SDK for live products through the shared local wallet, limits, replay, reconciliation, usage, and diagnostics."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"

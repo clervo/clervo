@@ -1,7 +1,7 @@
 {
   "name": "@clervo/router",
-  "version": "0.2.0",
-  "description": "Free-first Clervo CLI for x402 payments, receipts, replay, and local spend controls on Base.",
+  "version": "0.3.0",
+  "description": "Clervo Connect core and free-first CLI with one local wallet, x402 safety, usage, reconciliation, and OpenAI compatibility.",
   "license": "MIT",
   "type": "module",
   "keywords": [

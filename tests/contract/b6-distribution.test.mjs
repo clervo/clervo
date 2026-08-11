@@ -8,10 +8,19 @@ const packageReadme = readFileSync(new URL('../../packages/router/README.md', im
 const packageLicense = readFileSync(new URL('../../packages/router/LICENSE', import.meta.url), 'utf8');
 const discoveryGenerator = readFileSync(new URL('../../scripts/generate-discovery.mjs', import.meta.url), 'utf8');
 const workflow = readFileSync(new URL('../../.github/workflows/publish-router.yml', import.meta.url), 'utf8');
+const releaseHistory = JSON.parse(readFileSync(new URL('../../packages/router/release-history.v1.json', import.meta.url), 'utf8'));
 
 test('B6 Router public package metadata names one truthful immutable distribution target', () => {
   assert.equal(packageMetadata.name, '@clervo/router');
-  assert.equal(packageMetadata.version, '0.2.0');
+  assert.equal(packageMetadata.version, '0.3.0');
+  assert.deepEqual(releaseHistory.releases[0], {
+    version: '0.2.0',
+    sourceCommit: '9b3d165f84477b0c84278827d9ed5e0a1fb34c6c',
+    githubRunId: 31433103276,
+    integrity: 'sha512-HYwEaUtFRM+UrNd09HEN3Z8xg1vcMI3s1Qv3vpB9mprCNcemUYTxp04N+ZG2MRlxqVFnlCo7zSoPAHiOuOebfw==',
+    provenancePredicate: 'https://slsa.dev/provenance/v1',
+    state: 'published_verified',
+  });
   assert.equal(packageMetadata.license, 'MIT');
   assert.ok(packageMetadata.files.includes('LICENSE'));
   assert.equal(packageMetadata.publishConfig.access, 'public');
@@ -46,17 +55,17 @@ test('B6 Router release workflow is package-specific, immutable, OIDC-capable, a
   assert.match(workflow, /runs-on: ubuntu-latest/u);
   assert.match(workflow, /registry-url: https:\/\/registry\.npmjs\.org\//u);
   assert.match(workflow, /npm@11\.18\.0/u);
-  assert.match(workflow, /@clervo\/router@0\.2\.0/u);
-  assert.match(workflow, /Verify Router behavior and payment safety[\s\S]*?npm run build\s+npm run test:b6\s+node --test \.\/tests\/contract\/shared-paid-operation\.test\.mjs/u);
+  assert.match(workflow, /@clervo\/router@0\.3\.0/u);
+  assert.match(workflow, /Verify Router behavior and payment safety[\s\S]*?npm run build\s+npm run test:b6\s+npm run test:b11\s+node --test \.\/tests\/contract\/shared-paid-operation\.test\.mjs/u);
   assert.match(workflow, /npm publish "\$ROUTER_ARCHIVE" --access public --provenance/u);
   assert.doesNotMatch(workflow, /NPM_ROUTER_BOOTSTRAP_TOKEN|NODE_AUTH_TOKEN|release_mode|inputs\.release_mode/u);
   assert.match(workflow, /via trusted/u);
   assert.match(workflow, /packageMetadata\.license !== 'MIT'/u);
   assert.match(workflow, /package\/LICENSE/u);
-  assert.match(workflow, /registry\.npmjs\.org\/%40clervo%2Frouter\/0\.2\.0/u);
+  assert.match(workflow, /registry\.npmjs\.org\/%40clervo%2Frouter\/0\.3\.0/u);
   assert.doesNotMatch(workflow, /%2Frouter%2F0\.2\.0/u);
   assert.match(workflow, /for attempt in \$\(seq 1 30\)/u);
-  assert.match(workflow, /published_version="\$\(npm view @clervo\/router@0\.2\.0 version/u);
+  assert.match(workflow, /published_version="\$\(npm view @clervo\/router@0\.3\.0 version/u);
   assert.doesNotMatch(workflow, /@clervo\/sdk|@clervo\/mcp|clervo-sdk/u);
 });
 
@@ -64,7 +73,7 @@ test('B6 Router standard help and version flags succeed for package consumers', 
   const cli = new URL('../../packages/router/dist/cli.js', import.meta.url);
   const version = spawnSync(process.execPath, [cli.pathname, '--version'], { encoding: 'utf8' });
   assert.equal(version.status, 0, version.stderr);
-  assert.equal(version.stdout.trim(), '0.2.0');
+  assert.equal(version.stdout.trim(), '0.3.0');
 
   const help = spawnSync(process.execPath, [cli.pathname, '--help'], { encoding: 'utf8' });
   assert.equal(help.status, 0, help.stderr);

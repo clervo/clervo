@@ -37,11 +37,16 @@ type ClientId = keyof typeof installExamples;
 
 const searchObserved = observedProduct('search');
 
+function packageVersion(name: string): string {
+  const item = launchState.distribution.packages.items.find((entry) => entry.name === name);
+  return item === undefined ? 'unverified' : `${item.version} published`;
+}
+
 const clients: Array<{ id: ClientId; label: string; packageName: string; version: string }> = [
   { id: 'http', label: 'Raw HTTP', packageName: 'OpenAPI 3.1.1', version: 'published contract' },
-  { id: 'typescript', label: 'TypeScript', packageName: '@clervo/sdk', version: '0.3.0 published' },
-  { id: 'python', label: 'Python', packageName: 'clervo-sdk', version: '0.2.0 published' },
-  { id: 'mcp', label: 'MCP', packageName: '@clervo/mcp', version: '0.3.0 published' },
+  { id: 'typescript', label: 'TypeScript', packageName: '@clervo/sdk', version: packageVersion('@clervo/sdk') },
+  { id: 'python', label: 'Python', packageName: 'clervo-sdk', version: packageVersion('clervo-sdk') },
+  { id: 'mcp', label: 'MCP', packageName: '@clervo/mcp', version: packageVersion('@clervo/mcp') },
 ];
 
 // Typed failures, in the order a caller meets them. The middle column is the
@@ -49,7 +54,7 @@ const clients: Array<{ id: ClientId; label: string; packageName: string; version
 // sending the request again is safe.
 const failures: Array<{ code: string; retry: 'refused' | 'unresolved'; detail: string }> = [
   { code: '400', retry: 'refused', detail: 'The request was rejected before execution. Nothing ran and nothing was charged.' },
-  { code: '402', retry: 'refused', detail: 'A typed challenge carrying the exact maximum charge. No client signs it for you.' },
+  { code: '402', retry: 'refused', detail: 'A typed challenge carrying the exact maximum charge. Connect signs only after explicit local auto-pay opt-in and limit checks.' },
   { code: '409', retry: 'refused', detail: 'The idempotency key is already bound to a different request. Change the key or send the original request.' },
   { code: '429', retry: 'refused', detail: 'The free entry quota is exhausted. The request was not executed.' },
   { code: '502', retry: 'unresolved', detail: 'The executor or contract verification failed closed. Reconcile the settlement state before retrying.' },
@@ -119,8 +124,8 @@ export function Docs({
           <h2 id="docs-client">{selected.label} client</h2>
           <p className="lede">
             Installable from its public registry, configured with an explicit
-            base URL. It does not sign payment authorizations on your behalf and
-            never retries an unknown settlement automatically.
+            base URL. Automatic payment is disabled until explicit local opt-in;
+            unknown settlement is reconciled and never retried blindly.
           </p>
         </div>
         <nav className="cluster docs-clients" aria-label="Client language">
@@ -141,6 +146,26 @@ export function Docs({
           code={installExamples[clientId]}
           onCopy={() => updateActivation({ selectedClient: clientId })}
         />
+      </section>
+
+      <section className="band band--ruled docs-body" aria-labelledby="docs-connect">
+        <div className="section-head">
+          <p className="eyebrow">Clervo Connect / one local wallet</p>
+          <h2 id="docs-connect">Free first. Then one wallet across every client.</h2>
+          <p className="lede">
+            Run a useful free Search before creating any wallet. When you opt in
+            to paid work, the CLI, MCP, TypeScript, Python and localhost OpenAI
+            proxy share limits, receipts, replay, usage and reconciliation.
+          </p>
+        </div>
+        <CodeBlock label="Free before wallet" code={'npx @clervo/router search "World Wide Web"\nclervo wallet create\nclervo limits'} />
+        <CodeBlock label="OpenAI-compatible localhost" code={'clervo proxy\n# base URL: http://127.0.0.1:8402/v1\n# add --auto-pay only after reviewing clervo limits'} />
+        <p className="quiet docs-note">
+          Supported OpenAI-compatible endpoints are models, chat completions
+          (ordinary and SSE), and embeddings. Canonical model IDs are exact or
+          fail. Usage comes from durable operation and receipt records; it is
+          never a hand-written financial counter.
+        </p>
       </section>
 
       <section className="band band--ruled docs-body" aria-labelledby="docs-operations">

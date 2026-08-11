@@ -190,10 +190,55 @@ class ClientTests(unittest.TestCase):
         result_value = client.ai.execute(model="clervo/gpt-oss-20b", input={"kind": "chat", "messages": [{"role": "user", "content": "ready"}], "responseFormat": "text", "stream": False}, idempotency_key="idem_ai_python")
         self.assertEqual(result_value["fundingMode"], "free")
         self.assertTrue(calls[0][1].endswith("/v1/models"))
-        self.assertEqual(calls[0][2]["user-agent"], "clervo-sdk/0.3.1")
+        self.assertEqual(calls[0][2]["user-agent"], "clervo-sdk/0.4.0")
         self.assertTrue(calls[1][1].endswith("/v1/ai/execute"))
-        self.assertEqual(calls[1][2]["user-agent"], "clervo-sdk/0.3.1")
+        self.assertEqual(calls[1][2]["user-agent"], "clervo-sdk/0.4.0")
         self.assertEqual(calls[1][2]["idempotency-key"], "idem_ai_python")
+
+    def test_auto_pay_requires_the_shared_local_connect_core(self) -> None:
+        with self.assertRaisesRegex(TypeError, "clervo_auto_pay_requires_local_connect"):
+            Clervo(auto_pay=True)
+
+    def test_python_paid_path_and_status_use_the_local_connect_bridge(self) -> None:
+        calls = []
+        ai_result = {
+            "contractVersion": CLERVO_CONTRACT_VERSION,
+            "operationId": "op_python_connect",
+            "operation": "ai.execute",
+            "productId": "ai.chat",
+            "model": "clervo/exact-model",
+            "exactModelId": "clervo/exact-model",
+            "state": "RECEIPTED",
+            "replayed": False,
+            "fundingMode": "paid",
+            "requestHash": f"sha256:{'c' * 64}",
+            "result": {"output": {"kind": "chat", "content": "ready"}},
+            "receipt": {"receiptId": "rcpt_python_connect"},
+        }
+
+        def transport(method, url, headers, body, _timeout, _maximum_bytes):
+            calls.append((method, url, headers, json.loads(body) if body else None))
+            if url.endswith("/clervo/status"):
+                value = {"wallet": {"address": "0x" + "1" * 40}, "limits": {"perOperationAtomic": "20000"}, "unreconciled": 0}
+            elif url.endswith("/clervo/execute"):
+                value = {"status": "completed", "funding": "paid", "idempotencyKey": "idem_python_connect", "outcome": {"result": ai_result}}
+            else:
+                raise AssertionError(url)
+            return HttpResponse(200, {"content-type": "application/json"}, json.dumps(value).encode())
+
+        client = Clervo(connect_url="http://127.0.0.1:8402", auto_pay=True, transport=transport)
+        status = client.connect.status()
+        result_value = client.ai.execute(
+            model="clervo/exact-model",
+            input={"kind": "chat", "messages": [{"role": "user", "content": "ready"}], "responseFormat": "text", "stream": False},
+            idempotency_key="idem_python_connect",
+        )
+        self.assertEqual(status["wallet"]["address"], "0x" + "1" * 40)
+        self.assertEqual(result_value["exactModelId"], "clervo/exact-model")
+        self.assertTrue(calls[0][1].startswith("http://127.0.0.1:8402/clervo/"))
+        self.assertEqual(calls[1][3]["productId"], "ai.chat")
+        self.assertEqual(calls[1][2]["user-agent"], "clervo-sdk/0.4.0")
+        self.assertEqual(calls[1][2]["x-clervo-surface"], "python")
 
 
 if __name__ == "__main__":

@@ -54,7 +54,8 @@ price shown for a fixed-price product is the price the server quotes.
 clervo wallet create
 ```
 
-This creates a wallet used only for Clervo payments and prints its recovery
+This creates the one local wallet used by the Router CLI, MCP, the TypeScript
+and Python SDKs, and the OpenAI-compatible proxy. It prints its recovery
 phrase once. Write it down before continuing — it is the only way to recover the
 wallet, and `clervo wallet backup` will show it again only after you confirm.
 
@@ -148,6 +149,51 @@ catalog is reachable, the wallet and its permissions and balance, the spend
 limits, and whether anything is unreconciled. It never repairs anything on its
 own — a tool that silently fixes a wallet is a tool that can silently replace
 one.
+
+## Local usage
+
+Usage is computed from durable operation records and server receipts under
+`CLERVO_HOME`; it is not a separate counter and never invents revenue.
+
+```
+clervo usage
+clervo usage --json
+```
+
+The report includes calls by surface and family, free versus paid, authorized
+and settled amounts, route/model identity, replayed/refused outcomes, today's
+spend, and the unresolved-operation count.
+
+## OpenAI-compatible clients
+
+Start a loopback-only process:
+
+```
+clervo proxy
+```
+
+Point an ordinary OpenAI client at `http://127.0.0.1:8402/v1` and use any
+placeholder API key its constructor requires. The placeholder and wallet key
+are never sent to Clervo. Supported compatibility endpoints are
+`GET /v1/models`, `POST /v1/chat/completions` (non-streaming and SSE), and
+`POST /v1/embeddings`. The normalized upstream operation is synchronous, so
+SSE begins after the verified result completes.
+
+`/v1/responses`, image-generation and audio endpoints are not claimed because
+the current normalized artifact contract cannot expose those OpenAI contracts
+faithfully.
+
+Auto-pay is disabled by default. Enable it only after reviewing the limits:
+
+```
+clervo limits
+clervo proxy --auto-pay
+```
+
+Every proxy payment still uses the global limits and reconciliation freeze. A
+canonical model ID is exact or the call fails; only a published alias may
+route, and the actual model, operation, receipt and route remain visible in
+`clervo` response metadata and `x-clervo-*` headers.
 
 ## Configuration
 

@@ -49,6 +49,10 @@ const contractTests = [
   // one generic gateway binding across catalog revisions.
   'tests/contract/b7-dynamic-ai.test.mjs',
   'tests/contract/ai-production-runtime.test.mjs',
+  // Connect v1 must remain inside the ordinary repository acceptance run so a
+  // broad pass cannot omit its shared wallet, limits, reconciliation, usage,
+  // model-identity, MCP-profile and OpenAI compatibility contracts.
+  'tests/contract/b11-connect.test.mjs',
 ];
 
 const gates = [

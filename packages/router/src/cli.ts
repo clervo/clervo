@@ -9,6 +9,9 @@ import { capabilityFor, loadAiModelCatalog, loadRegistry, type Registry } from '
 import { listOperations, readOperation, readReceipt, spentTodayAtomic, unreconciledOperations } from './store.js';
 import { CLERVO_ROUTER_VERSION } from './version.js';
 import { createWallet, loadWalletFile, replaceWallet, walletExists } from './wallet.js';
+import { localUsage } from './usage.js';
+import { startOpenAiProxy } from './proxy.js';
+import { clearCommerceLockAfterReconciliation, commerceLockStatus } from './lock.js';
 
 /* Machine-readable output is opt-in per command via --json. Everything a human
  * reads goes to stdout; nothing secret is ever written to either stream. */
@@ -73,6 +76,8 @@ const USAGE = `clervo ${CLERVO_ROUTER_VERSION} — buy verified machine work wit
   clervo history                   Every operation this machine has run.
   clervo reconcile                 Resolve any unknown settlement. Run this if told to.
   clervo doctor                    Check this machine end to end.
+  clervo usage                     Durable local usage from operations and receipts.
+  clervo proxy [--port 8402]       OpenAI-compatible localhost proxy.
 
   clervo wallet create             Create the dedicated payment wallet.
   clervo wallet address            Show the address to fund, and how to fund it.
@@ -84,6 +89,7 @@ const USAGE = `clervo ${CLERVO_ROUTER_VERSION} — buy verified machine work wit
   clervo limits set --per-operation <usdc> --daily <usdc>
 
 Global flags: --json, --key <idempotency-key>, --yes, --product <id>
+Proxy payment: --auto-pay (explicit opt-in; local spend limits always apply)
 Environment:  CLERVO_HOME, CLERVO_API_ORIGIN, CLERVO_BASE_RPC_URL`;
 
 async function confirm(question: string, assumeYes: boolean): Promise<boolean> {
@@ -153,7 +159,7 @@ async function commandSearch(args: Args, registry: Registry): Promise<number> {
     print('usage: clervo search "<query>"');
     return 2;
   }
-  const outcome = await callFree({ registry, productId: 'search.web', body: searchBody(query, args) });
+  const outcome = await callFree({ registry, productId: 'search.web', body: searchBody(query, args), surface: 'cli' });
   if (wantsJson(args)) {
     printJson(outcome.result);
     return 0;
@@ -214,24 +220,26 @@ async function commandQuote(args: Args, registry: Registry): Promise<number> {
     return 2;
   }
   const rest: Args = { ...args, rest: args.rest.slice(1) };
+  const key = flagString(args, 'key') ?? newIdempotencyKey();
   const quote = await requestQuote({
     registry,
     productId,
     body: requestBodyFor(productId, rest),
-    idempotencyKey: flagString(args, 'key') ?? newIdempotencyKey(),
+    idempotencyKey: key,
   });
   if (wantsJson(args)) {
     printJson({
       productId: quote.productId, amountAtomic: quote.amountAtomic, amount: quote.amount, asset: quote.asset,
       network: quote.network, payTo: quote.payTo, priceVersion: quote.priceVersion, expiresAt: quote.expiresAt,
-      quoteId: quote.quoteId, operationId: quote.operationId, requestHash: quote.requestHash,
+      quoteId: quote.quoteId, operationId: quote.operationId, requestHash: quote.requestHash, idempotencyKey: quote.idempotencyKey,
     });
     return 0;
   }
   print('Quote — nothing was charged.');
   printQuote(quote);
+  print(`  key        ${quote.idempotencyKey}`);
   print();
-  print('Pay it with the same request: clervo run ' + quote.productId + ' ... --key <key>');
+  print(`Pay it with the same request: clervo run ${quote.productId} ... --key ${quote.idempotencyKey}`);
   return 0;
 }
 
@@ -249,7 +257,7 @@ async function commandRun(args: Args, registry: Registry): Promise<number> {
     const model = catalog.models.find(({ id }) => id === modelId);
     if (model === undefined || !model.publicSellable) throw new RouterError('model_unavailable', `${modelId} is not a sellable model in the live catalog`);
     if (model.billingMode === 'free') {
-      const outcome = await callAiFree({ registry, body, ...(flagString(args, 'key') === undefined ? {} : { idempotencyKey: flagString(args, 'key') as string }) });
+      const outcome = await callAiFree({ registry, body, surface: 'cli', ...(flagString(args, 'key') === undefined ? {} : { idempotencyKey: flagString(args, 'key') as string }) });
       if (wantsJson(args)) printJson(outcome.result);
       else { print(`Completed free AI call${outcome.replayed ? ' (replayed — no second execution)' : ''}.`); print(`  operation ${outcome.operationId}`); print(); printJson(outcome.result.result ?? outcome.result); }
       return 0;
@@ -261,6 +269,7 @@ async function commandRun(args: Args, registry: Registry): Promise<number> {
     productId,
     body,
     ...(flagString(args, 'key') === undefined ? {} : { idempotencyKey: flagString(args, 'key') as string }),
+    surface: 'cli',
     async approve(quote, limits) {
       if (wantsJson(args) || assumeYes) return true;
       print('This call costs real money.');
@@ -345,10 +354,42 @@ function commandHistory(args: Args): number {
   return 0;
 }
 
+function commandUsage(args: Args): number {
+  const usage = localUsage();
+  if (wantsJson(args)) { printJson(usage); return 0; }
+  print(`${usage.calls} call(s): ${usage.free} free, ${usage.paid} paid`);
+  print(`authorized  ${usage.amountAuthorized} USDC`);
+  print(`settled     ${usage.amountSettled} USDC`);
+  print(`today       ${usage.currentDaySpend} USDC`);
+  print(`unresolved  ${usage.unreconciledCount}`);
+  print();
+  for (const [surface, bucket] of Object.entries(usage.bySurface)) {
+    print(`  ${surface.padEnd(12)} ${String(bucket.calls).padStart(4)} calls  ${formatUsdc(bucket.settledAtomic)} USDC settled`);
+  }
+  return 0;
+}
+
+async function commandProxy(args: Args): Promise<number> {
+  const port = Number.parseInt(flagString(args, 'port') ?? '8402', 10);
+  if (!Number.isSafeInteger(port) || port < 0 || port > 65535) throw new RouterError('proxy_port_invalid');
+  const running = await startOpenAiProxy({ port, autoPay: args.flags.get('auto-pay') === true || args.flags.get('auto-pay') === 'true' });
+  if (wantsJson(args)) printJson({ baseUrl: running.baseUrl, autoPay: running.autoPay, wallet: walletExists() ? loadWalletFile().file.address : null });
+  else {
+    print(`Clervo OpenAI proxy listening at ${running.baseUrl}`);
+    print(`auto-pay ${running.autoPay ? 'ENABLED (bounded by local limits)' : 'disabled'}`);
+    print('Use any placeholder API key required by your OpenAI client; it is not sent to Clervo.');
+  }
+  return 0;
+}
+
 async function commandReconcile(args: Args, registry: Registry): Promise<number> {
   const open = unreconciledOperations();
   if (open.length < 1) {
-    print('Nothing to reconcile. No operation is in an unknown settlement state.');
+    const cleared = clearCommerceLockAfterReconciliation();
+    const lock = commerceLockStatus();
+    print(cleared || !lock.exists
+      ? 'Nothing to reconcile. No operation is in an unknown settlement state.'
+      : 'No unknown settlement record exists, but another live Clervo process is reserving a payment. Wait for it to finish.');
     return 0;
   }
   const results = [];
@@ -368,6 +409,7 @@ async function commandReconcile(args: Args, registry: Registry): Promise<number>
     print(`${unresolved.length} operation(s) are still unknown. Paid calls stay blocked. Try again when the API is reachable.`);
     return 1;
   }
+  clearCommerceLockAfterReconciliation();
   print('All settlements resolved. Paid calls are unblocked.');
   return 0;
 }
@@ -593,6 +635,8 @@ export async function main(argv: readonly string[]): Promise<number> {
     case 'history': return commandHistory(args);
     case 'reconcile': return commandReconcile(args, registry as Registry);
     case 'doctor': return commandDoctor(args);
+    case 'usage': return commandUsage(args);
+    case 'proxy': return commandProxy(args);
     case 'wallet': return commandWallet(args);
     case 'limits': return commandLimits(args);
     case 'home': print(clervoPaths().home); return 0;

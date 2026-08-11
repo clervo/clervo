@@ -509,7 +509,7 @@ result = clervo.search.web(
   "mcpServers": {
     "clervo": {
       "command": "npx",
-      "args": ["-y", "@clervo/mcp"],
+      "args": ["-y", "@clervo/mcp", "--profile", "research"],
       "env": {
         "CLERVO_BASE_URL": "${observedApiOrigin}"
       }
@@ -518,8 +518,14 @@ result = clervo.search.web(
 }`,
 } as const;
 
+function publishedClient(name: string) {
+  const item = launchState.distribution.packages.items.find((entry) => entry.name === name);
+  if (item === undefined) throw new Error(`published_client_missing:${name}`);
+  return item;
+}
+
 export const publishedClients = [
-  { id: 'typescript', label: 'TypeScript', name: '@clervo/sdk', version: '0.3.0', url: 'https://www.npmjs.com/package/@clervo/sdk' },
-  { id: 'mcp', label: 'MCP', name: '@clervo/mcp', version: '0.3.0', url: 'https://www.npmjs.com/package/@clervo/mcp' },
-  { id: 'python', label: 'Python', name: 'clervo-sdk', version: '0.2.0', url: 'https://pypi.org/project/clervo-sdk/0.2.0/' },
+  { id: 'typescript', label: 'TypeScript', ...publishedClient('@clervo/sdk') },
+  { id: 'mcp', label: 'MCP', ...publishedClient('@clervo/mcp') },
+  { id: 'python', label: 'Python', ...publishedClient('clervo-sdk') },
 ] as const;

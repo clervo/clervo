@@ -3,11 +3,12 @@ import { x402Client } from '@x402/core/client';
 import { registerExactEvmScheme } from '@x402/evm/exact/client';
 import { CLERVO_ROUTER_USER_AGENT } from './version.js';
 import { assertWithinLimits, loadLimits, type SpendLimits } from './limits.js';
-import { assertNothingUnreconciled, readOperation, requestBodyHash, saveReceipt, spentTodayAtomic, writeOperation, assertIdempotencyKey, type OperationRecord } from './store.js';
+import { assertNothingUnreconciled, readOperation, requestBodyHash, saveReceipt, spentTodayAtomic, writeOperation, assertIdempotencyKey, type ConnectSurface, type OperationRecord } from './store.js';
 import { loadWalletAccount } from './wallet.js';
 import { apiOrigin, capabilityFor, type Registry } from './registry.js';
 import { formatUsdc } from './chain.js';
 import { OPERATION_SCHEMA_VERSION } from './store.js';
+import { acquireCommerceLock } from './lock.js';
 
 const MAXIMUM_RESPONSE_BYTES = 8_388_608;
 
@@ -45,7 +46,7 @@ export interface FreeOutcome {
   readonly replayed: boolean;
 }
 
-export async function callAiFree({ registry, body, idempotencyKey, env = process.env, fetchImpl = fetch, timeoutMs = 600_000 }: { registry: Registry; body: Record<string, unknown>; idempotencyKey?: string; env?: NodeJS.ProcessEnv; fetchImpl?: typeof fetch; timeoutMs?: number }): Promise<FreeOutcome> {
+export async function callAiFree({ registry, body, idempotencyKey, env = process.env, fetchImpl = fetch, timeoutMs = 600_000, surface = 'unknown' }: { registry: Registry; body: Record<string, unknown>; idempotencyKey?: string; env?: NodeJS.ProcessEnv; fetchImpl?: typeof fetch; timeoutMs?: number; surface?: ConnectSurface }): Promise<FreeOutcome> {
   const key = idempotencyKey === undefined ? newIdempotencyKey() : assertIdempotencyKey(idempotencyKey);
   const resource = `${registry.origin}/v1/ai/execute`;
   const controller = new AbortController();
@@ -60,7 +61,7 @@ export async function callAiFree({ registry, body, idempotencyKey, env = process
   if (!response.ok) throw new RouterError(typeof value.code === 'string' ? value.code : `http_${response.status}`, typeof value.detail === 'string' ? value.detail : `the API returned ${response.status}`, value);
   if (value.state !== 'COMPLETED' || value.fundingMode !== 'free' || value.operation !== 'ai.execute') throw new RouterError('free_result_contract_mismatch', 'the free AI result did not match the published contract');
   const completedAt = new Date().toISOString();
-  writeOperation({ schemaVersion: OPERATION_SCHEMA_VERSION, idempotencyKey: key, productId: 'ai.chat', resource, requestBodyHash: requestBodyHash(body), requestBody: body, state: 'free', startedAt: completedAt, completedAt, quotedAtomic: '0', chargedAtomic: '0', operationId: typeof value.operationId === 'string' ? value.operationId : null, receiptId: null, settlementReferenceHash: null, replayed: value.replayed === true, reason: null }, env);
+  writeOperation({ schemaVersion: OPERATION_SCHEMA_VERSION, idempotencyKey: key, productId: typeof value.productId === 'string' ? value.productId : 'ai.chat', resource, requestBodyHash: requestBodyHash(body), requestBody: body, state: 'free', startedAt: completedAt, completedAt, quotedAtomic: '0', chargedAtomic: '0', operationId: typeof value.operationId === 'string' ? value.operationId : null, receiptId: null, settlementReferenceHash: null, replayed: value.replayed === true, reason: null, surface }, env);
   return Object.freeze({ funding: 'free', productId: 'ai.chat', operationId: typeof value.operationId === 'string' ? value.operationId : '', requestHash: typeof value.requestHash === 'string' ? value.requestHash : '', result: value, replayed: value.replayed === true });
 }
 
@@ -79,6 +80,7 @@ export async function callFree({
   fetchImpl = fetch,
   idempotencyKey,
   timeoutMs = 60_000,
+  surface = 'unknown',
 }: {
   registry: Registry;
   productId: string;
@@ -87,6 +89,7 @@ export async function callFree({
   fetchImpl?: typeof fetch;
   idempotencyKey?: string;
   timeoutMs?: number;
+  surface?: ConnectSurface;
 }): Promise<FreeOutcome> {
   const capability = capabilityFor(registry, productId);
   if (!capability.freeCallable || capability.freeRoute === null) {
@@ -134,6 +137,8 @@ export async function callFree({
     settlementReferenceHash: null,
     replayed: value.replayed === true,
     reason: null,
+    surface,
+    authorizationCreated: false,
   }, env);
   return Object.freeze({
     funding: 'free',
@@ -146,6 +151,7 @@ export async function callFree({
 }
 
 export interface Quote {
+  readonly idempotencyKey: string;
   readonly productId: string;
   readonly resource: string;
   readonly quoteId: string;
@@ -162,7 +168,7 @@ export interface Quote {
   readonly challenge: Record<string, unknown>;
 }
 
-function readQuote(productId: string, resource: string, challenge: Record<string, unknown>): Quote {
+function readQuote(productId: string, resource: string, idempotencyKey: string, challenge: Record<string, unknown>): Quote {
   const accepts = Array.isArray(challenge.accepts) ? challenge.accepts as Record<string, unknown>[] : [];
   const accepted = accepts[0];
   const quote = (challenge.quote as Record<string, unknown> | undefined) ?? {};
@@ -171,6 +177,7 @@ function readQuote(productId: string, resource: string, challenge: Record<string
   if (accepted === undefined || amountAtomic === undefined) throw new RouterError('challenge_missing_price', 'the 402 challenge carried no payable amount');
   if (accepted.network !== 'eip155:8453') throw new RouterError('challenge_wrong_network', `this router only pays on Base mainnet; the challenge asked for ${String(accepted.network)}`);
   return Object.freeze({
+    idempotencyKey,
     productId,
     resource,
     quoteId: typeof clervo.quoteId === 'string' ? clervo.quoteId : '',
@@ -240,7 +247,7 @@ export async function requestQuote({
   /* A 200 here means this key already bought this exact request. */
   if (response.status === 200) throw new RouterError('already_settled', 'this idempotency key has already been paid and settled — use `clervo replay` to fetch the result again', value);
   if (response.status !== 402) throw new RouterError(typeof value.code === 'string' ? value.code : `http_${response.status}`, typeof value.detail === 'string' ? value.detail : `expected a 402 quote and got ${response.status}`, value);
-  return readQuote(productId, resource, value);
+  return readQuote(productId, resource, idempotencyKey, value);
 }
 
 export interface PaidOutcome {
@@ -324,6 +331,7 @@ export interface PaidCallOptions {
    * nothing spent — this is where an interactive confirmation goes. */
   readonly approve?: (quote: Quote, limits: SpendLimits) => Promise<boolean> | boolean;
   readonly limits?: SpendLimits;
+  readonly surface?: ConnectSurface;
 }
 
 /*
@@ -342,7 +350,7 @@ export interface PaidCallOptions {
  */
 export async function callPaid(options: PaidCallOptions): Promise<PaidOutcome> {
   const {
-    registry, productId, body, env = process.env, fetchImpl = fetch, timeoutMs = 90_000, approve,
+    registry, productId, body, env = process.env, fetchImpl = fetch, timeoutMs = 90_000, approve, surface = 'unknown',
   } = options;
   const key = options.idempotencyKey === undefined ? newIdempotencyKey() : assertIdempotencyKey(options.idempotencyKey);
   const bodyHash = requestBodyHash(body);
@@ -354,41 +362,55 @@ export async function callPaid(options: PaidCallOptions): Promise<PaidOutcome> {
   if (existing?.state === 'settled') {
     return replayPaid({ registry, productId, body, idempotencyKey: key, env, fetchImpl, timeoutMs });
   }
-  /* Step 1. Includes any `authorizing` record for this very key. */
-  assertNothingUnreconciled(env);
-
-  const limits = options.limits ?? loadLimits(env);
-  const quote = await requestQuote({ registry, productId, body, idempotencyKey: key, fetchImpl, timeoutMs });
-  assertWithinLimits({ limits, quotedAtomic: quote.amountAtomic, spentTodayAtomic: spentTodayAtomic(env) });
-
-  if (approve !== undefined && (await approve(quote, limits)) !== true) {
-    throw new RouterError('payment_not_approved', 'the payment was not approved, so nothing was signed or spent');
-  }
-
-  const account = loadWalletAccount(env);
+  /* The reservation is serialized across processes. Without this small local
+   * lock, two surfaces could both observe the same remaining daily budget and
+   * sign before either operation became visible to the other. The lock is
+   * released as soon as `authorizing` is durable; that record then becomes the
+   * global fail-closed barrier while the payment is in flight. */
+  const releaseCommerceLock = acquireCommerceLock(env);
+  const reservation = await (async () => {
+    try {
+      const current = readOperation(key, env);
+      if (current !== undefined && current.requestBodyHash !== bodyHash) throw new RouterError('idempotency_key_reused_with_different_body', `idempotency key ${key} was already used for a different request body — use a new key`);
+      if (current?.state === 'settled') return Object.freeze({ replay: true as const });
+      /* Step 1. Includes any `authorizing` record for this very key. */
+      assertNothingUnreconciled(env);
+      const limits = options.limits ?? loadLimits(env);
+      const quote = await requestQuote({ registry, productId, body, idempotencyKey: key, fetchImpl, timeoutMs });
+      assertWithinLimits({ limits, quotedAtomic: quote.amountAtomic, spentTodayAtomic: spentTodayAtomic(env) });
+      if (approve === undefined) throw new RouterError('payment_approval_required', 'automatic payment is disabled; explicitly opt in and supply an approval decision');
+      if ((await approve(quote, limits)) !== true) throw new RouterError('payment_not_approved', 'the payment was not approved, so nothing was signed or spent');
+      const account = loadWalletAccount(env);
+      const startedAt = new Date().toISOString();
+      const record: OperationRecord = {
+        schemaVersion: OPERATION_SCHEMA_VERSION,
+        idempotencyKey: key,
+        productId,
+        resource: quote.resource,
+        requestBodyHash: bodyHash,
+        requestBody: body,
+        state: 'authorizing',
+        startedAt,
+        completedAt: null,
+        quotedAtomic: quote.amountAtomic,
+        chargedAtomic: null,
+        operationId: quote.operationId,
+        receiptId: null,
+        settlementReferenceHash: null,
+        replayed: false,
+        reason: null,
+        surface,
+      };
+      writeOperation(record, env);
+      return Object.freeze({ replay: false as const, account, quote, record });
+    } finally {
+      releaseCommerceLock();
+    }
+  })();
+  if (reservation.replay) return replayPaid({ registry, productId, body, idempotencyKey: key, env, fetchImpl, timeoutMs });
+  const { account, quote, record } = reservation;
   const paymentClient = new x402Client();
   registerExactEvmScheme(paymentClient, { signer: account });
-
-  const startedAt = new Date().toISOString();
-  const record: OperationRecord = {
-    schemaVersion: OPERATION_SCHEMA_VERSION,
-    idempotencyKey: key,
-    productId,
-    resource: quote.resource,
-    requestBodyHash: bodyHash,
-    requestBody: body,
-    state: 'authorizing',
-    startedAt,
-    completedAt: null,
-    quotedAtomic: quote.amountAtomic,
-    chargedAtomic: null,
-    operationId: quote.operationId,
-    receiptId: null,
-    settlementReferenceHash: null,
-    replayed: false,
-    reason: null,
-  };
-  writeOperation(record, env);
 
   let paymentHeader: string;
   try {
@@ -399,6 +421,9 @@ export async function callPaid(options: PaidCallOptions): Promise<PaidOutcome> {
     writeOperation({ ...record, state: 'refused', completedAt: new Date().toISOString(), reason: 'payment_signing_failed' }, env);
     throw new RouterError('payment_signing_failed', 'the payment could not be signed, so nothing was sent', (error as Error)?.message);
   }
+
+  const authorizedRecord: OperationRecord = { ...record, authorizationCreated: true };
+  writeOperation(authorizedRecord, env);
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -419,7 +444,7 @@ export async function callPaid(options: PaidCallOptions): Promise<PaidOutcome> {
     });
   } catch (error) {
     /* The signature was on the wire. This is ambiguous by definition. */
-    writeOperation({ ...record, state: 'unknown', reason: 'transport_failed_after_authorization' }, env);
+    writeOperation({ ...authorizedRecord, state: 'unknown', reason: 'transport_failed_after_authorization' }, env);
     throw new RouterError(
       'settlement_unknown',
       `the request failed after the payment was sent, so it may have settled. Run \`clervo reconcile\` — do not retry until it resolves.`,
@@ -433,7 +458,7 @@ export async function callPaid(options: PaidCallOptions): Promise<PaidOutcome> {
   try {
     value = await readJsonResponse(response);
   } catch (error) {
-    writeOperation({ ...record, state: 'unknown', reason: 'unreadable_response_after_authorization' }, env);
+    writeOperation({ ...authorizedRecord, state: 'unknown', reason: 'unreadable_response_after_authorization' }, env);
     throw error;
   }
 
@@ -441,11 +466,11 @@ export async function callPaid(options: PaidCallOptions): Promise<PaidOutcome> {
     const outcome = settledOutcome(productId, value, response.headers.get('idempotency-replayed') === 'true');
     const receiptId = outcome.receipt === null ? null : saveReceipt(outcome.receipt, env);
     writeOperation({
-      ...record,
+      ...authorizedRecord,
       state: 'settled',
       completedAt: new Date().toISOString(),
       chargedAtomic: outcome.chargedAtomic,
-      operationId: outcome.operationId === '' ? record.operationId : outcome.operationId,
+      operationId: outcome.operationId === '' ? authorizedRecord.operationId : outcome.operationId,
       receiptId,
       settlementReferenceHash: settlementReferenceHashOf(outcome.receipt),
       replayed: outcome.replayed,
@@ -455,14 +480,14 @@ export async function callPaid(options: PaidCallOptions): Promise<PaidOutcome> {
 
   const code = typeof value.code === 'string' ? value.code : undefined;
   if (settlementIsAmbiguous(response.status, code)) {
-    writeOperation({ ...record, state: 'unknown', reason: code ?? `http_${response.status}` }, env);
+    writeOperation({ ...authorizedRecord, state: 'unknown', reason: code ?? `http_${response.status}` }, env);
     throw new RouterError(
       'settlement_unknown',
       `the API answered ${response.status}${code === undefined ? '' : ` (${code})`} after the payment was sent, so it may have settled. Run \`clervo reconcile\` — do not retry until it resolves.`,
       value,
     );
   }
-  writeOperation({ ...record, state: 'refused', completedAt: new Date().toISOString(), reason: code ?? `http_${response.status}` }, env);
+  writeOperation({ ...authorizedRecord, state: 'refused', completedAt: new Date().toISOString(), reason: code ?? `http_${response.status}` }, env);
   throw new RouterError(code ?? `http_${response.status}`, typeof value.detail === 'string' ? value.detail : `the API refused the payment with ${response.status}`, value);
 }
 
@@ -543,6 +568,7 @@ export async function replayPaid({
      * is the same single charge for this key — see `spentTodayAtomic`. */
     replayed: true,
     reason: null,
+    surface: existing?.surface ?? 'unknown',
   }, env);
   return outcome;
 }

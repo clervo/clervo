@@ -1,7 +1,7 @@
 {
   "name": "@clervo/sdk",
-  "version": "0.4.1",
-  "description": "Typed client for live Clervo Search and provider-neutral AI.",
+  "version": "0.5.0",
+  "description": "Clervo Connect TypeScript SDK for live products, one local wallet, bounded x402, replay, reconciliation, and usage.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -38,8 +38,11 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc --project tsconfig.json",
+    "build": "npm run build --workspace @clervo/router && tsc --project tsconfig.json",
     "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@clervo/router": "0.3.0"
   },
   "publishConfig": {
     "access": "public",

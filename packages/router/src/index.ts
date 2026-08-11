@@ -25,6 +25,7 @@ export {
   type ReconcileResult,
 } from './client.js';
 export { diagnose, type Check, type CheckStatus, type Diagnosis } from './doctor.js';
+export { acquireCommerceLock, clearCommerceLockAfterReconciliation, commerceLockStatus, type CommerceLockStatus } from './lock.js';
 export {
   DEFAULT_DAILY_ATOMIC,
   DEFAULT_PER_OPERATION_ATOMIC,
@@ -43,7 +44,10 @@ export {
   RegistryError,
   apiOrigin,
   capabilityFor,
+  loadAiModelCatalog,
   loadRegistry,
+  type AiCatalogModel,
+  type AiModelCatalog,
   type Registry,
   type RegistryCapability,
 } from './registry.js';
@@ -62,7 +66,11 @@ export {
   writeOperation,
   type OperationRecord,
   type OperationState,
+  type ConnectSurface,
 } from './store.js';
+export { localUsage, type LocalUsage, type UsageBucket } from './usage.js';
+export { ClervoConnect, type ConnectExecuteOptions, type ConnectExecution, type ConnectOptions, type ConnectStatus } from './connect.js';
+export { startOpenAiProxy, type ProxyOptions, type RunningProxy } from './proxy.js';
 export { CLERVO_CONTRACT_VERSION, CLERVO_ROUTER_USER_AGENT, CLERVO_ROUTER_VERSION } from './version.js';
 export {
   WALLET_DERIVATION_PATH,

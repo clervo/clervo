@@ -13,6 +13,8 @@ export const OPERATION_SCHEMA_VERSION = 'clervo.router.operation.v1' as const;
  */
 export type OperationState = 'authorizing' | 'settled' | 'free' | 'unknown' | 'refused';
 
+export type ConnectSurface = 'cli' | 'mcp' | 'typescript' | 'python' | 'openai' | 'unknown';
+
 export interface OperationRecord {
   readonly schemaVersion: typeof OPERATION_SCHEMA_VERSION;
   readonly idempotencyKey: string;
@@ -36,6 +38,10 @@ export interface OperationRecord {
   readonly settlementReferenceHash: string | null;
   readonly replayed: boolean;
   readonly reason: string | null;
+  /* Added by Connect v1. Optional so the already-published B6 records remain
+   * readable and continue to participate in the global spend/freeze state. */
+  readonly surface?: ConnectSurface;
+  readonly authorizationCreated?: boolean;
 }
 
 export class StoreError extends Error {
