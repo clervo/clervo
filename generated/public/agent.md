@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `packages/catalog/live-registry.json`, probed at 2026-08-11T20:20:35.624Z. Release: `0d9307859da94c229eaa2f5e3e96dbb2cc847f1b`.
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-11T20:45:57.926Z. Release: `0d9307859da94c229eaa2f5e3e96dbb2cc847f1b`.
 
 ## Identity
 
@@ -21,8 +21,8 @@ Source: `packages/catalog/live-registry.json`, probed at 2026-08-11T20:20:35.624
 | Crypto Intelligence | `crypto_intelligence` | live | quote_observed_unpaid |
 | Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
-| Secure Sandbox | `sandbox` | live | quote_observed_unpaid |
-| Research | `search` | live | quote_observed_unpaid |
+| Secure Sandbox | `sandbox` | live | paid_outcome_verified |
+| Research | `search` | live | paid_outcome_verified |
 
 These are two independent facts. A `live` product with proof level
 `quote_observed_unpaid` is offered and priced; it is not a demonstrated paid

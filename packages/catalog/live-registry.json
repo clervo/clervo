@@ -2928,7 +2928,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-11T20:20:35.624Z",
+  "observedAt": "2026-08-11T20:45:57.926Z",
   "products": [
     {
       "evidence": {
@@ -3099,8 +3099,19 @@
         "edgeCode": null,
         "edgeStatus": 402,
         "paidOutcome": {
-          "accepted": false,
-          "reason": "paid_proof_invariant_failed"
+          "accepted": true,
+          "demandEvidence": false,
+          "externallyRepeated": false,
+          "operationCount": 2,
+          "ownerFunded": true,
+          "proofLevel": "paid_outcome_verified",
+          "reason": null,
+          "releaseCommit": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
+          "replayNoSecondChargeCount": 2,
+          "revenueEvidence": false,
+          "source": "infra/production/gcp/search-sandbox-x402-proof.v1.json",
+          "totalChargeAtomic": "20000",
+          "usefulResultCount": 1
         },
         "probed": true
       },
@@ -3121,7 +3132,7 @@
       "operations": [
         "sandbox.run"
       ],
-      "proof": "quote_observed_unpaid",
+      "proof": "paid_outcome_verified",
       "publiclyReachable": true,
       "reason": null,
       "state": "live"
@@ -3132,8 +3143,19 @@
         "edgeCode": null,
         "edgeStatus": 402,
         "paidOutcome": {
-          "accepted": false,
-          "reason": "paid_proof_invariant_failed"
+          "accepted": true,
+          "demandEvidence": false,
+          "externallyRepeated": false,
+          "operationCount": 1,
+          "ownerFunded": true,
+          "proofLevel": "paid_outcome_verified",
+          "reason": null,
+          "releaseCommit": "3dfe8a629d724f72f41174aad5ace8f5e7eb8927",
+          "replayNoSecondChargeCount": 1,
+          "revenueEvidence": false,
+          "source": "infra/production/gcp/search-sandbox-x402-proof.v1.json",
+          "totalChargeAtomic": "6000",
+          "usefulResultCount": 1
         },
         "probed": true
       },
@@ -3161,7 +3183,7 @@
       "operations": [
         "search.web"
       ],
-      "proof": "quote_observed_unpaid",
+      "proof": "paid_outcome_verified",
       "publiclyReachable": true,
       "reason": null,
       "state": "live"
@@ -3178,7 +3200,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "dfa0c57b0732fc476ca7d21846890f031a71e611",
+  "sourceCommit": "a9213f6f80a55ffda10f945c9d10a2277433dd3d",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",

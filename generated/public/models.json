@@ -23,6 +23,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -46,7 +53,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -81,6 +90,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -104,7 +120,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.750000",
+          "outputPerMToken": "3.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -139,6 +157,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -162,7 +187,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "12.500000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -197,6 +224,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -220,7 +254,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "12.500000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -255,6 +291,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -278,7 +321,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "12.500000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -313,6 +358,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -336,7 +388,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "12.500000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -371,6 +425,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -394,7 +455,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "1.500000",
+          "outputPerMToken": "7.500000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -429,6 +492,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -452,7 +522,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "1.000000",
+          "outputPerMToken": "5.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -486,6 +558,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -509,7 +588,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "15.000000"
         },
         "pricingMethod": "alias_contract",
         "competitiveComparison": "unverified",
@@ -521,6 +602,8 @@
           "replaySafe": true
         },
         "aliasFor": "clervo/gpt-5.6-sol",
+        "aliasRationale": "Code-focused stable route for implementation, debugging, and review tasks.",
+        "tradeoffs": "Code specialization over broad general reasoning.",
         "aliasKind": "fixed_canonical",
         "selectionPolicy": {
           "kind": "fixed_canonical",
@@ -555,6 +638,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -578,7 +668,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "15.000000"
         },
         "pricingMethod": "alias_contract",
         "competitiveComparison": "unverified",
@@ -590,6 +682,8 @@
           "replaySafe": true
         },
         "aliasFor": "clervo/gpt-5.6-sol",
+        "aliasRationale": "Highest-reasoning stable route for difficult analysis and long-form synthesis.",
+        "tradeoffs": "Capability over latency and cost; use for difficult reasoning tasks.",
         "aliasKind": "fixed_canonical",
         "selectionPolicy": {
           "kind": "fixed_canonical",
@@ -626,6 +720,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -649,7 +750,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.525000",
+          "outputPerMToken": "1.875000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -684,6 +787,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -707,7 +817,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -742,6 +854,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -765,7 +884,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.202500",
+          "outputPerMToken": "0.750000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -800,6 +921,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -823,7 +951,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.202500",
+          "outputPerMToken": "0.307500"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -858,6 +988,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -881,7 +1018,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.217500",
+          "outputPerMToken": "0.435000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -915,6 +1054,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -938,7 +1084,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.050000",
+          "outputPerMToken": "0.300000"
         },
         "pricingMethod": "alias_contract",
         "competitiveComparison": "unverified",
@@ -950,6 +1098,8 @@
           "replaySafe": true
         },
         "aliasFor": "clervo/gpt-5.6-luna",
+        "aliasRationale": "Lowest-latency stable route for short classification, extraction, and generation tasks.",
+        "tradeoffs": "Speed over capability; not suitable for deep reasoning, code, or long context.",
         "aliasKind": "fixed_canonical",
         "selectionPolicy": {
           "kind": "fixed_canonical",
@@ -985,6 +1135,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1008,7 +1165,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "1.875000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1043,6 +1202,13 @@
         "outputTypes": [
           "image"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "image"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1066,7 +1232,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1101,6 +1269,13 @@
         "outputTypes": [
           "audio"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1124,7 +1299,9 @@
           "audioMicrosPerThousandCharacters": 37500,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1159,6 +1336,13 @@
         "outputTypes": [
           "audio"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1182,7 +1366,9 @@
           "audioMicrosPerThousandCharacters": 37500,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1217,6 +1403,13 @@
         "outputTypes": [
           "audio"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1240,7 +1433,9 @@
           "audioMicrosPerThousandCharacters": 37500,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1275,6 +1470,13 @@
         "outputTypes": [
           "image"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "image"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1298,7 +1500,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1333,6 +1537,13 @@
         "outputTypes": [
           "image"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "image"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1356,7 +1567,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1391,6 +1604,13 @@
         "outputTypes": [
           "image"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "image"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1414,7 +1634,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1449,6 +1671,13 @@
         "outputTypes": [
           "audio"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1472,7 +1701,9 @@
           "audioMicrosPerThousandCharacters": 37500,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1507,6 +1738,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1530,7 +1768,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "1.875000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1565,6 +1805,13 @@
         "outputTypes": [
           "embedding"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1588,7 +1835,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.135000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1623,6 +1872,13 @@
         "outputTypes": [
           "video"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "video"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1646,7 +1902,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 37500,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1681,6 +1939,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1704,7 +1969,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1739,6 +2006,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1762,7 +2036,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1797,6 +2073,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1820,7 +2103,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.306000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1855,6 +2140,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1878,7 +2170,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.097500",
+          "outputPerMToken": "0.637500"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1913,6 +2207,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1936,7 +2237,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.265300",
+          "outputPerMToken": "0.833800"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -1973,6 +2276,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -1996,7 +2306,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.050000",
+          "outputPerMToken": "0.300000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2034,6 +2346,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2057,7 +2376,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "15.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2094,6 +2415,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2117,7 +2445,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.500000",
+          "outputPerMToken": "3.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2153,6 +2483,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2176,7 +2513,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.033300",
+          "outputPerMToken": "0.153000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2212,6 +2551,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2221,6 +2567,7 @@
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "degraded",
         "availability": "degraded",
+        "expectedReturnAt": "2026-09-09T19:09:36.000Z",
         "health": "degraded",
         "publicSellable": false,
         "publicationBlockers": [
@@ -2237,7 +2584,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2272,6 +2621,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2295,7 +2651,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.067500",
+          "outputPerMToken": "0.270000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2330,6 +2688,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2353,7 +2718,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.105000",
+          "outputPerMToken": "0.427500"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2388,6 +2755,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2411,7 +2785,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.099000",
+          "outputPerMToken": "0.396000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2446,6 +2822,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2469,7 +2852,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.427500",
+          "outputPerMToken": "2.137500"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2504,6 +2889,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2527,7 +2919,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.434625",
+          "outputPerMToken": "1.830000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2562,6 +2956,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2585,7 +2986,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.525000",
+          "outputPerMToken": "2.625000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2620,6 +3023,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2643,7 +3053,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "1.500000",
+          "outputPerMToken": "7.500000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2678,6 +3090,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2701,7 +3120,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2736,6 +3157,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2759,7 +3187,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2794,6 +3224,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2817,7 +3254,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.300000",
+          "outputPerMToken": "0.300000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2852,6 +3291,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2875,7 +3321,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.045000",
+          "outputPerMToken": "0.072000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2910,6 +3358,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2933,7 +3388,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -2970,6 +3427,14 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -2993,7 +3458,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3028,6 +3495,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3051,7 +3525,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3088,6 +3564,14 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3111,7 +3595,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.750000",
+          "outputPerMToken": "3.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3146,6 +3632,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3169,7 +3662,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.288000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3204,6 +3699,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3227,7 +3729,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3263,6 +3767,13 @@
         "outputTypes": [
           "audio"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3286,7 +3797,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 30000,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3322,6 +3835,13 @@
         "outputTypes": [
           "audio"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3345,7 +3865,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 60000,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3380,6 +3902,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3403,7 +3932,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.110000",
+          "outputPerMToken": "0.450000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3438,6 +3969,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3461,7 +3999,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3498,6 +4038,14 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3521,7 +4069,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3558,6 +4108,14 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3581,7 +4139,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3616,6 +4176,13 @@
         "outputTypes": [
           "embedding"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3639,7 +4206,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.720000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3674,6 +4243,13 @@
         "outputTypes": [
           "embedding"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3697,7 +4273,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3735,6 +4313,14 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3758,7 +4344,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3793,6 +4381,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3816,7 +4411,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3851,6 +4448,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3874,7 +4478,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.187500",
+          "outputPerMToken": "0.750000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3909,6 +4515,13 @@
         "outputTypes": [
           "embedding"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3932,7 +4545,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -3967,6 +4582,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -3990,7 +4612,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.270000",
+          "outputPerMToken": "0.300000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4025,6 +4649,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4048,7 +4679,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.180000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4083,6 +4716,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4106,7 +4746,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.043335",
+          "outputPerMToken": "0.173745"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4141,6 +4783,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4164,7 +4813,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.072000",
+          "outputPerMToken": "0.252000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4199,6 +4850,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4222,7 +4880,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.087750",
+          "outputPerMToken": "0.341250"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4257,6 +4917,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4280,7 +4947,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.063000",
+          "outputPerMToken": "0.252000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4317,6 +4986,14 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4340,7 +5017,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.112500",
+          "outputPerMToken": "0.450000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4378,6 +5057,14 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4401,7 +5088,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.150000",
+          "outputPerMToken": "1.800000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4438,6 +5127,14 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4461,7 +5158,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.078000",
+          "outputPerMToken": "0.312000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4499,6 +5198,14 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4522,7 +5229,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4559,6 +5268,14 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4582,7 +5299,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.087750",
+          "outputPerMToken": "0.341250"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4617,6 +5336,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4640,7 +5366,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.195000",
+          "outputPerMToken": "1.170000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4675,6 +5403,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4698,7 +5433,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.450000",
+          "outputPerMToken": "2.700000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4733,6 +5470,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4756,7 +5500,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4790,6 +5536,13 @@
         "outputTypes": [
           "text"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4813,7 +5566,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.500000",
+          "outputPerMToken": "3.000000"
         },
         "pricingMethod": "alias_contract",
         "competitiveComparison": "unverified",
@@ -4825,6 +5580,8 @@
           "replaySafe": true
         },
         "aliasFor": "clervo/gpt-5.6-terra",
+        "aliasRationale": "Balanced quality and latency for general-purpose reasoning and generation.",
+        "tradeoffs": "Balanced tradeoff; slower and less capable than deep/code on difficult tasks.",
         "aliasKind": "fixed_canonical",
         "selectionPolicy": {
           "kind": "fixed_canonical",
@@ -4860,6 +5617,13 @@
         "outputTypes": [
           "embedding"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4883,7 +5647,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4918,6 +5684,13 @@
         "outputTypes": [
           "embedding"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4941,7 +5714,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -4976,6 +5751,13 @@
         "outputTypes": [
           "embedding"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -4999,7 +5781,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -5034,6 +5818,13 @@
         "outputTypes": [
           "video"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "video"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -5057,7 +5848,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 75000,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -5092,6 +5885,13 @@
         "outputTypes": [
           "video"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "video"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -5115,7 +5915,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 300000,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -5150,6 +5952,13 @@
         "outputTypes": [
           "video"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "video"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -5173,7 +5982,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 37500,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 0
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -5208,6 +6019,13 @@
         "outputTypes": [
           "image"
         ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "image"
+        ],
+        "outputModalities": [
+          "image"
+        ],
         "limits": {},
         "modelCreator": null,
         "modelCreatorStatus": "unknown",
@@ -5231,7 +6049,9 @@
           "audioMicrosPerThousandCharacters": 0,
           "videoMicrosPerSecond": 0,
           "musicMicrosPerGeneration": 0,
-          "virtualTryOnMicrosPerImage": 45000
+          "virtualTryOnMicrosPerImage": 45000,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
         },
         "pricingMethod": "strategic_override",
         "competitiveComparison": "unverified",
@@ -5247,7 +6067,7 @@
   ],
   "clervo": {
     "catalogRevision": "b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1",
-    "composedAt": "2026-08-11T00:00:00.000Z",
+    "composedAt": "2026-08-11T20:20:35.624Z",
     "sourceValidUntil": "2026-09-09T19:09:36.000Z",
     "inventory": {
       "canonicalModels": 85,

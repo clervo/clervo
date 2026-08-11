@@ -103,7 +103,7 @@ test('public discovery excludes private release bookkeeping and agrees with live
     products: discovery.products,
     observedTruth: discovery.observedTruth,
   });
-  assert.equal(discovery.discoveryVersion, '2026-08-02.2');
+  assert.equal(discovery.discoveryVersion, '2026-08-11.1');
 });
 
 test('llms.txt matches the generator and states public status truthfully', async () => {

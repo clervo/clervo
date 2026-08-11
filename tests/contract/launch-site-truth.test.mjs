@@ -65,7 +65,9 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(prediction.length, 5);
   assert.ok(prediction.every(({ publicAvailable, payment }) => publicAvailable && payment.payable));
   assert.equal(status.packages.state, 'published_verified');
-  assert.equal(status.paymentProof, undefined);
+  assert.equal(status.paymentProof?.settlementConfirmed, true);
+  assert.equal(status.paymentProof?.usefulResult, true);
+  assert.equal(status.paymentProof?.revenueEvidence, false);
   assert.equal(pricing.publicOfferAvailable, true);
   assert.equal(pricing.publicPrice.productId, 'search.web');
   assert.equal(pricing.publicPrice.amountAtomic, '6000');

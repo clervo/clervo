@@ -1977,7 +1977,8 @@
       "availability": {
         "state": "degraded",
         "reason": "integrated_execution_failed",
-        "observedAt": "2026-08-10T20:10:30.000Z"
+        "observedAt": "2026-08-10T20:10:30.000Z",
+        "expectedReturnAt": "2026-09-09T19:09:36.000Z"
       },
       "upstreamCost": {
         "state": "known",

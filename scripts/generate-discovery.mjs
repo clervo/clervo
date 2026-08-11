@@ -223,8 +223,13 @@ function scannerSafeOperation(operation, { requestSchema, example, paymentInfo, 
   const cloned = structuredClone(operation);
   cloned.parameters = cloned.parameters.map((parameter) => ({
     ...parameter,
-    schema: { ...parameter.schema, default: 'x402scan-clervo-probe' },
-    example: 'x402scan-clervo-probe',
+    // This is deliberately a non-reusable illustration. Callers must mint
+    // their own key for every logical operation.
+    schema: (() => {
+      const { default: _default, ...schema } = parameter.schema ?? {};
+      return schema;
+    })(),
+    example: 'my-unique-key-550e8400',
   }));
   cloned.requestBody.content['application/json'] = { schema: requestSchema, example };
   for (const response of Object.values(cloned.responses)) {
@@ -472,6 +477,14 @@ for (const fileName of projectedSchemaFiles) {
 
 const openapi = contractModule.createOpenApiDocument(schemas, projection);
 const discovery = contractModule.createDiscoveryDocument(projection);
+// Discovery documents are deployment artifacts, not frozen release prose. Tie
+// their visible versions to the observed release day so clients can detect a
+// stale edge document without changing the wire-contract version used by
+// operation receipts and schemas.
+const discoveryArtifactVersion = `${liveRegistry.observedAt.slice(0, 10)}.1`;
+discovery.discoveryVersion = discoveryArtifactVersion;
+discovery.contractVersion = discoveryArtifactVersion;
+discovery.catalogVersion = discoveryArtifactVersion;
 let llms = contractModule.createLlmsText(projection);
 if (publicSearch) {
   openapi.servers = [{ url: 'https://api.clervo.dev' }];
@@ -783,6 +796,7 @@ if (liveApiFamilies.length > 0) {
   }
 }
 const catalog = contractModule.createCatalogDocument(projection);
+catalog.catalogVersion = discoveryArtifactVersion;
 if (publicAi || publicSandbox || publicPrediction || publicCrypto) catalog.products = discovery.products;
 
 // The contract package still supplies the historical introductory shape of
@@ -922,6 +936,9 @@ await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
   observedAt: liveRegistry.observedAt,
   publicApi: launchState.distribution.publicApi,
   packages: launchState.distribution.packages,
+  // This is the reconciled owner-funded settlement record already held in
+  // launch-state authority. It is not commercial/customer proof.
+  paymentProof: launchState.paymentProof,
   observedTruth: { provenance: observedProvenance, products: observedTruth },
   conformanceDefectsOpen: liveRegistry.conformance.filter(({ conformant }) => !conformant),
   aiRoutes: {
@@ -936,6 +953,15 @@ await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
 }));
 await mkdir(path.join(outputDirectory, '.well-known'), { recursive: true });
 await writeFile(path.join(outputDirectory, '.well-known', 'clervo.json'), stableJson(discovery));
+await writeFile(path.join(outputDirectory, '.well-known', 'ai-plugin.json'), stableJson({
+  schema_version: 'v1',
+  name_for_human: 'Clervo',
+  name_for_model: 'clervo',
+  description_for_human: 'Outcome infrastructure for agents. Search, AI (89 models), secure sandbox, prediction markets, crypto intelligence. Pay per call in USDC on Base.',
+  description_for_model: 'Clervo provides web search (POST /v1/search/free or /v1/search/paid), provider-neutral AI execution with 89 models (POST /v1/ai/execute), sandboxed Node.js execution (POST /v1/sandbox/execute), prediction market data (POST /v1/prediction/execute), and EVM wallet intelligence for Ethereum and Base (POST /v1/crypto/execute). Payment uses x402 or MPP over USDC on Base. No account required.',
+  api: { type: 'openapi', url: 'https://api.clervo.dev/openapi.json' },
+  auth: { type: 'none' },
+}));
 await writeFile(path.join(outputDirectory, '.well-known', 'mcp.json'), stableJson({
   schemaVersion: 'clervo.mcp-discovery.v1',
   name: '@clervo/mcp',
@@ -1309,8 +1335,12 @@ const skillDocument = [
   '',
   '## When to use this skill',
   '',
-  '- You need current cited web evidence for a question and want the sources with the answer.',
-  '- You want to pay per request instead of holding an account or an API key.',
+  '- You need a paid AI model call (89 models: Claude, GPT, Gemini, Qwen, DeepSeek, Llama, Kimi, Mistral and more) — use `POST /v1/ai/execute`.',
+  '- You need cited web evidence for a question — use `POST /v1/search/free` or `POST /v1/search/paid`.',
+  '- You need to run sandboxed Node.js code safely with a receipt — use `POST /v1/sandbox/execute`.',
+  '- You need real-time prediction market data (Polymarket, Kalshi, Manifold, Limitless) — use `POST /v1/prediction/execute`.',
+  '- You need EVM wallet intelligence for Ethereum or Base — use `POST /v1/crypto/execute`.',
+  '- You want per-request payment with no account, no API key, and safe retry on failure.',
   '- You need the same request to be safely retryable without being charged twice.',
   '',
   '## Observed capability',
@@ -1346,6 +1376,19 @@ const skillDocument = [
     '2. Read the 402 response: `accepts[0]` carries the exact maximum charge, asset, network, and expiry.',
     '3. Approve deliberately, then resend with `PAYMENT-SIGNATURE` (x402) or `Authorization: Payment` (MPP).',
     '4. Reuse the same key to replay the completed result. A replay never charges again.',
+    '',
+    '### Paid AI example',
+    '',
+    '```bash',
+    [
+      `curl -i -X POST ${publicBaseUrl}/v1/ai/execute`,
+      "  -H 'content-type: application/json'",
+      "  -H 'Idempotency-Key: my-unique-key-550e8400'",
+      `  -d '{"model":"${currentPaidDiscoveryModel}","input":{"kind":"chat","messages":[{"role":"user","content":"Reply with ready."}],"responseFormat":"text","stream":false},"maximumOutputTokens":16}'`,
+    ].join('\n'),
+    '```',
+    '',
+    'The paid AI route returns a 402 with the exact request-derived quote before execution. Approve only that quote, then resend with x402 or MPP payment headers.',
     '',
     '## Failure behaviour',
     '',

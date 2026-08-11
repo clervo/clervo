@@ -29,10 +29,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {
@@ -261,10 +260,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {
@@ -550,10 +548,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {
@@ -963,10 +960,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {
@@ -1268,10 +1264,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {
@@ -1649,10 +1644,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {

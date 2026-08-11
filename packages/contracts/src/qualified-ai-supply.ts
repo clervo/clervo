@@ -41,6 +41,7 @@ export interface QualifiedAiSupplyModel {
     state: 'available' | 'degraded' | 'unavailable' | 'withdrawn';
     reason: string | null;
     observedAt: string;
+    expectedReturnAt?: string;
   };
   upstreamCost: {
     state: 'known' | 'unknown';
@@ -199,12 +200,17 @@ function parseModel(value: unknown): Readonly<QualifiedAiSupplyModel> {
   };
 
   const availabilityInput = record(input.availability, 'qualified_ai_supply_availability_invalid');
-  exactKeys(availabilityInput, ['state', 'reason', 'observedAt'], 'qualified_ai_supply_availability_additional_property');
+  exactKeys(availabilityInput, ['state', 'reason', 'observedAt', 'expectedReturnAt'], 'qualified_ai_supply_availability_additional_property');
   if (!['available', 'degraded', 'unavailable', 'withdrawn'].includes(availabilityInput.state as string)) throw new TypeError('qualified_ai_supply_availability_state_invalid');
   const availabilityState = availabilityInput.state as QualifiedAiSupplyModel['availability']['state'];
   const availabilityReason = availabilityInput.reason === null ? null : text(availabilityInput.reason, 'qualified_ai_supply_availability_reason_invalid', 160);
   if (availabilityState === 'available' ? availabilityReason !== null : availabilityReason === null) throw new TypeError('qualified_ai_supply_availability_reason_mismatch');
-  const availability = { state: availabilityState, reason: availabilityReason, observedAt: timestamp(availabilityInput.observedAt, 'qualified_ai_supply_availability_observed_at_invalid') };
+  const availability = {
+    state: availabilityState,
+    reason: availabilityReason,
+    observedAt: timestamp(availabilityInput.observedAt, 'qualified_ai_supply_availability_observed_at_invalid'),
+    ...(availabilityInput.expectedReturnAt === undefined ? {} : { expectedReturnAt: timestamp(availabilityInput.expectedReturnAt, 'qualified_ai_supply_availability_expected_return_at_invalid') }),
+  };
 
   const costInput = record(input.upstreamCost, 'qualified_ai_supply_cost_invalid');
   exactKeys(costInput, ['state', 'pricing', 'authorityRef', 'observedAt', 'validUntil'], 'qualified_ai_supply_cost_additional_property');

@@ -40,6 +40,10 @@
       "zone_name": "clervo.dev"
     },
     {
+      "pattern": "ai.clervo.dev/.well-known/ai-plugin.json",
+      "zone_name": "clervo.dev"
+    },
+    {
       "pattern": "ai.clervo.dev/openapi.json",
       "zone_name": "clervo.dev"
     },

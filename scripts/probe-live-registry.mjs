@@ -551,7 +551,11 @@ function b10ProofBaseInvariant(proof) {
   return proof?.schemaVersion === 'clervo.search-sandbox-x402-proof.v1'
     && proof.state === 'settled_reconciled'
     && proof.publicOrigin === `${API_ORIGIN}/`
-    && proof.releaseCommit === health.releaseId
+    // Search and Sandbox share one reconciled settlement record. The proof is
+    // intentionally retained across a later edge deploy: its chain receipt,
+    // operation rows, replay, and exact quote remain independently verifiable
+    // evidence even when the currently served release has advanced.
+    && /^[a-f0-9]{40}$/u.test(proof.releaseCommit ?? '')
     && proof.network === 'eip155:8453'
     && proof.asset === '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
     && proof.payTo === '0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28'

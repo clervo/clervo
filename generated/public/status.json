@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-11T20:20:35.624Z",
+  "observedAt": "2026-08-11T20:45:57.926Z",
   "publicApi": {
     "state": "public_search_ai_sandbox_prediction_and_crypto_verified",
     "endpoint": "https://api.clervo.dev",
@@ -39,11 +39,34 @@
       }
     ]
   },
+  "paymentProof": {
+    "state": "owner_funded_public_proof",
+    "productId": "search.web",
+    "network": "Base",
+    "asset": "USDC",
+    "amountAtomic": "6000",
+    "decimals": 6,
+    "amountDisplay": "0.006 USDC",
+    "settlementConfirmed": true,
+    "usefulResult": true,
+    "replaySameReceipt": true,
+    "secondAuthorization": false,
+    "secondExecution": false,
+    "secondCharge": false,
+    "publicCustomerPaymentAvailable": true,
+    "revenueEvidence": false,
+    "demandEvidence": false,
+    "transactionUrl": "https://basescan.org/tx/0x22a537342614b14eb676b1cb3ccb51acdec98bb56811d152e650b3985a0403cb",
+    "evidence": [
+      "infra/production/gcp/search-sandbox-x402-proof.v1.json",
+      "tests/contract/b10-proof-worker.test.mjs"
+    ]
+  },
   "observedTruth": {
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T20:20:35.624Z",
+      "observedAt": "2026-08-11T20:45:57.926Z",
       "releaseId": "0d9307859da94c229eaa2f5e3e96dbb2cc847f1b",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -155,7 +178,7 @@
           "sandbox.run"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -174,7 +197,7 @@
           "search.web"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -238,14 +261,14 @@
     {
       "id": "sandbox",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid",
+      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
     {
       "id": "search",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid",
+      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     }
