@@ -1,365 +1,174 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { Worlds } from '../components/Worlds';
-import {
-  formatUsdc,
-  launchState,
-  lifecycleLabels,
-  observedProduct,
-  observedTruth,
-  phases,
-  proofLabels,
-  publicApiCallable,
-  publicOperations,
-  quickStartCurl,
-  quickStartNeedsNoKey,
-  installExamples,
-  type ExperiencePhase,
-} from '../product';
+import { B12HeroApex } from '../components/B12HeroApex';
+import { B12HomepageBelowHero } from '../components/B12HomepageBelowHero';
+import type { ExperiencePhase } from '../product';
 import { Link } from '../router';
 
-/*
- * The homepage.
- *
- * The first five seconds have to answer three questions: what this is, what it
- * does for the reader, and what to do next. Everything below the hero exists to
- * support one of those three answers, and every number on the page is read from
- * the observed registry rather than written into the markup — the previous
- * homepage carried a "packages published, API not callable" badge that had
- * outlived the deployment it described.
- */
+type DemoState = 'rest' | 'request' | 'qualify' | 'execute' | 'verify' | 'prove' | 'refused' | 'unresolved';
+type Truth = readonly [main: string, small: string];
 
-const liveFamilies = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live');
-const liveLabels = liveFamilies.map(({ label }) => label).join(', ');
-const liveRouteCount = publicOperations.filter(({ lifecycleState }) => lifecycleState === 'live').length;
-const search = observedProduct('search');
+const labels: Record<DemoState, string> = {
+  rest: 'Ready for an agent task.',
+  request: 'Task received.',
+  qualify: 'Qualifying capability, availability, policy, and cost.',
+  execute: 'Executing the selected route.',
+  verify: 'Verifying result and evidence.',
+  prove: 'Verified result. Evidence and receipt resolved.',
+  refused: 'Task refused. No execution and no charge.',
+  unresolved: 'Unresolved state. Retry blocked pending reconciliation.',
+};
 
-// The cheapest observed price across every serving route. It is a real quoted
-// ceiling, so it can be shown as one; if nothing is quoting, nothing is shown.
-const quotedPrices = publicOperations
-  .filter(({ lifecycleState, pricing }) => lifecycleState === 'live' && pricing.displayPrice !== null)
-  .map(({ pricing }) => pricing.displayPrice!);
-const cheapestQuote = quotedPrices.length === 0
-  ? null
-  : quotedPrices.reduce((low, price) => (BigInt(price.amountAtomic) < BigInt(low.amountAtomic) ? price : low));
+const truths: Record<DemoState, readonly Truth[]> = {
+  rest: [
+    ['For AI agents', 'Task-native interface'],
+    ['Across six capabilities', 'One operating layer'],
+    ['With bounded cost and proof', 'Evidence + receipt'],
+  ],
+  request: [
+    ['Task accepted', 'Bounded request'],
+    ['Six routes evaluated', 'No route chosen yet'],
+    ['No payment initiated', 'Approval remains external'],
+  ],
+  qualify: [
+    ['Route qualified', 'Search + RPC + intelligence'],
+    ['Maximum ≤ $0.02 USDC', 'Demo fixture'],
+    ['Approval required', 'Before any paid execution'],
+  ],
+  execute: [
+    ['Route executing', 'Selected capabilities'],
+    ['Maximum ≤ $0.02 USDC', 'Demo fixture'],
+    ['Evidence collecting', 'Sources + chain checks'],
+  ],
+  verify: [
+    ['Result returned', 'Now verifying'],
+    ['12 sources checked', '3 chain checks'],
+    ['Receipt preparing', 'Replay state binding'],
+  ],
+  prove: [
+    ['Verified outcome', 'Search + RPC + intelligence'],
+    ['Maximum ≤ $0.02 USDC', 'Demo fixture'],
+    ['Evidence + receipt', 'No additional replay charge'],
+  ],
+  refused: [
+    ['Request refused', 'Policy or availability boundary'],
+    ['No execution', 'No provider call'],
+    ['No charge', 'No gold outcome'],
+  ],
+  unresolved: [
+    ['Outcome unresolved', 'Execution or settlement uncertain'],
+    ['Retry blocked', 'Reconciliation required'],
+    ['No gold outcome', 'Proof not complete'],
+  ],
+};
 
-function PhaseSection({
-  id,
-  eyebrow,
-  title,
-  detail,
-  rule,
-  contract,
-  onPhase,
-}: {
-  id: ExperiencePhase;
-  eyebrow: string;
-  title: string;
-  detail: string;
-  rule: string;
-  contract: { to: string; label: string };
-  onPhase(phase: ExperiencePhase): void;
-}) {
-  const ref = useRef<HTMLElement>(null);
+const allowedStates = new Set<DemoState>([
+  'rest',
+  'request',
+  'qualify',
+  'execute',
+  'verify',
+  'prove',
+  'refused',
+  'unresolved',
+]);
+
+export function Home({ onPhase: _onPhase }: { onPhase(phase: ExperiencePhase): void }) {
+  const [state, setState] = useState<DemoState>('rest');
+  const [running, setRunning] = useState(false);
+  const [hasRun, setHasRun] = useState(false);
+  const timers = useRef<number[]>([]);
+
+  const clearTimers = () => {
+    timers.current.forEach((timer) => window.clearTimeout(timer));
+    timers.current = [];
+  };
+
   useEffect(() => {
-    const element = ref.current;
-    if (element === null) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) onPhase(id);
-      },
-      { rootMargin: '-38% 0px -38% 0px', threshold: 0.01 },
-    );
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [id, onPhase]);
+    const requested = new URLSearchParams(window.location.search).get('state');
+    if (requested !== null && allowedStates.has(requested as DemoState)) {
+      setState(requested as DemoState);
+      if (requested !== 'rest') setHasRun(true);
+    }
+    return clearTimers;
+  }, []);
+
+  const runSuccess = () => {
+    clearTimers();
+    setRunning(true);
+    setHasRun(true);
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setState('prove');
+      setRunning(false);
+      return;
+    }
+
+    const sequence: readonly [DemoState, number][] = [
+      ['request', 0],
+      ['qualify', 620],
+      ['execute', 1430],
+      ['verify', 2310],
+      ['prove', 3070],
+    ];
+
+    sequence.forEach(([next, delay]) => {
+      timers.current.push(window.setTimeout(() => setState(next), delay));
+    });
+    timers.current.push(window.setTimeout(() => setRunning(false), 3700));
+  };
+
   return (
-    <section ref={ref} id={id} className={`phase-section phase-section--${id}`}>
-      <div className="phase-copy">
-        <p className="eyebrow">{eyebrow}</p>
-        <h2>{title}</h2>
-        <p>{detail}</p>
-      </div>
-      <aside className="phase-rule">
-        <p className="phase-rule__label">The rule this step enforces</p>
-        <p className="phase-rule__text">{rule}</p>
-        <Link className="text-link" to={contract.to}>{contract.label}</Link>
-      </aside>
-    </section>
-  );
-}
-
-export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
-  const proof = launchState.paymentProof;
-
-  return (
-    <>
-      <section className="hero">
-        <div className="hero__copy">
-          <p className="eyebrow">{launchState.identity.category}</p>
-          <h1>Give your agent a task.<br />Get a verified result.</h1>
-          <p className="hero__deck">
-            Clervo finds the right capability for a bounded job, runs it inside
-            an approved price ceiling, and returns the result with its evidence,
-            its cost, and a replay-safe receipt. {launchState.identity.commercialPromise}
-          </p>
-          <div className="cluster hero__actions">
-            <Link className="button button--primary" to="/start">Set up Clervo</Link>
-            <Link className="button button--secondary" to="/catalog">See what is serving now</Link>
-          </div>
-          {/*
-            * The free path is the strongest thing this page can offer, so it is
-            * stated as a fact only while the deployed system is observed
-            * serving it. If the free route disappears, this line disappears
-            * with it rather than becoming a promise the site cannot keep.
-            */}
-          <p className="hero__free">
-            {search.freeEntry === null
-              ? 'The free entry route is not serving right now. The catalog below shows exactly what is.'
-              : 'The first call needs no account, no API key and no wallet.'}
-          </p>
-        </div>
-
-        {/*
-          * The observed strip. Four facts, each of them probed: how many routes
-          * are serving, what the cheapest quoted ceiling is, what the proof
-          * level actually reaches, and when it was all observed. A marketing
-          * statistic would go here on most sites; this is the version that
-          * cannot go stale, because nothing in it is typed by hand.
-          */}
-        <dl className="hero__observed" aria-label="Observed deployment state">
-          <div>
-            <dt>Routes serving</dt>
-            <dd>{liveRouteCount}</dd>
-          </div>
-          <div>
-            <dt>Product families live</dt>
-            <dd>{liveFamilies.length} of {observedTruth.products.length}</dd>
-          </div>
-          <div>
-            <dt>Lowest quoted ceiling</dt>
-            <dd>{cheapestQuote === null ? 'none quoted' : formatUsdc(cheapestQuote.amountAtomic, cheapestQuote.decimals)}</dd>
-          </div>
-          <div>
-            <dt>Observed</dt>
-            <dd>
-              <time dateTime={observedTruth.provenance.observedAt}>
-                {observedTruth.provenance.observedAt.slice(0, 10)}
-              </time>
-            </dd>
-          </div>
-        </dl>
-      </section>
-
-      {/* Find, Understand, Act. The permanent mechanism, stated once. */}
-      <section className="band band--ruled mechanism" aria-labelledby="mechanism-heading">
-        <div className="section-head shell">
-          <p className="eyebrow">{launchState.identity.architectureNarrative}</p>
-          <h2 id="mechanism-heading">Three steps, and none of them are yours to build.</h2>
-        </div>
-        <ol className="mechanism__steps shell">
-          <li className="panel">
-            <div className="panel__body stack stack--tight">
-              <p className="eyebrow">01 / Find</p>
-              <h3>The job picks its route.</h3>
-              <p>
-                A bounded request is matched against the routes the deployed
-                catalog is observed serving, with the contract, the supplier and
-                the price ceiling attached to the choice.
-              </p>
-            </div>
-          </li>
-          <li className="panel">
-            <div className="panel__body stack stack--tight">
-              <p className="eyebrow">02 / Understand</p>
-              <h3>Cost and limits are visible first.</h3>
-              <p>
-                The maximum charge, the network, the asset and the failure policy
-                are all returned before anything executes. Approval is a
-                deliberate act, not a default.
-              </p>
-            </div>
-          </li>
-          <li className="panel">
-            <div className="panel__body stack stack--tight">
-              <p className="eyebrow">03 / Act</p>
-              <h3>The result arrives with its receipt.</h3>
-              <p>
-                Output, evidence, exact cost and a request hash come back
-                together. Replaying the receipt returns the same result without a
-                second charge.
-              </p>
-            </div>
-          </li>
-        </ol>
-      </section>
-
-      {/* The free first call, exactly as the deployed route accepts it. */}
-      <section className="band band--ruled home-first" aria-labelledby="home-first-heading">
-        <div className="home-first__inner shell">
-          <div className="stack">
-            <p className="eyebrow">First call / one command</p>
-            <h2 id="home-first-heading">Run one command.<br />Read a cited result.</h2>
-            <p className="lede">
-              {quickStartCurl === null
-                ? 'The clients are public and registry-verified. No free command is published here, because the deployed system is not currently serving one and a command that fails is worse than no command at all.'
-                : quickStartNeedsNoKey
-                  ? 'No account, no API key, no wallet, no idempotency key. The free route generates the key and returns it in the response header, so the same call can be replayed deliberately.'
-                  : 'No account, no API key, no wallet. The free route currently requires an idempotency-key header, so the command carries one; reuse the same value to replay without a second execution.'}
-            </p>
-            <div className="cluster">
-              <Link className="button button--primary" to="/start">Set up Clervo</Link>
-              <Link className="button button--quiet" to="/docs/quickstart">Open the quickstart</Link>
-            </div>
-          </div>
-          <div className="code">
-            <div className="code__head">
-              <span>{quickStartCurl === null ? 'TypeScript client' : 'Free Search call'}</span>
-              <span className={`state state--${search.lifecycleState}`}>
-                {lifecycleLabels[search.lifecycleState]}
-              </span>
-            </div>
-            {/* Scrollable, so it is a real stop in the keyboard tab order. */}
-            <pre
-              tabIndex={0}
-              role="group"
-              aria-label={quickStartCurl === null ? 'TypeScript client example, scrollable' : 'Free Search call, scrollable'}
+    <div className="b12-home" data-running={running} data-state={state}>
+      <a className="b12-skip" href="#b12-title">Skip to main content</a>
+      <section className="b12-hero shell" aria-labelledby="b12-title">
+        <section className="b12-copy" aria-labelledby="b12-title">
+          <p className="b12-eyebrow">Agent outcome infrastructure</p>
+          <h1 id="b12-title">Give your agent a task.<br />Get a verified result.</h1>
+          <div className="b12-actions">
+            <Link className="b12-button b12-button-primary b12-liquid" data-liquid="primary" to="/start">
+              Set up Clervo
+            </Link>
+            <button
+              className="b12-button b12-button-secondary b12-run b12-liquid"
+              data-liquid="secondary"
+              disabled={running}
+              onClick={runSuccess}
+              type="button"
             >
-              <code>{quickStartCurl ?? installExamples.typescript}</code>
-            </pre>
+              {hasRun ? 'Run again' : 'Run a task'}
+            </button>
           </div>
-        </div>
+        </section>
+
+        <section aria-label="Clervo Apex Core" className="b12-stage">
+          <B12HeroApex />
+          <p aria-live="polite" className="b12-stage-state">{labels[state]}</p>
+        </section>
+
+        <aside aria-label="Clervo outcome contract" className="b12-truths">
+          {truths[state].map(([main, small]) => (
+            <p className="b12-truth" key={main}>
+              {main}
+              <small>{small}</small>
+            </p>
+          ))}
+        </aside>
+
+        <section aria-label="Demonstration task" className="b12-task-contract">
+          <span className="b12-task-label">Demo task · no payment</span>
+          <p className="b12-task-text">
+            Research an on-chain protocol, verify its current claims, and return cited evidence. Fixture values are clearly labeled and do not represent a live customer transaction.
+          </p>
+        </section>
       </section>
 
-      {/* The lifecycle. Drives the Apex instrument as the reader scrolls. */}
-      <div className="phase-sequence" aria-label="Clervo outcome lifecycle">
-        {phases.map((phase) => (
-          <PhaseSection key={phase.id} {...phase} onPhase={onPhase} />
-        ))}
+      <div className="b12-rail shell" aria-label="Capability families">
+        <span>Search</span><i>·</i><span>AI</span><i>·</i><span>Secure Sandbox</span><i>·</i>
+        <span>Multi-chain RPC</span><i>·</i><span>Prediction</span><i>·</i><span>Crypto Intelligence</span>
       </div>
 
-      {/* The six permanent families, with their observed state on each card. */}
-      <section className="band band--ruled families" aria-labelledby="families-heading">
-        <div className="section-head shell">
-          <p className="eyebrow">One outcome layer / six capability families</p>
-          <h2 id="families-heading">Cross the worlds without stitching them yourself.</h2>
-          <p className="lede">
-            Research, AI, secure execution, RPC, prediction and crypto
-            intelligence share one bounded contract. Engineering state and
-            customer availability are reported separately, because they are
-            separate facts.
-          </p>
-        </div>
-        <ul className="families__grid shell">
-          {observedTruth.products.map((product) => (
-            <li key={product.id} className="panel families__card">
-              <div className="panel__body stack stack--tight">
-                <div className="families__head">
-                  <h3>{product.label}</h3>
-                  <span className={`state state--${product.lifecycleState}`}>
-                    {lifecycleLabels[product.lifecycleState]}
-                  </span>
-                </div>
-                <p className="data quiet">{product.operations.join(' · ')}</p>
-                <p className="quiet">Proof: {proofLabels[product.proofLevel]}</p>
-                {product.observedPrice === null ? null : (
-                  <p className="data">
-                    {formatUsdc(product.observedPrice.amountAtomic, 6)} maximum on {product.observedPrice.network}
-                  </p>
-                )}
-                {product.reason === null ? null : <p className="quiet">{product.reason}</p>}
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className="cluster families__actions shell">
-          <Link className="button button--secondary" to="/catalog">Open the live catalog</Link>
-          <Link className="button button--quiet" to="/product">Read the product overview</Link>
-        </div>
-      </section>
-
-      <section className="band band--ruled worlds-section" aria-label="Capability worlds">
-        <Worlds />
-      </section>
-
-      {/* Proof, stated at exactly the strength the evidence supports. */}
-      <section className="band band--ruled home-proof" aria-labelledby="home-proof-heading">
-        <div className="section-head shell">
-          <p className="eyebrow">Proof / what is actually demonstrated</p>
-          <h2 id="home-proof-heading">Evidence travels with the claim.</h2>
-          <p className="lede">
-            {publicApiCallable
-              ? `${liveLabels} are publicly reachable and quote a price. A payment settled once on ${proof.network}, returned a useful result, and replayed against the same receipt without a second charge.`
-              : `A payment settled once on ${proof.network}, returned a useful result, and replayed against the same receipt without a second charge. The public customer API is not reachable yet.`}
-          </p>
-        </div>
-        <dl className="facts shell home-proof__facts">
-          <div>
-            <dt>Settled charge</dt>
-            <dd>{proof.amountDisplay} on {proof.network}</dd>
-          </div>
-          <div>
-            <dt>Result</dt>
-            <dd>useful, with citations</dd>
-          </div>
-          <div>
-            <dt>Replay</dt>
-            <dd>same receipt, no second charge</dd>
-          </div>
-          <div>
-            <dt>Strongest proof level reached</dt>
-            <dd>{proofLabels[search.proofLevel]}</dd>
-          </div>
-          <div>
-            <dt>Customer revenue evidence</dt>
-            <dd>{proof.revenueEvidence ? 'recorded' : 'none claimed'}</dd>
-          </div>
-        </dl>
-        <ul className="home-proof__links shell">
-          <li>
-            <Link className="panel panel--interactive" to="/proof">
-              <div className="panel__body stack stack--tight">
-                <p className="eyebrow">01 / Proof</p>
-                <h3>Settlement and no-charge replay</h3>
-                <p className="quiet">What it proves, and what it does not.</p>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link className="panel panel--interactive" to="/security">
-              <div className="panel__body stack stack--tight">
-                <p className="eyebrow">02 / Security</p>
-                <h3>Fail-closed invariants</h3>
-                <p className="quiet">Payment, secrets, isolation and cost ceilings.</p>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link className="panel panel--interactive" to="/status">
-              <div className="panel__body stack stack--tight">
-                <p className="eyebrow">03 / Status</p>
-                <h3>Availability without launch theatre</h3>
-                <p className="quiet">Engineering, customer and commercial state, kept apart.</p>
-              </div>
-            </Link>
-          </li>
-        </ul>
-      </section>
-
-      <section className="band home-cta" aria-labelledby="home-cta-heading">
-        <div className="home-cta__inner shell stack">
-          <p className="eyebrow">{launchState.identity.commercialPromise}</p>
-          <h2 id="home-cta-heading">Give your agent a task.<br />Get a verified result.</h2>
-          <div className="cluster">
-            <Link className="button button--primary" to="/start">Set up Clervo</Link>
-            <Link className="button button--quiet" to="/status">Read current status</Link>
-          </div>
-          <p className="quiet">
-            Observed {observedTruth.provenance.observedAt.slice(0, 10)} from{' '}
-            {observedTruth.provenance.source}. No customer revenue or demand is claimed.
-          </p>
-        </div>
-      </section>
-    </>
+      <B12HomepageBelowHero />
+    </div>
   );
 }

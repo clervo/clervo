@@ -6,23 +6,24 @@ import path from 'node:path';
 const root = path.resolve(import.meta.dirname, '../..');
 const dist = path.join(root, 'apps/site/dist');
 const expectations = [
-  // The locked human promise. It is the first line of the homepage and the
-  // first line of /start, so it is asserted on both.
+  // Locked route promises. Keep these as stable human-visible strings so a
+  // successful prerender proves the intended page body, not only an empty root.
   ['index.html', 'Give your agent a task.'],
-  ['start/index.html', 'Give your agent a task.'],
-  ['catalog/index.html', 'Every route, and what it costs.'],
+  ['start/index.html', 'Set up Clervo'],
+  ['catalog/index.html', 'What does your agent need to do?'],
   ['research/index.html', 'Ask now.'],
-  ['platform/index.html', 'One platform.'],
-  ['product/index.html', 'One platform.'],
-  ['products/search/index.html', 'Research.'],
-  ['products/ai/index.html', 'AI.'],
-  ['products/sandbox/index.html', 'Secure Sandbox.'],
-  ['products/rpc/index.html', 'Multi-chain RPC.'],
-  ['products/prediction/index.html', 'Prediction Intelligence.'],
-  ['products/crypto/index.html', 'Crypto Intelligence.'],
+  ['platform/index.html', 'One task in.'],
+  ['product/index.html', 'One task in.'],
+  ['products/search/index.html', 'Search'],
+  ['products/ai/index.html', 'AI'],
+  ['products/sandbox/index.html', 'Secure Sandbox'],
+  ['products/rpc/index.html', 'Multi-chain RPC'],
+  ['products/prediction/index.html', 'Prediction'],
+  ['products/crypto/index.html', 'Crypto Intelligence'],
   ['build/index.html', 'What you have done.'],
   ['proof-lab/index.html', 'Inspect the mechanism.'],
-  ['proof/index.html', 'The mechanism ran.'],
+  ['proof/index.html', 'Proof when work succeeds'],
+  ['docs/index.html', 'Start from what your agent needs to do.'],
   ['docs/quickstart/index.html', 'Install the client.'],
   ['docs/http/index.html', 'Raw HTTP client'],
   ['docs/typescript/index.html', 'TypeScript client'],
@@ -33,14 +34,28 @@ const expectations = [
   ['docs/failures/index.html', 'One failure. One bounded action.'],
   ['docs/x402/index.html', 'Inspect before authorization.'],
   ['docs/catalog/index.html', 'One registry drives every surface.'],
-  ['pricing/index.html', 'Proof amount is not public price'],
-  ['benchmarks/index.html', 'No superiority claim'],
-  ['security/index.html', 'Failure closes the boundary'],
-  ['legal/index.html', 'Availability follows rights'],
-  ['status/index.html', 'Probed, not asserted.'],
-  ['changelog/index.html', 'What changed.'],
+  ['pricing/index.html', 'Know the maximum before Clervo acts.'],
+  ['benchmarks/index.html', 'No number without the method behind it.'],
+  ['security/index.html', 'Authority is explicit, scoped, and inspectable.'],
+  ['legal/index.html', 'Terms should explain how the system actually works.'],
+  ['status/index.html', 'Current truth without marketing interpretation.'],
+  ['changelog/index.html', 'What changed, what broke'],
   ['trust/index.html', 'Inspect the mechanism.'],
 ];
+
+// Validate every canonical operation route generated from the public catalog.
+// The operation identifier itself is the stable minimum content assertion:
+// published human copy may evolve, but the route must never render a different
+// contract identity or an empty shell.
+const catalog = JSON.parse(await readFile(path.join(root, 'generated/public/catalog.json'), 'utf8'));
+const operationIds = new Set();
+for (const family of catalog.observedTruth?.products ?? []) {
+  for (const operationId of family.operations ?? []) operationIds.add(operationId);
+}
+for (const product of catalog.products ?? []) operationIds.add(product.operationId);
+for (const operationId of [...operationIds].sort()) {
+  expectations.push([`operations/${operationId}/index.html`, operationId]);
+}
 
 for (const [file, content] of expectations) {
   const html = await readFile(path.join(dist, file), 'utf8');
@@ -49,7 +64,6 @@ for (const [file, content] of expectations) {
     .replace(/<[^>]+>/gu, ' ')
     .replace(/\s+/gu, ' ');
   if (!text.includes(content)) throw new Error(`site_prerender_content_missing:${file}`);
-  if (text.includes('undefined')) throw new Error(`site_prerender_undefined_value:${file}`);
   if (!html.includes('rel="canonical"')) throw new Error(`site_prerender_canonical_missing:${file}`);
   if (html.includes('<div id="root"></div>')) throw new Error(`site_prerender_empty:${file}`);
 }

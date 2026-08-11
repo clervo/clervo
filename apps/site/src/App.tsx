@@ -5,21 +5,20 @@ import { Instrument } from './components/Instrument';
 import { LifecycleRail } from './components/Navigation';
 import { SiteFooter, SiteHeader } from './components/Shell';
 import { useActivation } from './experience';
+import { isCanonicalOperationId } from './operation';
 import { Docs } from './pages/Docs';
 import { Build } from './pages/Build';
 import { Capability } from './pages/Capability';
 import { Catalog } from './pages/Catalog';
-import { Changelog } from './pages/Changelog';
 import { Home } from './pages/Home';
 import { Guide, type GuideTopic } from './pages/Guide';
-import { Proof } from './pages/Proof';
+import { Operation } from './pages/Operation';
 import { ProofLab } from './pages/ProofLab';
 import { Product } from './pages/Product';
 import { Research } from './pages/Research';
 import { Start } from './pages/Start';
-import { Status } from './pages/Status';
-import { Trust, type TrustTopic } from './pages/Trust';
 import { TrustOverview } from './pages/TrustOverview';
+import { TrustSupport, type TrustSupportPage } from './pages/TrustSupport';
 import { observedTruth, publicApiCallable, type ExperiencePhase } from './product';
 
 const liveFamilyCount = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
@@ -43,6 +42,10 @@ function NotFound() {
   );
 }
 
+const trustSupportPages = new Set<TrustSupportPage>([
+  'pricing', 'proof', 'docs', 'status', 'security', 'benchmarks', 'changelog', 'legal',
+]);
+
 export function App() {
   const [phase, setPhase] = useState<ExperiencePhase>('risk');
   const [activation, updateActivation] = useActivation();
@@ -55,6 +58,7 @@ export function App() {
     if (pathname === '/') return;
     if (pathname.startsWith('/proof-lab')) return;
     else if (pathname === '/proof') setPhase('receipt');
+    else if (pathname.startsWith('/operations/')) setPhase('qualified');
     else if (pathname.startsWith('/docs')) setPhase(activation.receiptInspected ? 'receipt' : 'qualified');
     else if (pathname.startsWith('/products/')) setPhase(pathname === '/products/search' ? 'qualified' : 'risk');
     else if (pathname.startsWith('/product') || pathname === '/platform') setPhase('qualified');
@@ -67,7 +71,7 @@ export function App() {
 
   useEffect(() => {
     const exactTitles: Record<string, string> = {
-      '/': 'Outcome infrastructure for AI agents',
+      '/': 'Outcome infrastructure for agents',
       '/start': 'Set up Clervo',
       '/catalog': 'Live capability catalog',
       '/research': 'Research outcome',
@@ -88,12 +92,12 @@ export function App() {
       '/legal': 'Legal boundaries',
       '/status': 'Product status',
       '/changelog': 'Changelog',
-      '/products/search': 'Research product core',
-      '/products/ai': 'AI product core',
-      '/products/sandbox': 'Secure Sandbox product core',
-      '/products/rpc': 'Multi-chain RPC product core',
-      '/products/prediction': 'Prediction Intelligence product core',
-      '/products/crypto': 'Crypto Intelligence product core',
+      '/products/search': 'Search product family',
+      '/products/ai': 'AI product family',
+      '/products/sandbox': 'Secure Sandbox product family',
+      '/products/rpc': 'Multi-chain RPC product family',
+      '/products/prediction': 'Prediction product family',
+      '/products/crypto': 'Crypto Intelligence product family',
       '/docs/receipts': 'Receipt contract guide',
       '/docs/replay': 'Replay contract guide',
       '/docs/failures': 'Failure recovery guide',
@@ -101,7 +105,9 @@ export function App() {
       '/docs/catalog': 'Capability catalog guide',
       '/trust': 'Trust center',
     };
-    const routeTitle = exactTitles[pathname] ?? 'Route not found';
+    const operationMatch = pathname.match(/^\/operations\/([^/]+)$/u);
+    const routeTitle = exactTitles[pathname]
+      ?? (operationMatch?.[1] !== undefined && isCanonicalOperationId(operationMatch[1]) ? `Operation ${operationMatch[1]}` : 'Route not found');
     document.title = `${routeTitle} — Clervo`;
     let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (canonical === null) {
@@ -111,7 +117,7 @@ export function App() {
     }
     canonical.href = `https://clervo.dev${pathname === '/' ? '/' : `${pathname}/`}`;
     const description = pathname === '/'
-      ? 'Clervo is outcome infrastructure for AI agents. Give your agent a task. Get a verified result.'
+      ? 'Clervo is outcome infrastructure for agents: one bounded job in, one inspectable result out.'
       : `${routeTitle} from Clervo, with engineering state, customer lifecycle, and commercial proof kept separate.`;
     let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (meta !== null) meta.content = description;
@@ -122,6 +128,10 @@ export function App() {
     if (pathname === '/start') return <Start onPhase={updatePhase} />;
     if (pathname === '/catalog') return <Catalog onPhase={updatePhase} />;
     if (pathname === '/research') return <Research onPhase={updatePhase} />;
+    const operationMatch = pathname.match(/^\/operations\/([^/]+)$/u);
+    if (operationMatch?.[1] !== undefined && isCanonicalOperationId(operationMatch[1])) {
+      return <Operation operationId={operationMatch[1]} onPhase={updatePhase} />;
+    }
     const capabilityMatch = pathname.match(/^\/products\/([^/]+)$/u);
     if (capabilityMatch?.[1] !== undefined && ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto'].includes(capabilityMatch[1])) {
       return <Capability routeId={capabilityMatch[1]} onPhase={updatePhase} />;
@@ -139,8 +149,11 @@ export function App() {
         />
       );
     }
-    if (pathname === '/proof') return <Proof onPhase={updatePhase} />;
-    if (pathname === '/docs' || pathname === '/docs/quickstart') {
+    const trustSupportPage = pathname.slice(1) as TrustSupportPage;
+    if (trustSupportPages.has(trustSupportPage)) {
+      return <TrustSupport page={trustSupportPage} onPhase={updatePhase} />;
+    }
+    if (pathname === '/docs/quickstart') {
       return (
         <Docs
           activation={activation}
@@ -163,13 +176,7 @@ export function App() {
     if (docsMatch?.[1] !== undefined && ['receipts', 'replay', 'failures', 'x402', 'catalog'].includes(docsMatch[1])) {
       return <Guide topic={docsMatch[1] as GuideTopic} onPhase={updatePhase} />;
     }
-    if (pathname === '/status') return <Status onPhase={updatePhase} />;
-    if (pathname === '/changelog') return <Changelog onPhase={updatePhase} />;
     if (pathname === '/trust') return <TrustOverview onPhase={updatePhase} />;
-    const trustTopic = pathname.slice(1) as TrustTopic;
-    if (['pricing', 'benchmarks', 'security', 'legal'].includes(trustTopic)) {
-      return <Trust topic={trustTopic} onPhase={updatePhase} />;
-    }
     return <NotFound />;
   })();
 

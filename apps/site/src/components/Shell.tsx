@@ -125,6 +125,11 @@ export function SiteHeader() {
         className={`mobile-nav${open ? ' is-open' : ''}`}
         id={panelId}
         hidden={!open}
+        onClick={(event) => {
+          if (event.target !== event.currentTarget) return;
+          setOpen(false);
+          triggerRef.current?.focus();
+        }}
       >
         <div
           className="mobile-nav__panel"

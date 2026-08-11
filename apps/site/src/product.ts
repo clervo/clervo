@@ -315,9 +315,22 @@ interface ModelsDocument {
   data: Array<{
     id: string;
     object: 'model';
-    created: number;
+    created?: number;
     owned_by: string;
-    clervo: Omit<ObservedRoute, 'id'>;
+    clervo: {
+      identityKind: 'canonical' | 'alias';
+      aliases?: string[];
+      aliasFor?: string;
+      name: string;
+      description: string;
+      productIds: string[];
+      capabilities: string[];
+      availability: 'available' | 'degraded' | 'unavailable';
+      health: 'healthy' | 'degraded' | 'unavailable';
+      publicSellable: boolean;
+      publicationBlockers?: string[];
+      commerce: { executionPath: string };
+    };
   }>;
   clervo: { provenance: ObservedTruth['provenance'] };
 }
@@ -325,7 +338,26 @@ interface ModelsDocument {
 const modelsDocument = modelsSource as unknown as ModelsDocument;
 
 export const observedRoutes: ObservedRoute[] = modelsDocument.data
-  .map(({ id, clervo }) => ({ id, ...clervo }))
+  .map<ObservedRoute>(({ id, clervo }) => ({
+    id,
+    // The current customer catalog is model-first and deliberately does not
+    // publish internal supplier-route identifiers. Use the public model ID as
+    // the stable React/URL identity and keep supply disclosure explicit.
+    routeId: id,
+    supplyFamilyId: 'supply.not_publicly_disclosed',
+    productIds: clervo.productIds,
+    capabilities: clervo.capabilities,
+    route: clervo.commerce.executionPath,
+    lifecycleState: clervo.availability === 'available' ? 'live' : 'supply_paused',
+    proofLevel: observedTruth.products.find(({ id: productId }) => productId === 'ai')?.proofLevel ?? 'none',
+    sellable: clervo.publicSellable,
+    reason: clervo.publicationBlockers?.[0] ?? null,
+    expectedReturnAt: null,
+    // Customer pricing is usage-dimensional, not one frozen maximum charge.
+    // Model surfaces render that structure directly; operation surfaces ask
+    // the live endpoint for a request-bound quote.
+    observedPrice: null,
+  }))
   // Serving routes first, then paused ones, and alphabetically within each
   // group: a catalog that leads with what a caller cannot use today is a
   // catalog that reads as broken.
@@ -337,6 +369,7 @@ export const observedRoutes: ObservedRoute[] = modelsDocument.data
   });
 
 export const supplyFamilyLabels: Record<string, string> = {
+  'supply.not_publicly_disclosed': 'Not publicly disclosed',
   'supply.cloudflare_workers_ai': 'Cloudflare Workers AI',
   'supply.clervo_ai_gateway': 'Clervo AI gateway',
   'supply.deepgram': 'Deepgram',
