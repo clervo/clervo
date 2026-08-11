@@ -32,5 +32,17 @@ test('B7 reconciliation verify refuses without explicit proof identities and dat
     encoding: 'utf8', env: { PATH: process.env.PATH }, timeout: 10_000,
   });
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /CLERVO_DATABASE_URL is required/u);
+  assert.match(result.stderr, /database URL is invalid/u);
+});
+
+test('B7 preflight is read-only and refuses identities already observed by durable state', () => {
+  for (const guard of [
+    "action === 'preflight'", 'guarded proof identity was already observed; rotate and reconcile',
+    'receiverLedgerChainValid: true', 'receiverLedgerBalanced: true', 'paymentEffects: 0',
+  ]) assert.ok(source.includes(guard), `missing preflight guard ${guard}`);
+  const result = spawnSync(process.execPath, ['scripts/production/reconcile-b7-ai.mjs', 'preflight'], {
+    encoding: 'utf8', env: { PATH: process.env.PATH }, timeout: 10_000,
+  });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /database URL is invalid/u);
 });
