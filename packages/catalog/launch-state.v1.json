@@ -40,12 +40,12 @@
   },
   "paymentProof": {
     "state": "owner_funded_public_proof",
-    "productId": "search.web",
+    "productId": "prediction.markets",
     "network": "Base",
     "asset": "USDC",
-    "amountAtomic": "6000",
+    "amountAtomic": "2000",
     "decimals": 6,
-    "amountDisplay": "0.006 USDC",
+    "amountDisplay": "0.002 USDC",
     "settlementConfirmed": true,
     "usefulResult": true,
     "replaySameReceipt": true,
@@ -55,10 +55,10 @@
     "publicCustomerPaymentAvailable": true,
     "revenueEvidence": false,
     "demandEvidence": false,
-    "transactionUrl": "https://basescan.org/tx/0x22a537342614b14eb676b1cb3ccb51acdec98bb56811d152e650b3985a0403cb",
+    "transactionUrl": "https://basescan.org/tx/0xd7ca02e50b8870843275ddd7a27337b278827358a79ae40a611a8af6d2ffcec7",
     "evidence": [
-      "infra/production/gcp/search-sandbox-x402-proof.v1.json",
-      "tests/contract/b10-proof-worker.test.mjs"
+      "infra/production/gcp/prediction-x402-proof.v1.json",
+      "tests/contract/b8-prediction-intelligence.test.mjs"
     ]
   },
   "products": [

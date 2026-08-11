@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-11T21:52:46.314Z",
+  "observedAt": "2026-08-11T22:58:57.000Z",
   "publicApi": {
     "state": "public_search_ai_sandbox_prediction_and_crypto_verified",
     "endpoint": "https://api.clervo.dev",
@@ -41,12 +41,12 @@
   },
   "paymentProof": {
     "state": "owner_funded_public_proof",
-    "productId": "search.web",
+    "productId": "prediction.markets",
     "network": "Base",
     "asset": "USDC",
-    "amountAtomic": "6000",
+    "amountAtomic": "2000",
     "decimals": 6,
-    "amountDisplay": "0.006 USDC",
+    "amountDisplay": "0.002 USDC",
     "settlementConfirmed": true,
     "usefulResult": true,
     "replaySameReceipt": true,
@@ -56,17 +56,17 @@
     "publicCustomerPaymentAvailable": true,
     "revenueEvidence": false,
     "demandEvidence": false,
-    "transactionUrl": "https://basescan.org/tx/0x22a537342614b14eb676b1cb3ccb51acdec98bb56811d152e650b3985a0403cb",
+    "transactionUrl": "https://basescan.org/tx/0xd7ca02e50b8870843275ddd7a27337b278827358a79ae40a611a8af6d2ffcec7",
     "evidence": [
-      "infra/production/gcp/search-sandbox-x402-proof.v1.json",
-      "tests/contract/b10-proof-worker.test.mjs"
+      "infra/production/gcp/prediction-x402-proof.v1.json",
+      "tests/contract/b8-prediction-intelligence.test.mjs"
     ]
   },
   "observedTruth": {
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T21:52:46.314Z",
+      "observedAt": "2026-08-11T22:58:57.000Z",
       "releaseId": "fa9570d898cac044f3a9326a2186dbf68e49fe34",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -141,7 +141,7 @@
           "prediction.signal"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -247,7 +247,7 @@
     {
       "id": "prediction",
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid",
+      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },

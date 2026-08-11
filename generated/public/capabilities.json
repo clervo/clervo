@@ -6,7 +6,7 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T21:52:46.314Z",
+      "observedAt": "2026-08-11T22:58:57.000Z",
       "releaseId": "fa9570d898cac044f3a9326a2186dbf68e49fe34",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
@@ -81,7 +81,7 @@
           "prediction.signal"
         ],
         "lifecycleState": "live",
-        "proofLevel": "quote_observed_unpaid",
+        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -197,7 +197,7 @@
         "prediction.signal"
       ],
       "lifecycleState": "live",
-      "proofLevel": "quote_observed_unpaid",
+      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },

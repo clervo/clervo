@@ -43,8 +43,8 @@ const currentFreeModels = b7PublicModels.data
 const currentAliases = b7PublicModels.data.filter(({ clervo }) => clervo.identityKind === 'alias' && clervo.publicSellable === true).map(({ id }) => id).sort();
 if (typeof currentPaidDiscoveryModel !== 'string') throw new Error('ai_paid_discovery_model_missing');
 const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
-const b10Proof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/search-sandbox-x402-proof.v1.json'), 'utf8'));
-const b10SearchProof = b10Proof.operations.find(({ productId }) => productId === 'search.web');
+const predictionProof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/prediction-x402-proof.v1.json'), 'utf8'));
+const predictionPaymentProof = predictionProof.operations.find(({ productId }) => productId === 'prediction.markets');
 const predictionPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/prediction-product-pricing.v1.json'), 'utf8'));
 const cryptoPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/crypto-product-pricing.v1.json'), 'utf8'));
 
@@ -418,13 +418,14 @@ if (
   // not silently disagreed with it.
   || publicApiFlags.some((value) => value !== publicSearch)
   || launchState.paymentProof.state !== 'owner_funded_public_proof'
-  || launchState.paymentProof.productId !== b10SearchProof?.productId
-  || launchState.paymentProof.amountAtomic !== b10SearchProof?.customerChargeAtomic
-  || launchState.paymentProof.settlementConfirmed !== (b10SearchProof?.settlementStatus === 'settled')
-  || launchState.paymentProof.replaySameReceipt !== b10SearchProof?.replay?.sameReceipt
-  || launchState.paymentProof.secondCharge !== b10SearchProof?.replay?.secondCharge
-  || launchState.paymentProof.revenueEvidence !== b10Proof.proofClassification.revenueEvidence
-  || launchState.paymentProof.demandEvidence !== b10Proof.proofClassification.demandEvidence
+  || launchState.paymentProof.productId !== predictionPaymentProof?.productId
+  || launchState.paymentProof.amountAtomic !== predictionPaymentProof?.customerChargeAtomic
+  || launchState.paymentProof.settlementConfirmed !== (predictionPaymentProof?.settlementStatus === 'settled')
+  || launchState.paymentProof.usefulResult !== predictionPaymentProof?.usefulResult
+  || launchState.paymentProof.replaySameReceipt !== predictionPaymentProof?.replay?.sameReceipt
+  || launchState.paymentProof.secondCharge !== predictionPaymentProof?.replay?.secondCharge
+  || launchState.paymentProof.revenueEvidence !== predictionProof.proofClassification.revenueEvidence
+  || launchState.paymentProof.demandEvidence !== predictionProof.proofClassification.demandEvidence
   || launchState.products.length !== 6
   || launchState.products.some(({ id }) => !registry.pillars.some(({ pillarId }) => pillarId === id))
 ) throw new Error('launch_state_invalid');

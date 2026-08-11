@@ -6,23 +6,22 @@
   "service": "clervo-api-production",
   "publicOrigin": "https://api.clervo.dev/",
   "endpoint": "https://api.clervo.dev/v1/prediction/execute",
-  "releaseCommit": "ab0bb28b76fb8606bd854b741214961b8e1ba1d2",
-  "revision": "clervo-api-production-00037-nid",
-  "imageDigest": "sha256:f9dd5aba3ffb4bc08f98ce160be087475fbd1e41289a5d053cce3bff829c09c2",
+  "releaseCommit": "fa9570d898cac044f3a9326a2186dbf68e49fe34",
+  "revision": "clervo-api-production-00075-rox",
+  "imageDigest": "sha256:04677b4da4b5fc0fe82e9ec606829f55c101bfbe5aac67ccda1658ae9e398905",
   "network": "eip155:8453",
   "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
   "decimals": 6,
   "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
   "facilitatorUrl": "https://api.cdp.coinbase.com/platform/v2/x402",
   "ownerAuthorization": {
-    "maximumSpendAtomic": "4000",
-    "maximumExecutionCount": 2,
+    "maximumSpendAtomic": "2000",
+    "maximumExecutionCount": 1,
     "operationsInOrder": [
-      "prediction.markets",
-      "prediction.market"
+      "prediction.markets"
     ],
     "amountAtomicPerOperation": "2000",
-    "paymentEffects": 2,
+    "paymentEffects": 1,
     "automaticRetry": false
   },
   "observedChallenge": {
@@ -37,24 +36,25 @@
   "operations": [
     {
       "productId": "prediction.markets",
-      "idempotencyKey": "idem_b8_prediction_markets_funded_20260809_002",
-      "operationId": "op_51ddd509c878386beec22ad406fbb0ae",
-      "requestHash": "sha256:a8b40cf4dee071cce70b5545bdbd2ac23413c4eb97f36019003e0d409aacfaea",
-      "resultHash": "sha256:5c2afb92900716f7d5e66b84b0cf64c63cbbed93372ed50baf8ece722d306c2f",
-      "receiptId": "rcpt_74a0f5bed8a43523e6a0573ad51bfb7c",
-      "receiptHash": "sha256:a831d980a0469fc774e3710031c2a32b7c94d0e3a8c4e5247169aec74709f6c3",
+      "idempotencyKey": "idem_agentcash_external_prediction_20260811_01",
+      "operationId": "op_d3bd9f8b9f6ae3493a93bb22e0f4a917",
+      "requestHash": "sha256:76c587f1dfc10701180200c666c17fe8a21fb94a071be552266fa70facbbffa5",
+      "resultHash": "sha256:56a04dce13e75f7a613bf3e197a5a4ba249081f1ca655a185e0a3eaf273a8ece",
+      "receiptId": "rcpt_c57878a0727609bf7119aaec4811a007",
+      "receiptHash": "sha256:ae5d13fdfc2051d23bf3606bb7adcc8d8d9d834e6df33bf142c69eba937c22c5",
       "customerChargeAtomic": "2000",
       "supplierCostAtomic": "0",
       "settlementStatus": "settled",
-      "settlementReferenceHash": "sha256:14805f0ce3533146cb06fd3e35f06dafad7e9322badd75e2bc51df343aaaebb8",
-      "transactionHash": "0xc71d0e7c994b2e0c2f2d84ba2f86368b81abdf30ebac1f2763231a797255ee9f",
-      "blockNumber": 49750730,
-      "logIndex": 245,
+      "settlementReferenceHash": "sha256:2f95d40b9e5ba83200bce3edfd8803196004159f5d0292c96c7ba96cdc5f666a",
+      "transactionHash": "0xd7ca02e50b8870843275ddd7a27337b278827358a79ae40a611a8af6d2ffcec7",
+      "blockNumber": 49849561,
+      "logIndex": 127,
       "chainStatus": "confirmed",
       "exactTransferCount": 1,
       "usefulResult": true,
       "resultSummary": {
-        "marketCount": 3,
+        "marketCount": 1,
+        "resultState": "degraded",
         "freshnessState": "fresh",
         "adapterId": "adapter_prediction.pdata_rest",
         "sourceId": "pdata",
@@ -71,77 +71,35 @@
       },
       "durable": {
         "state": "completed",
-        "completedAt": "2026-08-09T15:53:22.454Z",
+        "completedAt": "2026-08-11T22:47:45.751Z",
         "operationRows": 1,
         "accountingRows": 1,
-        "accountingEntryId": "acct_e7347e019573e6d08a45e24c7ca48c95424d8970",
-        "accountingEntryHash": "sha256:67d22f1d81a010d5cb9a6370b3262b2508cff4be844d6a3b8d573f960b927451"
-      }
-    },
-    {
-      "productId": "prediction.market",
-      "idempotencyKey": "idem_b8_prediction_market_funded_20260809_001",
-      "operationId": "op_69aa12671017d53c7396e1131c23a0b1",
-      "requestHash": "sha256:4fec24673e7f5f156775c4d05249091158e581ee9998d2ae1c81402c53a34d76",
-      "resultHash": "sha256:6a264f9bc752060fb74cd3e2865b0ca74f8aec6275e7150a73991db5af403fbf",
-      "receiptId": "rcpt_0af12608e0564f8d016d9650bd3d99e2",
-      "receiptHash": "sha256:d04d82cbb4c96ca106216e8e70f62c9fd4bc50fd0b0779b25fcbec6014d0fa55",
-      "customerChargeAtomic": "2000",
-      "supplierCostAtomic": "0",
-      "settlementStatus": "settled",
-      "settlementReferenceHash": "sha256:070f82afdc02120b26be65b09b4cb094e5c45297dac7cc9bacb4fd3b5ad86273",
-      "transactionHash": "0xba73b38729d894b230bbd67d5caedd743bd2a3a279dc99a9b8ad188a3063e683",
-      "blockNumber": 49750946,
-      "logIndex": 96,
-      "chainStatus": "confirmed",
-      "exactTransferCount": 1,
-      "usefulResult": true,
-      "resultSummary": {
-        "marketRef": "pmkt_0527730107d822de06c8f43b38ead657",
-        "venue": "polymarket",
-        "freshnessState": "fresh",
-        "adapterId": "adapter_prediction.pdata_rest",
-        "sourceId": "pdata",
-        "license": "CC BY 4.0"
-      },
-      "replay": {
-        "sameOperation": true,
-        "sameReceipt": true,
-        "sameResult": true,
-        "idempotencyReplayed": true,
-        "paymentHeaderSent": false,
-        "secondAuthorization": false,
-        "secondCharge": false
-      },
-      "durable": {
-        "state": "completed",
-        "completedAt": "2026-08-09T16:00:36.220Z",
-        "operationRows": 1,
-        "accountingRows": 1,
-        "accountingEntryId": "acct_24cde511496816209ea1b71b505558285796b821",
-        "accountingEntryHash": "sha256:1272444d65377139efad84e177efc3af5c58b0f02cfbccdd13c991aefb102d99"
+        "accountingEntryId": "acct_50d59c850b854fe1caecfdf6d6a624b64d9bfa64",
+        "accountingEntryHash": "sha256:d79e794ffe7a32df7c14075290b9c10cdb39741ccb266ae8ae02d6316bd5cdee"
       }
     }
   ],
   "observedBalances": {
-    "payerBeforeAtomic": "20000",
-    "payerAfterAtomic": "16000",
-    "payerDeltaAtomic": "-4000",
-    "receiverBeforeAtomic": "12000",
-    "receiverAfterAtomic": "16000",
-    "receiverDeltaAtomic": "4000"
+    "payerBeforeAtomic": "4967504",
+    "payerAfterAtomic": "4965504",
+    "payerDeltaAtomic": "-2000",
+    "receiverBeforeAtomic": "86500",
+    "receiverAfterAtomic": "88500",
+    "receiverDeltaAtomic": "2000"
   },
   "observedDurability": {
-    "execution": "clervo-production-b8-payment-reconcile-f7dgd",
-    "verifiedAt": "2026-08-09T16:07:33.044Z",
+    "execution": "read_only_reconciliation",
+    "verifiedAt": "2026-08-11T22:55:30.844Z",
     "databaseIdentityVerified": true,
-    "operationRows": 2,
-    "accountingRowsForOperations": 2,
-    "receiverLedgerEntryCount": 4,
-    "receiverLedgerHeadHash": "sha256:1272444d65377139efad84e177efc3af5c58b0f02cfbccdd13c991aefb102d99",
+    "operationRows": 1,
+    "accountingRowsForOperations": 1,
+    "receiverLedgerEntryCount": 17,
+    "receiverLedgerHeadHash": "sha256:d79e794ffe7a32df7c14075290b9c10cdb39741ccb266ae8ae02d6316bd5cdee",
     "receiverLedgerChainValid": true,
     "receiverLedgerBalanced": true,
+    "temporaryJobCreated": false,
     "temporaryJobRemoved": true,
+    "localProxyStopped": true,
     "cloudLoggingEvidenceRetained": true,
     "credentialsLogged": false,
     "payerAddressLogged": false
@@ -158,6 +116,7 @@
   "cleanup": {
     "loopbackServersStopped": true,
     "browserTunnelsStopped": true,
-    "temporaryManagedJobRemoved": true
+    "temporaryManagedJobRemoved": true,
+    "localDatabaseProxyStopped": true
   }
 }

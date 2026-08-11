@@ -12,7 +12,7 @@ test('canonical launch state is evidence-bound while internal claims are not pub
   const [source, release, proof] = await Promise.all([
     json('packages/catalog/launch-state.v1.json'),
     json('packages/distribution/release-targets.v1.json'),
-    json('infra/production/gcp/x402-proof.v1.json'),
+    json('infra/production/gcp/prediction-x402-proof.v1.json'),
   ]);
   await assert.rejects(access(path.join(root, 'generated/public/claims.json')));
   assert.equal(source.repository.url, 'https://github.com/clervo/clervo');
@@ -21,7 +21,8 @@ test('canonical launch state is evidence-bound while internal claims are not pub
     source.distribution.packages.items.map(({ registry, name, version }) => [registry, name, version]),
     release.packages.map(({ registry, name, version }) => [registry, name, version]),
   );
-  assert.equal(source.paymentProof.amountAtomic, proof.observedSettlement.customerChargeAtomic);
+  const operation = proof.operations.find(({ productId }) => productId === source.paymentProof.productId);
+  assert.equal(source.paymentProof.amountAtomic, operation.customerChargeAtomic);
   assert.equal(source.paymentProof.settlementConfirmed, true);
   assert.equal(source.paymentProof.replaySameReceipt, true);
   assert.equal(source.paymentProof.secondAuthorization, false);

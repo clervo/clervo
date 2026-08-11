@@ -102,9 +102,16 @@ test('every model price is projected byte-for-byte from the coherent B7 pricing 
   assert.deepEqual(models, b7Models);
   for (const entry of models.data) {
     const rates = Object.entries(entry.clervo.customerPricing)
-      .filter(([field]) => !['currency', 'decimals'].includes(field))
+      .filter(([field]) => field.endsWith('MicrosPerMillion')
+        || field.endsWith('MicrosEach')
+        || field.endsWith('MicrosPerThousandCharacters')
+        || field.endsWith('MicrosPerSecond')
+        || field.endsWith('MicrosPerGeneration')
+        || field.endsWith('MicrosPerImage'))
       .map(([, value]) => value);
     assert.ok(rates.every((value) => Number.isInteger(value) && value >= 0), `${entry.id} rates must be non-negative atomic integers`);
+    assert.match(entry.clervo.customerPricing.inputPerMToken, /^(?:0|[1-9][0-9]*)\.[0-9]{6}$/u);
+    assert.match(entry.clervo.customerPricing.outputPerMToken, /^(?:0|[1-9][0-9]*)\.[0-9]{6}$/u);
     const free = rates.every((value) => value === 0);
     assert.equal(entry.clervo.billingMode, free ? 'free' : 'metered');
     assert.equal(entry.clervo.commerce.payment, free ? 'none' : 'x402_or_mpp');
