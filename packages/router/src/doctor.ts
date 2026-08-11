@@ -152,7 +152,7 @@ export async function diagnose({
   } catch (error) {
     checks.push(check('proxy.readiness', 'warn', `${proxyOrigin} is not currently ready: ${(error as Error).message}`, 'run `clervo proxy`; add `--auto-pay` only after reviewing limits'));
   }
-  checks.push(check('clients.versions', 'ok', `Router ${CLERVO_ROUTER_VERSION}; expected Connect clients @clervo/sdk 0.5.1, @clervo/mcp 0.5.1, clervo-sdk 0.4.1`));
+  checks.push(check('clients.versions', 'ok', `Router ${CLERVO_ROUTER_VERSION}; current Connect clients @clervo/sdk 0.5.2, @clervo/mcp 0.5.2, clervo-sdk 0.4.2`));
 
   return Object.freeze({
     routerVersion: CLERVO_ROUTER_VERSION,

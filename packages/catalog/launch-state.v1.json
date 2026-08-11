@@ -16,11 +16,11 @@
   "distribution": {
     "packages": {
       "state": "published_verified",
-      "verifiedAt": "2026-08-11T11:57:05Z",
+      "verifiedAt": "2026-08-11T12:04:05Z",
       "items": [
-        { "registry": "npm", "name": "@clervo/sdk", "version": "0.5.0", "url": "https://www.npmjs.com/package/@clervo/sdk" },
-        { "registry": "npm", "name": "@clervo/mcp", "version": "0.5.0", "url": "https://www.npmjs.com/package/@clervo/mcp" },
-        { "registry": "pypi", "name": "clervo-sdk", "version": "0.4.0", "url": "https://pypi.org/project/clervo-sdk/0.4.0/" }
+        { "registry": "npm", "name": "@clervo/sdk", "version": "0.5.1", "url": "https://www.npmjs.com/package/@clervo/sdk" },
+        { "registry": "npm", "name": "@clervo/mcp", "version": "0.5.1", "url": "https://www.npmjs.com/package/@clervo/mcp" },
+        { "registry": "pypi", "name": "clervo-sdk", "version": "0.4.1", "url": "https://pypi.org/project/clervo-sdk/0.4.1/" }
       ]
     },
     "publicApi": {

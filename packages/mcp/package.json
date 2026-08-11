@@ -1,6 +1,6 @@
 {
   "name": "@clervo/mcp",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Clervo Connect MCP profiles with one local wallet, live served products, bounded x402, reconciliation, usage, and diagnostics.",
   "license": "MIT",
   "type": "module",
@@ -43,8 +43,8 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@clervo/sdk": "0.5.1",
-    "@clervo/router": "0.3.0",
+    "@clervo/sdk": "0.5.2",
+    "@clervo/router": "0.3.1",
     "@modelcontextprotocol/sdk": "1.30.0",
     "zod": "4.4.3"
   },

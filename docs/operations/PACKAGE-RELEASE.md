@@ -6,16 +6,17 @@ lifecycle.
 
 ## Current verified release
 
-GitHub run `31488737496` published the exact source commit
-`6aa1fb5cca7fa037005df1dc9a6711ceacd1cb1b` through trusted publishing:
+GitHub run `31489320038` published the exact source commit
+`eea4941ae52d00fb5030b18ab5fefc33cca979c5` through trusted publishing:
 
-- `@clervo/sdk@0.5.0` and `@clervo/mcp@0.5.0` have npm SLSA provenance;
-- `clervo-sdk==0.4.0` has PyPI trusted-publisher attestations for its wheel and
+- `@clervo/sdk@0.5.1` and `@clervo/mcp@0.5.1` have npm SLSA provenance;
+- `clervo-sdk==0.4.1` has PyPI trusted-publisher attestations for its wheel and
   source distribution; and
 - all three install and import from their public registries in clean consumers.
 
-Router run `31488516730` published `@clervo/router@0.3.0` from the same source
-with npm SLSA provenance. The prior `0.2.0` identity remains frozen in
+Router run `31488516730` published `@clervo/router@0.3.0` from commit
+`6aa1fb5cca7fa037005df1dc9a6711ceacd1cb1b` with npm SLSA provenance. The prior
+`0.2.0` identity remains frozen in
 `packages/router/release-history.v1.json`.
 
 `npm run verify:distribution-release:published` rechecks the observed immutable

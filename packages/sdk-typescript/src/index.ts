@@ -379,7 +379,7 @@ export class ClervoClient {
 
   async #listModels(options: { signal?: AbortSignal } = {}): Promise<ClervoAiModelList> {
     let response: Response;
-    try { response = await this.#fetch(`${this.#baseUrl}/v1/models`, { method: 'GET', headers: { accept: 'application/json', 'x-clervo-client': '@clervo/sdk/0.5.1' }, redirect: 'error', ...(options.signal === undefined ? {} : { signal: options.signal }) }); }
+    try { response = await this.#fetch(`${this.#baseUrl}/v1/models`, { method: 'GET', headers: { accept: 'application/json', 'x-clervo-client': '@clervo/sdk/0.5.2' }, redirect: 'error', ...(options.signal === undefined ? {} : { signal: options.signal }) }); }
     catch (error) { throw new ClervoTransportError('clervo_transport_failed', { cause: error }); }
     const value = parseJsonObject(await readResponseText(response, this.#maxResponseBytes));
     if (!response.ok) throw new ClervoProblemError(response.status, value);
@@ -407,7 +407,7 @@ export class ClervoClient {
       }
       return execution.outcome.result as unknown as ClervoAiResult;
     }
-    const headers: Record<string, string> = { accept: 'application/json, application/problem+json', 'content-type': 'application/json', 'idempotency-key': key, 'x-clervo-client': '@clervo/sdk/0.5.1' };
+    const headers: Record<string, string> = { accept: 'application/json, application/problem+json', 'content-type': 'application/json', 'idempotency-key': key, 'x-clervo-client': '@clervo/sdk/0.5.2' };
     if (options.paymentSignature !== undefined) headers['payment-signature'] = options.paymentSignature;
     if (options.paymentAuthorization !== undefined) headers.authorization = options.paymentAuthorization;
     let response: Response;
@@ -460,7 +460,7 @@ export class ClervoClient {
           accept: 'application/json, application/problem+json',
           'content-type': 'application/json',
           'idempotency-key': requestIdempotencyKey,
-          'x-clervo-client': '@clervo/sdk/0.5.1',
+          'x-clervo-client': '@clervo/sdk/0.5.2',
         },
         body: JSON.stringify(body),
         redirect: 'error',

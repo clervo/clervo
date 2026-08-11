@@ -239,7 +239,7 @@ export function createClervoMcpServer(options: {
   const client = options.client ?? new ClervoClient({ baseUrl });
   const connectEnv = options.env ?? { ...process.env, CLERVO_API_ORIGIN: baseUrl };
   const connect = new ClervoConnect({ surface: 'mcp', autoPay: options.autoPay === true, env: connectEnv });
-  const server = new McpServer({ name: `clervo-${profile}`, version: '0.5.1' });
+  const server = new McpServer({ name: `clervo-${profile}`, version: '0.5.2' });
   const handlers = createConnectToolHandlers(client, connect, profile);
 
   if (PROFILE_FAMILIES[profile].includes('search')) server.registerTool(

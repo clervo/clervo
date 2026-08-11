@@ -1,6 +1,6 @@
 {
   "name": "@clervo/sdk",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Clervo Connect TypeScript SDK for live products, one local wallet, bounded x402, replay, reconciliation, and usage.",
   "license": "MIT",
   "type": "module",
@@ -42,7 +42,7 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@clervo/router": "0.3.0"
+    "@clervo/router": "0.3.1"
   },
   "publishConfig": {
     "access": "public",

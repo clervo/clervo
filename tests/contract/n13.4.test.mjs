@@ -19,9 +19,9 @@ test('release targets preserve current registry truth and bind the exact release
   assert.deepEqual(
     (targets.nextRelease?.packages ?? targets.packages).map(({ registry, name, version }) => ({ registry, name, version })),
     [
-      { registry: 'npm', name: '@clervo/sdk', version: '0.5.1' },
-      { registry: 'npm', name: '@clervo/mcp', version: '0.5.1' },
-      { registry: 'pypi', name: 'clervo-sdk', version: '0.4.1' },
+      { registry: 'npm', name: '@clervo/sdk', version: '0.5.2' },
+      { registry: 'npm', name: '@clervo/mcp', version: '0.5.2' },
+      { registry: 'pypi', name: 'clervo-sdk', version: '0.4.2' },
     ],
   );
   assert.equal(targets.publication.state, 'published_verified');
@@ -60,8 +60,8 @@ test('package publishing is manual, commit-bound, environment-protected, and tok
     assert.match(reference[1], /^[a-f0-9]{40}$/u);
   }
 
-  const sdkPublish = publishWorkflow.indexOf('npm publish release-artifacts/npm/clervo-sdk-0.5.1.tgz');
-  const mcpPublish = publishWorkflow.indexOf('npm publish release-artifacts/npm/clervo-mcp-0.5.1.tgz');
+  const sdkPublish = publishWorkflow.indexOf('npm publish release-artifacts/npm/clervo-sdk-0.5.2.tgz');
+  const mcpPublish = publishWorkflow.indexOf('npm publish release-artifacts/npm/clervo-mcp-0.5.2.tgz');
   const pythonPublish = publishWorkflow.indexOf('pypa/gh-action-pypi-publish@');
   assert.ok(sdkPublish > 0 && mcpPublish > sdkPublish && pythonPublish > mcpPublish);
 });

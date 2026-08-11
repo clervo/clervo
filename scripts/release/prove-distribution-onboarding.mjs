@@ -45,7 +45,7 @@ try {
     artifacts,
   ]));
   assert.equal(routerPack[0]?.name, '@clervo/router');
-  assert.equal(routerPack[0]?.version, '0.3.0');
+  assert.equal(routerPack[0]?.version, '0.3.1');
   const npmTarballs = [path.join(artifacts, routerPack[0].filename)];
   for (const target of releasePackages.filter(({ registry }) => registry === 'npm')) {
     const packed = JSON.parse(run('npm', [
@@ -85,7 +85,7 @@ try {
     "import { CLERVO_ROUTER_VERSION, ClervoConnect } from '@clervo/router';",
     `if (CLERVO_RELEASE_CANDIDATE_ID !== ${JSON.stringify(freeze.releaseCandidateId)}) throw new Error('candidate_identity_mismatch');`,
     "if (CLERVO_MCP_TOOLS.map(({ name }) => name).join(',') !== 'search_web,models_list,ai_execute,clervo_execute,connect_status,spend_limits,local_usage,reconcile,doctor') throw new Error('mcp_tools_invalid');",
-    "if (CLERVO_ROUTER_VERSION !== '0.3.0' || typeof ClervoConnect !== 'function') throw new Error('connect_core_invalid');",
+    "if (CLERVO_ROUTER_VERSION !== '0.3.1' || typeof ClervoConnect !== 'function') throw new Error('connect_core_invalid');",
     "const client = new ClervoClient({ baseUrl: 'http://127.0.0.1:8080' });",
     "if (!client.search.web || !client.search.answer || !client.models.list || !client.ai.execute || !client.catalog.list || !client.commerce.execute || !client.diagnostics.status) throw new Error('sdk_methods_missing');",
     '',
