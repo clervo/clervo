@@ -7,6 +7,7 @@ const searchRequest = Object.freeze({ query: 'Python programming', maxResults: 3
 const searchPath = 'https://clervo.dev/proof/b10-search';
 const payer = '0x1ada6E2EACb799f16bfC1A395c06D7fb52369207';
 const workerConfiguration = JSON.parse(await readFile('apps/b10-proof-worker/wrangler.jsonc', 'utf8'));
+const workerSource = await readFile('apps/b10-proof-worker/src/index.js', 'utf8');
 
 function request(path, options = {}) {
   return new Request(`${searchPath}${path}`, options);
@@ -74,6 +75,21 @@ test('B10 hosted Sandbox proof pins the repaired SHORT request and fresh post-fa
       limits: { cpuMillis: 5000, memoryBytes: 268435456, processes: 16, diskBytes: 67108864, outputBytes: 65536, artifactBytes: 1048576, wallTimeMs: 10000 },
     },
   });
+});
+
+test('temporary hosted proof quarantines both B7 identities after the bounded proof attempts', async () => {
+  assert.match(workerSource, /idem_b7_ai_paid_chat_20260810d10d693c7/u);
+  assert.match(workerSource, /idem_b7_ai_paid_image_20260810gbde2285e/u);
+  assert.doesNotMatch(workerSource, /idem_b7_ai_paid_chat_20260810c7a41e92/u);
+  assert.doesNotMatch(workerSource, /idem_b7_ai_paid_image_20260810f3b82d65/u);
+  assert.doesNotMatch(workerSource, /idem_b7_ai_paid_chat_20260810b1c7d4f2/u);
+  assert.doesNotMatch(workerSource, /idem_b7_ai_paid_image_20260810e9b2c6d1/u);
+  const chat = await worker.fetch(new Request('https://clervo.dev/proof/b7-ai-chat/config'), assets);
+  const image = await worker.fetch(new Request('https://clervo.dev/proof/b7-ai-image/config'), assets);
+  assert.equal(chat.status, 423);
+  assert.equal(image.status, 423);
+  assert.deepEqual(await chat.json(), { code: 'proof_quarantined', recovery: 'reconcile_without_retry' });
+  assert.deepEqual(await image.json(), { code: 'proof_quarantined', recovery: 'reconcile_without_retry' });
 });
 
 test('B10 hosted proof forwards an unsigned challenge as an exact guarded POST', async () => {

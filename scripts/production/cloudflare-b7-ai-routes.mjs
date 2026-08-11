@@ -32,6 +32,27 @@ async function status(pathname) {
   return response.status;
 }
 
+async function waitForRouteStatuses(expected, timeoutMs = 180_000) {
+  const deadline = Date.now() + timeoutMs;
+  let observed = {};
+  do {
+    observed = Object.fromEntries(await Promise.all(Object.keys(expected).map(async (pathname) => [pathname, await status(pathname)])));
+    if (Object.entries(expected).every(([pathname, expectedStatus]) => observed[pathname] === expectedStatus)) return;
+    await new Promise((resolve) => setTimeout(resolve, 2_000));
+  } while (Date.now() < deadline);
+  assert.deepEqual(observed, expected, 'normalized AI routes did not converge');
+}
+
+const projectedStatuses = Object.freeze({
+  '/v1/ai/execute': 405,
+  '/v1/catalog': 200,
+  '/.well-known/clervo.json': 200,
+  '/.well-known/x402': 200,
+  '/openapi.json': 200,
+  '/llms.txt': 200,
+});
+const protectedStatuses = Object.freeze(Object.fromEntries(Object.keys(projectedStatuses).map((pathname) => [pathname, 401])));
+
 async function assertGatewayPreserved(expectedTargetStatus) {
   assert.equal(await status('/'), 401, 'protected AI gateway root changed');
   assert.equal(await status('/v1/models'), 401, 'protected AI gateway model catalog changed');
@@ -107,16 +128,19 @@ if (action === 'plan') {
   await assertGatewayPreserved(401);
   await deployTriggers([...apiRoutes, ...aiRoutes]);
   try {
+    await waitForRouteStatuses(projectedStatuses);
     const proof = await verifyProjection();
     process.stdout.write(`${JSON.stringify({ action: 'applied', workerName, routesAdded: aiRoutes, protectedGatewayPreserved: true, proof, paymentEffects: 0 }, null, 2)}\n`);
   } catch (error) {
     await deployTriggers(apiRoutes);
+    await waitForRouteStatuses(protectedStatuses);
     await assertGatewayPreserved(401);
     throw error;
   }
 } else if (action === 'rollback') {
   assert.equal(process.env.CLERVO_B7_AI_ROUTE_CONFIRM, rollbackConfirmation, 'owner rollback confirmation mismatch');
   await deployTriggers(apiRoutes);
+  await waitForRouteStatuses(protectedStatuses);
   await assertGatewayPreserved(401);
   process.stdout.write(`${JSON.stringify({ action: 'rolled_back', routesRemoved: aiRoutes, protectedGatewayPreserved: true, paymentEffects: 0 }, null, 2)}\n`);
 } else refuse('usage_plan_apply_rollback');

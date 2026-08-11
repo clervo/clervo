@@ -22,6 +22,30 @@
     {
       "pattern": "api.clervo.dev/*",
       "zone_name": "clervo.dev"
+    },
+    {
+      "pattern": "ai.clervo.dev/v1/ai/execute",
+      "zone_name": "clervo.dev"
+    },
+    {
+      "pattern": "ai.clervo.dev/v1/catalog",
+      "zone_name": "clervo.dev"
+    },
+    {
+      "pattern": "ai.clervo.dev/.well-known/clervo.json",
+      "zone_name": "clervo.dev"
+    },
+    {
+      "pattern": "ai.clervo.dev/.well-known/x402",
+      "zone_name": "clervo.dev"
+    },
+    {
+      "pattern": "ai.clervo.dev/openapi.json",
+      "zone_name": "clervo.dev"
+    },
+    {
+      "pattern": "ai.clervo.dev/llms.txt",
+      "zone_name": "clervo.dev"
     }
   ],
   "observability": {

@@ -401,7 +401,10 @@ test('dynamic production runtime quotes stable customer identity and executes th
   const fetcher = async (_url, init) => {
     const payload = JSON.parse(new TextDecoder().decode(init.body));
     calls.push(payload.model);
-    return new Response(JSON.stringify({ model: payload.model, choices: [{ message: { content: 'Dynamic result.' }, finish_reason: 'stop' }], usage: { prompt_tokens: 2, completion_tokens: 1 } }), { status: 200, headers: { 'content-type': 'application/json' } });
+    // The protected gateway reports its own protocol/system envelope as input
+    // usage. This deliberately exceeds the caller's raw message length and
+    // guards the paid production path that previously failed after execution.
+    return new Response(JSON.stringify({ model: payload.model, choices: [{ message: { content: 'Dynamic result.' }, finish_reason: 'stop' }], usage: { prompt_tokens: 309, completion_tokens: 1 } }), { status: 200, headers: { 'content-type': 'application/json' } });
   };
   const runtime = await createDynamicAiProductionRuntime({
     env: { CLERVO_AI_BASE_URL: 'https://ai.clervo.dev/v1/', CLERVO_AI_GATEWAY_TOKEN: 'gateway-runtime-token' },
@@ -425,5 +428,6 @@ test('dynamic production runtime quotes stable customer identity and executes th
   const outcome = await executeAiOperation({ request, catalog: quote.catalog, routes: quote.routes, adapters: runtime.adapters, runtimeBindings: quote.runtimeBindings, startedAt: '2026-08-09T10:30:00.000Z', clock: () => Date.parse('2026-08-09T10:30:00.000Z') });
   assert.equal(outcome.outcome, 'completed');
   assert.equal(outcome.result.exactModelId, customerModelId);
+  assert.equal(outcome.result.usage.inputTokens, 309);
   assert.deepEqual(calls, [alpha.runtimeModelId]);
 });

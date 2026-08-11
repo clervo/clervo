@@ -43,7 +43,7 @@ here.
 | Capability | Public state |
 |---|---|
 | Search | Publicly callable; bounded free access and owner-funded paid-outcome proof exist |
-| AI | Preview-callable; qualified requests can expose an exact payment quote; paid-result proof remains pending |
+| AI | Publicly callable with 89 callable IDs (85 canonical models and 4 aliases), 88 currently sellable; owner-funded paid outcomes are verified for chat and image |
 | Secure Sandbox | Publicly callable bounded one-shot execution with owner-funded paid-outcome proof; current release is intentionally single-node |
 | Prediction Intelligence | Publicly callable paid outcomes have been verified with owner-funded production proof |
 | Crypto Intelligence | Publicly callable paid outcomes have been verified for Ethereum and Base |

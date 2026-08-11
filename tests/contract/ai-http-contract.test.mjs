@@ -7,6 +7,7 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 
 import {
+  AI_CHAT_INPUT_ENVELOPE_TOKENS,
   CONTRACT_VERSION,
   aiHttpRequestHash,
   createAiExecutionRequest,
@@ -28,7 +29,7 @@ test('public AI request normalization derives conservative bounded usage and a s
   };
   const normalized = normalizeAiHttpRequest(source);
   assert.equal(normalized.productId, 'ai.chat');
-  assert.equal(normalized.usageBounds.inputTokens, 12);
+  assert.equal(normalized.usageBounds.inputTokens, AI_CHAT_INPUT_ENVELOPE_TOKENS + 12);
   assert.equal(normalized.usageBounds.outputTokens, 500);
   assert.equal(normalized.usageBounds.reasoningTokens, 500);
   assert.match(aiHttpRequestHash(normalized), /^sha256:[a-f0-9]{64}$/u);

@@ -5,13 +5,14 @@
 // unpaid challenge per materially distinct modality. It never sends payment.
 
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
 import { readFile, writeFile } from 'node:fs/promises';
 
 const registryUrl = new URL('../../packages/catalog/live-registry.json', import.meta.url);
 const modelsUrl = new URL('../../generated/b7-ai/public/models.json', import.meta.url);
+const paidProofUrl = new URL('../../infra/production/gcp/ai-x402-proof.v1.json', import.meta.url);
 const registry = JSON.parse(await readFile(registryUrl, 'utf8'));
 const models = JSON.parse(await readFile(modelsUrl, 'utf8'));
+const paidProof = JSON.parse(await readFile(paidProofUrl, 'utf8'));
 const origin = 'https://api.clervo.dev';
 const observedAt = new Date().toISOString();
 const observationKey = observedAt.replace(/\D/gu, '').slice(0, 17);
@@ -25,27 +26,34 @@ async function json(path, init = {}) {
 const health = await json('/v1/health');
 assert.equal(health.response.status, 200);
 assert.equal(health.body.aiPaidEnabled, true);
-assert.equal(health.body.releaseId, execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim());
 
 const freeRequest = {
   model: 'clervo/gemma-4-26b-a4b-it',
   input: { kind: 'chat', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], responseFormat: 'text', stream: false },
   maximumOutputTokens: 16,
 };
+const freeKey = 'idem_b7_final_free_20260811b';
+const freeInitial = await json('/v1/ai/execute', {
+  method: 'POST', headers: { 'content-type': 'application/json', 'idempotency-key': freeKey }, body: JSON.stringify(freeRequest),
+});
+assert.equal(freeInitial.response.status, 200);
+assert.equal(freeInitial.body.fundingMode, 'free');
+assert.equal(freeInitial.body.exactModelId, freeRequest.model);
 const free = await json('/v1/ai/execute', {
-  method: 'POST', headers: { 'content-type': 'application/json', 'idempotency-key': 'idem_b7_final_free_20260810a' }, body: JSON.stringify(freeRequest),
+  method: 'POST', headers: { 'content-type': 'application/json', 'idempotency-key': freeKey }, body: JSON.stringify(freeRequest),
 });
 assert.equal(free.response.status, 200);
 assert.equal(free.body.fundingMode, 'free');
 assert.equal(free.body.replayed, true);
 assert.equal(free.body.exactModelId, freeRequest.model);
+assert.equal(free.body.operationId, freeInitial.body.operationId);
 assert.equal(free.response.headers.get('idempotency-replayed'), 'true');
 
 const encodedImage = Buffer.from('bounded-image').toString('base64');
 const cases = [
-  ['chat', 'clervo/fast', { kind: 'chat', messages: [{ role: 'user', content: 'ready' }], responseFormat: 'text', stream: false }, 16],
+  ['chat', 'clervo/gpt-5.6-luna', { kind: 'chat', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], responseFormat: 'text', stream: false }, 16],
   ['embedding', 'clervo/gemini-embedding-001', { kind: 'embedding', inputs: ['bounded quote probe'] }],
-  ['image', 'clervo/gemini-3.1-flash-lite-image', { kind: 'image', prompt: 'a plain red square', size: '1024x1024', quality: 'low', count: 1 }],
+  ['image', 'clervo/gemini-3.1-flash-lite-image', { kind: 'image', prompt: 'A plain red square on a white background.', size: '1024x1024', quality: 'low', count: 1 }],
   ['speech', 'clervo/gemini-2.5-flash-lite-preview-tts', { kind: 'speech', input: 'bounded quote probe', voice: 'Aoede', responseFormat: 'mp3' }],
   ['video', 'clervo/veo-3.1-lite-generate-001', { kind: 'video', prompt: 'a still red square', durationSeconds: 3, aspectRatio: '16:9', resolution: '720p' }],
   ['music', 'clervo/lyria-3-clip-preview', { kind: 'music', prompt: 'a single calm tone', durationSeconds: 5, instrumental: true }],
@@ -63,6 +71,96 @@ for (const [kind, model, input, maximumOutputTokens] of cases) {
   assert.ok(offer && result.body.quote?.maximumCharge?.amountAtomic === offer.amount, `${kind} quote agreement`);
   challenges.push({ kind, model, amountAtomic: offer.amount, priceVersion: result.body.quote.priceVersion, offer, resource: result.body.resource });
 }
+
+function paidProofValidation() {
+  const expectedProducts = ['ai.chat', 'ai.image'];
+  const expectedModels = ['clervo/gpt-5.6-luna', 'clervo/gemini-3.1-flash-lite-image'];
+  const expectedCharges = ['1000', '25500'];
+  const operations = Array.isArray(paidProof.operations) ? paidProof.operations : [];
+  const unique = (field) => new Set(operations.map((operation) => operation[field])).size === operations.length;
+  const proofChallenges = expectedProducts.map((productId) => paidProof.observedChallenges?.[productId]);
+  const liveChallenges = [challenges.find(({ kind }) => kind === 'chat'), challenges.find(({ kind }) => kind === 'image')];
+  const accepted = paidProof.schemaVersion === 'clervo.ai-x402-proof.v1'
+    && paidProof.state === 'settled_reconciled'
+    && paidProof.publicOrigin === `${origin}/`
+    && paidProof.endpoint === `${origin}/v1/ai/execute`
+    && paidProof.releaseCommit === health.body.releaseId
+    && paidProof.network === 'eip155:8453'
+    && paidProof.asset === '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
+    && paidProof.payTo === '0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28'
+    && paidProof.facilitatorUrl === 'https://api.cdp.coinbase.com/platform/v2/x402'
+    && paidProof.ownerAuthorization?.maximumSpendAtomic === '26500'
+    && paidProof.ownerAuthorization?.maximumExecutionCount === 2
+    && JSON.stringify(paidProof.ownerAuthorization?.operationsInOrder) === JSON.stringify(expectedProducts)
+    && JSON.stringify(paidProof.ownerAuthorization?.amountAtomicByOperation) === JSON.stringify(Object.fromEntries(expectedProducts.map((productId, index) => [productId, expectedCharges[index]])))
+    && paidProof.ownerAuthorization?.payerBalanceCapAtomic === '300000'
+    && paidProof.ownerAuthorization?.supplierCostCeilingAtomic === '0'
+    && paidProof.ownerAuthorization?.paymentEffects === 2
+    && paidProof.ownerAuthorization?.automaticRetry === false
+    && paidProof.ownerAuthorization?.immediateReconciliationAfterNon200OrUnknown === true
+    && operations.length === 2
+    && JSON.stringify(operations.map(({ productId }) => productId)) === JSON.stringify(expectedProducts)
+    && JSON.stringify(operations.map(({ model }) => model)) === JSON.stringify(expectedModels)
+    && JSON.stringify(operations.map(({ customerChargeAtomic }) => customerChargeAtomic)) === JSON.stringify(expectedCharges)
+    && ['operationId', 'receiptId', 'requestHash', 'resultHash', 'transactionHash'].every(unique)
+    && operations.every((operation, index) => operation.supplierCostAtomic === '0'
+      && operation.settlementStatus === 'settled'
+      && operation.chainStatus === 'confirmed'
+      && operation.exactTransferCount === 1
+      && operation.usefulResult === true
+      && operation.resultSummary?.kind === (index === 0 ? 'chat' : 'image')
+      && (index === 0 ? operation.resultSummary?.contentNonEmpty === true : operation.resultSummary?.artifactCount === 1
+        && operation.resultSummary?.images === 1 && operation.resultSummary?.width === 1024 && operation.resultSummary?.height === 1024
+        && /^sha256:[a-f0-9]{64}$/u.test(operation.resultSummary?.artifactSha256 ?? ''))
+      && operation.replay?.sameOperation === true
+      && operation.replay?.sameReceipt === true
+      && operation.replay?.sameResult === true
+      && operation.replay?.idempotencyReplayed === true
+      && operation.replay?.paymentHeaderSent === false
+      && operation.replay?.secondAuthorization === false
+      && operation.replay?.secondUpstreamExecution === false
+      && operation.replay?.secondSettlement === false
+      && operation.replay?.secondCharge === false
+      && operation.durable?.state === 'completed'
+      && operation.durable?.operationRows === 1
+      && operation.durable?.accountingRows === 1)
+    && proofChallenges.every((challenge, index) => challenge?.status === 402
+      && challenge?.model === expectedModels[index]
+      && challenge?.amountAtomic === expectedCharges[index]
+      && challenge?.networkMatched === true && challenge?.assetMatched === true && challenge?.payToMatched === true
+      && challenge?.facilitatorMatched === true && challenge?.productMatched === true && challenge?.modelMatched === true
+      && challenge?.freshAtAuthorization === true && challenge?.paymentAttemptedBeforeOwnerAuthorization === false)
+    && liveChallenges.every((challenge, index) => challenge?.model === expectedModels[index]
+      && challenge?.amountAtomic === expectedCharges[index]
+      && challenge?.offer?.network === paidProof.network && challenge?.offer?.asset === paidProof.asset && challenge?.offer?.payTo === paidProof.payTo)
+    && operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic), 0n) === 26500n
+    && paidProof.observedBalances?.payerDeltaAtomic === '-26500'
+    && paidProof.observedBalances?.receiverDeltaAtomic === '26500'
+    && paidProof.observedBalances?.authorizedAllowanceRemainingAtomic === '0'
+    && paidProof.observedDurability?.databaseIdentityVerified === true
+    && paidProof.observedDurability?.operationRows === 2
+    && paidProof.observedDurability?.accountingRowsForOperations === 2
+    && paidProof.observedDurability?.receiverLedgerChainValid === true
+    && paidProof.observedDurability?.receiverLedgerBalanced === true
+    && paidProof.observedDurability?.ambiguousOperations === 0
+    && paidProof.proofClassification?.proofLevel === 'paid_outcome_verified'
+    && paidProof.proofClassification?.ownerFunded === true
+    && paidProof.proofClassification?.commercialMechanismVerified === true
+    && paidProof.proofClassification?.revenueEvidence === false
+    && paidProof.proofClassification?.demandEvidence === false
+    && paidProof.proofClassification?.unrelatedCustomerEvidence === false
+    && paidProof.proofClassification?.externallyRepeatedClaimAllowed === false
+    && paidProof.cleanup?.proofSurfacesQuarantined === true
+    && paidProof.cleanup?.temporaryDatabaseProxyStopped === true
+    && paidProof.cleanup?.temporaryDatabaseProxyFilesRemoved === true;
+  return accepted ? {
+    accepted: true, reason: null, proofLevel: 'paid_outcome_verified', source: 'infra/production/gcp/ai-x402-proof.v1.json',
+    releaseCommit: paidProof.releaseCommit, operationCount: operations.length, totalChargeAtomic: '26500', usefulResultCount: 2,
+    replayNoSecondChargeCount: 2, ownerFunded: true, revenueEvidence: false, demandEvidence: false, externallyRepeated: false,
+  } : { accepted: false, reason: 'paid_proof_invariant_failed' };
+}
+
+const paidOutcome = paidProofValidation();
 
 const example = challenges.find(({ kind }) => kind === 'chat');
 const observedQuote = {
@@ -104,6 +202,7 @@ registry.aiCatalog = {
   counts,
   representativeChallenges: challenges.map(({ kind, model, amountAtomic, priceVersion }) => ({ kind, model, amountAtomic, priceVersion })),
   freeReplay: { model: free.body.exactModelId, status: free.response.status, replayed: true, noPayment: true },
+  paidOutcome,
   models: modelStates,
 };
 registry.summary.aiCatalog = counts;
@@ -113,10 +212,10 @@ registry.products[index] = {
   id: 'ai', label: 'AI',
   operations: ['ai.chat', 'ai.embed', 'ai.image', 'ai.speech', 'ai.video', 'ai.music', 'ai.virtual_try_on'],
   state: 'live', reason: null, expectedReturnAt: null, publiclyReachable: true,
-  proof: 'quote_observed_unpaid', observedQuote,
+  proof: paidOutcome.accepted ? paidOutcome.proofLevel : 'quote_observed_unpaid', observedQuote,
   freeEntry: { route: `${origin}/v1/ai/execute`, modelId: free.body.exactModelId, replayVerified: true, paymentRequired: false },
-  evidence: { probed: true, releaseId: health.body.releaseId, frozenCanonicalModels: models.clervo.inventory.canonicalModels, aliases: models.clervo.inventory.aliases, callableIds: models.clervo.inventory.callableIds, sellableIds: modelStates.filter(({ sellable }) => sellable).length, representativeModalities: challenges.length, freeOutcomeObserved: true },
+  evidence: { probed: true, releaseId: health.body.releaseId, frozenCanonicalModels: models.clervo.inventory.canonicalModels, aliases: models.clervo.inventory.aliases, callableIds: models.clervo.inventory.callableIds, sellableIds: modelStates.filter(({ sellable }) => sellable).length, representativeModalities: challenges.length, freeOutcomeObserved: true, paidOutcome },
 };
 
 await writeFile(registryUrl, `${JSON.stringify(registry, null, 2)}\n`, 'utf8');
-process.stdout.write(`B7 live AI probe: PASS (${models.clervo.inventory.callableIds} IDs, ${modelStates.filter(({ sellable }) => sellable).length} sellable, ${challenges.length} paid modality challenges, one free replay)\n`);
+process.stdout.write(`B7 live AI probe: PASS (${models.clervo.inventory.callableIds} IDs, ${modelStates.filter(({ sellable }) => sellable).length} sellable, ${challenges.length} paid modality challenges, one free replay, ${paidOutcome.proofLevel ?? 'quote_observed_unpaid'})\n`);

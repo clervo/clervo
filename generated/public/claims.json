@@ -1,7 +1,7 @@
 {
   "schemaVersion": "clervo.launch-state.v1",
-  "observedAt": "2026-08-10T15:17:56.255Z",
-  "sourceCommit": "faa1633561d0e45b465170fdde1ab389a49064eb",
+  "observedAt": "2026-08-11T08:48:34.576Z",
+  "sourceCommit": "802527f49f87b1aa9323c329bf52c07ffce6d659",
   "identity": {
     "category": "Outcome infrastructure for agents",
     "headline": "One job in. One inspectable result out.",
@@ -39,15 +39,17 @@
       ]
     },
     "publicApi": {
-      "state": "public_search_ai_sandbox_and_prediction_preview_verified",
+      "state": "public_search_ai_sandbox_prediction_and_crypto_verified",
       "endpoint": "https://api.clervo.dev",
       "publicCallable": true,
       "publicTraffic": true,
       "customerEndpointAvailable": true,
       "evidence": [
         "infra/production/cloudflare/public-search-release.v1.json",
+        "infra/production/gcp/ai-x402-proof.v1.json",
         "infra/production/gcp/sandbox-public-release.v1.json",
-        "infra/production/gcp/prediction-x402-proof.v1.json"
+        "infra/production/gcp/prediction-x402-proof.v1.json",
+        "infra/production/gcp/crypto-x402-proof.v1.json"
       ]
     }
   },
@@ -108,23 +110,28 @@
         "ai.chat",
         "ai.embed",
         "ai.image",
-        "ai.speech"
+        "ai.speech",
+        "ai.video",
+        "ai.music",
+        "ai.virtual_try_on"
       ],
-      "engineeringState": "public_production_origin_qualified",
-      "customerLifecycle": "preview_publicly_callable",
-      "commercialProof": "unproven",
-      "paymentState": "public_x402_challenge_available_paid_result_pending",
+      "engineeringState": "public_production_qualified",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
+      "commercialProof": "owner_funded_paid_outcome_verified",
+      "paymentState": "public_x402_two_owner_funded_settlements_and_replays_verified",
       "supplierRights": "qualified_resale_allowed_selected_routes",
       "allowedClaims": [
-        "Bounded AI chat requests expose an exact request-derived Base USDC x402 quote through the protected production edge.",
-        "The production origin returned a stable 402 challenge for gpt-5.6-luna while direct product access remained denied.",
+        "The frozen public AI catalog contains 85 canonical models and 4 stable aliases; 88 of 89 callable IDs are currently sellable.",
+        "Qualified AI requests expose exact request-derived Base USDC x402 quotes through the protected production edge.",
+        "Two bounded owner-funded production operations—ai.chat at 0.001 USDC and ai.image at 0.0255 USDC—returned useful exact-model results and settled for exactly 0.0265 USDC total with zero supplier cost.",
+        "Both paid operations replayed with the same operation, result, and receipt without another payment header, authorization, upstream execution, settlement, or charge.",
         "Only currently qualified exact routes are eligible; unsupported or expired routes fail closed."
       ],
       "prohibitedClaims": [
-        "Every model",
-        "All AI modalities publicly available",
-        "Paid AI result verified",
-        "Customer revenue or demand"
+        "Every catalogued model is currently sellable",
+        "Every AI modality has a paid-result proof",
+        "Customer revenue or demand",
+        "Unrelated-customer demand or externally repeated proof"
       ]
     },
     {

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.full-platform-readiness.v1",
-  "observedAt": "2026-08-04T05:12:00Z",
+  "observedAt": "2026-08-11T08:48:34.576Z",
   "basis": "Customer-functional paid readiness, not private-core engineering completion.",
   "scoring": {
     "completeBasisPoints": 10000,
@@ -8,7 +8,7 @@
     "missingBasisPoints": 0,
     "blockedBasisPoints": 0,
     "gateCountPerPillar": 8,
-    "aggregateReadinessBasisPoints": 5833
+    "aggregateReadinessBasisPoints": 5937
   },
   "finishLines": [
     {
@@ -50,18 +50,18 @@
     },
     {
       "id": "ai",
-      "readinessBasisPoints": 7500,
+      "readinessBasisPoints": 8125,
       "gates": {
         "contract": "complete",
         "supply": "complete",
         "runtime": "complete",
         "public_access": "complete",
-        "commerce": "partial",
+        "commerce": "complete",
         "durability": "complete",
         "operations": "partial",
         "external_acceptance": "missing"
       },
-      "nextOutcome": "Complete the bounded paid-result and no-charge replay acceptance through the exact public AI path, then retain operations evidence in the full-platform release."
+      "nextOutcome": "Retain the verified owner-funded AI settlement and replay evidence in the full-platform release, harden remaining operations evidence, and keep unrelated-customer acceptance separate."
     },
     {
       "id": "sandbox",

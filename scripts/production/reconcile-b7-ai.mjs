@@ -9,6 +9,7 @@ import { createRequire } from 'node:module';
 import { createPublicClient, getAddress, http, parseEventLogs } from 'viem';
 import { base } from 'viem/chains';
 import { hashJson } from '../../dist/packages/contracts/src/index.js';
+import { normalizeProductionDatabaseUrl } from './postgres-connection-url.mjs';
 
 const require = createRequire(`${process.cwd()}/package.json`);
 const { Pool } = require('pg');
@@ -33,11 +34,16 @@ function postingsBalanced(postings) {
 }
 
 function proofInput(item) {
-  const idempotencyKey = process.env[item.keyEnvironment];
+  const identity = identityInput(item);
   const transactionHash = process.env[item.transactionEnvironment];
-  assert.match(idempotencyKey ?? '', /^idem_b7_ai_paid_[a-z0-9_]{8,80}$/u, `${item.slot} idempotency key invalid`);
   assert.match(transactionHash ?? '', /^0x[a-fA-F0-9]{64}$/u, `${item.slot} transaction invalid`);
-  return { ...item, idempotencyKey, transactionHash: transactionHash.toLowerCase() };
+  return { ...identity, transactionHash: transactionHash.toLowerCase() };
+}
+
+function identityInput(item) {
+  const idempotencyKey = process.env[item.keyEnvironment];
+  assert.match(idempotencyKey ?? '', /^idem_b7_ai_paid_[a-z0-9_]{8,80}$/u, `${item.slot} idempotency key invalid`);
+  return { ...item, idempotencyKey };
 }
 
 if (action === 'plan') {
@@ -49,12 +55,52 @@ if (action === 'plan') {
   }, null, 2)}\n`);
   process.exit(0);
 }
-assert.equal(action, 'verify', 'usage: reconcile-b7-ai.mjs plan|verify');
+assert.ok(['preflight', 'verify-chat', 'verify-image', 'verify'].includes(action), 'usage: reconcile-b7-ai.mjs plan|preflight|verify-chat|verify-image|verify');
 
-const connectionString = process.env.CLERVO_DATABASE_URL;
-assert.ok(connectionString, 'CLERVO_DATABASE_URL is required');
-const proofs = expected.map(proofInput);
-assert.equal(new Set(proofs.map(({ idempotencyKey }) => idempotencyKey)).size, proofs.length, 'proof keys must differ');
+const connectionString = normalizeProductionDatabaseUrl(process.env.CLERVO_DATABASE_URL);
+const verificationTargets = action === 'verify-chat'
+  ? expected.filter(({ slot }) => slot === 'chat')
+  : action === 'verify-image'
+    ? expected.filter(({ slot }) => slot === 'image')
+    : expected;
+const identities = (action === 'preflight' ? expected : verificationTargets).map(identityInput);
+assert.equal(new Set(identities.map(({ idempotencyKey }) => idempotencyKey)).size, identities.length, 'proof keys must differ');
+
+if (action === 'preflight') {
+  const pool = new Pool({ connectionString, max: 1, connectionTimeoutMillis: 10_000, idleTimeoutMillis: 1_000, allowExitOnIdle: true });
+  try {
+    const identity = (await pool.query('SELECT current_database() AS database, current_user AS username')).rows[0];
+    assert.equal(identity.database, 'clervo');
+    assert.match(identity.username, /^clervo_runtime_[0-9]{8}$/u, 'preflight must use least-privilege runtime identity');
+    const operations = await pool.query(
+      `SELECT idempotency_key, state
+         FROM clervo_x402_operations
+        WHERE environment_namespace = 'production' AND idempotency_key = ANY($1::text[])
+        ORDER BY idempotency_key`,
+      [identities.map(({ idempotencyKey }) => idempotencyKey)],
+    );
+    assert.equal(operations.rows.length, 0, 'guarded proof identity was already observed; rotate and reconcile');
+    const ledger = await pool.query(
+      `SELECT entry_hash, previous_entry_hash, entry_json #> '{postings}' AS postings
+         FROM clervo_receiver_accounting_entries
+        WHERE environment_namespace = 'production'
+        ORDER BY occurred_at, entry_id`,
+    );
+    assert.equal(ledger.rows.every((row, index, rows) => index === 0 ? row.previous_entry_hash === null : row.previous_entry_hash === rows[index - 1].entry_hash), true, 'receiver ledger chain invalid');
+    assert.equal(ledger.rows.every(({ postings }) => postingsBalanced(postings)), true, 'receiver ledger unbalanced');
+    process.stdout.write(`${JSON.stringify({
+      schemaVersion: 'clervo.b7-ai-preflight.v1', checkedAt: new Date().toISOString(),
+      environment: 'production', databaseIdentityVerified: true, guardedIdentities: identities.map(({ slot }) => ({ slot, unused: true })),
+      receiverLedgerEntries: ledger.rows.length, receiverLedgerChainValid: true, receiverLedgerBalanced: true,
+      credentialsLogged: false, customerPayloadsLogged: false, readOnly: true, paymentEffects: 0,
+    }, null, 2)}\n`);
+  } finally {
+    await pool.end();
+  }
+  process.exit(0);
+}
+
+const proofs = verificationTargets.map(proofInput);
 assert.equal(new Set(proofs.map(({ transactionHash }) => transactionHash)).size, proofs.length, 'proof transactions must differ');
 
 const pool = new Pool({ connectionString, max: 1, connectionTimeoutMillis: 10_000, idleTimeoutMillis: 1_000, allowExitOnIdle: true });
@@ -138,12 +184,23 @@ try {
       operationId: row.operation_id, requestHash: row.request_hash, resultHash: response.result.resultHash,
       receiptId: response.receipt.receiptId, receiptHash: response.receipt.receiptHash,
       transactionHash: proof.transactionHash, blockNumber: chainReceipt.blockNumber.toString(),
-      customerChargeAtomic: proof.chargeAtomic, supplierCostAtomic: '0', accountingEntryId: entry.entry_id,
+      customerChargeAtomic: proof.chargeAtomic, supplierCostAtomic: '0', completedAt: row.completed_at.toISOString(),
+      outputSummary: proof.outputKind === 'chat'
+        ? { kind: 'chat', contentNonEmpty: true }
+        : {
+            kind: 'image', artifactCount: response.result.output.artifacts.length,
+            artifactSha256: response.result.output.artifacts[0].sha256,
+            width: response.result.output.artifacts[0].width, height: response.result.output.artifacts[0].height,
+            images: response.result.usage.images,
+          },
+      accountingEntryId: entry.entry_id, accountingEntryHash: entry.entry_hash,
     });
   }
   process.stdout.write(`${JSON.stringify({
     schemaVersion: 'clervo.b7-ai-reconciliation.v1', verifiedAt: new Date().toISOString(),
-    databaseIdentityVerified: true, operations: reconciled, totalChargeAtomic: reconciled.reduce((sum, item) => sum + BigInt(item.customerChargeAtomic), 0n).toString(),
+    scope: reconciled.map(({ slot }) => slot), databaseIdentityVerified: true, operations: reconciled,
+    totalChargeAtomic: reconciled.reduce((sum, item) => sum + BigInt(item.customerChargeAtomic), 0n).toString(),
+    receiverLedgerEntryCount: ledger.rows.length, receiverLedgerHeadHash: ledger.rows.at(-1)?.entry_hash ?? null,
     receiverLedgerChainValid: true, receiverLedgerBalanced: true, ambiguousOperations: 0,
     credentialsLogged: false, customerPayloadsLogged: false, readOnly: true, paymentEffects: 0,
   }, null, 2)}\n`);

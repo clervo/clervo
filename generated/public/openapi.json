@@ -513,9 +513,9 @@
                   "model": {
                     "type": "string",
                     "enum": [
-                      "gpt-5.6-luna"
+                      "clervo/gpt-5.6-luna"
                     ],
-                    "default": "gpt-5.6-luna"
+                    "default": "clervo/gpt-5.6-luna"
                   },
                   "input": {
                     "type": "object",
@@ -601,7 +601,7 @@
                 "additionalProperties": false
               },
               "example": {
-                "model": "gpt-5.6-luna",
+                "model": "clervo/gpt-5.6-luna",
                 "input": {
                   "kind": "chat",
                   "messages": [
@@ -793,6 +793,7 @@
         "summary": "List the authoritative provider-neutral Clervo AI catalog",
         "description": "Returns 85 frozen canonical model IDs and 4 stable aliases with capabilities, availability, health, free/paid state, pricing, and commerce metadata. Canonical IDs never silently substitute another model.",
         "operationId": "aiListModels",
+        "security": [],
         "responses": {
           "200": {
             "description": "OpenAI-compatible model list with authoritative Clervo commercial metadata",
@@ -5269,7 +5270,7 @@
       "crypto.wallet.transactions",
       "crypto.wallet.report"
     ],
-    "runtimeRelease": "6d928ea623e21d0cda8aa737b748e74d8ecaf552"
+    "runtimeRelease": "802527f49f87b1aa9323c329bf52c07ffce6d659"
   },
   "servers": [
     {

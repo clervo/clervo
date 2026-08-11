@@ -5,21 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Clervo bounded x402 proof</title>
     <style>
-      :root { color-scheme: dark; font: 16px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; background: #080b0d; color: #edf7f8; }
+      :root { color-scheme: dark; font: 16px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; background: #070707; color: #f5f5f5; --verified: #62d995; --warning: #f4c95d; --line: #303030; }
       body { margin: 0; min-height: 100vh; display: grid; place-items: center; }
-      main { width: min(44rem, calc(100% - 2rem)); padding: 2rem; border: 1px solid #29434a; background: #0d1215; }
+      main { width: min(44rem, calc(100% - 2rem)); box-sizing: border-box; padding: clamp(1.25rem, 4vw, 2.5rem); border: 1px solid var(--line); background: #0d0d0d; box-shadow: 0 1.5rem 5rem #0009; }
       h1 { margin-top: 0; font: 600 1.4rem/1.2 system-ui, sans-serif; }
       dl { display: grid; grid-template-columns: 9rem 1fr; gap: .5rem 1rem; }
-      dt { color: #8fa6ac; } dd { margin: 0; overflow-wrap: anywhere; }
-      button { margin: .75rem .5rem 0 0; padding: .75rem 1rem; border: 1px solid #7ee7f2; color: #eefeff; background: #12343a; font: inherit; cursor: pointer; }
+      dt { color: #a2a2a2; } dd { margin: 0; overflow-wrap: anywhere; }
+      button { margin: .75rem .5rem 0 0; padding: .75rem 1rem; border: 1px solid var(--verified); color: #f5fff9; background: #123021; font: inherit; cursor: pointer; }
+      button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
       button[disabled] { cursor: not-allowed; opacity: .45; }
-      #approve { border-color: #ffc96b; background: #493611; }
-      pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem; background: #070a0c; border: 1px solid #26353a; min-height: 4rem; }
-      .warning { color: #ffc96b; }
+      #approve { border-color: var(--warning); background: #382d0d; }
+      pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem; background: #070707; border: 1px solid var(--line); min-height: 4rem; }
+      .warning { color: var(--warning); }
+      .brand { color: #a2a2a2; letter-spacing: .16em; text-transform: uppercase; font-size: .75rem; }
+      @media (max-width: 36rem) { dl { grid-template-columns: 1fr; gap: .125rem; } dd { margin-bottom: .625rem; } button { width: 100%; margin-right: 0; } }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
     </style>
   </head>
   <body>
     <main>
+      <p class="brand">Clervo / bounded production proof</p>
       <h1>Bounded x402 launch proof</h1>
       <p class="warning">This utility can authorize one real Base USDC payment. Verify every field before approving MetaMask.</p>
       <dl id="bounds"></dl>

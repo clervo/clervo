@@ -18,7 +18,8 @@ test('B7 protected-host projection is exact, confirmation-guarded, and automatic
   assert.match(source, /CLERVO_B7_AI_ROUTE_CONFIRM/u);
   assert.match(source, /apply:b7-ai-normalized-routes:v1/u);
   assert.match(source, /rollback:b7-ai-normalized-routes:v1/u);
-  assert.match(source, /await deployTriggers\(apiRoutes\);\n    await assertGatewayPreserved\(401\);/u);
+  assert.match(source, /await waitForRouteStatuses\(projectedStatuses\);/u);
+  assert.match(source, /await deployTriggers\(apiRoutes\);\n    await waitForRouteStatuses\(protectedStatuses\);\n    await assertGatewayPreserved\(401\);/u);
   assert.doesNotMatch(source, /payment-signature|authorization:\s*[`'"]Payment/iu);
 });
 
