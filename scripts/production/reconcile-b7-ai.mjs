@@ -184,13 +184,23 @@ try {
       operationId: row.operation_id, requestHash: row.request_hash, resultHash: response.result.resultHash,
       receiptId: response.receipt.receiptId, receiptHash: response.receipt.receiptHash,
       transactionHash: proof.transactionHash, blockNumber: chainReceipt.blockNumber.toString(),
-      customerChargeAtomic: proof.chargeAtomic, supplierCostAtomic: '0', accountingEntryId: entry.entry_id,
+      customerChargeAtomic: proof.chargeAtomic, supplierCostAtomic: '0', completedAt: row.completed_at.toISOString(),
+      outputSummary: proof.outputKind === 'chat'
+        ? { kind: 'chat', contentNonEmpty: true }
+        : {
+            kind: 'image', artifactCount: response.result.output.artifacts.length,
+            artifactSha256: response.result.output.artifacts[0].sha256,
+            width: response.result.output.artifacts[0].width, height: response.result.output.artifacts[0].height,
+            images: response.result.usage.images,
+          },
+      accountingEntryId: entry.entry_id, accountingEntryHash: entry.entry_hash,
     });
   }
   process.stdout.write(`${JSON.stringify({
     schemaVersion: 'clervo.b7-ai-reconciliation.v1', verifiedAt: new Date().toISOString(),
     scope: reconciled.map(({ slot }) => slot), databaseIdentityVerified: true, operations: reconciled,
     totalChargeAtomic: reconciled.reduce((sum, item) => sum + BigInt(item.customerChargeAtomic), 0n).toString(),
+    receiverLedgerEntryCount: ledger.rows.length, receiverLedgerHeadHash: ledger.rows.at(-1)?.entry_hash ?? null,
     receiverLedgerChainValid: true, receiverLedgerBalanced: true, ambiguousOperations: 0,
     credentialsLogged: false, customerPayloadsLogged: false, readOnly: true, paymentEffects: 0,
   }, null, 2)}\n`);

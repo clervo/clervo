@@ -9,7 +9,7 @@ test('B7 reconciliation is read-only and binds exactly chat plus image paid proo
   for (const value of [
     "productId: 'ai.chat'", "model: 'clervo/gpt-5.6-luna'", "chargeAtomic: '1000'",
     "productId: 'ai.image'", "model: 'clervo/gemini-3.1-flash-lite-image'", "chargeAtomic: '25500'",
-    "network: 'eip155:8453'", "totalChargeAtomic",
+    "network: 'eip155:8453'", "totalChargeAtomic", 'receiverLedgerEntryCount', 'accountingEntryHash', 'outputSummary',
   ]) assert.ok(source.includes(value), `missing reconciliation bound ${value}`);
   assert.match(source, /SELECT current_database\(\) AS database, current_user AS username/u);
   assert.match(source, /clervo_receiver_accounting_entries/u);
