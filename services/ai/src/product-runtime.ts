@@ -1,4 +1,5 @@
 import {
+  AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS,
   aiQualificationCheckNames,
   createAiModelCatalog,
   createAiRouteQualification,
@@ -19,17 +20,6 @@ import type {
 } from './product-catalog.js';
 import { aiPricingRateKeys } from './product-catalog.js';
 
-const maximumUsageBounds: Readonly<AiUsageBounds> = Object.freeze({
-  inputTokens: 5_000_000,
-  cachedInputTokens: 0,
-  outputTokens: 1_000_000,
-  reasoningTokens: 1_000_000,
-  images: 16,
-  audioCharacters: 100_000,
-  videoSeconds: 120,
-  musicGenerations: 4,
-  virtualTryOnImages: 4,
-});
 const minimumChargeAtomic = 1_000n;
 
 function earliest(...values: string[]): string {
@@ -58,7 +48,7 @@ export function createAiProductRuntimeProjection(catalog: Readonly<ComposedAiPro
   const sellable = catalog.internalModels.filter(({ publicSellable }) => publicSellable);
   const definitions = sellable.map((model) => {
     if (model.pricing.upstreamCost === null || model.pricing.customerPricing === null) throw new TypeError('ai_product_runtime_pricing_missing');
-    const maximumSupplierCost = estimateAiSupplierCost(maximumUsageBounds, model.pricing.upstreamCost);
+    const maximumSupplierCost = estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, model.pricing.upstreamCost);
     const legacyMaximumExpiry = new Date(Date.parse(model.supply.qualification.checkedAt) + 31 * 86_400_000).toISOString();
     const expiresAt = earliest(model.supply.qualification.expiresAt, model.supply.upstreamCost.validUntil!, catalog.sourceValidUntil, legacyMaximumExpiry);
     const qualification = createAiRouteQualification({
@@ -144,9 +134,9 @@ export function createDynamicAiPublicPricing(projection: Readonly<AiProductRunti
         requestedModel: normalized.model,
         requiredCapabilities: [],
         usageBounds: normalized.usageBounds,
-        maximumSupplierCost: { asset: 'USD', amountAtomic: estimateAiSupplierCost(maximumUsageBounds, projection.routes.reduce((highest, route) => {
-          const left = BigInt(estimateAiSupplierCost(maximumUsageBounds, highest).amountAtomic);
-          const right = BigInt(estimateAiSupplierCost(maximumUsageBounds, route.pricing).amountAtomic);
+        maximumSupplierCost: { asset: 'USD', amountAtomic: estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, projection.routes.reduce((highest, route) => {
+          const left = BigInt(estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, highest).amountAtomic);
+          const right = BigInt(estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, route.pricing).amountAtomic);
           return right > left ? route.pricing : highest;
         }, projection.routes[0]!.pricing)).amountAtomic, decimals: 6 },
         routes: projection.routes,

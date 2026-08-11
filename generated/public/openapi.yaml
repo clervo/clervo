@@ -884,8 +884,8 @@
           "price": {
             "mode": "dynamic",
             "currency": "USD",
-            "min": "0.000001",
-            "max": "2.621440"
+            "min": "0.001000",
+            "max": "42.500000"
           },
           "protocols": [
             {

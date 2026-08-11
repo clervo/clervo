@@ -17,6 +17,12 @@ const liveRegistry = JSON.parse(await readFile(path.join(root, 'packages/catalog
 const modelCatalog = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-model-catalog.v1.json'), 'utf8'));
 const b7Freeze = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-b7-production-freeze.v1.json'), 'utf8'));
 const b7Pricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/ai-b7-commercial-pricing.v1.json'), 'utf8'));
+if (b7Pricing.currency !== 'USDC' || b7Pricing.decimals !== 6 || !/^[1-9][0-9]*$/u.test(b7Pricing.minimumBillableAtomic ?? '')) throw new Error('ai_pricing_authority_invalid');
+const aiMaximumChargeAtomic = b7Pricing.models
+  .filter(({ billingMode }) => billingMode === 'metered')
+  .map(({ customerPricing }) => BigInt(contractModule.estimateAiSupplierCost(contractModule.AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, customerPricing).amountAtomic))
+  .reduce((maximum, amount) => amount > maximum ? amount : maximum, 0n);
+if (aiMaximumChargeAtomic < BigInt(b7Pricing.minimumBillableAtomic)) throw new Error('ai_price_range_invalid');
 const b7Inventory = Object.freeze({ canonicalModels: b7Freeze.inventory.canonicalModels, aliases: b7Freeze.inventory.aliases, callableIds: b7Freeze.inventory.callableModelIds });
 const b7PublicModels = JSON.parse(await readFile(path.join(root, 'generated/b7-ai/public/models.json'), 'utf8'));
 const currentPaidDiscoveryModel = b7PublicModels.data
@@ -52,6 +58,12 @@ function componentName(fileName) {
 
 function stableJson(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
+}
+
+function decimalAtomic(amountAtomic, decimals) {
+  if (!/^(?:0|[1-9][0-9]*)$/u.test(String(amountAtomic)) || !Number.isInteger(decimals) || decimals < 0 || decimals > 18) throw new TypeError('atomic_decimal_invalid');
+  const padded = String(amountAtomic).padStart(decimals + 1, '0');
+  return decimals === 0 ? padded : `${padded.slice(0, -decimals)}.${padded.slice(-decimals)}`;
 }
 
 const publicProblemSchema = Object.freeze({
@@ -537,7 +549,12 @@ if (publicAi) {
     requestSchema: aiChatProbeSchema,
     example: aiProbeExample,
     paymentInfo: {
-      price: { mode: 'dynamic', currency: 'USD', min: '0.000001', max: '2.621440' },
+      price: {
+        mode: 'dynamic',
+        currency: 'USD',
+        min: decimalAtomic(b7Pricing.minimumBillableAtomic, b7Pricing.decimals),
+        max: decimalAtomic(aiMaximumChargeAtomic, b7Pricing.decimals),
+      },
       protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
     },
     tags: ['AI'],

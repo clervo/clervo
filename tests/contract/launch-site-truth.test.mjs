@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
+import { AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, estimateAiSupplierCost } from '../../dist/packages/contracts/src/index.js';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const read = (file) => readFile(path.join(root, file), 'utf8');
@@ -31,7 +32,7 @@ test('canonical launch state is evidence-bound while internal claims are not pub
 });
 
 test('machine discovery publishes every live public product without overstating proof', async () => {
-  const [discovery, status, pricing, capabilities, mcp, openapi, yaml] = await Promise.all([
+  const [discovery, status, pricing, capabilities, mcp, openapi, yaml, aiPricing] = await Promise.all([
     json('generated/public/.well-known/clervo.json'),
     json('generated/public/status.json'),
     json('generated/public/pricing.json'),
@@ -39,6 +40,7 @@ test('machine discovery publishes every live public product without overstating 
     json('generated/public/.well-known/mcp.json'),
     json('generated/public/openapi.json'),
     json('generated/public/openapi.yaml'),
+    json('packages/catalog/ai-b7-commercial-pricing.v1.json'),
   ]);
   assert.equal(discovery.distribution.callable, true);
   assert.equal(discovery.payment.publicAvailable, true);
@@ -87,8 +89,12 @@ test('machine discovery publishes every live public product without overstating 
     price: { mode: 'fixed', currency: 'USD', amount: '0.006000' },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
   });
+  const maximumAiAtomic = aiPricing.models.filter(({ billingMode }) => billingMode === 'metered')
+    .map(({ customerPricing }) => BigInt(estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, customerPricing).amountAtomic))
+    .reduce((maximum, amount) => amount > maximum ? amount : maximum, 0n);
+  const decimal = (amount) => `${String(amount).padStart(7, '0').slice(0, -6)}.${String(amount).padStart(7, '0').slice(-6)}`;
   assert.deepEqual(openapi.paths['/v1/ai/execute'].post['x-payment-info'], {
-    price: { mode: 'dynamic', currency: 'USD', min: '0.000001', max: '2.621440' },
+    price: { mode: 'dynamic', currency: 'USD', min: decimal(aiPricing.minimumBillableAtomic), max: decimal(maximumAiAtomic) },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
   });
   const aiProbe = openapi.paths['/v1/ai/execute'].post.requestBody.content['application/json'];
