@@ -37,7 +37,8 @@ for (const url of expectedUrls) {
 }
 
 const headers = await readFile(path.join(dist, '_headers'), 'utf8');
-if (!headers.includes("img-src 'self' data: https://upload.wikimedia.org")) throw new Error('site_csp_ecosystem_logo_origin_missing');
+if (!headers.includes("img-src 'self' data:")) throw new Error('site_csp_self_hosted_images_missing');
+if (headers.includes('upload.wikimedia.org')) throw new Error('site_csp_remote_logo_origin_present');
 if (!headers.includes("object-src 'none'")) throw new Error('site_csp_object_src_missing');
 if (!headers.includes("frame-ancestors 'none'")) throw new Error('site_csp_frame_ancestors_missing');
 
