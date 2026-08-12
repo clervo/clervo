@@ -104,9 +104,17 @@ await cp(source, target, { recursive: true });
 await cp(mediaSource, path.join(target, 'assets'), { recursive: true });
 await cp(renderSource, path.join(target, 'assets/renders'), { recursive: true });
 
+// Search/index crawlers are allowed to read the human and machine surfaces.
+// OAI-SearchBot is named explicitly so ChatGPT Search inclusion does not depend
+// on a crawler interpreting the generic group. GPTBot is not given a separate
+// training policy here; this file only states the existing public crawl policy.
 await writeFile(path.join(target, 'robots.txt'), [
+  'User-agent: OAI-SearchBot',
+  'Allow: /',
+  '',
   'User-agent: *',
   'Allow: /',
+  '',
   'Sitemap: https://clervo.dev/sitemap.xml',
   '',
 ].join('\n'));
@@ -136,7 +144,11 @@ await writeFile(path.join(target, '_headers'), [
   '  Referrer-Policy: strict-origin-when-cross-origin',
   '  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()',
   '  Cross-Origin-Opener-Policy: same-origin',
-  '  Content-Security-Policy: default-src \'self\'; script-src \'self\' https://static.cloudflareinsights.com; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:; font-src \'self\'; connect-src \'self\' https://cloudflareinsights.com https://*.cloudflareinsights.com; object-src \'none\'; base-uri \'self\'; frame-ancestors \'none\'; form-action \'self\'',
+  // The Home ecosystem marks are third-party visual references. They are the
+  // only remote images permitted by the site CSP; all Clervo identity/media,
+  // scripts and fonts remain self-hosted. This prevents local-preview logos
+  // from silently disappearing after deployment.
+  '  Content-Security-Policy: default-src \'self\'; script-src \'self\' https://static.cloudflareinsights.com; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: https://upload.wikimedia.org; font-src \'self\'; connect-src \'self\' https://cloudflareinsights.com https://*.cloudflareinsights.com; object-src \'none\'; base-uri \'self\'; frame-ancestors \'none\'; form-action \'self\'',
   '',
   '/assets/*',
   '  Cache-Control: public, max-age=31536000, immutable',
