@@ -22,12 +22,7 @@ import './styles/b12/final-whole-site-hardening.css';
 import './styles/recovery-foundation.css';
 import './styles/recovery-home.css';
 import './styles/b12/clervo-visual-system.css';
-import './styles/b12/home-opening-layout-fix.css';
-import './styles/b12/home-motion-system.css';
-import './styles/b12/home-full-picture.css';
-import './styles/b12/home-exact-hero.css';
-import './styles/b12/home-target-fidelity.css';
-import './styles/b12/home-lock-in.css';
+import './styles/b12/home-hero-scene.css';
 
 const root = document.getElementById('root');
 if (root === null) throw new Error('clervo_site_root_missing');
