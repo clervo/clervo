@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
+import { HomeHero } from '../components/HomeHero';
 import {
   lifecycleLabels,
   observedTruth,
@@ -10,57 +11,6 @@ import {
   type ObservedProduct,
 } from '../product';
 import { Link } from '../router';
-
-type JourneyState = 'request' | 'qualify' | 'execute' | 'verify' | 'prove';
-
-interface JourneyStep {
-  id: JourneyState;
-  label: string;
-  title: string;
-  detail: string;
-}
-
-const journeySteps: JourneyStep[] = [
-  {
-    id: 'request',
-    label: 'Request',
-    title: 'Bind the task.',
-    detail: 'Bind identity, intent, and limits.',
-  },
-  {
-    id: 'qualify',
-    label: 'Qualify',
-    title: 'Find a route allowed to run.',
-    detail: 'Check capability, policy, and price.',
-  },
-  {
-    id: 'execute',
-    label: 'Execute',
-    title: 'Run one bounded operation.',
-    detail: 'Run the selected bounded route.',
-  },
-  {
-    id: 'verify',
-    label: 'Verify',
-    title: 'Inspect result and evidence.',
-    detail: 'Check the outcome and evidence.',
-  },
-  {
-    id: 'prove',
-    label: 'Prove',
-    title: 'Return an inspectable outcome.',
-    detail: 'Return result, provenance, and receipt.',
-  },
-];
-
-const ecosystemBrands = [
-  { id: 'openai', label: 'OpenAI' },
-  { id: 'anthropic', label: 'Anthropic' },
-  { id: 'nvidia', label: 'NVIDIA' },
-  { id: 'cloudflare', label: 'Cloudflare' },
-  { id: 'aws', label: 'aws' },
-  { id: 'google-cloud', label: 'Google Cloud' },
-] as const;
 
 const familyRoutes: Record<ObservedProduct['id'], string> = {
   search: '/products/search',
@@ -80,23 +30,6 @@ const familyDescriptions: Record<ObservedProduct['id'], string> = {
   crypto_intelligence: 'Wallet and on-chain signals with evidence attached.',
 };
 
-const phaseByState: Record<JourneyState, ExperiencePhase> = {
-  request: 'risk',
-  qualify: 'qualified',
-  execute: 'qualified',
-  verify: 'verified',
-  prove: 'receipt',
-};
-
-const stateReadout: Record<JourneyState, string[]> = {
-  request: ['route unresolved', 'evidence pending', 'proof pending'],
-  qualify: ['route qualifying', 'evidence pending', 'proof pending'],
-  execute: ['route selected', 'execution bounded', 'proof pending'],
-  verify: ['result returned', 'evidence checking', 'proof pending'],
-  prove: ['route resolved', 'evidence attached', 'proof verified'],
-};
-
-const allowedStates = new Set<JourneyState>(journeySteps.map(({ id }) => id));
 const familyOrder: ObservedProduct['id'][] = [
   'search', 'ai', 'sandbox', 'prediction', 'crypto_intelligence', 'rpc',
 ];
@@ -108,60 +41,8 @@ const observedAtLabel = new Intl.DateTimeFormat('en', {
 }).format(new Date(observedTruth.provenance.observedAt));
 
 export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
-  const [state, setState] = useState<JourneyState>('request');
-  const [running, setRunning] = useState(false);
   const [copied, setCopied] = useState(false);
-  const timers = useRef<number[]>([]);
   const liveFamilies = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
-
-  const clearTimers = () => {
-    timers.current.forEach((timer) => window.clearTimeout(timer));
-    timers.current = [];
-  };
-
-  const selectState = (next: JourneyState) => {
-    setState(next);
-    onPhase(phaseByState[next]);
-  };
-
-  useEffect(() => {
-    const requested = new URLSearchParams(window.location.search).get('state');
-    if (requested !== null && allowedStates.has(requested as JourneyState)) {
-      selectState(requested as JourneyState);
-      return clearTimers;
-    }
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      selectState('prove');
-      return clearTimers;
-    }
-
-    setRunning(true);
-    const entryDelay = 760;
-    const stepDuration = 560;
-    journeySteps.forEach(({ id }, index) => {
-      timers.current.push(window.setTimeout(() => selectState(id), entryDelay + index * stepDuration));
-    });
-    timers.current.push(window.setTimeout(
-      () => setRunning(false),
-      entryDelay + journeySteps.length * stepDuration,
-    ));
-    return clearTimers;
-  }, []);
-
-  const runTrace = () => {
-    clearTimers();
-    setRunning(true);
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      selectState('prove');
-      setRunning(false);
-      return;
-    }
-    journeySteps.forEach(({ id }, index) => {
-      timers.current.push(window.setTimeout(() => selectState(id), index * 620));
-    });
-    timers.current.push(window.setTimeout(() => setRunning(false), journeySteps.length * 620));
-  };
 
   const copyFreeCall = async () => {
     if (quickStartCurl === null) return;
@@ -171,57 +52,10 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   };
 
   return (
-    <div className="recovery-home" data-running={running} data-state={state}>
+    <div className="recovery-home">
       <a className="skip-link" href="#home-title">Skip to main content</a>
 
-      <section className="home-hero home-hero--exact" aria-labelledby="home-title">
-        <div className="home-hero__frame shell">
-          <p className="eyebrow home-hero__eyebrow">Outcome infrastructure for agents</p>
-
-          <div className="home-hero__scene">
-            <h1 className="home-hero__title" id="home-title">
-              <span className="home-hero__statement home-hero__statement--request">
-                <span className="home-hero__line">Give your</span>
-                <span className="home-hero__line">agent a task.</span>
-              </span>
-              <span className="home-hero__statement home-hero__statement--verified">
-                <span className="home-hero__line">Get a verified</span>
-                <span className="home-hero__line">result.</span>
-              </span>
-            </h1>
-
-            <div className="home-signal-stage" aria-label="Clervo task lifecycle product model">
-              <span className="home-signal-label home-signal-label--request">Request</span>
-              <span className="home-signal-label home-signal-label--verified">Verified</span>
-              <span className="home-signal-track" aria-hidden="true">
-                <i className="home-signal-track__request" />
-                <i className="home-signal-track__qualify" />
-                <i className="home-signal-track__verified" />
-              </span>
-              <span className="home-core" aria-hidden="true">
-                <img className="home-core__asset" src="/assets/brand/clervo-apex-hero.svg" alt="" />
-              </span>
-            </div>
-
-            <p className="home-system-state data" aria-live="polite">
-              {stateReadout[state].map((item) => <span key={item}>{item}</span>)}
-            </p>
-
-            <div className="home-trace-control">
-              <button className="home-trace-action" disabled={running} onClick={runTrace} type="button">
-                {running ? 'Tracing task…' : state === 'prove' ? 'Trace again' : 'Trace the contract'}
-                <span aria-hidden="true">→</span>
-              </button>
-            </div>
-          </div>
-
-          <ul className="home-ecosystem" aria-label="Clervo technology ecosystem">
-            {ecosystemBrands.map((brand) => (
-              <li data-brand={brand.id} key={brand.id}><span>{brand.label}</span></li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      <HomeHero onPhase={onPhase} />
 
       <section className="home-platform" aria-labelledby="home-platform-title">
         <div className="shell home-platform__intro">
