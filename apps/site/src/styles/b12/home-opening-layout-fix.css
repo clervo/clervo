@@ -17,45 +17,118 @@
   width: 100%;
   min-width: 0;
   justify-self: stretch;
+  gap: clamp(0.9rem, 1.8vh, 1.45rem);
+  padding-block: clamp(2.3rem, 4.5vh, 3.75rem) clamp(2rem, 3.5vh, 3rem);
 }
 
 .recovery-home .home-hero h1.home-hero__title {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(7rem, 0.35fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(4rem, 0.18fr) minmax(0, 1fr);
   align-items: center;
-  gap: clamp(1rem, 2vw, 2.5rem);
+  gap: clamp(0.75rem, 1.4vw, 1.75rem);
   width: 100%;
   max-width: none;
-  font-size: clamp(3.8rem, 6.15vw, 7.2rem);
-  font-weight: 500;
-  line-height: 0.93;
-  letter-spacing: -0.06em;
+  font-family: var(--sans);
+  font-size: clamp(3.45rem, 5.35vw, 6.1rem);
+  font-weight: 340;
+  line-height: 0.97;
+  letter-spacing: -0.055em;
   text-wrap: balance;
+}
+
+.recovery-home .home-hero__statement {
+  max-width: 10.25ch;
+}
+
+.recovery-home .home-signal-stage {
+  --core-size: clamp(7.6rem, 11.5vw, 10.4rem);
+  min-height: clamp(8.25rem, 17vh, 10.75rem);
+}
+
+.recovery-home .home-core {
+  background: radial-gradient(circle, rgb(0 0 0 / 98%) 0 50%, rgb(0 0 0 / 78%) 63%, transparent 72%);
+}
+
+.recovery-home .home-core .apex-mark {
+  width: 69%;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 8px rgb(255 255 255 / 9%));
+}
+
+/* On the hero the locked Apex acts as a mechanism, not a second brand lockup.
+ * A black edge trims the canonical filled geometry against the black core so
+ * it carries less visual mass without changing the source identity asset. */
+.recovery-home .home-core .apex-mark path {
+  stroke: #000;
+  stroke-width: 3.4;
+  stroke-linejoin: round;
+}
+
+.recovery-home .home-system-state {
+  margin-top: -0.15rem;
+}
+
+.recovery-home .home-trace-control {
+  margin-top: -0.1rem;
+}
+
+.recovery-home .home-trace-control .data {
+  display: none;
 }
 
 @media (width <= 980px) {
   .recovery-home .home-hero h1.home-hero__title {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    font-size: clamp(3.3rem, 8vw, 5.6rem);
+    font-size: clamp(3.2rem, 7.4vw, 5.2rem);
+  }
+
+  .recovery-home .home-hero__statement {
+    max-width: 9.5ch;
   }
 }
 
 @media (width <= 820px) {
+  .recovery-home .home-hero > .home-hero__frame {
+    gap: 1.45rem;
+    padding-block: 4rem 3.25rem;
+  }
+
   .recovery-home .home-hero h1.home-hero__title {
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.2rem;
-    font-size: clamp(3.35rem, 12vw, 6rem);
+    gap: 0.35rem;
+    font-size: clamp(3.15rem, 11vw, 5.3rem);
+  }
+
+  .recovery-home .home-hero__statement {
+    max-width: 9.4ch;
+  }
+
+  .recovery-home .home-signal-stage {
+    --core-size: clamp(7rem, 25vw, 9.5rem);
+    min-height: clamp(8.2rem, 24vw, 10rem);
   }
 }
 
 @media (width <= 620px) {
+  .recovery-home .home-hero > .home-hero__frame {
+    padding-block: 3.5rem 3rem;
+  }
+
   .recovery-home .home-hero h1.home-hero__title {
-    font-size: clamp(3.15rem, 15vw, 4.8rem);
+    font-size: clamp(2.95rem, 13.6vw, 4.45rem);
+  }
+
+  .recovery-home .home-hero__statement {
+    max-width: 8.9ch;
   }
 }
 
 @media (width <= 420px) {
   .recovery-home .home-hero h1.home-hero__title {
-    font-size: clamp(2.9rem, 14.4vw, 4rem);
+    font-size: clamp(2.7rem, 13.2vw, 3.75rem);
+  }
+
+  .recovery-home .home-hero__statement {
+    max-width: 8.6ch;
   }
 }
