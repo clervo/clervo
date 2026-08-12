@@ -1,0 +1,5914 @@
+{
+  "build": {
+    "command": "npm run build --workspace @clervo/site",
+    "skipped": true,
+    "exitCode": null
+  },
+  "routeCount": 19,
+  "viewportCount": 4,
+  "captureCount": 76,
+  "viewports": [
+    {
+      "id": "1600",
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "id": "1024",
+      "width": 1024,
+      "height": 768
+    },
+    {
+      "id": "390",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "320",
+      "width": 320,
+      "height": 700
+    }
+  ],
+  "routes": [
+    {
+      "id": "home",
+      "path": "/",
+      "support": false
+    },
+    {
+      "id": "start",
+      "path": "/start",
+      "support": false
+    },
+    {
+      "id": "product",
+      "path": "/product",
+      "support": false
+    },
+    {
+      "id": "catalog",
+      "path": "/catalog",
+      "support": false
+    },
+    {
+      "id": "family-search",
+      "path": "/products/search",
+      "support": false
+    },
+    {
+      "id": "family-ai",
+      "path": "/products/ai",
+      "support": false
+    },
+    {
+      "id": "family-sandbox",
+      "path": "/products/sandbox",
+      "support": false
+    },
+    {
+      "id": "family-rpc",
+      "path": "/products/rpc",
+      "support": false
+    },
+    {
+      "id": "family-prediction",
+      "path": "/products/prediction",
+      "support": false
+    },
+    {
+      "id": "family-crypto",
+      "path": "/products/crypto",
+      "support": false
+    },
+    {
+      "id": "operation-search-web",
+      "path": "/operations/search.web",
+      "support": false
+    },
+    {
+      "id": "pricing",
+      "path": "/pricing",
+      "support": true
+    },
+    {
+      "id": "proof",
+      "path": "/proof",
+      "support": true
+    },
+    {
+      "id": "docs",
+      "path": "/docs",
+      "support": true
+    },
+    {
+      "id": "status",
+      "path": "/status",
+      "support": true
+    },
+    {
+      "id": "security",
+      "path": "/security",
+      "support": true
+    },
+    {
+      "id": "benchmarks",
+      "path": "/benchmarks",
+      "support": true
+    },
+    {
+      "id": "changelog",
+      "path": "/changelog",
+      "support": true
+    },
+    {
+      "id": "legal",
+      "path": "/legal",
+      "support": true
+    }
+  ],
+  "results": [
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/",
+      "routeId": "home",
+      "file": "1600--home.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 64,
+          "width": 1600,
+          "height": 64,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 80,
+          "top": 10,
+          "right": 180.5,
+          "bottom": 54,
+          "width": 100.5,
+          "height": 44
+        },
+        "mark": {
+          "left": 80,
+          "top": 20,
+          "right": 104,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "680",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1402.859375,
+          "top": 9,
+          "right": 1520,
+          "bottom": 55,
+          "width": 117.140625,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/start",
+      "routeId": "start",
+      "file": "1600--start.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.09375,
+          "bottom": 54,
+          "width": 100.5,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "680",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1242.234375,
+          "top": 10,
+          "right": 1350.40625,
+          "bottom": 54,
+          "width": 108.171875,
+          "height": 44
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/product",
+      "routeId": "product",
+      "file": "1600--product.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/catalog",
+      "routeId": "catalog",
+      "file": "1600--catalog.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/products/search",
+      "routeId": "family-search",
+      "file": "1600--family-search.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/products/ai",
+      "routeId": "family-ai",
+      "file": "1600--family-ai.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/products/sandbox",
+      "routeId": "family-sandbox",
+      "file": "1600--family-sandbox.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/products/rpc",
+      "routeId": "family-rpc",
+      "file": "1600--family-rpc.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/products/prediction",
+      "routeId": "family-prediction",
+      "file": "1600--family-prediction.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/products/crypto",
+      "routeId": "family-crypto",
+      "file": "1600--family-crypto.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/operations/search.web",
+      "routeId": "operation-search-web",
+      "file": "1600--operation-search-web.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/pricing",
+      "routeId": "pricing",
+      "file": "1600--pricing.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1600,
+          "bottom": 114,
+          "width": 1600,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/proof",
+      "routeId": "proof",
+      "file": "1600--proof.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1600,
+          "bottom": 114,
+          "width": 1600,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/docs",
+      "routeId": "docs",
+      "file": "1600--docs.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1600,
+          "bottom": 114,
+          "width": 1600,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/status",
+      "routeId": "status",
+      "file": "1600--status.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1600,
+          "bottom": 114,
+          "width": 1600,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/security",
+      "routeId": "security",
+      "file": "1600--security.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1600,
+          "bottom": 114,
+          "width": 1600,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/benchmarks",
+      "routeId": "benchmarks",
+      "file": "1600--benchmarks.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1600,
+          "bottom": 114,
+          "width": 1600,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/changelog",
+      "routeId": "changelog",
+      "file": "1600--changelog.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1600,
+          "bottom": 114,
+          "width": 1600,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1600",
+      "width": 1600,
+      "height": 900,
+      "route": "/legal",
+      "routeId": "legal",
+      "file": "1600--legal.png",
+      "diagnostics": {
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "width": 1600,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 249.59375,
+          "top": 10,
+          "right": 350.15625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 249.59375,
+          "top": 20,
+          "right": 273.59375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 1233.09375,
+          "top": 9,
+          "right": 1350.40625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1600,
+          "bottom": 114,
+          "width": 1600,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/",
+      "routeId": "home",
+      "file": "1024--home.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 64,
+          "width": 1024,
+          "height": 64,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 32,
+          "top": 10,
+          "right": 132.5,
+          "bottom": 54,
+          "width": 100.5,
+          "height": 44
+        },
+        "mark": {
+          "left": 32,
+          "top": 20,
+          "right": 56,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "680",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 874.859375,
+          "top": 9,
+          "right": 992,
+          "bottom": 55,
+          "width": 117.140625,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/start",
+      "routeId": "start",
+      "file": "1024--start.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.109375,
+          "bottom": 54,
+          "width": 100.5,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "680",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 881.21875,
+          "top": 10,
+          "right": 989.390625,
+          "bottom": 54,
+          "width": 108.171875,
+          "height": 44
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/product",
+      "routeId": "product",
+      "file": "1024--product.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/catalog",
+      "routeId": "catalog",
+      "file": "1024--catalog.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/products/search",
+      "routeId": "family-search",
+      "file": "1024--family-search.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/products/ai",
+      "routeId": "family-ai",
+      "file": "1024--family-ai.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/products/sandbox",
+      "routeId": "family-sandbox",
+      "file": "1024--family-sandbox.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/products/rpc",
+      "routeId": "family-rpc",
+      "file": "1024--family-rpc.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/products/prediction",
+      "routeId": "family-prediction",
+      "file": "1024--family-prediction.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/products/crypto",
+      "routeId": "family-crypto",
+      "file": "1024--family-crypto.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/operations/search.web",
+      "routeId": "operation-search-web",
+      "file": "1024--operation-search-web.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/pricing",
+      "routeId": "pricing",
+      "file": "1024--pricing.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1024,
+          "bottom": 114,
+          "width": 1024,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/proof",
+      "routeId": "proof",
+      "file": "1024--proof.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1024,
+          "bottom": 114,
+          "width": 1024,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/docs",
+      "routeId": "docs",
+      "file": "1024--docs.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1024,
+          "bottom": 114,
+          "width": 1024,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/status",
+      "routeId": "status",
+      "file": "1024--status.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1024,
+          "bottom": 114,
+          "width": 1024,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/security",
+      "routeId": "security",
+      "file": "1024--security.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1024,
+          "bottom": 114,
+          "width": 1024,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/benchmarks",
+      "routeId": "benchmarks",
+      "file": "1024--benchmarks.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1024,
+          "bottom": 114,
+          "width": 1024,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/changelog",
+      "routeId": "changelog",
+      "file": "1024--changelog.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1024,
+          "bottom": 114,
+          "width": 1024,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "1024",
+      "width": 1024,
+      "height": 768,
+      "route": "/legal",
+      "routeId": "legal",
+      "file": "1024--legal.png",
+      "diagnostics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 1024,
+          "bottom": 65,
+          "width": 1024,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 34.609375,
+          "top": 10,
+          "right": 135.171875,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 34.609375,
+          "top": 20,
+          "right": 58.609375,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 872.078125,
+          "top": 9,
+          "right": 989.390625,
+          "bottom": 55,
+          "width": 117.3125,
+          "height": 46
+        },
+        "menu": {
+          "visible": false,
+          "left": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "width": 0,
+          "height": 0
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 1024,
+          "bottom": 114,
+          "width": 1024,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/",
+      "routeId": "home",
+      "file": "390--home.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 75,
+          "width": 390,
+          "height": 75,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 16,
+          "top": 15,
+          "right": 108.28125,
+          "bottom": 59,
+          "width": 92.28125,
+          "height": 44
+        },
+        "mark": {
+          "left": 16,
+          "top": 26,
+          "right": 38,
+          "bottom": 48,
+          "width": 22,
+          "height": 22
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.88px",
+          "weight": "680",
+          "spacing": "2.6112px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 216.578125,
+          "top": 15,
+          "right": 318,
+          "bottom": 59,
+          "width": 101.421875,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 330,
+          "top": 15,
+          "right": 374,
+          "bottom": 59,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/start",
+      "routeId": "start",
+      "file": "390--start.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.15625,
+          "bottom": 54,
+          "width": 91.15625,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "680",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 224.0625,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 93.9375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/product",
+      "routeId": "product",
+      "file": "390--product.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 221.859375,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/catalog",
+      "routeId": "catalog",
+      "file": "390--catalog.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 221.859375,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/products/search",
+      "routeId": "family-search",
+      "file": "390--family-search.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 221.859375,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/products/ai",
+      "routeId": "family-ai",
+      "file": "390--family-ai.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 221.859375,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/products/sandbox",
+      "routeId": "family-sandbox",
+      "file": "390--family-sandbox.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 221.859375,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/products/rpc",
+      "routeId": "family-rpc",
+      "file": "390--family-rpc.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 221.859375,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/products/prediction",
+      "routeId": "family-prediction",
+      "file": "390--family-prediction.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 221.859375,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/products/crypto",
+      "routeId": "family-crypto",
+      "file": "390--family-crypto.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 221.859375,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/operations/search.web",
+      "routeId": "operation-search-web",
+      "file": "390--operation-search-web.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 120.5625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 221.859375,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/pricing",
+      "routeId": "pricing",
+      "file": "390--pricing.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 223.90625,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 390,
+          "bottom": 114,
+          "width": 390,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/proof",
+      "routeId": "proof",
+      "file": "390--proof.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 223.90625,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 390,
+          "bottom": 114,
+          "width": 390,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/docs",
+      "routeId": "docs",
+      "file": "390--docs.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 223.90625,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 390,
+          "bottom": 114,
+          "width": 390,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/status",
+      "routeId": "status",
+      "file": "390--status.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 223.90625,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 390,
+          "bottom": 114,
+          "width": 390,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/security",
+      "routeId": "security",
+      "file": "390--security.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 223.90625,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 390,
+          "bottom": 114,
+          "width": 390,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/benchmarks",
+      "routeId": "benchmarks",
+      "file": "390--benchmarks.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 223.90625,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 390,
+          "bottom": 114,
+          "width": 390,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/changelog",
+      "routeId": "changelog",
+      "file": "390--changelog.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 223.90625,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 390,
+          "bottom": 114,
+          "width": 390,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "390",
+      "width": 390,
+      "height": 844,
+      "route": "/legal",
+      "routeId": "legal",
+      "file": "390--legal.png",
+      "diagnostics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 65,
+          "width": 390,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 223.90625,
+          "top": 10,
+          "right": 318,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 326,
+          "top": 10,
+          "right": 370,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 390,
+          "bottom": 114,
+          "width": 390,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/",
+      "routeId": "home",
+      "file": "320--home.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 75,
+          "width": 320,
+          "height": 75,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 16,
+          "top": 15,
+          "right": 108.28125,
+          "bottom": 59,
+          "width": 92.28125,
+          "height": 44
+        },
+        "mark": {
+          "left": 16,
+          "top": 26,
+          "right": 38,
+          "bottom": 48,
+          "width": 22,
+          "height": 22
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.88px",
+          "weight": "680",
+          "spacing": "2.6112px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 146.578125,
+          "top": 15,
+          "right": 248,
+          "bottom": 59,
+          "width": 101.421875,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 260,
+          "top": 15,
+          "right": 304,
+          "bottom": 59,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/start",
+      "routeId": "start",
+      "file": "320--start.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.15625,
+          "bottom": 54,
+          "width": 91.15625,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "680",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 154.0625,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 93.9375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/product",
+      "routeId": "product",
+      "file": "320--product.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 151.859375,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/catalog",
+      "routeId": "catalog",
+      "file": "320--catalog.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 151.859375,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/products/search",
+      "routeId": "family-search",
+      "file": "320--family-search.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 151.859375,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/products/ai",
+      "routeId": "family-ai",
+      "file": "320--family-ai.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 151.859375,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/products/sandbox",
+      "routeId": "family-sandbox",
+      "file": "320--family-sandbox.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 151.859375,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/products/rpc",
+      "routeId": "family-rpc",
+      "file": "320--family-rpc.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 151.859375,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/products/prediction",
+      "routeId": "family-prediction",
+      "file": "320--family-prediction.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 151.859375,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/products/crypto",
+      "routeId": "family-crypto",
+      "file": "320--family-crypto.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 151.859375,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/operations/search.web",
+      "routeId": "operation-search-web",
+      "file": "320--operation-search-web.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 120.5625,
+          "bottom": 54,
+          "width": 100.5625,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "11.52px",
+          "weight": "700",
+          "spacing": "2.7648px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 151.859375,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 96.140625,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": null,
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": null,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/pricing",
+      "routeId": "pricing",
+      "file": "320--pricing.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 153.90625,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 320,
+          "bottom": 114,
+          "width": 320,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/proof",
+      "routeId": "proof",
+      "file": "320--proof.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 153.90625,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 320,
+          "bottom": 114,
+          "width": 320,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/docs",
+      "routeId": "docs",
+      "file": "320--docs.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 153.90625,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 320,
+          "bottom": 114,
+          "width": 320,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/status",
+      "routeId": "status",
+      "file": "320--status.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 153.90625,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 320,
+          "bottom": 114,
+          "width": 320,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/security",
+      "routeId": "security",
+      "file": "320--security.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 153.90625,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 320,
+          "bottom": 114,
+          "width": 320,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/benchmarks",
+      "routeId": "benchmarks",
+      "file": "320--benchmarks.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 153.90625,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 320,
+          "bottom": 114,
+          "width": 320,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/changelog",
+      "routeId": "changelog",
+      "file": "320--changelog.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 153.90625,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 320,
+          "bottom": 114,
+          "width": 320,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    },
+    {
+      "viewport": "320",
+      "width": 320,
+      "height": 700,
+      "route": "/legal",
+      "routeId": "legal",
+      "file": "320--legal.png",
+      "diagnostics": {
+        "scrollWidth": 320,
+        "clientWidth": 320,
+        "horizontalOverflow": false,
+        "header": {
+          "left": 0,
+          "top": 0,
+          "right": 320,
+          "bottom": 65,
+          "width": 320,
+          "height": 65,
+          "position": "relative"
+        },
+        "brand": {
+          "left": 20,
+          "top": 10,
+          "right": 111.21875,
+          "bottom": 54,
+          "width": 91.21875,
+          "height": 44
+        },
+        "mark": {
+          "left": 20,
+          "top": 20,
+          "right": 44,
+          "bottom": 44,
+          "width": 24,
+          "height": 24
+        },
+        "word": {
+          "text": "Clervo",
+          "transform": "uppercase",
+          "size": "10.4px",
+          "weight": "700",
+          "spacing": "2.496px"
+        },
+        "cta": {
+          "visible": true,
+          "left": 153.90625,
+          "top": 10,
+          "right": 248,
+          "bottom": 54,
+          "width": 94.09375,
+          "height": 44
+        },
+        "menu": {
+          "visible": true,
+          "left": 256,
+          "top": 10,
+          "right": 300,
+          "bottom": 54,
+          "width": 44,
+          "height": 44
+        },
+        "subnav": {
+          "left": 0,
+          "top": 65,
+          "right": 320,
+          "bottom": 114,
+          "width": 320,
+          "height": 49,
+          "position": "sticky"
+        },
+        "smallControls": [],
+        "issues": []
+      },
+      "sticky": {
+        "top": 65,
+        "bottom": 114,
+        "visible": true,
+        "headerVisible": true,
+        "overlap": false
+      },
+      "consoleErrors": [],
+      "pageErrors": [],
+      "issues": []
+    }
+  ],
+  "stateResults": [
+    "mobile-menu-escape:pass",
+    "mobile-menu-backdrop:pass",
+    "product-verified-reduced-motion:pass",
+    "operation-proof:pass",
+    "operation-unresolved:pass",
+    "pricing-approved:pass",
+    "pricing-refused:pass",
+    "proof-owner-funded:pass",
+    "status-unbound:pass",
+    "benchmarks-empty:pass",
+    "legal-structural:pass"
+  ],
+  "globalIssues": [],
+  "issues": []
+}

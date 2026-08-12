@@ -19,7 +19,7 @@ test('generated discovery publishes exactly the product families the registry ob
   const liveFamilies = new Set(registry.products.filter(({ state }) => state === 'live').map(({ id }) => id));
   const published = discovery.products.map(({ productId }) => productId);
   assert.ok(published.includes('search.web'), 'raw Search must stay published');
-  assert.ok(published.includes('search.answer'), 'Search synthesis must stay listed');
+  assert.equal(published.includes('search.answer'), false, 'non-callable Search synthesis must stay out of public inventory');
   for (const productId of published) {
     assert.ok(liveFamilies.has(familyOf(productId)), `${productId} is published but its family is not observed live`);
   }
@@ -30,7 +30,7 @@ test('generated discovery publishes exactly the product families the registry ob
   // Distribution flags follow the registry rather than a frozen snapshot.
   assert.equal(discovery.distribution.callable, liveFamilies.size > 0);
   assert.equal(discovery.distribution.publicAvailable, liveFamilies.size > 0);
-  assert.equal(discovery.distribution.noPublicDistribution, liveFamilies.size === 0);
+  assert.equal(discovery.distribution.noPublicDistribution, undefined);
 
   // Only an operation with an observed price may be advertised as payable.
   for (const product of discovery.products) {
@@ -61,14 +61,14 @@ test('site ships canonical media, static routes, and hardened hosting controls',
 
   const staticRoutes = [
     ['apps/site/dist/index.html', 'Give your agent a task.'],
-    ['apps/site/dist/product/index.html', 'One platform.'],
+    ['apps/site/dist/product/index.html', 'One task in.'],
     ['apps/site/dist/proof-lab/index.html', 'Inspect the mechanism.'],
     ['apps/site/dist/docs/typescript/index.html', 'TypeScript'],
-    ['apps/site/dist/security/index.html', 'Failure closes the boundary'],
+    ['apps/site/dist/security/index.html', 'Authority is explicit'],
     // The status headline is deliberately a constant that describes the method,
     // not the status. Pinning a rendered status value here would make the test
     // a second, competing source of truth.
-    ['apps/site/dist/status/index.html', 'Probed, not asserted.'],
+    ['apps/site/dist/status/index.html', 'Current truth without marketing interpretation.'],
   ];
   for (const [file, expected] of staticRoutes) {
     const html = await read(file);
@@ -95,6 +95,7 @@ test('site projects live Prediction operations, prices, attribution, and proof f
     read('apps/site/dist/status/index.html'),
     read('apps/site/dist/index.html'),
   ]);
+  const catalogDocument = JSON.parse(await read('generated/public/catalog.json'));
   assert.match(prediction, /prediction\.markets/u);
   assert.match(prediction, /pdata\.world \/ CC BY 4\.0/u);
   assert.match(prediction, /quote observed, unpaid/u);
@@ -102,8 +103,9 @@ test('site projects live Prediction operations, prices, attribution, and proof f
   assert.match(catalog, /pdata\.world \/ CC BY 4\.0/u);
   assert.match(pricing, /prediction\.markets/u);
   assert.match(pricing, /0\.002 USDC/u);
-  assert.match(status, /Routes answering<\/dt><dd><b>12/u);
-  assert.match(home, /Routes serving<\/dt><dd>12/u);
+  assert.match(status, /Routes answering/u);
+  const liveFamilies = catalogDocument.observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
+  assert.match(home, new RegExp(`${liveFamilies} of ${catalogDocument.observedTruth.products.length} product families observed serving`, 'u'));
 });
 
 test('site keeps WebGL optional for narrow and reduced-motion clients', async () => {

@@ -92,8 +92,20 @@ export interface AiInternalProductModel {
 export interface AiPublicProductModel {
   modelId: string;
   identityKind: 'canonical' | 'alias';
+  isAlias?: boolean;
   aliasFor?: string;
+  aliasRationale?: string;
+  tradeoffs?: string;
   reasoningEffort?: 'low' | 'medium' | 'high';
+  aliasKind?: 'fixed_canonical';
+  selectionPolicy?: Readonly<{
+    kind: 'fixed_canonical';
+    optimizationGoal: 'not_applicable_fixed_mapping';
+    tradeoffs: string;
+    dynamicallyRouted: false;
+    resolvedCanonicalResultField: 'exactModelId';
+    pricingSemantics: 'inherits_fixed_canonical_customer_pricing';
+  }>;
   aliases: readonly string[];
   name: string;
   description?: string;
@@ -101,9 +113,19 @@ export interface AiPublicProductModel {
   capabilities: readonly string[];
   inputTypes: readonly string[];
   outputTypes: readonly string[];
+  contextWindow: number;
+  inputModalities: readonly string[];
+  outputModalities: readonly string[];
   limits: Readonly<{ contextTokens?: number; maximumOutputTokens?: number }>;
+  modelCreator: null;
+  modelCreatorStatus: 'unknown';
+  executionSupplier: 'Clervo AI Gateway';
+  upstreamExecutionSupplier: null;
+  upstreamExecutionSupplierStatus: 'not_publicly_disclosed';
+  ownedBySemantics: 'Clervo customer-facing identifier namespace; not a model-creator claim';
   lifecycle: 'available' | 'degraded' | 'paused' | 'withdrawn';
   availability: 'available' | 'degraded' | 'unavailable' | 'withdrawn';
+  expectedReturnAt?: string;
   health: 'healthy' | 'degraded' | 'unavailable';
   publicSellable: boolean;
   publicationBlockers: readonly string[];
@@ -348,6 +370,13 @@ function publicProjection(model: Readonly<AiInternalProductModel>): Readonly<AiP
   const billingMode = model.pricing.customerPricing !== null && aiPricingRateKeys.every((key) => model.pricing.customerPricing![key] === 0) ? 'free' as const : 'metered' as const;
   const availability = model.lifecycle === 'paused' ? 'unavailable' as const : model.lifecycle;
   const health = model.lifecycle === 'available' ? 'healthy' as const : model.lifecycle === 'degraded' ? 'degraded' as const : 'unavailable' as const;
+  const customerPricing = model.pricing.customerPricing === null ? null : {
+    ...model.pricing.customerPricing,
+    // String USD-per-million fields are convenient for agent selection while
+    // the atomic micros-per-million fields remain the billing authority.
+    inputPerMToken: (model.pricing.customerPricing.inputTokenMicrosPerMillion / 1_000_000).toFixed(6),
+    outputPerMToken: (model.pricing.customerPricing.outputTokenMicrosPerMillion / 1_000_000).toFixed(6),
+  };
   return freezeDeep({
     modelId: model.identity.customerModelId,
     identityKind: 'canonical' as const,
@@ -358,13 +387,29 @@ function publicProjection(model: Readonly<AiInternalProductModel>): Readonly<AiP
     capabilities: model.supply.capabilities,
     inputTypes: model.supply.inputTypes,
     outputTypes: model.supply.outputTypes,
+    // The gateway exposes a bounded, provider-neutral context contract. A
+    // qualified route may narrow this with an explicit supply limit; absent a
+    // narrower declaration, agents can safely plan against the 128K contract.
+    contextWindow: model.supply.limits.contextTokens ?? 128_000,
+    inputModalities: model.supply.inputTypes,
+    outputModalities: model.supply.outputTypes,
     limits: model.supply.limits,
+    // Current supply qualification does not authoritatively identify upstream
+    // model creators or the gateway's upstream executor. Publish explicit
+    // unknown/undisclosed states instead of guessing from model names.
+    modelCreator: null,
+    modelCreatorStatus: 'unknown' as const,
+    executionSupplier: 'Clervo AI Gateway' as const,
+    upstreamExecutionSupplier: null,
+    upstreamExecutionSupplierStatus: 'not_publicly_disclosed' as const,
+    ownedBySemantics: 'Clervo customer-facing identifier namespace; not a model-creator claim' as const,
     lifecycle: model.lifecycle,
     availability,
+    ...(model.supply.availability.expectedReturnAt === undefined ? {} : { expectedReturnAt: model.supply.availability.expectedReturnAt }),
     health,
     publicSellable: model.publicSellable,
     publicationBlockers: model.publicationBlockers,
-    customerPricing: model.pricing.customerPricing,
+    customerPricing,
     pricingMethod: model.pricing.method,
     competitiveComparison: model.pricing.competitiveComparison,
     billingMode,
@@ -481,7 +526,31 @@ export function createAiPublicModelList(catalog: Readonly<ComposedAiProductCatal
       clervo: {
         ...target,
         identityKind: 'alias' as const,
+        isAlias: true as const,
         aliasFor: modelId,
+        aliasRationale: alias === 'clervo/fast'
+          ? 'Lowest-latency stable route for short classification, extraction, and generation tasks.'
+          : alias === 'clervo/smart'
+            ? 'Balanced quality and latency for general-purpose reasoning and generation.'
+            : alias === 'clervo/code'
+              ? 'Code-focused stable route for implementation, debugging, and review tasks.'
+              : 'Highest-reasoning stable route for difficult analysis and long-form synthesis.',
+        tradeoffs: alias === 'clervo/fast'
+          ? 'Speed over capability; not suitable for deep reasoning, code, or long context.'
+          : alias === 'clervo/smart'
+            ? 'Balanced tradeoff; slower and less capable than deep/code on difficult tasks.'
+            : alias === 'clervo/code'
+              ? 'Code specialization over broad general reasoning.'
+              : 'Capability over latency and cost; use for difficult reasoning tasks.',
+        aliasKind: 'fixed_canonical' as const,
+        selectionPolicy: {
+          kind: 'fixed_canonical' as const,
+          optimizationGoal: 'not_applicable_fixed_mapping' as const,
+          tradeoffs: 'The alias adds naming stability only; capabilities, availability, and customer pricing are inherited from its fixed canonical target.',
+          dynamicallyRouted: false as const,
+          resolvedCanonicalResultField: 'exactModelId' as const,
+          pricingSemantics: 'inherits_fixed_canonical_customer_pricing' as const,
+        },
         reasoningEffort: reasoningByAlias[alias as keyof typeof reasoningByAlias],
         aliases: [] as string[],
         name: `${alias} service alias`,

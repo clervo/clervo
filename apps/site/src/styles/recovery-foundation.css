@@ -1,0 +1,47 @@
+/* B12 recovery shared foundation.
+ *
+ * The shell, tokens, controls, and focus system remain canonical. Legacy page
+ * composition classes are intentionally not extended here: each recovered
+ * archetype receives its own composition while sharing these foundations.
+ */
+
+.app--home {
+  background: #000;
+}
+
+.app--home main {
+  z-index: 2;
+}
+
+.app--home .site-header {
+  background: rgb(0 0 0 / 82%);
+  border-bottom-color: rgb(255 255 255 / 9%);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .app--home .site-header {
+    background: rgb(0 0 0 / 62%);
+  }
+}
+
+.app--home .site-footer {
+  background: #000;
+}
+
+.mobile-nav__links a.is-active {
+  color: var(--qualify);
+}
+
+.mobile-nav__links a.is-active::after {
+  content: "Current";
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (width <= 420px) {
+  .app--home .site-header__cta {
+    display: none;
+  }
+}

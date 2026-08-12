@@ -10,8 +10,8 @@ const proof = JSON.parse(await readFile('infra/production/gcp/x402-proof.v1.json
 const manifest = JSON.parse(await readFile('package.json', 'utf8'));
 
 test('browser proof uses pinned official x402 libraries and a MetaMask-held signer', () => {
-  assert.equal(manifest.dependencies['@x402/fetch'], '2.20.0');
-  assert.equal(manifest.dependencies['@x402/evm'], '2.20.0');
+  assert.equal(manifest.dependencies['@x402/fetch'], '2.21.0');
+  assert.equal(manifest.dependencies['@x402/evm'], '2.21.0');
   assert.match(browser, /registerExactEvmScheme/u);
   assert.match(browser, /createWalletClient/u);
   assert.match(browser, /custom\(provider/u);
@@ -34,7 +34,7 @@ test('browser proof refuses drift and allows exactly one authorization attempt',
     "resource: 'https://api.clervo.dev/v1/search/paid'",
     "amountAtomic: '6000'",
     "'ai.chat'",
-    "model: 'clervo/gpt-5.6-luna'",
+    "model: 'clervo/allam-2-7b'",
     "'ai.image'",
     "resource: 'https://api.clervo.dev/v1/ai/execute'",
     "amountAtomic: '1000'",

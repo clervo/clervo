@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `packages/catalog/live-registry.json`, probed at 2026-08-11T08:48:34.576Z. Release: `802527f49f87b1aa9323c329bf52c07ffce6d659`.
+Source: `packages/catalog/live-registry.json`, probed at 2026-08-11T23:08:33.338Z. Release: `763601c4688fd9b2e3eedb4c7829b4586b329368`.
 
 ## Identity
 
@@ -18,8 +18,8 @@ Source: `packages/catalog/live-registry.json`, probed at 2026-08-11T08:48:34.576
 | Product | ID | Lifecycle state | Proof level |
 |---|---|---|---|
 | AI | `ai` | live | paid_outcome_verified |
-| Crypto Intelligence | `crypto_intelligence` | live | quote_observed_unpaid |
-| Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
+| Crypto Intelligence | `crypto_intelligence` | live | paid_outcome_verified |
+| Prediction Intelligence | `prediction` | live | paid_outcome_verified |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
 | Secure Sandbox | `sandbox` | live | paid_outcome_verified |
 | Research | `search` | live | paid_outcome_verified |
@@ -31,7 +31,7 @@ outcome. Report it that way if you cite it.
 ## Free entry point
 
 - `POST https://api.clervo.dev/v1/search/free`
-- Accepts a request with no idempotency key: no
+- Accepts a request with no idempotency key: yes
 - Quota headers: `ratelimit-limit`, `ratelimit-remaining`, `ratelimit-reset`.
 - Over the cap the route answers `429 free_quota_exceeded` rather than executing. Do not treat 429 as a transport error.
 
@@ -40,8 +40,7 @@ outcome. Report it that way if you cite it.
 ```bash
 curl -sS https://api.clervo.dev/v1/search/free \
   -H 'content-type: application/json' \
-  -d '{"query":"World Wide Web","maxResults":3,"synthesize":false}' \
-  -H 'idempotency-key: clervo-first-call-0001'
+  -d '{"query":"World Wide Web","maxResults":3,"synthesize":false}'
 ```
 
 ## Idempotency contract

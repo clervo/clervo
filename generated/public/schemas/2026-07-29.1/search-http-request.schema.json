@@ -20,7 +20,8 @@
     },
     "synthesize": {
       "type": "boolean",
-      "default": true
+      "default": false,
+      "description": "Public HTTP omission selects false. true is accepted only as a released-client compatibility input and returns search_synthesis_unavailable."
     },
     "language": {
       "type": "string",

@@ -19,6 +19,7 @@ const aiRoutes = [
   'ai.clervo.dev/v1/catalog',
   'ai.clervo.dev/.well-known/clervo.json',
   'ai.clervo.dev/.well-known/x402',
+  'ai.clervo.dev/.well-known/ai-plugin.json',
   'ai.clervo.dev/openapi.json',
   'ai.clervo.dev/llms.txt',
 ];
@@ -48,6 +49,7 @@ const projectedStatuses = Object.freeze({
   '/v1/catalog': 200,
   '/.well-known/clervo.json': 200,
   '/.well-known/x402': 200,
+  '/.well-known/ai-plugin.json': 200,
   '/openapi.json': 200,
   '/llms.txt': 200,
 });
@@ -80,7 +82,7 @@ async function deployTriggers(routes) {
 
 async function verifyProjection() {
   await assertGatewayPreserved(200);
-  for (const pathname of ['/.well-known/clervo.json', '/.well-known/x402', '/openapi.json', '/llms.txt']) {
+  for (const pathname of ['/.well-known/clervo.json', '/.well-known/x402', '/.well-known/ai-plugin.json', '/openapi.json', '/llms.txt']) {
     assert.equal(await status(pathname), 200, `${pathname} not projected`);
   }
   assert.equal(await status('/v1/ai/execute'), 405, 'normalized execute path not projected');

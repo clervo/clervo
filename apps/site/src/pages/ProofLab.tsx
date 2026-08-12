@@ -4,7 +4,7 @@ import type { ActivationState } from '../experience';
 import { lifecycleLabels, observedTruth, proofLabels, type ExperiencePhase } from '../product';
 import { Link, useRouter } from '../router';
 
-type ProductId = 'search.web' | 'search.answer';
+type ProductId = 'search.web';
 
 /*
  * /proof-lab — a deterministic local fixture.
@@ -39,7 +39,7 @@ interface FixtureReceipt {
   requestHash: string;
   price: {
     asset: 'mock:usdc';
-    amountAtomic: '6000' | '12000';
+    amountAtomic: '6000';
     decimals: 6;
     payable: false;
   };
@@ -80,7 +80,7 @@ function readLab(search: string): SavedLab {
     const params = new URLSearchParams(search);
     const stored: SavedLab = value === null ? initialLab : {
       query: typeof value.query === 'string' ? value.query : initialLab.query,
-      productId: value.productId === 'search.answer' ? 'search.answer' : 'search.web',
+      productId: 'search.web',
       state: labStates.includes(value.state as LabState)
         ? value.state as LabState
         : 'request',
@@ -93,7 +93,7 @@ function readLab(search: string): SavedLab {
       : stored.state;
     return {
       ...stored,
-      productId: productId === 'search.answer' ? 'search.answer' : productId === 'search.web' ? 'search.web' : stored.productId,
+      productId: productId === 'search.web' ? 'search.web' : stored.productId,
       state: ['verified', 'result', 'receipt', 'recovery'].includes(state) && stored.receipt === null
         ? 'evidence'
         : state,
@@ -133,7 +133,7 @@ export function ProofLab({
   const [busy, setBusy] = useState(false);
   const [shared, setShared] = useState(false);
   const phase = phaseForState(lab.state);
-  const price = lab.productId === 'search.web' ? '6000' : '12000';
+  const price = '6000';
   const step = labStates.indexOf(lab.state) + 1;
   const canContinue = lab.query.trim().length > 0 && lab.query.trim().length <= 2_000;
 
@@ -289,17 +289,6 @@ export function ProofLab({
                 />
                 <span>search.web</span>
                 <small>ranked evidence</small>
-              </label>
-              <label className={lab.productId === 'search.answer' ? 'is-selected' : ''}>
-                <input
-                  type="radio"
-                  name="product"
-                  value="search.answer"
-                  checked={lab.productId === 'search.answer'}
-                  onChange={() => update({ productId: 'search.answer' })}
-                />
-                <span>search.answer</span>
-                <small>cited synthesis</small>
               </label>
             </fieldset>
             {error === '' ? null : <p className="form-error" role="alert">{error}</p>}

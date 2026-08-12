@@ -6,22 +6,21 @@ import { Link, useRouter } from '../router';
 /*
  * The global shell.
  *
- * The navigation is the locked one (vault Step 7G): Product, Catalog, Pricing,
- * Docs, Status, and one primary action to /start. The deployed header carried
- * a different set — "Outcome", "How it works", "Proof" — and its primary
- * action was a search trigger, so the site's single most important conversion
- * path was not present in the header at all.
+ * Product, Catalog, Pricing, Docs, Status and one primary action to /start are
+ * the stable human navigation. The footer also exposes the canonical machine
+ * entry points so developers and agent crawlers do not have to infer them.
  */
 
 const primaryNav = [
   { to: '/product', label: 'Product' },
-  { to: '/catalog', label: 'Catalog' },
+  { to: '/catalog', label: 'Models' },
   { to: '/pricing', label: 'Pricing' },
   { to: '/docs', label: 'Docs' },
   { to: '/status', label: 'Status' },
 ];
 
 const secondaryNav = [
+  { to: '/trust', label: 'Trust center' },
   { to: '/proof', label: 'Proof' },
   { to: '/security', label: 'Security' },
   { to: '/benchmarks', label: 'Benchmarks' },
@@ -36,16 +35,16 @@ export function SiteHeader() {
   const panelRef = useRef<HTMLDivElement>(null);
   const pathname = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/u, '');
 
-  const isActive = (to: string) => pathname === to
-    || (to !== '/' && pathname.startsWith(`${to}/`));
+  const isActive = (to: string) => {
+    if (to === '/product') {
+      return pathname === '/product' || pathname === '/platform' || pathname.startsWith('/products/');
+    }
+    if (to === '/catalog') return pathname === '/catalog' || pathname.startsWith('/models/');
+    return pathname === to || (to !== '/' && pathname.startsWith(`${to}/`));
+  };
 
-  // Route change closes the panel. Without this, tapping a link on mobile
-  // navigates behind an overlay that is still covering the page.
   useEffect(() => setOpen(false), [pathname]);
 
-  // While the panel is open it owns the viewport: the page beneath must not
-  // scroll, Escape must close, and focus must not escape into content the user
-  // cannot see.
   useEffect(() => {
     if (!open) return;
     const { body } = document;
@@ -125,6 +124,11 @@ export function SiteHeader() {
         className={`mobile-nav${open ? ' is-open' : ''}`}
         id={panelId}
         hidden={!open}
+        onClick={(event) => {
+          if (event.target !== event.currentTarget) return;
+          setOpen(false);
+          triggerRef.current?.focus();
+        }}
       >
         <div
           className="mobile-nav__panel"
@@ -149,7 +153,12 @@ export function SiteHeader() {
           </div>
           <nav className="mobile-nav__links" aria-label="All pages">
             {[...primaryNav, ...secondaryNav].map(({ to, label }) => (
-              <Link key={to} to={to} aria-current={isActive(to) ? 'page' : undefined}>
+              <Link
+                key={to}
+                to={to}
+                className={isActive(to) ? 'is-active' : undefined}
+                aria-current={isActive(to) ? 'page' : undefined}
+              >
                 {label}
               </Link>
             ))}
@@ -176,7 +185,8 @@ export function SiteFooter({ note }: { note: string }) {
           <section>
             <h2>Product</h2>
             <Link to="/product">Overview</Link>
-            <Link to="/catalog">Live catalog</Link>
+            <Link to="/research">Research</Link>
+            <Link to="/catalog">Models</Link>
             <Link to="/pricing">Pricing</Link>
             <Link to="/start">Set up Clervo</Link>
           </section>
@@ -186,21 +196,20 @@ export function SiteFooter({ note }: { note: string }) {
             <Link to="/docs/quickstart">Quickstart</Link>
             <a href="/openapi.json">OpenAPI</a>
             <a href="/.well-known/clervo.json">Discovery</a>
+            <a href="/llms.txt">LLM reference</a>
+            <a href="/skill.md">Agent skill</a>
           </section>
           <section>
             <h2>Trust</h2>
+            <Link to="/trust">Trust center</Link>
             <Link to="/proof">Proof</Link>
             <Link to="/status">Status</Link>
             <Link to="/security">Security</Link>
+            <Link to="/changelog">Changelog</Link>
             <Link to="/legal">Legal</Link>
           </section>
         </div>
       </div>
-      {/*
-        * The footer note is generated from the observed registry, never
-        * written by hand. A hand-written availability line is the exact bug
-        * the truth spine exists to prevent.
-        */}
       <p className="site-footer__note shell quiet">{note}</p>
     </footer>
   );

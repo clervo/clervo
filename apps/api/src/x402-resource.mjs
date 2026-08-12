@@ -38,42 +38,22 @@ const RESOURCE_TAGS = Object.freeze({
   '/v1/crypto/execute': Object.freeze(['crypto', 'onchain', 'wallet', 'analytics', 'x402']),
 });
 const SEARCH_DISCOVERY_INPUT = Object.freeze({ query: 'current x402 protocol documentation', maxResults: 3, synthesize: false, language: 'en', region: 'US' });
-const AI_DISCOVERY_INPUT = Object.freeze({
-  model: 'gpt-5.6-luna',
-  input: Object.freeze({ kind: 'chat', messages: Object.freeze([Object.freeze({ role: 'user', content: 'Reply with the single word ready.' })]), responseFormat: 'text', stream: false }),
-  maximumOutputTokens: 16,
-});
 
 function defaultDiscovery(resourcePath) {
   const ai = resourcePath === '/v1/ai/execute';
-  const input = ai ? AI_DISCOVERY_INPUT : SEARCH_DISCOVERY_INPUT;
-  const inputSchema = ai ? {
-    type: 'object', required: ['model', 'input', 'maximumOutputTokens'], additionalProperties: false,
-    properties: {
-      model: { type: 'string', enum: ['gpt-5.6-luna'] },
-      input: {
-        type: 'object', required: ['kind', 'messages', 'responseFormat', 'stream'], additionalProperties: false,
-        properties: {
-          kind: { const: 'chat' },
-          messages: { type: 'array', minItems: 1, items: { type: 'object', required: ['role', 'content'], properties: { role: { enum: ['user'] }, content: { type: 'string', minLength: 1 } }, additionalProperties: false } },
-          responseFormat: { const: 'text' }, stream: { const: false },
-        },
-      },
-      maximumOutputTokens: { type: 'integer', minimum: 1, maximum: 16384 },
-    },
-  } : {
+  if (ai) throw new TypeError('ai_resource_discovery_required');
+  const input = SEARCH_DISCOVERY_INPUT;
+  const inputSchema = {
     type: 'object', required: ['query', 'synthesize'], additionalProperties: false,
     properties: {
       query: { type: 'string', minLength: 1, maxLength: 2000 }, maxResults: { type: 'integer', minimum: 1, maximum: 10 },
       synthesize: { const: false }, language: { type: 'string' }, region: { type: 'string' },
     },
   };
-  const outputExample = ai
-    ? { productId: 'ai.chat', state: 'RECEIPTED', replayed: false, exactModelId: 'gpt-5.6-luna', result: { output: { kind: 'chat', content: 'ready' } }, receipt: { settlement: { status: 'settled' } } }
-    : { productId: 'search.web', state: 'RECEIPTED', replayed: false, output: { searchResponse: { results: [], citations: [] } }, receipt: { settlement: { status: 'settled' } } };
+  const outputExample = { productId: 'search.web', state: 'RECEIPTED', replayed: false, output: { searchResponse: { results: [], citations: [] } }, receipt: { settlement: { status: 'settled' } } };
   return Object.freeze({
     method: 'POST', bodyType: 'json', input, inputSchema,
-    output: { example: outputExample, schema: { additionalProperties: true } },
+    output: { example: outputExample, schema: { type: 'object', additionalProperties: true } },
   });
 }
 

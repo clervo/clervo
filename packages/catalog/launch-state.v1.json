@@ -40,12 +40,12 @@
   },
   "paymentProof": {
     "state": "owner_funded_public_proof",
-    "productId": "search.web",
+    "productId": "prediction.markets",
     "network": "Base",
     "asset": "USDC",
-    "amountAtomic": "6000",
+    "amountAtomic": "2000",
     "decimals": 6,
-    "amountDisplay": "0.006 USDC",
+    "amountDisplay": "0.002 USDC",
     "settlementConfirmed": true,
     "usefulResult": true,
     "replaySameReceipt": true,
@@ -55,10 +55,10 @@
     "publicCustomerPaymentAvailable": true,
     "revenueEvidence": false,
     "demandEvidence": false,
-    "transactionUrl": "https://basescan.org/tx/0x22a537342614b14eb676b1cb3ccb51acdec98bb56811d152e650b3985a0403cb",
+    "transactionUrl": "https://basescan.org/tx/0xd7ca02e50b8870843275ddd7a27337b278827358a79ae40a611a8af6d2ffcec7",
     "evidence": [
-      "infra/production/gcp/search-sandbox-x402-proof.v1.json",
-      "tests/contract/b10-proof-worker.test.mjs"
+      "infra/production/gcp/prediction-x402-proof.v1.json",
+      "tests/contract/b8-prediction-intelligence.test.mjs"
     ]
   },
   "products": [
@@ -95,7 +95,7 @@
       "paymentState": "public_x402_two_owner_funded_settlements_and_replays_verified",
       "supplierRights": "qualified_resale_allowed_selected_routes",
       "allowedClaims": [
-        "The frozen public AI catalog contains 85 canonical models and 4 stable aliases; 88 of 89 callable IDs are currently sellable.",
+        "Current canonical, alias, callable, and sellable model counts are derived from the public AI catalog and published by /v1/models.",
         "Qualified AI requests expose exact request-derived Base USDC x402 quotes through the protected production edge.",
         "Two bounded owner-funded production operations—ai.chat at 0.001 USDC and ai.image at 0.0255 USDC—returned useful exact-model results and settled for exactly 0.0265 USDC total with zero supplier cost.",
         "Both paid operations replayed with the same operation, result, and receipt without another payment header, authorization, upstream execution, settlement, or charge.",

@@ -28,6 +28,7 @@ import { InMemorySearchStateStore } from './search-state-store.mjs';
 import { createX402PaidSearchProcessor, x402SearchPricing } from './x402-paid-search.mjs';
 import { createX402PaidAiProcessor } from './x402-paid-ai.mjs';
 import { createFreeAiOperationProcessor } from './ai-free-operation.mjs';
+import { createAiDiscoveryContract } from './ai-discovery.mjs';
 import {
   SANDBOX_DISCOVERY,
   SANDBOX_MAX_BODY_BYTES as SANDBOX_PUBLIC_MAX_BODY_BYTES,
@@ -70,16 +71,6 @@ const PROBLEM_TYPE = 'application/problem+json; charset=utf-8';
 const MOCK_PAYMENT_HEADER = 'x-clervo-mock-payment';
 const SANDBOX_PRIVATE_PATH = '/internal/v1/sandbox/run';
 const SANDBOX_MAX_BODY_BYTES = 1_500_000;
-const AI_DISCOVERY_PROBE_REQUEST = Object.freeze({
-  model: 'gpt-5.6-luna',
-  input: Object.freeze({
-    kind: 'chat',
-    messages: Object.freeze([Object.freeze({ role: 'user', content: 'Reply with the single word ready.' })]),
-    responseFormat: 'text',
-    stream: false,
-  }),
-  maximumOutputTokens: 16,
-});
 const SEARCH_DISCOVERY_PROBE_REQUEST = Object.freeze({
   query: 'current x402 protocol documentation',
   maxResults: 3,
@@ -147,13 +138,12 @@ function send(response, status, body, headers = {}, contentType = JSON_TYPE) {
 // therefore consume a caller's own free quota and nothing else.
 const NAIVE_CONTENT_TYPES = new Set(['application/json', 'text/plain', 'application/x-www-form-urlencoded', 'multipart/form-data']);
 
-async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType = false } = {}) {
+async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType = false, allowEmpty = false } = {}) {
   const contentType = request.headers['content-type'];
   const declaredType = typeof contentType === 'string' ? contentType.split(';', 1)[0].trim().toLowerCase() : '';
   const acceptable = acceptNaiveContentType
     ? declaredType === '' || NAIVE_CONTENT_TYPES.has(declaredType)
     : declaredType === 'application/json';
-  if (!acceptable) throw Object.assign(new Error('unsupported_media_type'), { status: 415 });
   const declared = Number(request.headers['content-length']);
   if (Number.isFinite(declared) && declared > maximumBytes) throw Object.assign(new Error('request_body_too_large'), { status: 413 });
   const chunks = [];
@@ -163,6 +153,8 @@ async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES, { acceptN
     if (bytes > maximumBytes) throw Object.assign(new Error('request_body_too_large'), { status: 413 });
     chunks.push(chunk);
   }
+  if (bytes === 0 && allowEmpty) return undefined;
+  if (!acceptable) throw Object.assign(new Error('unsupported_media_type'), { status: 415 });
   try { return JSON.parse(Buffer.concat(chunks).toString('utf8')); } catch { throw Object.assign(new Error('invalid_json'), { status: 400 }); }
 }
 
@@ -301,11 +293,14 @@ export function createSearchServer({
     let pricing;
     let discovery;
     if (pathname === AI_PAID_PATH) {
-      const normalized = normalizeAiHttpRequest(AI_DISCOVERY_PROBE_REQUEST);
+      if (typeof aiPublicPricing?.discoveryRequest !== 'function') throw new TypeError('ai_discovery_contract_unavailable');
+      const input = aiPublicPricing.discoveryRequest(observedAt);
+      const normalized = normalizeAiHttpRequest(input);
       productId = normalized.productId;
       requestHash = aiHttpRequestHash(normalized);
       const operationId = identifier('op', `discovery:${pathname}:${requestHash}`);
       pricing = aiPublicPricing.quote({ normalized, operationId, now: observedAt }).pricing;
+      discovery = createAiDiscoveryContract(input);
     } else if (pathname === SANDBOX_PAID_PATH) {
       const normalized = normalizeSandboxHttpRequest(SANDBOX_DISCOVERY.input);
       productId = 'sandbox.run';
@@ -478,12 +473,14 @@ export function createSearchServer({
         const observedAt = now();
         const suppliedKey = request.headers['idempotency-key'];
         const authorizationHeader = mppAuthorization(request.headers.authorization);
-        if (typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined && [undefined, '0'].includes(request.headers['content-length']) && request.headers['transfer-encoding'] === undefined) {
+        const discoveryEligible = typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined;
+        const aiBody = await readJson(request, AI_MAX_BODY_BYTES, { allowEmpty: discoveryEligible });
+        if (aiBody === undefined) {
           const challenge = await discoveryPaymentChallenge(AI_PAID_PATH, observedAt);
           send(response, challenge.status, challenge.body, challenge.headers);
           return;
         }
-        const normalized = normalizeAiHttpRequest(await readJson(request, AI_MAX_BODY_BYTES));
+        const normalized = normalizeAiHttpRequest(aiBody);
         const requestHash = aiHttpRequestHash(normalized);
         const classificationId = identifier('op', `classify:${requestHash}`);
         const billingMode = aiPublicPricing.quote({ normalized, operationId: classificationId, now: observedAt }).pricing.billingMode;
@@ -520,8 +517,8 @@ export function createSearchServer({
       } catch (error) {
         const code = errorCode(error);
         const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;
-        const title = status === 400 ? 'Invalid AI request' : status === 409 ? 'AI operation conflict' : 'AI execution unavailable';
-        const detail = status === 400 ? 'The request did not satisfy the bounded AI HTTP contract.' : 'The AI operation failed closed without an additional customer charge.';
+        const title = status === 400 ? 'Invalid AI request' : status === 404 ? 'AI model not found' : status === 409 ? 'AI operation conflict' : status === 422 ? 'AI model unavailable' : 'AI execution unavailable';
+        const detail = status === 400 ? 'The request did not satisfy the bounded AI HTTP contract.' : status === 404 ? 'The requested model ID is not present in the current Clervo catalog.' : status === 422 ? 'The requested model is known but is not currently sellable for this input kind.' : 'The AI operation failed closed without an additional customer charge.';
         send(response, status, problem(status, code, title, detail, url.pathname, aiOperationId), status >= 500 ? { 'retry-after': '30' } : {}, PROBLEM_TYPE);
       }
       return;
@@ -708,9 +705,16 @@ export function createSearchServer({
       // A caller who supplied no key is told which one was used, so a
       // deliberate replay of this exact operation is still possible.
       const keyHeaders = keyGenerated ? { 'idempotency-key': keyHeader } : {};
-      const normalized = normalizeSearchHttpRequest(await readJson(request, SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType: url.pathname === SEARCH_FREE_PATH }));
+      const decoded = await readJson(request, SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType: url.pathname === SEARCH_FREE_PATH });
+      // Released clients send synthesize explicitly. At the public HTTP edge,
+      // omission selects the supported raw Search operation so a clean caller
+      // does not accidentally opt into the non-callable compatibility mode.
+      const publicRequest = decoded !== null && typeof decoded === 'object' && !Array.isArray(decoded) && !Object.hasOwn(decoded, 'synthesize')
+        ? { ...decoded, synthesize: false }
+        : decoded;
+      const normalized = normalizeSearchHttpRequest(publicRequest);
       if (normalized.synthesize && !synthesisEnabled) {
-        send(response, 503, problem(503, 'search_synthesis_unavailable', 'Search synthesis unavailable', 'Live cited synthesis is not enabled on this release. Retry with synthesize=false for raw results.', url.pathname), { 'retry-after': '300' }, PROBLEM_TYPE);
+        send(response, 422, problem(422, 'search_synthesis_unavailable', 'Search synthesis unavailable', 'Live cited synthesis is not implemented on this release. Retry with synthesize=false for raw results.', url.pathname), {}, PROBLEM_TYPE);
         return;
       }
       const requestHash = searchHttpRequestHash(normalized, url.pathname);

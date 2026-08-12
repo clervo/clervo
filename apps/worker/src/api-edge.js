@@ -1,6 +1,7 @@
 import catalog from '../../../generated/public/catalog.json' with { type: 'json' };
 import capabilities from '../../../generated/public/capabilities.json' with { type: 'json' };
 import discovery from '../../../generated/public/.well-known/clervo.json' with { type: 'json' };
+import aiPlugin from '../../../generated/public/.well-known/ai-plugin.json' with { type: 'json' };
 import mcpDiscovery from '../../../generated/public/.well-known/mcp.json' with { type: 'json' };
 import x402Manifest from '../../../generated/public/.well-known/x402.json' with { type: 'json' };
 import models from '../../../generated/public/models.json' with { type: 'json' };
@@ -15,6 +16,7 @@ const FAVICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><pa
 const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid', '/v1/ai/execute', '/v1/sandbox/execute', '/v1/rpc/execute', '/v1/prediction/execute', '/v1/crypto/execute']);
 const DISCOVERY_DOCUMENTS = new Map([
   ['/.well-known/clervo.json', discovery],
+  ['/.well-known/ai-plugin.json', aiPlugin],
   ['/.well-known/mcp.json', mcpDiscovery],
   // The three agent discovery paths. An agent reads a model list, a payment
   // manifest, and a reference; without them the service is invisible to its

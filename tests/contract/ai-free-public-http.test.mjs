@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
+import { request as httpRequest } from 'node:http';
 import test from 'node:test';
+import Ajv2020 from 'ajv/dist/2020.js';
 
 import { createDynamicAiProductionRuntime } from '../../apps/api/src/ai-dynamic-production-runtime.mjs';
 import { createSearchServer } from '../../apps/api/src/search-server.mjs';
@@ -12,6 +14,7 @@ const observedAt = '2026-08-10T20:11:00.000Z';
 test('one AI endpoint executes free models without payment and challenges paid models from the same catalog', async (context) => {
   let executions = 0;
   let challenges = 0;
+  const discoveryChallenges = [];
   const runtime = await createDynamicAiProductionRuntime({
     env: { CLERVO_AI_BASE_URL: 'https://ai.clervo.dev/v1/', CLERVO_AI_GATEWAY_TOKEN: 'test-gateway-token' },
     clock: () => observedAt,
@@ -34,8 +37,9 @@ test('one AI endpoint executes free models without payment and challenges paid m
     edgeAuthorization: 'edge-authorization-at-least-32-characters',
     x402Service: {
       mode: 'settlement_enabled',
-      async challenge({ quote, resourcePath }) {
+      async challenge({ quote, resourcePath, discovery }) {
         challenges += 1;
+        if (discovery !== undefined) discoveryChallenges.push(discovery);
         return { status: 402, headers: { 'PAYMENT-REQUIRED': 'test' }, body: { accepts: [{ amount: quote.maximumCharge.amountAtomic }], resource: { url: `https://api.clervo.dev${resourcePath}` } } };
       },
       async authorize() { throw new Error('payment_not_expected'); },
@@ -64,6 +68,40 @@ test('one AI endpoint executes free models without payment and challenges paid m
     'x-clervo-edge-authorization': 'Bearer edge-authorization-at-least-32-characters',
     'x-clervo-quota-subject': `sha256:${'1'.repeat(64)}`,
   };
+  const discoveryResponse = await fetch(`${origin}/v1/ai/execute`, {
+    method: 'POST',
+    headers: { 'x-clervo-edge-authorization': 'Bearer edge-authorization-at-least-32-characters' },
+  });
+  assert.equal(discoveryResponse.status, 402);
+  assert.equal(discoveryChallenges.length, 1);
+  const chunkedEmptyStatus = await new Promise((resolve, reject) => {
+    const request = httpRequest(`${origin}/v1/ai/execute`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'transfer-encoding': 'chunked',
+        'x-clervo-edge-authorization': 'Bearer edge-authorization-at-least-32-characters',
+      },
+    }, (response) => {
+      response.resume();
+      response.on('end', () => resolve(response.statusCode));
+    });
+    request.on('error', reject);
+    request.end();
+  });
+  assert.equal(chunkedEmptyStatus, 402);
+  assert.equal(discoveryChallenges.length, 2);
+  const [declared] = discoveryChallenges;
+  assert.equal(declared.method, 'POST');
+  assert.equal(declared.bodyType, 'json');
+  const ajv = new Ajv2020({ strict: true, allErrors: true });
+  assert.equal(ajv.compile(declared.inputSchema)(declared.input), true);
+  assert.equal(ajv.compile(declared.output.schema)(declared.output.example), true);
+  assert.ok(runtime.productCatalog.publicModels.some(({ modelId, publicSellable, availability, billingMode, productIds }) => modelId === declared.input.model
+    && publicSellable === true
+    && availability === 'available'
+    && billingMode === 'metered'
+    && productIds.includes('ai.chat')));
   const freeBody = JSON.stringify({ model: 'clervo/gemma-4-26b-a4b-it', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 16 });
 
   const free = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers: edgeHeaders, body: freeBody });
@@ -75,7 +113,7 @@ test('one AI endpoint executes free models without payment and challenges paid m
   assert.equal(freeResult.fundingMode, 'free');
   assert.equal(freeResult.result.output.content, 'Free useful output.');
   assert.equal(executions, 1);
-  assert.equal(challenges, 0);
+  assert.equal(challenges, 2);
 
   const replay = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers: { ...edgeHeaders, 'idempotency-key': idempotencyKey }, body: freeBody });
   assert.equal(replay.status, 200);
@@ -92,7 +130,26 @@ test('one AI endpoint executes free models without payment and challenges paid m
   assert.equal(paid.status, 402);
   assert.match(paid.headers.get('idempotency-key'), /^srv\.ai\./u);
   assert.ok(BigInt((await paid.json()).quote.maximumCharge.amountAtomic) > 0n);
-  assert.equal(challenges, 1);
+  assert.equal(challenges, 3);
+  assert.equal(executions, 1);
+
+  const unknown = await fetch(`${origin}/v1/ai/execute`, {
+    method: 'POST', headers: edgeHeaders,
+    body: JSON.stringify({ model: 'clervo/model-that-does-not-exist', input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 16 }),
+  });
+  assert.equal(unknown.status, 404);
+  assert.equal((await unknown.json()).code, 'ai_model_not_found');
+  const unavailableModel = runtime.productCatalog.publicModels.find(({ publicSellable, productIds }) => !publicSellable && productIds.includes('ai.chat'));
+  assert.ok(unavailableModel);
+  const unavailable = await fetch(`${origin}/v1/ai/execute`, {
+    method: 'POST', headers: edgeHeaders,
+    body: JSON.stringify({ model: unavailableModel.modelId, input: { kind: 'chat', messages: [{ role: 'user', content: 'Hello' }], responseFormat: 'text', stream: false }, maximumOutputTokens: 16 }),
+  });
+  assert.equal(unavailable.status, 422);
+  assert.equal((await unavailable.json()).code, 'ai_model_unavailable');
+  const malformed = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers: edgeHeaders, body: '{}' });
+  assert.equal(malformed.status, 400);
+  assert.equal(challenges, 3);
   assert.equal(executions, 1);
 
   const image = Buffer.from('bounded-test-image').toString('base64');
@@ -102,6 +159,6 @@ test('one AI endpoint executes free models without payment and challenges paid m
   });
   assert.equal(virtualTryOn.status, 402);
   assert.equal((await virtualTryOn.json()).quote.productId, 'ai.virtual_try_on');
-  assert.equal(challenges, 2);
+  assert.equal(challenges, 4);
   assert.equal(executions, 1);
 });

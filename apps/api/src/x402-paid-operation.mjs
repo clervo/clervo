@@ -260,6 +260,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       const prepared = prepare === undefined ? undefined : await prepare();
       const effectivePricing = prepared?.pricing ?? pricing;
       const effectiveExecutionInput = prepared?.executionInput ?? executionInput;
+      const effectiveDiscovery = prepared?.discovery ?? discovery;
       assertPricing(effectivePricing);
 
       if (state.kind === 'missing') {
@@ -274,7 +275,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
           issuedAt: now,
           expiresAt: new Date(Date.parse(now) + 300_000).toISOString(),
         });
-        const challenge = await service.challenge({ quote, description: `Bounded ${productId} execution`, now, resourcePath: effectiveResourcePath, discovery });
+        const challenge = await service.challenge({ quote, description: `Bounded ${productId} execution`, now, resourcePath: effectiveResourcePath, discovery: effectiveDiscovery });
         state = await stateStore.challenge({ ...base, quote, challenge });
       }
       if (state.kind === 'conflict') refuse('idempotency_conflict');

@@ -25,6 +25,7 @@ apps/site/dist-server/
 # `--update` before a change, then run the harness after it to see the drift.
 apps/site/visual-baseline/
 apps/site/visual-output/
+apps/site/qa-recovery/
 
 # Runtime state
 data/

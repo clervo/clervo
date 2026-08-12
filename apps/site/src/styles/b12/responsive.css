@@ -1,0 +1,163 @@
+@media (max-width: 1040px) {
+  .b12-hero {
+    grid-template-columns: minmax(300px, .92fr) minmax(390px, 1.08fr);
+    gap: 2.25rem;
+    padding-top: 8rem;
+  }
+
+  .b12-truths {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, 1fr);
+    padding-top: 1.7rem;
+    border-top: 1px solid var(--b12-line);
+  }
+
+  .b12-task-contract { margin-top: 0; }
+}
+
+/* Step 7G hardening makes the hero single-column below 900px. */
+@media (max-width: 900px) {
+  .app--home .site-header__inner {
+    grid-template-columns: 1fr auto;
+    gap: .55rem;
+  }
+
+  .app--home .site-header__nav { display: none; }
+  .app--home .site-header__menu { display: flex; }
+
+  .b12-hero { grid-template-columns: 1fr; }
+  .b12-truths { border-left: 0; padding-left: 0; }
+}
+
+/* Locked Step 7G mobile authorship: headline → Apex → buttons → truths/task. */
+@media (max-width: 720px) {
+  .app--home .shell {
+    width: calc(100% - 32px);
+  }
+
+  .app--home .site-header {
+    border-bottom: 1px solid var(--b12-line);
+  }
+
+  .app--home .site-header__inner {
+    min-height: 74px;
+  }
+
+  .app--home .site-header__brand {
+    gap: .68rem;
+    font-size: .68rem;
+  }
+
+  .app--home .site-header__brand .apex-mark {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* The locked 390px and 320px references keep both CTA and menu visible. */
+  .app--home .site-header__cta {
+    display: inline-flex;
+    min-height: 44px;
+    padding-inline: .82rem;
+    font-size: .7rem;
+  }
+
+  .b12-home { min-height: calc(100svh - 74px); }
+
+  .b12-hero {
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 4rem 0 2.75rem;
+  }
+
+  .b12-copy { display: contents; }
+
+  .b12-eyebrow {
+    order: 1;
+    margin-bottom: 1.65rem;
+  }
+
+  .b12-copy h1 {
+    order: 2;
+    max-width: 100%;
+    font-size: clamp(3.05rem, 14.8vw, 4.35rem);
+    line-height: .91;
+    letter-spacing: -.073em;
+  }
+
+  .b12-stage {
+    order: 3;
+    margin: 2.7rem -.5rem 0;
+  }
+
+  .b12-apex { width: min(100%, 390px); }
+
+  .b12-stage-state { margin: -.6rem 0 0; }
+
+  .b12-actions {
+    order: 4;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .7rem;
+    margin-top: 1.65rem;
+  }
+
+  .b12-button {
+    width: 100%;
+    min-height: 46px;
+    padding-inline: .7rem;
+    font-size: .74rem;
+  }
+
+  .b12-truths {
+    order: 5;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 3.2rem;
+    padding-top: 0;
+    border-top: 1px solid var(--b12-line);
+  }
+
+  .b12-truth {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--b12-line);
+    font-size: .84rem;
+  }
+
+  .b12-task-contract {
+    order: 6;
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: .6rem;
+    margin-top: 2.7rem;
+  }
+
+  .b12-task-text { font-size: .72rem; }
+
+  .b12-rail {
+    width: calc(100% - 32px);
+    justify-content: flex-start;
+    min-height: 68px;
+    overflow-x: auto;
+    padding-right: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .b12-home *,
+  .b12-home *::before,
+  .b12-home *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .b12-liquid:hover,
+  .b12-liquid:active {
+    transform: none;
+  }
+}

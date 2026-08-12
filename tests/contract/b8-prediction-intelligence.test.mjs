@@ -152,20 +152,20 @@ test('competitive pricing evidence is dated, confidence-labelled, and supports t
   assert.ok(BigInt(predictionPublicPricing(normalizePredictionHttpRequest({ kind: 'search', query: 'Fed', limit: 1 })).maximumCharge.amountAtomic) < BigInt(blockRun.priceMicrousd));
 });
 
-test('production payment proof binds two exact owner-funded outcomes without claiming revenue or unrelated demand', () => {
+test('production payment proof binds one current-release owner-executed outcome without claiming revenue or unrelated demand', () => {
   const proof = JSON.parse(readFileSync(new URL('../../infra/production/gcp/prediction-x402-proof.v1.json', import.meta.url), 'utf8'));
   assert.equal(proof.schemaVersion, 'clervo.prediction-x402-proof.v1');
   assert.equal(proof.state, 'settled_reconciled');
   assert.equal(proof.endpoint, 'https://api.clervo.dev/v1/prediction/execute');
   assert.equal(proof.network, 'eip155:8453');
-  assert.equal(proof.ownerAuthorization.maximumSpendAtomic, '4000');
-  assert.equal(proof.ownerAuthorization.paymentEffects, 2);
-  assert.deepEqual(proof.ownerAuthorization.operationsInOrder, ['prediction.markets', 'prediction.market']);
-  assert.equal(proof.operations.length, 2);
-  assert.equal(new Set(proof.operations.map(({ operationId }) => operationId)).size, 2);
-  assert.equal(new Set(proof.operations.map(({ receiptId }) => receiptId)).size, 2);
-  assert.equal(new Set(proof.operations.map(({ transactionHash }) => transactionHash)).size, 2);
-  assert.equal(proof.operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic), 0n), 4000n);
+  assert.equal(proof.ownerAuthorization.maximumSpendAtomic, '2000');
+  assert.equal(proof.ownerAuthorization.paymentEffects, 1);
+  assert.deepEqual(proof.ownerAuthorization.operationsInOrder, ['prediction.markets']);
+  assert.equal(proof.operations.length, 1);
+  assert.equal(new Set(proof.operations.map(({ operationId }) => operationId)).size, 1);
+  assert.equal(new Set(proof.operations.map(({ receiptId }) => receiptId)).size, 1);
+  assert.equal(new Set(proof.operations.map(({ transactionHash }) => transactionHash)).size, 1);
+  assert.equal(proof.operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic), 0n), 2000n);
   for (const operation of proof.operations) {
     assert.equal(operation.customerChargeAtomic, '2000');
     assert.equal(operation.supplierCostAtomic, '0');
@@ -191,10 +191,10 @@ test('production payment proof binds two exact owner-funded outcomes without cla
     assert.equal(operation.durable.accountingRows, 1);
     assert.equal(hashJson({ network: proof.network, transaction: operation.transactionHash }), operation.settlementReferenceHash);
   }
-  assert.equal(proof.observedBalances.payerDeltaAtomic, '-4000');
-  assert.equal(proof.observedBalances.receiverDeltaAtomic, '4000');
-  assert.equal(proof.observedDurability.operationRows, 2);
-  assert.equal(proof.observedDurability.accountingRowsForOperations, 2);
+  assert.equal(proof.observedBalances.payerDeltaAtomic, '-2000');
+  assert.equal(proof.observedBalances.receiverDeltaAtomic, '2000');
+  assert.equal(proof.observedDurability.operationRows, 1);
+  assert.equal(proof.observedDurability.accountingRowsForOperations, 1);
   assert.equal(proof.observedDurability.receiverLedgerChainValid, true);
   assert.equal(proof.observedDurability.receiverLedgerBalanced, true);
   assert.equal(proof.observedDurability.temporaryJobRemoved, true);

@@ -1,4 +1,5 @@
 import {
+  AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS,
   aiQualificationCheckNames,
   createAiModelCatalog,
   createAiRouteQualification,
@@ -17,18 +18,8 @@ import type {
   AiInternalProductModel,
   ComposedAiProductCatalog,
 } from './product-catalog.js';
+import { aiPricingRateKeys } from './product-catalog.js';
 
-const maximumUsageBounds: Readonly<AiUsageBounds> = Object.freeze({
-  inputTokens: 5_000_000,
-  cachedInputTokens: 0,
-  outputTokens: 1_000_000,
-  reasoningTokens: 1_000_000,
-  images: 16,
-  audioCharacters: 100_000,
-  videoSeconds: 120,
-  musicGenerations: 4,
-  virtualTryOnImages: 4,
-});
 const minimumChargeAtomic = 1_000n;
 
 function earliest(...values: string[]): string {
@@ -50,13 +41,14 @@ export interface AiProductRuntimeProjection {
   routes: readonly Readonly<AiRuntimeRoute & { customerPricing: Readonly<AiRoutePricing>; priceVersion: string }>[];
   runtimeBindings: ComposedAiProductCatalog['privateRuntimeBindings'];
   aliasTargets: Readonly<Partial<Record<AiAlias, string>>>;
+  modelStates: ReadonlyMap<string, Readonly<{ publicSellable: boolean; productIds: readonly string[]; availability: string }>>;
 }
 
 export function createAiProductRuntimeProjection(catalog: Readonly<ComposedAiProductCatalog>): Readonly<AiProductRuntimeProjection> {
   const sellable = catalog.internalModels.filter(({ publicSellable }) => publicSellable);
   const definitions = sellable.map((model) => {
     if (model.pricing.upstreamCost === null || model.pricing.customerPricing === null) throw new TypeError('ai_product_runtime_pricing_missing');
-    const maximumSupplierCost = estimateAiSupplierCost(maximumUsageBounds, model.pricing.upstreamCost);
+    const maximumSupplierCost = estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, model.pricing.upstreamCost);
     const legacyMaximumExpiry = new Date(Date.parse(model.supply.qualification.checkedAt) + 31 * 86_400_000).toISOString();
     const expiresAt = earliest(model.supply.qualification.expiresAt, model.supply.upstreamCost.validUntil!, catalog.sourceValidUntil, legacyMaximumExpiry);
     const qualification = createAiRouteQualification({
@@ -105,12 +97,35 @@ export function createAiProductRuntimeProjection(catalog: Readonly<ComposedAiPro
     });
   });
   const aliasTargets = Object.freeze(Object.fromEntries(catalog.publicModels.flatMap((model) => model.aliases.map((alias) => [alias, model.modelId]))) as Partial<Record<AiAlias, string>>);
-  return Object.freeze({ catalog: modelCatalog, routes: Object.freeze(routes), runtimeBindings: catalog.privateRuntimeBindings, aliasTargets });
+  const modelStates = new Map<string, Readonly<{ publicSellable: boolean; productIds: readonly string[]; availability: string }>>();
+  for (const model of catalog.publicModels) {
+    const state = Object.freeze({ publicSellable: model.publicSellable, productIds: model.productIds, availability: model.availability });
+    modelStates.set(model.modelId, state);
+    for (const alias of model.aliases) modelStates.set(alias, state);
+  }
+  return Object.freeze({ catalog: modelCatalog, routes: Object.freeze(routes), runtimeBindings: catalog.privateRuntimeBindings, aliasTargets, modelStates });
 }
 
 export function createDynamicAiPublicPricing(projection: Readonly<AiProductRuntimeProjection>) {
   return Object.freeze({
+    discoveryRequest() {
+      const selected = projection.routes
+        .filter(({ definition, customerPricing }) => definition.productIds.includes('ai.chat')
+          && aiPricingRateKeys.some((key) => customerPricing[key] > 0))
+        .sort((left, right) => left.definition.exactModelId.localeCompare(right.definition.exactModelId))[0];
+      if (selected === undefined) throw Object.assign(new Error('ai_paid_discovery_model_unavailable'), { status: 503 });
+      return Object.freeze({
+        model: selected.definition.exactModelId,
+        input: Object.freeze({ kind: 'chat' as const, messages: Object.freeze([Object.freeze({ role: 'user' as const, content: 'Explain in one sentence why idempotency matters for paid API retries.' })]), responseFormat: 'text' as const, stream: false as const }),
+        maximumOutputTokens: 64,
+      });
+    },
     quote({ normalized, operationId, now }: { normalized: Readonly<{ model: string; productId: 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech' | 'ai.video' | 'ai.music' | 'ai.virtual_try_on'; usageBounds: AiUsageBounds }>; operationId: string; now: string }) {
+      const modelState = projection.modelStates.get(normalized.model);
+      if (modelState === undefined) throw Object.assign(new Error('ai_model_not_found'), { status: 404 });
+      if (!modelState.publicSellable || modelState.availability !== 'available' || !modelState.productIds.includes(normalized.productId)) {
+        throw Object.assign(new Error('ai_model_unavailable'), { status: 422 });
+      }
       if (projection.catalog === null) throw Object.assign(new Error('ai_route_unavailable'), { status: 503, rejectionCodes: ['commercial_supply_unavailable'] });
       const decision = selectAiRoute({
         catalog: projection.catalog,
@@ -119,9 +134,9 @@ export function createDynamicAiPublicPricing(projection: Readonly<AiProductRunti
         requestedModel: normalized.model,
         requiredCapabilities: [],
         usageBounds: normalized.usageBounds,
-        maximumSupplierCost: { asset: 'USD', amountAtomic: estimateAiSupplierCost(maximumUsageBounds, projection.routes.reduce((highest, route) => {
-          const left = BigInt(estimateAiSupplierCost(maximumUsageBounds, highest).amountAtomic);
-          const right = BigInt(estimateAiSupplierCost(maximumUsageBounds, route.pricing).amountAtomic);
+        maximumSupplierCost: { asset: 'USD', amountAtomic: estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, projection.routes.reduce((highest, route) => {
+          const left = BigInt(estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, highest).amountAtomic);
+          const right = BigInt(estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, route.pricing).amountAtomic);
           return right > left ? route.pricing : highest;
         }, projection.routes[0]!.pricing)).amountAtomic, decimals: 6 },
         routes: projection.routes,

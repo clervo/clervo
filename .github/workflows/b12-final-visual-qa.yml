@@ -1,0 +1,75 @@
+name: B12 final visual QA
+
+on:
+  push:
+    branches:
+      - design/b12-vault-rebuild
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: b12-final-visual-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  visual-qa:
+    name: Build and integrated browser QA
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out exact branch head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Use pinned Node.js runtime
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Syntax-check final QA harnesses
+        run: |
+          node --check scripts/site/b12-whole-site-qa.mjs
+          node --check scripts/site/b12-owner-evidence.mjs
+
+      - name: Build real site workspace
+        run: npm run build --workspace @clervo/site
+
+      - name: Re-run approved Home and Start browser QA
+        run: node scripts/site/b12-visual-qa.mjs --use-built --out apps/site/qa-artifacts-final/home-start
+
+      - name: Run final whole-site browser QA
+        run: node scripts/site/b12-whole-site-qa.mjs --use-built --out apps/site/qa-artifacts-final/whole-site
+
+      - name: Capture focused owner evidence
+        run: node scripts/site/b12-owner-evidence.mjs --site-root apps/site/dist --out apps/site/qa-artifacts-final/owner-evidence
+
+      - name: Write evidence manifest
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p apps/site/qa-artifacts-final
+          {
+            echo "starting_sha=cc11200fb5bd7f6866e682fc81e2562f2d74bd50"
+            echo "final_sha=${GITHUB_SHA}"
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "changed_files:"
+            git diff --name-only cc11200fb5bd7f6866e682fc81e2562f2d74bd50..HEAD | sed 's/^/  - /'
+          } > apps/site/qa-artifacts-final/MANIFEST.txt
+
+      - name: Upload owner-review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clervo-b12-final-owner-review-${{ github.sha }}
+          path: apps/site/qa-artifacts-final
+          if-no-files-found: error
+          retention-days: 14

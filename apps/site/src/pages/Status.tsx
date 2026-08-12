@@ -129,14 +129,14 @@ export function Status({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           <h2 id="status-contract-heading">What this observation was taken against.</h2>
         </div>
         <dl className="facts">
-          <div><dt>Release candidate</dt><dd>{discovery.distribution.releaseCandidateId}</dd></div>
-          <div><dt>Interface hash</dt><dd>{discovery.distribution.interfaceHash}</dd></div>
+          <div><dt>Observed runtime revision</dt><dd>{discovery.runtimeRelease.sourceCommit.slice(0, 12)}</dd></div>
+          <div><dt>Callable operation IDs</dt><dd>{discovery.runtimeRelease.operationIds.length}</dd></div>
           <div><dt>Public distribution</dt><dd>{discovery.distribution.publicAvailable ? 'available' : 'not available'}</dd></div>
           <div><dt>Public callable</dt><dd>{discovery.distribution.callable ? 'yes' : 'no'}</dd></div>
           <div><dt>Public packages</dt><dd>{launchState.distribution.packages.state.replaceAll('_', ' ')}</dd></div>
           <div><dt>Recorded Search x402 proof</dt><dd>{launchState.paymentProof.amountDisplay}, settled</dd></div>
           <div><dt>Customer revenue evidence</dt><dd>{String(launchState.paymentProof.revenueEvidence)}</dd></div>
-          <div><dt>First Revenue Release</dt><dd>{discovery.releaseScope.firstRevenueRelease.ready ? 'ready' : 'not ready'}</dd></div>
+          <div><dt>External demand evidence</dt><dd>{String(launchState.paymentProof.demandEvidence)}</dd></div>
           <div><dt>Status source</dt><dd>{observedTruth.provenance.source}</dd></div>
         </dl>
       </section>

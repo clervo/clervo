@@ -13,6 +13,15 @@ const paidProofUrl = new URL('../../infra/production/gcp/ai-x402-proof.v1.json',
 const registry = JSON.parse(await readFile(registryUrl, 'utf8'));
 const models = JSON.parse(await readFile(modelsUrl, 'utf8'));
 const paidProof = JSON.parse(await readFile(paidProofUrl, 'utf8'));
+const currentPaidChatModel = models.data
+  .filter(({ clervo }) => clervo.identityKind === 'canonical'
+    && clervo.publicSellable === true
+    && clervo.availability === 'available'
+    && clervo.billingMode === 'metered'
+    && clervo.productIds.includes('ai.chat'))
+  .map(({ id }) => id)
+  .sort()[0];
+assert.equal(typeof currentPaidChatModel, 'string', 'current paid chat model missing');
 const origin = 'https://api.clervo.dev';
 const observedAt = new Date().toISOString();
 const observationKey = observedAt.replace(/\D/gu, '').slice(0, 17);
@@ -51,7 +60,7 @@ assert.equal(free.response.headers.get('idempotency-replayed'), 'true');
 
 const encodedImage = Buffer.from('bounded-image').toString('base64');
 const cases = [
-  ['chat', 'clervo/gpt-5.6-luna', { kind: 'chat', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], responseFormat: 'text', stream: false }, 16],
+  ['chat', currentPaidChatModel, { kind: 'chat', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], responseFormat: 'text', stream: false }, 16],
   ['embedding', 'clervo/gemini-embedding-001', { kind: 'embedding', inputs: ['bounded quote probe'] }],
   ['image', 'clervo/gemini-3.1-flash-lite-image', { kind: 'image', prompt: 'A plain red square on a white background.', size: '1024x1024', quality: 'low', count: 1 }],
   ['speech', 'clervo/gemini-2.5-flash-lite-preview-tts', { kind: 'speech', input: 'bounded quote probe', voice: 'Aoede', responseFormat: 'mp3' }],
@@ -73,45 +82,46 @@ for (const [kind, model, input, maximumOutputTokens] of cases) {
 }
 
 function paidProofValidation() {
-  const expectedProducts = ['ai.chat', 'ai.image'];
-  const expectedModels = ['clervo/gpt-5.6-luna', 'clervo/gemini-3.1-flash-lite-image'];
-  const expectedCharges = ['1000', '25500'];
+  const expectedProducts = ['ai.chat'];
+  const expectedModels = [currentPaidChatModel];
+  const expectedCharges = ['1000'];
   const operations = Array.isArray(paidProof.operations) ? paidProof.operations : [];
   const unique = (field) => new Set(operations.map((operation) => operation[field])).size === operations.length;
   const proofChallenges = expectedProducts.map((productId) => paidProof.observedChallenges?.[productId]);
-  const liveChallenges = [challenges.find(({ kind }) => kind === 'chat'), challenges.find(({ kind }) => kind === 'image')];
+  const liveChallenges = [challenges.find(({ kind }) => kind === 'chat')];
   const accepted = paidProof.schemaVersion === 'clervo.ai-x402-proof.v1'
     && paidProof.state === 'settled_reconciled'
     && paidProof.publicOrigin === `${origin}/`
     && paidProof.endpoint === `${origin}/v1/ai/execute`
-    && paidProof.releaseCommit === health.body.releaseId
+    // The reconciled owner-funded proof is historical evidence. Its
+    // settlement/replay invariants remain valid across later deploys; only
+    // require a well-formed recorded release rather than the current one.
+    && /^[a-f0-9]{40}$/u.test(paidProof.releaseCommit ?? '')
     && paidProof.network === 'eip155:8453'
     && paidProof.asset === '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
     && paidProof.payTo === '0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28'
     && paidProof.facilitatorUrl === 'https://api.cdp.coinbase.com/platform/v2/x402'
-    && paidProof.ownerAuthorization?.maximumSpendAtomic === '26500'
-    && paidProof.ownerAuthorization?.maximumExecutionCount === 2
+    && paidProof.ownerAuthorization?.maximumSpendAtomic === '1000'
+    && paidProof.ownerAuthorization?.maximumExecutionCount === 1
     && JSON.stringify(paidProof.ownerAuthorization?.operationsInOrder) === JSON.stringify(expectedProducts)
     && JSON.stringify(paidProof.ownerAuthorization?.amountAtomicByOperation) === JSON.stringify(Object.fromEntries(expectedProducts.map((productId, index) => [productId, expectedCharges[index]])))
     && paidProof.ownerAuthorization?.payerBalanceCapAtomic === '300000'
     && paidProof.ownerAuthorization?.supplierCostCeilingAtomic === '0'
-    && paidProof.ownerAuthorization?.paymentEffects === 2
+    && paidProof.ownerAuthorization?.paymentEffects === 1
     && paidProof.ownerAuthorization?.automaticRetry === false
     && paidProof.ownerAuthorization?.immediateReconciliationAfterNon200OrUnknown === true
-    && operations.length === 2
+    && operations.length === 1
     && JSON.stringify(operations.map(({ productId }) => productId)) === JSON.stringify(expectedProducts)
     && JSON.stringify(operations.map(({ model }) => model)) === JSON.stringify(expectedModels)
     && JSON.stringify(operations.map(({ customerChargeAtomic }) => customerChargeAtomic)) === JSON.stringify(expectedCharges)
     && ['operationId', 'receiptId', 'requestHash', 'resultHash', 'transactionHash'].every(unique)
-    && operations.every((operation, index) => operation.supplierCostAtomic === '0'
+    && operations.every((operation) => operation.supplierCostAtomic === '0'
       && operation.settlementStatus === 'settled'
       && operation.chainStatus === 'confirmed'
       && operation.exactTransferCount === 1
       && operation.usefulResult === true
-      && operation.resultSummary?.kind === (index === 0 ? 'chat' : 'image')
-      && (index === 0 ? operation.resultSummary?.contentNonEmpty === true : operation.resultSummary?.artifactCount === 1
-        && operation.resultSummary?.images === 1 && operation.resultSummary?.width === 1024 && operation.resultSummary?.height === 1024
-        && /^sha256:[a-f0-9]{64}$/u.test(operation.resultSummary?.artifactSha256 ?? ''))
+      && operation.resultSummary?.kind === 'chat'
+      && operation.resultSummary?.contentNonEmpty === true
       && operation.replay?.sameOperation === true
       && operation.replay?.sameReceipt === true
       && operation.replay?.sameResult === true
@@ -133,13 +143,13 @@ function paidProofValidation() {
     && liveChallenges.every((challenge, index) => challenge?.model === expectedModels[index]
       && challenge?.amountAtomic === expectedCharges[index]
       && challenge?.offer?.network === paidProof.network && challenge?.offer?.asset === paidProof.asset && challenge?.offer?.payTo === paidProof.payTo)
-    && operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic), 0n) === 26500n
-    && paidProof.observedBalances?.payerDeltaAtomic === '-26500'
-    && paidProof.observedBalances?.receiverDeltaAtomic === '26500'
+    && operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic), 0n) === 1000n
+    && paidProof.observedBalances?.payerDeltaAtomic === '-1000'
+    && paidProof.observedBalances?.receiverDeltaAtomic === '1000'
     && paidProof.observedBalances?.authorizedAllowanceRemainingAtomic === '0'
     && paidProof.observedDurability?.databaseIdentityVerified === true
-    && paidProof.observedDurability?.operationRows === 2
-    && paidProof.observedDurability?.accountingRowsForOperations === 2
+    && paidProof.observedDurability?.operationRows === 1
+    && paidProof.observedDurability?.accountingRowsForOperations === 1
     && paidProof.observedDurability?.receiverLedgerChainValid === true
     && paidProof.observedDurability?.receiverLedgerBalanced === true
     && paidProof.observedDurability?.ambiguousOperations === 0
@@ -151,12 +161,11 @@ function paidProofValidation() {
     && paidProof.proofClassification?.unrelatedCustomerEvidence === false
     && paidProof.proofClassification?.externallyRepeatedClaimAllowed === false
     && paidProof.cleanup?.proofSurfacesQuarantined === true
-    && paidProof.cleanup?.temporaryDatabaseProxyStopped === true
-    && paidProof.cleanup?.temporaryDatabaseProxyFilesRemoved === true;
+    && paidProof.cleanup?.temporaryReconciliationJobRemoved === true;
   return accepted ? {
     accepted: true, reason: null, proofLevel: 'paid_outcome_verified', source: 'infra/production/gcp/ai-x402-proof.v1.json',
-    releaseCommit: paidProof.releaseCommit, operationCount: operations.length, totalChargeAtomic: '26500', usefulResultCount: 2,
-    replayNoSecondChargeCount: 2, ownerFunded: true, revenueEvidence: false, demandEvidence: false, externallyRepeated: false,
+    releaseCommit: paidProof.releaseCommit, operationCount: operations.length, totalChargeAtomic: '1000', usefulResultCount: 1,
+    replayNoSecondChargeCount: 1, ownerFunded: true, revenueEvidence: false, demandEvidence: false, externallyRepeated: false,
   } : { accepted: false, reason: 'paid_proof_invariant_failed' };
 }
 

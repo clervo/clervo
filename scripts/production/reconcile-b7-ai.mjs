@@ -17,7 +17,7 @@ const action = process.argv[2] ?? 'plan';
 const receiver = getAddress('0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28');
 const usdc = getAddress('0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913');
 const expected = Object.freeze([
-  Object.freeze({ slot: 'chat', keyEnvironment: 'CLERVO_B7_AI_CHAT_IDEMPOTENCY_KEY', transactionEnvironment: 'CLERVO_B7_AI_CHAT_TRANSACTION', productId: 'ai.chat', model: 'clervo/gpt-5.6-luna', chargeAtomic: '1000', outputKind: 'chat' }),
+  Object.freeze({ slot: 'chat', keyEnvironment: 'CLERVO_B7_AI_CHAT_IDEMPOTENCY_KEY', transactionEnvironment: 'CLERVO_B7_AI_CHAT_TRANSACTION', productId: 'ai.chat', model: 'clervo/allam-2-7b', chargeAtomic: '1000', outputKind: 'chat' }),
   Object.freeze({ slot: 'image', keyEnvironment: 'CLERVO_B7_AI_IMAGE_IDEMPOTENCY_KEY', transactionEnvironment: 'CLERVO_B7_AI_IMAGE_TRANSACTION', productId: 'ai.image', model: 'clervo/gemini-3.1-flash-lite-image', chargeAtomic: '25500', outputKind: 'image' }),
 ]);
 const transferEvent = [{ type: 'event', name: 'Transfer', inputs: [{ indexed: true, name: 'from', type: 'address' }, { indexed: true, name: 'to', type: 'address' }, { indexed: false, name: 'value', type: 'uint256' }] }];
@@ -42,7 +42,7 @@ function proofInput(item) {
 
 function identityInput(item) {
   const idempotencyKey = process.env[item.keyEnvironment];
-  assert.match(idempotencyKey ?? '', /^idem_b7_ai_paid_[a-z0-9_]{8,80}$/u, `${item.slot} idempotency key invalid`);
+  assert.match(idempotencyKey ?? '', /^idem_[a-z0-9_]{16,96}$/u, `${item.slot} idempotency key invalid`);
   return { ...item, idempotencyKey };
 }
 

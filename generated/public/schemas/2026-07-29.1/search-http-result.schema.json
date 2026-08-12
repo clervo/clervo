@@ -27,9 +27,9 @@
     },
     "productId": {
       "enum": [
-        "search.web",
-        "search.answer"
-      ]
+        "search.web"
+      ],
+      "description": "Callable public Search operation identity. search.answer remains a released-client compatibility identifier but is not callable."
     },
     "state": {
       "const": "RECEIPTED"

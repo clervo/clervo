@@ -10,6 +10,7 @@ import { validateDiscoveryExtension } from '@x402/extensions/bazaar';
 import { Mppx as MppxClient, evm as clientEvm } from 'mppx/client';
 import { privateKeyToAccount } from 'viem/accounts';
 import { CONTRACT_VERSION, sealQuote } from '../../dist/packages/contracts/src/index.js';
+import { createAiDiscoveryContract } from '../../apps/api/src/ai-discovery.mjs';
 import { createCdpFacilitatorAuth, createX402ChallengeService } from '../../apps/api/src/x402-resource.mjs';
 
 const network = 'eip155:8453';
@@ -175,10 +176,20 @@ test('challenge service binds AI payments to the exact public AI resource', asyn
     async getSupported() { return { kinds: [{ x402Version: 2, scheme: 'exact', network }], extensions: [], signers: {} }; },
   };
   const service = await createX402ChallengeService({ facilitator, network, asset, payTo, publicOrigin: 'https://api.clervo.dev/', mppSecretKey });
-  const result = await service.challenge({ quote, description: 'Bounded ai.chat execution', now: issuedAt, resourcePath: '/v1/ai/execute' });
+  await assert.rejects(
+    service.challenge({ quote, description: 'Bounded ai.chat execution', now: issuedAt, resourcePath: '/v1/ai/execute' }),
+    /ai_resource_discovery_required/u,
+  );
+  const discovery = createAiDiscoveryContract({
+    model: 'clervo/allam-2-7b',
+    input: { kind: 'chat', messages: [{ role: 'user', content: 'Explain why idempotency matters.' }], responseFormat: 'text', stream: false },
+    maximumOutputTokens: 64,
+  });
+  const result = await service.challenge({ quote, description: 'Bounded ai.chat execution', now: issuedAt, resourcePath: '/v1/ai/execute', discovery });
   assert.equal(result.body.resource.url, 'https://api.clervo.dev/v1/ai/execute');
   assert.equal(result.body.extensions.bazaar.info.input.body.input.kind, 'chat');
-  assert.equal(result.body.extensions.bazaar.info.output.example.exactModelId, 'gpt-5.6-luna');
+  assert.equal(result.body.extensions.bazaar.info.input.body.model, 'clervo/allam-2-7b');
+  assert.equal(result.body.extensions.bazaar.info.output.example.exactModelId, 'clervo/allam-2-7b');
   assert.equal(validateDiscoveryExtension(result.body.extensions.bazaar).valid, true);
   await assert.rejects(
     service.challenge({ quote, description: 'Invalid route', now: issuedAt, resourcePath: '/v1/unknown' }),

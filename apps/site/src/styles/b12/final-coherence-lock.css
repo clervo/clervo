@@ -1,0 +1,460 @@
+/*
+ * Final cross-site coherence lock.
+ *
+ * Home is already the visual authority. This layer removes the remaining
+ * legacy vocabulary from internal routes: capsule chrome, boxed subnav cells,
+ * gray SaaS panels, over-explained hero diagrams and excessive document void.
+ * It intentionally does not touch the Home hero architecture.
+ */
+
+/* Internal chrome --------------------------------------------------------- */
+#root .app.app--internal .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 0;
+  background: rgb(0 0 0 / 88%);
+  box-shadow: none;
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  #root .app.app--internal .site-header {
+    background: rgb(0 0 0 / 74%);
+    backdrop-filter: blur(16px) saturate(112%);
+  }
+}
+
+#root .app.app--internal .site-header__inner.shell {
+  width: min(92rem, calc(100% - 2 * var(--clervo-gutter)));
+  max-width: none;
+  min-height: 64px;
+  margin-inline: auto;
+  padding-inline: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+#root .app.app--internal .site-header__brand {
+  gap: 0.78rem;
+  min-height: 44px;
+  color: rgb(242 242 244 / 92%);
+}
+
+#root .app.app--internal .site-header__brand .apex-mark {
+  width: 24px;
+  height: 24px;
+}
+
+#root .app.app--internal .site-header__wordmark {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 610;
+  letter-spacing: 0.27em;
+  text-transform: uppercase;
+}
+
+#root .app.app--internal .site-header__nav {
+  gap: clamp(1.75rem, 2.8vw, 3rem);
+}
+
+#root .app.app--internal .site-header__nav a {
+  min-width: 0;
+  color: rgb(242 242 244 / 58%);
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 410;
+}
+
+#root .app.app--internal .site-header__nav a:hover,
+#root .app.app--internal .site-header__nav a.is-active {
+  color: rgb(242 242 244 / 92%);
+}
+
+#root .app.app--internal .site-header__nav a.is-active::after {
+  right: 0;
+  left: 0;
+  background: rgb(242 242 244 / 52%);
+}
+
+#root .app.app--internal .site-header__cta.button--primary,
+#root .app.app--internal .site-header__cta {
+  min-height: 44px;
+  padding-inline: 1.2rem;
+  border: 1px solid rgb(255 255 255 / 17%);
+  border-radius: 13px;
+  background: rgb(255 255 255 / 2.2%);
+  box-shadow: none;
+  color: rgb(242 242 244 / 91%);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 430;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+#root .app.app--internal .site-header__cta:hover {
+  border-color: rgb(255 255 255 / 28%);
+  background: rgb(255 255 255 / 4%);
+}
+
+/* Trust/pricing/docs secondary rail: one quiet line, not a row of cells. */
+#root .app.app--internal .s6-subnav {
+  top: 64px;
+  border: 0;
+  border-bottom: 1px solid var(--clervo-rule);
+  background: rgb(0 0 0 / 90%);
+  box-shadow: none;
+}
+
+#root .app.app--internal .s6-subnav__inner {
+  width: min(92rem, calc(100% - 2 * var(--clervo-gutter)));
+  max-width: none;
+  min-height: 48px;
+  margin-inline: auto;
+  padding: 0;
+  gap: clamp(1.35rem, 2.3vw, 2.4rem);
+  border: 0;
+}
+
+#root .app.app--internal .s6-subnav a {
+  position: relative;
+  min-height: 48px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgb(242 242 244 / 43%);
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  font-weight: 530;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+#root .app.app--internal .s6-subnav a:hover,
+#root .app.app--internal .s6-subnav a.is-active {
+  color: rgb(242 242 244 / 86%);
+  background: transparent;
+  box-shadow: none;
+}
+
+#root .app.app--internal .s6-subnav a.is-active::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: var(--qualify);
+}
+
+/* Opening rhythm ---------------------------------------------------------- */
+#root .app.app--internal .page-lead {
+  padding: clamp(5.25rem, 8vw, 7rem) var(--clervo-gutter) clamp(3rem, 4.5vw, 4rem);
+}
+
+#root .app.app--internal :where(.s4-family-hero, .model-hero, .s5-operation-hero, .s6-hero) {
+  padding-block: clamp(5.5rem, 8.5vw, 7.5rem) clamp(3rem, 5vw, 4.5rem);
+}
+
+#root .app.app--internal .model-band,
+#root .app.app--internal :where(.docs-body, .guide-body) {
+  padding-block: clamp(4.25rem, 6.5vw, 6.25rem);
+}
+
+#root .app.app--internal .s5-contract-layout {
+  padding-block: clamp(4rem, 6vw, 6rem);
+}
+
+/* Keep the locked editorial hierarchy consistent across archetypes. */
+#root .app.app--internal :where(
+  .page-lead,
+  .s4-product-copy,
+  .s4-family-hero,
+  .model-hero,
+  .s5-operation-hero,
+  .s6-hero__copy,
+  .research-hero,
+  .build-hero,
+  .trust-hero
+) h1 {
+  font-weight: 320;
+}
+
+#root .app.app--internal :where(
+  .section-head,
+  .s4-section-head,
+  .model-section-head,
+  .s5-section-head,
+  .s6-section-head,
+  .workspace-intro
+) h2,
+#root .app.app--internal :where(.page-lead, .guide-body, .docs-body) h2 {
+  font-weight: 380;
+}
+
+#root .app.app--internal :where(
+  .s4-family-row h3,
+  .s4-contract-panel h3,
+  .s4-interface h3,
+  .s4-boundary-card h3,
+  .model-contract-grid h3,
+  .s5-panel h3,
+  .s6-state-card h3
+) {
+  font-weight: 440;
+}
+
+/* Product hero: one object, one task, one outcome. The family ledger below
+ * already explains the six capability families, so the hero does not repeat
+ * them around the Apex. */
+#root .app.app--internal .b12-product .s4-router-label.search,
+#root .app.app--internal .b12-product .s4-router-label.ai,
+#root .app.app--internal .b12-product .s4-router-label.sandbox,
+#root .app.app--internal .b12-product .s4-router-label.rpc,
+#root .app.app--internal .b12-product .s4-router-label.prediction,
+#root .app.app--internal .b12-product .s4-router-label.crypto {
+  display: none;
+}
+
+#root .app.app--internal .b12-product .s4-router-visual {
+  min-height: 540px;
+}
+
+#root .app.app--internal .b12-product .s4-router-field {
+  opacity: 0.2;
+}
+
+#root .app.app--internal .b12-product .s4-apex-wrap {
+  width: min(100%, 480px);
+}
+
+#root .app.app--internal .b12-product .s4-router-label.input,
+#root .app.app--internal .b12-product .s4-router-label.output {
+  top: 51%;
+  max-width: 9.5rem;
+}
+
+#root .app.app--internal .b12-product .s4-router-label strong {
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+#root .app.app--internal .b12-product .s4-router-label span {
+  color: var(--clervo-quiet);
+  font-size: 0.54rem;
+}
+
+#root .app.app--internal .b12-product .s4-router-status {
+  bottom: 5%;
+  border-color: var(--clervo-rule);
+  background: #030303;
+}
+
+/* Product contracts and states: open technical structures, never gray SaaS
+ * cards. Child borders carry the hierarchy. */
+#root .app.app--internal :where(
+  .s4-contract-grid,
+  .s4-boundary-grid,
+  .s4-interfaces,
+  .s4-family-grid,
+  .s4-claims-grid
+) {
+  gap: 0;
+  overflow: visible;
+  border: 0;
+  border-top: 1px solid var(--clervo-rule-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+#root .app.app--internal :where(
+  .s4-contract-panel,
+  .s4-boundary-card,
+  .s4-interface,
+  .s4-family-panel,
+  .s4-claims-grid article
+) {
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none;
+}
+
+#root .app.app--internal .s4-contract-panel {
+  min-height: 0;
+  padding: clamp(2rem, 3.6vw, 3.25rem);
+}
+
+#root .app.app--internal .s4-contract-panel h3 {
+  margin-top: clamp(1.8rem, 3vw, 2.5rem);
+  font-size: clamp(2.2rem, 3.5vw, 3.6rem);
+}
+
+#root .app.app--internal .s4-boundary-card {
+  min-height: 16rem;
+  padding: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+#root .app.app--internal .s4-interface {
+  min-height: 13rem;
+}
+
+/* Catalog/models: let the search and results arrive sooner, and keep the
+ * primary search action in the same quiet control language as the rest. */
+#root .app.app--internal .s4-catalog-hero {
+  padding-block: clamp(5.5rem, 8vw, 7rem) clamp(2.5rem, 4vw, 3.5rem);
+  border-bottom: 0;
+}
+
+#root .app.app--internal .s4-search-stage {
+  margin-top: clamp(2.5rem, 4vw, 3.5rem);
+}
+
+#root .app.app--internal .s4-catalog-area {
+  padding-top: clamp(2.5rem, 4vw, 3.5rem);
+}
+
+#root .app.app--internal .s4-search-main .b12-button {
+  border: 1px solid var(--clervo-rule-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: rgb(242 242 244 / 76%);
+  box-shadow: none;
+}
+
+#root .app.app--internal .s4-search-main .b12-button:hover {
+  border-color: rgb(255 255 255 / 26%);
+  background: rgb(255 255 255 / 3%);
+  color: var(--text);
+}
+
+/* Operation/model detail pages are documents after their opening, not
+ * cinematic landing pages. */
+#root .app.app--internal .model-contract-grid article {
+  min-height: 12rem;
+}
+
+#root .app.app--internal .s5-contract-section {
+  padding-bottom: clamp(4rem, 6vw, 5.5rem);
+  margin-bottom: clamp(4rem, 6vw, 5.5rem);
+}
+
+#root .app.app--internal .s5-section-head,
+#root .app.app--internal .model-section-head {
+  margin-bottom: clamp(2.25rem, 4vw, 3.5rem);
+}
+
+/* Mobile keeps the same grammar without compressing the desktop composition. */
+@media (width <= 900px) {
+  #root .app.app--internal .site-header {
+    background: rgb(0 0 0 / 94%);
+  }
+
+  #root .app.app--internal .site-header__inner.shell {
+    width: 100%;
+    min-height: 58px;
+    padding-inline: 1.2rem;
+  }
+
+  #root .app.app--internal .site-header__menu {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  #root .app.app--internal .s6-subnav {
+    top: 58px;
+  }
+
+  #root .app.app--internal .s6-subnav__inner {
+    width: 100%;
+    padding-inline: 1.25rem;
+    gap: 1.4rem;
+  }
+
+  #root .app.app--internal .s6-subnav a {
+    flex: 0 0 auto;
+  }
+
+  #root .app.app--internal .page-lead {
+    padding: 5rem 1.25rem 3.5rem;
+  }
+
+  #root .app.app--internal :where(.s4-family-hero, .model-hero, .s5-operation-hero, .s6-hero) {
+    padding-block: 5rem 3.5rem;
+  }
+
+  #root .app.app--internal :where(.docs-body, .guide-body, .model-band) {
+    padding-block: 4rem;
+  }
+
+  #root .app.app--internal .b12-product .s4-router-visual {
+    min-height: 410px;
+  }
+
+  #root .app.app--internal .b12-product .s4-apex-wrap {
+    width: min(86vw, 360px);
+  }
+
+  #root .app.app--internal .b12-product .s4-router-label.input {
+    left: 2%;
+  }
+
+  #root .app.app--internal .b12-product .s4-router-label.output {
+    right: 2%;
+  }
+
+  #root .app.app--internal :where(.s4-contract-grid, .s4-boundary-grid, .s4-interfaces) {
+    grid-template-columns: 1fr;
+  }
+
+  #root .app.app--internal :where(.s4-contract-panel, .s4-boundary-card, .s4-interface) {
+    min-height: 0;
+    border-right: 0;
+  }
+
+  #root .app.app--internal .s4-catalog-hero {
+    padding-block: 5rem 2.75rem;
+  }
+
+  #root .app.app--internal .s4-catalog-area {
+    padding-top: 2.5rem;
+  }
+
+  #root .app.app--internal .s4-search-main .b12-button {
+    border-radius: 0;
+  }
+}
+
+@media (width <= 520px) {
+  #root .app.app--internal .site-header__wordmark {
+    font-size: 0.7rem;
+    letter-spacing: 0.23em;
+  }
+
+  #root .app.app--internal .s6-subnav__inner {
+    gap: 1.15rem;
+  }
+
+  #root .app.app--internal .b12-product .s4-router-label span {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #root .app.app--internal *,
+  #root .app.app--internal *::before,
+  #root .app.app--internal *::after {
+    scroll-behavior: auto !important;
+  }
+}

@@ -40,6 +40,18 @@ export interface AiRoutePricing {
   virtualTryOnMicrosPerImage: number;
 }
 
+export const AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS: Readonly<AiUsageBounds> = Object.freeze({
+  inputTokens: 5_000_000,
+  cachedInputTokens: 0,
+  outputTokens: 1_000_000,
+  reasoningTokens: 1_000_000,
+  images: 16,
+  audioCharacters: 100_000,
+  videoSeconds: 120,
+  musicGenerations: 4,
+  virtualTryOnImages: 4,
+});
+
 export interface AiRuntimeRoute {
   definition: Readonly<AiRouteDefinition>;
   pricing: Readonly<AiRoutePricing>;

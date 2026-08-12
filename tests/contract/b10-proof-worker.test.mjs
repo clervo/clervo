@@ -81,8 +81,9 @@ test('B10 hosted Sandbox proof pins the repaired SHORT request and fresh post-fa
   });
 });
 
-test('temporary hosted proof quarantines both B7 identities after the bounded proof attempts', async () => {
-  assert.match(workerSource, /idem_b7_ai_paid_chat_20260810d10d693c7/u);
+test('temporary hosted proof preserves and quarantines the completed AI discovery payment identity', async () => {
+  assert.match(workerSource, /idem_b12_ai_discovery_3a4c08108c9442859ceccf249c67d293/u);
+  assert.match(workerSource, /model: 'clervo\/allam-2-7b'/u);
   assert.match(workerSource, /idem_b7_ai_paid_image_20260810gbde2285e/u);
   assert.doesNotMatch(workerSource, /idem_b7_ai_paid_chat_20260810c7a41e92/u);
   assert.doesNotMatch(workerSource, /idem_b7_ai_paid_image_20260810f3b82d65/u);

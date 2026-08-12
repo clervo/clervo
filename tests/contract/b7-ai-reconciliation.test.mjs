@@ -5,9 +5,9 @@ import test from 'node:test';
 
 const source = await readFile('scripts/production/reconcile-b7-ai.mjs', 'utf8');
 
-test('B7 reconciliation is read-only and binds exactly chat plus image paid proofs', () => {
+test('AI reconciliation is read-only and binds current chat plus retained image proof support', () => {
   for (const value of [
-    "productId: 'ai.chat'", "model: 'clervo/gpt-5.6-luna'", "chargeAtomic: '1000'",
+    "productId: 'ai.chat'", "model: 'clervo/allam-2-7b'", "chargeAtomic: '1000'",
     "productId: 'ai.image'", "model: 'clervo/gemini-3.1-flash-lite-image'", "chargeAtomic: '25500'",
     "network: 'eip155:8453'", "totalChargeAtomic", 'receiverLedgerEntryCount', 'accountingEntryHash', 'outputSummary',
   ]) assert.ok(source.includes(value), `missing reconciliation bound ${value}`);

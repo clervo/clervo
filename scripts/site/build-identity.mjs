@@ -12,15 +12,19 @@
 // drawn per size, so the favicon, the header lockup, and the social avatar are
 // the same mark rather than three drawings that resemble each other.
 
+import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import sharp from 'sharp';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const brandDir = path.join(root, 'apps/site/brand');
+const packDir = path.join(brandDir, 'clervo-logo-pack');
 const runtimeDir = path.join(root, 'apps/site/public-assets/brand');
 
 // ---------------------------------------------------------------------------
-// Geometry
+// Geometry — copied from the locked Hollow Apex authority. The values below
+// are the canonical coordinates, not a raster trace.
 // ---------------------------------------------------------------------------
 
 const VIEW = 64;
@@ -149,6 +153,26 @@ const WORDMARK_PATH = 'M28.9 1.4C11.2 1.4 5.2-9.6 5.2-24.7v-21.7c0-15.1 6-26.1 2
 const WORDMARK_ADVANCE = 344;
 const WORDMARK_CAP = 71.4;
 
+function socialCard() {
+  const markScale = 4.75;
+  return [
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="social-card-title">',
+    '<title id="social-card-title">Clervo — Give your agent a task. Get a verified result.</title>',
+    `<rect width="1200" height="630" fill="${BLACK}"/>`,
+    '<path d="M0 1H1200" stroke="#242426"/>',
+    `<g transform="translate(104 128) scale(${markScale})">`,
+    beam({ bleed: false, width: 2.5 }),
+    `<path d="${APEX_PATH}" fill="${MIST}" fill-rule="evenodd"/>`,
+    '</g>',
+    `<g transform="translate(475 230) scale(.72)"><path d="${WORDMARK_PATH}" fill="${MIST}"/></g>`,
+    '<text x="477" y="338" fill="#E6E6E8" font-family="Inter,Arial,sans-serif" font-size="37" font-weight="500">Give your agent a task.</text>',
+    '<text x="477" y="388" fill="#9A9A9F" font-family="Inter,Arial,sans-serif" font-size="37" font-weight="500">Get a verified result.</text>',
+    '<text x="477" y="458" fill="#77777D" font-family="JetBrains Mono,monospace" font-size="17" letter-spacing="2">OUTCOME INFRASTRUCTURE FOR AGENTS</text>',
+    '</svg>',
+    '',
+  ].join('\n');
+}
+
 function lockup({ id, title, orientation, colour = MIST, monochrome = null, showBeam = true }) {
   const markColour = monochrome ?? colour;
   const textColour = monochrome ?? colour;
@@ -236,6 +260,7 @@ const assets = [
   ['clervo-lockup-horizontal.svg', lockup({ id: 'lockup-h', title: 'Clervo', orientation: 'horizontal' })],
   ['clervo-lockup-horizontal-mono-dark.svg', lockup({ id: 'lockup-h-mono', title: 'Clervo', orientation: 'horizontal', monochrome: BLACK })],
   ['clervo-lockup-compact.svg', lockup({ id: 'lockup-c', title: 'Clervo', orientation: 'compact' })],
+  ['clervo-social-card.svg', socialCard()],
 ];
 
 const CLEAR_SPACE = round(LIMB);
@@ -298,13 +323,117 @@ const specification = {
 };
 
 await mkdir(brandDir, { recursive: true });
+await mkdir(packDir, { recursive: true });
 await mkdir(runtimeDir, { recursive: true });
 
 for (const [name, markup] of assets) {
   await writeFile(path.join(brandDir, name), markup);
+  await writeFile(path.join(packDir, name), markup);
   await writeFile(path.join(runtimeDir, name), markup);
 }
 await writeFile(path.join(brandDir, 'identity.json'), `${JSON.stringify(specification, null, 2)}\n`);
+await writeFile(path.join(packDir, 'identity.json'), `${JSON.stringify(specification, null, 2)}\n`);
+
+const socialCardPng = await sharp(Buffer.from(socialCard())).png({ compressionLevel: 9, palette: true }).toBuffer();
+await writeFile(path.join(brandDir, 'clervo-social-card.png'), socialCardPng);
+await writeFile(path.join(packDir, 'clervo-social-card.png'), socialCardPng);
+await writeFile(path.join(runtimeDir, 'clervo-social-card.png'), socialCardPng);
+
+const packFiles = [
+  ...assets.map(([name, markup]) => ({ name, bytes: Buffer.from(markup) })),
+  { name: 'clervo-social-card.png', bytes: socialCardPng },
+  { name: 'identity.json', bytes: Buffer.from(`${JSON.stringify(specification, null, 2)}\n`) },
+];
+const packManifest = {
+  schemaVersion: 'clervo.logo-pack.v1',
+  identity: specification.identity,
+  identityVersion: specification.version,
+  generatedBy: 'scripts/site/build-identity.mjs',
+  assets: packFiles.map(({ name, bytes }) => ({
+    name,
+    bytes: bytes.length,
+    sha256: createHash('sha256').update(bytes).digest('hex'),
+  })),
+};
+const packManifestBytes = Buffer.from(`${JSON.stringify(packManifest, null, 2)}\n`);
+const packReadmeBytes = Buffer.from([
+  '# Clervo Hollow Apex logo pack',
+  '',
+  'Generated from the locked Hollow Apex geometry by `scripts/site/build-identity.mjs`.',
+  'Do not redraw or edit individual files. Regenerate the complete pack so the',
+  'header, favicon, app icon, social preview, registry marks, and lockups remain',
+  'one identity.',
+  '',
+  'Use `clervo-apex-symbol.svg` below 24px. Use the three-colour beam only at',
+  '24px or larger. Gold is the verified outcome and always exits to the right.',
+  '',
+].join('\n'));
+await writeFile(path.join(packDir, 'manifest.json'), packManifestBytes);
+await writeFile(path.join(packDir, 'README.md'), packReadmeBytes);
+
+function crc32(bytes) {
+  let crc = 0xFFFFFFFF;
+  for (const byte of bytes) {
+    crc ^= byte;
+    for (let bit = 0; bit < 8; bit += 1) crc = (crc >>> 1) ^ (crc & 1 ? 0xEDB88320 : 0);
+  }
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+
+function storedZip(files) {
+  const localParts = [];
+  const centralParts = [];
+  let offset = 0;
+  for (const { name, bytes } of files) {
+    const fileName = Buffer.from(`clervo-logo-pack/${name}`);
+    const checksum = crc32(bytes);
+    const local = Buffer.alloc(30);
+    local.writeUInt32LE(0x04034B50, 0);
+    local.writeUInt16LE(20, 4);
+    local.writeUInt16LE(0x0800, 6);
+    local.writeUInt16LE(0, 8);
+    local.writeUInt16LE(0, 10);
+    local.writeUInt16LE(0x0021, 12);
+    local.writeUInt32LE(checksum, 14);
+    local.writeUInt32LE(bytes.length, 18);
+    local.writeUInt32LE(bytes.length, 22);
+    local.writeUInt16LE(fileName.length, 26);
+    localParts.push(local, fileName, bytes);
+
+    const central = Buffer.alloc(46);
+    central.writeUInt32LE(0x02014B50, 0);
+    central.writeUInt16LE(20, 4);
+    central.writeUInt16LE(20, 6);
+    central.writeUInt16LE(0x0800, 8);
+    central.writeUInt16LE(0, 10);
+    central.writeUInt16LE(0, 12);
+    central.writeUInt16LE(0x0021, 14);
+    central.writeUInt32LE(checksum, 16);
+    central.writeUInt32LE(bytes.length, 20);
+    central.writeUInt32LE(bytes.length, 24);
+    central.writeUInt16LE(fileName.length, 28);
+    central.writeUInt32LE(offset, 42);
+    centralParts.push(central, fileName);
+    offset += local.length + fileName.length + bytes.length;
+  }
+  const centralBytes = Buffer.concat(centralParts);
+  const end = Buffer.alloc(22);
+  end.writeUInt32LE(0x06054B50, 0);
+  end.writeUInt16LE(files.length, 8);
+  end.writeUInt16LE(files.length, 10);
+  end.writeUInt32LE(centralBytes.length, 12);
+  end.writeUInt32LE(offset, 16);
+  return Buffer.concat([...localParts, centralBytes, end]);
+}
+
+const archiveFiles = [
+  ...packFiles,
+  { name: 'manifest.json', bytes: packManifestBytes },
+  { name: 'README.md', bytes: packReadmeBytes },
+].sort((left, right) => left.name.localeCompare(right.name));
+const logoPackZip = storedZip(archiveFiles);
+await writeFile(path.join(brandDir, 'clervo-logo-pack.zip'), logoPackZip);
+await writeFile(path.join(runtimeDir, 'clervo-logo-pack.zip'), logoPackZip);
 
 // The favicon is also written to the legacy path so already-published
 // references, the manifest, and cached crawler entries resolve to the new mark

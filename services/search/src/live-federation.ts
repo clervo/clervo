@@ -85,7 +85,12 @@ function metadataEvidence(candidate: LiveDiscoveryCandidate, query: string): Con
   const hits = tokens.filter((token) => lower.includes(token)).length;
   const title = candidate.title.normalize('NFKC').toLocaleLowerCase('en-US');
   const titleHits = tokens.filter((token) => title.includes(token)).length;
-  if (tokens.length > 0 && (hits < Math.max(2, Math.ceil(tokens.length * 0.5)) || titleHits < Math.min(3, tokens.length))) return undefined;
+  // A concise title often contains only one of a multi-token query (for
+  // example, Wikimedia's “X402” page for “x402 protocol”). Requiring every
+  // query token in the title incorrectly discards healthy primary results and
+  // forces the Crossref fallback. Keep the relevance floor on the combined
+  // evidence, but require only one title token as a disambiguating anchor.
+  if (tokens.length > 0 && (hits < Math.max(1, Math.ceil(tokens.length * 0.5)) || titleHits < 1)) return undefined;
   const bodyHash = digest(text);
   const identity = createHash('sha256').update(`${candidate.adapterId}\n${candidate.currentUrl}\n${text}`).digest('hex');
   return Object.freeze({

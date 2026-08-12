@@ -26,7 +26,7 @@
           }
         }
       ],
-      "lastUpdated": 1786438114,
+      "lastUpdated": 1786489713,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -39,7 +39,7 @@
           "validatorAccepted": true,
           "indexed": true,
           "indexActive": true,
-          "indexLastCrawledAt": "2026-08-10T13:36:24.537Z",
+          "indexLastCrawledAt": "2026-08-10T18:30:16.17Z",
           "failedChecks": []
         }
       }
@@ -69,7 +69,7 @@
           }
         }
       ],
-      "lastUpdated": 1786438114,
+      "lastUpdated": 1786489713,
       "metadata": {
         "category": "ai",
         "provider": "clervo",
@@ -79,144 +79,11 @@
         "idempotency": "idempotency-key header; the same key with the same body replays without a second charge",
         "bazaarExtensionPresent": true,
         "bazaar": {
-          "validatorAccepted": false,
-          "indexed": false,
-          "indexActive": null,
-          "indexLastCrawledAt": null,
-          "failedChecks": [
-            {
-              "actual": null,
-              "check": "accepts[0].amount",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "accepts[0].asset",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "accepts[0].maxTimeoutSeconds",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "accepts[0].network",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "accepts[0].payTo",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "accepts[0].scheme",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "accepts[0].shape",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "bazaar.info",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "bazaar.info.input",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "bazaar.info.input.method",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "bazaar.info.input.type",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "bazaar.info.output",
-              "expected": null,
-              "severity": "advisory"
-            },
-            {
-              "actual": null,
-              "check": "bazaar.info.output.example",
-              "expected": null,
-              "severity": "advisory"
-            },
-            {
-              "actual": null,
-              "check": "bazaar.schema",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "has_accepts",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "has_bazaar_extension",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "has_resource",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "parse",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "payment_required_header",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": "503",
-              "check": "returns_402",
-              "expected": "402",
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "valid_json",
-              "expected": null,
-              "severity": "required"
-            },
-            {
-              "actual": null,
-              "check": "x402_version",
-              "expected": null,
-              "severity": "required"
-            }
-          ]
+          "validatorAccepted": true,
+          "indexed": true,
+          "indexActive": true,
+          "indexLastCrawledAt": "2026-08-11T19:55:23.821Z",
+          "failedChecks": []
         },
         "modelList": "https://api.clervo.dev/v1/models"
       }
@@ -246,7 +113,7 @@
           }
         }
       ],
-      "lastUpdated": 1786438114,
+      "lastUpdated": 1786489713,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -284,12 +151,12 @@
               "amountIsBinding": false,
               "exampleRouteId": null,
               "lifecycleState": "live",
-              "proofLevel": "quote_observed_unpaid"
+              "proofLevel": "paid_outcome_verified"
             }
           }
         }
       ],
-      "lastUpdated": 1786438114,
+      "lastUpdated": 1786489713,
       "metadata": {
         "category": "prediction",
         "provider": "clervo",
@@ -302,7 +169,7 @@
           "validatorAccepted": true,
           "indexed": true,
           "indexActive": true,
-          "indexLastCrawledAt": "2026-08-09T16:00:37.868Z",
+          "indexLastCrawledAt": "2026-08-11T22:47:49.05Z",
           "failedChecks": []
         }
       }
@@ -327,12 +194,12 @@
               "amountIsBinding": false,
               "exampleRouteId": null,
               "lifecycleState": "live",
-              "proofLevel": "quote_observed_unpaid"
+              "proofLevel": "paid_outcome_verified"
             }
           }
         }
       ],
-      "lastUpdated": 1786438114,
+      "lastUpdated": 1786489713,
       "metadata": {
         "category": "crypto_intelligence",
         "provider": "clervo",
@@ -345,7 +212,7 @@
           "validatorAccepted": true,
           "indexed": true,
           "indexActive": true,
-          "indexLastCrawledAt": "2026-08-09T19:21:09.167Z",
+          "indexLastCrawledAt": "2026-08-11T12:49:38.432Z",
           "failedChecks": []
         }
       }
@@ -360,8 +227,8 @@
     "provenance": {
       "source": "packages/catalog/live-registry.json",
       "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T08:48:34.576Z",
-      "releaseId": "802527f49f87b1aa9323c329bf52c07ffce6d659",
+      "observedAt": "2026-08-11T23:08:33.338Z",
+      "releaseId": "763601c4688fd9b2e3eedb4c7829b4586b329368",
       "proofLevels": {
         "externally_repeated": "an unrelated party did it, more than once",
         "none": "nothing demonstrated",
@@ -388,7 +255,7 @@
     "bazaar": {
       "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",
       "validator": "https://api.cdp.coinbase.com/platform/v2/x402/validate",
-      "indexedResourceCount": 4,
+      "indexedResourceCount": 5,
       "note": "Indexing triggers only on a payment settled through the CDP facilitator. A valid resource that has never been paid for is eligible and unindexed, which is not a defect."
     },
     "freeResources": [
@@ -398,7 +265,7 @@
         "method": "POST",
         "bodyType": "json",
         "paymentRequired": false,
-        "acceptsRequestWithoutIdempotencyKey": false,
+        "acceptsRequestWithoutIdempotencyKey": true,
         "operationId": "search.web",
         "lifecycleState": "live",
         "proofLevel": "paid_outcome_verified",

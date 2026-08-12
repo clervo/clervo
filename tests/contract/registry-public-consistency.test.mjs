@@ -38,8 +38,8 @@ test('the live registry uses exactly the three lifecycle states and four proof l
 });
 
 test('the prober never drops a catalogued route, and a paused route keeps its reason', async () => {
-  const catalog = await json('packages/catalog/ai-model-catalog.v1.json');
-  const catalogued = catalog.routes.map(({ routeId }) => routeId).sort();
+  const catalog = await json('generated/b7-ai/public/models.json');
+  const catalogued = catalog.data.map(({ id }) => id).sort();
   const recorded = registry.aiRoutes.map(({ routeId }) => routeId).sort();
   // A probe failure yields supply_paused, never removal. Losing a route here
   // erases supply we own.
@@ -135,9 +135,9 @@ test('public status publishes every open conformance defect and every paused rou
   // we own and would make the catalog look smaller than it is.
   assert.deepEqual(
     status.aiRoutes.paused.map(({ modelId }) => modelId).sort(),
-    registry.aiCatalog.models.filter(({ state }) => state === 'supply_paused').map(({ modelId }) => modelId).sort(),
+    registry.aiRoutes.filter(({ state }) => state === 'supply_paused').map(({ routeId }) => routeId).sort(),
   );
-  assert.deepEqual(status.aiRoutes.counts, registry.aiCatalog.counts);
+  assert.deepEqual(status.aiRoutes.counts, registry.summary.aiRoutes);
 });
 
 test('no public surface offers an operation the registry does not serve', async () => {
@@ -177,7 +177,6 @@ test('the site projection is byte-identical to the generated output', async () =
     'capabilities.json',
     'pricing.json',
     'status.json',
-    'claims.json',
     'onboarding.json',
     'openapi.json',
     'openapi.yaml',
@@ -221,7 +220,7 @@ test('the agent-facing documents render the registry rather than a hand-written 
     for (const [name, document] of [['skill.md', skill], ['agent.md', agent], ['llms.txt', llms]]) {
       assert.ok(document.includes(freeEntry.route), `${name} must publish the observed free route`);
       assert.equal(
-        document.includes("-H 'idempotency-key:"),
+        document.includes('idempotency-key:'),
         !freeEntry.acceptsNaiveRequest,
         `${name} must show an idempotency-key header exactly when the observed route requires one`,
       );

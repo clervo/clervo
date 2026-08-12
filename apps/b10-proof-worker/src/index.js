@@ -20,9 +20,9 @@ const profiles = Object.freeze({
   '/proof/b7-ai-chat': Object.freeze({
     productId: 'ai.chat', route: '/v1/ai/execute', resource: 'https://api.clervo.dev/v1/ai/execute',
     amountAtomic: '1000', amountDisplay: '0.001 USDC', supplierCostCeilingAtomic: '0',
-    idempotencyKey: 'idem_b7_ai_paid_chat_20260810d10d693c7',
+    idempotencyKey: 'idem_b12_ai_discovery_3a4c08108c9442859ceccf249c67d293',
     request: Object.freeze({
-      model: 'clervo/gpt-5.6-luna',
+      model: 'clervo/allam-2-7b',
       input: Object.freeze({ kind: 'chat', messages: Object.freeze([Object.freeze({ role: 'user', content: 'Reply with the single word ready.' })]), responseFormat: 'text', stream: false }),
       maximumOutputTokens: 16,
     }),

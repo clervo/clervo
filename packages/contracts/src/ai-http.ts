@@ -19,11 +19,11 @@ export const AI_PAID_PATH = '/v1/ai/execute' as const;
 export const AI_MAX_BODY_BYTES = 10_485_760;
 export const AI_DEFAULT_MAXIMUM_OUTPUT_TOKENS = 1_024;
 export const AI_MAXIMUM_OUTPUT_TOKENS = 65_536;
-// Chat gateways add role framing, safety instructions, and other protocol
-// envelope tokens that are included in truthful upstream usage even though
-// they are not present in the caller's message text. Keep that bounded here so
-// quote, execution validation, and receipt usage share the same authority.
-export const AI_CHAT_INPUT_ENVELOPE_TOKENS = 1_024;
+// The qualified gateway reports provider-side prompt usage that includes its
+// own routing and safety envelope. Production observations currently place
+// that fixed overhead above 4,500 tokens. Reserve it before quoting so a valid
+// provider response cannot exceed the request-bound input ceiling.
+export const AI_CHAT_INPUT_ENVELOPE_TOKENS = 8_192;
 
 export interface AiHttpRequest {
   model: string;

@@ -3,6 +3,7 @@ import {
   createAiHttpResult,
 } from '../../../dist/packages/contracts/src/index.js';
 import { executeAiOperation } from '../../../dist/services/ai/src/execution.js';
+import { createAiDiscoveryContract } from './ai-discovery.mjs';
 import { createX402PaidOperationProcessor } from './x402-paid-operation.mjs';
 
 function refuse(code, status = 503) {
@@ -10,7 +11,7 @@ function refuse(code, status = 503) {
 }
 
 export function createX402PaidAiProcessor({ service, stateStore, publicPricing, adapters, adapterFactory, runtimeBindings, acquireExecution, monitor } = {}) {
-  if (!publicPricing || typeof publicPricing.quote !== 'function') throw new TypeError('invalid_ai_public_pricing');
+  if (!publicPricing || typeof publicPricing.quote !== 'function' || typeof publicPricing.discoveryRequest !== 'function') throw new TypeError('invalid_ai_public_pricing');
   if (!Array.isArray(adapters) || adapters.some((adapter) => typeof adapter?.routeId !== 'string' || typeof adapter?.execute !== 'function')) throw new TypeError('invalid_ai_adapters');
   if (adapterFactory !== undefined && typeof adapterFactory !== 'function') throw new TypeError('invalid_ai_adapter_factory');
   const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution });
@@ -40,7 +41,11 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
             deadlineAt: new Date(Date.parse(now) + deadlineMs).toISOString(),
           });
           prepared = Object.freeze({ quote, request });
-          return Object.freeze({ pricing: quote.pricing, executionInput: request });
+          return Object.freeze({
+            pricing: quote.pricing,
+            executionInput: request,
+            discovery: createAiDiscoveryContract(publicPricing.discoveryRequest(now)),
+          });
         },
         async execute(request, { authorization }) {
           if (prepared === undefined) throw new TypeError('ai_execution_not_prepared');

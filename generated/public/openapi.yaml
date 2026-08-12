@@ -10,7 +10,10 @@
       "email": "mo@clervo.dev",
       "url": "https://github.com/clervo/clervo"
     },
-    "x-guidance": "Use POST /v1/search/free for a bounded no-payment sample. Paid routes return x402 v2 and MPP EVM charge challenges before execution. Supply the required JSON body and a stable Idempotency-Key, inspect the exact payment requirements, and send either PAYMENT-SIGNATURE for x402 or Authorization: Payment for MPP only after approval. Reuse the same key to recover or replay a completed result without a second charge. Every unsupported capability fails closed."
+    "x-guidance": "Use POST /v1/search/free for a bounded no-payment sample. Paid routes return x402 v2 exact-scheme and MPP EVM charge challenges before execution. x-payment-info prices are decimal USD discovery values; PAYMENT-REQUIRED carries the binding USDC amount in token atomic units, including a request-specific maximum where pricing is dynamic. Supply the required JSON body and a stable Idempotency-Key, inspect the exact payment requirements, and send either PAYMENT-SIGNATURE for x402 or Authorization: Payment for MPP only after approval. Reuse the same key to recover or replay a completed result without a second charge. Every unsupported capability fails closed.",
+    "x-agentcash-guidance": {
+      "llmsTxtUrl": "https://api.clervo.dev/llms.txt"
+    }
   },
   "paths": {
     "/v1/search/free": {
@@ -26,10 +29,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {
@@ -190,6 +192,18 @@
               }
             }
           },
+          "422": {
+            "description": "Released-client compatibility request selected synthesize=true, which remains unsupported",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
           "429": {
             "description": "Preview quota exceeded",
             "content": {
@@ -227,7 +241,10 @@
             }
           }
         },
-        "security": []
+        "security": [],
+        "tags": [
+          "Search"
+        ]
       }
     },
     "/v1/search/paid": {
@@ -243,10 +260,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {
@@ -381,6 +397,30 @@
                   "additionalProperties": true
                 }
               }
+            },
+            "headers": {
+              "PAYMENT-RESPONSE": {
+                "description": "Base64-encoded x402 v2 settlement response when x402 was used.",
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "Payment-Receipt": {
+                "description": "MPP receipt when MPP was used.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Idempotency-Replayed": {
+                "description": "true when the completed logical operation was replayed without another charge.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
             }
           },
           "400": {
@@ -432,6 +472,18 @@
               }
             }
           },
+          "422": {
+            "description": "Released-client compatibility request selected synthesize=true, which remains unsupported",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
           "502": {
             "description": "Mock test execution failed closed",
             "content": {
@@ -457,6 +509,10 @@
             }
           }
         },
+        "security": [],
+        "tags": [
+          "Search"
+        ],
         "x-payment-info": {
           "price": {
             "mode": "fixed",
@@ -492,10 +548,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {
@@ -512,10 +567,14 @@
                 "properties": {
                   "model": {
                     "type": "string",
-                    "enum": [
-                      "clervo/gpt-5.6-luna"
-                    ],
-                    "default": "clervo/gpt-5.6-luna"
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Canonical Clervo model ID or a published stable alias. GET /v1/models is the current catalog authority; catalog state, not this schema, determines callability.",
+                    "examples": [
+                      "clervo/allam-2-7b",
+                      "clervo/code",
+                      "clervo/gemma-4-26b-a4b-it"
+                    ]
                   },
                   "input": {
                     "type": "object",
@@ -538,7 +597,7 @@
                         "default": [
                           {
                             "role": "user",
-                            "content": "Reply with the single word ready."
+                            "content": "Explain in one sentence why idempotency matters for paid API retries."
                           }
                         ],
                         "items": {
@@ -559,7 +618,7 @@
                               "type": "string",
                               "minLength": 1,
                               "maxLength": 100000,
-                              "default": "Reply with the single word ready."
+                              "default": "Explain in one sentence why idempotency matters for paid API retries."
                             }
                           },
                           "additionalProperties": false
@@ -584,7 +643,7 @@
                       "messages": [
                         {
                           "role": "user",
-                          "content": "Reply with the single word ready."
+                          "content": "Explain in one sentence why idempotency matters for paid API retries."
                         }
                       ],
                       "responseFormat": "text",
@@ -595,25 +654,25 @@
                     "type": "integer",
                     "minimum": 1,
                     "maximum": 16384,
-                    "default": 16
+                    "default": 64
                   }
                 },
                 "additionalProperties": false
               },
               "example": {
-                "model": "clervo/gpt-5.6-luna",
+                "model": "clervo/allam-2-7b",
                 "input": {
                   "kind": "chat",
                   "messages": [
                     {
                       "role": "user",
-                      "content": "Reply with the single word ready."
+                      "content": "Explain in one sentence why idempotency matters for paid API retries."
                     }
                   ],
                   "responseFormat": "text",
                   "stream": false
                 },
-                "maximumOutputTokens": 16
+                "maximumOutputTokens": 64
               }
             }
           }
@@ -699,6 +758,30 @@
                   "additionalProperties": true
                 }
               }
+            },
+            "headers": {
+              "PAYMENT-RESPONSE": {
+                "description": "Base64-encoded x402 v2 settlement response when x402 was used.",
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "Payment-Receipt": {
+                "description": "MPP receipt when MPP was used.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Idempotency-Replayed": {
+                "description": "true when the completed logical operation was replayed without another charge.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
             }
           },
           "400": {
@@ -729,8 +812,32 @@
               }
             }
           },
+          "404": {
+            "description": "Requested model ID is not present in the current catalog",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
           "409": {
             "description": "Idempotency or quote conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Known model is unavailable, unsellable, or incompatible with the requested input kind",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -766,12 +873,16 @@
             }
           }
         },
+        "security": [],
+        "tags": [
+          "AI"
+        ],
         "x-payment-info": {
           "price": {
             "mode": "dynamic",
             "currency": "USD",
-            "min": "0.000001",
-            "max": "2.621440"
+            "min": "0.001000",
+            "max": "42.500000"
           },
           "protocols": [
             {
@@ -830,7 +941,10 @@
               }
             }
           }
-        }
+        },
+        "tags": [
+          "AI"
+        ]
       }
     },
     "/v1/sandbox/execute": {
@@ -846,10 +960,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {
@@ -1033,6 +1146,30 @@
                   "additionalProperties": true
                 }
               }
+            },
+            "headers": {
+              "PAYMENT-RESPONSE": {
+                "description": "Base64-encoded x402 v2 settlement response when x402 was used.",
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "Payment-Receipt": {
+                "description": "MPP receipt when MPP was used.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Idempotency-Replayed": {
+                "description": "true when the completed logical operation was replayed without another charge.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
             }
           },
           "400": {
@@ -1088,12 +1225,16 @@
             }
           }
         },
+        "security": [],
+        "tags": [
+          "Sandbox"
+        ],
         "x-payment-info": {
           "price": {
-            "mode": "dynamic_class",
+            "mode": "dynamic",
             "currency": "USD",
-            "minimum": "0.010000",
-            "maximum": "0.060000"
+            "min": "0.010000",
+            "max": "0.060000"
           },
           "protocols": [
             {
@@ -1123,10 +1264,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {
@@ -1374,6 +1514,30 @@
                   "additionalProperties": true
                 }
               }
+            },
+            "headers": {
+              "PAYMENT-RESPONSE": {
+                "description": "Base64-encoded x402 v2 settlement response when x402 was used.",
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "Payment-Receipt": {
+                "description": "MPP receipt when MPP was used.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Idempotency-Replayed": {
+                "description": "true when the completed logical operation was replayed without another charge.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
             }
           },
           "400": {
@@ -1441,9 +1605,13 @@
             }
           }
         },
+        "security": [],
+        "tags": [
+          "Prediction"
+        ],
         "x-payment-info": {
           "price": {
-            "mode": "request_derived_per_operation",
+            "mode": "dynamic",
             "currency": "USD",
             "min": "0.002000",
             "max": "0.003000"
@@ -1476,10 +1644,9 @@
             "schema": {
               "type": "string",
               "minLength": 8,
-              "maxLength": 128,
-              "default": "x402scan-clervo-probe"
+              "maxLength": 128
             },
-            "example": "x402scan-clervo-probe"
+            "example": "my-unique-key-550e8400"
           }
         ],
         "requestBody": {
@@ -1728,6 +1895,30 @@
                   "additionalProperties": true
                 }
               }
+            },
+            "headers": {
+              "PAYMENT-RESPONSE": {
+                "description": "Base64-encoded x402 v2 settlement response when x402 was used.",
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "Payment-Receipt": {
+                "description": "MPP receipt when MPP was used.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Idempotency-Replayed": {
+                "description": "true when the completed logical operation was replayed without another charge.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
             }
           },
           "400": {
@@ -1783,9 +1974,13 @@
             }
           }
         },
+        "security": [],
+        "tags": [
+          "Crypto Intelligence"
+        ],
         "x-payment-info": {
           "price": {
-            "mode": "request_derived_per_operation",
+            "mode": "dynamic",
             "currency": "USD",
             "min": "0.002000",
             "max": "0.004000"
@@ -3739,496 +3934,6 @@
         },
         "additionalProperties": false
       },
-      "ProductScope": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": "https://api.clervo.dev/schemas/2026-07-29.1/product-scope.schema.json",
-        "title": "Clervo product release scope",
-        "type": "object",
-        "required": [
-          "scopeVersion",
-          "company",
-          "productCore",
-          "firstRevenueRelease",
-          "pillars"
-        ],
-        "properties": {
-          "scopeVersion": {
-            "const": "2026-08-01.3"
-          },
-          "company": {
-            "type": "object",
-            "required": [
-              "name",
-              "identity",
-              "permanentNarrative"
-            ],
-            "properties": {
-              "name": {
-                "const": "Clervo"
-              },
-              "identity": {
-                "const": "outcome infrastructure for agents"
-              },
-              "permanentNarrative": {
-                "const": [
-                  "find",
-                  "understand",
-                  "act"
-                ]
-              }
-            },
-            "additionalProperties": false
-          },
-          "productCore": {
-            "type": "object",
-            "required": [
-              "requiredPillars",
-              "interfacesFrozen",
-              "compatibilityVerified",
-              "ready"
-            ],
-            "properties": {
-              "requiredPillars": {
-                "const": [
-                  "search",
-                  "ai",
-                  "sandbox",
-                  "rpc",
-                  "prediction",
-                  "crypto_intelligence"
-                ]
-              },
-              "interfacesFrozen": {
-                "type": "boolean"
-              },
-              "compatibilityVerified": {
-                "type": "boolean"
-              },
-              "ready": {
-                "type": "boolean"
-              }
-            },
-            "allOf": [
-              {
-                "if": {
-                  "type": "object",
-                  "properties": {
-                    "ready": {
-                      "const": true
-                    }
-                  },
-                  "required": [
-                    "ready"
-                  ]
-                },
-                "then": {
-                  "type": "object",
-                  "properties": {
-                    "interfacesFrozen": {
-                      "const": true
-                    },
-                    "compatibilityVerified": {
-                      "const": true
-                    }
-                  }
-                }
-              }
-            ],
-            "additionalProperties": false
-          },
-          "firstRevenueRelease": {
-            "type": "object",
-            "required": [
-              "productId",
-              "productName",
-              "requiredPillars",
-              "requirements",
-              "ready"
-            ],
-            "properties": {
-              "productId": {
-                "const": "clervo.platform"
-              },
-              "productName": {
-                "const": "Clervo Platform"
-              },
-              "requiredPillars": {
-                "const": [
-                  "search",
-                  "ai",
-                  "sandbox",
-                  "rpc",
-                  "prediction",
-                  "crypto_intelligence"
-                ]
-              },
-              "requirements": {
-                "type": "array",
-                "minItems": 9,
-                "maxItems": 9,
-                "prefixItems": [
-                  {
-                    "$ref": "#/$defs/requirementApi"
-                  },
-                  {
-                    "$ref": "#/$defs/requirementMcpSdk"
-                  },
-                  {
-                    "$ref": "#/$defs/requirementPricing"
-                  },
-                  {
-                    "$ref": "#/$defs/requirementOnboarding"
-                  },
-                  {
-                    "$ref": "#/$defs/requirementPublicExperience"
-                  },
-                  {
-                    "$ref": "#/$defs/requirementDeployment"
-                  },
-                  {
-                    "$ref": "#/$defs/requirementDemonstrations"
-                  },
-                  {
-                    "$ref": "#/$defs/requirementSettlement"
-                  },
-                  {
-                    "$ref": "#/$defs/requirementExternalResult"
-                  }
-                ],
-                "items": false
-              },
-              "ready": {
-                "type": "boolean"
-              }
-            },
-            "additionalProperties": false
-          },
-          "pillars": {
-            "type": "array",
-            "minItems": 6,
-            "maxItems": 6,
-            "prefixItems": [
-              {
-                "allOf": [
-                  {
-                    "$ref": "#/$defs/pillar"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "pillarId": {
-                        "const": "search"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "allOf": [
-                  {
-                    "$ref": "#/$defs/pillar"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "pillarId": {
-                        "const": "ai"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "allOf": [
-                  {
-                    "$ref": "#/$defs/pillar"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "pillarId": {
-                        "const": "sandbox"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "allOf": [
-                  {
-                    "$ref": "#/$defs/pillar"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "pillarId": {
-                        "const": "rpc"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "allOf": [
-                  {
-                    "$ref": "#/$defs/pillar"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "pillarId": {
-                        "const": "prediction"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "allOf": [
-                  {
-                    "$ref": "#/$defs/pillar"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "pillarId": {
-                        "const": "crypto_intelligence"
-                      }
-                    }
-                  }
-                ]
-              }
-            ],
-            "items": false
-          }
-        },
-        "$defs": {
-          "requirement": {
-            "type": "object",
-            "required": [
-              "requirementId",
-              "verified"
-            ],
-            "properties": {
-              "requirementId": {
-                "type": "string"
-              },
-              "verified": {
-                "type": "boolean"
-              }
-            },
-            "additionalProperties": false
-          },
-          "requirementApi": {
-            "allOf": [
-              {
-                "$ref": "#/$defs/requirement"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "requirementId": {
-                    "const": "machine_readable_api"
-                  }
-                }
-              }
-            ]
-          },
-          "requirementMcpSdk": {
-            "allOf": [
-              {
-                "$ref": "#/$defs/requirement"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "requirementId": {
-                    "const": "mcp_sdk_access"
-                  }
-                }
-              }
-            ]
-          },
-          "requirementPricing": {
-            "allOf": [
-              {
-                "$ref": "#/$defs/requirement"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "requirementId": {
-                    "const": "bounded_pricing_receipts"
-                  }
-                }
-              }
-            ]
-          },
-          "requirementOnboarding": {
-            "allOf": [
-              {
-                "$ref": "#/$defs/requirement"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "requirementId": {
-                    "const": "tested_onboarding"
-                  }
-                }
-              }
-            ]
-          },
-          "requirementPublicExperience": {
-            "allOf": [
-              {
-                "$ref": "#/$defs/requirement"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "requirementId": {
-                    "const": "unified_public_experience_distribution"
-                  }
-                }
-              }
-            ]
-          },
-          "requirementDeployment": {
-            "allOf": [
-              {
-                "$ref": "#/$defs/requirement"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "requirementId": {
-                    "const": "production_deployment"
-                  }
-                }
-              }
-            ]
-          },
-          "requirementDemonstrations": {
-            "allOf": [
-              {
-                "$ref": "#/$defs/requirement"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "requirementId": {
-                    "const": "real_demonstrations"
-                  }
-                }
-              }
-            ]
-          },
-          "requirementSettlement": {
-            "allOf": [
-              {
-                "$ref": "#/$defs/requirement"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "requirementId": {
-                    "const": "bounded_real_settlement"
-                  }
-                }
-              }
-            ]
-          },
-          "requirementExternalResult": {
-            "allOf": [
-              {
-                "$ref": "#/$defs/requirement"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "requirementId": {
-                    "const": "external_useful_paid_result"
-                  }
-                }
-              }
-            ]
-          },
-          "pillar": {
-            "type": "object",
-            "required": [
-              "pillarId",
-              "release",
-              "lifecycle",
-              "coreQualified",
-              "capabilityIds"
-            ],
-            "properties": {
-              "pillarId": {
-                "enum": [
-                  "search",
-                  "ai",
-                  "sandbox",
-                  "rpc",
-                  "prediction",
-                  "crypto_intelligence"
-                ]
-              },
-              "release": {
-                "const": "first_revenue_release"
-              },
-              "lifecycle": {
-                "enum": [
-                  "available",
-                  "degraded",
-                  "preview",
-                  "unavailable"
-                ]
-              },
-              "coreQualified": {
-                "type": "boolean"
-              },
-              "capabilityIds": {
-                "type": "array",
-                "minItems": 1,
-                "uniqueItems": true,
-                "items": {
-                  "type": "string",
-                  "pattern": "^[a-z][a-z0-9]*(?:[._][a-z][a-z0-9]*)+$"
-                }
-              }
-            },
-            "allOf": [
-              {
-                "if": {
-                  "type": "object",
-                  "properties": {
-                    "lifecycle": {
-                      "enum": [
-                        "available",
-                        "degraded"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "lifecycle"
-                  ]
-                },
-                "then": {
-                  "type": "object",
-                  "properties": {
-                    "coreQualified": {
-                      "const": true
-                    }
-                  }
-                }
-              }
-            ],
-            "additionalProperties": false
-          }
-        },
-        "additionalProperties": false
-      },
       "Quote": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://api.clervo.dev/schemas/2026-07-29.1/quote.schema.json",
@@ -4886,7 +4591,8 @@
           },
           "synthesize": {
             "type": "boolean",
-            "default": true
+            "default": false,
+            "description": "Public HTTP omission selects false. true is accepted only as a released-client compatibility input and returns search_synthesis_unavailable."
           },
           "language": {
             "type": "string",
@@ -4932,9 +4638,9 @@
           },
           "productId": {
             "enum": [
-              "search.web",
-              "search.answer"
-            ]
+              "search.web"
+            ],
+            "description": "Callable public Search operation identity. search.answer remains a released-client compatibility identifier but is not callable."
           },
           "state": {
             "const": "RECEIPTED"
@@ -5248,8 +4954,6 @@
     "publicCallable": true,
     "paymentImplemented": true,
     "deploymentVerified": true,
-    "releaseCandidateId": "clervo-private-core-2026-08-02.2",
-    "interfaceHash": "sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4",
     "operationIds": [
       "search.web",
       "ai.chat",
@@ -5270,11 +4974,33 @@
       "crypto.wallet.transactions",
       "crypto.wallet.report"
     ],
-    "runtimeRelease": "802527f49f87b1aa9323c329bf52c07ffce6d659"
+    "runtimeRelease": "763601c4688fd9b2e3eedb4c7829b4586b329368"
   },
   "servers": [
     {
       "url": "https://api.clervo.dev"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Search",
+      "description": "Free-first raw web evidence and paid replay-safe retrieval."
+    },
+    {
+      "name": "AI",
+      "description": "Provider-neutral model discovery and normalized free-or-paid execution."
+    },
+    {
+      "name": "Sandbox",
+      "description": "Bounded one-shot isolated code execution."
+    },
+    {
+      "name": "Prediction",
+      "description": "Normalized prediction-market discovery and derived intelligence."
+    },
+    {
+      "name": "Crypto Intelligence",
+      "description": "Bounded wallet facts and deterministic on-chain derivations."
     }
   ]
 }

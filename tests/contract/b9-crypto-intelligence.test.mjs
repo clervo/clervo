@@ -27,10 +27,10 @@ test('B9 historical paid proof remains intact while current-release public truth
   assert.deepEqual(Object.fromEntries(Object.entries(registry.bazaar.resources.find(({ productId }) => productId === 'crypto_intelligence')).filter(([key]) => ['valid', 'indexed', 'indexActive'].includes(key))), { indexActive: true, indexed: true, valid: true });
   assert.deepEqual(release.publicOperations, pricing.products.map(({ productId, customerPriceMicrousd }) => ({ productId, amountAtomic: String(customerPriceMicrousd) })));
   assert.deepEqual(discovery.products.filter(({ productId }) => productId.startsWith('crypto.')).map(({ productId, publicAvailable, commercialProof }) => [productId, publicAvailable, commercialProof]), [
-    ['crypto.wallet.balances', true, false],
-    ['crypto.wallet.tokens', true, false],
-    ['crypto.wallet.transactions', true, false],
-    ['crypto.wallet.report', true, false],
+    ['crypto.wallet.balances', true, undefined],
+    ['crypto.wallet.tokens', true, undefined],
+    ['crypto.wallet.transactions', true, undefined],
+    ['crypto.wallet.report', true, undefined],
   ]);
   assert.deepEqual([release.commerce.paymentAttempted, release.commerce.paymentEffects, release.commerce.paidOutcomeVerified, release.commerce.revenueEvidence], [false, 0, false, false]);
   assert.deepEqual(paidProof.operations.map(({ productId, customerChargeAtomic, usefulResult, chainStatus, exactTransferCount }) => ({ productId, customerChargeAtomic, usefulResult, chainStatus, exactTransferCount })), [

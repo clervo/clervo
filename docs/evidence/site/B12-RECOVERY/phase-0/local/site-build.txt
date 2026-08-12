@@ -1,0 +1,60 @@
+
+> @clervo/site@0.1.0 prebuild
+> npm --prefix ../.. run generate:discovery && node ../../scripts/site/build-identity.mjs && node ../../scripts/site/build-fonts.mjs && node ../../scripts/site/validate-canonical-media.mjs && node ../../scripts/site/prepare-public.mjs
+
+
+> clervo-next@0.0.0 generate:discovery
+> node ./scripts/verify-runtime.mjs && npm run build && node ./scripts/generate-discovery.mjs
+
+runtime enforcement: PASS
+executing Node.js: 24.18.1
+required Node.js: 24.18.1
+
+> clervo-next@0.0.0 build
+> node ./scripts/verify-runtime.mjs && npm run build --workspace @clervo/sdk && tsc --project tsconfig.json
+
+runtime enforcement: PASS
+executing Node.js: 24.18.1
+required Node.js: 24.18.1
+
+> @clervo/sdk@0.5.2 build
+> npm run build --workspace @clervo/router && tsc --project tsconfig.json
+
+
+> @clervo/router@0.3.1 build
+> tsc --project tsconfig.json
+
+distribution discovery generation: PASS (public AI, Crypto Intelligence, Prediction Intelligence, Secure Sandbox, Research preview, 12 operations, 16 schemas)
+identity: PASS (13 assets, limb 7.6, signal y=39.28)
+site fonts: PASS (4 files, 113 KB of 195 KB)
+canonical media: PASS (32 hashed artifacts, 99 runtime nodes)
+site public projection: PASS (clervo-private-core-2026-08-02.2)
+
+> @clervo/site@0.1.0 build
+> tsc --project tsconfig.json --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist-server && node ../../scripts/site/prerender.mjs && node ../../scripts/site/validate-prerender.mjs
+
+vite v8.2.0 building client environment for production...
+[2Ktransforming...✓ 92 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                            4.98 kB │ gzip:   1.72 kB
+dist/assets/index-knesgxIU.css           202.85 kB │ gzip:  36.07 kB
+dist/assets/index-CO7m1o-s.js            674.96 kB │ gzip: 155.57 kB │ map: 1,322.79 kB
+dist/assets/WebGLInstrument-BTcuFl0F.js  929.50 kB │ gzip: 248.11 kB │ map: 4,094.67 kB
+
+✓ built in 471ms
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+vite v8.2.0 building ssr environment for production...
+[2Ktransforming...✓ 51 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-server/assets/WebGLInstrument-CLVggl1o.js    6.01 kB │ gzip:   1.94 kB │ map:  12.05 kB
+dist-server/entry-server.js                     666.34 kB │ gzip: 112.42 kB │ map: 956.51 kB
+
+✓ built in 85ms
+site prerender: PASS (153 static routes, 404 document)
+site prerender validation: PASS (153 content routes, 404 document)

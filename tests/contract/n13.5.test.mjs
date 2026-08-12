@@ -16,10 +16,12 @@ test('onboarding stays bound to the frozen candidate and tracks observed callabi
   // values to equal the frozen source and to pin publicCallable to false, which
   // made the honest projection a build failure.
   assert.equal(generated.schemaVersion, onboarding.schemaVersion);
-  assert.equal(generated.releaseCandidateId, discovery.distribution.releaseCandidateId);
-  assert.equal(onboarding.releaseCandidateId, discovery.distribution.releaseCandidateId);
-  assert.equal(generated.interfaceHash, discovery.distribution.interfaceHash);
-  assert.equal(onboarding.interfaceHash, discovery.distribution.interfaceHash);
+  assert.equal(generated.releaseCandidateId, undefined);
+  assert.equal(generated.interfaceHash, undefined);
+  assert.equal(discovery.distribution.releaseCandidateId, undefined);
+  assert.equal(discovery.distribution.interfaceHash, undefined);
+  assert.equal(typeof onboarding.releaseCandidateId, 'string');
+  assert.equal(typeof onboarding.interfaceHash, 'string');
   assert.deepEqual(generated.recovery, onboarding.recovery);
 
   const searchLive = registry.products.find(({ id }) => id === 'search').publiclyReachable;
@@ -59,7 +61,7 @@ test('raw HTTP onboarding is static, explicit, and reflects current payment avai
   const build = await readFile('apps/site/src/pages/Build.tsx', 'utf8');
   const html = await readFile('apps/site/dist/docs/http/index.html', 'utf8');
   assert.match(product, /curl --fail-with-body/u);
-  assert.match(product, /idempotency-key: clervo_example_0001/u);
+  assert.doesNotMatch(product, /idempotency-key: clervo_example_0001|stable-request-0001/iu);
   assert.match(product, /127\.0\.0\.1:8080/u);
   assert.match(build, /Package availability is not endpoint availability/iu);
   assert.doesNotMatch(build, /funding, signing, or settlement is available today/iu);

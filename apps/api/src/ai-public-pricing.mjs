@@ -169,6 +169,24 @@ export function createAiPublicPricing(catalogs, { enabledRouteIds } = {}) {
   }
 
   return Object.freeze({
+    discoveryRequest(now = new Date().toISOString()) {
+      const observedAt = Date.parse(now);
+      if (!Number.isFinite(observedAt)) throw new TypeError('ai_paid_discovery_time_invalid');
+      const selected = catalogs.model.routes
+        .filter((definition) => (enabled === undefined || enabled.has(definition.routeId))
+          && definition.productIds.includes('ai.chat')
+          && definition.qualification.status === 'passed'
+          && definition.qualification.resaleAllowed === true
+          && Date.parse(definition.qualification.expiresAt) > observedAt
+          && routePricing(definition.exactModelId, 'ai.chat', catalogs) !== undefined)
+        .sort((left, right) => left.exactModelId.localeCompare(right.exactModelId))[0];
+      if (selected === undefined) throw Object.assign(new Error('ai_paid_discovery_model_unavailable'), { status: 503 });
+      return Object.freeze({
+        model: selected.exactModelId,
+        input: Object.freeze({ kind: 'chat', messages: Object.freeze([Object.freeze({ role: 'user', content: 'Explain in one sentence why idempotency matters for paid API retries.' })]), responseFormat: 'text', stream: false }),
+        maximumOutputTokens: 64,
+      });
+    },
     quote({ normalized, operationId, now }) {
       const routes = availableRoutes(normalized, now);
       const decision = selectAiRoute({

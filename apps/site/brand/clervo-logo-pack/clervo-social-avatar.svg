@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88" width="88" height="88" role="img" aria-labelledby="social-avatar-title">
+<title id="social-avatar-title">Clervo</title>
+<rect width="88" height="88" fill="#0B0B0B"/>
+<g transform="translate(12 12)">
+<path d="M3 39.28H22.5" stroke="#FF3B30" stroke-width="3.1" stroke-linecap="round"/><path d="M22.5 39.28H41.5" stroke="#00E5FF" stroke-width="3.1" stroke-linecap="round"/><path d="M41.5 39.28H61" stroke="#FFC800" stroke-width="3.1" stroke-linecap="round"/>
+<path d="M32 8L59.5 55H4.5ZM32 23.05L17.75 47.4H46.25Z" fill="#E6E6E8" fill-rule="evenodd"/>
+</g>
+</svg>

@@ -22,7 +22,7 @@ const result = await clervo.ai.execute({
     stream: false,
   },
   maximumOutputTokens: 16,
-}, { idempotencyKey: 'my-stable-request-0001' });
+}); // the client generates a fresh key for this logical operation
 ```
 
 `models.list()` returns stable canonical Clervo IDs and explicit alias
@@ -37,9 +37,7 @@ core as the CLI, MCP, Python and OpenAI proxy:
 
 ```ts
 const clervo = new ClervoClient({ connect: { autoPay: true } });
-const result = await clervo.ai.execute(request, {
-  idempotencyKey: 'my-stable-request-0001'
-});
+const result = await clervo.ai.execute(request); // fresh operation key by default
 ```
 
 `autoPay` is false unless it is literally `true`. The shared core enforces the
@@ -49,8 +47,9 @@ no fresh authorization. Use `clervo.catalog`, `clervo.commerce`,
 `clervo.wallet`, `clervo.limits`, `clervo.usage`, and `clervo.diagnostics` for
 all currently served product families and local Connect state.
 
-Search remains available through `clervo.search.web()` and
-`clervo.search.answer()`. Known failures can be reduced to a bounded recovery
+Search remains available through `clervo.search.web()`. The released
+`clervo.search.answer()` compatibility method fails deterministically because
+synthesis is not implemented. Known failures can be reduced to a bounded recovery
 action with `recoveryActionFor(error)`. Unknown settlement and payment timeout
 states prohibit retry until the original idempotency key is reconciled.
 

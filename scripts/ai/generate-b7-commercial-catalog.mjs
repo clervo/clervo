@@ -40,7 +40,9 @@ const aliasContracts = Object.freeze({
 // Minimum post-integration production checks may refine health without
 // changing the frozen B7 identity set or repeating model qualification.
 const availabilityOverrides = Object.freeze({
-  'clervo/gpt-oss-20b': Object.freeze({ state: 'degraded', reason: 'integrated_execution_failed', observedAt: '2026-08-10T20:10:30.000Z' }),
+  // Requalification is scheduled at the current supply snapshot boundary;
+  // until then this free route is withheld from sellable selection.
+  'clervo/gpt-oss-20b': Object.freeze({ state: 'degraded', reason: 'integrated_execution_failed', observedAt: '2026-08-10T20:10:30.000Z', expectedReturnAt: validUntil }),
 });
 
 const officialMediaFloors = Object.freeze({

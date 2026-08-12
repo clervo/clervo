@@ -42,7 +42,7 @@ const profiles = Object.freeze({
     amountDisplay: '0.001 USDC',
     supplierCostCeilingAtomic: '0',
     request: {
-      model: 'clervo/gpt-5.6-luna',
+      model: 'clervo/allam-2-7b',
       input: { kind: 'chat', messages: [{ role: 'user', content: 'Reply with the single word ready.' }], responseFormat: 'text', stream: false },
       maximumOutputTokens: 16,
     },

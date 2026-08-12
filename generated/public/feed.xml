@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Clervo changelog</title>
+    <link>https://clervo.dev/changelog/</link>
+    <description>Dated, source-bound changes to Clervo public product and distribution state.</description>
+    <language>en</language>
+    <atom:link href="https://clervo.dev/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <guid isPermaLink="false">urn:clervo:catalog:763601c4688fd9b2e3eedb4c7829b4586b329368</guid>
+      <title>Public catalog observation regenerated</title>
+      <link>https://clervo.dev/changelog/</link>
+      <pubDate>Tue, 11 Aug 2026 23:08:33 GMT</pubDate>
+      <description>5 of 6 product families were observed serving. The catalog and status surfaces were regenerated from that observation.</description>
+    </item>
+    <item>
+      <guid isPermaLink="false">urn:clervo:packages:2026-08-11T12:17:26Z</guid>
+      <title>Clervo Connect packages registry-verified</title>
+      <link>https://clervo.dev/changelog/</link>
+      <pubDate>Tue, 11 Aug 2026 12:17:26 GMT</pubDate>
+      <description>@clervo/sdk 0.5.2, @clervo/mcp 0.5.2, clervo-sdk 0.4.2 were observed on their public registries.</description>
+    </item>
+  </channel>
+</rss>

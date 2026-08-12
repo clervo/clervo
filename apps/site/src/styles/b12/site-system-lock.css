@@ -1,0 +1,373 @@
+/*
+ * Full-site recovery lock.
+ *
+ * The Home hero is the visual authority. Internal routes inherit the same
+ * black field, restrained type, hairline geometry, state colour semantics and
+ * motion discipline without pretending every page is a cinematic hero.
+ */
+
+:root {
+  --clervo-page-max: 92rem;
+  --clervo-reading: 46rem;
+  --clervo-gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --clervo-section-y: clamp(5.25rem, 10vw, 9.5rem);
+  --clervo-rule: rgb(255 255 255 / 10%);
+  --clervo-rule-strong: rgb(255 255 255 / 16%);
+  --clervo-muted: rgb(242 242 244 / 61%);
+  --clervo-quiet: rgb(242 242 244 / 42%);
+  --clervo-panel: rgb(255 255 255 / 1.8%);
+}
+
+html {
+  background: #000;
+}
+
+body,
+.app,
+.app--internal,
+.app--home {
+  background: #000;
+}
+
+.app--internal {
+  color: var(--text);
+}
+
+/* The legacy full-viewport instrument was useful during recovery but fights
+ * the locked visual language on document/data pages. State now lives in text,
+ * rules and controls instead of a second hero behind every route. */
+.app--internal .instrument,
+.app--internal main::before {
+  display: none !important;
+}
+
+.app--internal main {
+  min-height: calc(100svh - 64px);
+  overflow: clip;
+}
+
+/* Shared internal header: the same open chrome as Home, but sticky so long
+ * documents keep navigation available. */
+.app--internal .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  border-bottom: 1px solid rgb(255 255 255 / 7%);
+  background: rgb(0 0 0 / 88%);
+  box-shadow: none;
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .app--internal .site-header {
+    background: rgb(0 0 0 / 72%);
+    backdrop-filter: blur(18px) saturate(115%);
+  }
+}
+
+.app--internal .site-header__inner.shell {
+  width: 100%;
+  max-width: none;
+  min-height: 64px;
+  padding-inline: 4%;
+}
+
+.app--internal .site-header__brand {
+  gap: 0.78rem;
+}
+
+.app--internal .site-header__brand .apex-mark {
+  width: 25px;
+  height: 25px;
+}
+
+.app--internal .site-header__wordmark {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.app--internal .site-header__nav {
+  gap: clamp(1.8rem, 3vw, 3.4rem);
+}
+
+.app--internal .site-header__nav a {
+  color: rgb(242 242 244 / 66%);
+  font-size: 0.82rem;
+  font-weight: 420;
+  letter-spacing: -0.005em;
+}
+
+.app--internal .site-header__nav a.is-active::after {
+  right: 0;
+  left: 0;
+  background: rgb(242 242 244 / 55%);
+}
+
+.app--internal .site-header__cta.button--primary {
+  min-height: 42px;
+  padding-inline: 1.25rem;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 14px;
+  background: rgb(255 255 255 / 2.5%);
+  box-shadow: none;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.84rem;
+  font-weight: 430;
+  text-transform: none;
+}
+
+/* Internal page opening grammar. Old page-specific styles can still set
+ * layout, but not the oversized 600-weight visual language from earlier B12. */
+.app--internal :where(
+  .page-lead,
+  .s4-product-copy,
+  .s4-family-hero,
+  .model-hero,
+  .s5-operation-hero,
+  .s6-hero__copy,
+  .research-hero,
+  .build-hero,
+  .trust-hero
+) h1 {
+  color: #f3f3f5;
+  font-family: var(--sans);
+  font-size: clamp(3rem, 5.6vw, 6rem);
+  font-weight: 300;
+  line-height: 0.96;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.app--internal :where(
+  .section-head,
+  .s4-section-head,
+  .model-section-head,
+  .s5-section-head,
+  .s6-section-head,
+  .workspace-intro
+) h2,
+.app--internal :where(.page-lead, .guide-body, .docs-body) h2 {
+  color: #f2f2f4;
+  font-family: var(--sans);
+  font-size: clamp(2rem, 3.25vw, 3.65rem);
+  font-weight: 360;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.app--internal :where(.eyebrow, .kicker, .s4-eyebrow, .s4-kicker, .s5-eyebrow, .s5-kicker, .s6-eyebrow) {
+  color: rgb(242 242 244 / 50%);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 520;
+  letter-spacing: 0.19em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.app--internal :where(.lede, .section-copy, .s4-section-copy, .s4-lede, .s5-lede, .s6-lede) {
+  color: var(--clervo-muted);
+  font-family: var(--sans);
+  font-size: clamp(1rem, 1.15vw, 1.18rem);
+  font-weight: 360;
+  line-height: 1.6;
+  letter-spacing: -0.015em;
+}
+
+/* Sections are defined by space and rules, not card backgrounds. */
+.app--internal :where(.band, .section, .s4-section, .model-band, .s5-contract-section, .s6-section) {
+  border-color: var(--clervo-rule);
+  background: transparent;
+}
+
+.app--internal :where(.panel, .card, .s4-family-panel, .s4-contract-panel, .s4-interface, .s5-panel, .s6-state-card) {
+  border-color: var(--clervo-rule);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Controls: flat, exact, quiet. Primary white remains rare. */
+.app--internal :where(
+  .button,
+  .b12-button,
+  .s6-button,
+  .primary-button,
+  .secondary-button,
+  .ghost-button
+) {
+  min-height: 44px;
+  border-radius: 999px;
+  box-shadow: none;
+  font-family: var(--sans);
+  font-weight: 480;
+}
+
+.app--internal :where(.button--quiet, .b12-button-secondary, .s6-button--secondary, .secondary-button, .ghost-button) {
+  border-color: var(--clervo-rule-strong);
+  background: transparent;
+  color: rgb(242 242 244 / 76%);
+}
+
+/* Data/state controls stay technical and compact. */
+.app--internal :where(.state, .s4-lifecycle, .s5-badge, .s6-state, .state-pill) {
+  border-radius: 999px;
+  font-family: var(--mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+/* Code is a first-class product surface. */
+.app--internal .code-block,
+.app--internal :where(.s5-code-panel, .s5-code-block, .log-panel) {
+  border-color: var(--clervo-rule-strong);
+  border-radius: 0;
+  background: #030404;
+  box-shadow: none;
+}
+
+.app--internal .code-block-bar,
+.app--internal :where(.s5-code-head, .command-label) {
+  border-color: var(--clervo-rule);
+  color: rgb(242 242 244 / 58%);
+  background: transparent;
+}
+
+.app--internal .code-block pre {
+  color: rgb(242 242 244 / 79%);
+  font-size: clamp(0.72rem, 0.85vw, 0.84rem);
+  line-height: 1.75;
+}
+
+/* Shared footer becomes a quiet document index, not another giant section. */
+.site-footer {
+  border-top: 1px solid var(--clervo-rule);
+  background: #000;
+}
+
+.site-footer__inner.shell {
+  max-width: var(--clervo-page-max);
+  padding-block: clamp(4rem, 8vw, 7rem);
+  padding-inline: var(--clervo-gutter);
+}
+
+.site-footer__brand .quiet,
+.site-footer__columns a,
+.site-footer__note {
+  color: var(--clervo-muted);
+}
+
+.site-footer__columns h2 {
+  color: var(--clervo-quiet);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 520;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.site-footer__note.shell {
+  max-width: var(--clervo-page-max);
+  padding: 1.8rem var(--clervo-gutter) 2.5rem;
+  border-top: 1px solid var(--clervo-rule);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+/* Mobile document shell: no glass capsule and no shrunken desktop nav. */
+@media (width <= 900px) {
+  :root {
+    --clervo-gutter: 1.25rem;
+    --clervo-section-y: 4.75rem;
+  }
+
+  .app--internal .site-header {
+    background: rgb(0 0 0 / 92%);
+  }
+
+  .app--internal .site-header__inner.shell {
+    min-height: 58px;
+    padding-inline: 1.2rem;
+  }
+
+  .app--internal .site-header__menu {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .mobile-nav {
+    background: rgb(0 0 0 / 72%);
+  }
+
+  .mobile-nav__panel {
+    width: min(100%, 30rem);
+    border-left-color: var(--clervo-rule);
+    background: #050505;
+  }
+
+  .mobile-nav__links a {
+    min-height: 56px;
+    border-color: var(--clervo-rule);
+    font-size: 1.05rem;
+  }
+
+  .app--internal :where(
+    .page-lead,
+    .s4-product-copy,
+    .s4-family-hero,
+    .model-hero,
+    .s5-operation-hero,
+    .s6-hero__copy
+  ) h1 {
+    font-size: clamp(2.75rem, 12vw, 4.25rem);
+    overflow-wrap: anywhere;
+  }
+
+  .app--internal :where(
+    .section-head,
+    .s4-section-head,
+    .model-section-head,
+    .s5-section-head,
+    .s6-section-head,
+    .workspace-intro
+  ) h2,
+  .app--internal :where(.page-lead, .guide-body, .docs-body) h2 {
+    font-size: clamp(2rem, 8.8vw, 3rem);
+  }
+
+  .site-footer__inner.shell {
+    gap: 3.5rem;
+    padding-block: 4.5rem;
+  }
+
+  .site-footer__columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 3rem;
+  }
+}
+
+@media (width <= 520px) {
+  .site-footer__columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem 1.5rem;
+  }
+
+  .site-footer__columns section:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app--internal *,
+  .app--internal *::before,
+  .app--internal *::after {
+    scroll-behavior: auto !important;
+  }
+}

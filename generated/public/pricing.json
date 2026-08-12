@@ -11,11 +11,6 @@
     "amountDisplay": "0.006 USDC",
     "maximumCharge": true
   },
-  "privateProof": {
-    "productId": "search.web",
-    "amountDisplay": "0.006 USDC",
-    "label": "Owner-funded private proof amount; not a public customer offer."
-  },
   "offers": [
     {
       "productId": "search.web",
@@ -28,14 +23,6 @@
       },
       "maximumChargeRequired": true,
       "priceVersion": "search-web-candidate-2"
-    },
-    {
-      "productId": "search.answer",
-      "publicAvailable": false,
-      "model": "unavailable",
-      "displayPrice": null,
-      "maximumChargeRequired": true,
-      "priceVersion": "search-answer-candidate-2"
     },
     {
       "productId": "ai",

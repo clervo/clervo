@@ -11,7 +11,10 @@
 
 @font-face {
   font-family: "Space Grotesk";
-  src: url("/assets/fonts/space-grotesk-latin-500.woff2") format("woff2");
+  /* The approved 600 cut is also the stable 500 fallback: Firefox rejects the
+     fontsource 500 metadata while Chromium/WebKit accept it. One verified
+     binary keeps the display face cross-browser and avoids a console error. */
+  src: url("/assets/fonts/space-grotesk-latin-600.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;

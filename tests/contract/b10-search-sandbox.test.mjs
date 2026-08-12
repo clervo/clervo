@@ -28,7 +28,7 @@ test('B10 Search uses commercially permitted open primary and truthful independe
   const executor = createOpenCommercialSearchExecutor({ transport: async ({ url }) => {
     if (url.hostname === 'en.wikipedia.org') {
       primaryCalls += 1;
-      return { status: 200, headers: {}, body: wikimediaBody('Kubernetes security') };
+      return { status: 200, headers: {}, body: wikimediaBody(url.searchParams.get('gsrsearch') ?? 'Kubernetes security') };
     }
     fallbackCalls += 1;
     return { status: 200, headers: {}, body: crossrefBody() };
@@ -42,6 +42,12 @@ test('B10 Search uses commercially permitted open primary and truthful independe
   assert.equal(primary.searchResponse.citations[0].quote.includes('Kubernetes'), true);
   assert.equal(JSON.stringify(primary).includes('credential'), false);
   assert.equal(primaryCalls, 1);
+  assert.equal(fallbackCalls, 0);
+
+  const discoveryProbe = await executor.execute(operation('current x402 protocol documentation'));
+  assert.equal(discoveryProbe.route.routeId, 'clervo.search.open.wikimedia.v1');
+  assert.equal(discoveryProbe.route.degraded, false);
+  assert.equal(discoveryProbe.route.fallback, false);
   assert.equal(fallbackCalls, 0);
 
   const fallbackExecutor = createOpenCommercialSearchExecutor({ transport: async ({ url }) => {

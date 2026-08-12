@@ -4,12 +4,16 @@ Clervo sells bounded outcomes over HTTP: one request in, one verified result
 and one receipt out. Payment, when required, uses x402 or MPP over USDC on
 Base and is always quoted before execution.
 
-Generated from `packages/catalog/live-registry.json`, probed at 2026-08-11T08:48:34.576Z. Every row below is observed from the deployed system, never asserted.
+Generated from `packages/catalog/live-registry.json`, probed at 2026-08-11T23:08:33.338Z. Every row below is observed from the deployed system, never asserted.
 
 ## When to use this skill
 
-- You need current cited web evidence for a question and want the sources with the answer.
-- You want to pay per request instead of holding an account or an API key.
+- You need a paid AI model call (89 models: Claude, GPT, Gemini, Qwen, DeepSeek, Llama, Kimi, Mistral and more) — use `POST /v1/ai/execute`.
+- You need cited web evidence for a question — use `POST /v1/search/free` or `POST /v1/search/paid`.
+- You need to run sandboxed Node.js code safely with a receipt — use `POST /v1/sandbox/execute`.
+- You need real-time prediction market data (Polymarket, Kalshi, Manifold, Limitless) — use `POST /v1/prediction/execute`.
+- You need EVM wallet intelligence for Ethereum or Base — use `POST /v1/crypto/execute`.
+- You want per-request payment with no account, no API key, and safe retry on failure.
 - You need the same request to be safely retryable without being charged twice.
 
 ## Observed capability
@@ -17,8 +21,8 @@ Generated from `packages/catalog/live-registry.json`, probed at 2026-08-11T08:48
 | Product | ID | Lifecycle state | Proof level |
 |---|---|---|---|
 | AI | `ai` | live | paid_outcome_verified |
-| Crypto Intelligence | `crypto_intelligence` | live | quote_observed_unpaid |
-| Prediction Intelligence | `prediction` | live | quote_observed_unpaid |
+| Crypto Intelligence | `crypto_intelligence` | live | paid_outcome_verified |
+| Prediction Intelligence | `prediction` | live | paid_outcome_verified |
 | Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
 | Secure Sandbox | `sandbox` | live | paid_outcome_verified |
 | Research | `search` | live | paid_outcome_verified |
@@ -30,16 +34,15 @@ as a proven paid outcome.
 
 ## First call
 
-No account, no wallet:
+No key, no account, no wallet:
 
 ```bash
 curl -sS https://api.clervo.dev/v1/search/free \
   -H 'content-type: application/json' \
-  -d '{"query":"World Wide Web","maxResults":3,"synthesize":false}' \
-  -H 'idempotency-key: clervo-first-call-0001'
+  -d '{"query":"World Wide Web","maxResults":3,"synthesize":false}'
 ```
 
-The free sample currently requires a caller-supplied `idempotency-key` header. Send a stable value of 8 to 128 token characters.
+The free sample accepts a request with no `idempotency-key`. The server mints one and returns it in the `idempotency-key` response header; send that value back to replay the same operation without re-executing it.
 
 ## Paid call
 
@@ -47,6 +50,17 @@ The free sample currently requires a caller-supplied `idempotency-key` header. S
 2. Read the 402 response: `accepts[0]` carries the exact maximum charge, asset, network, and expiry.
 3. Approve deliberately, then resend with `PAYMENT-SIGNATURE` (x402) or `Authorization: Payment` (MPP).
 4. Reuse the same key to replay the completed result. A replay never charges again.
+
+### Paid AI example
+
+```bash
+curl -i -X POST https://api.clervo.dev/v1/ai/execute
+  -H 'content-type: application/json'
+  -H 'Idempotency-Key: my-unique-key-550e8400'
+  -d '{"model":"clervo/allam-2-7b","input":{"kind":"chat","messages":[{"role":"user","content":"Reply with ready."}],"responseFormat":"text","stream":false},"maximumOutputTokens":16}'
+```
+
+The paid AI route returns a 402 with the exact request-derived quote before execution. Approve only that quote, then resend with x402 or MPP payment headers.
 
 ## Failure behaviour
 

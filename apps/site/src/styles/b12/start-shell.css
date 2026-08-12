@@ -1,0 +1,120 @@
+/* Slice 3 integration only: make the shared shell conform to the locked /start header without changing the approved homepage shell. */
+.app:has(#main-content > .b12-start) .site-header{
+  position:relative;
+  z-index:60;
+  border-bottom:1px solid transparent;
+  background:transparent;
+  backdrop-filter:none;
+}
+.app:has(#main-content > .b12-start) .site-header__inner{
+  grid-template-columns:1fr auto 1fr;
+  gap:2rem;
+  min-height:64px;
+}
+.app:has(#main-content > .b12-start) .site-header__brand{
+  width:max-content;
+  gap:.85rem;
+  min-height:44px;
+  color:#e8e8e8;
+  font-family:var(--sans);
+  font-size:.72rem;
+  font-weight:680;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+}
+.app:has(#main-content > .b12-start) .site-header__brand .apex-mark{
+  width:24px;
+  height:24px;
+  max-width:none;
+  overflow:visible;
+}
+.app:has(#main-content > .b12-start) .site-header__wordmark{
+  font-family:inherit;
+  font-size:inherit;
+  font-weight:inherit;
+  letter-spacing:inherit;
+}
+.app:has(#main-content > .b12-start) .site-header__nav{
+  gap:1.75rem;
+  color:#8f8f95;
+}
+.app:has(#main-content > .b12-start) .site-header__nav a{
+  min-width:44px;
+  min-height:44px;
+  justify-content:center;
+  color:#8f8f95;
+  font-size:.78rem;
+  font-weight:400;
+}
+.app:has(#main-content > .b12-start) .site-header__nav a:hover,
+.app:has(#main-content > .b12-start) .site-header__nav a:focus-visible,
+.app:has(#main-content > .b12-start) .site-header__nav a.is-active{
+  color:#fff;
+}
+.app:has(#main-content > .b12-start) .site-header__actions{
+  gap:.7rem;
+}
+.app:has(#main-content > .b12-start) .site-header__cta{
+  display:inline-flex;
+  min-width:44px;
+  min-height:44px;
+  padding-inline:.9rem;
+  color:#050505;
+  background:#f4f4f4;
+  border-color:#f4f4f4;
+  font-size:.74rem;
+  font-weight:650;
+}
+.app:has(#main-content > .b12-start) .site-header__menu,
+.app:has(#main-content > .b12-start) .mobile-nav__close{
+  min-width:44px;
+  min-height:44px;
+  border-color:#323238;
+  background:#060607;
+}
+.app:has(#main-content > .b12-start) .mobile-nav{
+  background:rgb(0 0 0 / 76%);
+}
+.app:has(#main-content > .b12-start) .mobile-nav__panel{
+  border-color:#202024;
+  background:#070708;
+}
+.app:has(#main-content > .b12-start) .mobile-nav__links a{
+  border-color:#202024;
+  color:#d8d8dc;
+  font-size:.85rem;
+}
+
+/* Locked watermark stays inside the entry-choice stage; it must not leak upward over the command card. */
+.b12-start .hero-stage{overflow:hidden}
+
+@media(max-width:900px){
+  .app:has(#main-content > .b12-start) .site-header__inner{
+    grid-template-columns:1fr auto;
+    gap:.55rem;
+  }
+  .app:has(#main-content > .b12-start) .site-header__nav{display:none}
+  .app:has(#main-content > .b12-start) .site-header__menu{display:flex}
+}
+
+@media(max-width:780px){
+  .app:has(#main-content > .b12-start) .site-header__actions{gap:.5rem}
+  .app:has(#main-content > .b12-start) .site-header__cta{
+    display:inline-flex;
+    min-width:44px;
+    min-height:44px;
+    padding-inline:.75rem;
+    font-size:.68rem;
+  }
+  /* The <=1100 rule is ID-scoped. Match its specificity so the locked 3.35rem mobile top padding actually wins. */
+  .b12-start #entry.hero{
+    min-height:auto;
+    padding:3.35rem 0 5rem;
+    gap:2.1rem;
+  }
+}
+
+@media(max-width:480px){
+  .app:has(#main-content > .b12-start) .site-header__brand{gap:.65rem;font-size:.65rem}
+  .app:has(#main-content > .b12-start) .site-header__cta{padding-inline:.65rem}
+}

@@ -115,7 +115,7 @@ test('free route rejects idempotency conflicts, excess quota, query parameters, 
 test('free route accepts a naive request with no idempotency-key, reports the generated key, and keeps unkeyed requests distinct', async () => {
   const executor = recordedExecutor();
   await withServer({ executor, now: () => now, freeQuota: new InMemoryFreeSearchQuota(3, 60_000) }, async (origin) => {
-    const naive = await postWithoutKey(origin, SEARCH_FREE_PATH, { query: 'naive first call', maxResults: 1, synthesize: false });
+    const naive = await postWithoutKey(origin, SEARCH_FREE_PATH, { query: 'naive first call', maxResults: 1 });
     assert.equal(naive.status, 200);
     const generatedKey = naive.headers.get('idempotency-key');
     assert.ok(generatedKey, 'the server must report the key it generated');
@@ -238,7 +238,7 @@ test('a raw-only release refuses synthesis before quota, execution, or payment c
   const executor = recordedExecutor();
   await withServer({ executor, now: () => now, synthesisEnabled: false, retrievalMode: 'live_external' }, async (origin) => {
     const response = await post(origin, SEARCH_PAID_PATH, 'idem_n49_synthesis_off', { query: 'live answer', synthesize: true });
-    assert.equal(response.status, 503);
+    assert.equal(response.status, 422);
     assert.equal((await response.json()).code, 'search_synthesis_unavailable');
     assert.equal(executor.calls, 0);
   });

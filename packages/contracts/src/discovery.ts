@@ -123,7 +123,6 @@ export interface DiscoveryDocument {
     openapi: string;
     catalog: string;
     onboarding: string;
-    claims: string;
     capabilities: string;
     pricing: string;
     status: string;
@@ -299,7 +298,6 @@ export function createDiscoveryDocument(
       openapi: '/openapi.json',
       catalog: '/catalog.json',
       onboarding: '/onboarding.json',
-      claims: '/claims.json',
       capabilities: '/capabilities.json',
       pricing: '/pricing.json',
       status: '/status.json',
@@ -376,7 +374,6 @@ export function createLlmsText(
     '- [OpenAPI contract](/openapi.json): repository-local preview and non-payable challenge routes.',
     '- [Catalog](/catalog.json): exact projected operations and lifecycle limitations.',
     '- [Onboarding and recovery](/onboarding.json): exact candidate journey state and six bounded recovery actions.',
-    '- [Launch claims](/claims.json): separate engineering state, customer lifecycle, and commercial proof.',
     '- [Capability state](/capabilities.json): exact lifecycle and operation identities.',
     '- [Pricing state](/pricing.json): public-offer boundary, private proof amount, and fixture amounts.',
     '- [Status](/status.json): current packages, API, payment proof, and product states.',
