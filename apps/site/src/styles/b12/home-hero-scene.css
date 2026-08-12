@@ -1,0 +1,741 @@
+/*
+ * Locked Home hero.
+ *
+ * This is intentionally isolated from the historical `.home-hero` cascade.
+ * The promise, signal and Hollow Apex share one optical scene; the Apex itself
+ * stays simple and all state/motion is expressed by light passing through it.
+ */
+
+/* Home chrome is open and weightless. Internal pages keep the shared shell. */
+.app--home .site-header {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 80;
+  padding: clamp(1rem, 2.35vh, 1.45rem) var(--shell-gutter) 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.app--home .site-header__inner.shell {
+  max-width: 1480px;
+  min-height: 54px;
+  padding-inline: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.app--home .site-header__brand {
+  gap: 0.82rem;
+}
+
+.app--home .site-header__brand .apex-mark {
+  width: 27px;
+  height: 27px;
+}
+
+.app--home .site-header__wordmark {
+  font-size: 0.86rem;
+  letter-spacing: 0.31em;
+}
+
+.app--home .site-header__nav {
+  gap: clamp(2rem, 3.1vw, 3.65rem);
+}
+
+.app--home .site-header__nav a {
+  color: rgb(242 242 244 / 73%);
+  font-size: 0.86rem;
+  font-weight: 430;
+  letter-spacing: -0.006em;
+}
+
+.app--home .site-header__nav a.is-active::after {
+  display: none;
+}
+
+.app--home .site-header__cta.button--primary {
+  min-height: 45px;
+  padding-inline: 1.45rem;
+  border: 1px solid rgb(255 255 255 / 23%);
+  border-radius: 15px;
+  background: rgb(255 255 255 / 2.2%);
+  box-shadow: 0 0 18px rgb(255 255 255 / 3%);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 430;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.app--home .site-header__cta.button--primary:hover {
+  border-color: rgb(255 255 255 / 38%);
+  background: rgb(255 255 255 / 4%);
+}
+
+.clervo-home-hero {
+  --hero-ease: cubic-bezier(0.22, 0.75, 0.2, 1);
+  --hero-state-ease: cubic-bezier(0.2, 0.72, 0.18, 1);
+  position: relative;
+  height: 100svh;
+  min-height: 700px;
+  overflow: hidden;
+  border-bottom: 1px solid rgb(255 255 255 / 6%);
+  background:
+    radial-gradient(circle at 50% 51%, rgb(255 255 255 / 2.4%), transparent 14rem),
+    radial-gradient(circle at 50% 52%, rgb(0 229 255 / 2.8%), transparent 22rem),
+    #000;
+  isolation: isolate;
+}
+
+.clervo-home-hero__inner.shell {
+  position: relative;
+  width: 100%;
+  max-width: 1480px;
+  height: 100%;
+  padding-inline: clamp(1.4rem, 2.6vw, 2.75rem);
+}
+
+.clervo-home-hero__promise {
+  position: absolute;
+  z-index: 8;
+  top: 27.7%;
+  right: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  width: 100%;
+  margin: 0;
+  color: #f4f4f6;
+  font-family: var(--sans);
+  font-size: clamp(3.7rem, 4.55vw, 5rem);
+  font-weight: 285;
+  line-height: 0.97;
+  letter-spacing: -0.056em;
+  pointer-events: none;
+}
+
+.clervo-home-hero__promise-left,
+.clervo-home-hero__promise-right {
+  display: block;
+  opacity: 0;
+  filter: blur(6px);
+  animation: clervo-hero-promise-in 820ms var(--hero-ease) forwards;
+}
+
+.clervo-home-hero__promise-left {
+  justify-self: start;
+  animation-delay: 110ms;
+}
+
+.clervo-home-hero__promise-right {
+  justify-self: end;
+  text-align: right;
+  animation-delay: 230ms;
+}
+
+.clervo-home-hero__promise span > span {
+  display: block;
+  white-space: nowrap;
+}
+
+.clervo-hero-signal {
+  position: absolute;
+  z-index: 4;
+  top: 35.4%;
+  right: 0;
+  left: 0;
+  height: 30.5%;
+  pointer-events: none;
+}
+
+.clervo-hero-signal__beam {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.clervo-hero-signal__red-glow,
+.clervo-hero-signal__gold-glow,
+.clervo-hero-signal__cyan,
+.clervo-hero-signal__hotspot,
+.clervo-hero-signal__gold {
+  transition:
+    opacity 520ms var(--hero-state-ease),
+    transform 620ms var(--hero-state-ease);
+}
+
+.clervo-hero-signal__red-glow {
+  opacity: 0.54;
+}
+
+.clervo-hero-signal__red {
+  opacity: 0.96;
+}
+
+.clervo-hero-signal__cyan {
+  opacity: 0.18;
+}
+
+.clervo-hero-signal__hotspot {
+  opacity: 0.08;
+}
+
+.clervo-hero-signal__gold,
+.clervo-hero-signal__gold-glow {
+  opacity: 0;
+  transform: scaleX(0.03);
+  transform-box: fill-box;
+  transform-origin: left center;
+}
+
+.clervo-home-hero[data-state="qualify"] .clervo-hero-signal__cyan {
+  opacity: 0.62;
+}
+
+.clervo-home-hero[data-state="qualify"] .clervo-hero-signal__hotspot {
+  opacity: 0.28;
+}
+
+.clervo-home-hero[data-state="execute"] .clervo-hero-signal__cyan {
+  opacity: 1;
+}
+
+.clervo-home-hero[data-state="execute"] .clervo-hero-signal__hotspot {
+  opacity: 0.82;
+}
+
+.clervo-home-hero[data-state="verify"] .clervo-hero-signal__cyan,
+.clervo-home-hero[data-state="prove"] .clervo-hero-signal__cyan {
+  opacity: 0.9;
+}
+
+.clervo-home-hero[data-state="verify"] .clervo-hero-signal__hotspot,
+.clervo-home-hero[data-state="prove"] .clervo-hero-signal__hotspot {
+  opacity: 0.56;
+}
+
+.clervo-home-hero[data-state="verify"] .clervo-hero-signal__gold,
+.clervo-home-hero[data-state="verify"] .clervo-hero-signal__gold-glow {
+  opacity: 0.28;
+  transform: scaleX(0.36);
+}
+
+.clervo-home-hero[data-state="prove"] .clervo-hero-signal__gold {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.clervo-home-hero[data-state="prove"] .clervo-hero-signal__gold-glow {
+  opacity: 0.62;
+  transform: scaleX(1);
+}
+
+.clervo-hero-apex {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  width: clamp(17rem, 19vw, 20rem);
+  height: auto;
+  overflow: visible;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.93);
+  transform-origin: center;
+  animation: clervo-hero-apex-in 980ms var(--hero-ease) 330ms forwards;
+}
+
+.clervo-hero-apex__bloom {
+  opacity: 0.28;
+  transition: opacity 520ms var(--hero-state-ease);
+}
+
+.clervo-hero-apex__surface {
+  filter: drop-shadow(0 0 4px rgb(255 255 255 / 30%));
+  transform-origin: 50% 50%;
+  transition:
+    filter 540ms var(--hero-state-ease),
+    transform 600ms var(--hero-state-ease);
+}
+
+.clervo-hero-apex__edge {
+  opacity: 0.82;
+}
+
+.clervo-home-hero[data-state="qualify"] .clervo-hero-apex__bloom {
+  opacity: 0.42;
+}
+
+.clervo-home-hero[data-state="execute"] .clervo-hero-apex__bloom {
+  opacity: 0.8;
+}
+
+.clervo-home-hero[data-state="execute"] .clervo-hero-apex__surface {
+  transform: scale(1.012);
+  filter:
+    drop-shadow(0 0 5px rgb(255 255 255 / 48%))
+    drop-shadow(0 0 13px rgb(0 229 255 / 20%));
+}
+
+.clervo-home-hero[data-state="verify"] .clervo-hero-apex__bloom,
+.clervo-home-hero[data-state="prove"] .clervo-hero-apex__bloom {
+  opacity: 0.58;
+}
+
+.clervo-home-hero[data-state="prove"] .clervo-hero-apex__surface {
+  filter:
+    drop-shadow(0 0 5px rgb(255 255 255 / 46%))
+    drop-shadow(-8px 4px 14px rgb(0 229 255 / 9%))
+    drop-shadow(9px 4px 15px rgb(255 200 0 / 10%));
+}
+
+.clervo-home-hero__signal-label {
+  position: absolute;
+  z-index: 8;
+  top: 60.7%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--mono);
+  font-size: clamp(0.67rem, 0.71vw, 0.76rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: color 500ms var(--hero-state-ease), opacity 500ms var(--hero-state-ease);
+}
+
+.clervo-home-hero__signal-label::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentcolor;
+  box-shadow: 0 0 14px currentcolor;
+}
+
+.clervo-home-hero__signal-label--request {
+  left: 16.2%;
+  color: var(--request);
+}
+
+.clervo-home-hero__signal-label--verified {
+  right: 16.2%;
+  color: rgb(166 166 173 / 58%);
+}
+
+.clervo-home-hero[data-state="prove"] .clervo-home-hero__signal-label--verified {
+  color: var(--verified);
+}
+
+.clervo-home-hero__state {
+  position: absolute;
+  z-index: 8;
+  top: 68.2%;
+  left: 50%;
+  display: flex;
+  width: max-content;
+  max-width: 82vw;
+  margin: 0;
+  gap: 0.42rem;
+  color: rgb(242 242 244 / 79%);
+  font-family: var(--sans);
+  font-size: clamp(0.84rem, 0.92vw, 0.98rem);
+  font-weight: 380;
+  letter-spacing: -0.015em;
+  transform: translateX(-50%);
+}
+
+.clervo-home-hero__state span {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.clervo-home-hero__state span + span::before {
+  content: "•";
+  margin-right: 0.42rem;
+  color: rgb(242 242 244 / 58%);
+}
+
+.clervo-home-hero__trace {
+  position: absolute;
+  z-index: 8;
+  top: 74.2%;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 0;
+  padding: 0 0 0.55rem;
+  border: 0;
+  border-bottom: 1px solid rgb(242 242 244 / 50%);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: clamp(0.86rem, 0.94vw, 1rem);
+  font-weight: 430;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  transform: translateX(-50%);
+}
+
+.clervo-home-hero__trace:hover:not(:disabled) {
+  border-bottom-color: rgb(242 242 244 / 80%);
+  background: transparent;
+}
+
+.clervo-home-hero__trace:disabled {
+  cursor: default;
+  opacity: 0.72;
+}
+
+.clervo-home-hero__ecosystem {
+  position: absolute;
+  z-index: 8;
+  right: 3.2%;
+  bottom: 6.5%;
+  left: 3.2%;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clervo-home-hero__ecosystem li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 46px;
+  opacity: 0;
+  animation: clervo-hero-ecosystem-in 660ms var(--hero-ease) forwards;
+}
+
+.clervo-home-hero__ecosystem li:nth-child(1) { animation-delay: 710ms; }
+.clervo-home-hero__ecosystem li:nth-child(2) { animation-delay: 760ms; }
+.clervo-home-hero__ecosystem li:nth-child(3) { animation-delay: 810ms; }
+.clervo-home-hero__ecosystem li:nth-child(4) { animation-delay: 860ms; }
+.clervo-home-hero__ecosystem li:nth-child(5) { animation-delay: 910ms; }
+.clervo-home-hero__ecosystem li:nth-child(6) { animation-delay: 960ms; }
+
+.clervo-home-hero__ecosystem li + li::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  left: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgb(255 255 255 / 12%), transparent);
+}
+
+.clervo-home-hero__ecosystem img {
+  display: block;
+  max-width: 72%;
+  max-height: 42px;
+  object-fit: contain;
+  filter: grayscale(1) brightness(0) invert(1);
+  opacity: 0.76;
+}
+
+.clervo-home-hero__ecosystem [data-brand="openai"] img { max-width: min(72%, 164px); }
+.clervo-home-hero__ecosystem [data-brand="anthropic"] img { max-width: min(72%, 176px); }
+.clervo-home-hero__ecosystem [data-brand="nvidia"] img { max-width: min(72%, 174px); }
+.clervo-home-hero__ecosystem [data-brand="cloudflare"] img { max-width: min(72%, 174px); }
+.clervo-home-hero__ecosystem [data-brand="aws"] img { max-width: min(50%, 118px); max-height: 48px; }
+.clervo-home-hero__ecosystem [data-brand="google-cloud"] img { max-width: min(74%, 178px); }
+
+@keyframes clervo-hero-promise-in {
+  from {
+    opacity: 0;
+    filter: blur(7px);
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes clervo-hero-apex-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.93);
+  }
+  72% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.012);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes clervo-hero-ecosystem-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 9px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Short laptop screens preserve the single picture without clipping. */
+@media (width > 980px) and (height <= 760px) {
+  .clervo-home-hero {
+    min-height: 620px;
+  }
+
+  .clervo-home-hero__promise {
+    top: 25.8%;
+    font-size: clamp(3rem, 4.05vw, 4.2rem);
+  }
+
+  .clervo-hero-signal {
+    top: 31.7%;
+    height: 34%;
+  }
+
+  .clervo-hero-apex {
+    width: clamp(14.5rem, 17.5vw, 17rem);
+  }
+
+  .clervo-home-hero__signal-label {
+    top: 59.2%;
+  }
+
+  .clervo-home-hero__state {
+    top: 67.2%;
+    font-size: 0.78rem;
+  }
+
+  .clervo-home-hero__trace {
+    top: 73.5%;
+    font-size: 0.82rem;
+  }
+
+  .clervo-home-hero__ecosystem {
+    bottom: 4.2%;
+  }
+}
+
+/* Mobile is intentionally recomposed instead of scaled desktop. */
+@media (width <= 980px) {
+  .app--home .site-header {
+    padding: max(1rem, env(safe-area-inset-top)) 1.2rem 0;
+  }
+
+  .app--home .site-header__inner.shell {
+    min-height: 48px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .app--home .site-header__brand {
+    gap: 0.72rem;
+  }
+
+  .app--home .site-header__brand .apex-mark {
+    width: 25px;
+    height: 25px;
+  }
+
+  .app--home .site-header__wordmark {
+    font-size: 0.8rem;
+  }
+
+  .app--home .site-header__nav,
+  .app--home .site-header__cta {
+    display: none;
+  }
+
+  .app--home .site-header__menu {
+    display: inline-grid;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .clervo-home-hero {
+    height: 100svh;
+    min-height: 760px;
+  }
+
+  .clervo-home-hero__inner.shell {
+    max-width: none;
+    padding-inline: 1.35rem;
+  }
+
+  .clervo-home-hero__promise {
+    top: 17.2%;
+    right: 1.35rem;
+    left: 1.35rem;
+    display: block;
+    width: auto;
+    font-size: clamp(3.1rem, 12.5vw, 4.35rem);
+    line-height: 0.98;
+  }
+
+  .clervo-home-hero__promise-left {
+    justify-self: auto;
+  }
+
+  .clervo-home-hero__promise-right {
+    width: max-content;
+    max-width: 9.5ch;
+    margin-top: clamp(2.3rem, 7svh, 3.6rem);
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .clervo-hero-signal {
+    top: 47.2%;
+    height: 24.5%;
+  }
+
+  .clervo-hero-apex {
+    width: clamp(12rem, 58vw, 15rem);
+  }
+
+  .clervo-home-hero__signal-label {
+    top: 62.5%;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+  }
+
+  .clervo-home-hero__signal-label--request {
+    left: 1.35rem;
+  }
+
+  .clervo-home-hero__signal-label--verified {
+    right: 1.35rem;
+  }
+
+  .clervo-home-hero__state {
+    top: 72.5%;
+    width: calc(100% - 2.7rem);
+    max-width: none;
+    justify-content: center;
+    gap: 0.3rem;
+    font-family: var(--mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .clervo-home-hero__state span + span::before {
+    margin-right: 0.3rem;
+  }
+
+  .clervo-home-hero__trace {
+    top: 79.3%;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .clervo-home-hero__ecosystem {
+    right: auto;
+    bottom: 2.4%;
+    left: -3.8rem;
+    display: flex;
+    width: max-content;
+    gap: 0;
+  }
+
+  .clervo-home-hero__ecosystem li {
+    flex: 0 0 132px;
+    min-height: 44px;
+  }
+
+  .clervo-home-hero__ecosystem li + li::before {
+    display: none;
+  }
+
+  .clervo-home-hero__ecosystem img {
+    max-width: 102px;
+    max-height: 34px;
+  }
+
+  .clervo-home-hero__ecosystem [data-brand="aws"] img {
+    max-width: 74px;
+  }
+}
+
+@media (width <= 420px) {
+  .clervo-home-hero__promise {
+    font-size: clamp(2.85rem, 12.9vw, 3.65rem);
+  }
+
+  .clervo-home-hero__promise-right {
+    margin-top: 2.15rem;
+  }
+
+  .clervo-hero-signal {
+    top: 46.5%;
+    height: 24%;
+  }
+
+  .clervo-hero-apex {
+    width: 58vw;
+  }
+
+  .clervo-home-hero__state {
+    top: 72%;
+    font-size: 0.52rem;
+  }
+
+  .clervo-home-hero__trace {
+    top: 78.6%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clervo-home-hero__promise-left,
+  .clervo-home-hero__promise-right,
+  .clervo-hero-apex,
+  .clervo-home-hero__ecosystem li {
+    opacity: 1;
+    filter: none;
+    animation: none;
+    transform: none;
+  }
+
+  .clervo-hero-apex {
+    transform: translate(-50%, -50%);
+  }
+
+  .clervo-hero-signal__red-glow,
+  .clervo-hero-signal__gold-glow,
+  .clervo-hero-signal__cyan,
+  .clervo-hero-signal__hotspot,
+  .clervo-hero-signal__gold,
+  .clervo-hero-apex__bloom,
+  .clervo-hero-apex__surface {
+    transition: none;
+  }
+}
