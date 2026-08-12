@@ -7,7 +7,7 @@
     "predev": "npm --prefix ../.. run generate:discovery && node ../../scripts/site/build-identity.mjs && node ../../scripts/site/build-fonts.mjs && node ../../scripts/site/validate-canonical-media.mjs && node ../../scripts/site/prepare-public.mjs",
     "dev": "vite",
     "prebuild": "npm --prefix ../.. run generate:discovery && node ../../scripts/site/build-identity.mjs && node ../../scripts/site/build-fonts.mjs && node ../../scripts/site/validate-canonical-media.mjs && node ../../scripts/site/prepare-public.mjs",
-    "build": "tsc --project tsconfig.json --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist-server && node ../../scripts/site/prerender.mjs && node ../../scripts/site/validate-prerender.mjs",
+    "build": "tsc --project tsconfig.json --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist-server && node ../../scripts/site/prerender.mjs && node ../../scripts/site/validate-prerender.mjs && node ../../scripts/site/validate-machine-surface.mjs",
     "preview": "vite preview",
     "qa:b12": "node ../../scripts/site/full-site-recovery-qa.mjs",
     "qa:recovery": "node ../../scripts/site/full-site-recovery-qa.mjs",
