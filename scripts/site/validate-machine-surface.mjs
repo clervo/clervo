@@ -1,0 +1,66 @@
+#!/usr/bin/env node
+
+import { readFile, stat } from 'node:fs/promises';
+import path from 'node:path';
+
+import { canonicalPath, siteRouteInventory } from './site-route-inventory.mjs';
+
+const root = path.resolve(import.meta.dirname, '../..');
+const dist = path.join(root, 'apps/site/dist');
+const required = [
+  'robots.txt', 'sitemap.xml', 'llms.txt', 'llms-full.txt', 'skill.md', 'agent.md',
+  'openapi.json', 'openapi.yaml', 'catalog.json', 'capabilities.json', 'models.json',
+  'status.json', 'pricing.json', 'onboarding.json', '.well-known/clervo.json', '.well-known/x402.json',
+  '_headers', 'manifest.webmanifest',
+];
+
+for (const relative of required) {
+  const file = path.join(dist, relative);
+  const info = await stat(file);
+  if (!info.isFile() || info.size < 8) throw new Error(`site_machine_surface_missing_or_empty:${relative}`);
+  const text = await readFile(file, 'utf8');
+  if (/\bundefined\b/u.test(text)) throw new Error(`site_machine_surface_undefined:${relative}`);
+}
+
+const robots = await readFile(path.join(dist, 'robots.txt'), 'utf8');
+if (!/User-agent:\s*OAI-SearchBot[\s\S]*?Allow:\s*\//u.test(robots)) throw new Error('site_robots_oai_searchbot_missing');
+if (!robots.includes('Sitemap: https://clervo.dev/sitemap.xml')) throw new Error('site_robots_sitemap_missing');
+
+const inventory = await siteRouteInventory(root);
+const sitemap = await readFile(path.join(dist, 'sitemap.xml'), 'utf8');
+const sitemapUrls = [...sitemap.matchAll(/<loc>(https:\/\/clervo\.dev[^<]+)<\/loc>/gu)].map((match) => match[1]);
+const expectedUrls = inventory.map(({ route }) => `https://clervo.dev${canonicalPath(route)}`);
+if (sitemapUrls.length !== expectedUrls.length) throw new Error(`site_sitemap_route_count:${sitemapUrls.length}/${expectedUrls.length}`);
+for (const url of expectedUrls) {
+  const count = sitemapUrls.filter((item) => item === url).length;
+  if (count !== 1) throw new Error(`site_sitemap_canonical_count:${url}:${count}`);
+}
+
+const headers = await readFile(path.join(dist, '_headers'), 'utf8');
+if (!headers.includes("img-src 'self' data: https://upload.wikimedia.org")) throw new Error('site_csp_ecosystem_logo_origin_missing');
+if (!headers.includes("object-src 'none'")) throw new Error('site_csp_object_src_missing');
+if (!headers.includes("frame-ancestors 'none'")) throw new Error('site_csp_frame_ancestors_missing');
+
+for (const relative of ['catalog.json', 'capabilities.json', 'models.json', 'status.json', 'pricing.json', 'onboarding.json', '.well-known/clervo.json', '.well-known/x402.json', 'openapi.json', 'manifest.webmanifest']) {
+  try { JSON.parse(await readFile(path.join(dist, relative), 'utf8')); }
+  catch (error) { throw new Error(`site_machine_json_invalid:${relative}:${error instanceof Error ? error.message : String(error)}`); }
+}
+
+const openapi = JSON.parse(await readFile(path.join(dist, 'openapi.json'), 'utf8'));
+if (openapi.openapi !== '3.1.1') throw new Error(`site_openapi_version:${openapi.openapi ?? 'missing'}`);
+
+const llms = await readFile(path.join(dist, 'llms.txt'), 'utf8');
+for (const needle of [
+  'https://clervo.dev/openapi.json',
+  'https://clervo.dev/catalog.json',
+  'https://clervo.dev/status.json',
+  'https://clervo.dev/skill.md',
+  'Request -> Qualify -> Execute -> Verify -> Prove',
+]) {
+  if (!llms.includes(needle)) throw new Error(`site_llms_reference_missing:${needle}`);
+}
+
+const skill = await readFile(path.join(dist, 'skill.md'), 'utf8');
+if (!/Clervo/iu.test(skill) || !/operation/iu.test(skill)) throw new Error('site_skill_reference_incomplete');
+
+console.log(`site machine surface validation: PASS (${required.length} canonical files, ${inventory.length} sitemap routes)`);
