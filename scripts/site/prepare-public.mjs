@@ -134,8 +134,8 @@ await writeFile(path.join(target, 'manifest.webmanifest'), `${JSON.stringify({
   description: 'Outcome infrastructure for agents.',
   start_url: '/',
   display: 'standalone',
-  background_color: '#050606',
-  theme_color: '#050606',
+  background_color: '#000000',
+  theme_color: '#000000',
   icons: [{ src: '/assets/favicon.svg', sizes: 'any', type: 'image/svg+xml' }],
 }, null, 2)}\n`);
 await writeFile(path.join(target, '_headers'), [
@@ -144,11 +144,9 @@ await writeFile(path.join(target, '_headers'), [
   '  Referrer-Policy: strict-origin-when-cross-origin',
   '  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()',
   '  Cross-Origin-Opener-Policy: same-origin',
-  // The Home ecosystem marks are third-party visual references. They are the
-  // only remote images permitted by the site CSP; all Clervo identity/media,
-  // scripts and fonts remain self-hosted. This prevents local-preview logos
-  // from silently disappearing after deployment.
-  '  Content-Security-Policy: default-src \'self\'; script-src \'self\' https://static.cloudflareinsights.com; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data: https://upload.wikimedia.org; font-src \'self\'; connect-src \'self\' https://cloudflareinsights.com https://*.cloudflareinsights.com; object-src \'none\'; base-uri \'self\'; frame-ancestors \'none\'; form-action \'self\'',
+  // The visible site is self-hosted: Clervo identity/media, fonts and the Home
+  // ecosystem typography do not depend on a third-party asset origin.
+  '  Content-Security-Policy: default-src \'self\'; script-src \'self\' https://static.cloudflareinsights.com; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:; font-src \'self\'; connect-src \'self\' https://cloudflareinsights.com https://*.cloudflareinsights.com; object-src \'none\'; base-uri \'self\'; frame-ancestors \'none\'; form-action \'self\'',
   '',
   '/assets/*',
   '  Cache-Control: public, max-age=31536000, immutable',
