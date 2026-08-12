@@ -56,7 +56,10 @@ const ecosystemBrands = [
   },
 ] as const;
 
-const APEX_PATH = 'M32 8L59.5 55H4.5ZM32 23.05L17.75 47.4H46.25Z';
+const ecosystemLoop = [...ecosystemBrands, ...ecosystemBrands] as const;
+
+/* Same outer Hollow Apex. The inner cutout is opened up for a lighter visual weight. */
+const APEX_PATH = 'M32 8L59.5 55H4.5ZM32 18.8L13.7 50.2H50.3Z';
 
 function SignalScene() {
   return (
@@ -76,7 +79,7 @@ function SignalScene() {
           </linearGradient>
           <linearGradient id="clervo-hero-cyan" gradientUnits="userSpaceOnUse" x1="590" y1="150" x2="810" y2="150">
             <stop offset="0" stopColor="#00e5ff" stopOpacity="0" />
-            <stop offset="0.23" stopColor="#ffffff" stopOpacity="0.94" />
+            <stop offset="0.23" stopColor="#ffffff" stopOpacity="0.88" />
             <stop offset="0.48" stopColor="#67f6ff" />
             <stop offset="0.7" stopColor="#00e5ff" />
             <stop offset="1" stopColor="#00e5ff" stopOpacity="0" />
@@ -89,44 +92,44 @@ function SignalScene() {
             <stop offset="1" stopColor="#8d5b00" />
           </linearGradient>
           <radialGradient id="clervo-hero-hotspot">
-            <stop offset="0" stopColor="#ffffff" stopOpacity="1" />
-            <stop offset="0.16" stopColor="#d8feff" stopOpacity="0.96" />
-            <stop offset="0.5" stopColor="#00e5ff" stopOpacity="0.36" />
+            <stop offset="0" stopColor="#ffffff" stopOpacity="0.9" />
+            <stop offset="0.16" stopColor="#d8feff" stopOpacity="0.76" />
+            <stop offset="0.5" stopColor="#00e5ff" stopOpacity="0.24" />
             <stop offset="1" stopColor="#00e5ff" stopOpacity="0" />
           </radialGradient>
-          <filter id="clervo-hero-blur-10" x="-30%" y="-300%" width="160%" height="700%">
-            <feGaussianBlur stdDeviation="10" />
+          <filter id="clervo-hero-blur-8" x="-30%" y="-260%" width="160%" height="620%">
+            <feGaussianBlur stdDeviation="8" />
           </filter>
-          <filter id="clervo-hero-blur-18" x="-30%" y="-400%" width="160%" height="900%">
-            <feGaussianBlur stdDeviation="18" />
+          <filter id="clervo-hero-blur-13" x="-30%" y="-350%" width="160%" height="800%">
+            <feGaussianBlur stdDeviation="13" />
           </filter>
-          <filter id="clervo-hero-blur-30" x="-80%" y="-120%" width="260%" height="340%">
-            <feGaussianBlur stdDeviation="30" />
+          <filter id="clervo-hero-blur-22" x="-80%" y="-120%" width="260%" height="340%">
+            <feGaussianBlur stdDeviation="22" />
           </filter>
         </defs>
 
         <g className="clervo-hero-signal__red-glow">
-          <rect x="0" y="143" width="690" height="14" fill="#ff2a23" filter="url(#clervo-hero-blur-18)" />
+          <rect x="0" y="144" width="690" height="12" fill="#ff2a23" filter="url(#clervo-hero-blur-13)" />
         </g>
         <g className="clervo-hero-signal__gold-glow">
-          <rect x="710" y="143" width="690" height="14" fill="#ffc800" filter="url(#clervo-hero-blur-18)" />
+          <rect x="710" y="144" width="690" height="12" fill="#ffc800" filter="url(#clervo-hero-blur-13)" />
         </g>
 
         <line className="clervo-hero-signal__red" x1="0" y1="150" x2="690" y2="150" stroke="url(#clervo-hero-red)" strokeWidth="2" />
         <line className="clervo-hero-signal__gold" x1="710" y1="150" x2="1400" y2="150" stroke="url(#clervo-hero-gold)" strokeWidth="2" />
 
         <g className="clervo-hero-signal__cyan">
-          <rect x="590" y="132" width="220" height="36" fill="url(#clervo-hero-cyan)" filter="url(#clervo-hero-blur-10)" />
-          <rect x="610" y="146.5" width="180" height="7" fill="url(#clervo-hero-cyan)" />
+          <rect x="600" y="136" width="200" height="28" fill="url(#clervo-hero-cyan)" filter="url(#clervo-hero-blur-8)" />
+          <rect x="620" y="147" width="160" height="6" fill="url(#clervo-hero-cyan)" />
         </g>
         <ellipse
           className="clervo-hero-signal__hotspot"
           cx="700"
           cy="150"
-          rx="126"
-          ry="82"
+          rx="104"
+          ry="60"
           fill="url(#clervo-hero-hotspot)"
-          filter="url(#clervo-hero-blur-30)"
+          filter="url(#clervo-hero-blur-22)"
         />
       </svg>
 
@@ -134,11 +137,11 @@ function SignalScene() {
         <defs>
           <linearGradient id="clervo-apex-surface" x1="0.18" y1="0" x2="0.72" y2="1">
             <stop offset="0" stopColor="#ffffff" />
-            <stop offset="0.58" stopColor="#fdfdff" />
-            <stop offset="1" stopColor="#e8e8eb" />
+            <stop offset="0.62" stopColor="#fdfdff" />
+            <stop offset="1" stopColor="#eeeeF0" />
           </linearGradient>
-          <filter id="clervo-apex-bloom" x="-60%" y="-60%" width="220%" height="220%">
-            <feGaussianBlur stdDeviation="2.25" />
+          <filter id="clervo-apex-bloom" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1.35" />
           </filter>
         </defs>
         <path
@@ -159,7 +162,7 @@ function SignalScene() {
           d={APEX_PATH}
           fill="none"
           stroke="#ffffff"
-          strokeWidth="0.45"
+          strokeWidth="0.34"
           strokeLinejoin="round"
         />
       </svg>
@@ -249,13 +252,23 @@ export function HomeHero({ onPhase }: { onPhase(phase: ExperiencePhase): void })
           <span aria-hidden="true">→</span>
         </button>
 
-        <ul className="clervo-home-hero__ecosystem" aria-label="Clervo technology ecosystem">
-          {ecosystemBrands.map((brand) => (
-            <li key={brand.id} data-brand={brand.id}>
-              <img src={brand.src} alt={brand.label} decoding="async" />
-            </li>
-          ))}
-        </ul>
+        <div className="clervo-home-hero__ecosystem-viewport">
+          <ul className="clervo-home-hero__ecosystem" aria-label="Clervo technology ecosystem">
+            {ecosystemLoop.map((brand, index) => {
+              const clone = index >= ecosystemBrands.length;
+              return (
+                <li
+                  className={clone ? 'is-clone' : undefined}
+                  data-brand={brand.id}
+                  key={`${brand.id}-${index}`}
+                  aria-hidden={clone || undefined}
+                >
+                  <img src={brand.src} alt={clone ? '' : brand.label} decoding="async" />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
     </section>
   );
