@@ -162,6 +162,7 @@
   width: 100%;
   height: 100%;
   overflow: visible;
+  transform: translateY(clamp(6px, 1.05vh, 10px));
 }
 
 .clervo-hero-signal__red-glow,
@@ -301,17 +302,17 @@
 .clervo-home-hero__signal-label {
   position: absolute;
   z-index: 8;
-  top: 60.7%;
+  top: 57.6%;
   display: inline-flex;
   align-items: center;
   gap: 0.7rem;
+  color: rgb(242 242 244 / 78%);
   font-family: var(--mono);
   font-size: clamp(0.67rem, 0.71vw, 0.76rem);
   font-weight: 600;
   letter-spacing: 0.18em;
   line-height: 1;
   text-transform: uppercase;
-  transition: color 500ms var(--hero-state-ease), opacity 500ms var(--hero-state-ease);
 }
 
 .clervo-home-hero__signal-label::before {
@@ -320,27 +321,39 @@
   height: 5px;
   border-radius: 50%;
   background: currentcolor;
-  box-shadow: 0 0 14px currentcolor;
 }
 
 .clervo-home-hero__signal-label--request {
   left: 17%;
+}
+
+.clervo-home-hero__signal-label--request::before {
   color: var(--request);
+  background: var(--request);
+  box-shadow: 0 0 14px var(--request);
 }
 
 .clervo-home-hero__signal-label--verified {
   right: 17%;
-  color: rgb(166 166 173 / 58%);
 }
 
-.clervo-home-hero[data-state="prove"] .clervo-home-hero__signal-label--verified {
+.clervo-home-hero__signal-label--verified::before {
+  color: rgb(166 166 173 / 58%);
+  background: currentcolor;
+  box-shadow: 0 0 10px currentcolor;
+  transition: color 500ms var(--hero-state-ease), background 500ms var(--hero-state-ease), box-shadow 500ms var(--hero-state-ease);
+}
+
+.clervo-home-hero[data-state="prove"] .clervo-home-hero__signal-label--verified::before {
   color: var(--verified);
+  background: var(--verified);
+  box-shadow: 0 0 14px var(--verified);
 }
 
 .clervo-home-hero__state {
   position: absolute;
   z-index: 8;
-  top: 68.2%;
+  top: 69.4%;
   left: 50%;
   display: flex;
   width: max-content;
@@ -370,7 +383,7 @@
 .clervo-home-hero__trace {
   position: absolute;
   z-index: 8;
-  top: 74.2%;
+  top: 75.6%;
   left: 50%;
   display: inline-flex;
   align-items: center;
@@ -514,21 +527,25 @@
     height: 34%;
   }
 
+  .clervo-hero-signal__beam {
+    transform: translateY(clamp(5px, 0.9vh, 7px));
+  }
+
   .clervo-hero-apex {
     width: clamp(14.75rem, 18vw, 17.25rem);
   }
 
   .clervo-home-hero__signal-label {
-    top: 59.2%;
+    top: 57.2%;
   }
 
   .clervo-home-hero__state {
-    top: 67.2%;
+    top: 68.4%;
     font-size: 0.78rem;
   }
 
   .clervo-home-hero__trace {
-    top: 73.5%;
+    top: 74.8%;
     font-size: 0.82rem;
   }
 
@@ -617,13 +634,17 @@
     height: 24.5%;
   }
 
+  .clervo-hero-signal__beam {
+    transform: translateY(4px);
+  }
+
   .clervo-hero-apex {
     width: clamp(12rem, 56vw, 15rem);
     transform: translate(-50%, -57%) scale(0.93);
   }
 
   .clervo-home-hero__signal-label {
-    top: 62.5%;
+    top: 61.2%;
     font-size: 0.62rem;
     letter-spacing: 0.16em;
   }
