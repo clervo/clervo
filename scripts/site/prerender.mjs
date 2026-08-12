@@ -33,7 +33,9 @@ function routeStructuredData({ route, title, description, canonical }) {
       '@type': 'ListItem',
       position: index + 2,
       name: index === parts.length - 1 ? title : segmentLabel(segment),
-      item: `https://clervo.dev/${parts.slice(0, index + 1).map(encodeURIComponent).join('/')}/`,
+      // Route segments in the generated inventory are already URL-safe. Do not
+      // encode them a second time or a model path containing %2F becomes %252F.
+      item: `https://clervo.dev/${parts.slice(0, index + 1).join('/')}/`,
     })),
   ];
   return {
@@ -67,9 +69,6 @@ for (const { route, title, description: routeDescription } of routes) {
       ? 'Give your agent a task. Get a verified result. Clervo connects models, data, and secure execution through one inspectable outcome contract.'
       : `${title} from Clervo, with current lifecycle, product behavior, and evidence boundaries kept explicit.`);
   const routeJsonLd = JSON.stringify(routeStructuredData({ route, title, description, canonical })).replaceAll('<', '\\u003c');
-  // Use a replacement callback: rendered contract/schema text can legitimately
-  // contain `$&`, which has special meaning in String.replace replacement
-  // strings and would otherwise inject a second empty root into the HTML.
   const html = template
     .replace('<div id="root"></div>', () => `<div id="root" data-prerender-path="${route}">${content}</div>`)
     .replace(
@@ -90,16 +89,13 @@ for (const { route, title, description: routeDescription } of routes) {
   await writeFile(destination, html);
 }
 
-// The site previously answered 200 for every unknown URL, so a crawler saw a
-// site that claimed every path existed and would not index it. Every real route
-// above is a file, so an unmatched path is genuinely not a page: the deployment
-// serves this document with a real 404 status (`not_found_handling: 404-page`).
+// Unknown paths get one robots directive, no canonical, and a real 404 file.
 const notFoundPath = '/404';
 await writeFile(
   path.join(dist, '404.html'),
   template
     .replace('<div id="root"></div>', () => `<div id="root" data-prerender-path="${notFoundPath}">${render(`https://clervo.dev${notFoundPath}`)}</div>`)
-    .replace(/<title>.*?<\/title>/u, '<title>Route not found — Clervo</title><meta name="robots" content="noindex">')
+    .replace(/<title>.*?<\/title>/u, '<title>Route not found — Clervo</title>')
     .replace(/<meta name="robots" content="[^"]*" \/>/u, '<meta name="robots" content="noindex" />'),
 );
 
