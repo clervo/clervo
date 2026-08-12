@@ -83,7 +83,9 @@
     drop-shadow(7px 3px 11px rgb(255 200 0 / 6%));
 }
 
-/* Desktop marks are intentionally quieter than the product promise. */
+/* Desktop ecosystem names are intentionally quieter than the product promise.
+ * The reviewed creator registry requires typography fallback until approved
+ * third-party logo files and usage terms are retained with the repo. */
 .clervo-home-hero__ecosystem-viewport {
   display: contents;
 }
@@ -92,18 +94,27 @@
   display: none;
 }
 
-.clervo-home-hero__ecosystem img {
-  max-width: 58%;
-  max-height: 34px;
-  opacity: 0.66;
+.clervo-home-hero__ecosystem-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 82%;
+  color: rgb(242 242 244 / 58%);
+  font-family: var(--sans);
+  font-size: clamp(0.82rem, 1.08vw, 1.05rem);
+  font-weight: 590;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.clervo-home-hero__ecosystem [data-brand="openai"] img { max-width: min(58%, 132px); }
-.clervo-home-hero__ecosystem [data-brand="anthropic"] img { max-width: min(58%, 142px); }
-.clervo-home-hero__ecosystem [data-brand="nvidia"] img { max-width: min(58%, 140px); }
-.clervo-home-hero__ecosystem [data-brand="cloudflare"] img { max-width: min(58%, 140px); }
-.clervo-home-hero__ecosystem [data-brand="aws"] img { max-width: min(42%, 92px); max-height: 38px; }
-.clervo-home-hero__ecosystem [data-brand="google-cloud"] img { max-width: min(60%, 144px); }
+.clervo-home-hero__ecosystem [data-brand="anthropic"] .clervo-home-hero__ecosystem-mark,
+.clervo-home-hero__ecosystem [data-brand="nvidia"] .clervo-home-hero__ecosystem-mark,
+.clervo-home-hero__ecosystem [data-brand="cloudflare"] .clervo-home-hero__ecosystem-mark,
+.clervo-home-hero__ecosystem [data-brand="aws"] .clervo-home-hero__ecosystem-mark {
+  text-transform: uppercase;
+  letter-spacing: 0.015em;
+}
 
 @media (width <= 980px) {
   /* Anchor the rail to the physical end of the viewport and let it run continuously. */
@@ -140,23 +151,11 @@
     animation: none;
   }
 
-  .clervo-home-hero__ecosystem img {
-    max-width: 80px;
-    max-height: 25px;
-    opacity: 0.6;
-  }
-
-  .clervo-home-hero__ecosystem [data-brand="openai"] img,
-  .clervo-home-hero__ecosystem [data-brand="anthropic"] img,
-  .clervo-home-hero__ecosystem [data-brand="nvidia"] img,
-  .clervo-home-hero__ecosystem [data-brand="cloudflare"] img,
-  .clervo-home-hero__ecosystem [data-brand="google-cloud"] img {
-    max-width: 80px;
-  }
-
-  .clervo-home-hero__ecosystem [data-brand="aws"] img {
-    max-width: 58px;
-    max-height: 27px;
+  .clervo-home-hero__ecosystem-mark {
+    max-width: 92px;
+    color: rgb(242 242 244 / 56%);
+    font-size: 0.72rem;
+    font-weight: 580;
   }
 }
 
