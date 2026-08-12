@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { B12HeroApex } from '../components/B12HeroApex';
+import { ApexMark } from '../components/ApexMark';
 import {
   lifecycleLabels,
   observedTruth,
@@ -26,31 +26,31 @@ const journeySteps: JourneyStep[] = [
     id: 'request',
     label: 'Request',
     title: 'Bind the task.',
-    detail: 'Identity, intent, limits, and failure policy enter together.',
+    detail: 'Bind identity, intent, and limits.',
   },
   {
     id: 'qualify',
     label: 'Qualify',
     title: 'Find a route allowed to run.',
-    detail: 'Clervo checks capability, availability, policy, and price boundaries.',
+    detail: 'Check capability, policy, and price.',
   },
   {
     id: 'execute',
     label: 'Execute',
     title: 'Run one bounded operation.',
-    detail: 'The selected route keeps the request contract attached.',
+    detail: 'Run the selected bounded route.',
   },
   {
     id: 'verify',
     label: 'Verify',
     title: 'Inspect result and evidence.',
-    detail: 'The outcome is checked before it is represented as proved.',
+    detail: 'Check the outcome and evidence.',
   },
   {
     id: 'prove',
     label: 'Prove',
     title: 'Return an inspectable outcome.',
-    detail: 'Result, evidence, provenance, and receipt resolve as one contract.',
+    detail: 'Return result, provenance, and receipt.',
   },
 ];
 
@@ -80,6 +80,14 @@ const phaseByState: Record<JourneyState, ExperiencePhase> = {
   prove: 'receipt',
 };
 
+const stateReadout: Record<JourneyState, string[]> = {
+  request: ['route unresolved', 'evidence pending', 'proof pending'],
+  qualify: ['route qualifying', 'evidence pending', 'proof pending'],
+  execute: ['route selected', 'execution bounded', 'proof pending'],
+  verify: ['result returned', 'evidence checking', 'proof pending'],
+  prove: ['route resolved', 'evidence attached', 'proof verified'],
+};
+
 const allowedStates = new Set<JourneyState>(journeySteps.map(({ id }) => id));
 const familyOrder: ObservedProduct['id'][] = [
   'search', 'ai', 'sandbox', 'prediction', 'crypto_intelligence', 'rpc',
@@ -96,7 +104,7 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   const [running, setRunning] = useState(false);
   const [copied, setCopied] = useState(false);
   const timers = useRef<number[]>([]);
-  const activeStep = journeySteps.find(({ id }) => id === state) ?? journeySteps[0]!;
+  const activeIndex = Math.max(0, journeySteps.findIndex(({ id }) => id === state));
   const liveFamilies = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
 
   const clearTimers = () => {
@@ -144,50 +152,68 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
     <div className="recovery-home" data-running={running} data-state={state}>
       <a className="skip-link" href="#home-title">Skip to main content</a>
 
-      <section className="home-hero shell" aria-labelledby="home-title">
-        <div className="home-hero__copy">
-          <p className="eyebrow">Outcome infrastructure for agents</p>
-          <h1 id="home-title">Give your agent a task.<br />Get a verified result.</h1>
-          <p className="home-hero__lede">
-            Clervo turns a bounded job into one inspectable outcome—across models,
-            data, and runtime—without hiding route, cost, evidence, or recovery.
-          </p>
-          <div className="home-actions">
-            <Link className="button button--primary" to="/start">Set up Clervo</Link>
-            <Link className="button button--secondary" to="/product">Explore the product</Link>
-          </div>
-          <p className="home-free-note">
-            <span aria-hidden="true" /> A real free-first Search path is available before wallet setup.
-          </p>
-        </div>
+      <section className="home-hero" aria-labelledby="home-title">
+        <div className="home-hero__frame shell">
+          <p className="eyebrow home-hero__eyebrow">Outcome infrastructure for agents</p>
+          <h1 className="home-hero__title" id="home-title">
+            <span className="home-hero__statement home-hero__statement--request">Give your agent a task.</span>
+            <span className="home-hero__statement home-hero__statement--verified">Get a verified result.</span>
+          </h1>
 
-        <div className="home-hero__mechanism">
-          <div className="home-apex-stage" aria-label="Clervo task lifecycle">
-            <B12HeroApex />
-            <div className="home-stage-readout" aria-live="polite">
-              <span>{activeStep.label}</span>
-              <strong>{activeStep.title}</strong>
-            </div>
+          <div className="home-signal-stage" aria-label="Clervo task lifecycle product model">
+            <span className="home-signal-label home-signal-label--request">Request</span>
+            <span className="home-signal-label home-signal-label--verified">Verified</span>
+            <span className="home-signal-track" aria-hidden="true">
+              <i className="home-signal-track__request" />
+              <i className="home-signal-track__qualify" />
+              <i className="home-signal-track__verified" />
+            </span>
+            <span className="home-core" aria-hidden="true">
+              <ApexMark beam={false} size={220} />
+            </span>
           </div>
+
+          <p className="home-system-state data" aria-live="polite">
+            {stateReadout[state].map((item) => <span key={item}>{item}</span>)}
+          </p>
+
           <div className="home-trace-control">
             <p className="data">Product model · no request is sent</p>
-            <button className="button button--quiet" disabled={running} onClick={runTrace} type="button">
+            <button className="home-trace-action" disabled={running} onClick={runTrace} type="button">
               {running ? 'Tracing task…' : state === 'prove' ? 'Trace again' : 'Trace the contract'}
+              <span aria-hidden="true">→</span>
             </button>
           </div>
         </div>
+      </section>
 
-        <ol className="home-journey" aria-label="Clervo operating sequence">
-          {journeySteps.map((step, index) => (
-            <li data-active={step.id === state} data-complete={index < journeySteps.indexOf(activeStep)} key={step.id}>
-              <button type="button" onClick={() => selectState(step.id)} aria-current={step.id === state ? 'step' : undefined}>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <strong>{step.label}</strong>
-              </button>
-              <p>{step.detail}</p>
-            </li>
-          ))}
-        </ol>
+      <section className="home-sequence" aria-labelledby="home-sequence-title">
+        <div className="shell">
+          <div className="home-sequence__head">
+            <p className="eyebrow" id="home-sequence-title">The operating sequence</p>
+            <Link className="text-link" to="/product">Explore the system <span aria-hidden="true">→</span></Link>
+          </div>
+          <ol className="home-sequence__track" aria-label="Clervo operating sequence">
+            {journeySteps.map((step, index) => (
+              <li
+                data-active={step.id === state}
+                data-complete={index < activeIndex}
+                data-state={step.id}
+                key={step.id}
+              >
+                <button
+                  type="button"
+                  onClick={() => selectState(step.id)}
+                  aria-current={step.id === state ? 'step' : undefined}
+                >
+                  <span className="home-sequence__number">{String(index + 1).padStart(2, '0')}</span>
+                  <strong>{step.label}</strong>
+                  <small>{step.detail}</small>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
 
       <section className="home-platform" aria-labelledby="home-platform-title">
@@ -209,18 +235,18 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
               const product = observedTruth.products.find((candidate) => candidate.id === id);
               if (product === undefined) return null;
               return (
-              <li key={product.id}>
-                <Link to={familyRoutes[product.id]}>
-                  <span className="home-capability__index data">{String(index + 1).padStart(2, '0')}</span>
-                  <span className="home-capability__body">
-                    <strong>{pillarLabels[product.id]}</strong>
-                    <small>{familyDescriptions[product.id]}</small>
-                  </span>
-                  <span className={`state state--${product.lifecycleState}`}>
-                    {lifecycleLabels[product.lifecycleState]}
-                  </span>
-                </Link>
-              </li>
+                <li key={product.id}>
+                  <Link to={familyRoutes[product.id]}>
+                    <span className="home-capability__index data">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="home-capability__body">
+                      <strong>{pillarLabels[product.id]}</strong>
+                      <small>{familyDescriptions[product.id]}</small>
+                    </span>
+                    <span className={`state state--${product.lifecycleState}`}>
+                      {lifecycleLabels[product.lifecycleState]}
+                    </span>
+                  </Link>
+                </li>
               );
             })}
           </ul>
