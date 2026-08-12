@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { ApexMark } from '../components/ApexMark';
 import {
   lifecycleLabels,
   observedTruth,
@@ -169,7 +168,9 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
               <i className="home-signal-track__verified" />
             </span>
             <span className="home-core" aria-hidden="true">
-              <ApexMark beam={false} size={220} />
+              <svg className="home-core__apex" viewBox="0 0 64 64" focusable="false">
+                <path d="M32 8 59.5 55H4.5Z" />
+              </svg>
             </span>
           </div>
 
@@ -178,7 +179,6 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           </p>
 
           <div className="home-trace-control">
-            <p className="data">Product model · no request is sent</p>
             <button className="home-trace-action" disabled={running} onClick={runTrace} type="button">
               {running ? 'Tracing task…' : state === 'prove' ? 'Trace again' : 'Trace the contract'}
               <span aria-hidden="true">→</span>
