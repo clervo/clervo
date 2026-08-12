@@ -149,7 +149,7 @@ async function scrollTo(cdp, selector) {
 async function inspect(cdp, route) {
   return (await cdp.send('Runtime.evaluate', { expression: `(() => {
     const transparent=(value)=>value==='rgba(0, 0, 0, 0)'||value==='transparent';
-    const style=(selector)=>{const el=document.querySelector(selector);if(!(el instanceof HTMLElement))return null;const s=getComputedStyle(el),r=el.getBoundingClientRect();return{backgroundColor:s.backgroundColor,backgroundImage:s.backgroundImage,borderRadius:s.borderRadius,borderRightWidth:s.borderRightWidth,height:r.height,width:r.width,display:s.display}};
+    const style=(selector)=>{const el=document.querySelector(selector);if(!(el instanceof HTMLElement))return null;const s=getComputedStyle(el),r=el.getBoundingClientRect();return{backgroundColor:s.backgroundColor,backgroundImage:s.backgroundImage,borderRadius:s.borderRadius,borderRightWidth:s.borderRightWidth,height:r.height,width:r.width,display:s.display,visibility:s.visibility}};
     const header=style('.site-header__inner.shell');
     const cta=style('.site-header__cta');
     const subnav=[...document.querySelectorAll('.s6-subnav a')].map((el)=>getComputedStyle(el).borderRightWidth);
@@ -234,7 +234,7 @@ for (const result of results) {
     if (parseFloat(d.header.borderRadius) > 1) issues.push(`${result.id}:internal_header_capsule:${d.header.borderRadius}`);
     if (d.header.backgroundImage !== 'none') issues.push(`${result.id}:internal_header_gradient:${d.header.backgroundImage}`);
   }
-  if (d.cta && d.cta.height < 44) issues.push(`${result.id}:header_cta_below_44:${d.cta.height}`);
+  if (d.cta && d.cta.display !== 'none' && d.cta.visibility !== 'hidden' && d.cta.height < 44) issues.push(`${result.id}:header_cta_below_44:${d.cta.height}`);
   if (d.subnav.some((value) => parseFloat(value) > 0)) issues.push(`${result.id}:boxed_secondary_nav`);
   if (result.route === '/product' && d.visibleFamilyLabels !== 0) issues.push(`${result.id}:product_hero_repeats_family_labels:${d.visibleFamilyLabels}`);
   if (result.route === '/product' && !d.contractTransparent) issues.push(`${result.id}:product_contract_surface_not_open`);
