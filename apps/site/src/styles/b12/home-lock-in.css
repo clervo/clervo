@@ -1,0 +1,540 @@
+/*
+ * Final Home lock-in layer — 2026-08-12.
+ *
+ * The Hollow Apex is a symbol, not an illustration. Its geometry stays flat and
+ * white; causality is communicated by the beam, a tight local halo, and one-shot
+ * state transitions around the intersection. Desktop prioritizes negative space.
+ * Mobile is deliberately recomposed and keeps the provider rail horizontal.
+ */
+
+/* Home chrome: open, quiet, and subordinate to the hero. */
+.app--home .site-header {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 80;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.app--home .site-header__inner.shell {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.app--home .site-header__cta.button--primary {
+  border-color: rgb(255 255 255 / 18%);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 2.5%);
+  box-shadow: none;
+}
+
+.app--home .site-header__cta.button--primary:hover {
+  border-color: rgb(255 255 255 / 32%);
+  background: rgb(255 255 255 / 5%);
+}
+
+/* Sacred mark rule: no facets, bevels, glass texture, or fake 3D. */
+.recovery-home .home-hero--exact .home-core__asset {
+  opacity: 0;
+  animation: none;
+}
+
+.recovery-home .home-hero--exact .home-core::after {
+  background: #fff;
+  -webkit-mask: url("/assets/brand/clervo-apex-symbol.svg") center / contain no-repeat;
+  mask: url("/assets/brand/clervo-apex-symbol.svg") center / contain no-repeat;
+  filter:
+    drop-shadow(0 0 2px rgb(255 255 255 / 88%))
+    drop-shadow(0 0 8px rgb(255 255 255 / 24%));
+  animation: home-lock-apex-enter 880ms var(--home-motion-ease) 320ms both;
+  transition:
+    filter 520ms var(--home-motion-ease),
+    transform 520ms var(--home-motion-ease),
+    opacity 320ms var(--home-motion-ease);
+}
+
+.recovery-home .home-hero--exact .home-core::before {
+  inset: 22% 10% 10%;
+  opacity: 0.5;
+  background: radial-gradient(
+    ellipse at 50% 60%,
+    rgb(255 255 255 / 12%) 0%,
+    rgb(0 229 255 / 10%) 22%,
+    transparent 57%
+  );
+  filter: blur(17px);
+  transition:
+    opacity 480ms var(--home-motion-ease),
+    background 520ms var(--home-motion-ease),
+    filter 520ms var(--home-motion-ease);
+}
+
+/* The interaction hotspot belongs to the beam, not the mark. */
+.recovery-home .home-hero--exact .home-signal-stage::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  width: clamp(5rem, 8vw, 8rem);
+  height: clamp(1.7rem, 2.8vw, 2.8rem);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.22;
+  background: radial-gradient(
+    ellipse,
+    rgb(255 255 255 / 78%) 0%,
+    rgb(0 229 255 / 34%) 18%,
+    rgb(0 229 255 / 8%) 42%,
+    transparent 72%
+  );
+  filter: blur(5px);
+  transform: translate(-50%, -50%) scaleX(0.72);
+  transition:
+    opacity 420ms var(--home-motion-ease),
+    transform 520ms var(--home-motion-ease),
+    filter 520ms var(--home-motion-ease);
+}
+
+.recovery-home[data-state="qualify"] .home-hero--exact .home-signal-stage::after,
+.recovery-home[data-state="execute"] .home-hero--exact .home-signal-stage::after {
+  opacity: 0.92;
+  transform: translate(-50%, -50%) scaleX(1.08);
+  filter: blur(4px);
+}
+
+.recovery-home[data-state="execute"] .home-hero--exact .home-core::after {
+  animation: home-lock-apex-catch 560ms var(--home-motion-causal) both;
+}
+
+.recovery-home[data-state="qualify"] .home-hero--exact .home-core::before,
+.recovery-home[data-state="execute"] .home-hero--exact .home-core::before,
+.recovery-home[data-state="verify"] .home-hero--exact .home-core::before {
+  opacity: 0.72;
+  background: radial-gradient(
+    ellipse at 50% 60%,
+    rgb(255 255 255 / 17%) 0%,
+    rgb(0 229 255 / 18%) 20%,
+    transparent 58%
+  );
+}
+
+.recovery-home[data-state="prove"] .home-hero--exact .home-core::before {
+  opacity: 0.64;
+  background:
+    radial-gradient(ellipse at 46% 60%, rgb(0 229 255 / 13%), transparent 43%),
+    radial-gradient(ellipse at 57% 60%, rgb(255 200 0 / 10%), transparent 46%),
+    radial-gradient(ellipse at 50% 56%, rgb(255 255 255 / 12%), transparent 55%);
+}
+
+.recovery-home[data-state="prove"] .home-hero--exact .home-core::after {
+  filter:
+    drop-shadow(0 0 2px rgb(255 255 255 / 94%))
+    drop-shadow(0 0 9px rgb(255 255 255 / 27%));
+}
+
+.recovery-home[data-state="prove"] .home-hero--exact .home-signal-stage::after {
+  opacity: 0.56;
+  background: radial-gradient(
+    ellipse,
+    rgb(255 255 255 / 82%) 0%,
+    rgb(0 229 255 / 28%) 17%,
+    rgb(255 200 0 / 10%) 39%,
+    transparent 72%
+  );
+  transform: translate(-50%, -50%) scaleX(0.9);
+}
+
+@keyframes home-lock-apex-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+    filter: blur(5px) drop-shadow(0 0 0 transparent);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1.012);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes home-lock-apex-catch {
+  0% {
+    transform: scale(1);
+    filter:
+      drop-shadow(0 0 2px rgb(255 255 255 / 90%))
+      drop-shadow(0 0 8px rgb(255 255 255 / 24%));
+  }
+  44% {
+    transform: scale(1.014);
+    filter:
+      drop-shadow(0 0 4px rgb(255 255 255 / 100%))
+      drop-shadow(0 0 16px rgb(255 255 255 / 48%))
+      drop-shadow(0 0 28px rgb(0 229 255 / 22%));
+  }
+  100% {
+    transform: scale(1);
+    filter:
+      drop-shadow(0 0 2px rgb(255 255 255 / 92%))
+      drop-shadow(0 0 9px rgb(255 255 255 / 26%));
+  }
+}
+
+@media (width > 980px) {
+  .app--home .site-header {
+    padding: clamp(1rem, 2.1vh, 1.35rem) var(--shell-gutter) 0;
+  }
+
+  .app--home .site-header__inner.shell {
+    max-width: 1480px;
+    min-height: 52px;
+    padding-inline: 0;
+  }
+
+  .app--home .site-header__nav a {
+    color: rgb(242 242 244 / 65%);
+    font-size: 0.82rem;
+  }
+
+  .app--home .site-header__cta.button--primary {
+    min-height: 42px;
+    padding-inline: 1.25rem;
+    font-size: 0.84rem;
+  }
+
+  .recovery-home .home-hero--exact > .home-hero__frame {
+    padding-inline: clamp(3.5rem, 5.5vw, 5.6rem);
+  }
+
+  .recovery-home .home-hero--exact h1.home-hero__title {
+    top: 28.2%;
+    grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.86fr) minmax(0, 1fr);
+    font-size: clamp(3.65rem, 4.35vw, 5rem);
+    line-height: 0.99;
+    letter-spacing: -0.055em;
+  }
+
+  .recovery-home .home-hero--exact .home-hero__statement--request {
+    transform: translateX(-0.4rem);
+  }
+
+  .recovery-home .home-hero--exact .home-hero__statement--verified {
+    transform: translateX(0.4rem);
+  }
+
+  .recovery-home .home-hero--exact .home-signal-stage {
+    --core-size: clamp(16.2rem, 19vw, 19.4rem);
+    top: 29.5%;
+    height: 41.5%;
+  }
+
+  .recovery-home .home-hero--exact .home-signal-track {
+    height: 1.5px;
+  }
+
+  .recovery-home .home-hero--exact .home-system-state {
+    top: 68.5%;
+    color: rgb(242 242 244 / 68%);
+    font-size: clamp(0.78rem, 0.82vw, 0.9rem);
+  }
+
+  .recovery-home .home-hero--exact .home-trace-control {
+    top: 74.5%;
+  }
+
+  .recovery-home .home-hero--exact .home-trace-action {
+    font-size: clamp(0.82rem, 0.87vw, 0.94rem);
+  }
+
+  .recovery-home .home-ecosystem {
+    bottom: clamp(2rem, 4.5vh, 3rem);
+  }
+
+  .recovery-home .home-ecosystem li {
+    opacity: 0.73;
+  }
+
+  .recovery-home .home-ecosystem li::after {
+    opacity: 0.76;
+  }
+}
+
+/* Mobile: open header, four-line promise, compact mechanism, one logo rail. */
+@media (width <= 980px) {
+  .app--home .site-header {
+    padding: max(18px, env(safe-area-inset-top)) 18px 0;
+  }
+
+  .app--home .site-header__inner.shell {
+    min-height: 44px;
+    padding-inline: 0;
+    border-radius: 0;
+  }
+
+  .app--home .site-header__brand {
+    gap: 0.68rem;
+  }
+
+  .app--home .site-header__brand .apex-mark {
+    width: 24px;
+    height: 24px;
+  }
+
+  .app--home .site-header__wordmark {
+    font-size: 0.75rem;
+    letter-spacing: 0.26em;
+  }
+
+  .app--home .site-header__cta {
+    display: none;
+  }
+
+  .app--home .site-header__menu {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .app--home .site-header__menu span,
+  .app--home .site-header__menu span::before,
+  .app--home .site-header__menu span::after {
+    background: rgb(242 242 244 / 90%);
+  }
+
+  .recovery-home .home-hero--exact {
+    min-height: 100svh;
+    padding: 0;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 59%, rgb(0 229 255 / 3%), transparent 15rem),
+      #000;
+  }
+
+  .recovery-home .home-hero--exact > .home-hero__frame {
+    display: block;
+    min-height: 100svh;
+    padding: 0 18px;
+  }
+
+  .recovery-home .home-hero--exact .home-hero__eyebrow {
+    display: none;
+  }
+
+  .recovery-home .home-hero__scene {
+    position: absolute;
+    inset: 0 18px;
+    display: block;
+  }
+
+  .recovery-home .home-hero--exact h1.home-hero__title {
+    position: absolute;
+    top: clamp(8.5rem, 17svh, 10.5rem);
+    left: 0;
+    display: block;
+    width: 100%;
+    margin: 0;
+    font-size: clamp(3rem, 10.8vw, 4.5rem);
+    font-weight: 285;
+    line-height: 0.98;
+    letter-spacing: -0.058em;
+  }
+
+  .recovery-home .home-hero--exact .home-hero__statement {
+    display: block;
+    max-width: none;
+  }
+
+  .recovery-home .home-hero--exact .home-hero__statement--request {
+    width: 82%;
+    text-align: left;
+  }
+
+  .recovery-home .home-hero--exact .home-hero__statement--verified {
+    width: 80%;
+    margin-top: clamp(2rem, 5svh, 3.2rem);
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .recovery-home .home-hero--exact .home-signal-stage {
+    --core-size: clamp(9rem, 35vw, 12.5rem);
+    position: absolute;
+    top: 49%;
+    left: 0;
+    width: 100%;
+    height: clamp(9rem, 29vw, 11.5rem);
+    margin: 0;
+  }
+
+  .recovery-home .home-hero--exact .home-signal-label {
+    top: calc(50% + 23px);
+    font-size: 0.58rem;
+  }
+
+  .recovery-home .home-hero--exact .home-system-state {
+    position: absolute;
+    top: 66%;
+    left: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 92%;
+    margin: 0;
+    gap: 0.35rem 0.5rem;
+    color: rgb(166 166 173 / 70%);
+    font-family: var(--mono);
+    font-size: clamp(0.5rem, 1.75vw, 0.62rem);
+    letter-spacing: 0.1em;
+    line-height: 1.7;
+    text-transform: uppercase;
+    transform: translateX(-50%);
+  }
+
+  .recovery-home .home-hero--exact .home-system-state span + span::before {
+    margin-right: 0.5rem;
+  }
+
+  .recovery-home .home-hero--exact .home-trace-control {
+    position: absolute;
+    top: 73.5%;
+    left: 50%;
+    width: max-content;
+    margin: 0;
+    transform: translateX(-50%);
+  }
+
+  .recovery-home .home-hero--exact .home-trace-action {
+    min-height: 38px;
+    font-family: var(--mono);
+    font-size: 0.67rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .recovery-home .home-ecosystem {
+    position: absolute;
+    right: auto;
+    bottom: max(1.4rem, env(safe-area-inset-bottom));
+    left: 50%;
+    display: flex;
+    grid-template-columns: none;
+    align-items: center;
+    gap: clamp(2.4rem, 9vw, 4rem);
+    width: max-content;
+    min-width: 155%;
+    margin: 0;
+    padding: 0 1rem;
+    transform: translateX(-50%);
+    overflow: visible;
+  }
+
+  .recovery-home .home-ecosystem li {
+    flex: 0 0 auto;
+    min-width: clamp(7rem, 24vw, 9rem);
+    min-height: 38px;
+    opacity: 0.64;
+  }
+
+  .recovery-home .home-ecosystem li + li::before {
+    display: none;
+  }
+
+  .recovery-home .home-ecosystem span {
+    display: none;
+  }
+
+  .recovery-home .home-ecosystem li::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 34px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    filter: grayscale(1) brightness(0) invert(1);
+    opacity: 0.72;
+  }
+
+  .recovery-home .home-ecosystem [data-brand="openai"]::after {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg");
+  }
+
+  .recovery-home .home-ecosystem [data-brand="anthropic"]::after {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg");
+  }
+
+  .recovery-home .home-ecosystem [data-brand="nvidia"]::after {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/a/a4/NVIDIA_logo.svg");
+  }
+
+  .recovery-home .home-ecosystem [data-brand="cloudflare"]::after {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg");
+  }
+
+  .recovery-home .home-ecosystem [data-brand="aws"]::after {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/f/fc/Amazon_Web_Services_2025.svg");
+  }
+
+  .recovery-home .home-ecosystem [data-brand="google-cloud"]::after {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg");
+  }
+}
+
+@media (width <= 620px) {
+  .recovery-home .home-hero--exact h1.home-hero__title {
+    top: clamp(7.5rem, 15svh, 9rem);
+    font-size: clamp(2.75rem, 12.2vw, 3.75rem);
+  }
+
+  .recovery-home .home-hero--exact .home-hero__statement--request {
+    width: 88%;
+  }
+
+  .recovery-home .home-hero--exact .home-hero__statement--verified {
+    width: 84%;
+    margin-top: clamp(1.6rem, 4svh, 2.5rem);
+  }
+
+  .recovery-home .home-hero--exact .home-signal-stage {
+    --core-size: clamp(8.4rem, 40vw, 10.8rem);
+    top: 48.5%;
+  }
+
+  .recovery-home .home-hero--exact .home-system-state {
+    top: 65.5%;
+  }
+
+  .recovery-home .home-hero--exact .home-trace-control {
+    top: 73%;
+  }
+
+  .recovery-home .home-ecosystem {
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    gap: 2.2rem;
+    min-width: 185%;
+  }
+
+  .recovery-home .home-ecosystem li {
+    min-width: 7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recovery-home .home-hero--exact .home-core::after {
+    animation: none;
+    transition: none;
+  }
+
+  .recovery-home .home-hero--exact .home-signal-stage::after {
+    transition: none;
+  }
+}
