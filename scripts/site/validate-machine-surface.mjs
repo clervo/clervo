@@ -72,6 +72,9 @@ for (const needle of ['# Clervo skill', '## When to use this skill', '## Failure
 if (!/operation/iu.test(skill) || !/receipt/iu.test(skill) || !/replay/iu.test(skill)) throw new Error('site_skill_reference_incomplete');
 
 const agent = await readFile(path.join(dist, 'agent.md'), 'utf8');
-if (!/Clervo/iu.test(agent) || !/idempot/iu.test(agent) || !/boundary/iu.test(agent)) throw new Error('site_agent_reference_incomplete');
+for (const needle of ['# Clervo for agents', '## Identity', '## Observed state', '## Idempotency contract', '## Discovery paths']) {
+  if (!agent.includes(needle)) throw new Error(`site_agent_reference_missing:${needle}`);
+}
+if (!/payment/iu.test(agent) || !/replay/iu.test(agent) || !/unavailable/iu.test(agent)) throw new Error('site_agent_reference_incomplete');
 
 console.log(`site machine surface validation: PASS (${required.length} canonical files, ${inventory.length} sitemap routes)`);
