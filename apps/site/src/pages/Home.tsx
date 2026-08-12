@@ -155,8 +155,14 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
         <div className="home-hero__frame shell">
           <p className="eyebrow home-hero__eyebrow">Outcome infrastructure for agents</p>
           <h1 className="home-hero__title" id="home-title">
-            <span className="home-hero__statement home-hero__statement--request">Give your agent a task.</span>
-            <span className="home-hero__statement home-hero__statement--verified">Get a verified result.</span>
+            <span className="home-hero__statement home-hero__statement--request">
+              <span className="home-hero__line">Give your</span>
+              <span className="home-hero__line">agent a task.</span>
+            </span>
+            <span className="home-hero__statement home-hero__statement--verified">
+              <span className="home-hero__line">Get a</span>
+              <span className="home-hero__line">verified result.</span>
+            </span>
           </h1>
 
           <div className="home-signal-stage" aria-label="Clervo task lifecycle product model">
