@@ -9,7 +9,8 @@ import { Router } from './router';
  * next so the rebuilt shell, control, and mark layers win on any conflict.
  * The recovery lock files at the end are intentionally archetype-scoped: they
  * unify the full site without turning the cascade into one undifferentiated
- * override sheet.
+ * override sheet. The final coherence lock only resolves the repeated internal
+ * primitives that remained visually older than the approved Home language.
  */
 import './styles/tokens.css';
 import './styles/base.css';
@@ -33,6 +34,7 @@ import './styles/b12/developer-recovery-lock.css';
 import './styles/b12/product-recovery-lock.css';
 import './styles/b12/utility-recovery-lock.css';
 import './styles/b12/interaction-hardening.css';
+import './styles/b12/final-coherence-lock.css';
 
 const root = document.getElementById('root');
 if (root === null) throw new Error('clervo_site_root_missing');
