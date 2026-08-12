@@ -48,19 +48,30 @@ for (const relative of ['catalog.json', 'capabilities.json', 'models.json', 'sta
 
 const openapi = JSON.parse(await readFile(path.join(dist, 'openapi.json'), 'utf8'));
 if (openapi.openapi !== '3.1.1') throw new Error(`site_openapi_version:${openapi.openapi ?? 'missing'}`);
+if (openapi.jsonSchemaDialect !== 'https://json-schema.org/draft/2020-12/schema') throw new Error(`site_openapi_json_schema_dialect:${openapi.jsonSchemaDialect ?? 'missing'}`);
 
+// llms.txt is generated as a compact documentation map. Validate its canonical
+// relative machine links and observed-lifecycle framing rather than forcing a
+// second human-marketing lifecycle sentence into the generated contract.
 const llms = await readFile(path.join(dist, 'llms.txt'), 'utf8');
 for (const needle of [
-  'https://clervo.dev/openapi.json',
-  'https://clervo.dev/catalog.json',
-  'https://clervo.dev/status.json',
-  'https://clervo.dev/skill.md',
-  'Request -> Qualify -> Execute -> Verify -> Prove',
+  '[OpenAPI contract](/openapi.json)',
+  '[Catalog](/catalog.json)',
+  '[Status](/status.json)',
+  '[Agent skill](/skill.md)',
+  'Observed lifecycle state and proof level',
+  'Multi-chain RPC | unavailable',
 ]) {
   if (!llms.includes(needle)) throw new Error(`site_llms_reference_missing:${needle}`);
 }
 
 const skill = await readFile(path.join(dist, 'skill.md'), 'utf8');
-if (!/Clervo/iu.test(skill) || !/operation/iu.test(skill)) throw new Error('site_skill_reference_incomplete');
+for (const needle of ['# Clervo skill', '## When to use this skill', '## Failure behaviour', '## Machine-readable contracts']) {
+  if (!skill.includes(needle)) throw new Error(`site_skill_reference_missing:${needle}`);
+}
+if (!/operation/iu.test(skill) || !/receipt/iu.test(skill) || !/replay/iu.test(skill)) throw new Error('site_skill_reference_incomplete');
+
+const agent = await readFile(path.join(dist, 'agent.md'), 'utf8');
+if (!/Clervo/iu.test(agent) || !/idempot/iu.test(agent) || !/boundary/iu.test(agent)) throw new Error('site_agent_reference_incomplete');
 
 console.log(`site machine surface validation: PASS (${required.length} canonical files, ${inventory.length} sitemap routes)`);
