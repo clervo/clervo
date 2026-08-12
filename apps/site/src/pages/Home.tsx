@@ -128,9 +128,24 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
     const requested = new URLSearchParams(window.location.search).get('state');
     if (requested !== null && allowedStates.has(requested as JourneyState)) {
       selectState(requested as JourneyState);
-    } else {
-      onPhase('risk');
+      return clearTimers;
     }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      selectState('prove');
+      return clearTimers;
+    }
+
+    setRunning(true);
+    const entryDelay = 760;
+    const stepDuration = 560;
+    journeySteps.forEach(({ id }, index) => {
+      timers.current.push(window.setTimeout(() => selectState(id), entryDelay + index * stepDuration));
+    });
+    timers.current.push(window.setTimeout(
+      () => setRunning(false),
+      entryDelay + journeySteps.length * stepDuration,
+    ));
     return clearTimers;
   }, []);
 
