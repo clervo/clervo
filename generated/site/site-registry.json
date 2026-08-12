@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "clervo.site-registry.v1",
+  "observedAt": "2026-08-11T23:28:37.241Z",
+  "releaseId": "ac1fa402c4de985904713172047f2e36b647d49b",
+  "products": [
+    {
+      "id": "ai",
+      "label": "AI",
+      "operations": [
+        "ai.chat",
+        "ai.embed",
+        "ai.image",
+        "ai.music",
+        "ai.speech",
+        "ai.video",
+        "ai.virtual_try_on"
+      ],
+      "state": "live",
+      "expectedReturnAt": null,
+      "publiclyReachable": true,
+      "observedQuote": {
+        "amountAtomic": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi",
+        "resourceDescription": "Bounded ai.chat execution",
+        "scheme": "exact"
+      },
+      "freeEntry": {
+        "accepted": true,
+        "acceptsRequestWithoutPayment": true,
+        "modelId": "clervo/gemma-4-26b-a4b-it",
+        "observedStatus": 429,
+        "route": "https://api.clervo.dev/v1/ai/execute"
+      }
+    },
+    {
+      "id": "crypto_intelligence",
+      "label": "Crypto Intelligence",
+      "operations": [
+        "crypto.wallet.balances",
+        "crypto.wallet.report",
+        "crypto.wallet.tokens",
+        "crypto.wallet.transactions"
+      ],
+      "state": "live",
+      "expectedReturnAt": null,
+      "publiclyReachable": true,
+      "observedQuote": {
+        "amountAtomic": "4000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "crypto-public-2026-08-09.1-crypto.wallet.report",
+        "resourceDescription": "Bounded crypto.wallet.report execution",
+        "scheme": "exact"
+      },
+      "freeEntry": null
+    },
+    {
+      "id": "prediction",
+      "label": "Prediction Intelligence",
+      "operations": [
+        "prediction.compare",
+        "prediction.history",
+        "prediction.market",
+        "prediction.markets",
+        "prediction.signal"
+      ],
+      "state": "live",
+      "expectedReturnAt": null,
+      "publiclyReachable": true,
+      "observedQuote": {
+        "amountAtomic": "2000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "prediction-product-2026-08-09.3-prediction.markets",
+        "resourceDescription": "Bounded prediction.markets execution",
+        "scheme": "exact"
+      },
+      "freeEntry": null
+    },
+    {
+      "id": "rpc",
+      "label": "Multi-chain RPC",
+      "operations": [
+        "rpc.archive",
+        "rpc.batch",
+        "rpc.broadcast",
+        "rpc.call",
+        "rpc.health"
+      ],
+      "state": "unavailable",
+      "expectedReturnAt": null,
+      "publiclyReachable": false,
+      "observedQuote": null,
+      "freeEntry": null
+    },
+    {
+      "id": "sandbox",
+      "label": "Secure Sandbox",
+      "operations": [
+        "sandbox.run"
+      ],
+      "state": "live",
+      "expectedReturnAt": null,
+      "publiclyReachable": true,
+      "observedQuote": {
+        "amountAtomic": "60000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "sandbox-run-standard-2026-08-09.1",
+        "resourceDescription": "Bounded sandbox.run execution",
+        "scheme": "exact"
+      },
+      "freeEntry": null
+    },
+    {
+      "id": "search",
+      "label": "Research",
+      "operations": [
+        "search.web"
+      ],
+      "state": "live",
+      "expectedReturnAt": null,
+      "publiclyReachable": true,
+      "observedQuote": {
+        "amountAtomic": "6000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "search-web-open-federation-2026-08-09.1",
+        "resourceDescription": "Bounded search.web execution",
+        "scheme": "exact"
+      },
+      "freeEntry": {
+        "acceptsNaiveRequest": true,
+        "freeOutcomeObserved": true,
+        "naiveRejectionCode": null,
+        "route": "https://api.clervo.dev/v1/search/free",
+        "withIdempotencyKeyStatus": 200,
+        "withoutIdempotencyKeyStatus": 200
+      }
+    }
+  ]
+}
