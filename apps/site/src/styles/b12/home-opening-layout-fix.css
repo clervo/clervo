@@ -9,6 +9,7 @@
 .recovery-home .home-hero {
   grid-template-columns: minmax(0, 1fr);
   gap: 0;
+  min-height: clamp(34rem, 64svh, 43rem);
   padding-block: 0;
 }
 
@@ -16,119 +17,195 @@
   grid-column: 1 / -1;
   width: 100%;
   min-width: 0;
+  min-height: inherit;
   justify-self: stretch;
-  gap: clamp(0.9rem, 1.8vh, 1.45rem);
-  padding-block: clamp(2.3rem, 4.5vh, 3.75rem) clamp(2rem, 3.5vh, 3rem);
+  gap: clamp(0.8rem, 1.5vh, 1.25rem);
+  padding-block: clamp(2rem, 3.8vh, 3.1rem) clamp(1.6rem, 2.8vh, 2.4rem);
+}
+
+.recovery-home .home-hero__eyebrow {
+  margin-bottom: clamp(0.35rem, 0.9vh, 0.8rem);
 }
 
 .recovery-home .home-hero h1.home-hero__title {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(4rem, 0.18fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(6rem, 0.28fr) minmax(0, 1fr);
   align-items: center;
-  gap: clamp(0.75rem, 1.4vw, 1.75rem);
+  gap: clamp(1rem, 2.2vw, 2.7rem);
   width: 100%;
   max-width: none;
   font-family: var(--sans);
-  font-size: clamp(3.45rem, 5.35vw, 6.1rem);
-  font-weight: 340;
-  line-height: 0.97;
-  letter-spacing: -0.055em;
+  font-size: clamp(3.1rem, 4.35vw, 5.15rem);
+  font-weight: 315;
+  line-height: 0.99;
+  letter-spacing: -0.052em;
   text-wrap: balance;
 }
 
 .recovery-home .home-hero__statement {
-  max-width: 10.25ch;
+  max-width: none;
+}
+
+.recovery-home .home-hero__statement--request {
+  max-width: 7.7ch;
+}
+
+.recovery-home .home-hero__statement--verified {
+  max-width: 8.15ch;
 }
 
 .recovery-home .home-signal-stage {
-  --core-size: clamp(7.6rem, 11.5vw, 10.4rem);
-  min-height: clamp(8.25rem, 17vh, 10.75rem);
+  --core-size: clamp(11rem, 16vw, 15rem);
+  min-height: clamp(11.5rem, 20vh, 14.5rem);
+  margin-top: clamp(-0.15rem, -0.5vh, -0.4rem);
+}
+
+.recovery-home .home-signal-track {
+  height: 1px;
+  background: #28282e;
+}
+
+.recovery-home .home-signal-track__request {
+  width: 48%;
+  background: linear-gradient(90deg, var(--request), #ff625b 72%, rgb(255 59 48 / 30%));
+  box-shadow: 0 0 13px rgb(255 59 48 / 34%);
+}
+
+/* The center path can be visible as structure before qualification, but it is
+ * deliberately quiet until the state advances. Gold stays absent until proof. */
+.recovery-home .home-signal-track__qualify {
+  left: 42%;
+  width: 20%;
+  opacity: 0.22;
+  transform: scaleX(1);
+  background: linear-gradient(90deg, transparent, var(--qualify) 34% 66%, transparent);
+  box-shadow: 0 0 14px rgb(0 229 255 / 28%);
+}
+
+.recovery-home[data-state="qualify"] .home-signal-track__qualify,
+.recovery-home[data-state="execute"] .home-signal-track__qualify,
+.recovery-home[data-state="verify"] .home-signal-track__qualify,
+.recovery-home[data-state="prove"] .home-signal-track__qualify {
+  opacity: 1;
 }
 
 .recovery-home .home-core {
-  background: radial-gradient(circle, rgb(0 0 0 / 98%) 0 50%, rgb(0 0 0 / 78%) 63%, transparent 72%);
+  background: radial-gradient(circle, rgb(0 229 255 / 5%) 0 21%, rgb(0 0 0 / 74%) 45%, transparent 70%);
 }
 
-.recovery-home .home-core .apex-mark {
-  width: 69%;
-  opacity: 0.9;
-  filter: drop-shadow(0 0 8px rgb(255 255 255 / 9%));
-}
-
-/* On the hero the locked Apex acts as a mechanism, not a second brand lockup.
- * A black edge trims the canonical filled geometry against the black core so
- * it carries less visual mass without changing the source identity asset. */
-.recovery-home .home-core .apex-mark path {
-  stroke: #000;
-  stroke-width: 3.4;
+.recovery-home .home-core__apex {
+  width: 88%;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: rgb(242 242 244 / 92%);
+  stroke-width: 0.58;
   stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter:
+    drop-shadow(0 0 8px rgb(255 255 255 / 8%))
+    drop-shadow(10px 5px 14px rgb(0 229 255 / 5%));
 }
 
 .recovery-home .home-system-state {
-  margin-top: -0.15rem;
+  margin-top: -0.25rem;
+  font-size: 0.58rem;
+  opacity: 0.78;
 }
 
 .recovery-home .home-trace-control {
-  margin-top: -0.1rem;
+  margin-top: -0.2rem;
 }
 
-.recovery-home .home-trace-control .data {
-  display: none;
+.recovery-home .home-trace-action {
+  min-height: 38px;
+  gap: 1.35rem;
+  font-size: 0.66rem;
+}
+
+/* The approved composition lets the next causal scene enter the first desktop
+ * viewport instead of reserving a full 100vh for one static frame. */
+.recovery-home .home-sequence {
+  padding-block: clamp(3.2rem, 5.5vw, 5.2rem);
+}
+
+.recovery-home .home-sequence__head {
+  margin-bottom: clamp(2.4rem, 3.5vw, 3.8rem);
 }
 
 @media (width <= 980px) {
-  .recovery-home .home-hero h1.home-hero__title {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    font-size: clamp(3.2rem, 7.4vw, 5.2rem);
+  .recovery-home .home-hero {
+    min-height: clamp(34rem, 70svh, 42rem);
   }
 
-  .recovery-home .home-hero__statement {
-    max-width: 9.5ch;
+  .recovery-home .home-hero h1.home-hero__title {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    font-size: clamp(3rem, 6.8vw, 4.9rem);
+  }
+
+  .recovery-home .home-hero__statement--request {
+    max-width: 7.5ch;
+  }
+
+  .recovery-home .home-hero__statement--verified {
+    max-width: 8ch;
+  }
+
+  .recovery-home .home-signal-stage {
+    --core-size: clamp(9.8rem, 21vw, 13rem);
   }
 }
 
 @media (width <= 820px) {
+  .recovery-home .home-hero {
+    min-height: auto;
+  }
+
   .recovery-home .home-hero > .home-hero__frame {
-    gap: 1.45rem;
-    padding-block: 4rem 3.25rem;
+    gap: 1.4rem;
+    min-height: 0;
+    padding-block: 3.8rem 3rem;
   }
 
   .recovery-home .home-hero h1.home-hero__title {
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.35rem;
-    font-size: clamp(3.15rem, 11vw, 5.3rem);
+    gap: 0.3rem;
+    font-size: clamp(3rem, 10.5vw, 5rem);
   }
 
-  .recovery-home .home-hero__statement {
-    max-width: 9.4ch;
+  .recovery-home .home-hero__statement--request,
+  .recovery-home .home-hero__statement--verified {
+    max-width: 8.8ch;
   }
 
   .recovery-home .home-signal-stage {
-    --core-size: clamp(7rem, 25vw, 9.5rem);
-    min-height: clamp(8.2rem, 24vw, 10rem);
+    --core-size: clamp(8.8rem, 30vw, 11.5rem);
+    min-height: clamp(9.5rem, 28vw, 11.5rem);
   }
 }
 
 @media (width <= 620px) {
   .recovery-home .home-hero > .home-hero__frame {
-    padding-block: 3.5rem 3rem;
+    padding-block: 3.2rem 2.8rem;
   }
 
   .recovery-home .home-hero h1.home-hero__title {
-    font-size: clamp(2.95rem, 13.6vw, 4.45rem);
+    font-size: clamp(2.8rem, 12.8vw, 4.2rem);
   }
 
-  .recovery-home .home-hero__statement {
-    max-width: 8.9ch;
+  .recovery-home .home-hero__statement--request,
+  .recovery-home .home-hero__statement--verified {
+    max-width: 8.4ch;
   }
 }
 
 @media (width <= 420px) {
   .recovery-home .home-hero h1.home-hero__title {
-    font-size: clamp(2.7rem, 13.2vw, 3.75rem);
+    font-size: clamp(2.6rem, 12.7vw, 3.65rem);
   }
 
-  .recovery-home .home-hero__statement {
-    max-width: 8.6ch;
+  .recovery-home .home-signal-stage {
+    --core-size: 8.4rem;
+    min-height: 9rem;
   }
 }
