@@ -3,15 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0b0b0b" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="application-name" content="Clervo" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/assets/brand/clervo-app-icon.svg" />
     <!--
       The two fonts that set the first painted text: Space Grotesk 600 for the
-      headline and the Inter variable face for everything under it. Both are
-      self-hosted because the site's Content-Security-Policy is
-      `font-src 'self'`, and both are preloaded because a swap on the headline
-      is the most visible layout shift this page can produce.
+      legacy display surfaces and the Inter variable face for the recovered
+      editorial system. Both are self-hosted because the site CSP is
+      `font-src 'self'`.
     -->
     <link
       rel="preload"
@@ -27,18 +29,12 @@
       href="/assets/fonts/inter-latin-variable.woff2"
       crossorigin
     />
-    <link
-      rel="preload"
-      as="image"
-      href="/assets/renders/clervo-prism-portrait-risk.webp"
-      media="(max-width: 900px)"
-      fetchpriority="high"
-    />
     <meta name="description" content="Clervo is outcome infrastructure for AI agents. Give your agent a task. Get a verified result." />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Clervo" />
     <meta property="og:title" content="Clervo — Outcome infrastructure for AI agents" />
-    <meta property="og:description" content="Give your agent a task. Get a verified result. Buy outcomes. Not integrations." />
+    <meta property="og:description" content="Give your agent a task. Get a verified result. Outcome infrastructure with inspectable capability, cost, evidence, receipt and replay boundaries." />
     <meta property="og:url" content="https://clervo.dev/" />
     <meta property="og:image" content="https://clervo.dev/assets/brand/clervo-social-card.png" />
     <meta property="og:image:width" content="1200" />
@@ -46,11 +42,13 @@
     <meta property="og:image:alt" content="Clervo Hollow Apex and the words Give your agent a task. Get a verified result." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Clervo — Outcome infrastructure for AI agents" />
-    <meta name="twitter:description" content="Give your agent a task. Get a verified result. Buy outcomes. Not integrations." />
+    <meta name="twitter:description" content="Give your agent a task. Get a verified result. Outcome infrastructure with inspectable capability, cost, evidence, receipt and replay boundaries." />
     <meta name="twitter:image" content="https://clervo.dev/assets/brand/clervo-social-card.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="alternate" type="application/rss+xml" title="Clervo changelog" href="/feed.xml" />
-    <meta name="color-scheme" content="dark" />
+    <link rel="alternate" type="text/plain" title="Clervo LLM reference" href="/llms.txt" />
+    <link rel="alternate" type="text/markdown" title="Clervo agent skill" href="/skill.md" />
+    <link rel="alternate" type="text/markdown" title="Clervo agent reference" href="/agent.md" />
     <title>Clervo — Outcome infrastructure for AI agents</title>
     <script type="application/ld+json">
       {
@@ -61,7 +59,16 @@
             "@id": "https://clervo.dev/#organization",
             "name": "Clervo",
             "url": "https://clervo.dev/",
+            "logo": "https://clervo.dev/assets/brand/clervo-social-avatar.svg",
             "sameAs": ["https://github.com/clervo/clervo", "https://www.npmjs.com/org/clervo"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://clervo.dev/#website",
+            "name": "Clervo",
+            "url": "https://clervo.dev/",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://clervo.dev/#organization" }
           },
           {
             "@type": "SoftwareApplication",
@@ -83,8 +90,7 @@
       The degraded shell.
 
       Every route is prerendered, so with scripting unavailable the page still
-      renders its full content — but the controls that need hydration (the
-      mobile navigation panel, the catalog filters, the Proof Lab) become
+      renders its full content — but the controls that need hydration become
       inert. Saying so is more useful than letting a reader tap a dead button,
       and the note names the paths that keep working without scripting.
     -->
@@ -93,8 +99,8 @@
         <p class="degraded__title">Reading this page without JavaScript.</p>
         <p class="degraded__body">
           All page content is served as static HTML and is complete. Controls
-          that need scripting — the navigation panel, the catalog filters and
-          the Proof Lab — will not respond. The
+          that need scripting — the navigation panel, catalog filters and proof
+          demonstrations — will not respond. The
           <a href="/catalog/">catalog</a>, <a href="/start/">setup guide</a>,
           <a href="/docs/">docs</a> and
           <a href="/openapi.json">OpenAPI document</a> are readable as they are.
