@@ -4,11 +4,11 @@ import path from 'node:path';
 const fixedRoutes = [
   ['/', 'Outcome infrastructure for agents', 'Give your agent a task. Get a verified result. Clervo qualifies capability, cost and policy, executes within a bounded contract, and keeps evidence, receipt and replay state inspectable.'],
   ['/start', 'Set up Clervo', 'Set up Clervo in an agent with explicit approval boundaries, environment checks, recovery states and a verified first-task workflow.'],
-  ['/catalog', 'AI models and capability catalog', 'Inspect Clervo model identities, capability families, current availability, proof state and published pricing without guessing provider or lifecycle state.'],
+  ['/catalog', 'AI model catalog', 'Inspect Clervo model identities, capability families, current availability, proof state and published pricing without guessing provider or lifecycle state.'],
   ['/research', 'Research outcome', 'Use Clervo Research for fresh source retrieval with citations, evidence and explicit outcome boundaries.'],
   ['/platform', 'Clervo Platform', 'One operating contract for bounded requests, capability qualification, execution, verification, evidence and safe replay.'],
   ['/product', 'Product and capabilities', 'Explore ClervoRouter and the six permanent capability families behind one bounded outcome contract.'],
-  ['/products/search', 'Research product family', 'Clervo Research retrieves fresh sources with citations and evidence while keeping route, price and proof state explicit.'],
+  ['/products/search', 'Search product family', 'Clervo Research retrieves fresh sources with citations and evidence while keeping route, price and proof state explicit.'],
   ['/products/ai', 'AI product family', 'Clervo AI exposes a qualified model catalog behind one request contract with exact model identity, capability, price and availability boundaries.'],
   ['/products/sandbox', 'Secure Sandbox product family', 'Clervo Secure Sandbox runs bounded no-network code execution with resource limits, receipt and replay-safe outcome semantics.'],
   ['/products/rpc', 'Multi-chain RPC product family', 'Clervo Multi-chain RPC product identity and current commercial-rights availability boundary.'],
