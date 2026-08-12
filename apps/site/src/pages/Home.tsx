@@ -53,6 +53,15 @@ const journeySteps: JourneyStep[] = [
   },
 ];
 
+const ecosystemBrands = [
+  { id: 'openai', label: 'OpenAI' },
+  { id: 'anthropic', label: 'Anthropic' },
+  { id: 'nvidia', label: 'NVIDIA' },
+  { id: 'cloudflare', label: 'Cloudflare' },
+  { id: 'aws', label: 'aws' },
+  { id: 'google-cloud', label: 'Google Cloud' },
+] as const;
+
 const familyRoutes: Record<ObservedProduct['id'], string> = {
   search: '/products/search',
   ai: '/products/ai',
@@ -103,7 +112,6 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   const [running, setRunning] = useState(false);
   const [copied, setCopied] = useState(false);
   const timers = useRef<number[]>([]);
-  const activeIndex = Math.max(0, journeySteps.findIndex(({ id }) => id === state));
   const liveFamilies = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
 
   const clearTimers = () => {
@@ -151,74 +159,52 @@ export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
     <div className="recovery-home" data-running={running} data-state={state}>
       <a className="skip-link" href="#home-title">Skip to main content</a>
 
-      <section className="home-hero" aria-labelledby="home-title">
+      <section className="home-hero home-hero--exact" aria-labelledby="home-title">
         <div className="home-hero__frame shell">
           <p className="eyebrow home-hero__eyebrow">Outcome infrastructure for agents</p>
-          <h1 className="home-hero__title" id="home-title">
-            <span className="home-hero__statement home-hero__statement--request">
-              <span className="home-hero__line">Give your</span>
-              <span className="home-hero__line">agent a task.</span>
-            </span>
-            <span className="home-hero__statement home-hero__statement--verified">
-              <span className="home-hero__line">Get a</span>
-              <span className="home-hero__line">verified result.</span>
-            </span>
-          </h1>
 
-          <div className="home-signal-stage" aria-label="Clervo task lifecycle product model">
-            <span className="home-signal-label home-signal-label--request">Request</span>
-            <span className="home-signal-label home-signal-label--verified">Verified</span>
-            <span className="home-signal-track" aria-hidden="true">
-              <i className="home-signal-track__request" />
-              <i className="home-signal-track__qualify" />
-              <i className="home-signal-track__verified" />
-            </span>
-            <span className="home-core" aria-hidden="true">
-              <svg className="home-core__apex" viewBox="0 0 64 64" focusable="false">
-                <path d="M32 8 59.5 55H4.5Z" />
-              </svg>
-            </span>
+          <div className="home-hero__scene">
+            <h1 className="home-hero__title" id="home-title">
+              <span className="home-hero__statement home-hero__statement--request">
+                <span className="home-hero__line">Give your</span>
+                <span className="home-hero__line">agent a task.</span>
+              </span>
+              <span className="home-hero__statement home-hero__statement--verified">
+                <span className="home-hero__line">Get a verified</span>
+                <span className="home-hero__line">result.</span>
+              </span>
+            </h1>
+
+            <div className="home-signal-stage" aria-label="Clervo task lifecycle product model">
+              <span className="home-signal-label home-signal-label--request">Request</span>
+              <span className="home-signal-label home-signal-label--verified">Verified</span>
+              <span className="home-signal-track" aria-hidden="true">
+                <i className="home-signal-track__request" />
+                <i className="home-signal-track__qualify" />
+                <i className="home-signal-track__verified" />
+              </span>
+              <span className="home-core" aria-hidden="true">
+                <img className="home-core__asset" src="/assets/brand/clervo-apex-hero.svg" alt="" />
+              </span>
+            </div>
+
+            <p className="home-system-state data" aria-live="polite">
+              {stateReadout[state].map((item) => <span key={item}>{item}</span>)}
+            </p>
+
+            <div className="home-trace-control">
+              <button className="home-trace-action" disabled={running} onClick={runTrace} type="button">
+                {running ? 'Tracing task…' : state === 'prove' ? 'Trace again' : 'Trace the contract'}
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
           </div>
 
-          <p className="home-system-state data" aria-live="polite">
-            {stateReadout[state].map((item) => <span key={item}>{item}</span>)}
-          </p>
-
-          <div className="home-trace-control">
-            <button className="home-trace-action" disabled={running} onClick={runTrace} type="button">
-              {running ? 'Tracing task…' : state === 'prove' ? 'Trace again' : 'Trace the contract'}
-              <span aria-hidden="true">→</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section className="home-sequence" aria-labelledby="home-sequence-title">
-        <div className="shell">
-          <div className="home-sequence__head">
-            <p className="eyebrow" id="home-sequence-title">The operating sequence</p>
-            <Link className="text-link" to="/product">Explore the system <span aria-hidden="true">→</span></Link>
-          </div>
-          <ol className="home-sequence__track" aria-label="Clervo operating sequence">
-            {journeySteps.map((step, index) => (
-              <li
-                data-active={step.id === state}
-                data-complete={index < activeIndex}
-                data-state={step.id}
-                key={step.id}
-              >
-                <button
-                  type="button"
-                  onClick={() => selectState(step.id)}
-                  aria-current={step.id === state ? 'step' : undefined}
-                >
-                  <span className="home-sequence__number">{String(index + 1).padStart(2, '0')}</span>
-                  <strong>{step.label}</strong>
-                  <small>{step.detail}</small>
-                </button>
-              </li>
+          <ul className="home-ecosystem" aria-label="Clervo technology ecosystem">
+            {ecosystemBrands.map((brand) => (
+              <li data-brand={brand.id} key={brand.id}><span>{brand.label}</span></li>
             ))}
-          </ol>
+          </ul>
         </div>
       </section>
 
