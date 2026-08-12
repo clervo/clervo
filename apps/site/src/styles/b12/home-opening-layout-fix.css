@@ -1,0 +1,7 @@
+/*
+ * The rebuilt Home opening intentionally reuses the historic `.home-hero`
+ * hook so semantics and analytics stay stable. The recovery sheet loaded
+ * earlier still assigns that hook a three-column grid and vertical padding,
+ * and its `.home-hero h1` selector is more specific than the new title class.
+ * Reset those legacy layout responsibilities here so the cinematic frame owns
+ * the full viewport width
