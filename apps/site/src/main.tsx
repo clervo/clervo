@@ -27,6 +27,7 @@ import './styles/b12/home-motion-system.css';
 import './styles/b12/home-full-picture.css';
 import './styles/b12/home-exact-hero.css';
 import './styles/b12/home-target-fidelity.css';
+import './styles/b12/home-lock-in.css';
 
 const root = document.getElementById('root');
 if (root === null) throw new Error('clervo_site_root_missing');
