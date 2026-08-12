@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "qa:b12": "node ../../scripts/site/full-site-recovery-qa.mjs && node ../../scripts/site/full-site-route-smoke.mjs --use-built",
     "qa:recovery": "node ../../scripts/site/full-site-recovery-qa.mjs && node ../../scripts/site/full-site-route-smoke.mjs --use-built",
+    "qa:recovery:built": "node ../../scripts/site/full-site-recovery-qa.mjs --use-built && node ../../scripts/site/full-site-route-smoke.mjs --use-built",
     "qa:b12:legacy": "node ../../scripts/site/b12-visual-qa.mjs"
   },
   "dependencies": {
