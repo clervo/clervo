@@ -1,0 +1,618 @@
+/*
+ * Home recovery below the locked hero.
+ *
+ * One continuous story: operating layer -> serving families -> connect -> proof
+ * -> next task. The sections share the hero's restraint instead of reverting to
+ * boxed B12 marketing layouts.
+ */
+
+.recovery-home {
+  background: #000;
+}
+
+.recovery-home > :not(.clervo-home-hero) {
+  color: var(--text);
+}
+
+.recovery-home .eyebrow {
+  color: rgb(242 242 244 / 47%);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 520;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.recovery-home :where(.home-platform, .home-connect, .home-proof, .home-final) h2 {
+  font-family: var(--sans);
+  font-weight: 330;
+  letter-spacing: -0.052em;
+}
+
+.recovery-home :where(.lede, small, .quiet) {
+  color: rgb(242 242 244 / 58%);
+}
+
+/* Operating layer --------------------------------------------------------- */
+.home-platform {
+  padding-block: clamp(6rem, 11vw, 10rem) clamp(5rem, 8vw, 8rem);
+  border-top: 1px solid rgb(255 255 255 / 7%);
+  border-bottom: 1px solid rgb(255 255 255 / 7%);
+  background: #000;
+}
+
+.home-platform__intro.shell {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.52fr) minmax(0, 1.55fr) minmax(17rem, 0.78fr);
+  align-items: start;
+  gap: clamp(2.5rem, 5vw, 6rem);
+  max-width: 92rem;
+  padding-inline: var(--clervo-gutter);
+}
+
+.home-platform__intro .eyebrow {
+  padding-top: 0.55rem;
+}
+
+.home-platform__intro h2 {
+  max-width: 13ch;
+  margin: 0;
+  font-size: clamp(3.6rem, 5.4vw, 5.9rem);
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.home-platform__intro .lede {
+  max-width: 24rem;
+  padding-top: 0.45rem;
+  font-size: clamp(1rem, 1.18vw, 1.15rem);
+  line-height: 1.65;
+}
+
+.home-capabilities.shell {
+  max-width: 92rem;
+  margin-top: clamp(6rem, 10vw, 9rem);
+  padding-inline: var(--clervo-gutter);
+}
+
+.home-capabilities__status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid rgb(255 255 255 / 16%);
+  color: rgb(242 242 244 / 45%);
+  font-size: 0.72rem;
+}
+
+.home-capabilities__status .state {
+  min-height: 27px;
+  padding-inline: 0.8rem;
+  border-color: color-mix(in srgb, var(--qualify) 46%, transparent);
+  background: color-mix(in srgb, var(--qualify) 4%, transparent);
+  color: var(--qualify);
+}
+
+.home-capabilities ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-capabilities li {
+  min-width: 0;
+  border-bottom: 1px solid rgb(255 255 255 / 9%);
+}
+
+.home-capabilities li:nth-child(odd) {
+  border-right: 1px solid rgb(255 255 255 / 9%);
+}
+
+.home-capabilities li:last-child {
+  background: rgb(255 255 255 / 1.5%);
+}
+
+.home-capabilities li > a {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.25rem;
+  min-height: clamp(7.3rem, 10vw, 9rem);
+  padding: clamp(1.5rem, 2.4vw, 2.2rem);
+  color: var(--text);
+  text-decoration: none;
+  transition: background-color 220ms ease, padding-left 260ms ease;
+}
+
+.home-capabilities li > a:hover {
+  padding-left: clamp(1.8rem, 2.7vw, 2.6rem);
+  background: rgb(255 255 255 / 2%);
+}
+
+.home-capability__index {
+  color: rgb(242 242 244 / 40%);
+  font-size: 0.72rem;
+}
+
+.home-capability__body {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.home-capability__body strong {
+  font-family: var(--sans);
+  font-size: clamp(1.25rem, 1.55vw, 1.65rem);
+  font-weight: 440;
+  letter-spacing: -0.025em;
+}
+
+.home-capability__body small {
+  max-width: 25rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.home-capabilities .state {
+  min-height: 26px;
+  padding-inline: 0.7rem;
+  background: transparent;
+  font-size: 0.64rem;
+}
+
+/* Connect ----------------------------------------------------------------- */
+.home-connect.shell {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(29rem, 1.14fr);
+  align-items: center;
+  gap: clamp(5rem, 9vw, 10rem);
+  min-height: min(100svh, 60rem);
+  max-width: 92rem;
+  padding: clamp(6rem, 11vw, 10rem) var(--clervo-gutter);
+}
+
+.home-connect__copy h2 {
+  max-width: 11ch;
+  margin-bottom: 1.7rem;
+  font-size: clamp(3.3rem, 4.8vw, 5.4rem);
+  line-height: 0.98;
+}
+
+.home-connect__copy .lede {
+  max-width: 35rem;
+  margin-bottom: 2.6rem;
+  font-size: clamp(1rem, 1.22vw, 1.18rem);
+  line-height: 1.62;
+}
+
+.home-client-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 0 2.5rem;
+  border-top: 1px solid rgb(255 255 255 / 12%);
+}
+
+.home-client-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 64px;
+  padding: 0.4rem 0.2rem;
+  border-bottom: 1px solid rgb(255 255 255 / 9%);
+  color: rgb(242 242 244 / 84%);
+  text-decoration: none;
+}
+
+.home-client-list a:nth-child(odd) {
+  margin-right: 1.2rem;
+}
+
+.home-client-list a:nth-child(even) {
+  margin-left: 1.2rem;
+}
+
+.home-client-list strong {
+  font-size: 0.88rem;
+  font-weight: 480;
+}
+
+.home-client-list span {
+  color: rgb(242 242 244 / 42%);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.home-actions .button--primary {
+  min-height: 48px;
+  padding-inline: 1.6rem;
+  border-radius: 999px;
+  background: #f3f3f4;
+  color: #080808;
+  box-shadow: none;
+}
+
+.home-actions .text-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding-inline: 0.15rem;
+  border-bottom: 1px solid rgb(255 255 255 / 22%);
+  color: rgb(242 242 244 / 82%);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.home-free-call {
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 13%);
+  background: #030303;
+}
+
+.home-free-call header,
+.home-free-call footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 52px;
+  padding-inline: 1.25rem;
+  color: rgb(242 242 244 / 48%);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+}
+
+.home-free-call header {
+  border-bottom: 1px solid rgb(255 255 255 / 9%);
+}
+
+.home-free-call footer {
+  border-top: 1px solid rgb(255 255 255 / 9%);
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+}
+
+.home-free-call button {
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--qualify);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  cursor: pointer;
+}
+
+.home-free-call pre {
+  min-height: clamp(20rem, 33vw, 31rem);
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: clamp(1.5rem, 3vw, 2.6rem);
+  overflow: auto;
+  color: rgb(242 242 244 / 79%);
+  font-family: var(--mono);
+  font-size: clamp(0.72rem, 0.82vw, 0.83rem);
+  line-height: 1.75;
+}
+
+/* Proof ------------------------------------------------------------------- */
+.home-proof {
+  border-top: 1px solid rgb(255 255 255 / 8%);
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+  background: #000;
+}
+
+.home-proof__layout.shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(30rem, 0.98fr);
+  align-items: stretch;
+  max-width: none;
+  min-height: min(92svh, 56rem);
+  padding: 0;
+}
+
+.home-proof__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(6rem, 10vw, 9rem) clamp(2rem, 8vw, 9rem);
+}
+
+.home-proof__copy h2 {
+  max-width: 10ch;
+  margin-bottom: 1.7rem;
+  font-size: clamp(3.5rem, 5vw, 5.7rem);
+  line-height: 0.98;
+}
+
+.home-proof__copy .lede {
+  max-width: 36rem;
+  margin-bottom: 2.2rem;
+  font-size: clamp(1rem, 1.18vw, 1.17rem);
+  line-height: 1.65;
+}
+
+.home-proof__copy .text-link {
+  width: fit-content;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgb(255 255 255 / 24%);
+  color: rgb(242 242 244 / 88%);
+  text-decoration: none;
+}
+
+.home-receipt {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(5rem, 9vw, 8rem) clamp(2rem, 7vw, 7rem);
+  border-left: 1px solid rgb(255 255 255 / 9%);
+  background: rgb(255 255 255 / 1.4%);
+}
+
+.home-receipt::before {
+  content: "";
+  position: absolute;
+  top: 24%;
+  bottom: 24%;
+  left: 0;
+  width: 1px;
+  background: linear-gradient(transparent, var(--verified), transparent);
+  box-shadow: 0 0 28px rgb(255 200 0 / 13%);
+}
+
+.home-receipt__status {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.35rem;
+  border-bottom: 1px solid rgb(255 200 0 / 25%);
+  color: var(--verified);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.home-receipt__status strong {
+  font-weight: 500;
+}
+
+.home-receipt dl {
+  margin: 0;
+}
+
+.home-receipt dl div {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 1.5rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid rgb(255 255 255 / 9%);
+}
+
+.home-receipt dt {
+  color: rgb(242 242 244 / 42%);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home-receipt dd {
+  margin: 0;
+  color: rgb(242 242 244 / 68%);
+  font-size: 0.9rem;
+}
+
+/* Final ------------------------------------------------------------------- */
+.home-final.shell {
+  min-height: min(78svh, 48rem);
+  max-width: 64rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(6rem, 10vw, 9rem) var(--clervo-gutter);
+  text-align: center;
+}
+
+.home-final h2 {
+  max-width: 13ch;
+  margin: 0 auto 2.2rem;
+  font-size: clamp(3.5rem, 5.8vw, 6rem);
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.home-final .eyebrow {
+  margin-bottom: 2rem;
+}
+
+.home-final .home-actions {
+  justify-content: center;
+}
+
+/* Motion belongs to the narrative, not to decoration. */
+@media (prefers-reduced-motion: no-preference) {
+  .home-capabilities li > a,
+  .home-client-list a,
+  .home-proof__copy .text-link,
+  .home-actions .text-link {
+    transition: color 200ms ease, border-color 200ms ease, background-color 200ms ease, transform 260ms cubic-bezier(.22,.75,.2,1);
+  }
+
+  .home-client-list a:hover,
+  .home-proof__copy .text-link:hover,
+  .home-actions .text-link:hover {
+    transform: translateX(3px);
+  }
+}
+
+@media (width <= 980px) {
+  .home-platform__intro.shell {
+    grid-template-columns: 1fr;
+    gap: 1.8rem;
+  }
+
+  .home-platform__intro h2 {
+    max-width: 15ch;
+  }
+
+  .home-platform__intro .lede {
+    max-width: 38rem;
+  }
+
+  .home-connect.shell,
+  .home-proof__layout.shell {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .home-connect.shell {
+    gap: 4rem;
+  }
+
+  .home-receipt {
+    min-height: 36rem;
+    border-top: 1px solid rgb(255 255 255 / 9%);
+    border-left: 0;
+  }
+
+  .home-receipt::before {
+    top: 0;
+    right: 25%;
+    bottom: auto;
+    left: 25%;
+    width: auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--verified), transparent);
+  }
+}
+
+@media (width <= 700px) {
+  .home-platform {
+    padding-block: 5.5rem 4rem;
+  }
+
+  .home-platform__intro.shell,
+  .home-capabilities.shell,
+  .home-connect.shell {
+    padding-inline: 1.25rem;
+  }
+
+  .home-platform__intro h2,
+  .home-connect__copy h2,
+  .home-proof__copy h2,
+  .home-final h2 {
+    font-size: clamp(2.8rem, 12vw, 4rem);
+  }
+
+  .home-capabilities.shell {
+    margin-top: 4.5rem;
+  }
+
+  .home-capabilities__status {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .home-capabilities ul {
+    grid-template-columns: 1fr;
+  }
+
+  .home-capabilities li:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .home-capabilities li > a {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    min-height: 0;
+    padding: 1.6rem 0;
+  }
+
+  .home-capabilities li > a:hover {
+    padding-left: 0;
+  }
+
+  .home-capabilities .state {
+    grid-column: 2;
+    width: fit-content;
+    margin-top: 0.4rem;
+  }
+
+  .home-connect.shell {
+    padding-block: 5.5rem;
+  }
+
+  .home-client-list {
+    grid-template-columns: 1fr;
+  }
+
+  .home-client-list a:nth-child(n) {
+    margin: 0;
+  }
+
+  .home-free-call pre {
+    min-height: 20rem;
+    padding: 1.25rem;
+    font-size: 0.68rem;
+  }
+
+  .home-free-call footer {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 72px;
+    padding-block: 0.8rem;
+  }
+
+  .home-proof__copy,
+  .home-receipt {
+    padding: 5.5rem 1.25rem;
+  }
+
+  .home-receipt {
+    min-height: 0;
+  }
+
+  .home-receipt__status {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .home-receipt dl div {
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+  }
+
+  .home-final.shell {
+    min-height: 70svh;
+    padding-inline: 1.25rem;
+  }
+
+  .home-final .home-actions {
+    width: min(100%, 22rem);
+    flex-direction: column;
+  }
+
+  .home-final .button {
+    width: 100%;
+  }
+}
