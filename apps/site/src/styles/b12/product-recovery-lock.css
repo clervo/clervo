@@ -1,0 +1,797 @@
+/*
+ * Product/data/trust recovery lock.
+ *
+ * Dense surfaces keep their information architecture, but the presentation is
+ * normalized to Clervo's editorial + instrument language: open rows, exact
+ * metadata, hairlines, black space, and state colour only where semantically
+ * earned.
+ */
+
+/* Product overview / family pages ---------------------------------------- */
+.b12-slice4,
+.b12-operation,
+.model-page,
+.s6-page,
+.s6-support {
+  background: #000;
+  color: var(--text);
+}
+
+.b12-slice4 :where(.s4-product-hero, .s4-family-hero),
+.model-hero,
+.s5-operation-hero,
+.s6-hero {
+  border-color: var(--clervo-rule);
+  background: transparent;
+}
+
+.s4-product-hero.shell,
+.s4-family-hero.shell,
+.s4-family-content.shell,
+.model-hero.shell,
+.model-band.shell {
+  max-width: 92rem;
+  padding-inline: var(--clervo-gutter);
+}
+
+.s4-product-hero {
+  min-height: calc(100svh - 64px);
+  padding-block: clamp(6rem, 10vw, 9rem);
+}
+
+.s4-product-copy h1,
+.s4-family-hero h1,
+.model-hero h1 {
+  max-width: 12ch;
+}
+
+.s4-router-visual {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.s4-router-field {
+  opacity: 0.34;
+}
+
+.s4-product-facts,
+.s4-family-summary,
+.model-summary,
+.s5-hero-summary,
+.s6-hero__aside {
+  border: 0;
+  border-left: 1px solid var(--clervo-rule-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.s4-product-facts > div,
+.s4-family-summary > div,
+.model-summary > div,
+.s5-summary-row,
+.s6-fact-stack > div {
+  border-color: var(--clervo-rule);
+}
+
+.s4-section {
+  padding-block: var(--clervo-section-y);
+  border-top: 1px solid var(--clervo-rule);
+}
+
+.s4-section > .shell,
+.s4-family-content.shell {
+  max-width: 92rem;
+  padding-inline: var(--clervo-gutter);
+}
+
+.s4-section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.55fr);
+  gap: clamp(2.5rem, 6vw, 7rem);
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.s4-section-head h2 {
+  max-width: 14ch;
+  margin: 0;
+}
+
+.s4-router-contract,
+.s4-contract-grid,
+.s4-boundary-grid,
+.s4-interfaces,
+.s4-family-grid,
+.s4-claims-grid {
+  gap: 0;
+  border-top: 1px solid var(--clervo-rule-strong);
+  border-left: 1px solid var(--clervo-rule);
+}
+
+.s4-router-copy,
+.s4-contract-panel,
+.s4-boundary-card,
+.s4-interface,
+.s4-family-panel,
+.s4-claims-grid article {
+  border: 0;
+  border-right: 1px solid var(--clervo-rule);
+  border-bottom: 1px solid var(--clervo-rule);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.s4-router-step,
+.s4-family-row,
+.s4-operation-card,
+.s4-family-strip a {
+  border-color: var(--clervo-rule);
+  background: transparent;
+}
+
+.s4-router-step:hover,
+.s4-family-row:hover,
+.s4-operation-card:hover,
+.s4-family-strip a:hover {
+  background: rgb(255 255 255 / 1.8%);
+}
+
+.s4-family-ledger {
+  border-top: 1px solid var(--clervo-rule-strong);
+}
+
+.s4-family-row {
+  min-height: 7.8rem;
+}
+
+.s4-family-row h3,
+.s4-operation-card h3,
+.s4-family-panel h2,
+.s4-contract-panel h3,
+.s4-interface h3 {
+  font-family: var(--sans);
+  font-weight: 430;
+  letter-spacing: -0.03em;
+}
+
+.s4-family-row p,
+.s4-operation-card p,
+.s4-family-panel p,
+.s4-contract-panel p,
+.s4-interface p {
+  color: var(--clervo-muted);
+}
+
+.s4-family-hero {
+  padding-block: clamp(6rem, 10vw, 9rem) clamp(4rem, 6vw, 6rem);
+}
+
+.s4-back-link,
+.model-breadcrumbs,
+.s5-breadcrumbs {
+  color: var(--clervo-quiet);
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+}
+
+.s4-family-hero-grid,
+.model-hero-grid,
+.s5-hero-grid {
+  gap: clamp(3rem, 7vw, 8rem);
+}
+
+.s4-truth-note,
+.model-alias-note,
+.model-example-note,
+.s4-provenance {
+  color: var(--clervo-quiet);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.s4-family-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.s4-family-panel {
+  min-height: 23rem;
+  padding: clamp(2rem, 4vw, 3.5rem);
+}
+
+.s4-family-operations,
+.s4-claim-boundary {
+  margin-top: clamp(5rem, 9vw, 8rem);
+}
+
+.s4-catalog-head,
+.s4-family-strip--footer {
+  border-color: var(--clervo-rule-strong);
+}
+
+.s4-operation-list {
+  border-top: 1px solid var(--clervo-rule-strong);
+}
+
+.s4-operation-card {
+  min-height: 0;
+  padding-block: 1.4rem;
+}
+
+.s4-claims-grid .refused {
+  background: rgb(255 59 48 / 1.8%);
+}
+
+/* Models ------------------------------------------------------------------ */
+.model-hero {
+  padding-block: clamp(6rem, 10vw, 9rem) clamp(4rem, 6vw, 6rem);
+}
+
+.model-description {
+  max-width: 42rem;
+  color: var(--clervo-muted);
+  font-size: clamp(1rem, 1.15vw, 1.18rem);
+  line-height: 1.65;
+}
+
+.model-id-line {
+  border-color: var(--clervo-rule);
+}
+
+.model-band {
+  padding-block: var(--clervo-section-y);
+  border-top: 1px solid var(--clervo-rule);
+}
+
+.model-section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.62fr);
+  gap: clamp(2rem, 5vw, 6rem);
+  margin-bottom: clamp(2.8rem, 5vw, 4.5rem);
+}
+
+.model-section-head h2 {
+  max-width: 14ch;
+}
+
+.model-contract-grid,
+.model-price-grid,
+.model-related {
+  gap: 0;
+  border-top: 1px solid var(--clervo-rule-strong);
+  border-left: 1px solid var(--clervo-rule);
+}
+
+.model-contract-grid article,
+.model-price-grid > *,
+.model-related a {
+  border: 0;
+  border-right: 1px solid var(--clervo-rule);
+  border-bottom: 1px solid var(--clervo-rule);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.model-contract-grid article {
+  min-height: 14rem;
+  padding: 1.8rem;
+}
+
+.model-contract-grid h3,
+.model-related strong {
+  font-family: var(--sans);
+  font-weight: 440;
+  letter-spacing: -0.025em;
+}
+
+.model-contract-grid li,
+.model-contract-grid p,
+.model-price-grid p,
+.model-related span {
+  color: var(--clervo-muted);
+}
+
+.model-blocked {
+  border-color: rgb(255 59 48 / 35%);
+  border-radius: 0;
+  background: rgb(255 59 48 / 2%);
+}
+
+/* Operation contracts ----------------------------------------------------- */
+.b12-operation {
+  --s5-shell: min(92rem, calc(100vw - 2 * var(--clervo-gutter)));
+}
+
+.s5-contract-picker {
+  border-color: var(--clervo-rule);
+  background: #000;
+}
+
+.s5-contract-picker-inner,
+.s5-operation-hero.s5-narrow,
+.s5-contract-strip-inner,
+.s5-contract-layout {
+  width: min(92rem, calc(100% - 2 * var(--clervo-gutter)));
+  max-width: none;
+  margin-inline: auto;
+}
+
+.s5-contract-picker-inner {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.s5-contract-picker-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.s5-contract-choice {
+  flex: 0 0 auto;
+  border-color: var(--clervo-rule);
+  background: transparent;
+}
+
+.s5-contract-choice.active {
+  color: var(--text);
+  background: rgb(0 229 255 / 2.4%);
+}
+
+.s5-operation-hero {
+  padding-block: clamp(6rem, 10vw, 9rem) clamp(4rem, 6vw, 6rem);
+}
+
+.s5-operation-id {
+  color: rgb(242 242 244 / 64%);
+  background: transparent;
+}
+
+.s5-hero-badges {
+  gap: 0.55rem;
+}
+
+.s5-badge {
+  border-color: var(--clervo-rule-strong);
+  background: transparent;
+}
+
+.s5-contract-strip {
+  border-block: 1px solid var(--clervo-rule);
+  background: rgb(255 255 255 / 1%);
+}
+
+.s5-contract-stat {
+  border-color: var(--clervo-rule);
+}
+
+.s5-contract-layout {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr);
+  gap: clamp(3rem, 6vw, 7rem);
+  padding-block: clamp(4rem, 7vw, 7rem);
+}
+
+.s5-contract-nav {
+  position: sticky;
+  top: 88px;
+  align-self: start;
+  border-top: 1px solid var(--clervo-rule-strong);
+}
+
+.s5-contract-nav a {
+  min-height: 44px;
+  border-bottom: 1px solid var(--clervo-rule);
+  color: var(--clervo-quiet);
+  font-size: 0.72rem;
+}
+
+.s5-contract-nav a:hover {
+  color: var(--text);
+}
+
+.s5-contract-section {
+  padding: 0 0 clamp(5rem, 8vw, 7rem);
+  margin-bottom: clamp(5rem, 8vw, 7rem);
+  border-bottom: 1px solid var(--clervo-rule);
+}
+
+.s5-contract-section:last-child {
+  margin-bottom: 0;
+}
+
+.s5-section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.7fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.s5-section-head h2 {
+  max-width: 14ch;
+  margin: 0;
+}
+
+.s5-section-head > p {
+  color: var(--clervo-muted);
+  line-height: 1.65;
+}
+
+.s5-two-col,
+.s5-availability-grid,
+.s5-quote-layout,
+.s5-execution-shell,
+.s5-latency-layout {
+  gap: 0;
+  border-top: 1px solid var(--clervo-rule-strong);
+  border-left: 1px solid var(--clervo-rule);
+}
+
+.s5-panel,
+.s5-availability-cell,
+.s5-quote-copy,
+.s5-approval-box,
+.s5-execution-control,
+.s5-pipeline,
+.s5-latency-empty,
+.s5-timeout-card {
+  border: 0;
+  border-right: 1px solid var(--clervo-rule);
+  border-bottom: 1px solid var(--clervo-rule);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.s5-schema-shell,
+.s5-result-window {
+  border-color: var(--clervo-rule-strong);
+  border-radius: 0;
+  background: #020303;
+}
+
+.s5-field-row,
+.s5-quote-row,
+.s5-pipeline-step,
+.s5-code-head {
+  border-color: var(--clervo-rule);
+}
+
+.s5-tab,
+.s5-scenario-tabs button {
+  border-color: var(--clervo-rule-strong);
+  border-radius: 999px;
+  background: transparent;
+}
+
+.s5-tab.active,
+.s5-scenario-tabs button.active {
+  color: #020303;
+  background: var(--text);
+}
+
+.s5-execution-result.verified {
+  color: var(--verified);
+}
+
+/* Trust / pricing / proof / status / legal -------------------------------- */
+.s6-subnav {
+  position: sticky;
+  top: 64px;
+  z-index: 45;
+  border-bottom: 1px solid var(--clervo-rule);
+  background: rgb(0 0 0 / 88%);
+}
+
+.s6-subnav__inner {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.s6-subnav__inner::-webkit-scrollbar {
+  display: none;
+}
+
+.s6-subnav a {
+  flex: 0 0 auto;
+  min-height: 46px;
+  padding-inline: 1rem;
+  border-right: 1px solid var(--clervo-rule);
+  color: var(--clervo-quiet);
+  font-size: 0.72rem;
+}
+
+.s6-subnav a.is-active {
+  color: var(--text);
+  background: rgb(255 255 255 / 2%);
+}
+
+.s6-shell,
+.s6-narrow {
+  width: min(92rem, calc(100% - 2 * var(--clervo-gutter)));
+  max-width: none;
+  margin-inline: auto;
+}
+
+.s6-hero {
+  padding-block: clamp(7rem, 11vw, 10rem) clamp(4rem, 7vw, 6rem);
+}
+
+.s6-hero__grid {
+  gap: clamp(3rem, 7vw, 8rem);
+}
+
+.s6-hero__copy h1 {
+  max-width: 12ch;
+}
+
+.s6-core-orbit {
+  opacity: 0.34;
+}
+
+.s6-orbit-ring {
+  border-color: rgb(255 255 255 / 10%);
+}
+
+.s6-section {
+  padding-block: var(--clervo-section-y);
+  border-top: 1px solid var(--clervo-rule);
+}
+
+.s6-section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.65fr);
+  gap: clamp(2.5rem, 6vw, 7rem);
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.s6-section-head h2 {
+  max-width: 14ch;
+  margin: 0;
+}
+
+.s6-section-head > p {
+  color: var(--clervo-muted);
+  line-height: 1.65;
+}
+
+.s6-principles,
+.s6-state-grid,
+.s6-trust-grid,
+.s6-control-grid {
+  gap: 0;
+  border-top: 1px solid var(--clervo-rule-strong);
+  border-left: 1px solid var(--clervo-rule);
+}
+
+.s6-principles article,
+.s6-state-card,
+.s6-trust-grid article,
+.s6-control-grid article {
+  min-height: 13rem;
+  padding: clamp(1.6rem, 3vw, 2.5rem);
+  border: 0;
+  border-right: 1px solid var(--clervo-rule);
+  border-bottom: 1px solid var(--clervo-rule);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.s6-ledger {
+  border-top: 1px solid var(--clervo-rule-strong);
+}
+
+.s6-ledger-row {
+  min-height: 64px;
+  border-color: var(--clervo-rule);
+  background: transparent;
+}
+
+.s6-ledger-row:not(.s6-ledger-row--head):hover {
+  background: rgb(255 255 255 / 1.8%);
+}
+
+.s6-quote-shell {
+  gap: 0;
+  border-top: 1px solid var(--clervo-rule-strong);
+  border-left: 1px solid var(--clervo-rule);
+}
+
+.s6-quote-copy,
+.s6-quote-card {
+  border: 0;
+  border-right: 1px solid var(--clervo-rule);
+  border-bottom: 1px solid var(--clervo-rule);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.s6-state-card--verified {
+  box-shadow: inset 0 1px 0 rgb(255 200 0 / 40%);
+}
+
+.s6-state-card--refused {
+  box-shadow: inset 0 1px 0 rgb(255 59 48 / 34%);
+}
+
+/* Mobile product/data surfaces ------------------------------------------- */
+@media (width <= 900px) {
+  .s4-product-hero,
+  .s4-family-hero,
+  .model-hero,
+  .s5-operation-hero,
+  .s6-hero {
+    min-height: 0;
+    padding-block: 6.5rem 4.5rem;
+  }
+
+  .s4-section-head,
+  .model-section-head,
+  .s5-section-head,
+  .s6-section-head {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .s4-product-facts,
+  .s4-family-summary,
+  .model-summary,
+  .s5-hero-summary,
+  .s6-hero__aside {
+    border-top: 1px solid var(--clervo-rule-strong);
+    border-left: 0;
+  }
+
+  .s4-family-grid,
+  .s4-contract-grid,
+  .s4-boundary-grid,
+  .s4-interfaces,
+  .s4-claims-grid,
+  .model-contract-grid,
+  .model-price-grid,
+  .model-related,
+  .s5-two-col,
+  .s5-availability-grid,
+  .s5-quote-layout,
+  .s5-execution-shell,
+  .s5-latency-layout,
+  .s6-principles,
+  .s6-state-grid,
+  .s6-trust-grid,
+  .s6-control-grid,
+  .s6-quote-shell {
+    grid-template-columns: 1fr;
+    border-left: 0;
+  }
+
+  .s4-router-contract {
+    grid-template-columns: 1fr;
+    border-left: 0;
+  }
+
+  .s4-router-copy,
+  .s4-contract-panel,
+  .s4-boundary-card,
+  .s4-interface,
+  .s4-family-panel,
+  .s4-claims-grid article,
+  .model-contract-grid article,
+  .model-price-grid > *,
+  .model-related a,
+  .s5-panel,
+  .s5-availability-cell,
+  .s5-quote-copy,
+  .s5-approval-box,
+  .s5-execution-control,
+  .s5-pipeline,
+  .s5-latency-empty,
+  .s5-timeout-card,
+  .s6-principles article,
+  .s6-state-card,
+  .s6-trust-grid article,
+  .s6-control-grid article,
+  .s6-quote-copy,
+  .s6-quote-card {
+    border-right: 0;
+  }
+
+  .s4-family-panel {
+    min-height: 0;
+  }
+
+  .s4-family-row,
+  .s4-operation-card {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    min-height: 0;
+    padding: 1.5rem 0;
+  }
+
+  .s5-contract-picker-inner,
+  .s5-operation-hero.s5-narrow,
+  .s5-contract-strip-inner,
+  .s5-contract-layout,
+  .s6-shell,
+  .s6-narrow {
+    width: calc(100% - 2.5rem);
+  }
+
+  .s5-contract-strip-inner {
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .s5-contract-stat {
+    flex: 0 0 10rem;
+  }
+
+  .s5-contract-layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .s5-contract-nav {
+    position: static;
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--clervo-rule-strong);
+    scrollbar-width: none;
+  }
+
+  .s5-contract-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .s5-contract-nav p {
+    display: none;
+  }
+
+  .s5-contract-nav a {
+    flex: 0 0 auto;
+    min-width: 9rem;
+    border-right: 1px solid var(--clervo-rule);
+    border-bottom: 0;
+  }
+
+  .s5-contract-section {
+    padding-bottom: 4.5rem;
+    margin-bottom: 4.5rem;
+  }
+
+  .s6-subnav {
+    top: 58px;
+  }
+
+  .s6-shell,
+  .s6-narrow {
+    width: calc(100% - 2.5rem);
+  }
+
+  .s6-ledger-row {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+    padding-block: 1.2rem;
+  }
+
+  .s6-ledger-row--head {
+    display: none;
+  }
+}
+
+@media (width <= 520px) {
+  .s4-product-hero.shell,
+  .s4-family-hero.shell,
+  .s4-family-content.shell,
+  .model-hero.shell,
+  .model-band.shell {
+    padding-inline: 1.25rem;
+  }
+
+  .s4-section > .shell {
+    padding-inline: 1.25rem;
+  }
+}
