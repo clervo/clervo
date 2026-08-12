@@ -23,37 +23,20 @@ const stateReadout: Record<HeroState, string[]> = {
   prove: ['Route resolved', 'Evidence attached', 'Proof verified'],
 };
 
+/*
+ * The reviewed creator registry deliberately uses typography fallback until an
+ * official logo asset and its usage terms are retained with the repo. The Home
+ * rail follows the same rule: it names the technology ecosystem without
+ * copying, redrawing or recoloring third-party marks and without implying a
+ * supplier or endorsement relationship.
+ */
 const ecosystemBrands = [
-  {
-    id: 'openai',
-    label: 'OpenAI',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg',
-  },
-  {
-    id: 'anthropic',
-    label: 'Anthropic',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg',
-  },
-  {
-    id: 'nvidia',
-    label: 'NVIDIA',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/a/a4/NVIDIA_logo.svg',
-  },
-  {
-    id: 'cloudflare',
-    label: 'Cloudflare',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg',
-  },
-  {
-    id: 'aws',
-    label: 'AWS',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/f/fc/Amazon_Web_Services_2025.svg',
-  },
-  {
-    id: 'google-cloud',
-    label: 'Google Cloud',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg',
-  },
+  { id: 'openai', label: 'OpenAI' },
+  { id: 'anthropic', label: 'Anthropic' },
+  { id: 'nvidia', label: 'NVIDIA' },
+  { id: 'cloudflare', label: 'Cloudflare' },
+  { id: 'aws', label: 'AWS' },
+  { id: 'google-cloud', label: 'Google Cloud' },
 ] as const;
 
 const ecosystemLoop = [...ecosystemBrands, ...ecosystemBrands] as const;
@@ -263,7 +246,7 @@ export function HomeHero({ onPhase }: { onPhase(phase: ExperiencePhase): void })
                   key={`${brand.id}-${index}`}
                   aria-hidden={clone || undefined}
                 >
-                  <img src={brand.src} alt={clone ? '' : brand.label} decoding="async" />
+                  <span className="clervo-home-hero__ecosystem-mark">{brand.label}</span>
                 </li>
               );
             })}
