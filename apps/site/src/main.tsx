@@ -31,6 +31,7 @@ import './styles/b12/site-system-lock.css';
 import './styles/b12/home-recovery-lock.css';
 import './styles/b12/developer-recovery-lock.css';
 import './styles/b12/product-recovery-lock.css';
+import './styles/b12/utility-recovery-lock.css';
 
 const root = document.getElementById('root');
 if (root === null) throw new Error('clervo_site_root_missing');
