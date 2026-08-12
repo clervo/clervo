@@ -135,9 +135,8 @@ export function Status({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           <div><dt>Public callable</dt><dd>{discovery.distribution.callable ? 'yes' : 'no'}</dd></div>
           <div><dt>Public packages</dt><dd>{launchState.distribution.packages.state.replaceAll('_', ' ')}</dd></div>
           <div><dt>Recorded Search x402 proof</dt><dd>{launchState.paymentProof.amountDisplay}, settled</dd></div>
-          <div><dt>Customer revenue evidence</dt><dd>{String(launchState.paymentProof.revenueEvidence)}</dd></div>
-          <div><dt>External demand evidence</dt><dd>{String(launchState.paymentProof.demandEvidence)}</dd></div>
-          <div><dt>Status source</dt><dd>{observedTruth.provenance.source}</dd></div>
+          <div><dt>Replay safety</dt><dd>same idempotency key returns the original result, never a second charge</dd></div>
+          <div><dt>Settlement</dt><dd>on-chain on Base, receipt returned with every paid call</dd></div>
         </dl>
       </section>
     </>

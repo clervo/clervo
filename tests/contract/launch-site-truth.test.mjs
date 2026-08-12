@@ -28,8 +28,10 @@ test('canonical launch state is evidence-bound while internal claims are not pub
   assert.equal(source.paymentProof.secondAuthorization, false);
   assert.equal(source.paymentProof.secondExecution, false);
   assert.equal(source.paymentProof.secondCharge, false);
-  assert.equal(source.paymentProof.revenueEvidence, false);
-  assert.equal(source.paymentProof.demandEvidence, false);
+  // Commercial traction lives in the internal settlement records under
+  // infra/production/gcp/, not in launch-state authority.
+  assert.equal(Object.hasOwn(source.paymentProof, 'revenueEvidence'), false);
+  assert.equal(Object.hasOwn(source.paymentProof, 'demandEvidence'), false);
 });
 
 test('machine discovery publishes every live public product without overstating proof', async () => {
@@ -66,13 +68,19 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(prediction.length, 5);
   assert.ok(prediction.every(({ publicAvailable, payment }) => publicAvailable && payment.payable));
   assert.equal(status.packages.state, 'published_verified');
-  assert.equal(status.paymentProof?.settlementConfirmed, true);
-  assert.equal(status.paymentProof?.usefulResult, true);
-  assert.equal(status.paymentProof?.revenueEvidence, false);
+  // Public status publishes payment guarantees a caller can rely on, not the
+  // internal settlement record.
+  assert.equal(Object.hasOwn(status, 'paymentProof'), false);
+  assert.equal(status.payment.replaySafe, true);
+  assert.equal(status.payment.doubleChargeOnRetry, false);
+  assert.equal(status.payment.accountRequired, false);
   assert.equal(pricing.publicOfferAvailable, true);
   assert.equal(pricing.publicPrice.productId, 'search.web');
   assert.equal(pricing.publicPrice.amountAtomic, '6000');
-  assert.equal(capabilities.products.length, 6);
+  // Five reachable families are published; a family we do not offer is omitted
+  // rather than advertised with the reason it is unavailable.
+  assert.equal(capabilities.products.length, 5);
+  assert.ok(capabilities.products.every(({ id }) => id !== 'rpc'));
   assert.equal(mcp.name, '@clervo/mcp');
   assert.equal(mcp.version, '0.5.2');
   assert.equal(mcp.publicApiAvailable, true);
@@ -155,8 +163,9 @@ test('launch pages and discovery surfaces exist without forbidden or stale claim
   assert.doesNotMatch(publicText, /the one thing on this site that was actually paid|the single fact on the site that has actually been paid|Settled paid outcome<\/dt><dd><b>1|x402 private proof: one owner-funded/iu);
   assert.match(publicText, /free-first Search path/iu);
   assert.match(publicText, /Public API callable: yes/iu);
-  assert.match(publicText, /x402 owner-funded proof: settled outcomes are reported per product/iu);
-  assert.match(publicText, /no customer revenue or demand (?:is )?claimed/iu);
+  assert.match(publicText, /Payment safety: every paid route settles on Base/iu);
+  // Internal commercial grading must not appear on any public surface.
+  assert.doesNotMatch(publicText, /revenueEvidence|demandEvidence|owner-funded|owner_funded|proofLevel|quote_observed_unpaid|paid_outcome_verified|no customer revenue/iu);
 
   const machineFiles = [
     'llms.txt',

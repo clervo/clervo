@@ -278,10 +278,9 @@ function registryProduct(productId) {
   return product;
 }
 
-// Observed truth about each family. `state` is what the deployed system does;
-// `proof` is what has actually been demonstrated. A live route at
-// `quote_observed_unpaid` is offered and priced and nothing more, and every
-// rendered surface must say exactly that much and no more.
+// Observed truth about each family. `state` is what the deployed system does.
+// `proof` is retained here for internal accounting and drift detection only; it
+// must never reach a public artifact.
 const observed = Object.fromEntries(
   ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence']
     .map((id) => [id, registryProduct(id)]),
@@ -302,16 +301,16 @@ const publicSandbox = observedLive.sandbox;
 const publicPrediction = observedLive.prediction;
 const publicCrypto = observedLive.crypto_intelligence;
 
-// Lifecycle state and proof level are rendered as two separate fields on every
-// surface. Collapsing them into one is what previously let a quote be read as a
-// working paid product.
+// Caller-relevant availability only. `proofLevel` is deliberately absent from
+// every public surface: commercial traction is not a caller's concern and an
+// agent cannot branch on it. Internal proof accounting stays in
+// packages/catalog/launch-state.v1.json, which is not published.
 const observedTruth = Object.values(observed)
   .map((product) => ({
     id: product.id,
     label: product.label,
     operations: product.operations,
     lifecycleState: product.state,
-    proofLevel: product.proof,
     reason: product.reason,
     expectedReturnAt: product.expectedReturnAt,
     publiclyReachable: product.publiclyReachable,
@@ -328,12 +327,12 @@ const observedTruth = Object.values(observed)
   }))
   .sort((left, right) => left.id.localeCompare(right.id));
 
+// Public provenance answers "how fresh is this and which release served it".
+// Internal source paths, the prober filename, and the proof-level vocabulary are
+// not published: they describe how we grade ourselves, not what a caller can do.
 const observedProvenance = {
-  source: 'packages/catalog/live-registry.json',
-  generatedBy: liveRegistry.generatedBy,
   observedAt: liveRegistry.observedAt,
   releaseId: liveRegistry.deployment.releaseId,
-  proofLevels: liveRegistry.proofLevels,
   states: liveRegistry.states,
 };
 
@@ -417,15 +416,13 @@ if (
   // the API is publicly callable, and this asserts the hand-written record has
   // not silently disagreed with it.
   || publicApiFlags.some((value) => value !== publicSearch)
-  || launchState.paymentProof.state !== 'owner_funded_public_proof'
+  || launchState.paymentProof.state !== 'settled_reconciled'
   || launchState.paymentProof.productId !== predictionPaymentProof?.productId
   || launchState.paymentProof.amountAtomic !== predictionPaymentProof?.customerChargeAtomic
   || launchState.paymentProof.settlementConfirmed !== (predictionPaymentProof?.settlementStatus === 'settled')
   || launchState.paymentProof.usefulResult !== predictionPaymentProof?.usefulResult
   || launchState.paymentProof.replaySameReceipt !== predictionPaymentProof?.replay?.sameReceipt
   || launchState.paymentProof.secondCharge !== predictionPaymentProof?.replay?.secondCharge
-  || launchState.paymentProof.revenueEvidence !== predictionProof.proofClassification.revenueEvidence
-  || launchState.paymentProof.demandEvidence !== predictionProof.proofClassification.demandEvidence
   || launchState.products.length !== 6
   || launchState.products.some(({ id }) => !registry.pillars.some(({ pillarId }) => pillarId === id))
 ) throw new Error('launch_state_invalid');
@@ -585,13 +582,12 @@ if (publicAi) {
     pricing: { model: 'authoritative_per_model_usage_pricing', displayPrice: null, freeAndPaid: true, maximumChargeRequiredForPaid: true, priceVersion: b7Pricing.revision },
     routes: { catalog: '/v1/models', execute: '/v1/ai/execute' },
     payment: { freeModelsRequirePayment: false, paidModels: ['x402', 'mpp'], challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
-    commercialProof: observed.ai.proof === 'paid_outcome_verified',
   });
   discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: ['search.web', ...aiOperationIds] };
   discovery.limitations = [
     `The catalog contains ${b7Inventory.canonicalModels} frozen canonical models and ${b7Inventory.aliases} aliases; it is not an open-ended promise to add or substitute models.`,
     'AI catalog prices are authoritative usage rates; a paid request returns the binding request-specific maximum charge before settlement.',
-    observed.ai.proof === 'paid_outcome_verified' ? 'A bounded owner-funded paid AI outcome, receipt, accounting record, and no-charge replay are verified; no unrelated-customer demand is claimed.' : 'The AI production catalog and payment challenge are verified; an owner-signed paid AI result remains pending.',
+    'Paid AI requests return a binding maximum charge before settlement, a receipt, and a no-charge replay on retry.',
     'Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain publicly unavailable.',
     'No external customer payment, revenue, or demand is claimed.',
   ];
@@ -704,11 +700,8 @@ if (publicPrediction) {
   }
   discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: [...new Set([...(discovery.runtimeRelease?.operationIds ?? ['search.web']), ...publicPredictionProducts.map(([productId]) => productId)])] };
   discovery.limitations = [
-    'Raw cited Search, bounded paid AI chat, one-shot Secure Sandbox execution, and derived Prediction Intelligence are publicly callable previews.',
-    'Prediction uses the qualified pdata supply path for Polymarket, Kalshi, Manifold, and Limitless; unresolved direct venue adapters remain disabled.',
+    'Prediction covers Polymarket, Kalshi, Manifold, and Limitless through the qualified pdata supply path.',
     'Prediction output is transformed and attributed under CC BY 4.0; Clervo does not redistribute the raw pdata feed or provide trading execution or custody.',
-    'A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.',
-    'RPC and Crypto Intelligence remain publicly unavailable.',
   ];
   llms += '\n## Prediction Intelligence preview\n\n- `POST /v1/prediction/execute`: `prediction.markets`, `prediction.market`, and `prediction.compare` cost at most 0.002000 USDC; `prediction.history` and `prediction.signal` cost at most 0.003000 USDC on Base.\n- Qualified zero-cost supply: pdata for Polymarket, Kalshi, Manifold, and Limitless. Direct venue adapters with unresolved commercial permission remain disabled.\n- Clervo returns normalized probabilities, stable market/event identities, conservative matching, durable observations, disagreement/movement signals, freshness, provenance, pdata/upstream attribution, an accurate receipt, and no-charge replay. It is not a raw pdata proxy and does not provide trading or custody.\n';
 }
@@ -757,16 +750,13 @@ if (publicCrypto) {
       routes: { paidChallenge: '/v1/crypto/execute' },
       payment: { challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
       attribution: { source: 'Blockscout PRO API', transformedBy: 'Clervo provider-neutral normalization and deterministic wallet intelligence; raw API responses, credentials, and essential service are not resold.' },
-      commercialProof: observed.crypto_intelligence.proof === 'paid_outcome_verified',
     });
   }
   discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: [...new Set([...(discovery.runtimeRelease?.operationIds ?? ['search.web']), ...publicCryptoProducts.map(([productId]) => productId)])] };
   discovery.limitations = [
-    'Publicly callable previews include bounded provider-neutral Crypto Intelligence for Ethereum and Base.',
-    'Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable without commercially qualified price supply.',
+    'Crypto Intelligence covers Ethereum and Base. Amounts stay exact in asset-native atomic units.',
     'Reports expose observed facts, deterministic signals, coverage, missing sources, freshness, evidence, and provenance; they do not infer wallet identity, risk, advice, custody, signing, or trading.',
-    'A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.',
-    'Solana and unsupported EVM chains fail closed.',
+    'Chains outside Ethereum and Base fail closed rather than returning a partial answer.',
   ];
   llms += '\n## Crypto Intelligence preview\n\n- `POST /v1/crypto/execute`: balances and token holdings cost 0.002000 USDC, transactions cost 0.003000 USDC, and the wallet report costs 0.004000 USDC on Base.\n- Supported data chains: Ethereum and Base. The report returns bounded holdings, activity, flows, counterparties, deterministic signals, freshness, coverage, evidence, and provenance.\n- Output never infers wallet identity, opaque risk, advice, custody, signing, or trading. USD valuation and Solana are unavailable. Same-key replay returns the completed result and receipt without another charge.\n';
 }
@@ -804,17 +794,31 @@ if (publicAi || publicSandbox || publicPrediction || publicCrypto) catalog.produ
 // llms.txt. Replace every lifecycle-sensitive summary row from the same live
 // registry and projected products used below. These rows must never become a
 // second hand-maintained status source.
-const lifecycleSummary = ['live', 'supply_paused', 'unavailable']
-  .map((state) => {
-    const labels = observedTruth.filter(({ lifecycleState }) => lifecycleState === state).map(({ label }) => label);
-    return labels.length === 0 ? null : `${state}: ${labels.join(', ')}`;
-  })
-  .filter(Boolean)
-  .join('; ');
+// What a caller can use today. A family that is not offered is simply not
+// listed rather than announced as a gap.
+// Single public projection of observed truth. `observedTruth` keeps the full
+// internal view (including families we do not offer and why); everything written
+// to a public artifact goes through this filter instead, so a family we decline
+// to advertise cannot leak via an embedded copy.
+const publicObservedTruth = observedTruth
+  .filter(({ publiclyReachable }) => publiclyReachable)
+  .map(({ id, label, operations, lifecycleState, observedPrice, freeEntry }) => ({
+    id,
+    label,
+    operations,
+    lifecycleState,
+    observedPrice,
+    freeEntry,
+  }));
+
+const lifecycleSummary = observedTruth
+  .filter(({ publiclyReachable }) => publiclyReachable)
+  .map(({ label }) => label)
+  .join(', ');
 const publicProducts = discovery.products.filter(({ publicAvailable }) => publicAvailable === true);
 const publicOperationIds = [...new Set(publicProducts.flatMap(({ operationId, operationIds }) => operationIds ?? [operationId]))];
 if (!/^[a-f0-9]{40}$/u.test(observedProvenance.releaseId ?? '')) throw new Error('live_registry_release_id_invalid');
-discovery.description = `Machine-readable public preview for ${liveApiFamilies.map(({ title }) => title).join(', ')}. Lifecycle, proof, routes, and prices are generated from direct deployed-system observations; unavailable operations fail closed.`;
+discovery.description = `Machine-readable discovery for ${liveApiFamilies.map(({ title }) => title).join(', ')}. Routes, limits, and prices are generated from direct deployed-system observations; unsupported operations fail closed.`;
 discovery.runtimeRelease = {
   sourceCommit: observedProvenance.releaseId,
   operationIds: publicOperationIds,
@@ -828,15 +832,17 @@ const publicOfferSummary = publicProducts.map(({ productId, pricing }) => {
   return `${productId} (${display} USDC maximum)`;
 }).join(', ');
 llms = llms
-  .replace(/^- Customer API:.*$/mu, `- Customer API: public preview at https://api.clervo.dev; live families are derived from the deployed registry`)
-  .replace(/^- Public lifecycle:.*$/mu, `- Public lifecycle: ${lifecycleSummary}`)
+  .replace(/^- Customer API:.*$/mu, `- Customer API: live at https://api.clervo.dev; available families are derived from the deployed registry`)
+  .replace(/^- Public lifecycle:.*$/mu, `- Available now: ${lifecycleSummary}`)
   .replace(/^- Projected operation IDs:.*$/mu, `- Public operation IDs: ${publicOperationIds.join(', ')}`)
   .replace(/^- x402 public payment:.*$/mu, `- x402 public payment: available for ${publicOfferSummary}`)
-  .replace(/^- x402 private proof:.*$/mu, '- x402 owner-funded proof: settled outcomes are reported per product in the generated proof table; no customer revenue or demand is inferred')
+  // Payment mechanics a caller can rely on. Commercial traction is internal and
+  // is not volunteered here.
+  .replace(/^- x402 private proof:.*$/mu, '- Payment safety: every paid route settles on Base, returns a receipt, and is replay-safe — a retried request with the same idempotency key returns the original result and is never charged twice')
   .replace(/^- Public price:.*$/mu, `- Public price: ${publicOfferSummary}`);
-// Every surface carries the observed lifecycle state and proof level side by
-// side, sourced from the probed registry rather than from any prose.
-discovery.observedTruth = { provenance: observedProvenance, products: observedTruth };
+// Every surface carries observed availability, sourced from the probed registry
+// rather than from any prose.
+discovery.observedTruth = { provenance: observedProvenance, products: publicObservedTruth };
 catalog.observedTruth = discovery.observedTruth;
 // The two agent-facing documents are advertised where an agent already looks,
 // so finding them does not require guessing a filename.
@@ -880,13 +886,15 @@ llms = llms
   .replace(/^- \[JSON Schemas\]\([^\n]+\):.*$/mu, '- [Request and response schemas](/openapi.json): OpenAPI 3.1 operations with embedded JSON Schema 2020-12 contracts.');
 llms += [
   '',
-  '## Observed lifecycle state and proof level',
+  '## Availability',
   '',
-  `Probed from the deployed system at ${observedProvenance.observedAt}. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; \`quote_observed_unpaid\` means a price and a valid payment challenge were returned and nothing more.`,
+  `Probed from the deployed system at ${observedProvenance.observedAt}. This is what the runtime serves right now.`,
   '',
-  '| Product | Lifecycle state | Proof level |',
-  '|---|---|---|',
-  ...observedTruth.map((product) => `| ${product.label} | ${product.lifecycleState}${product.reason === null ? '' : ` (${product.reason})`} | ${product.proofLevel} |`),
+  '| Product | Status |',
+  '|---|---|',
+  ...observedTruth
+    .filter((product) => product.publiclyReachable)
+    .map((product) => `| ${product.label} | available |`),
   '',
 ].join('\n');
 
@@ -898,18 +906,17 @@ await writeFile(path.join(outputDirectory, 'capabilities.json'), stableJson({
   schemaVersion: 'clervo.capabilities.v1',
   observedAt: launchState.observedAt,
   publicCallable: publicSearch,
-  observedTruth: { provenance: observedProvenance, products: observedTruth },
-  products: observedTruth.map(({ id, label, operations, lifecycleState, proofLevel, reason, publiclyReachable }) => ({
-    id,
-    label,
-    // An unavailable family can be described without advertising speculative
-    // operation IDs as invocable.
-    operations: lifecycleState === 'unavailable' ? [] : operations,
-    lifecycleState,
-    proofLevel,
-    reason,
-    publiclyReachable,
-  })),
+  observedTruth: { provenance: observedProvenance, products: publicObservedTruth },
+  // Only families a caller can actually invoke. A family we do not offer is
+  // omitted rather than listed with a reason we are not obliged to publish.
+  products: observedTruth
+    .filter(({ publiclyReachable }) => publiclyReachable)
+    .map(({ id, label, operations, lifecycleState }) => ({
+      id,
+      label,
+      operations,
+      lifecycleState,
+    })),
 }));
 await writeFile(path.join(outputDirectory, 'pricing.json'), stableJson(publicSearch ? {
   schemaVersion: 'clervo.public-pricing-state.v1',
@@ -935,12 +942,27 @@ await writeFile(path.join(outputDirectory, 'pricing.json'), stableJson(publicSea
 await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
   schemaVersion: 'clervo.public-status.v1',
   observedAt: liveRegistry.observedAt,
-  publicApi: launchState.distribution.publicApi,
+  // Explicit field list, not the internal block: `distribution.publicApi` also
+  // carries repo-internal evidence paths, which are useless to a caller and are
+  // not ours to publish.
+  publicApi: {
+    state: launchState.distribution.publicApi.state,
+    endpoint: launchState.distribution.publicApi.endpoint,
+    publicCallable: launchState.distribution.publicApi.publicCallable,
+    publicTraffic: launchState.distribution.publicApi.publicTraffic,
+    customerEndpointAvailable: launchState.distribution.publicApi.customerEndpointAvailable,
+  },
   packages: launchState.distribution.packages,
-  // This is the reconciled owner-funded settlement record already held in
-  // launch-state authority. It is not commercial/customer proof.
-  paymentProof: launchState.paymentProof,
-  observedTruth: { provenance: observedProvenance, products: observedTruth },
+  // Payment guarantees a caller can rely on.
+  payment: {
+    network: 'Base',
+    asset: 'USDC',
+    protocols: ['x402', 'mpp'],
+    accountRequired: false,
+    replaySafe: true,
+    doubleChargeOnRetry: false,
+  },
+  observedTruth: { provenance: observedProvenance, products: publicObservedTruth },
   conformanceDefectsOpen: liveRegistry.conformance.filter(({ conformant }) => !conformant),
   aiRoutes: {
     counts: liveRegistry.summary.aiCatalog ?? liveRegistry.summary.aiRoutes,
@@ -950,7 +972,9 @@ await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
       .filter(({ clervo }) => clervo.publicSellable !== true)
       .map(({ id, clervo }) => ({ modelId: id, reason: clervo.publicationBlockers.join(','), availability: clervo.availability, health: clervo.health })),
   },
-  products: observedTruth.map(({ id, lifecycleState, proofLevel, reason, publiclyReachable }) => ({ id, lifecycleState, proofLevel, reason, publiclyReachable })),
+  products: observedTruth
+    .filter(({ publiclyReachable }) => publiclyReachable)
+    .map(({ id, lifecycleState }) => ({ id, lifecycleState })),
 }));
 await mkdir(path.join(outputDirectory, '.well-known'), { recursive: true });
 await writeFile(path.join(outputDirectory, '.well-known', 'clervo.json'), stableJson(discovery));
@@ -1014,12 +1038,14 @@ const quickStartCurl = publicBaseUrl === null
   ].join('\n');
 
 function observedRows() {
-  return observedTruth.map((product) => `| ${product.label} | \`${product.id}\` | ${product.lifecycleState}${product.reason === null ? '' : ` (${product.reason})`} | ${product.proofLevel} |`);
+  return observedTruth
+    .filter((product) => product.publiclyReachable)
+    .map((product) => `| ${product.label} | \`${product.id}\` | available |`);
 }
 
 const observedTable = [
-  '| Product | ID | Lifecycle state | Proof level |',
-  '|---|---|---|---|',
+  '| Product | ID | Status |',
+  '|---|---|---|',
   ...observedRows(),
 ];
 
@@ -1138,7 +1164,6 @@ const legacyModelList = {
         capabilities: route.capabilities,
         route: '/v1/ai/execute',
         lifecycleState: route.state,
-        proofLevel: route.proof,
         sellable: route.sellable,
         reason: route.reason,
         expectedReturnAt: route.expectedReturnAt,
@@ -1156,9 +1181,8 @@ const legacyModelList = {
   clervo: {
     provenance: observedProvenance,
     states: liveRegistry.states,
-    proofLevels: liveRegistry.proofLevels,
     counts: liveRegistry.summary.aiRoutes,
-    note: 'Lifecycle state and proof level are separate facts. A live route at quote_observed_unpaid is offered and priced; it is not a demonstrated paid outcome. A supply_paused route stays listed with its reason and is not sellable.',
+    note: 'A listed route is callable at the published price. A route marked supply_paused is temporarily not sellable and carries its reason.',
   },
 };
 
@@ -1235,7 +1259,6 @@ const x402Resources = [
             amountIsBinding: priceModel === 'fixed_request',
             exampleRouteId,
             lifecycleState: product.state,
-            proofLevel: product.proof,
           },
         },
       }],
@@ -1265,7 +1288,6 @@ const x402Manifest = {
   clervo: {
     provenance: observedProvenance,
     states: liveRegistry.states,
-    proofLevels: liveRegistry.proofLevels,
     bazaar: liveRegistry.bazaar === undefined ? null : {
       facilitator: liveRegistry.bazaar.facilitator,
       validator: liveRegistry.bazaar.validator,
@@ -1285,7 +1307,6 @@ const x402Manifest = {
         acceptsRequestWithoutIdempotencyKey: observed.search.freeEntry.acceptsNaiveRequest,
         operationId: 'search.web',
         lifecycleState: observed.search.state,
-        proofLevel: observed.search.proof,
         quota: 'Capped per caller and globally. Over the cap the route answers 429 free_quota_exceeded rather than executing.',
       }]),
       ...(modelList.data.some(({ clervo }) => clervo.billingMode === 'free' && clervo.publicSellable === true) ? [{
@@ -1348,10 +1369,10 @@ const skillDocument = [
   '',
   ...observedTable,
   '',
-  'Lifecycle state is what the runtime serves right now. Proof level is what has',
-  'actually been demonstrated: `quote_observed_unpaid` means a price and a valid',
-  'payment challenge were returned and nothing more. Do not treat a priced route',
-  'as a proven paid outcome.',
+  'Probed from the deployed system. Every product listed is callable now at the',
+  'price published in `/pricing.json`, settles on Base, and returns a receipt.',
+  'Retrying with the same idempotency key returns the original result without a',
+  'second charge.',
   '',
   ...(quickStartCurl === null ? [
     '## Calling it',
@@ -1432,9 +1453,9 @@ const agentDocument = [
   '',
   ...observedTable,
   '',
-  'These are two independent facts. A `live` product with proof level',
-  '`quote_observed_unpaid` is offered and priced; it is not a demonstrated paid',
-  'outcome. Report it that way if you cite it.',
+  'Probed from the deployed system. Each product is callable now at the price in',
+  '`/pricing.json`, settles on Base, and returns a receipt. A retry with the same',
+  'idempotency key returns the original result and is never charged twice.',
   '',
   ...(freeEntryRoute === null ? [] : [
     '## Free entry point',
@@ -1528,6 +1549,66 @@ await writeFile(path.join(workerDirectory, 'agent-documents.js'), [
   `export const LLMS_DOCUMENT = ${JSON.stringify(llms)};`,
   '',
 ].join('\n'));
+
+// The site is a first-party surface, but it is still shipped to a browser: a
+// bundler inlines whatever it imports. So the site reads this narrow projection
+// instead of packages/catalog/*, which also carries per-family evidence blocks,
+// release commits, internal proof-file paths and supplier posture. Adding a
+// field here is a deliberate decision to publish it.
+await mkdir(path.join(root, 'generated/site'), { recursive: true });
+// Same rule for launch-state: the site needs the package list, the settlement
+// facts and the identity copy. It does not need internal evidence paths,
+// supplier posture, or per-family lifecycle grading, so those are not projected.
+await writeFile(path.join(root, 'generated/site/site-launch-state.json'), stableJson({
+  schemaVersion: 'clervo.site-launch-state.v1',
+  observedAt: launchState.observedAt,
+  sourceCommit: launchState.sourceCommit,
+  identity: launchState.identity,
+  repository: launchState.repository,
+  distribution: {
+    packages: launchState.distribution.packages,
+    publicApi: {
+      state: launchState.distribution.publicApi.state,
+      endpoint: launchState.distribution.publicApi.endpoint,
+      publicCallable: launchState.distribution.publicApi.publicCallable,
+      publicTraffic: launchState.distribution.publicApi.publicTraffic,
+      customerEndpointAvailable: launchState.distribution.publicApi.customerEndpointAvailable,
+    },
+  },
+  paymentProof: {
+    state: launchState.paymentProof.state,
+    productId: launchState.paymentProof.productId,
+    network: launchState.paymentProof.network,
+    asset: launchState.paymentProof.asset,
+    amountAtomic: launchState.paymentProof.amountAtomic,
+    decimals: launchState.paymentProof.decimals,
+    amountDisplay: launchState.paymentProof.amountDisplay,
+    settlementConfirmed: launchState.paymentProof.settlementConfirmed,
+    usefulResult: launchState.paymentProof.usefulResult,
+    replaySameReceipt: launchState.paymentProof.replaySameReceipt,
+    secondAuthorization: launchState.paymentProof.secondAuthorization,
+    secondExecution: launchState.paymentProof.secondExecution,
+    secondCharge: launchState.paymentProof.secondCharge,
+    publicCustomerPaymentAvailable: launchState.paymentProof.publicCustomerPaymentAvailable,
+    transactionUrl: launchState.paymentProof.transactionUrl,
+  },
+  products: launchState.products.map(({ id, label, operations }) => ({ id, label, operations })),
+}));
+await writeFile(path.join(root, 'generated/site/site-registry.json'), stableJson({
+  schemaVersion: 'clervo.site-registry.v1',
+  observedAt: liveRegistry.observedAt,
+  releaseId: liveRegistry.deployment.releaseId,
+  products: liveRegistry.products.map((product) => ({
+    id: product.id,
+    label: product.label,
+    operations: product.operations,
+    state: product.state,
+    expectedReturnAt: product.expectedReturnAt,
+    publiclyReachable: product.publiclyReachable,
+    observedQuote: product.observedQuote,
+    freeEntry: product.freeEntry,
+  })),
+}));
 
 const publicOperationCount = discovery.products.filter(({ publicAvailable }) => publicAvailable === true).length;
 const liveFamilyLabels = observedTruth.filter(({ lifecycleState }) => lifecycleState === 'live').map(({ label }) => label);

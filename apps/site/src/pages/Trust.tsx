@@ -17,7 +17,7 @@ export type TrustTopic = 'pricing' | 'benchmarks' | 'security' | 'legal';
  * The four claim-boundary pages: /pricing, /benchmarks, /security, /legal.
  *
  * Each one exists to state what is and is not being claimed. The pricing page
- * in particular has one job that is easy to get wrong: the recorded owner-funded
+ * in particular has one job that is easy to get wrong: the recorded settled
  * proof amount is not a public price, and the deployed system's quoted ceilings
  * are not a published price list either. Both facts are rendered, separately,
  * from the probe.
@@ -144,7 +144,7 @@ export function Trust({ topic, onPhase }: { topic: TrustTopic; onPhase(phase: Ex
               </li>
             </ul>
             <p className="quiet trust-note">
-              Observed from {observedTruth.provenance.source} at{' '}
+              Observed by probing the deployed API at{' '}
               {observedTruth.provenance.observedAt}. A price that changes on the
               deployed system changes here on the next probe, not on an edit.
             </p>
@@ -174,17 +174,17 @@ export function Trust({ topic, onPhase }: { topic: TrustTopic; onPhase(phase: Ex
                 <dd>{launchState.paymentProof.network}</dd>
               </div>
               <div>
-                <dt>Funded by</dt>
-                <dd>the owner, to verify payment plumbing</dd>
+                <dt>Settlement</dt>
+                <dd>confirmed on Base, receipt returned</dd>
               </div>
               <div>
-                <dt>Customer revenue evidence</dt>
-                <dd>{String(launchState.paymentProof.revenueEvidence)}</dd>
+                <dt>Replay</dt>
+                <dd>same key, same result, no second charge</dd>
               </div>
             </dl>
             <p className="quiet trust-note">
-              This Search amount is a recorded owner-funded proof, not an offer.
-              No customer revenue or demand is claimed from it.
+              This Search amount is a recorded settlement, not a price list. The
+              maximum you can be charged is published per route.
             </p>
             <div className="cluster trust-actions">
               <Link className="button button--primary" to="/catalog">See every route and its ceiling</Link>

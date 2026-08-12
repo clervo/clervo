@@ -122,12 +122,12 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
         </section>
 
         <section className="s4-claim-boundary" aria-labelledby="s4-family-claim-title">
-          <div className="s4-section-head"><div><p className="s4-kicker">Claim boundary</p><h2 id="s4-family-claim-title">What current authority allows—and refuses.</h2></div><p className="s4-section-copy">These lists are live-bound to the current launch-state authority, separate from the design-fixture task examples above.</p></div>
+          <div className="s4-section-head"><div><p className="s4-kicker">Before you call</p><h2 id="s4-family-claim-title">What you pay, and what you get back.</h2></div><p className="s4-section-copy">Every price below is the maximum for that route, observed on the deployed system rather than written by hand.</p></div>
           <div className="s4-claims-grid">
-            <article><p className="s4-kicker">Supported by current authority</p><ul>{launch.allowedClaims.map((claim) => <li key={claim}>{claim}</li>)}</ul></article>
-            <article className="refused"><p className="s4-kicker">Explicitly not claimed</p><ul>{launch.prohibitedClaims.map((claim) => <li key={claim}>{claim}</li>)}</ul></article>
+            <article><p className="s4-kicker">You get</p><ul><li>No account, no API key, and no sales call before the first call.</li><li>A published maximum charge or a request-time quote before anything executes.</li><li>An on-chain receipt on Base for every paid call.</li><li>A retry with the same idempotency key returns the original result and is never charged twice.</li></ul></article>
+            <article className="refused"><p className="s4-kicker">You never get</p><ul><li>A charge above the published maximum.</li><li>A silent substitution of a different model or provider.</li><li>A second charge for a retried request.</li><li>A subscription, seat, or minimum commitment.</li></ul></article>
           </div>
-          <p className="s4-provenance">Observed at {observedTruth.provenance.observedAt}. Supplier rights: {launch.supplierRights.replaceAll('_', ' ')}. Payment state: {launch.paymentState.replaceAll('_', ' ')}.</p>
+          <p className="s4-provenance">Observed at {observedTruth.provenance.observedAt}.</p>
         </section>
 
         <nav className="s4-family-strip s4-family-strip--footer" aria-label="All product families">

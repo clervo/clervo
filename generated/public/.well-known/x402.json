@@ -20,13 +20,12 @@
               "priceVersion": "search-web-open-federation-2026-08-09.1",
               "amountIsBinding": true,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
       ],
-      "lastUpdated": 1786489713,
+      "lastUpdated": 1786490917,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -39,7 +38,7 @@
           "validatorAccepted": true,
           "indexed": true,
           "indexActive": true,
-          "indexLastCrawledAt": "2026-08-10T18:30:16.17Z",
+          "indexLastCrawledAt": "2026-08-11T23:09:09.739Z",
           "failedChecks": []
         }
       }
@@ -63,13 +62,12 @@
               "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi",
               "amountIsBinding": false,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
       ],
-      "lastUpdated": 1786489713,
+      "lastUpdated": 1786490917,
       "metadata": {
         "category": "ai",
         "provider": "clervo",
@@ -82,7 +80,7 @@
           "validatorAccepted": true,
           "indexed": true,
           "indexActive": true,
-          "indexLastCrawledAt": "2026-08-11T19:55:23.821Z",
+          "indexLastCrawledAt": "2026-08-11T23:28:14.724Z",
           "failedChecks": []
         },
         "modelList": "https://api.clervo.dev/v1/models"
@@ -107,13 +105,12 @@
               "priceVersion": "sandbox-run-standard-2026-08-09.1",
               "amountIsBinding": false,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
       ],
-      "lastUpdated": 1786489713,
+      "lastUpdated": 1786490917,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -126,7 +123,7 @@
           "validatorAccepted": true,
           "indexed": true,
           "indexActive": true,
-          "indexLastCrawledAt": "2026-08-10T14:56:26.837Z",
+          "indexLastCrawledAt": "2026-08-11T23:11:46.599Z",
           "failedChecks": []
         }
       }
@@ -150,13 +147,12 @@
               "priceVersion": "prediction-product-2026-08-09.3-prediction.markets",
               "amountIsBinding": false,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
       ],
-      "lastUpdated": 1786489713,
+      "lastUpdated": 1786490917,
       "metadata": {
         "category": "prediction",
         "provider": "clervo",
@@ -193,13 +189,12 @@
               "priceVersion": "crypto-public-2026-08-09.1-crypto.wallet.report",
               "amountIsBinding": false,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
       ],
-      "lastUpdated": 1786489713,
+      "lastUpdated": 1786490917,
       "metadata": {
         "category": "crypto_intelligence",
         "provider": "clervo",
@@ -212,7 +207,7 @@
           "validatorAccepted": true,
           "indexed": true,
           "indexActive": true,
-          "indexLastCrawledAt": "2026-08-11T12:49:38.432Z",
+          "indexLastCrawledAt": "2026-08-11T23:12:03.998Z",
           "failedChecks": []
         }
       }
@@ -225,16 +220,8 @@
   },
   "clervo": {
     "provenance": {
-      "source": "packages/catalog/live-registry.json",
-      "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T23:08:33.338Z",
-      "releaseId": "763601c4688fd9b2e3eedb4c7829b4586b329368",
-      "proofLevels": {
-        "externally_repeated": "an unrelated party did it, more than once",
-        "none": "nothing demonstrated",
-        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
-        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
-      },
+      "observedAt": "2026-08-11T23:28:37.241Z",
+      "releaseId": "ac1fa402c4de985904713172047f2e36b647d49b",
       "states": {
         "live": "probed; the deployed system serves it now",
         "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -245,12 +232,6 @@
       "live": "probed; the deployed system serves it now",
       "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
       "unavailable": "absent from the catalog or has no public route at all"
-    },
-    "proofLevels": {
-      "externally_repeated": "an unrelated party did it, more than once",
-      "none": "nothing demonstrated",
-      "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
-      "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
     },
     "bazaar": {
       "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",
@@ -268,7 +249,6 @@
         "acceptsRequestWithoutIdempotencyKey": true,
         "operationId": "search.web",
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "quota": "Capped per caller and globally. Over the cap the route answers 429 free_quota_exceeded rather than executing."
       },
       {

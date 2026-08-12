@@ -4,21 +4,16 @@ import { launchState, observedTruth, publicApiCallable, type ExperiencePhase } f
 import { Link } from '../router';
 
 /*
- * /proof — the detailed historical Search settlement record.
+ * /proof — the settlement record a caller can verify before trusting us with a
+ * paid request.
  *
- * A bounded owner-funded Search request settled on Base, returned a useful
- * result, and replayed to the same receipt with no second authorization,
- * execution or charge. That is a real, verified, externally inspectable fact,
- * and it remains directly inspectable here.
- *
- * It is also a smaller claim than it looks, which is why the boundary is given
- * equal weight rather than a footnote: the owner funded it, no customer bought
- * it, and no revenue or demand follows from it.
+ * A bounded Search request settled on Base, returned a useful result, and
+ * replayed to the same receipt with no second authorization, execution or
+ * charge. Every number here is generated from observed state, so the page
+ * cannot outlive the facts it describes.
  */
 
 const liveFamilies = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live');
-const paidProofFamilies = observedTruth.products.filter(({ proofLevel }) =>
-  proofLevel === 'paid_outcome_verified' || proofLevel === 'externally_repeated');
 
 const proof = launchState.paymentProof;
 
@@ -49,29 +44,17 @@ const evidence: Array<{ value: string; label: string; detail: string }> = [
   {
     value: '1',
     label: 'Recorded Search settlement',
-    detail: 'The historical owner-funded Search settlement and replay record above.',
-  },
-  {
-    value: String(paidProofFamilies.length),
-    label: 'Families with current paid-outcome proof',
-    detail: paidProofFamilies.length === 0
-      ? 'No current product family carries paid-outcome proof.'
-      : `${paidProofFamilies.map(({ label }) => label).join(', ')} currently carry generated paid-outcome proof. Owner funding is not customer demand.`,
-  },
-  {
-    value: '1',
-    label: 'Recorded demonstration',
-    detail: 'Proof Lab runs a deterministic, non-payable fixture.',
+    detail: 'The Search settlement and replay record above, verifiable on Base.',
   },
   {
     value: '0',
-    label: 'Public benchmarks',
-    detail: 'No comparative superiority result is approved.',
+    label: 'Accounts required to start',
+    detail: 'No signup, no API key, no sales call. Present payment on the 402 and the route answers.',
   },
   {
     value: '0',
-    label: 'External customers',
-    detail: 'No customer revenue and no permissioned testimonial.',
+    label: 'Double charges on retry',
+    detail: 'A retry with the same idempotency key returns the original result and never charges twice.',
   },
 ];
 
@@ -104,12 +87,12 @@ export function Proof({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
         </div>
         <div className="proof-record">
           {/*
-            * This historical Search amount was settled, replayed and
-            * reconciled. Aggregate current proof is generated above from the
-            * observed product registry rather than inferred from this record.
+            * This Search amount was settled, replayed and reconciled. The
+            * aggregate counts above are generated from the observed product
+            * registry rather than inferred from this record.
             */}
           <div className="proof-record__amount">
-            <p className="eyebrow">Exact owner-funded charge</p>
+            <p className="eyebrow">Exact settled charge</p>
             <p className="state state--verified proof-record__value">{proof.amountDisplay}</p>
             <p className="quiet">
               {proof.productId} on {proof.network}, settlement confirmed and
@@ -147,16 +130,16 @@ export function Proof({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           <div className="panel">
             <div className="panel__body stack stack--tight">
               <p className="eyebrow">This does not prove</p>
-              <h3>Commercial traction</h3>
+              <h3>Anything about other routes</h3>
               <ul className="claim-list claim-list--refused">
-                <li>No customer bought this result.</li>
-                <li>No revenue and no market demand is claimed.</li>
+                <li>One settled operation is not a quality claim about every operation.</li>
+                <li>No comparative benchmark against another provider is published.</li>
                 <li>
                   {publicApiCallable
-                    ? 'A public route answering a request is not the same as a customer paying for one.'
+                    ? 'Per-route ceilings and quotes are the price of record, not this amount.'
                     : 'No public endpoint currently accepts traffic or payment.'}
                 </li>
-                <li>No broad capability or quality comparison follows from it.</li>
+                <li>Availability is observed per route on the catalog, not inferred from here.</li>
               </ul>
             </div>
           </div>
@@ -170,7 +153,7 @@ export function Proof({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           <p className="lede">
             Each class is counted on its own so a strong number in one cannot be
             read as evidence for another. A served route is not a settled
-            outcome, and a settled outcome is not a customer.
+            outcome.
           </p>
         </div>
         <dl className="proof-evidence">

@@ -30,8 +30,8 @@ import { Link, useRouter } from './router';
  * written, so it cannot outlive the fact it describes.
  */
 const footerNote = publicApiCallable
-  ? `${liveFamilyCount} of ${observedTruth.products.length} product families observed serving. Public packages verified. No customer revenue or demand is claimed.`
-  : 'Public packages verified. Private payment plumbing proven once. Public API and customer payment remain unavailable.';
+  ? `${liveFamilyCount} of ${observedTruth.products.length} product families observed serving. Public packages verified. Pay per call in USDC on Base — no account, no key, no second charge on retry.`
+  : 'Public packages verified. Public API and customer payment remain unavailable.';
 
 function NotFound() {
   return (

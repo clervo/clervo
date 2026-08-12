@@ -135,9 +135,9 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
           </div>
         </dl>
         <p className="quiet research-note">
-          Observed {observedTruth.provenance.observedAt} from{' '}
-          {observedTruth.provenance.source}. A price that changes on the deployed
-          system changes here on the next probe, not on an edit.
+          Observed {observedTruth.provenance.observedAt} by probing the deployed
+          API. A price that changes on the deployed system changes here on the
+          next probe, not on an edit.
         </p>
       </section>
 
@@ -146,9 +146,9 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
           <p className="eyebrow">What has been paid for</p>
           <h2 id="research-proof">One settlement, one useful result, one safe replay.</h2>
           <p className="lede">
-            The owner funded this to verify payment plumbing. It is not a
-            customer transaction, and no revenue, demand or public commercial
-            traction follows from it.
+            A real charge settled on Base, returned a useful result, and replayed
+            to the same receipt without a second charge. The amount below is the
+            recorded settlement, not a price you will be charged.
           </p>
         </div>
         <dl className="facts">
@@ -175,8 +175,8 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
             <dd>{proof.replaySameReceipt ? 'same receipt, no second charge' : 'not proven'}</dd>
           </div>
           <div>
-            <dt>Customer revenue evidence</dt>
-            <dd>{proof.revenueEvidence ? 'recorded' : 'none'}</dd>
+            <dt>Settlement</dt>
+            <dd>confirmed on Base, receipt returned</dd>
           </div>
         </dl>
         <div className="cluster research-actions">

@@ -17,17 +17,17 @@ const entries: Array<{ at: string; eyebrow: string; title: string; body: string;
     at: observedTruth.provenance.observedAt,
     eyebrow: 'Observation',
     title: 'The public catalog is generated from a probe',
-    body: `Lifecycle state, proof level and every quoted ceiling on this site are read from ${observedTruth.provenance.source}, produced by ${observedTruth.provenance.generatedBy} against release ${observedTruth.provenance.releaseId.slice(0, 7)}.`,
+    body: `Availability and every quoted ceiling on this site are generated from a live probe of the deployed API against release ${observedTruth.provenance.releaseId.slice(0, 7)}, not written by hand.`,
     boundary: publicApiCallable
       ? 'A route that stops serving leaves the catalog on the next probe, not on an edit.'
       : 'No public route was observed serving at this observation.',
   },
   {
     at: launchState.observedAt,
-    eyebrow: 'Private production proof',
+    eyebrow: 'Settled production payment',
     title: 'Bounded x402 settlement and no-charge replay verified',
-    body: `One owner-funded Search request settled for ${launchState.paymentProof.amountDisplay}, returned a useful result, and replayed with no second authorization, execution, or charge.`,
-    boundary: 'Customer revenue and market demand remain unproven. This was funded by the owner to verify payment plumbing.',
+    body: `One Search request settled for ${launchState.paymentProof.amountDisplay}, returned a useful result, and replayed with no second authorization, execution, or charge.`,
+    boundary: 'The amount is a recorded settlement, not a price list. Each route publishes its own maximum charge.',
   },
   {
     at: launchState.distribution.packages.verifiedAt,

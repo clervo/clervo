@@ -52,11 +52,6 @@
   <url><loc>https://clervo.dev/operations/prediction.market/</loc></url>
   <url><loc>https://clervo.dev/operations/prediction.markets/</loc></url>
   <url><loc>https://clervo.dev/operations/prediction.signal/</loc></url>
-  <url><loc>https://clervo.dev/operations/rpc.archive/</loc></url>
-  <url><loc>https://clervo.dev/operations/rpc.batch/</loc></url>
-  <url><loc>https://clervo.dev/operations/rpc.broadcast/</loc></url>
-  <url><loc>https://clervo.dev/operations/rpc.call/</loc></url>
-  <url><loc>https://clervo.dev/operations/rpc.health/</loc></url>
   <url><loc>https://clervo.dev/operations/sandbox.run/</loc></url>
   <url><loc>https://clervo.dev/operations/search.web/</loc></url>
   <url><loc>https://clervo.dev/models/allam-2-7b/</loc></url>

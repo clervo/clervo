@@ -79,7 +79,12 @@ test('public launch policy exposes qualified Search, AI, Sandbox, Prediction, an
   assert.equal(launchState.distribution.publicApi.publicCallable, true);
   assert.equal(launchState.distribution.publicApi.publicTraffic, true);
   assert.equal(launchState.paymentProof.publicCustomerPaymentAvailable, true);
-  assert.equal(launchState.paymentProof.revenueEvidence, false);
+  // Commercial traction is tracked in the internal settlement records under
+  // infra/production/gcp/, not in launch-state authority and never in a public
+  // artifact. launch-state carries the verifiable settlement mechanism only.
+  assert.equal(Object.hasOwn(launchState.paymentProof, 'revenueEvidence'), false);
+  assert.equal(Object.hasOwn(launchState.paymentProof, 'demandEvidence'), false);
+  assert.equal(launchState.paymentProof.state, 'settled_reconciled');
   assert.equal(launchState.products.find(({ id }) => id === 'search').customerLifecycle, 'publicly_callable_paid_outcome_verified');
   assert.equal(launchState.products.find(({ id }) => id === 'ai').customerLifecycle, 'publicly_callable_paid_outcome_verified');
   assert.equal(launchState.products.find(({ id }) => id === 'sandbox').customerLifecycle, 'publicly_callable_paid_outcome_verified');

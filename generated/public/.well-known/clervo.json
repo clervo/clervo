@@ -2,7 +2,7 @@
   "discoveryVersion": "2026-08-11.1",
   "contractVersion": "2026-08-11.1",
   "name": "Clervo",
-  "description": "Machine-readable public preview for Search, AI, Secure Sandbox, Prediction Intelligence, Crypto Intelligence. Lifecycle, proof, routes, and prices are generated from direct deployed-system observations; unavailable operations fail closed.",
+  "description": "Machine-readable discovery for Search, AI, Secure Sandbox, Prediction Intelligence, Crypto Intelligence. Routes, limits, and prices are generated from direct deployed-system observations; unsupported operations fail closed.",
   "lifecycle": "preview",
   "distribution": {
     "state": "public",
@@ -547,14 +547,12 @@
   ],
   "limitations": [
     "Publicly callable previews: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.",
-    "Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable without commercially qualified price supply.",
     "Reports expose observed facts, deterministic signals, coverage, missing sources, freshness, evidence, and provenance; they do not infer wallet identity, risk, advice, custody, signing, or trading.",
-    "A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.",
-    "Solana and unsupported EVM chains fail closed."
+    "Chains outside Ethereum and Base fail closed rather than returning a partial answer."
   ],
   "catalogVersion": "2026-08-11.1",
   "runtimeRelease": {
-    "sourceCommit": "763601c4688fd9b2e3eedb4c7829b4586b329368",
+    "sourceCommit": "ac1fa402c4de985904713172047f2e36b647d49b",
     "operationIds": [
       "search.web",
       "ai.chat",
@@ -578,16 +576,8 @@
   },
   "observedTruth": {
     "provenance": {
-      "source": "packages/catalog/live-registry.json",
-      "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T23:08:33.338Z",
-      "releaseId": "763601c4688fd9b2e3eedb4c7829b4586b329368",
-      "proofLevels": {
-        "externally_repeated": "an unrelated party did it, more than once",
-        "none": "nothing demonstrated",
-        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
-        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
-      },
+      "observedAt": "2026-08-11T23:28:37.241Z",
+      "releaseId": "ac1fa402c4de985904713172047f2e36b647d49b",
       "states": {
         "live": "probed; the deployed system serves it now",
         "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -608,10 +598,6 @@
           "ai.virtual_try_on"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
-        "reason": null,
-        "expectedReturnAt": null,
-        "publiclyReachable": true,
         "observedPrice": {
           "amountAtomic": "1000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
@@ -632,10 +618,6 @@
           "crypto.wallet.transactions"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
-        "reason": null,
-        "expectedReturnAt": null,
-        "publiclyReachable": true,
         "observedPrice": {
           "amountAtomic": "4000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
@@ -655,10 +637,6 @@
           "prediction.signal"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
-        "reason": null,
-        "expectedReturnAt": null,
-        "publiclyReachable": true,
         "observedPrice": {
           "amountAtomic": "2000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
@@ -668,34 +646,12 @@
         "freeEntry": null
       },
       {
-        "id": "rpc",
-        "label": "Multi-chain RPC",
-        "operations": [
-          "rpc.archive",
-          "rpc.batch",
-          "rpc.broadcast",
-          "rpc.call",
-          "rpc.health"
-        ],
-        "lifecycleState": "unavailable",
-        "proofLevel": "none",
-        "reason": "commercial_rights_blocked",
-        "expectedReturnAt": null,
-        "publiclyReachable": false,
-        "observedPrice": null,
-        "freeEntry": null
-      },
-      {
         "id": "sandbox",
         "label": "Secure Sandbox",
         "operations": [
           "sandbox.run"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
-        "reason": null,
-        "expectedReturnAt": null,
-        "publiclyReachable": true,
         "observedPrice": {
           "amountAtomic": "60000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
@@ -711,10 +667,6 @@
           "search.web"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
-        "reason": null,
-        "expectedReturnAt": null,
-        "publiclyReachable": true,
         "observedPrice": {
           "amountAtomic": "6000",
           "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",

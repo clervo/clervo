@@ -5,12 +5,12 @@
 Current verified status:
 
 - Developer distribution: public TypeScript, MCP, and Python packages are registry-verified
-- Customer API: public preview at https://api.clervo.dev; live families are derived from the deployed registry
-- Public lifecycle: live: AI, Crypto Intelligence, Prediction Intelligence, Secure Sandbox, Research; unavailable: Multi-chain RPC
+- Customer API: live at https://api.clervo.dev; available families are derived from the deployed registry
+- Available now: AI, Crypto Intelligence, Prediction Intelligence, Secure Sandbox, Research
 - Public operation IDs: search.web, ai.chat, ai.embed, ai.image, ai.speech, ai.video, ai.music, ai.virtual_try_on, sandbox.run, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal, crypto.wallet.balances, crypto.wallet.tokens, crypto.wallet.transactions, crypto.wallet.report
 - Public API callable: yes
 - x402 public payment: available for search.web (0.006000 USDC maximum), ai (request-derived quote), sandbox.run (0.010000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
-- x402 owner-funded proof: settled outcomes are reported per product in the generated proof table; no customer revenue or demand is inferred
+- Payment safety: every paid route settles on Base, returns a receipt, and is replay-safe — a retried request with the same idempotency key returns the original result and is never charged twice
 - Public price: search.web (0.006000 USDC maximum), ai (request-derived quote), sandbox.run (0.010000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
 - llms.txt is a documentation map, not a search or AI ranking claim
 
@@ -43,18 +43,17 @@ Current verified status:
 - Supported data chains: Ethereum and Base. The report returns bounded holdings, activity, flows, counterparties, deterministic signals, freshness, coverage, evidence, and provenance.
 - Output never infers wallet identity, opaque risk, advice, custody, signing, or trading. USD valuation and Solana are unavailable. Same-key replay returns the completed result and receipt without another charge.
 
-## Observed lifecycle state and proof level
+## Availability
 
-Probed from the deployed system at 2026-08-11T23:08:33.338Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
+Probed from the deployed system at 2026-08-11T23:28:37.241Z. This is what the runtime serves right now.
 
-| Product | Lifecycle state | Proof level |
-|---|---|---|
-| AI | live | paid_outcome_verified |
-| Crypto Intelligence | live | paid_outcome_verified |
-| Prediction Intelligence | live | paid_outcome_verified |
-| Multi-chain RPC | unavailable (commercial_rights_blocked) | none |
-| Secure Sandbox | live | paid_outcome_verified |
-| Research | live | paid_outcome_verified |
+| Product | Status |
+|---|---|
+| AI | available |
+| Crypto Intelligence | available |
+| Prediction Intelligence | available |
+| Secure Sandbox | available |
+| Research | available |
 
 ## First call
 

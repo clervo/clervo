@@ -140,9 +140,9 @@ export function Guide({ topic, onPhase }: { topic: GuideTopic; onPhase(phase: Ex
             <p className="eyebrow">Generated surface</p>
             <h2 id="catalog-heading">Two fields per family, never merged.</h2>
             <p className="lede">
-              Observed at {observedTruth.provenance.observedAt} from{' '}
-              {observedTruth.provenance.source}. Lifecycle says whether a family
-              serves requests now; proof says what has been demonstrated.
+              Observed at {observedTruth.provenance.observedAt} by probing the
+              deployed API. Lifecycle says whether a family serves requests now;
+              the ceiling says the most you can be charged.
             </p>
           </div>
           <ul className="guide-catalog">

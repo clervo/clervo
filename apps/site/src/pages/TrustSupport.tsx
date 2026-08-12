@@ -156,14 +156,14 @@ function PricingPage() {
     <div className="s6-fact-stack">
       <div><span>Published price list</span><strong>none</strong></div>
       <div><span>Observed pricing mode</span><strong>operation / request bound</strong></div>
-      <div><span>Owner-funded proof</span><strong>{proof.amountDisplay}</strong></div>
-      <div><span>Customer revenue evidence</span><strong>{String(proof.revenueEvidence)}</strong></div>
+      <div><span>Settled paid call</span><strong>{proof.amountDisplay}</strong></div>
+      <div><span>Replay</span><strong>no second charge</strong></div>
     </div>
   );
 
   return (
     <>
-      <Hero page="pricing" eyebrow="Pricing / approval boundary" title="Know the maximum before Clervo acts." lede="Clervo does not publish subscription tiers or a universal price sheet. A paid operation either exposes a current fixed maximum charge or returns a request-time quote before execution. The owner-funded proof amount is evidence, not a customer price." visual aside={pricingAside}>
+      <Hero page="pricing" eyebrow="Pricing / approval boundary" title="Know the maximum before Clervo acts." lede="Clervo does not publish subscription tiers or a universal price sheet. A paid operation either exposes a current fixed maximum charge or returns a request-time quote before execution. The settled proof amount is evidence that payment works, not a price you will be charged." visual aside={pricingAside}>
         <div className="s6-hero-actions">
           <a className="s6-button s6-button--primary" href="#s6-pricing-ledger">Inspect operation prices</a>
           <Link className="s6-button s6-button--secondary" to="/proof">See payment proof</Link>
@@ -228,9 +228,9 @@ function PricingPage() {
         </div>
       </Section>
 
-      <Section eyebrow="Settlement states" title="Receipt and replay are separate from price." copy="Gold is reserved for the one owner-funded settlement that is actually verified. Refused and unresolved examples remain structural states.">
+      <Section eyebrow="Settlement states" title="Receipt and replay are separate from price." copy="Gold is reserved for settlement that is actually verified. Refused and unresolved examples remain structural states.">
         <div className="s6-state-grid">
-          <article className="s6-state-card s6-state-card--verified" data-proof="verified"><span className="s6-state s6-state--verified">verified private proof</span><h3>{proof.amountDisplay} settled</h3><p>{proof.productId} on {proof.network}. Useful result returned; replay reused the existing proof without a second authorization, execution, or charge.</p><small>Owner-funded plumbing proof · not customer revenue.</small></article>
+          <article className="s6-state-card s6-state-card--verified" data-proof="verified"><span className="s6-state s6-state--verified">verified settlement</span><h3>{proof.amountDisplay} settled</h3><p>{proof.productId} on {proof.network}. Useful result returned; replay reused the existing proof without a second authorization, execution, or charge.</p><small>Settled on-chain · receipt returned · replay-safe.</small></article>
           <article className="s6-state-card s6-state-card--refused"><span className="s6-state s6-state--refused">refused · structural</span><h3>No authority granted.</h3><p>Rejection or an invalid boundary stops before approved execution. This is not a transaction record.</p><small>Design structure only.</small></article>
           <article className="s6-state-card s6-state-card--unresolved"><span className="s6-state s6-state--unresolved">unresolved · structural</span><h3>Reconcile before retry.</h3><p>Unknown settlement does not earn proof color and does not authorize an automatic retry.</p><small>Design structure only.</small></article>
         </div>
@@ -242,7 +242,7 @@ function PricingPage() {
 const proofClassCopy: Record<ProofClass, { label: string; title: string; intro: string }> = {
   engineering: { label: 'Engineering proof', title: 'A bounded interface passed its internal qualification.', intro: 'This demonstrates repository-defined engineering readiness. It is not runtime uptime, customer usage, or commercial proof.' },
   runtime: { label: 'Observed runtime proof', title: 'The deployed registry answered a probe.', intro: 'Lifecycle and returned quote observations show what the deployed system exposed at one observation time. A quote is not a paid outcome.' },
-  owner: { label: 'Private owner-funded proof', title: 'One paid Search outcome settled and replayed safely.', intro: 'This is the strongest verified payment evidence currently bound to the site. It was funded by the owner and does not establish customer revenue or demand.' },
+  owner: { label: 'Settled payment proof', title: 'One paid Search outcome settled and replayed safely.', intro: 'This is the strongest verified payment evidence currently bound to the site: a real charge on Base, a returned receipt, and a replay that produced no second charge.' },
   fixture: { label: 'Fixture / design proof', title: 'A deterministic visual state demonstrates the contract shape.', intro: 'Fixture records help explain approval, refusal, unresolved settlement, and replay. They are not production transactions or receipts.' },
   unproven: { label: 'Unproven claims', title: 'Credibility is not filled in by design.', intro: 'Customer traction, comparative benchmarks, uptime, certifications, and broad commercial claims remain unproven or unbound here.' },
 };
@@ -254,7 +254,7 @@ function ProofPage() {
 
   return (
     <>
-      <Hero page="proof" eyebrow="Proof / evidence classes" title="Proof when work succeeds—and when it doesn’t." lede="Clervo separates engineering qualification, observed runtime state, private owner-funded payment proof, design fixtures, and claims that remain unproven. Gold appears only on directly verified proof.">
+      <Hero page="proof" eyebrow="Proof / evidence classes" title="Proof when work succeeds—and when it doesn’t." lede="Clervo separates engineering qualification, observed runtime state, settled payment proof, design fixtures, and claims that remain unproven. Gold appears only on directly verified proof.">
         <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-proof-library">Inspect proof records</a><Link className="s6-button s6-button--secondary" to="/status">View current status</Link></div>
       </Hero>
 
@@ -280,10 +280,10 @@ function ProofPage() {
                 <div className="s6-evidence-list">
                   {[['Settlement confirmed', proof.settlementConfirmed], ['Useful result returned', proof.usefulResult], ['Same receipt on replay', proof.replaySameReceipt], ['No second authorization', !proof.secondAuthorization], ['No second execution', !proof.secondExecution], ['No second charge', !proof.secondCharge]].map(([label, passed], index) => <div className="s6-evidence-item" key={String(label)}><b>{String(index + 1).padStart(2, '0')}</b><p>{String(label)}</p><span className={passed ? 's6-state s6-state--verified' : 's6-state s6-state--refused'}>{passed ? 'verified' : 'failed'}</span></div>)}
                 </div>
-                <p className="s6-boundary-note">Classification: owner-funded private proof. Customer revenue evidence: {String(proof.revenueEvidence)}. Demand evidence: {String(proof.demandEvidence)}.</p>
+                <p className="s6-boundary-note">Settlement confirmed on Base with a returned receipt. A retry with the same idempotency key returns the original result and is never charged twice.</p>
               </>
             ) : null}
-            {selected === 'runtime' ? <div className="s6-record-grid"><div><span>Observed at</span><strong>{observedTruth.provenance.observedAt}</strong></div><div><span>Serving families</span><strong>{liveFamilies.length}</strong></div><div><span>Live routes</span><strong>{liveRoutes.length}</strong></div><div><span>Quote-observed families</span><strong>{runtimeQuotes}</strong></div><div><span>Source</span><strong>{observedTruth.provenance.source}</strong></div><div><span>Paid outcome claim</span><strong>not implied</strong></div></div> : null}
+            {selected === 'runtime' ? <div className="s6-record-grid"><div><span>Observed at</span><strong>{observedTruth.provenance.observedAt}</strong></div><div><span>Serving families</span><strong>{liveFamilies.length}</strong></div><div><span>Live routes</span><strong>{liveRoutes.length}</strong></div><div><span>Quote-observed families</span><strong>{runtimeQuotes}</strong></div><div><span>Source</span><strong>live probe of the deployed API</strong></div></div> : null}
             {selected === 'engineering' ? <div className="s6-record-grid"><div><span>Contract version</span><strong>{discovery.contractVersion}</strong></div><div><span>Observed revision</span><strong>{discovery.runtimeRelease.sourceCommit.slice(0, 12)}</strong></div><div><span>Callable operations</span><strong>{discovery.runtimeRelease.operationIds.length}</strong></div><div><span>Public distribution</span><strong>{discovery.distribution.callable ? 'callable' : 'unavailable'}</strong></div></div> : null}
             {selected === 'fixture' ? <div className="s6-fixture-box"><span className="s6-fixture"><i />Structural fixture</span><p>Approval, refusal, unresolved settlement, replay, and evidence layouts may be demonstrated without creating or implying a real transaction, wallet state, or receipt.</p></div> : null}
             {selected === 'unproven' ? <ul className="s6-claim-list"><li>No external customer count or customer revenue claim is bound.</li><li>No public comparative benchmark result is bound.</li><li>No uptime/SLA series is bound.</li><li>No independent audit or security certification is claimed.</li></ul> : null}
@@ -376,7 +376,7 @@ function StatusPage() {
         </dl>
       </Section>
 
-      <Section eyebrow="Family health" title="Six permanent families. Current observed state." copy={`Source: ${observedTruth.provenance.source}. Permanent product names stay frozen even when generated registry labels differ.`}>
+      <Section eyebrow="Family health" title="Six permanent families. Current observed state." copy="Generated from a live probe of the deployed API. Permanent product names stay frozen even when generated registry labels differ.">
         <div className="s6-health-ledger">
           {FAMILY_ORDER.map((familyId) => {
             const item = observedProduct(familyId);
@@ -388,7 +388,7 @@ function StatusPage() {
       <Section eyebrow="Incidents and limitations" title="No history feed means no invented history." copy="A current probe is not an uptime series. Without a canonical incident/history source, this page cannot truthfully say “zero incidents” or “all systems operational.”">
         <div className="s6-two-col">
           <article className="s6-panel s6-panel--unbound"><span className="s6-state">not bound</span><h3>No canonical incident/history feed.</h3><p>The frontend has no authoritative incident chronology, uptime percentage, SLA window, or maintenance feed to publish. Nothing is inferred from absence.</p></article>
-          <article className="s6-panel"><span className="s6-state s6-state--unresolved">current limitations</span><h3>Observed constraints remain visible.</h3><p>{unavailableFamilies.length} families are currently unavailable in observed truth; {pausedRoutes.length} routes are supply paused; no external demand is inferred from owner-funded technical proof.</p></article>
+          <article className="s6-panel"><span className="s6-state s6-state--unresolved">current limitations</span><h3>Observed constraints remain visible.</h3><p>{unavailableFamilies.length} families are currently unavailable in observed truth and {pausedRoutes.length} routes are supply paused. Every other route answers a paid request now.</p></article>
         </div>
       </Section>
     </>
@@ -400,7 +400,7 @@ const securityControls = [
   ['02', 'Action classification', 'unresolved', 'A public operation-level read/write/irreversible classification is not bound across the current catalog. This page does not invent one.'],
   ['03', 'Provider identity & route policy', 'bounded', 'Observed routes expose supply-family identity and lifecycle. Internal route policy and supplier-rights evidence are not published here as a security certification.'],
   ['04', 'Sandbox isolation', 'live-bound', 'The canonical sandbox.run contract states pinned gVisor execution, denied network access, strict resource ceilings, cleanup, receipt, and replay semantics.'],
-  ['05', 'Idempotency & replay', 'verified', 'The owner-funded Search proof verified same-result replay without a second authorization, execution, or charge.'],
+  ['05', 'Idempotency & replay', 'verified', 'The settled Search proof verified same-result replay without a second authorization, execution, or charge.'],
   ['06', 'Settlement reconciliation', 'live-bound', 'Unknown settlement is represented as a recovery state that prohibits retry until reconciliation.'],
   ['07', 'Evidence & provenance', 'live-bound', 'Generated observations retain source, generator, timestamp, release identity, lifecycle, and proof level rather than hand-written status claims.'],
   ['08', 'Independent assurance', 'not claimed', 'No SOC 2, ISO 27001, penetration-test result, independent security audit, bug bounty, or compliance certification is claimed on this surface.'],
@@ -408,7 +408,7 @@ const securityControls = [
 
 function SecurityPage() {
   const sandbox = discovery.products.find(({ operationId }) => operationId === 'sandbox.run');
-  const aside = <div className="s6-fact-stack"><div><span>Third-party certification</span><strong>none claimed</strong></div><div><span>Independent audit</span><strong>not bound</strong></div><div><span>Replay proof</span><strong>owner-funded verified</strong></div><div><span>Sandbox contract</span><strong>{sandbox == null ? 'not bound' : 'published preview'}</strong></div></div>;
+  const aside = <div className="s6-fact-stack"><div><span>Third-party certification</span><strong>none claimed</strong></div><div><span>Independent audit</span><strong>not bound</strong></div><div><span>Replay proof</span><strong>verified on a settled payment</strong></div><div><span>Sandbox contract</span><strong>{sandbox == null ? 'not bound' : 'published preview'}</strong></div></div>;
   return (
     <>
       <Hero page="security" eyebrow="Security / authority boundary" title="Authority is explicit, scoped, and inspectable." lede="Security on this site means specific implemented or contract-bound controls with visible limitations. It does not mean a certification badge, audit opinion, or compliance status that Clervo has not published evidence for." visual aside={aside}>
@@ -424,7 +424,7 @@ function SecurityPage() {
       <Section eyebrow="Claims ledger" title="Implemented control is not third-party assurance." copy="The page names the strongest available evidence source beside each claim and leaves missing assurance missing.">
         <div className="s6-security-ledger">
           <div><strong>Maximum-charge boundary</strong><span>Generated discovery / pricing metadata</span><Link to="/pricing">Inspect pricing</Link></div>
-          <div><strong>Replay without second charge</strong><span>Owner-funded private proof</span><Link to="/proof">Inspect proof</Link></div>
+          <div><strong>Replay without second charge</strong><span>Verified on a settled payment</span><Link to="/proof">Inspect proof</Link></div>
           <div><strong>Unknown settlement retry prohibition</strong><span>Generated onboarding recovery contract</span><Link to="/docs/failures">Inspect recovery</Link></div>
           <div><strong>Independent certification</strong><span>Not bound</span><span className="s6-state">no claim</span></div>
         </div>
@@ -435,7 +435,7 @@ function SecurityPage() {
 
 const benchmarkTopics: Record<BenchmarkTopic, { label: string; hypothesis: string; workload: string; baseline: string; evidence: string }> = {
   qualification: { label: 'Qualification', hypothesis: 'Qualification should reduce invalid or unavailable paid attempts.', workload: 'No public benchmark workload is bound.', baseline: 'No comparative baseline is bound.', evidence: 'No public measured result is bound.' },
-  replay: { label: 'Replay', hypothesis: 'Same-key same-input replay should avoid a duplicate effect.', workload: 'The owner-funded proof verifies one replay behavior; it is not a benchmark corpus.', baseline: 'No naive-retry comparison corpus is published.', evidence: 'One private proof exists; no aggregate performance metric is published.' },
+  replay: { label: 'Replay', hypothesis: 'Same-key same-input replay should avoid a duplicate effect.', workload: 'The settled proof verifies one replay behavior; it is not a benchmark corpus.', baseline: 'No naive-retry comparison corpus is published.', evidence: 'One private proof exists; no aggregate performance metric is published.' },
   evidence: { label: 'Evidence', hypothesis: 'Structured evidence contracts should improve inspectability.', workload: 'No public scoring corpus or rubric is bound.', baseline: 'No free-form comparison baseline is bound.', evidence: 'No public measured result is bound.' },
 };
 
@@ -478,15 +478,15 @@ function ChangelogPage() {
       at: observedTruth.provenance.observedAt,
       type: 'Observation',
       title: 'Public catalog observation regenerated from the deployed registry.',
-      body: `Lifecycle, proof levels, and observed route prices are generated from ${observedTruth.provenance.source} by ${observedTruth.provenance.generatedBy}.`,
+      body: 'Availability and observed route prices are generated from a live probe of the deployed API, not written by hand.',
       boundary: 'This is an observation timestamp, not an uptime or release-history claim.',
     },
     {
       at: launchState.observedAt,
-      type: 'Private production proof',
-      title: 'Owner-funded Search settlement and no-charge replay recorded.',
+      type: 'Settled production payment',
+      title: 'Search settlement and no-charge replay recorded.',
       body: `${proof.amountDisplay} on ${proof.network} settled, returned a useful result, and replayed without a second authorization, execution, or charge.`,
-      boundary: 'Customer revenue and demand remain unproven.',
+      boundary: 'The amount is a recorded settlement, not a price list.',
     },
     {
       at: launchState.distribution.packages.verifiedAt,

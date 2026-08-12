@@ -14,7 +14,7 @@
 // so improving the runtime can never break this suite.
 
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
 
@@ -143,7 +143,7 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
     assert.equal(offer.payTo, product.observedQuote.payTo);
     assert.equal(offer.scheme, product.observedQuote.scheme);
     assert.equal(offer.extra.clervo.lifecycleState, product.state, `${family} lifecycle must match the registry`);
-    assert.equal(offer.extra.clervo.proofLevel, product.proof, `${family} proof level must match the registry`);
+    assert.equal(Object.hasOwn(offer.extra.clervo, 'proofLevel'), false, `${family} offer must not publish an internal proof level`);
 
     // A request-derived price carries an example quote and says so. A fixed
     // price is the product-level quote and is binding. Publishing a per-request
@@ -205,6 +205,70 @@ test('no discovery document lists a product the registry marks unavailable', () 
     assert.ok(!manifestText.includes(route), `the x402 manifest must not offer ${route}`);
     assert.ok(!modelsText.includes(route), `the model list must not offer ${route}`);
   }
+});
+
+// A caller needs capability, price, limits, and payment safety. Internal
+// commercial grading (how mature we consider a product, whether anyone has paid
+// yet, which supplier rights are unresolved) is not a caller fact and is not
+// published. This guards the whole generated surface rather than one file, so a
+// new artifact cannot reintroduce the leak by copying an internal record.
+test('no site source imports the internal catalog into the browser bundle', async () => {
+  // The generated/public guard below would not have caught this: the site once
+  // imported packages/catalog/*.json directly, and the bundler inlined the whole
+  // file, shipping internal proof paths, release commits, supplier posture and
+  // per-family grading to every visitor while the same fields were absent from
+  // the published artifacts. The site reads generated/site/* instead, which is an
+  // explicit field list, so a new internal field cannot reach a browser by
+  // default. Assert the import boundary, not just the output.
+  const sourceRoot = path.join(process.cwd(), 'apps', 'site', 'src');
+  const entries = await readdir(sourceRoot, { recursive: true, withFileTypes: true });
+  const offenders = [];
+  for (const entry of entries) {
+    if (!entry.isFile()) continue;
+    if (!/\.(?:ts|tsx)$/u.test(entry.name)) continue;
+    const absolute = path.join(entry.parentPath ?? entry.path, entry.name);
+    const text = await readFile(absolute, 'utf8');
+    for (const line of text.split('\n')) {
+      if (!/^\s*import\s/u.test(line)) continue;
+      if (line.includes('packages/catalog/')) {
+        offenders.push(`${path.relative(sourceRoot, absolute)}: ${line.trim()}`);
+      }
+    }
+  }
+  assert.deepEqual(offenders, [], `site source must import generated/site/*, not packages/catalog/*:\n${offenders.join('\n')}`);
+});
+
+test('no public artifact projects internal commercial grading', async () => {
+  const forbidden = [
+    'revenueEvidence',
+    'demandEvidence',
+    'proofLevel',
+    'owner_funded',
+    'ownerFunded',
+    'quote_observed_unpaid',
+    'paid_outcome_verified',
+    'commercial_rights_blocked',
+    'engineeringState',
+    'commercialProof',
+    'prohibitedClaims',
+    'allowedClaims',
+    'no customer revenue',
+    'unrelated-customer',
+  ];
+  const publicRoot = path.join(process.cwd(), 'generated', 'public');
+  const files = await readdir(publicRoot, { recursive: true, withFileTypes: true });
+  const checked = [];
+  for (const entry of files) {
+    if (!entry.isFile()) continue;
+    const absolute = path.join(entry.parentPath ?? entry.path, entry.name);
+    const text = await readFile(absolute, 'utf8');
+    const relative = path.relative(publicRoot, absolute);
+    checked.push(relative);
+    for (const term of forbidden) {
+      assert.ok(!text.includes(term), `${relative} must not publish internal grading term "${term}"`);
+    }
+  }
+  assert.ok(checked.length >= 12, 'the public surface should have been enumerated');
 });
 
 test('the API edge serves all three agent documents, and llms.txt byte-identically', async () => {

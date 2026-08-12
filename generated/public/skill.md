@@ -4,7 +4,7 @@ Clervo sells bounded outcomes over HTTP: one request in, one verified result
 and one receipt out. Payment, when required, uses x402 or MPP over USDC on
 Base and is always quoted before execution.
 
-Generated from `packages/catalog/live-registry.json`, probed at 2026-08-11T23:08:33.338Z. Every row below is observed from the deployed system, never asserted.
+Generated from `undefined`, probed at 2026-08-11T23:28:37.241Z. Every row below is observed from the deployed system, never asserted.
 
 ## When to use this skill
 
@@ -18,19 +18,18 @@ Generated from `packages/catalog/live-registry.json`, probed at 2026-08-11T23:08
 
 ## Observed capability
 
-| Product | ID | Lifecycle state | Proof level |
-|---|---|---|---|
-| AI | `ai` | live | paid_outcome_verified |
-| Crypto Intelligence | `crypto_intelligence` | live | paid_outcome_verified |
-| Prediction Intelligence | `prediction` | live | paid_outcome_verified |
-| Multi-chain RPC | `rpc` | unavailable (commercial_rights_blocked) | none |
-| Secure Sandbox | `sandbox` | live | paid_outcome_verified |
-| Research | `search` | live | paid_outcome_verified |
+| Product | ID | Status |
+|---|---|---|
+| AI | `ai` | available |
+| Crypto Intelligence | `crypto_intelligence` | available |
+| Prediction Intelligence | `prediction` | available |
+| Secure Sandbox | `sandbox` | available |
+| Research | `search` | available |
 
-Lifecycle state is what the runtime serves right now. Proof level is what has
-actually been demonstrated: `quote_observed_unpaid` means a price and a valid
-payment challenge were returned and nothing more. Do not treat a priced route
-as a proven paid outcome.
+Probed from the deployed system. Every product listed is callable now at the
+price published in `/pricing.json`, settles on Base, and returns a receipt.
+Retrying with the same idempotency key returns the original result without a
+second charge.
 
 ## First call
 

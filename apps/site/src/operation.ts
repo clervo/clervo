@@ -144,7 +144,6 @@ export function operationContract(operationId: string) {
 
   const familyId = familyOf(operationId);
   const family = observedProduct(familyId);
-  const launch = launchState.products.find(({ id }) => id === familyId);
   const published = discovery.products.find((entry) => entry.operationId === operationId);
   const offer = pricing.offers.find((entry) => entry.productId === operationId);
   const publicRoute = published?.publicAvailable === true && published.payment.challengeImplemented
@@ -210,8 +209,6 @@ export function operationContract(operationId: string) {
     },
     operationRoutes,
     exactPrivateProof,
-    familyAllowedClaims: launch?.allowedClaims ?? [],
-    familyProhibitedClaims: launch?.prohibitedClaims ?? [],
     recovery: onboarding.recovery,
     relatedOperationIds,
     artifacts: {

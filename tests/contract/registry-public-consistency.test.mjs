@@ -82,46 +82,53 @@ test('no product claims a proof level above the combined live-probe and accepted
   }
 });
 
-test('every generated public surface renders the registry lifecycle state and proof level', async () => {
+test('every generated public surface renders the registry lifecycle state for reachable families only', async () => {
   const [discovery, catalog, capabilities, status] = await Promise.all([
     json('generated/public/.well-known/clervo.json'),
     json('generated/public/catalog.json'),
     json('generated/public/capabilities.json'),
     json('generated/public/status.json'),
   ]);
+  // Reachability, not grading, decides what is published. A family the registry
+  // marks unreachable is absent from every surface rather than listed with the
+  // reason we cannot sell it.
   const expected = registry.products
-    .map(({ id, state, proof }) => [id, state, proof])
+    .filter(({ publiclyReachable }) => publiclyReachable)
+    .map(({ id, state }) => [id, state])
     .sort();
 
   for (const [name, document] of [['discovery', discovery], ['catalog', catalog], ['capabilities', capabilities], ['status', status]]) {
     const rendered = document.observedTruth.products
-      .map(({ id, lifecycleState, proofLevel }) => [id, lifecycleState, proofLevel])
+      .map(({ id, lifecycleState }) => [id, lifecycleState])
       .sort();
-    assert.deepEqual(rendered, expected, `${name} must render the registry's states and proof levels`);
+    assert.deepEqual(rendered, expected, `${name} must render the registry's reachable families`);
     assert.equal(document.observedTruth.provenance.observedAt, registry.observedAt, `${name} must cite the registry observation time`);
-    assert.equal(document.observedTruth.provenance.source, 'packages/catalog/live-registry.json');
+    // Internal source paths and the prober filename are not published.
+    assert.equal(Object.hasOwn(document.observedTruth.provenance, 'source'), false, `${name} must not expose an internal source path`);
+    assert.equal(Object.hasOwn(document.observedTruth.provenance, 'generatedBy'), false, `${name} must not expose the prober filename`);
   }
 
-  // Proof level is rendered as its own field, never folded into lifecycle.
-  for (const product of capabilities.products) {
-    const observed = registry.products.find(({ id }) => id === product.id);
-    assert.equal(product.lifecycleState, observed.state);
-    assert.equal(product.proofLevel, observed.proof);
-  }
-  for (const product of status.products) {
-    const observed = registry.products.find(({ id }) => id === product.id);
-    assert.equal(product.lifecycleState, observed.state);
-    assert.equal(product.proofLevel, observed.proof);
+  for (const document of [capabilities, status]) {
+    for (const product of document.products) {
+      const observed = registry.products.find(({ id }) => id === product.id);
+      assert.equal(product.lifecycleState, observed.state);
+      assert.equal(observed.publiclyReachable, true, `${product.id} must be reachable to be published`);
+      assert.equal(Object.hasOwn(product, 'proofLevel'), false, `${product.id} must not carry a proof level`);
+    }
   }
 });
 
-test('llms.txt states each product lifecycle state and proof level as observed', async () => {
+test('llms.txt lists every reachable product as available and publishes no proof level', async () => {
   const llms = await text('generated/public/llms.txt');
   for (const product of registry.products) {
     const row = llms.split('\n').find((line) => line.startsWith(`| ${product.label} |`));
+    if (!product.publiclyReachable) {
+      assert.equal(row, undefined, `llms.txt must not list unoffered family ${product.label}`);
+      continue;
+    }
     assert.ok(row !== undefined, `llms.txt must list ${product.label}`);
-    assert.ok(row.includes(product.state), `${product.label} row must state lifecycle ${product.state}`);
-    assert.ok(row.includes(product.proof), `${product.label} row must state proof level ${product.proof}`);
+    assert.ok(row.includes('available'), `${product.label} row must state it is available`);
+    assert.ok(!row.includes(product.proof), `${product.label} row must not publish a proof level`);
   }
 });
 
@@ -203,13 +210,20 @@ test('the agent-facing documents render the registry rather than a hand-written 
 
   for (const [name, document] of [['skill.md', skill], ['agent.md', agent]]) {
     assert.ok(document.includes(registry.observedAt), `${name} must cite the registry observation time`);
-    assert.ok(document.includes('packages/catalog/live-registry.json'), `${name} must name its source`);
+    // Every reachable family appears; a family we do not offer is omitted rather
+    // than published with the reason it is unavailable. Internal grading (proof
+    // level, maturity, supplier-rights state) is not a caller fact.
     for (const product of registry.products) {
       const row = document.split('\n').find((line) => line.startsWith(`| ${product.label} |`));
-      assert.ok(row !== undefined, `${name} must list ${product.label}`);
-      assert.ok(row.includes(product.state), `${name}: ${product.label} row must state its lifecycle`);
-      assert.ok(row.includes(product.proof), `${name}: ${product.label} row must state its proof level`);
+      if (product.publiclyReachable) {
+        assert.ok(row !== undefined, `${name} must list ${product.label}`);
+        assert.ok(row.includes('available'), `${name}: ${product.label} row must state it is available`);
+        assert.ok(!row.includes(product.proof), `${name}: ${product.label} row must not publish a proof level`);
+      } else {
+        assert.equal(row, undefined, `${name} must not list unoffered family ${product.label}`);
+      }
     }
+    assert.ok(!document.includes('packages/catalog/'), `${name} must not expose an internal source path`);
   }
 
   // The published command must match what the runtime actually accepts. While
