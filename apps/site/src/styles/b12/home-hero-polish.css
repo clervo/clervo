@@ -1,0 +1,172 @@
+/*
+ * Final Home hero precision pass.
+ * Keep the scene architecture fixed: only optical weight and the mobile brand rail change here.
+ */
+
+.clervo-home-hero {
+  background:
+    radial-gradient(circle at 50% 51%, rgb(255 255 255 / 1.35%), transparent 12rem),
+    radial-gradient(circle at 50% 52%, rgb(0 229 255 / 1.6%), transparent 19rem),
+    #000;
+}
+
+/* Light should reveal the Apex, not turn it into a neon object. */
+.clervo-hero-signal__red-glow {
+  opacity: 0.34;
+}
+
+.clervo-home-hero[data-state="qualify"] .clervo-hero-signal__cyan {
+  opacity: 0.46;
+}
+
+.clervo-home-hero[data-state="qualify"] .clervo-hero-signal__hotspot {
+  opacity: 0.16;
+}
+
+.clervo-home-hero[data-state="execute"] .clervo-hero-signal__cyan {
+  opacity: 0.76;
+}
+
+.clervo-home-hero[data-state="execute"] .clervo-hero-signal__hotspot {
+  opacity: 0.46;
+}
+
+.clervo-home-hero[data-state="verify"] .clervo-hero-signal__cyan,
+.clervo-home-hero[data-state="prove"] .clervo-hero-signal__cyan {
+  opacity: 0.7;
+}
+
+.clervo-home-hero[data-state="verify"] .clervo-hero-signal__hotspot,
+.clervo-home-hero[data-state="prove"] .clervo-hero-signal__hotspot {
+  opacity: 0.3;
+}
+
+.clervo-home-hero[data-state="prove"] .clervo-hero-signal__gold-glow {
+  opacity: 0.4;
+}
+
+.clervo-hero-apex__bloom {
+  opacity: 0.12;
+}
+
+.clervo-hero-apex__surface {
+  filter: drop-shadow(0 0 2px rgb(255 255 255 / 18%));
+}
+
+.clervo-hero-apex__edge {
+  opacity: 0.68;
+}
+
+.clervo-home-hero[data-state="qualify"] .clervo-hero-apex__bloom {
+  opacity: 0.18;
+}
+
+.clervo-home-hero[data-state="execute"] .clervo-hero-apex__bloom {
+  opacity: 0.36;
+}
+
+.clervo-home-hero[data-state="execute"] .clervo-hero-apex__surface {
+  filter:
+    drop-shadow(0 0 3px rgb(255 255 255 / 28%))
+    drop-shadow(0 0 9px rgb(0 229 255 / 11%));
+}
+
+.clervo-home-hero[data-state="verify"] .clervo-hero-apex__bloom,
+.clervo-home-hero[data-state="prove"] .clervo-hero-apex__bloom {
+  opacity: 0.24;
+}
+
+.clervo-home-hero[data-state="prove"] .clervo-hero-apex__surface {
+  filter:
+    drop-shadow(0 0 3px rgb(255 255 255 / 25%))
+    drop-shadow(-6px 3px 10px rgb(0 229 255 / 5%))
+    drop-shadow(7px 3px 11px rgb(255 200 0 / 6%));
+}
+
+/* Desktop marks are intentionally quieter than the product promise. */
+.clervo-home-hero__ecosystem-viewport {
+  display: contents;
+}
+
+.clervo-home-hero__ecosystem .is-clone {
+  display: none;
+}
+
+.clervo-home-hero__ecosystem img {
+  max-width: 58%;
+  max-height: 34px;
+  opacity: 0.66;
+}
+
+.clervo-home-hero__ecosystem [data-brand="openai"] img { max-width: min(58%, 132px); }
+.clervo-home-hero__ecosystem [data-brand="anthropic"] img { max-width: min(58%, 142px); }
+.clervo-home-hero__ecosystem [data-brand="nvidia"] img { max-width: min(58%, 140px); }
+.clervo-home-hero__ecosystem [data-brand="cloudflare"] img { max-width: min(58%, 140px); }
+.clervo-home-hero__ecosystem [data-brand="aws"] img { max-width: min(42%, 92px); max-height: 38px; }
+.clervo-home-hero__ecosystem [data-brand="google-cloud"] img { max-width: min(60%, 144px); }
+
+@media (width <= 980px) {
+  /* Anchor the rail to the physical end of the viewport and let it run continuously. */
+  .clervo-home-hero__ecosystem-viewport {
+    position: absolute;
+    z-index: 8;
+    right: 0;
+    bottom: max(0.65rem, env(safe-area-inset-bottom));
+    left: 0;
+    display: block;
+    height: 36px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+
+  .clervo-home-hero__ecosystem {
+    position: static;
+    display: flex;
+    width: max-content;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+    animation: clervo-hero-brand-loop 24s linear infinite;
+    will-change: transform;
+  }
+
+  .clervo-home-hero__ecosystem li,
+  .clervo-home-hero__ecosystem .is-clone {
+    display: flex;
+    flex: 0 0 108px;
+    min-height: 34px;
+    opacity: 1;
+    animation: none;
+  }
+
+  .clervo-home-hero__ecosystem img {
+    max-width: 80px;
+    max-height: 25px;
+    opacity: 0.6;
+  }
+
+  .clervo-home-hero__ecosystem [data-brand="openai"] img,
+  .clervo-home-hero__ecosystem [data-brand="anthropic"] img,
+  .clervo-home-hero__ecosystem [data-brand="nvidia"] img,
+  .clervo-home-hero__ecosystem [data-brand="cloudflare"] img,
+  .clervo-home-hero__ecosystem [data-brand="google-cloud"] img {
+    max-width: 80px;
+  }
+
+  .clervo-home-hero__ecosystem [data-brand="aws"] img {
+    max-width: 58px;
+    max-height: 27px;
+  }
+}
+
+@keyframes clervo-hero-brand-loop {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clervo-home-hero__ecosystem {
+    animation: none;
+  }
+}
