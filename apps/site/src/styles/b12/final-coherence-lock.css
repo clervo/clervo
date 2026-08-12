@@ -84,7 +84,7 @@
 
 #root .app.app--internal .site-header__cta.button--primary,
 #root .app.app--internal .site-header__cta {
-  min-height: 42px;
+  min-height: 44px;
   padding-inline: 1.2rem;
   border: 1px solid rgb(255 255 255 / 17%);
   border-radius: 13px;
