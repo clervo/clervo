@@ -6,11 +6,9 @@ import { Link, useRouter } from '../router';
 /*
  * The global shell.
  *
- * The navigation is the locked one (vault Step 7G): Product, Catalog, Pricing,
- * Docs, Status, and one primary action to /start. The deployed header carried
- * a different set — "Outcome", "How it works", "Proof" — and its primary
- * action was a search trigger, so the site's single most important conversion
- * path was not present in the header at all.
+ * Product, Catalog, Pricing, Docs, Status and one primary action to /start are
+ * the stable human navigation. The footer also exposes the canonical machine
+ * entry points so developers and agent crawlers do not have to infer them.
  */
 
 const primaryNav = [
@@ -45,13 +43,8 @@ export function SiteHeader() {
     return pathname === to || (to !== '/' && pathname.startsWith(`${to}/`));
   };
 
-  // Route change closes the panel. Without this, tapping a link on mobile
-  // navigates behind an overlay that is still covering the page.
   useEffect(() => setOpen(false), [pathname]);
 
-  // While the panel is open it owns the viewport: the page beneath must not
-  // scroll, Escape must close, and focus must not escape into content the user
-  // cannot see.
   useEffect(() => {
     if (!open) return;
     const { body } = document;
@@ -192,6 +185,7 @@ export function SiteFooter({ note }: { note: string }) {
           <section>
             <h2>Product</h2>
             <Link to="/product">Overview</Link>
+            <Link to="/research">Research</Link>
             <Link to="/catalog">Models</Link>
             <Link to="/pricing">Pricing</Link>
             <Link to="/start">Set up Clervo</Link>
@@ -202,6 +196,8 @@ export function SiteFooter({ note }: { note: string }) {
             <Link to="/docs/quickstart">Quickstart</Link>
             <a href="/openapi.json">OpenAPI</a>
             <a href="/.well-known/clervo.json">Discovery</a>
+            <a href="/llms.txt">LLM reference</a>
+            <a href="/skill.md">Agent skill</a>
           </section>
           <section>
             <h2>Trust</h2>
@@ -209,15 +205,11 @@ export function SiteFooter({ note }: { note: string }) {
             <Link to="/proof">Proof</Link>
             <Link to="/status">Status</Link>
             <Link to="/security">Security</Link>
+            <Link to="/changelog">Changelog</Link>
             <Link to="/legal">Legal</Link>
           </section>
         </div>
       </div>
-      {/*
-        * The footer note is generated from the observed registry, never
-        * written by hand. A hand-written availability line is the exact bug
-        * the truth spine exists to prevent.
-        */}
       <p className="site-footer__note shell quiet">{note}</p>
     </footer>
   );
