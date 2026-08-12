@@ -1,0 +1,37 @@
+/*
+ * Final interaction QA hardening.
+ * These rules do not alter the visual system; they make the locked controls
+ * meet the 44px mobile target without reintroducing page-specific chrome.
+ */
+
+@media (width <= 980px) {
+  .app--home .site-header__menu,
+  .app--internal .site-header__menu {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+  }
+
+  .clervo-home-hero__trace {
+    min-height: 44px;
+    padding: 0 0.15rem;
+    border-bottom: 0;
+  }
+
+  .clervo-home-hero__trace::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+    left: 0;
+    height: 1px;
+    background: rgb(242 242 244 / 50%);
+    transition: background-color 180ms ease;
+  }
+
+  .clervo-home-hero__trace:hover:not(:disabled)::after,
+  .clervo-home-hero__trace:focus-visible::after {
+    background: rgb(242 242 244 / 82%);
+  }
+}
