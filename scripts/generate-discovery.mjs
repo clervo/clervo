@@ -8,6 +8,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const schemaDirectory = path.join(root, 'packages/contracts/schemas');
 const outputDirectory = path.join(root, 'generated/public');
 const contractModule = await import(pathToFileURL(path.join(root, 'dist/packages/contracts/src/index.js')));
+const openAiChatCompat = await import(pathToFileURL(path.join(root, 'apps/api/src/openai-chat-compat.mjs')));
 const schemaVisibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
 const releaseCandidate = JSON.parse(await readFile(path.join(root, 'packages/catalog/release-candidate-freeze.v1.json'), 'utf8'));
 const registry = JSON.parse(await readFile(path.join(root, releaseCandidate.baseRegistry.file), 'utf8'));
@@ -42,6 +43,14 @@ const currentFreeModels = b7PublicModels.data
   .sort();
 const currentAliases = b7PublicModels.data.filter(({ clervo }) => clervo.identityKind === 'alias' && clervo.publicSellable === true).map(({ id }) => id).sort();
 if (typeof currentPaidDiscoveryModel !== 'string') throw new Error('ai_paid_discovery_model_missing');
+const OPENAI_CHAT_COMPLETIONS_PATH = openAiChatCompat.OPENAI_CHAT_COMPLETIONS_PATH;
+const openAiChatProbeExample = Object.freeze({
+  model: currentPaidDiscoveryModel,
+  messages: [{ role: 'user', content: 'Explain in one sentence why idempotency matters for paid API retries.' }],
+  stream: false,
+  max_completion_tokens: 64,
+});
+const openAiChatDiscovery = openAiChatCompat.createOpenAiChatDiscoveryContract(openAiChatProbeExample);
 const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
 const predictionProof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/prediction-x402-proof.v1.json'), 'utf8'));
 const predictionPaymentProof = predictionProof.operations.find(({ productId }) => productId === 'prediction.markets');
@@ -309,6 +318,10 @@ const publicApiFlags = [
 ];
 const publicSearch = observedLive.search;
 const publicAi = observedLive.ai;
+const openAiChatCompatibility = observed.ai.compatibilityRoutes?.find(({ protocol }) => protocol === 'openai_chat_completions') ?? null;
+const publicOpenAiChat = publicAi
+  && openAiChatCompatibility?.state === 'live'
+  && openAiChatCompatibility.observedQuote !== null;
 const aiOperationIds = Object.freeze(['ai.chat', 'ai.embed', 'ai.image', 'ai.speech', 'ai.video', 'ai.music', 'ai.virtual_try_on']);
 const publicSandbox = observedLive.sandbox;
 const publicPrediction = observedLive.prediction;
@@ -603,6 +616,66 @@ if (publicAi) {
       },
     },
   };
+  if (publicOpenAiChat) {
+    openapi.paths[OPENAI_CHAT_COMPLETIONS_PATH] = {
+      post: {
+        summary: 'Create an OpenAI-compatible chat completion',
+        description: 'Thin non-streaming OpenAI Chat Completions compatibility adapter over Clervo AI execution. Free models use the same published quota; paid models return a request-bound x402 or MPP quote before execution. Unsupported non-default controls and stream=true fail closed with 422.',
+        operationId: 'openAiChatCompletions',
+        security: [],
+        tags: ['AI'],
+        parameters: [{
+          name: 'Idempotency-Key',
+          in: 'header',
+          required: false,
+          description: 'Stable replay key. When omitted before payment, the service generates one and returns it in the response headers.',
+          schema: { type: 'string', minLength: 8, maxLength: 128 },
+        }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: openAiChatDiscovery.inputSchema,
+              example: openAiChatDiscovery.input,
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'OpenAI-compatible chat completion',
+            headers: {
+              'PAYMENT-RESPONSE': { description: 'Base64-encoded x402 v2 settlement response when x402 was used.', schema: { type: 'string', contentEncoding: 'base64' } },
+              'Payment-Receipt': { description: 'MPP receipt when MPP was used.', schema: { type: 'string' } },
+              'Idempotency-Replayed': { description: 'true when the completed logical operation was replayed without another charge.', schema: { type: 'string', enum: ['true'] } },
+            },
+            content: {
+              'application/json': {
+                schema: openAiChatDiscovery.output.schema,
+                example: openAiChatDiscovery.output.example,
+              },
+            },
+          },
+          400: { description: 'Invalid compatibility request', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
+          404: { description: 'Requested model ID is not present in the current catalog', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          422: { description: 'Unsupported compatibility behavior, unavailable model, or streaming request', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          429: { description: 'Published free-tier quota exhausted', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          503: { description: 'No qualified route, capacity, or settlement path is available', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        },
+        'x-payment-info': {
+          price: {
+            mode: 'dynamic',
+            currency: 'USD',
+            min: decimalAtomic(b7Pricing.minimumBillableAtomic, b7Pricing.decimals),
+            max: decimalAtomic(aiMaximumChargeAtomic, b7Pricing.decimals),
+          },
+          protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
+        },
+      },
+    };
+  }
+
   openapi.paths['/v1/ai/execute'].post = scannerSafeOperation(openapi.paths['/v1/ai/execute'].post, {
     requestSchema: aiChatProbeSchema,
     example: aiProbeExample,
@@ -627,7 +700,11 @@ if (publicAi) {
     lifecycle: observed.ai.proof === 'paid_outcome_verified' ? 'production' : 'preview', publicAvailable: true, deliveryModes: ['sync'],
     selection: { model: 'Stable canonical Clervo model ID or a published alias contract.', catalog: '/v1/models' },
     pricing: { model: 'authoritative_per_model_usage_pricing', displayPrice: null, freeAndPaid: true, maximumChargeRequiredForPaid: true, priceVersion: b7Pricing.revision },
-    routes: { catalog: '/v1/models', execute: '/v1/ai/execute' },
+    routes: {
+      catalog: '/v1/models',
+      execute: '/v1/ai/execute',
+      ...(publicOpenAiChat ? { openAiChatCompletions: OPENAI_CHAT_COMPLETIONS_PATH } : {}),
+    },
     payment: { freeModelsRequirePayment: false, paidModels: ['x402', 'mpp'], challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
     commercialProof: observed.ai.proof === 'paid_outcome_verified',
   });
@@ -642,6 +719,17 @@ if (publicAi) {
     .replace('raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable', 'raw cited Search and the complete provider-neutral Clervo AI catalog are callable; synthesized Search, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable')
     .replace('Projected operation IDs: search.web, search.answer', `Projected operation IDs: search.web, search.answer, ${aiOperationIds.join(', ')}`)
     .replace('x402 public payment: available for search.web at a maximum charge of 0.006 USDC on Base', 'x402 public payment: available for search.web at a maximum charge of 0.006 USDC and for paid AI requests through an exact request-derived maximum-charge quote on Base; published free AI models require no payment');
+  if (publicOpenAiChat) {
+    llms += [
+      '',
+      '## OpenAI Chat Completions compatibility',
+      '',
+      `- \`POST ${projection.publicBaseUrl}${OPENAI_CHAT_COMPLETIONS_PATH}\`: OpenAI Chat Completions-compatible non-streaming adapter over the canonical Clervo AI execution stack.`,
+      '- The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.',
+      '- `stream: true` is not advertised yet and returns 422 until streaming support is implemented.',
+      '',
+    ].join('\n');
+  }
 }
 if (publicSandbox) {
   openapi.info.title = 'Clervo Search, AI, and Secure Sandbox API';
@@ -1321,6 +1409,14 @@ const aiExampleRouteId = dynamicModelAuthority ? null : aiExampleRoute?.routeId 
 const x402Resources = [
   { productId: 'search', path: '/v1/search/paid', operationId: 'search.web', priceModel: 'fixed_request', quote: observed.search.observedQuote, exampleRouteId: null },
   { productId: 'ai', path: '/v1/ai/execute', operationId: 'ai.chat', priceModel: 'request_derived_per_model', quote: aiExampleQuote, exampleRouteId: aiExampleRouteId },
+  ...(publicOpenAiChat ? [{
+    productId: 'ai',
+    path: OPENAI_CHAT_COMPLETIONS_PATH,
+    operationId: 'ai.chat',
+    priceModel: 'request_derived_per_model',
+    quote: openAiChatCompatibility.observedQuote,
+    exampleRouteId: null,
+  }] : []),
   { productId: 'sandbox', path: '/v1/sandbox/execute', operationId: 'sandbox.run', priceModel: 'class_derived_quote', quote: observed.sandbox.observedQuote, exampleRouteId: null },
   { productId: 'prediction', path: '/v1/prediction/execute', operationId: 'prediction.markets', priceModel: 'request_derived_per_operation', quote: observed.prediction.observedQuote, exampleRouteId: null },
   { productId: 'crypto_intelligence', path: '/v1/crypto/execute', operationId: 'crypto.wallet.report', priceModel: 'request_derived_per_operation', quote: observed.crypto_intelligence.observedQuote, exampleRouteId: null },
