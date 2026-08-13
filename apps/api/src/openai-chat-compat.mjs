@@ -141,10 +141,10 @@ export function normalizeOpenAiChatCompletionRequest(value) {
     refuse('openai_chat_messages_invalid');
   }
 
-  if (value.stream === true) {
-    refuse('openai_chat_streaming_unavailable', 422);
-  }
-  if (value.stream !== undefined && value.stream !== false) {
+  if (
+    value.stream !== undefined
+    && typeof value.stream !== 'boolean'
+  ) {
     refuse('openai_chat_stream_invalid');
   }
 
@@ -180,7 +180,7 @@ export function normalizeOpenAiChatCompletionRequest(value) {
       kind: 'chat',
       messages: value.messages.map(normalizeMessage),
       responseFormat: responseFormat(value.response_format),
-      stream: false,
+      stream: value.stream === true,
     },
     ...(maximumOutputTokens === undefined
       ? {}
@@ -209,7 +209,7 @@ export function createOpenAiChatDiscoveryContract(openAiRequest) {
   const input = Object.freeze({
     model: normalized.model,
     messages: structuredClone(openAiRequest.messages),
-    stream: false,
+    stream: normalized.input.stream,
     max_completion_tokens: normalized.usageBounds.outputTokens,
     response_format: Object.freeze({
       type: normalized.input.responseFormat,
@@ -251,7 +251,7 @@ export function createOpenAiChatDiscoveryContract(openAiRequest) {
           },
         },
         stream: {
-          const: false,
+          type: 'boolean',
         },
         max_completion_tokens: {
           type: 'integer',
@@ -377,4 +377,59 @@ export function createOpenAiChatCompletion(value) {
       },
     },
   };
+}
+
+function openAiChatSseData(value) {
+  return `data: ${JSON.stringify(value)}\n\n`;
+}
+
+export function createOpenAiChatStream(value) {
+  const completion = createOpenAiChatCompletion(value);
+  const choice = completion.choices[0];
+
+  const common = {
+    id: completion.id,
+    object: 'chat.completion.chunk',
+    created: completion.created,
+    model: completion.model,
+  };
+
+  const chunks = [
+    {
+      ...common,
+      choices: [{
+        index: 0,
+        delta: {
+          role: 'assistant',
+          content: '',
+        },
+        logprobs: null,
+        finish_reason: null,
+      }],
+    },
+    ...(choice.message.content.length === 0
+      ? []
+      : [{
+          ...common,
+          choices: [{
+            index: 0,
+            delta: {
+              content: choice.message.content,
+            },
+            logprobs: null,
+            finish_reason: null,
+          }],
+        }]),
+    {
+      ...common,
+      choices: [{
+        index: 0,
+        delta: {},
+        logprobs: null,
+        finish_reason: choice.finish_reason,
+      }],
+    },
+  ];
+
+  return `${chunks.map(openAiChatSseData).join('')}data: [DONE]\n\n`;
 }

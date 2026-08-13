@@ -352,6 +352,187 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
     3,
   );
 
+
+  const chatStreamBody = JSON.stringify({
+    model: 'gpt-5.6-luna',
+    messages: [{
+      role: 'user',
+      content: 'Hello from an OpenAI streaming client',
+    }],
+    stream: true,
+    max_completion_tokens: 100,
+  });
+  const chatStreamHeaders = {
+    ...compatibleHeaders,
+    'idempotency-key': 'idem_openai_chat_stream_001',
+  };
+
+  const chatStreamChallenge = await fetch(
+    `${origin}/v1/chat/completions`,
+    {
+      method: 'POST',
+      headers: chatStreamHeaders,
+      body: chatStreamBody,
+    },
+  );
+  assert.equal(chatStreamChallenge.status, 402);
+  assert.equal(discoveries.at(-1).input.stream, true);
+
+  const chatStreamPaid = await fetch(
+    `${origin}/v1/chat/completions`,
+    {
+      method: 'POST',
+      headers: {
+        ...chatStreamHeaders,
+        'payment-signature': 'opaque-payment',
+      },
+      body: chatStreamBody,
+    },
+  );
+  assert.equal(chatStreamPaid.status, 200);
+  assert.match(
+    chatStreamPaid.headers.get('content-type') ?? '',
+    /^text\/event-stream/iu,
+  );
+  assert.equal(
+    chatStreamPaid.headers.get('payment-response'),
+    'ai-http-settled',
+  );
+  const chatStream = await chatStreamPaid.text();
+  assert.match(
+    chatStream,
+    /"object":"chat\.completion\.chunk"/u,
+  );
+  assert.match(
+    chatStream,
+    /"content":"Useful output\."/u,
+  );
+  assert.match(chatStream, /data: \[DONE\]/u);
+
+  const anthropicStreamBody = JSON.stringify({
+    model: 'gpt-5.6-luna',
+    max_tokens: 100,
+    messages: [{
+      role: 'user',
+      content: 'Hello from an Anthropic streaming client',
+    }],
+    stream: true,
+  });
+  const anthropicStreamHeaders = {
+    ...anthropicHeaders,
+    'idempotency-key': 'idem_anthropic_stream_001',
+  };
+
+  const anthropicStreamChallenge = await fetch(
+    `${origin}/v1/messages`,
+    {
+      method: 'POST',
+      headers: anthropicStreamHeaders,
+      body: anthropicStreamBody,
+    },
+  );
+  assert.equal(anthropicStreamChallenge.status, 402);
+  assert.equal(discoveries.at(-1).input.stream, true);
+
+  const anthropicStreamPaid = await fetch(
+    `${origin}/v1/messages`,
+    {
+      method: 'POST',
+      headers: {
+        ...anthropicStreamHeaders,
+        'payment-signature': 'opaque-payment',
+      },
+      body: anthropicStreamBody,
+    },
+  );
+  assert.equal(anthropicStreamPaid.status, 200);
+  assert.match(
+    anthropicStreamPaid.headers.get('content-type') ?? '',
+    /^text\/event-stream/iu,
+  );
+  assert.equal(
+    anthropicStreamPaid.headers.get('payment-response'),
+    'ai-http-settled',
+  );
+  const anthropicStream = await anthropicStreamPaid.text();
+  assert.match(anthropicStream, /event: message_start/u);
+  assert.match(
+    anthropicStream,
+    /event: content_block_delta/u,
+  );
+  assert.match(
+    anthropicStream,
+    /"text":"Useful output\."/u,
+  );
+  assert.match(anthropicStream, /event: message_delta/u);
+  assert.match(anthropicStream, /event: message_stop/u);
+
+  const responsesStreamBody = JSON.stringify({
+    model: 'gpt-5.6-luna',
+    input: 'Hello from a Responses streaming client',
+    max_output_tokens: 100,
+    stream: true,
+    store: false,
+    text: {
+      format: {
+        type: 'text',
+      },
+    },
+  });
+  const responsesStreamHeaders = {
+    ...responsesHeaders,
+    'idempotency-key': 'idem_openai_responses_stream_001',
+  };
+
+  const responsesStreamChallenge = await fetch(
+    `${origin}/v1/responses`,
+    {
+      method: 'POST',
+      headers: responsesStreamHeaders,
+      body: responsesStreamBody,
+    },
+  );
+  assert.equal(responsesStreamChallenge.status, 402);
+  assert.equal(discoveries.at(-1).input.stream, true);
+
+  const responsesStreamPaid = await fetch(
+    `${origin}/v1/responses`,
+    {
+      method: 'POST',
+      headers: {
+        ...responsesStreamHeaders,
+        'payment-signature': 'opaque-payment',
+      },
+      body: responsesStreamBody,
+    },
+  );
+  assert.equal(responsesStreamPaid.status, 200);
+  assert.match(
+    responsesStreamPaid.headers.get('content-type') ?? '',
+    /^text\/event-stream/iu,
+  );
+  assert.equal(
+    responsesStreamPaid.headers.get('payment-response'),
+    'ai-http-settled',
+  );
+  const responsesStream = await responsesStreamPaid.text();
+  assert.match(
+    responsesStream,
+    /"type":"response\.created"/u,
+  );
+  assert.match(
+    responsesStream,
+    /"type":"response\.output_text\.delta"/u,
+  );
+  assert.match(
+    responsesStream,
+    /"delta":"Useful output\."/u,
+  );
+  assert.match(
+    responsesStream,
+    /"type":"response\.completed"/u,
+  );
+
   assert.deepEqual(resourcePaths, [
     '/v1/ai/execute',
     '/v1/search/paid',
@@ -359,11 +540,14 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
     '/v1/chat/completions',
     '/v1/messages',
     '/v1/responses',
+    '/v1/chat/completions',
+    '/v1/messages',
+    '/v1/responses',
   ]);
   assert.deepEqual(calls, {
-    challenge: 6,
-    authorize: 4,
-    settle: 4,
-    execute: 4,
+    challenge: 9,
+    authorize: 7,
+    settle: 7,
+    execute: 7,
   });
 });

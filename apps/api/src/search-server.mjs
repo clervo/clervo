@@ -32,6 +32,7 @@ import { createAiDiscoveryContract } from './ai-discovery.mjs';
 import {
   OPENAI_CHAT_COMPLETIONS_PATH,
   createOpenAiChatCompletion,
+  createOpenAiChatStream,
   createOpenAiChatDiscoveryContract,
   normalizeOpenAiChatCompletionRequest,
   openAiChatRequestHash,
@@ -40,12 +41,14 @@ import {
   ANTHROPIC_MESSAGES_PATH,
   anthropicMessagesRequestHash,
   createAnthropicMessage,
+  createAnthropicMessageStream,
   createAnthropicMessagesDiscoveryContract,
   normalizeAnthropicMessagesRequest,
 } from './anthropic-messages-compat.mjs';
 import {
   OPENAI_RESPONSES_PATH,
   createOpenAiResponse,
+  createOpenAiResponsesStream,
   createOpenAiResponsesDiscoveryContract,
   normalizeOpenAiResponsesRequest,
   openAiResponsesRequestHash,
@@ -143,6 +146,15 @@ function errorCode(error) {
 function send(response, status, body, headers = {}, contentType = JSON_TYPE) {
   response.writeHead(status, { 'content-type': contentType, 'cache-control': 'no-store', ...headers });
   response.end(JSON.stringify(body));
+}
+
+function sendSse(response, body, headers = {}) {
+  response.writeHead(200, {
+    'content-type': 'text/event-stream; charset=utf-8',
+    'cache-control': 'no-store',
+    ...headers,
+  });
+  response.end(body);
 }
 
 // `curl -d '{"query":"..."}'` sends `application/x-www-form-urlencoded`, so a
@@ -532,6 +544,23 @@ export function createSearchServer({
             ? edgeSubject
             : request.socket.remoteAddress ?? 'loopback-unknown';
           const free = await freeAiProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId: aiOperationId, normalized, subject, now: observedAt });
+          const responseHeaders = {
+            ...free.headers,
+            ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}),
+          };
+          if (free.status === 200 && aiBody.stream === true) {
+            const streamBody = openAiCompatibility
+              ? createOpenAiChatStream(free.body)
+              : anthropicCompatibility
+                ? createAnthropicMessageStream(free.body)
+                : responsesCompatibility
+                  ? createOpenAiResponsesStream(free.body, aiBody)
+                  : undefined;
+            if (streamBody !== undefined) {
+              sendSse(response, streamBody, responseHeaders);
+              return;
+            }
+          }
           const responseBody = free.status !== 200
             ? free.body
             : openAiCompatibility
@@ -541,7 +570,7 @@ export function createSearchServer({
                 : responsesCompatibility
                   ? createOpenAiResponse(free.body, aiBody)
                   : free.body;
-          send(response, free.status, responseBody, { ...free.headers, ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}) });
+          send(response, free.status, responseBody, responseHeaders);
           return;
         }
         const keyGenerated = typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined;
@@ -566,6 +595,23 @@ export function createSearchServer({
                 ? createOpenAiResponsesDiscoveryContract(aiBody)
                 : undefined,
         });
+        const responseHeaders = {
+          ...paid.headers,
+          ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}),
+        };
+        if (paid.status === 200 && aiBody.stream === true) {
+          const streamBody = openAiCompatibility
+            ? createOpenAiChatStream(paid.body)
+            : anthropicCompatibility
+              ? createAnthropicMessageStream(paid.body)
+              : responsesCompatibility
+                ? createOpenAiResponsesStream(paid.body, aiBody)
+                : undefined;
+          if (streamBody !== undefined) {
+            sendSse(response, streamBody, responseHeaders);
+            return;
+          }
+        }
         const responseBody = paid.status !== 200
           ? paid.body
           : openAiCompatibility
@@ -575,7 +621,7 @@ export function createSearchServer({
               : responsesCompatibility
                 ? createOpenAiResponse(paid.body, aiBody)
                 : paid.body;
-        send(response, paid.status, responseBody, { ...paid.headers, ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}) });
+        send(response, paid.status, responseBody, responseHeaders);
       } catch (error) {
         const code = errorCode(error);
         const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;

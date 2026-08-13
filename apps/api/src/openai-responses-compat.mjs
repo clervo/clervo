@@ -234,13 +234,9 @@ export function normalizeOpenAiResponsesRequest(value) {
     refuse('openai_responses_request_property_unsupported', 422);
   }
 
-  if (value.stream === true) {
-    refuse('openai_responses_streaming_unavailable', 422);
-  }
-
   if (
     value.stream !== undefined
-    && value.stream !== false
+    && typeof value.stream !== 'boolean'
   ) {
     refuse('openai_responses_stream_invalid');
   }
@@ -393,7 +389,7 @@ export function normalizeOpenAiResponsesRequest(value) {
         ...normalizeInput(value.input),
       ],
       responseFormat: responseFormat(value.text),
-      stream: false,
+      stream: value.stream === true,
     },
     ...(value.max_output_tokens === undefined
       ? {}
@@ -428,7 +424,7 @@ export function createOpenAiResponsesDiscoveryContract(
     ...(openAiRequest.instructions === undefined
       ? {}
       : { instructions: openAiRequest.instructions }),
-    stream: false,
+    stream: normalized.input.stream,
     store: false,
     max_output_tokens: normalized.usageBounds.outputTokens,
     text: Object.freeze({
@@ -516,7 +512,7 @@ export function createOpenAiResponsesDiscoveryContract(
           maximum: 65_536,
         },
         stream: {
-          const: false,
+          type: 'boolean',
         },
         store: {
           const: false,
@@ -764,4 +760,117 @@ export function createOpenAiResponse(
     },
     metadata: {},
   };
+}
+
+function openAiResponsesSseData(value) {
+  return `data: ${JSON.stringify(value)}\n\n`;
+}
+
+export function createOpenAiResponsesStream(
+  value,
+  openAiRequest = {},
+) {
+  const response = createOpenAiResponse(
+    value,
+    openAiRequest,
+  );
+
+  const item = response.output[0];
+  const part = item?.content?.[0];
+
+  if (
+    item?.type !== 'message'
+    || part?.type !== 'output_text'
+  ) {
+    refuse(
+      'openai_responses_stream_result_invalid',
+      503,
+    );
+  }
+
+  const createdResponse = {
+    ...response,
+    status: 'in_progress',
+    completed_at: null,
+    incomplete_details: null,
+    output: [],
+    usage: null,
+  };
+
+  const pendingItem = {
+    ...item,
+    status: 'in_progress',
+    content: [],
+  };
+
+  const emptyPart = {
+    ...part,
+    text: '',
+  };
+
+  const terminalType =
+    response.status === 'completed'
+      ? 'response.completed'
+      : 'response.incomplete';
+
+  const events = [
+    {
+      type: 'response.created',
+      response: createdResponse,
+      sequence_number: 0,
+    },
+    {
+      type: 'response.output_item.added',
+      output_index: 0,
+      item: pendingItem,
+      sequence_number: 1,
+    },
+    {
+      type: 'response.content_part.added',
+      item_id: item.id,
+      output_index: 0,
+      content_index: 0,
+      part: emptyPart,
+      sequence_number: 2,
+    },
+    {
+      type: 'response.output_text.delta',
+      item_id: item.id,
+      output_index: 0,
+      content_index: 0,
+      delta: part.text,
+      sequence_number: 3,
+    },
+    {
+      type: 'response.output_text.done',
+      item_id: item.id,
+      output_index: 0,
+      content_index: 0,
+      text: part.text,
+      sequence_number: 4,
+    },
+    {
+      type: 'response.content_part.done',
+      item_id: item.id,
+      output_index: 0,
+      content_index: 0,
+      part,
+      sequence_number: 5,
+    },
+    {
+      type: 'response.output_item.done',
+      output_index: 0,
+      item,
+      sequence_number: 6,
+    },
+    {
+      type: terminalType,
+      response,
+      sequence_number: 7,
+    },
+  ];
+
+  return events
+    .map(openAiResponsesSseData)
+    .join('');
 }

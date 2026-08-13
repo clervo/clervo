@@ -655,7 +655,7 @@ if (publicAi) {
     openapi.paths[OPENAI_CHAT_COMPLETIONS_PATH] = {
       post: {
         summary: 'Create an OpenAI-compatible chat completion',
-        description: 'Thin non-streaming OpenAI Chat Completions compatibility adapter over Clervo AI execution. Free models use the same published quota; paid models return a request-bound x402 or MPP quote before execution. Unsupported non-default controls and stream=true fail closed with 422.',
+        description: 'Thin OpenAI Chat Completions compatibility adapter over Clervo AI execution. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Unsupported non-default controls still fail closed.',
         operationId: 'openAiChatCompletions',
         security: [],
         tags: ['AI'],
@@ -694,7 +694,7 @@ if (publicAi) {
           402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
           404: { description: 'Requested model ID is not present in the current catalog', content: { 'application/problem+json': { schema: publicProblemSchema } } },
           409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: publicProblemSchema } } },
-          422: { description: 'Unsupported compatibility behavior, unavailable model, or streaming request', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          422: { description: 'Unsupported compatibility behavior or unavailable model', content: { 'application/problem+json': { schema: publicProblemSchema } } },
           429: { description: 'Published free-tier quota exhausted', content: { 'application/problem+json': { schema: publicProblemSchema } } },
           503: { description: 'No qualified route, capacity, or settlement path is available', content: { 'application/problem+json': { schema: publicProblemSchema } } },
         },
@@ -715,7 +715,7 @@ if (publicAi) {
     openapi.paths[ANTHROPIC_MESSAGES_PATH] = {
       post: {
         summary: 'Create an Anthropic-compatible message',
-        description: 'Thin non-streaming Anthropic Messages compatibility adapter over Clervo AI execution. Text-only user/assistant messages and top-level system text are supported. Paid models return a request-bound x402 or MPP quote before execution; unsupported richer content, tools, thinking, non-default controls, and stream=true fail closed with 422.',
+        description: 'Thin Anthropic Messages compatibility adapter over Clervo AI execution. Text-only user/assistant messages and top-level system text are supported. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Unsupported richer content, tools, thinking, and non-default controls still fail closed.',
         operationId: 'anthropicMessages',
         security: [],
         tags: ['AI'],
@@ -754,7 +754,7 @@ if (publicAi) {
           402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
           404: { description: 'Requested model ID is not present in the current catalog', content: { 'application/problem+json': { schema: publicProblemSchema } } },
           409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: publicProblemSchema } } },
-          422: { description: 'Unsupported compatibility behavior, unavailable model, or streaming request', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          422: { description: 'Unsupported compatibility behavior or unavailable model', content: { 'application/problem+json': { schema: publicProblemSchema } } },
           429: { description: 'Published free-tier quota exhausted', content: { 'application/problem+json': { schema: publicProblemSchema } } },
           503: { description: 'No qualified route, capacity, or settlement path is available', content: { 'application/problem+json': { schema: publicProblemSchema } } },
         },
@@ -775,7 +775,7 @@ if (publicAi) {
     openapi.paths[OPENAI_RESPONSES_PATH] = {
       post: {
         summary: 'Create an OpenAI-compatible response',
-        description: 'Thin stateless non-streaming OpenAI Responses compatibility adapter over Clervo AI execution. String or text-message input and optional instructions are supported. Callers must set store=false because Clervo does not retain Responses application state. Unsupported tools, continuation state, background execution, reasoning controls, richer input items, and stream=true fail closed with 422.',
+        description: 'Thin stateless OpenAI Responses compatibility adapter over Clervo AI execution. Callers must set store=false. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Stateful continuation, tools, background execution, and unsupported controls fail closed.',
         operationId: 'openAiResponses',
         security: [],
         tags: ['AI'],
@@ -872,7 +872,7 @@ if (publicAi) {
             },
           },
           422: {
-            description: 'Unsupported Responses behavior, unavailable model, stateful request, or streaming request',
+            description: 'Unsupported Responses behavior, unavailable model, or stateful request',
             content: {
               'application/problem+json': {
                 schema: publicProblemSchema,
@@ -920,6 +920,23 @@ if (publicAi) {
             },
           ],
         },
+      },
+    };
+  }
+
+  // Compatibility SSE response documentation.
+  // The payment/execution pipeline completes before these frames are emitted;
+  // this is protocol streaming compatibility, not low-latency token passthrough.
+  for (const [enabled, compatibilityPath, protocol] of [
+    [publicOpenAiChat, OPENAI_CHAT_COMPLETIONS_PATH, 'OpenAI Chat Completions'],
+    [publicAnthropicMessages, ANTHROPIC_MESSAGES_PATH, 'Anthropic Messages'],
+    [publicOpenAiResponses, OPENAI_RESPONSES_PATH, 'OpenAI Responses'],
+  ]) {
+    if (!enabled) continue;
+    openapi.paths[compatibilityPath].post.responses[200].content['text/event-stream'] = {
+      schema: {
+        type: 'string',
+        description: `${protocol} SSE emitted after execution completes; paid streams begin only after settlement succeeds.`,
       },
     };
   }
@@ -974,9 +991,9 @@ if (publicAi) {
       '',
       '## OpenAI Chat Completions compatibility',
       '',
-      `- \`POST ${projection.publicBaseUrl}${OPENAI_CHAT_COMPLETIONS_PATH}\`: OpenAI Chat Completions-compatible non-streaming adapter over the canonical Clervo AI execution stack.`,
+      `- \`POST ${projection.publicBaseUrl}${OPENAI_CHAT_COMPLETIONS_PATH}\`: OpenAI Chat Completions-compatible adapter with SSE support over the canonical Clervo AI execution stack.`,
       '- The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.',
-      '- `stream: true` is not advertised yet and returns 422 until streaming support is implemented.',
+      '- `stream: true` returns protocol-compatible SSE after the operation completes; paid streams begin only after settlement succeeds.',
       '',
     ].join('\n');
   }
@@ -985,10 +1002,10 @@ if (publicAi) {
       '',
       '## Anthropic Messages compatibility',
       '',
-      `- \`POST ${projection.publicBaseUrl}${ANTHROPIC_MESSAGES_PATH}\`: Anthropic Messages-compatible non-streaming adapter over the canonical Clervo AI execution stack.`,
+      `- \`POST ${projection.publicBaseUrl}${ANTHROPIC_MESSAGES_PATH}\`: Anthropic Messages-compatible adapter with SSE support over the canonical Clervo AI execution stack.`,
       '- Supports text-only user/assistant messages plus top-level system text; richer content blocks, tools, thinking, and unsupported non-default controls fail closed with 422.',
       '- The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.',
-      '- `stream: true` is not advertised yet and returns 422 until streaming support is implemented.',
+      '- `stream: true` returns protocol-compatible SSE after the operation completes; paid streams begin only after settlement succeeds.',
       '',
     ].join('\n');
 
@@ -998,11 +1015,11 @@ if (publicAi) {
       '',
       '## OpenAI Responses compatibility',
       '',
-      `- \`POST ${projection.publicBaseUrl}${OPENAI_RESPONSES_PATH}\`: stateless OpenAI Responses-compatible non-streaming adapter over the canonical Clervo AI execution stack.`,
+      `- \`POST ${projection.publicBaseUrl}${OPENAI_RESPONSES_PATH}\`: stateless OpenAI Responses-compatible adapter with SSE support over the canonical Clervo AI execution stack.`,
       '- Supports string input, bounded text message input, optional instructions, max_output_tokens, and text/json_object output formatting.',
       '- Callers must send `store: false`; stored response state, previous-response continuation, conversations, tools, background execution, and reasoning controls fail closed with 422.',
       '- The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.',
-      '- `stream: true` is not advertised yet and returns 422 until streaming support is implemented.',
+      '- `stream: true` returns protocol-compatible SSE after the operation completes; paid streams begin only after settlement succeeds.',
       '',
     ].join('\n');
   }

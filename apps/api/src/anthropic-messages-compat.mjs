@@ -137,13 +137,9 @@ export function normalizeAnthropicMessagesRequest(value) {
     refuse('anthropic_messages_invalid');
   }
 
-  if (value.stream === true) {
-    refuse('anthropic_streaming_unavailable', 422);
-  }
-
   if (
     value.stream !== undefined
-    && value.stream !== false
+    && typeof value.stream !== 'boolean'
   ) {
     refuse('anthropic_stream_invalid');
   }
@@ -233,7 +229,7 @@ export function normalizeAnthropicMessagesRequest(value) {
         ...value.messages.map(normalizeMessage),
       ],
       responseFormat: 'text',
-      stream: false,
+      stream: value.stream === true,
     },
     maximumOutputTokens: value.max_tokens,
   });
@@ -267,7 +263,7 @@ export function createAnthropicMessagesDiscoveryContract(
     ...(anthropicRequest.system === undefined
       ? {}
       : { system: structuredClone(anthropicRequest.system) }),
-    stream: false,
+    stream: normalized.input.stream,
   });
 
   const textContentSchema = Object.freeze({
@@ -325,7 +321,7 @@ export function createAnthropicMessagesDiscoveryContract(
         },
         system: textContentSchema,
         stream: {
-          const: false,
+          type: 'boolean',
         },
       },
       additionalProperties: true,
@@ -431,4 +427,86 @@ export function createAnthropicMessage(value) {
       output_tokens: usage.outputTokens + reasoningTokens,
     },
   };
+}
+
+function anthropicSseEvent(type, data) {
+  return `event: ${type}\ndata: ${JSON.stringify(data)}\n\n`;
+}
+
+export function createAnthropicMessageStream(value) {
+  const message = createAnthropicMessage(value);
+
+  const events = [
+    [
+      'message_start',
+      {
+        type: 'message_start',
+        message: {
+          id: message.id,
+          type: 'message',
+          role: 'assistant',
+          model: message.model,
+          content: [],
+          stop_reason: null,
+          stop_sequence: null,
+          usage: {
+            input_tokens: message.usage.input_tokens,
+            output_tokens: 0,
+          },
+        },
+      },
+    ],
+    [
+      'content_block_start',
+      {
+        type: 'content_block_start',
+        index: 0,
+        content_block: {
+          type: 'text',
+          text: '',
+        },
+      },
+    ],
+    [
+      'content_block_delta',
+      {
+        type: 'content_block_delta',
+        index: 0,
+        delta: {
+          type: 'text_delta',
+          text: message.content[0].text,
+        },
+      },
+    ],
+    [
+      'content_block_stop',
+      {
+        type: 'content_block_stop',
+        index: 0,
+      },
+    ],
+    [
+      'message_delta',
+      {
+        type: 'message_delta',
+        delta: {
+          stop_reason: message.stop_reason,
+          stop_sequence: message.stop_sequence,
+        },
+        usage: {
+          output_tokens: message.usage.output_tokens,
+        },
+      },
+    ],
+    [
+      'message_stop',
+      {
+        type: 'message_stop',
+      },
+    ],
+  ];
+
+  return events
+    .map(([type, data]) => anthropicSseEvent(type, data))
+    .join('');
 }
