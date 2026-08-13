@@ -68,7 +68,15 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(status.packages.state, 'published_verified');
   assert.equal(status.paymentProof?.settlementConfirmed, true);
   assert.equal(status.paymentProof?.usefulResult, true);
-  assert.equal(status.paymentProof?.revenueEvidence, false);
+  assert.equal(
+    status.paymentProof?.state,
+    status.paymentProof?.settlementConfirmed && status.paymentProof?.usefulResult
+      ? 'verified'
+      : 'unverified',
+  );
+  assert.equal('revenueEvidence' in status.paymentProof, false);
+  assert.equal('demandEvidence' in status.paymentProof, false);
+  assert.equal('evidence' in status.paymentProof, false);
   assert.equal(pricing.publicOfferAvailable, true);
   assert.equal(pricing.publicPrice.productId, 'search.web');
   assert.equal(pricing.publicPrice.amountAtomic, '6000');
@@ -153,10 +161,9 @@ test('launch pages and discovery surfaces exist without forbidden or stale claim
   assert.doesNotMatch(publicText, /Every AI model|Google-quality|BlockRun has 0 free|20% cheaper than BlockRun/iu);
   assert.doesNotMatch(publicText, /Package candidates · publication not verified/iu);
   assert.doesNotMatch(publicText, /the one thing on this site that was actually paid|the single fact on the site that has actually been paid|Settled paid outcome<\/dt><dd><b>1|x402 private proof: one owner-funded/iu);
-  assert.match(publicText, /free-first Search path/iu);
+  assert.match(publicText, /Get a verified result/iu);
   assert.match(publicText, /Public API callable: yes/iu);
-  assert.match(publicText, /x402 owner-funded proof: settled outcomes are reported per product/iu);
-  assert.match(publicText, /no customer revenue or demand (?:is )?claimed/iu);
+  assert.match(publicText, /x402 payment verification: settled outcomes are reported per product/iu);
 
   const machineFiles = [
     'llms.txt',

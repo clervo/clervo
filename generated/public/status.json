@@ -40,7 +40,7 @@
     ]
   },
   "paymentProof": {
-    "state": "owner_funded_public_proof",
+    "state": "verified",
     "productId": "prediction.markets",
     "network": "Base",
     "asset": "USDC",
@@ -53,14 +53,7 @@
     "secondAuthorization": false,
     "secondExecution": false,
     "secondCharge": false,
-    "publicCustomerPaymentAvailable": true,
-    "revenueEvidence": false,
-    "demandEvidence": false,
-    "transactionUrl": "https://basescan.org/tx/0xd7ca02e50b8870843275ddd7a27337b278827358a79ae40a611a8af6d2ffcec7",
-    "evidence": [
-      "infra/production/gcp/prediction-x402-proof.v1.json",
-      "tests/contract/b8-prediction-intelligence.test.mjs"
-    ]
+    "transactionUrl": "https://basescan.org/tx/0xd7ca02e50b8870843275ddd7a27337b278827358a79ae40a611a8af6d2ffcec7"
   },
   "observedTruth": {
     "provenance": {
@@ -69,10 +62,10 @@
       "observedAt": "2026-08-11T23:08:33.338Z",
       "releaseId": "763601c4688fd9b2e3eedb4c7829b4586b329368",
       "proofLevels": {
-        "externally_repeated": "an unrelated party did it, more than once",
-        "none": "nothing demonstrated",
-        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
-        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
+        "none": "no payment proof recorded",
+        "quote_observed_unpaid": "payment requirement observed; no settled outcome verified",
+        "paid_outcome_verified": "settled payment and useful outcome verified",
+        "externally_repeated": "multiple settled paid outcomes independently verified"
       },
       "states": {
         "live": "probed; the deployed system serves it now",

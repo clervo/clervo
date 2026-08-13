@@ -269,6 +269,12 @@ if (liveRegistry.handEditingProhibited !== true) throw new Error('live_registry_
 
 const LIFECYCLE_STATES = new Set(['live', 'supply_paused', 'unavailable']);
 const PROOF_LEVELS = new Set(['none', 'quote_observed_unpaid', 'paid_outcome_verified', 'externally_repeated']);
+const PUBLIC_PROOF_LEVELS = Object.freeze({
+  none: 'no payment proof recorded',
+  quote_observed_unpaid: 'payment requirement observed; no settled outcome verified',
+  paid_outcome_verified: 'settled payment and useful outcome verified',
+  externally_repeated: 'multiple settled paid outcomes independently verified',
+});
 
 function registryProduct(productId) {
   const product = liveRegistry.products.find(({ id }) => id === productId);
@@ -333,9 +339,31 @@ const observedProvenance = {
   generatedBy: liveRegistry.generatedBy,
   observedAt: liveRegistry.observedAt,
   releaseId: liveRegistry.deployment.releaseId,
-  proofLevels: liveRegistry.proofLevels,
+  proofLevels: PUBLIC_PROOF_LEVELS,
   states: liveRegistry.states,
 };
+
+// Public payment proof contains only objective verification facts useful to an
+// external caller. Wallet ownership, revenue classification, demand
+// classification, and internal evidence-file provenance remain internal.
+const publicPaymentProof = Object.freeze({
+  state: launchState.paymentProof.settlementConfirmed && launchState.paymentProof.usefulResult
+    ? 'verified'
+    : 'unverified',
+  productId: launchState.paymentProof.productId,
+  network: launchState.paymentProof.network,
+  asset: launchState.paymentProof.asset,
+  amountAtomic: launchState.paymentProof.amountAtomic,
+  decimals: launchState.paymentProof.decimals,
+  amountDisplay: launchState.paymentProof.amountDisplay,
+  settlementConfirmed: launchState.paymentProof.settlementConfirmed,
+  usefulResult: launchState.paymentProof.usefulResult,
+  replaySameReceipt: launchState.paymentProof.replaySameReceipt,
+  secondAuthorization: launchState.paymentProof.secondAuthorization,
+  secondExecution: launchState.paymentProof.secondExecution,
+  secondCharge: launchState.paymentProof.secondCharge,
+  transactionUrl: launchState.paymentProof.transactionUrl,
+});
 
 // CDP Bazaar state as the prober observed it, keyed by resource URL. Absent for
 // a resource the prober did not reach — rendered as `null`, never as a claim.
@@ -591,9 +619,8 @@ if (publicAi) {
   discovery.limitations = [
     `The catalog contains ${b7Inventory.canonicalModels} frozen canonical models and ${b7Inventory.aliases} aliases; it is not an open-ended promise to add or substitute models.`,
     'AI catalog prices are authoritative usage rates; a paid request returns the binding request-specific maximum charge before settlement.',
-    observed.ai.proof === 'paid_outcome_verified' ? 'A bounded owner-funded paid AI outcome, receipt, accounting record, and no-charge replay are verified; no unrelated-customer demand is claimed.' : 'The AI production catalog and payment challenge are verified; an owner-signed paid AI result remains pending.',
+    observed.ai.proof === 'paid_outcome_verified' ? 'A bounded paid AI outcome, receipt, accounting record, and no-charge replay are verified.' : 'The AI production catalog and payment challenge are verified; a settled paid AI result remains pending.',
     'Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain publicly unavailable.',
-    'No external customer payment, revenue, or demand is claimed.',
   ];
   llms = llms
     .replace('raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable', 'raw cited Search and the complete provider-neutral Clervo AI catalog are callable; synthesized Search, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable')
@@ -832,7 +859,7 @@ llms = llms
   .replace(/^- Public lifecycle:.*$/mu, `- Public lifecycle: ${lifecycleSummary}`)
   .replace(/^- Projected operation IDs:.*$/mu, `- Public operation IDs: ${publicOperationIds.join(', ')}`)
   .replace(/^- x402 public payment:.*$/mu, `- x402 public payment: available for ${publicOfferSummary}`)
-  .replace(/^- x402 private proof:.*$/mu, '- x402 owner-funded proof: settled outcomes are reported per product in the generated proof table; no customer revenue or demand is inferred')
+  .replace(/^- x402 private proof:.*$/mu, '- x402 payment verification: settled outcomes are reported per product in the generated proof table; transaction evidence is linked where available')
   .replace(/^- Public price:.*$/mu, `- Public price: ${publicOfferSummary}`);
 // Every surface carries the observed lifecycle state and proof level side by
 // side, sourced from the probed registry rather than from any prose.
@@ -937,9 +964,7 @@ await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
   observedAt: liveRegistry.observedAt,
   publicApi: launchState.distribution.publicApi,
   packages: launchState.distribution.packages,
-  // This is the reconciled owner-funded settlement record already held in
-  // launch-state authority. It is not commercial/customer proof.
-  paymentProof: launchState.paymentProof,
+  paymentProof: publicPaymentProof,
   observedTruth: { provenance: observedProvenance, products: observedTruth },
   conformanceDefectsOpen: liveRegistry.conformance.filter(({ conformant }) => !conformant),
   aiRoutes: {

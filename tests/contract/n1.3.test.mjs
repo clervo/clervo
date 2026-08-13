@@ -118,7 +118,7 @@ test('llms.txt matches the generator and states public status truthfully', async
   // by the acceptance run, which regenerates generated/public and leaves a
   // dirty tree if the checked-in files drift.
   assert.match(llms, /^# Clervo\n\n> /);
-  assert.match(llms, /x402 owner-funded proof: settled outcomes are reported per product in the generated proof table/);
+  assert.match(llms, /x402 payment verification: settled outcomes are reported per product in the generated proof table/);
   assert.match(llms, /llms\.txt is a documentation map, not a search or AI ranking claim/);
   assert.doesNotMatch(llms, /live service|available now|production-ready/i);
   // Status lines are generated from launch state, so assert their shape rather
