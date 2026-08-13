@@ -271,6 +271,8 @@ const surfaceProbes = await Promise.all([
     postJson({ model: currentPaidAiModel.id, messages: [{ role: 'user', content: 'Reply with the single word ready.' }], stream: false, max_completion_tokens: 16 }, `idem_probe_openai_chat_${probeNonce}`)),
   observe('api.anthropic_messages', `${API_ORIGIN}/v1/messages`,
     postJson({ model: currentPaidAiModel.id, max_tokens: 16, messages: [{ role: 'user', content: 'Reply with the single word ready.' }], stream: false }, `idem_probe_anthropic_messages_${probeNonce}`)),
+  observe('api.openai_responses', `${API_ORIGIN}/v1/responses`,
+    postJson({ model: currentPaidAiModel.id, input: 'Reply with the single word ready.', max_output_tokens: 16, stream: false, store: false, text: { format: { type: 'text' } } }, `idem_probe_openai_responses_${probeNonce}`)),
   observe('api.search_free_naive', `${API_ORIGIN}/v1/search/free`,
     postJson({ query: 'clervo live registry probe', maxResults: 1, synthesize: false })),
   observe('api.search_free_keyed', `${API_ORIGIN}/v1/search/free`,
@@ -500,6 +502,19 @@ const anthropicMessagesAccepted = anthropicMessagesProbe.status === 402
 const anthropicMessagesState = anthropicMessagesAccepted
   ? STATE_LIVE
   : anthropicMessagesProbe.status === 404
+    ? STATE_UNAVAILABLE
+    : STATE_PAUSED;
+
+const openAiResponsesProbe = surfaceById['api.openai_responses'];
+const openAiResponsesQuote = quoteFrom(openAiResponsesProbe);
+const openAiResponsesAccepted = openAiResponsesProbe.status === 402
+  && openAiResponsesQuote !== null
+  && openAiResponsesProbe.body?.resource?.url === `${API_ORIGIN}/v1/responses`
+  && openAiResponsesProbe.body?.extensions?.bazaar?.info?.output?.example?.object === 'response'
+  && openAiResponsesProbe.body?.extensions?.bazaar?.info?.output?.example?.output?.[0]?.type === 'message';
+const openAiResponsesState = openAiResponsesAccepted
+  ? STATE_LIVE
+  : openAiResponsesProbe.status === 404
     ? STATE_UNAVAILABLE
     : STATE_PAUSED;
 
@@ -1124,6 +1139,21 @@ const aiProductRecord = {
       responseObject: anthropicMessagesProbe.body?.extensions?.bazaar?.info?.output?.example?.type ?? null,
       responseRole: anthropicMessagesProbe.body?.extensions?.bazaar?.info?.output?.example?.role ?? null,
     },
+  }, {
+    protocol: 'openai_responses',
+    path: '/v1/responses',
+    state: openAiResponsesState,
+    reason: openAiResponsesAccepted
+      ? null
+      : problemCode(openAiResponsesProbe) ?? (openAiResponsesProbe.reachable ? `edge_unexpected_status_${openAiResponsesProbe.status}` : 'edge_unreachable'),
+    publiclyReachable: openAiResponsesProbe.reachable && openAiResponsesProbe.status !== 404,
+    observedQuote: openAiResponsesQuote,
+    evidence: {
+      observedStatus: openAiResponsesProbe.status,
+      resourceUrl: openAiResponsesProbe.body?.resource?.url ?? null,
+      responseObject: openAiResponsesProbe.body?.extensions?.bazaar?.info?.output?.example?.object ?? null,
+      responseItemType: openAiResponsesProbe.body?.extensions?.bazaar?.info?.output?.example?.output?.[0]?.type ?? null,
+    },
   }],
   freeEntry: {
     route: `${API_ORIGIN}/v1/ai/execute`,
@@ -1268,6 +1298,7 @@ const bazaarResourcePaths = [
   { productId: 'ai', resourcePath: '/v1/ai/execute' },
   { productId: 'ai', resourcePath: '/v1/chat/completions' },
   { productId: 'ai', resourcePath: '/v1/messages' },
+  { productId: 'ai', resourcePath: '/v1/responses' },
   { productId: 'sandbox', resourcePath: '/v1/sandbox/execute' },
   { productId: 'prediction', resourcePath: '/v1/prediction/execute' },
   { productId: 'crypto_intelligence', resourcePath: '/v1/crypto/execute' },
@@ -1276,7 +1307,7 @@ const bazaarResourcePaths = [
 // The receiver is read from the quote the deployed system actually returned,
 // never from configuration, so the merchant lookup can only ever ask about the
 // address production is really advertising.
-const observedPayTo = [surfaceById['api.search_paid'], surfaceById['api.openai_chat_completions'], surfaceById['api.anthropic_messages'], surfaceById['api.sandbox_execute'], surfaceById['api.prediction_execute'], surfaceById['api.crypto_execute'], ...routeProbes]
+const observedPayTo = [surfaceById['api.search_paid'], surfaceById['api.openai_chat_completions'], surfaceById['api.anthropic_messages'], surfaceById['api.openai_responses'], surfaceById['api.sandbox_execute'], surfaceById['api.prediction_execute'], surfaceById['api.crypto_execute'], ...routeProbes]
   .map((probe) => quoteFrom(probe)?.payTo)
   .find((value) => typeof value === 'string' && /^0x[a-fA-F0-9]{40}$/u.test(value)) ?? null;
 

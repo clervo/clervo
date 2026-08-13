@@ -1629,6 +1629,426 @@
         }
       }
     },
+    "/v1/responses": {
+      "post": {
+        "summary": "Create an OpenAI-compatible response",
+        "description": "Thin stateless non-streaming OpenAI Responses compatibility adapter over Clervo AI execution. String or text-message input and optional instructions are supported. Callers must set store=false because Clervo does not retain Responses application state. Unsupported tools, continuation state, background execution, reasoning controls, richer input items, and stream=true fail closed with 422.",
+        "operationId": "openAiResponses",
+        "security": [],
+        "tags": [
+          "AI"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "description": "Stable replay key. When omitted before payment, the service generates one and returns it in the response headers.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "input"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "const": "clervo/allam-2-7b"
+                  },
+                  "input": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "role",
+                            "content"
+                          ],
+                          "properties": {
+                            "type": {
+                              "const": "message"
+                            },
+                            "role": {
+                              "enum": [
+                                "system",
+                                "developer",
+                                "user",
+                                "assistant"
+                              ]
+                            },
+                            "content": {
+                              "oneOf": [
+                                {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "items": {
+                                    "type": "object",
+                                    "required": [
+                                      "type",
+                                      "text"
+                                    ],
+                                    "properties": {
+                                      "type": {
+                                        "const": "input_text"
+                                      },
+                                      "text": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "additionalProperties": false
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      }
+                    ]
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "max_output_tokens": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65536
+                  },
+                  "stream": {
+                    "const": false
+                  },
+                  "store": {
+                    "const": false
+                  },
+                  "text": {
+                    "type": "object",
+                    "required": [
+                      "format"
+                    ],
+                    "properties": {
+                      "format": {
+                        "type": "object",
+                        "required": [
+                          "type"
+                        ],
+                        "properties": {
+                          "type": {
+                            "enum": [
+                              "text",
+                              "json_object"
+                            ]
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": true
+              },
+              "example": {
+                "model": "clervo/allam-2-7b",
+                "input": "Explain in one sentence why idempotency matters for paid API retries.",
+                "stream": false,
+                "store": false,
+                "max_output_tokens": 64,
+                "text": {
+                  "format": {
+                    "type": "text"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OpenAI-compatible Response object",
+            "headers": {
+              "PAYMENT-RESPONSE": {
+                "description": "Base64-encoded x402 v2 settlement response when x402 was used.",
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "Payment-Receipt": {
+                "description": "MPP receipt when MPP was used.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Idempotency-Replayed": {
+                "description": "true when the completed logical operation was replayed without another charge.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "object",
+                    "created_at",
+                    "status",
+                    "completed_at",
+                    "error",
+                    "incomplete_details",
+                    "model",
+                    "output",
+                    "store",
+                    "usage"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "object": {
+                      "const": "response"
+                    },
+                    "created_at": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "enum": [
+                        "completed",
+                        "incomplete"
+                      ]
+                    },
+                    "completed_at": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "error": {
+                      "type": [
+                        "object",
+                        "null"
+                      ]
+                    },
+                    "incomplete_details": {
+                      "type": [
+                        "object",
+                        "null"
+                      ]
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "output": {
+                      "type": "array",
+                      "minItems": 1
+                    },
+                    "store": {
+                      "const": false
+                    },
+                    "usage": {
+                      "type": "object"
+                    }
+                  },
+                  "additionalProperties": true
+                },
+                "example": {
+                  "id": "resp_example",
+                  "object": "response",
+                  "created_at": 0,
+                  "status": "completed",
+                  "completed_at": 0,
+                  "error": null,
+                  "incomplete_details": null,
+                  "instructions": null,
+                  "max_output_tokens": 64,
+                  "model": "clervo/allam-2-7b",
+                  "output": [
+                    {
+                      "id": "msg_example",
+                      "type": "message",
+                      "status": "completed",
+                      "role": "assistant",
+                      "content": [
+                        {
+                          "type": "output_text",
+                          "text": "Idempotency keeps retries from becoming a second logical operation or charge.",
+                          "annotations": []
+                        }
+                      ]
+                    }
+                  ],
+                  "parallel_tool_calls": true,
+                  "previous_response_id": null,
+                  "reasoning": {
+                    "effort": null,
+                    "summary": null
+                  },
+                  "store": false,
+                  "temperature": 1,
+                  "text": {
+                    "format": {
+                      "type": "text"
+                    }
+                  },
+                  "tool_choice": "auto",
+                  "tools": [],
+                  "top_p": 1,
+                  "truncation": "disabled",
+                  "usage": {
+                    "input_tokens": 1,
+                    "input_tokens_details": {
+                      "cached_tokens": 0
+                    },
+                    "output_tokens": 1,
+                    "output_tokens_details": {
+                      "reasoning_tokens": 0
+                    },
+                    "total_tokens": 2
+                  },
+                  "metadata": {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid compatibility request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "x402 or MPP payment required",
+            "headers": {
+              "PAYMENT-REQUIRED": {
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested model ID is not present in the current catalog",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency or quote conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unsupported Responses behavior, unavailable model, stateful request, or streaming request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Published free-tier quota exhausted",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No qualified route, capacity, or settlement path is available",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "x-payment-info": {
+          "price": {
+            "mode": "dynamic",
+            "currency": "USD",
+            "min": "0.001000",
+            "max": "42.500000"
+          },
+          "protocols": [
+            {
+              "x402": {}
+            },
+            {
+              "mpp": {
+                "method": "evm",
+                "intent": "charge",
+                "currency": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              }
+            }
+          ]
+        }
+      }
+    },
     "/v1/sandbox/execute": {
       "post": {
         "summary": "Request or settle a bounded one-shot Secure Sandbox execution",
@@ -5656,7 +6076,7 @@
       "crypto.wallet.transactions",
       "crypto.wallet.report"
     ],
-    "runtimeRelease": "e4a08a84a1b001666179cd07de70ed6c5df0734d"
+    "runtimeRelease": "9cfd498d068224384ae5a3b1ea98ae581c23aed5"
   },
   "servers": [
     {

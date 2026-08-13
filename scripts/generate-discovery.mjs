@@ -10,6 +10,7 @@ const outputDirectory = path.join(root, 'generated/public');
 const contractModule = await import(pathToFileURL(path.join(root, 'dist/packages/contracts/src/index.js')));
 const openAiChatCompat = await import(pathToFileURL(path.join(root, 'apps/api/src/openai-chat-compat.mjs')));
 const anthropicMessagesCompat = await import(pathToFileURL(path.join(root, 'apps/api/src/anthropic-messages-compat.mjs')));
+const openAiResponsesCompat = await import(pathToFileURL(path.join(root, 'apps/api/src/openai-responses-compat.mjs')));
 const schemaVisibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
 const releaseCandidate = JSON.parse(await readFile(path.join(root, 'packages/catalog/release-candidate-freeze.v1.json'), 'utf8'));
 const registry = JSON.parse(await readFile(path.join(root, releaseCandidate.baseRegistry.file), 'utf8'));
@@ -61,6 +62,21 @@ const anthropicMessagesProbeExample = Object.freeze({
   stream: false,
 });
 const anthropicMessagesDiscovery = anthropicMessagesCompat.createAnthropicMessagesDiscoveryContract(anthropicMessagesProbeExample);
+
+const OPENAI_RESPONSES_PATH = openAiResponsesCompat.OPENAI_RESPONSES_PATH;
+const openAiResponsesProbeExample = Object.freeze({
+  model: currentPaidDiscoveryModel,
+  input: 'Explain in one sentence why idempotency matters for paid API retries.',
+  max_output_tokens: 64,
+  stream: false,
+  store: false,
+  text: Object.freeze({
+    format: Object.freeze({
+      type: 'text',
+    }),
+  }),
+});
+const openAiResponsesDiscovery = openAiResponsesCompat.createOpenAiResponsesDiscoveryContract(openAiResponsesProbeExample);
 
 const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
 const predictionProof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/prediction-x402-proof.v1.json'), 'utf8'));
@@ -337,6 +353,10 @@ const anthropicMessagesCompatibility = observed.ai.compatibilityRoutes?.find(({ 
 const publicAnthropicMessages = publicAi
   && anthropicMessagesCompatibility?.state === 'live'
   && anthropicMessagesCompatibility.observedQuote !== null;
+const openAiResponsesCompatibility = observed.ai.compatibilityRoutes?.find(({ protocol }) => protocol === 'openai_responses') ?? null;
+const publicOpenAiResponses = publicAi
+  && openAiResponsesCompatibility?.state === 'live'
+  && openAiResponsesCompatibility.observedQuote !== null;
 const aiOperationIds = Object.freeze(['ai.chat', 'ai.embed', 'ai.image', 'ai.speech', 'ai.video', 'ai.music', 'ai.virtual_try_on']);
 const publicSandbox = observedLive.sandbox;
 const publicPrediction = observedLive.prediction;
@@ -751,6 +771,159 @@ if (publicAi) {
     };
   }
 
+  if (publicOpenAiResponses) {
+    openapi.paths[OPENAI_RESPONSES_PATH] = {
+      post: {
+        summary: 'Create an OpenAI-compatible response',
+        description: 'Thin stateless non-streaming OpenAI Responses compatibility adapter over Clervo AI execution. String or text-message input and optional instructions are supported. Callers must set store=false because Clervo does not retain Responses application state. Unsupported tools, continuation state, background execution, reasoning controls, richer input items, and stream=true fail closed with 422.',
+        operationId: 'openAiResponses',
+        security: [],
+        tags: ['AI'],
+        parameters: [{
+          name: 'Idempotency-Key',
+          in: 'header',
+          required: false,
+          description: 'Stable replay key. When omitted before payment, the service generates one and returns it in the response headers.',
+          schema: {
+            type: 'string',
+            minLength: 8,
+            maxLength: 128,
+          },
+        }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: openAiResponsesDiscovery.inputSchema,
+              example: openAiResponsesDiscovery.input,
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'OpenAI-compatible Response object',
+            headers: {
+              'PAYMENT-RESPONSE': {
+                description: 'Base64-encoded x402 v2 settlement response when x402 was used.',
+                schema: {
+                  type: 'string',
+                  contentEncoding: 'base64',
+                },
+              },
+              'Payment-Receipt': {
+                description: 'MPP receipt when MPP was used.',
+                schema: {
+                  type: 'string',
+                },
+              },
+              'Idempotency-Replayed': {
+                description: 'true when the completed logical operation was replayed without another charge.',
+                schema: {
+                  type: 'string',
+                  enum: ['true'],
+                },
+              },
+            },
+            content: {
+              'application/json': {
+                schema: openAiResponsesDiscovery.output.schema,
+                example: openAiResponsesDiscovery.output.example,
+              },
+            },
+          },
+          400: {
+            description: 'Invalid compatibility request',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+          402: {
+            description: 'x402 or MPP payment required',
+            headers: {
+              'PAYMENT-REQUIRED': {
+                schema: {
+                  type: 'string',
+                  contentEncoding: 'base64',
+                },
+              },
+              'WWW-Authenticate': {
+                schema: {
+                  type: 'string',
+                },
+              },
+            },
+          },
+          404: {
+            description: 'Requested model ID is not present in the current catalog',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+          409: {
+            description: 'Idempotency or quote conflict',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+          422: {
+            description: 'Unsupported Responses behavior, unavailable model, stateful request, or streaming request',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+          429: {
+            description: 'Published free-tier quota exhausted',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+          503: {
+            description: 'No qualified route, capacity, or settlement path is available',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+        },
+        'x-payment-info': {
+          price: {
+            mode: 'dynamic',
+            currency: 'USD',
+            min: decimalAtomic(
+              b7Pricing.minimumBillableAtomic,
+              b7Pricing.decimals,
+            ),
+            max: decimalAtomic(
+              aiMaximumChargeAtomic,
+              b7Pricing.decimals,
+            ),
+          },
+          protocols: [
+            { x402: {} },
+            {
+              mpp: {
+                method: 'evm',
+                intent: 'charge',
+                currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+              },
+            },
+          ],
+        },
+      },
+    };
+  }
+
   openapi.paths['/v1/ai/execute'].post = scannerSafeOperation(openapi.paths['/v1/ai/execute'].post, {
     requestSchema: aiChatProbeSchema,
     example: aiProbeExample,
@@ -780,6 +953,7 @@ if (publicAi) {
       execute: '/v1/ai/execute',
       ...(publicOpenAiChat ? { openAiChatCompletions: OPENAI_CHAT_COMPLETIONS_PATH } : {}),
       ...(publicAnthropicMessages ? { anthropicMessages: ANTHROPIC_MESSAGES_PATH } : {}),
+      ...(publicOpenAiResponses ? { openAiResponses: OPENAI_RESPONSES_PATH } : {}),
     },
     payment: { freeModelsRequirePayment: false, paidModels: ['x402', 'mpp'], challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
     commercialProof: observed.ai.proof === 'paid_outcome_verified',
@@ -813,6 +987,20 @@ if (publicAi) {
       '',
       `- \`POST ${projection.publicBaseUrl}${ANTHROPIC_MESSAGES_PATH}\`: Anthropic Messages-compatible non-streaming adapter over the canonical Clervo AI execution stack.`,
       '- Supports text-only user/assistant messages plus top-level system text; richer content blocks, tools, thinking, and unsupported non-default controls fail closed with 422.',
+      '- The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.',
+      '- `stream: true` is not advertised yet and returns 422 until streaming support is implemented.',
+      '',
+    ].join('\n');
+
+  }
+  if (publicOpenAiResponses) {
+    llms += [
+      '',
+      '## OpenAI Responses compatibility',
+      '',
+      `- \`POST ${projection.publicBaseUrl}${OPENAI_RESPONSES_PATH}\`: stateless OpenAI Responses-compatible non-streaming adapter over the canonical Clervo AI execution stack.`,
+      '- Supports string input, bounded text message input, optional instructions, max_output_tokens, and text/json_object output formatting.',
+      '- Callers must send `store: false`; stored response state, previous-response continuation, conversations, tools, background execution, and reasoning controls fail closed with 422.',
       '- The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.',
       '- `stream: true` is not advertised yet and returns 422 until streaming support is implemented.',
       '',
@@ -1511,6 +1699,14 @@ const x402Resources = [
     operationId: 'ai.chat',
     priceModel: 'request_derived_per_model',
     quote: anthropicMessagesCompatibility.observedQuote,
+    exampleRouteId: null,
+  }] : []),
+  ...(publicOpenAiResponses ? [{
+    productId: 'ai',
+    path: OPENAI_RESPONSES_PATH,
+    operationId: 'ai.chat',
+    priceModel: 'request_derived_per_model',
+    quote: openAiResponsesCompatibility.observedQuote,
     exampleRouteId: null,
   }] : []),
   { productId: 'sandbox', path: '/v1/sandbox/execute', operationId: 'sandbox.run', priceModel: 'class_derived_quote', quote: observed.sandbox.observedQuote, exampleRouteId: null },
