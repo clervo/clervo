@@ -7,7 +7,7 @@ import {
   familyOf,
   formatUsdc,
   installExamples,
-  launchState,
+  publicStatus,
   lifecycleLabels,
   observedApiOrigin,
   observedProduct,
@@ -63,7 +63,7 @@ type ClientId = keyof typeof clientExamples;
 const searchObserved = observedProduct('search');
 
 function packageVersion(name: string): string {
-  const item = launchState.distribution.packages.items.find((entry) => entry.name === name);
+  const item = publicStatus.packages.items.find((entry) => entry.name === name);
   return item === undefined ? 'unverified' : `${item.version} published`;
 }
 
@@ -298,7 +298,7 @@ export function Docs({
           </div>
           <div>
             <dt>Package publication</dt>
-            <dd>{launchState.distribution.packages.state.replaceAll('_', ' ')}</dd>
+            <dd>{publicStatus.packages.state.replaceAll('_', ' ')}</dd>
           </div>
           <div>
             <dt>Public payment quoted</dt>

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import {
   discovery,
-  launchState,
+  publicStatus,
   lifecycleLabels,
   observedTruth,
   publicOperations,
@@ -133,10 +133,9 @@ export function Status({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           <div><dt>Callable operation IDs</dt><dd>{discovery.runtimeRelease.operationIds.length}</dd></div>
           <div><dt>Public distribution</dt><dd>{discovery.distribution.publicAvailable ? 'available' : 'not available'}</dd></div>
           <div><dt>Public callable</dt><dd>{discovery.distribution.callable ? 'yes' : 'no'}</dd></div>
-          <div><dt>Public packages</dt><dd>{launchState.distribution.packages.state.replaceAll('_', ' ')}</dd></div>
-          <div><dt>Recorded Search x402 proof</dt><dd>{launchState.paymentProof.amountDisplay}, settled</dd></div>
-          <div><dt>Customer revenue evidence</dt><dd>{String(launchState.paymentProof.revenueEvidence)}</dd></div>
-          <div><dt>External demand evidence</dt><dd>{String(launchState.paymentProof.demandEvidence)}</dd></div>
+          <div><dt>Public packages</dt><dd>{publicStatus.packages.state.replaceAll('_', ' ')}</dd></div>
+          <div><dt>Payment verification</dt><dd>{publicStatus.paymentProof.productId} · {publicStatus.paymentProof.amountDisplay} · {publicStatus.paymentProof.state}</dd></div>
+          <div><dt>Replay verification</dt><dd>{publicStatus.paymentProof.replaySameReceipt ? 'verified' : 'not verified'}</dd></div>
           <div><dt>Status source</dt><dd>{observedTruth.provenance.source}</dd></div>
         </dl>
       </section>

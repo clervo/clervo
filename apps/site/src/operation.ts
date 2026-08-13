@@ -6,8 +6,8 @@ import statusSource from '../../../generated/public/status.json';
 import {
   discovery,
   familyOf,
-  launchState,
   lifecycleLabels,
+  publicStatus,
   observedProduct,
   observedRoutes,
   onboarding,
@@ -57,6 +57,22 @@ interface StatusDocument {
     verifiedAt: string;
     items: Array<{ registry: 'npm' | 'pypi'; name: string; version: string; url: string }>;
   };
+  paymentProof: {
+    state: 'verified' | 'unverified';
+    productId: string;
+    network: string;
+    asset: string;
+    amountAtomic: string;
+    decimals: number;
+    amountDisplay: string;
+    settlementConfirmed: boolean;
+    usefulResult: boolean;
+    replaySameReceipt: boolean;
+    secondAuthorization: boolean;
+    secondExecution: boolean;
+    secondCharge: boolean;
+    transactionUrl: string;
+  };
 }
 
 interface CatalogDocument {
@@ -80,6 +96,10 @@ type OpenApiDocument = {
 
 const pricing = pricingSource as unknown as PricingDocument;
 const status = statusSource as unknown as StatusDocument;
+
+if (status.schemaVersion !== publicStatus.schemaVersion) {
+  throw new Error('public_status_schema_mismatch');
+}
 const catalog = catalogSource as unknown as CatalogDocument;
 const openapi = openapiSource as unknown as OpenApiDocument;
 
@@ -144,7 +164,6 @@ export function operationContract(operationId: string) {
 
   const familyId = familyOf(operationId);
   const family = observedProduct(familyId);
-  const launch = launchState.products.find(({ id }) => id === familyId);
   const published = discovery.products.find((entry) => entry.operationId === operationId);
   const offer = pricing.offers.find((entry) => entry.productId === operationId);
   const publicRoute = published?.publicAvailable === true && published.payment.challengeImplemented
@@ -153,7 +172,7 @@ export function operationContract(operationId: string) {
   const method = publicRoute === null ? undefined : openapi.paths?.[publicRoute]?.post;
   const operationRoutes = observedRoutes.filter((route) => route.productIds.includes(operationId));
   const relatedOperationIds = family.operations.filter((id) => id !== operationId);
-  const exactPrivateProof = launchState.paymentProof.productId === operationId ? launchState.paymentProof : null;
+  const exactPaymentProof = status.paymentProof.productId === operationId ? status.paymentProof : null;
   const exactPublicPrice = pricing.publicPrice?.productId === operationId ? pricing.publicPrice : null;
   const idempotencyRequired = method?.parameters?.some((parameter) =>
     parameter.name?.toLowerCase() === 'idempotency-key' && parameter.required === true,
@@ -209,9 +228,7 @@ export function operationContract(operationId: string) {
       idempotencyRequired,
     },
     operationRoutes,
-    exactPrivateProof,
-    familyAllowedClaims: launch?.allowedClaims ?? [],
-    familyProhibitedClaims: launch?.prohibitedClaims ?? [],
+    exactPaymentProof,
     recovery: onboarding.recovery,
     relatedOperationIds,
     artifacts: {

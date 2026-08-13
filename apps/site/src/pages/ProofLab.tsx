@@ -165,7 +165,7 @@ export function ProofLab({
         `${product.label}: ${lifecycleLabels[product.lifecycleState]}, proof ${proofLabels[product.proofLevel]}.`
       )),
       'The challenge amount below is a fixture, not a customer charge; the deployed route quotes its own price.',
-      'A separate owner-funded private proof settled once; this fixture does not replay that transaction.',
+      'A separate production payment verification record exists; this fixture does not replay that transaction.',
     ],
   }), []);
 

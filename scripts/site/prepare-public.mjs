@@ -26,7 +26,7 @@ const target = path.join(root, 'apps/site/public');
 const mediaSource = path.join(root, 'apps/site/public-assets');
 const renderSource = path.join(root, 'apps/site/media/optimized');
 const discovery = JSON.parse(await readFile(path.join(source, '.well-known/clervo.json'), 'utf8'));
-const launchState = JSON.parse(await readFile(path.join(root, 'packages/catalog/launch-state.v1.json'), 'utf8'));
+const status = JSON.parse(await readFile(path.join(source, 'status.json'), 'utf8'));
 const routeInventory = await siteRouteInventory(root);
 const siteRoutes = routeInventory.map(({ route }) => canonicalPath(route));
 
@@ -56,9 +56,9 @@ const xml = (value) => String(value)
   .replaceAll('"', '&quot;')
   .replaceAll("'", '&apos;');
 const observedAt = discovery.observedTruth.provenance.observedAt;
-const packageVerifiedAt = launchState.distribution.packages.verifiedAt;
+const packageVerifiedAt = status.packages.verifiedAt;
 const liveFamilies = discovery.observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
-const packageSummary = launchState.distribution.packages.items
+const packageSummary = status.packages.items
   .map(({ name, version }) => `${name} ${version}`)
   .join(', ');
 const feedItems = [

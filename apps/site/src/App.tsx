@@ -29,8 +29,8 @@ const liveFamilyCount = observedTruth.products.filter(({ lifecycleState }) => li
  * written, so it cannot outlive the fact it describes.
  */
 const footerNote = publicApiCallable
-  ? `${liveFamilyCount} of ${observedTruth.products.length} product families observed serving. Public packages verified. No customer revenue or demand is claimed.`
-  : 'Public packages verified. Private payment plumbing proven once. Public API and customer payment remain unavailable.';
+  ? `${liveFamilyCount} of ${observedTruth.products.length} product families observed serving. Public packages verified.`
+  : 'Public packages verified. Public API is currently unavailable.';
 
 const exactTitles: Record<string, string> = {
   '/': 'Outcome infrastructure for agents',
@@ -79,7 +79,7 @@ const exactDescriptions: Record<string, string> = {
   '/product': 'Explore ClervoRouter and the six permanent capability families behind one bounded outcome contract.',
   '/build': 'Build agent workflows against Clervo machine contracts, published clients, explicit approvals and inspectable recovery semantics.',
   '/proof-lab': 'Interact with Clervo proof-state fixtures to understand request, qualification, verification, receipt and replay boundaries without creating a live transaction.',
-  '/proof': 'Inspect Clervo proof classes, owner-funded settlement evidence, replay guarantees and the boundary between verified, refused, unresolved and unproven claims.',
+  '/proof': 'Inspect Clervo payment verification, settlement evidence, replay guarantees and the boundary between verified, refused and unresolved states.',
   '/docs': 'Clervo developer documentation for the first free call, exact public operations, clients, wallet opt-in, payment boundaries, receipts, replay and recovery.',
   '/docs/quickstart': 'Install a published Clervo client, make a first free request, inspect the exact operation contract and opt into paid work only when needed.',
   '/docs/http': 'Call Clervo through raw HTTP using the current OpenAPI contract, explicit idempotency and typed payment or recovery states.',
@@ -103,7 +103,7 @@ const exactDescriptions: Record<string, string> = {
   '/products/search': 'Clervo Research retrieves fresh sources with citations and evidence while keeping route, price and proof state explicit.',
   '/products/ai': 'Clervo AI exposes a qualified model catalog behind one request contract with exact model identity, capability, price and availability boundaries.',
   '/products/sandbox': 'Clervo Secure Sandbox runs bounded no-network code execution with resource limits, receipt and replay-safe outcome semantics.',
-  '/products/rpc': 'Clervo Multi-chain RPC product identity and current commercial-rights availability boundary.',
+  '/products/rpc': 'Clervo Multi-chain RPC product identity and current public availability boundary.',
   '/products/prediction': 'Clervo Prediction Intelligence returns normalized market context, freshness, evidence and provenance across supported public market data routes.',
   '/products/crypto': 'Clervo Crypto Intelligence returns bounded wallet and on-chain signals with chain coverage, evidence and provenance.',
 };

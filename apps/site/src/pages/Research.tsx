@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import {
   formatUsdc,
-  launchState,
+  publicStatus,
   lifecycleLabels,
   observedProduct,
   observedTruth,
@@ -27,7 +27,7 @@ import { Link } from '../router';
  */
 
 const search = observedProduct('search');
-const proof = launchState.paymentProof;
+const proof = publicStatus.paymentProof;
 
 // What the outcome contains, and what it does not. Raw evidence and a
 // synthesized answer are different products with different availability, and
@@ -143,12 +143,12 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
 
       <section className="band research-body" aria-labelledby="research-proof">
         <div className="section-head">
-          <p className="eyebrow">What has been paid for</p>
+          <p className="eyebrow">Payment verification</p>
           <h2 id="research-proof">One settlement, one useful result, one safe replay.</h2>
           <p className="lede">
-            The owner funded this to verify payment plumbing. It is not a
-            customer transaction, and no revenue, demand or public commercial
-            traction follows from it.
+            The public payment record reports the operation, settled amount,
+            useful-result state and replay checks without adding business
+            classifications to those technical facts.
           </p>
         </div>
         <dl className="facts">
@@ -175,8 +175,8 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
             <dd>{proof.replaySameReceipt ? 'same receipt, no second charge' : 'not proven'}</dd>
           </div>
           <div>
-            <dt>Customer revenue evidence</dt>
-            <dd>{proof.revenueEvidence ? 'recorded' : 'none'}</dd>
+            <dt>Asset</dt>
+            <dd>{proof.asset}</dd>
           </div>
         </dl>
         <div className="cluster research-actions">

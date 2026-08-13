@@ -1,7 +1,7 @@
 import discoverySource from '../../../generated/public/.well-known/clervo.json';
-import launchStateSource from '../../../packages/catalog/launch-state.v1.json';
 import modelsSource from '../../../generated/public/models.json';
 import onboardingSource from '../../../generated/public/onboarding.json';
+import statusSource from '../../../generated/public/status.json';
 
 export type ExperiencePhase = 'risk' | 'qualified' | 'approval' | 'verified' | 'receipt';
 export type PillarLifecycle = 'preview' | 'unavailable' | 'available';
@@ -109,12 +109,7 @@ export const lifecycleLabels: Record<LifecycleState, string> = {
   unavailable: 'unavailable',
 };
 
-export const proofLabels: Record<ProofLevel, string> = {
-  none: 'nothing demonstrated',
-  quote_observed_unpaid: 'quote observed, unpaid',
-  paid_outcome_verified: 'paid outcome verified',
-  externally_repeated: 'externally repeated',
-};
+export const proofLabels: Record<ProofLevel, string> = observedTruth.provenance.proofLevels;
 
 export function attributionLabel(attribution: NonNullable<DiscoveryProduct['attribution']>): string {
   return attribution.license === undefined
@@ -165,79 +160,53 @@ export const publicOperations: PublicOperation[] = discovery.products.map((produ
   };
 });
 
-export type LaunchProductId = 'search' | 'ai' | 'sandbox' | 'rpc' | 'prediction' | 'crypto_intelligence';
+export type LaunchProductId = ObservedProduct['id'];
 
-export interface LaunchProduct {
-  id: LaunchProductId;
-  label: string;
-  operations: string[];
-  engineeringState: string;
-  customerLifecycle: string;
-  commercialProof: string;
-  paymentState: string;
-  supplierRights: string;
-  allowedClaims: string[];
-  prohibitedClaims: string[];
-}
-
-interface LaunchState {
-  schemaVersion: 'clervo.launch-state.v1';
+export interface PublicStatus {
+  schemaVersion: 'clervo.public-status.v1';
   observedAt: string;
-  sourceCommit: string;
-  identity: {
-    category: string;
-    headline: string;
-    architectureNarrative: string;
-    commercialPromise: string;
-    explanation: string;
+  publicApi: {
+    state: string;
+    endpoint?: string;
+    publicCallable: boolean;
+    publicTraffic: boolean;
+    customerEndpointAvailable: boolean;
   };
-  repository: { state: 'public_verified'; url: string };
-  distribution: {
-    packages: {
-      state: 'published_verified';
-      verifiedAt: string;
-      items: Array<{ registry: 'npm' | 'pypi'; name: string; version: string; url: string }>;
-    };
-    publicApi: {
-      state: string;
-      endpoint?: string;
-      publicCallable: boolean;
-      publicTraffic: boolean;
-      customerEndpointAvailable: boolean;
-    };
+  packages: {
+    state: string;
+    verifiedAt: string;
+    items: Array<{
+      registry: 'npm' | 'pypi';
+      name: string;
+      version: string;
+      url: string;
+    }>;
   };
   paymentProof: {
-    state: 'owner_funded_private_proof';
-    productId: 'search.web';
-    network: 'Base';
-    asset: 'USDC';
-    amountAtomic: '6000';
-    decimals: 6;
-    amountDisplay: '0.006 USDC';
-    settlementConfirmed: true;
-    usefulResult: true;
-    replaySameReceipt: true;
-    secondAuthorization: false;
-    secondExecution: false;
-    secondCharge: false;
-    publicCustomerPaymentAvailable: boolean;
-    revenueEvidence: boolean;
-    demandEvidence: boolean;
+    state: 'verified' | 'unverified';
+    productId: string;
+    network: string;
+    asset: string;
+    amountAtomic: string;
+    decimals: number;
+    amountDisplay: string;
+    settlementConfirmed: boolean;
+    usefulResult: boolean;
+    replaySameReceipt: boolean;
+    secondAuthorization: boolean;
+    secondExecution: boolean;
+    secondCharge: boolean;
     transactionUrl: string;
-    evidence: string[];
-  };
-  products: LaunchProduct[];
-  competitors: {
-    blockrun: {
-      state: 'revalidation_required';
-      observedAt: string;
-      renderVolatileClaims: false;
-      reason: string;
-    };
   };
 }
 
-export const launchState = launchStateSource as unknown as LaunchState;
+/**
+ * Browser-safe public status.
+ *
+ * The website must never import the internal launch-state authority. Anything
+ * required by a customer-facing page must first exist in generated/public.
+ */
+export const publicStatus = statusSource as unknown as PublicStatus;
 
 export interface OnboardingRecovery {
   code: 'insufficient_funds' | 'wrong_network_or_asset' | 'expired_quote' | 'rejected' | 'timeout' | 'unknown_settlement';
@@ -309,7 +278,7 @@ interface ModelsDocument {
       availability: 'available' | 'degraded' | 'unavailable';
       health: 'healthy' | 'degraded' | 'unavailable';
       publicSellable: boolean;
-      publicationBlockers?: string[];
+      availabilityReason?: string;
       commerce: { executionPath: string };
     };
   }>;
@@ -332,7 +301,7 @@ export const observedRoutes: ObservedRoute[] = modelsDocument.data
     lifecycleState: clervo.availability === 'available' ? 'live' : 'supply_paused',
     proofLevel: observedTruth.products.find(({ id: productId }) => productId === 'ai')?.proofLevel ?? 'none',
     sellable: clervo.publicSellable,
-    reason: clervo.publicationBlockers?.[0] ?? null,
+    reason: clervo.availabilityReason ?? null,
     expectedReturnAt: null,
     // Customer pricing is usage-dimensional, not one frozen maximum charge.
     // Model surfaces render that structure directly; operation surfaces ask
@@ -419,7 +388,7 @@ export const phases: Array<{
     eyebrow: '02 / Qualify',
     title: 'A route earns the right to run.',
     detail: 'Contracts, provider terms, cost controls, and evidence gates remain attached to the decision.',
-    rule: 'Qualification is private engineering state and never implies customer availability.',
+    rule: 'Qualification does not imply current public availability.',
     contract: { to: '/docs/catalog', label: 'The machine catalog' },
   },
   {
@@ -533,7 +502,7 @@ result = clervo.search.web(
 } as const;
 
 function publishedClient(name: string) {
-  const item = launchState.distribution.packages.items.find((entry) => entry.name === name);
+  const item = publicStatus.packages.items.find((entry) => entry.name === name);
   if (item === undefined) throw new Error(`published_client_missing:${name}`);
   return item;
 }

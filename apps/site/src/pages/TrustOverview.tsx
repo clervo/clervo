@@ -18,7 +18,7 @@ const map: Array<{ to: string; label: string; detail: string }> = [
   { to: '/pricing', label: 'Pricing', detail: 'Observed maximum charges, kept separate from the recorded proof amount.' },
   { to: '/security', label: 'Security', detail: 'The controls that fail closed, including unknown-settlement quarantine.' },
   { to: '/benchmarks', label: 'Benchmarks', detail: 'What has and has not been comparatively established.' },
-  { to: '/legal', label: 'Rights', detail: 'Supplier rights, terms-aware routing, and pending customer documents.' },
+  { to: '/legal', label: 'Legal', detail: 'Usage, payment, privacy and acceptable-operation boundaries.' },
 ];
 
 export function TrustOverview({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
@@ -30,9 +30,9 @@ export function TrustOverview({ onPhase }: { onPhase(phase: ExperiencePhase): vo
         <p className="eyebrow">Trust</p>
         <h1>Inspect the mechanism.</h1>
         <p className="lede">
-          Clervo keeps engineering state, customer lifecycle, commercial proof,
-          security controls, supplier rights, and observed status as six
-          separate facts, so one kind of readiness cannot impersonate another.
+          Clervo keeps runtime status, payment verification, pricing,
+          security controls, legal boundaries and observed capability state as
+          separate facts, so one kind of evidence cannot impersonate another.
         </p>
       </section>
 

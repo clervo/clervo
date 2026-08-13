@@ -25,7 +25,7 @@ const familyDescriptions: Record<ObservedProduct['id'], string> = {
   search: 'Fresh source retrieval with citations and evidence.',
   ai: 'A qualified model catalog behind one request contract.',
   sandbox: 'Bounded code execution with isolated failure.',
-  rpc: 'Chain access held unavailable until commercial rights are cleared.',
+  rpc: 'Chain access is currently unavailable on the public API.',
   prediction: 'Comparable market context with freshness and attribution.',
   crypto_intelligence: 'Wallet and on-chain signals with evidence attached.',
 };

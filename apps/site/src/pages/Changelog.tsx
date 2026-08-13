@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { launchState, observedTruth, publicApiCallable, type ExperiencePhase } from '../product';
+import { observedTruth, publicApiCallable, publicStatus, type ExperiencePhase } from '../product';
 import { Link } from '../router';
 
 /*
@@ -23,20 +23,20 @@ const entries: Array<{ at: string; eyebrow: string; title: string; body: string;
       : 'No public route was observed serving at this observation.',
   },
   {
-    at: launchState.observedAt,
-    eyebrow: 'Private production proof',
-    title: 'Bounded x402 settlement and no-charge replay verified',
-    body: `One owner-funded Search request settled for ${launchState.paymentProof.amountDisplay}, returned a useful result, and replayed with no second authorization, execution, or charge.`,
-    boundary: 'Customer revenue and market demand remain unproven. This was funded by the owner to verify payment plumbing.',
+    at: publicStatus.observedAt,
+    eyebrow: 'Payment verification',
+    title: 'Bounded settlement and no-charge replay verified',
+    body: `${publicStatus.paymentProof.productId} settled for ${publicStatus.paymentProof.amountDisplay}, returned a useful result, and replayed with no second authorization, execution, or charge.`,
+    boundary: 'This record represents settlement, useful-result and replay verification for the named operation.',
   },
   {
-    at: launchState.distribution.packages.verifiedAt,
+    at: publicStatus.packages.verifiedAt,
     eyebrow: 'Developer distribution',
-    title: 'Public packages verified from one source commit',
-    body: launchState.distribution.packages.items
+    title: 'Public packages verified',
+    body: publicStatus.packages.items
       .map(({ name, version }) => `${name} ${version}`)
-      .join(', ') + ' are published with registry provenance or trusted-publisher attestations.',
-    boundary: 'Every client takes an explicit base URL. Package availability and API availability stay separate facts.',
+      .join(', ') + ' are published on their public registries.',
+    boundary: 'Package publication and live API availability remain separate facts.',
   },
 ];
 

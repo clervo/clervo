@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import {
   discovery,
-  launchState,
+  publicStatus,
   lifecycleLabels,
   observedTruth,
   onboarding,
@@ -41,7 +41,7 @@ const guideCopy: Record<GuideTopic, { eyebrow: string; title: string; intro: str
   replay: {
     eyebrow: 'Docs / replay',
     title: 'Same request. No second effect.',
-    intro: `The recorded ${launchState.paymentProof.productId} proof replayed to the same receipt with no second authorization, execution, or charge. That proves one bounded mechanism, not public availability.`,
+    intro: `The recorded ${publicStatus.paymentProof.productId} payment verification replayed to the same receipt with no second authorization, execution, or charge. That demonstrates one bounded replay mechanism.`,
   },
   failures: {
     eyebrow: 'Docs / recovery',

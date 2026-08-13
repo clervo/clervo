@@ -13,7 +13,7 @@ const destinations = [
   { title: 'Crypto Intelligence product core', path: '/products/crypto', terms: 'wallet token transaction read only unavailable' },
   { title: 'Build and get started', path: '/build', terms: 'install onboarding activate setup environment' },
   { title: 'Proof Lab', path: '/proof-lab', terms: 'fixture request quote approve verify receipt replay recover' },
-  { title: 'Payment and replay proof', path: '/proof', terms: 'x402 settlement receipt owner funded replay no charge' },
+  { title: 'Payment and replay proof', path: '/proof', terms: 'x402 settlement receipt payment verification replay no charge' },
   { title: 'Developer quickstart', path: '/docs/quickstart', terms: 'install sdk mcp python http onboarding' },
   { title: 'Raw HTTP docs', path: '/docs/http', terms: 'curl openapi http rest request idempotency' },
   { title: 'TypeScript docs', path: '/docs/typescript', terms: 'sdk npm javascript client' },

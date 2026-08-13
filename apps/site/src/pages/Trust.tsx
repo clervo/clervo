@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import {
   discovery,
   formatUsdc,
-  launchState,
+  publicStatus,
   observedTruth,
   publicOperations,
   proofLabels,
@@ -17,7 +17,7 @@ export type TrustTopic = 'pricing' | 'benchmarks' | 'security' | 'legal';
  * The four claim-boundary pages: /pricing, /benchmarks, /security, /legal.
  *
  * Each one exists to state what is and is not being claimed. The pricing page
- * in particular has one job that is easy to get wrong: the recorded owner-funded
+ * in particular has one job that is easy to get wrong: the recorded verified payment
  * proof amount is not a public price, and the deployed system's quoted ceilings
  * are not a published price list either. Both facts are rendered, separately,
  * from the probe.
@@ -153,7 +153,7 @@ export function Trust({ topic, onPhase }: { topic: TrustTopic; onPhase(phase: Ex
           <section className="band band--ruled trust-body" aria-labelledby="proof-amount">
             <div className="section-head">
               <p className="eyebrow">Recorded proof</p>
-              <h2 id="proof-amount">The recorded Search payment, and what it is not.</h2>
+              <h2 id="proof-amount">The recorded payment verification.</h2>
             </div>
             {/*
               * Gold is spent here and nowhere else on this page. This amount is
@@ -163,28 +163,28 @@ export function Trust({ topic, onPhase }: { topic: TrustTopic; onPhase(phase: Ex
             <dl className="facts">
               <div>
                 <dt>Settled amount</dt>
-                <dd className="state state--verified">{launchState.paymentProof.amountDisplay}</dd>
+                <dd className="state state--verified">{publicStatus.paymentProof.amountDisplay}</dd>
               </div>
               <div>
                 <dt>Operation</dt>
-                <dd>{launchState.paymentProof.productId}</dd>
+                <dd>{publicStatus.paymentProof.productId}</dd>
               </div>
               <div>
                 <dt>Network</dt>
-                <dd>{launchState.paymentProof.network}</dd>
+                <dd>{publicStatus.paymentProof.network}</dd>
               </div>
               <div>
-                <dt>Funded by</dt>
-                <dd>the owner, to verify payment plumbing</dd>
+                <dt>Asset</dt>
+                <dd>{publicStatus.paymentProof.asset}</dd>
               </div>
               <div>
-                <dt>Customer revenue evidence</dt>
-                <dd>{String(launchState.paymentProof.revenueEvidence)}</dd>
+                <dt>Replay</dt>
+                <dd>{publicStatus.paymentProof.replaySameReceipt ? 'verified' : 'not verified'}</dd>
               </div>
             </dl>
             <p className="quiet trust-note">
-              This Search amount is a recorded owner-funded proof, not an offer.
-              No customer revenue or demand is claimed from it.
+              This settled amount is a verification record, not a universal price.
+              Transaction, result and replay checks are shown on the proof page.
             </p>
             <div className="cluster trust-actions">
               <Link className="button button--primary" to="/catalog">See every route and its ceiling</Link>
@@ -219,7 +219,7 @@ export function Trust({ topic, onPhase }: { topic: TrustTopic; onPhase(phase: Ex
               <div className="panel__body stack stack--tight">
                 <p className="eyebrow">Proven privately</p>
                 <h3>Bounded settlement mechanics</h3>
-                <p className="quiet">The recorded Search result settled and replayed safely. Current product-level paid proof is reported separately from customer demand.</p>
+                <p className="quiet">The recorded Search result settled and replayed safely. Current product-level paid proof is reported separately from broader product claims.</p>
               </div>
             </li>
           </ul>

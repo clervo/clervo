@@ -6,7 +6,6 @@ import {
   discovery,
   familyOf,
   formatUsdc,
-  launchState,
   lifecycleLabels,
   observedProduct,
   observedRoutes,
@@ -31,8 +30,6 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
   if (familyId === undefined) return null;
 
   const observed = observedProduct(familyId);
-  const launch = launchState.products.find((product) => product.id === familyId);
-  if (launch === undefined) return null;
 
   const published = discovery.products.filter((entry) => familyOf(entry.operationId) === familyId);
   const routes = observedRoutes.filter((route) => route.productIds.some((id) => {
@@ -122,12 +119,31 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
         </section>
 
         <section className="s4-claim-boundary" aria-labelledby="s4-family-claim-title">
-          <div className="s4-section-head"><div><p className="s4-kicker">Claim boundary</p><h2 id="s4-family-claim-title">What current authority allows—and refuses.</h2></div><p className="s4-section-copy">These lists are live-bound to the current launch-state authority, separate from the design-fixture task examples above.</p></div>
-          <div className="s4-claims-grid">
-            <article><p className="s4-kicker">Supported by current authority</p><ul>{launch.allowedClaims.map((claim) => <li key={claim}>{claim}</li>)}</ul></article>
-            <article className="refused"><p className="s4-kicker">Explicitly not claimed</p><ul>{launch.prohibitedClaims.map((claim) => <li key={claim}>{claim}</li>)}</ul></article>
+          <div className="s4-section-head">
+            <div>
+              <p className="s4-kicker">Public boundary</p>
+              <h2 id="s4-family-claim-title">What the current public observation establishes.</h2>
+            </div>
+            <p className="s4-section-copy">Lifecycle, proof, reachability and availability reasons come only from generated public artifacts.</p>
           </div>
-          <p className="s4-provenance">Observed at {observedTruth.provenance.observedAt}. Supplier rights: {launch.supplierRights.replaceAll('_', ' ')}. Payment state: {launch.paymentState.replaceAll('_', ' ')}.</p>
+          <div className="s4-claims-grid">
+            <article>
+              <p className="s4-kicker">Observed now</p>
+              <ul>
+                <li>Lifecycle: {lifecycleLabels[observed.lifecycleState]}</li>
+                <li>Proof: {proofLabels[observed.proofLevel]}</li>
+                <li>Publicly reachable: {observed.publiclyReachable ? 'yes' : 'no'}</li>
+              </ul>
+            </article>
+            <article className="refused">
+              <p className="s4-kicker">Availability boundary</p>
+              <ul>
+                <li>{observed.reason === null ? 'No current public limitation reason is published.' : observed.reason.replaceAll('_', ' ')}</li>
+                <li>Unpublished operational classifications are not projected into this page.</li>
+              </ul>
+            </article>
+          </div>
+          <p className="s4-provenance">Observed at {observedTruth.provenance.observedAt}.</p>
         </section>
 
         <nav className="s4-family-strip s4-family-strip--footer" aria-label="All product families">
