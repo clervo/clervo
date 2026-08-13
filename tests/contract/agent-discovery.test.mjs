@@ -188,6 +188,7 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
     'https://api.clervo.dev/v1/search/paid': 'search',
     'https://api.clervo.dev/v1/ai/execute': 'ai',
     'https://api.clervo.dev/v1/chat/completions': 'ai',
+    'https://api.clervo.dev/v1/messages': 'ai',
     'https://api.clervo.dev/v1/sandbox/execute': 'sandbox',
     'https://api.clervo.dev/v1/prediction/execute': 'prediction',
     'https://api.clervo.dev/v1/crypto/execute': 'crypto_intelligence',

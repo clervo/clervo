@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `Clervo production probe`, probed at 2026-08-13T16:48:23.277Z. Release: `ad69fca050bb490c3ebcaf1b951b7d611ce8fffd`.
+Source: `Clervo production probe`, probed at 2026-08-13T20:13:01.876Z. Release: `e4a08a84a1b001666179cd07de70ed6c5df0734d`.
 
 ## Identity
 
