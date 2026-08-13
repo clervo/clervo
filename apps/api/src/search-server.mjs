@@ -44,6 +44,13 @@ import {
   normalizeAnthropicMessagesRequest,
 } from './anthropic-messages-compat.mjs';
 import {
+  OPENAI_RESPONSES_PATH,
+  createOpenAiResponse,
+  createOpenAiResponsesDiscoveryContract,
+  normalizeOpenAiResponsesRequest,
+  openAiResponsesRequestHash,
+} from './openai-responses-compat.mjs';
+import {
   SANDBOX_DISCOVERY,
   SANDBOX_MAX_BODY_BYTES as SANDBOX_PUBLIC_MAX_BODY_BYTES,
   SANDBOX_PAID_PATH,
@@ -469,7 +476,7 @@ export function createSearchServer({
       }
       return;
     }
-    if (request.method === 'POST' && [AI_PAID_PATH, OPENAI_CHAT_COMPLETIONS_PATH, ANTHROPIC_MESSAGES_PATH].includes(url.pathname) && x402AiProcessor !== undefined) {
+    if (request.method === 'POST' && [AI_PAID_PATH, OPENAI_CHAT_COMPLETIONS_PATH, ANTHROPIC_MESSAGES_PATH, OPENAI_RESPONSES_PATH].includes(url.pathname) && x402AiProcessor !== undefined) {
       if (edgeAuthorization !== undefined && !internalAuthorized(request.headers['x-clervo-edge-authorization'], edgeAuthorization)) {
         send(response, 401, problem(401, 'edge_unauthorized', 'Unauthorized', 'The public API edge is required.', url.pathname), {}, PROBLEM_TYPE);
         return;
@@ -489,7 +496,8 @@ export function createSearchServer({
         const authorizationHeader = mppAuthorization(request.headers.authorization);
         const openAiCompatibility = url.pathname === OPENAI_CHAT_COMPLETIONS_PATH;
         const anthropicCompatibility = url.pathname === ANTHROPIC_MESSAGES_PATH;
-        const discoveryEligible = !openAiCompatibility && !anthropicCompatibility && typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined;
+        const responsesCompatibility = url.pathname === OPENAI_RESPONSES_PATH;
+        const discoveryEligible = !openAiCompatibility && !anthropicCompatibility && !responsesCompatibility && typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined;
         const aiBody = await readJson(request, AI_MAX_BODY_BYTES, { allowEmpty: discoveryEligible });
         if (aiBody === undefined) {
           const challenge = await discoveryPaymentChallenge(AI_PAID_PATH, observedAt);
@@ -500,12 +508,16 @@ export function createSearchServer({
           ? normalizeOpenAiChatCompletionRequest(aiBody)
           : anthropicCompatibility
             ? normalizeAnthropicMessagesRequest(aiBody)
-            : normalizeAiHttpRequest(aiBody);
+            : responsesCompatibility
+              ? normalizeOpenAiResponsesRequest(aiBody)
+              : normalizeAiHttpRequest(aiBody);
         const requestHash = openAiCompatibility
           ? openAiChatRequestHash(normalized)
           : anthropicCompatibility
             ? anthropicMessagesRequestHash(normalized)
-            : aiHttpRequestHash(normalized);
+            : responsesCompatibility
+              ? openAiResponsesRequestHash(normalized)
+              : aiHttpRequestHash(normalized);
         const classificationId = identifier('op', `classify:${requestHash}`);
         const billingMode = aiPublicPricing.quote({ normalized, operationId: classificationId, now: observedAt }).pricing.billingMode;
         if (billingMode === 'free') {
@@ -526,7 +538,9 @@ export function createSearchServer({
               ? createOpenAiChatCompletion(free.body)
               : anthropicCompatibility
                 ? createAnthropicMessage(free.body)
-                : free.body;
+                : responsesCompatibility
+                  ? createOpenAiResponse(free.body, aiBody)
+                  : free.body;
           send(response, free.status, responseBody, { ...free.headers, ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}) });
           return;
         }
@@ -548,7 +562,9 @@ export function createSearchServer({
             ? createOpenAiChatDiscoveryContract(aiBody)
             : anthropicCompatibility
               ? createAnthropicMessagesDiscoveryContract(aiBody)
-              : undefined,
+              : responsesCompatibility
+                ? createOpenAiResponsesDiscoveryContract(aiBody)
+                : undefined,
         });
         const responseBody = paid.status !== 200
           ? paid.body
@@ -556,7 +572,9 @@ export function createSearchServer({
             ? createOpenAiChatCompletion(paid.body)
             : anthropicCompatibility
               ? createAnthropicMessage(paid.body)
-              : paid.body;
+              : responsesCompatibility
+                ? createOpenAiResponse(paid.body, aiBody)
+                : paid.body;
         send(response, paid.status, responseBody, { ...paid.headers, ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}) });
       } catch (error) {
         const code = errorCode(error);

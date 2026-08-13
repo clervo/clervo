@@ -226,17 +226,144 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
     1,
   );
 
+  const responsesBody = JSON.stringify({
+    model: 'gpt-5.6-luna',
+    instructions: 'Be concise.',
+    input: 'Hello from an OpenAI Responses client',
+    max_output_tokens: 100,
+    stream: false,
+    store: false,
+    text: {
+      format: {
+        type: 'text',
+      },
+    },
+  });
+
+  const responsesHeaders = {
+    'content-type': 'application/json',
+    'idempotency-key': 'idem_openai_responses_001',
+    'x-clervo-edge-authorization':
+      'Bearer edge-authorization-at-least-32-characters',
+  };
+
+  const responsesChallenge = await fetch(
+    `${origin}/v1/responses`,
+    {
+      method: 'POST',
+      headers: responsesHeaders,
+      body: responsesBody,
+    },
+  );
+
+  assert.equal(responsesChallenge.status, 402);
+
+  const responsesQuote = await responsesChallenge.json();
+
+  assert.equal(
+    responsesQuote.resource.url,
+    'https://api.clervo.dev/v1/responses',
+  );
+
+  assert.equal(
+    discoveries.at(-1).input.model,
+    'gpt-5.6-luna',
+  );
+
+  assert.equal(
+    discoveries.at(-1).input.input,
+    'Hello from an OpenAI Responses client',
+  );
+
+  assert.equal(
+    discoveries.at(-1).input.instructions,
+    'Be concise.',
+  );
+
+  assert.equal(
+    discoveries.at(-1).input.store,
+    false,
+  );
+
+  assert.equal(
+    discoveries.at(-1).output.example.object,
+    'response',
+  );
+
+  const responsesPaid = await fetch(
+    `${origin}/v1/responses`,
+    {
+      method: 'POST',
+      headers: {
+        ...responsesHeaders,
+        'payment-signature': 'opaque-payment',
+      },
+      body: responsesBody,
+    },
+  );
+
+  assert.equal(responsesPaid.status, 200);
+
+  const responses = await responsesPaid.json();
+
+  assert.match(responses.id, /^resp_/u);
+  assert.equal(responses.object, 'response');
+  assert.equal(responses.status, 'completed');
+  assert.equal(responses.model, 'gpt-5.6-luna');
+  assert.equal(responses.store, false);
+
+  assert.equal(
+    responses.output[0].type,
+    'message',
+  );
+
+  assert.equal(
+    responses.output[0].role,
+    'assistant',
+  );
+
+  assert.equal(
+    responses.output[0].content[0].type,
+    'output_text',
+  );
+
+  assert.equal(
+    responses.output[0].content[0].text,
+    'Useful output.',
+  );
+
+  assert.equal(
+    responses.text.format.type,
+    'text',
+  );
+
+  assert.equal(
+    responses.usage.input_tokens,
+    2,
+  );
+
+  assert.equal(
+    responses.usage.output_tokens,
+    1,
+  );
+
+  assert.equal(
+    responses.usage.total_tokens,
+    3,
+  );
+
   assert.deepEqual(resourcePaths, [
     '/v1/ai/execute',
     '/v1/search/paid',
     '/v1/ai/execute',
     '/v1/chat/completions',
     '/v1/messages',
+    '/v1/responses',
   ]);
   assert.deepEqual(calls, {
-    challenge: 5,
-    authorize: 3,
-    settle: 3,
-    execute: 3,
+    challenge: 6,
+    authorize: 4,
+    settle: 4,
+    execute: 4,
   });
 });

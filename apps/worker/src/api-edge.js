@@ -13,7 +13,7 @@ import { AGENT_DOCUMENT, LLMS_DOCUMENT, SKILL_DOCUMENT } from '../../../generate
 
 const UPSTREAM_ORIGIN = 'https://clervo-api-production-jbtbib4yqa-uc.a.run.app';
 const FAVICON = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="M32 2 62 32 32 62 2 32Z" fill="#050606" stroke="#64706d" stroke-width="2"/><path d="M39.5 23.5a12 12 0 1 0 0 17" fill="none" stroke="#f4f7f6" stroke-width="6" stroke-linecap="square"/><circle cx="43" cy="21" r="3" fill="#d6b86a"/></svg>';
-const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid', '/v1/ai/execute', '/v1/chat/completions', '/v1/messages', '/v1/sandbox/execute', '/v1/rpc/execute', '/v1/prediction/execute', '/v1/crypto/execute']);
+const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid', '/v1/ai/execute', '/v1/chat/completions', '/v1/messages', '/v1/responses', '/v1/sandbox/execute', '/v1/rpc/execute', '/v1/prediction/execute', '/v1/crypto/execute']);
 const DISCOVERY_DOCUMENTS = new Map([
   ['/.well-known/clervo.json', discovery],
   ['/.well-known/ai-plugin.json', aiPlugin],
@@ -51,6 +51,7 @@ const MAXIMUM_REQUEST_BYTES = Object.freeze({
   '/v1/ai/execute': 10_485_760,
   '/v1/chat/completions': 10_485_760,
   '/v1/messages': 10_485_760,
+  '/v1/responses': 10_485_760,
   '/v1/sandbox/execute': 1_500_000,
   '/v1/rpc/execute': 262_144,
   '/v1/prediction/execute': 262_144,
@@ -85,7 +86,7 @@ export default {
   async fetch(request, env = {}) {
     const incoming = new URL(request.url);
     const artifactRequest = ARTIFACT_PATH.test(incoming.pathname);
-    if (['/v1/ai/execute', '/v1/chat/completions', '/v1/messages'].includes(incoming.pathname) && env.CLERVO_AI_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
+    if (['/v1/ai/execute', '/v1/chat/completions', '/v1/messages', '/v1/responses'].includes(incoming.pathname) && env.CLERVO_AI_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/v1/sandbox/execute' && env.CLERVO_SANDBOX_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/v1/rpc/execute' && env.CLERVO_RPC_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/v1/prediction/execute' && env.CLERVO_PREDICTION_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
