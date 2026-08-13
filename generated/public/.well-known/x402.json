@@ -225,8 +225,8 @@
   },
   "clervo": {
     "provenance": {
-      "source": "packages/catalog/live-registry.json",
-      "generatedBy": "scripts/probe-live-registry.mjs",
+      "source": "Clervo production probe",
+      "generatedBy": "Clervo discovery generator",
       "observedAt": "2026-08-11T23:08:33.338Z",
       "releaseId": "763601c4688fd9b2e3eedb4c7829b4586b329368",
       "proofLevels": {
@@ -247,10 +247,10 @@
       "unavailable": "absent from the catalog or has no public route at all"
     },
     "proofLevels": {
-      "externally_repeated": "an unrelated party did it, more than once",
-      "none": "nothing demonstrated",
-      "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
-      "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
+      "none": "no payment proof recorded",
+      "quote_observed_unpaid": "payment requirement observed; no settled outcome verified",
+      "paid_outcome_verified": "settled payment and useful outcome verified",
+      "externally_repeated": "multiple settled paid outcomes independently verified"
     },
     "bazaar": {
       "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",

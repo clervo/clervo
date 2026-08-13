@@ -31,17 +31,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -57,8 +51,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.360000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -98,17 +90,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -124,8 +110,6 @@
           "inputPerMToken": "0.750000",
           "outputPerMToken": "3.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -165,17 +149,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -191,8 +169,6 @@
           "inputPerMToken": "2.500000",
           "outputPerMToken": "12.500000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -232,17 +208,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -258,8 +228,6 @@
           "inputPerMToken": "2.500000",
           "outputPerMToken": "12.500000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -299,17 +267,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -325,8 +287,6 @@
           "inputPerMToken": "2.500000",
           "outputPerMToken": "12.500000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -366,17 +326,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -392,8 +346,6 @@
           "inputPerMToken": "2.500000",
           "outputPerMToken": "12.500000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -433,17 +385,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -459,8 +405,6 @@
           "inputPerMToken": "1.500000",
           "outputPerMToken": "7.500000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -500,17 +444,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -526,8 +464,6 @@
           "inputPerMToken": "1.000000",
           "outputPerMToken": "5.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -543,7 +479,9 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "alias",
-        "isAlias": true,
+        "aliases": [],
+        "aliasFor": "clervo/gpt-5.6-sol",
+        "reasoningEffort": "medium",
         "name": "clervo/code service alias",
         "description": "Stable Clervo service alias for clervo/gpt-5.6-sol. Canonical requests are never silently substituted.",
         "productIds": [
@@ -567,17 +505,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -593,29 +525,13 @@
           "inputPerMToken": "2.500000",
           "outputPerMToken": "15.000000"
         },
-        "pricingMethod": "alias_contract",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
           "payment": "x402_or_mpp",
           "resultAccounting": "usage_and_settled_receipt",
           "replaySafe": true
-        },
-        "aliasFor": "clervo/gpt-5.6-sol",
-        "aliasRationale": "Code-focused stable route for implementation, debugging, and review tasks.",
-        "tradeoffs": "Code specialization over broad general reasoning.",
-        "aliasKind": "fixed_canonical",
-        "selectionPolicy": {
-          "kind": "fixed_canonical",
-          "optimizationGoal": "not_applicable_fixed_mapping",
-          "tradeoffs": "The alias adds naming stability only; capabilities, availability, and customer pricing are inherited from its fixed canonical target.",
-          "dynamicallyRouted": false,
-          "resolvedCanonicalResultField": "exactModelId",
-          "pricingSemantics": "inherits_fixed_canonical_customer_pricing"
-        },
-        "reasoningEffort": "medium",
-        "aliases": []
+        }
       }
     },
     {
@@ -624,7 +540,9 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "alias",
-        "isAlias": true,
+        "aliases": [],
+        "aliasFor": "clervo/gpt-5.6-sol",
+        "reasoningEffort": "high",
         "name": "clervo/deep service alias",
         "description": "Stable Clervo service alias for clervo/gpt-5.6-sol. Canonical requests are never silently substituted.",
         "productIds": [
@@ -648,17 +566,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -674,29 +586,13 @@
           "inputPerMToken": "2.500000",
           "outputPerMToken": "15.000000"
         },
-        "pricingMethod": "alias_contract",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
           "payment": "x402_or_mpp",
           "resultAccounting": "usage_and_settled_receipt",
           "replaySafe": true
-        },
-        "aliasFor": "clervo/gpt-5.6-sol",
-        "aliasRationale": "Highest-reasoning stable route for difficult analysis and long-form synthesis.",
-        "tradeoffs": "Capability over latency and cost; use for difficult reasoning tasks.",
-        "aliasKind": "fixed_canonical",
-        "selectionPolicy": {
-          "kind": "fixed_canonical",
-          "optimizationGoal": "not_applicable_fixed_mapping",
-          "tradeoffs": "The alias adds naming stability only; capabilities, availability, and customer pricing are inherited from its fixed canonical target.",
-          "dynamicallyRouted": false,
-          "resolvedCanonicalResultField": "exactModelId",
-          "pricingSemantics": "inherits_fixed_canonical_customer_pricing"
-        },
-        "reasoningEffort": "high",
-        "aliases": []
+        }
       }
     },
     {
@@ -730,17 +626,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -756,8 +646,6 @@
           "inputPerMToken": "0.525000",
           "outputPerMToken": "1.875000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -797,17 +685,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -823,8 +705,6 @@
           "inputPerMToken": "0.225000",
           "outputPerMToken": "0.900000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -864,17 +744,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -890,8 +764,6 @@
           "inputPerMToken": "0.202500",
           "outputPerMToken": "0.750000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -931,17 +803,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -957,8 +823,6 @@
           "inputPerMToken": "0.202500",
           "outputPerMToken": "0.307500"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -998,17 +862,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1024,8 +882,6 @@
           "inputPerMToken": "0.217500",
           "outputPerMToken": "0.435000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1041,7 +897,9 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "alias",
-        "isAlias": true,
+        "aliases": [],
+        "aliasFor": "clervo/gpt-5.6-luna",
+        "reasoningEffort": "low",
         "name": "clervo/fast service alias",
         "description": "Stable Clervo service alias for clervo/gpt-5.6-luna. Canonical requests are never silently substituted.",
         "productIds": [
@@ -1065,17 +923,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1091,29 +943,13 @@
           "inputPerMToken": "0.050000",
           "outputPerMToken": "0.300000"
         },
-        "pricingMethod": "alias_contract",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
           "payment": "x402_or_mpp",
           "resultAccounting": "usage_and_settled_receipt",
           "replaySafe": true
-        },
-        "aliasFor": "clervo/gpt-5.6-luna",
-        "aliasRationale": "Lowest-latency stable route for short classification, extraction, and generation tasks.",
-        "tradeoffs": "Speed over capability; not suitable for deep reasoning, code, or long context.",
-        "aliasKind": "fixed_canonical",
-        "selectionPolicy": {
-          "kind": "fixed_canonical",
-          "optimizationGoal": "not_applicable_fixed_mapping",
-          "tradeoffs": "The alias adds naming stability only; capabilities, availability, and customer pricing are inherited from its fixed canonical target.",
-          "dynamicallyRouted": false,
-          "resolvedCanonicalResultField": "exactModelId",
-          "pricingSemantics": "inherits_fixed_canonical_customer_pricing"
-        },
-        "reasoningEffort": "low",
-        "aliases": []
+        }
       }
     },
     {
@@ -1146,17 +982,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1172,8 +1002,6 @@
           "inputPerMToken": "0.225000",
           "outputPerMToken": "1.875000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1213,17 +1041,11 @@
           "image"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1239,8 +1061,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1280,17 +1100,11 @@
           "audio"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1306,8 +1120,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1347,17 +1159,11 @@
           "audio"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1373,8 +1179,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1414,17 +1218,11 @@
           "audio"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1440,8 +1238,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1481,17 +1277,11 @@
           "image"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1507,8 +1297,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1548,17 +1336,11 @@
           "image"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1574,8 +1356,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1615,17 +1395,11 @@
           "image"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1641,8 +1415,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1682,17 +1454,11 @@
           "audio"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1708,8 +1474,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1749,17 +1513,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1775,8 +1533,6 @@
           "inputPerMToken": "0.225000",
           "outputPerMToken": "1.875000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1816,17 +1572,11 @@
           "embedding"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1842,8 +1592,6 @@
           "inputPerMToken": "0.135000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1883,17 +1631,11 @@
           "video"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1909,8 +1651,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -1950,17 +1690,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -1976,8 +1710,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.360000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2017,17 +1749,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2043,8 +1769,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "free",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2084,17 +1808,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2110,8 +1828,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.306000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2151,17 +1867,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2177,8 +1887,6 @@
           "inputPerMToken": "0.097500",
           "outputPerMToken": "0.637500"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2218,17 +1926,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2244,8 +1946,6 @@
           "inputPerMToken": "0.265300",
           "outputPerMToken": "0.833800"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2287,17 +1987,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2313,8 +2007,6 @@
           "inputPerMToken": "0.050000",
           "outputPerMToken": "0.300000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2357,17 +2049,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2383,8 +2069,6 @@
           "inputPerMToken": "2.500000",
           "outputPerMToken": "15.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2426,17 +2110,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2452,8 +2130,6 @@
           "inputPerMToken": "0.500000",
           "outputPerMToken": "3.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2494,17 +2170,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2520,8 +2190,6 @@
           "inputPerMToken": "0.033300",
           "outputPerMToken": "0.153000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2562,20 +2230,12 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "degraded",
         "availability": "degraded",
-        "expectedReturnAt": "2026-09-09T19:09:36.000Z",
         "health": "degraded",
         "publicSellable": false,
-        "publicationBlockers": [
-          "availability_degraded"
-        ],
+        "availabilityReason": "temporarily_unavailable",
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2591,8 +2251,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "free",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2632,17 +2290,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2658,8 +2310,6 @@
           "inputPerMToken": "0.067500",
           "outputPerMToken": "0.270000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2699,17 +2349,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2725,8 +2369,6 @@
           "inputPerMToken": "0.105000",
           "outputPerMToken": "0.427500"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2766,17 +2408,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2792,8 +2428,6 @@
           "inputPerMToken": "0.099000",
           "outputPerMToken": "0.396000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2833,17 +2467,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2859,8 +2487,6 @@
           "inputPerMToken": "0.427500",
           "outputPerMToken": "2.137500"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2900,17 +2526,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2926,8 +2546,6 @@
           "inputPerMToken": "0.434625",
           "outputPerMToken": "1.830000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -2967,17 +2585,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -2993,8 +2605,6 @@
           "inputPerMToken": "0.525000",
           "outputPerMToken": "2.625000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3034,17 +2644,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3060,8 +2664,6 @@
           "inputPerMToken": "1.500000",
           "outputPerMToken": "7.500000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3101,17 +2703,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3127,8 +2723,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "free",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3168,17 +2762,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3194,8 +2782,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.360000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3235,17 +2821,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3261,8 +2841,6 @@
           "inputPerMToken": "0.300000",
           "outputPerMToken": "0.300000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3302,17 +2880,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3328,8 +2900,6 @@
           "inputPerMToken": "0.045000",
           "outputPerMToken": "0.072000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3369,17 +2939,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3395,8 +2959,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.360000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3439,17 +3001,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3465,8 +3021,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.360000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3506,17 +3060,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3532,8 +3080,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.360000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3576,17 +3122,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3602,8 +3142,6 @@
           "inputPerMToken": "0.750000",
           "outputPerMToken": "3.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3643,17 +3181,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3669,8 +3201,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.288000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3710,17 +3240,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3736,8 +3260,6 @@
           "inputPerMToken": "0.225000",
           "outputPerMToken": "0.900000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3778,17 +3300,11 @@
           "audio"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3804,8 +3320,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3846,17 +3360,11 @@
           "audio"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3872,8 +3380,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3913,17 +3419,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -3939,8 +3439,6 @@
           "inputPerMToken": "0.110000",
           "outputPerMToken": "0.450000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -3980,17 +3478,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4006,8 +3498,6 @@
           "inputPerMToken": "0.225000",
           "outputPerMToken": "0.900000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4050,17 +3540,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4076,8 +3560,6 @@
           "inputPerMToken": "0.225000",
           "outputPerMToken": "0.900000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4120,17 +3602,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4146,8 +3622,6 @@
           "inputPerMToken": "0.225000",
           "outputPerMToken": "0.900000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4187,17 +3661,11 @@
           "embedding"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4213,8 +3681,6 @@
           "inputPerMToken": "0.720000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4254,17 +3720,11 @@
           "embedding"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4280,8 +3740,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4325,17 +3783,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4351,8 +3803,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "free",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4392,17 +3842,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4418,8 +3862,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.360000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4459,17 +3901,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4485,8 +3921,6 @@
           "inputPerMToken": "0.187500",
           "outputPerMToken": "0.750000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4526,17 +3960,11 @@
           "embedding"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4552,8 +3980,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4593,17 +4019,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4619,8 +4039,6 @@
           "inputPerMToken": "0.270000",
           "outputPerMToken": "0.300000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4660,17 +4078,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4686,8 +4098,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.180000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4727,17 +4137,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4753,8 +4157,6 @@
           "inputPerMToken": "0.043335",
           "outputPerMToken": "0.173745"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4794,17 +4196,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4820,8 +4216,6 @@
           "inputPerMToken": "0.072000",
           "outputPerMToken": "0.252000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4861,17 +4255,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4887,8 +4275,6 @@
           "inputPerMToken": "0.087750",
           "outputPerMToken": "0.341250"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4928,17 +4314,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -4954,8 +4334,6 @@
           "inputPerMToken": "0.063000",
           "outputPerMToken": "0.252000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -4998,17 +4376,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5024,8 +4396,6 @@
           "inputPerMToken": "0.112500",
           "outputPerMToken": "0.450000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5069,17 +4439,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5095,8 +4459,6 @@
           "inputPerMToken": "0.150000",
           "outputPerMToken": "1.800000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5139,17 +4501,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5165,8 +4521,6 @@
           "inputPerMToken": "0.078000",
           "outputPerMToken": "0.312000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5210,17 +4564,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5236,8 +4584,6 @@
           "inputPerMToken": "0.225000",
           "outputPerMToken": "0.900000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5280,17 +4626,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5306,8 +4646,6 @@
           "inputPerMToken": "0.087750",
           "outputPerMToken": "0.341250"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5347,17 +4685,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5373,8 +4705,6 @@
           "inputPerMToken": "0.195000",
           "outputPerMToken": "1.170000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5414,17 +4744,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5440,8 +4764,6 @@
           "inputPerMToken": "0.450000",
           "outputPerMToken": "2.700000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5481,17 +4803,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5507,8 +4823,6 @@
           "inputPerMToken": "0.225000",
           "outputPerMToken": "0.900000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5524,7 +4838,9 @@
       "owned_by": "clervo",
       "clervo": {
         "identityKind": "alias",
-        "isAlias": true,
+        "aliases": [],
+        "aliasFor": "clervo/gpt-5.6-terra",
+        "reasoningEffort": "medium",
         "name": "clervo/smart service alias",
         "description": "Stable Clervo service alias for clervo/gpt-5.6-terra. Canonical requests are never silently substituted.",
         "productIds": [
@@ -5548,17 +4864,11 @@
           "text"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5574,29 +4884,13 @@
           "inputPerMToken": "0.500000",
           "outputPerMToken": "3.000000"
         },
-        "pricingMethod": "alias_contract",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
           "payment": "x402_or_mpp",
           "resultAccounting": "usage_and_settled_receipt",
           "replaySafe": true
-        },
-        "aliasFor": "clervo/gpt-5.6-terra",
-        "aliasRationale": "Balanced quality and latency for general-purpose reasoning and generation.",
-        "tradeoffs": "Balanced tradeoff; slower and less capable than deep/code on difficult tasks.",
-        "aliasKind": "fixed_canonical",
-        "selectionPolicy": {
-          "kind": "fixed_canonical",
-          "optimizationGoal": "not_applicable_fixed_mapping",
-          "tradeoffs": "The alias adds naming stability only; capabilities, availability, and customer pricing are inherited from its fixed canonical target.",
-          "dynamicallyRouted": false,
-          "resolvedCanonicalResultField": "exactModelId",
-          "pricingSemantics": "inherits_fixed_canonical_customer_pricing"
-        },
-        "reasoningEffort": "medium",
-        "aliases": []
+        }
       }
     },
     {
@@ -5629,17 +4923,11 @@
           "embedding"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5655,8 +4943,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5696,17 +4982,11 @@
           "embedding"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5722,8 +5002,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5763,17 +5041,11 @@
           "embedding"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5789,8 +5061,6 @@
           "inputPerMToken": "0.090000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5830,17 +5100,11 @@
           "video"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5856,8 +5120,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5897,17 +5159,11 @@
           "video"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5923,8 +5179,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -5964,17 +5218,11 @@
           "video"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -5990,8 +5238,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",
@@ -6031,17 +5277,11 @@
           "image"
         ],
         "limits": {},
-        "modelCreator": null,
-        "modelCreatorStatus": "unknown",
-        "executionSupplier": "Clervo AI Gateway",
-        "upstreamExecutionSupplier": null,
-        "upstreamExecutionSupplierStatus": "not_publicly_disclosed",
         "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
         "lifecycle": "available",
         "availability": "available",
         "health": "healthy",
         "publicSellable": true,
-        "publicationBlockers": [],
         "customerPricing": {
           "currency": "USD",
           "decimals": 6,
@@ -6057,8 +5297,6 @@
           "inputPerMToken": "0.000000",
           "outputPerMToken": "0.000000"
         },
-        "pricingMethod": "strategic_override",
-        "competitiveComparison": "unverified",
         "billingMode": "metered",
         "commerce": {
           "executionPath": "/v1/ai/execute",

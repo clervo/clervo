@@ -99,7 +99,8 @@ test('every generated public surface renders the registry lifecycle state and pr
       .sort();
     assert.deepEqual(rendered, expected, `${name} must render the registry's states and proof levels`);
     assert.equal(document.observedTruth.provenance.observedAt, registry.observedAt, `${name} must cite the registry observation time`);
-    assert.equal(document.observedTruth.provenance.source, 'packages/catalog/live-registry.json');
+    assert.equal(document.observedTruth.provenance.source, 'Clervo production probe');
+    assert.equal(document.observedTruth.provenance.generatedBy, 'Clervo discovery generator');
   }
 
   // Proof level is rendered as its own field, never folded into lifecycle.
@@ -167,6 +168,36 @@ test('no public surface offers an operation the registry does not serve', async 
   }
 });
 
+test('the public AI catalog excludes internal commercialization and supplier metadata', async () => {
+  const models = await json('generated/public/models.json');
+  const forbidden = [
+    'publicationBlockers',
+    'pricingMethod',
+    'competitiveComparison',
+    'executionSupplier',
+    'upstreamExecutionSupplier',
+    'upstreamExecutionSupplierStatus',
+    'modelCreatorStatus',
+    'gatewaySupplyId',
+    'runtimeModelId',
+    'providerId',
+    'authorityRef',
+    'ownerDecisionRef',
+  ];
+
+  for (const model of models.data) {
+    for (const field of forbidden) {
+      assert.equal(field in model.clervo, false, `${model.id} must not publish ${field}`);
+    }
+    if (model.clervo.publicSellable === false) {
+      assert.equal(model.clervo.availabilityReason, 'temporarily_unavailable');
+    }
+  }
+
+  const serialized = JSON.stringify(models);
+  assert.doesNotMatch(serialized, /strategic_override|integrated_execution_failed/iu);
+});
+
 test('the site projection is byte-identical to the generated output', async () => {
   const files = [
     'llms.txt',
@@ -203,7 +234,7 @@ test('the agent-facing documents render the registry rather than a hand-written 
 
   for (const [name, document] of [['skill.md', skill], ['agent.md', agent]]) {
     assert.ok(document.includes(registry.observedAt), `${name} must cite the registry observation time`);
-    assert.ok(document.includes('packages/catalog/live-registry.json'), `${name} must name its source`);
+    assert.ok(document.includes('Clervo production probe'), `${name} must name its public observation source`);
     for (const product of registry.products) {
       const row = document.split('\n').find((line) => line.startsWith(`| ${product.label} |`));
       assert.ok(row !== undefined, `${name} must list ${product.label}`);

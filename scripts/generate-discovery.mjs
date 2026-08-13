@@ -276,6 +276,12 @@ const PUBLIC_PROOF_LEVELS = Object.freeze({
   externally_repeated: 'multiple settled paid outcomes independently verified',
 });
 
+function publicReason(reason) {
+  return reason === null || reason === undefined
+    ? null
+    : 'temporarily_unavailable';
+}
+
 function registryProduct(productId) {
   const product = liveRegistry.products.find(({ id }) => id === productId);
   if (product === undefined) throw new Error(`live_registry_product_missing:${productId}`);
@@ -318,7 +324,7 @@ const observedTruth = Object.values(observed)
     operations: product.operations,
     lifecycleState: product.state,
     proofLevel: product.proof,
-    reason: product.reason,
+    reason: publicReason(product.reason),
     expectedReturnAt: product.expectedReturnAt,
     publiclyReachable: product.publiclyReachable,
     observedPrice: product.observedQuote === null ? null : {
@@ -335,8 +341,8 @@ const observedTruth = Object.values(observed)
   .sort((left, right) => left.id.localeCompare(right.id));
 
 const observedProvenance = {
-  source: 'packages/catalog/live-registry.json',
-  generatedBy: liveRegistry.generatedBy,
+  source: 'Clervo production probe',
+  generatedBy: 'Clervo discovery generator',
   observedAt: liveRegistry.observedAt,
   releaseId: liveRegistry.deployment.releaseId,
   proofLevels: PUBLIC_PROOF_LEVELS,
@@ -346,6 +352,16 @@ const observedProvenance = {
 // Public payment proof contains only objective verification facts useful to an
 // external caller. Wallet ownership, revenue classification, demand
 // classification, and internal evidence-file provenance remain internal.
+const publicApiStatus = Object.freeze({
+  state: launchState.distribution.publicApi.publicCallable
+    ? 'available'
+    : 'unavailable',
+  endpoint: launchState.distribution.publicApi.endpoint,
+  publicCallable: launchState.distribution.publicApi.publicCallable,
+  publicTraffic: launchState.distribution.publicApi.publicTraffic,
+  customerEndpointAvailable: launchState.distribution.publicApi.customerEndpointAvailable,
+});
+
 const publicPaymentProof = Object.freeze({
   state: launchState.paymentProof.settlementConfirmed && launchState.paymentProof.usefulResult
     ? 'verified'
@@ -962,7 +978,7 @@ await writeFile(path.join(outputDirectory, 'pricing.json'), stableJson(publicSea
 await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
   schemaVersion: 'clervo.public-status.v1',
   observedAt: liveRegistry.observedAt,
-  publicApi: launchState.distribution.publicApi,
+  publicApi: publicApiStatus,
   packages: launchState.distribution.packages,
   paymentProof: publicPaymentProof,
   observedTruth: { provenance: observedProvenance, products: observedTruth },
@@ -973,7 +989,12 @@ await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
     // supplier identifiers never enter a public projection.
     paused: b7PublicModels.data
       .filter(({ clervo }) => clervo.publicSellable !== true)
-      .map(({ id, clervo }) => ({ modelId: id, reason: clervo.publicationBlockers.join(','), availability: clervo.availability, health: clervo.health })),
+      .map(({ id, clervo }) => ({
+        modelId: id,
+        reason: 'temporarily_unavailable',
+        availability: clervo.availability,
+        health: clervo.health,
+      })),
   },
   products: observedTruth.map(({ id, lifecycleState, proofLevel, reason, publiclyReachable }) => ({ id, lifecycleState, proofLevel, reason, publiclyReachable })),
 }));
@@ -1165,8 +1186,8 @@ const legacyModelList = {
         lifecycleState: route.state,
         proofLevel: route.proof,
         sellable: route.sellable,
-        reason: route.reason,
-        expectedReturnAt: route.expectedReturnAt,
+        reason: publicReason(route.reason),
+        expectedReturnAt: null,
         observedPrice: route.observedQuote === null ? null : {
           amountAtomic: route.observedQuote.amountAtomic,
           asset: route.observedQuote.asset,
@@ -1181,7 +1202,7 @@ const legacyModelList = {
   clervo: {
     provenance: observedProvenance,
     states: liveRegistry.states,
-    proofLevels: liveRegistry.proofLevels,
+    proofLevels: PUBLIC_PROOF_LEVELS,
     counts: liveRegistry.summary.aiRoutes,
     note: 'Lifecycle state and proof level are separate facts. A live route at quote_observed_unpaid is offered and priced; it is not a demonstrated paid outcome. A supply_paused route stays listed with its reason and is not sellable.',
   },
@@ -1205,10 +1226,80 @@ async function dynamicModelList() {
 // B7's frozen commercial catalog is now the default public AI authority. An
 // explicit empty setting retains the legacy probe projection for historical
 // validation only; normal catalog revisions change data, never this generator.
-const modelList = await dynamicModelList() ?? legacyModelList;
+const dynamicModelSource = await dynamicModelList();
+const dynamicModelAuthority = dynamicModelSource !== null;
+
+function publicDynamicModel(entry) {
+  const clervo = entry.clervo;
+  return {
+    id: entry.id,
+    object: entry.object,
+    ...(entry.created === undefined ? {} : { created: entry.created }),
+    owned_by: entry.owned_by,
+    clervo: {
+      identityKind: clervo.identityKind,
+      ...(Array.isArray(clervo.aliases) ? { aliases: clervo.aliases } : {}),
+      ...(typeof clervo.aliasFor === 'string' ? { aliasFor: clervo.aliasFor } : {}),
+      ...(typeof clervo.reasoningEffort === 'string' ? { reasoningEffort: clervo.reasoningEffort } : {}),
+      name: clervo.name,
+      description: clervo.description,
+      productIds: clervo.productIds,
+      capabilities: clervo.capabilities,
+      inputTypes: clervo.inputTypes,
+      outputTypes: clervo.outputTypes,
+      ...(Number.isInteger(clervo.contextWindow) ? { contextWindow: clervo.contextWindow } : {}),
+      ...(Array.isArray(clervo.inputModalities) ? { inputModalities: clervo.inputModalities } : {}),
+      ...(Array.isArray(clervo.outputModalities) ? { outputModalities: clervo.outputModalities } : {}),
+      ...(clervo.limits !== undefined ? { limits: clervo.limits } : {}),
+      ...(typeof clervo.ownedBySemantics === 'string' ? { ownedBySemantics: clervo.ownedBySemantics } : {}),
+      lifecycle: clervo.lifecycle,
+      availability: clervo.availability,
+      health: clervo.health,
+      publicSellable: clervo.publicSellable,
+      ...(clervo.publicSellable === false ? { availabilityReason: 'temporarily_unavailable' } : {}),
+      customerPricing: clervo.customerPricing,
+      billingMode: clervo.billingMode,
+      commerce: {
+        executionPath: clervo.commerce.executionPath,
+        payment: clervo.commerce.payment,
+        resultAccounting: clervo.commerce.resultAccounting,
+        replaySafe: clervo.commerce.replaySafe,
+      },
+    },
+  };
+}
+
+const modelList = dynamicModelSource === null
+  ? legacyModelList
+  : {
+      ...dynamicModelSource,
+      data: dynamicModelSource.data.map(publicDynamicModel),
+    };
+
+const prohibitedPublicModelFields = [
+  'publicationBlockers',
+  'pricingMethod',
+  'competitiveComparison',
+  'executionSupplier',
+  'upstreamExecutionSupplier',
+  'upstreamExecutionSupplierStatus',
+  'modelCreatorStatus',
+  'gatewaySupplyId',
+  'runtimeModelId',
+  'providerId',
+  'authorityRef',
+  'ownerDecisionRef',
+];
+
+const serializedPublicModelList = JSON.stringify(modelList);
+for (const field of prohibitedPublicModelFields) {
+  if (serializedPublicModelList.includes(`"${field}"`)) {
+    throw new Error(`public_ai_model_catalog_internal_field:${field}`);
+  }
+}
+
 const sellableModelCount = modelList.data.filter(({ clervo }) => clervo.publicSellable === true || clervo.sellable === true).length;
 const modelInventory = modelList.clervo.inventory ?? { canonicalModels: modelList.data.length, aliases: 0, callableIds: modelList.data.length };
-const dynamicModelAuthority = modelList.clervo.inventory !== undefined;
 
 // The x402 v2 discovery listing shape: `items[]`, each with the resource URL and
 // the `accepts` array the resource actually answers with. Every entry is the
@@ -1290,7 +1381,7 @@ const x402Manifest = {
   clervo: {
     provenance: observedProvenance,
     states: liveRegistry.states,
-    proofLevels: liveRegistry.proofLevels,
+    proofLevels: PUBLIC_PROOF_LEVELS,
     bazaar: liveRegistry.bazaar === undefined ? null : {
       facilitator: liveRegistry.bazaar.facilitator,
       validator: liveRegistry.bazaar.validator,

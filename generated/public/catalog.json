@@ -520,8 +520,8 @@
   ],
   "observedTruth": {
     "provenance": {
-      "source": "packages/catalog/live-registry.json",
-      "generatedBy": "scripts/probe-live-registry.mjs",
+      "source": "Clervo production probe",
+      "generatedBy": "Clervo discovery generator",
       "observedAt": "2026-08-11T23:08:33.338Z",
       "releaseId": "763601c4688fd9b2e3eedb4c7829b4586b329368",
       "proofLevels": {
@@ -621,7 +621,7 @@
         ],
         "lifecycleState": "unavailable",
         "proofLevel": "none",
-        "reason": "commercial_rights_blocked",
+        "reason": "temporarily_unavailable",
         "expectedReturnAt": null,
         "publiclyReachable": false,
         "observedPrice": null,

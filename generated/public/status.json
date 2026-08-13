@@ -2,18 +2,11 @@
   "schemaVersion": "clervo.public-status.v1",
   "observedAt": "2026-08-11T23:08:33.338Z",
   "publicApi": {
-    "state": "public_search_ai_sandbox_prediction_and_crypto_verified",
+    "state": "available",
     "endpoint": "https://api.clervo.dev",
     "publicCallable": true,
     "publicTraffic": true,
-    "customerEndpointAvailable": true,
-    "evidence": [
-      "infra/production/cloudflare/public-search-release.v1.json",
-      "infra/production/gcp/ai-x402-proof.v1.json",
-      "infra/production/gcp/sandbox-public-release.v1.json",
-      "infra/production/gcp/prediction-x402-proof.v1.json",
-      "infra/production/gcp/crypto-x402-proof.v1.json"
-    ]
+    "customerEndpointAvailable": true
   },
   "packages": {
     "state": "published_verified",
@@ -57,8 +50,8 @@
   },
   "observedTruth": {
     "provenance": {
-      "source": "packages/catalog/live-registry.json",
-      "generatedBy": "scripts/probe-live-registry.mjs",
+      "source": "Clervo production probe",
+      "generatedBy": "Clervo discovery generator",
       "observedAt": "2026-08-11T23:08:33.338Z",
       "releaseId": "763601c4688fd9b2e3eedb4c7829b4586b329368",
       "proofLevels": {
@@ -158,7 +151,7 @@
         ],
         "lifecycleState": "unavailable",
         "proofLevel": "none",
-        "reason": "commercial_rights_blocked",
+        "reason": "temporarily_unavailable",
         "expectedReturnAt": null,
         "publiclyReachable": false,
         "observedPrice": null,
@@ -216,7 +209,7 @@
     "paused": [
       {
         "modelId": "clervo/gpt-oss-20b",
-        "reason": "availability_degraded",
+        "reason": "temporarily_unavailable",
         "availability": "degraded",
         "health": "degraded"
       }
@@ -248,7 +241,7 @@
       "id": "rpc",
       "lifecycleState": "unavailable",
       "proofLevel": "none",
-      "reason": "commercial_rights_blocked",
+      "reason": "temporarily_unavailable",
       "publiclyReachable": false
     },
     {
