@@ -139,11 +139,104 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
   assert.equal(compatible.usage.completion_tokens, 1);
   assert.equal(compatible.usage.total_tokens, 3);
 
+  const anthropicBody = JSON.stringify({
+    model: 'gpt-5.6-luna',
+    max_tokens: 100,
+    system: 'Be concise.',
+    messages: [
+      {
+        role: 'user',
+        content: 'Hello from an Anthropic client',
+      },
+    ],
+    stream: false,
+  });
+  const anthropicHeaders = {
+    'content-type': 'application/json',
+    'idempotency-key': 'idem_anthropic_messages_001',
+    'x-clervo-edge-authorization': 'Bearer edge-authorization-at-least-32-characters',
+    'anthropic-version': '2023-06-01',
+  };
+
+  const anthropicChallenge = await fetch(`${origin}/v1/messages`, {
+    method: 'POST',
+    headers: anthropicHeaders,
+    body: anthropicBody,
+  });
+  assert.equal(anthropicChallenge.status, 402);
+  const anthropicQuote = await anthropicChallenge.json();
+  assert.equal(
+    anthropicQuote.resource.url,
+    'https://api.clervo.dev/v1/messages',
+  );
+  assert.equal(
+    discoveries.at(-1).input.model,
+    'gpt-5.6-luna',
+  );
+  assert.equal(
+    discoveries.at(-1).input.max_tokens,
+    100,
+  );
+  assert.equal(
+    discoveries.at(-1).input.system,
+    'Be concise.',
+  );
+  assert.equal(
+    discoveries.at(-1).input.messages[0].role,
+    'user',
+  );
+  assert.equal(
+    discoveries.at(-1).output.example.type,
+    'message',
+  );
+
+  const anthropicPaid = await fetch(`${origin}/v1/messages`, {
+    method: 'POST',
+    headers: {
+      ...anthropicHeaders,
+      'payment-signature': 'opaque-payment',
+    },
+    body: anthropicBody,
+  });
+  assert.equal(anthropicPaid.status, 200);
+
+  const anthropic = await anthropicPaid.json();
+  assert.equal(anthropic.type, 'message');
+  assert.equal(anthropic.role, 'assistant');
+  assert.equal(anthropic.model, 'gpt-5.6-luna');
+  assert.equal(anthropic.content[0].type, 'text');
+  assert.equal(
+    anthropic.content[0].text,
+    'Useful output.',
+  );
+  assert.equal(
+    anthropic.stop_reason,
+    'end_turn',
+  );
+  assert.equal(
+    anthropic.stop_sequence,
+    null,
+  );
+  assert.equal(
+    anthropic.usage.input_tokens,
+    2,
+  );
+  assert.equal(
+    anthropic.usage.output_tokens,
+    1,
+  );
+
   assert.deepEqual(resourcePaths, [
     '/v1/ai/execute',
     '/v1/search/paid',
     '/v1/ai/execute',
     '/v1/chat/completions',
+    '/v1/messages',
   ]);
-  assert.deepEqual(calls, { challenge: 4, authorize: 2, settle: 2, execute: 2 });
+  assert.deepEqual(calls, {
+    challenge: 5,
+    authorize: 3,
+    settle: 3,
+    execute: 3,
+  });
 });

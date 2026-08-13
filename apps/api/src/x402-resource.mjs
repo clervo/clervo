@@ -17,6 +17,7 @@ export const PAYABLE_RESOURCE_PATHS = Object.freeze([
   '/v1/search/paid',
   '/v1/ai/execute',
   '/v1/chat/completions',
+  '/v1/messages',
   '/v1/sandbox/execute',
   '/v1/rpc/execute',
   '/v1/prediction/execute',
@@ -34,6 +35,7 @@ const RESOURCE_TAGS = Object.freeze({
   '/v1/search/paid': Object.freeze(['search', 'web', 'citations', 'x402']),
   '/v1/ai/execute': Object.freeze(['ai', 'llm', 'chat', 'inference', 'x402']),
   '/v1/chat/completions': Object.freeze(['ai', 'llm', 'chat', 'openai', 'x402']),
+  '/v1/messages': Object.freeze(['ai', 'llm', 'chat', 'anthropic', 'x402']),
   '/v1/sandbox/execute': Object.freeze(['sandbox', 'code-execution', 'isolated', 'x402']),
   '/v1/rpc/execute': Object.freeze(['rpc', 'blockchain', 'evm', 'json-rpc', 'x402']),
   '/v1/prediction/execute': Object.freeze(['prediction-markets', 'odds', 'forecasting', 'x402']),
@@ -42,7 +44,7 @@ const RESOURCE_TAGS = Object.freeze({
 const SEARCH_DISCOVERY_INPUT = Object.freeze({ query: 'current x402 protocol documentation', maxResults: 3, synthesize: false, language: 'en', region: 'US' });
 
 function defaultDiscovery(resourcePath) {
-  const ai = ['/v1/ai/execute', '/v1/chat/completions'].includes(resourcePath);
+  const ai = ['/v1/ai/execute', '/v1/chat/completions', '/v1/messages'].includes(resourcePath);
   if (ai) throw new TypeError('ai_resource_discovery_required');
   const input = SEARCH_DISCOVERY_INPUT;
   const inputSchema = {
