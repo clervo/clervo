@@ -30,6 +30,13 @@ import { createX402PaidAiProcessor } from './x402-paid-ai.mjs';
 import { createFreeAiOperationProcessor } from './ai-free-operation.mjs';
 import { createAiDiscoveryContract } from './ai-discovery.mjs';
 import {
+  OPENAI_CHAT_COMPLETIONS_PATH,
+  createOpenAiChatCompletion,
+  createOpenAiChatDiscoveryContract,
+  normalizeOpenAiChatCompletionRequest,
+  openAiChatRequestHash,
+} from './openai-chat-compat.mjs';
+import {
   SANDBOX_DISCOVERY,
   SANDBOX_MAX_BODY_BYTES as SANDBOX_PUBLIC_MAX_BODY_BYTES,
   SANDBOX_PAID_PATH,
@@ -455,7 +462,7 @@ export function createSearchServer({
       }
       return;
     }
-    if (request.method === 'POST' && url.pathname === AI_PAID_PATH && x402AiProcessor !== undefined) {
+    if (request.method === 'POST' && [AI_PAID_PATH, OPENAI_CHAT_COMPLETIONS_PATH].includes(url.pathname) && x402AiProcessor !== undefined) {
       if (edgeAuthorization !== undefined && !internalAuthorized(request.headers['x-clervo-edge-authorization'], edgeAuthorization)) {
         send(response, 401, problem(401, 'edge_unauthorized', 'Unauthorized', 'The public API edge is required.', url.pathname), {}, PROBLEM_TYPE);
         return;
@@ -473,15 +480,20 @@ export function createSearchServer({
         const observedAt = now();
         const suppliedKey = request.headers['idempotency-key'];
         const authorizationHeader = mppAuthorization(request.headers.authorization);
-        const discoveryEligible = typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined;
+        const openAiCompatibility = url.pathname === OPENAI_CHAT_COMPLETIONS_PATH;
+        const discoveryEligible = !openAiCompatibility && typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined;
         const aiBody = await readJson(request, AI_MAX_BODY_BYTES, { allowEmpty: discoveryEligible });
         if (aiBody === undefined) {
           const challenge = await discoveryPaymentChallenge(AI_PAID_PATH, observedAt);
           send(response, challenge.status, challenge.body, challenge.headers);
           return;
         }
-        const normalized = normalizeAiHttpRequest(aiBody);
-        const requestHash = aiHttpRequestHash(normalized);
+        const normalized = openAiCompatibility
+          ? normalizeOpenAiChatCompletionRequest(aiBody)
+          : normalizeAiHttpRequest(aiBody);
+        const requestHash = openAiCompatibility
+          ? openAiChatRequestHash(normalized)
+          : aiHttpRequestHash(normalized);
         const classificationId = identifier('op', `classify:${requestHash}`);
         const billingMode = aiPublicPricing.quote({ normalized, operationId: classificationId, now: observedAt }).pricing.billingMode;
         if (billingMode === 'free') {
@@ -496,7 +508,10 @@ export function createSearchServer({
             ? edgeSubject
             : request.socket.remoteAddress ?? 'loopback-unknown';
           const free = await freeAiProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId: aiOperationId, normalized, subject, now: observedAt });
-          send(response, free.status, free.body, { ...free.headers, ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}) });
+          const responseBody = openAiCompatibility && free.status === 200
+            ? createOpenAiChatCompletion(free.body)
+            : free.body;
+          send(response, free.status, responseBody, { ...free.headers, ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}) });
           return;
         }
         const keyGenerated = typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined;
@@ -512,8 +527,15 @@ export function createSearchServer({
           paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
           authorizationHeader,
           now: observedAt,
+          resourcePath: url.pathname,
+          discovery: openAiCompatibility
+            ? createOpenAiChatDiscoveryContract(aiBody)
+            : undefined,
         });
-        send(response, paid.status, paid.body, { ...paid.headers, ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}) });
+        const responseBody = openAiCompatibility && paid.status === 200
+          ? createOpenAiChatCompletion(paid.body)
+          : paid.body;
+        send(response, paid.status, responseBody, { ...paid.headers, ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}) });
       } catch (error) {
         const code = errorCode(error);
         const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;

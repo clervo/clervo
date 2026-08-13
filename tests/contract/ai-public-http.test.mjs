@@ -26,14 +26,21 @@ async function pricing() {
 test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-safe', async (context) => {
   const calls = { challenge: 0, authorize: 0, settle: 0, execute: 0 };
   const resourcePaths = [];
+  const discoveries = [];
   const service = {
     mode: 'settlement_enabled',
-    async challenge({ quote, resourcePath }) {
+    async challenge({ quote, resourcePath, discovery }) {
       calls.challenge += 1;
       resourcePaths.push(resourcePath);
+      discoveries.push(discovery);
       return { status: 402, headers: { 'PAYMENT-REQUIRED': 'ai-http' }, body: { x402Version: 2, accepts: [{ amount: quote.maximumCharge.amountAtomic }], resource: { url: `https://api.clervo.dev${resourcePath}` } } };
     },
-    async authorize() { calls.authorize += 1; return { fingerprint: `sha256:${'7'.repeat(64)}` }; },
+    async authorize() {
+      calls.authorize += 1;
+      return {
+        fingerprint: `sha256:${calls.authorize.toString(16).padStart(64, '0')}`,
+      };
+    },
     async settle() { calls.settle += 1; return { kind: 'settled', headers: { 'PAYMENT-RESPONSE': 'ai-http-settled' }, settlement: { network: 'eip155:8453', transaction: `0x${'8'.repeat(64)}` } }; },
   };
   const server = createSearchServer({
@@ -89,6 +96,54 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
   const replayed = await replay.json();
   assert.equal(replayed.replayed, true);
   assert.equal(replayed.receipt.receiptId, result.receipt.receiptId);
-  assert.deepEqual(resourcePaths, ['/v1/ai/execute', '/v1/search/paid', '/v1/ai/execute']);
-  assert.deepEqual(calls, { challenge: 3, authorize: 1, settle: 1, execute: 1 });
+
+  const compatibleBody = JSON.stringify({
+    model: 'gpt-5.6-luna',
+    messages: [{ role: 'user', content: 'Hello from an OpenAI client' }],
+    stream: false,
+    max_completion_tokens: 100,
+  });
+  const compatibleHeaders = {
+    'content-type': 'application/json',
+    'idempotency-key': 'idem_openai_chat_001',
+    'x-clervo-edge-authorization': 'Bearer edge-authorization-at-least-32-characters',
+  };
+
+  const compatibleChallenge = await fetch(`${origin}/v1/chat/completions`, {
+    method: 'POST',
+    headers: compatibleHeaders,
+    body: compatibleBody,
+  });
+  assert.equal(compatibleChallenge.status, 402);
+  const compatibleQuote = await compatibleChallenge.json();
+  assert.equal(compatibleQuote.resource.url, 'https://api.clervo.dev/v1/chat/completions');
+  assert.equal(discoveries.at(-1).input.model, 'gpt-5.6-luna');
+  assert.equal(discoveries.at(-1).input.messages[0].role, 'user');
+  assert.equal(discoveries.at(-1).input.input, undefined);
+  assert.equal(discoveries.at(-1).input.stream, false);
+  assert.equal(discoveries.at(-1).output.example.object, 'chat.completion');
+
+  const compatiblePaid = await fetch(`${origin}/v1/chat/completions`, {
+    method: 'POST',
+    headers: { ...compatibleHeaders, 'payment-signature': 'opaque-payment' },
+    body: compatibleBody,
+  });
+  assert.equal(compatiblePaid.status, 200);
+  const compatible = await compatiblePaid.json();
+  assert.equal(compatible.object, 'chat.completion');
+  assert.equal(compatible.model, 'gpt-5.6-luna');
+  assert.equal(compatible.choices[0].message.role, 'assistant');
+  assert.equal(compatible.choices[0].message.content, 'Useful output.');
+  assert.equal(compatible.choices[0].finish_reason, 'stop');
+  assert.equal(compatible.usage.prompt_tokens, 2);
+  assert.equal(compatible.usage.completion_tokens, 1);
+  assert.equal(compatible.usage.total_tokens, 3);
+
+  assert.deepEqual(resourcePaths, [
+    '/v1/ai/execute',
+    '/v1/search/paid',
+    '/v1/ai/execute',
+    '/v1/chat/completions',
+  ]);
+  assert.deepEqual(calls, { challenge: 4, authorize: 2, settle: 2, execute: 2 });
 });
