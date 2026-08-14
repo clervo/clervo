@@ -14,10 +14,26 @@ import { AGENT_DOCUMENT, LLMS_DOCUMENT, SKILL_DOCUMENT } from '../../../generate
 const UPSTREAM_ORIGIN = 'https://clervo-api-production-jbtbib4yqa-uc.a.run.app';
 const FAVICON = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" data-clervo-logo=\"x402\">\n<title>Clervo</title>\n<defs>\n  <filter id=\"glow\" x=\"-20%\" y=\"-300%\" width=\"140%\" height=\"700%\">\n    <feGaussianBlur stdDeviation=\"2\"/>\n  </filter>\n</defs>\n<rect width=\"64\" height=\"64\" fill=\"#020202\"/>\n<g fill=\"none\" stroke-linecap=\"square\">\n  <path d=\"M0 32H23.5\" stroke=\"#fd1b21\" stroke-width=\"4\" opacity=\".36\" filter=\"url(#glow)\"/>\n  <path d=\"M23.5 32H40.5\" stroke=\"#46fdfd\" stroke-width=\"4\" opacity=\".34\" filter=\"url(#glow)\"/>\n  <path d=\"M40.5 32H64\" stroke=\"#fcd64f\" stroke-width=\"4\" opacity=\".34\" filter=\"url(#glow)\"/>\n  <path d=\"M0 32H23.5\" stroke=\"#ff1b22\" stroke-width=\"1.15\"/>\n  <path d=\"M23.5 32H40.5\" stroke=\"#46fbfd\" stroke-width=\"1.15\"/>\n  <path d=\"M40.5 32H64\" stroke=\"#ffd54a\" stroke-width=\"1.15\"/>\n</g>\n<path fill=\"#fff\" fill-rule=\"evenodd\"\n d=\"M32 17.75 45.9 44H18.1L32 17.75Zm0 6.55L24.25 39.7h15.5L32 24.3Z\"/>\n</svg>";
 const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid', '/v1/ai/execute', '/v1/chat/completions', '/v1/messages', '/v1/responses', '/v1/sandbox/execute', '/v1/rpc/execute', '/v1/prediction/execute', '/v1/crypto/execute']);
+const COMPATIBILITY_PATHS = new Set(['/v1/chat/completions', '/v1/messages', '/v1/responses']);
+const COMPATIBILITY_MODEL_MAP = Object.freeze({
+  'gpt-4o': 'clervo/gpt-5.6-luna',
+  'gpt-4o-mini': 'clervo/fast',
+  'gpt-4-turbo': 'clervo/smart',
+  'gpt-3.5-turbo': 'clervo/fast',
+  o1: 'clervo/deep',
+  o3: 'clervo/deep',
+  'claude-3-5-sonnet-20241022': 'clervo/claude-sonnet-4-6',
+  'claude-sonnet-4-6': 'clervo/claude-sonnet-4-6',
+  'claude-3-opus-20240229': 'clervo/claude-opus-4-6',
+  'claude-opus-4-6': 'clervo/claude-opus-4-6',
+  'claude-3-haiku-20240307': 'clervo/claude-haiku-4-5-20251001',
+});
 const DISCOVERY_DOCUMENTS = new Map([
   ['/.well-known/clervo.json', discovery],
+  ['/.well-known/agent.json', discovery],
   ['/.well-known/ai-plugin.json', aiPlugin],
   ['/.well-known/mcp.json', mcpDiscovery],
+  ['/.well-known/mcp/server.json', mcpDiscovery],
   // The three agent discovery paths. An agent reads a model list, a payment
   // manifest, and a reference; without them the service is invisible to its
   // actual customer. All three are generated from the probed live registry, so
@@ -35,7 +51,7 @@ const DISCOVERY_DOCUMENTS = new Map([
   ['/status.json', status],
   ['/onboarding.json', onboarding],
 ]);
-const READ_PATHS = new Set(['/', '/favicon.ico', '/favicon.svg', '/v1/health', '/readyz', '/skill.md', '/agent.md', '/llms.txt', ...DISCOVERY_DOCUMENTS.keys()]);
+const READ_PATHS = new Set(['/', '/favicon.ico', '/favicon.svg', '/v1/health', '/readyz', '/skill.md', '/agent.md', '/agents.txt', '/llms.txt', ...DISCOVERY_DOCUMENTS.keys()]);
 // The agent-facing documents. An agent that discovers the API host first must
 // not have to know that these live only on the site host.
 const TEXT_DOCUMENTS = new Map([
@@ -43,6 +59,7 @@ const TEXT_DOCUMENTS = new Map([
   ['/agent.md', AGENT_DOCUMENT],
 ]);
 const PLAIN_TEXT_DOCUMENTS = new Map([
+  ['/agents.txt', AGENT_DOCUMENT],
   ['/llms.txt', LLMS_DOCUMENT],
 ]);
 const MAXIMUM_REQUEST_BYTES = Object.freeze({
@@ -74,6 +91,43 @@ function cors(headers = new Headers()) {
 function json(status, body) {
   const headers = cors(new Headers({ 'content-type': 'application/json; charset=utf-8' }));
   return new Response(JSON.stringify(body), { status, headers });
+}
+
+function resolveCompatibilityModel(model) {
+  if (typeof model !== 'string' || model.length === 0) return model;
+  return COMPATIBILITY_MODEL_MAP[model]
+    ?? (model.startsWith('clervo/') ? model : `clervo/${model}`);
+}
+
+async function normalizeCompatibilityRequest(request, pathname) {
+  if (!COMPATIBILITY_PATHS.has(pathname)) return request;
+
+  let body;
+  try {
+    body = await request.clone().json();
+  } catch {
+    // Preserve the origin's existing error contract for malformed JSON.
+    return request;
+  }
+  if (body === null || typeof body !== 'object' || Array.isArray(body)) return request;
+
+  const model = resolveCompatibilityModel(body.model);
+  const normalized = {
+    ...body,
+    ...(model === body.model ? {} : { model }),
+    ...(pathname === '/v1/responses' && body.store === undefined
+      ? { store: false }
+      : {}),
+  };
+  const headers = new Headers(request.headers);
+  headers.set('content-type', 'application/json');
+  headers.delete('content-length');
+  return new Request(request.url, {
+    method: request.method,
+    headers,
+    body: JSON.stringify(normalized),
+    redirect: 'manual',
+  });
 }
 
 async function quotaSubject(request) {
@@ -121,16 +175,17 @@ export default {
     const declared = Number(request.headers.get('content-length'));
     const maximumRequestBytes = MAXIMUM_REQUEST_BYTES[incoming.pathname];
     if (Number.isFinite(declared) && maximumRequestBytes !== undefined && declared > maximumRequestBytes) return json(413, { code: 'request_body_too_large', status: 413 });
+    const forwardedRequest = await normalizeCompatibilityRequest(request, incoming.pathname);
     const upstream = new URL(incoming.pathname, UPSTREAM_ORIGIN);
-    const headers = new Headers(request.headers);
+    const headers = new Headers(forwardedRequest.headers);
     for (const name of ['cf-connecting-ip', 'cf-ipcountry', 'cf-ray', 'cf-visitor', 'x-forwarded-host', 'x-forwarded-proto']) headers.delete(name);
     if (typeof env.CLERVO_EDGE_AUTHORIZATION !== 'string' || env.CLERVO_EDGE_AUTHORIZATION.length < 32) return json(503, { code: 'edge_configuration_unavailable', status: 503 });
     headers.set('x-clervo-edge-authorization', `Bearer ${env.CLERVO_EDGE_AUTHORIZATION}`);
     headers.set('x-clervo-quota-subject', await quotaSubject(request));
     const response = await fetch(new Request(upstream, {
-      method: request.method,
+      method: forwardedRequest.method,
       headers,
-      body: request.body,
+      body: forwardedRequest.body,
       redirect: 'manual',
     }));
     const responseHeaders = cors(new Headers(response.headers));
