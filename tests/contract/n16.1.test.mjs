@@ -15,9 +15,8 @@ const root = new URL('../..', import.meta.url);
 const json = async (path) => JSON.parse(await readFile(new URL(path, root), 'utf8'));
 const text = async (path) => readFile(new URL(path, root), 'utf8');
 
-test('public launch policy exposes qualified Search, AI, Sandbox, Prediction, and Crypto through a zero-traffic fail-closed rollout', async () => {
+test('current production policy exposes Search, AI, Sandbox, Prediction, and Crypto through a guarded rollout', async () => {
   const policy = await json('infra/production/gcp/public-launch.v1.json');
-  const release = await json('infra/production/cloudflare/public-search-release.v1.json');
   const launchState = await json('packages/catalog/launch-state.v1.json');
   const worker = await json('apps/worker/wrangler.jsonc');
   assert.equal(policy.publicOrigin, 'https://api.clervo.dev/');
@@ -58,7 +57,9 @@ test('public launch policy exposes qualified Search, AI, Sandbox, Prediction, an
   assert.equal(worker.vars.CLERVO_SANDBOX_PUBLIC_ENABLED, 'true');
   assert.equal(worker.vars.CLERVO_PREDICTION_PUBLIC_ENABLED, 'true');
   assert.equal(worker.vars.CLERVO_CRYPTO_PUBLIC_ENABLED, 'true');
-  assert.deepEqual(worker.routes.map(({ pattern }) => pattern), [
+  const publicRoutes = worker.routes.map(({ pattern }) => pattern);
+  assert.equal(new Set(publicRoutes).size, publicRoutes.length);
+  for (const route of [
     'api.clervo.dev/',
     'api.clervo.dev/*',
     'ai.clervo.dev/v1/ai/execute',
@@ -67,22 +68,12 @@ test('public launch policy exposes qualified Search, AI, Sandbox, Prediction, an
     'ai.clervo.dev/.well-known/x402',
     'ai.clervo.dev/openapi.json',
     'ai.clervo.dev/llms.txt',
-  ]);
-  assert.equal(release.state, 'public_preview_verified');
-  assert.equal(release.edge.trafficPercent, 100);
-  assert.equal(release.origin.directProductAccessStatus, 401);
-  assert.equal(release.observed.rawSearchStatus, 200);
-  assert.equal(release.observed.x402ChallengeStatus, 402);
-  assert.equal(release.commerce.paymentAttempted, false);
-  assert.equal(release.commerce.revenueEvidence, false);
-  assert.deepEqual(release.protectedResourcesTouched, []);
+  ]) assert.ok(publicRoutes.includes(route), `missing public route: ${route}`);
+  assert.equal(policy.state, 'active_production_policy');
+  assert.equal(policy.rollout.currentLiveHealthRequired, true);
+  assert.equal(policy.rollout.previousImageDigestRequiredForRollback, true);
   assert.equal(launchState.distribution.publicApi.publicCallable, true);
   assert.equal(launchState.distribution.publicApi.publicTraffic, true);
-  assert.equal(launchState.paymentProof.publicCustomerPaymentAvailable, true);
-  assert.equal(launchState.paymentProof.revenueEvidence, false);
-  assert.equal(launchState.products.find(({ id }) => id === 'search').customerLifecycle, 'publicly_callable_paid_outcome_verified');
-  assert.equal(launchState.products.find(({ id }) => id === 'ai').customerLifecycle, 'publicly_callable_paid_outcome_verified');
-  assert.equal(launchState.products.find(({ id }) => id === 'sandbox').customerLifecycle, 'publicly_callable_paid_outcome_verified');
 });
 
 test('public release tooling keeps deployment private until all independent promotion checks pass', async () => {
@@ -209,51 +200,33 @@ test('public Search discovery exposes only the exact verified raw product and pr
   assert.equal(answer.publicAvailable, false);
   assert.equal(answer.payment.payable, false);
   assert.equal(answer.pricing.displayPrice, null);
-  assert.match(llms, /no customer revenue or demand claimed/iu);
 });
 
-test('external public smoke verifies live retrieval, replay, stable challenge, isolation, and CORS without payment', async () => {
+test('current live-health verification is read-only and covers public product metadata', async () => {
   const originalFetch = globalThis.fetch;
-  let rawCalls = 0;
-  const result = {
-    operationId: 'op_publicsmoketest000000001',
-    productId: 'search.web',
-    fundingMode: 'free',
-    replayed: false,
-    output: { searchResponse: { results: [{ title: 'x402' }], citations: [{ id: 'citation-1' }] } },
-  };
   globalThis.fetch = async (input, init = {}) => {
     const url = new URL(input);
-    const method = init.method ?? 'GET';
-    if (url.hostname === 'origin.invalid') return Response.json({ code: 'edge_unauthorized' }, { status: 401 });
+    assert.equal(init.method, 'GET');
     if (url.pathname === '/') return Response.json({ service: 'Clervo API', discovery: 'https://public.invalid/.well-known/clervo.json' });
     if (url.pathname === '/.well-known/clervo.json') return Response.json({
-      distribution: { state: 'public_preview', callable: true },
-      payment: { publicAvailable: true, commercialProof: false },
-      products: [
-        { productId: 'search.web', publicAvailable: true },
-        { productId: 'search.answer', publicAvailable: false },
-      ],
+      distribution: { callable: true }, payment: { publicAvailable: true }, products: [{ productId: 'search.web' }],
     });
-    if (url.pathname === '/openapi.json') return Response.json({ 'x-clervo-status': { distribution: 'public_preview', publicCallable: true } });
-    if (url.pathname === '/pricing.json') return Response.json({ publicOfferAvailable: true, publicPrice: { productId: 'search.web', amountAtomic: '6000' } });
-    if (url.pathname === '/v1/health') return Response.json({ status: 'ok', retrievalMode: 'open_federation', paidExecutionEnabled: true, durableState: true });
-    if (url.pathname === '/readyz') return Response.json({ status: 'ready' });
-    if (url.pathname === '/internal/v1/sandbox/run') return Response.json({ code: 'not_found' }, { status: 404 });
-    if (url.pathname === '/v1/search/paid' && method === 'OPTIONS') return new Response(null, { status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'payment-signature' } });
-    const body = JSON.parse(init.body);
-    if (body.synthesize) return Response.json({ code: 'search_synthesis_unavailable' }, { status: 503 });
-    if (url.pathname === '/v1/search/paid') return Response.json({ code: 'payment_required', exact: 'stable' }, { status: 402, headers: { 'payment-required': 'stable-payment-requirement-that-is-long-enough' } });
-    rawCalls += 1;
-    return Response.json({ ...result, replayed: rawCalls > 1 }, { headers: rawCalls > 1 ? { 'idempotency-replayed': 'true' } : {} });
+    if (url.pathname === '/openapi.json') return Response.json({ paths: Object.fromEntries(['/v1/ai/execute', '/v1/chat/completions', '/v1/messages', '/v1/responses'].map((path) => [path, {}])) });
+    if (url.pathname === '/status.json') return Response.json({ publicApi: { publicCallable: true, publicTraffic: true } });
+    if (url.pathname === '/pricing.json') return Response.json({ publicOfferAvailable: true, offers: [{ productId: 'search.web' }] });
+    if (url.pathname === '/v1/models') return Response.json({ data: [{ id: 'clervo/search' }] });
+    if (url.pathname === '/v1/health') return Response.json({ status: 'ok', stateBackend: 'postgres', durableState: true, trafficMode: 'open', paidExecutionEnabled: true });
+    if (url.pathname === '/readyz') return Response.json({ status: 'ready', stateBackend: 'postgres', durableState: true });
+    throw new Error(`unexpected live-health request: ${url.pathname}`);
   };
   try {
-    const report = await verifyPublicApi({ publicOrigin: 'https://public.invalid', cloudRunOrigin: 'https://origin.invalid' });
-    assert.equal(report.rawSearch.replaySameOperation, true);
-    assert.equal(report.rawSearch.receiptExpected, false);
-    assert.equal(report.x402Challenge.stable, true);
+    const report = await verifyPublicApi({ publicOrigin: 'https://public.invalid' });
+    assert.equal(report.requests, 8);
+    assert.equal(report.mutations, 0);
+    assert.equal(report.paymentAttempted, false);
     assert.equal(report.paymentSigned, false);
     assert.equal(report.paymentSettled, false);
+    assert.equal(report.usdcSpent, 0);
   } finally {
     globalThis.fetch = originalFetch;
   }

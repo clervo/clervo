@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.production-public-launch.v1",
-  "state": "prepared_zero_traffic",
+  "state": "active_production_policy",
   "project": "bloxsniper-prod",
   "region": "us-central1",
   "service": "clervo-api-production",
@@ -92,7 +92,9 @@
     "predictionLiveSmokeRequired": true,
     "cryptoLiveSmokeRequired": true,
     "monitoringDeliveryRequired": true,
+    "currentLiveHealthRequired": true,
     "previousRevisionRequired": true,
+    "previousImageDigestRequiredForRollback": true,
     "publicAccessEnabledOnlyAfterPromotion": true,
     "publicAccessMethod": "cloud_run_invoker_iam_check_disabled",
     "edgeDeployedOnlyAfterOriginVerification": true

@@ -17,6 +17,8 @@ function version(name) { const value = env(name); if (!/^[1-9][0-9]*$/u.test(val
 function release() { const value = env('CLERVO_RELEASE_ID'); if (!/^[a-f0-9]{40}$/u.test(value)) refuse('invalid_release_id'); return value; }
 function image() { const value = env('CLERVO_PRODUCTION_IMAGE'); if (!/^us-central1-docker\.pkg\.dev\/bloxsniper-prod\/clervo-production\/clervo-api@sha256:[a-f0-9]{64}$/u.test(value)) refuse('invalid_image'); return value; }
 function revision() { const value = env('CLERVO_CANDIDATE_REVISION'); if (!/^clervo-api-production-[0-9]{5}-[a-z0-9]{3}$/u.test(value)) refuse('invalid_revision'); return value; }
+function previousRevision() { const value = env('CLERVO_PREVIOUS_REVISION'); if (!/^clervo-api-production-[0-9]{5}-[a-z0-9]{3}$/u.test(value)) refuse('invalid_previous_revision'); return value; }
+function previousImage() { const value = env('CLERVO_PREVIOUS_IMAGE'); if (!/^us-central1-docker\.pkg\.dev\/bloxsniper-prod\/clervo-production\/clervo-api@sha256:[a-f0-9]{64}$/u.test(value)) refuse('invalid_previous_image'); return value; }
 function gcloud(args, capture = false) {
   const result = spawnSync('gcloud', args, { encoding: 'utf8', stdio: capture ? ['ignore', 'pipe', 'pipe'] : 'inherit', maxBuffer: 16 * 1024 * 1024 });
   if (result.error || result.status !== 0) { if (capture && result.stderr) process.stderr.write(result.stderr); refuse(`gcloud_${args.slice(0, 3).join('_').replaceAll(/[^a-z0-9]+/giu, '_').toLowerCase()}`); }
@@ -53,6 +55,7 @@ const plan = Object.freeze({
   predictionMode: policy.prediction.mode, predictionQualifiedAdapter: policy.prediction.qualifiedAdapter,
   cryptoMode: policy.crypto.mode, cryptoQualifiedAdapter: policy.crypto.qualifiedAdapter,
   publicAccessEnabledOnlyAfterPromotion: true, publicAccessMethod: policy.rollout.publicAccessMethod, protectedResources: policy.protectedResources,
+  mutationActions: ['deploy', 'promote', 'rollback', 'privatize'],
 });
 
 let result;
@@ -151,12 +154,26 @@ else if (action === 'observe') {
   gcloud(['run', 'services', 'update', policy.service, '--project', policy.project, '--region', policy.region, '--no-invoker-iam-check', '--quiet']);
   assert.equal(invokerIamDisabled(), true, 'invoker IAM check remained enabled after promotion');
   result = { action: 'public-origin-promoted', revision: candidateRevision, image: candidateImage, trafficPercent: 100, publicAccess: true, accessMethod: 'invoker_iam_check_disabled' };
+} else if (action === 'rollback') {
+  const releaseId = release();
+  const targetRevision = previousRevision();
+  const targetImage = previousImage();
+  assert.equal(env('CLERVO_PUBLIC_LAUNCH_CONFIRM'), `rollback:${releaseId}:${targetRevision}`, 'confirmation mismatch');
+  assert.equal(env('CLERVO_DATABASE_READINESS'), 'ready', 'database readiness missing');
+  assert.equal(env('CLERVO_MONITORING_DELIVERY'), 'acknowledged', 'monitoring delivery missing');
+  assert.equal(env('CLERVO_CURRENT_LIVE_HEALTH'), 'passed', 'current live health missing');
+  assert.equal(describedImage(targetRevision), targetImage, 'rollback image mismatch');
+  verifyArtifact(targetImage);
+  gcloud(['run', 'services', 'update-traffic', policy.service, '--project', policy.project, '--region', policy.region, '--to-revisions', `${targetRevision}=100`, '--quiet']);
+  const restored = traffic(service());
+  assert.deepEqual(restored, [{ revisionName: targetRevision, percent: 100 }], 'rollback traffic did not converge');
+  result = { action: 'public-origin-rolled-back', revision: targetRevision, image: targetImage, trafficPercent: 100, publicAccess: publicAccess() };
 } else if (action === 'privatize') {
   const releaseId = release();
   assert.equal(env('CLERVO_PUBLIC_LAUNCH_CONFIRM'), `privatize:${releaseId}`, 'confirmation mismatch');
   gcloud(['run', 'services', 'update', policy.service, '--project', policy.project, '--region', policy.region, '--invoker-iam-check', '--quiet']);
   assert.equal(publicAccess(), false, 'public access remained after privatize');
   result = { action: 'public-origin-privatized', publicAccess: false };
-} else refuse('usage_plan_observe_deploy_promote_privatize');
+} else refuse('usage_plan_observe_deploy_promote_rollback_privatize');
 
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
