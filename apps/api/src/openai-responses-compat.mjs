@@ -4,6 +4,7 @@ import {
   canonicalRequestHash,
   normalizeAiHttpRequest,
 } from '../../../dist/packages/contracts/src/index.js';
+import { resolveCompatibilityModel } from './compatibility-model-map.mjs';
 
 export const OPENAI_RESPONSES_PATH = '/v1/responses';
 
@@ -377,7 +378,7 @@ export function normalizeOpenAiResponsesRequest(value) {
   );
 
   return normalizeAiHttpRequest({
-    model: value.model,
+    model: resolveCompatibilityModel(value.model),
     input: {
       kind: 'chat',
       messages: [
