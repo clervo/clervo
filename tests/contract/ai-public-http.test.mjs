@@ -27,6 +27,7 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
   const calls = { challenge: 0, authorize: 0, settle: 0, execute: 0 };
   const resourcePaths = [];
   const discoveries = [];
+  const executionStreamFlags = [];
   const service = {
     mode: 'settlement_enabled',
     async challenge({ quote, resourcePath, discovery }) {
@@ -54,8 +55,13 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
     aiPublicPricing: await pricing(),
     aiAdapters: [{
       routeId: 'ai.route.gpt_5_6_luna',
-      async execute({ exactModelId }) {
+      async execute({ exactModelId, request }) {
         calls.execute += 1;
+        executionStreamFlags.push(
+          request.input.kind === 'chat'
+            ? request.input.stream
+            : null,
+        );
         return { modelIdentity: exactModelId, completedAt: '2026-08-04T06:00:01.000Z', usage: { inputTokens: 2, cachedInputTokens: 0, outputTokens: 1, reasoningTokens: 0, images: 0, audioCharacters: 0 }, output: { kind: 'chat', content: 'Useful output.', finishReason: 'stop' } };
       },
     }],
@@ -550,4 +556,17 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
     settle: 7,
     execute: 7,
   });
+
+  assert.deepEqual(
+    executionStreamFlags,
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ],
+  );
 });

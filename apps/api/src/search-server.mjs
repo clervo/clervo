@@ -530,8 +530,30 @@ export function createSearchServer({
             : responsesCompatibility
               ? openAiResponsesRequestHash(normalized)
               : aiHttpRequestHash(normalized);
+        const compatibilityStreamRequested =
+          (openAiCompatibility
+            || anthropicCompatibility
+            || responsesCompatibility)
+          && aiBody.stream === true;
+
+        const executionNormalized =
+          compatibilityStreamRequested
+            && normalized.input?.kind === 'chat'
+            ? Object.freeze({
+                ...normalized,
+                input: Object.freeze({
+                  ...normalized.input,
+                  stream: false,
+                }),
+              })
+            : normalized;
+
         const classificationId = identifier('op', `classify:${requestHash}`);
-        const billingMode = aiPublicPricing.quote({ normalized, operationId: classificationId, now: observedAt }).pricing.billingMode;
+        const billingMode = aiPublicPricing.quote({
+          normalized: executionNormalized,
+          operationId: classificationId,
+          now: observedAt,
+        }).pricing.billingMode;
         if (billingMode === 'free') {
           if (freeAiProcessor === undefined) throw Object.assign(new Error('ai_free_tier_unavailable'), { status: 503 });
           const keyGenerated = typeof suppliedKey !== 'string';
@@ -543,7 +565,14 @@ export function createSearchServer({
           const subject = typeof edgeSubject === 'string' && edgeSubject.length >= 1 && edgeSubject.length <= 200
             ? edgeSubject
             : request.socket.remoteAddress ?? 'loopback-unknown';
-          const free = await freeAiProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId: aiOperationId, normalized, subject, now: observedAt });
+          const free = await freeAiProcessor.process({
+            idempotencyKey: keyHeader,
+            requestHash,
+            operationId: aiOperationId,
+            normalized: executionNormalized,
+            subject,
+            now: observedAt,
+          });
           const responseHeaders = {
             ...free.headers,
             ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}),
@@ -582,7 +611,7 @@ export function createSearchServer({
           idempotencyKey: keyHeader,
           requestHash,
           operationId: aiOperationId,
-          normalized,
+          normalized: executionNormalized,
           paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
           authorizationHeader,
           now: observedAt,

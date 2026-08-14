@@ -70,13 +70,21 @@ export class ClervoAiGatewayAdapter implements AiExecutionAdapter {
     signal: AbortSignal;
   }>): Promise<Readonly<AiAdapterExecution>> {
     if (input.runtimeModelId === undefined || input.routeId === undefined || !this.supportsRoute(input.routeId)) throw new TypeError('clervo_ai_gateway_binding_invalid');
+    const upstreamModelId = input.runtimeModelId.startsWith('clervo/')
+      ? input.runtimeModelId.slice('clervo/'.length)
+      : input.runtimeModelId;
+
+    if (upstreamModelId.length === 0) {
+      throw new TypeError('clervo_ai_gateway_runtime_model_invalid');
+    }
+
     const adapter = new OpenAiCompatibleAdapter({
       config: {
         routeId: input.routeId,
         baseUrl: this.#config.baseUrl,
         allowedHosts: this.#config.allowedHosts,
         secretName: this.#config.secretName,
-        exactModelId: input.runtimeModelId,
+        exactModelId: upstreamModelId,
         productId: productForRequest(input.request),
         maximumResponseBytes: this.#config.maximumResponseBytes,
         ...(input.request.requestedModel in aliasReasoningEffort ? { reasoningEffort: aliasReasoningEffort[input.request.requestedModel as keyof typeof aliasReasoningEffort] } : {}),
@@ -86,6 +94,22 @@ export class ClervoAiGatewayAdapter implements AiExecutionAdapter {
       ...(this.#artifacts === undefined ? {} : { artifacts: this.#artifacts }),
       clock: this.#clock,
     });
-    return adapter.execute({ request: input.request, exactModelId: input.runtimeModelId, signal: input.signal });
+
+    const execution = await adapter.execute({
+      request: input.request,
+      exactModelId: upstreamModelId,
+      signal: input.signal,
+    });
+
+    if (execution.modelIdentity !== upstreamModelId) {
+      throw new TypeError(
+        'clervo_ai_gateway_model_identity_mismatch',
+      );
+    }
+
+    return Object.freeze({
+      ...execution,
+      modelIdentity: input.runtimeModelId,
+    });
   }
 }
