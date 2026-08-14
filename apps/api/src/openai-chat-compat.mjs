@@ -4,6 +4,7 @@ import {
   canonicalRequestHash,
   normalizeAiHttpRequest,
 } from '../../../dist/packages/contracts/src/index.js';
+import { resolveCompatibilityModel } from './compatibility-model-map.mjs';
 
 export const OPENAI_CHAT_COMPLETIONS_PATH = '/v1/chat/completions';
 
@@ -175,7 +176,7 @@ export function normalizeOpenAiChatCompletionRequest(value) {
     value.max_completion_tokens ?? value.max_tokens;
 
   return normalizeAiHttpRequest({
-    model: value.model,
+    model: resolveCompatibilityModel(value.model),
     input: {
       kind: 'chat',
       messages: value.messages.map(normalizeMessage),
