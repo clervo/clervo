@@ -14,6 +14,5 @@ const MODEL_MAP = Object.freeze({
 
 export function resolveCompatibilityModel(model) {
   if (typeof model !== 'string' || model.length === 0) return model;
-  return MODEL_MAP[model]
-    ?? (model.startsWith('clervo/') ? model : `clervo/${model}`);
+  return MODEL_MAP[model] ?? model;
 }
