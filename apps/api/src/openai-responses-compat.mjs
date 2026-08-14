@@ -241,11 +241,7 @@ export function normalizeOpenAiResponsesRequest(value) {
     refuse('openai_responses_stream_invalid');
   }
 
-  if (value.store === undefined) {
-    refuse('openai_responses_store_false_required', 422);
-  }
-
-  if (value.store !== false) {
+  if (value.store !== undefined && value.store !== false) {
     refuse('openai_responses_storage_unsupported', 422);
   }
 
@@ -457,7 +453,7 @@ export function createOpenAiResponsesDiscoveryContract(
     input,
     inputSchema: Object.freeze({
       type: 'object',
-      required: ['model', 'input', 'store'],
+      required: ['model', 'input'],
       properties: {
         model: {
           type: 'string',
