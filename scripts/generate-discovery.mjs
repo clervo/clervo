@@ -199,7 +199,7 @@ const aiChatProbeSchema = Object.freeze({
       additionalProperties: false,
       default: aiProbeExample.input,
     },
-    maximumOutputTokens: { type: 'integer', minimum: 1, maximum: 16384, default: aiProbeExample.maximumOutputTokens },
+    maximumOutputTokens: { type: 'integer', minimum: 1, maximum: contractModule.AI_MAXIMUM_OUTPUT_TOKENS, default: aiProbeExample.maximumOutputTokens },
   },
   additionalProperties: false,
 });

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
-import { AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, estimateAiSupplierCost } from '../../dist/packages/contracts/src/index.js';
+import { AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, AI_MAXIMUM_OUTPUT_TOKENS, estimateAiSupplierCost } from '../../dist/packages/contracts/src/index.js';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const read = (file) => readFile(path.join(root, file), 'utf8');
@@ -83,6 +83,7 @@ test('machine discovery publishes every live public product and payment contract
   assert.equal(aiProbe.schema.properties.model.type, 'string');
   assert.equal(aiProbe.schema.properties.model.enum, undefined);
   assert.equal(aiProbe.schema.properties.model.default, undefined);
+  assert.equal(aiProbe.schema.properties.maximumOutputTokens.maximum, AI_MAXIMUM_OUTPUT_TOKENS);
   assert.deepEqual(openapi.paths['/v1/sandbox/execute'].post['x-payment-info'], {
     price: { mode: 'dynamic', currency: 'USD', min: '0.010000', max: '0.060000' },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
