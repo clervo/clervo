@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { access, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
 import { AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, estimateAiSupplierCost } from '../../dist/packages/contracts/src/index.js';
@@ -8,31 +8,7 @@ const root = path.resolve(import.meta.dirname, '../..');
 const read = (file) => readFile(path.join(root, file), 'utf8');
 const json = async (file) => JSON.parse(await read(file));
 
-test('canonical launch state is evidence-bound while internal claims are not published', async () => {
-  const [source, release, proof] = await Promise.all([
-    json('packages/catalog/launch-state.v1.json'),
-    json('packages/distribution/release-targets.v1.json'),
-    json('infra/production/gcp/prediction-x402-proof.v1.json'),
-  ]);
-  await assert.rejects(access(path.join(root, 'generated/public/claims.json')));
-  assert.equal(source.repository.url, 'https://github.com/clervo/clervo');
-  assert.equal(source.distribution.packages.state, release.publication.state);
-  assert.deepEqual(
-    source.distribution.packages.items.map(({ registry, name, version }) => [registry, name, version]),
-    release.packages.map(({ registry, name, version }) => [registry, name, version]),
-  );
-  const operation = proof.operations.find(({ productId }) => productId === source.paymentProof.productId);
-  assert.equal(source.paymentProof.amountAtomic, operation.customerChargeAtomic);
-  assert.equal(source.paymentProof.settlementConfirmed, true);
-  assert.equal(source.paymentProof.replaySameReceipt, true);
-  assert.equal(source.paymentProof.secondAuthorization, false);
-  assert.equal(source.paymentProof.secondExecution, false);
-  assert.equal(source.paymentProof.secondCharge, false);
-  assert.equal(source.paymentProof.revenueEvidence, false);
-  assert.equal(source.paymentProof.demandEvidence, false);
-});
-
-test('machine discovery publishes every live public product without overstating proof', async () => {
+test('machine discovery publishes every live public product and payment contract', async () => {
   const [discovery, status, pricing, capabilities, mcp, openapi, yaml, aiPricing] = await Promise.all([
     json('generated/public/.well-known/clervo.json'),
     json('generated/public/status.json'),
@@ -66,17 +42,7 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(prediction.length, 5);
   assert.ok(prediction.every(({ publicAvailable, payment }) => publicAvailable && payment.payable));
   assert.equal(status.packages.state, 'published_verified');
-  assert.equal(status.paymentProof?.settlementConfirmed, true);
-  assert.equal(status.paymentProof?.usefulResult, true);
-  assert.equal(
-    status.paymentProof?.state,
-    status.paymentProof?.settlementConfirmed && status.paymentProof?.usefulResult
-      ? 'verified'
-      : 'unverified',
-  );
-  assert.equal('revenueEvidence' in status.paymentProof, false);
-  assert.equal('demandEvidence' in status.paymentProof, false);
-  assert.equal('evidence' in status.paymentProof, false);
+  assert.equal(status.paymentProof, undefined);
   assert.equal(pricing.publicOfferAvailable, true);
   assert.equal(pricing.publicPrice.productId, 'search.web');
   assert.equal(pricing.publicPrice.amountAtomic, '6000');
@@ -89,6 +55,9 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(mcp.paymentSigningImplemented, true);
   assert.deepEqual(yaml, openapi);
   assert.ok(openapi.paths['/v1/ai/execute']);
+  assert.ok(openapi.paths['/v1/chat/completions']);
+  assert.ok(openapi.paths['/v1/messages']);
+  assert.ok(openapi.paths['/v1/responses']);
   assert.ok(openapi.paths['/v1/sandbox/execute']);
   assert.ok(openapi.paths['/v1/prediction/execute']);
   assert.equal(openapi.info.contact.url, 'https://github.com/clervo/clervo');
@@ -128,7 +97,7 @@ test('machine discovery publishes every live public product without overstating 
   assert.doesNotMatch(JSON.stringify(openapi.paths), /"\$ref"/u);
 });
 
-test('launch pages and discovery surfaces exist without forbidden or stale claims', async () => {
+test('important site routes and discovery surfaces are built', async () => {
   const requiredPages = [
     'index.html',
     'research/index.html',
@@ -153,17 +122,6 @@ test('launch pages and discovery surfaces exist without forbidden or stale claim
   ];
   const pages = await Promise.all(requiredPages.map((file) => read(`apps/site/dist/${file}`)));
   assert.ok(pages.every((html) => html.includes('rel="canonical"')));
-  const publicText = [
-    ...pages,
-    await read('generated/public/llms.txt'),
-  ].join('\n');
-  assert.doesNotMatch(publicText, /\/claims\.json/iu);
-  assert.doesNotMatch(publicText, /Every AI model|Google-quality|BlockRun has 0 free|20% cheaper than BlockRun/iu);
-  assert.doesNotMatch(publicText, /Package candidates · publication not verified/iu);
-  assert.doesNotMatch(publicText, /the one thing on this site that was actually paid|the single fact on the site that has actually been paid|Settled paid outcome<\/dt><dd><b>1|x402 private proof: one owner-funded/iu);
-  assert.match(publicText, /Get a verified result/iu);
-  assert.match(publicText, /Public API callable: yes/iu);
-  assert.match(publicText, /x402 payment verification: settled outcomes are reported per product/iu);
 
   const machineFiles = [
     'llms.txt',

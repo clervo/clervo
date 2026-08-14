@@ -2,11 +2,10 @@ import { useEffect } from 'react';
 
 import {
   discovery,
-  publicStatus,
   lifecycleLabels,
   observedTruth,
   onboarding,
-  proofLabels,
+  publicOperations,
   publicApiCallable,
   type ExperiencePhase,
 } from '../product';
@@ -36,12 +35,12 @@ const guideCopy: Record<GuideTopic, { eyebrow: string; title: string; intro: str
   receipts: {
     eyebrow: 'Docs / inspectable receipts',
     title: 'The result keeps its boundary.',
-    intro: 'A Clervo receipt binds operation identity, declared checks, cost state, evidence, timestamps, and replay behaviour, so a result can be re-examined later without trusting the page that displayed it. Public receipt issuance is not available yet.',
+    intro: 'A Clervo receipt binds operation identity, declared checks, cost state, evidence, timestamps, and replay behaviour, so a result can be re-examined later without trusting the page that displayed it.',
   },
   replay: {
     eyebrow: 'Docs / replay',
     title: 'Same request. No second effect.',
-    intro: `The recorded ${publicStatus.paymentProof.productId} payment verification replayed to the same receipt with no second authorization, execution, or charge. That demonstrates one bounded replay mechanism.`,
+    intro: 'Reuse the same idempotency key for the same request. A completed operation returns its durable result without another authorization, execution, or charge.',
   },
   failures: {
     eyebrow: 'Docs / recovery',
@@ -56,7 +55,7 @@ const guideCopy: Record<GuideTopic, { eyebrow: string; title: string; intro: str
   catalog: {
     eyebrow: 'Docs / machine catalog',
     title: 'One registry drives every surface.',
-    intro: 'Capabilities, claims, lifecycle, prices, packages and discovery are all generated from the probed release candidate. Private qualification and customer availability stay different fields.',
+    intro: 'Capabilities, availability, prices, packages, and discovery are generated from the current catalog and deployed-system probe.',
   },
 };
 
@@ -138,19 +137,19 @@ export function Guide({ topic, onPhase }: { topic: GuideTopic; onPhase(phase: Ex
         <section className="band band--ruled guide-body" aria-labelledby="catalog-heading">
           <div className="section-head">
             <p className="eyebrow">Generated surface</p>
-            <h2 id="catalog-heading">Two fields per family, never merged.</h2>
+            <h2 id="catalog-heading">Current availability by family.</h2>
             <p className="lede">
               Observed at {observedTruth.provenance.observedAt} from{' '}
-              {observedTruth.provenance.source}. Lifecycle says whether a family
-              serves requests now; proof says what has been demonstrated.
+              {observedTruth.provenance.source}. Availability says whether a
+              family serves requests now.
             </p>
           </div>
           <ul className="guide-catalog">
-            {observedTruth.products.map(({ id, label, lifecycleState, proofLevel }) => (
+            {observedTruth.products.map(({ id, label, lifecycleState, observedPrice }) => (
               <li key={id}>
                 <b>{label}</b>
                 <span className={`state state--${lifecycleState}`}>{lifecycleLabels[lifecycleState]}</span>
-                <span className="quiet">{proofLabels[proofLevel]}</span>
+                <span className="quiet">{observedPrice === null ? 'No public price' : 'Paid route quoted before execution'}</span>
               </li>
             ))}
           </ul>
@@ -181,17 +180,17 @@ export function Guide({ topic, onPhase }: { topic: GuideTopic; onPhase(phase: Ex
 
       <section className="band guide-body" aria-labelledby="guide-contract-heading">
         <div className="section-head">
-          <p className="eyebrow">Frozen interface</p>
+          <p className="eyebrow">Current interface</p>
           <h2 id="guide-contract-heading">What these guides describe.</h2>
         </div>
         <dl className="facts">
           <div>
-            <dt>Observed runtime revision</dt>
-            <dd>{discovery.runtimeRelease.sourceCommit.slice(0, 12)}</dd>
+            <dt>Availability observed</dt>
+            <dd>{observedTruth.provenance.observedAt}</dd>
           </div>
           <div>
             <dt>Callable operation IDs</dt>
-            <dd>{discovery.runtimeRelease.operationIds.length}</dd>
+            <dd>{publicOperations.length}</dd>
           </div>
           <div>
             <dt>Public callable</dt>

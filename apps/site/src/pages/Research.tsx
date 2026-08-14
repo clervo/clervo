@@ -2,11 +2,9 @@ import { useEffect } from 'react';
 
 import {
   formatUsdc,
-  publicStatus,
   lifecycleLabels,
   observedProduct,
   observedTruth,
-  proofLabels,
   quickStartCurl,
   quickStartNeedsNoKey,
   type ExperiencePhase,
@@ -27,7 +25,6 @@ import { Link } from '../router';
  */
 
 const search = observedProduct('search');
-const proof = publicStatus.paymentProof;
 
 // What the outcome contains, and what it does not. Raw evidence and a
 // synthesized answer are different products with different availability, and
@@ -129,10 +126,7 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
             <dt>Lifecycle state</dt>
             <dd>{lifecycleLabels[search.lifecycleState]}</dd>
           </div>
-          <div>
-            <dt>Proof level</dt>
-            <dd>{proofLabels[search.proofLevel]}</dd>
-          </div>
+          <div><dt>Paid behavior</dt><dd>{search.observedPrice === null ? 'not offered' : '402 quote before execution'}</dd></div>
         </dl>
         <p className="quiet research-note">
           Observed {observedTruth.provenance.observedAt} from{' '}
@@ -141,47 +135,26 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
         </p>
       </section>
 
-      <section className="band research-body" aria-labelledby="research-proof">
+      <section className="band research-body" aria-labelledby="research-payment">
         <div className="section-head">
-          <p className="eyebrow">Payment verification</p>
-          <h2 id="research-proof">One settlement, one useful result, one safe replay.</h2>
+          <p className="eyebrow">Payment behavior</p>
+          <h2 id="research-payment">Inspect the quote before authorizing it.</h2>
           <p className="lede">
-            The public payment record reports the operation, settled amount,
-            useful-result state and replay checks without adding business
-            classifications to those technical facts.
+            The paid route returns HTTP 402 with the maximum charge, network,
+            asset, recipient, resource, and expiry. Reuse the same idempotency
+            key to recover or replay without creating a second logical charge.
           </p>
         </div>
         <dl className="facts">
-          <div>
-            <dt>Operation</dt>
-            <dd>{proof.productId}</dd>
-          </div>
-          <div>
-            <dt>Bounded charge</dt>
-            {/* Gold appears once on this page, on the amount that was actually
-              * settled and reconciled. */}
-            <dd className="state state--verified">{proof.amountDisplay}</dd>
-          </div>
-          <div>
-            <dt>Network</dt>
-            <dd>{proof.network}</dd>
-          </div>
-          <div>
-            <dt>Result</dt>
-            <dd>{proof.usefulResult ? 'useful' : 'not proven'}</dd>
-          </div>
-          <div>
-            <dt>Replay</dt>
-            <dd>{proof.replaySameReceipt ? 'same receipt, no second charge' : 'not proven'}</dd>
-          </div>
-          <div>
-            <dt>Asset</dt>
-            <dd>{proof.asset}</dd>
-          </div>
+          <div><dt>Paid route</dt><dd>/v1/search/paid</dd></div>
+          <div><dt>Payment response</dt><dd>HTTP 402 before execution</dd></div>
+          <div><dt>Binding amount</dt><dd>The request-specific 402 challenge</dd></div>
+          <div><dt>Unknown settlement</dt><dd>Reconcile; do not authorize again</dd></div>
+          <div><dt>Replay</dt><dd>Same key and body return the completed result</dd></div>
         </dl>
         <div className="cluster research-actions">
-          <Link className="button button--secondary" to="/proof">Inspect the proof record</Link>
-          <Link className="button button--quiet" to="/proof-lab">Run the no-payment fixture</Link>
+          <Link className="button button--secondary" to="/docs/x402">Read the x402 guide</Link>
+          <Link className="button button--quiet" to="/docs/replay">Read replay semantics</Link>
         </div>
       </section>
     </>

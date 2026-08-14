@@ -611,7 +611,7 @@
   text-transform: capitalize;
 }
 
-/* When the proof level is a settled outcome the value becomes a state pill, so
+/* When an operation reaches a completed outcome the value becomes a state pill, so
  * gold appears here only on a fact that was actually paid for and verified. */
 .family-facts dd > b.state {
   display: inline-flex;

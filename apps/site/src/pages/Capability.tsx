@@ -10,7 +10,6 @@ import {
   observedProduct,
   observedRoutes,
   observedTruth,
-  proofLabels,
   type ExperiencePhase,
 } from '../product';
 import { Link } from '../router';
@@ -46,11 +45,11 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
             <p className="s4-eyebrow">Capability family · {FAMILY_CODE[familyId]}</p>
             <h1 id="s4-family-title">{FAMILY_DISPLAY[familyId]}</h1>
             <p className="s4-lede">{fixture.promise}</p>
-            <p className="s4-truth-note">Editorial family promise from the locked design. Current lifecycle and proof are shown separately.</p>
+            <p className="s4-truth-note">Current availability, routes, and prices come from generated public product data.</p>
           </div>
           <dl className="s4-family-summary">
             <div><dt>Observed lifecycle</dt><dd>{lifecycleLabels[observed.lifecycleState]}</dd></div>
-            <div><dt>Observed proof</dt><dd className={observed.proofLevel === 'paid_outcome_verified' || observed.proofLevel === 'externally_repeated' ? 'proof-word' : undefined}>{proofLabels[observed.proofLevel]}</dd></div>
+            <div><dt>Payment</dt><dd>{observed.observedPrice === null ? 'No public price' : 'Quoted before execution'}</dd></div>
             <div><dt>Published operation identities</dt><dd>{published.length}</dd></div>
             <div><dt>Observed routes</dt><dd>{routes.length}</dd></div>
           </dl>
@@ -85,7 +84,7 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
           <article className="s4-family-panel">
             <p className="s4-kicker">Permanent page rule</p>
             <h2>The family stays. Operations evolve.</h2>
-            <p>Permanent family identity is presentation authority. Lifecycle, route, price, proof, and supplier state below remain canonical observations.</p>
+            <p>Permanent family identity is presentation authority. Availability, route, price, and supplier state below remain generated observations.</p>
             <Link className="b12-button b12-button-secondary b12-liquid" to="/catalog">Open observed catalog</Link>
           </article>
         </div>
@@ -111,7 +110,7 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
             <div className="s4-operation-list">
               {routes.map((route) => <article className="s4-operation-card" key={route.routeId} data-lifecycle={route.lifecycleState}>
                 <div className="s4-op-title"><div className="s4-op-top"><span className={`s4-lifecycle ${route.lifecycleState}`}><i />{lifecycleLabels[route.lifecycleState]}</span><span className="s4-live-label">Observed</span></div><h3>{route.id}</h3><code>{route.route}</code></div>
-                <div className="s4-op-description"><p>{route.capabilities.map(capabilityLabel).join(' · ') || 'No capability tags observed'}</p><div className="s4-op-meta"><div><small>Maximum charge</small><strong>{route.observedPrice == null ? 'request a quote' : formatUsdc(route.observedPrice.amountAtomic, route.observedPrice.decimals)}</strong></div><div><small>Proof</small><strong className={route.proofLevel === 'paid_outcome_verified' || route.proofLevel === 'externally_repeated' ? 'proof-word' : undefined}>{proofLabels[route.proofLevel]}</strong></div><div><small>Registry sellable</small><strong>{route.sellable ? 'yes' : 'no'}</strong></div></div>{route.reason == null ? null : <div className="s4-proof-flags"><span>{route.reason.replaceAll('_', ' ')}</span></div>}</div>
+                <div className="s4-op-description"><p>{route.capabilities.map(capabilityLabel).join(' · ') || 'No capability tags observed'}</p><div className="s4-op-meta"><div><small>Maximum charge</small><strong>{route.observedPrice == null ? 'request a quote' : formatUsdc(route.observedPrice.amountAtomic, route.observedPrice.decimals)}</strong></div><div><small>Availability</small><strong>{lifecycleLabels[route.lifecycleState]}</strong></div><div><small>Selectable</small><strong>{route.sellable ? 'yes' : 'no'}</strong></div></div>{route.reason == null ? null : <div className="s4-proof-flags"><span>{route.reason.replaceAll('_', ' ')}</span></div>}</div>
                 <div className="s4-op-action"><Link className="b12-button b12-button-secondary b12-liquid" to="/catalog">Catalog</Link></div>
               </article>)}
             </div>
@@ -124,14 +123,14 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
               <p className="s4-kicker">Public boundary</p>
               <h2 id="s4-family-claim-title">What the current public observation establishes.</h2>
             </div>
-            <p className="s4-section-copy">Lifecycle, proof, reachability and availability reasons come only from generated public artifacts.</p>
+            <p className="s4-section-copy">Availability, reachability, and reasons come only from generated public artifacts.</p>
           </div>
           <div className="s4-claims-grid">
             <article>
               <p className="s4-kicker">Observed now</p>
               <ul>
                 <li>Lifecycle: {lifecycleLabels[observed.lifecycleState]}</li>
-                <li>Proof: {proofLabels[observed.proofLevel]}</li>
+                <li>Payment: {observed.observedPrice === null ? 'not offered' : 'quoted before execution'}</li>
                 <li>Publicly reachable: {observed.publiclyReachable ? 'yes' : 'no'}</li>
               </ul>
             </article>

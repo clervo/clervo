@@ -11,7 +11,7 @@ const pythonProject = await readFile('packages/sdk-python/pyproject.toml', 'utf8
 const verifyWorkflow = await readFile('.github/workflows/verify-distribution.yml', 'utf8');
 const publishWorkflow = await readFile('.github/workflows/publish-packages.yml', 'utf8');
 
-test('release targets preserve current registry truth and bind the exact release candidate', () => {
+test('release targets preserve current package and registry truth', () => {
   assert.deepEqual(targets.repository, {
     owner: 'clervo',
     name: 'clervo',
@@ -50,7 +50,7 @@ test('ordinary distribution CI is read-only and proves clean onboarding', () => 
   assert.match(verifyWorkflow, /^permissions:\n  contents: read$/mu);
   assert.doesNotMatch(verifyWorkflow, /id-token: write/u);
   assert.doesNotMatch(verifyWorkflow, /npm publish|gh-action-pypi-publish/u);
-  assert.match(verifyWorkflow, /npm run prove:distribution-onboarding/u);
+  assert.match(verifyWorkflow, /npm run verify:package-consumers/u);
 });
 
 test('package publishing is manual, commit-bound, environment-protected, and tokenless', () => {

@@ -107,7 +107,7 @@ test('the model list carries every catalogued route and no route the registry do
   assert.equal(models.object, 'list');
 });
 
-test('the model list renders lifecycle state and proof level from the registry, never above it', () => {
+test('the model list renders current availability and sellability from the catalog', () => {
   for (const entry of models.data) {
     const catalogModel = catalogModelById.get(entry.id);
     assert.ok(catalogModel !== undefined, `${entry.id} must map to a frozen customer model identity`);
@@ -211,7 +211,7 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
     assert.equal(offer.payTo, product.observedQuote.payTo);
     assert.equal(offer.scheme, product.observedQuote.scheme);
     assert.equal(offer.extra.clervo.lifecycleState, product.state, `${family} lifecycle must match the registry`);
-    assert.equal(offer.extra.clervo.proofLevel, product.proof, `${family} proof level must match the registry`);
+    assert.equal('proofLevel' in offer.extra.clervo, false, `${family} must not publish internal proof classification`);
 
     // A request-derived price carries an example quote and says so. A fixed
     // price is the product-level quote and is binding. Publishing a per-request

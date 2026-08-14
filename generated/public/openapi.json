@@ -4,7 +4,7 @@
   "info": {
     "title": "Clervo Search, AI, Secure Sandbox, Prediction Intelligence, Crypto Intelligence API",
     "version": "2026-07-29.1",
-    "description": "Publicly callable previews: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence. Lifecycle and proof state are generated from the probed live registry; unavailable operations fail closed.",
+    "description": "Publicly callable previews: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence. Availability, routes, and prices are generated from the probed live registry; unavailable operations fail closed.",
     "contact": {
       "name": "Clervo",
       "email": "mo@clervo.dev",
@@ -6093,8 +6093,7 @@
       "crypto.wallet.tokens",
       "crypto.wallet.transactions",
       "crypto.wallet.report"
-    ],
-    "runtimeRelease": "6024e67a816e69fef7f73fae2cc867951c3dfd00"
+    ]
   },
   "servers": [
     {

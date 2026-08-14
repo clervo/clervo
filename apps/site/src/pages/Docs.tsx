@@ -12,6 +12,7 @@ import {
   observedApiOrigin,
   observedProduct,
   publicApiCallable,
+  publicOperations,
   quickStartCurl,
   quickStartNeedsNoKey,
   type ExperiencePhase,
@@ -188,10 +189,10 @@ export function Docs({
         <CodeBlock label="Free before wallet" code={'npx @clervo/router search "World Wide Web"\nclervo wallet create\nclervo limits'} />
         <CodeBlock label="OpenAI-compatible localhost" code={'clervo proxy\n# base URL: http://127.0.0.1:8402/v1\n# add --auto-pay only after reviewing clervo limits'} />
         <p className="quiet docs-note">
-          Supported OpenAI-compatible endpoints are models, chat completions
-          (ordinary and SSE), and embeddings. Canonical model IDs are exact or
-          fail. Usage comes from durable operation and receipt records; it is
-          never a hand-written financial counter.
+          Primary compatibility endpoints are OpenAI chat completions and
+          Responses, plus Anthropic Messages. The native Clervo route remains
+          <code> POST /v1/ai/execute</code>. Canonical model IDs are exact or
+          fail, and usage comes from durable operation and receipt records.
         </p>
       </section>
 
@@ -212,7 +213,8 @@ export function Docs({
           <code>wallet create</code> never overwrites an existing wallet.
           <code> wallet restore</code> refuses to replace a wallet that holds a
           balance. If settlement is unknown, <code>reconcile</code> performs a
-          retrieval-only check with no new authorization and paid work stays frozen.
+          retrieval-only check with no new authorization and blocks new paid work
+          until the prior attempt is resolved.
         </p>
       </section>
 
@@ -277,7 +279,7 @@ export function Docs({
       <section className="band docs-body" aria-labelledby="docs-binding">
         <div className="section-head">
           <p className="eyebrow">Interface binding</p>
-          <h2 id="docs-binding">What these snippets are pinned to.</h2>
+          <h2 id="docs-binding">What these snippets use.</h2>
         </div>
         <dl className="facts">
           <div>
@@ -285,12 +287,12 @@ export function Docs({
             <dd>{discovery.contractVersion}</dd>
           </div>
           <div>
-            <dt>Observed runtime revision</dt>
-            <dd>{discovery.runtimeRelease.sourceCommit.slice(0, 12)}</dd>
+            <dt>Availability observed</dt>
+            <dd>{discovery.observedTruth.provenance.observedAt}</dd>
           </div>
           <div>
             <dt>Callable operation IDs</dt>
-            <dd>{discovery.runtimeRelease.operationIds.length}</dd>
+            <dd>{publicOperations.length}</dd>
           </div>
           <div>
             <dt>Observed API origin</dt>

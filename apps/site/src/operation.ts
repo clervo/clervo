@@ -11,7 +11,6 @@ import {
   observedProduct,
   observedRoutes,
   onboarding,
-  proofLabels,
   type LaunchProductId,
 } from './product';
 
@@ -56,22 +55,6 @@ interface StatusDocument {
     state: string;
     verifiedAt: string;
     items: Array<{ registry: 'npm' | 'pypi'; name: string; version: string; url: string }>;
-  };
-  paymentProof: {
-    state: 'verified' | 'unverified';
-    productId: string;
-    network: string;
-    asset: string;
-    amountAtomic: string;
-    decimals: number;
-    amountDisplay: string;
-    settlementConfirmed: boolean;
-    usefulResult: boolean;
-    replaySameReceipt: boolean;
-    secondAuthorization: boolean;
-    secondExecution: boolean;
-    secondCharge: boolean;
-    transactionUrl: string;
   };
 }
 
@@ -172,7 +155,6 @@ export function operationContract(operationId: string) {
   const method = publicRoute === null ? undefined : openapi.paths?.[publicRoute]?.post;
   const operationRoutes = observedRoutes.filter((route) => route.productIds.includes(operationId));
   const relatedOperationIds = family.operations.filter((id) => id !== operationId);
-  const exactPaymentProof = status.paymentProof.productId === operationId ? status.paymentProof : null;
   const exactPublicPrice = pricing.publicPrice?.productId === operationId ? pricing.publicPrice : null;
   const idempotencyRequired = method?.parameters?.some((parameter) =>
     parameter.name?.toLowerCase() === 'idempotency-key' && parameter.required === true,
@@ -181,7 +163,7 @@ export function operationContract(operationId: string) {
   const lifecycle = published === undefined
     ? 'Unavailable'
     : `${published.lifecycle[0]?.toUpperCase() ?? ''}${published.lifecycle.slice(1)}`;
-  const access = published?.publicAvailable === true ? 'Publicly callable preview' : 'No public execution path';
+  const access = published?.publicAvailable === true ? 'Publicly callable' : 'No public execution path';
   const summary = published?.summary ?? 'No public human summary is currently bound to this canonical operation identity.';
   const title = published?.title ?? operationId;
   const offerAmount = priceAmount(offer, operationId);
@@ -199,7 +181,11 @@ export function operationContract(operationId: string) {
     summary,
     lifecycle,
     observedFamilyLifecycle: lifecycleLabels[family.lifecycleState],
-    proofLabel: proofLabels[family.proofLevel],
+    paymentBehavior: offer === undefined || !offer.publicAvailable
+      ? 'Not publicly offered'
+      : offer.model === 'x402_request_quote'
+        ? 'Request-specific 402 quote'
+        : 'Maximum shown before authorization',
     health: 'No operation-specific incident feed is bound',
     actionClass: 'Not bound in public operation truth',
     access,
@@ -228,7 +214,6 @@ export function operationContract(operationId: string) {
       idempotencyRequired,
     },
     operationRoutes,
-    exactPaymentProof,
     recovery: onboarding.recovery,
     relatedOperationIds,
     artifacts: {

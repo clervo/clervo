@@ -18,19 +18,17 @@ Generated from `Clervo production probe`, probed at 2026-08-14T12:17:15.502Z. Ev
 
 ## Observed capability
 
-| Product | ID | Lifecycle state | Proof level |
+| Product | ID | Availability | Price |
 |---|---|---|---|
-| AI | `ai` | live | paid_outcome_verified |
-| Crypto Intelligence | `crypto_intelligence` | live | paid_outcome_verified |
-| Prediction Intelligence | `prediction` | live | paid_outcome_verified |
-| Multi-chain RPC | `rpc` | unavailable (temporarily_unavailable) | none |
-| Secure Sandbox | `sandbox` | live | paid_outcome_verified |
-| Research | `search` | live | paid_outcome_verified |
+| AI | `ai` | live | 0.001000 USDC observed maximum |
+| Crypto Intelligence | `crypto_intelligence` | live | 0.004000 USDC observed maximum |
+| Prediction Intelligence | `prediction` | live | 0.002000 USDC observed maximum |
+| Multi-chain RPC | `rpc` | unavailable (temporarily_unavailable) | not offered |
+| Secure Sandbox | `sandbox` | live | 0.060000 USDC observed maximum |
+| Research | `search` | live | 0.006000 USDC observed maximum |
 
-Lifecycle state is what the runtime serves right now. Proof level is what has
-actually been demonstrated: `quote_observed_unpaid` means a price and a valid
-payment challenge were returned and nothing more. Do not treat a priced route
-as a proven paid outcome.
+Availability is probed from the deployed runtime. Paid routes return a 402
+before execution; inspect that request-specific quote before authorizing it.
 
 ## First call
 
@@ -76,6 +74,6 @@ The paid AI route returns a 402 with the exact request-derived quote before exec
 - `/.well-known/x402` — x402 v2 payment manifest with the exact quote each paid resource returns.
 - `/v1/models` — authoritative AI catalog with stable IDs, aliases, capabilities, price, free/paid state, availability, health, and commerce contract.
 - `/openapi.json` — request and response contracts.
-- `/status.json` — current lifecycle state, proof level, and open conformance defects.
+- `/status.json` — current availability, health, and open conformance defects.
 - `/pricing.json` — the public offer boundary.
 - `/llms.txt` — this service as a documentation map.

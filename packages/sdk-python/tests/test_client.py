@@ -4,8 +4,6 @@ from pathlib import Path
 
 from clervo import (
     CLERVO_CONTRACT_VERSION,
-    CLERVO_RELEASE_CANDIDATE_ID,
-    CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH,
     Clervo,
     ClervoPaymentRequiredError,
     ClervoProblemError,
@@ -50,13 +48,6 @@ def result(product_id: str, funding_mode: str) -> bytes:
 
 
 class ClientTests(unittest.TestCase):
-    def test_package_identity_matches_shared_transcript(self) -> None:
-        self.assertEqual(CLERVO_RELEASE_CANDIDATE_ID, TRANSCRIPT["releaseCandidateId"])
-        self.assertEqual(
-            CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH,
-            TRANSCRIPT["interfaceHash"],
-        )
-
     def test_wire_behavior_matches_shared_cross_client_transcript(self) -> None:
         for fixture in TRANSCRIPT["cases"][:2]:
             observed = {}

@@ -108,7 +108,9 @@ test('B11 all customer surfaces observe one non-destructive permission-safe wall
   assert.deepEqual(clients.map((client) => client.status().wallet?.address), Array(5).fill(created.view.address));
   assert.throws(() => clients[1].createWallet(), (error) => error.code === 'wallet_already_exists');
   assert.equal(clients[2].backupWallet(true).recoveryPhrase, created.mnemonic);
-  assert.doesNotMatch(JSON.stringify(clients[3].status()), new RegExp(created.mnemonic.split(' ')[0], 'u'));
+  const status = JSON.stringify(clients[3].status());
+  assert.equal(status.includes(created.mnemonic), false);
+  assert.doesNotMatch(status, /mnemonic|privateKey|recoveryPhrase/iu);
 });
 
 test('B11 recovery restores the identical address and diagnostics never disclose its phrase', async () => {

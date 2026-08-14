@@ -20,8 +20,7 @@
               "priceVersion": "search-web-open-federation-2026-08-09.1",
               "amountIsBinding": true,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
@@ -63,8 +62,7 @@
               "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi",
               "amountIsBinding": false,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
@@ -107,8 +105,7 @@
               "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi",
               "amountIsBinding": false,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
@@ -284,8 +281,7 @@
               "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi",
               "amountIsBinding": false,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
@@ -461,8 +457,7 @@
               "priceVersion": "ai-dynamic-b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1:chat_competi",
               "amountIsBinding": false,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
@@ -638,8 +633,7 @@
               "priceVersion": "sandbox-run-standard-2026-08-09.1",
               "amountIsBinding": false,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
@@ -681,8 +675,7 @@
               "priceVersion": "prediction-product-2026-08-09.3-prediction.markets",
               "amountIsBinding": false,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
@@ -724,8 +717,7 @@
               "priceVersion": "crypto-public-2026-08-09.1-crypto.wallet.report",
               "amountIsBinding": false,
               "exampleRouteId": null,
-              "lifecycleState": "live",
-              "proofLevel": "paid_outcome_verified"
+              "lifecycleState": "live"
             }
           }
         }
@@ -759,12 +751,11 @@
       "source": "Clervo production probe",
       "generatedBy": "Clervo discovery generator",
       "observedAt": "2026-08-14T12:17:15.502Z",
-      "releaseId": "6024e67a816e69fef7f73fae2cc867951c3dfd00",
       "proofLevels": {
-        "none": "no payment proof recorded",
-        "quote_observed_unpaid": "payment requirement observed; no settled outcome verified",
-        "paid_outcome_verified": "settled payment and useful outcome verified",
-        "externally_repeated": "multiple settled paid outcomes independently verified"
+        "externally_repeated": "an unrelated party did it, more than once",
+        "none": "nothing demonstrated",
+        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
+        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
       },
       "states": {
         "live": "probed; the deployed system serves it now",
@@ -776,12 +767,6 @@
       "live": "probed; the deployed system serves it now",
       "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
       "unavailable": "absent from the catalog or has no public route at all"
-    },
-    "proofLevels": {
-      "none": "no payment proof recorded",
-      "quote_observed_unpaid": "payment requirement observed; no settled outcome verified",
-      "paid_outcome_verified": "settled payment and useful outcome verified",
-      "externally_repeated": "multiple settled paid outcomes independently verified"
     },
     "bazaar": {
       "facilitator": "https://api.cdp.coinbase.com/platform/v2/x402",
@@ -799,7 +784,6 @@
         "acceptsRequestWithoutIdempotencyKey": true,
         "operationId": "search.web",
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "quota": "Capped per caller and globally. Over the cap the route answers 429 free_quota_exceeded rather than executing."
       },
       {

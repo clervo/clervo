@@ -116,13 +116,12 @@ test('every generated public surface renders the registry lifecycle state and pr
   }
 });
 
-test('llms.txt states each product lifecycle state and proof level as observed', async () => {
+test('llms.txt states each product availability as observed', async () => {
   const llms = await text('generated/public/llms.txt');
   for (const product of registry.products) {
     const row = llms.split('\n').find((line) => line.startsWith(`| ${product.label} |`));
     assert.ok(row !== undefined, `llms.txt must list ${product.label}`);
     assert.ok(row.includes(product.state), `${product.label} row must state lifecycle ${product.state}`);
-    assert.ok(row.includes(product.proof), `${product.label} row must state proof level ${product.proof}`);
   }
 });
 
@@ -239,7 +238,6 @@ test('the agent-facing documents render the registry rather than a hand-written 
       const row = document.split('\n').find((line) => line.startsWith(`| ${product.label} |`));
       assert.ok(row !== undefined, `${name} must list ${product.label}`);
       assert.ok(row.includes(product.state), `${name}: ${product.label} row must state its lifecycle`);
-      assert.ok(row.includes(product.proof), `${name}: ${product.label} row must state its proof level`);
     }
   }
 

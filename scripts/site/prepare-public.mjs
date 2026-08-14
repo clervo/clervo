@@ -63,7 +63,7 @@ const packageSummary = status.packages.items
   .join(', ');
 const feedItems = [
   {
-    id: `urn:clervo:catalog:${discovery.observedTruth.provenance.releaseId ?? observedAt}`,
+    id: `urn:clervo:catalog:${observedAt}`,
     title: 'Public catalog observation regenerated',
     date: observedAt,
     description: `${liveFamilies} of ${discovery.observedTruth.products.length} product families were observed serving. The catalog and status surfaces were regenerated from that observation.`,
@@ -207,4 +207,4 @@ if (projectionMismatches.length > 0) {
   throw new Error(`site_public_projection_differs_from_generated: ${projectionMismatches.join('; ')}`);
 }
 
-console.log(`site public projection: PASS (${discovery.runtimeRelease.sourceCommit})`);
+console.log(`site public projection: PASS (${observedAt})`);

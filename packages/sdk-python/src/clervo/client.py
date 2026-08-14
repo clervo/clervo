@@ -10,10 +10,6 @@ from urllib.parse import urlsplit, urlunsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 CLERVO_CONTRACT_VERSION = "2026-07-29.1"
-CLERVO_RELEASE_CANDIDATE_ID = "clervo-private-core-2026-08-02.2"
-CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH = (
-    "sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4"
-)
 
 
 class ClervoError(Exception):
@@ -25,7 +21,7 @@ class ClervoTransportError(ClervoError):
 
 
 class ClervoProtocolError(ClervoError):
-    """The endpoint returned bytes that do not satisfy the frozen contract."""
+    """The endpoint returned bytes that do not satisfy the API contract."""
 
 
 class ClervoProblemError(ClervoError):

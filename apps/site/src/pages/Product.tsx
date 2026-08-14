@@ -6,7 +6,6 @@ import {
   lifecycleLabels,
   observedProduct,
   observedRoutes,
-  proofLabels,
   type ExperiencePhase,
 } from '../product';
 import { Link } from '../router';
@@ -103,7 +102,7 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
 
       <section className="s4-section">
         <div className="shell">
-          <div className="s4-section-head"><div><p className="s4-kicker">Six permanent families</p><h2>Six capability families. One operating contract.</h2></div><p className="s4-section-copy">Family identity is permanent. Lifecycle and proof below come from the canonical observed registry and can change independently.</p></div>
+          <div className="s4-section-head"><div><p className="s4-kicker">Six permanent families</p><h2>Six capability families. One operating contract.</h2></div><p className="s4-section-copy">Family identity is permanent. Availability and routes below come from the generated registry.</p></div>
           <div className="s4-family-ledger">
             {FAMILY_ORDER.map((familyId) => {
               const observed = observedProduct(familyId);
@@ -112,7 +111,7 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
                 <span className="s4-family-mark">{FAMILY_CODE[familyId]}</span>
                 <h3>{FAMILY_DISPLAY[familyId]}</h3>
                 <p>Permanent family identity · current operation and route state is registry-bound.</p>
-                <span className="s4-family-meta"><strong>{lifecycleLabels[observed.lifecycleState]}</strong><span>{proofLabels[observed.proofLevel]} · {currentRoutes.length} observed {currentRoutes.length === 1 ? 'route' : 'routes'}</span></span>
+                <span className="s4-family-meta"><strong>{lifecycleLabels[observed.lifecycleState]}</strong><span>{observed.observedPrice === null ? 'No public price' : 'Paid route'} · {currentRoutes.length} observed {currentRoutes.length === 1 ? 'route' : 'routes'}</span></span>
               </Link>;
             })}
           </div>
@@ -150,7 +149,7 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
       </section>
 
       <section className="s4-section">
-        <div className="shell s4-cta-panel"><div><p className="s4-kicker">Operate from current truth</p><h2>Find the exact operation Clervo currently exposes.</h2><p>Search canonical observed routes by task, family, lifecycle, proof, and capability without promoting design fixtures into live claims.</p></div><Link className="b12-button b12-button-primary b12-liquid" to="/catalog">Explore the catalog</Link></div>
+        <div className="shell s4-cta-panel"><div><p className="s4-kicker">Operate from current truth</p><h2>Find the exact operation Clervo currently exposes.</h2><p>Search current routes by task, family, availability, price, and capability.</p></div><Link className="b12-button b12-button-primary b12-liquid" to="/catalog">Explore the catalog</Link></div>
       </section>
     </div>
   );

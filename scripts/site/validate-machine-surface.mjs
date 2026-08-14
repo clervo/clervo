@@ -52,15 +52,14 @@ if (openapi.openapi !== '3.1.1') throw new Error(`site_openapi_version:${openapi
 if (openapi.jsonSchemaDialect !== 'https://json-schema.org/draft/2020-12/schema') throw new Error(`site_openapi_json_schema_dialect:${openapi.jsonSchemaDialect ?? 'missing'}`);
 
 // llms.txt is generated as a compact documentation map. Validate its canonical
-// relative machine links and observed-lifecycle framing rather than forcing a
-// second human-marketing lifecycle sentence into the generated contract.
+// relative machine links and current availability framing.
 const llms = await readFile(path.join(dist, 'llms.txt'), 'utf8');
 for (const needle of [
   '[OpenAPI contract](/openapi.json)',
   '[Catalog](/catalog.json)',
   '[Status](/status.json)',
   '[Agent skill](/skill.md)',
-  'Observed lifecycle state and proof level',
+  'Current product availability',
   'Multi-chain RPC | unavailable',
 ]) {
   if (!llms.includes(needle)) throw new Error(`site_llms_reference_missing:${needle}`);

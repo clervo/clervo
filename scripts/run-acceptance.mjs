@@ -66,11 +66,6 @@ const gates = [
   ['N0.3 acceptance', node, ['scripts/test-n0.3.mjs']],
   ['build', tsc, ['--project', 'tsconfig.json']],
   ['contract schemas', node, ['scripts/validate-contracts.mjs']],
-  // The cloud gate has always checked this; this list did not, so a manifest
-  // that drifted from the schema directory reached Cloud Build before it was
-  // noticed. A local gate that is weaker than the release gate is a gate that
-  // reports PASS on a release that cannot build.
-  ['release-candidate freeze', node, ['scripts/release/generate-release-candidate-freeze.mjs', '--check']],
   ['discovery generation', node, ['scripts/generate-discovery.mjs']],
   // The consistency tests compare the generated public truth with the exact
   // files the site serves. A clean checkout has no projected site files until

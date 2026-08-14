@@ -28,7 +28,7 @@ const destinations = [
   { title: 'Benchmark truth', path: '/benchmarks', terms: 'quality comparison performance evidence' },
   { title: 'Security controls', path: '/security', terms: 'ssrf secrets idempotency isolation cleanup cost' },
   { title: 'Legal boundaries', path: '/legal', terms: 'terms resale privacy retention rights' },
-  { title: 'Product status', path: '/status', terms: 'availability preview unavailable release candidate deployment' },
+  { title: 'Product status', path: '/status', terms: 'availability unavailable routes packages health' },
   { title: 'Changelog', path: '/changelog', terms: 'release changes packages payment proof' },
   { title: 'Trust center', path: '/trust', terms: 'proof security pricing benchmarks rights status' },
   { title: 'Error: request rejected', path: '/docs#errors', terms: '400 schema invalid request error' },

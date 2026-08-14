@@ -6,9 +6,9 @@ import statusSource from '../../../generated/public/status.json';
 export type ExperiencePhase = 'risk' | 'qualified' | 'approval' | 'verified' | 'receipt';
 export type PillarLifecycle = 'preview' | 'unavailable' | 'available';
 
-// Lifecycle state and proof level are two separate facts, observed by probing
-// the deployed system, and the site renders both. Collapsing them into one
-// would let a returned quote read as a working paid product.
+// Availability is observed by probing the deployed system. Qualification
+// fields remain in the machine projection for released-client compatibility,
+// but customer pages use availability, routes, prices, and payment behavior.
 export type LifecycleState = 'live' | 'supply_paused' | 'unavailable';
 export type ProofLevel = 'none' | 'quote_observed_unpaid' | 'paid_outcome_verified' | 'externally_repeated';
 
@@ -35,7 +35,6 @@ export interface ObservedTruth {
     source: string;
     generatedBy: string;
     observedAt: string;
-    releaseId: string;
     proofLevels: Record<ProofLevel, string>;
     states: Record<LifecycleState, string>;
   };
@@ -84,10 +83,6 @@ interface Discovery {
     callable: boolean;
   };
   products: DiscoveryProduct[];
-  runtimeRelease: {
-    sourceCommit: string;
-    operationIds: string[];
-  };
   observedTruth: ObservedTruth;
 }
 
@@ -108,8 +103,6 @@ export const lifecycleLabels: Record<LifecycleState, string> = {
   supply_paused: 'supply paused',
   unavailable: 'unavailable',
 };
-
-export const proofLabels: Record<ProofLevel, string> = observedTruth.provenance.proofLevels;
 
 export function attributionLabel(attribution: NonNullable<DiscoveryProduct['attribution']>): string {
   return attribution.license === undefined
@@ -140,7 +133,6 @@ export interface PublicOperation extends DiscoveryProduct {
   familyId: ObservedProduct['id'];
   familyLabel: string;
   lifecycleState: LifecycleState;
-  proofLevel: ProofLevel;
 }
 
 /**
@@ -156,7 +148,6 @@ export const publicOperations: PublicOperation[] = discovery.products.map((produ
     familyId,
     familyLabel: family.label,
     lifecycleState: product.publicAvailable ? family.lifecycleState : 'unavailable',
-    proofLevel: product.publicAvailable ? family.proofLevel : 'none',
   };
 });
 
@@ -181,22 +172,6 @@ export interface PublicStatus {
       version: string;
       url: string;
     }>;
-  };
-  paymentProof: {
-    state: 'verified' | 'unverified';
-    productId: string;
-    network: string;
-    asset: string;
-    amountAtomic: string;
-    decimals: number;
-    amountDisplay: string;
-    settlementConfirmed: boolean;
-    usefulResult: boolean;
-    replaySameReceipt: boolean;
-    secondAuthorization: boolean;
-    secondExecution: boolean;
-    secondCharge: boolean;
-    transactionUrl: string;
   };
 }
 
@@ -246,7 +221,6 @@ export interface ObservedRoute {
   capabilities: string[];
   route: string;
   lifecycleState: LifecycleState;
-  proofLevel: ProofLevel;
   sellable: boolean;
   reason: string | null;
   expectedReturnAt: string | null;
@@ -299,7 +273,6 @@ export const observedRoutes: ObservedRoute[] = modelsDocument.data
     capabilities: clervo.capabilities,
     route: clervo.commerce.executionPath,
     lifecycleState: clervo.availability === 'available' ? 'live' : 'supply_paused',
-    proofLevel: observedTruth.products.find(({ id: productId }) => productId === 'ai')?.proofLevel ?? 'none',
     sellable: clervo.publicSellable,
     reason: clervo.availabilityReason ?? null,
     expectedReturnAt: null,

@@ -4,7 +4,7 @@ This document is written for an autonomous caller. It states what is callable,
 what it costs, and what has actually been proven. It contains no marketing
 claim and no capability that the deployed system does not serve.
 
-Source: `Clervo production probe`, probed at 2026-08-14T12:17:15.502Z. Release: `6024e67a816e69fef7f73fae2cc867951c3dfd00`.
+Source: `Clervo production probe`, probed at 2026-08-14T12:17:15.502Z.
 
 ## Identity
 
@@ -15,18 +15,17 @@ Source: `Clervo production probe`, probed at 2026-08-14T12:17:15.502Z. Release: 
 
 ## Observed state
 
-| Product | ID | Lifecycle state | Proof level |
+| Product | ID | Availability | Price |
 |---|---|---|---|
-| AI | `ai` | live | paid_outcome_verified |
-| Crypto Intelligence | `crypto_intelligence` | live | paid_outcome_verified |
-| Prediction Intelligence | `prediction` | live | paid_outcome_verified |
-| Multi-chain RPC | `rpc` | unavailable (temporarily_unavailable) | none |
-| Secure Sandbox | `sandbox` | live | paid_outcome_verified |
-| Research | `search` | live | paid_outcome_verified |
+| AI | `ai` | live | 0.001000 USDC observed maximum |
+| Crypto Intelligence | `crypto_intelligence` | live | 0.004000 USDC observed maximum |
+| Prediction Intelligence | `prediction` | live | 0.002000 USDC observed maximum |
+| Multi-chain RPC | `rpc` | unavailable (temporarily_unavailable) | not offered |
+| Secure Sandbox | `sandbox` | live | 0.060000 USDC observed maximum |
+| Research | `search` | live | 0.006000 USDC observed maximum |
 
-These are two independent facts. A `live` product with proof level
-`quote_observed_unpaid` is offered and priced; it is not a demonstrated paid
-outcome. Report it that way if you cite it.
+A `live` product accepts requests. Paid resources return their binding quote
+in the 402 response; unavailable resources have no public execution route.
 
 ## Free entry point
 
@@ -73,8 +72,8 @@ curl -sS https://api.clervo.dev/v1/search/free \
 
 ## Boundaries
 
-- Publicly callable previews: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.
+- Publicly callable operations: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.
 - Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable without commercially qualified price supply.
 - Reports expose observed facts, deterministic signals, coverage, missing sources, freshness, evidence, and provenance; they do not infer wallet identity, risk, advice, custody, signing, or trading.
-- A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.
+- A 402 response is a quote, not payment authorization or settlement.
 - Solana and unsupported EVM chains fail closed.

@@ -1,9 +1,7 @@
 {
   "schemaVersion": "clervo.distribution-onboarding.v1",
-  "releaseCandidateId": "clervo-private-core-2026-08-02.2",
-  "interfaceHash": "sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4",
-  "publicCallable": false,
-  "paymentImplemented": false,
+  "publicCallable": true,
+  "paymentImplemented": true,
   "journey": [
     {
       "step": "install",
@@ -12,28 +10,28 @@
     },
     {
       "step": "ask",
-      "state": "fixture_verified",
-      "action": "Submit one bounded request with an idempotency key."
+      "state": "public_raw_search",
+      "action": "Submit one bounded raw Search request with an idempotency key."
     },
     {
       "step": "fund",
-      "state": "unavailable",
-      "action": "Wait for a verified payable deployment before funding."
+      "state": "user_managed",
+      "action": "Hold enough exact quoted USDC on Base before approving a paid request."
     },
     {
       "step": "approve",
-      "state": "fixture_only",
-      "action": "Inspect and approve only the explicitly non-payable fixture."
+      "state": "explicit_wallet_action",
+      "action": "Inspect the exact maximum charge, network, asset, resource, and expiry before signing."
     },
     {
       "step": "result",
-      "state": "fixture_verified",
-      "action": "Verify the fixture result against its contract evidence."
+      "state": "public_raw_search",
+      "action": "Verify the normalized result and its source citations."
     },
     {
       "step": "receipt",
-      "state": "fixture_verified",
-      "action": "Inspect the request hash and replay-safe fixture receipt."
+      "state": "public_verified",
+      "action": "Inspect the payment response, receipt, request hash, and no-charge replay behavior."
     }
   ],
   "recovery": [

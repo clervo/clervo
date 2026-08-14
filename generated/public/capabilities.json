@@ -7,12 +7,11 @@
       "source": "Clervo production probe",
       "generatedBy": "Clervo discovery generator",
       "observedAt": "2026-08-14T12:17:15.502Z",
-      "releaseId": "6024e67a816e69fef7f73fae2cc867951c3dfd00",
       "proofLevels": {
-        "none": "no payment proof recorded",
-        "quote_observed_unpaid": "payment requirement observed; no settled outcome verified",
-        "paid_outcome_verified": "settled payment and useful outcome verified",
-        "externally_repeated": "multiple settled paid outcomes independently verified"
+        "externally_repeated": "an unrelated party did it, more than once",
+        "none": "nothing demonstrated",
+        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
+        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
       },
       "states": {
         "live": "probed; the deployed system serves it now",
