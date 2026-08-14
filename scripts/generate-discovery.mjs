@@ -780,7 +780,7 @@ if (publicAi) {
     openapi.paths[OPENAI_RESPONSES_PATH] = {
       post: {
         summary: 'Create an OpenAI-compatible response',
-        description: 'Thin stateless OpenAI Responses compatibility adapter over Clervo AI execution. Callers must set store=false. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Stateful continuation, tools, background execution, and unsupported controls fail closed.',
+        description: 'Thin stateless OpenAI Responses compatibility adapter over Clervo AI execution. store defaults to false when omitted; store=true remains unsupported. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Stateful continuation, tools, background execution, and unsupported controls fail closed.',
         operationId: 'openAiResponses',
         security: [],
         tags: ['AI'],
@@ -1022,7 +1022,7 @@ if (publicAi) {
       '',
       `- \`POST ${projection.publicBaseUrl}${OPENAI_RESPONSES_PATH}\`: stateless OpenAI Responses-compatible adapter with SSE support over the canonical Clervo AI execution stack.`,
       '- Supports string input, bounded text message input, optional instructions, max_output_tokens, and text/json_object output formatting.',
-      '- Callers must send `store: false`; stored response state, previous-response continuation, conversations, tools, background execution, and reasoning controls fail closed with 422.',
+      '- `store` defaults to `false` when omitted; `store: true`, stored response state, previous-response continuation, conversations, tools, background execution, and reasoning controls fail closed with 422.',
       '- The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.',
       '- `stream: true` returns protocol-compatible SSE after the operation completes; paid streams begin only after settlement succeeds.',
       '',

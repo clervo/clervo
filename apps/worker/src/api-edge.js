@@ -164,12 +164,21 @@ export default {
     if (typeof env.CLERVO_EDGE_AUTHORIZATION !== 'string' || env.CLERVO_EDGE_AUTHORIZATION.length < 32) return json(503, { code: 'edge_configuration_unavailable', status: 503 });
     headers.set('x-clervo-edge-authorization', `Bearer ${env.CLERVO_EDGE_AUTHORIZATION}`);
     headers.set('x-clervo-quota-subject', await quotaSubject(request));
-    const response = await fetch(new Request(upstream, {
+    const upstreamInit = {
       method: forwardedRequest.method,
       headers,
       body: forwardedRequest.body,
       redirect: 'manual',
-    }));
+    };
+    // Node/Undici requires duplex when forwarding a ReadableStream body.
+    // Propagate it only when the current Request implementation exposes it.
+    if (
+      forwardedRequest.body !== null
+      && forwardedRequest.duplex === 'half'
+    ) {
+      upstreamInit.duplex = 'half';
+    }
+    const response = await fetch(new Request(upstream, upstreamInit));
     const responseHeaders = cors(new Headers(response.headers));
     return new Response(response.body, { status: response.status, headers: responseHeaders });
   },

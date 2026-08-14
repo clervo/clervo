@@ -1644,7 +1644,7 @@
     "/v1/responses": {
       "post": {
         "summary": "Create an OpenAI-compatible response",
-        "description": "Thin stateless OpenAI Responses compatibility adapter over Clervo AI execution. Callers must set store=false. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Stateful continuation, tools, background execution, and unsupported controls fail closed.",
+        "description": "Thin stateless OpenAI Responses compatibility adapter over Clervo AI execution. store defaults to false when omitted; store=true remains unsupported. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Stateful continuation, tools, background execution, and unsupported controls fail closed.",
         "operationId": "openAiResponses",
         "security": [],
         "tags": [
@@ -1671,8 +1671,7 @@
                 "type": "object",
                 "required": [
                   "model",
-                  "input",
-                  "store"
+                  "input"
                 ],
                 "properties": {
                   "model": {
