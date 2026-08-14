@@ -34,15 +34,7 @@
   },
   "observedTruth": {
     "provenance": {
-      "source": "Clervo production probe",
-      "generatedBy": "Clervo discovery generator",
       "observedAt": "2026-08-14T12:17:15.502Z",
-      "proofLevels": {
-        "externally_repeated": "an unrelated party did it, more than once",
-        "none": "nothing demonstrated",
-        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
-        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
-      },
       "states": {
         "live": "probed; the deployed system serves it now",
         "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -63,7 +55,6 @@
           "ai.virtual_try_on"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -87,7 +78,6 @@
           "crypto.wallet.transactions"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -110,7 +100,6 @@
           "prediction.signal"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -133,7 +122,6 @@
           "rpc.health"
         ],
         "lifecycleState": "unavailable",
-        "proofLevel": "none",
         "reason": "temporarily_unavailable",
         "expectedReturnAt": null,
         "publiclyReachable": false,
@@ -147,7 +135,6 @@
           "sandbox.run"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -166,7 +153,6 @@
           "search.web"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -202,42 +188,36 @@
     {
       "id": "ai",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
     {
       "id": "crypto_intelligence",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
     {
       "id": "prediction",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
     {
       "id": "rpc",
       "lifecycleState": "unavailable",
-      "proofLevel": "none",
       "reason": "temporarily_unavailable",
       "publiclyReachable": false
     },
     {
       "id": "sandbox",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
     {
       "id": "search",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     }

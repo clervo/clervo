@@ -4,7 +4,6 @@
   <url><loc>https://clervo.dev/start/</loc></url>
   <url><loc>https://clervo.dev/catalog/</loc></url>
   <url><loc>https://clervo.dev/research/</loc></url>
-  <url><loc>https://clervo.dev/platform/</loc></url>
   <url><loc>https://clervo.dev/product/</loc></url>
   <url><loc>https://clervo.dev/products/search/</loc></url>
   <url><loc>https://clervo.dev/products/ai/</loc></url>
@@ -12,9 +11,6 @@
   <url><loc>https://clervo.dev/products/rpc/</loc></url>
   <url><loc>https://clervo.dev/products/prediction/</loc></url>
   <url><loc>https://clervo.dev/products/crypto/</loc></url>
-  <url><loc>https://clervo.dev/build/</loc></url>
-  <url><loc>https://clervo.dev/proof/</loc></url>
-  <url><loc>https://clervo.dev/proof-lab/</loc></url>
   <url><loc>https://clervo.dev/docs/</loc></url>
   <url><loc>https://clervo.dev/docs/quickstart/</loc></url>
   <url><loc>https://clervo.dev/docs/http/</loc></url>
@@ -29,20 +25,11 @@
   <url><loc>https://clervo.dev/docs/x402/</loc></url>
   <url><loc>https://clervo.dev/docs/catalog/</loc></url>
   <url><loc>https://clervo.dev/pricing/</loc></url>
-  <url><loc>https://clervo.dev/benchmarks/</loc></url>
   <url><loc>https://clervo.dev/security/</loc></url>
   <url><loc>https://clervo.dev/legal/</loc></url>
   <url><loc>https://clervo.dev/status/</loc></url>
   <url><loc>https://clervo.dev/changelog/</loc></url>
-  <url><loc>https://clervo.dev/trust/</loc></url>
-  <url><loc>https://clervo.dev/operations/ai.chat/</loc></url>
-  <url><loc>https://clervo.dev/operations/ai.embed/</loc></url>
   <url><loc>https://clervo.dev/operations/ai.execute/</loc></url>
-  <url><loc>https://clervo.dev/operations/ai.image/</loc></url>
-  <url><loc>https://clervo.dev/operations/ai.music/</loc></url>
-  <url><loc>https://clervo.dev/operations/ai.speech/</loc></url>
-  <url><loc>https://clervo.dev/operations/ai.video/</loc></url>
-  <url><loc>https://clervo.dev/operations/ai.virtual_try_on/</loc></url>
   <url><loc>https://clervo.dev/operations/crypto.wallet.balances/</loc></url>
   <url><loc>https://clervo.dev/operations/crypto.wallet.report/</loc></url>
   <url><loc>https://clervo.dev/operations/crypto.wallet.tokens/</loc></url>
@@ -52,11 +39,6 @@
   <url><loc>https://clervo.dev/operations/prediction.market/</loc></url>
   <url><loc>https://clervo.dev/operations/prediction.markets/</loc></url>
   <url><loc>https://clervo.dev/operations/prediction.signal/</loc></url>
-  <url><loc>https://clervo.dev/operations/rpc.archive/</loc></url>
-  <url><loc>https://clervo.dev/operations/rpc.batch/</loc></url>
-  <url><loc>https://clervo.dev/operations/rpc.broadcast/</loc></url>
-  <url><loc>https://clervo.dev/operations/rpc.call/</loc></url>
-  <url><loc>https://clervo.dev/operations/rpc.health/</loc></url>
   <url><loc>https://clervo.dev/operations/sandbox.run/</loc></url>
   <url><loc>https://clervo.dev/operations/search.web/</loc></url>
   <url><loc>https://clervo.dev/models/allam-2-7b/</loc></url>

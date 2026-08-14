@@ -30,6 +30,8 @@
     "test:n1.1": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n1.1.test.mjs",
     "test:n1.2": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n1.2.test.mjs",
     "generate:discovery": "node ./scripts/verify-runtime.mjs && npm run build && node ./scripts/generate-discovery.mjs",
+    "audit:public-truth": "node ./scripts/verify-runtime.mjs && node ./scripts/audit-public-truth.mjs",
+    "accept:fresh-user:mcp": "node ./scripts/verify-runtime.mjs && node ./scripts/accept-fresh-user-mcp.mjs",
     "test:n1.3": "node ./scripts/verify-runtime.mjs && npm run generate:discovery && node --test ./tests/contract/n1.3.test.mjs",
     "test:n2.1": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n2.1.test.mjs",
     "test:n2.2": "node ./scripts/verify-runtime.mjs && npm run build && node --test ./tests/contract/n2.2.test.mjs",

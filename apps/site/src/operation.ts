@@ -148,9 +148,9 @@ export function operationContract(operationId: string) {
   const familyId = familyOf(operationId);
   const family = observedProduct(familyId);
   const published = discovery.products.find((entry) => entry.operationId === operationId);
-  const offer = pricing.offers.find((entry) => entry.productId === operationId);
+  const offer = pricing.offers.find((entry) => entry.productId === (published?.productId ?? operationId));
   const publicRoute = published?.publicAvailable === true && published.payment.challengeImplemented
-    ? (published.routes?.paidChallenge ?? published.routes?.freeSample ?? null)
+    ? (published.routes?.paidChallenge ?? published.routes?.execute ?? published.routes?.freeSample ?? null)
     : null;
   const method = publicRoute === null ? undefined : openapi.paths?.[publicRoute]?.post;
   const operationRoutes = observedRoutes.filter((route) => route.productIds.includes(operationId));

@@ -129,9 +129,8 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
           <div><dt>Paid behavior</dt><dd>{search.observedPrice === null ? 'not offered' : '402 quote before execution'}</dd></div>
         </dl>
         <p className="quiet research-note">
-          Observed {observedTruth.provenance.observedAt} from{' '}
-          {observedTruth.provenance.source}. A price that changes on the deployed
-          system changes here on the next probe, not on an edit.
+          Current at {observedTruth.provenance.observedAt}. Prices are generated
+          from the same public product data used by discovery and status.
         </p>
       </section>
 

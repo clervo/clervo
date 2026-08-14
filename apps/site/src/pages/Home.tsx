@@ -1,12 +1,9 @@
-import { useState } from 'react';
-
 import { HomeHero } from '../components/HomeHero';
 import {
   lifecycleLabels,
   observedTruth,
   pillarLabels,
   publishedClients,
-  quickStartCurl,
   type ExperiencePhase,
   type ObservedProduct,
 } from '../product';
@@ -22,148 +19,84 @@ const familyRoutes: Record<ObservedProduct['id'], string> = {
 };
 
 const familyDescriptions: Record<ObservedProduct['id'], string> = {
-  search: 'Fresh source retrieval with citations and evidence.',
-  ai: 'A qualified model catalog behind one request contract.',
-  sandbox: 'Bounded code execution with isolated failure.',
-  rpc: 'Chain access is currently unavailable on the public API.',
-  prediction: 'Comparable market context with freshness and attribution.',
-  crypto_intelligence: 'Wallet and on-chain signals with evidence attached.',
+  search: 'Fresh web results with citations.',
+  ai: 'Chat, embeddings, and multimodal models through one API.',
+  sandbox: 'One-shot, isolated Node.js execution.',
+  rpc: 'Multi-chain RPC is not currently offered.',
+  prediction: 'Normalized prediction-market data and signals.',
+  crypto_intelligence: 'Read-only wallet balances, activity, and reports.',
 };
 
-const familyOrder: ObservedProduct['id'][] = [
-  'search', 'ai', 'sandbox', 'prediction', 'crypto_intelligence', 'rpc',
-];
-
-const observedAtLabel = new Intl.DateTimeFormat('en', {
-  dateStyle: 'medium',
-  timeStyle: 'short',
-  timeZone: 'UTC',
-}).format(new Date(observedTruth.provenance.observedAt));
+const familyOrder: ObservedProduct['id'][] = ['ai', 'search', 'sandbox', 'prediction', 'crypto_intelligence', 'rpc'];
+const flow = ['Install', 'Make request', 'See the price', 'Approve safely', 'Receive result'];
 
 export function Home({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
-  const [copied, setCopied] = useState(false);
-  const liveFamilies = observedTruth.products.filter(({ lifecycleState }) => lifecycleState === 'live').length;
-
-  const copyFreeCall = async () => {
-    if (quickStartCurl === null) return;
-    await navigator.clipboard.writeText(quickStartCurl);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1800);
-  };
-
   return (
-    <div className="recovery-home">
+    <main className="commercial-home">
       <a className="skip-link" href="#home-title">Skip to main content</a>
-
       <HomeHero onPhase={onPhase} />
 
-      <section className="home-platform" aria-labelledby="home-platform-title">
-        <div className="shell home-platform__intro">
-          <p className="eyebrow">One operating layer</p>
-          <h2 id="home-platform-title">The outcome stays coherent when the provider stack does not.</h2>
-          <p className="lede">
-            Ask for the job. Clervo discovers the capability, qualifies what can serve,
-            holds the spend boundary, and returns the outcome in a common contract.
-          </p>
-        </div>
-        <div className="shell home-capabilities">
-          <p className="home-capabilities__status data">
-            <span className="state state--live">{liveFamilies} serving</span>
-            <time dateTime={observedTruth.provenance.observedAt}>{observedAtLabel} UTC</time>
-          </p>
-          <ul>
-            {familyOrder.map((id, index) => {
+      <section className="commercial-section shell" aria-labelledby="home-flow-title">
+        <p className="eyebrow">How it works</p>
+        <h2 id="home-flow-title">From install to result in one clear flow.</h2>
+        <ol className="commercial-flow">
+          {flow.map((item, index) => <li key={item}><span>{index + 1}</span><strong>{item}</strong></li>)}
+        </ol>
+        <p className="quiet">Free operations skip the payment steps. Paid operations return HTTP 402 with the exact request-specific requirement before anything runs.</p>
+      </section>
+
+      <section className="commercial-section commercial-section--tint" aria-labelledby="home-products-title">
+        <div className="shell">
+          <div className="commercial-heading">
+            <div><p className="eyebrow">Products</p><h2 id="home-products-title">Use the capability, not another provider account.</h2></div>
+            <Link className="text-link" to="/product">See routes and prices <span aria-hidden="true">→</span></Link>
+          </div>
+          <div className="commercial-product-grid">
+            {familyOrder.map((id) => {
               const product = observedTruth.products.find((candidate) => candidate.id === id);
               if (product === undefined) return null;
               return (
-                <li key={product.id}>
-                  <Link to={familyRoutes[product.id]}>
-                    <span className="home-capability__index data">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="home-capability__body">
-                      <strong>{pillarLabels[product.id]}</strong>
-                      <small>{familyDescriptions[product.id]}</small>
-                    </span>
-                    <span className={`state state--${product.lifecycleState}`}>
-                      {lifecycleLabels[product.lifecycleState]}
-                    </span>
-                  </Link>
-                </li>
+                <Link className="commercial-product-card" key={id} to={familyRoutes[id]}>
+                  <span className={`state state--${product.lifecycleState}`}>{lifecycleLabels[product.lifecycleState]}</span>
+                  <h3>{pillarLabels[id]}</h3>
+                  <p>{familyDescriptions[id]}</p>
+                </Link>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section className="commercial-section shell commercial-integrate" aria-labelledby="home-integrate-title">
+        <div>
+          <p className="eyebrow">Use what you already have</p>
+          <h2 id="home-integrate-title">Claude, OpenAI-compatible apps, CLI, TypeScript, or Python.</h2>
+          <p className="lede">Connect through MCP, point a compatible client at the hosted API, or use a published Clervo package. The local Router shares wallet limits, receipts, and replay state across tools.</p>
+          <div className="commercial-actions"><Link className="button button--primary" to="/start">Choose how to start</Link><Link className="text-link" to="/docs">Read the reference <span aria-hidden="true">→</span></Link></div>
+        </div>
+        <ul className="commercial-client-list">
+          <li><strong>Claude / MCP</strong><span>@clervo/mcp</span></li>
+          <li><strong>OpenAI-compatible</strong><span>Hosted API or local proxy</span></li>
+          <li><strong>Router / CLI</strong><span>@clervo/router</span></li>
+          {publishedClients.filter(({ id }) => id !== 'mcp').map((client) => <li key={client.id}><strong>{client.label}</strong><span>v{client.version}</span></li>)}
+        </ul>
+      </section>
+
+      <section className="commercial-section commercial-payment" aria-labelledby="home-payment-title">
+        <div className="shell commercial-payment__layout">
+          <div><p className="eyebrow">Payment you control</p><h2 id="home-payment-title">No silent spend.</h2></div>
+          <ul>
+            <li>Price shown before payment</li><li>Automatic payment requires explicit opt-in</li><li>Per-operation and daily limits</li><li>Same-key replay never pays twice</li>
           </ul>
+          <Link className="button button--secondary" to="/pricing">Understand pricing</Link>
         </div>
       </section>
 
-      <section className="home-connect shell" aria-labelledby="home-connect-title">
-        <div className="home-connect__copy">
-          <p className="eyebrow">Free first. Wallet when needed.</p>
-          <h2 id="home-connect-title">Start with the client your agent already speaks.</h2>
-          <p className="lede">
-            Router / CLI, MCP, TypeScript, Python, raw HTTP, and OpenAI-compatible
-            clients converge on the same Clervo operating contract.
-          </p>
-          <div className="home-client-list" aria-label="Released clients">
-            <Link to="/docs/cli"><strong>Router / CLI</strong><span>Command line</span></Link>
-            {publishedClients.map((client) => (
-              <Link to={`/docs/${client.id}`} key={client.id}>
-                <strong>{client.label}</strong><span>v{client.version}</span>
-              </Link>
-            ))}
-            <Link to="/docs/openai"><strong>OpenAI-compatible</strong><span>Existing clients</span></Link>
-          </div>
-          <div className="home-actions">
-            <Link className="button button--primary" to="/docs/quickstart">Get a free first result</Link>
-            <Link className="text-link" to="/docs">Read the docs <span aria-hidden="true">→</span></Link>
-          </div>
-        </div>
-
-        <div className="home-free-call" aria-label="Free first Search request">
-          <header>
-            <span className="data">curl · observed public route</span>
-            <button type="button" onClick={copyFreeCall} disabled={quickStartCurl === null}>
-              {copied ? 'Copied' : 'Copy'}
-            </button>
-          </header>
-          <pre tabIndex={0}><code>{quickStartCurl ?? 'No public free entry is currently observed.'}</code></pre>
-          <footer>
-            <span>Free Search entry</span>
-            <span>Wallet not required</span>
-          </footer>
-        </div>
+      <section className="commercial-section shell commercial-final" aria-labelledby="home-final-title">
+        <p className="eyebrow">Ready when you are</p><h2 id="home-final-title">Make your first AI call.</h2>
+        <p className="lede">Start free, then stop at the real 402 boundary before deciding whether to pay.</p>
+        <Link className="button button--primary" to="/start#ai-call">Get started</Link>
       </section>
-
-      <section className="home-proof" aria-labelledby="home-proof-title">
-        <div className="shell home-proof__layout">
-          <div className="home-proof__copy">
-            <p className="eyebrow">Proof is part of the result</p>
-            <h2 id="home-proof-title">A successful response should explain itself.</h2>
-            <p className="lede">
-              Clervo keeps operation identity, evidence, provenance, settlement,
-              and replay attached to the result—so an agent can inspect what happened next.
-            </p>
-            <Link className="text-link" to="/proof">Understand Clervo proof <span aria-hidden="true">→</span></Link>
-          </div>
-          <div className="home-receipt" aria-label="Verified outcome contract anatomy">
-            <p className="home-receipt__status"><span>Verified outcome</span><strong>Receipt resolved</strong></p>
-            <dl>
-              <div><dt>Operation</dt><dd>Exact work identity</dd></div>
-              <div><dt>Result</dt><dd>Returned outcome</dd></div>
-              <div><dt>Evidence</dt><dd>Sources and provenance</dd></div>
-              <div><dt>Settlement</dt><dd>Charge state and boundary</dd></div>
-              <div><dt>Replay</dt><dd>Same request, same receipt</dd></div>
-            </dl>
-          </div>
-        </div>
-      </section>
-
-      <section className="home-final shell" aria-labelledby="home-final-title">
-        <p className="eyebrow">One useful result is enough to begin.</p>
-        <h2 id="home-final-title">Give Clervo the next bounded task.</h2>
-        <div className="home-actions">
-          <Link className="button button--primary" to="/start">Set up Clervo</Link>
-          <Link className="button button--quiet" to="/catalog">Find an AI model</Link>
-        </div>
-      </section>
-    </div>
+    </main>
   );
 }

@@ -56,5 +56,7 @@ test('raw HTTP onboarding is static, explicit, and reflects current payment avai
   assert.match(build, /Package availability is not endpoint availability/iu);
   assert.doesNotMatch(build, /funding, signing, or settlement is available today/iu);
   assert.match(html, /Raw HTTP(?:<!-- -->)? client/u);
-  assert.match(html, /Public packages verified/iu);
+  assert.match(html, /https:\/\/api\.clervo\.dev/u);
+  assert.match(html, /402/u);
+  assert.doesNotMatch(html, /release candidate|commercially unproven|owner[- ]funded|quote observed unpaid/iu);
 });

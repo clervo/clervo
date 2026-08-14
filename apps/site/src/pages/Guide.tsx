@@ -139,9 +139,8 @@ export function Guide({ topic, onPhase }: { topic: GuideTopic; onPhase(phase: Ex
             <p className="eyebrow">Generated surface</p>
             <h2 id="catalog-heading">Current availability by family.</h2>
             <p className="lede">
-              Observed at {observedTruth.provenance.observedAt} from{' '}
-              {observedTruth.provenance.source}. Availability says whether a
-              family serves requests now.
+              Current at {observedTruth.provenance.observedAt}. Availability
+              says whether a family serves requests now.
             </p>
           </div>
           <ul className="guide-catalog">

@@ -1,6 +1,6 @@
 # Clervo
 
-> Clervo is outcome infrastructure for agents: Find, Understand, Act.
+> Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.
 
 Product access:
 
@@ -66,16 +66,16 @@ Product access:
 
 ## Current product availability
 
-Probed from the deployed system at 2026-08-14T12:17:15.502Z. A live product accepts requests; an unavailable product has no public execution route. The 402 returned for a paid request is the binding quote.
+Current at 2026-08-14T12:17:15.502Z. An available product accepts requests; an unavailable product has no public execution route. The 402 returned for a paid request is the binding quote.
 
 | Product | Availability | Price |
 |---|---|---|
-| AI | live | 0.001000 USDC observed maximum |
-| Crypto Intelligence | live | 0.004000 USDC observed maximum |
-| Prediction Intelligence | live | 0.002000 USDC observed maximum |
+| AI | live | 0.001000 USDC maximum |
+| Crypto Intelligence | live | 0.004000 USDC maximum |
+| Prediction Intelligence | live | 0.002000 USDC maximum |
 | Multi-chain RPC | unavailable (temporarily_unavailable) | not offered |
-| Secure Sandbox | live | 0.060000 USDC observed maximum |
-| Research | live | 0.006000 USDC observed maximum |
+| Secure Sandbox | live | 0.060000 USDC maximum |
+| Research | live | 0.006000 USDC maximum |
 
 ## First call
 
@@ -130,11 +130,12 @@ Model list: 89 callable IDs (85 canonical, 4 aliases), 88 sellable. Payment mani
 
 # Clervo for agents
 
-This document is written for an autonomous caller. It states what is callable,
-what it costs, and what has actually been proven. It contains no marketing
-claim and no capability that the deployed system does not serve.
+Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.
 
-Source: `Clervo production probe`, probed at 2026-08-14T12:17:15.502Z.
+This document lists the callable routes, current prices, setup paths, and safe
+payment behavior an autonomous caller needs.
+
+Current availability was generated at 2026-08-14T12:17:15.502Z.
 
 ## Identity
 
@@ -143,7 +144,7 @@ Source: `Clervo production probe`, probed at 2026-08-14T12:17:15.502Z.
 - Payment protocols: x402 and MPP EVM charge intents, USDC on Base.
 - Authentication: none. The free sample needs no credential; paid routes need a payment, not an account.
 
-## Observed state
+## Current availability
 
 | Product | ID | Availability | Price |
 |---|---|---|---|
@@ -203,8 +204,7 @@ curl -sS https://api.clervo.dev/v1/search/free \
 ## Boundaries
 
 - Publicly callable operations: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.
-- Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable without commercially qualified price supply.
-- Reports expose observed facts, deterministic signals, coverage, missing sources, freshness, evidence, and provenance; they do not infer wallet identity, risk, advice, custody, signing, or trading.
+- Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable.
 - A 402 response is a quote, not payment authorization or settlement.
 - Solana and unsupported EVM chains fail closed.
 
@@ -212,15 +212,16 @@ curl -sS https://api.clervo.dev/v1/search/free \
 
 # Clervo skill
 
-Clervo sells bounded outcomes over HTTP: one request in, one verified result
-and one receipt out. Payment, when required, uses x402 or MPP over USDC on
-Base and is always quoted before execution.
+Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.
 
-Generated from `Clervo production probe`, probed at 2026-08-14T12:17:15.502Z. Every row below is observed from the deployed system, never asserted.
+Payment, when required, uses x402 or MPP over USDC on Base and is always
+quoted before execution. Automatic payment is off by default.
+
+Current availability was generated at 2026-08-14T12:17:15.502Z.
 
 ## When to use this skill
 
-- You need a paid AI model call (89 models: Claude, GPT, Gemini, Qwen, DeepSeek, Llama, Kimi, Mistral and more) — use `POST /v1/ai/execute`.
+- You need an AI model call (89 model IDs) — use `POST /v1/ai/execute`.
 - You need cited web evidence for a question — use `POST /v1/search/free` or `POST /v1/search/paid`.
 - You need to run sandboxed Node.js code safely with a receipt — use `POST /v1/sandbox/execute`.
 - You need real-time prediction market data (Polymarket, Kalshi, Manifold, Limitless) — use `POST /v1/prediction/execute`.
@@ -228,7 +229,7 @@ Generated from `Clervo production probe`, probed at 2026-08-14T12:17:15.502Z. Ev
 - You want per-request payment with no account, no API key, and safe retry on failure.
 - You need the same request to be safely retryable without being charged twice.
 
-## Observed capability
+## Current availability
 
 | Product | ID | Availability | Price |
 |---|---|---|---|
@@ -239,7 +240,7 @@ Generated from `Clervo production probe`, probed at 2026-08-14T12:17:15.502Z. Ev
 | Secure Sandbox | `sandbox` | live | 0.060000 USDC observed maximum |
 | Research | `search` | live | 0.006000 USDC observed maximum |
 
-Availability is probed from the deployed runtime. Paid routes return a 402
+Availability is current at the time shown in the public status document. Paid routes return a 402
 before execution; inspect that request-specific quote before authorizing it.
 
 ## First call

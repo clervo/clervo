@@ -1,0 +1,165 @@
+.commercial-home,
+.commercial-page {
+  background: var(--surface-0);
+  color: var(--text);
+}
+
+.commercial-hero {
+  min-height: min(760px, calc(100svh - 72px));
+  display: grid;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 72% 42%, rgb(0 229 255 / 10%), transparent 24rem),
+    radial-gradient(circle at 26% 56%, rgb(255 48 40 / 8%), transparent 28rem),
+    #050505;
+}
+
+.commercial-hero__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+  gap: clamp(3rem, 8vw, 8rem);
+  align-items: center;
+  padding-block: clamp(5rem, 10vw, 9rem);
+}
+
+.commercial-hero__copy { max-width: 52rem; }
+.commercial-hero h1,
+.commercial-page-lead h1 {
+  max-width: 15ch;
+  margin: .3em 0;
+  font-size: clamp(3.2rem, 7.2vw, 7.4rem);
+  line-height: .9;
+  letter-spacing: -.065em;
+}
+
+.commercial-hero .lede { max-width: 43rem; font-size: clamp(1.15rem, 1.7vw, 1.45rem); }
+.commercial-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .85rem; margin-top: 2rem; }
+.commercial-hero__safety { max-width: 42rem; margin-top: 1.3rem; color: var(--text-secondary); font-size: .92rem; }
+
+.commercial-hero__card {
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid rgb(255 255 255 / 16%);
+  background: rgb(255 255 255 / 4%);
+  box-shadow: 0 2rem 6rem rgb(0 0 0 / 35%);
+}
+.commercial-hero__card-kicker { color: var(--qualify); font: 600 .75rem/1 var(--mono); text-transform: uppercase; letter-spacing: .1em; }
+.commercial-hero__card dl { margin: 1.5rem 0; }
+.commercial-hero__card dl div { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-top: 1px solid rgb(255 255 255 / 11%); }
+.commercial-hero__card dt { color: var(--text-secondary); }
+.commercial-hero__card dd { margin: 0; text-align: right; font-weight: 650; }
+
+.commercial-section { padding-block: clamp(4.5rem, 8vw, 8rem); }
+.commercial-section--tint { border-block: 1px solid var(--line); background: var(--surface-1); }
+.commercial-section h2 { max-width: 18ch; margin-top: .3em; font-size: clamp(2.2rem, 4.5vw, 4.7rem); line-height: .98; letter-spacing: -.045em; }
+.commercial-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: clamp(2rem, 5vw, 4rem); }
+
+.commercial-flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; margin: 3rem 0 1.5rem; padding: 0; list-style: none; background: var(--line); }
+.commercial-flow li { min-height: 8.5rem; padding: 1.3rem; display: flex; flex-direction: column; justify-content: space-between; background: var(--surface-0); }
+.commercial-flow span { color: var(--qualify); font: 600 .75rem/1 var(--mono); }
+.commercial-flow strong { font-size: 1rem; }
+
+.commercial-product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); }
+.commercial-product-card { min-height: 15rem; padding: 1.6rem; color: inherit; background: var(--surface-0); text-decoration: none; transition: background-color 160ms ease; }
+.commercial-product-card:hover { background: var(--surface-2); }
+.commercial-product-card h3 { margin: 3rem 0 .75rem; font-size: 1.5rem; }
+.commercial-product-card p { color: var(--text-secondary); }
+
+.commercial-integrate { display: grid; grid-template-columns: 1fr minmax(18rem, .75fr); gap: clamp(3rem, 8vw, 8rem); align-items: center; }
+.commercial-client-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.commercial-client-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line); }
+.commercial-client-list span { color: var(--text-secondary); text-align: right; }
+
+.commercial-payment { background: #080808; border-block: 1px solid var(--line); }
+.commercial-payment__layout { display: grid; grid-template-columns: 1fr 1fr auto; gap: clamp(2rem, 6vw, 6rem); align-items: center; }
+.commercial-payment ul { margin: 0; padding-left: 1.2rem; color: var(--text-secondary); }
+.commercial-payment li + li { margin-top: .7rem; }
+.commercial-final { text-align: center; display: grid; justify-items: center; }
+.commercial-final .lede { max-width: 40rem; }
+
+.commercial-page-lead { padding-block: clamp(5rem, 10vw, 9rem); }
+.commercial-page-lead .lede { max-width: 48rem; font-size: clamp(1.1rem, 1.6vw, 1.35rem); }
+.commercial-family-list { display: grid; gap: 1px; background: var(--line); }
+.commercial-family { display: grid; grid-template-columns: minmax(12rem, .55fr) minmax(14rem, .8fr) minmax(18rem, 1fr) auto; gap: clamp(1.5rem, 4vw, 4rem); align-items: start; padding: clamp(1.5rem, 3vw, 2.5rem); background: var(--surface-0); }
+.commercial-family__title h3 { margin: .8rem 0 0; font-size: 1.5rem; }
+.commercial-family > p { margin: 0; color: var(--text-secondary); }
+.commercial-family dl { margin: 0; }
+.commercial-family dl div { display: grid; grid-template-columns: 7rem 1fr; gap: .75rem; padding: .35rem 0; }
+.commercial-family dt { color: var(--text-quiet); }
+.commercial-family dd { margin: 0; }
+.commercial-family__actions { display: grid; gap: .75rem; white-space: nowrap; }
+.commercial-unavailable { display: flex; justify-content: space-between; align-items: center; gap: 2rem; }
+.commercial-unavailable p { max-width: 44rem; color: var(--text-secondary); }
+
+.commercial-free-badge { padding: .55rem .8rem; border: 1px solid rgb(0 229 255 / 35%); color: var(--qualify); font: 600 .76rem/1 var(--mono); }
+.commercial-start-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); }
+.commercial-start-card { min-width: 0; padding: clamp(1.4rem, 3vw, 2.3rem); background: var(--surface-0); }
+.commercial-start-card--featured { grid-column: 1 / -1; background: linear-gradient(115deg, rgb(0 229 255 / 8%), transparent 55%), var(--surface-0); }
+.commercial-start-card > span { color: var(--qualify); font: 600 .75rem/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+.commercial-start-card h3 { margin: 1rem 0; font-size: 1.55rem; }
+.commercial-start-card p { color: var(--text-secondary); }
+.commercial-start-card pre { max-width: 100%; overflow-x: auto; padding: 1rem; border: 1px solid var(--line); background: #030303; }
+.commercial-start-card > div { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+.commercial-payment-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 2rem 0; padding: 0; list-style-position: inside; background: var(--line); }
+.commercial-payment-steps li { min-height: 9rem; padding: 1.2rem; background: var(--surface-0); }
+.s5-badge.available i { background: var(--qualify); }
+.site-footer__columns h2 { color: var(--text-secondary); }
+.commercial-family--operation { grid-template-columns: minmax(12rem, .65fr) minmax(14rem, 1fr) minmax(18rem, 1fr) auto; }
+.commercial-empty { padding: 2rem; border: 1px solid var(--line); }
+.commercial-empty p { color: var(--text-secondary); }
+.commercial-family-nav,
+.commercial-operation-nav { display: flex; flex-wrap: wrap; gap: 1px; padding-block: 2rem 5rem; }
+.commercial-family-nav a,
+.commercial-operation-nav a { display: grid; gap: .25rem; min-height: 44px; padding: .75rem 1rem; border: 1px solid var(--line); color: var(--text-secondary); text-decoration: none; }
+.commercial-family-nav a.is-active { border-color: var(--qualify); color: var(--text); }
+.commercial-family-nav small { color: var(--text-quiet); }
+.commercial-breadcrumbs { display: flex; flex-wrap: wrap; gap: .55rem; color: var(--text-secondary); }
+.commercial-contract-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 2.5rem 0 1rem; background: var(--line); }
+.commercial-contract-grid div { min-width: 0; min-height: 8rem; padding: 1.2rem; background: var(--surface-0); }
+.commercial-contract-grid dt { margin-bottom: 1rem; color: var(--text-quiet); font-size: .8rem; }
+.commercial-contract-grid dd { margin: 0; overflow-wrap: anywhere; }
+.commercial-schema-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); }
+.commercial-schema-grid article { min-width: 0; padding: 1.5rem; background: var(--surface-0); }
+.commercial-schema-grid pre { max-height: 34rem; overflow: auto; }
+.commercial-error-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1px; margin: 2rem 0; background: var(--line); }
+.commercial-error-list article { padding: 1.2rem; background: var(--surface-0); }
+.commercial-error-list strong { color: var(--qualify); font-family: var(--mono); }
+.commercial-error-list p { color: var(--text-secondary); }
+
+@media (max-width: 980px) {
+  .commercial-hero__layout,
+  .commercial-integrate,
+  .commercial-payment__layout { grid-template-columns: 1fr; }
+  .commercial-hero { min-height: auto; }
+  .commercial-hero__card { max-width: 38rem; }
+  .commercial-flow { grid-template-columns: repeat(3, 1fr); }
+  .commercial-product-grid { grid-template-columns: repeat(2, 1fr); }
+  .commercial-family { grid-template-columns: 1fr 1fr; }
+  .commercial-family--operation { grid-template-columns: 1fr 1fr; }
+  .commercial-contract-grid { grid-template-columns: repeat(2, 1fr); }
+  .commercial-payment-steps { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .commercial-hero__layout { padding-block: 4rem; }
+  .commercial-hero h1,
+  .commercial-page-lead h1 { font-size: clamp(3rem, 15vw, 4.6rem); }
+  .commercial-actions .button { width: 100%; }
+  .commercial-heading { align-items: flex-start; flex-direction: column; }
+  .commercial-flow,
+  .commercial-product-grid,
+  .commercial-start-grid,
+  .commercial-payment-steps { grid-template-columns: 1fr; }
+  .commercial-start-card--featured { grid-column: auto; }
+  .commercial-flow li { min-height: 6.5rem; }
+  .commercial-family { grid-template-columns: 1fr; }
+  .commercial-family--operation,
+  .commercial-schema-grid,
+  .commercial-contract-grid { grid-template-columns: 1fr; }
+  .commercial-family__actions { display: flex; flex-wrap: wrap; }
+  .commercial-unavailable { align-items: flex-start; flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .commercial-product-card { transition: none; }
+}

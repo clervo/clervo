@@ -67,12 +67,12 @@
     {
       "name": "clervo-social-card.svg",
       "bytes": 2011,
-      "sha256": "043d213a40b611ea4a2920a8e70c1add37fca898ba799a558a7a76c3a37592b4"
+      "sha256": "0bc88819bb596a31738da0a51a554831f12dca419f2f1925ceb44cb368106329"
     },
     {
       "name": "clervo-social-card.png",
-      "bytes": 14734,
-      "sha256": "cb0e1d226d16e5767719d150963346c0c70270c4890320d11dc69ebb5832b770"
+      "bytes": 15267,
+      "sha256": "70944c91f269280da245b70558cd6562a7173cc62259ac4d36297776ccb04588"
     },
     {
       "name": "identity.json",

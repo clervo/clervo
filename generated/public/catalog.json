@@ -12,7 +12,7 @@
       "operationId": "search.web",
       "title": "Web search evidence",
       "summary": "Normalized ranked retrieval evidence without synthesized prose.",
-      "lifecycle": "preview",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -54,7 +54,7 @@
       ],
       "title": "Clervo AI model catalog",
       "summary": "Provider-neutral chat, embeddings, image, speech, video, music, and virtual try-on with stable identities, normalized results, truthful usage, paid receipts, and no-charge replay.",
-      "lifecycle": "production",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -93,7 +93,7 @@
       "operationId": "sandbox.run",
       "title": "Secure one-shot code execution",
       "summary": "Bounded Node.js execution in a pinned gVisor image with no network, strict resource ceilings, cleanup, receipt, and no-charge replay.",
-      "lifecycle": "preview",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -129,7 +129,7 @@
       "operationId": "prediction.markets",
       "title": "Discover normalized markets",
       "summary": "Search and paginate fresh normalized markets and conservative canonical events.",
-      "lifecycle": "preview",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -173,7 +173,7 @@
       "operationId": "prediction.market",
       "title": "Inspect one normalized market",
       "summary": "Read one stable Clervo market identity with normalized probabilities, freshness, evidence, and supply attribution.",
-      "lifecycle": "preview",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -217,7 +217,7 @@
       "operationId": "prediction.compare",
       "title": "Compare equivalent markets",
       "summary": "Compare two conservatively matched markets and return normalized disagreement evidence.",
-      "lifecycle": "preview",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -261,7 +261,7 @@
       "operationId": "prediction.history",
       "title": "Read durable market history",
       "summary": "Read a bounded hash-linked history of Clervo normalized observations.",
-      "lifecycle": "preview",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -305,7 +305,7 @@
       "operationId": "prediction.signal",
       "title": "Derive market signals",
       "summary": "Derive bounded movement or disagreement signals only when the evidence is sufficient.",
-      "lifecycle": "preview",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -349,7 +349,7 @@
       "operationId": "crypto.wallet.balances",
       "title": "Read wallet balances",
       "summary": "Read exact native balances and bounded holding coverage across requested supported chains.",
-      "lifecycle": "preview",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -393,7 +393,7 @@
       "operationId": "crypto.wallet.tokens",
       "title": "Read token holdings",
       "summary": "Read bounded ERC-20 holdings with exact atomic amounts and explicit missing valuation.",
-      "lifecycle": "preview",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -437,7 +437,7 @@
       "operationId": "crypto.wallet.transactions",
       "title": "Read wallet activity",
       "summary": "Read bounded normalized native and ERC-20 activity with direction, status, freshness, and evidence.",
-      "lifecycle": "preview",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -481,7 +481,7 @@
       "operationId": "crypto.wallet.report",
       "title": "Derive wallet intelligence",
       "summary": "Derive one bounded multichain wallet report with holdings, activity, flows, counterparties, deterministic signals, coverage, freshness, and provenance.",
-      "lifecycle": "preview",
+      "lifecycle": "available",
       "publicAvailable": true,
       "deliveryModes": [
         "sync"
@@ -523,15 +523,7 @@
   ],
   "observedTruth": {
     "provenance": {
-      "source": "Clervo production probe",
-      "generatedBy": "Clervo discovery generator",
       "observedAt": "2026-08-14T12:17:15.502Z",
-      "proofLevels": {
-        "externally_repeated": "an unrelated party did it, more than once",
-        "none": "nothing demonstrated",
-        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
-        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
-      },
       "states": {
         "live": "probed; the deployed system serves it now",
         "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -552,7 +544,6 @@
           "ai.virtual_try_on"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -576,7 +567,6 @@
           "crypto.wallet.transactions"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -599,7 +589,6 @@
           "prediction.signal"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -622,7 +611,6 @@
           "rpc.health"
         ],
         "lifecycleState": "unavailable",
-        "proofLevel": "none",
         "reason": "temporarily_unavailable",
         "expectedReturnAt": null,
         "publiclyReachable": false,
@@ -636,7 +624,6 @@
           "sandbox.run"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -655,7 +642,6 @@
           "search.web"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,

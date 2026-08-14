@@ -1,0 +1,5320 @@
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "clervo/allam-2-7b",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Allam 2 7b",
+        "description": "Allam 2 7b through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 360000,
+          "reasoningTokenMicrosPerMillion": 360000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/claude-haiku-4-5-20251001",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Claude Haiku 4 5 20251001",
+        "description": "Claude Haiku 4 5 20251001 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 750000,
+          "cachedInputTokenMicrosPerMillion": 750000,
+          "outputTokenMicrosPerMillion": 3000000,
+          "reasoningTokenMicrosPerMillion": 3000000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.750000",
+          "outputPerMToken": "3.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/claude-opus-4-6",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Claude Opus 4 6",
+        "description": "Claude Opus 4 6 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 2500000,
+          "cachedInputTokenMicrosPerMillion": 2500000,
+          "outputTokenMicrosPerMillion": 12500000,
+          "reasoningTokenMicrosPerMillion": 12500000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "12.500000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/claude-opus-4-7",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Claude Opus 4 7",
+        "description": "Claude Opus 4 7 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 2500000,
+          "cachedInputTokenMicrosPerMillion": 2500000,
+          "outputTokenMicrosPerMillion": 12500000,
+          "reasoningTokenMicrosPerMillion": 12500000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "12.500000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/claude-opus-4-8",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Claude Opus 4 8",
+        "description": "Claude Opus 4 8 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 2500000,
+          "cachedInputTokenMicrosPerMillion": 2500000,
+          "outputTokenMicrosPerMillion": 12500000,
+          "reasoningTokenMicrosPerMillion": 12500000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "12.500000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/claude-opus-5",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Claude Opus 5",
+        "description": "Claude Opus 5 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 2500000,
+          "cachedInputTokenMicrosPerMillion": 2500000,
+          "outputTokenMicrosPerMillion": 12500000,
+          "reasoningTokenMicrosPerMillion": 12500000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "12.500000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/claude-sonnet-4-6",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Claude Sonnet 4 6",
+        "description": "Claude Sonnet 4 6 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 1500000,
+          "cachedInputTokenMicrosPerMillion": 1500000,
+          "outputTokenMicrosPerMillion": 7500000,
+          "reasoningTokenMicrosPerMillion": 7500000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "1.500000",
+          "outputPerMToken": "7.500000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/claude-sonnet-5",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Claude Sonnet 5",
+        "description": "Claude Sonnet 5 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 1000000,
+          "cachedInputTokenMicrosPerMillion": 1000000,
+          "outputTokenMicrosPerMillion": 5000000,
+          "reasoningTokenMicrosPerMillion": 5000000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "1.000000",
+          "outputPerMToken": "5.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/code",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "alias",
+        "aliases": [],
+        "aliasFor": "clervo/gpt-5.6-sol",
+        "reasoningEffort": "medium",
+        "name": "clervo/code service alias",
+        "description": "Stable Clervo service alias for clervo/gpt-5.6-sol. Canonical requests are never silently substituted.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 2500000,
+          "cachedInputTokenMicrosPerMillion": 2500000,
+          "outputTokenMicrosPerMillion": 15000000,
+          "reasoningTokenMicrosPerMillion": 15000000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "15.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/deep",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "alias",
+        "aliases": [],
+        "aliasFor": "clervo/gpt-5.6-sol",
+        "reasoningEffort": "high",
+        "name": "clervo/deep service alias",
+        "description": "Stable Clervo service alias for clervo/gpt-5.6-sol. Canonical requests are never silently substituted.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 2500000,
+          "cachedInputTokenMicrosPerMillion": 2500000,
+          "outputTokenMicrosPerMillion": 15000000,
+          "reasoningTokenMicrosPerMillion": 15000000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "15.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/deepseek-r1",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Deepseek R1",
+        "description": "Deepseek R1 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 525000,
+          "cachedInputTokenMicrosPerMillion": 525000,
+          "outputTokenMicrosPerMillion": 1875000,
+          "reasoningTokenMicrosPerMillion": 1875000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.525000",
+          "outputPerMToken": "1.875000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/deepseek-v3",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Deepseek V3",
+        "description": "Deepseek V3 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 225000,
+          "cachedInputTokenMicrosPerMillion": 225000,
+          "outputTokenMicrosPerMillion": 900000,
+          "reasoningTokenMicrosPerMillion": 900000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/deepseek-v3.1-terminus",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Deepseek V3.1 Terminus",
+        "description": "Deepseek V3.1 Terminus through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 202500,
+          "cachedInputTokenMicrosPerMillion": 202500,
+          "outputTokenMicrosPerMillion": 750000,
+          "reasoningTokenMicrosPerMillion": 750000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.202500",
+          "outputPerMToken": "0.750000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/deepseek-v3.2-exp",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Deepseek V3.2 Exp",
+        "description": "Deepseek V3.2 Exp through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 202500,
+          "cachedInputTokenMicrosPerMillion": 202500,
+          "outputTokenMicrosPerMillion": 307500,
+          "reasoningTokenMicrosPerMillion": 307500,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.202500",
+          "outputPerMToken": "0.307500"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/deepseek-v4-pro",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Deepseek V4 Pro",
+        "description": "Deepseek V4 Pro through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 217500,
+          "cachedInputTokenMicrosPerMillion": 217500,
+          "outputTokenMicrosPerMillion": 435000,
+          "reasoningTokenMicrosPerMillion": 435000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.217500",
+          "outputPerMToken": "0.435000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/fast",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "alias",
+        "aliases": [],
+        "aliasFor": "clervo/gpt-5.6-luna",
+        "reasoningEffort": "low",
+        "name": "clervo/fast service alias",
+        "description": "Stable Clervo service alias for clervo/gpt-5.6-luna. Canonical requests are never silently substituted.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 50000,
+          "cachedInputTokenMicrosPerMillion": 50000,
+          "outputTokenMicrosPerMillion": 300000,
+          "reasoningTokenMicrosPerMillion": 300000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.050000",
+          "outputPerMToken": "0.300000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-2.5-flash",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini 2.5 Flash",
+        "description": "Gemini 2.5 Flash through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 225000,
+          "cachedInputTokenMicrosPerMillion": 225000,
+          "outputTokenMicrosPerMillion": 1875000,
+          "reasoningTokenMicrosPerMillion": 1875000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "1.875000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-2.5-flash-image",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini 2.5 Flash Image",
+        "description": "Gemini 2.5 Flash Image through Clervo's normalized image contract.",
+        "productIds": [
+          "ai.image"
+        ],
+        "capabilities": [
+          "image_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "image"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "image"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 29250,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-2.5-flash-lite-preview-tts",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini 2.5 Flash Lite Preview Tts",
+        "description": "Gemini 2.5 Flash Lite Preview Tts through Clervo's normalized speech contract.",
+        "productIds": [
+          "ai.speech"
+        ],
+        "capabilities": [
+          "audio_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "audio"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 37500,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-2.5-flash-tts",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini 2.5 Flash Tts",
+        "description": "Gemini 2.5 Flash Tts through Clervo's normalized speech contract.",
+        "productIds": [
+          "ai.speech"
+        ],
+        "capabilities": [
+          "audio_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "audio"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 37500,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-2.5-pro-tts",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini 2.5 Pro Tts",
+        "description": "Gemini 2.5 Pro Tts through Clervo's normalized speech contract.",
+        "productIds": [
+          "ai.speech"
+        ],
+        "capabilities": [
+          "audio_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "audio"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 37500,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-3-pro-image",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini 3 Pro Image",
+        "description": "Gemini 3 Pro Image through Clervo's normalized image contract.",
+        "productIds": [
+          "ai.image"
+        ],
+        "capabilities": [
+          "image_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "image"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "image"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 100500,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-3.1-flash-image",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini 3.1 Flash Image",
+        "description": "Gemini 3.1 Flash Image through Clervo's normalized image contract.",
+        "productIds": [
+          "ai.image"
+        ],
+        "capabilities": [
+          "image_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "image"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "image"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 50250,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-3.1-flash-lite-image",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini 3.1 Flash Lite Image",
+        "description": "Gemini 3.1 Flash Lite Image through Clervo's normalized image contract.",
+        "productIds": [
+          "ai.image"
+        ],
+        "capabilities": [
+          "image_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "image"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "image"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 25500,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-3.1-flash-tts-preview",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini 3.1 Flash Tts Preview",
+        "description": "Gemini 3.1 Flash Tts Preview through Clervo's normalized speech contract.",
+        "productIds": [
+          "ai.speech"
+        ],
+        "capabilities": [
+          "audio_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "audio"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 37500,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-3.5-flash-lite",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini 3.5 Flash Lite",
+        "description": "Gemini 3.5 Flash Lite through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 225000,
+          "cachedInputTokenMicrosPerMillion": 225000,
+          "outputTokenMicrosPerMillion": 1875000,
+          "reasoningTokenMicrosPerMillion": 1875000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "1.875000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-embedding-001",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini Embedding 001",
+        "description": "Gemini Embedding 001 through Clervo's normalized embedding contract.",
+        "productIds": [
+          "ai.embed"
+        ],
+        "capabilities": [
+          "embedding_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "embedding"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 135000,
+          "cachedInputTokenMicrosPerMillion": 135000,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.135000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemini-omni-flash-preview",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemini Omni Flash Preview",
+        "description": "Gemini Omni Flash Preview through Clervo's normalized video contract.",
+        "productIds": [
+          "ai.video"
+        ],
+        "capabilities": [
+          "text_input",
+          "video_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "video"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "video"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 37500,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemma-4-12b-it",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemma 4 12b It",
+        "description": "Gemma 4 12b It through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 360000,
+          "reasoningTokenMicrosPerMillion": 360000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemma-4-26b-a4b-it",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemma 4 26b A4b It",
+        "description": "Gemma 4 26b A4b It through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "free",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "none",
+          "resultAccounting": "usage",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gemma-4-31b-it",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gemma 4 31b It",
+        "description": "Gemma 4 31b It through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 306000,
+          "reasoningTokenMicrosPerMillion": 306000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.306000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/glm-4.5-air",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Glm 4.5 Air",
+        "description": "Glm 4.5 Air through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 97500,
+          "cachedInputTokenMicrosPerMillion": 97500,
+          "outputTokenMicrosPerMillion": 637500,
+          "reasoningTokenMicrosPerMillion": 637500,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.097500",
+          "outputPerMToken": "0.637500"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/glm-5.2",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Glm 5.2",
+        "description": "Glm 5.2 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 265300,
+          "cachedInputTokenMicrosPerMillion": 265300,
+          "outputTokenMicrosPerMillion": 833800,
+          "reasoningTokenMicrosPerMillion": 833800,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.265300",
+          "outputPerMToken": "0.833800"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gpt-5.6-luna",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [
+          "clervo/fast"
+        ],
+        "name": "Gpt 5.6 Luna",
+        "description": "Gpt 5.6 Luna through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 50000,
+          "cachedInputTokenMicrosPerMillion": 50000,
+          "outputTokenMicrosPerMillion": 300000,
+          "reasoningTokenMicrosPerMillion": 300000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.050000",
+          "outputPerMToken": "0.300000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gpt-5.6-sol",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [
+          "clervo/code",
+          "clervo/deep"
+        ],
+        "name": "Gpt 5.6 Sol",
+        "description": "Gpt 5.6 Sol through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 2500000,
+          "cachedInputTokenMicrosPerMillion": 2500000,
+          "outputTokenMicrosPerMillion": 15000000,
+          "reasoningTokenMicrosPerMillion": 15000000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "2.500000",
+          "outputPerMToken": "15.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gpt-5.6-terra",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [
+          "clervo/smart"
+        ],
+        "name": "Gpt 5.6 Terra",
+        "description": "Gpt 5.6 Terra through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 500000,
+          "cachedInputTokenMicrosPerMillion": 500000,
+          "outputTokenMicrosPerMillion": 3000000,
+          "reasoningTokenMicrosPerMillion": 3000000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.500000",
+          "outputPerMToken": "3.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gpt-oss-120b",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gpt Oss 120b",
+        "description": "Gpt Oss 120b through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 33300,
+          "cachedInputTokenMicrosPerMillion": 33300,
+          "outputTokenMicrosPerMillion": 153000,
+          "reasoningTokenMicrosPerMillion": 153000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.033300",
+          "outputPerMToken": "0.153000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gpt-oss-20b",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gpt Oss 20b",
+        "description": "Gpt Oss 20b through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "reasoning",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "degraded",
+        "availability": "degraded",
+        "health": "degraded",
+        "publicSellable": false,
+        "availabilityReason": "temporarily_unavailable",
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "free",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "none",
+          "resultAccounting": "usage",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/gpt-oss-safeguard-20b",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Gpt Oss Safeguard 20b",
+        "description": "Gpt Oss Safeguard 20b through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 67500,
+          "cachedInputTokenMicrosPerMillion": 67500,
+          "outputTokenMicrosPerMillion": 270000,
+          "reasoningTokenMicrosPerMillion": 270000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.067500",
+          "outputPerMToken": "0.270000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/hunyuan-a13b-instruct",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Hunyuan A13b Instruct",
+        "description": "Hunyuan A13b Instruct through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 105000,
+          "cachedInputTokenMicrosPerMillion": 105000,
+          "outputTokenMicrosPerMillion": 427500,
+          "reasoningTokenMicrosPerMillion": 427500,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.105000",
+          "outputPerMToken": "0.427500"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/hy3",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Hy3",
+        "description": "Hy3 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 99000,
+          "cachedInputTokenMicrosPerMillion": 99000,
+          "outputTokenMicrosPerMillion": 396000,
+          "reasoningTokenMicrosPerMillion": 396000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.099000",
+          "outputPerMToken": "0.396000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/kimi-k2.5",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Kimi K2.5",
+        "description": "Kimi K2.5 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 427500,
+          "cachedInputTokenMicrosPerMillion": 427500,
+          "outputTokenMicrosPerMillion": 2137500,
+          "reasoningTokenMicrosPerMillion": 2137500,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.427500",
+          "outputPerMToken": "2.137500"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/kimi-k2.6",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Kimi K2.6",
+        "description": "Kimi K2.6 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 434625,
+          "cachedInputTokenMicrosPerMillion": 434625,
+          "outputTokenMicrosPerMillion": 1830000,
+          "reasoningTokenMicrosPerMillion": 1830000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.434625",
+          "outputPerMToken": "1.830000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/kimi-k2.7-code",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Kimi K2.7 Code",
+        "description": "Kimi K2.7 Code through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 525000,
+          "cachedInputTokenMicrosPerMillion": 525000,
+          "outputTokenMicrosPerMillion": 2625000,
+          "reasoningTokenMicrosPerMillion": 2625000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.525000",
+          "outputPerMToken": "2.625000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/kimi-k3",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Kimi K3",
+        "description": "Kimi K3 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 1500000,
+          "cachedInputTokenMicrosPerMillion": 1500000,
+          "outputTokenMicrosPerMillion": 7500000,
+          "reasoningTokenMicrosPerMillion": 7500000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "1.500000",
+          "outputPerMToken": "7.500000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/laguna-s-2.1",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Laguna S 2.1",
+        "description": "Laguna S 2.1 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "free",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "none",
+          "resultAccounting": "usage",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/ling-flash-2.0",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Ling Flash 2.0",
+        "description": "Ling Flash 2.0 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 360000,
+          "reasoningTokenMicrosPerMillion": 360000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/llama-3.1-70b-instruct",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Llama 3.1 70b Instruct",
+        "description": "Llama 3.1 70b Instruct through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 300000,
+          "cachedInputTokenMicrosPerMillion": 300000,
+          "outputTokenMicrosPerMillion": 300000,
+          "reasoningTokenMicrosPerMillion": 300000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.300000",
+          "outputPerMToken": "0.300000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/llama-3.1-8b-instruct",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Llama 3.1 8b Instruct",
+        "description": "Llama 3.1 8b Instruct through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 45000,
+          "cachedInputTokenMicrosPerMillion": 45000,
+          "outputTokenMicrosPerMillion": 72000,
+          "reasoningTokenMicrosPerMillion": 72000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.045000",
+          "outputPerMToken": "0.072000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/llama-3.1-nemoguard-8b-content-safety",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Llama 3.1 Nemoguard 8b Content Safety",
+        "description": "Llama 3.1 Nemoguard 8b Content Safety through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 360000,
+          "reasoningTokenMicrosPerMillion": 360000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/llama-3.1-nemotron-nano-vl-8b-v1",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Llama 3.1 Nemotron Nano Vl 8b V1",
+        "description": "Llama 3.1 Nemotron Nano Vl 8b V1 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "image_input",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text",
+          "image"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 360000,
+          "reasoningTokenMicrosPerMillion": 360000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/llama-3.1-nemotron-safety-guard-8b-v3",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Llama 3.1 Nemotron Safety Guard 8b V3",
+        "description": "Llama 3.1 Nemotron Safety Guard 8b V3 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 360000,
+          "reasoningTokenMicrosPerMillion": 360000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/llama-3.2-11b-vision-instruct",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Llama 3.2 11b Vision Instruct",
+        "description": "Llama 3.2 11b Vision Instruct through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "image_input",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text",
+          "image"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 750000,
+          "cachedInputTokenMicrosPerMillion": 750000,
+          "outputTokenMicrosPerMillion": 3000000,
+          "reasoningTokenMicrosPerMillion": 3000000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.750000",
+          "outputPerMToken": "3.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/llama-3.3-70b-instruct",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Llama 3.3 70b Instruct",
+        "description": "Llama 3.3 70b Instruct through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 288000,
+          "reasoningTokenMicrosPerMillion": 288000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.288000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/longcat-2.0",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Longcat 2.0",
+        "description": "Longcat 2.0 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 225000,
+          "cachedInputTokenMicrosPerMillion": 225000,
+          "outputTokenMicrosPerMillion": 900000,
+          "reasoningTokenMicrosPerMillion": 900000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/lyria-3-clip-preview",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Lyria 3 Clip Preview",
+        "description": "Lyria 3 Clip Preview through Clervo's normalized music contract.",
+        "productIds": [
+          "ai.music"
+        ],
+        "capabilities": [
+          "audio_output",
+          "music_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "audio"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 30000,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/lyria-3-pro-preview",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Lyria 3 Pro Preview",
+        "description": "Lyria 3 Pro Preview through Clervo's normalized music contract.",
+        "productIds": [
+          "ai.music"
+        ],
+        "capabilities": [
+          "audio_output",
+          "music_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "audio"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "audio"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 60000,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/minimax-m2.5",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Minimax M2.5",
+        "description": "Minimax M2.5 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 110000,
+          "cachedInputTokenMicrosPerMillion": 110000,
+          "outputTokenMicrosPerMillion": 450000,
+          "reasoningTokenMicrosPerMillion": 450000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.110000",
+          "outputPerMToken": "0.450000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/minimax-m3",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Minimax M3",
+        "description": "Minimax M3 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 225000,
+          "cachedInputTokenMicrosPerMillion": 225000,
+          "outputTokenMicrosPerMillion": 900000,
+          "reasoningTokenMicrosPerMillion": 900000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/mistral-medium-2505",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Mistral Medium 2505",
+        "description": "Mistral Medium 2505 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "image_input",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text",
+          "image"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 225000,
+          "cachedInputTokenMicrosPerMillion": 225000,
+          "outputTokenMicrosPerMillion": 900000,
+          "reasoningTokenMicrosPerMillion": 900000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/mistral-medium-2508",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Mistral Medium 2508",
+        "description": "Mistral Medium 2508 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "image_input",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text",
+          "image"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 225000,
+          "cachedInputTokenMicrosPerMillion": 225000,
+          "outputTokenMicrosPerMillion": 900000,
+          "reasoningTokenMicrosPerMillion": 900000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/multimodalembedding-001",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Multimodalembedding 001",
+        "description": "Multimodalembedding 001 through Clervo's normalized embedding contract.",
+        "productIds": [
+          "ai.embed"
+        ],
+        "capabilities": [
+          "embedding_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "embedding"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 720000,
+          "cachedInputTokenMicrosPerMillion": 720000,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.720000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/nemotron-3-embed-1b",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Nemotron 3 Embed 1b",
+        "description": "Nemotron 3 Embed 1b through Clervo's normalized embedding contract.",
+        "productIds": [
+          "ai.embed"
+        ],
+        "capabilities": [
+          "embedding_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "embedding"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/nemotron-3-nano-omni-30b-a3b-reasoning",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Nemotron 3 Nano Omni 30b A3b Reasoning",
+        "description": "Nemotron 3 Nano Omni 30b A3b Reasoning through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "image_input",
+          "reasoning",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text",
+          "image"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "free",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "none",
+          "resultAccounting": "usage",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/nemotron-3.5-content-safety",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Nemotron 3.5 Content Safety",
+        "description": "Nemotron 3.5 Content Safety through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 360000,
+          "reasoningTokenMicrosPerMillion": 360000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.360000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/nex-n2-pro",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Nex N2 Pro",
+        "description": "Nex N2 Pro through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 187500,
+          "cachedInputTokenMicrosPerMillion": 187500,
+          "outputTokenMicrosPerMillion": 750000,
+          "reasoningTokenMicrosPerMillion": 750000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.187500",
+          "outputPerMToken": "0.750000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/nv-embed-v1",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Nv Embed V1",
+        "description": "Nv Embed V1 through Clervo's normalized embedding contract.",
+        "productIds": [
+          "ai.embed"
+        ],
+        "capabilities": [
+          "embedding_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "embedding"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen2.5-72b-instruct",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen2.5 72b Instruct",
+        "description": "Qwen2.5 72b Instruct through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 270000,
+          "cachedInputTokenMicrosPerMillion": 270000,
+          "outputTokenMicrosPerMillion": 300000,
+          "reasoningTokenMicrosPerMillion": 300000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.270000",
+          "outputPerMToken": "0.300000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3-14b",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3 14b",
+        "description": "Qwen3 14b through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 180000,
+          "reasoningTokenMicrosPerMillion": 180000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.180000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3-30b-a3b-instruct-2507",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3 30b A3b Instruct 2507",
+        "description": "Qwen3 30b A3b Instruct 2507 through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 43335,
+          "cachedInputTokenMicrosPerMillion": 43335,
+          "outputTokenMicrosPerMillion": 173745,
+          "reasoningTokenMicrosPerMillion": 173745,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.043335",
+          "outputPerMToken": "0.173745"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3-32b",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3 32b",
+        "description": "Qwen3 32b through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 72000,
+          "cachedInputTokenMicrosPerMillion": 72000,
+          "outputTokenMicrosPerMillion": 252000,
+          "reasoningTokenMicrosPerMillion": 252000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.072000",
+          "outputPerMToken": "0.252000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3-8b",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3 8b",
+        "description": "Qwen3 8b through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 87750,
+          "cachedInputTokenMicrosPerMillion": 87750,
+          "outputTokenMicrosPerMillion": 341250,
+          "reasoningTokenMicrosPerMillion": 341250,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.087750",
+          "outputPerMToken": "0.341250"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3-coder-30b-a3b-instruct",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3 Coder 30b A3b Instruct",
+        "description": "Qwen3 Coder 30b A3b Instruct through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 63000,
+          "cachedInputTokenMicrosPerMillion": 63000,
+          "outputTokenMicrosPerMillion": 252000,
+          "reasoningTokenMicrosPerMillion": 252000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.063000",
+          "outputPerMToken": "0.252000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3-vl-30b-a3b-instruct",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3 Vl 30b A3b Instruct",
+        "description": "Qwen3 Vl 30b A3b Instruct through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "image_input",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text",
+          "image"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 112500,
+          "cachedInputTokenMicrosPerMillion": 112500,
+          "outputTokenMicrosPerMillion": 450000,
+          "reasoningTokenMicrosPerMillion": 450000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.112500",
+          "outputPerMToken": "0.450000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3-vl-30b-a3b-thinking",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3 Vl 30b A3b Thinking",
+        "description": "Qwen3 Vl 30b A3b Thinking through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "image_input",
+          "reasoning",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text",
+          "image"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 150000,
+          "cachedInputTokenMicrosPerMillion": 150000,
+          "outputTokenMicrosPerMillion": 1800000,
+          "reasoningTokenMicrosPerMillion": 1800000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.150000",
+          "outputPerMToken": "1.800000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3-vl-32b-instruct",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3 Vl 32b Instruct",
+        "description": "Qwen3 Vl 32b Instruct through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "image_input",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text",
+          "image"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 78000,
+          "cachedInputTokenMicrosPerMillion": 78000,
+          "outputTokenMicrosPerMillion": 312000,
+          "reasoningTokenMicrosPerMillion": 312000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.078000",
+          "outputPerMToken": "0.312000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3-vl-32b-thinking",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3 Vl 32b Thinking",
+        "description": "Qwen3 Vl 32b Thinking through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "image_input",
+          "reasoning",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text",
+          "image"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 225000,
+          "cachedInputTokenMicrosPerMillion": 225000,
+          "outputTokenMicrosPerMillion": 900000,
+          "reasoningTokenMicrosPerMillion": 900000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3-vl-8b-instruct",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3 Vl 8b Instruct",
+        "description": "Qwen3 Vl 8b Instruct through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "image_input",
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text",
+          "image"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 87750,
+          "cachedInputTokenMicrosPerMillion": 87750,
+          "outputTokenMicrosPerMillion": 341250,
+          "reasoningTokenMicrosPerMillion": 341250,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.087750",
+          "outputPerMToken": "0.341250"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3.5-397b-a17b",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3.5 397b A17b",
+        "description": "Qwen3.5 397b A17b through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 195000,
+          "cachedInputTokenMicrosPerMillion": 195000,
+          "outputTokenMicrosPerMillion": 1170000,
+          "reasoningTokenMicrosPerMillion": 1170000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.195000",
+          "outputPerMToken": "1.170000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/qwen3.6-27b",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Qwen3.6 27b",
+        "description": "Qwen3.6 27b through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 450000,
+          "cachedInputTokenMicrosPerMillion": 450000,
+          "outputTokenMicrosPerMillion": 2700000,
+          "reasoningTokenMicrosPerMillion": 2700000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.450000",
+          "outputPerMToken": "2.700000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/seed-oss-36b-instruct",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Seed Oss 36b Instruct",
+        "description": "Seed Oss 36b Instruct through Clervo's normalized chat contract.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 225000,
+          "cachedInputTokenMicrosPerMillion": 225000,
+          "outputTokenMicrosPerMillion": 900000,
+          "reasoningTokenMicrosPerMillion": 900000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.225000",
+          "outputPerMToken": "0.900000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/smart",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "alias",
+        "aliases": [],
+        "aliasFor": "clervo/gpt-5.6-terra",
+        "reasoningEffort": "medium",
+        "name": "clervo/smart service alias",
+        "description": "Stable Clervo service alias for clervo/gpt-5.6-terra. Canonical requests are never silently substituted.",
+        "productIds": [
+          "ai.chat"
+        ],
+        "capabilities": [
+          "text_input",
+          "text_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "text"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 500000,
+          "cachedInputTokenMicrosPerMillion": 500000,
+          "outputTokenMicrosPerMillion": 3000000,
+          "reasoningTokenMicrosPerMillion": 3000000,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.500000",
+          "outputPerMToken": "3.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/text-embedding-005",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Text Embedding 005",
+        "description": "Text Embedding 005 through Clervo's normalized embedding contract.",
+        "productIds": [
+          "ai.embed"
+        ],
+        "capabilities": [
+          "embedding_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "embedding"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/text-embedding-large-exp-03-07",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Text Embedding Large Exp 03 07",
+        "description": "Text Embedding Large Exp 03 07 through Clervo's normalized embedding contract.",
+        "productIds": [
+          "ai.embed"
+        ],
+        "capabilities": [
+          "embedding_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "embedding"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/text-multilingual-embedding-002",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Text Multilingual Embedding 002",
+        "description": "Text Multilingual Embedding 002 through Clervo's normalized embedding contract.",
+        "productIds": [
+          "ai.embed"
+        ],
+        "capabilities": [
+          "embedding_output",
+          "text_input"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "embedding"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "embedding"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 90000,
+          "cachedInputTokenMicrosPerMillion": 90000,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.090000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/veo-3.1-fast-generate-001",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Veo 3.1 Fast Generate 001",
+        "description": "Veo 3.1 Fast Generate 001 through Clervo's normalized video contract.",
+        "productIds": [
+          "ai.video"
+        ],
+        "capabilities": [
+          "text_input",
+          "video_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "video"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "video"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 75000,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/veo-3.1-generate-001",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Veo 3.1 Generate 001",
+        "description": "Veo 3.1 Generate 001 through Clervo's normalized video contract.",
+        "productIds": [
+          "ai.video"
+        ],
+        "capabilities": [
+          "text_input",
+          "video_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "video"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "video"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 300000,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/veo-3.1-lite-generate-001",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Veo 3.1 Lite Generate 001",
+        "description": "Veo 3.1 Lite Generate 001 through Clervo's normalized video contract.",
+        "productIds": [
+          "ai.video"
+        ],
+        "capabilities": [
+          "text_input",
+          "video_output"
+        ],
+        "inputTypes": [
+          "text"
+        ],
+        "outputTypes": [
+          "video"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "video"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 37500,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 0,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    },
+    {
+      "id": "clervo/virtual-try-on-001",
+      "object": "model",
+      "owned_by": "clervo",
+      "clervo": {
+        "identityKind": "canonical",
+        "aliases": [],
+        "name": "Virtual Try On 001",
+        "description": "Virtual Try On 001 through Clervo's normalized virtual try on contract.",
+        "productIds": [
+          "ai.virtual_try_on"
+        ],
+        "capabilities": [
+          "image_input",
+          "image_output"
+        ],
+        "inputTypes": [
+          "image"
+        ],
+        "outputTypes": [
+          "image"
+        ],
+        "contextWindow": 128000,
+        "inputModalities": [
+          "image"
+        ],
+        "outputModalities": [
+          "image"
+        ],
+        "limits": {},
+        "ownedBySemantics": "Clervo customer-facing identifier namespace; not a model-creator claim",
+        "lifecycle": "available",
+        "availability": "available",
+        "health": "healthy",
+        "publicSellable": true,
+        "customerPricing": {
+          "currency": "USD",
+          "decimals": 6,
+          "inputTokenMicrosPerMillion": 0,
+          "cachedInputTokenMicrosPerMillion": 0,
+          "outputTokenMicrosPerMillion": 0,
+          "reasoningTokenMicrosPerMillion": 0,
+          "imageMicrosEach": 0,
+          "audioMicrosPerThousandCharacters": 0,
+          "videoMicrosPerSecond": 0,
+          "musicMicrosPerGeneration": 0,
+          "virtualTryOnMicrosPerImage": 45000,
+          "inputPerMToken": "0.000000",
+          "outputPerMToken": "0.000000"
+        },
+        "billingMode": "metered",
+        "commerce": {
+          "executionPath": "/v1/ai/execute",
+          "payment": "x402_or_mpp",
+          "resultAccounting": "usage_and_settled_receipt",
+          "replaySafe": true
+        }
+      }
+    }
+  ],
+  "clervo": {
+    "catalogRevision": "b7:b7supply_8b0e0a557a3ef3c94f891565_health1:aiid_58d12ee858e759c93b42fb72:pricing:2026-08-09:dynamic-v1",
+    "composedAt": "2026-08-11T20:20:35.624Z",
+    "sourceValidUntil": "2026-09-09T19:09:36.000Z",
+    "inventory": {
+      "canonicalModels": 85,
+      "aliases": 4,
+      "callableIds": 89
+    }
+  }
+}

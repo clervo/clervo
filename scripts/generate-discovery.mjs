@@ -93,6 +93,8 @@ function stableJson(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
+const COMMERCIAL_DESCRIPTION = 'Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.';
+
 function decimalAtomic(amountAtomic, decimals) {
   if (!/^(?:0|[1-9][0-9]*)$/u.test(String(amountAtomic)) || !Number.isInteger(decimals) || decimals < 0 || decimals > 18) throw new TypeError('atomic_decimal_invalid');
   const padded = String(amountAtomic).padStart(decimals + 1, '0');
@@ -387,6 +389,15 @@ const observedProvenance = {
   observedAt: liveRegistry.observedAt,
   proofLevels: liveRegistry.proofLevels,
   states: liveRegistry.states,
+};
+
+// Qualification and transaction evidence stays in the internal live registry.
+// Public callers need current availability, routes, prices, and limitations—not
+// Clervo's internal evidence classification.
+const publicObservedTruth = observedTruth.map(({ proofLevel: _proofLevel, ...product }) => product);
+const publicObservedProvenance = {
+  observedAt: observedProvenance.observedAt,
+  states: observedProvenance.states,
 };
 
 const publicApiStatus = Object.freeze({
@@ -1139,7 +1150,7 @@ const lifecycleSummary = ['live', 'supply_paused', 'unavailable']
   .join('; ');
 const publicProducts = discovery.products.filter(({ publicAvailable }) => publicAvailable === true);
 const publicOperationIds = [...new Set(publicProducts.flatMap(({ operationId, operationIds }) => operationIds ?? [operationId]))];
-discovery.description = `Machine-readable public API for ${liveApiFamilies.map(({ title }) => title).join(', ')}. Availability, routes, prices, and payment behavior are generated from direct deployed-system observations; unavailable operations fail closed.`;
+discovery.description = COMMERCIAL_DESCRIPTION;
 openapi['x-clervo-status'].operationIds = publicOperationIds;
 const publicOfferSummary = publicProducts.map(({ productId, pricing }) => {
   const price = pricing?.displayPrice;
@@ -1148,6 +1159,7 @@ const publicOfferSummary = publicProducts.map(({ productId, pricing }) => {
   return `${productId} (${display} USDC maximum)`;
 }).join(', ');
 llms = llms
+  .replace('> Clervo is outcome infrastructure for agents: Find, Understand, Act.', `> ${COMMERCIAL_DESCRIPTION}`)
   .replace(/^- API:.*$/mu, '- API: https://api.clervo.dev')
   .replace(/^- Search:.*$/mu, `- Product availability: ${lifecycleSummary}`)
   .replace(/^- Operation IDs:.*$/mu, `- Public operation IDs: ${publicOperationIds.join(', ')}`)
@@ -1155,7 +1167,7 @@ llms = llms
   .replace(/^- Public price:.*$/mu, `- Public price: ${publicOfferSummary}`);
 // Availability and pricing stay sourced from the probed registry rather than
 // from customer-facing prose.
-discovery.observedTruth = { provenance: observedProvenance, products: observedTruth };
+discovery.observedTruth = { provenance: publicObservedProvenance, products: publicObservedTruth };
 catalog.observedTruth = discovery.observedTruth;
 // The two agent-facing documents are advertised where an agent already looks,
 // so finding them does not require guessing a filename.
@@ -1165,6 +1177,8 @@ if (publicSearch) contractModule.assertPublicArtifacts(openapi, discovery, llms,
 else contractModule.assertPreviewArtifacts(openapi, discovery, llms, projection);
 delete openapi['x-clervo-status'].releaseCandidateId;
 delete openapi['x-clervo-status'].interfaceHash;
+openapi['x-clervo-status'].distribution = publicSearch ? 'public' : 'unavailable';
+openapi.info.description = `${COMMERCIAL_DESCRIPTION} Current operations, routes, prices, and limitations are listed below.`;
 
 // Public discovery describes how an external caller uses the deployed system.
 // Historical release-candidate gates, B-number readiness, private proof ledgers,
@@ -1182,7 +1196,10 @@ discovery.payment = {
   network: 'eip155:8453',
   asset: 'USDC',
 };
-for (const product of discovery.products) delete product.commercialProof;
+for (const product of discovery.products) {
+  delete product.commercialProof;
+  product.lifecycle = product.publicAvailable ? 'available' : 'unavailable';
+}
 // Compatibility-only and roadmap products remain in the internal registry,
 // not in the invocable public inventory returned to unrelated agents.
 discovery.products = discovery.products.filter(({ publicAvailable }) => publicAvailable === true);
@@ -1190,7 +1207,13 @@ catalog.products = discovery.products;
 delete catalog.releaseScope;
 catalog.distribution = discovery.distribution;
 discovery.limitations = discovery.limitations
-  .map((line) => line.replace(/Publicly callable previews:/iu, 'Publicly callable operations:'));
+  .filter((line) => !/(proof|proven|pending|customer payment|revenue|demand)/iu.test(line))
+  .map((line) => line
+    .replace(/Publicly callable previews:/iu, 'Publicly callable operations:')
+    .replace(/ without commercially qualified price supply/iu, '')
+    .replace(/Qualified supply, /iu, '')
+    .replace(/The qualified pdata supply path/iu, 'pdata')
+    .replace(/ Direct venue adapters with unresolved commercial permission remain disabled\./iu, ''));
 llms = llms
   .replace(/^- \[Launch claims\]\(\/claims\.json\):.*\n/mu, '')
   .replace(/^- \[JSON Schemas\]\([^\n]+\):.*$/mu, '- [Request and response schemas](/openapi.json): OpenAPI 3.1 operations with embedded JSON Schema 2020-12 contracts.')
@@ -1206,11 +1229,11 @@ llms += [
   '',
   '## Current product availability',
   '',
-  `Probed from the deployed system at ${observedProvenance.observedAt}. A live product accepts requests; an unavailable product has no public execution route. The 402 returned for a paid request is the binding quote.`,
+  `Current at ${publicObservedProvenance.observedAt}. An available product accepts requests; an unavailable product has no public execution route. The 402 returned for a paid request is the binding quote.`,
   '',
   '| Product | Availability | Price |',
   '|---|---|---|',
-  ...observedTruth.map((product) => `| ${product.label} | ${product.lifecycleState}${product.reason === null ? '' : ` (${product.reason})`} | ${product.observedPrice === null ? 'not offered' : `${decimalAtomic(product.observedPrice.amountAtomic, 6)} USDC observed maximum`} |`),
+  ...publicObservedTruth.map((product) => `| ${product.label} | ${product.lifecycleState}${product.reason === null ? '' : ` (${product.reason})`} | ${product.observedPrice === null ? 'not offered' : `${decimalAtomic(product.observedPrice.amountAtomic, 6)} USDC maximum`} |`),
   '',
 ].join('\n');
 
@@ -1221,15 +1244,14 @@ await writeFile(path.join(outputDirectory, 'capabilities.json'), stableJson({
   schemaVersion: 'clervo.capabilities.v1',
   observedAt: launchState.observedAt,
   publicCallable: publicSearch,
-  observedTruth: { provenance: observedProvenance, products: observedTruth },
-  products: observedTruth.map(({ id, label, operations, lifecycleState, proofLevel, reason, publiclyReachable }) => ({
+  observedTruth: { provenance: publicObservedProvenance, products: publicObservedTruth },
+  products: publicObservedTruth.map(({ id, label, operations, lifecycleState, reason, publiclyReachable }) => ({
     id,
     label,
     // An unavailable family can be described without advertising speculative
     // operation IDs as invocable.
     operations: lifecycleState === 'unavailable' ? [] : operations,
     lifecycleState,
-    proofLevel,
     reason,
     publiclyReachable,
   })),
@@ -1260,7 +1282,7 @@ await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
   observedAt: liveRegistry.observedAt,
   publicApi: publicApiStatus,
   packages: launchState.distribution.packages,
-  observedTruth: { provenance: observedProvenance, products: observedTruth },
+  observedTruth: { provenance: publicObservedProvenance, products: publicObservedTruth },
   conformanceDefectsOpen: liveRegistry.conformance.filter(({ conformant }) => !conformant),
   aiRoutes: {
     counts: liveRegistry.summary.aiCatalog ?? liveRegistry.summary.aiRoutes,
@@ -1275,20 +1297,22 @@ await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
         health: clervo.health,
       })),
   },
-  products: observedTruth.map(({ id, lifecycleState, proofLevel, reason, publiclyReachable }) => ({ id, lifecycleState, proofLevel, reason, publiclyReachable })),
+  products: publicObservedTruth.map(({ id, lifecycleState, reason, publiclyReachable }) => ({ id, lifecycleState, reason, publiclyReachable })),
 }));
-await mkdir(path.join(outputDirectory, '.well-known'), { recursive: true });
+await mkdir(path.join(outputDirectory, '.well-known', 'mcp'), { recursive: true });
+await mkdir(path.join(outputDirectory, 'v1'), { recursive: true });
 await writeFile(path.join(outputDirectory, '.well-known', 'clervo.json'), stableJson(discovery));
+await writeFile(path.join(outputDirectory, '.well-known', 'agent.json'), stableJson(discovery));
 await writeFile(path.join(outputDirectory, '.well-known', 'ai-plugin.json'), stableJson({
   schema_version: 'v1',
   name_for_human: 'Clervo',
   name_for_model: 'clervo',
-  description_for_human: 'Outcome infrastructure for agents. Search, AI (89 models), secure sandbox, prediction markets, crypto intelligence. Pay per call in USDC on Base.',
-  description_for_model: 'Clervo provides web search (POST /v1/search/free or /v1/search/paid), provider-neutral AI execution with 89 models (POST /v1/ai/execute), sandboxed Node.js execution (POST /v1/sandbox/execute), prediction market data (POST /v1/prediction/execute), and EVM wallet intelligence for Ethereum and Base (POST /v1/crypto/execute). Payment uses x402 or MPP over USDC on Base. No account required.',
+  description_for_human: COMMERCIAL_DESCRIPTION,
+  description_for_model: `${COMMERCIAL_DESCRIPTION} Public operations: ${publicOperationIds.join(', ')}. Production API: ${projection.publicBaseUrl}.`,
   api: { type: 'openapi', url: 'https://api.clervo.dev/openapi.json' },
   auth: { type: 'none' },
 }));
-await writeFile(path.join(outputDirectory, '.well-known', 'mcp.json'), stableJson({
+const mcpDiscovery = {
   schemaVersion: 'clervo.mcp-discovery.v1',
   name: '@clervo/mcp',
   version: launchState.distribution.packages.items.find(({ name }) => name === '@clervo/mcp').version,
@@ -1300,7 +1324,12 @@ await writeFile(path.join(outputDirectory, '.well-known', 'mcp.json'), stableJso
   configurationOptional: ['CLERVO_BASE_URL', 'CLERVO_HOME', 'CLERVO_AUTO_PAY'],
   paymentSigningImplemented: true,
   automaticPaymentRetry: false,
-}));
+  installCommand: `npx -y @clervo/mcp@${launchState.distribution.packages.items.find(({ name }) => name === '@clervo/mcp').version}`,
+  claudeCodeCommand: 'claude mcp add clervo -s user -- npx -y @clervo/mcp',
+  documentationUrl: 'https://clervo.dev/start/',
+};
+await writeFile(path.join(outputDirectory, '.well-known', 'mcp.json'), stableJson(mcpDiscovery));
+await writeFile(path.join(outputDirectory, '.well-known', 'mcp', 'server.json'), stableJson(mcpDiscovery));
 await writeFile(path.join(outputDirectory, '.well-known', 'security.txt'), [
   'Canonical: https://clervo.dev/.well-known/security.txt',
   'Contact: https://github.com/clervo/clervo/security/advisories/new',
@@ -1478,7 +1507,7 @@ const legacyModelList = {
     }))
     .sort((left, right) => left.id.localeCompare(right.id)),
   clervo: {
-    provenance: observedProvenance,
+    provenance: publicObservedProvenance,
     states: liveRegistry.states,
     counts: liveRegistry.summary.aiRoutes,
     note: 'A live route is selectable. A supply_paused route stays listed with its reason and is not selectable. The 402 returned for a request is the binding quote.',
@@ -1679,7 +1708,7 @@ const x402Manifest = {
   items: x402Resources,
   pagination: { limit: x402Resources.length, offset: 0, total: x402Resources.length },
   clervo: {
-    provenance: observedProvenance,
+    provenance: publicObservedProvenance,
     states: liveRegistry.states,
     bazaar: liveRegistry.bazaar === undefined ? null : {
       facilitator: liveRegistry.bazaar.facilitator,
@@ -1737,20 +1766,23 @@ await writeFile(path.join(outputDirectory, 'llms.txt'), llms);
 // byte-identical copies. The API host serves them at their canonical agent
 // paths — `/v1/models` and `/.well-known/x402` — from the same bytes.
 await writeFile(path.join(outputDirectory, 'models.json'), stableJson(modelList));
+await writeFile(path.join(outputDirectory, 'v1', 'models'), stableJson(modelList));
 await writeFile(path.join(outputDirectory, '.well-known', 'x402.json'), stableJson(x402Manifest));
+await writeFile(path.join(outputDirectory, '.well-known', 'x402'), stableJson(x402Manifest));
 
 const skillDocument = [
   '# Clervo skill',
   '',
-  'Clervo sells bounded outcomes over HTTP: one request in, one verified result',
-  'and one receipt out. Payment, when required, uses x402 or MPP over USDC on',
-  'Base and is always quoted before execution.',
+  COMMERCIAL_DESCRIPTION,
   '',
-  `Generated from \`${observedProvenance.source}\`, probed at ${observedProvenance.observedAt}. Every row below is observed from the deployed system, never asserted.`,
+  'Payment, when required, uses x402 or MPP over USDC on Base and is always',
+  'quoted before execution. Automatic payment is off by default.',
+  '',
+  `Current availability was generated at ${publicObservedProvenance.observedAt}.`,
   '',
   '## When to use this skill',
   '',
-  '- You need a paid AI model call (89 models: Claude, GPT, Gemini, Qwen, DeepSeek, Llama, Kimi, Mistral and more) — use `POST /v1/ai/execute`.',
+  `- You need an AI model call (${b7Inventory.callableIds} model IDs) — use \`POST /v1/ai/execute\`.`,
   '- You need cited web evidence for a question — use `POST /v1/search/free` or `POST /v1/search/paid`.',
   '- You need to run sandboxed Node.js code safely with a receipt — use `POST /v1/sandbox/execute`.',
   '- You need real-time prediction market data (Polymarket, Kalshi, Manifold, Limitless) — use `POST /v1/prediction/execute`.',
@@ -1758,11 +1790,11 @@ const skillDocument = [
   '- You want per-request payment with no account, no API key, and safe retry on failure.',
   '- You need the same request to be safely retryable without being charged twice.',
   '',
-  '## Observed capability',
+  '## Current availability',
   '',
   ...observedTable,
   '',
-  'Availability is probed from the deployed runtime. Paid routes return a 402',
+  'Availability is current at the time shown in the public status document. Paid routes return a 402',
   'before execution; inspect that request-specific quote before authorizing it.',
   '',
   ...(quickStartCurl === null ? [
@@ -1827,11 +1859,12 @@ const skillDocument = [
 const agentDocument = [
   '# Clervo for agents',
   '',
-  'This document is written for an autonomous caller. It states what is callable,',
-  'what it costs, and what has actually been proven. It contains no marketing',
-  'claim and no capability that the deployed system does not serve.',
+  COMMERCIAL_DESCRIPTION,
   '',
-  `Source: \`${observedProvenance.source}\`, probed at ${observedProvenance.observedAt}.`,
+  'This document lists the callable routes, current prices, setup paths, and safe',
+  'payment behavior an autonomous caller needs.',
+  '',
+  `Current availability was generated at ${publicObservedProvenance.observedAt}.`,
   '',
   '## Identity',
   '',
@@ -1840,7 +1873,7 @@ const agentDocument = [
   '- Payment protocols: x402 and MPP EVM charge intents, USDC on Base.',
   '- Authentication: none. The free sample needs no credential; paid routes need a payment, not an account.',
   '',
-  '## Observed state',
+  '## Current availability',
   '',
   ...observedTable,
   '',
@@ -1913,6 +1946,7 @@ const llmsFull = [
 
 await writeFile(path.join(outputDirectory, 'skill.md'), skillDocument);
 await writeFile(path.join(outputDirectory, 'agent.md'), agentDocument);
+await writeFile(path.join(outputDirectory, 'agents.txt'), agentDocument);
 await writeFile(path.join(outputDirectory, 'llms-full.txt'), llmsFull);
 
 // The API edge is a Worker with no filesystem, so it cannot read these

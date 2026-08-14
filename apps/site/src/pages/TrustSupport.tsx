@@ -21,18 +21,13 @@ import { FAMILY_CODE, FAMILY_DISPLAY, FAMILY_ORDER } from './b12Slice4';
 
 export type TrustSupportPage = 'pricing' | 'proof' | 'docs' | 'status' | 'security' | 'benchmarks' | 'changelog' | 'legal';
 
-type QuoteState = 'idle' | 'approved' | 'refused';
 type DocsObjective = 'coding' | 'agent' | 'backend' | 'http' | 'provider';
 type BenchmarkTopic = 'qualification' | 'replay' | 'evidence';
 type LegalTopic = 'terms' | 'privacy' | 'payments' | 'acceptable';
 
 const SUPPORT_PAGES: Array<{ id: TrustSupportPage; label: string }> = [
-  { id: 'pricing', label: 'Pricing' },
-  { id: 'proof', label: 'Proof' },
-  { id: 'docs', label: 'Docs' },
   { id: 'status', label: 'Status' },
   { id: 'security', label: 'Security' },
-  { id: 'benchmarks', label: 'Benchmarks' },
   { id: 'changelog', label: 'Changelog' },
   { id: 'legal', label: 'Legal' },
 ];
@@ -142,43 +137,36 @@ function Section({ eyebrow, title, copy, children, narrow = false, className = '
 }
 
 function PricingPage() {
-  const [selectedId, setSelectedId] = useState(priceProducts[0]?.productId ?? '');
-  const [quoteState, setQuoteState] = useState<QuoteState>('idle');
-  const selected = useMemo(() => priceProducts.find(({ productId }) => productId === selectedId) ?? priceProducts[0], [selectedId]);
-  const observed = selected == null ? null : observedProduct(familyOf(selected.productId));
-
-  useEffect(() => setQuoteState('idle'), [selectedId]);
-
   const pricingAside = (
     <div className="s6-fact-stack">
       <div><span>Public operations</span><strong>{priceProducts.length}</strong></div>
-      <div><span>Observed pricing mode</span><strong>operation / request bound</strong></div>
+      <div><span>Billing</span><strong>pay per call</strong></div>
       <div><span>Payment protocols</span><strong>x402 / MPP</strong></div>
-      <div><span>Unknown settlement</span><strong>reconcile before retry</strong></div>
+      <div><span>Automatic payment</span><strong>off by default</strong></div>
     </div>
   );
 
   return (
     <>
-      <Hero page="pricing" eyebrow="Pricing / approval boundary" title="Know the maximum before Clervo acts." lede="A paid operation either exposes a current fixed maximum charge or returns a request-time quote before execution. The request's 402 response is the binding payment requirement." visual aside={pricingAside}>
+      <Hero page="pricing" eyebrow="Pricing" title="Pay per call. See the price first." lede="There is no subscription or hidden automatic spend. A paid request returns HTTP 402 with its maximum charge before the operation runs." visual aside={pricingAside}>
         <div className="s6-hero-actions">
           <a className="s6-button s6-button--primary" href="#s6-pricing-ledger">Inspect operation prices</a>
           <Link className="s6-button s6-button--secondary" to="/docs/x402">Read the payment guide</Link>
         </div>
       </Hero>
 
-      <Section eyebrow="Pricing model" title="Three boundaries before money can move." copy="The locked pricing structure stays intact, while values come only from canonical generated pricing and observed operation truth.">
+      <Section eyebrow="How payment works" title="You stay in control of every paid call." copy="Free operations run without a wallet. Paid operations stop at a price first, and Clervo clients enforce local limits before signing anything.">
         <div className="s6-principles">
-          <article><span>01</span><strong>Inspect metadata</strong><p>Operation identity, availability, and published pricing metadata are visible before approval.</p></article>
-          <article><span>02</span><strong>Execute fixed-price</strong><p>Where a fixed maximum is published, the exact current amount is shown as an operation boundary—not a platform-wide rate.</p></article>
-          <article><span>03</span><strong>Qualify dynamic quote</strong><p>Where the amount is request-derived, this page says so instead of inventing a pre-request number.</p></article>
+          <article><span>01</span><strong>Send the request</strong><p>Use a free operation immediately, or receive a 402 for a paid one.</p></article>
+          <article><span>02</span><strong>Review the maximum</strong><p>Inspect the asset, Base network, recipient, amount, and expiry before approval.</p></article>
+          <article><span>03</span><strong>Approve within limits</strong><p>Automatic payment is opt-in, with per-operation and daily spend limits.</p></article>
         </div>
       </Section>
 
-      <Section id="s6-pricing-ledger" eyebrow="Canonical offers" title="Operation-level pricing, not tiers." copy={`Generated contract ${discovery.contractVersion}. Values below are read from the current discovery document; a missing amount remains missing.`}>
+      <Section id="s6-pricing-ledger" eyebrow="Current prices" title="One price basis for each operation." copy="Fixed maximums and request-priced operations below come from the same generated discovery data used by the API and product pages.">
         <div className="s6-ledger" role="table" aria-label="Current operation pricing">
           <div className="s6-ledger-row s6-ledger-row--head" role="row">
-            <span role="columnheader">Operation</span><span role="columnheader">Model</span><span role="columnheader">Maximum</span><span role="columnheader">Lifecycle</span><span role="columnheader">Public</span>
+            <span role="columnheader">Operation</span><span role="columnheader">Price basis</span><span role="columnheader">Maximum</span><span role="columnheader">Availability</span><span role="columnheader">Route</span>
           </div>
           {priceProducts.map((product) => {
             const family = observedProduct(familyOf(product.productId));
@@ -188,44 +176,14 @@ function PricingPage() {
                 <span role="cell">{humanize(product.pricing.model)}</span>
                 <strong role="cell">{displayPrice(product)}</strong>
                 <span role="cell" className={`s6-state s6-state--${family.lifecycleState}`}>{lifecycleLabels[family.lifecycleState]}</span>
-                <span role="cell">{product.publicAvailable ? 'yes' : 'no'}</span>
+                <span role="cell">{product.routes?.paidChallenge ?? product.routes?.freeSample ?? 'OpenAPI'}</span>
               </Link>
             );
           })}
         </div>
       </Section>
 
-      <Section eyebrow="Quote anatomy" title="Approval is visible. This demonstration does not pay." copy="The interaction below is a design-state fixture. It never contacts the API, signs a wallet request, authorizes payment, or creates settlement.">
-        <div className="s6-quote-shell" data-quote-state={quoteState}>
-          <div className="s6-quote-copy">
-            <span className="s6-fixture"><i />Design fixture · no network call</span>
-            <h3>One quote. One bounded approval.</h3>
-            <p>Use the selector to inspect how the locked quote surface handles a current operation. Only fields published by canonical truth receive values.</p>
-            <label className="s6-field-label" htmlFor="s6-price-operation">Operation</label>
-            <select id="s6-price-operation" value={selectedId} onChange={(event) => setSelectedId(event.target.value)}>
-              {priceProducts.map((product) => <option key={product.productId} value={product.productId}>{product.operationId}</option>)}
-            </select>
-          </div>
-          <div className="s6-quote-card">
-            <div className="s6-quote-top"><span className="s6-eyebrow">Maximum charge boundary</span><span className={`s6-state ${quoteState === 'refused' ? 's6-state--refused' : quoteState === 'approved' ? 's6-state--qualified' : ''}`}>{quoteState === 'idle' ? 'not approved' : quoteState === 'approved' ? 'approval fixture' : 'refused fixture'}</span></div>
-            <p className="s6-quote-number">{selected == null ? 'not bound' : displayPrice(selected)} <small>{selected?.pricing.displayPrice == null ? '' : 'maximum'}</small></p>
-            <div className="s6-quote-lines">
-              <div><span>Operation</span><code>{selected?.operationId ?? 'not bound'}</code></div>
-              <div><span>Pricing model</span><strong>{selected == null ? 'not bound' : humanize(selected.pricing.model)}</strong></div>
-              <div><span>Observed family lifecycle</span><strong>{observed == null ? 'not bound' : lifecycleLabels[observed.lifecycleState]}</strong></div>
-              <div><span>Network / asset</span><strong>{observed?.observedPrice == null ? 'not bound in current observation' : `${observed.observedPrice.network} · ${observed.observedPrice.asset}`}</strong></div>
-              <div><span>Provider / expiry / budget</span><strong>not bound in published pricing metadata</strong></div>
-            </div>
-            <div className="s6-button-row">
-              <button className="s6-button s6-button--secondary" type="button" onClick={() => setQuoteState('approved')}>Preview approval boundary</button>
-              <button className="s6-button s6-button--quiet" type="button" onClick={() => setQuoteState('refused')}>Preview refusal</button>
-            </div>
-            <p className="s6-local-note" aria-live="polite">Local browser state only. No wallet, payment, settlement, or receipt action occurs.</p>
-          </div>
-        </div>
-      </Section>
-
-      <Section eyebrow="Payment states" title="Receipt and replay are separate from price." copy="The client distinguishes a completed result, a refused authorization, and an unknown settlement.">
+      <Section eyebrow="Safe payment" title="A retry never needs a second payment." copy="The client distinguishes a completed result, a refused authorization, and an unknown settlement.">
         <div className="s6-state-grid">
           <article className="s6-state-card s6-state-card--verified"><span className="s6-state s6-state--verified">completed</span><h3>Return the durable result.</h3><p>The same key and body replay the existing result without another logical execution or charge.</p><small>Keep the original idempotency key.</small></article>
           <article className="s6-state-card s6-state-card--refused"><span className="s6-state s6-state--refused">refused</span><h3>No authority granted.</h3><p>Rejection or an invalid boundary stops before approved execution.</p><small>Correct the request before retrying.</small></article>
@@ -345,7 +303,7 @@ function StatusPage() {
         </dl>
       </Section>
 
-      <Section eyebrow="Family health" title="Six permanent families. Current observed state." copy={`Source: ${observedTruth.provenance.source}. Permanent product names stay frozen even when generated registry labels differ.`}>
+      <Section eyebrow="Family health" title="Current product availability." copy={`Current at ${observedTruth.provenance.observedAt}. Available families accept public requests; unavailable families advertise no execution route.`}>
         <div className="s6-health-ledger">
           {FAMILY_ORDER.map((familyId) => {
             const item = observedProduct(familyId);
@@ -381,7 +339,7 @@ function SecurityPage() {
   return (
     <>
       <Hero page="security" eyebrow="Security / authority boundary" title="Authority is explicit, scoped, and inspectable." lede="Security on this site means specific implemented or contract-bound controls with visible limitations. It does not mean a certification badge, audit opinion, or compliance status that Clervo has not published evidence for." visual aside={aside}>
-        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-security-controls">Inspect controls</a><Link className="s6-button s6-button--secondary" to="/proof">See request recovery</Link></div>
+        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-security-controls">Inspect controls</a><Link className="s6-button s6-button--secondary" to="/docs/failures">See request recovery</Link></div>
       </Hero>
 
       <Section id="s6-security-controls" eyebrow="Control surface" title="Eight boundaries, each with an evidence state." copy="A control can be live-bound, directly verified, bounded but incomplete, unresolved, or explicitly not claimed. Those states are not interchangeable.">
@@ -447,7 +405,7 @@ function ChangelogPage() {
       at: observedTruth.provenance.observedAt,
       type: 'Observation',
       title: 'Public catalog observation regenerated from the deployed registry.',
-      body: `Availability and observed route prices are generated from ${observedTruth.provenance.source} by ${observedTruth.provenance.generatedBy}.`,
+      body: 'Availability and route prices were regenerated from the current public product data.',
       boundary: 'This is an observation timestamp, not an uptime or release-history claim.',
     },
     {
@@ -512,7 +470,7 @@ export function TrustSupport({ page, onPhase }: { page: TrustSupportPage; onPhas
   useEffect(() => onPhase(phaseFor(page)), [onPhase, page]);
   return (
     <div className={`b12-trust-support s6-page s6-page--${page}`} data-support-page={page}>
-      <SupportNav page={page} />
+      {page === 'pricing' || page === 'docs' ? null : <SupportNav page={page} />}
       {page === 'pricing' ? <PricingPage /> : null}
       {page === 'proof' ? <ProofPage /> : null}
       {page === 'docs' ? <DocsPage /> : null}

@@ -82,7 +82,7 @@ test('no product claims a proof level above the combined live-probe and accepted
   }
 });
 
-test('every generated public surface renders the registry lifecycle state and proof level', async () => {
+test('every generated public surface renders availability without internal evidence classification', async () => {
   const [discovery, catalog, capabilities, status] = await Promise.all([
     json('generated/public/.well-known/clervo.json'),
     json('generated/public/catalog.json'),
@@ -90,29 +90,28 @@ test('every generated public surface renders the registry lifecycle state and pr
     json('generated/public/status.json'),
   ]);
   const expected = registry.products
-    .map(({ id, state, proof }) => [id, state, proof])
+    .map(({ id, state }) => [id, state])
     .sort();
 
   for (const [name, document] of [['discovery', discovery], ['catalog', catalog], ['capabilities', capabilities], ['status', status]]) {
     const rendered = document.observedTruth.products
-      .map(({ id, lifecycleState, proofLevel }) => [id, lifecycleState, proofLevel])
+      .map(({ id, lifecycleState }) => [id, lifecycleState])
       .sort();
-    assert.deepEqual(rendered, expected, `${name} must render the registry's states and proof levels`);
+    assert.deepEqual(rendered, expected, `${name} must render the registry's availability states`);
     assert.equal(document.observedTruth.provenance.observedAt, registry.observedAt, `${name} must cite the registry observation time`);
-    assert.equal(document.observedTruth.provenance.source, 'Clervo production probe');
-    assert.equal(document.observedTruth.provenance.generatedBy, 'Clervo discovery generator');
+    assert.equal('proofLevels' in document.observedTruth.provenance, false);
+    assert.ok(document.observedTruth.products.every((product) => !('proofLevel' in product)));
   }
 
-  // Proof level is rendered as its own field, never folded into lifecycle.
   for (const product of capabilities.products) {
     const observed = registry.products.find(({ id }) => id === product.id);
     assert.equal(product.lifecycleState, observed.state);
-    assert.equal(product.proofLevel, observed.proof);
+    assert.equal('proofLevel' in product, false);
   }
   for (const product of status.products) {
     const observed = registry.products.find(({ id }) => id === product.id);
     assert.equal(product.lifecycleState, observed.state);
-    assert.equal(product.proofLevel, observed.proof);
+    assert.equal('proofLevel' in product, false);
   }
 });
 
@@ -223,7 +222,7 @@ test('the site projection is byte-identical to the generated output', async () =
   }
 });
 
-test('the agent-facing documents render the registry rather than a hand-written claim', async () => {
+test('the agent-facing documents render current availability without internal evidence labels', async () => {
   const [skill, agent, llms] = await Promise.all([
     text('generated/public/skill.md'),
     text('generated/public/agent.md'),
@@ -233,7 +232,7 @@ test('the agent-facing documents render the registry rather than a hand-written 
 
   for (const [name, document] of [['skill.md', skill], ['agent.md', agent]]) {
     assert.ok(document.includes(registry.observedAt), `${name} must cite the registry observation time`);
-    assert.ok(document.includes('Clervo production probe'), `${name} must name its public observation source`);
+    assert.doesNotMatch(document, /production probe|proof level|proofLevel/iu, `${name} must not expose internal evidence classification`);
     for (const product of registry.products) {
       const row = document.split('\n').find((line) => line.startsWith(`| ${product.label} |`));
       assert.ok(row !== undefined, `${name} must list ${product.label}`);

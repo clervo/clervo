@@ -4,7 +4,7 @@
   "info": {
     "title": "Clervo Search, AI, Secure Sandbox, Prediction Intelligence, Crypto Intelligence API",
     "version": "2026-07-29.1",
-    "description": "Publicly callable previews: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence. Availability, routes, and prices are generated from the probed live registry; unavailable operations fail closed.",
+    "description": "Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys. Current operations, routes, prices, and limitations are listed below.",
     "contact": {
       "name": "Clervo",
       "email": "mo@clervo.dev",
@@ -6069,7 +6069,7 @@
   },
   "x-clervo-status": {
     "lifecycle": "preview",
-    "distribution": "public_preview",
+    "distribution": "public",
     "noPublicDistribution": false,
     "publicCallable": true,
     "paymentImplemented": true,

@@ -6,25 +6,23 @@ import { Link, useRouter } from '../router';
 /*
  * The global shell.
  *
- * Product, Catalog, Pricing, Docs, Status and one primary action to /start are
- * the stable human navigation. The footer also exposes the canonical machine
+ * Home, Products, Pricing, Docs and one primary action to /start are the
+ * customer navigation. The footer also exposes the canonical machine
  * entry points so developers and agent crawlers do not have to infer them.
  */
 
 const primaryNav = [
-  { to: '/product', label: 'Product' },
-  { to: '/catalog', label: 'Models' },
+  { to: '/', label: 'Home' },
+  { to: '/product', label: 'Products' },
   { to: '/pricing', label: 'Pricing' },
   { to: '/docs', label: 'Docs' },
-  { to: '/status', label: 'Status' },
 ];
 
 const secondaryNav = [
-  { to: '/trust', label: 'Trust center' },
-  { to: '/proof', label: 'Proof' },
+  { to: '/catalog', label: 'Model catalog' },
+  { to: '/status', label: 'Status' },
   { to: '/security', label: 'Security' },
-  { to: '/benchmarks', label: 'Benchmarks' },
-  { to: '/changelog', label: 'Changelog' },
+  { to: '/legal', label: 'Legal' },
 ];
 
 export function SiteHeader() {
@@ -103,7 +101,7 @@ export function SiteHeader() {
 
           <div className="site-header__actions">
             <Link className="button button--primary site-header__cta" to="/start">
-              Set up Clervo
+              Make your first AI call
             </Link>
             <button
               ref={triggerRef}
@@ -164,7 +162,7 @@ export function SiteHeader() {
             ))}
           </nav>
           <Link className="button button--primary mobile-nav__cta" to="/start">
-            Set up Clervo
+            Make your first AI call
           </Link>
         </div>
       </div>
@@ -178,7 +176,7 @@ export function SiteFooter({ note }: { note: string }) {
       <div className="site-footer__inner shell">
         <div className="site-footer__brand">
           <ApexMark size={26} />
-          <p className="quiet">Find. Understand. Act.</p>
+          <p className="quiet">AI and agent tools, paid per call.</p>
         </div>
 
         <div className="site-footer__columns">
@@ -188,7 +186,7 @@ export function SiteFooter({ note }: { note: string }) {
             <Link to="/research">Research</Link>
             <Link to="/catalog">Models</Link>
             <Link to="/pricing">Pricing</Link>
-            <Link to="/start">Set up Clervo</Link>
+            <Link to="/start">Start</Link>
           </section>
           <section>
             <h2>Developers</h2>
@@ -201,8 +199,6 @@ export function SiteFooter({ note }: { note: string }) {
           </section>
           <section>
             <h2>Trust</h2>
-            <Link to="/trust">Trust center</Link>
-            <Link to="/proof">Proof</Link>
             <Link to="/status">Status</Link>
             <Link to="/security">Security</Link>
             <Link to="/changelog">Changelog</Link>

@@ -79,7 +79,15 @@ export interface ToolResult {
 }
 
 function text(value: unknown): ToolResult {
-  return { content: [{ type: 'text', text: JSON.stringify(value) }] };
+  const customerValue = value !== null
+    && typeof value === 'object'
+    && (value as { status?: unknown }).status === 'payment_required'
+    ? {
+        ...(value as Record<string, unknown>),
+        nextAction: 'Review the quoted maximum, asset, network, recipient, and expiry. To approve it, explicitly enable payment in a Clervo client after setting local spend limits; otherwise stop here. No payment has been sent.',
+      }
+    : value;
+  return { content: [{ type: 'text', text: JSON.stringify(customerValue) }] };
 }
 
 function failure(error: unknown): ToolResult {
@@ -245,7 +253,7 @@ export function createClervoMcpServer(options: {
   if (PROFILE_FAMILIES[profile].includes('search')) server.registerTool(
     'search_web',
     {
-      title: 'Clervo web evidence preview',
+      title: 'Search the web with Clervo',
       description: 'Runs the live bounded free Search route or obtains its exact paid challenge without signing.',
       inputSchema,
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },

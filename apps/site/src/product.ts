@@ -4,20 +4,17 @@ import onboardingSource from '../../../generated/public/onboarding.json';
 import statusSource from '../../../generated/public/status.json';
 
 export type ExperiencePhase = 'risk' | 'qualified' | 'approval' | 'verified' | 'receipt';
-export type PillarLifecycle = 'preview' | 'unavailable' | 'available';
+export type PillarLifecycle = 'unavailable' | 'available';
 
 // Availability is observed by probing the deployed system. Qualification
 // fields remain in the machine projection for released-client compatibility,
 // but customer pages use availability, routes, prices, and payment behavior.
 export type LifecycleState = 'live' | 'supply_paused' | 'unavailable';
-export type ProofLevel = 'none' | 'quote_observed_unpaid' | 'paid_outcome_verified' | 'externally_repeated';
-
 export interface ObservedProduct {
   id: 'search' | 'ai' | 'sandbox' | 'rpc' | 'prediction' | 'crypto_intelligence';
   label: string;
   operations: string[];
   lifecycleState: LifecycleState;
-  proofLevel: ProofLevel;
   reason: string | null;
   expectedReturnAt: string | null;
   publiclyReachable: boolean;
@@ -32,10 +29,7 @@ export interface ObservedProduct {
 
 export interface ObservedTruth {
   provenance: {
-    source: string;
-    generatedBy: string;
     observedAt: string;
-    proofLevels: Record<ProofLevel, string>;
     states: Record<LifecycleState, string>;
   };
   products: ObservedProduct[];
@@ -59,7 +53,15 @@ export interface DiscoveryProduct {
     maximumChargeRequired: boolean;
     priceVersion: string;
   };
-  routes?: { freeSample?: string; paidChallenge?: string };
+  routes?: {
+    freeSample?: string;
+    paidChallenge?: string;
+    catalog?: string;
+    execute?: string;
+    openAiChatCompletions?: string;
+    anthropicMessages?: string;
+    openAiResponses?: string;
+  };
   attribution?: {
     source: string;
     license?: string;
@@ -222,6 +224,7 @@ export interface ObservedRoute {
   route: string;
   lifecycleState: LifecycleState;
   sellable: boolean;
+  billingMode: 'free' | 'metered';
   reason: string | null;
   expectedReturnAt: string | null;
   observedPrice: {
@@ -252,6 +255,7 @@ interface ModelsDocument {
       availability: 'available' | 'degraded' | 'unavailable';
       health: 'healthy' | 'degraded' | 'unavailable';
       publicSellable: boolean;
+      billingMode: 'free' | 'metered';
       availabilityReason?: string;
       commerce: { executionPath: string };
     };
@@ -274,6 +278,7 @@ export const observedRoutes: ObservedRoute[] = modelsDocument.data
     route: clervo.commerce.executionPath,
     lifecycleState: clervo.availability === 'available' ? 'live' : 'supply_paused',
     sellable: clervo.publicSellable,
+    billingMode: clervo.billingMode,
     reason: clervo.availabilityReason ?? null,
     expectedReturnAt: null,
     // Customer pricing is usage-dimensional, not one frozen maximum charge.

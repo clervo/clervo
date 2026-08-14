@@ -1,6 +1,6 @@
 # Clervo
 
-> Clervo is outcome infrastructure for agents: Find, Understand, Act.
+> Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.
 
 Product access:
 
@@ -66,16 +66,16 @@ Product access:
 
 ## Current product availability
 
-Probed from the deployed system at 2026-08-14T12:17:15.502Z. A live product accepts requests; an unavailable product has no public execution route. The 402 returned for a paid request is the binding quote.
+Current at 2026-08-14T12:17:15.502Z. An available product accepts requests; an unavailable product has no public execution route. The 402 returned for a paid request is the binding quote.
 
 | Product | Availability | Price |
 |---|---|---|
-| AI | live | 0.001000 USDC observed maximum |
-| Crypto Intelligence | live | 0.004000 USDC observed maximum |
-| Prediction Intelligence | live | 0.002000 USDC observed maximum |
+| AI | live | 0.001000 USDC maximum |
+| Crypto Intelligence | live | 0.004000 USDC maximum |
+| Prediction Intelligence | live | 0.002000 USDC maximum |
 | Multi-chain RPC | unavailable (temporarily_unavailable) | not offered |
-| Secure Sandbox | live | 0.060000 USDC observed maximum |
-| Research | live | 0.006000 USDC observed maximum |
+| Secure Sandbox | live | 0.060000 USDC maximum |
+| Research | live | 0.006000 USDC maximum |
 
 ## First call
 

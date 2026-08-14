@@ -2,13 +2,13 @@
   "name": "@clervo/mcp",
   "version": "0.5.2",
   "mcpName": "io.github.clervo/connect",
-  "description": "Clervo Connect MCP profiles with one local wallet, live served products, bounded x402, reconciliation, usage, and diagnostics.",
+  "description": "MCP server for Clervo AI and agent tools with pay-per-use x402 payment controls.",
   "license": "MIT",
   "type": "module",
   "keywords": [
     "clervo",
     "ai-agents",
-    "agent-infrastructure",
+    "x402",
     "mcp",
     "model-context-protocol",
     "search"

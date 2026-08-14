@@ -76,9 +76,16 @@ function cors(headers = new Headers()) {
   return headers;
 }
 
-function json(status, body) {
+function json(status, body, { cache = false } = {}) {
   const headers = cors(new Headers({ 'content-type': 'application/json; charset=utf-8' }));
+  if (cache) headers.set('cache-control', 'public, max-age=300, stale-while-revalidate=3600');
   return new Response(JSON.stringify(body), { status, headers });
+}
+
+function staticHeaders(contentType) {
+  const headers = cors(new Headers({ 'content-type': contentType }));
+  headers.set('cache-control', 'public, max-age=300, stale-while-revalidate=3600');
+  return headers;
 }
 
 async function normalizeCompatibilityRequest(request, pathname) {
@@ -140,19 +147,19 @@ export default {
       models: 'https://api.clervo.dev/v1/models',
       x402: 'https://api.clervo.dev/.well-known/x402',
       reference: 'https://api.clervo.dev/llms.txt',
-    });
+    }, { cache: true });
     if (['/favicon.ico', '/favicon.svg'].includes(incoming.pathname)) return new Response(FAVICON, {
       status: 200,
-      headers: cors(new Headers({ 'content-type': 'image/svg+xml; charset=utf-8' })),
+      headers: staticHeaders('image/svg+xml; charset=utf-8'),
     });
-    if (DISCOVERY_DOCUMENTS.has(incoming.pathname)) return json(200, DISCOVERY_DOCUMENTS.get(incoming.pathname));
+    if (DISCOVERY_DOCUMENTS.has(incoming.pathname)) return json(200, DISCOVERY_DOCUMENTS.get(incoming.pathname), { cache: true });
     if (TEXT_DOCUMENTS.has(incoming.pathname)) return new Response(TEXT_DOCUMENTS.get(incoming.pathname), {
       status: 200,
-      headers: cors(new Headers({ 'content-type': 'text/markdown; charset=utf-8' })),
+      headers: staticHeaders('text/markdown; charset=utf-8'),
     });
     if (PLAIN_TEXT_DOCUMENTS.has(incoming.pathname)) return new Response(PLAIN_TEXT_DOCUMENTS.get(incoming.pathname), {
       status: 200,
-      headers: cors(new Headers({ 'content-type': 'text/plain; charset=utf-8' })),
+      headers: staticHeaders('text/plain; charset=utf-8'),
     });
     const declared = Number(request.headers.get('content-length'));
     const maximumRequestBytes = MAXIMUM_REQUEST_BYTES[incoming.pathname];
