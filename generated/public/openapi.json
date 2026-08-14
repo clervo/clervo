@@ -1671,7 +1671,8 @@
                 "type": "object",
                 "required": [
                   "model",
-                  "input"
+                  "input",
+                  "store"
                 ],
                 "properties": {
                   "model": {

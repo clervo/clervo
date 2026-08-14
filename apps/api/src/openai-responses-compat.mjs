@@ -457,7 +457,7 @@ export function createOpenAiResponsesDiscoveryContract(
     input,
     inputSchema: Object.freeze({
       type: 'object',
-      required: ['model', 'input'],
+      required: ['model', 'input', 'store'],
       properties: {
         model: {
           type: 'string',
