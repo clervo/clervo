@@ -27,24 +27,24 @@ Current verified status:
 
 ## OpenAI Chat Completions compatibility
 
-- `POST https://api.clervo.dev/v1/chat/completions`: OpenAI Chat Completions-compatible non-streaming adapter over the canonical Clervo AI execution stack.
+- `POST https://api.clervo.dev/v1/chat/completions`: OpenAI Chat Completions-compatible adapter with SSE support over the canonical Clervo AI execution stack.
 - The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.
-- `stream: true` is not advertised yet and returns 422 until streaming support is implemented.
+- `stream: true` returns protocol-compatible SSE after the operation completes; paid streams begin only after settlement succeeds.
 
 ## Anthropic Messages compatibility
 
-- `POST https://api.clervo.dev/v1/messages`: Anthropic Messages-compatible non-streaming adapter over the canonical Clervo AI execution stack.
+- `POST https://api.clervo.dev/v1/messages`: Anthropic Messages-compatible adapter with SSE support over the canonical Clervo AI execution stack.
 - Supports text-only user/assistant messages plus top-level system text; richer content blocks, tools, thinking, and unsupported non-default controls fail closed with 422.
 - The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.
-- `stream: true` is not advertised yet and returns 422 until streaming support is implemented.
+- `stream: true` returns protocol-compatible SSE after the operation completes; paid streams begin only after settlement succeeds.
 
 ## OpenAI Responses compatibility
 
-- `POST https://api.clervo.dev/v1/responses`: stateless OpenAI Responses-compatible non-streaming adapter over the canonical Clervo AI execution stack.
+- `POST https://api.clervo.dev/v1/responses`: stateless OpenAI Responses-compatible adapter with SSE support over the canonical Clervo AI execution stack.
 - Supports string input, bounded text message input, optional instructions, max_output_tokens, and text/json_object output formatting.
 - Callers must send `store: false`; stored response state, previous-response continuation, conversations, tools, background execution, and reasoning controls fail closed with 422.
 - The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.
-- `stream: true` is not advertised yet and returns 422 until streaming support is implemented.
+- `stream: true` returns protocol-compatible SSE after the operation completes; paid streams begin only after settlement succeeds.
 
 ## Secure Sandbox preview
 
@@ -66,7 +66,7 @@ Current verified status:
 
 ## Observed lifecycle state and proof level
 
-Probed from the deployed system at 2026-08-13T22:55:05.457Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
+Probed from the deployed system at 2026-08-14T12:17:15.502Z. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; `quote_observed_unpaid` means a price and a valid payment challenge were returned and nothing more.
 
 | Product | Lifecycle state | Proof level |
 |---|---|---|

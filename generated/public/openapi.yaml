@@ -950,7 +950,7 @@
     "/v1/chat/completions": {
       "post": {
         "summary": "Create an OpenAI-compatible chat completion",
-        "description": "Thin non-streaming OpenAI Chat Completions compatibility adapter over Clervo AI execution. Free models use the same published quota; paid models return a request-bound x402 or MPP quote before execution. Unsupported non-default controls and stream=true fail closed with 422.",
+        "description": "Thin OpenAI Chat Completions compatibility adapter over Clervo AI execution. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Unsupported non-default controls still fail closed.",
         "operationId": "openAiChatCompletions",
         "security": [],
         "tags": [
@@ -1015,7 +1015,7 @@
                     }
                   },
                   "stream": {
-                    "const": false
+                    "type": "boolean"
                   },
                   "max_completion_tokens": {
                     "type": "integer",
@@ -1150,6 +1150,12 @@
                     "total_tokens": 2
                   }
                 }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "description": "OpenAI Chat Completions SSE emitted after execution completes; paid streams begin only after settlement succeeds."
+                }
               }
             }
           },
@@ -1206,7 +1212,7 @@
             }
           },
           "422": {
-            "description": "Unsupported compatibility behavior, unavailable model, or streaming request",
+            "description": "Unsupported compatibility behavior or unavailable model",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1267,7 +1273,7 @@
     "/v1/messages": {
       "post": {
         "summary": "Create an Anthropic-compatible message",
-        "description": "Thin non-streaming Anthropic Messages compatibility adapter over Clervo AI execution. Text-only user/assistant messages and top-level system text are supported. Paid models return a request-bound x402 or MPP quote before execution; unsupported richer content, tools, thinking, non-default controls, and stream=true fail closed with 422.",
+        "description": "Thin Anthropic Messages compatibility adapter over Clervo AI execution. Text-only user/assistant messages and top-level system text are supported. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Unsupported richer content, tools, thinking, and non-default controls still fail closed.",
         "operationId": "anthropicMessages",
         "security": [],
         "tags": [
@@ -1382,7 +1388,7 @@
                     ]
                   },
                   "stream": {
-                    "const": false
+                    "type": "boolean"
                   }
                 },
                 "additionalProperties": true
@@ -1515,6 +1521,12 @@
                     "output_tokens": 1
                   }
                 }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "description": "Anthropic Messages SSE emitted after execution completes; paid streams begin only after settlement succeeds."
+                }
               }
             }
           },
@@ -1571,7 +1583,7 @@
             }
           },
           "422": {
-            "description": "Unsupported compatibility behavior, unavailable model, or streaming request",
+            "description": "Unsupported compatibility behavior or unavailable model",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -1632,7 +1644,7 @@
     "/v1/responses": {
       "post": {
         "summary": "Create an OpenAI-compatible response",
-        "description": "Thin stateless non-streaming OpenAI Responses compatibility adapter over Clervo AI execution. String or text-message input and optional instructions are supported. Callers must set store=false because Clervo does not retain Responses application state. Unsupported tools, continuation state, background execution, reasoning controls, richer input items, and stream=true fail closed with 422.",
+        "description": "Thin stateless OpenAI Responses compatibility adapter over Clervo AI execution. Callers must set store=false. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Stateful continuation, tools, background execution, and unsupported controls fail closed.",
         "operationId": "openAiResponses",
         "security": [],
         "tags": [
@@ -1738,7 +1750,7 @@
                     "maximum": 65536
                   },
                   "stream": {
-                    "const": false
+                    "type": "boolean"
                   },
                   "store": {
                     "const": false
@@ -1935,6 +1947,12 @@
                   },
                   "metadata": {}
                 }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "description": "OpenAI Responses SSE emitted after execution completes; paid streams begin only after settlement succeeds."
+                }
               }
             }
           },
@@ -1991,7 +2009,7 @@
             }
           },
           "422": {
-            "description": "Unsupported Responses behavior, unavailable model, stateful request, or streaming request",
+            "description": "Unsupported Responses behavior, unavailable model, or stateful request",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6076,7 +6094,7 @@
       "crypto.wallet.transactions",
       "crypto.wallet.report"
     ],
-    "runtimeRelease": "9cfd498d068224384ae5a3b1ea98ae581c23aed5"
+    "runtimeRelease": "6024e67a816e69fef7f73fae2cc867951c3dfd00"
   },
   "servers": [
     {

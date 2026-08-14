@@ -388,11 +388,16 @@ const observedTruth = Object.values(observed)
   }))
   .sort((left, right) => left.id.localeCompare(right.id));
 
+const runtimeRelease = liveRegistry.deployment.releaseId;
+if (!/^[a-f0-9]{40}$/u.test(runtimeRelease ?? '')) {
+  throw new Error('live_registry_runtime_release_invalid');
+}
+
 const observedProvenance = {
   source: 'Clervo production probe',
   generatedBy: 'Clervo discovery generator',
   observedAt: liveRegistry.observedAt,
-  releaseId: liveRegistry.deployment.releaseId,
+  releaseId: runtimeRelease,
   proofLevels: PUBLIC_PROOF_LEVELS,
   states: liveRegistry.states,
 };
@@ -957,7 +962,7 @@ if (publicAi) {
   });
   openapi.paths['/v1/models'].get.tags = ['AI'];
   openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, ...aiOperationIds];
-  openapi['x-clervo-status'].runtimeRelease = launchState.sourceCommit;
+  openapi['x-clervo-status'].runtimeRelease = runtimeRelease;
   discovery.description = `Machine-readable public Search and complete provider-neutral AI catalog. ${b7Inventory.callableIds} stable model IDs are discoverable and callable through one normalized free-or-paid contract without exposing suppliers. No external customer revenue or demand is claimed.`;
   discovery.products.push({
     productId: 'ai', operationId: 'ai.execute', operationIds: aiOperationIds, title: 'Clervo AI model catalog',
@@ -975,7 +980,7 @@ if (publicAi) {
     payment: { freeModelsRequirePayment: false, paidModels: ['x402', 'mpp'], challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
     commercialProof: observed.ai.proof === 'paid_outcome_verified',
   });
-  discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: ['search.web', ...aiOperationIds] };
+  discovery.runtimeRelease = { sourceCommit: runtimeRelease, operationIds: ['search.web', ...aiOperationIds] };
   discovery.limitations = [
     `The catalog contains ${b7Inventory.canonicalModels} frozen canonical models and ${b7Inventory.aliases} aliases; it is not an open-ended promise to add or substitute models.`,
     'AI catalog prices are authoritative usage rates; a paid request returns the binding request-specific maximum charge before settlement.',

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-13T22:55:05.457Z",
+  "observedAt": "2026-08-14T12:17:15.502Z",
   "publicApi": {
     "state": "available",
     "endpoint": "https://api.clervo.dev",
@@ -52,8 +52,8 @@
     "provenance": {
       "source": "Clervo production probe",
       "generatedBy": "Clervo discovery generator",
-      "observedAt": "2026-08-13T22:55:05.457Z",
-      "releaseId": "9cfd498d068224384ae5a3b1ea98ae581c23aed5",
+      "observedAt": "2026-08-14T12:17:15.502Z",
+      "releaseId": "6024e67a816e69fef7f73fae2cc867951c3dfd00",
       "proofLevels": {
         "none": "no payment proof recorded",
         "quote_observed_unpaid": "payment requirement observed; no settled outcome verified",

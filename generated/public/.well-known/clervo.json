@@ -1,6 +1,6 @@
 {
-  "discoveryVersion": "2026-08-13.1",
-  "contractVersion": "2026-08-13.1",
+  "discoveryVersion": "2026-08-14.1",
+  "contractVersion": "2026-08-14.1",
   "name": "Clervo",
   "description": "Machine-readable public preview for Search, AI, Secure Sandbox, Prediction Intelligence, Crypto Intelligence. Lifecycle, proof, routes, and prices are generated from direct deployed-system observations; unavailable operations fail closed.",
   "lifecycle": "preview",
@@ -555,9 +555,9 @@
     "A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.",
     "Solana and unsupported EVM chains fail closed."
   ],
-  "catalogVersion": "2026-08-13.1",
+  "catalogVersion": "2026-08-14.1",
   "runtimeRelease": {
-    "sourceCommit": "9cfd498d068224384ae5a3b1ea98ae581c23aed5",
+    "sourceCommit": "6024e67a816e69fef7f73fae2cc867951c3dfd00",
     "operationIds": [
       "search.web",
       "ai.chat",
@@ -583,8 +583,8 @@
     "provenance": {
       "source": "Clervo production probe",
       "generatedBy": "Clervo discovery generator",
-      "observedAt": "2026-08-13T22:55:05.457Z",
-      "releaseId": "9cfd498d068224384ae5a3b1ea98ae581c23aed5",
+      "observedAt": "2026-08-14T12:17:15.502Z",
+      "releaseId": "6024e67a816e69fef7f73fae2cc867951c3dfd00",
       "proofLevels": {
         "none": "no payment proof recorded",
         "quote_observed_unpaid": "payment requirement observed; no settled outcome verified",
