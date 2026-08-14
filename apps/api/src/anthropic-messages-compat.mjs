@@ -4,6 +4,7 @@ import {
   canonicalRequestHash,
   normalizeAiHttpRequest,
 } from '../../../dist/packages/contracts/src/index.js';
+import { resolveCompatibilityModel } from './compatibility-model-map.mjs';
 
 export const ANTHROPIC_MESSAGES_PATH = '/v1/messages';
 
@@ -221,7 +222,7 @@ export function normalizeAnthropicMessagesRequest(value) {
   );
 
   return normalizeAiHttpRequest({
-    model: value.model,
+    model: resolveCompatibilityModel(value.model),
     input: {
       kind: 'chat',
       messages: [
