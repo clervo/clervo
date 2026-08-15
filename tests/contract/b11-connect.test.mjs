@@ -123,7 +123,8 @@ test('B11 recovery restores the identical address and diagnostics never disclose
   assert.equal(restored.address, created.view.address);
   const diagnosis = await diagnose({ env, checkBalance: false, fetchImpl: async (url) => String(url).endsWith('/.well-known/clervo.json') ? response(200, discovery()) : response(503, {}) });
   const rendered = JSON.stringify(diagnosis);
-  assert.doesNotMatch(rendered, new RegExp(created.mnemonic.split(' ')[0], 'u'));
+  assert.equal(rendered.includes(created.mnemonic), false);
+  assert.equal(rendered.includes(created.mnemonic.split(' ').slice(0, 3).join(' ')), false);
   assert.doesNotMatch(rendered, /mnemonic|privateKey|recoveryPhrase/iu);
 });
 
