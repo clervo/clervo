@@ -73,7 +73,7 @@ const exactDescriptions: Record<string, string> = {
   '/catalog': 'Inspect Clervo model identities, capabilities, current availability and pricing without guessing provider or route state.',
   '/research': 'Use Clervo Research for fresh source retrieval with citations, evidence and explicit outcome boundaries.',
   '/platform': 'One operating contract for bounded requests, capability qualification, execution, verification, evidence and safe replay.',
-  '/product': 'Explore the AI, Search, Sandbox, Prediction, and Crypto products currently available through Clervo, with routes and pricing.',
+  '/product': 'Explore the AI, Search, Sandbox, Multi-chain RPC, Prediction, and Crypto products currently available through Clervo, with routes and pricing.',
   '/build': 'Build agent workflows against Clervo machine contracts, published clients, explicit approvals and inspectable recovery semantics.',
   '/proof-lab': 'Interact with Clervo proof-state fixtures to understand request, qualification, verification, receipt and replay boundaries without creating a live transaction.',
   '/proof': 'Follow Clervo payment requirements, receipts, replay, refusal and unknown-settlement recovery.',

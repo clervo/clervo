@@ -264,6 +264,7 @@ function DocsPage() {
             <Link to="/docs/openai">OpenAI-compatible</Link>
             <Link to="/docs/http">HTTP / OpenAPI</Link>
             <Link to="/docs/catalog">Catalog discovery</Link>
+            <Link to="/products/rpc">Multi-chain RPC</Link>
             <Link to="/docs/x402">Quotes and payment</Link>
             <Link to="/docs/receipts">Evidence and receipts</Link>
             <Link to="/docs/replay">Idempotency and replay</Link>

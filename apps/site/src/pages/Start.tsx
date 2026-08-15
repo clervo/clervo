@@ -80,7 +80,7 @@ export function Start({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
 
       <section className="start-payment" aria-labelledby="paid-boundary-title">
         <div className="shell start-payment__layout">
-          <div className="start-payment__copy"><p className="eyebrow">Paid only when needed</p><h2 id="paid-boundary-title">Stop at the quote. Decide with the exact maximum in view.</h2><p className="lede">Send a paid-model request without a payment header. Clervo returns HTTP 402; nothing is charged and the model does not run.</p><div><Link className="button button--primary" to="/docs/x402">Read the payment guide</Link><Link className="button button--secondary" to="/pricing">See prices</Link></div></div>
+          <div className="start-payment__copy"><p className="eyebrow">Paid only when needed</p><h2 id="paid-boundary-title">Stop at the quote. Decide with the exact maximum in view.</h2><p className="lede">Send a paid operation request—including a Multi-chain RPC read—without a payment header. Clervo returns HTTP 402; nothing is charged and the operation does not run.</p><div><Link className="button button--primary" to="/docs/x402">Read the payment guide</Link><Link className="button button--secondary" to="/pricing">See prices</Link></div></div>
           <div className="start-payment__contract"><pre tabIndex={0}><code>{paidBoundary}</code></pre><ol><li><span>Request</span><strong>One body · one idempotency key</strong></li><li><span>Quote</span><strong>USDC · Base · recipient · expiry · maximum</strong></li><li><span>Approval</span><strong>Explicit client policy required</strong></li><li><span>Replay</span><strong>Completed result · no second payment</strong></li></ol></div>
         </div>
       </section>
