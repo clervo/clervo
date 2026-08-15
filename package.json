@@ -162,6 +162,7 @@
     "test:b13": "npm run generate:discovery && npm run test:b13:clients && npm run verify:distribution-release && npm run verify:package-consumers && npm run site:build && node --test ./tests/contract/n13.3.test.mjs ./tests/contract/n13.4.test.mjs ./tests/contract/n13.5.test.mjs ./tests/contract/launch-site-truth.test.mjs ./tests/contract/ai-public-http.test.mjs ./tests/contract/bazaar-compatibility-edge.test.mjs ./tests/contract/agent-discovery.test.mjs",
     "test:b14": "node ./scripts/verify-runtime.mjs && node ./scripts/production/verify-production.mjs",
     "production:retention": "node ./scripts/verify-runtime.mjs && node ./scripts/production/search-state-retention.mjs",
+    "commercial:report": "node ./scripts/verify-runtime.mjs && npm run build && node ./scripts/production/commercial-report.mjs",
     "production:gcp": "node ./scripts/verify-runtime.mjs && node ./scripts/production/gcp-public-launch.mjs",
     "production:gcp:iam": "node ./scripts/verify-runtime.mjs && node ./scripts/production/gcp-iam.mjs",
     "production:gcp:build": "node ./scripts/verify-runtime.mjs && node ./scripts/production/gcp-build.mjs",

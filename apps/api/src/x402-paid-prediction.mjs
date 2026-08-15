@@ -90,7 +90,7 @@ export function createX402PaidPredictionProcessor({ service, stateStore, runtime
   if (!runtime || typeof runtime.execute !== 'function' || runtime.durable !== true) throw new TypeError('invalid_public_prediction_runtime');
   const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution });
   return Object.freeze({ mode: processor.mode, durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, trafficClass }) {
       const pricing = predictionPublicPricing(normalized);
       /* Bounded by the customer charge. Qualified public read-only sources have
        * no per-call supplier fee; storage and transport remain priced through
@@ -104,7 +104,7 @@ export function createX402PaidPredictionProcessor({ service, stateStore, runtime
         now,
         deadlineMs: 30_000,
       });
-      return processor.process({ idempotencyKey, requestHash, operationId, productId: normalized.productId, executionInput: request, paymentHeader, authorizationHeader, now, pricing, resourcePath: PREDICTION_PAID_PATH, discovery: PREDICTION_DISCOVERY, overloadCode: 'prediction_overloaded',
+      return processor.process({ idempotencyKey, requestHash, operationId, productId: normalized.productId, executionInput: request, paymentHeader, authorizationHeader, now, pricing, resourcePath: PREDICTION_PAID_PATH, discovery: PREDICTION_DISCOVERY, overloadCode: 'prediction_overloaded', trafficClass,
         async execute(executionRequest) {
           const completed = await runtime.execute(executionRequest);
           if (!validResult(completed?.result, executionRequest)) throw new TypeError('prediction_runtime_result_invalid');

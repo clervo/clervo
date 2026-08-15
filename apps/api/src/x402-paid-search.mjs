@@ -30,7 +30,7 @@ export function createX402PaidSearchProcessor({ service, stateStore, executor, a
   return Object.freeze({
     mode: processor.mode,
     durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, productId, normalized, paymentHeader, authorizationHeader, now }) {
+    async process({ idempotencyKey, requestHash, operationId, productId, normalized, paymentHeader, authorizationHeader, now, trafficClass }) {
       const pricing = x402SearchPricing(productId);
       const executionInput = Object.freeze({ ...normalized, operationId, productId, requestHash, fundingMode: 'paid' });
       return processor.process({
@@ -44,7 +44,7 @@ export function createX402PaidSearchProcessor({ service, stateStore, executor, a
         now,
         pricing,
         resourcePath: '/v1/search/paid',
-        overloadCode: 'search_overloaded',
+        overloadCode: 'search_overloaded', trafficClass,
         async execute(input) {
           const output = await executor.execute(input);
           assertSearchExecutionOutput(output, input);

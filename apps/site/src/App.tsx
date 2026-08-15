@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useCapsuleSheen } from './capsule';
 import { SiteFooter, SiteHeader } from './components/Shell';
 import { useActivation } from './experience';
+import { recordSiteMeasurement } from './measurement';
 import { modelFromSlug } from './models';
 import { isCanonicalOperationId } from './operation';
 import { Docs } from './pages/Docs';
@@ -133,6 +134,14 @@ export function App() {
   const [phase, setPhase] = useState<ExperiencePhase>('risk');
   const [activation, updateActivation] = useActivation();
   const { location } = useRouter();
+  useEffect(() => {
+    void recordSiteMeasurement('site_visit', location.pathname);
+  }, []);
+  useEffect(() => {
+    void recordSiteMeasurement('activation_surface', location.pathname);
+    if (location.pathname === '/start' || location.pathname.startsWith('/docs/quickstart')) void recordSiteMeasurement('setup_start', location.pathname);
+    if (location.pathname === '/catalog') void recordSiteMeasurement('catalog_view', location.pathname);
+  }, [location.pathname]);
   const pathname = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/u, '');
   const updatePhase = useCallback((next: ExperiencePhase) => setPhase(next), []);
   useCapsuleSheen();

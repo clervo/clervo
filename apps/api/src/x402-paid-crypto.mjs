@@ -94,7 +94,7 @@ export function createX402PaidCryptoProcessor({ service, stateStore, runtime, ac
   const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution });
   return Object.freeze({
     mode: processor.mode, durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, trafficClass }) {
       const pricing = cryptoPublicPricing(normalized);
       /* Crypto bounds the runtime by the customer charge: it buys nothing per
        * call, so the supplier cost is 0 and would bound the request to zero. */
@@ -109,7 +109,7 @@ export function createX402PaidCryptoProcessor({ service, stateStore, runtime, ac
       });
       return processor.process({
         idempotencyKey, requestHash, operationId, productId: normalized.productId, executionInput: request,
-        paymentHeader, authorizationHeader, now, pricing, resourcePath: CRYPTO_PAID_PATH, discovery: CRYPTO_DISCOVERY, overloadCode: 'crypto_overloaded',
+        paymentHeader, authorizationHeader, now, pricing, resourcePath: CRYPTO_PAID_PATH, discovery: CRYPTO_DISCOVERY, overloadCode: 'crypto_overloaded', trafficClass,
         async execute(executionRequest) {
           const completed = await runtime.execute(executionRequest);
           if (!validResult(completed?.result, executionRequest)) throw new TypeError('crypto_runtime_result_invalid');

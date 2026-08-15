@@ -14,6 +14,13 @@ function identifier(prefix, seed) {
   return `${prefix}_${createHash('sha256').update(seed).digest('hex').slice(0, 32)}`;
 }
 
+function payerReference(authorization) {
+  const payer = authorization?.verification?.payer;
+  return /^0x[a-fA-F0-9]{40}$/u.test(payer ?? '')
+    ? `sha256:${createHash('sha256').update(`wallet:${payer.toLowerCase()}`).digest('hex')}`
+    : undefined;
+}
+
 function refuse(code, status = 409) {
   throw Object.assign(new Error(code), { status });
 }
@@ -242,6 +249,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       resourcePath,
       discovery,
       overloadCode = 'operation_overloaded',
+      trafficClass = 'external',
     }) {
       if (typeof execute !== 'function' || typeof createResponse !== 'function') throw new TypeError('invalid_x402_operation_handler');
       if (prepare !== undefined && typeof prepare !== 'function') throw new TypeError('invalid_x402_operation_prepare');
@@ -276,7 +284,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
           expiresAt: new Date(Date.parse(now) + 300_000).toISOString(),
         });
         const challenge = await service.challenge({ quote, description: `Bounded ${productId} execution`, now, resourcePath: effectiveResourcePath, discovery: effectiveDiscovery });
-        state = await stateStore.challenge({ ...base, quote, challenge });
+        state = await stateStore.challenge({ ...base, quote, challenge, trafficClass });
       }
       if (state.kind === 'conflict') refuse('idempotency_conflict');
       if (state.quote.priceVersion !== effectivePricing.priceVersion || !sameAmount(state.quote.maximumCharge, effectivePricing.maximumCharge)) refuse('quote_pricing_changed');
@@ -285,6 +293,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       if (service.mode !== 'settlement_enabled') refuse('x402_settlement_disabled', 503);
 
       const authorization = await service.authorize({ paymentHeader, authorizationHeader, challenge: state.challenge });
+      const customerRef = payerReference(authorization);
       let execution = state.execution;
       if (state.state === 'challenged') {
         const release = acquireExecution?.();
@@ -341,7 +350,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
         leaseId: settlementClaim.leaseId,
         settlement,
         response,
-        accountingInput: {
+          accountingInput: {
           settlementId: settlement.settlementId,
           operationId,
           authorizationId: identifier('auth', `${operationId}:${authorization.fingerprint}`),
@@ -350,8 +359,10 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
           customerCharge: { ...state.quote.maximumCharge, asset: 'usdc' },
           supplierCost: execution.supplierCost,
           occurredAt: now,
-        },
-        now,
+          },
+          customerRef,
+          trafficClass,
+          now,
       });
       return Object.freeze({ status: 200, headers: settled.headers, body: response });
     },

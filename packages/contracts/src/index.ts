@@ -8,6 +8,7 @@ export * from './audit.js';
 export * from './canonical-request.js';
 export * from './catalog.js';
 export * from './commerce.js';
+export * from './commercial-measurement.js';
 export * from './discovery.js';
 export * from './development-retrieval-supply.js';
 export * from './extraction.js';
