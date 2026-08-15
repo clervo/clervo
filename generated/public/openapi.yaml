@@ -19,7 +19,7 @@
     "/v1/search/free": {
       "post": {
         "summary": "Execute a bounded search preview",
-        "description": "Public idempotent raw web-search sample. Set synthesize to false; synthesized answers are unavailable.",
+        "description": "Public idempotent fast Research sample. Set synthesize to false for ranked evidence; set synthesize to true for a bounded cited synthesis.",
         "operationId": "searchPreview",
         "parameters": [
           {
@@ -192,18 +192,6 @@
               }
             }
           },
-          "422": {
-            "description": "Released-client compatibility request selected synthesize=true, which remains unsupported",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "type": "object",
-                  "description": "Fail-closed RFC 9457-style problem details.",
-                  "additionalProperties": true
-                }
-              }
-            }
-          },
           "429": {
             "description": "Preview quota exceeded",
             "content": {
@@ -249,8 +237,8 @@
     },
     "/v1/search/paid": {
       "post": {
-        "summary": "Request or settle a raw Search payment",
-        "description": "Returns an exact x402 challenge for raw cited web retrieval. The same idempotency key replays the completed receipt without another charge. Set synthesize to false.",
+        "summary": "Request or settle a bounded Research payment",
+        "description": "Returns an exact x402 challenge for fast or deep Research. Deep mode performs bounded multi-source retrieval, page reading, synthesis, citations, conflicts, and uncertainty reporting. The same idempotency key replays the completed receipt without another charge.",
         "operationId": "searchPaymentChallenge",
         "parameters": [
           {
@@ -318,7 +306,7 @@
         },
         "responses": {
           "200": {
-            "description": "Raw cited Search completed or replayed",
+            "description": "Fast cited Search or deep multi-source Research completed or replayed",
             "content": {
               "application/json": {
                 "schema": {
@@ -462,18 +450,6 @@
           },
           "409": {
             "description": "Idempotency conflict",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "type": "object",
-                  "description": "Fail-closed RFC 9457-style problem details.",
-                  "additionalProperties": true
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Released-client compatibility request selected synthesize=true, which remains unsupported",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6060,7 +6036,7 @@
           "synthesize": {
             "type": "boolean",
             "default": false,
-            "description": "Public HTTP omission selects false. true is accepted only as a released-client compatibility input and returns search_synthesis_unavailable."
+            "description": "Public HTTP omission selects false for fast evidence. Set true for bounded deep Research with multi-source synthesis and citations."
           },
           "language": {
             "type": "string",
@@ -6106,9 +6082,10 @@
           },
           "productId": {
             "enum": [
-              "search.web"
+              "search.web",
+              "search.answer"
             ],
-            "description": "Callable public Search operation identity. Obsolete non-callable synthesis identifiers are not exposed by current clients."
+            "description": "Callable public Research operation identity: search.web for fast evidence or search.answer for deep cited synthesis."
           },
           "state": {
             "const": "RECEIPTED"
@@ -6424,6 +6401,7 @@
     "deploymentVerified": true,
     "operationIds": [
       "search.web",
+      "search.answer",
       "ai.chat",
       "ai.embed",
       "ai.image",

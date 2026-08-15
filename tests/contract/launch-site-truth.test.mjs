@@ -25,7 +25,7 @@ test('machine discovery publishes every live public product and payment contract
   assert.equal(discovery.releaseScope, undefined);
   assert.equal(discovery.artifacts.claims, undefined);
   assert.ok(discovery.products.every(({ publicAvailable }) => publicAvailable));
-  assert.equal(discovery.products.some(({ productId }) => productId === 'search.answer'), false);
+  assert.equal(discovery.products.some(({ productId }) => productId === 'search.answer'), true);
   const ai = discovery.products.find(({ productId }) => productId === 'ai');
   assert.equal(ai.publicAvailable, true);
   assert.equal(ai.payment.payable, true);

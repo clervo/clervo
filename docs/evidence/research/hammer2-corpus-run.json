@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "clervo.research-quality-run.v1",
+  "observedAt": "2026-08-15T17:37:00.000Z",
+  "total": 100,
+  "counts": {
+    "current_latest": 15,
+    "company_competitive": 15,
+    "technical": 15,
+    "academic": 10,
+    "government_regulatory": 10,
+    "claim_verification": 10,
+    "comparison": 10,
+    "ambiguous_conflict": 5,
+    "insufficient": 5,
+    "injection": 5
+  },
+  "failures": [],
+  "pass": true,
+  "citationFailures": 0,
+  "freshnessFailures": 0,
+  "injectionFailures": 0,
+  "noResultHonestyFailures": 0,
+  "mode": "production-code-safe-deterministic-supplier-fixtures",
+  "realPayments": 0
+}

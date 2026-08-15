@@ -518,12 +518,12 @@ for (const fileName of projectedSchemaFiles) {
   const declaration = schemaVisibility.schemas.find(({ file }) => file === fileName);
   if (!declaration || declaration.schemaId !== schema.$id) throw new Error(`schema visibility identity mismatch: ${fileName}`);
   if (fileName === 'search-http-result.schema.json') {
-    schema.properties.productId.enum = ['search.web'];
-    schema.properties.productId.description = 'Callable public Search operation identity. Obsolete non-callable synthesis identifiers are not exposed by current clients.';
+    schema.properties.productId.enum = ['search.web', 'search.answer'];
+    schema.properties.productId.description = 'Callable public Research operation identity: search.web for fast evidence or search.answer for deep cited synthesis.';
   }
   if (fileName === 'search-http-request.schema.json') {
     schema.properties.synthesize.default = false;
-    schema.properties.synthesize.description = 'Public HTTP omission selects false. true is accepted only as a released-client compatibility input and returns search_synthesis_unavailable.';
+    schema.properties.synthesize.description = 'Public HTTP omission selects false for fast evidence. Set true for bounded deep Research with multi-source synthesis and citations.';
   }
   schemas[componentName(fileName)] = schema;
   await writeFile(path.join(outputDirectory, 'schemas', contractModule.CONTRACT_VERSION, fileName), stableJson(schema));
@@ -551,7 +551,6 @@ if (publicSearch) {
     free: true,
     tags: ['Search'],
   });
-  openapi.paths['/v1/search/free'].post.responses['422'] = { description: 'Released-client compatibility request selected synthesize=true, which remains unsupported', content: { 'application/problem+json': { schema: publicProblemSchema } } };
   openapi.paths['/v1/search/paid'].post = scannerSafeOperation(openapi.paths['/v1/search/paid'].post, {
     requestSchema: searchProbeSchema,
     example: searchProbeExample,
@@ -561,8 +560,7 @@ if (publicSearch) {
     },
     tags: ['Search'],
   });
-  openapi.paths['/v1/search/paid'].post.responses['422'] = { description: 'Released-client compatibility request selected synthesize=true, which remains unsupported', content: { 'application/problem+json': { schema: publicProblemSchema } } };
-  openapi.paths['/v1/search/paid'].post.responses['200'].description = 'Raw cited Search completed or replayed';
+  openapi.paths['/v1/search/paid'].post.responses['200'].description = 'Fast cited Search or deep multi-source Research completed or replayed';
 }
 if (publicAi) {
   openapi.info.title = 'Clervo Search and AI API';
@@ -942,7 +940,7 @@ if (publicAi) {
     'Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain publicly unavailable.',
   ];
   llms = llms
-    .replace('raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable', 'raw cited Search and the complete provider-neutral Clervo AI catalog are callable; synthesized Search, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable')
+    .replace('raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable', 'fast cited Search and paid deep Research, plus the complete provider-neutral Clervo AI catalog, are callable; Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable')
     .replace('Projected operation IDs: search.web, search.answer', `Projected operation IDs: search.web, search.answer, ${aiOperationIds.join(', ')}`)
     .replace('x402 public payment: available for search.web at a maximum charge of 0.006 USDC on Base', 'x402 public payment: available for search.web at a maximum charge of 0.006 USDC and for paid AI requests through an exact request-derived maximum-charge quote on Base; published free AI models require no payment');
   if (publicOpenAiChat) {
@@ -1026,7 +1024,7 @@ if (publicSandbox) {
   discovery.limitations = [
     'Raw cited Search, bounded paid AI chat, and bounded paid one-shot Secure Sandbox execution are publicly callable previews.',
     'The Sandbox has one qualified execution node; high availability, sessions, arbitrary images, network access, and public artifact retrieval are not claimed.',
-    'Search synthesis, AI media, RPC, Prediction, and Crypto Intelligence remain unavailable.',
+    'Deep Research is bounded and callable; AI media, RPC, Prediction, and Crypto Intelligence remain unavailable.',
     'The Sandbox production origin, useful gVisor output, replay, and cleanup are verified; a bounded paid Sandbox proof remains pending.',
     'No external customer payment, revenue, or demand is claimed.',
   ];

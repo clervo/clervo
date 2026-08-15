@@ -21,7 +21,7 @@
     "synthesize": {
       "type": "boolean",
       "default": false,
-      "description": "Public HTTP omission selects false. true is accepted only as a released-client compatibility input and returns search_synthesis_unavailable."
+      "description": "Public HTTP omission selects false for fast evidence. Set true for bounded deep Research with multi-source synthesis and citations."
     },
     "language": {
       "type": "string",

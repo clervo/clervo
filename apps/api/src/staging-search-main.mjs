@@ -2,7 +2,7 @@
 
 import { createRecordedSearchExecutor } from '../../../dist/services/search/src/recorded-pipeline.js';
 import { createLiveExternalSearchExecutor } from '../../../dist/services/search/src/live-external-pipeline.js';
-import { createOpenCommercialSearchExecutor } from '../../../dist/services/search/src/open-commercial-pipeline.js';
+import { createResearchSearchExecutor } from '../../../dist/services/search/src/research-pipeline.js';
 import { createSearchMonitor } from '../../../dist/services/search/src/monitoring.js';
 import { createSearchServer } from './search-server.mjs';
 import {
@@ -101,10 +101,7 @@ const sandboxGateway = sandboxMode === 'disabled' ? undefined : createSandboxPri
   environment,
 });
 const executor = searchMode === 'open_federation'
-  ? createOpenCommercialSearchExecutor({
-    primaryCallCeiling: Number(process.env.CLERVO_SEARCH_PRIMARY_CALL_CEILING ?? '1000'),
-    fallbackCallCeiling: Number(process.env.CLERVO_SEARCH_FALLBACK_CALL_CEILING ?? '1000'),
-  })
+  ? createResearchSearchExecutor({ sourceCallCeiling: 8, pageReadCeiling: 3 })
   : searchMode === 'live_external' ? createLiveExternalSearchExecutor({
     primaryCredential: process.env.CLERVO_SEARCH_PRIMARY_KEY ?? '',
     fallbackCredential: process.env.CLERVO_SEARCH_FALLBACK_KEY ?? '',
@@ -168,7 +165,7 @@ const server = createSearchServer({
   x402StateStore,
   sandboxGateway,
   sandboxApiToken: sandboxMode === 'disabled' ? undefined : process.env.CLERVO_SANDBOX_API_TOKEN,
-  synthesisEnabled: searchMode === 'recorded',
+  synthesisEnabled: true,
   retrievalMode: searchMode,
   edgeAuthorization,
   aiPublicPricing: aiRuntime?.publicPricing,

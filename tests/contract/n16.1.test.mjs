@@ -21,7 +21,9 @@ test('current production policy exposes Search, AI, Sandbox, Prediction, and Cry
   const worker = await json('apps/worker/wrangler.jsonc');
   assert.equal(policy.publicOrigin, 'https://api.clervo.dev/');
   assert.equal(policy.search.mode, 'open_federation');
-  assert.equal(policy.search.synthesisEnabled, false);
+  assert.equal(policy.search.synthesisEnabled, true);
+  assert.equal(policy.search.primaryCallCeiling, 8);
+  assert.equal(policy.search.fallbackCallCeiling, 8);
   assert.equal(policy.search.automaticPaidOverage, false);
   assert.equal(policy.commerce.mode, 'settlement_enabled');
   assert.equal(policy.sandbox.publicRoute, true);
@@ -181,7 +183,7 @@ test('API edge publishes enabled products while blocking private control and dis
   assert.equal(malformedArtifact.status, 404);
 });
 
-test('public Search discovery exposes only the exact verified raw product and preserves commercial boundaries', () => {
+test('public Research discovery exposes fast and deep products with bounded commercial boundaries', () => {
   const projection = PUBLIC_SEARCH_DISTRIBUTION_PROJECTION;
   const openapi = createOpenApiDocument({}, projection);
   const discovery = createDiscoveryDocument(projection);
@@ -197,9 +199,9 @@ test('public Search discovery exposes only the exact verified raw product and pr
   assert.equal(raw.payment.payable, true);
   assert.equal(raw.pricing.displayPrice.asset, '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913');
   assert.equal(raw.pricing.displayPrice.amountAtomic, '6000');
-  assert.equal(answer.publicAvailable, false);
-  assert.equal(answer.payment.payable, false);
-  assert.equal(answer.pricing.displayPrice, null);
+  assert.equal(answer.publicAvailable, true);
+  assert.equal(answer.payment.payable, true);
+  assert.equal(answer.pricing.displayPrice.amountAtomic, '12000');
 });
 
 test('current live-health verification is read-only and covers public product metadata', async () => {

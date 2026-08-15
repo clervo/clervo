@@ -27,12 +27,11 @@ import { Link } from '../router';
 const search = observedProduct('search');
 
 // What the outcome contains, and what it does not. Raw evidence and a
-// synthesized answer are different products with different availability, and
-// the difference is the single most misread thing about this family.
+// Fast evidence and deep synthesis are different modes with different bounds.
 const returns: Array<[string, string]> = [
-  ['Ranked evidence', 'Normalized retrieval results in a stable shape, ordered by relevance rather than by whoever paid for placement.'],
-  ['Source citations', 'Every result carries the source it came from, so the answer can be checked rather than trusted.'],
-  ['No synthesized prose', 'The publicly available operation returns evidence, not an essay. Synthesis is a separate operation and is not publicly available.'],
+  ['Source-diverse retrieval', 'News, official pages, repositories, package registries, scholarly indexes, government data, and contextual sources are routed by question intent.'],
+  ['Primary-source preference', 'Official documentation, filings, registries, and first-party announcements outrank secondary reporting when they directly answer the question.'],
+  ['Deep evidence report', 'Paid mode reads selected pages, deduplicates syndicated copies, synthesizes claim-by-claim, and exposes conflicts and uncertainty.'],
   ['A bounded cost', 'The maximum charge is quoted before anything runs, and the settled amount is never higher.'],
 ];
 
@@ -86,7 +85,7 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
       <section className="band band--ruled research-body" aria-labelledby="research-returns">
         <div className="section-head">
           <p className="eyebrow">What comes back</p>
-          <h2 id="research-returns">Evidence you can check, not prose you must trust.</h2>
+          <h2 id="research-returns">Evidence you can check, with synthesis you can audit.</h2>
         </div>
         <ul className="research-returns">
           {returns.map(([name, detail]) => (

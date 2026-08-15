@@ -379,6 +379,28 @@ export function createSearchServer({
     try { monitor?.record(input); } catch { /* Monitoring must never alter customer response behavior. */ }
   };
 
+  const recordResearchTelemetry = (input, output) => {
+    const route = output?.route;
+    if (route === undefined) return;
+    // Operational metadata only: never log the prompt, fetched page bodies, or
+    // supplier credentials. This is enough to diagnose source degradation and
+    // bounded-cost regressions without turning telemetry into a data sink.
+    try {
+      console.log(JSON.stringify({
+        event: 'clervo.research.completed',
+        productId: input.productId,
+        mode: input.synthesize ? 'deep' : 'fast',
+        supplierPath: route.servingAdapters,
+        sourceCount: route.servingAdapters.length,
+        pageReadCount: route.pageReadCount ?? 0,
+        fallbackUsed: route.fallback,
+        sourceFailures: Array.isArray(route.sourceFailures) ? route.sourceFailures.slice(0, 8) : [],
+        costBasisId: route.cost.basisId,
+        boundedSupplierCostAtomic: route.cost.amount.amountAtomic,
+      }));
+    } catch { /* Telemetry must never alter the customer response. */ }
+  };
+
   let cachedProductHealth;
   async function boundedHealth(check, timeoutMs = 4_000) {
     const timeout = new Promise((resolve) => setTimeout(() => resolve(false), timeoutMs));
@@ -1024,6 +1046,7 @@ export function createSearchServer({
           await searchState.complete({ idempotencyKey: keyHeader, requestHash, operationId, leaseId: stateClaim.leaseId, response: result, now: now() });
         }
         idempotency.set(keyHeader, { operationId, requestHash, response: result });
+        recordResearchTelemetry(executionInput, result.output);
         record({ timestamp: now(), productId, outcome: 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
         send(response, 200, result, { ...quotaHeaders, ...keyHeaders });
         return;
@@ -1044,6 +1067,7 @@ export function createSearchServer({
         });
         record({ timestamp: now(), productId, outcome: paid.status === 402 ? 'payment_challenge' : 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
         if (paid.status === 200 && paid.body.replayed !== true) record({ timestamp: now(), productId, outcome: 'paid_completion', operationId });
+        if (paid.status === 200 && paid.body.replayed !== true) recordResearchTelemetry({ productId, synthesize: normalized.synthesize }, paid.body.output);
         send(response, paid.status, paid.body, paid.headers);
         return;
       }
@@ -1102,6 +1126,7 @@ export function createSearchServer({
       idempotency.set(keyHeader, { operationId, requestHash, pending });
       const result = await pending;
       idempotency.set(keyHeader, { operationId, requestHash, response: result });
+      recordResearchTelemetry(executionInput, executionOutput);
       record({ timestamp: now(), productId, outcome: 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
       record({ timestamp: now(), productId, outcome: 'paid_completion', operationId });
       send(response, 200, result, { 'idempotency-replayed': String(result.replayed) });

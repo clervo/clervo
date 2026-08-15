@@ -80,9 +80,9 @@
       "officialDocumentationUrl": "https://api.search.brave.com/app/documentation"
     },
     {
-      "serviceId": "supply.wikimedia_open_data",
+      "serviceId": "supply.research_federation",
       "productId": "search.web",
-      "publicAssetId": "open-wikimedia-search",
+      "publicAssetId": "research-multi-source-federation",
       "billingUnit": "request",
       "maximumResults": 10,
       "customerPriceMicrousd": 6000,
@@ -107,11 +107,11 @@
       "commercialPermission": "approved",
       "publicSellable": true,
       "variableCost": { "semantics": "documented_cost_basis", "amountAtomic": "2000", "basisId": "search-open-federation-2026-08-09.1" },
-      "coverage": "Fresh Wikimedia encyclopedic search and excerpts with page-level attribution; not a universal index.",
-      "freshness": "Current API retrieval timestamp plus source revision timestamp where supplied.",
-      "reliability": "Primary route with per-source deadline, circuit, and independent Crossref fallback; no paid overage.",
-      "officialTermsUrl": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
-      "officialDocumentationUrl": "https://www.mediawiki.org/wiki/API:Etiquette"
+      "coverage": "GDELT and Google News RSS; official primary pages; GitHub repositories; npm; OpenAlex/Crossref; US government data and Federal Register; Wikimedia context",
+      "freshness": "Published/updated timestamps plus observed retrieval time; current/latest intent is explicit.",
+      "reliability": "Bounded multi-source federation with independent source failures, page-read ceiling, deduplication, primary-source ranking, and honest degradation.",
+      "officialTermsUrl": "https://www.gdeltproject.org/about.html",
+      "officialDocumentationUrl": "https://www.gdeltproject.org/data.html"
     },
     {
       "serviceId": "supply.crossref_open_metadata",

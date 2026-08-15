@@ -28,11 +28,11 @@
   },
   "search": {
     "mode": "open_federation",
-    "synthesisEnabled": false,
+    "synthesisEnabled": true,
     "primarySecret": null,
     "fallbackSecret": null,
-    "primaryCallCeiling": 1000,
-    "fallbackCallCeiling": 1000,
+    "primaryCallCeiling": 8,
+    "fallbackCallCeiling": 8,
     "automaticPaidOverage": false
   },
   "commerce": {

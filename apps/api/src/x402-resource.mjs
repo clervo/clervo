@@ -43,7 +43,7 @@ const RESOURCE_TAGS = Object.freeze({
   '/v1/prediction/execute': Object.freeze(['prediction-markets', 'odds', 'forecasting', 'x402']),
   '/v1/crypto/execute': Object.freeze(['crypto', 'onchain', 'wallet', 'analytics', 'x402']),
 });
-const SEARCH_DISCOVERY_INPUT = Object.freeze({ query: 'current x402 protocol documentation', maxResults: 3, synthesize: false, language: 'en', region: 'US' });
+const SEARCH_DISCOVERY_INPUT = Object.freeze({ query: 'current x402 protocol documentation', maxResults: 3, synthesize: true, language: 'en', region: 'US' });
 
 function defaultDiscovery(resourcePath) {
   const ai = ['/v1/ai/execute', '/v1/chat/completions', '/v1/messages', '/v1/responses'].includes(resourcePath);
@@ -53,10 +53,10 @@ function defaultDiscovery(resourcePath) {
     type: 'object', required: ['query', 'synthesize'], additionalProperties: false,
     properties: {
       query: { type: 'string', minLength: 1, maxLength: 2000 }, maxResults: { type: 'integer', minimum: 1, maximum: 10 },
-      synthesize: { const: false }, language: { type: 'string' }, region: { type: 'string' },
+      synthesize: { type: 'boolean' }, language: { type: 'string' }, region: { type: 'string' },
     },
   };
-  const outputExample = { productId: 'search.web', state: 'RECEIPTED', replayed: false, output: { searchResponse: { results: [], citations: [] } }, receipt: { settlement: { status: 'settled' } } };
+  const outputExample = { productId: 'search.answer', state: 'RECEIPTED', replayed: false, output: { searchResponse: { results: [], citations: [] }, synthesisReport: { outcome: 'synthesized', claims: [], citations: [] } }, receipt: { settlement: { status: 'settled' } } };
   return Object.freeze({
     method: 'POST', bodyType: 'json', input, inputSchema,
     output: { example: outputExample, schema: { type: 'object', additionalProperties: true } },

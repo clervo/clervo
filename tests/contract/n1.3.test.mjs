@@ -66,7 +66,7 @@ test('embedded and published schemas compile under Draft 2020-12 with resolved r
       assert.equal(published.properties.synthesize.default, false);
       assert.deepEqual({ ...published, properties: { ...published.properties, synthesize: internal.properties.synthesize } }, internal);
     } else if (fileName === 'search-http-result.schema.json') {
-      assert.deepEqual(published.properties.productId.enum, ['search.web']);
+      assert.deepEqual(published.properties.productId.enum, ['search.web', 'search.answer']);
       assert.deepEqual({ ...published, properties: { ...published.properties, productId: internal.properties.productId } }, internal);
     } else assert.deepEqual(published, internal);
   }
@@ -83,7 +83,7 @@ test('public discovery excludes private release bookkeeping and agrees with live
   assert.equal(discovery.payment.asset, 'USDC');
   const productIds = discovery.products.map(({ productId }) => productId);
   assert.ok(productIds.includes('search.web'), 'search.web must stay published');
-  assert.equal(productIds.includes('search.answer'), false, 'non-callable search.answer must stay out of public inventory');
+  assert.equal(productIds.includes('search.answer'), true, 'deep Research must stay published when the runtime serves it');
   // Anything advertised as payable must carry a real price, never a mock
   // fixture. displayPrice is null for request-derived quotes such as ai.chat,
   // where the exact maximum charge is computed per request.

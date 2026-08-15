@@ -68,6 +68,39 @@
       }
     },
     {
+      "productId": "search.answer",
+      "operationId": "search.answer",
+      "title": "Search answer",
+      "summary": "Evidence-grounded synthesized answer with citations.",
+      "lifecycle": "available",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "synthesize": true
+      },
+      "pricing": {
+        "model": "x402_exact",
+        "displayPrice": {
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "amountAtomic": "12000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "search-answer-candidate-2"
+      },
+      "routes": {
+        "freeSample": "/v1/search/free",
+        "paidChallenge": "/v1/search/paid"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      }
+    },
+    {
       "productId": "ai",
       "operationId": "ai.execute",
       "operationIds": [
