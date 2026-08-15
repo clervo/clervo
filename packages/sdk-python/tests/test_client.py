@@ -49,7 +49,9 @@ def result(product_id: str, funding_mode: str) -> bytes:
 
 class ClientTests(unittest.TestCase):
     def test_wire_behavior_matches_shared_cross_client_transcript(self) -> None:
-        for fixture in TRANSCRIPT["cases"][:2]:
+        for fixture in TRANSCRIPT["cases"]:
+            if fixture["method"] != "search.web" or fixture["response"].get("operation") != "search.query":
+                continue
             observed = {}
 
             def transport(method, url, headers, body, _timeout, _maximum_bytes):
