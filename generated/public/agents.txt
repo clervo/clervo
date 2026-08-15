@@ -5,7 +5,7 @@ Clervo lets software use AI models and agent tools with pay-per-use x402 payment
 This document lists the callable routes, current prices, setup paths, and safe
 payment behavior an autonomous caller needs.
 
-Current availability was generated at 2026-08-14T12:17:15.502Z.
+Current availability was generated at 2026-08-15T14:28:34.287Z.
 
 ## Identity
 
@@ -21,7 +21,7 @@ Current availability was generated at 2026-08-14T12:17:15.502Z.
 | AI | `ai` | live | 0.001000 USDC observed maximum |
 | Crypto Intelligence | `crypto_intelligence` | live | 0.004000 USDC observed maximum |
 | Prediction Intelligence | `prediction` | live | 0.002000 USDC observed maximum |
-| Multi-chain RPC | `rpc` | unavailable (temporarily_unavailable) | not offered |
+| Multi-chain RPC | `rpc` | live | 0.001000 USDC observed maximum |
 | Secure Sandbox | `sandbox` | live | 0.060000 USDC observed maximum |
 | Research | `search` | live | 0.006000 USDC observed maximum |
 
@@ -73,7 +73,7 @@ curl -sS https://api.clervo.dev/v1/search/free \
 
 ## Boundaries
 
-- Publicly callable operations: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.
+- Publicly callable operations: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, bounded read-only Multi-chain RPC, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.
 - Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable.
 - A 402 response is a quote, not payment authorization or settlement.
 - Solana and unsupported EVM chains fail closed.

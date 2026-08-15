@@ -25,7 +25,7 @@
           }
         }
       ],
-      "lastUpdated": 1786709835,
+      "lastUpdated": 1786804114,
       "metadata": {
         "category": "search",
         "provider": "clervo",
@@ -67,7 +67,7 @@
           }
         }
       ],
-      "lastUpdated": 1786709835,
+      "lastUpdated": 1786804114,
       "metadata": {
         "category": "ai",
         "provider": "clervo",
@@ -110,7 +110,7 @@
           }
         }
       ],
-      "lastUpdated": 1786709835,
+      "lastUpdated": 1786804114,
       "metadata": {
         "category": "ai",
         "provider": "clervo",
@@ -286,7 +286,7 @@
           }
         }
       ],
-      "lastUpdated": 1786709835,
+      "lastUpdated": 1786804114,
       "metadata": {
         "category": "ai",
         "provider": "clervo",
@@ -462,7 +462,7 @@
           }
         }
       ],
-      "lastUpdated": 1786709835,
+      "lastUpdated": 1786804114,
       "metadata": {
         "category": "ai",
         "provider": "clervo",
@@ -592,7 +592,7 @@
               "severity": "required"
             },
             {
-              "actual": "422",
+              "actual": "400",
               "check": "returns_402",
               "expected": "402",
               "severity": "required"
@@ -638,7 +638,7 @@
           }
         }
       ],
-      "lastUpdated": 1786709835,
+      "lastUpdated": 1786804114,
       "metadata": {
         "category": "sandbox",
         "provider": "clervo",
@@ -654,6 +654,42 @@
           "indexLastCrawledAt": "2026-08-11T23:11:46.599Z",
           "failedChecks": []
         }
+      }
+    },
+    {
+      "resource": "https://api.clervo.dev/v1/rpc/execute",
+      "type": "http",
+      "x402Version": 2,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+          "maxTimeoutSeconds": 60,
+          "extra": {
+            "clervo": {
+              "operationId": "rpc.call",
+              "priceModel": "request_derived_per_call",
+              "priceVersion": "rpc-read-public-2026-08-15.1-rpc.call",
+              "amountIsBinding": false,
+              "exampleRouteId": null,
+              "lifecycleState": "live"
+            }
+          }
+        }
+      ],
+      "lastUpdated": 1786804114,
+      "metadata": {
+        "category": "rpc",
+        "provider": "clervo",
+        "description": "Bounded rpc.call execution",
+        "method": "POST",
+        "bodyType": "json",
+        "idempotency": "idempotency-key header; the same key with the same body replays without a second charge",
+        "bazaarExtensionPresent": true,
+        "bazaar": null
       }
     },
     {
@@ -680,7 +716,7 @@
           }
         }
       ],
-      "lastUpdated": 1786709835,
+      "lastUpdated": 1786804114,
       "metadata": {
         "category": "prediction",
         "provider": "clervo",
@@ -722,7 +758,7 @@
           }
         }
       ],
-      "lastUpdated": 1786709835,
+      "lastUpdated": 1786804114,
       "metadata": {
         "category": "crypto_intelligence",
         "provider": "clervo",
@@ -742,13 +778,13 @@
     }
   ],
   "pagination": {
-    "limit": 8,
+    "limit": 9,
     "offset": 0,
-    "total": 8
+    "total": 9
   },
   "clervo": {
     "provenance": {
-      "observedAt": "2026-08-14T12:17:15.502Z",
+      "observedAt": "2026-08-15T14:28:34.287Z",
       "states": {
         "live": "probed; the deployed system serves it now",
         "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",

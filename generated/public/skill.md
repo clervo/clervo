@@ -5,13 +5,14 @@ Clervo lets software use AI models and agent tools with pay-per-use x402 payment
 Payment, when required, uses x402 or MPP over USDC on Base and is always
 quoted before execution. Automatic payment is off by default.
 
-Current availability was generated at 2026-08-14T12:17:15.502Z.
+Current availability was generated at 2026-08-15T14:28:34.287Z.
 
 ## When to use this skill
 
 - You need an AI model call (89 model IDs) — use `POST /v1/ai/execute`.
 - You need cited web evidence for a question — use `POST /v1/search/free` or `POST /v1/search/paid`.
 - You need to run sandboxed Node.js code safely with a receipt — use `POST /v1/sandbox/execute`.
+- You need read-only JSON-RPC on Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, or Solana — use `POST /v1/rpc/execute`.
 - You need real-time prediction market data (Polymarket, Kalshi, Manifold, Limitless) — use `POST /v1/prediction/execute`.
 - You need EVM wallet intelligence for Ethereum or Base — use `POST /v1/crypto/execute`.
 - You want per-request payment with no account, no API key, and safe retry on failure.
@@ -24,7 +25,7 @@ Current availability was generated at 2026-08-14T12:17:15.502Z.
 | AI | `ai` | live | 0.001000 USDC observed maximum |
 | Crypto Intelligence | `crypto_intelligence` | live | 0.004000 USDC observed maximum |
 | Prediction Intelligence | `prediction` | live | 0.002000 USDC observed maximum |
-| Multi-chain RPC | `rpc` | unavailable (temporarily_unavailable) | not offered |
+| Multi-chain RPC | `rpc` | live | 0.001000 USDC observed maximum |
 | Secure Sandbox | `sandbox` | live | 0.060000 USDC observed maximum |
 | Research | `search` | live | 0.006000 USDC observed maximum |
 

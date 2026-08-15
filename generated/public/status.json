@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-14T12:17:15.502Z",
+  "observedAt": "2026-08-15T14:28:34.287Z",
   "publicApi": {
     "state": "available",
     "endpoint": "https://api.clervo.dev",
@@ -34,7 +34,7 @@
   },
   "observedTruth": {
     "provenance": {
-      "observedAt": "2026-08-14T12:17:15.502Z",
+      "observedAt": "2026-08-15T14:28:34.287Z",
       "states": {
         "live": "probed; the deployed system serves it now",
         "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -115,17 +115,19 @@
         "id": "rpc",
         "label": "Multi-chain RPC",
         "operations": [
-          "rpc.archive",
           "rpc.batch",
-          "rpc.broadcast",
-          "rpc.call",
-          "rpc.health"
+          "rpc.call"
         ],
-        "lifecycleState": "unavailable",
-        "reason": "temporarily_unavailable",
+        "lifecycleState": "live",
+        "reason": null,
         "expectedReturnAt": null,
-        "publiclyReachable": false,
-        "observedPrice": null,
+        "publiclyReachable": true,
+        "observedPrice": {
+          "amountAtomic": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "priceVersion": "rpc-read-public-2026-08-15.1-rpc.call"
+        },
         "freeEntry": null
       },
       {
@@ -205,9 +207,9 @@
     },
     {
       "id": "rpc",
-      "lifecycleState": "unavailable",
-      "reason": "temporarily_unavailable",
-      "publiclyReachable": false
+      "lifecycleState": "live",
+      "reason": null,
+      "publiclyReachable": true
     },
     {
       "id": "sandbox",

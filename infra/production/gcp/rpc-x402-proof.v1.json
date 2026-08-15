@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "clervo.rpc-x402-proof.v1",
+  "state": "settled_reconciled",
+  "observedAt": "2026-08-15T14:25:40.112Z",
+  "releaseCommit": "324ac8702955e8276d1cd9cc348738ea935bc659",
+  "publicOrigin": "https://api.clervo.dev/",
+  "endpoint": "https://api.clervo.dev/v1/rpc/execute",
+  "network": "eip155:8453",
+  "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+  "observedChallenge": {
+    "status": 402,
+    "productId": "rpc.call",
+    "amountAtomic": "1000",
+    "priceVersion": "rpc-read-public-2026-08-15.1-rpc.call",
+    "networkMatched": true,
+    "assetMatched": true,
+    "payToMatched": true,
+    "paymentAttemptedBeforeOwnerAuthorization": false
+  },
+  "ownerAuthorization": {
+    "maximumSpendAtomic": "10000",
+    "maximumExecutionCount": 1,
+    "amountAtomicPerOperation": "1000",
+    "operationsInOrder": ["rpc.call"],
+    "paymentEffects": 1,
+    "automaticRetry": false
+  },
+  "operation": {
+    "productId": "rpc.call",
+    "chainId": "eip155:1",
+    "method": "eth_chainId",
+    "idempotencyKey": "idem_rpc_b14_final_20260815a",
+    "operationId": "op_e1ceb0dc9106123be34dc2f06b2c12c1",
+    "requestHash": "sha256:03d98c23fc47ddd8a7ce510c3188bc579befb96653353aa47e60e4541be35218",
+    "resultHash": "sha256:b4ea3485e5ac61ec2739f130a335138de8dead744e2780748421ed008e76280f",
+    "receiptId": "rcpt_a1ea30a548d5385cab790fd60850aedb",
+    "receiptHash": "sha256:7ed55709e55a478406ef32825d011ca52364a59a81082a820e12be8f8b9af371",
+    "settlementReferenceHash": "sha256:481e448d9bd0bb34e465640ad462a8fd27f34955b33768e21ed48b4fd97dfbee",
+    "customerChargeAtomic": "1000",
+    "supplierCostAtomic": "0",
+    "settlementStatus": "settled",
+    "usefulResult": true,
+    "resultVerified": true,
+    "resultSummary": {
+      "kind": "rpc",
+      "chainId": "eip155:1",
+      "outcomeCount": 1,
+      "result": "0x1"
+    },
+    "onchain": {
+      "receiptStatus": "success",
+      "exactReceiverTransferCount": 1,
+      "settlementReferenceExposedOnlyAsHash": true
+    },
+    "replay": {
+      "sameOperation": true,
+      "sameReceipt": true,
+      "sameResult": true,
+      "idempotencyReplayed": true,
+      "paymentHeaderSent": false,
+      "secondAuthorization": false,
+      "secondUpstreamExecution": false,
+      "secondSettlement": false,
+      "secondCharge": false
+    },
+    "durable": {
+      "state": "completed",
+      "completedAt": "2026-08-15T14:20:06.850Z",
+      "operationRows": 1,
+      "accountingRows": 1,
+      "accountingEntryId": "acct_815f34fe79b719046ccb89d20d5d10a3de85492c",
+      "accountingEntryHash": "sha256:7c83550a25b5bc7663561a685c4484453c1d1814c5e5d9a35884d8c5a871cc60"
+    }
+  },
+  "observedBalances": {
+    "payerBeforeAtomic": "4947316",
+    "payerAfterAtomic": "4946316",
+    "payerDeltaAtomic": "-1000"
+  },
+  "observedDurability": {
+    "verifiedAt": "2026-08-15T14:25:40.112Z",
+    "databaseIdentityVerified": true,
+    "operationRows": 1,
+    "accountingRowsForOperation": 1,
+    "receiverLedgerEntryCount": 22,
+    "receiverLedgerHeadHash": "sha256:7c83550a25b5bc7663561a685c4484453c1d1814c5e5d9a35884d8c5a871cc60",
+    "receiverLedgerChainValid": true,
+    "receiverLedgerBalanced": true,
+    "credentialsLogged": false,
+    "transactionMaterialLogged": false,
+    "customerPayloadsLogged": false
+  },
+  "proofClassification": {
+    "proofLevel": "paid_outcome_verified",
+    "ownerFunded": true,
+    "commercialMechanismVerified": true,
+    "revenueEvidence": false,
+    "demandEvidence": false,
+    "unrelatedCustomerEvidence": false,
+    "externallyRepeatedClaimAllowed": false
+  },
+  "cleanup": {
+    "temporaryProxyStopped": true,
+    "temporaryProxyRemoved": true,
+    "paymentAuthorizationMaterialRetained": false,
+    "transactionMaterialRetained": false
+  }
+}

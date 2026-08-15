@@ -187,7 +187,7 @@ test('public Search discovery exposes only the exact verified raw product and pr
   const discovery = createDiscoveryDocument(projection);
   const llms = createLlmsText(projection);
   assert.doesNotThrow(() => assertPublicArtifacts(openapi, discovery, llms, projection));
-  assert.equal(openapi['x-clervo-status'].distribution, 'public');
+  assert.equal(openapi['x-clervo-status'].distribution, 'public_preview');
   assert.equal(discovery.distribution.callable, true);
   assert.equal(discovery.payment.publicAvailable, true);
   assert.equal(discovery.payment.commercialProof, false);

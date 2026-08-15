@@ -6,12 +6,12 @@ Product access:
 
 - Client packages: TypeScript, MCP, and Python
 - API: https://api.clervo.dev
-- Product availability: live: AI, Crypto Intelligence, Prediction Intelligence, Secure Sandbox, Research; unavailable: Multi-chain RPC
-- Public operation IDs: search.web, ai.chat, ai.embed, ai.image, ai.speech, ai.video, ai.music, ai.virtual_try_on, sandbox.run, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal, crypto.wallet.balances, crypto.wallet.tokens, crypto.wallet.transactions, crypto.wallet.report
+- Product availability: live: AI, Crypto Intelligence, Prediction Intelligence, Multi-chain RPC, Secure Sandbox, Research
+- Public operation IDs: search.web, ai.chat, ai.embed, ai.image, ai.speech, ai.video, ai.music, ai.virtual_try_on, sandbox.run, rpc.call, rpc.batch, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal, crypto.wallet.balances, crypto.wallet.tokens, crypto.wallet.transactions, crypto.wallet.report
 - Public API callable: yes
-- x402 public payment: available for search.web (0.006000 USDC maximum), ai (request-derived quote), sandbox.run (0.010000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
+- x402 public payment: available for search.web (0.006000 USDC maximum), ai (request-derived quote), sandbox.run (0.010000 USDC maximum), rpc.call (0.001000 USDC maximum), rpc.batch (0.001000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
 - Payment behavior: authorization is required before paid execution; same-key replay cannot authorize a second charge
-- Public price: search.web (0.006000 USDC maximum), ai (request-derived quote), sandbox.run (0.010000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
+- Public price: search.web (0.006000 USDC maximum), ai (request-derived quote), sandbox.run (0.010000 USDC maximum), rpc.call (0.001000 USDC maximum), rpc.batch (0.001000 USDC maximum), prediction.markets (0.002000 USDC maximum), prediction.market (0.002000 USDC maximum), prediction.compare (0.002000 USDC maximum), prediction.history (0.003000 USDC maximum), prediction.signal (0.003000 USDC maximum), crypto.wallet.balances (0.002000 USDC maximum), crypto.wallet.tokens (0.002000 USDC maximum), crypto.wallet.transactions (0.003000 USDC maximum), crypto.wallet.report (0.004000 USDC maximum)
 - llms.txt is a documentation map, not a search or AI ranking claim
 
 ## Repository-generated contracts
@@ -52,6 +52,12 @@ Product access:
 - The short class is capped at 5 CPU seconds, 256 MiB, 16 processes, 64 MiB disk, 64 KiB output, 1 MiB artifacts, and 10 seconds wall time; larger requests use the standard class without weaker ceilings.
 - The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.
 
+## Multi-chain RPC
+
+- `POST /v1/rpc/execute`: 0.001000 USDC per read-only RPC call on Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, or Solana; batches contain at most 20 calls on one chain.
+- `GET /v1/rpc/chains`: current semantic health for every advertised chain. Credentialed primary supply and independent read-only fallbacks are checked for chain identity, height, and finalized block consistency.
+- Public operations are `rpc.call` and `rpc.batch`. Archive reads and transaction broadcast remain unavailable. Same-key replay returns the completed result and receipt without another charge.
+
 ## Prediction Intelligence
 
 - `POST /v1/prediction/execute`: `prediction.markets`, `prediction.market`, and `prediction.compare` cost at most 0.002000 USDC; `prediction.history` and `prediction.signal` cost at most 0.003000 USDC on Base.
@@ -66,14 +72,14 @@ Product access:
 
 ## Current product availability
 
-Current at 2026-08-14T12:17:15.502Z. An available product accepts requests; an unavailable product has no public execution route. The 402 returned for a paid request is the binding quote.
+Current at 2026-08-15T14:28:34.287Z. An available product accepts requests; an unavailable product has no public execution route. The 402 returned for a paid request is the binding quote.
 
 | Product | Availability | Price |
 |---|---|---|
 | AI | live | 0.001000 USDC maximum |
 | Crypto Intelligence | live | 0.004000 USDC maximum |
 | Prediction Intelligence | live | 0.002000 USDC maximum |
-| Multi-chain RPC | unavailable (temporarily_unavailable) | not offered |
+| Multi-chain RPC | live | 0.001000 USDC maximum |
 | Secure Sandbox | live | 0.060000 USDC maximum |
 | Research | live | 0.006000 USDC maximum |
 
@@ -124,4 +130,4 @@ clervo doctor                       # check the machine end to end
 - [`GET https://api.clervo.dev/.well-known/x402`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.
 - `GET https://api.clervo.dev/llms.txt`: this document, served from the API host as well as the site.
 
-Model list: 89 callable IDs (85 canonical, 4 aliases), 88 sellable. Payment manifest: 8 paid resources.
+Model list: 89 callable IDs (85 canonical, 4 aliases), 88 sellable. Payment manifest: 9 paid resources.

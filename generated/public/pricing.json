@@ -50,6 +50,30 @@
       }
     },
     {
+      "productId": "rpc.call",
+      "publicAvailable": true,
+      "model": "fixed_per_request",
+      "displayPrice": {
+        "asset": "USDC",
+        "amountAtomic": "1000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "rpc-product-2026-08-15.1-rpc.call"
+    },
+    {
+      "productId": "rpc.batch",
+      "publicAvailable": true,
+      "model": "fixed_per_call",
+      "displayPrice": {
+        "asset": "USDC",
+        "amountAtomic": "1000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "rpc-product-2026-08-15.1-rpc.batch"
+    },
+    {
       "productId": "prediction.markets",
       "publicAvailable": true,
       "model": "fixed_by_operation",

@@ -203,7 +203,7 @@ async function inspectPage(cdp, width, route) {
       positionedOutside:positioned.filter((x)=>x.left<-1||x.right>vw+1||(x.position==='fixed'&&(x.top<-1||x.bottom>vh+1))).map((x)=>x.label),
       homeState:document.querySelector('.clervo-home-hero')?.getAttribute('data-state')||null,
       homeMarquee:getComputedStyle(document.querySelector('.clervo-home-hero__ecosystem')||document.documentElement).animationName,
-      rpcUnavailable:${JSON.stringify(route === '/products/rpc')}?document.querySelector('main')?.textContent?.toLowerCase().includes('unavailable')===true:true,
+      rpcTruth:${JSON.stringify(route === '/products/rpc')}?document.querySelector('main')?.textContent?.toLowerCase().includes('live')===true&&!document.querySelector('main')?.textContent?.toLowerCase().includes('unavailable'):true,
     };
   })()`, returnByValue: true })).result.value;
 }
@@ -303,7 +303,7 @@ for (const result of results) {
   if (!d.og || !d.twitter || !d.jsonLd) issues.push(`${id}:social_or_jsonld`);
   if (!d.footer) issues.push(`${id}:footer`);
   if (route === '/' && d.homeState !== 'result') issues.push(`${id}:home_state:${d.homeState}`);
-  if (!d.rpcUnavailable) issues.push(`${id}:rpc_truth_missing`);
+  if (!d.rpcTruth) issues.push(`${id}:rpc_truth_missing`);
   for (const label of d.tooSmall) issues.push(`${id}:control_below_44px:${label}`);
   for (const label of d.controlsOutside) issues.push(`${id}:control_outside_document:${label}`);
   for (const label of d.positionedOutside) issues.push(`${id}:fixed_or_sticky_horizontal_escape:${label}`);

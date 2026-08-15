@@ -3236,7 +3236,7 @@
             "severity": "required"
           },
           {
-            "actual": "422",
+            "actual": "400",
             "check": "returns_402",
             "expected": "402",
             "severity": "required"
@@ -3307,7 +3307,7 @@
     "apiOrigin": "https://api.clervo.dev",
     "environment": "production",
     "paidExecutionEnabled": true,
-    "releaseId": "6024e67a816e69fef7f73fae2cc867951c3dfd00",
+    "releaseId": "324ac8702955e8276d1cd9cc348738ea935bc659",
     "sandboxPaidEnabled": true,
     "siteOrigin": "https://clervo.dev",
     "stateBackend": "postgres",
@@ -3357,7 +3357,7 @@
   ],
   "generatedBy": "scripts/probe-live-registry.mjs",
   "handEditingProhibited": true,
-  "observedAt": "2026-08-14T12:17:15.502Z",
+  "observedAt": "2026-08-15T14:28:34.287Z",
   "products": [
     {
       "compatibilityRoutes": [
@@ -3594,25 +3594,54 @@
     },
     {
       "evidence": {
-        "basis": "no_public_route_is_served",
-        "probed": false
+        "chainHealth": {
+          "advertisedChains": 8,
+          "healthyChains": 8,
+          "status": 200,
+          "verified": true
+        },
+        "edgeAttempts": 1,
+        "edgeCode": null,
+        "edgeStatus": 402,
+        "paidOutcome": {
+          "accepted": true,
+          "demandEvidence": false,
+          "externallyRepeated": false,
+          "operationCount": 1,
+          "ownerFunded": true,
+          "proofLevel": "paid_outcome_verified",
+          "reason": null,
+          "releaseCommit": "324ac8702955e8276d1cd9cc348738ea935bc659",
+          "replayNoSecondChargeCount": 1,
+          "revenueEvidence": false,
+          "source": "infra/production/gcp/rpc-x402-proof.v1.json",
+          "totalChargeAtomic": "1000",
+          "usefulResultCount": 1
+        },
+        "probed": true
       },
       "expectedReturnAt": null,
       "freeEntry": null,
       "id": "rpc",
       "label": "Multi-chain RPC",
-      "observedQuote": null,
+      "observedQuote": {
+        "amountAtomic": "1000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "bazaarExtensionPresent": true,
+        "network": "eip155:8453",
+        "payTo": "0xBd11d82d8Dbd01Ba3eed279d3bACf74659fFca28",
+        "priceVersion": "rpc-read-public-2026-08-15.1-rpc.call",
+        "resourceDescription": "Bounded rpc.call execution",
+        "scheme": "exact"
+      },
       "operations": [
-        "rpc.archive",
         "rpc.batch",
-        "rpc.broadcast",
-        "rpc.call",
-        "rpc.health"
+        "rpc.call"
       ],
-      "proof": "none",
-      "publiclyReachable": false,
-      "reason": "commercial_rights_blocked",
-      "state": "unavailable"
+      "proof": "paid_outcome_verified",
+      "publiclyReachable": true,
+      "reason": null,
+      "state": "live"
     },
     {
       "evidence": {
@@ -3721,7 +3750,7 @@
     "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
   },
   "schemaVersion": "clervo.live-registry.v1",
-  "sourceCommit": "6024e67a816e69fef7f73fae2cc867951c3dfd00",
+  "sourceCommit": "324ac8702955e8276d1cd9cc348738ea935bc659",
   "states": {
     "live": "probed; the deployed system serves it now",
     "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -3739,8 +3768,7 @@
       "live": 5
     },
     "products": {
-      "live": 5,
-      "unavailable": 1
+      "live": 6
     }
   },
   "supplyFamilies": [

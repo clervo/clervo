@@ -1,6 +1,6 @@
 {
-  "discoveryVersion": "2026-08-14.1",
-  "contractVersion": "2026-08-14.1",
+  "discoveryVersion": "2026-08-15.1",
+  "contractVersion": "2026-08-15.1",
   "name": "Clervo",
   "description": "Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.",
   "lifecycle": "preview",
@@ -144,6 +144,94 @@
       },
       "routes": {
         "paidChallenge": "/v1/sandbox/execute"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      }
+    },
+    {
+      "productId": "rpc.call",
+      "operationId": "rpc.call",
+      "title": "Call one supported-chain RPC method",
+      "summary": "Execute one allowlisted read-only JSON-RPC method against a healthy route with failover.",
+      "lifecycle": "available",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "chains": [
+          "eip155:1",
+          "eip155:10",
+          "eip155:56",
+          "eip155:137",
+          "eip155:8453",
+          "eip155:42161",
+          "eip155:43114",
+          "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"
+        ],
+        "maximumBatchSize": 20,
+        "methods": "Published read-only allowlist; unsafe namespaces, archive reads, and transaction broadcast fail closed."
+      },
+      "pricing": {
+        "model": "fixed_per_request",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "1000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "rpc-product-2026-08-15.1-rpc.call"
+      },
+      "routes": {
+        "paidChallenge": "/v1/rpc/execute",
+        "health": "/v1/rpc/chains"
+      },
+      "payment": {
+        "challengeImplemented": true,
+        "payable": true,
+        "mockExecutionAvailableByInjectionOnly": false
+      }
+    },
+    {
+      "productId": "rpc.batch",
+      "operationId": "rpc.batch",
+      "title": "Batch supported-chain RPC reads",
+      "summary": "Execute up to 20 allowlisted read-only JSON-RPC calls on one supported chain.",
+      "lifecycle": "available",
+      "publicAvailable": true,
+      "deliveryModes": [
+        "sync"
+      ],
+      "selection": {
+        "chains": [
+          "eip155:1",
+          "eip155:10",
+          "eip155:56",
+          "eip155:137",
+          "eip155:8453",
+          "eip155:42161",
+          "eip155:43114",
+          "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"
+        ],
+        "maximumBatchSize": 20,
+        "methods": "Published read-only allowlist; unsafe namespaces, archive reads, and transaction broadcast fail closed."
+      },
+      "pricing": {
+        "model": "fixed_per_call",
+        "displayPrice": {
+          "asset": "USDC",
+          "amountAtomic": "1000",
+          "decimals": 6
+        },
+        "maximumChargeRequired": true,
+        "priceVersion": "rpc-product-2026-08-15.1-rpc.batch"
+      },
+      "routes": {
+        "paidChallenge": "/v1/rpc/execute",
+        "health": "/v1/rpc/chains"
       },
       "payment": {
         "challengeImplemented": true,
@@ -549,15 +637,15 @@
     }
   ],
   "limitations": [
-    "Publicly callable operations: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.",
+    "Publicly callable operations: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, bounded read-only Multi-chain RPC, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence.",
     "Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable.",
     "A 402 response is a quote, not payment authorization or settlement.",
     "Solana and unsupported EVM chains fail closed."
   ],
-  "catalogVersion": "2026-08-14.1",
+  "catalogVersion": "2026-08-15.1",
   "observedTruth": {
     "provenance": {
-      "observedAt": "2026-08-14T12:17:15.502Z",
+      "observedAt": "2026-08-15T14:28:34.287Z",
       "states": {
         "live": "probed; the deployed system serves it now",
         "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -638,17 +726,19 @@
         "id": "rpc",
         "label": "Multi-chain RPC",
         "operations": [
-          "rpc.archive",
           "rpc.batch",
-          "rpc.broadcast",
-          "rpc.call",
-          "rpc.health"
+          "rpc.call"
         ],
-        "lifecycleState": "unavailable",
-        "reason": "temporarily_unavailable",
+        "lifecycleState": "live",
+        "reason": null,
         "expectedReturnAt": null,
-        "publiclyReachable": false,
-        "observedPrice": null,
+        "publiclyReachable": true,
+        "observedPrice": {
+          "amountAtomic": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "priceVersion": "rpc-read-public-2026-08-15.1-rpc.call"
+        },
         "freeEntry": null
       },
       {

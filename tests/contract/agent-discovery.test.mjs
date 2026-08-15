@@ -191,6 +191,7 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
     'https://api.clervo.dev/v1/messages': 'ai',
     'https://api.clervo.dev/v1/responses': 'ai',
     'https://api.clervo.dev/v1/sandbox/execute': 'sandbox',
+    'https://api.clervo.dev/v1/rpc/execute': 'rpc',
     'https://api.clervo.dev/v1/prediction/execute': 'prediction',
     'https://api.clervo.dev/v1/crypto/execute': 'crypto_intelligence',
   };
@@ -232,13 +233,14 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
         prediction: 'prediction.markets',
         crypto_intelligence: 'crypto.wallet.report',
         sandbox: 'sandbox.run',
+        rpc: 'rpc.call',
       };
-      assert.ok(Object.hasOwn(exampleOperationByFamily, family), 'only AI, Prediction, Crypto, and Sandbox use request-derived public quotes');
+      assert.ok(Object.hasOwn(exampleOperationByFamily, family), 'request-derived public quote family missing');
       assert.equal(offer.extra.clervo.operationId, exampleOperationByFamily[family]);
       assert.equal(offer.extra.clervo.exampleRouteId, null);
       assert.equal(
         offer.extra.clervo.priceModel,
-        family === 'sandbox' ? 'class_derived_quote' : 'request_derived_per_operation',
+        family === 'sandbox' ? 'class_derived_quote' : family === 'rpc' ? 'request_derived_per_call' : 'request_derived_per_operation',
       );
       assert.equal(offer.amount, product.observedQuote.amountAtomic);
       assert.equal(offer.extra.clervo.priceVersion, product.observedQuote.priceVersion);
