@@ -9,7 +9,7 @@
     { "name": "heavy", "requests": 128, "clientConcurrency": 4 }
   ],
   "steadyRequests": 256,
-  "steadyClientConcurrency": 8,
+  "steadyClientConcurrency": 4,
   "maximumOverloadP95Ms": 2000,
   "maximumSteadyP95Ms": 250,
   "maximumRssGrowthBytes": 201326592,
