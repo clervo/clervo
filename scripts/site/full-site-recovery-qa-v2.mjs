@@ -209,15 +209,16 @@ async function inspectPage(cdp, width, route) {
 }
 
 async function runStartWalkthrough(cdp) {
-  const indexes = (await cdp.send('Runtime.evaluate', { expression: `[...document.querySelectorAll('[data-start-stage-button]')].map((button)=>button.getAttribute('data-start-stage-button')).filter(Boolean)`, returnByValue: true })).result.value ?? [];
-  const visited = [];
-  for (const index of indexes) {
-    const clicked = (await cdp.send('Runtime.evaluate', { expression: `(() => {const b=document.querySelector('[data-start-stage-button="${index}"]');if(!(b instanceof HTMLButtonElement))return false;b.click();return true})()`, returnByValue: true })).result.value;
-    if (!clicked) continue;
-    await waitForExpression(cdp, `document.querySelector('.stage-panel')?.getAttribute('data-stage-index')===${JSON.stringify(String(index))}`, `start_stage_${index}`, 4_000);
-    visited.push(String(index));
-  }
-  return { available: indexes.map(String), visited };
+  return (await cdp.send('Runtime.evaluate', { expression: `(() => {
+    const text=document.querySelector('.start-page')?.textContent||'';
+    return {
+      canonicalSkill:text.includes('Set up https://clervo.dev/skill.md'),
+      hostedApi:text.includes('https://api.clervo.dev/v1'),
+      localProxy:text.includes('http://127.0.0.1:8402/v1'),
+      paymentBoundary:text.includes('HTTP 402')&&text.includes('nothing is charged'),
+      supportedInterfaces:document.querySelectorAll('.start-interface-ledger article').length,
+    };
+  })()`, returnByValue: true })).result.value;
 }
 
 if (!useBuilt) {
@@ -232,7 +233,7 @@ await mkdir(captures, { recursive: true });
 const inventory = await siteRouteInventory(root);
 const firstModel = inventory.find(({ kind }) => kind === 'model')?.route;
 const firstOperation = inventory.find(({ kind }) => kind === 'operation')?.route;
-const representative = ['/', '/start', '/product', '/catalog', '/docs', '/docs/quickstart', '/pricing', '/proof', '/status', '/trust', '/products/ai', '/products/rpc', firstModel, firstOperation].filter(Boolean);
+const representative = ['/', '/start', '/product', '/catalog', '/docs', '/docs/quickstart', '/pricing', '/status', '/security', '/products/ai', '/products/rpc', firstModel, firstOperation].filter(Boolean);
 const matrix = representative.flatMap((route) => [
   { id: `${route === '/' ? 'home' : route.slice(1).replaceAll('/', '-')}-desktop`, route, width: 1600, height: 900 },
   { id: `${route === '/' ? 'home' : route.slice(1).replaceAll('/', '-')}-mobile`, route, width: 390, height: 844 },
@@ -264,7 +265,7 @@ try {
     await cdp.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
     await setViewport(cdp, capture.width, capture.height);
     await navigate(cdp, `http://127.0.0.1:${webPort}${canonicalPath(capture.route)}`);
-    if (capture.route === '/') await waitForExpression(cdp, `document.querySelector('.clervo-home-hero')?.getAttribute('data-state')==='prove'`, `${capture.id}_home_prove`, 6_000);
+    if (capture.route === '/') await waitForExpression(cdp, `document.querySelector('.clervo-home-hero')?.getAttribute('data-state')==='result'`, `${capture.id}_home_result`, 6_000);
     const menu = await inspectMobileMenu(cdp, capture.width);
     const diagnostics = await inspectPage(cdp, capture.width, capture.route);
     const start = capture.route === '/start' && capture.width === 1600 ? await runStartWalkthrough(cdp) : null;
@@ -276,7 +277,7 @@ try {
   await cdp.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
   await setViewport(cdp, 390, 844);
   await navigate(cdp, `http://127.0.0.1:${webPort}/`);
-  await waitForExpression(cdp, `document.querySelector('.clervo-home-hero')?.getAttribute('data-state')==='prove'`, 'reduced_home_prove', 2_000);
+  await waitForExpression(cdp, `document.querySelector('.clervo-home-hero')?.getAttribute('data-state')==='result'`, 'reduced_home_result', 2_000);
   const reduced = await inspectPage(cdp, 390, '/');
   if (reduced.homeMarquee !== 'none') issues.push(`home-reduced:marquee_animation:${reduced.homeMarquee}`);
 } finally {
@@ -301,7 +302,7 @@ for (const result of results) {
   if (d.description.length < 20) issues.push(`${id}:description`);
   if (!d.og || !d.twitter || !d.jsonLd) issues.push(`${id}:social_or_jsonld`);
   if (!d.footer) issues.push(`${id}:footer`);
-  if (route === '/' && d.homeState !== 'prove') issues.push(`${id}:home_state:${d.homeState}`);
+  if (route === '/' && d.homeState !== 'result') issues.push(`${id}:home_state:${d.homeState}`);
   if (!d.rpcUnavailable) issues.push(`${id}:rpc_truth_missing`);
   for (const label of d.tooSmall) issues.push(`${id}:control_below_44px:${label}`);
   for (const label of d.controlsOutside) issues.push(`${id}:control_outside_document:${label}`);
@@ -318,7 +319,9 @@ for (const result of results) {
       for (const label of menu.outside) issues.push(`${id}:mobile_menu_horizontal_escape:${label}`);
     }
   }
-  if (start && (start.available.length < 11 || start.visited.length !== start.available.length)) issues.push(`${id}:start_walkthrough:${start.visited.length}/${start.available.length}`);
+  if (start && (!start.canonicalSkill || !start.hostedApi || !start.localProxy || !start.paymentBoundary || start.supportedInterfaces !== 6)) {
+    issues.push(`${id}:start_activation_contract:${JSON.stringify(start)}`);
+  }
 }
 
 const report = { generatedAt: new Date().toISOString(), chrome: browser?.executable ?? null, staticRoutes: inventory.length, captures: results.length, issues, results };
