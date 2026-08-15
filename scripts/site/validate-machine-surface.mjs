@@ -55,13 +55,14 @@ if (openapi.jsonSchemaDialect !== 'https://json-schema.org/draft/2020-12/schema'
 // llms.txt is generated as a compact documentation map. Validate its canonical
 // relative machine links and current availability framing.
 const llms = await readFile(path.join(dist, 'llms.txt'), 'utf8');
+const rpcCatalogued = (JSON.parse(await readFile(path.join(dist, 'catalog.json'), 'utf8')).products ?? []).some(({ productId }) => productId === 'rpc.call');
 for (const needle of [
   '[OpenAPI contract](/openapi.json)',
   '[Catalog](/catalog.json)',
   '[Status](/status.json)',
   '[Agent skill](/skill.md)',
   'Current product availability',
-  'Multi-chain RPC | unavailable',
+  rpcCatalogued ? 'Multi-chain RPC | live' : 'Multi-chain RPC | unavailable',
 ]) {
   if (!llms.includes(needle)) throw new Error(`site_llms_reference_missing:${needle}`);
 }

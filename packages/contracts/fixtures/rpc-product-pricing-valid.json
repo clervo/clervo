@@ -3,17 +3,17 @@
   "valid": true,
   "value": {
     "schemaVersion": "clervo.rpc-product-pricing.v1",
-    "priceVersion": "rpc-product-2026-08-02.1",
-    "effectiveAt": "2026-08-02T12:30:00.000Z",
+  "priceVersion": "rpc-product-2026-08-15.1",
+  "effectiveAt": "2026-08-15T13:55:32.900Z",
     "currency": "USD",
-    "lifecycle": "unavailable",
+  "lifecycle": "available",
     "providerNamesPublic": false,
     "products": [
-      { "productId": "rpc.call", "billingUnit": "request", "customerPriceMicrousd": 1, "listingStatus": "terms_blocked", "maximumBatchSize": 1, "maximumResponseBytes": 10485760 },
-      { "productId": "rpc.batch", "billingUnit": "call", "customerPriceMicrousd": 1, "listingStatus": "terms_blocked", "maximumBatchSize": 20, "maximumResponseBytes": 10485760 },
-      { "productId": "rpc.health", "billingUnit": "request", "customerPriceMicrousd": 0, "listingStatus": "free_unavailable", "maximumBatchSize": 1, "maximumResponseBytes": 65536 },
-      { "productId": "rpc.archive", "billingUnit": "request", "customerPriceMicrousd": 2, "listingStatus": "unqualified", "maximumBatchSize": 1, "maximumResponseBytes": 10485760 },
-      { "productId": "rpc.broadcast", "billingUnit": "request", "customerPriceMicrousd": 2, "listingStatus": "unqualified", "maximumBatchSize": 1, "maximumResponseBytes": 65536 }
+      { "productId": "rpc.call", "billingUnit": "request", "customerPriceMicrousd": 1000, "supplierCostMicrousd": 0, "contributionMarginMicrousd": 1000, "listingStatus": "sellable", "maximumBatchSize": 1, "maximumResponseBytes": 10485760 },
+      { "productId": "rpc.batch", "billingUnit": "call", "customerPriceMicrousd": 1000, "supplierCostMicrousd": 0, "contributionMarginMicrousd": 1000, "listingStatus": "sellable", "maximumBatchSize": 20, "maximumResponseBytes": 10485760 },
+      { "productId": "rpc.health", "billingUnit": "request", "customerPriceMicrousd": 0, "supplierCostMicrousd": 0, "contributionMarginMicrousd": 0, "listingStatus": "free_unavailable", "maximumBatchSize": 1, "maximumResponseBytes": 65536 },
+      { "productId": "rpc.archive", "billingUnit": "request", "customerPriceMicrousd": 1000, "supplierCostMicrousd": 0, "contributionMarginMicrousd": 1000, "listingStatus": "unqualified", "maximumBatchSize": 1, "maximumResponseBytes": 10485760 },
+      { "productId": "rpc.broadcast", "billingUnit": "request", "customerPriceMicrousd": 1000, "supplierCostMicrousd": 0, "contributionMarginMicrousd": 1000, "listingStatus": "unqualified", "maximumBatchSize": 1, "maximumResponseBytes": 65536 }
     ]
   }
 }

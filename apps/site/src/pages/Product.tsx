@@ -23,6 +23,7 @@ const families: FamilyCopy[] = [
   { id: 'ai', title: 'AI models', description: 'Use chat, embeddings, image, speech, video, music, and virtual try-on models through one catalog and payment contract.', example: 'Ask a model to summarize a document or generate an image.', href: '/products/ai' },
   { id: 'search', title: 'Web Search', description: 'Retrieve fresh ranked web results with citations, with a free entry route and a paid replay-safe route.', example: 'Find the latest primary sources for a research question.', href: '/products/search' },
   { id: 'sandbox', title: 'Secure Sandbox', description: 'Run one bounded Node.js command with no network and strict resource ceilings.', example: 'Execute a short data transformation in isolation.', href: '/products/sandbox' },
+  { id: 'rpc', title: 'Multi-chain RPC', description: 'Read allowlisted chain state across eight supported EVM and Solana networks with health-aware failover.', example: 'Read a balance, block, transaction, or contract state.', href: '/products/rpc' },
   { id: 'prediction', title: 'Prediction Intelligence', description: 'Discover, compare, and inspect normalized prediction markets and derived signals.', example: 'Compare equivalent markets across supported venues.', href: '/products/prediction' },
   { id: 'crypto_intelligence', title: 'Crypto Intelligence', description: 'Read wallet balances, tokens, transactions, and bounded reports for Ethereum and Base.', example: 'Summarize recent activity for a public EVM address.', href: '/products/crypto' },
 ];
@@ -56,7 +57,7 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
           </div>
           <div className="product-map" aria-label="Clervo product families">
             <div className="product-map__core"><ApexMark size={58} /><span>One wallet</span></div>
-            <span data-node="ai">AI models</span><span data-node="search">Research</span><span data-node="prediction">Prediction</span><span data-node="crypto">Crypto</span><span data-node="sandbox">Sandbox</span><span data-node="rpc" aria-disabled="true">RPC unavailable</span>
+            <span data-node="ai">AI models</span><span data-node="search">Research</span><span data-node="prediction">Prediction</span><span data-node="crypto">Crypto</span><span data-node="sandbox">Sandbox</span><span data-node="rpc">RPC</span>
           </div>
         </div>
       </section>
@@ -82,13 +83,6 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
               </article>
             );
           })}
-        </div>
-      </section>
-
-      <section className="commercial-section commercial-section--tint" aria-labelledby="unavailable-products">
-        <div className="shell commercial-unavailable">
-          <div><p className="eyebrow">Not currently offered</p><h2 id="unavailable-products">Multi-chain RPC</h2><p>Clervo does not advertise a public RPC execution route today. It remains out of the available catalog until the public runtime can serve it.</p></div>
-          <span className="state state--unavailable">unavailable</span>
         </div>
       </section>
 

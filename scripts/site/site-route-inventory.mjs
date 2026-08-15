@@ -10,7 +10,7 @@ const fixedRoutes = [
   ['/products/search', 'Web Search', 'Retrieve fresh ranked web results with citations through free and paid routes.'],
   ['/products/ai', 'AI models', 'Use chat, embeddings, and multimodal models through one catalog and execution API.'],
   ['/products/sandbox', 'Secure Sandbox product family', 'Clervo Secure Sandbox runs bounded no-network code execution with resource limits, receipt and replay-safe outcome semantics.'],
-  ['/products/rpc', 'Multi-chain RPC', 'Multi-chain RPC has no public execution route at this time.'],
+  ['/products/rpc', 'Multi-chain RPC', 'Read allowlisted state across eight supported EVM and Solana networks with health-aware failover.'],
   ['/products/prediction', 'Prediction Intelligence product family', 'Clervo Prediction Intelligence returns normalized market context, freshness, evidence and provenance across supported public market data routes.'],
   ['/products/crypto', 'Crypto Intelligence product family', 'Clervo Crypto Intelligence returns bounded wallet and on-chain signals with chain coverage, evidence and provenance.'],
   ['/docs', 'Developer docs', 'Clervo developer documentation for the first free call, exact public operations, clients, wallet opt-in, payment boundaries, receipts, replay and recovery.'],

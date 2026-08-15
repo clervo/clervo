@@ -8,6 +8,7 @@
   "vars": {
     "CLERVO_AI_PUBLIC_ENABLED": "true",
     "CLERVO_SANDBOX_PUBLIC_ENABLED": "true",
+    "CLERVO_RPC_PUBLIC_ENABLED": "true",
     "CLERVO_PREDICTION_PUBLIC_ENABLED": "true",
     "CLERVO_CRYPTO_PUBLIC_ENABLED": "true"
   },

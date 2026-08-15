@@ -39,7 +39,7 @@ const DISCOVERY_DOCUMENTS = new Map([
   ['/status.json', status],
   ['/onboarding.json', onboarding],
 ]);
-const READ_PATHS = new Set(['/', '/favicon.ico', '/favicon.svg', '/v1/health', '/readyz', '/skill.md', '/agent.md', '/agents.txt', '/llms.txt', ...DISCOVERY_DOCUMENTS.keys()]);
+const READ_PATHS = new Set(['/', '/favicon.ico', '/favicon.svg', '/v1/health', '/readyz', '/v1/rpc/chains', '/skill.md', '/agent.md', '/agents.txt', '/llms.txt', ...DISCOVERY_DOCUMENTS.keys()]);
 // The agent-facing documents. An agent that discovers the API host first must
 // not have to know that these live only on the site host.
 const TEXT_DOCUMENTS = new Map([
@@ -131,7 +131,7 @@ export default {
     const artifactRequest = ARTIFACT_PATH.test(incoming.pathname);
     if (['/v1/ai/execute', '/v1/chat/completions', '/v1/messages', '/v1/responses'].includes(incoming.pathname) && env.CLERVO_AI_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/v1/sandbox/execute' && env.CLERVO_SANDBOX_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
-    if (incoming.pathname === '/v1/rpc/execute' && env.CLERVO_RPC_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
+    if (['/v1/rpc/execute', '/v1/rpc/chains'].includes(incoming.pathname) && env.CLERVO_RPC_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/v1/prediction/execute' && env.CLERVO_PREDICTION_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/v1/crypto/execute' && env.CLERVO_CRYPTO_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (request.method === 'OPTIONS' && (PRODUCT_PATHS.has(incoming.pathname) || artifactRequest)) return new Response(null, { status: 204, headers: cors() });

@@ -72,6 +72,20 @@
     "supplierCostMicrousd": 0,
     "attributionRequired": true
   },
+  "rpc": {
+    "mode": "paid",
+    "publicRoute": true,
+    "drpcCredentialSecret": "clervo-production-rpc-drpc-api-key",
+    "heliusCredentialSecret": "clervo-production-rpc-helius-api-key",
+    "supportedChains": ["eip155:1", "eip155:10", "eip155:56", "eip155:137", "eip155:8453", "eip155:42161", "eip155:43114", "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"],
+    "dailyCallCeilingPerInstance": 100000,
+    "maximumBatchSize": 20,
+    "priceVersion": "rpc-product-2026-08-15.1",
+    "customerPriceMicrousdPerCall": 1000,
+    "supplierCostMicrousdPerCall": 0,
+    "archivePublic": false,
+    "broadcastPublic": false
+  },
   "crypto": {
     "mode": "paid",
     "publicRoute": true,
@@ -90,6 +104,7 @@
     "stableChallengeRequired": true,
     "sandboxLiveSmokeRequired": true,
     "predictionLiveSmokeRequired": true,
+    "rpcLiveSmokeRequired": true,
     "cryptoLiveSmokeRequired": true,
     "monitoringDeliveryRequired": true,
     "currentLiveHealthRequired": true,

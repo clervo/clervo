@@ -57,7 +57,7 @@ test('Solana probes bind genesis identity, finalized slot, and common finalized 
     routeId: 'rpc.route.solana_recorded',
     chainId: solana.chainId,
     async execute(calls) {
-      return calls.map(({ method }, index) => ({ id: index + 1, ok: true, result: method === 'getGenesisHash' ? '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp' : method === 'getSlot' ? 1000 : { blockhash: '11111111111111111111111111111111' } }));
+      return calls.map(({ method }, index) => ({ id: index + 1, ok: true, result: method === 'getGenesisHash' ? '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d' : method === 'getSlot' ? 1000 : { blockhash: '11111111111111111111111111111111' } }));
     },
   };
   const router = new RpcHealthRouter({ chains: [solana], routes: [solanaRoute] });

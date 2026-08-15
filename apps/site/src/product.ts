@@ -56,6 +56,7 @@ export interface DiscoveryProduct {
   routes?: {
     freeSample?: string;
     paidChallenge?: string;
+    health?: string;
     catalog?: string;
     execute?: string;
     openAiChatCompletions?: string;

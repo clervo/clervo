@@ -25,7 +25,7 @@ const familyDescriptions: Record<ObservedProduct['id'], string> = {
   search: 'Fresh web results with sources and citations.',
   ai: 'Chat, embeddings, image, speech, and multimodal models.',
   sandbox: 'Bounded, isolated Node.js execution with no network.',
-  rpc: 'No public execution route is currently advertised.',
+  rpc: 'Read-only RPC across eight EVM and Solana networks.',
   prediction: 'Normalized markets, comparisons, and derived signals.',
   crypto_intelligence: 'Read-only wallet activity, balances, and reports.',
 };

@@ -53,6 +53,7 @@ const plan = Object.freeze({
   publicOrigin: policy.publicOrigin, searchMode: policy.search.mode, synthesisEnabled: policy.search.synthesisEnabled,
   x402Mode: policy.commerce.mode, sandboxMode: policy.sandbox.mode, sandboxPublicMode: policy.sandbox.publicMode, deployTrafficPercent: 0,
   predictionMode: policy.prediction.mode, predictionQualifiedAdapter: policy.prediction.qualifiedAdapter,
+  rpcMode: policy.rpc.mode, rpcSupportedChains: policy.rpc.supportedChains,
   cryptoMode: policy.crypto.mode, cryptoQualifiedAdapter: policy.crypto.qualifiedAdapter,
   publicAccessEnabledOnlyAfterPromotion: true, publicAccessMethod: policy.rollout.publicAccessMethod, protectedResources: policy.protectedResources,
   mutationActions: ['deploy', 'promote', 'rollback', 'privatize'],
@@ -76,6 +77,7 @@ else if (action === 'observe') {
     aiClervo: version('CLERVO_AI_CLERVO_SECRET_VERSION'), r2Access: version('CLERVO_R2_ACCESS_KEY_SECRET_VERSION'),
     r2Secret: version('CLERVO_R2_SECRET_ACCESS_KEY_SECRET_VERSION'), artifactSigning: version('CLERVO_ARTIFACT_SIGNING_SECRET_VERSION'),
     mpp: version('CLERVO_MPP_SECRET_VERSION'), blockscout: version('CLERVO_BLOCKSCOUT_SECRET_VERSION'),
+    rpcDrpc: version('CLERVO_RPC_DRPC_SECRET_VERSION'), rpcHelius: version('CLERVO_RPC_HELIUS_SECRET_VERSION'),
   };
   const artifact = verifyArtifact(candidateImage);
   const before = service();
@@ -98,6 +100,7 @@ else if (action === 'observe') {
     `R2_BUCKET_NAME=${policy.ai.artifacts.bucket}`, `CLERVO_ARTIFACT_RETENTION_SECONDS=${policy.ai.artifacts.retentionSeconds}`,
     `CLERVO_ARTIFACT_MAXIMUM_OBJECT_BYTES=${policy.ai.artifacts.maximumObjectBytes}`,
     `CLERVO_PREDICTION_MODE=${policy.prediction.mode}`,
+    `CLERVO_RPC_MODE=${policy.rpc.mode}`, `CLERVO_RPC_DAILY_CALL_CEILING=${policy.rpc.dailyCallCeilingPerInstance}`,
     `CLERVO_CRYPTO_MODE=${policy.crypto.mode}`, `CLERVO_CRYPTO_DAILY_CALL_CEILING=${policy.crypto.dailyCallCeiling}`,
   ];
   const secrets = [
@@ -116,6 +119,8 @@ else if (action === 'observe') {
     `R2_SECRET_ACCESS_KEY=${policy.ai.artifacts.secretAccessKeySecret}:${versions.r2Secret}`,
     `CLERVO_ARTIFACT_SIGNING_SECRET=${policy.ai.artifacts.signingSecret}:${versions.artifactSigning}`,
     `CLERVO_BLOCKSCOUT_API_KEY=${policy.crypto.credentialSecret}:${versions.blockscout}`,
+    `CLERVO_RPC_DRPC_API_KEY=${policy.rpc.drpcCredentialSecret}:${versions.rpcDrpc}`,
+    `CLERVO_RPC_HELIUS_API_KEY=${policy.rpc.heliusCredentialSecret}:${versions.rpcHelius}`,
   ];
   gcloud([
     'run', 'deploy', policy.service, '--project', policy.project, '--region', policy.region, '--image', candidateImage,

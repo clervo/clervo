@@ -19,7 +19,7 @@ const descriptions: Record<ObservedProduct['id'], string> = {
   search: 'Retrieve fresh ranked web results with citations through free and paid routes.',
   ai: 'Use chat, embeddings, and multimodal models through one catalog and execution API.',
   sandbox: 'Run one bounded Node.js command with no network and strict resource ceilings.',
-  rpc: 'Multi-chain RPC has no public execution route at this time.',
+  rpc: 'Read allowlisted state across Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, and Solana.',
   prediction: 'Discover, compare, and inspect normalized prediction markets and derived signals.',
   crypto_intelligence: 'Read wallet balances, tokens, transactions, and bounded reports for Ethereum and Base.',
 };
@@ -30,7 +30,7 @@ function CapabilityVisual({ familyId, modelCount }: { familyId: ObservedProduct[
   if (familyId === 'sandbox') return <div className="capability-visual capability-visual--sandbox" aria-label="Bounded sandbox execution frame"><header><span>Execution boundary</span><em>no network</em></header><pre><code>{`$ node task.js\n\n// bounded input\n// isolated process\n// captured result`}</code></pre><footer><span>Node.js</span><span>strict ceilings</span><span>cleanup</span></footer></div>;
   if (familyId === 'prediction') return <div className="capability-visual capability-visual--prediction" aria-label="Prediction market structure"><div className="capability-visual__axis"><span>Market</span><span>Probability</span><span>Source</span></div><div className="capability-visual__signal"><i /><i /><i /></div><strong>Comparable context<small>normalized markets · freshness · provenance</small></strong></div>;
   if (familyId === 'crypto_intelligence') return <div className="capability-visual capability-visual--crypto" aria-label="Wallet evidence timeline"><div><span>01</span><strong>Wallet</strong><small>Ethereum · Base</small></div><div><span>02</span><strong>Activity</strong><small>balances · tokens · transactions</small></div><div><span>03</span><strong>Report</strong><small>read-only · bounded</small></div></div>;
-  return <div className="capability-visual capability-visual--rpc" aria-label="Multi-chain RPC unavailable"><span>Public route</span><strong>Unavailable</strong><small>No reachable execution route is advertised.</small></div>;
+  return <div className="capability-visual capability-visual--rpc" aria-label="Eight-network read-only Multi-chain RPC"><span>8 networks</span><strong>Read only</strong><small>health-aware routing · failover · replay safe</small></div>;
 }
 
 export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phase: ExperiencePhase): void }) {

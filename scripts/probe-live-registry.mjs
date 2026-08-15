@@ -230,6 +230,13 @@ const cryptoPaidProof = await (async () => {
     return null;
   }
 })();
+const rpcPaidProof = await (async () => {
+  try {
+    return JSON.parse(await readFile(path.join(root, 'infra/production/gcp/rpc-x402-proof.v1.json'), 'utf8'));
+  } catch {
+    return null;
+  }
+})();
 const searchSandboxPaidProof = await (async () => {
   try {
     return JSON.parse(await readFile(path.join(root, 'infra/production/gcp/search-sandbox-x402-proof.v1.json'), 'utf8'));
@@ -283,6 +290,9 @@ const surfaceProbes = await Promise.all([
     postJson({ command: ['node', '-e', "process.stdout.write('ready')"], limits: { wallTimeMs: 5_000, memoryBytes: 67_108_864 } }, `idem_probe_sandbox_${probeNonce}`)),
   observe('api.sandbox_short_execute', `${API_ORIGIN}/v1/sandbox/execute`,
     postJson({ command: ['node', '-e', "process.stdout.write('ready')"], limits: { cpuMillis: 5_000, memoryBytes: 268_435_456, processes: 16, diskBytes: 67_108_864, outputBytes: 65_536, artifactBytes: 1_048_576, wallTimeMs: 10_000 } }, `idem_probe_sandbox_short_${probeNonce}`)),
+  observe('api.rpc_execute', `${API_ORIGIN}/v1/rpc/execute`,
+    postJson({ chainId: 'eip155:1', call: { method: 'eth_chainId', params: [] } }, `idem_probe_rpc_${probeNonce}`)),
+  observe('api.rpc_chains', `${API_ORIGIN}/v1/rpc/chains`),
   observe('api.prediction_execute', `${API_ORIGIN}/v1/prediction/execute`,
     postJson({ kind: 'markets', status: 'open', limit: 3 }, `idem_probe_prediction_${probeNonce}`)),
   observe('api.crypto_execute', `${API_ORIGIN}/v1/crypto/execute`,
@@ -953,6 +963,60 @@ function cryptoPaidProofValidation(quote) {
   };
 }
 
+function rpcPaidProofValidation(quote) {
+  const proof = rpcPaidProof;
+  const operation = proof?.operation;
+  const accepted = proof?.schemaVersion === 'clervo.rpc-x402-proof.v1'
+    && proof.state === 'settled_reconciled'
+    && proof.publicOrigin === `${API_ORIGIN}/`
+    && proof.endpoint === `${API_ORIGIN}/v1/rpc/execute`
+    && /^[a-f0-9]{40}$/u.test(proof.releaseCommit ?? '')
+    && proof.network === quote?.network
+    && proof.asset === quote?.asset
+    && proof.payTo === quote?.payTo
+    && proof.observedChallenge?.status === 402
+    && proof.observedChallenge?.amountAtomic === quote?.amountAtomic
+    && proof.observedChallenge?.networkMatched === true
+    && proof.observedChallenge?.assetMatched === true
+    && proof.observedChallenge?.payToMatched === true
+    && proof.ownerAuthorization?.maximumSpendAtomic === '10000'
+    && proof.ownerAuthorization?.maximumExecutionCount === 1
+    && proof.ownerAuthorization?.paymentEffects === 1
+    && proof.ownerAuthorization?.automaticRetry === false
+    && operation?.productId === 'rpc.call'
+    && operation?.chainId === 'eip155:1'
+    && operation?.method === 'eth_chainId'
+    && operation?.customerChargeAtomic === '1000'
+    && operation?.supplierCostAtomic === '0'
+    && operation?.settlementStatus === 'settled'
+    && operation?.usefulResult === true
+    && operation?.resultVerified === true
+    && operation?.replay?.sameOperation === true
+    && operation?.replay?.sameReceipt === true
+    && operation?.replay?.sameResult === true
+    && operation?.replay?.idempotencyReplayed === true
+    && operation?.replay?.paymentHeaderSent === false
+    && operation?.replay?.secondAuthorization === false
+    && operation?.replay?.secondUpstreamExecution === false
+    && operation?.replay?.secondCharge === false
+    && operation?.durable?.state === 'completed'
+    && operation?.durable?.operationRows === 1
+    && operation?.durable?.accountingRows === 1
+    && proof.observedDurability?.databaseIdentityVerified === true
+    && proof.observedDurability?.operationRows === 1
+    && proof.observedDurability?.accountingRowsForOperation === 1
+    && proof.observedDurability?.receiverLedgerChainValid === true
+    && proof.observedDurability?.receiverLedgerBalanced === true;
+  if (!accepted) return { accepted: false, reason: proof === null ? 'paid_proof_absent' : 'paid_proof_invariant_failed' };
+  return {
+    accepted: true, reason: null, proofLevel: PROOF_PAID,
+    source: 'infra/production/gcp/rpc-x402-proof.v1.json', releaseCommit: proof.releaseCommit,
+    operationCount: 1, totalChargeAtomic: '1000', usefulResultCount: 1,
+    replayNoSecondChargeCount: 1, ownerFunded: true, revenueEvidence: false,
+    demandEvidence: false, externallyRepeated: false,
+  };
+}
+
 function productFromProbes({ id, label, operations, probeIds, freeProbeId = null, commercialBlocker = null, paidProof = null }) {
   if (commercialBlocker !== null) {
     return {
@@ -1180,6 +1244,29 @@ const aiProductRecord = {
   },
 };
 
+const rpcExpectedChains = new Set(['eip155:1', 'eip155:10', 'eip155:56', 'eip155:137', 'eip155:8453', 'eip155:42161', 'eip155:43114', 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp']);
+const rpcHealthProbe = surfaceById['api.rpc_chains'];
+const rpcHealthChains = Array.isArray(rpcHealthProbe.body?.chains) ? rpcHealthProbe.body.chains : [];
+const rpcHealthVerified = rpcHealthProbe.status === 200
+  && rpcHealthProbe.body?.status === 'healthy'
+  && rpcHealthChains.length === rpcExpectedChains.size
+  && rpcHealthChains.every(({ chainId, status, healthyRoutes }) => rpcExpectedChains.has(chainId) && status === 'healthy' && Number(healthyRoutes) >= 1);
+const rpcProductRecord = productFromProbes({
+  id: 'rpc', label: 'Multi-chain RPC', operations: ['rpc.call', 'rpc.batch'],
+  probeIds: { paid: 'api.rpc_execute' }, paidProof: rpcPaidProofValidation,
+});
+if (!rpcHealthVerified && rpcProductRecord.state === STATE_LIVE) {
+  rpcProductRecord.state = STATE_PAUSED;
+  rpcProductRecord.reason = 'rpc_chain_health_unavailable';
+  rpcProductRecord.proof = PROOF_NONE;
+}
+rpcProductRecord.evidence.chainHealth = {
+  status: rpcHealthProbe.status,
+  verified: rpcHealthVerified,
+  advertisedChains: rpcExpectedChains.size,
+  healthyChains: rpcHealthChains.filter(({ status }) => status === 'healthy').length,
+};
+
 const products = [
   productFromProbes({
     id: 'search',
@@ -1200,13 +1287,7 @@ const products = [
     probeIds: { paid: 'api.sandbox_execute' },
     paidProof: sandboxPaidProofValidation,
   }),
-  productFromProbes({
-    id: 'rpc',
-    label: 'Multi-chain RPC',
-    operations: ['rpc.call', 'rpc.batch', 'rpc.health', 'rpc.archive', 'rpc.broadcast'],
-    probeIds: {},
-    commercialBlocker: 'commercial_rights_blocked',
-  }),
+  rpcProductRecord,
   productFromProbes({
     id: 'prediction',
     label: 'Prediction Intelligence',

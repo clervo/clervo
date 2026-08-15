@@ -80,6 +80,7 @@ const openAiResponsesDiscovery = openAiResponsesCompat.createOpenAiResponsesDisc
 const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
 const predictionPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/prediction-product-pricing.v1.json'), 'utf8'));
 const cryptoPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/crypto-product-pricing.v1.json'), 'utf8'));
+const rpcPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/rpc-product-pricing.v1.json'), 'utf8'));
 
 function componentName(fileName) {
   return fileName
@@ -226,6 +227,18 @@ const sandboxProbeSchema = Object.freeze({
     },
   },
 });
+const rpcChains = Object.freeze(['eip155:1', 'eip155:10', 'eip155:56', 'eip155:137', 'eip155:8453', 'eip155:42161', 'eip155:43114', 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp']);
+const rpcProbeExample = Object.freeze({ chainId: 'eip155:1', call: Object.freeze({ method: 'eth_chainId', params: Object.freeze([]) }) });
+const rpcCallSchema = Object.freeze({
+  type: 'object', required: ['method', 'params'], additionalProperties: false,
+  properties: { method: { type: 'string', minLength: 2, maxLength: 64 }, params: {} },
+});
+const rpcProbeSchema = Object.freeze({
+  oneOf: [
+    { type: 'object', required: ['chainId', 'call'], additionalProperties: false, properties: { chainId: { enum: rpcChains }, call: rpcCallSchema, quorum: { type: 'integer', minimum: 1, maximum: 3 } } },
+    { type: 'object', required: ['chainId', 'calls'], additionalProperties: false, properties: { chainId: { enum: rpcChains }, calls: { type: 'array', minItems: 1, maxItems: 20, items: rpcCallSchema }, quorum: { type: 'integer', minimum: 1, maximum: 3 } } },
+  ],
+});
 const predictionProbeExample = Object.freeze({ kind: 'markets', status: 'open', limit: 3 });
 const predictionMarketRefSchema = Object.freeze({ type: 'string', pattern: '^pmkt_[a-f0-9]{32}$' });
 const predictionProbeSchema = Object.freeze({
@@ -349,6 +362,7 @@ const publicOpenAiResponses = publicAi
   && openAiResponsesCompatibility.observedQuote !== null;
 const aiOperationIds = Object.freeze(['ai.chat', 'ai.embed', 'ai.image', 'ai.speech', 'ai.video', 'ai.music', 'ai.virtual_try_on']);
 const publicSandbox = observedLive.sandbox;
+const publicRpc = observedLive.rpc;
 const publicPrediction = observedLive.prediction;
 const publicCrypto = observedLive.crypto_intelligence;
 
@@ -990,6 +1004,62 @@ if (publicSandbox) {
   ];
   llms += '\n## Secure Sandbox preview\n\n- `POST /v1/sandbox/execute`: class-derived 0.010000–0.060000 USDC quote on Base for one bounded Node.js gVisor execution.\n- The short class is capped at 5 CPU seconds, 256 MiB, 16 processes, 64 MiB disk, 64 KiB output, 1 MiB artifacts, and 10 seconds wall time; larger requests use the standard class without weaker ceilings.\n- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.\n';
 }
+if (publicRpc) {
+  const priceByProduct = new Map(rpcPricing.products.map((product) => [product.productId, product]));
+  const publicRpcProducts = [
+    ['rpc.call', 'Call one supported-chain RPC method', 'Execute one allowlisted read-only JSON-RPC method against a healthy route with failover.'],
+    ['rpc.batch', 'Batch supported-chain RPC reads', 'Execute up to 20 allowlisted read-only JSON-RPC calls on one supported chain.'],
+  ];
+  openapi.paths['/v1/rpc/execute'] = {
+    post: {
+      summary: 'Request or settle a bounded Multi-chain RPC read',
+      description: 'Serves allowlisted read-only methods across Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, and Solana. Archive reads and transaction broadcast are not public operations.',
+      operationId: 'rpcExecute',
+      parameters: [{ name: 'Idempotency-Key', in: 'header', required: true, schema: { type: 'string', minLength: 8, maxLength: 128 } }],
+      requestBody: { required: true, content: { 'application/json': { schema: rpcProbeSchema } } },
+      responses: {
+        200: { description: 'RPC read completed or replayed', content: { 'application/json': { schema: publicResultSchema } } },
+        400: { description: 'Invalid chain, method, batch, quorum, or body', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
+        409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        503: { description: 'Healthy RPC supply, capacity, or settlement is unavailable', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+      },
+    },
+  };
+  openapi.paths['/v1/rpc/execute'].post = scannerSafeOperation(openapi.paths['/v1/rpc/execute'].post, {
+    requestSchema: rpcProbeSchema,
+    example: rpcProbeExample,
+    paymentInfo: {
+      price: { mode: 'dynamic', currency: 'USD', min: '0.001000', max: '0.020000' },
+      protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
+    },
+    tags: ['RPC'],
+  });
+  openapi.paths['/v1/rpc/chains'] = {
+    get: {
+      summary: 'Read current health for all supported RPC chains', operationId: 'rpcListChains', security: [], tags: ['RPC'],
+      responses: {
+        200: { description: 'Every advertised chain has at least one semantically healthy route', content: { 'application/json': { schema: { type: 'object', additionalProperties: true } } } },
+        503: { description: 'One or more advertised chains could not be verified healthy', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+      },
+    },
+  };
+  openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, ...publicRpcProducts.map(([productId]) => productId)];
+  for (const [productId, title, summary] of publicRpcProducts) {
+    const price = priceByProduct.get(productId);
+    if (price?.listingStatus !== 'sellable' || price.customerPriceMicrousd !== 1000) throw new Error(`public_rpc_price_invalid:${productId}`);
+    discovery.products.push({
+      productId, operationId: productId, title, summary,
+      lifecycle: 'preview', publicAvailable: true, deliveryModes: ['sync'],
+      selection: { chains: rpcChains, maximumBatchSize: 20, methods: 'Published read-only allowlist; unsafe namespaces, archive reads, and transaction broadcast fail closed.' },
+      pricing: { model: productId === 'rpc.call' ? 'fixed_per_request' : 'fixed_per_call', displayPrice: { asset: 'USDC', amountAtomic: '1000', decimals: 6 }, maximumChargeRequired: true, priceVersion: `${rpcPricing.priceVersion}-${productId}` },
+      routes: { paidChallenge: '/v1/rpc/execute', health: '/v1/rpc/chains' },
+      payment: { challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
+      commercialProof: observed.rpc.proof === 'paid_outcome_verified',
+    });
+  }
+  llms += '\n## Multi-chain RPC\n\n- `POST /v1/rpc/execute`: 0.001000 USDC per read-only RPC call on Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, or Solana; batches contain at most 20 calls on one chain.\n- `GET /v1/rpc/chains`: current semantic health for every advertised chain. Credentialed primary supply and independent read-only fallbacks are checked for chain identity, height, and finalized block consistency.\n- Public operations are `rpc.call` and `rpc.batch`. Archive reads and transaction broadcast remain unavailable. Same-key replay returns the completed result and receipt without another charge.\n';
+}
 if (publicPrediction) {
   const priceByProduct = new Map(predictionPricing.products.map((product) => [product.productId, product]));
   const publicPredictionProducts = [
@@ -1112,6 +1182,7 @@ const liveApiFamilies = [
   publicSearch ? { title: 'Search', description: 'raw cited Search' } : null,
   publicAi ? { title: 'AI', description: 'bounded paid AI' } : null,
   publicSandbox ? { title: 'Secure Sandbox', description: 'bounded one-shot Secure Sandbox execution' } : null,
+  publicRpc ? { title: 'Multi-chain RPC', description: 'bounded read-only Multi-chain RPC' } : null,
   publicPrediction ? { title: 'Prediction Intelligence', description: 'derived Prediction Intelligence' } : null,
   publicCrypto ? { title: 'Crypto Intelligence', description: 'bounded provider-neutral Crypto Intelligence' } : null,
 ].filter(Boolean);
@@ -1122,10 +1193,11 @@ if (liveApiFamilies.length > 0) {
     Search: 'Free-first raw web evidence and paid replay-safe retrieval.',
     AI: 'Provider-neutral model discovery and normalized free-or-paid execution.',
     Sandbox: 'Bounded one-shot isolated code execution.',
+    RPC: 'Bounded allowlisted reads across eight supported chains.',
     Prediction: 'Normalized prediction-market discovery and derived intelligence.',
     'Crypto Intelligence': 'Bounded wallet facts and deterministic on-chain derivations.',
   };
-  const openApiTagName = { 'Secure Sandbox': 'Sandbox', 'Prediction Intelligence': 'Prediction', 'Crypto Intelligence': 'Crypto Intelligence' };
+  const openApiTagName = { 'Secure Sandbox': 'Sandbox', 'Multi-chain RPC': 'RPC', 'Prediction Intelligence': 'Prediction', 'Crypto Intelligence': 'Crypto Intelligence' };
   openapi.tags = liveApiFamilies.map(({ title }) => {
     const name = openApiTagName[title] ?? title;
     return { name, description: tagDescriptions[name] };
@@ -1136,7 +1208,7 @@ if (liveApiFamilies.length > 0) {
 }
 const catalog = contractModule.createCatalogDocument(projection);
 catalog.catalogVersion = discoveryArtifactVersion;
-if (publicAi || publicSandbox || publicPrediction || publicCrypto) catalog.products = discovery.products;
+if (publicAi || publicSandbox || publicRpc || publicPrediction || publicCrypto) catalog.products = discovery.products;
 
 // Project lifecycle-sensitive summary rows from the same live registry and
 // products used below. These rows must never become a second hand-maintained
@@ -1652,6 +1724,7 @@ const x402Resources = [
     exampleRouteId: null,
   }] : []),
   { productId: 'sandbox', path: '/v1/sandbox/execute', operationId: 'sandbox.run', priceModel: 'class_derived_quote', quote: observed.sandbox.observedQuote, exampleRouteId: null },
+  { productId: 'rpc', path: '/v1/rpc/execute', operationId: 'rpc.call', priceModel: 'request_derived_per_call', quote: observed.rpc.observedQuote, exampleRouteId: null },
   { productId: 'prediction', path: '/v1/prediction/execute', operationId: 'prediction.markets', priceModel: 'request_derived_per_operation', quote: observed.prediction.observedQuote, exampleRouteId: null },
   { productId: 'crypto_intelligence', path: '/v1/crypto/execute', operationId: 'crypto.wallet.report', priceModel: 'request_derived_per_operation', quote: observed.crypto_intelligence.observedQuote, exampleRouteId: null },
 ]
@@ -1785,6 +1858,7 @@ const skillDocument = [
   `- You need an AI model call (${b7Inventory.callableIds} model IDs) — use \`POST /v1/ai/execute\`.`,
   '- You need cited web evidence for a question — use `POST /v1/search/free` or `POST /v1/search/paid`.',
   '- You need to run sandboxed Node.js code safely with a receipt — use `POST /v1/sandbox/execute`.',
+  '- You need read-only JSON-RPC on Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, or Solana — use `POST /v1/rpc/execute`.',
   '- You need real-time prediction market data (Polymarket, Kalshi, Manifold, Limitless) — use `POST /v1/prediction/execute`.',
   '- You need EVM wallet intelligence for Ethereum or Base — use `POST /v1/crypto/execute`.',
   '- You want per-request payment with no account, no API key, and safe retry on failure.',

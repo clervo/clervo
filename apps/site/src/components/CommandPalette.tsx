@@ -8,7 +8,7 @@ const destinations = [
   { title: 'Research product core', path: '/products/search', terms: 'search exact operations lifecycle source boundary' },
   { title: 'AI product core', path: '/products/ai', terms: 'chat embed image speech unavailable' },
   { title: 'Secure Sandbox product core', path: '/products/sandbox', terms: 'gvisor isolation execution unavailable' },
-  { title: 'Multi-chain RPC product core', path: '/products/rpc', terms: 'chain rpc archive broadcast rights unavailable' },
+  { title: 'Multi-chain RPC product core', path: '/products/rpc', terms: 'ethereum optimism bsc polygon base arbitrum avalanche solana read batch health' },
   { title: 'Prediction product core', path: '/products/prediction', terms: 'market signals rights unavailable' },
   { title: 'Crypto Intelligence product core', path: '/products/crypto', terms: 'wallet token transaction read only unavailable' },
   { title: 'Start using Clervo', path: '/start', terms: 'install onboarding claude mcp openai cli typescript python' },

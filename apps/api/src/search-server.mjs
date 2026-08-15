@@ -64,6 +64,7 @@ import {
 } from './x402-paid-sandbox.mjs';
 import {
   RPC_DISCOVERY,
+  RPC_HEALTH_PATH,
   RPC_MAX_BODY_BYTES,
   RPC_PAID_PATH,
   createX402PaidRpcProcessor,
@@ -260,7 +261,7 @@ export function createSearchServer({
   if (aiArtifactAccess !== undefined && (typeof aiArtifactAccess.matches !== 'function' || typeof aiArtifactAccess.retrieve !== 'function')) throw new TypeError('invalid AI artifact access');
   if (aiReady !== undefined && (aiPublicPricing === undefined || typeof aiReady !== 'function')) throw new TypeError('invalid AI readiness probe');
   if (sandboxPublicRunnerDigest !== undefined && (sandboxGateway === undefined || x402Service === undefined)) throw new TypeError('public Sandbox requires private execution and x402 commerce');
-  if (rpcRuntime !== undefined && x402Service === undefined) throw new TypeError('public RPC requires x402 commerce');
+  if (rpcRuntime !== undefined && (x402Service === undefined || typeof rpcRuntime.health !== 'function' || typeof rpcRuntime.ready !== 'function' || !Array.isArray(rpcRuntime.chains) || rpcRuntime.chains.length !== 8)) throw new TypeError('public RPC requires x402 commerce and eight-chain health');
   if (predictionRuntime !== undefined && x402Service === undefined) throw new TypeError('public Prediction requires x402 commerce');
   if (cryptoRuntime !== undefined && x402Service === undefined) throw new TypeError('public Crypto requires x402 commerce');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
@@ -433,6 +434,26 @@ export function createSearchServer({
           durableState: searchState.durable === true,
           trafficMode: trafficControl?.snapshot().mode ?? 'open',
         });
+      }
+      return;
+    }
+    if (request.method === 'GET' && url.pathname === RPC_HEALTH_PATH && url.search === '' && rpcRuntime !== undefined) {
+      if (edgeAuthorization !== undefined && !internalAuthorized(request.headers['x-clervo-edge-authorization'], edgeAuthorization)) {
+        send(response, 401, problem(401, 'edge_unauthorized', 'Unauthorized', 'The public API edge is required.', url.pathname), {}, PROBLEM_TYPE);
+        return;
+      }
+      try {
+        const chains = await rpcRuntime.health();
+        const available = chains.length === rpcRuntime.chains.length && chains.every(({ status }) => status === 'healthy');
+        send(response, available ? 200 : 503, {
+          schemaVersion: 'clervo.rpc-public-health.v1',
+          status: available ? 'healthy' : 'degraded',
+          operations: ['rpc.call', 'rpc.batch'],
+          chains,
+          limits: rpcRuntime.limits,
+        }, available ? { 'cache-control': 'public, max-age=10' } : { 'cache-control': 'no-store', 'retry-after': '30' });
+      } catch {
+        send(response, 503, problem(503, 'rpc_health_unavailable', 'RPC health unavailable', 'Current upstream health could not be verified.', url.pathname), { 'retry-after': '30' }, PROBLEM_TYPE);
       }
       return;
     }

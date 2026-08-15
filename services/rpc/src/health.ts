@@ -53,7 +53,9 @@ function solanaHeight(value: unknown): number {
 }
 
 function expectedIdentity(chain: Readonly<RpcChainPolicy>): string {
-  return chain.protocol === 'evm' ? `0x${BigInt(chain.chainId.slice('eip155:'.length)).toString(16)}` : chain.chainId.slice('solana:'.length);
+  return chain.protocol === 'evm'
+    ? `0x${BigInt(chain.chainId.slice('eip155:'.length)).toString(16)}`
+    : '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d';
 }
 
 function headCalls(chain: Readonly<RpcChainPolicy>): readonly Readonly<JsonRpcCall>[] {

@@ -96,6 +96,8 @@
       "clervo-production-x402-key-secret",
       "clervo-production-x402-pay-to",
       "clervo-production-mpp-secret-key",
+      "clervo-production-rpc-drpc-api-key",
+      "clervo-production-rpc-helius-api-key",
       "clervo-sandbox-control-token",
       "clervo-sandbox-api-token"
     ],
