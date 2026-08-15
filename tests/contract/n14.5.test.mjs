@@ -22,7 +22,6 @@ test('production migration runner is ordered, checksum-bound, secret-safe, and f
     '0007-prediction-market-state.sql',
     '0008-ai-free-tier-quota.sql',
     '0008-prediction-dynamic-venues.sql',
-    '0009-commercial-measurement.sql',
   ]);
   assert.ok(plan.migrations.every(({ checksum }) => /^sha256:[a-f0-9]{64}$/u.test(checksum)));
   assert.equal(plan.credentialInput, 'environment_or_stdin');

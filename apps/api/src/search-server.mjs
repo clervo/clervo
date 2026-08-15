@@ -239,7 +239,6 @@ export function createSearchServer({
   rpcRuntime,
   predictionRuntime,
   cryptoRuntime,
-  commercialMeasurementStore,
 } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
   if (monitor !== undefined && typeof monitor.record !== 'function') throw new TypeError('invalid search monitor');
@@ -264,7 +263,6 @@ export function createSearchServer({
   if (rpcRuntime !== undefined && x402Service === undefined) throw new TypeError('public RPC requires x402 commerce');
   if (predictionRuntime !== undefined && x402Service === undefined) throw new TypeError('public Prediction requires x402 commerce');
   if (cryptoRuntime !== undefined && x402Service === undefined) throw new TypeError('public Crypto requires x402 commerce');
-  if (commercialMeasurementStore !== undefined && typeof commercialMeasurementStore.record !== 'function') throw new TypeError('invalid commercial measurement store');
   const searchState = stateStore ?? new InMemorySearchStateStore({ freeQuota });
   if (
     typeof searchState.begin !== 'function'
@@ -384,47 +382,9 @@ export function createSearchServer({
   const record = (input) => {
     try { monitor?.record(input); } catch { /* Monitoring must never alter customer response behavior. */ }
   };
-  const recordCommercialEvent = async (eventName, operationId, fields = {}) => {
-    if (commercialMeasurementStore === undefined || typeof operationId !== 'string') return;
-    try {
-      const eventId = `evt_${createHash('sha256').update(`${eventName}:${operationId}`).digest('hex').slice(0, 32)}`;
-      await commercialMeasurementStore.record({ eventId, eventName, occurredAt: now(), operationId, trafficClass: 'external', ...fields });
-    } catch { /* Measurement must never alter customer response behavior. */ }
-  };
-  const trafficClassForRequest = (request) => (
-    request.headers['x-clervo-traffic-class'] === 'internal'
-      && edgeAuthorization !== undefined
-      && internalAuthorized(request.headers['x-clervo-edge-authorization'], edgeAuthorization)
-      ? 'internal'
-      : 'external'
-  );
 
   const server = http.createServer(async (request, response) => {
     const url = new URL(request.url ?? '/', 'http://loopback.invalid');
-    if (request.method === 'POST' && url.pathname === '/v1/analytics/events' && url.search === '') {
-      if (commercialMeasurementStore === undefined) {
-        send(response, 503, problem(503, 'commercial_measurement_unavailable', 'Measurement unavailable', 'Commercial measurement is not configured.', url.pathname), {}, PROBLEM_TYPE);
-        return;
-      }
-      if (edgeAuthorization !== undefined && !internalAuthorized(request.headers['x-clervo-edge-authorization'], edgeAuthorization)) {
-        send(response, 401, problem(401, 'edge_unauthorized', 'Unauthorized', 'The public API edge is required.', url.pathname), {}, PROBLEM_TYPE);
-        return;
-      }
-      try {
-        const input = await readJson(request, 8_192);
-        if (input === null || typeof input !== 'object' || Array.isArray(input)) throw Object.assign(new Error('invalid_commercial_event'), { status: 400 });
-        const declaredClass = request.headers['x-clervo-traffic-class'];
-        if (declaredClass === 'internal' && edgeAuthorization === undefined) throw Object.assign(new Error('invalid_commercial_traffic_class'), { status: 400 });
-        const event = { ...input, trafficClass: declaredClass === 'internal' ? 'internal' : declaredClass === 'unknown' ? 'unknown' : 'external' };
-        const result = await commercialMeasurementStore.record(event);
-        send(response, 202, { accepted: true, recorded: result.kind === 'recorded' });
-      } catch (error) {
-        const code = errorCode(error);
-        const status = Number.isInteger(error?.status) ? error.status : code.includes('invalid') ? 400 : 503;
-        send(response, status, problem(status, code, 'Invalid measurement event', 'Only bounded commercial metadata is accepted; customer prompts and payloads are not collected.', url.pathname), {}, PROBLEM_TYPE);
-      }
-      return;
-    }
     if (request.method === 'GET' && ['/healthz', '/v1/health'].includes(url.pathname) && url.search === '') {
       send(response, 200, {
         status: 'ok',
@@ -452,7 +412,6 @@ export function createSearchServer({
         const ready = trafficOpen
           && typeof searchState.ready === 'function'
           && await searchState.ready()
-          && (commercialMeasurementStore === undefined || await commercialMeasurementStore.ready())
           && (x402StateStore === undefined || await x402StateStore.ready())
           && (sandboxGateway === undefined || await sandboxGateway.ready())
           && (aiReady === undefined || await aiReady())
@@ -614,7 +573,6 @@ export function createSearchServer({
             subject,
             now: observedAt,
           });
-          if (free.status === 200) await recordCommercialEvent('free_result', aiOperationId, { productId: executionNormalized.productId, modelId: executionNormalized.model });
           const responseHeaders = {
             ...free.headers,
             ...(keyGenerated ? { 'idempotency-key': keyHeader } : {}),
@@ -658,7 +616,6 @@ export function createSearchServer({
           authorizationHeader,
           now: observedAt,
           resourcePath: url.pathname,
-          trafficClass: trafficClassForRequest(request),
           discovery: openAiCompatibility
             ? createOpenAiChatDiscoveryContract(aiBody)
             : anthropicCompatibility
@@ -730,7 +687,7 @@ export function createSearchServer({
         const normalized = normalizeRpcHttpRequest(await readJson(request, RPC_MAX_BODY_BYTES));
         const requestHash = rpcHttpRequestHash(normalized);
         operationId = identifier('op', `${keyHeader}:${requestHash}`);
-        const paid = await x402RpcProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now(), trafficClass: trafficClassForRequest(request) });
+        const paid = await x402RpcProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now() });
         send(response, paid.status, paid.body, paid.headers);
       } catch (error) {
         const code = errorCode(error); const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;
@@ -760,7 +717,7 @@ export function createSearchServer({
         const normalized = normalizePredictionHttpRequest(await readJson(request, PREDICTION_MAX_BODY_BYTES));
         const requestHash = predictionHttpRequestHash(normalized);
         operationId = identifier('op', `${keyHeader}:${requestHash}`);
-        const paid = await x402PredictionProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now(), trafficClass: trafficClassForRequest(request) });
+        const paid = await x402PredictionProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now() });
         send(response, paid.status, paid.body, paid.headers);
       } catch (error) {
         const code = errorCode(error); const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;
@@ -790,7 +747,7 @@ export function createSearchServer({
         const normalized = normalizeCryptoHttpRequest(await readJson(request, CRYPTO_MAX_BODY_BYTES));
         const requestHash = cryptoHttpRequestHash(normalized);
         operationId = identifier('op', `${keyHeader}:${requestHash}`);
-        const paid = await x402CryptoProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now(), trafficClass: trafficClassForRequest(request) });
+        const paid = await x402CryptoProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now() });
         send(response, paid.status, paid.body, paid.headers);
       } catch (error) {
         const code = errorCode(error); const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional') || code.includes('unavailable')) ? 400 : 503;
@@ -833,7 +790,6 @@ export function createSearchServer({
           paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
           authorizationHeader,
           now: now(),
-          trafficClass: trafficClassForRequest(request),
         });
         send(response, paid.status, paid.body, paid.headers);
       } catch (error) {
@@ -982,7 +938,6 @@ export function createSearchServer({
         }
         idempotency.set(keyHeader, { operationId, requestHash, response: result });
         record({ timestamp: now(), productId, outcome: 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
-        await recordCommercialEvent('free_result', operationId, { productId });
         send(response, 200, result, { ...quotaHeaders, ...keyHeaders });
         return;
       }
@@ -997,7 +952,6 @@ export function createSearchServer({
           paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
           authorizationHeader,
           now: now(),
-          trafficClass: trafficClassForRequest(request),
         });
         record({ timestamp: now(), productId, outcome: paid.status === 402 ? 'payment_challenge' : 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
         if (paid.status === 200 && paid.body.replayed !== true) record({ timestamp: now(), productId, outcome: 'paid_completion', operationId });

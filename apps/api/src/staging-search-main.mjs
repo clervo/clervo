@@ -13,7 +13,6 @@ import { createHttpMonitoringExporter, createSentryMonitoringExporter } from './
 import { createTrafficControl } from './traffic-control.mjs';
 import { createX402ChallengeService } from './x402-resource.mjs';
 import { createPostgresX402OperationStoreFromEnvironment } from './x402-operation-store.mjs';
-import { InMemoryCommercialMeasurementStore, createPostgresCommercialMeasurementStoreFromEnvironment } from './commercial-measurement-store.mjs';
 import { createSandboxPrivateGateway } from './sandbox-private-gateway.mjs';
 import { createPostgresSandboxOperationStoreFromEnvironment } from './sandbox-operation-store.mjs';
 import { createAiProductionRuntime } from './ai-production-runtime.mjs';
@@ -81,9 +80,6 @@ const stateStore = stateBackend === 'postgres'
   ? await createPostgresSearchStateStoreFromEnvironment()
   : new InMemorySearchStateStore({ environmentNamespace: 'local' });
 const x402StateStore = x402Mode === 'disabled' ? undefined : createPostgresX402OperationStoreFromEnvironment();
-const commercialMeasurementStore = stateBackend === 'postgres'
-  ? createPostgresCommercialMeasurementStoreFromEnvironment()
-  : new InMemoryCommercialMeasurementStore({ environmentNamespace: 'local' });
 const x402Service = x402Mode === 'disabled' ? undefined : await createX402ChallengeService({
   facilitatorUrl: process.env.CLERVO_X402_FACILITATOR_URL,
   keyId: process.env.CLERVO_X402_FACILITATOR_KEY_ID,
@@ -167,7 +163,6 @@ const server = createSearchServer({
   rpcRuntime,
   predictionRuntime,
   cryptoRuntime,
-  commercialMeasurementStore,
 });
 
 const exportTimer = setInterval(() => {
@@ -186,7 +181,6 @@ for (const signal of ['SIGINT', 'SIGTERM']) {
       try {
         await stateStore.close();
         await x402StateStore?.close();
-        await commercialMeasurementStore?.close();
         await sandboxGateway?.close();
         await predictionRuntime?.close();
       } catch {

@@ -150,7 +150,7 @@ export function createX402PaidSandboxProcessor({ service, stateStore, gateway, r
   return Object.freeze({
     mode: processor.mode,
     durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, trafficClass }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
       const pricing = sandboxRunPricing(normalized);
       /* Sandbox bounds the runtime by the supplier cost: it rents real
        * compute per run. Its deadline is the only content-dependent one on the
@@ -169,7 +169,7 @@ export function createX402PaidSandboxProcessor({ service, stateStore, gateway, r
       return processor.process({
         idempotencyKey, requestHash, operationId, productId: 'sandbox.run', executionInput: request,
         paymentHeader, authorizationHeader, now, pricing,
-        resourcePath: SANDBOX_PAID_PATH, discovery: SANDBOX_DISCOVERY, overloadCode: 'sandbox_overloaded', trafficClass,
+        resourcePath: SANDBOX_PAID_PATH, discovery: SANDBOX_DISCOVERY, overloadCode: 'sandbox_overloaded',
         async execute(executionRequest, { authorization }) {
           const completed = await gateway.run({ tenantId: payerTenant(authorization), request: executionRequest });
           return Object.freeze({

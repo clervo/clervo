@@ -15,7 +15,6 @@ import { AGENT_DOCUMENT, LLMS_DOCUMENT, SKILL_DOCUMENT } from '../../../generate
 const UPSTREAM_ORIGIN = 'https://clervo-api-production-jbtbib4yqa-uc.a.run.app';
 const FAVICON = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" data-clervo-logo=\"x402\">\n<title>Clervo</title>\n<defs>\n  <filter id=\"glow\" x=\"-20%\" y=\"-300%\" width=\"140%\" height=\"700%\">\n    <feGaussianBlur stdDeviation=\"2\"/>\n  </filter>\n</defs>\n<rect width=\"64\" height=\"64\" fill=\"#020202\"/>\n<g fill=\"none\" stroke-linecap=\"square\">\n  <path d=\"M0 32H23.5\" stroke=\"#fd1b21\" stroke-width=\"4\" opacity=\".36\" filter=\"url(#glow)\"/>\n  <path d=\"M23.5 32H40.5\" stroke=\"#46fdfd\" stroke-width=\"4\" opacity=\".34\" filter=\"url(#glow)\"/>\n  <path d=\"M40.5 32H64\" stroke=\"#fcd64f\" stroke-width=\"4\" opacity=\".34\" filter=\"url(#glow)\"/>\n  <path d=\"M0 32H23.5\" stroke=\"#ff1b22\" stroke-width=\"1.15\"/>\n  <path d=\"M23.5 32H40.5\" stroke=\"#46fbfd\" stroke-width=\"1.15\"/>\n  <path d=\"M40.5 32H64\" stroke=\"#ffd54a\" stroke-width=\"1.15\"/>\n</g>\n<path fill=\"#fff\" fill-rule=\"evenodd\"\n d=\"M32 17.75 45.9 44H18.1L32 17.75Zm0 6.55L24.25 39.7h15.5L32 24.3Z\"/>\n</svg>";
 const PRODUCT_PATHS = new Set(['/v1/search/free', '/v1/search/paid', '/v1/ai/execute', '/v1/chat/completions', '/v1/messages', '/v1/responses', '/v1/sandbox/execute', '/v1/rpc/execute', '/v1/prediction/execute', '/v1/crypto/execute']);
-const ANALYTICS_PATH = '/v1/analytics/events';
 const COMPATIBILITY_PATHS = new Set(['/v1/chat/completions', '/v1/messages', '/v1/responses']);
 const DISCOVERY_DOCUMENTS = new Map([
   ['/.well-known/clervo.json', discovery],
@@ -68,7 +67,7 @@ const ARTIFACT_PATH = /^\/v1\/artifacts\/tenant_[A-Za-z0-9]{20,64}\/[a-f0-9]{64}
 function cors(headers = new Headers()) {
   headers.set('access-control-allow-origin', '*');
   headers.set('access-control-allow-methods', 'GET, POST, OPTIONS');
-  headers.set('access-control-allow-headers', 'authorization, content-type, idempotency-key, payment-signature, x-clervo-traffic-class');
+  headers.set('access-control-allow-headers', 'authorization, content-type, idempotency-key, payment-signature');
   headers.set('access-control-expose-headers', 'payment-required, payment-response, payment-receipt, www-authenticate, idempotency-key, idempotency-replayed, ratelimit-limit, ratelimit-remaining, ratelimit-reset, retry-after');
   headers.set('access-control-max-age', '86400');
   headers.set('x-content-type-options', 'nosniff');
@@ -135,12 +134,12 @@ export default {
     if (incoming.pathname === '/v1/rpc/execute' && env.CLERVO_RPC_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/v1/prediction/execute' && env.CLERVO_PREDICTION_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/v1/crypto/execute' && env.CLERVO_CRYPTO_PUBLIC_ENABLED !== 'true') return json(404, { code: 'not_found', status: 404 });
-    if (request.method === 'OPTIONS' && (PRODUCT_PATHS.has(incoming.pathname) || incoming.pathname === ANALYTICS_PATH || artifactRequest)) return new Response(null, { status: 204, headers: cors() });
+    if (request.method === 'OPTIONS' && (PRODUCT_PATHS.has(incoming.pathname) || artifactRequest)) return new Response(null, { status: 204, headers: cors() });
     if (incoming.search && incoming.pathname !== '/') return json(400, { code: 'query_parameters_not_allowed', status: 400 });
     if (READ_PATHS.has(incoming.pathname) && request.method !== 'GET') return json(405, { code: 'method_not_allowed', status: 405 });
-    if ((PRODUCT_PATHS.has(incoming.pathname) || incoming.pathname === ANALYTICS_PATH) && request.method !== 'POST') return json(405, { code: 'method_not_allowed', status: 405 });
+    if (PRODUCT_PATHS.has(incoming.pathname) && request.method !== 'POST') return json(405, { code: 'method_not_allowed', status: 405 });
     if (artifactRequest && request.method !== 'GET') return json(405, { code: 'method_not_allowed', status: 405 });
-    if (!READ_PATHS.has(incoming.pathname) && !PRODUCT_PATHS.has(incoming.pathname) && incoming.pathname !== ANALYTICS_PATH && !artifactRequest) return json(404, { code: 'not_found', status: 404 });
+    if (!READ_PATHS.has(incoming.pathname) && !PRODUCT_PATHS.has(incoming.pathname) && !artifactRequest) return json(404, { code: 'not_found', status: 404 });
     if (incoming.pathname === '/') return json(200, {
       service: 'Clervo API',
       discovery: 'https://api.clervo.dev/.well-known/clervo.json',
@@ -168,7 +167,7 @@ export default {
     const forwardedRequest = await normalizeCompatibilityRequest(request, incoming.pathname);
     const upstream = new URL(incoming.pathname, UPSTREAM_ORIGIN);
     const headers = new Headers(forwardedRequest.headers);
-    for (const name of ['cf-connecting-ip', 'cf-ipcountry', 'cf-ray', 'cf-visitor', 'x-forwarded-host', 'x-forwarded-proto', 'x-clervo-traffic-class']) headers.delete(name);
+    for (const name of ['cf-connecting-ip', 'cf-ipcountry', 'cf-ray', 'cf-visitor', 'x-forwarded-host', 'x-forwarded-proto']) headers.delete(name);
     if (typeof env.CLERVO_EDGE_AUTHORIZATION !== 'string' || env.CLERVO_EDGE_AUTHORIZATION.length < 32) return json(503, { code: 'edge_configuration_unavailable', status: 503 });
     headers.set('x-clervo-edge-authorization', `Bearer ${env.CLERVO_EDGE_AUTHORIZATION}`);
     headers.set('x-clervo-quota-subject', await quotaSubject(request));

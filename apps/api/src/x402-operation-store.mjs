@@ -17,10 +17,6 @@ function assertHash(value, code = 'invalid_x402_state_hash') {
   if (!/^sha256:[a-f0-9]{64}$/u.test(value ?? '')) throw new TypeError(code);
 }
 
-function assertTrafficClass(value) {
-  if (value !== undefined && !['external', 'internal', 'unknown'].includes(value)) throw new TypeError('invalid_x402_traffic_class');
-}
-
 function assertOperation(input) {
   if (!/^[!-~]{8,128}$/u.test(input.idempotencyKey ?? '')) throw new TypeError('invalid_x402_idempotency_key');
   assertHash(input.requestHash, 'invalid_x402_request_hash');
@@ -73,7 +69,6 @@ export class InMemoryX402OperationStore {
 
   async challenge(input) {
     assertOperation(input);
-    assertTrafficClass(input.trafficClass);
     const existing = await this.lookup(input);
     if (existing.kind !== 'missing') return existing;
     const record = {
@@ -83,8 +78,6 @@ export class InMemoryX402OperationStore {
       state: 'challenged',
       quote: structuredClone(input.quote),
       challenge: structuredClone(input.challenge),
-      customerRef: input.customerRef,
-      trafficClass: input.trafficClass ?? 'external',
     };
     this.#operations.set(input.idempotencyKey, record);
     return publicRecord(record);
@@ -137,7 +130,6 @@ export class InMemoryX402OperationStore {
   }
 
   async complete(input) {
-    assertTrafficClass(input.trafficClass);
     const current = this.#operations.get(input.idempotencyKey);
     if (current?.state !== 'settling' || current.leaseId !== input.leaseId) throw new Error('x402_settlement_claim_lost');
     const accounting = input.accountingInput === undefined ? undefined : this.#accounting.record(input.accountingInput);
@@ -145,8 +137,6 @@ export class InMemoryX402OperationStore {
     current.settlement = structuredClone(input.settlement);
     current.response = structuredClone(input.response);
     current.completedAt = input.now;
-    current.customerRef = input.customerRef ?? current.customerRef;
-    current.trafficClass = input.trafficClass ?? current.trafficClass;
     current.leaseId = undefined;
     current.leaseExpiresAt = undefined;
     return Object.freeze({ ...publicRecord(current), ...(accounting ? { accounting } : {}) });
@@ -204,14 +194,13 @@ export class PostgresX402OperationStore {
 
   async challenge(input) {
     assertOperation(input);
-    assertTrafficClass(input.trafficClass);
     await this.client.query(
       `INSERT INTO clervo_x402_operations (
         environment_namespace, idempotency_key, request_hash, operation_id, state,
-        quote_json, challenge_json, traffic_class, created_at, updated_at
-      ) VALUES ($1, $2, $3, $4, 'challenged', $5::jsonb, $6::jsonb, $7, $8::timestamptz, $8::timestamptz)
+        quote_json, challenge_json, created_at, updated_at
+      ) VALUES ($1, $2, $3, $4, 'challenged', $5::jsonb, $6::jsonb, $7::timestamptz, $7::timestamptz)
       ON CONFLICT (environment_namespace, idempotency_key) DO NOTHING`,
-      [this.environmentNamespace, input.idempotencyKey, input.requestHash, input.operationId, JSON.stringify(input.quote), JSON.stringify(input.challenge), input.trafficClass ?? 'external', input.now],
+      [this.environmentNamespace, input.idempotencyKey, input.requestHash, input.operationId, JSON.stringify(input.quote), JSON.stringify(input.challenge), input.now],
     );
     return this.lookup(input);
   }
@@ -286,11 +275,10 @@ export class PostgresX402OperationStore {
       const result = await client.query(
         `UPDATE clervo_x402_operations
             SET state = 'completed', settlement_json = $4::jsonb, response_json = $5::jsonb,
-                customer_ref = $7, traffic_class = $8,
                 lease_id = NULL, lease_expires_at = NULL, completed_at = $6::timestamptz, updated_at = $6::timestamptz
           WHERE environment_namespace = $1 AND idempotency_key = $2 AND state = 'settling' AND lease_id = $3
         RETURNING *`,
-        [this.environmentNamespace, input.idempotencyKey, input.leaseId, JSON.stringify(input.settlement), JSON.stringify(input.response), input.now, input.customerRef ?? null, input.trafficClass ?? 'external'],
+        [this.environmentNamespace, input.idempotencyKey, input.leaseId, JSON.stringify(input.settlement), JSON.stringify(input.response), input.now],
       );
       if (!result.rows[0]) throw new Error('x402_settlement_claim_lost');
       await client.query('COMMIT');
@@ -380,8 +368,6 @@ function rowRecord(row) {
     execution: row.execution_json ?? undefined,
     settlement: row.settlement_json ?? undefined,
     response: row.response_json ?? undefined,
-    customerRef: row.customer_ref ?? undefined,
-    trafficClass: row.traffic_class ?? 'unknown',
   });
 }
 

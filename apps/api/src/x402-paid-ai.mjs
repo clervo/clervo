@@ -19,7 +19,7 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
   return Object.freeze({
     mode: processor.mode,
     durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, resourcePath = '/v1/ai/execute', discovery, trafficClass }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, resourcePath = '/v1/ai/execute', discovery }) {
       let prepared;
       return processor.process({
         idempotencyKey,
@@ -30,7 +30,7 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
         authorizationHeader,
         now,
         resourcePath,
-        overloadCode: 'ai_overloaded', trafficClass,
+        overloadCode: 'ai_overloaded',
         prepare() {
           const quote = publicPricing.quote({ normalized, operationId, now });
           const deadlineMs = ['ai.video', 'ai.music', 'ai.virtual_try_on'].includes(normalized.productId) ? 600_000 : 120_000;

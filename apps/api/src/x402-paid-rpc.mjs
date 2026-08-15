@@ -78,7 +78,7 @@ export function createX402PaidRpcProcessor({ service, stateStore, runtime, acqui
   return Object.freeze({
     mode: processor.mode,
     durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, trafficClass }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
       const selectedPricing = rpcPublicPricing(normalized);
       /* RPC bounds the runtime by the supplier cost, not the customer charge.
        * It buys each call from an upstream provider, so the supplier figure is
@@ -97,7 +97,7 @@ export function createX402PaidRpcProcessor({ service, stateStore, runtime, acqui
       return processor.process({
         idempotencyKey, requestHash, operationId, productId: normalized.productId, executionInput: request,
         paymentHeader, authorizationHeader, now, pricing: selectedPricing, resourcePath: RPC_PAID_PATH,
-        discovery: RPC_DISCOVERY, overloadCode: 'rpc_overloaded', trafficClass,
+        discovery: RPC_DISCOVERY, overloadCode: 'rpc_overloaded',
         async execute(executionRequest) {
           const completed = await runtime.execute(executionRequest);
           if (!completed?.result || !verifyRpcOperationResult(completed.result, executionRequest)) throw new TypeError('rpc_runtime_result_invalid');
