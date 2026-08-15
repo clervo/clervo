@@ -47,8 +47,7 @@ no fresh authorization. Use `clervo.catalog`, `clervo.commerce`,
 `clervo.wallet`, `clervo.limits`, `clervo.usage`, and `clervo.diagnostics` for
 all currently served product families and local Connect state.
 
-Search is available through the current `clervo.search.web()` operation; the
-obsolete, non-callable `search.answer` identifier is not exposed. Known failures can be reduced to a bounded recovery
+Search is available through the current `clervo.search.web()` operation. Known failures can be reduced to a bounded recovery
 action with `recoveryActionFor(error)`. Unknown settlement and payment timeout
 states prohibit retry until the original idempotency key is reconciled.
 

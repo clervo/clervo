@@ -50,8 +50,7 @@ All paid work crosses loopback into the Router core, so the same ceilings,
 idempotency records, receipts and unknown-settlement freeze apply to Python.
 Neither wallet key material nor a placeholder OpenAI key leaves the machine.
 
-Search is available through the current `client.search.web()` operation; the
-obsolete, non-callable `search.answer` identifier is not exposed. `recovery_action_for(error)` returns one safe next
+Search is available through the current `client.search.web()` operation. `recovery_action_for(error)` returns one safe next
 action for known failures. Unknown settlement and timeout states prohibit retry
 until reconciliation.
 
