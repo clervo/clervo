@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { ApexMark } from '../components/ApexMark';
 import {
   formatUsdc,
   lifecycleLabels,
@@ -44,12 +45,20 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
   useEffect(() => onPhase('qualified'), [onPhase]);
 
   return (
-    <main className="commercial-page">
-      <section className="commercial-page-lead shell" aria-labelledby="products-title">
-        <p className="eyebrow">Products</p>
-        <h1 id="products-title">Useful capabilities.<br />One way to pay.</h1>
-        <p className="lede">Choose an available product, send a request, and inspect the quoted maximum before any paid execution. Product state and prices below come from Clervo's generated public catalog.</p>
-        <div className="commercial-actions"><Link className="button button--primary" to="/start">Start using Clervo</Link><Link className="button button--secondary" to="/pricing">See pricing</Link></div>
+    <main className="commercial-page product-page">
+      <section className="product-hero" aria-labelledby="products-title">
+        <div className="shell product-hero__layout">
+          <div className="product-hero__copy">
+            <p className="eyebrow">Products / one wallet</p>
+            <h1 id="products-title">Useful capabilities.<br />One way to pay.</h1>
+            <p className="lede">Choose an available product, send a request, and inspect the quoted maximum before any paid execution. Product state and prices below come from Clervo's generated public catalog.</p>
+            <div className="commercial-actions"><Link className="button button--primary" to="/start">Start using Clervo</Link><Link className="button button--secondary" to="/pricing">See pricing</Link></div>
+          </div>
+          <div className="product-map" aria-label="Clervo product families">
+            <div className="product-map__core"><ApexMark size={58} /><span>One wallet</span></div>
+            <span data-node="ai">AI models</span><span data-node="search">Research</span><span data-node="prediction">Prediction</span><span data-node="crypto">Crypto</span><span data-node="sandbox">Sandbox</span><span data-node="rpc" aria-disabled="true">RPC unavailable</span>
+          </div>
+        </div>
       </section>
 
       <section className="commercial-section shell" aria-labelledby="available-products">
@@ -61,7 +70,7 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
             const routes = operations[0]?.routes;
             const primaryRoute = routes?.paidChallenge ?? routes?.execute ?? routes?.freeSample;
             return (
-              <article className="commercial-family" key={family.id}>
+              <article className="commercial-family product-family" data-family={family.id} key={family.id}>
                 <div className="commercial-family__title"><span className={`state state--${observed.lifecycleState}`}>{lifecycleLabels[observed.lifecycleState]}</span><h3>{family.title}</h3></div>
                 <p>{family.description}</p>
                 <dl>

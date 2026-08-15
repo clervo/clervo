@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { observedRoutes, publicStatus, type ExperiencePhase } from '../product';
 import { Link } from '../router';
@@ -7,6 +7,7 @@ const packageByName = new Map(publicStatus.packages.items.map((item) => [item.na
 const freeModel = observedRoutes.find(({ sellable, billingMode }) => sellable && billingMode === 'free')?.id;
 const paidModel = observedRoutes.find(({ sellable, billingMode }) => sellable && billingMode === 'metered')?.id;
 const claudeCommand = 'claude mcp add clervo -s user -- npx -y @clervo/mcp';
+const agentInstruction = 'Set up https://clervo.dev/skill.md';
 
 const firstAiCall = `curl -sS https://api.clervo.dev/v1/chat/completions \\
   -H 'content-type: application/json' \\
@@ -18,45 +19,70 @@ const paidBoundary = `curl -i https://api.clervo.dev/v1/chat/completions \\
   -d '{"model":"${paidModel ?? 'clervo/allam-2-7b'}","messages":[{"role":"user","content":"Reply with ready."}],"max_completion_tokens":16}'`;
 
 export function Start({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
+  const [copied, setCopied] = useState<'skill' | 'ai' | null>(null);
   useEffect(() => onPhase('qualified'), [onPhase]);
 
   const sdk = packageByName.get('@clervo/sdk');
   const mcp = packageByName.get('@clervo/mcp');
   const python = packageByName.get('clervo-sdk');
 
+  const copy = async (kind: 'skill' | 'ai', value: string) => {
+    await navigator.clipboard.writeText(value);
+    setCopied(kind);
+    window.setTimeout(() => setCopied(null), 1600);
+  };
+
   return (
-    <main className="commercial-page">
-      <section className="commercial-page-lead shell" aria-labelledby="start-title">
-        <p className="eyebrow">Start</p>
-        <h1 id="start-title">Choose how you want<br />to use Clervo.</h1>
-        <p className="lede">Make a free AI call against the hosted API, connect Claude through MCP, or install a client. No account, API key, or wallet is required to start.</p>
-      </section>
+    <main className="start-page">
+      <section className="start-hero" aria-labelledby="start-title">
+        <div className="shell start-hero__layout">
+          <div className="start-hero__copy">
+            <p className="eyebrow">Start</p>
+            <h1 id="start-title">Give Clervo<br />to your agent.</h1>
+            <p className="lede">Use the canonical setup instruction, make a useful free call, and add payment authority only when the task needs paid work.</p>
+            <div className="start-hero__facts"><span>No account</span><span>No API key</span><span>No wallet to start</span></div>
+          </div>
 
-      <section className="commercial-section shell" id="ai-call" aria-labelledby="first-ai-title">
-        <div className="commercial-heading"><div><p className="eyebrow">Fastest path</p><h2 id="first-ai-title">Make your first AI call.</h2></div><span className="commercial-free-badge">Free model · no wallet</span></div>
-        <pre className="code-block" tabIndex={0}><code>{firstAiCall}</code></pre>
-        <p className="quiet">This calls the hosted production API at <code>https://api.clervo.dev</code>. The current free-model list lives at <a href="https://api.clervo.dev/v1/models">/v1/models</a>.</p>
-      </section>
-
-      <section className="commercial-section commercial-section--tint" aria-labelledby="start-clients">
-        <div className="shell">
-          <div className="commercial-heading"><div><p className="eyebrow">Choose your interface</p><h2 id="start-clients">Five supported ways to start.</h2></div></div>
-          <div className="commercial-start-grid">
-            <article className="commercial-start-card commercial-start-card--featured"><span>Claude / MCP</span><h3>Add Clervo to Claude Code</h3><pre tabIndex={0}><code>{claudeCommand}</code></pre><p>Restart or reconnect MCP, then ask Claude to list Clervo tools. Payment remains off by default.</p><div><Link className="text-link" to="/docs/mcp">MCP guide <span aria-hidden="true">→</span></Link><a className="text-link" href={mcp?.url}>npm v{mcp?.version}</a></div></article>
-            <article className="commercial-start-card"><span>OpenAI-compatible app</span><h3>Use the hosted API</h3><pre tabIndex={0}><code>{'Base URL: https://api.clervo.dev/v1\nAPI key: not required'}</code></pre><p>Hosted Chat Completions, Responses, and Anthropic Messages are supported. Use the local Router proxy when an app needs wallet-backed automatic payment.</p><Link className="text-link" to="/docs/openai">Compatibility guide <span aria-hidden="true">→</span></Link></article>
-            <article className="commercial-start-card"><span>CLI / Router</span><h3>Run from a terminal</h3><pre tabIndex={0}><code>{'npx -y @clervo/router search "current x402 documentation"'}</code></pre><p>The local proxy runs at <code>http://127.0.0.1:8402/v1</code>. That loopback address is not the hosted API.</p><Link className="text-link" to="/docs/cli">CLI and proxy guide <span aria-hidden="true">→</span></Link></article>
-            <article className="commercial-start-card"><span>TypeScript</span><h3>Install the SDK</h3><pre tabIndex={0}><code>{`npm install @clervo/sdk@${sdk?.version}`}</code></pre><p>Use typed operations, explicit payment policy, receipts, and safe replay.</p><a className="text-link" href={sdk?.url}>npm package <span aria-hidden="true">→</span></a></article>
-            <article className="commercial-start-card"><span>Python</span><h3>Install the SDK</h3><pre tabIndex={0}><code>{`python -m pip install clervo-sdk==${python?.version}`}</code></pre><p>Use the same public API and explicit payment boundary from Python.</p><a className="text-link" href={python?.url}>PyPI package <span aria-hidden="true">→</span></a></article>
+          <div className="start-instruction" aria-label="Canonical Clervo agent instruction">
+            <header><span className="data">Recommended · agent setup</span><button type="button" onClick={() => copy('skill', agentInstruction)}>{copied === 'skill' ? 'Copied' : 'Copy'}</button></header>
+            <div className="start-instruction__command"><span aria-hidden="true">›</span><code>{agentInstruction}</code></div>
+            <div className="start-instruction__flow">
+              <div><span>01</span><strong>Discover</strong><small>Read current machine truth.</small></div>
+              <div><span>02</span><strong>Connect</strong><small>Select a supported interface.</small></div>
+              <div><span>03</span><strong>Run free</strong><small>Use a free model where available.</small></div>
+              <div><span>04</span><strong>Approve</strong><small>Opt into bounded paid work.</small></div>
+            </div>
+            <footer><a href="/skill.md">skill.md ↗</a><a href="https://clervo.dev/agents.txt">agents.txt ↗</a><a href="/.well-known/clervo.json">discovery ↗</a></footer>
           </div>
         </div>
       </section>
 
-      <section className="commercial-section shell" aria-labelledby="paid-boundary-title">
-        <p className="eyebrow">See payment before paying</p><h2 id="paid-boundary-title">Stop safely at the real 402 boundary.</h2>
-        <p className="lede">Send a paid-model request without a payment header. Clervo returns the exact x402 requirement; nothing is charged and the model does not run.</p>
-        <pre className="code-block" tabIndex={0}><code>{paidBoundary}</code></pre>
-        <ol className="commercial-payment-steps"><li>Inspect the amount, USDC asset, Base network, recipient, and expiry.</li><li>Choose whether to approve it with a Clervo client.</li><li>Reuse the same idempotency key and body after authorization.</li><li>If settlement is ever unknown, reconcile before retrying.</li></ol>
-        <div className="commercial-actions"><Link className="button button--primary" to="/docs/x402">Read the payment guide</Link><Link className="button button--secondary" to="/pricing">See prices</Link></div>
+      <section className="start-free" id="ai-call" aria-labelledby="first-ai-title">
+        <div className="shell start-free__layout">
+          <div className="start-free__copy"><p className="eyebrow">First useful result</p><h2 id="first-ai-title">Run a free model against the hosted API.</h2><p className="lede">This calls <code>https://api.clervo.dev</code>. It does not use the local Router proxy and requires no provider API key or wallet.</p><a className="text-link" href="https://api.clervo.dev/v1/models">Inspect current models <span aria-hidden="true">↗</span></a></div>
+          <div className="start-code"><header><span>bash · hosted production API</span><button type="button" onClick={() => copy('ai', firstAiCall)}>{copied === 'ai' ? 'Copied' : 'Copy'}</button></header><pre tabIndex={0}><code>{firstAiCall}</code></pre><footer><span className="start-code__ready">Free model</span><span>no wallet</span></footer></div>
+        </div>
+      </section>
+
+      <section className="start-interfaces" aria-labelledby="start-clients">
+        <div className="shell">
+          <div className="start-section-head"><div><p className="eyebrow">Choose your interface</p><h2 id="start-clients">One service.<br />Six entry points.</h2></div><p>Every path reaches current Clervo product truth. The hosted API and local Router proxy are intentionally distinct.</p></div>
+          <div className="start-interface-ledger">
+            <article data-interface="mcp"><span>01 / Claude</span><h3>MCP</h3><p>Add Clervo tools to Claude Code. Payment remains off by default.</p><code>{claudeCommand}</code><div><Link to="/docs/mcp">MCP guide →</Link><a href={mcp?.url}>npm v{mcp?.version} ↗</a></div></article>
+            <article data-interface="hosted"><span>02 / Compatible apps</span><h3>Hosted API</h3><p>Use Chat Completions, Responses, or Anthropic Messages.</p><code>https://api.clervo.dev/v1</code><Link to="/docs/openai">Compatibility guide →</Link></article>
+            <article data-interface="router"><span>03 / Terminal</span><h3>Router / CLI</h3><p>Use local wallet limits, receipts, and automatic payment policy.</p><code>http://127.0.0.1:8402/v1</code><Link to="/docs/cli">CLI and proxy guide →</Link></article>
+            <article data-interface="typescript"><span>04 / SDK</span><h3>TypeScript</h3><p>Typed operations, explicit payment policy, receipts, and safe replay.</p><code>npm i @clervo/sdk@{sdk?.version}</code><a href={sdk?.url}>npm package ↗</a></article>
+            <article data-interface="python"><span>05 / SDK</span><h3>Python</h3><p>The same public API and explicit payment boundary from Python.</p><code>pip install clervo-sdk=={python?.version}</code><a href={python?.url}>PyPI package ↗</a></article>
+            <article data-interface="http"><span>06 / Contract</span><h3>Raw HTTP</h3><p>Integrate directly from the generated OpenAPI and discovery surfaces.</p><code>https://api.clervo.dev</code><Link to="/docs/http">HTTP guide →</Link></article>
+          </div>
+        </div>
+      </section>
+
+      <section className="start-payment" aria-labelledby="paid-boundary-title">
+        <div className="shell start-payment__layout">
+          <div className="start-payment__copy"><p className="eyebrow">Paid only when needed</p><h2 id="paid-boundary-title">Stop at the quote. Decide with the exact maximum in view.</h2><p className="lede">Send a paid-model request without a payment header. Clervo returns HTTP 402; nothing is charged and the model does not run.</p><div><Link className="button button--primary" to="/docs/x402">Read the payment guide</Link><Link className="button button--secondary" to="/pricing">See prices</Link></div></div>
+          <div className="start-payment__contract"><pre tabIndex={0}><code>{paidBoundary}</code></pre><ol><li><span>Request</span><strong>One body · one idempotency key</strong></li><li><span>Quote</span><strong>USDC · Base · recipient · expiry · maximum</strong></li><li><span>Approval</span><strong>Explicit client policy required</strong></li><li><span>Replay</span><strong>Completed result · no second payment</strong></li></ol></div>
+        </div>
       </section>
     </main>
   );
