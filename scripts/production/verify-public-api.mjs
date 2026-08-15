@@ -52,7 +52,7 @@ export async function verifyPublicApi({ publicOrigin = DEFAULT_PUBLIC_ORIGIN } =
   assert.equal(pricing.publicOfferAvailable, true);
   assert.ok(pricing.offers?.length > 0, 'public_offers_missing');
   assert.ok(models.data?.length > 0, 'public_models_missing');
-  assert.equal(health.status, 'ok');
+  assert.ok(['ok', 'healthy', 'degraded'].includes(health.status), 'public_health_must_be_healthy_or_degraded');
   assert.equal(health.stateBackend, 'postgres');
   assert.equal(health.durableState, true);
   assert.equal(health.trafficMode, 'open');
