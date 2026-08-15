@@ -45,7 +45,7 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
   useEffect(() => onPhase('qualified'), [onPhase]);
 
   return (
-    <main className="commercial-page product-page">
+    <div className="commercial-page product-page">
       <section className="product-hero" aria-labelledby="products-title">
         <div className="shell product-hero__layout">
           <div className="product-hero__copy">
@@ -93,6 +93,6 @@ export function Product({ onPhase }: { onPhase(phase: ExperiencePhase): void }) 
       </section>
 
       <section className="commercial-section shell commercial-final"><p className="eyebrow">Choose an interface</p><h2>Claude, OpenAI-compatible apps, CLI, TypeScript, or Python.</h2><Link className="button button--primary" to="/start">Choose how to start</Link></section>
-    </main>
+    </div>
   );
 }

@@ -43,7 +43,7 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
   const models = familyId === 'ai' ? observedRoutes : [];
 
   return (
-    <main className="commercial-page capability-page" data-family={familyId}>
+    <div className="commercial-page capability-page" data-family={familyId}>
       <section className="capability-hero" aria-labelledby="capability-title">
         <div className="shell capability-hero__layout">
           <div className="capability-hero__copy">
@@ -94,6 +94,6 @@ export function Capability({ routeId, onPhase }: { routeId: string; onPhase(phas
           return <Link key={id} className={id === familyId ? 'is-active' : undefined} aria-current={id === familyId ? 'page' : undefined} to={`/products/${FAMILY_ROUTE[id]}`}><span>{FAMILY_DISPLAY[id]}</span><small>{lifecycleLabels[current.lifecycleState]}</small></Link>;
         })}
       </nav>
-    </main>
+    </div>
   );
 }

@@ -33,7 +33,7 @@ export function Start({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
   };
 
   return (
-    <main className="start-page">
+    <div className="start-page">
       <section className="start-hero" aria-labelledby="start-title">
         <div className="shell start-hero__layout">
           <div className="start-hero__copy">
@@ -84,6 +84,6 @@ export function Start({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
           <div className="start-payment__contract"><pre tabIndex={0}><code>{paidBoundary}</code></pre><ol><li><span>Request</span><strong>One body · one idempotency key</strong></li><li><span>Quote</span><strong>USDC · Base · recipient · expiry · maximum</strong></li><li><span>Approval</span><strong>Explicit client policy required</strong></li><li><span>Replay</span><strong>Completed result · no second payment</strong></li></ol></div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
