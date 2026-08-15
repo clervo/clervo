@@ -181,6 +181,13 @@ const searchProbeSchema = Object.freeze({
   },
   additionalProperties: false,
 });
+const searchResearchProbeSchema = Object.freeze({
+  ...searchProbeSchema,
+  properties: {
+    ...searchProbeSchema.properties,
+    synthesize: { type: 'boolean', default: true, description: 'false selects fast evidence; true selects bounded deep Research with multi-source synthesis, page reading, citations, conflicts, and uncertainty.' },
+  },
+});
 const aiProbeExample = Object.freeze({
   model: currentPaidDiscoveryModel,
   input: {
@@ -552,10 +559,10 @@ if (publicSearch) {
     tags: ['Search'],
   });
   openapi.paths['/v1/search/paid'].post = scannerSafeOperation(openapi.paths['/v1/search/paid'].post, {
-    requestSchema: searchProbeSchema,
-    example: searchProbeExample,
+    requestSchema: searchResearchProbeSchema,
+    example: { ...searchProbeExample, synthesize: true },
     paymentInfo: {
-      price: { mode: 'fixed', currency: 'USD', amount: '0.006000' },
+      price: { mode: 'fixed', currency: 'USD', amount: '0.012000' },
       protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
     },
     tags: ['Search'],

@@ -278,8 +278,8 @@
                   },
                   "synthesize": {
                     "type": "boolean",
-                    "const": false,
-                    "default": false
+                    "default": true,
+                    "description": "false selects fast evidence; true selects bounded deep Research with multi-source synthesis, page reading, citations, conflicts, and uncertainty."
                   },
                   "language": {
                     "type": "string",
@@ -297,7 +297,7 @@
               "example": {
                 "query": "current x402 protocol documentation",
                 "maxResults": 3,
-                "synthesize": false,
+                "synthesize": true,
                 "language": "en",
                 "region": "US"
               }
@@ -493,7 +493,7 @@
           "price": {
             "mode": "fixed",
             "currency": "USD",
-            "amount": "0.006000"
+            "amount": "0.012000"
           },
           "protocols": [
             {
