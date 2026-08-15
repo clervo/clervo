@@ -9,12 +9,11 @@
   "cloudSqlConnection": "bloxsniper-prod:us-central1:clervo-production-postgres",
   "databaseSecret": "clervo-production-database-url",
   "databaseSecretVersion": 4,
-  "targetMigration": "0009-commercial-measurement.sql",
+  "targetMigration": "0008-prediction-dynamic-venues.sql",
   "expectedPendingMigrations": [
     "0007-prediction-market-state.sql",
     "0008-ai-free-tier-quota.sql",
-    "0008-prediction-dynamic-venues.sql",
-    "0009-commercial-measurement.sql"
+    "0008-prediction-dynamic-venues.sql"
   ],
   "taskCount": 1,
   "maximumRetries": 0,
