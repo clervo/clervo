@@ -143,14 +143,14 @@ export const SANDBOX_DISCOVERY = Object.freeze({
   }),
 });
 
-export function createX402PaidSandboxProcessor({ service, stateStore, gateway, runnerDigest, acquireExecution } = {}) {
+export function createX402PaidSandboxProcessor({ service, stateStore, gateway, runnerDigest, acquireExecution, acquireQuote } = {}) {
   if (!gateway || typeof gateway.run !== 'function' || gateway.durable !== true) throw new TypeError('invalid_public_sandbox_gateway');
   if (!/^sha256:[a-f0-9]{64}$/u.test(runnerDigest ?? '')) throw new TypeError('invalid_public_sandbox_runner_digest');
-  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution });
+  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution, acquireQuote });
   return Object.freeze({
     mode: processor.mode,
     durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, deadlineAt, signal }) {
       const pricing = sandboxRunPricing(normalized);
       /* Sandbox bounds the runtime by the supplier cost: it rents real
        * compute per run. Its deadline is the only content-dependent one on the
@@ -164,12 +164,14 @@ export function createX402PaidSandboxProcessor({ service, stateStore, gateway, r
         boundAmountAtomic: pricing.supplierCost.amountAtomic,
         now,
         deadlineMs: normalized.limits.wallTimeMs + 60_000,
+        deadlineAt,
       });
       assertSandboxOperationRequest(request);
       return processor.process({
         idempotencyKey, requestHash, operationId, productId: 'sandbox.run', executionInput: request,
         paymentHeader, authorizationHeader, now, pricing,
         resourcePath: SANDBOX_PAID_PATH, discovery: SANDBOX_DISCOVERY, overloadCode: 'sandbox_overloaded',
+        deadlineAt, signal,
         async execute(executionRequest, { authorization }) {
           const completed = await gateway.run({ tenantId: payerTenant(authorization), request: executionRequest });
           return Object.freeze({

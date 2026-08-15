@@ -1271,7 +1271,7 @@ const products = [
   productFromProbes({
     id: 'search',
     label: 'Research',
-    // search.answer remains a compatibility identifier in released clients,
+    // Historical search.answer builds remain compatible with deterministic rejection,
     // but synthesize=true is not implemented and therefore is not callable
     // discovery inventory.
     operations: ['search.web'],

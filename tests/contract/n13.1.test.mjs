@@ -28,7 +28,7 @@ function result(productId, fundingMode = 'free') {
   };
 }
 
-test('TypeScript web and answer methods force distinct product selection', async () => {
+test('TypeScript exposes only the current callable Search operation', async () => {
   const observed = [];
   const client = new ClervoClient({
     baseUrl: 'http://127.0.0.1:8080/',
@@ -39,14 +39,14 @@ test('TypeScript web and answer methods force distinct product selection', async
     },
   });
   assert.equal((await client.search.web({ query: 'evidence' }, { idempotencyKey: 'idem_web' })).productId, 'search.web');
-  assert.equal((await client.search.answer({ query: 'evidence' }, { idempotencyKey: 'idem_answer' })).productId, 'search.answer');
-  assert.deepEqual(observed.map(({ body }) => body.synthesize), [false, true]);
+  assert.equal(client.search.answer, undefined);
+  assert.deepEqual(observed.map(({ body }) => body.synthesize), [false]);
   assert.ok(observed.every(({ url }) => url === 'http://127.0.0.1:8080/v1/search/free'));
-  assert.deepEqual(observed.map(({ init }) => init.headers['idempotency-key']), ['idem_web', 'idem_answer']);
+  assert.deepEqual(observed.map(({ init }) => init.headers['idempotency-key']), ['idem_web']);
 });
 
 test('TypeScript wire behavior matches the shared cross-client transcript', async () => {
-  for (const fixture of transcript.cases.slice(0, 2)) {
+  for (const fixture of transcript.cases.filter(({ method, response }) => method === 'search.web' && response.operation === 'search.query')) {
     let observed;
     const client = new ClervoClient({
       baseUrl: 'http://127.0.0.1:8080',

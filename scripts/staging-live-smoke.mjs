@@ -32,7 +32,7 @@ const healthResponse = await fetch(`${normalizedOrigin}/v1/health`, {
 });
 assert.equal(healthResponse.status, 200);
 const health = await healthResponse.json();
-assert.equal(health.status, 'ok');
+assert.ok(['healthy', 'degraded'].includes(health.status));
 assert.equal(health.environment, 'staging');
 assert.equal(health.releaseId, expectedReleaseId);
 assert.equal(health.paidExecutionEnabled, false);

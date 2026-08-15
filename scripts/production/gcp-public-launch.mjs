@@ -126,7 +126,7 @@ else if (action === 'observe') {
     'run', 'deploy', policy.service, '--project', policy.project, '--region', policy.region, '--image', candidateImage,
     '--service-account', `${deployment.resources.runtimeServiceAccount}@${policy.project}.iam.gserviceaccount.com`, '--execution-environment', 'gen2',
     '--ingress', 'all', '--no-allow-unauthenticated', '--no-traffic', '--tag', tag, '--cpu', '1', '--memory', '512Mi',
-    '--concurrency', '16', '--min-instances', '0', '--max-instances', '1', '--timeout', `${sandbox.cloudRun.requestTimeoutSeconds}s`,
+    '--concurrency', '16', '--min-instances', '0', '--max-instances', '5', '--timeout', `${sandbox.cloudRun.requestTimeoutSeconds}s`,
     '--no-cpu-throttling', '--no-session-affinity', '--port', '8080', '--set-cloudsql-instances', `${policy.project}:${policy.region}:${deployment.resources.databaseInstance}`,
     '--network', sandbox.network, '--subnet', sandbox.serverlessSubnet.name, '--vpc-egress', sandbox.cloudRun.directVpcEgress, '--network-tags', sandbox.cloudRun.networkTag,
     '--set-env-vars', `^@^${environment.join('@')}`, '--set-secrets', secrets.join(','),

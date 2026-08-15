@@ -12,7 +12,7 @@ import {
 export const CLERVO_CONTRACT_VERSION = '2026-07-29.1' as const;
 
 export type ClervoProductId =
-  | 'search.web' | 'search.answer'
+  | 'search.web'
   | 'ai.chat' | 'ai.embed' | 'ai.image' | 'ai.speech' | 'ai.video' | 'ai.music' | 'ai.virtual_try_on'
   | 'sandbox.run'
   | 'prediction.markets' | 'prediction.market' | 'prediction.compare' | 'prediction.history' | 'prediction.signal'
@@ -315,7 +315,6 @@ export class ClervoClient {
 
   readonly search: {
     web: (request: ClervoSearchRequest, options?: ClervoRequestOptions) => Promise<ClervoSearchResult>;
-    answer: (request: ClervoSearchRequest, options?: ClervoRequestOptions) => Promise<ClervoSearchResult>;
   };
   readonly models: { list: (options?: { signal?: AbortSignal }) => Promise<ClervoAiModelList> };
   readonly ai: { execute: (request: ClervoAiRequest, options?: ClervoAiRequestOptions) => Promise<ClervoAiResult> };
@@ -350,7 +349,6 @@ export class ClervoClient {
     });
     this.search = Object.freeze({
       web: (request, requestOptions) => this.#execute('search.web', request, requestOptions),
-      answer: (request, requestOptions) => this.#execute('search.answer', request, requestOptions),
     });
     this.models = Object.freeze({ list: (requestOptions) => this.#listModels(requestOptions) });
     this.ai = Object.freeze({ execute: (request, requestOptions) => this.#executeAi(request, requestOptions) });
@@ -436,7 +434,7 @@ export class ClervoClient {
     const body = {
       query: request.query.trim(),
       ...(request.maxResults === undefined ? {} : { maxResults: request.maxResults }),
-      synthesize: productId === 'search.answer',
+      synthesize: false,
       ...(request.language === undefined ? {} : { language: request.language }),
       ...(request.region === undefined ? {} : { region: request.region }),
     };

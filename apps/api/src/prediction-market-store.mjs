@@ -90,7 +90,7 @@ export class PostgresPredictionMarketStore {
 export async function createPostgresPredictionMarketStoreFromEnvironment(environment = process.env) {
   if (!environment.CLERVO_DATABASE_URL) throw new Error('CLERVO_DATABASE_URL is required');
   const { Pool } = await import('pg');
-  const client = new Pool({ connectionString: environment.CLERVO_DATABASE_URL, max: 4, connectionTimeoutMillis: 5_000, idleTimeoutMillis: 10_000, allowExitOnIdle: true, application_name: 'clervo-prediction-api' });
+  const client = new Pool({ connectionString: environment.CLERVO_DATABASE_URL, max: 4, connectionTimeoutMillis: 5_000, idleTimeoutMillis: 10_000, query_timeout: 5_000, statement_timeout: 5_000, allowExitOnIdle: true, application_name: 'clervo-prediction-api' });
   const store = new PostgresPredictionMarketStore(client);
   if (!await store.ready()) { await store.close(); throw new Error('prediction_market_migration_required'); }
   return store;

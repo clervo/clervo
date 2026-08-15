@@ -29,7 +29,7 @@
       "enum": [
         "search.web"
       ],
-      "description": "Callable public Search operation identity. search.answer remains a released-client compatibility identifier but is not callable."
+      "description": "Callable public Search operation identity. Obsolete non-callable synthesis identifiers are not exposed by current clients."
     },
     "state": {
       "const": "RECEIPTED"

@@ -89,12 +89,12 @@ function validResult(value, request) {
   return verifiedRuntimeResult(value, request, CRYPTO_RESULT_SCHEMA_VERSION);
 }
 
-export function createX402PaidCryptoProcessor({ service, stateStore, runtime, acquireExecution } = {}) {
+export function createX402PaidCryptoProcessor({ service, stateStore, runtime, acquireExecution, acquireQuote } = {}) {
   if (!runtime || typeof runtime.execute !== 'function' || runtime.durable !== true) throw new TypeError('invalid_public_crypto_runtime');
-  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution });
+  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution, acquireQuote });
   return Object.freeze({
     mode: processor.mode, durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, deadlineAt, signal }) {
       const pricing = cryptoPublicPricing(normalized);
       /* Crypto bounds the runtime by the customer charge: it buys nothing per
        * call, so the supplier cost is 0 and would bound the request to zero. */
@@ -106,10 +106,12 @@ export function createX402PaidCryptoProcessor({ service, stateStore, runtime, ac
         boundAmountAtomic: pricing.maximumCharge.amountAtomic,
         now,
         deadlineMs: 30_000,
+        deadlineAt,
       });
       return processor.process({
         idempotencyKey, requestHash, operationId, productId: normalized.productId, executionInput: request,
         paymentHeader, authorizationHeader, now, pricing, resourcePath: CRYPTO_PAID_PATH, discovery: CRYPTO_DISCOVERY, overloadCode: 'crypto_overloaded',
+        deadlineAt, signal,
         async execute(executionRequest) {
           const completed = await runtime.execute(executionRequest);
           if (!validResult(completed?.result, executionRequest)) throw new TypeError('crypto_runtime_result_invalid');

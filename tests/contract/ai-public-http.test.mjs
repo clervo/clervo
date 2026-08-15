@@ -80,6 +80,11 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
   const aiProbe = await fetch(`${origin}/v1/ai/execute`, { method: 'POST', headers: edgeOnly });
   assert.equal(aiProbe.status, 402);
   assert.equal((await aiProbe.json()).resource.url, 'https://api.clervo.dev/v1/ai/execute');
+  for (const compatibilityPath of ['/v1/chat/completions', '/v1/messages', '/v1/responses']) {
+    const compatibilityProbe = await fetch(`${origin}${compatibilityPath}`, { method: 'POST', headers: edgeOnly });
+    assert.equal(compatibilityProbe.status, 402, `${compatibilityPath} must support Bazaar-style empty challenge discovery`);
+    assert.equal((await compatibilityProbe.json()).resource.url, `https://api.clervo.dev${compatibilityPath}`);
+  }
   const searchProbe = await fetch(`${origin}/v1/search/paid`, { method: 'POST', headers: edgeOnly });
   assert.equal(searchProbe.status, 402);
   assert.equal((await searchProbe.json()).accepts[0].amount, '6000');
@@ -541,6 +546,9 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
 
   assert.deepEqual(resourcePaths, [
     '/v1/ai/execute',
+    '/v1/chat/completions',
+    '/v1/messages',
+    '/v1/responses',
     '/v1/search/paid',
     '/v1/ai/execute',
     '/v1/chat/completions',
@@ -551,7 +559,7 @@ test('public AI HTTP route is edge-protected, x402-bounded, useful, and replay-s
     '/v1/responses',
   ]);
   assert.deepEqual(calls, {
-    challenge: 9,
+    challenge: 12,
     authorize: 7,
     settle: 7,
     execute: 7,

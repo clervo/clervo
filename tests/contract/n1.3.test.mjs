@@ -101,6 +101,7 @@ test('public discovery excludes private release bookkeeping and agrees with live
     distribution: discovery.distribution,
     products: discovery.products,
     observedTruth: discovery.observedTruth,
+    sharedBoundary: discovery.sharedBoundary,
   });
   assert.match(discovery.discoveryVersion, /^\d{4}-\d{2}-\d{2}\.\d+$/u);
 });

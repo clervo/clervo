@@ -184,3 +184,66 @@ test('shared paid operation kernel binds non-AI products to their exact public r
   assert.equal(response.status, 402);
   assert.equal(upstream.calls.challenge, 1);
 });
+
+test('simultaneous duplicates admit one execution and one settlement, then replay without charge', async () => {
+  const upstream = service();
+  const stateStore = new InMemoryX402OperationStore({ environmentNamespace: 'shared_simultaneous' });
+  const processor = createX402PaidOperationProcessor({ service: upstream, stateStore });
+  let executions = 0;
+  let releaseExecution;
+  let startedResolve;
+  const gate = new Promise((resolve) => { releaseExecution = resolve; });
+  const started = new Promise((resolve) => { startedResolve = resolve; });
+  const input = {
+    idempotencyKey: 'idem_shared_simultaneous_001', requestHash, operationId, productId: 'ai.chat', executionInput: {}, now, pricing,
+    paymentHeader: 'opaque-payment',
+    async execute() {
+      executions += 1;
+      startedResolve();
+      await gate;
+      return { output: { content: 'once' }, provenance: [{ adapterId: 'adapter_ai.qualified_test', qualificationId: `qual_${'b'.repeat(32)}`, providerReferenceHash: requestHash }] };
+    },
+    createResponse: ({ output, receipt }) => ({ operationId, productId: 'ai.chat', state: 'RECEIPTED', replayed: false, output, receipt }),
+  };
+
+  assert.equal((await processor.process({ ...input, paymentHeader: undefined })).status, 402);
+  const first = processor.process(input);
+  await started;
+  await assert.rejects(processor.process(input), /idempotency_in_progress/u);
+  releaseExecution();
+  const completed = await first;
+  assert.equal(completed.status, 200);
+  const replay = await processor.process(input);
+  assert.equal(replay.body.replayed, true);
+  assert.equal(executions, 1);
+  assert.equal(upstream.calls.settle, 1);
+});
+
+test('deadline after durable execution preserves the result for settlement on same-key retry', async () => {
+  const upstream = service();
+  const memory = new InMemoryX402OperationStore({ environmentNamespace: 'shared_deadline_after_execution' });
+  const controller = new AbortController();
+  const stateStore = {
+    lookup: memory.lookup.bind(memory), challenge: memory.challenge.bind(memory), claimExecution: memory.claimExecution.bind(memory),
+    markExecutionUnknown: memory.markExecutionUnknown.bind(memory), claimSettlement: memory.claimSettlement.bind(memory),
+    markSettlementUnknown: memory.markSettlementUnknown.bind(memory), complete: memory.complete.bind(memory),
+    async recordExecution(value) { await memory.recordExecution(value); controller.abort(); },
+  };
+  const processor = createX402PaidOperationProcessor({ service: upstream, stateStore });
+  let executions = 0;
+  const input = {
+    idempotencyKey: 'idem_shared_deadline_001', requestHash, operationId, productId: 'ai.chat', executionInput: {}, now, pricing,
+    paymentHeader: 'opaque-payment', deadlineAt: new Date(Date.now() + 30_000).toISOString(), signal: controller.signal,
+    async execute() { executions += 1; return { output: { content: 'durable' }, provenance: [{ adapterId: 'adapter_ai.qualified_test', qualificationId: `qual_${'b'.repeat(32)}`, providerReferenceHash: requestHash }] }; },
+    createResponse: ({ output, receipt }) => ({ operationId, productId: 'ai.chat', state: 'RECEIPTED', replayed: false, output, receipt }),
+  };
+  assert.equal((await processor.process({ ...input, paymentHeader: undefined, signal: undefined, deadlineAt: undefined })).status, 402);
+  await assert.rejects(processor.process(input), /request_deadline_exceeded/u);
+  assert.equal((await memory.lookup(input)).kind, 'executed');
+
+  const recovered = await processor.process({ ...input, signal: undefined, deadlineAt: undefined });
+  assert.equal(recovered.status, 200);
+  assert.equal(recovered.body.output.content, 'durable');
+  assert.equal(executions, 1);
+  assert.equal(upstream.calls.settle, 1);
+});

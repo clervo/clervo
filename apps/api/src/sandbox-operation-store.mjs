@@ -157,7 +157,7 @@ export async function createPostgresSandboxOperationStoreFromEnvironment(environ
   const { Pool } = await import('pg');
   const client = new Pool({
     connectionString: environment.CLERVO_DATABASE_URL, max: 4, connectionTimeoutMillis: 5_000,
-    idleTimeoutMillis: 10_000, allowExitOnIdle: true, application_name: 'clervo-sandbox-api',
+    idleTimeoutMillis: 10_000, query_timeout: 5_000, statement_timeout: 5_000, allowExitOnIdle: true, application_name: 'clervo-sandbox-api',
   });
   const store = new PostgresSandboxOperationStore(client, { environmentNamespace: environment.CLERVO_STATE_NAMESPACE });
   if (!await store.ready()) { await store.close(); throw new Error('sandbox_operation_migration_required'); }

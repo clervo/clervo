@@ -23,16 +23,16 @@ export function x402SearchPricing(productId) {
   return pricing;
 }
 
-export function createX402PaidSearchProcessor({ service, stateStore, executor, acquireExecution } = {}) {
+export function createX402PaidSearchProcessor({ service, stateStore, executor, acquireExecution, acquireQuote } = {}) {
   if (!executor || typeof executor.execute !== 'function') throw new TypeError('search executor is required');
-  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution });
+  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution, acquireQuote });
 
   return Object.freeze({
     mode: processor.mode,
     durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, productId, normalized, paymentHeader, authorizationHeader, now }) {
+    async process({ idempotencyKey, requestHash, operationId, productId, normalized, paymentHeader, authorizationHeader, now, deadlineAt, signal }) {
       const pricing = x402SearchPricing(productId);
-      const executionInput = Object.freeze({ ...normalized, operationId, productId, requestHash, fundingMode: 'paid' });
+      const executionInput = Object.freeze({ ...normalized, operationId, productId, requestHash, fundingMode: 'paid', deadlineAt, signal });
       return processor.process({
         idempotencyKey,
         requestHash,
@@ -45,6 +45,8 @@ export function createX402PaidSearchProcessor({ service, stateStore, executor, a
         pricing,
         resourcePath: '/v1/search/paid',
         overloadCode: 'search_overloaded',
+        deadlineAt,
+        signal,
         async execute(input) {
           const output = await executor.execute(input);
           assertSearchExecutionOutput(output, input);

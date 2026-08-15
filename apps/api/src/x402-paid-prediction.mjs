@@ -86,11 +86,11 @@ function validResult(value, request) {
   return verifiedRuntimeResult(value, request, PREDICTION_RESULT_SCHEMA_VERSION);
 }
 
-export function createX402PaidPredictionProcessor({ service, stateStore, runtime, acquireExecution } = {}) {
+export function createX402PaidPredictionProcessor({ service, stateStore, runtime, acquireExecution, acquireQuote } = {}) {
   if (!runtime || typeof runtime.execute !== 'function' || runtime.durable !== true) throw new TypeError('invalid_public_prediction_runtime');
-  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution });
+  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution, acquireQuote });
   return Object.freeze({ mode: processor.mode, durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, deadlineAt, signal }) {
       const pricing = predictionPublicPricing(normalized);
       /* Bounded by the customer charge. Qualified public read-only sources have
        * no per-call supplier fee; storage and transport remain priced through
@@ -103,8 +103,9 @@ export function createX402PaidPredictionProcessor({ service, stateStore, runtime
         boundAmountAtomic: pricing.maximumCharge.amountAtomic,
         now,
         deadlineMs: 30_000,
+        deadlineAt,
       });
-      return processor.process({ idempotencyKey, requestHash, operationId, productId: normalized.productId, executionInput: request, paymentHeader, authorizationHeader, now, pricing, resourcePath: PREDICTION_PAID_PATH, discovery: PREDICTION_DISCOVERY, overloadCode: 'prediction_overloaded',
+      return processor.process({ idempotencyKey, requestHash, operationId, productId: normalized.productId, executionInput: request, paymentHeader, authorizationHeader, now, pricing, resourcePath: PREDICTION_PAID_PATH, discovery: PREDICTION_DISCOVERY, overloadCode: 'prediction_overloaded', deadlineAt, signal,
         async execute(executionRequest) {
           const completed = await runtime.execute(executionRequest);
           if (!validResult(completed?.result, executionRequest)) throw new TypeError('prediction_runtime_result_invalid');

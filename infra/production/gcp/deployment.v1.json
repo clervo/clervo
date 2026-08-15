@@ -45,7 +45,7 @@
     "containerConcurrency": 16,
     "minimumInstances": 0,
     "maximumInstances": 5,
-    "requestTimeoutSeconds": 20,
+    "requestTimeoutSeconds": 330,
     "port": 8080,
     "cpuThrottling": false,
     "sessionAffinity": false,

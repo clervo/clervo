@@ -207,7 +207,7 @@ def _request_body(
     return {
         "query": query.strip(),
         **({} if max_results is None else {"maxResults": max_results}),
-        "synthesize": product_id == "search.answer",
+        "synthesize": False,
         **({} if language is None else {"language": language}),
         **({} if region is None else {"region": region}),
     }
@@ -268,29 +268,6 @@ class _Search:
             mode,
             timeout,
         )
-
-    def answer(
-        self,
-        *,
-        query: str,
-        max_results: int | None = None,
-        language: str | None = None,
-        region: str | None = None,
-        idempotency_key: str | None = None,
-        mode: str = "preview",
-        timeout: float | None = None,
-    ) -> dict[str, Any]:
-        return self._client._execute(
-            "search.answer",
-            query,
-            max_results,
-            language,
-            region,
-            idempotency_key,
-            mode,
-            timeout,
-        )
-
 
 class _Models:
     def __init__(self, client: Clervo) -> None:

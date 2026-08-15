@@ -82,7 +82,7 @@ try {
     "if (CLERVO_MCP_TOOLS.map(({ name }) => name).join(',') !== 'search_web,models_list,ai_execute,clervo_execute,connect_status,spend_limits,local_usage,reconcile,doctor') throw new Error('mcp_tools_invalid');",
     "if (CLERVO_ROUTER_VERSION !== '0.3.1' || typeof ClervoConnect !== 'function') throw new Error('connect_core_invalid');",
     "const client = new ClervoClient({ baseUrl: 'http://127.0.0.1:8080' });",
-    "if (!client.search.web || !client.search.answer || !client.models.list || !client.ai.execute || !client.catalog.list || !client.commerce.execute || !client.diagnostics.status) throw new Error('sdk_methods_missing');",
+    "if (!client.search.web || client.search.answer || !client.models.list || !client.ai.execute || !client.catalog.list || !client.commerce.execute || !client.diagnostics.status) throw new Error('sdk_methods_invalid');",
     '',
   ].join('\n'));
   run(process.execPath, ['verify.mjs'], { cwd: nodeConsumer });
@@ -137,7 +137,7 @@ try {
       'from clervo import Clervo',
       "client = Clervo(base_url='http://127.0.0.1:8080')",
       'assert callable(client.search.web)',
-      'assert callable(client.search.answer)',
+      "assert not hasattr(client.search, 'answer')",
       'assert callable(client.models.list)',
       'assert callable(client.ai.execute)',
       'assert callable(client.connect.status)',

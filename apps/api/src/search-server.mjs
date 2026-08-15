@@ -90,6 +90,7 @@ import {
   cryptoPublicPricing,
   normalizeCryptoHttpRequest,
 } from './x402-paid-crypto.mjs';
+import { SharedCapacityController, requestDeadline } from './shared-boundary.mjs';
 
 const JSON_TYPE = 'application/json; charset=utf-8';
 const PROBLEM_TYPE = 'application/problem+json; charset=utf-8';
@@ -125,6 +126,14 @@ function generatedIdempotencyKey() {
   return `srv.free.${randomUUID().replaceAll('-', '')}`;
 }
 
+function compatibilityDiscoveryBody(pathname, canonical) {
+  const prompt = canonical?.input?.messages?.find(({ role }) => role === 'user')?.content ?? 'Describe this API in one sentence.';
+  if (pathname === OPENAI_CHAT_COMPLETIONS_PATH) return { model: canonical.model, messages: [{ role: 'user', content: prompt }], max_tokens: 16 };
+  if (pathname === ANTHROPIC_MESSAGES_PATH) return { model: canonical.model, messages: [{ role: 'user', content: prompt }], max_tokens: 16 };
+  if (pathname === OPENAI_RESPONSES_PATH) return { model: canonical.model, input: prompt, max_output_tokens: 16, store: false };
+  throw new TypeError('ai_compatibility_discovery_path_invalid');
+}
+
 function problem(status, code, title, detail, instance, operationId) {
   return {
     type: `https://api.clervo.dev/problems/${code.replaceAll('_', '-')}`,
@@ -158,26 +167,10 @@ function sendSse(response, body, headers = {}) {
   response.end(body);
 }
 
-// `curl -d '{"query":"..."}'` sends `application/x-www-form-urlencoded`, so a
-// first-time caller who copies the shortest possible command received 415 from
-// the free sample. The free path therefore accepts any of the content types a
-// naive client sends and still requires the body itself to be JSON; nothing is
-// ever parsed as a form. Paid paths keep the strict check, because a payable
-// request should be explicit about what it is sending.
-//
-// This makes the free route reachable by a cross-origin HTML form without a
-// preflight. It is safe here and only here: the route is unauthenticated, reads
-// no cookie, carries no ambient identity, is capped by the per-subject free
-// quota, and answers `cache-control: no-store`. A forged submission can
-// therefore consume a caller's own free quota and nothing else.
-const NAIVE_CONTENT_TYPES = new Set(['application/json', 'text/plain', 'application/x-www-form-urlencoded', 'multipart/form-data']);
-
-async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType = false, allowEmpty = false } = {}) {
+async function readJson(request, maximumBytes = SEARCH_MAX_BODY_BYTES, { allowEmpty = false } = {}) {
   const contentType = request.headers['content-type'];
   const declaredType = typeof contentType === 'string' ? contentType.split(';', 1)[0].trim().toLowerCase() : '';
-  const acceptable = acceptNaiveContentType
-    ? declaredType === '' || NAIVE_CONTENT_TYPES.has(declaredType)
-    : declaredType === 'application/json';
+  const acceptable = declaredType === 'application/json';
   const declared = Number(request.headers['content-length']);
   if (Number.isFinite(declared) && declared > maximumBytes) throw Object.assign(new Error('request_body_too_large'), { status: 413 });
   const chunks = [];
@@ -220,6 +213,7 @@ export function createSearchServer({
   environment,
   releaseId,
   maxConcurrentExecutions = 16,
+  capacityController,
   trafficControl,
   x402Service,
   x402StateStore,
@@ -272,23 +266,16 @@ export function createSearchServer({
     || typeof searchState.consumeFreeQuota !== 'function'
   ) throw new TypeError('invalid search state store');
   const idempotency = new Map();
-  let activeExecutions = 0;
-
-  const acquireExecution = () => {
-    if (activeExecutions >= maxConcurrentExecutions) return undefined;
-    activeExecutions += 1;
-    let released = false;
-    return () => {
-      if (released) return;
-      released = true;
-      activeExecutions -= 1;
-    };
-  };
+  const capacity = capacityController ?? new SharedCapacityController({ maximumExecutions: maxConcurrentExecutions });
+  if (typeof capacity.acquireExecution !== 'function' || typeof capacity.acquireQuote !== 'function' || typeof capacity.rate !== 'function' || typeof capacity.snapshot !== 'function') throw new TypeError('invalid shared capacity controller');
+  const acquireExecution = (input) => capacity.acquireExecution(input);
+  const acquireQuote = () => capacity.acquireQuote();
   const x402PaidProcessor = x402Service === undefined ? undefined : createX402PaidSearchProcessor({
     service: x402Service,
     stateStore: x402StateStore,
     executor,
     acquireExecution,
+    acquireQuote,
   });
   const x402AiProcessor = aiPublicPricing === undefined ? undefined : createX402PaidAiProcessor({
     service: x402Service,
@@ -298,6 +285,7 @@ export function createSearchServer({
     adapterFactory: aiAdapterFactory,
     runtimeBindings: aiRuntimeBindings,
     acquireExecution,
+    acquireQuote,
     monitor: aiMonitor,
   });
   const freeAiProcessor = aiFreeTier === undefined ? undefined : createFreeAiOperationProcessor({
@@ -316,12 +304,16 @@ export function createSearchServer({
     gateway: sandboxGateway,
     runnerDigest: sandboxPublicRunnerDigest,
     acquireExecution,
+    acquireQuote,
   });
-  const x402RpcProcessor = rpcRuntime === undefined ? undefined : createX402PaidRpcProcessor({ service: x402Service, stateStore: x402StateStore, runtime: rpcRuntime, acquireExecution });
-  const x402PredictionProcessor = predictionRuntime === undefined ? undefined : createX402PaidPredictionProcessor({ service: x402Service, stateStore: x402StateStore, runtime: predictionRuntime, acquireExecution });
-  const x402CryptoProcessor = cryptoRuntime === undefined ? undefined : createX402PaidCryptoProcessor({ service: x402Service, stateStore: x402StateStore, runtime: cryptoRuntime, acquireExecution });
+  const x402RpcProcessor = rpcRuntime === undefined ? undefined : createX402PaidRpcProcessor({ service: x402Service, stateStore: x402StateStore, runtime: rpcRuntime, acquireExecution, acquireQuote });
+  const x402PredictionProcessor = predictionRuntime === undefined ? undefined : createX402PaidPredictionProcessor({ service: x402Service, stateStore: x402StateStore, runtime: predictionRuntime, acquireExecution, acquireQuote });
+  const x402CryptoProcessor = cryptoRuntime === undefined ? undefined : createX402PaidCryptoProcessor({ service: x402Service, stateStore: x402StateStore, runtime: cryptoRuntime, acquireExecution, acquireQuote });
 
   async function discoveryPaymentChallenge(pathname, observedAt) {
+    const releaseQuote = capacity.acquireQuote();
+    if (releaseQuote === undefined) throw Object.assign(new Error('quote_capacity_exhausted'), { status: 503 });
+    try {
     let productId;
     let requestHash;
     let pricing;
@@ -375,20 +367,88 @@ export function createSearchServer({
       priceVersion: pricing.priceVersion,
       maximumCharge: pricing.maximumCharge,
       issuedAt: observedAt,
-      expiresAt: new Date(Date.parse(observedAt) + 300_000).toISOString(),
+      expiresAt: new Date(Date.parse(observedAt) + 180_000).toISOString(),
     });
-    return x402Service.challenge({ quote, description: `Bounded ${productId} discovery challenge`, now: observedAt, resourcePath: pathname, discovery });
+      return await x402Service.challenge({ quote, description: `Bounded ${productId} discovery challenge`, now: observedAt, resourcePath: pathname, discovery });
+    } finally {
+      releaseQuote();
+    }
   }
 
   const record = (input) => {
     try { monitor?.record(input); } catch { /* Monitoring must never alter customer response behavior. */ }
   };
 
-  const server = http.createServer(async (request, response) => {
+  let cachedProductHealth;
+  async function boundedHealth(check, timeoutMs = 4_000) {
+    const timeout = new Promise((resolve) => setTimeout(() => resolve(false), timeoutMs));
+    try { return await Promise.race([Promise.resolve().then(check), timeout]); } catch { return false; }
+  }
+  async function productHealth() {
+    const observedMs = Date.now();
+    if (cachedProductHealth !== undefined && observedMs - cachedProductHealth.observedMs < 10_000) return cachedProductHealth.value;
+    const observedAt = new Date(observedMs).toISOString();
+    const [searchValue, aiValue, sandboxValue, rpcValue, predictionValue, cryptoValue] = await Promise.all([
+      boundedHealth(() => typeof executor.health === 'function' ? executor.health(observedAt) : { status: 'healthy' }),
+      boundedHealth(async () => aiReady === undefined ? { status: 'unavailable' } : { status: await aiReady() ? 'healthy' : 'unavailable' }),
+      boundedHealth(async () => sandboxGateway === undefined ? { status: 'unavailable' } : { status: await sandboxGateway.ready() ? 'healthy' : 'unavailable' }),
+      boundedHealth(async () => {
+        if (rpcRuntime === undefined) return { status: 'unavailable' };
+        const chains = await rpcRuntime.health();
+        const healthy = chains.filter(({ status }) => status === 'healthy').length;
+        return { status: healthy === chains.length ? 'healthy' : healthy > 0 ? 'degraded' : 'unavailable', chains: { healthy, total: chains.length }, circuit: rpcRuntime.circuitHealth?.() };
+      }),
+      boundedHealth(async () => predictionRuntime === undefined ? { status: 'unavailable' } : { status: await predictionRuntime.ready() ? 'healthy' : 'unavailable', circuit: predictionRuntime.circuitHealth?.() }),
+      boundedHealth(async () => cryptoRuntime === undefined ? { status: 'unavailable' } : { status: await cryptoRuntime.ready() ? 'healthy' : 'unavailable', circuit: cryptoRuntime.circuitHealth?.() }),
+    ]);
+    const normalized = (value) => value && typeof value === 'object' && ['healthy', 'degraded', 'unavailable'].includes(value.status) ? value : { status: 'unavailable' };
+    const products = Object.freeze({
+      search: Object.freeze(normalized(searchValue)), ai: Object.freeze(normalized(aiValue)), sandbox: Object.freeze(normalized(sandboxValue)),
+      rpc: Object.freeze(normalized(rpcValue)), prediction: Object.freeze(normalized(predictionValue)), crypto_intelligence: Object.freeze(normalized(cryptoValue)),
+    });
+    const values = Object.values(products);
+    const lifecycle = values.every(({ status }) => status === 'healthy') ? 'healthy' : values.some(({ status }) => status === 'healthy' || status === 'degraded') ? 'degraded' : 'unavailable';
+    const value = Object.freeze({ observedAt, lifecycle, products });
+    cachedProductHealth = { observedMs, value };
+    return value;
+  }
+
+  const server = http.createServer({ maxHeaderSize: 32_768, requireHostHeader: true }, async (request, response) => {
     const url = new URL(request.url ?? '/', 'http://loopback.invalid');
+    if (request.rawHeaders.length / 2 > 64) {
+      send(response, 431, problem(431, 'request_headers_too_large', 'Request headers too large', 'The public request header count exceeds the shared boundary.', url.pathname), {}, PROBLEM_TYPE);
+      return;
+    }
+    const publicProductPath = [SEARCH_FREE_PATH, SEARCH_PAID_PATH, AI_PAID_PATH, OPENAI_CHAT_COMPLETIONS_PATH, ANTHROPIC_MESSAGES_PATH, OPENAI_RESPONSES_PATH, SANDBOX_PAID_PATH, RPC_PAID_PATH, PREDICTION_PAID_PATH, CRYPTO_PAID_PATH].includes(url.pathname);
+    const edgeAuthorized = edgeAuthorization === undefined || internalAuthorized(request.headers['x-clervo-edge-authorization'], edgeAuthorization);
+    if (publicProductPath && !edgeAuthorized) {
+      send(response, 401, problem(401, 'edge_unauthorized', 'Unauthorized', 'The public API edge is required.', url.pathname), {}, PROBLEM_TYPE);
+      return;
+    }
+    const subject = edgeAuthorization !== undefined && typeof request.headers['x-clervo-quota-subject'] === 'string' && /^sha256:[a-f0-9]{64}$/u.test(request.headers['x-clervo-quota-subject'])
+      ? request.headers['x-clervo-quota-subject']
+      : `sha256:${createHash('sha256').update(request.socket.remoteAddress ?? 'loopback-unknown').digest('hex')}`;
+    if (publicProductPath) {
+      const paidCredential = typeof request.headers['payment-signature'] === 'string' || mppAuthorization(request.headers.authorization) !== undefined;
+      const rateKind = url.pathname === SEARCH_FREE_PATH ? 'free' : paidCredential ? 'paid' : 'quote';
+      const rate = capacity.rate({ kind: rateKind, subject });
+      if (!rate.allowed) {
+        send(response, 429, problem(429, `${rateKind}_rate_limit_exceeded`, 'Request rate exceeded', 'This request class is temporarily rate limited before supplier or commerce work.', url.pathname), {
+          'ratelimit-limit': String(rate.limit), 'ratelimit-remaining': String(rate.remaining), 'ratelimit-reset': rate.resetAt, 'retry-after': String(rate.retryAfterSeconds),
+        }, PROBLEM_TYPE);
+        return;
+      }
+    }
+    const deadline = requestDeadline({ pathname: url.pathname, supplied: edgeAuthorized ? request.headers['x-clervo-deadline-at'] : undefined });
+    const disconnect = new AbortController();
+    request.once('aborted', () => disconnect.abort(new Error('client_disconnected')));
+    response.once('close', () => { if (!response.writableFinished) disconnect.abort(new Error('client_disconnected')); });
+    const deadlineSignal = AbortSignal.timeout(deadline.remainingMs);
+    const requestSignal = AbortSignal.any([disconnect.signal, deadlineSignal]);
     if (request.method === 'GET' && ['/healthz', '/v1/health'].includes(url.pathname) && url.search === '') {
+      const runtimeHealth = await productHealth();
       send(response, 200, {
-        status: 'ok',
+        status: runtimeHealth.lifecycle,
         service: 'clervo-search-api',
         environment: environment ?? 'unknown',
         releaseId: releaseId ?? 'unknown',
@@ -404,6 +464,10 @@ export function createSearchServer({
         predictionPaidEnabled: x402PredictionProcessor?.mode === 'settlement_enabled',
         cryptoPaidEnabled: x402CryptoProcessor?.mode === 'settlement_enabled',
         retrievalMode,
+        lifecycle: runtimeHealth.lifecycle,
+        capacity: capacity.snapshot(),
+        observedAt: runtimeHealth.observedAt,
+        products: runtimeHealth.products,
       });
       return;
     }
@@ -413,18 +477,15 @@ export function createSearchServer({
         const ready = trafficOpen
           && typeof searchState.ready === 'function'
           && await searchState.ready()
-          && (x402StateStore === undefined || await x402StateStore.ready())
-          && (sandboxGateway === undefined || await sandboxGateway.ready())
-          && (aiReady === undefined || await aiReady())
-          && (rpcRuntime === undefined || await rpcRuntime.ready())
-          && (predictionRuntime === undefined || await predictionRuntime.ready())
-          && (cryptoRuntime === undefined || await cryptoRuntime.ready());
+          && (x402StateStore === undefined || await x402StateStore.ready());
         send(response, ready ? 200 : 503, {
           status: ready ? 'ready' : 'unavailable',
           service: 'clervo-search-api',
           stateBackend: searchState.kind ?? 'unknown',
           durableState: searchState.durable === true,
           trafficMode: trafficControl?.snapshot().mode ?? 'open',
+          lifecycle: ready ? 'healthy' : 'unavailable',
+          capacity: capacity.snapshot(),
         });
       } catch {
         send(response, 503, {
@@ -432,7 +493,9 @@ export function createSearchServer({
           service: 'clervo-search-api',
           stateBackend: searchState.kind ?? 'unknown',
           durableState: searchState.durable === true,
-          trafficMode: trafficControl?.snapshot().mode ?? 'open',
+            trafficMode: trafficControl?.snapshot().mode ?? 'open',
+            lifecycle: 'unavailable',
+            capacity: capacity.snapshot(),
         });
       }
       return;
@@ -530,13 +593,14 @@ export function createSearchServer({
         const openAiCompatibility = url.pathname === OPENAI_CHAT_COMPLETIONS_PATH;
         const anthropicCompatibility = url.pathname === ANTHROPIC_MESSAGES_PATH;
         const responsesCompatibility = url.pathname === OPENAI_RESPONSES_PATH;
-        const discoveryEligible = !openAiCompatibility && !anthropicCompatibility && !responsesCompatibility && typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined;
-        const aiBody = await readJson(request, AI_MAX_BODY_BYTES, { allowEmpty: discoveryEligible });
-        if (aiBody === undefined) {
+        const discoveryEligible = typeof suppliedKey !== 'string' && typeof request.headers['payment-signature'] !== 'string' && authorizationHeader === undefined;
+        const decodedAiBody = await readJson(request, AI_MAX_BODY_BYTES, { allowEmpty: discoveryEligible });
+        if (decodedAiBody === undefined && !openAiCompatibility && !anthropicCompatibility && !responsesCompatibility) {
           const challenge = await discoveryPaymentChallenge(AI_PAID_PATH, observedAt);
           send(response, challenge.status, challenge.body, challenge.headers);
           return;
         }
+        const aiBody = decodedAiBody ?? compatibilityDiscoveryBody(url.pathname, aiPublicPricing.discoveryRequest(observedAt));
         const normalized = openAiCompatibility
           ? normalizeOpenAiChatCompletionRequest(aiBody)
           : anthropicCompatibility
@@ -593,6 +657,8 @@ export function createSearchServer({
             normalized: executionNormalized,
             subject,
             now: observedAt,
+            deadlineAt: deadline.deadlineAt,
+            signal: requestSignal,
           });
           const responseHeaders = {
             ...free.headers,
@@ -644,6 +710,8 @@ export function createSearchServer({
               : responsesCompatibility
                 ? createOpenAiResponsesDiscoveryContract(aiBody)
                 : undefined,
+          deadlineAt: deadline.deadlineAt,
+          signal: requestSignal,
         });
         const responseHeaders = {
           ...paid.headers,
@@ -708,7 +776,7 @@ export function createSearchServer({
         const normalized = normalizeRpcHttpRequest(await readJson(request, RPC_MAX_BODY_BYTES));
         const requestHash = rpcHttpRequestHash(normalized);
         operationId = identifier('op', `${keyHeader}:${requestHash}`);
-        const paid = await x402RpcProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now() });
+        const paid = await x402RpcProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now(), deadlineAt: deadline.deadlineAt, signal: requestSignal });
         send(response, paid.status, paid.body, paid.headers);
       } catch (error) {
         const code = errorCode(error); const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;
@@ -738,7 +806,7 @@ export function createSearchServer({
         const normalized = normalizePredictionHttpRequest(await readJson(request, PREDICTION_MAX_BODY_BYTES));
         const requestHash = predictionHttpRequestHash(normalized);
         operationId = identifier('op', `${keyHeader}:${requestHash}`);
-        const paid = await x402PredictionProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now() });
+        const paid = await x402PredictionProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now(), deadlineAt: deadline.deadlineAt, signal: requestSignal });
         send(response, paid.status, paid.body, paid.headers);
       } catch (error) {
         const code = errorCode(error); const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional')) ? 400 : 503;
@@ -768,7 +836,7 @@ export function createSearchServer({
         const normalized = normalizeCryptoHttpRequest(await readJson(request, CRYPTO_MAX_BODY_BYTES));
         const requestHash = cryptoHttpRequestHash(normalized);
         operationId = identifier('op', `${keyHeader}:${requestHash}`);
-        const paid = await x402CryptoProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now() });
+        const paid = await x402CryptoProcessor.process({ idempotencyKey: keyHeader, requestHash, operationId, normalized, paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined, authorizationHeader, now: now(), deadlineAt: deadline.deadlineAt, signal: requestSignal });
         send(response, paid.status, paid.body, paid.headers);
       } catch (error) {
         const code = errorCode(error); const status = Number.isInteger(error?.status) ? error.status : (code.includes('invalid') || code.includes('required') || code.includes('additional') || code.includes('unavailable')) ? 400 : 503;
@@ -811,6 +879,8 @@ export function createSearchServer({
           paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
           authorizationHeader,
           now: now(),
+          deadlineAt: deadline.deadlineAt,
+          signal: requestSignal,
         });
         send(response, paid.status, paid.body, paid.headers);
       } catch (error) {
@@ -863,7 +933,7 @@ export function createSearchServer({
       // A caller who supplied no key is told which one was used, so a
       // deliberate replay of this exact operation is still possible.
       const keyHeaders = keyGenerated ? { 'idempotency-key': keyHeader } : {};
-      const decoded = await readJson(request, SEARCH_MAX_BODY_BYTES, { acceptNaiveContentType: url.pathname === SEARCH_FREE_PATH });
+      const decoded = await readJson(request, SEARCH_MAX_BODY_BYTES);
       // Released clients send synthesize explicitly. At the public HTTP edge,
       // omission selects the supported raw Search operation so a clean caller
       // does not accidentally opt into the non-callable compatibility mode.
@@ -920,13 +990,9 @@ export function createSearchServer({
       if (!realPaid) idempotency.set(keyHeader, { ...stored, operationId, requestHash });
       const fundingMode = url.pathname === SEARCH_FREE_PATH ? 'free' : 'paid';
       productId = searchProductId(normalized);
-      const executionInput = Object.freeze({ ...normalized, operationId, productId, requestHash, fundingMode });
+      const executionInput = Object.freeze({ ...normalized, operationId, productId, requestHash, fundingMode, deadlineAt: deadline.deadlineAt, signal: requestSignal });
 
       if (fundingMode === 'free') {
-        const edgeSubject = request.headers['x-clervo-quota-subject'];
-        const subject = edgeAuthorization !== undefined && typeof edgeSubject === 'string' && /^sha256:[a-f0-9]{64}$/u.test(edgeSubject)
-          ? edgeSubject
-          : request.socket.remoteAddress ?? 'loopback-unknown';
         const quota = await searchState.consumeFreeQuota(subject, now());
         const quotaHeaders = {
           'ratelimit-limit': String(quota.limit),
@@ -940,7 +1006,7 @@ export function createSearchServer({
           send(response, 429, problem(429, 'free_quota_exceeded', 'Free search quota exceeded', 'The bounded free sample quota is exhausted.', url.pathname, operationId), { ...quotaHeaders, 'retry-after': String(Math.max(1, Math.ceil((Date.parse(quota.resetAt) - Date.parse(now())) / 1_000))) }, PROBLEM_TYPE);
           return;
         }
-        const releaseExecution = acquireExecution();
+        const releaseExecution = acquireExecution({ productId, fundingMode: 'free' });
         if (releaseExecution === undefined) {
           idempotency.delete(keyHeader);
           if (stateClaim?.kind === 'claimed') await searchState.abandon({ idempotencyKey: keyHeader, requestHash, operationId, leaseId: stateClaim.leaseId });
@@ -973,6 +1039,8 @@ export function createSearchServer({
           paymentHeader: typeof request.headers['payment-signature'] === 'string' ? request.headers['payment-signature'] : undefined,
           authorizationHeader,
           now: now(),
+          deadlineAt: deadline.deadlineAt,
+          signal: requestSignal,
         });
         record({ timestamp: now(), productId, outcome: paid.status === 402 ? 'payment_challenge' : 'success', durationSeconds: Math.max(0, (monotonicNow() - startedAt) / 1_000), operationId });
         if (paid.status === 200 && paid.body.replayed !== true) record({ timestamp: now(), productId, outcome: 'paid_completion', operationId });
@@ -981,7 +1049,7 @@ export function createSearchServer({
       }
 
       const issuedAt = now();
-      const expiresAt = new Date(Date.parse(issuedAt) + 300_000).toISOString();
+      const expiresAt = new Date(Date.parse(issuedAt) + 180_000).toISOString();
       const pricing = searchProductPricing(productId);
       const quote = stored?.quote ?? sealQuote({
         contractVersion: CONTRACT_VERSION,
@@ -1016,7 +1084,7 @@ export function createSearchServer({
         ledgerTransactionId: identifier('ledger', operationId),
         receiptId: identifier('rcpt', operationId),
         execute: async () => {
-          const releaseExecution = acquireExecution();
+          const releaseExecution = acquireExecution({ productId, fundingMode: 'paid' });
           if (releaseExecution === undefined) throw Object.assign(new Error('search_overloaded'), { status: 503 });
           try {
             executionOutput = await executor.execute(executionInput);
@@ -1059,5 +1127,12 @@ export function createSearchServer({
   server.headersTimeout = 5_000;
   server.keepAliveTimeout = 5_000;
   server.maxRequestsPerSocket = 100;
+  server.maxHeadersCount = 64;
+  server.on('clientError', (error, socket) => {
+    if (!socket.writable) return;
+    const status = error?.code === 'HPE_HEADER_OVERFLOW' ? 431 : 400;
+    const body = JSON.stringify({ code: status === 431 ? 'request_headers_too_large' : 'malformed_http_request', status });
+    socket.end(`HTTP/1.1 ${status} ${status === 431 ? 'Request Header Fields Too Large' : 'Bad Request'}\r\nConnection: close\r\nContent-Type: application/problem+json\r\nContent-Length: ${Buffer.byteLength(body)}\r\n\r\n${body}`);
+  });
   return server;
 }

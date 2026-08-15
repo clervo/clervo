@@ -11,6 +11,21 @@
     "configuration": "apps/worker/wrangler.jsonc",
     "sharedSecret": "clervo-production-edge-authorization"
   },
+  "sharedBoundary": {
+    "cloudRunMaximumInstances": 5,
+    "containerConcurrency": 16,
+    "maximumConcurrentExecutionsPerInstance": 16,
+    "maximumFreeExecutionsPerInstance": 4,
+    "maximumConcurrentQuotesPerInstance": 8,
+    "rateLimitsPerMinute": {
+      "free": 12,
+      "unpaidQuote": 30,
+      "paid": 180
+    },
+    "quoteTtlSeconds": 180,
+    "originRequiresEdgeAuthorization": true,
+    "absoluteDeadlinePropagation": true
+  },
   "search": {
     "mode": "open_federation",
     "synthesisEnabled": false,

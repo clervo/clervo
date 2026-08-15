@@ -95,6 +95,34 @@ function stableJson(value) {
 }
 
 const COMMERCIAL_DESCRIPTION = 'Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.';
+const SHARED_PUBLIC_BOUNDARY = Object.freeze({
+  schemaVersion: 'clervo.shared-public-boundary.v1',
+  request: Object.freeze({
+    mediaType: 'application/json',
+    maximumHeaderBytes: 32_768,
+    maximumHeaderCount: 64,
+    maximumJsonDepth: 32,
+    maximumJsonNodes: 20_000,
+    maximumArrayItems: 1_000,
+    maximumBodyBytesByPath: Object.freeze({
+      '/v1/search/free': 16_384, '/v1/search/paid': 16_384,
+      '/v1/ai/execute': 10_485_760, '/v1/chat/completions': 10_485_760,
+      '/v1/messages': 10_485_760, '/v1/responses': 10_485_760,
+      '/v1/sandbox/execute': 1_500_000, '/v1/rpc/execute': 262_144,
+      '/v1/prediction/execute': 262_144, '/v1/crypto/execute': 262_144,
+    }),
+  }),
+  rateLimitsPerMinute: Object.freeze({ free: 12, unpaidQuote: 30, paid: 180 }),
+  quoteTtlSeconds: 180,
+  deadlineMillisecondsByPath: Object.freeze({
+    '/v1/search/free': 12_000, '/v1/search/paid': 15_000,
+    '/v1/ai/execute': 120_000, '/v1/chat/completions': 120_000,
+    '/v1/messages': 120_000, '/v1/responses': 120_000,
+    '/v1/sandbox/execute': 75_000, '/v1/rpc/execute': 35_000,
+    '/v1/prediction/execute': 35_000, '/v1/crypto/execute': 35_000,
+  }),
+  retry: Object.freeze({ overload: [429, 503], deadline: 504, useSameIdempotencyKeyAfterUnknownOutcome: true }),
+});
 
 function decimalAtomic(amountAtomic, decimals) {
   if (!/^(?:0|[1-9][0-9]*)$/u.test(String(amountAtomic)) || !Number.isInteger(decimals) || decimals < 0 || decimals > 18) throw new TypeError('atomic_decimal_invalid');
@@ -491,7 +519,7 @@ for (const fileName of projectedSchemaFiles) {
   if (!declaration || declaration.schemaId !== schema.$id) throw new Error(`schema visibility identity mismatch: ${fileName}`);
   if (fileName === 'search-http-result.schema.json') {
     schema.properties.productId.enum = ['search.web'];
-    schema.properties.productId.description = 'Callable public Search operation identity. search.answer remains a released-client compatibility identifier but is not callable.';
+    schema.properties.productId.description = 'Callable public Search operation identity. Obsolete non-callable synthesis identifiers are not exposed by current clients.';
   }
   if (fileName === 'search-http-request.schema.json') {
     schema.properties.synthesize.default = false;
@@ -1241,6 +1269,9 @@ llms = llms
 // from customer-facing prose.
 discovery.observedTruth = { provenance: publicObservedProvenance, products: publicObservedTruth };
 catalog.observedTruth = discovery.observedTruth;
+discovery.sharedBoundary = SHARED_PUBLIC_BOUNDARY;
+catalog.sharedBoundary = SHARED_PUBLIC_BOUNDARY;
+openapi['x-clervo-shared-boundary'] = SHARED_PUBLIC_BOUNDARY;
 // The two agent-facing documents are advertised where an agent already looks,
 // so finding them does not require guessing a filename.
 const { claims: _obsoleteClaimsArtifact, ...discoveryArtifacts } = discovery.artifacts;
@@ -1353,6 +1384,7 @@ await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
   schemaVersion: 'clervo.public-status.v1',
   observedAt: liveRegistry.observedAt,
   publicApi: publicApiStatus,
+  sharedBoundary: SHARED_PUBLIC_BOUNDARY,
   packages: launchState.distribution.packages,
   observedTruth: { provenance: publicObservedProvenance, products: publicObservedTruth },
   conformanceDefectsOpen: liveRegistry.conformance.filter(({ conformant }) => !conformant),

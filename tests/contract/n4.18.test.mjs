@@ -71,7 +71,7 @@ test('deployable staging entry point exposes release health and keeps mock-paid 
     // execution off, which a subset assertion covers exactly as well.
     const health = await healthResponse.json();
     for (const [key, value] of Object.entries({
-      status: 'ok',
+      status: 'degraded',
       service: 'clervo-search-api',
       environment: 'staging',
       releaseId,
@@ -82,6 +82,8 @@ test('deployable staging entry point exposes release health and keeps mock-paid 
       sandboxPrivateEnabled: false,
       sandboxDurableState: false,
     })) assert.equal(health[key], value, `health.${key}`);
+    assert.equal(health.lifecycle, 'degraded');
+    assert.equal(health.products.search.status, 'healthy');
     // No paid surface may be enabled in staging, including ones added later.
     for (const [key, value] of Object.entries(health)) {
       if (key.endsWith('PaidEnabled')) assert.equal(value, false, `health.${key} must be false in staging`);

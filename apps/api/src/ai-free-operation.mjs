@@ -15,7 +15,7 @@ export function createFreeAiOperationProcessor({ stateStore, quotaStore, policy,
   if (!publicPricing || typeof publicPricing.quote !== 'function' || !Array.isArray(adapters) || adapters.some((adapter) => typeof adapter?.routeId !== 'string' || typeof adapter?.execute !== 'function')) throw new TypeError('invalid_ai_free_runtime');
 
   return Object.freeze({
-    async process({ idempotencyKey, requestHash, operationId, normalized, subject, now }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, subject, now, deadlineAt, signal }) {
       const validUntil = Date.parse(policy.validUntil);
       if (!Number.isFinite(validUntil) || validUntil <= Date.parse(now)) problem('ai_free_policy_expired');
       const stateKey = `ai-free:${idempotencyKey}`;
@@ -38,14 +38,23 @@ export function createFreeAiOperationProcessor({ stateStore, quotaStore, policy,
         return Object.freeze({ status: 429, body: Object.freeze({ code: 'ai_free_quota_exceeded', status: 429, resetAt: quota.resetAt, automaticPaidOverageAllowed: false }), headers: Object.freeze({ ...quotaHeaders, 'retry-after': String(Math.max(1, Math.ceil((Date.parse(quota.resetAt) - Date.parse(now)) / 1_000))) }) });
       }
 
-      const release = acquireExecution?.();
+      if (signal?.aborted || Number.isFinite(Date.parse(deadlineAt ?? '')) && Date.now() >= Date.parse(deadlineAt)) problem('request_deadline_exceeded', 504);
+      const release = acquireExecution?.({ productId: normalized.productId, fundingMode: 'free' });
       if (release === undefined) {
         await stateStore.abandon({ idempotencyKey: stateKey, requestHash, operationId, leaseId: claim.leaseId });
         problem('ai_overloaded');
       }
       try {
-        const request = createAiExecutionRequest({ normalized, operationId, maximumSupplierCost: quote.decision.maximumSupplierCost, deadlineAt: new Date(Date.parse(now) + 120_000).toISOString() });
-        const outcome = await executeAiOperation({ request, catalog: quote.catalog, routes: quote.routes, adapters, runtimeBindings: quote.runtimeBindings ?? runtimeBindings, aliasTargets: quote.aliasTargets, startedAt: now, clock: () => Date.parse(now), monitor });
+        const suppliedDeadline = Date.parse(deadlineAt ?? '');
+        const localDeadline = (Number.isFinite(suppliedDeadline) ? Date.now() : Date.parse(now)) + 120_000;
+        const request = createAiExecutionRequest({ normalized, operationId, maximumSupplierCost: quote.decision.maximumSupplierCost, deadlineAt: new Date(Number.isFinite(suppliedDeadline) ? Math.min(localDeadline, suppliedDeadline) : localDeadline).toISOString() });
+        const outcome = await executeAiOperation({
+          request, catalog: quote.catalog, routes: quote.routes, adapters,
+          runtimeBindings: quote.runtimeBindings ?? runtimeBindings,
+          aliasTargets: quote.aliasTargets, startedAt: now, signal,
+          ...(deadlineAt === undefined ? { clock: () => Date.parse(now) } : {}),
+          monitor,
+        });
         if (outcome.outcome !== 'completed') problem(`ai_execution_${outcome.failureCode}`);
         const response = createAiFreeHttpResult({ request, requestHash, result: outcome.result });
         await stateStore.complete({ idempotencyKey: stateKey, requestHash, operationId, leaseId: claim.leaseId, response, now });

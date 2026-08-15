@@ -90,18 +90,17 @@ class ClientTests(unittest.TestCase):
                 },
             )
 
-    def test_web_and_answer_bind_exact_product(self) -> None:
+    def test_search_exposes_only_the_callable_web_product(self) -> None:
         observed = []
 
         def transport(method, url, headers, body, timeout, maximum_bytes):
             observed.append((method, url, headers, json.loads(body), timeout, maximum_bytes))
-            product_id = "search.answer" if json.loads(body)["synthesize"] else "search.web"
-            return HttpResponse(200, {"content-type": "application/json"}, result(product_id, "free"))
+            return HttpResponse(200, {"content-type": "application/json"}, result("search.web", "free"))
 
         client = Clervo(base_url="http://127.0.0.1:8080/", transport=transport)
         self.assertEqual(client.search.web(query="evidence", idempotency_key="idem_web").get("productId"), "search.web")
-        self.assertEqual(client.search.answer(query="evidence", idempotency_key="idem_answer").get("productId"), "search.answer")
-        self.assertEqual([item[3]["synthesize"] for item in observed], [False, True])
+        self.assertFalse(hasattr(client.search, "answer"))
+        self.assertEqual([item[3]["synthesize"] for item in observed], [False])
         self.assertTrue(all(item[1].endswith("/v1/search/free") for item in observed))
 
     def test_402_remains_non_payable_and_visible(self) -> None:

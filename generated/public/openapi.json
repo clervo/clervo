@@ -6108,7 +6108,7 @@
             "enum": [
               "search.web"
             ],
-            "description": "Callable public Search operation identity. search.answer remains a released-client compatibility identifier but is not callable."
+            "description": "Callable public Search operation identity. Obsolete non-callable synthesis identifiers are not exposed by current clients."
           },
           "state": {
             "const": "RECEIPTED"
@@ -6475,5 +6475,54 @@
       "name": "Crypto Intelligence",
       "description": "Bounded wallet facts and deterministic on-chain derivations."
     }
-  ]
+  ],
+  "x-clervo-shared-boundary": {
+    "schemaVersion": "clervo.shared-public-boundary.v1",
+    "request": {
+      "mediaType": "application/json",
+      "maximumHeaderBytes": 32768,
+      "maximumHeaderCount": 64,
+      "maximumJsonDepth": 32,
+      "maximumJsonNodes": 20000,
+      "maximumArrayItems": 1000,
+      "maximumBodyBytesByPath": {
+        "/v1/search/free": 16384,
+        "/v1/search/paid": 16384,
+        "/v1/ai/execute": 10485760,
+        "/v1/chat/completions": 10485760,
+        "/v1/messages": 10485760,
+        "/v1/responses": 10485760,
+        "/v1/sandbox/execute": 1500000,
+        "/v1/rpc/execute": 262144,
+        "/v1/prediction/execute": 262144,
+        "/v1/crypto/execute": 262144
+      }
+    },
+    "rateLimitsPerMinute": {
+      "free": 12,
+      "unpaidQuote": 30,
+      "paid": 180
+    },
+    "quoteTtlSeconds": 180,
+    "deadlineMillisecondsByPath": {
+      "/v1/search/free": 12000,
+      "/v1/search/paid": 15000,
+      "/v1/ai/execute": 120000,
+      "/v1/chat/completions": 120000,
+      "/v1/messages": 120000,
+      "/v1/responses": 120000,
+      "/v1/sandbox/execute": 75000,
+      "/v1/rpc/execute": 35000,
+      "/v1/prediction/execute": 35000,
+      "/v1/crypto/execute": 35000
+    },
+    "retry": {
+      "overload": [
+        429,
+        503
+      ],
+      "deadline": 504,
+      "useSameIdempotencyKeyAfterUnknownOutcome": true
+    }
+  }
 }

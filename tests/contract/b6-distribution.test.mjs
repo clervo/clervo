@@ -43,7 +43,7 @@ test('B6 Router public package metadata names one truthful immutable distributio
     url: 'git+https://github.com/clervo/clervo.git',
     directory: 'packages/router',
   });
-  assert.equal(packageMetadata.homepage, 'https://github.com/clervo/clervo/tree/main/packages/router#readme');
+  assert.equal(packageMetadata.homepage, 'https://clervo.dev/docs/cli');
   assert.equal(packageMetadata.bugs.url, 'https://github.com/clervo/clervo/issues');
   assert.match(packageReadme, /npx @clervo\/router search "World Wide Web"/u);
   assert.match(packageReadme, /client package is MIT licensed/u);

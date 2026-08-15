@@ -25,6 +25,7 @@ import {
   InMemoryAiFreeTierQuotaStore,
   PostgresAiFreeTierQuotaStore,
 } from '../../../dist/services/ai/src/free-tier.js';
+import { SupplierCircuitBreaker, containSupplierRuntime } from './shared-boundary.mjs';
 
 const environment = process.env.CLERVO_ENV ?? 'staging';
 const releaseId = process.env.CLERVO_RELEASE_ID;
@@ -112,20 +113,33 @@ const executor = searchMode === 'open_federation'
     }) : createRecordedSearchExecutor();
 const aiArtifactRuntime = aiArtifactMode === 'r2' ? createAiArtifactRuntime() : undefined;
 const aiRuntime = aiMode === 'paid' ? await createAiProductionRuntime({ artifactStoreFactory: aiArtifactRuntime?.forAuthorization }) : undefined;
+const aiSupplierCircuit = new SupplierCircuitBreaker({ threshold: 3, cooldownMs: 30_000 });
+const containAiAdapter = (adapter) => Object.freeze({
+  ...adapter,
+  routeId: adapter.routeId,
+  execute: (input) => aiSupplierCircuit.execute(`ai:${input.exactModelId}`, () => adapter.execute(input)),
+});
+const containedAiAdapters = aiRuntime?.adapters.map(containAiAdapter);
+const containedAiAdapterFactory = aiRuntime?.adapterFactory === undefined
+  ? undefined
+  : (authorization) => aiRuntime.adapterFactory(authorization).map(containAiAdapter);
 const aiFreeTier = aiRuntime === undefined ? undefined : Object.freeze({
   policy: aiRuntime.freeTierPolicy,
   store: stateStore.kind === 'postgres'
     ? new PostgresAiFreeTierQuotaStore(stateStore.client, stateStore.environmentNamespace)
     : new InMemoryAiFreeTierQuotaStore(),
 });
-const rpcRuntime = rpcMode === 'paid' ? createRpcProductionRuntime({
+const rpcRuntimeUncontained = rpcMode === 'paid' ? createRpcProductionRuntime({
   drpcApiKey: process.env.CLERVO_RPC_DRPC_API_KEY,
   heliusApiKey: process.env.CLERVO_RPC_HELIUS_API_KEY,
   dailyCallCeiling: Number(process.env.CLERVO_RPC_DAILY_CALL_CEILING ?? '100000'),
 }) : undefined;
+const rpcRuntime = containSupplierRuntime(rpcRuntimeUncontained, new SupplierCircuitBreaker({ threshold: 4, cooldownMs: 20_000 }), (request) => `rpc:${request.input.chainId}`);
 const predictionStore = predictionMode === 'paid' ? await createPostgresPredictionMarketStoreFromEnvironment() : undefined;
-const predictionRuntime = predictionMode === 'paid' ? createPredictionProductionRuntime({ store: predictionStore }) : undefined;
-const cryptoRuntime = cryptoMode === 'paid' ? createCryptoProductionRuntime({ credential: process.env.CLERVO_BLOCKSCOUT_API_KEY, hardDailyCallCeiling: Number(process.env.CLERVO_CRYPTO_DAILY_CALL_CEILING ?? '100000') }) : undefined;
+const predictionRuntimeUncontained = predictionMode === 'paid' ? createPredictionProductionRuntime({ store: predictionStore }) : undefined;
+const predictionRuntime = containSupplierRuntime(predictionRuntimeUncontained, new SupplierCircuitBreaker({ threshold: 3, cooldownMs: 30_000 }), () => 'prediction:pdata');
+const cryptoRuntimeUncontained = cryptoMode === 'paid' ? createCryptoProductionRuntime({ credential: process.env.CLERVO_BLOCKSCOUT_API_KEY, hardDailyCallCeiling: Number(process.env.CLERVO_CRYPTO_DAILY_CALL_CEILING ?? '100000') }) : undefined;
+const cryptoRuntime = containSupplierRuntime(cryptoRuntimeUncontained, new SupplierCircuitBreaker({ threshold: 3, cooldownMs: 30_000 }), (request) => `crypto:${request.input.chains.join(',')}`);
 
 const monitoringExporter = monitoringDriver === 'sentry'
   ? createSentryMonitoringExporter({ dsn: sentryDsn, environment, release: releaseId })
@@ -158,8 +172,8 @@ const server = createSearchServer({
   retrievalMode: searchMode,
   edgeAuthorization,
   aiPublicPricing: aiRuntime?.publicPricing,
-  aiAdapters: aiRuntime?.adapters,
-  aiAdapterFactory: aiRuntime?.adapterFactory,
+  aiAdapters: containedAiAdapters,
+  aiAdapterFactory: containedAiAdapterFactory,
   aiRuntimeBindings: aiRuntime?.runtimeBindings,
   aiReady: aiRuntime?.ready,
   aiFreeTier,

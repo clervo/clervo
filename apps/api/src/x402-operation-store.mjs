@@ -376,7 +376,7 @@ export function createPostgresX402OperationStoreFromEnvironment() {
   if (!connectionString) throw new Error('CLERVO_DATABASE_URL is required');
   const environmentNamespace = process.env.CLERVO_STATE_NAMESPACE;
   assertNamespace(environmentNamespace);
-  const pool = new Pool({ connectionString, max: 4, connectionTimeoutMillis: 5_000, idleTimeoutMillis: 10_000, allowExitOnIdle: true });
+  const pool = new Pool({ connectionString, max: 4, connectionTimeoutMillis: 5_000, idleTimeoutMillis: 10_000, query_timeout: 5_000, statement_timeout: 5_000, application_name: 'clervo-x402-state', allowExitOnIdle: true });
   const store = new PostgresX402OperationStore(pool, { environmentNamespace });
   store.close = () => pool.end();
   return store;
