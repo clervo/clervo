@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "clervo.blockscout-b9-requalification-proof.v1",
+  "sourceId": "crypto.source.blockscout_pro",
+  "qualificationId": "qual_BlockscoutValueAdded20260817",
+  "evaluatedAt": "2026-08-17T23:36:48.183Z",
+  "expiresAt": "2026-08-24T23:36:48.183Z",
+  "qualificationWindowDays": 7,
+  "qualifierCommit": "3fc831d099611f92902125d29acbd7dab7c55494",
+  "executedAgainstImage": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-production/clervo-api@sha256:8dea6e63ab920a12759b1e2c67383aba212ce9dae4259b677849071abfbfa266",
+  "reportSha256": "sha256:97c53deaeded4ce44757118f866570f5c58a7d0af7e6e66791c374bc802f1880",
+  "network": {
+    "externalCalls": 27,
+    "successfulRequests": 26,
+    "failedRequests": 1,
+    "checksPassed": 22,
+    "checksFailed": 0,
+    "paginationPassed": true,
+    "normalizationPassed": true,
+    "burstSuccesses": 5,
+    "burstFailures": 1,
+    "cooldownRecovered": true,
+    "latencyMs": {
+      "minimum": 200,
+      "median": 2297.2,
+      "p95": 23979.6,
+      "maximum": 24101.1
+    }
+  },
+  "safety": {
+    "ownerCashSpentUsd": 0,
+    "transactionSubmissionCalls": 0,
+    "signedPayloads": 0,
+    "customerPayloadsUsed": false,
+    "credentialRecorded": false
+  },
+  "interpretation": "The sole failed network request occurred during the deliberate six-request burst characterization. All functional checks passed, pagination and normalization passed, five burst calls succeeded, and the cooldown recovery check passed."
+}
