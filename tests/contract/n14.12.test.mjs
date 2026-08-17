@@ -9,7 +9,7 @@ import {
 
 const policy = JSON.parse(await readFile('infra/production/post-credit-economics.v1.json', 'utf8'));
 
-test('search candidate prices remain competitive after credits end without hiding bounded costs', () => {
+test('search prices preserve positive contribution without hiding bounded costs', () => {
   const decisions = policy.products.map((product) => evaluateUnitEconomics(product));
   assert.deepEqual(decisions.map(({ productId, requiredPriceMicrousd, customerPriceMicrousd }) => [
     productId,
@@ -66,13 +66,4 @@ test('unknown supplier ceilings, underpricing, and uncompetitive pricing fail cl
   const overpriced = evaluateUnitEconomics({ ...bounded, customerPriceMicrousd: 12001 });
   assert.equal(overpriced.paidActivationAllowed, false);
   assert.ok(overpriced.failureCodes.includes('price_above_competitive_ceiling'));
-});
-
-test('competitive references are current context, not a quality-equivalence claim, and payment stays disabled', () => {
-  assert.equal(policy.observedAt, '2026-08-02T16:30:00.000Z');
-  assert.deepEqual(policy.competitiveReferences.map(({ priceMicrousd }) => priceMicrousd), [264500, 12000, 12000]);
-  assert.ok(policy.competitiveReferences.every(({ source }) => new URL(source).hostname === 'blockrun.ai'));
-  assert.equal(policy.competitiveReferences[0].use, 'context_only_not_quality_equivalence');
-  assert.equal(policy.customerPaymentEnabled, false);
-  assert.equal(policy.ownerCashSpentUsd, 0);
 });

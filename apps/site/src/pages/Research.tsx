@@ -2,11 +2,9 @@ import { useEffect } from 'react';
 
 import {
   formatUsdc,
-  launchState,
   lifecycleLabels,
   observedProduct,
   observedTruth,
-  proofLabels,
   quickStartCurl,
   quickStartNeedsNoKey,
   type ExperiencePhase,
@@ -27,15 +25,13 @@ import { Link } from '../router';
  */
 
 const search = observedProduct('search');
-const proof = launchState.paymentProof;
 
 // What the outcome contains, and what it does not. Raw evidence and a
-// synthesized answer are different products with different availability, and
-// the difference is the single most misread thing about this family.
+// Fast evidence and deep synthesis are different modes with different bounds.
 const returns: Array<[string, string]> = [
-  ['Ranked evidence', 'Normalized retrieval results in a stable shape, ordered by relevance rather than by whoever paid for placement.'],
-  ['Source citations', 'Every result carries the source it came from, so the answer can be checked rather than trusted.'],
-  ['No synthesized prose', 'The publicly available operation returns evidence, not an essay. Synthesis is a separate operation and is not publicly available.'],
+  ['Source-diverse retrieval', 'News, official pages, repositories, package registries, scholarly indexes, government data, and contextual sources are routed by question intent.'],
+  ['Primary-source preference', 'Official documentation, filings, registries, and first-party announcements outrank secondary reporting when they directly answer the question.'],
+  ['Deep evidence report', 'Paid mode reads selected pages, deduplicates syndicated copies, synthesizes claim-by-claim, and exposes conflicts and uncertainty.'],
   ['A bounded cost', 'The maximum charge is quoted before anything runs, and the settled amount is never higher.'],
 ];
 
@@ -89,7 +85,7 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
       <section className="band band--ruled research-body" aria-labelledby="research-returns">
         <div className="section-head">
           <p className="eyebrow">What comes back</p>
-          <h2 id="research-returns">Evidence you can check, not prose you must trust.</h2>
+          <h2 id="research-returns">Evidence you can check, with synthesis you can audit.</h2>
         </div>
         <ul className="research-returns">
           {returns.map(([name, detail]) => (
@@ -129,59 +125,34 @@ export function Research({ onPhase }: { onPhase(phase: ExperiencePhase): void })
             <dt>Lifecycle state</dt>
             <dd>{lifecycleLabels[search.lifecycleState]}</dd>
           </div>
-          <div>
-            <dt>Proof level</dt>
-            <dd>{proofLabels[search.proofLevel]}</dd>
-          </div>
+          <div><dt>Paid behavior</dt><dd>{search.observedPrice === null ? 'not offered' : '402 quote before execution'}</dd></div>
         </dl>
         <p className="quiet research-note">
-          Observed {observedTruth.provenance.observedAt} from{' '}
-          {observedTruth.provenance.source}. A price that changes on the deployed
-          system changes here on the next probe, not on an edit.
+          Current at {observedTruth.provenance.observedAt}. Prices are generated
+          from the same public product data used by discovery and status.
         </p>
       </section>
 
-      <section className="band research-body" aria-labelledby="research-proof">
+      <section className="band research-body" aria-labelledby="research-payment">
         <div className="section-head">
-          <p className="eyebrow">What has been paid for</p>
-          <h2 id="research-proof">One settlement, one useful result, one safe replay.</h2>
+          <p className="eyebrow">Payment behavior</p>
+          <h2 id="research-payment">Inspect the quote before authorizing it.</h2>
           <p className="lede">
-            The owner funded this to verify payment plumbing. It is not a
-            customer transaction, and no revenue, demand or public commercial
-            traction follows from it.
+            The paid route returns HTTP 402 with the maximum charge, network,
+            asset, recipient, resource, and expiry. Reuse the same idempotency
+            key to recover or replay without creating a second logical charge.
           </p>
         </div>
         <dl className="facts">
-          <div>
-            <dt>Operation</dt>
-            <dd>{proof.productId}</dd>
-          </div>
-          <div>
-            <dt>Bounded charge</dt>
-            {/* Gold appears once on this page, on the amount that was actually
-              * settled and reconciled. */}
-            <dd className="state state--verified">{proof.amountDisplay}</dd>
-          </div>
-          <div>
-            <dt>Network</dt>
-            <dd>{proof.network}</dd>
-          </div>
-          <div>
-            <dt>Result</dt>
-            <dd>{proof.usefulResult ? 'useful' : 'not proven'}</dd>
-          </div>
-          <div>
-            <dt>Replay</dt>
-            <dd>{proof.replaySameReceipt ? 'same receipt, no second charge' : 'not proven'}</dd>
-          </div>
-          <div>
-            <dt>Customer revenue evidence</dt>
-            <dd>{proof.revenueEvidence ? 'recorded' : 'none'}</dd>
-          </div>
+          <div><dt>Paid route</dt><dd>/v1/search/paid</dd></div>
+          <div><dt>Payment response</dt><dd>HTTP 402 before execution</dd></div>
+          <div><dt>Binding amount</dt><dd>The request-specific 402 challenge</dd></div>
+          <div><dt>Unknown settlement</dt><dd>Reconcile; do not authorize again</dd></div>
+          <div><dt>Replay</dt><dd>Same key and body return the completed result</dd></div>
         </dl>
         <div className="cluster research-actions">
-          <Link className="button button--secondary" to="/proof">Inspect the proof record</Link>
-          <Link className="button button--quiet" to="/proof-lab">Run the no-payment fixture</Link>
+          <Link className="button button--secondary" to="/docs/x402">Read the x402 guide</Link>
+          <Link className="button button--quiet" to="/docs/replay">Read replay semantics</Link>
         </div>
       </section>
     </>

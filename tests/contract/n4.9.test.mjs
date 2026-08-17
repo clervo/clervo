@@ -172,30 +172,21 @@ test('a caller-supplied key keeps its exact replay and conflict behaviour, and t
   });
 });
 
-test('the free route reads a JSON body from the content types a naive client sends, and the paid route still requires application/json', async () => {
+test('all execution routes require an explicit JSON content type', async () => {
   const executor = recordedExecutor();
   await withServer({ executor, now: () => now, freeQuota: new InMemoryFreeSearchQuota(5, 60_000) }, async (origin) => {
     const body = JSON.stringify({ query: 'shortest possible command', maxResults: 1, synthesize: false });
-    // `curl -d` sends application/x-www-form-urlencoded, and a fetch() with a
-    // string body and no headers sends text/plain. Both are what the published
-    // one-line example actually produces, so both must reach the free route.
-    for (const contentType of ['application/x-www-form-urlencoded', 'text/plain;charset=UTF-8', 'multipart/form-data', 'application/json']) {
+    for (const contentType of ['application/x-www-form-urlencoded', 'text/plain;charset=UTF-8', 'multipart/form-data']) {
       const response = await fetch(`${origin}${SEARCH_FREE_PATH}`, { method: 'POST', headers: { 'content-type': contentType }, body });
-      assert.equal(response.status, 200, `free route must accept a JSON body declared as ${contentType}`);
-      assert.equal((await response.json()).fundingMode, 'free');
+      assert.equal(response.status, 415, `free route must reject JSON declared as ${contentType}`);
+      assert.equal((await response.json()).code, 'unsupported_media_type');
     }
-    // An absent content-type is accepted for the same reason.
     const undeclared = await fetch(`${origin}${SEARCH_FREE_PATH}`, { method: 'POST', headers: { 'content-type': '' }, body });
-    assert.equal(undeclared.status, 200);
+    assert.equal(undeclared.status, 415);
 
-    // The body itself is still required to be JSON. Nothing is ever parsed as a
-    // form, so a real form submission is refused rather than reinterpreted.
-    const form = await fetch(`${origin}${SEARCH_FREE_PATH}`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
-      body: 'query=form+encoded',
-    });
-    assert.equal(form.status, 400);
+    const json = await fetch(`${origin}${SEARCH_FREE_PATH}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body });
+    assert.equal(json.status, 200);
+    assert.equal((await json.json()).fundingMode, 'free');
 
     // A payable request must be explicit about what it is sending: the
     // relaxation is scoped to the unauthenticated free sample.
@@ -205,7 +196,7 @@ test('the free route reads a JSON body from the content types a naive client sen
       body,
     });
     assert.equal(paid.status, 415);
-    assert.equal(executor.calls, 5);
+    assert.equal(executor.calls, 1);
   });
 });
 

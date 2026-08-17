@@ -12,12 +12,13 @@ steps:
     env:
       - CLERVO_CLOUD_ACCEPTANCE=true
       - CLERVO_EXPECTED_RELEASE_SHA=$_RELEASE_SHA
+      - CLERVO_PRODUCTION_RECOVERY_BUILD=$_RECOVERY_MODE
       - SECRET_SCAN_SOURCE_ARCHIVE=1
     args:
       - -ceu
       - |
         npm ci
-        npm run test:stage14
+        npm run test:b14
   - id: image
     name: gcr.io/cloud-builders/docker@sha256:f8b08c609fdc392ee6827ff3e1725e4980f7d96bde9f76f4695086405c96c147
     args:
@@ -43,3 +44,5 @@ options:
   requestedVerifyOption: VERIFIED
   logging: CLOUD_LOGGING_ONLY
 timeout: 1800s
+substitutions:
+  _RECOVERY_MODE: none

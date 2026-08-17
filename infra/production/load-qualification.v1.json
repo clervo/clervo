@@ -2,8 +2,14 @@
   "schemaVersion": "clervo.production-load-qualification-policy.v1",
   "burstRequests": 1000,
   "maximumConcurrentExecutions": 16,
+  "maximumFreeExecutions": 4,
+  "ramp": [
+    { "name": "normal", "requests": 32, "clientConcurrency": 1 },
+    { "name": "elevated", "requests": 64, "clientConcurrency": 2 },
+    { "name": "heavy", "requests": 128, "clientConcurrency": 4 }
+  ],
   "steadyRequests": 256,
-  "steadyClientConcurrency": 8,
+  "steadyClientConcurrency": 4,
   "maximumOverloadP95Ms": 2000,
   "maximumSteadyP95Ms": 250,
   "maximumRssGrowthBytes": 201326592,

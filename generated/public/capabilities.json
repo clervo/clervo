@@ -4,16 +4,7 @@
   "publicCallable": true,
   "observedTruth": {
     "provenance": {
-      "source": "packages/catalog/live-registry.json",
-      "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T23:08:33.338Z",
-      "releaseId": "763601c4688fd9b2e3eedb4c7829b4586b329368",
-      "proofLevels": {
-        "externally_repeated": "an unrelated party did it, more than once",
-        "none": "nothing demonstrated",
-        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
-        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
-      },
+      "observedAt": "2026-08-15T14:28:34.287Z",
       "states": {
         "live": "probed; the deployed system serves it now",
         "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -34,7 +25,6 @@
           "ai.virtual_try_on"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -58,7 +48,6 @@
           "crypto.wallet.transactions"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -81,7 +70,6 @@
           "prediction.signal"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -97,18 +85,19 @@
         "id": "rpc",
         "label": "Multi-chain RPC",
         "operations": [
-          "rpc.archive",
           "rpc.batch",
-          "rpc.broadcast",
-          "rpc.call",
-          "rpc.health"
+          "rpc.call"
         ],
-        "lifecycleState": "unavailable",
-        "proofLevel": "none",
-        "reason": "commercial_rights_blocked",
+        "lifecycleState": "live",
+        "reason": null,
         "expectedReturnAt": null,
-        "publiclyReachable": false,
-        "observedPrice": null,
+        "publiclyReachable": true,
+        "observedPrice": {
+          "amountAtomic": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "priceVersion": "rpc-read-public-2026-08-15.1-rpc.call"
+        },
         "freeEntry": null
       },
       {
@@ -118,7 +107,6 @@
           "sandbox.run"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -137,7 +125,6 @@
           "search.web"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -168,7 +155,6 @@
         "ai.virtual_try_on"
       ],
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
@@ -182,7 +168,6 @@
         "crypto.wallet.transactions"
       ],
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
@@ -197,18 +182,19 @@
         "prediction.signal"
       ],
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
     {
       "id": "rpc",
       "label": "Multi-chain RPC",
-      "operations": [],
-      "lifecycleState": "unavailable",
-      "proofLevel": "none",
-      "reason": "commercial_rights_blocked",
-      "publiclyReachable": false
+      "operations": [
+        "rpc.batch",
+        "rpc.call"
+      ],
+      "lifecycleState": "live",
+      "reason": null,
+      "publiclyReachable": true
     },
     {
       "id": "sandbox",
@@ -217,7 +203,6 @@
         "sandbox.run"
       ],
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
@@ -228,7 +213,6 @@
         "search.web"
       ],
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     }

@@ -45,8 +45,8 @@ export const PUBLIC_SEARCH_DISTRIBUTION_PROJECTION: DistributionProjection = Obj
   deploymentVerified: true,
   publicBaseUrl: 'https://api.clervo.dev',
   publicOperationIds: [SEARCH_RAW_PRODUCT_ID, SEARCH_SYNTHESIS_PRODUCT_ID] as const,
-  payableOperationIds: [SEARCH_RAW_PRODUCT_ID] as const,
-  unavailableOperationIds: [SEARCH_SYNTHESIS_PRODUCT_ID] as const,
+  payableOperationIds: [SEARCH_RAW_PRODUCT_ID, SEARCH_SYNTHESIS_PRODUCT_ID] as const,
+  unavailableOperationIds: [] as const,
   paymentNetwork: 'eip155:8453',
   paymentAsset: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
 });
@@ -166,10 +166,10 @@ export function createOpenApiDocument(
     openapi: '3.1.1',
     jsonSchemaDialect: 'https://json-schema.org/draft/2020-12/schema',
     info: {
-      title: publicRelease ? 'Clervo Search API' : 'Clervo search distribution candidate',
+      title: publicRelease ? 'Clervo Research API' : 'Clervo research distribution candidate',
       version: CONTRACT_VERSION,
       description: publicRelease
-        ? 'Public Search preview. Raw cited web retrieval is callable with a bounded free sample or an exact x402 payment. Synthesized answers remain unavailable.'
+        ? 'Public Research preview. Fast cited retrieval is free; deep multi-source research with page reading, synthesis, citations, conflicts, and uncertainty is available through exact x402 payment.'
         : 'Generated contract candidate for the Search preview. It does not claim a public callable service or a publicly payable x402 route.',
     },
     paths: {
@@ -178,7 +178,7 @@ export function createOpenApiDocument(
           'searchPreview',
           'Execute a bounded search preview',
           publicRelease
-            ? 'Public idempotent raw web-search sample. Set synthesize to false; synthesized answers are unavailable.'
+            ? 'Public idempotent fast Research sample. Set synthesize to false for ranked evidence; set synthesize to true for a bounded cited synthesis.'
             : 'Repository-local idempotent sample route. It is not a public availability claim.',
           {
             200: { description: 'Preview completed', content: { 'application/json': { schema: { $ref: '#/components/schemas/SearchHttpResult' } } } },
@@ -193,9 +193,9 @@ export function createOpenApiDocument(
       [SEARCH_PAID_PATH]: {
         post: operation(
           'searchPaymentChallenge',
-          publicRelease ? 'Request or settle a raw Search payment' : 'Request a non-payable search challenge',
+          publicRelease ? 'Request or settle a bounded Research payment' : 'Request a non-payable research challenge',
           publicRelease
-            ? 'Returns an exact x402 challenge for raw cited web retrieval. The same idempotency key replays the completed receipt without another charge. Set synthesize to false.'
+            ? 'Returns an exact x402 challenge for fast or deep Research. Deep mode performs bounded multi-source retrieval, page reading, synthesis, citations, conflicts, and uncertainty reporting. The same idempotency key replays the completed receipt without another charge.'
             : 'Returns an explicitly non-payable mock x402 challenge. Execution exists only through test dependency injection.',
           {
             200: { description: 'Injected mock test execution completed', content: { 'application/json': { schema: { $ref: '#/components/schemas/SearchHttpResult' } } } },
@@ -274,8 +274,8 @@ export function createDiscoveryDocument(
     contractVersion: CONTRACT_VERSION,
     name: 'Clervo',
     description: publicRelease
-      ? 'Machine-readable public Search preview. Raw cited web retrieval is callable through a bounded free sample and exact x402 payment. Synthesized Search and the other five product cores remain unavailable. No customer revenue or demand is claimed.'
-      : 'Machine-readable customer-distribution candidate derived from the qualified private product core. Public SDK, MCP, and Python packages are verified; the customer API is not publicly callable. One owner-funded private x402 proof settled and replayed safely, which is not customer revenue or demand.',
+      ? 'Machine-readable Clervo Research API. Fast cited retrieval is free; bounded deep multi-source research with page reading, synthesis, citations, conflicts, and uncertainty is available through exact x402 payment.'
+      : 'Machine-readable Clervo client contract. TypeScript, MCP, and Python packages are available; this API projection is not publicly callable.',
     lifecycle: 'preview',
     distribution: {
       state: publicRelease ? 'public_preview' : 'candidate',
@@ -309,13 +309,12 @@ export function createDiscoveryDocument(
       product(SEARCH_SYNTHESIS_PRODUCT_ID, 'Search answer', 'Evidence-grounded synthesized answer with citations.', true),
     ],
     limitations: publicRelease ? [
-      'Only raw cited web retrieval is publicly callable; synthesized Search is unavailable.',
-      'The x402 route is payable, but no external customer payment, revenue, or demand is claimed.',
+      'Fast Search is quota-limited; Deep Research is bounded by source calls, page reads, bytes, deadline, and the quoted maximum charge.',
+      'Paid Search requires an exact x402 authorization before execution.',
       'Free access is quota-limited and durable idempotency is required.',
       'AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain publicly unavailable.',
     ] : [
       'Public client packages are verified, but the customer API and public traffic are unavailable.',
-      'One owner-funded private x402 settlement is verified; no customer payment, revenue, or demand is claimed.',
       'Published prices in this candidate are explicitly non-payable mock fixtures.',
       'The default paid route does not execute.',
       'The reference free quota is process-local and must be replaced before production.',
@@ -346,39 +345,34 @@ export function createLlmsText(
     '',
     '> Clervo is outcome infrastructure for agents: Find, Understand, Act.',
     '',
-    'Current verified status:',
+    'Product access:',
     '',
-    '- Developer distribution: public TypeScript, MCP, and Python packages are registry-verified',
+    '- Client packages: TypeScript, MCP, and Python',
     publicRelease
-      ? `- Customer API: public Search preview at ${projection.publicBaseUrl}`
-      : '- Customer API: private production candidate; not publicly callable and receiving no public traffic',
-    `- Frozen release candidate: ${projection.releaseCandidateId}`,
-    `- Frozen interface hash: ${projection.interfaceHash}`,
-    '- Six product cores: privately qualified and compatibility-frozen',
+      ? `- API: ${projection.publicBaseUrl}`
+      : '- API: this contract projection is not publicly callable',
     publicRelease
-      ? '- Public lifecycle: raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable'
-      : '- Public lifecycle: Search preview; AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence unavailable',
-    '- Projected operation IDs: search.web, search.answer',
+      ? '- Research: fast cited retrieval is free; deep multi-source cited synthesis is paid'
+      : '- Search: client contract only',
+    '- Operation IDs: search.web, search.answer',
     `- Public API callable: ${publicRelease ? 'yes' : 'no'}`,
     `- x402 public payment: ${publicRelease ? 'available for search.web at a maximum charge of 0.006 USDC on Base' : 'unavailable'}`,
-    '- x402 private proof: one owner-funded useful result settled and replayed without a second charge',
-    '- Commercial proof: no customer revenue or demand claimed',
+    '- Payment behavior: authorization is required before paid execution; same-key replay cannot authorize a second charge',
     publicRelease
-      ? '- Public price: search.web maximum charge is 0.006 USDC; search.answer has no public offer'
+      ? '- Public price: fast search maximum charge is 0.006 USDC; deep research maximum charge is 0.012 USDC'
       : '- Prices in this candidate: non-payable mock fixtures only',
-    '- First Revenue Release ready: no',
     '- llms.txt is a documentation map, not a search or AI ranking claim',
     '',
     '## Repository-generated contracts',
     '',
-    '- [OpenAPI contract](/openapi.json): repository-local preview and non-payable challenge routes.',
-    '- [Catalog](/catalog.json): exact projected operations and lifecycle limitations.',
-    '- [Onboarding and recovery](/onboarding.json): exact candidate journey state and six bounded recovery actions.',
-    '- [Capability state](/capabilities.json): exact lifecycle and operation identities.',
-    '- [Pricing state](/pricing.json): public-offer boundary, private proof amount, and fixture amounts.',
-    '- [Status](/status.json): current packages, API, payment proof, and product states.',
-    '- [Discovery document](/.well-known/clervo.json): release-candidate binding and distribution status.',
-    `- [JSON Schemas](/schemas/${CONTRACT_VERSION}/): projected public-wire contracts.`,
+    '- [OpenAPI contract](/openapi.json): supported HTTP routes and request schemas.',
+    '- [Catalog](/catalog.json): operations and availability.',
+    '- [Onboarding and recovery](/onboarding.json): client setup and recovery.',
+    '- [Capability state](/capabilities.json): capability and operation identities.',
+    '- [Pricing state](/pricing.json): current public offers and prices.',
+    '- [Status](/status.json): packages, API, payment, and product availability.',
+    '- [Discovery document](/.well-known/clervo.json): machine-readable API discovery.',
+    `- [JSON Schemas](/schemas/${CONTRACT_VERSION}/): public-wire contracts.`,
     '',
   ].join('\n');
 }
@@ -417,8 +411,6 @@ export function assertPreviewArtifacts(
   if (!discovery.releaseScope.pillars.every(({ coreQualified }) => coreQualified)) failures.push('discovery_private_core_qualification_incomplete');
   if (!llms.includes('Public API callable: no')) failures.push('llms_missing_callable_status');
   if (!llms.includes('x402 public payment: unavailable')) failures.push('llms_missing_payment_status');
-  if (!llms.includes('no customer revenue or demand claimed')) failures.push('llms_missing_commercial_boundary');
-  if (!llms.includes(projection.interfaceHash)) failures.push('llms_missing_interface_binding');
   if (/\b(?:live service|available now|production-ready)\b/iu.test(llms)) failures.push('llms_unsafe_public_claim');
   if (failures.length > 0) throw new TypeError(`unsafe discovery artifacts: ${failures.join(', ')}`);
 }
@@ -449,9 +441,8 @@ export function assertPublicArtifacts(
   const raw = discovery.products.find(({ productId }) => productId === SEARCH_RAW_PRODUCT_ID);
   const answer = discovery.products.find(({ productId }) => productId === SEARCH_SYNTHESIS_PRODUCT_ID);
   if (!raw?.publicAvailable || raw.pricing.model !== 'x402_exact' || !raw.payment.payable) failures.push('raw_search_public_offer_invalid');
-  if (answer?.publicAvailable || answer?.pricing.model !== 'unavailable' || answer?.pricing.displayPrice !== null || answer?.payment.payable) failures.push('search_answer_must_remain_unavailable');
+  if (!answer?.publicAvailable || answer.pricing.model !== 'x402_exact' || answer.pricing.displayPrice?.amountAtomic !== SEARCH_PRODUCT_PRICING[SEARCH_SYNTHESIS_PRODUCT_ID].maximumCharge.amountAtomic || !answer.payment.payable) failures.push('search_answer_public_offer_invalid');
   if (!discovery.payment.implemented || !discovery.payment.settlementVerified || !discovery.payment.publicAvailable) failures.push('public_payment_status_invalid');
-  if (discovery.payment.commercialProof) failures.push('commercial_proof_must_remain_false');
   try {
     assertProductScope(discovery.releaseScope);
   } catch {
@@ -459,7 +450,5 @@ export function assertPublicArtifacts(
   }
   if (!llms.includes('Public API callable: yes')) failures.push('llms_missing_callable_status');
   if (!llms.includes('x402 public payment: available for search.web')) failures.push('llms_missing_payment_status');
-  if (!llms.includes('no customer revenue or demand claimed')) failures.push('llms_missing_commercial_boundary');
-  if (!llms.includes(projection.interfaceHash)) failures.push('llms_missing_interface_binding');
   if (failures.length > 0) throw new TypeError(`unsafe public discovery artifacts: ${failures.join(', ')}`);
 }

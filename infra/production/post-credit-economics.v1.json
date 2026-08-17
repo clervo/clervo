@@ -27,8 +27,7 @@
         "commercially_permitted_supplier_route",
         "observed_supplier_cost_at_or_below_ceiling",
         "monitoring_delivery_acknowledged",
-        "receiver_accounting_ready",
-        "real_payment_still_requires_stage15_owner_approval"
+        "receiver_accounting_ready"
       ]
     },
     {
@@ -47,8 +46,7 @@
         "commercially_permitted_search_and_synthesis_routes",
         "observed_combined_supplier_cost_at_or_below_ceiling",
         "monitoring_delivery_acknowledged",
-        "receiver_accounting_ready",
-        "real_payment_still_requires_stage15_owner_approval"
+        "receiver_accounting_ready"
       ]
     }
   ],
@@ -83,7 +81,5 @@
       "source": "https://blockrun.ai/docs/api-reference/exa-search",
       "use": "competitive_price_ceiling"
     }
-  ],
-  "customerPaymentEnabled": false,
-  "ownerCashSpentUsd": 0
+  ]
 }

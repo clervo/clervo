@@ -3,22 +3,13 @@ import { useEffect } from 'react';
 import type { ExperiencePhase } from '../product';
 import { Link } from '../router';
 
-/*
- * /trust — the index of the claim-boundary pages.
- *
- * It exists so that the six kinds of readiness Clervo tracks are visible as six
- * separate things. Collapsing them is how one kind of readiness starts to
- * impersonate another: a published package standing in for a live API, a
- * settled proof standing in for revenue.
- */
-
 const map: Array<{ to: string; label: string; detail: string }> = [
-  { to: '/status', label: 'Status', detail: 'What the deployed system was observed doing, probed rather than asserted.' },
-  { to: '/proof', label: 'Proof', detail: 'The recorded settlement and replay evidence, and what it does not establish.' },
-  { to: '/pricing', label: 'Pricing', detail: 'Observed maximum charges, kept separate from the recorded proof amount.' },
+  { to: '/status', label: 'Status', detail: 'Current API, family, route, and package availability.' },
+  { to: '/proof', label: 'Payments and replay', detail: 'How request identity, challenges, receipts, replay, and reconciliation work.' },
+  { to: '/pricing', label: 'Pricing', detail: 'Published fixed maximums and request-derived quotes.' },
   { to: '/security', label: 'Security', detail: 'The controls that fail closed, including unknown-settlement quarantine.' },
   { to: '/benchmarks', label: 'Benchmarks', detail: 'What has and has not been comparatively established.' },
-  { to: '/legal', label: 'Rights', detail: 'Supplier rights, terms-aware routing, and pending customer documents.' },
+  { to: '/legal', label: 'Legal', detail: 'Usage, payment, privacy and acceptable-operation boundaries.' },
 ];
 
 export function TrustOverview({ onPhase }: { onPhase(phase: ExperiencePhase): void }) {
@@ -28,16 +19,15 @@ export function TrustOverview({ onPhase }: { onPhase(phase: ExperiencePhase): vo
     <>
       <section className="page-lead">
         <p className="eyebrow">Trust</p>
-        <h1>Inspect the mechanism.</h1>
+        <h1>Understand the operating boundaries.</h1>
         <p className="lede">
-          Clervo keeps engineering state, customer lifecycle, commercial proof,
-          security controls, supplier rights, and observed status as six
-          separate facts, so one kind of readiness cannot impersonate another.
+          Find current availability, payment behavior, prices, security and
+          privacy controls, and usage terms in one place.
         </p>
       </section>
 
       <section className="band band--ruled trust-body" aria-labelledby="trust-map-heading">
-        <h2 id="trust-map-heading" className="sr-only">Claim boundary pages</h2>
+        <h2 id="trust-map-heading" className="sr-only">Trust and support pages</h2>
         <ul className="trust-map">
           {map.map(({ to, label, detail }) => (
             <li key={to}>

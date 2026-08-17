@@ -1,76 +1,62 @@
 # Clervo
 
-**Outcome infrastructure for AI agents.**
+Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.
 
-> Give your agent a task. Get a verified result.
+The public API is `https://api.clervo.dev`. Current products include AI, Web Search, Secure Sandbox, Prediction Intelligence, and Crypto Intelligence. Multi-chain RPC is not currently available through the public API.
 
-Clervo is an execution layer for agents that need to discover capabilities, route work, execute through external infrastructure, handle paid execution when supported, and receive results with explicit evidence and cost boundaries.
+## Start
 
-**Buy outcomes. Not integrations.**
+Make a free AI call:
 
-Instead of wiring every model, search provider, sandbox, data source, RPC, or paid tool independently, agent builders can work through one coherent capability layer. Clervo's product direction spans AI, Search, Secure Sandbox, Prediction, Crypto Intelligence, Multi-chain RPC, and the routing infrastructure that connects them.
-
-## Current public state
-
-Clervo keeps product direction separate from observed availability. The canonical launch state currently records:
-
-| Capability | Public state |
-| --- | --- |
-| Search | Publicly callable; bounded free entry and paid Base USDC execution verified |
-| AI | Publicly callable through the current canonical IDs and stable aliases published by `/v1/models`; owner-funded paid outcomes are verified for chat and image |
-| Secure Sandbox | Publicly callable paid one-shot execution verified; intentionally bounded single-node release |
-| Prediction Intelligence | Publicly callable paid outcomes verified |
-| Crypto Intelligence | Publicly callable paid outcomes verified for Ethereum and Base |
-| Multi-chain RPC | Private core qualified; public availability and commercial rights remain blocked |
-
-Paid-outcome evidence currently comes from bounded owner-funded production proof. **No customer revenue, market demand, or external-customer payment is claimed.** Lifecycle state is generated from the canonical registry and current evidence rather than inferred from source-code presence.
-
-Public endpoint: `https://api.clervo.dev`
-
-## For developers
-
-The public repository includes:
-
-- [`@clervo/sdk`](packages/sdk-typescript) — typed TypeScript client for the current Search client surface
-- [`clervo-sdk`](packages/sdk-python) — dependency-free Python client for the current Search client surface
-- [`@clervo/mcp`](packages/mcp) — stdio MCP server backed by the TypeScript SDK
-- machine-readable discovery, capability, pricing, status, onboarding, and OpenAPI artifacts generated from the product registry
-
-The published client packages remain narrower than the complete public capability catalog: package support does not imply every public operation is exposed through every client.
-
-## Try Clervo
-
-The current TypeScript client requires an explicit base URL:
-
-```ts
-import { ClervoClient } from '@clervo/sdk';
-
-const clervo = new ClervoClient({ baseUrl: 'https://api.clervo.dev' });
-const result = await clervo.search.web({ query: 'agent payment idempotency' });
+```sh
+curl -sS https://api.clervo.dev/v1/chat/completions \
+  -H 'content-type: application/json' \
+  -d '{"model":"clervo/laguna-s-2.1","messages":[{"role":"user","content":"Reply with ready."}],"max_completion_tokens":16}'
 ```
 
-For the exact operations, prices, payment boundary, lifecycle state, and failure contracts that are serving now, use the generated public catalog and OpenAPI artifacts rather than a hard-coded marketing claim.
+Connect Claude Code through MCP:
+
+```sh
+claude mcp add clervo -s user -- npx -y @clervo/mcp
+```
+
+Or choose another supported path at [clervo.dev/start](https://clervo.dev/start/):
+
+- [`@clervo/sdk`](packages/sdk-typescript) for TypeScript
+- [`clervo-sdk`](packages/sdk-python) for Python
+- [`@clervo/mcp`](packages/mcp) for Claude and other MCP clients
+- [`@clervo/router`](packages/router) for the CLI and local OpenAI-compatible proxy
+- [OpenAPI](https://api.clervo.dev/openapi.json) for direct HTTP
+
+The hosted API supports OpenAI Chat Completions at `POST /v1/chat/completions`, OpenAI Responses at `POST /v1/responses`, Anthropic Messages at `POST /v1/messages`, and the native Clervo route at `POST /v1/ai/execute`.
+
+## Payment safety
+
+Free operations require no wallet. Paid operations return HTTP 402 with the maximum price before execution. Clervo clients keep automatic payment off by default and support per-operation limits, daily limits, receipts, reconciliation, and same-key replay without a second payment.
+
+Payment uses USDC on Base through x402 or MPP. If settlement is unknown, retry only after reconciliation; never create a new authorization just to recover an uncertain request.
+
+Current products, model availability, routes, and prices are machine-readable:
+
+- [Discovery](https://api.clervo.dev/.well-known/clervo.json)
+- [Models](https://api.clervo.dev/v1/models)
+- [Pricing](https://api.clervo.dev/pricing.json)
+- [Status](https://api.clervo.dev/status.json)
+- [MCP discovery](https://api.clervo.dev/.well-known/mcp.json)
+- [x402 manifest](https://api.clervo.dev/.well-known/x402)
+- [Agent reference](https://api.clervo.dev/llms.txt)
 
 ## Work with the repository
 
-The repository is pinned to Node.js `24.18.1` and npm `10.9.8`.
+The repository requires Node.js `24.18.1` and npm `10.9.8`.
 
 ```sh
 npm ci --ignore-scripts
-npm run test:stage13:clients
-npm run test:stage13:site
+npm run generate:discovery
+npm run test:b13:clients
+npm run site:build
 ```
 
-Then preview the site locally:
-
-```sh
-npm run site:preview
-```
-
-## Why trust the boundary
-
-Clervo separates implementation, qualification, public availability, commercial proof, and market proof. A capability is not presented as live merely because code exists, and owner-funded proof is not presented as customer adoption.
-
-Never place credentials, wallet material, customer payloads, or authentication files in issues or commits. Security concerns should use the repository's private vulnerability-reporting channel.
+Never place credentials, wallet material, customer payloads, or authentication files in issues or commits. Report security concerns through the repository's private vulnerability-reporting channel.
 
 This source is currently unlicensed (`UNLICENSED`). No permission to copy, modify, or redistribute is granted unless Clervo publishes separate terms.

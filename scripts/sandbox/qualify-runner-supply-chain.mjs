@@ -29,7 +29,7 @@ const rootfs = path.join(temporary, 'rootfs');
 const generated = path.join(temporary, 'generated');
 const clamDatabase = path.join(temporary, 'clam-database');
 const freshclamConfig = path.join(root, 'infra/sandbox/runner/freshclam-qualification.conf');
-const sbomPath = path.join(root, `docs/evidence/sandbox/${component}-sbom.spdx.json`);
+const sbomPath = path.join(root, `docs/evidence/sandbox/${component === 'runner' ? 'runner-sbom-hammer3' : 'control-sbom'}.spdx.json`);
 const reportPath = path.join(root, `docs/evidence/sandbox/${component}-supply-chain.v5.json`);
 let containerId;
 
@@ -63,10 +63,18 @@ try {
   await mkdir(rootfs); await mkdir(generated); await mkdir(clamDatabase);
   run('gcloud', ['auth', 'configure-docker', 'us-central1-docker.pkg.dev', '--quiet']);
   run('docker', ['pull', image]);
-  const metadata = JSON.parse(run('gcloud', [
-    'artifacts', 'docker', 'images', 'describe', image,
-    '--project', 'bloxsniper-prod', '--show-provenance', '--show-package-vulnerability', '--format=json',
-  ]));
+  let metadata;
+  for (let attempt = 0; attempt < 40; attempt += 1) {
+    metadata = JSON.parse(run('gcloud', [
+      'artifacts', 'docker', 'images', 'describe', image,
+      '--project', 'bloxsniper-prod', '--show-provenance', '--show-package-vulnerability', '--format=json',
+    ]));
+    const completed = metadata.discovery_summary?.discovery?.some((entry) => entry.discovery?.analysisStatus === 'FINISHED_SUCCESS'
+      && ['OS', 'NPM', 'SECRET'].every((type) => entry.discovery?.analysisCompleted?.analysisType?.includes(type)));
+    if (completed) break;
+    if (attempt === 39) throw new Error('sandbox_artifact_analysis_timeout');
+    await new Promise((resolve) => setTimeout(resolve, 15_000));
+  }
   assert.equal(metadata.image_summary?.fully_qualified_digest, image);
   assert.ok(metadata.image_summary?.slsa_build_level >= 3);
   const discovery = metadata.discovery_summary?.discovery ?? [];
@@ -80,6 +88,8 @@ try {
   run('docker', ['export', '--output', rootfsArchive, containerId]);
   run('docker', ['rm', containerId]); containerId = undefined;
   run('tar', ['--extract', '--file', rootfsArchive, '--directory', rootfs, '--no-same-owner', '--no-same-permissions']);
+  const syftVersion = JSON.parse(isolatedScanner(syftImage, [], ['version', '-o', 'json'])).version;
+  assert.equal(syftVersion, '1.44.0');
   isolatedScanner(syftImage, [[rootfs, '/scan/rootfs', 'ro'], [generated, '/out', 'rw']], [
     'dir:/scan/rootfs', '-o', 'spdx-json=/out/runner-sbom.spdx.json',
   ]);
@@ -112,7 +122,7 @@ try {
     build: { status: 'passed', builder: 'google-cloud-build', slsaBuildLevel: metadata.image_summary.slsa_build_level, provenanceAttestations: metadata.provenance_summary?.provenance?.length ?? 0 },
     artifactAnalysis: { status: 'passed', analysisStatus: 'FINISHED_SUCCESS', effectiveCritical: 0, effectiveHigh: 0, secretAnalysisComplete: true },
     malwareScan: { status: 'passed', scanner: 'clamav', version: clamVersion, databaseDownloadedBeforeIsolation: true, scanNetwork: 'none', filesScanned: scanned, infectedFiles: infected, scannerImage: clamImage },
-    sbom: { format: 'SPDX-2.3', generator: 'syft-1.44.0', path: path.relative(root, sbomPath), sha256: hash(finalSbom), packageCount: sbom.packages.length, generatorImage: syftImage },
+    sbom: { format: 'SPDX-2.3', generator: `syft-${syftVersion}`, path: path.relative(root, sbomPath), sha256: hash(finalSbom), packageCount: sbom.packages.length, generatorImage: syftImage },
     isolation: { dockerSocketMountedToScanner: false, scannerNetwork: 'none', scannerReadOnly: true, scannerCapabilitiesDropped: 'ALL' },
   };
   await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`);

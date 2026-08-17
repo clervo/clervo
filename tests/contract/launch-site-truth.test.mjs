@@ -1,38 +1,14 @@
 import assert from 'node:assert/strict';
-import { access, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
-import { AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, estimateAiSupplierCost } from '../../dist/packages/contracts/src/index.js';
+import { AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, AI_MAXIMUM_OUTPUT_TOKENS, estimateAiSupplierCost } from '../../dist/packages/contracts/src/index.js';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const read = (file) => readFile(path.join(root, file), 'utf8');
 const json = async (file) => JSON.parse(await read(file));
 
-test('canonical launch state is evidence-bound while internal claims are not published', async () => {
-  const [source, release, proof] = await Promise.all([
-    json('packages/catalog/launch-state.v1.json'),
-    json('packages/distribution/release-targets.v1.json'),
-    json('infra/production/gcp/prediction-x402-proof.v1.json'),
-  ]);
-  await assert.rejects(access(path.join(root, 'generated/public/claims.json')));
-  assert.equal(source.repository.url, 'https://github.com/clervo/clervo');
-  assert.equal(source.distribution.packages.state, release.publication.state);
-  assert.deepEqual(
-    source.distribution.packages.items.map(({ registry, name, version }) => [registry, name, version]),
-    release.packages.map(({ registry, name, version }) => [registry, name, version]),
-  );
-  const operation = proof.operations.find(({ productId }) => productId === source.paymentProof.productId);
-  assert.equal(source.paymentProof.amountAtomic, operation.customerChargeAtomic);
-  assert.equal(source.paymentProof.settlementConfirmed, true);
-  assert.equal(source.paymentProof.replaySameReceipt, true);
-  assert.equal(source.paymentProof.secondAuthorization, false);
-  assert.equal(source.paymentProof.secondExecution, false);
-  assert.equal(source.paymentProof.secondCharge, false);
-  assert.equal(source.paymentProof.revenueEvidence, false);
-  assert.equal(source.paymentProof.demandEvidence, false);
-});
-
-test('machine discovery publishes every live public product without overstating proof', async () => {
+test('machine discovery publishes every live public product and payment contract', async () => {
   const [discovery, status, pricing, capabilities, mcp, openapi, yaml, aiPricing] = await Promise.all([
     json('generated/public/.well-known/clervo.json'),
     json('generated/public/status.json'),
@@ -49,7 +25,7 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(discovery.releaseScope, undefined);
   assert.equal(discovery.artifacts.claims, undefined);
   assert.ok(discovery.products.every(({ publicAvailable }) => publicAvailable));
-  assert.equal(discovery.products.some(({ productId }) => productId === 'search.answer'), false);
+  assert.equal(discovery.products.some(({ productId }) => productId === 'search.answer'), true);
   const ai = discovery.products.find(({ productId }) => productId === 'ai');
   assert.equal(ai.publicAvailable, true);
   assert.equal(ai.payment.payable, true);
@@ -66,9 +42,7 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(prediction.length, 5);
   assert.ok(prediction.every(({ publicAvailable, payment }) => publicAvailable && payment.payable));
   assert.equal(status.packages.state, 'published_verified');
-  assert.equal(status.paymentProof?.settlementConfirmed, true);
-  assert.equal(status.paymentProof?.usefulResult, true);
-  assert.equal(status.paymentProof?.revenueEvidence, false);
+  assert.equal(status.paymentProof, undefined);
   assert.equal(pricing.publicOfferAvailable, true);
   assert.equal(pricing.publicPrice.productId, 'search.web');
   assert.equal(pricing.publicPrice.amountAtomic, '6000');
@@ -81,6 +55,9 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(mcp.paymentSigningImplemented, true);
   assert.deepEqual(yaml, openapi);
   assert.ok(openapi.paths['/v1/ai/execute']);
+  assert.ok(openapi.paths['/v1/chat/completions']);
+  assert.ok(openapi.paths['/v1/messages']);
+  assert.ok(openapi.paths['/v1/responses']);
   assert.ok(openapi.paths['/v1/sandbox/execute']);
   assert.ok(openapi.paths['/v1/prediction/execute']);
   assert.equal(openapi.info.contact.url, 'https://github.com/clervo/clervo');
@@ -106,6 +83,7 @@ test('machine discovery publishes every live public product without overstating 
   assert.equal(aiProbe.schema.properties.model.type, 'string');
   assert.equal(aiProbe.schema.properties.model.enum, undefined);
   assert.equal(aiProbe.schema.properties.model.default, undefined);
+  assert.equal(aiProbe.schema.properties.maximumOutputTokens.maximum, AI_MAXIMUM_OUTPUT_TOKENS);
   assert.deepEqual(openapi.paths['/v1/sandbox/execute'].post['x-payment-info'], {
     price: { mode: 'dynamic', currency: 'USD', min: '0.010000', max: '0.060000' },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
@@ -120,18 +98,18 @@ test('machine discovery publishes every live public product without overstating 
   assert.doesNotMatch(JSON.stringify(openapi.paths), /"\$ref"/u);
 });
 
-test('launch pages and discovery surfaces exist without forbidden or stale claims', async () => {
+test('important site routes and discovery surfaces are built', async () => {
   const requiredPages = [
     'index.html',
+    'start/index.html',
+    'product/index.html',
     'research/index.html',
-    'platform/index.html',
     'products/search/index.html',
     'products/ai/index.html',
     'products/sandbox/index.html',
     'products/rpc/index.html',
     'products/prediction/index.html',
     'products/crypto/index.html',
-    'proof/index.html',
     'pricing/index.html',
     'docs/quickstart/index.html',
     'docs/receipts/index.html',
@@ -139,31 +117,27 @@ test('launch pages and discovery surfaces exist without forbidden or stale claim
     'docs/failures/index.html',
     'docs/x402/index.html',
     'docs/catalog/index.html',
-    'trust/index.html',
+    'docs/index.html',
+    'operations/ai.execute/index.html',
+    'security/index.html',
+    'legal/index.html',
     'status/index.html',
     'changelog/index.html',
   ];
   const pages = await Promise.all(requiredPages.map((file) => read(`apps/site/dist/${file}`)));
   assert.ok(pages.every((html) => html.includes('rel="canonical"')));
-  const publicText = [
-    ...pages,
-    await read('generated/public/llms.txt'),
-  ].join('\n');
-  assert.doesNotMatch(publicText, /\/claims\.json/iu);
-  assert.doesNotMatch(publicText, /Every AI model|Google-quality|BlockRun has 0 free|20% cheaper than BlockRun/iu);
-  assert.doesNotMatch(publicText, /Package candidates · publication not verified/iu);
-  assert.doesNotMatch(publicText, /the one thing on this site that was actually paid|the single fact on the site that has actually been paid|Settled paid outcome<\/dt><dd><b>1|x402 private proof: one owner-funded/iu);
-  assert.match(publicText, /free-first Search path/iu);
-  assert.match(publicText, /Public API callable: yes/iu);
-  assert.match(publicText, /x402 owner-funded proof: settled outcomes are reported per product/iu);
-  assert.match(publicText, /no customer revenue or demand (?:is )?claimed/iu);
 
   const machineFiles = [
     'llms.txt',
     'openapi.yaml',
     'openapi.json',
     '.well-known/clervo.json',
+    '.well-known/agent.json',
     '.well-known/mcp.json',
+    '.well-known/mcp/server.json',
+    '.well-known/x402',
+    'agents.txt',
+    'v1/models',
     'catalog.json',
     'capabilities.json',
     'pricing.json',

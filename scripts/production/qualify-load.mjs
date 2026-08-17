@@ -12,6 +12,7 @@ import {
 } from '../../dist/packages/contracts/src/index.js';
 import { createSearchServer } from '../../apps/api/src/search-server.mjs';
 import { InMemorySearchStateStore } from '../../apps/api/src/search-state-store.mjs';
+import { SharedCapacityController } from '../../apps/api/src/shared-boundary.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const policy = JSON.parse(await readFile(path.join(root, 'infra/production/load-qualification.v1.json'), 'utf8'));
@@ -66,7 +67,7 @@ const executor = {
     calls += 1;
     active += 1;
     maximumActive = Math.max(maximumActive, active);
-    if (burstMode && active === policy.maximumConcurrentExecutions) burstStartedResolve();
+    if (burstMode && active === policy.maximumFreeExecutions) burstStartedResolve();
     try {
       if (burstMode) await burstGate;
       else await new Promise((resolve) => setTimeout(resolve, 2));
@@ -86,6 +87,15 @@ const server = createSearchServer({
   stateStore,
   now: () => now,
   maxConcurrentExecutions: policy.maximumConcurrentExecutions,
+  capacityController: new SharedCapacityController({
+    maximumExecutions: policy.maximumConcurrentExecutions,
+    maximumFreeExecutions: policy.maximumFreeExecutions,
+    rateLimits: {
+      free: { limit: 10_000, windowMs: 60_000 },
+      quote: { limit: 10_000, windowMs: 60_000 },
+      paid: { limit: 10_000, windowMs: 60_000 },
+    },
+  }),
 });
 await new Promise((resolve, reject) => {
   server.once('error', reject);
@@ -130,7 +140,7 @@ async function concurrentRange(count, concurrency, prefix) {
 let report;
 try {
   const admittedPromises = Array.from(
-    { length: policy.maximumConcurrentExecutions },
+    { length: policy.maximumFreeExecutions },
     (_, index) => post(index + 1, 'burst'),
   );
   await Promise.race([
@@ -138,8 +148,8 @@ try {
     new Promise((_, reject) => setTimeout(() => reject(new Error('burst_admission_timeout')), 5_000)),
   ]);
   const overflow = await Promise.all(Array.from(
-    { length: policy.burstRequests - policy.maximumConcurrentExecutions },
-    (_, index) => post(index + policy.maximumConcurrentExecutions + 1, 'burst'),
+    { length: policy.burstRequests - policy.maximumFreeExecutions },
+    (_, index) => post(index + policy.maximumFreeExecutions + 1, 'burst'),
   ));
   assert.ok(overflow.every(({ status, body }) => status === 503 && body.code === 'search_overloaded'));
   const overloadP95Ms = percentile(overflow.map(({ latencyMs }) => latencyMs), 0.95);
@@ -154,6 +164,17 @@ try {
   assert.equal(calls, callsAfterBurst);
 
   burstMode = false;
+  const ramp = [];
+  for (const phase of policy.ramp) {
+    const results = await concurrentRange(phase.requests, phase.clientConcurrency, `ramp_${phase.name}`);
+    assert.ok(results.every(({ status }) => status === 200));
+    ramp.push({
+      name: phase.name,
+      requests: results.length,
+      clientConcurrency: phase.clientConcurrency,
+      p95Ms: percentile(results.map(({ latencyMs }) => latencyMs), 0.95),
+    });
+  }
   const steady = await concurrentRange(policy.steadyRequests, policy.steadyClientConcurrency, 'steady');
   assert.ok(steady.every(({ status }) => status === 200));
   const steadyP95Ms = percentile(steady.map(({ latencyMs }) => latencyMs), 0.95);
@@ -181,9 +202,11 @@ try {
       p50Ms: percentile(steady.map(({ latencyMs }) => latencyMs), 0.5),
       p95Ms: steadyP95Ms,
     },
+    ramp,
     runtime: {
       maximumActiveExecutions: maximumActive,
-      executionCeiling: policy.maximumConcurrentExecutions,
+      globalExecutionCeiling: policy.maximumConcurrentExecutions,
+      freeExecutionCeiling: policy.maximumFreeExecutions,
       totalExecutorCalls: calls,
       rssGrowthBytes,
       requestTimeoutMs: server.requestTimeout,

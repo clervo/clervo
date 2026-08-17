@@ -7,17 +7,21 @@ import {
   familyOf,
   formatUsdc,
   installExamples,
-  launchState,
+  publicStatus,
   lifecycleLabels,
   observedApiOrigin,
   observedProduct,
+  observedRoutes,
   publicApiCallable,
+  publicOperations,
   quickStartCurl,
   quickStartNeedsNoKey,
   type ExperiencePhase,
 } from '../product';
 import { Link } from '../router';
 import routerPackage from '../../../../packages/router/package.json';
+
+const freeAiModel = observedRoutes.find(({ sellable, billingMode }) => sellable && billingMode === 'free')?.id ?? 'clervo/laguna-s-2.1';
 
 /*
  * /docs and /docs/:client — the developer quickstart.
@@ -43,17 +47,15 @@ clervo catalog --models
 clervo doctor`,
   openai: `npm install openai
 
-clervo proxy
-
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  baseURL: 'http://127.0.0.1:8402/v1',
-  apiKey: 'local-placeholder'
+  baseURL: 'https://api.clervo.dev/v1',
+  apiKey: 'not-required'
 });
 
 const result = await openai.chat.completions.create({
-  model: 'clervo/fast',
+  model: '${freeAiModel}',
   messages: [{ role: 'user', content: 'Reply with ready.' }]
 });`,
 } as const;
@@ -63,7 +65,7 @@ type ClientId = keyof typeof clientExamples;
 const searchObserved = observedProduct('search');
 
 function packageVersion(name: string): string {
-  const item = launchState.distribution.packages.items.find((entry) => entry.name === name);
+  const item = publicStatus.packages.items.find((entry) => entry.name === name);
   return item === undefined ? 'unverified' : `${item.version} published`;
 }
 
@@ -73,7 +75,7 @@ const clients: Array<{ id: ClientId; label: string; packageName: string; version
   { id: 'typescript', label: 'TypeScript', packageName: '@clervo/sdk', version: packageVersion('@clervo/sdk') },
   { id: 'python', label: 'Python', packageName: 'clervo-sdk', version: packageVersion('clervo-sdk') },
   { id: 'mcp', label: 'MCP', packageName: '@clervo/mcp', version: packageVersion('@clervo/mcp') },
-  { id: 'openai', label: 'OpenAI-compatible', packageName: 'localhost proxy', version: `@clervo/router ${routerPackage.version}` },
+  { id: 'openai', label: 'OpenAI-compatible', packageName: 'hosted API + local proxy', version: `@clervo/router ${routerPackage.version}` },
 ];
 
 // Typed failures, in the order a caller meets them. The middle column is the
@@ -180,18 +182,20 @@ export function Docs({
           <p className="eyebrow">Clervo Connect / one local wallet</p>
           <h2 id="docs-connect">Free first. Then one wallet across every client.</h2>
           <p className="lede">
-            Run a useful free Search before creating any wallet. When you opt in
-            to paid work, the CLI, MCP, TypeScript, Python and localhost OpenAI
+            Run a useful free request before creating any wallet. When you opt
+            in to paid work, the CLI, MCP, TypeScript, Python and local OpenAI
             proxy share limits, receipts, replay, usage and reconciliation.
           </p>
         </div>
         <CodeBlock label="Free before wallet" code={'npx @clervo/router search "World Wide Web"\nclervo wallet create\nclervo limits'} />
-        <CodeBlock label="OpenAI-compatible localhost" code={'clervo proxy\n# base URL: http://127.0.0.1:8402/v1\n# add --auto-pay only after reviewing clervo limits'} />
+        <CodeBlock label="Hosted compatibility API" code={'# No local process required\n# base URL: https://api.clervo.dev/v1\n# Chat Completions, Responses, and Anthropic Messages'} />
+        <CodeBlock label="Local wallet-backed proxy" code={'clervo proxy\n# local base URL: http://127.0.0.1:8402/v1\n# models, Chat Completions, and embeddings\n# add --auto-pay only after reviewing clervo limits'} />
         <p className="quiet docs-note">
-          Supported OpenAI-compatible endpoints are models, chat completions
-          (ordinary and SSE), and embeddings. Canonical model IDs are exact or
-          fail. Usage comes from durable operation and receipt records; it is
-          never a hand-written financial counter.
+          The hosted API serves OpenAI Chat Completions and Responses plus
+          Anthropic Messages. The local Router proxy serves models, Chat
+          Completions, and embeddings; it does not claim a local Responses or
+          Anthropic Messages endpoint. The native hosted Clervo route remains
+          <code> POST /v1/ai/execute</code>.
         </p>
       </section>
 
@@ -212,7 +216,8 @@ export function Docs({
           <code>wallet create</code> never overwrites an existing wallet.
           <code> wallet restore</code> refuses to replace a wallet that holds a
           balance. If settlement is unknown, <code>reconcile</code> performs a
-          retrieval-only check with no new authorization and paid work stays frozen.
+          retrieval-only check with no new authorization and blocks new paid work
+          until the prior attempt is resolved.
         </p>
       </section>
 
@@ -277,7 +282,7 @@ export function Docs({
       <section className="band docs-body" aria-labelledby="docs-binding">
         <div className="section-head">
           <p className="eyebrow">Interface binding</p>
-          <h2 id="docs-binding">What these snippets are pinned to.</h2>
+          <h2 id="docs-binding">What these snippets use.</h2>
         </div>
         <dl className="facts">
           <div>
@@ -285,12 +290,12 @@ export function Docs({
             <dd>{discovery.contractVersion}</dd>
           </div>
           <div>
-            <dt>Observed runtime revision</dt>
-            <dd>{discovery.runtimeRelease.sourceCommit.slice(0, 12)}</dd>
+            <dt>Availability observed</dt>
+            <dd>{discovery.observedTruth.provenance.observedAt}</dd>
           </div>
           <div>
             <dt>Callable operation IDs</dt>
-            <dd>{discovery.runtimeRelease.operationIds.length}</dd>
+            <dd>{publicOperations.length}</dd>
           </div>
           <div>
             <dt>Observed API origin</dt>
@@ -298,7 +303,7 @@ export function Docs({
           </div>
           <div>
             <dt>Package publication</dt>
-            <dd>{launchState.distribution.packages.state.replaceAll('_', ' ')}</dd>
+            <dd>{publicStatus.packages.state.replaceAll('_', ' ')}</dd>
           </div>
           <div>
             <dt>Public payment quoted</dt>

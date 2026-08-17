@@ -157,7 +157,7 @@ function socialCard() {
   const markScale = 4.75;
   return [
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="social-card-title">',
-    '<title id="social-card-title">Clervo — Give your agent a task. Get a verified result.</title>',
+    '<title id="social-card-title">Clervo — AI models and agent tools, paid per call.</title>',
     `<rect width="1200" height="630" fill="${BLACK}"/>`,
     '<path d="M0 1H1200" stroke="#242426"/>',
     `<g transform="translate(104 128) scale(${markScale})">`,
@@ -165,9 +165,9 @@ function socialCard() {
     `<path d="${APEX_PATH}" fill="${MIST}" fill-rule="evenodd"/>`,
     '</g>',
     `<g transform="translate(475 230) scale(.72)"><path d="${WORDMARK_PATH}" fill="${MIST}"/></g>`,
-    '<text x="477" y="338" fill="#E6E6E8" font-family="Inter,Arial,sans-serif" font-size="37" font-weight="500">Give your agent a task.</text>',
-    '<text x="477" y="388" fill="#9A9A9F" font-family="Inter,Arial,sans-serif" font-size="37" font-weight="500">Get a verified result.</text>',
-    '<text x="477" y="458" fill="#77777D" font-family="JetBrains Mono,monospace" font-size="17" letter-spacing="2">OUTCOME INFRASTRUCTURE FOR AGENTS</text>',
+    '<text x="477" y="338" fill="#E6E6E8" font-family="Inter,Arial,sans-serif" font-size="37" font-weight="500">AI models and agent tools.</text>',
+    '<text x="477" y="388" fill="#9A9A9F" font-family="Inter,Arial,sans-serif" font-size="37" font-weight="500">Pay per call with x402.</text>',
+    '<text x="477" y="458" fill="#77777D" font-family="JetBrains Mono,monospace" font-size="17" letter-spacing="2">ONE WALLET · NO PROVIDER API KEYS</text>',
     '</svg>',
     '',
   ].join('\n');

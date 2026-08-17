@@ -15,9 +15,10 @@ import {
 } from './x402-paid-operation.mjs';
 
 export const RPC_PAID_PATH = '/v1/rpc/execute';
+export const RPC_HEALTH_PATH = '/v1/rpc/chains';
 export const RPC_MAX_BODY_BYTES = 262_144;
 
-const pricingByKind = Object.freeze({ call: 1n, batch: 1n });
+const pricingByKind = Object.freeze({ call: 1_000n, batch: 1_000n });
 
 function object(value, code) {
   return assertOperationObject(value, code);
@@ -50,9 +51,9 @@ export function rpcPublicPricing(normalized) {
   const units = normalized.input.kind === 'batch' ? BigInt(normalized.input.calls.length) : 1n;
   const amountAtomic = (pricingByKind[normalized.input.kind] * units).toString();
   return Object.freeze({
-    priceVersion: `rpc-read-public-2026-08-04.1-${normalized.productId}`,
+    priceVersion: `rpc-read-public-2026-08-15.1-${normalized.productId}`,
     maximumCharge: Object.freeze({ asset: 'USDC', amountAtomic, decimals: 6 }),
-    supplierCost: Object.freeze({ asset: 'usd', amountAtomic, decimals: 6 }),
+    supplierCost: Object.freeze({ asset: 'usd', amountAtomic: '0', decimals: 6 }),
   });
 }
 
@@ -72,18 +73,17 @@ export const RPC_DISCOVERY = Object.freeze({
   output: Object.freeze({ example: Object.freeze({ productId: 'rpc.call', state: 'RECEIPTED', replayed: false, result: Object.freeze({ output: Object.freeze({ kind: 'rpc', chainId: 'eip155:1' }) }), receipt: Object.freeze({ settlement: Object.freeze({ status: 'settled' }) }) }), schema: Object.freeze({ type: 'object', additionalProperties: true }) }),
 });
 
-export function createX402PaidRpcProcessor({ service, stateStore, runtime, acquireExecution } = {}) {
+export function createX402PaidRpcProcessor({ service, stateStore, runtime, acquireExecution, acquireQuote } = {}) {
   if (!runtime || typeof runtime.execute !== 'function' || runtime.durable !== true) throw new TypeError('invalid_public_rpc_runtime');
-  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution });
+  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution, acquireQuote });
   return Object.freeze({
     mode: processor.mode,
     durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, deadlineAt, signal }) {
       const selectedPricing = rpcPublicPricing(normalized);
-      /* RPC bounds the runtime by the supplier cost, not the customer charge.
-       * It buys each call from an upstream provider, so the supplier figure is
-       * the real ceiling; the two happen to be equal at current prices, and
-       * binding the wrong one would go unnoticed until they diverge. */
+      /* RPC bounds execution by the represented supplier cost. The current
+       * owned allocations have zero marginal cost; their finite usage is
+       * independently bounded by the production runtime call ceiling. */
       const request = operationExecutionRequest({
         schemaVersion: RPC_OPERATION_REQUEST_SCHEMA_VERSION,
         operationId,
@@ -92,12 +92,14 @@ export function createX402PaidRpcProcessor({ service, stateStore, runtime, acqui
         boundAmountAtomic: selectedPricing.supplierCost.amountAtomic,
         now,
         deadlineMs: 30_000,
+        deadlineAt,
       });
       assertRpcOperationRequest(request);
       return processor.process({
         idempotencyKey, requestHash, operationId, productId: normalized.productId, executionInput: request,
         paymentHeader, authorizationHeader, now, pricing: selectedPricing, resourcePath: RPC_PAID_PATH,
         discovery: RPC_DISCOVERY, overloadCode: 'rpc_overloaded',
+        deadlineAt, signal,
         async execute(executionRequest) {
           const completed = await runtime.execute(executionRequest);
           if (!completed?.result || !verifyRpcOperationResult(completed.result, executionRequest)) throw new TypeError('rpc_runtime_result_invalid');

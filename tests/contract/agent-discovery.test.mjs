@@ -64,25 +64,50 @@ test('the model list carries every catalogued route and no route the registry do
     assert.equal(entry.clervo.identityKind, authoritative.clervo.identityKind);
     assert.equal(entry.object, 'model');
     assert.equal(entry.owned_by, 'clervo');
-    assert.equal(entry.clervo.modelCreator, null);
-    assert.equal(entry.clervo.modelCreatorStatus, 'unknown');
-    assert.equal(entry.clervo.executionSupplier, 'Clervo AI Gateway');
-    assert.equal(entry.clervo.upstreamExecutionSupplier, null);
-    assert.equal(entry.clervo.upstreamExecutionSupplierStatus, 'not_publicly_disclosed');
+    for (const field of [
+      'modelCreator',
+      'modelCreatorStatus',
+      'executionSupplier',
+      'upstreamExecutionSupplier',
+      'upstreamExecutionSupplierStatus',
+    ]) {
+      assert.equal(
+        field in entry.clervo,
+        false,
+        `${entry.id} must not publish internal field ${field}`,
+      );
+    }
     assert.match(entry.clervo.ownedBySemantics, /not a model-creator claim/u);
     assert.equal(entry.clervo.commerce.executionPath, '/v1/ai/execute');
     if (entry.clervo.identityKind === 'alias') {
-      assert.equal(entry.clervo.aliasKind, 'fixed_canonical');
-      assert.equal(entry.clervo.selectionPolicy.kind, 'fixed_canonical');
-      assert.equal(entry.clervo.selectionPolicy.dynamicallyRouted, false);
-      assert.equal(entry.clervo.selectionPolicy.resolvedCanonicalResultField, 'exactModelId');
-      assert.ok(models.data.some(({ id, clervo }) => id === entry.clervo.aliasFor && clervo.identityKind === 'canonical'));
+      assert.equal(typeof entry.clervo.aliasFor, 'string');
+      assert.ok(
+        models.data.some(
+          ({ id, clervo }) =>
+            id === entry.clervo.aliasFor
+            && clervo.identityKind === 'canonical',
+        ),
+      );
+
+      for (const field of [
+        'aliasKind',
+        'aliasRationale',
+        'selectionPolicy',
+        'tradeoffs',
+        'isAlias',
+      ]) {
+        assert.equal(
+          field in entry.clervo,
+          false,
+          `${entry.id} must not publish internal alias field ${field}`,
+        );
+      }
     }
   }
   assert.equal(models.object, 'list');
 });
 
-test('the model list renders lifecycle state and proof level from the registry, never above it', () => {
+test('the model list renders current availability and sellability from the catalog', () => {
   for (const entry of models.data) {
     const catalogModel = catalogModelById.get(entry.id);
     assert.ok(catalogModel !== undefined, `${entry.id} must map to a frozen customer model identity`);
@@ -90,7 +115,14 @@ test('the model list renders lifecycle state and proof level from the registry, 
     assert.equal(entry.clervo.availability, authoritative.clervo.availability, `${entry.id} availability must match the catalog authority`);
     assert.equal(entry.clervo.health, authoritative.clervo.health, `${entry.id} health must match the catalog authority`);
     assert.equal(entry.clervo.publicSellable, catalogModel.sellable, `${entry.id} sellability must match the live catalog`);
-    if (!entry.clervo.publicSellable) assert.ok(entry.clervo.publicationBlockers.includes(catalogModel.reason));
+    if (entry.clervo.publicSellable) {
+      assert.equal('availabilityReason' in entry.clervo, false);
+    } else {
+      assert.equal(
+        entry.clervo.availabilityReason,
+        'temporarily_unavailable',
+      );
+    }
   }
   assert.deepEqual(registry.summary.aiRoutes, {
     live: models.data.filter(({ clervo }) => clervo.publicSellable).length,
@@ -99,8 +131,41 @@ test('the model list renders lifecycle state and proof level from the registry, 
 });
 
 test('every model price is projected byte-for-byte from the coherent B7 pricing authority', () => {
-  assert.deepEqual(models, b7Models);
+  assert.equal(
+    models.clervo.catalogRevision,
+    b7Models.clervo.catalogRevision,
+  );
+  assert.deepEqual(
+    models.clervo.inventory,
+    b7Models.clervo.inventory,
+  );
+
   for (const entry of models.data) {
+    const authoritative = b7Models.data.find(
+      ({ id }) => id === entry.id,
+    );
+
+    assert.ok(
+      authoritative !== undefined,
+      `${entry.id} must exist in the B7 pricing authority`,
+    );
+
+    assert.deepEqual(
+      entry.clervo.customerPricing,
+      authoritative.clervo.customerPricing,
+      `${entry.id} customer pricing must match the B7 authority`,
+    );
+
+    assert.equal(
+      entry.clervo.billingMode,
+      authoritative.clervo.billingMode,
+    );
+
+    assert.equal(
+      entry.clervo.commerce.payment,
+      authoritative.clervo.commerce.payment,
+    );
+
     const rates = Object.entries(entry.clervo.customerPricing)
       .filter(([field]) => field.endsWith('MicrosPerMillion')
         || field.endsWith('MicrosEach')
@@ -122,7 +187,11 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
   const familyOfResource = {
     'https://api.clervo.dev/v1/search/paid': 'search',
     'https://api.clervo.dev/v1/ai/execute': 'ai',
+    'https://api.clervo.dev/v1/chat/completions': 'ai',
+    'https://api.clervo.dev/v1/messages': 'ai',
+    'https://api.clervo.dev/v1/responses': 'ai',
     'https://api.clervo.dev/v1/sandbox/execute': 'sandbox',
+    'https://api.clervo.dev/v1/rpc/execute': 'rpc',
     'https://api.clervo.dev/v1/prediction/execute': 'prediction',
     'https://api.clervo.dev/v1/crypto/execute': 'crypto_intelligence',
   };
@@ -143,7 +212,7 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
     assert.equal(offer.payTo, product.observedQuote.payTo);
     assert.equal(offer.scheme, product.observedQuote.scheme);
     assert.equal(offer.extra.clervo.lifecycleState, product.state, `${family} lifecycle must match the registry`);
-    assert.equal(offer.extra.clervo.proofLevel, product.proof, `${family} proof level must match the registry`);
+    assert.equal('proofLevel' in offer.extra.clervo, false, `${family} must not publish internal proof classification`);
 
     // A request-derived price carries an example quote and says so. A fixed
     // price is the product-level quote and is binding. Publishing a per-request
@@ -164,13 +233,14 @@ test('the x402 manifest lists only resources the registry serves, at the quote i
         prediction: 'prediction.markets',
         crypto_intelligence: 'crypto.wallet.report',
         sandbox: 'sandbox.run',
+        rpc: 'rpc.call',
       };
-      assert.ok(Object.hasOwn(exampleOperationByFamily, family), 'only AI, Prediction, Crypto, and Sandbox use request-derived public quotes');
+      assert.ok(Object.hasOwn(exampleOperationByFamily, family), 'request-derived public quote family missing');
       assert.equal(offer.extra.clervo.operationId, exampleOperationByFamily[family]);
       assert.equal(offer.extra.clervo.exampleRouteId, null);
       assert.equal(
         offer.extra.clervo.priceModel,
-        family === 'sandbox' ? 'class_derived_quote' : 'request_derived_per_operation',
+        family === 'sandbox' ? 'class_derived_quote' : family === 'rpc' ? 'request_derived_per_call' : 'request_derived_per_operation',
       );
       assert.equal(offer.amount, product.observedQuote.amountAtomic);
       assert.equal(offer.extra.clervo.priceVersion, product.observedQuote.priceVersion);

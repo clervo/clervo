@@ -4,11 +4,10 @@
   "trafficRestoreRequires": [
     "database_readiness",
     "monitoring_delivery",
-    "nonpayable_useful_smoke"
+    "current_live_health"
   ],
   "rollbackTarget": "previous_verified_immutable_registry_digest",
   "rollbackFailsClosedWithoutTarget": true,
-  "paymentExecutionDuringStage14": false,
   "automaticRollbackSignals": [
     "readiness_unavailable",
     "repeated_execution_failure",

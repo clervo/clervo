@@ -9,6 +9,7 @@ const server = await readFile('apps/api/src/sandbox-control-main.mjs', 'utf8');
 const dockerfile = await readFile('infra/sandbox/control/Dockerfile', 'utf8');
 const supply = JSON.parse(await readFile('docs/evidence/sandbox/control-supply-chain.v5.json', 'utf8'));
 const live = JSON.parse(await readFile('docs/evidence/sandbox/control-service-live-smoke.v1.json', 'utf8'));
+const interruption = JSON.parse(await readFile('docs/evidence/sandbox/control-interruption-recovery.v1.json', 'utf8'));
 const sha256 = async (path) => `sha256:${createHash('sha256').update(await readFile(path)).digest('hex')}`;
 
 test('private Sandbox control is digest pinned, authenticated, non-public, and separated from execution nodes', () => {
@@ -30,6 +31,8 @@ test('private Sandbox control is digest pinned, authenticated, non-public, and s
   assert.match(server, /timingSafeEqual/u);
   assert.match(server, /\/internal\/v1\/sandbox\/run/u);
   assert.match(server, /active >= 2/u);
+  assert.match(server, /await plane\.reap\(\)/u);
+  assert.match(server, /sandbox_control_startup_cleanup_failed/u);
 });
 
 test('control identity receives only namespaced Agent Sandbox lifecycle and runner access', () => {
@@ -82,5 +85,11 @@ test('live private control returns useful output once, replays without execution
   assert.equal(live.replayWithoutExecution, true);
   assert.equal(live.cleanupVerified, true);
   assert.equal(live.chargedMicrousd, 0);
+  assert.deepEqual(live.capacity, { maximumConcurrent: 2, queueBehavior: 'immediate_bounded_rejection', overloadStatus: 503, retryAfterSeconds: 2, recoveryVerified: true, crossTenantContamination: false, publicApiHealthDuringOverload: true });
+  assert.equal(policy.observed.boundedConcurrencyQualified, true);
   assert.equal(policy.observed.liveSmokeReportSha256, await sha256('docs/evidence/sandbox/control-service-live-smoke.v1.json'));
+  assert.equal(interruption.status, 'passed'); assert.equal(interruption.controlImageDigest, policy.imageDigest); assert.equal(interruption.runnerImageDigest, policy.runnerDigest);
+  assert.equal(interruption.activeExecutionObserved, true); assert.equal(interruption.controlRestarted, true); assert.equal(interruption.customerResultExposed, false);
+  assert.equal(interruption.startupReaperVerified, true); assert.equal(interruption.cleanupVerified, true); assert.deepEqual(interruption.residual, { claims: 0, templates: 0, pods: 0 });
+  assert.equal(policy.observed.interruptionRecoveryReportSha256, await sha256('docs/evidence/sandbox/control-interruption-recovery.v1.json'));
 });

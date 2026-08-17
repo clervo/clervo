@@ -12,6 +12,7 @@
     "qa:b12": "node ../../scripts/site/full-site-recovery-qa-v2.mjs && node ../../scripts/site/full-site-route-smoke.mjs --use-built && node ../../scripts/site/visual-coherence-audit.mjs",
     "qa:recovery": "node ../../scripts/site/full-site-recovery-qa-v2.mjs && node ../../scripts/site/full-site-route-smoke.mjs --use-built && node ../../scripts/site/visual-coherence-audit.mjs",
     "qa:recovery:built": "node ../../scripts/site/full-site-recovery-qa-v2.mjs --use-built && node ../../scripts/site/full-site-route-smoke.mjs --use-built && node ../../scripts/site/visual-coherence-audit.mjs",
+    "qa:commercial": "node ../../scripts/site/commercial-qa.mjs",
     "qa:b12:legacy": "node ../../scripts/site/b12-visual-qa.mjs"
   },
   "dependencies": {

@@ -370,5 +370,7 @@ else if (action === 'promote') result = promote(releaseInputs());
 else if (action === 'rollback') result = rollback();
 else die('usage_plan_verify_artifact_validate_bootstrap_private_deploy_candidate_deploy_x402_preflight_deploy_sandbox_private_promote_rollback');
 
-assert.equal(policy.rollout.paidExecutionEnabled, false);
+if (action !== 'verify-artifact') {
+  assert.equal(policy.rollout.paidExecutionEnabled, false, 'legacy private-candidate release actions are retired');
+}
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);

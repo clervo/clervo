@@ -2,8 +2,8 @@
   "schema_version": "v1",
   "name_for_human": "Clervo",
   "name_for_model": "clervo",
-  "description_for_human": "Outcome infrastructure for agents. Search, AI (89 models), secure sandbox, prediction markets, crypto intelligence. Pay per call in USDC on Base.",
-  "description_for_model": "Clervo provides web search (POST /v1/search/free or /v1/search/paid), provider-neutral AI execution with 89 models (POST /v1/ai/execute), sandboxed Node.js execution (POST /v1/sandbox/execute), prediction market data (POST /v1/prediction/execute), and EVM wallet intelligence for Ethereum and Base (POST /v1/crypto/execute). Payment uses x402 or MPP over USDC on Base. No account required.",
+  "description_for_human": "Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.",
+  "description_for_model": "Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys. Public operations: search.web, search.answer, ai.chat, ai.embed, ai.image, ai.speech, ai.video, ai.music, ai.virtual_try_on, sandbox.run, rpc.call, rpc.batch, prediction.markets, prediction.market, prediction.compare, prediction.history, prediction.signal, crypto.wallet.balances, crypto.wallet.tokens, crypto.wallet.transactions, crypto.wallet.report. Production API: https://api.clervo.dev.",
   "api": {
     "type": "openapi",
     "url": "https://api.clervo.dev/openapi.json"

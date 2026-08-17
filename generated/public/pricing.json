@@ -25,6 +25,18 @@
       "priceVersion": "search-web-candidate-2"
     },
     {
+      "productId": "search.answer",
+      "publicAvailable": true,
+      "model": "x402_exact",
+      "displayPrice": {
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "amountAtomic": "12000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "search-answer-candidate-2"
+    },
+    {
       "productId": "ai",
       "publicAvailable": true,
       "model": "authoritative_per_model_usage_pricing",
@@ -48,6 +60,30 @@
         "minimumAtomic": "10000",
         "maximumAtomic": "60000"
       }
+    },
+    {
+      "productId": "rpc.call",
+      "publicAvailable": true,
+      "model": "fixed_per_request",
+      "displayPrice": {
+        "asset": "USDC",
+        "amountAtomic": "1000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "rpc-product-2026-08-15.1-rpc.call"
+    },
+    {
+      "productId": "rpc.batch",
+      "publicAvailable": true,
+      "model": "fixed_per_call",
+      "displayPrice": {
+        "asset": "USDC",
+        "amountAtomic": "1000",
+        "decimals": 6
+      },
+      "maximumChargeRequired": true,
+      "priceVersion": "rpc-product-2026-08-15.1-rpc.batch"
     },
     {
       "productId": "prediction.markets",

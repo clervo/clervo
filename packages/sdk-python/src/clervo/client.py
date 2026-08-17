@@ -10,10 +10,6 @@ from urllib.parse import urlsplit, urlunsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 CLERVO_CONTRACT_VERSION = "2026-07-29.1"
-CLERVO_RELEASE_CANDIDATE_ID = "clervo-private-core-2026-08-02.2"
-CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH = (
-    "sha256:2773690eda2ed6c89461c98f1537fccc5ae648f37845eb7a5a620952647a39b4"
-)
 
 
 class ClervoError(Exception):
@@ -25,7 +21,7 @@ class ClervoTransportError(ClervoError):
 
 
 class ClervoProtocolError(ClervoError):
-    """The endpoint returned bytes that do not satisfy the frozen contract."""
+    """The endpoint returned bytes that do not satisfy the API contract."""
 
 
 class ClervoProblemError(ClervoError):
@@ -211,7 +207,7 @@ def _request_body(
     return {
         "query": query.strip(),
         **({} if max_results is None else {"maxResults": max_results}),
-        "synthesize": product_id == "search.answer",
+        "synthesize": False,
         **({} if language is None else {"language": language}),
         **({} if region is None else {"region": region}),
     }
@@ -272,29 +268,6 @@ class _Search:
             mode,
             timeout,
         )
-
-    def answer(
-        self,
-        *,
-        query: str,
-        max_results: int | None = None,
-        language: str | None = None,
-        region: str | None = None,
-        idempotency_key: str | None = None,
-        mode: str = "preview",
-        timeout: float | None = None,
-    ) -> dict[str, Any]:
-        return self._client._execute(
-            "search.answer",
-            query,
-            max_results,
-            language,
-            region,
-            idempotency_key,
-            mode,
-            timeout,
-        )
-
 
 class _Models:
     def __init__(self, client: Clervo) -> None:

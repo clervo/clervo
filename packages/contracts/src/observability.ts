@@ -4,9 +4,12 @@ import { CONTRACT_VERSION } from './types.js';
 
 export const logAttributeNames = [
   'adapter_id',
+  'attempt_index',
+  'commit_state',
   'component',
   'dependency',
   'error_code',
+  'failure_class',
   'http_status',
   'operation_state',
   'outcome',

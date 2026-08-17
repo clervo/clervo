@@ -16,6 +16,9 @@ const BASE_USDC_EIP712_DOMAIN = Object.freeze({ name: 'USD Coin', version: '2' }
 export const PAYABLE_RESOURCE_PATHS = Object.freeze([
   '/v1/search/paid',
   '/v1/ai/execute',
+  '/v1/chat/completions',
+  '/v1/messages',
+  '/v1/responses',
   '/v1/sandbox/execute',
   '/v1/rpc/execute',
   '/v1/prediction/execute',
@@ -32,25 +35,28 @@ const RESOURCE_SERVICE_NAME = 'Clervo';
 const RESOURCE_TAGS = Object.freeze({
   '/v1/search/paid': Object.freeze(['search', 'web', 'citations', 'x402']),
   '/v1/ai/execute': Object.freeze(['ai', 'llm', 'chat', 'inference', 'x402']),
+  '/v1/chat/completions': Object.freeze(['ai', 'llm', 'chat', 'openai', 'x402']),
+  '/v1/messages': Object.freeze(['ai', 'llm', 'chat', 'anthropic', 'x402']),
+  '/v1/responses': Object.freeze(['ai', 'llm', 'responses', 'openai', 'x402']),
   '/v1/sandbox/execute': Object.freeze(['sandbox', 'code-execution', 'isolated', 'x402']),
   '/v1/rpc/execute': Object.freeze(['rpc', 'blockchain', 'evm', 'json-rpc', 'x402']),
   '/v1/prediction/execute': Object.freeze(['prediction-markets', 'odds', 'forecasting', 'x402']),
   '/v1/crypto/execute': Object.freeze(['crypto', 'onchain', 'wallet', 'analytics', 'x402']),
 });
-const SEARCH_DISCOVERY_INPUT = Object.freeze({ query: 'current x402 protocol documentation', maxResults: 3, synthesize: false, language: 'en', region: 'US' });
+const SEARCH_DISCOVERY_INPUT = Object.freeze({ query: 'current x402 protocol documentation', maxResults: 3, synthesize: true, language: 'en', region: 'US' });
 
 function defaultDiscovery(resourcePath) {
-  const ai = resourcePath === '/v1/ai/execute';
+  const ai = ['/v1/ai/execute', '/v1/chat/completions', '/v1/messages', '/v1/responses'].includes(resourcePath);
   if (ai) throw new TypeError('ai_resource_discovery_required');
   const input = SEARCH_DISCOVERY_INPUT;
   const inputSchema = {
     type: 'object', required: ['query', 'synthesize'], additionalProperties: false,
     properties: {
       query: { type: 'string', minLength: 1, maxLength: 2000 }, maxResults: { type: 'integer', minimum: 1, maximum: 10 },
-      synthesize: { const: false }, language: { type: 'string' }, region: { type: 'string' },
+      synthesize: { type: 'boolean' }, language: { type: 'string' }, region: { type: 'string' },
     },
   };
-  const outputExample = { productId: 'search.web', state: 'RECEIPTED', replayed: false, output: { searchResponse: { results: [], citations: [] } }, receipt: { settlement: { status: 'settled' } } };
+  const outputExample = { productId: 'search.answer', state: 'RECEIPTED', replayed: false, output: { searchResponse: { results: [], citations: [] }, synthesisReport: { outcome: 'synthesized', claims: [], citations: [] } }, receipt: { settlement: { status: 'settled' } } };
   return Object.freeze({
     method: 'POST', bodyType: 'json', input, inputSchema,
     output: { example: outputExample, schema: { type: 'object', additionalProperties: true } },

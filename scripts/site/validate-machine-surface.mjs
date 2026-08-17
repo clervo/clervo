@@ -8,9 +8,10 @@ import { canonicalPath, siteRouteInventory } from './site-route-inventory.mjs';
 const root = path.resolve(import.meta.dirname, '../..');
 const dist = path.join(root, 'apps/site/dist');
 const required = [
-  'robots.txt', 'sitemap.xml', 'llms.txt', 'llms-full.txt', 'skill.md', 'agent.md',
+  'robots.txt', 'sitemap.xml', 'llms.txt', 'llms-full.txt', 'skill.md', 'agent.md', 'agents.txt',
   'openapi.json', 'openapi.yaml', 'catalog.json', 'capabilities.json', 'models.json',
-  'status.json', 'pricing.json', 'onboarding.json', '.well-known/clervo.json', '.well-known/x402.json',
+  'status.json', 'pricing.json', 'onboarding.json', '.well-known/clervo.json', '.well-known/agent.json',
+  '.well-known/mcp.json', '.well-known/mcp/server.json', '.well-known/x402', '.well-known/x402.json', 'v1/models',
   '_headers', 'manifest.webmanifest',
 ];
 
@@ -42,7 +43,7 @@ if (headers.includes('upload.wikimedia.org')) throw new Error('site_csp_remote_l
 if (!headers.includes("object-src 'none'")) throw new Error('site_csp_object_src_missing');
 if (!headers.includes("frame-ancestors 'none'")) throw new Error('site_csp_frame_ancestors_missing');
 
-for (const relative of ['catalog.json', 'capabilities.json', 'models.json', 'status.json', 'pricing.json', 'onboarding.json', '.well-known/clervo.json', '.well-known/x402.json', 'openapi.json', 'manifest.webmanifest']) {
+for (const relative of ['catalog.json', 'capabilities.json', 'models.json', 'v1/models', 'status.json', 'pricing.json', 'onboarding.json', '.well-known/clervo.json', '.well-known/agent.json', '.well-known/mcp.json', '.well-known/mcp/server.json', '.well-known/x402', '.well-known/x402.json', 'openapi.json', 'manifest.webmanifest']) {
   try { JSON.parse(await readFile(path.join(dist, relative), 'utf8')); }
   catch (error) { throw new Error(`site_machine_json_invalid:${relative}:${error instanceof Error ? error.message : String(error)}`); }
 }
@@ -52,16 +53,16 @@ if (openapi.openapi !== '3.1.1') throw new Error(`site_openapi_version:${openapi
 if (openapi.jsonSchemaDialect !== 'https://json-schema.org/draft/2020-12/schema') throw new Error(`site_openapi_json_schema_dialect:${openapi.jsonSchemaDialect ?? 'missing'}`);
 
 // llms.txt is generated as a compact documentation map. Validate its canonical
-// relative machine links and observed-lifecycle framing rather than forcing a
-// second human-marketing lifecycle sentence into the generated contract.
+// relative machine links and current availability framing.
 const llms = await readFile(path.join(dist, 'llms.txt'), 'utf8');
+const rpcCatalogued = (JSON.parse(await readFile(path.join(dist, 'catalog.json'), 'utf8')).products ?? []).some(({ productId }) => productId === 'rpc.call');
 for (const needle of [
   '[OpenAPI contract](/openapi.json)',
   '[Catalog](/catalog.json)',
   '[Status](/status.json)',
   '[Agent skill](/skill.md)',
-  'Observed lifecycle state and proof level',
-  'Multi-chain RPC | unavailable',
+  'Current product availability',
+  rpcCatalogued ? 'Multi-chain RPC | live' : 'Multi-chain RPC | unavailable',
 ]) {
   if (!llms.includes(needle)) throw new Error(`site_llms_reference_missing:${needle}`);
 }
@@ -73,7 +74,7 @@ for (const needle of ['# Clervo skill', '## When to use this skill', '## Failure
 if (!/operation/iu.test(skill) || !/receipt/iu.test(skill) || !/replay/iu.test(skill)) throw new Error('site_skill_reference_incomplete');
 
 const agent = await readFile(path.join(dist, 'agent.md'), 'utf8');
-for (const needle of ['# Clervo for agents', '## Identity', '## Observed state', '## Idempotency contract', '## Discovery paths']) {
+for (const needle of ['# Clervo for agents', '## Identity', '## Current availability', '## Idempotency contract', '## Discovery paths']) {
   if (!agent.includes(needle)) throw new Error(`site_agent_reference_missing:${needle}`);
 }
 if (!/payment/iu.test(agent) || !/replay/iu.test(agent) || !/unavailable/iu.test(agent)) throw new Error('site_agent_reference_incomplete');

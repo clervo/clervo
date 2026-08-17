@@ -181,8 +181,8 @@ const firstModel = inventory.find(({ kind }) => kind === 'model')?.route;
 const firstOperation = inventory.find(({ kind }) => kind === 'operation')?.route;
 const cases = [
   { id: 'product-top-desktop', route: '/product', width: 1600, height: 900 },
-  { id: 'product-contract-desktop', route: '/product', width: 1600, height: 900, selector: '.s4-contract-grid' },
-  { id: 'product-boundary-desktop', route: '/product', width: 1600, height: 900, selector: '.s4-boundary-grid' },
+  { id: 'product-map-desktop', route: '/product', width: 1600, height: 900, selector: '.product-map' },
+  { id: 'product-family-ledger-desktop', route: '/product', width: 1600, height: 900, selector: '.product-family' },
   { id: 'product-mobile', route: '/product', width: 390, height: 844 },
   { id: 'catalog-desktop', route: '/catalog', width: 1600, height: 900 },
   { id: 'catalog-mobile', route: '/catalog', width: 390, height: 844 },

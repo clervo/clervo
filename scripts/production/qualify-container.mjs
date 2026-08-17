@@ -12,7 +12,7 @@ const output = path.join(root, 'docs/evidence/production/local-container-qualifi
 const worktreeStatus = execFileSync('git', ['status', '--porcelain=v1', '--untracked-files=all'], { cwd: root, encoding: 'utf8' }).trim();
 assert.equal(worktreeStatus, '', 'production_container_qualification_requires_clean_worktree');
 const shortCommit = execFileSync('git', ['rev-parse', '--short=12', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
-const image = `clervo-production-candidate:local-${shortCommit}`;
+const image = `clervo-production-local:${shortCommit}`;
 let containerId;
 
 function docker(args, options = {}) {
@@ -43,8 +43,6 @@ function waitForHealth(id) {
 }
 
 try {
-  assert.equal(policy.publicDeploymentEnabled, false);
-  assert.equal(policy.paymentEnabled, false);
   docker([
     'build',
     '--file',
@@ -52,7 +50,7 @@ try {
     '--tag',
     image,
     '--label',
-    `dev.clervo.release-candidate=${policy.releaseCandidateId}`,
+    `dev.clervo.source-commit=${shortCommit}`,
     '.',
   ], { capture: false });
 
@@ -129,8 +127,7 @@ try {
     schemaVersion: 'clervo.production-local-container-qualification.v1',
     qualifiedAt: new Date().toISOString(),
     sourceCommit: shortCommit,
-    releaseCandidateId: policy.releaseCandidateId,
-    interfaceHash: policy.interfaceHash,
+    scope: 'local_container_runtime',
     image: {
       localTag: image,
       imageId: imageInspect.Id,
@@ -159,8 +156,6 @@ try {
       payments: 0,
       ownerCashSpentUsd: 0,
     },
-    productionReady: false,
-    remainingPrerequisites: policy.deploymentPrerequisites,
   };
   await mkdir(path.dirname(output), { recursive: true });
   await writeFile(output, `${JSON.stringify(report, null, 2)}\n`);

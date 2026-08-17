@@ -45,7 +45,7 @@ test('Agent Sandbox executor invokes only the fixed runner and validates its bou
   assert.deepEqual(result.stdout, new TextEncoder().encode('ok'));
   const call = deps.calls.find(([name]) => name === 'exec')[1];
   assert.deepEqual(call.command, ['node', '/opt/clervo/runner.mjs']);
-  assert.ok(call.maximumOutputBytes <= limits.outputBytes + 65536);
+  assert.equal(call.maximumOutputBytes, Math.ceil(limits.outputBytes / 3) * 4 + Math.ceil(limits.artifactBytes / 3) * 4 + 65_536);
   const invalid = dependencies({ async exec() { return { exitCode: 0, stderr: new Uint8Array(), stdout: new TextEncoder().encode('{"exitCode":0}') }; } });
   await assert.rejects(invalid.executor.execute({ sessionId, executionId: 'exec_0123456789ABCDEFGHIJ', command: ['node'], stdin: new Uint8Array(), limits }), /response_invalid/u);
 });

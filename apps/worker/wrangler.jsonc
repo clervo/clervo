@@ -8,12 +8,30 @@
   "vars": {
     "CLERVO_AI_PUBLIC_ENABLED": "true",
     "CLERVO_SANDBOX_PUBLIC_ENABLED": "true",
+    "CLERVO_RPC_PUBLIC_ENABLED": "true",
     "CLERVO_PREDICTION_PUBLIC_ENABLED": "true",
     "CLERVO_CRYPTO_PUBLIC_ENABLED": "true"
   },
   "secrets": {
     "required": ["CLERVO_EDGE_AUTHORIZATION"]
   },
+  "ratelimits": [
+    {
+      "name": "CLERVO_FREE_RATE_LIMIT",
+      "namespace_id": "1001",
+      "simple": { "limit": 12, "period": 60 }
+    },
+    {
+      "name": "CLERVO_QUOTE_RATE_LIMIT",
+      "namespace_id": "1002",
+      "simple": { "limit": 30, "period": 60 }
+    },
+    {
+      "name": "CLERVO_PAID_RATE_LIMIT",
+      "namespace_id": "1003",
+      "simple": { "limit": 180, "period": 60 }
+    }
+  ],
   "routes": [
     {
       "pattern": "api.clervo.dev/",

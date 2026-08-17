@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { ActivationState } from '../experience';
-import { lifecycleLabels, observedTruth, proofLabels, type ExperiencePhase } from '../product';
+import { lifecycleLabels, observedTruth, type ExperiencePhase } from '../product';
 import { Link, useRouter } from '../router';
 
 type ProductId = 'search.web';
@@ -160,12 +160,12 @@ export function ProofLab({
     title: 'Distribution contract inspection',
     summary: `This lab runs a deterministic fixture: no request leaves the browser and nothing is charged. The deployed system separately reports ${liveFamilies.length} of ${observedTruth.products.length} product families as ${lifecycleLabels.live}.`,
     observations: [
-      'All six product cores are privately qualified and compatibility-frozen.',
+      'The fixture uses the same operation identities published in discovery.',
       ...observedTruth.products.map((product) => (
-        `${product.label}: ${lifecycleLabels[product.lifecycleState]}, proof ${proofLabels[product.proofLevel]}.`
+        `${product.label}: ${lifecycleLabels[product.lifecycleState]}, ${product.observedPrice === null ? 'no public price' : 'paid route'}.`
       )),
       'The challenge amount below is a fixture, not a customer charge; the deployed route quotes its own price.',
-      'A separate owner-funded private proof settled once; this fixture does not replay that transaction.',
+      'Paid routes return their own binding challenge; this browser fixture never authorizes one.',
     ],
   }), []);
 
@@ -230,15 +230,14 @@ export function ProofLab({
     <>
       <section className="page-lead">
         <p className="eyebrow">Proof Lab / request to receipt</p>
-        <h1>Inspect the mechanism.<br />Not a staged success.</h1>
+        <h1>Explore the request lifecycle.</h1>
         <p className="lede">
           A deterministic local fixture. No request leaves this browser, no
           provider is contacted, no wallet message is signed and nothing is
-          charged. The one real settled payment is recorded separately on the
-          proof page, and this fixture does not replay it.
+          charged. Paid routes independently return a binding challenge.
         </p>
         <div className="cluster page-lead__actions">
-          <Link className="button button--secondary" to="/proof">See the settled proof</Link>
+          <Link className="button button--secondary" to="/proof">Read payment and replay behavior</Link>
           <Link className="button button--quiet" to="/docs">Open the quickstart</Link>
         </div>
       </section>
@@ -344,7 +343,7 @@ export function ProofLab({
                   <ul className="lab-links">
                     <li><a className="text-link" href="/openapi.json">OpenAPI operation and wire schema</a></li>
                     <li><a className="text-link" href="/catalog.json">Catalog lifecycle and fixture price</a></li>
-                    <li><a className="text-link" href="/.well-known/clervo.json">Release candidate and distribution state</a></li>
+                    <li><a className="text-link" href="/.well-known/clervo.json">Public operations and distribution state</a></li>
                   </ul>
                   <p className="quiet">No generated media or provider output is used as evidence.</p>
                 </div>

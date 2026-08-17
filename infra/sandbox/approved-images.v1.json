@@ -1,7 +1,17 @@
 {
   "schemaVersion": "clervo.sandbox-approved-images.v1",
-  "lifecycle": "unavailable",
+  "lifecycle": "qualified",
   "images": [
+    {
+      "imageId": "sandbox.nodejs-24-python3-12",
+      "digest": "sha256:fe0c81bd0cc5b77b643d2fa0017f48aa3fcfcd470326a00c4ba3a037a09170e9",
+      "lifecycle": "qualified",
+      "signatureVerified": true,
+      "provenanceVerified": true,
+      "vulnerabilityScan": "passed",
+      "malwareScan": "passed",
+      "sbomSha256": "sha256:a98e3ca23a482359510e876ca10067f4ba9fa204b061596b89cc9c6f25f297f9"
+    },
     {
       "imageId": "sandbox.nodejs-24.previous",
       "digest": "sha256:0cfdf789b798d623cee9ec071c32e584443f9331c73fc7be9bd20f7ae1c243af",
@@ -55,7 +65,7 @@
     {
       "imageId": "sandbox.nodejs-24",
       "digest": "sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a",
-      "lifecycle": "qualified",
+      "lifecycle": "blocked",
       "signatureVerified": true,
       "provenanceVerified": true,
       "vulnerabilityScan": "passed",

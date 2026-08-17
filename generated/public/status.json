@@ -1,19 +1,61 @@
 {
   "schemaVersion": "clervo.public-status.v1",
-  "observedAt": "2026-08-11T23:08:33.338Z",
+  "observedAt": "2026-08-15T14:28:34.287Z",
   "publicApi": {
-    "state": "public_search_ai_sandbox_prediction_and_crypto_verified",
+    "state": "available",
     "endpoint": "https://api.clervo.dev",
     "publicCallable": true,
     "publicTraffic": true,
-    "customerEndpointAvailable": true,
-    "evidence": [
-      "infra/production/cloudflare/public-search-release.v1.json",
-      "infra/production/gcp/ai-x402-proof.v1.json",
-      "infra/production/gcp/sandbox-public-release.v1.json",
-      "infra/production/gcp/prediction-x402-proof.v1.json",
-      "infra/production/gcp/crypto-x402-proof.v1.json"
-    ]
+    "customerEndpointAvailable": true
+  },
+  "sharedBoundary": {
+    "schemaVersion": "clervo.shared-public-boundary.v1",
+    "request": {
+      "mediaType": "application/json",
+      "maximumHeaderBytes": 32768,
+      "maximumHeaderCount": 64,
+      "maximumJsonDepth": 32,
+      "maximumJsonNodes": 20000,
+      "maximumArrayItems": 1000,
+      "maximumBodyBytesByPath": {
+        "/v1/search/free": 16384,
+        "/v1/search/paid": 16384,
+        "/v1/ai/execute": 10485760,
+        "/v1/chat/completions": 10485760,
+        "/v1/messages": 10485760,
+        "/v1/responses": 10485760,
+        "/v1/sandbox/execute": 1500000,
+        "/v1/rpc/execute": 262144,
+        "/v1/prediction/execute": 262144,
+        "/v1/crypto/execute": 262144
+      }
+    },
+    "rateLimitsPerMinute": {
+      "free": 12,
+      "unpaidQuote": 30,
+      "paid": 180
+    },
+    "quoteTtlSeconds": 180,
+    "deadlineMillisecondsByPath": {
+      "/v1/search/free": 12000,
+      "/v1/search/paid": 15000,
+      "/v1/ai/execute": 120000,
+      "/v1/chat/completions": 120000,
+      "/v1/messages": 120000,
+      "/v1/responses": 120000,
+      "/v1/sandbox/execute": 75000,
+      "/v1/rpc/execute": 35000,
+      "/v1/prediction/execute": 35000,
+      "/v1/crypto/execute": 35000
+    },
+    "retry": {
+      "overload": [
+        429,
+        503
+      ],
+      "deadline": 504,
+      "useSameIdempotencyKeyAfterUnknownOutcome": true
+    }
   },
   "packages": {
     "state": "published_verified",
@@ -39,41 +81,9 @@
       }
     ]
   },
-  "paymentProof": {
-    "state": "owner_funded_public_proof",
-    "productId": "prediction.markets",
-    "network": "Base",
-    "asset": "USDC",
-    "amountAtomic": "2000",
-    "decimals": 6,
-    "amountDisplay": "0.002 USDC",
-    "settlementConfirmed": true,
-    "usefulResult": true,
-    "replaySameReceipt": true,
-    "secondAuthorization": false,
-    "secondExecution": false,
-    "secondCharge": false,
-    "publicCustomerPaymentAvailable": true,
-    "revenueEvidence": false,
-    "demandEvidence": false,
-    "transactionUrl": "https://basescan.org/tx/0xd7ca02e50b8870843275ddd7a27337b278827358a79ae40a611a8af6d2ffcec7",
-    "evidence": [
-      "infra/production/gcp/prediction-x402-proof.v1.json",
-      "tests/contract/b8-prediction-intelligence.test.mjs"
-    ]
-  },
   "observedTruth": {
     "provenance": {
-      "source": "packages/catalog/live-registry.json",
-      "generatedBy": "scripts/probe-live-registry.mjs",
-      "observedAt": "2026-08-11T23:08:33.338Z",
-      "releaseId": "763601c4688fd9b2e3eedb4c7829b4586b329368",
-      "proofLevels": {
-        "externally_repeated": "an unrelated party did it, more than once",
-        "none": "nothing demonstrated",
-        "paid_outcome_verified": "we paid once, a useful result came back, the receipt was accurate, the replay matched, and the retry did not double-charge",
-        "quote_observed_unpaid": "publicly offered, a price was returned, and a valid payment challenge was formed; nothing else"
-      },
+      "observedAt": "2026-08-15T14:28:34.287Z",
       "states": {
         "live": "probed; the deployed system serves it now",
         "supply_paused": "in the catalog, temporarily not serving; carries a reason and, where known, an expected return date",
@@ -94,7 +104,6 @@
           "ai.virtual_try_on"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -118,7 +127,6 @@
           "crypto.wallet.transactions"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -141,7 +149,6 @@
           "prediction.signal"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -157,18 +164,19 @@
         "id": "rpc",
         "label": "Multi-chain RPC",
         "operations": [
-          "rpc.archive",
           "rpc.batch",
-          "rpc.broadcast",
-          "rpc.call",
-          "rpc.health"
+          "rpc.call"
         ],
-        "lifecycleState": "unavailable",
-        "proofLevel": "none",
-        "reason": "commercial_rights_blocked",
+        "lifecycleState": "live",
+        "reason": null,
         "expectedReturnAt": null,
-        "publiclyReachable": false,
-        "observedPrice": null,
+        "publiclyReachable": true,
+        "observedPrice": {
+          "amountAtomic": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "priceVersion": "rpc-read-public-2026-08-15.1-rpc.call"
+        },
         "freeEntry": null
       },
       {
@@ -178,7 +186,6 @@
           "sandbox.run"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -197,7 +204,6 @@
           "search.web"
         ],
         "lifecycleState": "live",
-        "proofLevel": "paid_outcome_verified",
         "reason": null,
         "expectedReturnAt": null,
         "publiclyReachable": true,
@@ -223,7 +229,7 @@
     "paused": [
       {
         "modelId": "clervo/gpt-oss-20b",
-        "reason": "availability_degraded",
+        "reason": "temporarily_unavailable",
         "availability": "degraded",
         "health": "degraded"
       }
@@ -233,42 +239,36 @@
     {
       "id": "ai",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
     {
       "id": "crypto_intelligence",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
     {
       "id": "prediction",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
     {
       "id": "rpc",
-      "lifecycleState": "unavailable",
-      "proofLevel": "none",
-      "reason": "commercial_rights_blocked",
-      "publiclyReachable": false
+      "lifecycleState": "live",
+      "reason": null,
+      "publiclyReachable": true
     },
     {
       "id": "sandbox",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     },
     {
       "id": "search",
       "lifecycleState": "live",
-      "proofLevel": "paid_outcome_verified",
       "reason": null,
       "publiclyReachable": true
     }

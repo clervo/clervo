@@ -7,8 +7,8 @@ import { RpcMethodPolicy } from '../../dist/services/rpc/src/policy.js';
 const registry = JSON.parse(await readFile(new URL('../../infra/rpc/chain-registry.v1.json', import.meta.url), 'utf8'));
 const policy = new RpcMethodPolicy(registry.chains);
 
-test('RPC registry starts with a bounded read-only multi-chain matrix', () => {
-  assert.equal(registry.lifecycle, 'unavailable'); assert.equal(registry.chains.length, 8); assert.ok(registry.chains.every(({ archiveQualified, broadcastQualified }) => !archiveQualified && !broadcastQualified));
+test('RPC registry exposes a bounded read-only multi-chain matrix', () => {
+  assert.equal(registry.lifecycle, 'available'); assert.equal(registry.chains.length, 8); assert.ok(registry.chains.every(({ archiveQualified, broadcastQualified }) => !archiveQualified && !broadcastQualified));
   const call = policy.authorize({ productId: 'rpc.call', chainId: 'eip155:1', calls: { method: 'eth_getBalance', params: ['0x0000000000000000000000000000000000000000', 'latest'] } });
   assert.equal(call.sideEffecting, false); assert.equal(call.cachePolicy, 'short'); assert.match(call.requestHash, /^sha256:[a-f0-9]{64}$/u);
   assert.equal(policy.authorize({ productId: 'rpc.call', chainId: 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp', calls: { method: 'getGenesisHash', params: [] } }).cachePolicy, 'finalized_immutable');

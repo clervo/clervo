@@ -5,6 +5,7 @@ import test from 'node:test';
 const policy = JSON.parse(await readFile('infra/sandbox/production-plane.v1.json', 'utf8'));
 const bootstrap = await readFile('scripts/sandbox/gcp-production-plane.mjs', 'utf8');
 const qualification = await readFile('scripts/sandbox/qualify-agent-sandbox-network.mjs', 'utf8');
+const redTeam = JSON.parse(await readFile('docs/evidence/sandbox/gvisor-production-red-team.v1.json', 'utf8'));
 
 test('persistent sandbox plane preserves the qualified private Dataplane V2 and gVisor boundary', () => {
   assert.equal(policy.state, 'private_plane_qualified');
@@ -32,7 +33,7 @@ test('persistent sandbox plane preserves the qualified private Dataplane V2 and 
   assert.equal(policy.observed.publicWorkload, false);
   assert.equal(policy.observed.failedZoneAttemptRemoved, true);
   assert.equal(policy.observed.publicControlCapacityQualified, false);
-  assert.equal(policy.observed.runnerRedTeamReportSha256, 'sha256:ee22f5f17706b5394cd72c03558fc5588e90ea5553854ae7915109b4ef01b6fd');
+  assert.equal(policy.observed.runnerRedTeamReportSha256, redTeam.reportSha256);
   assert.match(bootstrap, /--enable-dataplane-v2/u);
   assert.match(bootstrap, /--enable-private-nodes/u);
   assert.match(bootstrap, /--enable-private-endpoint/u);

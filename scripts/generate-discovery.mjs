@@ -8,9 +8,11 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const schemaDirectory = path.join(root, 'packages/contracts/schemas');
 const outputDirectory = path.join(root, 'generated/public');
 const contractModule = await import(pathToFileURL(path.join(root, 'dist/packages/contracts/src/index.js')));
+const openAiChatCompat = await import(pathToFileURL(path.join(root, 'apps/api/src/openai-chat-compat.mjs')));
+const anthropicMessagesCompat = await import(pathToFileURL(path.join(root, 'apps/api/src/anthropic-messages-compat.mjs')));
+const openAiResponsesCompat = await import(pathToFileURL(path.join(root, 'apps/api/src/openai-responses-compat.mjs')));
 const schemaVisibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
-const releaseCandidate = JSON.parse(await readFile(path.join(root, 'packages/catalog/release-candidate-freeze.v1.json'), 'utf8'));
-const registry = JSON.parse(await readFile(path.join(root, releaseCandidate.baseRegistry.file), 'utf8'));
+const registry = JSON.parse(await readFile(path.join(root, 'packages/catalog/platform-registry.v1.json'), 'utf8'));
 const onboarding = JSON.parse(await readFile(path.join(root, 'packages/distribution/onboarding.v1.json'), 'utf8'));
 const launchState = JSON.parse(await readFile(path.join(root, 'packages/catalog/launch-state.v1.json'), 'utf8'));
 const liveRegistry = JSON.parse(await readFile(path.join(root, 'packages/catalog/live-registry.json'), 'utf8'));
@@ -42,11 +44,43 @@ const currentFreeModels = b7PublicModels.data
   .sort();
 const currentAliases = b7PublicModels.data.filter(({ clervo }) => clervo.identityKind === 'alias' && clervo.publicSellable === true).map(({ id }) => id).sort();
 if (typeof currentPaidDiscoveryModel !== 'string') throw new Error('ai_paid_discovery_model_missing');
+const OPENAI_CHAT_COMPLETIONS_PATH = openAiChatCompat.OPENAI_CHAT_COMPLETIONS_PATH;
+const openAiChatProbeExample = Object.freeze({
+  model: currentPaidDiscoveryModel,
+  messages: [{ role: 'user', content: 'Explain in one sentence why idempotency matters for paid API retries.' }],
+  stream: false,
+  max_completion_tokens: 64,
+});
+const openAiChatDiscovery = openAiChatCompat.createOpenAiChatDiscoveryContract(openAiChatProbeExample);
+
+const ANTHROPIC_MESSAGES_PATH = anthropicMessagesCompat.ANTHROPIC_MESSAGES_PATH;
+const anthropicMessagesProbeExample = Object.freeze({
+  model: currentPaidDiscoveryModel,
+  max_tokens: 64,
+  messages: [{ role: 'user', content: 'Explain in one sentence why idempotency matters for paid API retries.' }],
+  stream: false,
+});
+const anthropicMessagesDiscovery = anthropicMessagesCompat.createAnthropicMessagesDiscoveryContract(anthropicMessagesProbeExample);
+
+const OPENAI_RESPONSES_PATH = openAiResponsesCompat.OPENAI_RESPONSES_PATH;
+const openAiResponsesProbeExample = Object.freeze({
+  model: currentPaidDiscoveryModel,
+  input: 'Explain in one sentence why idempotency matters for paid API retries.',
+  max_output_tokens: 64,
+  stream: false,
+  store: false,
+  text: Object.freeze({
+    format: Object.freeze({
+      type: 'text',
+    }),
+  }),
+});
+const openAiResponsesDiscovery = openAiResponsesCompat.createOpenAiResponsesDiscoveryContract(openAiResponsesProbeExample);
+
 const distributionRelease = JSON.parse(await readFile(path.join(root, 'packages/distribution/release-targets.v1.json'), 'utf8'));
-const predictionProof = JSON.parse(await readFile(path.join(root, 'infra/production/gcp/prediction-x402-proof.v1.json'), 'utf8'));
-const predictionPaymentProof = predictionProof.operations.find(({ productId }) => productId === 'prediction.markets');
 const predictionPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/prediction-product-pricing.v1.json'), 'utf8'));
 const cryptoPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/crypto-product-pricing.v1.json'), 'utf8'));
+const rpcPricing = JSON.parse(await readFile(path.join(root, 'packages/catalog/rpc-product-pricing.v1.json'), 'utf8'));
 
 function componentName(fileName) {
   return fileName
@@ -59,6 +93,36 @@ function componentName(fileName) {
 function stableJson(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
+
+const COMMERCIAL_DESCRIPTION = 'Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.';
+const SHARED_PUBLIC_BOUNDARY = Object.freeze({
+  schemaVersion: 'clervo.shared-public-boundary.v1',
+  request: Object.freeze({
+    mediaType: 'application/json',
+    maximumHeaderBytes: 32_768,
+    maximumHeaderCount: 64,
+    maximumJsonDepth: 32,
+    maximumJsonNodes: 20_000,
+    maximumArrayItems: 1_000,
+    maximumBodyBytesByPath: Object.freeze({
+      '/v1/search/free': 16_384, '/v1/search/paid': 16_384,
+      '/v1/ai/execute': 10_485_760, '/v1/chat/completions': 10_485_760,
+      '/v1/messages': 10_485_760, '/v1/responses': 10_485_760,
+      '/v1/sandbox/execute': 1_500_000, '/v1/rpc/execute': 262_144,
+      '/v1/prediction/execute': 262_144, '/v1/crypto/execute': 262_144,
+    }),
+  }),
+  rateLimitsPerMinute: Object.freeze({ free: 12, unpaidQuote: 30, paid: 180 }),
+  quoteTtlSeconds: 180,
+  deadlineMillisecondsByPath: Object.freeze({
+    '/v1/search/free': 12_000, '/v1/search/paid': 15_000,
+    '/v1/ai/execute': 120_000, '/v1/chat/completions': 120_000,
+    '/v1/messages': 120_000, '/v1/responses': 120_000,
+    '/v1/sandbox/execute': 75_000, '/v1/rpc/execute': 35_000,
+    '/v1/prediction/execute': 35_000, '/v1/crypto/execute': 35_000,
+  }),
+  retry: Object.freeze({ overload: [429, 503], deadline: 504, useSameIdempotencyKeyAfterUnknownOutcome: true }),
+});
 
 function decimalAtomic(amountAtomic, decimals) {
   if (!/^(?:0|[1-9][0-9]*)$/u.test(String(amountAtomic)) || !Number.isInteger(decimals) || decimals < 0 || decimals > 18) throw new TypeError('atomic_decimal_invalid');
@@ -117,6 +181,13 @@ const searchProbeSchema = Object.freeze({
   },
   additionalProperties: false,
 });
+const searchResearchProbeSchema = Object.freeze({
+  ...searchProbeSchema,
+  properties: {
+    ...searchProbeSchema.properties,
+    synthesize: { type: 'boolean', default: true, description: 'false selects fast evidence; true selects bounded deep Research with multi-source synthesis, page reading, citations, conflicts, and uncertainty.' },
+  },
+});
 const aiProbeExample = Object.freeze({
   model: currentPaidDiscoveryModel,
   input: {
@@ -164,7 +235,7 @@ const aiChatProbeSchema = Object.freeze({
       additionalProperties: false,
       default: aiProbeExample.input,
     },
-    maximumOutputTokens: { type: 'integer', minimum: 1, maximum: 16384, default: aiProbeExample.maximumOutputTokens },
+    maximumOutputTokens: { type: 'integer', minimum: 1, maximum: contractModule.AI_MAXIMUM_OUTPUT_TOKENS, default: aiProbeExample.maximumOutputTokens },
   },
   additionalProperties: false,
 });
@@ -173,10 +244,19 @@ const sandboxProbeExample = Object.freeze({
   limits: Object.freeze({ cpuMillis: 5_000, memoryBytes: 268_435_456, processes: 16, diskBytes: 67_108_864, outputBytes: 65_536, artifactBytes: 1_048_576, wallTimeMs: 10_000 }),
 });
 const sandboxProbeSchema = Object.freeze({
-  type: 'object', required: ['command'], additionalProperties: false,
+  type: 'object', additionalProperties: false,
+  oneOf: [
+    { required: ['command'], not: { anyOf: [{ required: ['runtime'] }, { required: ['code'] }, { required: ['args'] }] } },
+    { required: ['runtime', 'code'], not: { required: ['command'] } },
+  ],
   properties: {
     command: { type: 'array', minItems: 1, maxItems: 32, items: { type: 'string', minLength: 1, maxLength: 4096 }, default: sandboxProbeExample.command },
-    stdinBase64: { type: 'string' },
+    runtime: { type: 'string', enum: ['node', 'python'] },
+    code: { type: 'string', minLength: 1, maxLength: 262_144 },
+    args: { type: 'array', maxItems: 29, items: { type: 'string', minLength: 1, maxLength: 4_096 } },
+    stdinBase64: { type: 'string', maxLength: 1_398_104 },
+    files: { type: 'array', maxItems: 32, description: 'Decoded code, stdin, and file content share a 1 MiB aggregate envelope.', items: { type: 'object', required: ['path', 'contentBase64'], additionalProperties: false, properties: { path: { type: 'string', minLength: 1, maxLength: 256 }, contentBase64: { type: 'string', maxLength: 1_398_104 } } } },
+    artifactPaths: { type: 'array', maxItems: 32, items: { type: 'object', required: ['path'], additionalProperties: false, properties: { path: { type: 'string', minLength: 1, maxLength: 256 }, filename: { type: 'string', minLength: 1, maxLength: 128 }, mimeType: { type: 'string', minLength: 3, maxLength: 129 } } } },
     limits: {
       type: 'object', additionalProperties: false, default: sandboxProbeExample.limits,
       properties: {
@@ -185,11 +265,23 @@ const sandboxProbeSchema = Object.freeze({
         processes: { type: 'integer', minimum: 1, maximum: 64 },
         diskBytes: { type: 'integer', minimum: 1_048_576, maximum: 1_073_741_824 },
         outputBytes: { type: 'integer', minimum: 1, maximum: 1_048_576 },
-        artifactBytes: { type: 'integer', minimum: 1, maximum: 10_485_760 },
+        artifactBytes: { type: 'integer', minimum: 1, maximum: 1_048_576 },
         wallTimeMs: { type: 'integer', minimum: 100, maximum: 60_000 },
       },
     },
   },
+});
+const rpcChains = Object.freeze(['eip155:1', 'eip155:10', 'eip155:56', 'eip155:137', 'eip155:8453', 'eip155:42161', 'eip155:43114', 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp']);
+const rpcProbeExample = Object.freeze({ chainId: 'eip155:1', call: Object.freeze({ method: 'eth_chainId', params: Object.freeze([]) }) });
+const rpcCallSchema = Object.freeze({
+  type: 'object', required: ['method', 'params'], additionalProperties: false,
+  properties: { method: { type: 'string', minLength: 2, maxLength: 64 }, params: {} },
+});
+const rpcProbeSchema = Object.freeze({
+  oneOf: [
+    { type: 'object', required: ['chainId', 'call'], additionalProperties: false, properties: { chainId: { enum: rpcChains }, call: rpcCallSchema, quorum: { type: 'integer', minimum: 1, maximum: 3 } } },
+    { type: 'object', required: ['chainId', 'calls'], additionalProperties: false, properties: { chainId: { enum: rpcChains }, calls: { type: 'array', minItems: 1, maxItems: 20, items: rpcCallSchema }, quorum: { type: 'integer', minimum: 1, maximum: 3 } } },
+  ],
 });
 const predictionProbeExample = Object.freeze({ kind: 'markets', status: 'open', limit: 3 });
 const predictionMarketRefSchema = Object.freeze({ type: 'string', pattern: '^pmkt_[a-f0-9]{32}$' });
@@ -253,22 +345,26 @@ function scannerSafeOperation(operation, { requestSchema, example, paymentInfo, 
   return cloned;
 }
 
-const { interfaceHash, ...unsignedReleaseCandidate } = releaseCandidate;
-
-// Lifecycle state and proof level come from the live registry, which is
+// Lifecycle state and payment availability come from the live registry, which is
 // generated by probing the deployed system. They are never read from a
 // hand-written field, because a hand-written status line is a bug: it is what
 // let the published site deny that the API takes payment while the API was
 // quoting real prices.
 //
 // `launch-state.v1.json` is still authoritative for what it uniquely owns —
-// identity, repository, published package versions, and the owner-funded
-// payment proof record — none of which a probe can observe.
+// identity, repository, and published package versions — none of which a probe
+// can observe.
 if (liveRegistry.schemaVersion !== 'clervo.live-registry.v1') throw new Error('live_registry_schema_unrecognized');
 if (liveRegistry.handEditingProhibited !== true) throw new Error('live_registry_hand_editing_marker_missing');
 
 const LIFECYCLE_STATES = new Set(['live', 'supply_paused', 'unavailable']);
 const PROOF_LEVELS = new Set(['none', 'quote_observed_unpaid', 'paid_outcome_verified', 'externally_repeated']);
+
+function publicReason(reason) {
+  return reason === null || reason === undefined
+    ? null
+    : 'temporarily_unavailable';
+}
 
 function registryProduct(productId) {
   const product = liveRegistry.products.find(({ id }) => id === productId);
@@ -278,10 +374,9 @@ function registryProduct(productId) {
   return product;
 }
 
-// Observed truth about each family. `state` is what the deployed system does;
-// `proof` is what has actually been demonstrated. A live route at
-// `quote_observed_unpaid` is offered and priced and nothing more, and every
-// rendered surface must say exactly that much and no more.
+// Observed truth about each family. `state` determines public availability;
+// qualification evidence stays available to compatibility consumers but does
+// not drive customer-facing copy.
 const observed = Object.fromEntries(
   ['search', 'ai', 'sandbox', 'rpc', 'prediction', 'crypto_intelligence']
     .map((id) => [id, registryProduct(id)]),
@@ -297,14 +392,27 @@ const publicApiFlags = [
 ];
 const publicSearch = observedLive.search;
 const publicAi = observedLive.ai;
+const openAiChatCompatibility = observed.ai.compatibilityRoutes?.find(({ protocol }) => protocol === 'openai_chat_completions') ?? null;
+const publicOpenAiChat = publicAi
+  && openAiChatCompatibility?.state === 'live'
+  && openAiChatCompatibility.observedQuote !== null;
+const anthropicMessagesCompatibility = observed.ai.compatibilityRoutes?.find(({ protocol }) => protocol === 'anthropic_messages') ?? null;
+const publicAnthropicMessages = publicAi
+  && anthropicMessagesCompatibility?.state === 'live'
+  && anthropicMessagesCompatibility.observedQuote !== null;
+const openAiResponsesCompatibility = observed.ai.compatibilityRoutes?.find(({ protocol }) => protocol === 'openai_responses') ?? null;
+const publicOpenAiResponses = publicAi
+  && openAiResponsesCompatibility?.state === 'live'
+  && openAiResponsesCompatibility.observedQuote !== null;
 const aiOperationIds = Object.freeze(['ai.chat', 'ai.embed', 'ai.image', 'ai.speech', 'ai.video', 'ai.music', 'ai.virtual_try_on']);
 const publicSandbox = observedLive.sandbox;
+const publicRpc = observedLive.rpc;
 const publicPrediction = observedLive.prediction;
 const publicCrypto = observedLive.crypto_intelligence;
 
-// Lifecycle state and proof level are rendered as two separate fields on every
-// surface. Collapsing them into one is what previously let a quote be read as a
-// working paid product.
+// The internal registry also records qualification evidence. Public product
+// language uses availability, routes, and payment behavior; the field remains
+// in this compatibility projection for released clients that already read it.
 const observedTruth = Object.values(observed)
   .map((product) => ({
     id: product.id,
@@ -312,7 +420,7 @@ const observedTruth = Object.values(observed)
     operations: product.operations,
     lifecycleState: product.state,
     proofLevel: product.proof,
-    reason: product.reason,
+    reason: publicReason(product.reason),
     expectedReturnAt: product.expectedReturnAt,
     publiclyReachable: product.publiclyReachable,
     observedPrice: product.observedQuote === null ? null : {
@@ -328,14 +436,37 @@ const observedTruth = Object.values(observed)
   }))
   .sort((left, right) => left.id.localeCompare(right.id));
 
+const runtimeRelease = liveRegistry.deployment.releaseId;
+if (!/^[a-f0-9]{40}$/u.test(runtimeRelease ?? '')) {
+  throw new Error('live_registry_runtime_release_invalid');
+}
+
 const observedProvenance = {
-  source: 'packages/catalog/live-registry.json',
-  generatedBy: liveRegistry.generatedBy,
+  source: 'Clervo production probe',
+  generatedBy: 'Clervo discovery generator',
   observedAt: liveRegistry.observedAt,
-  releaseId: liveRegistry.deployment.releaseId,
   proofLevels: liveRegistry.proofLevels,
   states: liveRegistry.states,
 };
+
+// Qualification and transaction evidence stays in the internal live registry.
+// Public callers need current availability, routes, prices, and limitations—not
+// Clervo's internal evidence classification.
+const publicObservedTruth = observedTruth.map(({ proofLevel: _proofLevel, ...product }) => product);
+const publicObservedProvenance = {
+  observedAt: observedProvenance.observedAt,
+  states: observedProvenance.states,
+};
+
+const publicApiStatus = Object.freeze({
+  state: launchState.distribution.publicApi.publicCallable
+    ? 'available'
+    : 'unavailable',
+  endpoint: launchState.distribution.publicApi.endpoint,
+  publicCallable: launchState.distribution.publicApi.publicCallable,
+  publicTraffic: launchState.distribution.publicApi.publicTraffic,
+  customerEndpointAvailable: launchState.distribution.publicApi.customerEndpointAvailable,
+});
 
 // CDP Bazaar state as the prober observed it, keyed by resource URL. Absent for
 // a resource the prober did not reach — rendered as `null`, never as a claim.
@@ -352,47 +483,9 @@ function bazaarStateFor(resource) {
 }
 
 if (
-  releaseCandidate.state !== 'private_core_frozen'
-  || releaseCandidate.noPublicDistribution !== true
-  || interfaceHash !== contractModule.hashJson(unsignedReleaseCandidate)
-) throw new Error('distribution_release_candidate_invalid');
-if (
-  releaseCandidate.coreQualifications.length !== 6
-  || releaseCandidate.coreQualifications.some(({ privateCoreQualified }) => privateCoreQualified !== true)
-) throw new Error('distribution_private_core_qualification_incomplete');
-if (
-  releaseCandidate.operationSet.publicOperationIds.join(',') !== 'search.web,search.answer'
-  || releaseCandidate.operationSet.publicOperationIds.some((operationId) => {
-    const operation = registry.operations.find((candidate) => candidate.operationId === operationId);
-    const inputVisibility = schemaVisibility.schemas.find(({ schemaId }) => schemaId === operation?.inputSchema)?.visibility;
-    const outputVisibility = schemaVisibility.schemas.find(({ schemaId }) => schemaId === operation?.outputSchema)?.visibility;
-    return operation?.lifecycle !== 'preview'
-      || operation.visibility !== 'internal'
-      || operation.route === null
-      || inputVisibility !== 'public_wire'
-      || outputVisibility !== 'public_wire';
-  })
-) throw new Error('distribution_operation_projection_invalid');
-if (
-  releaseCandidate.lifecycleProjection.length !== registry.pillars.length
-  || releaseCandidate.lifecycleProjection.some(({ pillarId, lifecycle }) => {
-    const pillar = registry.pillars.find((candidate) => candidate.pillarId === pillarId);
-    return pillar?.lifecycle !== lifecycle;
-  })
-) throw new Error('distribution_lifecycle_projection_invalid');
-
-const frozenProjection = Object.freeze({
-  releaseCandidateId: releaseCandidate.releaseCandidateId,
-  interfaceHash,
-  noPublicDistribution: true,
-  publicOperationIds: Object.freeze([...releaseCandidate.operationSet.publicOperationIds]),
-});
-if (
   onboarding.schemaVersion !== 'clervo.distribution-onboarding.v1'
-  || onboarding.releaseCandidateId !== frozenProjection.releaseCandidateId
-  || onboarding.interfaceHash !== frozenProjection.interfaceHash
-  || onboarding.publicCallable !== false
-  || onboarding.paymentImplemented !== false
+  || onboarding.publicCallable !== publicSearch
+  || onboarding.paymentImplemented !== publicSearch
   || onboarding.journey.map(({ step }) => step).join(',') !== 'install,ask,fund,approve,result,receipt'
   || onboarding.recovery.map(({ code }) => code).join(',') !== 'insufficient_funds,wrong_network_or_asset,expired_quote,rejected,timeout,unknown_settlement'
   || onboarding.recovery.some(({ action, retry, problemCodes }) =>
@@ -417,36 +510,12 @@ if (
   // the API is publicly callable, and this asserts the hand-written record has
   // not silently disagreed with it.
   || publicApiFlags.some((value) => value !== publicSearch)
-  || launchState.paymentProof.state !== 'owner_funded_public_proof'
-  || launchState.paymentProof.productId !== predictionPaymentProof?.productId
-  || launchState.paymentProof.amountAtomic !== predictionPaymentProof?.customerChargeAtomic
-  || launchState.paymentProof.settlementConfirmed !== (predictionPaymentProof?.settlementStatus === 'settled')
-  || launchState.paymentProof.usefulResult !== predictionPaymentProof?.usefulResult
-  || launchState.paymentProof.replaySameReceipt !== predictionPaymentProof?.replay?.sameReceipt
-  || launchState.paymentProof.secondCharge !== predictionPaymentProof?.replay?.secondCharge
-  || launchState.paymentProof.revenueEvidence !== predictionProof.proofClassification.revenueEvidence
-  || launchState.paymentProof.demandEvidence !== predictionProof.proofClassification.demandEvidence
   || launchState.products.length !== 6
   || launchState.products.some(({ id }) => !registry.pillars.some(({ pillarId }) => pillarId === id))
 ) throw new Error('launch_state_invalid');
-const projection = publicSearch ? Object.freeze({
-  ...contractModule.PUBLIC_SEARCH_DISTRIBUTION_PROJECTION,
-  releaseCandidateId: releaseCandidate.releaseCandidateId,
-  interfaceHash,
-}) : frozenProjection;
-const projectedOnboarding = publicSearch ? {
-  ...onboarding,
-  publicCallable: true,
-  paymentImplemented: true,
-  journey: onboarding.journey.map((step) => ({
-    ...step,
-    ...(step.step === 'ask' ? { state: 'public_raw_search', action: 'Submit one bounded raw Search request with an idempotency key.' } : {}),
-    ...(step.step === 'fund' ? { state: 'user_managed', action: 'Hold enough exact quoted USDC on Base before approving a paid request.' } : {}),
-    ...(step.step === 'approve' ? { state: 'explicit_wallet_action', action: 'Inspect the exact maximum charge, network, asset, resource, and expiry before signing.' } : {}),
-    ...(step.step === 'result' ? { state: 'public_raw_search', action: 'Verify the normalized result and its source citations.' } : {}),
-    ...(step.step === 'receipt' ? { state: 'public_verified', action: 'Inspect the payment response, receipt, request hash, and no-charge replay behavior.' } : {}),
-  })),
-} : onboarding;
+const projection = publicSearch
+  ? contractModule.PUBLIC_SEARCH_DISTRIBUTION_PROJECTION
+  : contractModule.DEFAULT_DISTRIBUTION_PROJECTION;
 
 await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(path.join(outputDirectory, 'schemas', contractModule.CONTRACT_VERSION), { recursive: true });
@@ -465,12 +534,12 @@ for (const fileName of projectedSchemaFiles) {
   const declaration = schemaVisibility.schemas.find(({ file }) => file === fileName);
   if (!declaration || declaration.schemaId !== schema.$id) throw new Error(`schema visibility identity mismatch: ${fileName}`);
   if (fileName === 'search-http-result.schema.json') {
-    schema.properties.productId.enum = ['search.web'];
-    schema.properties.productId.description = 'Callable public Search operation identity. search.answer remains a released-client compatibility identifier but is not callable.';
+    schema.properties.productId.enum = ['search.web', 'search.answer'];
+    schema.properties.productId.description = 'Callable public Research operation identity: search.web for fast evidence or search.answer for deep cited synthesis.';
   }
   if (fileName === 'search-http-request.schema.json') {
     schema.properties.synthesize.default = false;
-    schema.properties.synthesize.description = 'Public HTTP omission selects false. true is accepted only as a released-client compatibility input and returns search_synthesis_unavailable.';
+    schema.properties.synthesize.description = 'Public HTTP omission selects false for fast evidence. Set true for bounded deep Research with multi-source synthesis and citations.';
   }
   schemas[componentName(fileName)] = schema;
   await writeFile(path.join(outputDirectory, 'schemas', contractModule.CONTRACT_VERSION, fileName), stableJson(schema));
@@ -498,18 +567,16 @@ if (publicSearch) {
     free: true,
     tags: ['Search'],
   });
-  openapi.paths['/v1/search/free'].post.responses['422'] = { description: 'Released-client compatibility request selected synthesize=true, which remains unsupported', content: { 'application/problem+json': { schema: publicProblemSchema } } };
   openapi.paths['/v1/search/paid'].post = scannerSafeOperation(openapi.paths['/v1/search/paid'].post, {
-    requestSchema: searchProbeSchema,
-    example: searchProbeExample,
+    requestSchema: searchResearchProbeSchema,
+    example: { ...searchProbeExample, synthesize: true },
     paymentInfo: {
-      price: { mode: 'fixed', currency: 'USD', amount: '0.006000' },
+      price: { mode: 'fixed', currency: 'USD', amount: '0.012000' },
       protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
     },
     tags: ['Search'],
   });
-  openapi.paths['/v1/search/paid'].post.responses['422'] = { description: 'Released-client compatibility request selected synthesize=true, which remains unsupported', content: { 'application/problem+json': { schema: publicProblemSchema } } };
-  openapi.paths['/v1/search/paid'].post.responses['200'].description = 'Raw cited Search completed or replayed';
+  openapi.paths['/v1/search/paid'].post.responses['200'].description = 'Fast cited Search or deep multi-source Research completed or replayed';
 }
 if (publicAi) {
   openapi.info.title = 'Clervo Search and AI API';
@@ -559,6 +626,296 @@ if (publicAi) {
       },
     },
   };
+  if (publicOpenAiChat) {
+    openapi.paths[OPENAI_CHAT_COMPLETIONS_PATH] = {
+      post: {
+        summary: 'Create an OpenAI-compatible chat completion',
+        description: 'Thin OpenAI Chat Completions compatibility adapter over Clervo AI execution. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Unsupported non-default controls still fail closed.',
+        operationId: 'openAiChatCompletions',
+        security: [],
+        tags: ['AI'],
+        parameters: [{
+          name: 'Idempotency-Key',
+          in: 'header',
+          required: false,
+          description: 'Stable replay key. When omitted before payment, the service generates one and returns it in the response headers.',
+          schema: { type: 'string', minLength: 8, maxLength: 128 },
+        }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: openAiChatDiscovery.inputSchema,
+              example: openAiChatDiscovery.input,
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'OpenAI-compatible chat completion',
+            headers: {
+              'PAYMENT-RESPONSE': { description: 'Base64-encoded x402 v2 settlement response when x402 was used.', schema: { type: 'string', contentEncoding: 'base64' } },
+              'Payment-Receipt': { description: 'MPP receipt when MPP was used.', schema: { type: 'string' } },
+              'Idempotency-Replayed': { description: 'true when the completed logical operation was replayed without another charge.', schema: { type: 'string', enum: ['true'] } },
+            },
+            content: {
+              'application/json': {
+                schema: openAiChatDiscovery.output.schema,
+                example: openAiChatDiscovery.output.example,
+              },
+            },
+          },
+          400: { description: 'Invalid compatibility request', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
+          404: { description: 'Requested model ID is not present in the current catalog', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          422: { description: 'Unsupported compatibility behavior or unavailable model', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          429: { description: 'Published free-tier quota exhausted', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          503: { description: 'No qualified route, capacity, or settlement path is available', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        },
+        'x-payment-info': {
+          price: {
+            mode: 'dynamic',
+            currency: 'USD',
+            min: decimalAtomic(b7Pricing.minimumBillableAtomic, b7Pricing.decimals),
+            max: decimalAtomic(aiMaximumChargeAtomic, b7Pricing.decimals),
+          },
+          protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
+        },
+      },
+    };
+  }
+
+  if (publicAnthropicMessages) {
+    openapi.paths[ANTHROPIC_MESSAGES_PATH] = {
+      post: {
+        summary: 'Create an Anthropic-compatible message',
+        description: 'Thin Anthropic Messages compatibility adapter over Clervo AI execution. Text-only user/assistant messages and top-level system text are supported. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Unsupported richer content, tools, thinking, and non-default controls still fail closed.',
+        operationId: 'anthropicMessages',
+        security: [],
+        tags: ['AI'],
+        parameters: [{
+          name: 'Idempotency-Key',
+          in: 'header',
+          required: false,
+          description: 'Stable replay key. When omitted before payment, the service generates one and returns it in the response headers.',
+          schema: { type: 'string', minLength: 8, maxLength: 128 },
+        }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: anthropicMessagesDiscovery.inputSchema,
+              example: anthropicMessagesDiscovery.input,
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Anthropic-compatible Message response',
+            headers: {
+              'PAYMENT-RESPONSE': { description: 'Base64-encoded x402 v2 settlement response when x402 was used.', schema: { type: 'string', contentEncoding: 'base64' } },
+              'Payment-Receipt': { description: 'MPP receipt when MPP was used.', schema: { type: 'string' } },
+              'Idempotency-Replayed': { description: 'true when the completed logical operation was replayed without another charge.', schema: { type: 'string', enum: ['true'] } },
+            },
+            content: {
+              'application/json': {
+                schema: anthropicMessagesDiscovery.output.schema,
+                example: anthropicMessagesDiscovery.output.example,
+              },
+            },
+          },
+          400: { description: 'Invalid compatibility request', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
+          404: { description: 'Requested model ID is not present in the current catalog', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          422: { description: 'Unsupported compatibility behavior or unavailable model', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          429: { description: 'Published free-tier quota exhausted', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+          503: { description: 'No qualified route, capacity, or settlement path is available', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        },
+        'x-payment-info': {
+          price: {
+            mode: 'dynamic',
+            currency: 'USD',
+            min: decimalAtomic(b7Pricing.minimumBillableAtomic, b7Pricing.decimals),
+            max: decimalAtomic(aiMaximumChargeAtomic, b7Pricing.decimals),
+          },
+          protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
+        },
+      },
+    };
+  }
+
+  if (publicOpenAiResponses) {
+    openapi.paths[OPENAI_RESPONSES_PATH] = {
+      post: {
+        summary: 'Create an OpenAI-compatible response',
+        description: 'Thin stateless OpenAI Responses compatibility adapter over Clervo AI execution. store defaults to false when omitted; store=true remains unsupported. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Stateful continuation, tools, background execution, and unsupported controls fail closed.',
+        operationId: 'openAiResponses',
+        security: [],
+        tags: ['AI'],
+        parameters: [{
+          name: 'Idempotency-Key',
+          in: 'header',
+          required: false,
+          description: 'Stable replay key. When omitted before payment, the service generates one and returns it in the response headers.',
+          schema: {
+            type: 'string',
+            minLength: 8,
+            maxLength: 128,
+          },
+        }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: openAiResponsesDiscovery.inputSchema,
+              example: openAiResponsesDiscovery.input,
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'OpenAI-compatible Response object',
+            headers: {
+              'PAYMENT-RESPONSE': {
+                description: 'Base64-encoded x402 v2 settlement response when x402 was used.',
+                schema: {
+                  type: 'string',
+                  contentEncoding: 'base64',
+                },
+              },
+              'Payment-Receipt': {
+                description: 'MPP receipt when MPP was used.',
+                schema: {
+                  type: 'string',
+                },
+              },
+              'Idempotency-Replayed': {
+                description: 'true when the completed logical operation was replayed without another charge.',
+                schema: {
+                  type: 'string',
+                  enum: ['true'],
+                },
+              },
+            },
+            content: {
+              'application/json': {
+                schema: openAiResponsesDiscovery.output.schema,
+                example: openAiResponsesDiscovery.output.example,
+              },
+            },
+          },
+          400: {
+            description: 'Invalid compatibility request',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+          402: {
+            description: 'x402 or MPP payment required',
+            headers: {
+              'PAYMENT-REQUIRED': {
+                schema: {
+                  type: 'string',
+                  contentEncoding: 'base64',
+                },
+              },
+              'WWW-Authenticate': {
+                schema: {
+                  type: 'string',
+                },
+              },
+            },
+          },
+          404: {
+            description: 'Requested model ID is not present in the current catalog',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+          409: {
+            description: 'Idempotency or quote conflict',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+          422: {
+            description: 'Unsupported Responses behavior, unavailable model, or stateful request',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+          429: {
+            description: 'Published free-tier quota exhausted',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+          503: {
+            description: 'No qualified route, capacity, or settlement path is available',
+            content: {
+              'application/problem+json': {
+                schema: publicProblemSchema,
+              },
+            },
+          },
+        },
+        'x-payment-info': {
+          price: {
+            mode: 'dynamic',
+            currency: 'USD',
+            min: decimalAtomic(
+              b7Pricing.minimumBillableAtomic,
+              b7Pricing.decimals,
+            ),
+            max: decimalAtomic(
+              aiMaximumChargeAtomic,
+              b7Pricing.decimals,
+            ),
+          },
+          protocols: [
+            { x402: {} },
+            {
+              mpp: {
+                method: 'evm',
+                intent: 'charge',
+                currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+              },
+            },
+          ],
+        },
+      },
+    };
+  }
+
+  // Compatibility SSE response documentation.
+  // The payment/execution pipeline completes before these frames are emitted;
+  // this is protocol streaming compatibility, not low-latency token passthrough.
+  for (const [enabled, compatibilityPath, protocol] of [
+    [publicOpenAiChat, OPENAI_CHAT_COMPLETIONS_PATH, 'OpenAI Chat Completions'],
+    [publicAnthropicMessages, ANTHROPIC_MESSAGES_PATH, 'Anthropic Messages'],
+    [publicOpenAiResponses, OPENAI_RESPONSES_PATH, 'OpenAI Responses'],
+  ]) {
+    if (!enabled) continue;
+    openapi.paths[compatibilityPath].post.responses[200].content['text/event-stream'] = {
+      schema: {
+        type: 'string',
+        description: `${protocol} SSE emitted after execution completes; paid streams begin only after settlement succeeds.`,
+      },
+    };
+  }
+
   openapi.paths['/v1/ai/execute'].post = scannerSafeOperation(openapi.paths['/v1/ai/execute'].post, {
     requestSchema: aiChatProbeSchema,
     example: aiProbeExample,
@@ -575,30 +932,70 @@ if (publicAi) {
   });
   openapi.paths['/v1/models'].get.tags = ['AI'];
   openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, ...aiOperationIds];
-  openapi['x-clervo-status'].runtimeRelease = launchState.sourceCommit;
-  discovery.description = `Machine-readable public Search and complete provider-neutral AI catalog. ${b7Inventory.callableIds} stable model IDs are discoverable and callable through one normalized free-or-paid contract without exposing suppliers. No external customer revenue or demand is claimed.`;
+  discovery.description = `Machine-readable public Search and complete provider-neutral AI catalog. ${b7Inventory.callableIds} stable model IDs are discoverable and callable through one normalized free-or-paid contract without exposing suppliers.`;
   discovery.products.push({
     productId: 'ai', operationId: 'ai.execute', operationIds: aiOperationIds, title: 'Clervo AI model catalog',
     summary: 'Provider-neutral chat, embeddings, image, speech, video, music, and virtual try-on with stable identities, normalized results, truthful usage, paid receipts, and no-charge replay.',
     lifecycle: observed.ai.proof === 'paid_outcome_verified' ? 'production' : 'preview', publicAvailable: true, deliveryModes: ['sync'],
     selection: { model: 'Stable canonical Clervo model ID or a published alias contract.', catalog: '/v1/models' },
     pricing: { model: 'authoritative_per_model_usage_pricing', displayPrice: null, freeAndPaid: true, maximumChargeRequiredForPaid: true, priceVersion: b7Pricing.revision },
-    routes: { catalog: '/v1/models', execute: '/v1/ai/execute' },
+    routes: {
+      catalog: '/v1/models',
+      execute: '/v1/ai/execute',
+      ...(publicOpenAiChat ? { openAiChatCompletions: OPENAI_CHAT_COMPLETIONS_PATH } : {}),
+      ...(publicAnthropicMessages ? { anthropicMessages: ANTHROPIC_MESSAGES_PATH } : {}),
+      ...(publicOpenAiResponses ? { openAiResponses: OPENAI_RESPONSES_PATH } : {}),
+    },
     payment: { freeModelsRequirePayment: false, paidModels: ['x402', 'mpp'], challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
     commercialProof: observed.ai.proof === 'paid_outcome_verified',
   });
-  discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: ['search.web', ...aiOperationIds] };
   discovery.limitations = [
     `The catalog contains ${b7Inventory.canonicalModels} frozen canonical models and ${b7Inventory.aliases} aliases; it is not an open-ended promise to add or substitute models.`,
     'AI catalog prices are authoritative usage rates; a paid request returns the binding request-specific maximum charge before settlement.',
-    observed.ai.proof === 'paid_outcome_verified' ? 'A bounded owner-funded paid AI outcome, receipt, accounting record, and no-charge replay are verified; no unrelated-customer demand is claimed.' : 'The AI production catalog and payment challenge are verified; an owner-signed paid AI result remains pending.',
+    observed.ai.proof === 'paid_outcome_verified' ? 'A bounded paid AI outcome, receipt, accounting record, and no-charge replay are verified.' : 'The AI production catalog and payment challenge are verified; a settled paid AI result remains pending.',
     'Secure Sandbox, RPC, Prediction, and Crypto Intelligence remain publicly unavailable.',
-    'No external customer payment, revenue, or demand is claimed.',
   ];
   llms = llms
-    .replace('raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable', 'raw cited Search and the complete provider-neutral Clervo AI catalog are callable; synthesized Search, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable')
+    .replace('raw cited Search is callable; synthesized Search, AI, Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable', 'fast cited Search and paid deep Research, plus the complete provider-neutral Clervo AI catalog, are callable; Secure Sandbox, RPC, Prediction, and Crypto Intelligence are unavailable')
     .replace('Projected operation IDs: search.web, search.answer', `Projected operation IDs: search.web, search.answer, ${aiOperationIds.join(', ')}`)
     .replace('x402 public payment: available for search.web at a maximum charge of 0.006 USDC on Base', 'x402 public payment: available for search.web at a maximum charge of 0.006 USDC and for paid AI requests through an exact request-derived maximum-charge quote on Base; published free AI models require no payment');
+  if (publicOpenAiChat) {
+    llms += [
+      '',
+      '## OpenAI Chat Completions compatibility',
+      '',
+      `- \`POST ${projection.publicBaseUrl}${OPENAI_CHAT_COMPLETIONS_PATH}\`: OpenAI Chat Completions-compatible adapter with SSE support over the canonical Clervo AI execution stack.`,
+      '- The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.',
+      '- `stream: true` returns protocol-compatible SSE after the operation completes; paid streams begin only after settlement succeeds.',
+      '',
+    ].join('\n');
+  }
+  if (publicAnthropicMessages) {
+    llms += [
+      '',
+      '## Anthropic Messages compatibility',
+      '',
+      `- \`POST ${projection.publicBaseUrl}${ANTHROPIC_MESSAGES_PATH}\`: Anthropic Messages-compatible adapter with SSE support over the canonical Clervo AI execution stack.`,
+      '- Supports text-only user/assistant messages plus top-level system text; richer content blocks, tools, thinking, and unsupported non-default controls fail closed with 422.',
+      '- The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.',
+      '- `stream: true` returns protocol-compatible SSE after the operation completes; paid streams begin only after settlement succeeds.',
+      '',
+    ].join('\n');
+
+  }
+  if (publicOpenAiResponses) {
+    llms += [
+      '',
+      '## OpenAI Responses compatibility',
+      '',
+      `- \`POST ${projection.publicBaseUrl}${OPENAI_RESPONSES_PATH}\`: stateless OpenAI Responses-compatible adapter with SSE support over the canonical Clervo AI execution stack.`,
+      '- Supports string input, bounded text message input, optional instructions, max_output_tokens, and text/json_object output formatting.',
+      '- `store` defaults to `false` when omitted; `store: true`, stored response state, previous-response continuation, conversations, tools, background execution, and reasoning controls fail closed with 422.',
+      '- The same model catalog, request-derived pricing, x402/MPP payment boundary, idempotency, settlement, and replay behavior apply.',
+      '- `stream: true` returns protocol-compatible SSE after the operation completes; paid streams begin only after settlement succeeds.',
+      '',
+    ].join('\n');
+  }
 }
 if (publicSandbox) {
   openapi.info.title = 'Clervo Search, AI, and Secure Sandbox API';
@@ -606,7 +1003,7 @@ if (publicSandbox) {
   openapi.paths['/v1/sandbox/execute'] = {
     post: {
       summary: 'Request or settle a bounded one-shot Secure Sandbox execution',
-      description: 'Runs one command in the pinned qualified Node.js gVisor image with no network, strict resources, cleanup, a receipt, and no-charge replay. The short class is 0.010 USDC; larger bounded requests quote the standard class. Sessions and artifact retrieval are not yet public.',
+      description: 'Runs one Node.js or Python program (or a raw command) in the pinned qualified gVisor image with no network, strict resources, bounded files and returned artifacts, cleanup, a receipt, and no-charge replay. Generated artifacts are hashed but explicitly not malware-scanned. The short class is 0.010 USDC; larger bounded requests quote the standard class. Sessions and artifact retrieval are not yet public.',
       operationId: 'sandboxExecute',
       parameters: [{ name: 'Idempotency-Key', in: 'header', required: true, schema: { type: 'string', minLength: 8, maxLength: 128 } }],
       requestBody: { required: true, content: { 'application/json': { schema: sandboxProbeSchema } } },
@@ -629,26 +1026,81 @@ if (publicSandbox) {
     tags: ['Sandbox'],
   });
   openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, 'sandbox.run'];
-  discovery.description = 'Machine-readable public Search, paid AI chat, and paid one-shot Secure Sandbox previews. Each published operation returns real output through the production path; unsupported operations fail closed. No external customer revenue or demand is claimed.';
+  discovery.description = 'Machine-readable public Search, paid AI chat, and paid one-shot Secure Sandbox. Each published operation returns real output through the production path; unsupported operations fail closed.';
   discovery.products.push({
     productId: 'sandbox.run', operationId: 'sandbox.run', title: 'Secure one-shot code execution',
     summary: 'Bounded Node.js execution in a pinned gVisor image with no network, strict resource ceilings, cleanup, receipt, and no-charge replay.',
     lifecycle: 'preview', publicAvailable: true, deliveryModes: ['sync'],
-    selection: { image: 'Pinned qualified sandbox.nodejs-24 image; caller cannot select an arbitrary image.' },
+    selection: { image: 'Pinned qualified sandbox.nodejs-24-python3-12 image; caller cannot select an arbitrary image.' },
     pricing: { model: 'class_derived_quote', displayPrice: { asset: 'USDC', amountAtomic: '10000', decimals: 6 }, maximumChargeRequired: true, priceVersion: 'sandbox-run-short-2026-08-09.1', priceRange: { minimumAtomic: '10000', maximumAtomic: '60000' } },
     routes: { paidChallenge: '/v1/sandbox/execute' },
     payment: { challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
     commercialProof: false,
   });
-  discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: ['search.web', 'ai.chat', 'sandbox.run'] };
   discovery.limitations = [
     'Raw cited Search, bounded paid AI chat, and bounded paid one-shot Secure Sandbox execution are publicly callable previews.',
     'The Sandbox has one qualified execution node; high availability, sessions, arbitrary images, network access, and public artifact retrieval are not claimed.',
-    'Search synthesis, AI media, RPC, Prediction, and Crypto Intelligence remain unavailable.',
+    'Deep Research is bounded and callable; AI media, RPC, Prediction, and Crypto Intelligence remain unavailable.',
     'The Sandbox production origin, useful gVisor output, replay, and cleanup are verified; a bounded paid Sandbox proof remains pending.',
     'No external customer payment, revenue, or demand is claimed.',
   ];
-  llms += '\n## Secure Sandbox preview\n\n- `POST /v1/sandbox/execute`: class-derived 0.010000–0.060000 USDC quote on Base for one bounded Node.js gVisor execution.\n- The short class is capped at 5 CPU seconds, 256 MiB, 16 processes, 64 MiB disk, 64 KiB output, 1 MiB artifacts, and 10 seconds wall time; larger requests use the standard class without weaker ceilings.\n- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.\n';
+  llms += '\n## Secure Sandbox preview\n\n- `POST /v1/sandbox/execute`: class-derived 0.010000–0.060000 USDC quote on Base for one bounded Node.js 24 or Python 3.12 gVisor execution.\n- Requests may include bounded stdin and files and may return requested artifacts; decoded code, stdin, and files share a 1 MiB envelope, artifact transport is capped at 1 MiB, and returned artifacts are hashed but not malware-scanned.\n- The short class is capped at 5 CPU seconds, 256 MiB, 16 processes, 64 MiB disk, 64 KiB output, 1 MiB artifacts, and 10 seconds wall time; larger requests use the standard class without weaker ceilings.\n- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.\n';
+}
+if (publicRpc) {
+  const priceByProduct = new Map(rpcPricing.products.map((product) => [product.productId, product]));
+  const publicRpcProducts = [
+    ['rpc.call', 'Call one supported-chain RPC method', 'Execute one allowlisted read-only JSON-RPC method against a healthy route with failover.'],
+    ['rpc.batch', 'Batch supported-chain RPC reads', 'Execute up to 20 allowlisted read-only JSON-RPC calls on one supported chain.'],
+  ];
+  openapi.paths['/v1/rpc/execute'] = {
+    post: {
+      summary: 'Request or settle a bounded Multi-chain RPC read',
+      description: 'Serves allowlisted read-only methods across Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, and Solana. Archive reads and transaction broadcast are not public operations.',
+      operationId: 'rpcExecute',
+      parameters: [{ name: 'Idempotency-Key', in: 'header', required: true, schema: { type: 'string', minLength: 8, maxLength: 128 } }],
+      requestBody: { required: true, content: { 'application/json': { schema: rpcProbeSchema } } },
+      responses: {
+        200: { description: 'RPC read completed or replayed', content: { 'application/json': { schema: publicResultSchema } } },
+        400: { description: 'Invalid chain, method, batch, quorum, or body', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        402: { description: 'x402 or MPP payment required', headers: { 'PAYMENT-REQUIRED': { schema: { type: 'string', contentEncoding: 'base64' } }, 'WWW-Authenticate': { schema: { type: 'string' } } } },
+        409: { description: 'Idempotency or quote conflict', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+        503: { description: 'Healthy RPC supply, capacity, or settlement is unavailable', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+      },
+    },
+  };
+  openapi.paths['/v1/rpc/execute'].post = scannerSafeOperation(openapi.paths['/v1/rpc/execute'].post, {
+    requestSchema: rpcProbeSchema,
+    example: rpcProbeExample,
+    paymentInfo: {
+      price: { mode: 'dynamic', currency: 'USD', min: '0.001000', max: '0.020000' },
+      protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
+    },
+    tags: ['RPC'],
+  });
+  openapi.paths['/v1/rpc/chains'] = {
+    get: {
+      summary: 'Read current health for all supported RPC chains', operationId: 'rpcListChains', security: [], tags: ['RPC'],
+      responses: {
+        200: { description: 'Every advertised chain has at least one semantically healthy route', content: { 'application/json': { schema: { type: 'object', additionalProperties: true } } } },
+        503: { description: 'One or more advertised chains could not be verified healthy', content: { 'application/problem+json': { schema: publicProblemSchema } } },
+      },
+    },
+  };
+  openapi['x-clervo-status'].operationIds = [...openapi['x-clervo-status'].operationIds, ...publicRpcProducts.map(([productId]) => productId)];
+  for (const [productId, title, summary] of publicRpcProducts) {
+    const price = priceByProduct.get(productId);
+    if (price?.listingStatus !== 'sellable' || price.customerPriceMicrousd !== 1000) throw new Error(`public_rpc_price_invalid:${productId}`);
+    discovery.products.push({
+      productId, operationId: productId, title, summary,
+      lifecycle: 'preview', publicAvailable: true, deliveryModes: ['sync'],
+      selection: { chains: rpcChains, maximumBatchSize: 20, methods: 'Published read-only allowlist; unsafe namespaces, archive reads, and transaction broadcast fail closed.' },
+      pricing: { model: productId === 'rpc.call' ? 'fixed_per_request' : 'fixed_per_call', displayPrice: { asset: 'USDC', amountAtomic: '1000', decimals: 6 }, maximumChargeRequired: true, priceVersion: `${rpcPricing.priceVersion}-${productId}` },
+      routes: { paidChallenge: '/v1/rpc/execute', health: '/v1/rpc/chains' },
+      payment: { challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
+      commercialProof: observed.rpc.proof === 'paid_outcome_verified',
+    });
+  }
+  llms += '\n## Multi-chain RPC\n\n- `POST /v1/rpc/execute`: 0.001000 USDC per read-only RPC call on Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, or Solana; batches contain at most 20 calls on one chain.\n- `GET /v1/rpc/chains`: current semantic health for every advertised chain. Credentialed primary supply and independent read-only fallbacks are checked for chain identity, height, and finalized block consistency.\n- Public operations are `rpc.call` and `rpc.batch`. Archive reads and transaction broadcast remain unavailable. Same-key replay returns the completed result and receipt without another charge.\n';
 }
 if (publicPrediction) {
   const priceByProduct = new Map(predictionPricing.products.map((product) => [product.productId, product]));
@@ -702,12 +1154,11 @@ if (publicPrediction) {
       commercialProof: false,
     });
   }
-  discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: [...new Set([...(discovery.runtimeRelease?.operationIds ?? ['search.web']), ...publicPredictionProducts.map(([productId]) => productId)])] };
   discovery.limitations = [
     'Raw cited Search, bounded paid AI chat, one-shot Secure Sandbox execution, and derived Prediction Intelligence are publicly callable previews.',
     'Prediction uses the qualified pdata supply path for Polymarket, Kalshi, Manifold, and Limitless; unresolved direct venue adapters remain disabled.',
     'Prediction output is transformed and attributed under CC BY 4.0; Clervo does not redistribute the raw pdata feed or provide trading execution or custody.',
-    'A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.',
+    'A 402 response is a quote, not payment authorization or settlement.',
     'RPC and Crypto Intelligence remain publicly unavailable.',
   ];
   llms += '\n## Prediction Intelligence preview\n\n- `POST /v1/prediction/execute`: `prediction.markets`, `prediction.market`, and `prediction.compare` cost at most 0.002000 USDC; `prediction.history` and `prediction.signal` cost at most 0.003000 USDC on Base.\n- Qualified zero-cost supply: pdata for Polymarket, Kalshi, Manifold, and Limitless. Direct venue adapters with unresolved commercial permission remain disabled.\n- Clervo returns normalized probabilities, stable market/event identities, conservative matching, durable observations, disagreement/movement signals, freshness, provenance, pdata/upstream attribution, an accurate receipt, and no-charge replay. It is not a raw pdata proxy and does not provide trading or custody.\n';
@@ -760,12 +1211,11 @@ if (publicCrypto) {
       commercialProof: observed.crypto_intelligence.proof === 'paid_outcome_verified',
     });
   }
-  discovery.runtimeRelease = { sourceCommit: launchState.sourceCommit, operationIds: [...new Set([...(discovery.runtimeRelease?.operationIds ?? ['search.web']), ...publicCryptoProducts.map(([productId]) => productId)])] };
   discovery.limitations = [
     'Publicly callable previews include bounded provider-neutral Crypto Intelligence for Ethereum and Base.',
     'Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable without commercially qualified price supply.',
     'Reports expose observed facts, deterministic signals, coverage, missing sources, freshness, evidence, and provenance; they do not infer wallet identity, risk, advice, custody, signing, or trading.',
-    'A public quote proves price and reachability only; paid outcome proof is reported separately and is never inferred from a 402.',
+    'A 402 response is a quote, not payment authorization or settlement.',
     'Solana and unsupported EVM chains fail closed.',
   ];
   llms += '\n## Crypto Intelligence preview\n\n- `POST /v1/crypto/execute`: balances and token holdings cost 0.002000 USDC, transactions cost 0.003000 USDC, and the wallet report costs 0.004000 USDC on Base.\n- Supported data chains: Ethereum and Base. The report returns bounded holdings, activity, flows, counterparties, deterministic signals, freshness, coverage, evidence, and provenance.\n- Output never infers wallet identity, opaque risk, advice, custody, signing, or trading. USD valuation and Solana are unavailable. Same-key replay returns the completed result and receipt without another charge.\n';
@@ -774,20 +1224,22 @@ const liveApiFamilies = [
   publicSearch ? { title: 'Search', description: 'raw cited Search' } : null,
   publicAi ? { title: 'AI', description: 'bounded paid AI' } : null,
   publicSandbox ? { title: 'Secure Sandbox', description: 'bounded one-shot Secure Sandbox execution' } : null,
+  publicRpc ? { title: 'Multi-chain RPC', description: 'bounded read-only Multi-chain RPC' } : null,
   publicPrediction ? { title: 'Prediction Intelligence', description: 'derived Prediction Intelligence' } : null,
   publicCrypto ? { title: 'Crypto Intelligence', description: 'bounded provider-neutral Crypto Intelligence' } : null,
 ].filter(Boolean);
 if (liveApiFamilies.length > 0) {
   openapi.info.title = `Clervo ${liveApiFamilies.map(({ title }) => title).join(', ')} API`;
-  openapi.info.description = `Publicly callable previews: ${liveApiFamilies.map(({ description }) => description).join(', ')}. Lifecycle and proof state are generated from the probed live registry; unavailable operations fail closed.`;
+  openapi.info.description = `Publicly callable previews: ${liveApiFamilies.map(({ description }) => description).join(', ')}. Availability, routes, and prices are generated from the probed live registry; unavailable operations fail closed.`;
   const tagDescriptions = {
     Search: 'Free-first raw web evidence and paid replay-safe retrieval.',
     AI: 'Provider-neutral model discovery and normalized free-or-paid execution.',
     Sandbox: 'Bounded one-shot isolated code execution.',
+    RPC: 'Bounded allowlisted reads across eight supported chains.',
     Prediction: 'Normalized prediction-market discovery and derived intelligence.',
     'Crypto Intelligence': 'Bounded wallet facts and deterministic on-chain derivations.',
   };
-  const openApiTagName = { 'Secure Sandbox': 'Sandbox', 'Prediction Intelligence': 'Prediction', 'Crypto Intelligence': 'Crypto Intelligence' };
+  const openApiTagName = { 'Secure Sandbox': 'Sandbox', 'Multi-chain RPC': 'RPC', 'Prediction Intelligence': 'Prediction', 'Crypto Intelligence': 'Crypto Intelligence' };
   openapi.tags = liveApiFamilies.map(({ title }) => {
     const name = openApiTagName[title] ?? title;
     return { name, description: tagDescriptions[name] };
@@ -798,12 +1250,11 @@ if (liveApiFamilies.length > 0) {
 }
 const catalog = contractModule.createCatalogDocument(projection);
 catalog.catalogVersion = discoveryArtifactVersion;
-if (publicAi || publicSandbox || publicPrediction || publicCrypto) catalog.products = discovery.products;
+if (publicAi || publicSandbox || publicRpc || publicPrediction || publicCrypto) catalog.products = discovery.products;
 
-// The contract package still supplies the historical introductory shape of
-// llms.txt. Replace every lifecycle-sensitive summary row from the same live
-// registry and projected products used below. These rows must never become a
-// second hand-maintained status source.
+// Project lifecycle-sensitive summary rows from the same live registry and
+// products used below. These rows must never become a second hand-maintained
+// status source.
 const lifecycleSummary = ['live', 'supply_paused', 'unavailable']
   .map((state) => {
     const labels = observedTruth.filter(({ lifecycleState }) => lifecycleState === state).map(({ label }) => label);
@@ -813,13 +1264,7 @@ const lifecycleSummary = ['live', 'supply_paused', 'unavailable']
   .join('; ');
 const publicProducts = discovery.products.filter(({ publicAvailable }) => publicAvailable === true);
 const publicOperationIds = [...new Set(publicProducts.flatMap(({ operationId, operationIds }) => operationIds ?? [operationId]))];
-if (!/^[a-f0-9]{40}$/u.test(observedProvenance.releaseId ?? '')) throw new Error('live_registry_release_id_invalid');
-discovery.description = `Machine-readable public preview for ${liveApiFamilies.map(({ title }) => title).join(', ')}. Lifecycle, proof, routes, and prices are generated from direct deployed-system observations; unavailable operations fail closed.`;
-discovery.runtimeRelease = {
-  sourceCommit: observedProvenance.releaseId,
-  operationIds: publicOperationIds,
-};
-openapi['x-clervo-status'].runtimeRelease = observedProvenance.releaseId;
+discovery.description = COMMERCIAL_DESCRIPTION;
 openapi['x-clervo-status'].operationIds = publicOperationIds;
 const publicOfferSummary = publicProducts.map(({ productId, pricing }) => {
   const price = pricing?.displayPrice;
@@ -828,16 +1273,19 @@ const publicOfferSummary = publicProducts.map(({ productId, pricing }) => {
   return `${productId} (${display} USDC maximum)`;
 }).join(', ');
 llms = llms
-  .replace(/^- Customer API:.*$/mu, `- Customer API: public preview at https://api.clervo.dev; live families are derived from the deployed registry`)
-  .replace(/^- Public lifecycle:.*$/mu, `- Public lifecycle: ${lifecycleSummary}`)
-  .replace(/^- Projected operation IDs:.*$/mu, `- Public operation IDs: ${publicOperationIds.join(', ')}`)
+  .replace('> Clervo is outcome infrastructure for agents: Find, Understand, Act.', `> ${COMMERCIAL_DESCRIPTION}`)
+  .replace(/^- API:.*$/mu, '- API: https://api.clervo.dev')
+  .replace(/^- Search:.*$/mu, `- Product availability: ${lifecycleSummary}`)
+  .replace(/^- Operation IDs:.*$/mu, `- Public operation IDs: ${publicOperationIds.join(', ')}`)
   .replace(/^- x402 public payment:.*$/mu, `- x402 public payment: available for ${publicOfferSummary}`)
-  .replace(/^- x402 private proof:.*$/mu, '- x402 owner-funded proof: settled outcomes are reported per product in the generated proof table; no customer revenue or demand is inferred')
   .replace(/^- Public price:.*$/mu, `- Public price: ${publicOfferSummary}`);
-// Every surface carries the observed lifecycle state and proof level side by
-// side, sourced from the probed registry rather than from any prose.
-discovery.observedTruth = { provenance: observedProvenance, products: observedTruth };
+// Availability and pricing stay sourced from the probed registry rather than
+// from customer-facing prose.
+discovery.observedTruth = { provenance: publicObservedProvenance, products: publicObservedTruth };
 catalog.observedTruth = discovery.observedTruth;
+discovery.sharedBoundary = SHARED_PUBLIC_BOUNDARY;
+catalog.sharedBoundary = SHARED_PUBLIC_BOUNDARY;
+openapi['x-clervo-shared-boundary'] = SHARED_PUBLIC_BOUNDARY;
 // The two agent-facing documents are advertised where an agent already looks,
 // so finding them does not require guessing a filename.
 const { claims: _obsoleteClaimsArtifact, ...discoveryArtifacts } = discovery.artifacts;
@@ -846,6 +1294,8 @@ if (publicSearch) contractModule.assertPublicArtifacts(openapi, discovery, llms,
 else contractModule.assertPreviewArtifacts(openapi, discovery, llms, projection);
 delete openapi['x-clervo-status'].releaseCandidateId;
 delete openapi['x-clervo-status'].interfaceHash;
+openapi['x-clervo-status'].distribution = publicSearch ? 'public' : 'unavailable';
+openapi.info.description = `${COMMERCIAL_DESCRIPTION} Current operations, routes, prices, and limitations are listed below.`;
 
 // Public discovery describes how an external caller uses the deployed system.
 // Historical release-candidate gates, B-number readiness, private proof ledgers,
@@ -863,50 +1313,62 @@ discovery.payment = {
   network: 'eip155:8453',
   asset: 'USDC',
 };
-for (const product of discovery.products) delete product.commercialProof;
+for (const product of discovery.products) {
+  delete product.commercialProof;
+  product.lifecycle = product.publicAvailable ? 'available' : 'unavailable';
+}
 // Compatibility-only and roadmap products remain in the internal registry,
 // not in the invocable public inventory returned to unrelated agents.
 discovery.products = discovery.products.filter(({ publicAvailable }) => publicAvailable === true);
 catalog.products = discovery.products;
 delete catalog.releaseScope;
 catalog.distribution = discovery.distribution;
+discovery.limitations = discovery.limitations
+  .filter((line) => !/(proof|proven|pending|customer payment|revenue|demand)/iu.test(line))
+  .map((line) => line
+    .replace(/Publicly callable previews:/iu, 'Publicly callable operations:')
+    .replace(/ without commercially qualified price supply/iu, '')
+    .replace(/Qualified supply, /iu, '')
+    .replace(/The qualified pdata supply path/iu, 'pdata')
+    .replace(/ Direct venue adapters with unresolved commercial permission remain disabled\./iu, ''));
 llms = llms
-  .replace(/^- Frozen release candidate:.*\n/mu, '')
-  .replace(/^- Frozen interface hash:.*\n/mu, '')
-  .replace(/^- Six product cores:.*\n/mu, '')
-  .replace(/^- First Revenue Release ready:.*\n/mu, '')
-  .replace(/^- Commercial proof:.*\n/mu, '')
   .replace(/^- \[Launch claims\]\(\/claims\.json\):.*\n/mu, '')
-  .replace(/^- \[JSON Schemas\]\([^\n]+\):.*$/mu, '- [Request and response schemas](/openapi.json): OpenAPI 3.1 operations with embedded JSON Schema 2020-12 contracts.');
+  .replace(/^- \[JSON Schemas\]\([^\n]+\):.*$/mu, '- [Request and response schemas](/openapi.json): OpenAPI 3.1 operations with embedded JSON Schema 2020-12 contracts.')
+  .replace(/^- \[Onboarding and recovery\].*$/mu, '- [Onboarding and recovery](/onboarding.json): client setup, payment approval, replay, and reconciliation actions.')
+  .replace(/^- \[Pricing state\].*$/mu, '- [Pricing state](/pricing.json): current public offers and maximum-charge behavior.')
+  .replace(/^- \[Status\].*$/mu, '- [Status](/status.json): current API, package, route, and product availability.')
+  .replace(/^- \[Discovery document\].*$/mu, '- [Discovery document](/.well-known/clervo.json): public operations, routes, prices, and payment protocols.')
+  .replace(/## Secure Sandbox preview/gu, '## Secure Sandbox')
+  .replace(/## Prediction Intelligence preview/gu, '## Prediction Intelligence')
+  .replace(/## Crypto Intelligence preview/gu, '## Crypto Intelligence')
+  .replace(/Qualified zero-cost supply:/gu, 'Current market sources:');
 llms += [
   '',
-  '## Observed lifecycle state and proof level',
+  '## Current product availability',
   '',
-  `Probed from the deployed system at ${observedProvenance.observedAt}. Lifecycle state is what the runtime serves now. Proof level is what has actually been demonstrated; \`quote_observed_unpaid\` means a price and a valid payment challenge were returned and nothing more.`,
+  `Current at ${publicObservedProvenance.observedAt}. An available product accepts requests; an unavailable product has no public execution route. The 402 returned for a paid request is the binding quote.`,
   '',
-  '| Product | Lifecycle state | Proof level |',
+  '| Product | Availability | Price |',
   '|---|---|---|',
-  ...observedTruth.map((product) => `| ${product.label} | ${product.lifecycleState}${product.reason === null ? '' : ` (${product.reason})`} | ${product.proofLevel} |`),
+  ...publicObservedTruth.map((product) => `| ${product.label} | ${product.lifecycleState}${product.reason === null ? '' : ` (${product.reason})`} | ${product.observedPrice === null ? 'not offered' : `${decimalAtomic(product.observedPrice.amountAtomic, 6)} USDC maximum`} |`),
   '',
 ].join('\n');
 
 await writeFile(path.join(outputDirectory, 'openapi.json'), stableJson(openapi));
 await writeFile(path.join(outputDirectory, 'catalog.json'), stableJson(catalog));
-const { releaseCandidateId: _releaseCandidateId, interfaceHash: _interfaceHash, ...publicOnboarding } = projectedOnboarding;
-await writeFile(path.join(outputDirectory, 'onboarding.json'), stableJson(publicOnboarding));
+await writeFile(path.join(outputDirectory, 'onboarding.json'), stableJson(onboarding));
 await writeFile(path.join(outputDirectory, 'capabilities.json'), stableJson({
   schemaVersion: 'clervo.capabilities.v1',
   observedAt: launchState.observedAt,
   publicCallable: publicSearch,
-  observedTruth: { provenance: observedProvenance, products: observedTruth },
-  products: observedTruth.map(({ id, label, operations, lifecycleState, proofLevel, reason, publiclyReachable }) => ({
+  observedTruth: { provenance: publicObservedProvenance, products: publicObservedTruth },
+  products: publicObservedTruth.map(({ id, label, operations, lifecycleState, reason, publiclyReachable }) => ({
     id,
     label,
     // An unavailable family can be described without advertising speculative
     // operation IDs as invocable.
     operations: lifecycleState === 'unavailable' ? [] : operations,
     lifecycleState,
-    proofLevel,
     reason,
     publiclyReachable,
   })),
@@ -935,12 +1397,10 @@ await writeFile(path.join(outputDirectory, 'pricing.json'), stableJson(publicSea
 await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
   schemaVersion: 'clervo.public-status.v1',
   observedAt: liveRegistry.observedAt,
-  publicApi: launchState.distribution.publicApi,
+  publicApi: publicApiStatus,
+  sharedBoundary: SHARED_PUBLIC_BOUNDARY,
   packages: launchState.distribution.packages,
-  // This is the reconciled owner-funded settlement record already held in
-  // launch-state authority. It is not commercial/customer proof.
-  paymentProof: launchState.paymentProof,
-  observedTruth: { provenance: observedProvenance, products: observedTruth },
+  observedTruth: { provenance: publicObservedProvenance, products: publicObservedTruth },
   conformanceDefectsOpen: liveRegistry.conformance.filter(({ conformant }) => !conformant),
   aiRoutes: {
     counts: liveRegistry.summary.aiCatalog ?? liveRegistry.summary.aiRoutes,
@@ -948,22 +1408,29 @@ await writeFile(path.join(outputDirectory, 'status.json'), stableJson({
     // supplier identifiers never enter a public projection.
     paused: b7PublicModels.data
       .filter(({ clervo }) => clervo.publicSellable !== true)
-      .map(({ id, clervo }) => ({ modelId: id, reason: clervo.publicationBlockers.join(','), availability: clervo.availability, health: clervo.health })),
+      .map(({ id, clervo }) => ({
+        modelId: id,
+        reason: 'temporarily_unavailable',
+        availability: clervo.availability,
+        health: clervo.health,
+      })),
   },
-  products: observedTruth.map(({ id, lifecycleState, proofLevel, reason, publiclyReachable }) => ({ id, lifecycleState, proofLevel, reason, publiclyReachable })),
+  products: publicObservedTruth.map(({ id, lifecycleState, reason, publiclyReachable }) => ({ id, lifecycleState, reason, publiclyReachable })),
 }));
-await mkdir(path.join(outputDirectory, '.well-known'), { recursive: true });
+await mkdir(path.join(outputDirectory, '.well-known', 'mcp'), { recursive: true });
+await mkdir(path.join(outputDirectory, 'v1'), { recursive: true });
 await writeFile(path.join(outputDirectory, '.well-known', 'clervo.json'), stableJson(discovery));
+await writeFile(path.join(outputDirectory, '.well-known', 'agent.json'), stableJson(discovery));
 await writeFile(path.join(outputDirectory, '.well-known', 'ai-plugin.json'), stableJson({
   schema_version: 'v1',
   name_for_human: 'Clervo',
   name_for_model: 'clervo',
-  description_for_human: 'Outcome infrastructure for agents. Search, AI (89 models), secure sandbox, prediction markets, crypto intelligence. Pay per call in USDC on Base.',
-  description_for_model: 'Clervo provides web search (POST /v1/search/free or /v1/search/paid), provider-neutral AI execution with 89 models (POST /v1/ai/execute), sandboxed Node.js execution (POST /v1/sandbox/execute), prediction market data (POST /v1/prediction/execute), and EVM wallet intelligence for Ethereum and Base (POST /v1/crypto/execute). Payment uses x402 or MPP over USDC on Base. No account required.',
+  description_for_human: COMMERCIAL_DESCRIPTION,
+  description_for_model: `${COMMERCIAL_DESCRIPTION} Public operations: ${publicOperationIds.join(', ')}. Production API: ${projection.publicBaseUrl}.`,
   api: { type: 'openapi', url: 'https://api.clervo.dev/openapi.json' },
   auth: { type: 'none' },
 }));
-await writeFile(path.join(outputDirectory, '.well-known', 'mcp.json'), stableJson({
+const mcpDiscovery = {
   schemaVersion: 'clervo.mcp-discovery.v1',
   name: '@clervo/mcp',
   version: launchState.distribution.packages.items.find(({ name }) => name === '@clervo/mcp').version,
@@ -975,7 +1442,12 @@ await writeFile(path.join(outputDirectory, '.well-known', 'mcp.json'), stableJso
   configurationOptional: ['CLERVO_BASE_URL', 'CLERVO_HOME', 'CLERVO_AUTO_PAY'],
   paymentSigningImplemented: true,
   automaticPaymentRetry: false,
-}));
+  installCommand: `npx -y @clervo/mcp@${launchState.distribution.packages.items.find(({ name }) => name === '@clervo/mcp').version}`,
+  claudeCodeCommand: 'claude mcp add clervo -s user -- npx -y @clervo/mcp',
+  documentationUrl: 'https://clervo.dev/start/',
+};
+await writeFile(path.join(outputDirectory, '.well-known', 'mcp.json'), stableJson(mcpDiscovery));
+await writeFile(path.join(outputDirectory, '.well-known', 'mcp', 'server.json'), stableJson(mcpDiscovery));
 await writeFile(path.join(outputDirectory, '.well-known', 'security.txt'), [
   'Canonical: https://clervo.dev/.well-known/security.txt',
   'Contact: https://github.com/clervo/clervo/security/advisories/new',
@@ -1014,11 +1486,11 @@ const quickStartCurl = publicBaseUrl === null
   ].join('\n');
 
 function observedRows() {
-  return observedTruth.map((product) => `| ${product.label} | \`${product.id}\` | ${product.lifecycleState}${product.reason === null ? '' : ` (${product.reason})`} | ${product.proofLevel} |`);
+  return observedTruth.map((product) => `| ${product.label} | \`${product.id}\` | ${product.lifecycleState}${product.reason === null ? '' : ` (${product.reason})`} | ${product.observedPrice === null ? 'not offered' : `${decimalAtomic(product.observedPrice.amountAtomic, 6)} USDC observed maximum`} |`);
 }
 
 const observedTable = [
-  '| Product | ID | Lifecycle state | Proof level |',
+  '| Product | ID | Availability | Price |',
   '|---|---|---|---|',
   ...observedRows(),
 ];
@@ -1121,7 +1593,7 @@ const routeQualifiedAt = new Map(modelCatalog.routes.map((route) => [route.route
 const epochSeconds = (value) => (value === null || Number.isNaN(Date.parse(value)) ? null : Math.floor(Date.parse(value) / 1_000));
 
 // OpenAI's list shape, so a client that already speaks it works unmodified. The
-// observed lifecycle state, proof level, and price live under `clervo` rather
+// observed availability and price live under `clervo` rather
 // than being folded into the standard fields: an OpenAI client ignores them,
 // and an agent that reads them cannot mistake a priced route for a proven one.
 const legacyModelList = {
@@ -1138,10 +1610,9 @@ const legacyModelList = {
         capabilities: route.capabilities,
         route: '/v1/ai/execute',
         lifecycleState: route.state,
-        proofLevel: route.proof,
         sellable: route.sellable,
-        reason: route.reason,
-        expectedReturnAt: route.expectedReturnAt,
+        reason: publicReason(route.reason),
+        expectedReturnAt: null,
         observedPrice: route.observedQuote === null ? null : {
           amountAtomic: route.observedQuote.amountAtomic,
           asset: route.observedQuote.asset,
@@ -1154,11 +1625,10 @@ const legacyModelList = {
     }))
     .sort((left, right) => left.id.localeCompare(right.id)),
   clervo: {
-    provenance: observedProvenance,
+    provenance: publicObservedProvenance,
     states: liveRegistry.states,
-    proofLevels: liveRegistry.proofLevels,
     counts: liveRegistry.summary.aiRoutes,
-    note: 'Lifecycle state and proof level are separate facts. A live route at quote_observed_unpaid is offered and priced; it is not a demonstrated paid outcome. A supply_paused route stays listed with its reason and is not sellable.',
+    note: 'A live route is selectable. A supply_paused route stays listed with its reason and is not selectable. The 402 returned for a request is the binding quote.',
   },
 };
 
@@ -1180,10 +1650,80 @@ async function dynamicModelList() {
 // B7's frozen commercial catalog is now the default public AI authority. An
 // explicit empty setting retains the legacy probe projection for historical
 // validation only; normal catalog revisions change data, never this generator.
-const modelList = await dynamicModelList() ?? legacyModelList;
+const dynamicModelSource = await dynamicModelList();
+const dynamicModelAuthority = dynamicModelSource !== null;
+
+function publicDynamicModel(entry) {
+  const clervo = entry.clervo;
+  return {
+    id: entry.id,
+    object: entry.object,
+    ...(entry.created === undefined ? {} : { created: entry.created }),
+    owned_by: entry.owned_by,
+    clervo: {
+      identityKind: clervo.identityKind,
+      ...(Array.isArray(clervo.aliases) ? { aliases: clervo.aliases } : {}),
+      ...(typeof clervo.aliasFor === 'string' ? { aliasFor: clervo.aliasFor } : {}),
+      ...(typeof clervo.reasoningEffort === 'string' ? { reasoningEffort: clervo.reasoningEffort } : {}),
+      name: clervo.name,
+      description: clervo.description,
+      productIds: clervo.productIds,
+      capabilities: clervo.capabilities,
+      inputTypes: clervo.inputTypes,
+      outputTypes: clervo.outputTypes,
+      ...(Number.isInteger(clervo.contextWindow) ? { contextWindow: clervo.contextWindow } : {}),
+      ...(Array.isArray(clervo.inputModalities) ? { inputModalities: clervo.inputModalities } : {}),
+      ...(Array.isArray(clervo.outputModalities) ? { outputModalities: clervo.outputModalities } : {}),
+      ...(clervo.limits !== undefined ? { limits: clervo.limits } : {}),
+      ...(typeof clervo.ownedBySemantics === 'string' ? { ownedBySemantics: clervo.ownedBySemantics } : {}),
+      lifecycle: clervo.lifecycle,
+      availability: clervo.availability,
+      health: clervo.health,
+      publicSellable: clervo.publicSellable,
+      ...(clervo.publicSellable === false ? { availabilityReason: 'temporarily_unavailable' } : {}),
+      customerPricing: clervo.customerPricing,
+      billingMode: clervo.billingMode,
+      commerce: {
+        executionPath: clervo.commerce.executionPath,
+        payment: clervo.commerce.payment,
+        resultAccounting: clervo.commerce.resultAccounting,
+        replaySafe: clervo.commerce.replaySafe,
+      },
+    },
+  };
+}
+
+const modelList = dynamicModelSource === null
+  ? legacyModelList
+  : {
+      ...dynamicModelSource,
+      data: dynamicModelSource.data.map(publicDynamicModel),
+    };
+
+const prohibitedPublicModelFields = [
+  'publicationBlockers',
+  'pricingMethod',
+  'competitiveComparison',
+  'executionSupplier',
+  'upstreamExecutionSupplier',
+  'upstreamExecutionSupplierStatus',
+  'modelCreatorStatus',
+  'gatewaySupplyId',
+  'runtimeModelId',
+  'providerId',
+  'authorityRef',
+  'ownerDecisionRef',
+];
+
+const serializedPublicModelList = JSON.stringify(modelList);
+for (const field of prohibitedPublicModelFields) {
+  if (serializedPublicModelList.includes(`"${field}"`)) {
+    throw new Error(`public_ai_model_catalog_internal_field:${field}`);
+  }
+}
+
 const sellableModelCount = modelList.data.filter(({ clervo }) => clervo.publicSellable === true || clervo.sellable === true).length;
 const modelInventory = modelList.clervo.inventory ?? { canonicalModels: modelList.data.length, aliases: 0, callableIds: modelList.data.length };
-const dynamicModelAuthority = modelList.clervo.inventory !== undefined;
 
 // The x402 v2 discovery listing shape: `items[]`, each with the resource URL and
 // the `accepts` array the resource actually answers with. Every entry is the
@@ -1205,7 +1745,32 @@ const aiExampleRouteId = dynamicModelAuthority ? null : aiExampleRoute?.routeId 
 const x402Resources = [
   { productId: 'search', path: '/v1/search/paid', operationId: 'search.web', priceModel: 'fixed_request', quote: observed.search.observedQuote, exampleRouteId: null },
   { productId: 'ai', path: '/v1/ai/execute', operationId: 'ai.chat', priceModel: 'request_derived_per_model', quote: aiExampleQuote, exampleRouteId: aiExampleRouteId },
+  ...(publicOpenAiChat ? [{
+    productId: 'ai',
+    path: OPENAI_CHAT_COMPLETIONS_PATH,
+    operationId: 'ai.chat',
+    priceModel: 'request_derived_per_model',
+    quote: openAiChatCompatibility.observedQuote,
+    exampleRouteId: null,
+  }] : []),
+  ...(publicAnthropicMessages ? [{
+    productId: 'ai',
+    path: ANTHROPIC_MESSAGES_PATH,
+    operationId: 'ai.chat',
+    priceModel: 'request_derived_per_model',
+    quote: anthropicMessagesCompatibility.observedQuote,
+    exampleRouteId: null,
+  }] : []),
+  ...(publicOpenAiResponses ? [{
+    productId: 'ai',
+    path: OPENAI_RESPONSES_PATH,
+    operationId: 'ai.chat',
+    priceModel: 'request_derived_per_model',
+    quote: openAiResponsesCompatibility.observedQuote,
+    exampleRouteId: null,
+  }] : []),
   { productId: 'sandbox', path: '/v1/sandbox/execute', operationId: 'sandbox.run', priceModel: 'class_derived_quote', quote: observed.sandbox.observedQuote, exampleRouteId: null },
+  { productId: 'rpc', path: '/v1/rpc/execute', operationId: 'rpc.call', priceModel: 'request_derived_per_call', quote: observed.rpc.observedQuote, exampleRouteId: null },
   { productId: 'prediction', path: '/v1/prediction/execute', operationId: 'prediction.markets', priceModel: 'request_derived_per_operation', quote: observed.prediction.observedQuote, exampleRouteId: null },
   { productId: 'crypto_intelligence', path: '/v1/crypto/execute', operationId: 'crypto.wallet.report', priceModel: 'request_derived_per_operation', quote: observed.crypto_intelligence.observedQuote, exampleRouteId: null },
 ]
@@ -1235,7 +1800,6 @@ const x402Resources = [
             amountIsBinding: priceModel === 'fixed_request',
             exampleRouteId,
             lifecycleState: product.state,
-            proofLevel: product.proof,
           },
         },
       }],
@@ -1263,9 +1827,8 @@ const x402Manifest = {
   items: x402Resources,
   pagination: { limit: x402Resources.length, offset: 0, total: x402Resources.length },
   clervo: {
-    provenance: observedProvenance,
+    provenance: publicObservedProvenance,
     states: liveRegistry.states,
-    proofLevels: liveRegistry.proofLevels,
     bazaar: liveRegistry.bazaar === undefined ? null : {
       facilitator: liveRegistry.bazaar.facilitator,
       validator: liveRegistry.bazaar.validator,
@@ -1285,7 +1848,6 @@ const x402Manifest = {
         acceptsRequestWithoutIdempotencyKey: observed.search.freeEntry.acceptsNaiveRequest,
         operationId: 'search.web',
         lifecycleState: observed.search.state,
-        proofLevel: observed.search.proof,
         quota: 'Capped per caller and globally. Over the cap the route answers 429 free_quota_exceeded rather than executing.',
       }]),
       ...(modelList.data.some(({ clervo }) => clervo.billingMode === 'free' && clervo.publicSellable === true) ? [{
@@ -1310,7 +1872,7 @@ if (publicBaseUrl !== null) {
     '',
     '## Agent discovery',
     '',
-    `- [\`GET ${publicBaseUrl}/v1/models\`](/models.json): ${dynamicModelAuthority ? 'the authoritative canonical AI catalog and stable aliases, with capability, availability, health, free/paid state, pricing, and commerce contract' : 'every catalogued AI route with its exact model identity, lifecycle state, proof level, and observed price'}. OpenAI list shape.`,
+    `- [\`GET ${publicBaseUrl}/v1/models\`](/models.json): ${dynamicModelAuthority ? 'the authoritative canonical AI catalog and stable aliases, with capability, availability, health, free/paid state, pricing, and commerce contract' : 'every catalogued AI route with its exact model identity, availability, and observed price'}. OpenAI list shape.`,
     `- [\`GET ${publicBaseUrl}/.well-known/x402\`](/.well-known/x402.json): the x402 v2 payment manifest. Each item carries the exact quote the resource returns.`,
     `- \`GET ${publicBaseUrl}/llms.txt\`: this document, served from the API host as well as the site.`,
     '',
@@ -1323,35 +1885,37 @@ await writeFile(path.join(outputDirectory, 'llms.txt'), llms);
 // byte-identical copies. The API host serves them at their canonical agent
 // paths — `/v1/models` and `/.well-known/x402` — from the same bytes.
 await writeFile(path.join(outputDirectory, 'models.json'), stableJson(modelList));
+await writeFile(path.join(outputDirectory, 'v1', 'models'), stableJson(modelList));
 await writeFile(path.join(outputDirectory, '.well-known', 'x402.json'), stableJson(x402Manifest));
+await writeFile(path.join(outputDirectory, '.well-known', 'x402'), stableJson(x402Manifest));
 
 const skillDocument = [
   '# Clervo skill',
   '',
-  'Clervo sells bounded outcomes over HTTP: one request in, one verified result',
-  'and one receipt out. Payment, when required, uses x402 or MPP over USDC on',
-  'Base and is always quoted before execution.',
+  COMMERCIAL_DESCRIPTION,
   '',
-  `Generated from \`${observedProvenance.source}\`, probed at ${observedProvenance.observedAt}. Every row below is observed from the deployed system, never asserted.`,
+  'Payment, when required, uses x402 or MPP over USDC on Base and is always',
+  'quoted before execution. Automatic payment is off by default.',
+  '',
+  `Current availability was generated at ${publicObservedProvenance.observedAt}.`,
   '',
   '## When to use this skill',
   '',
-  '- You need a paid AI model call (89 models: Claude, GPT, Gemini, Qwen, DeepSeek, Llama, Kimi, Mistral and more) — use `POST /v1/ai/execute`.',
+  `- You need an AI model call (${b7Inventory.callableIds} model IDs) — use \`POST /v1/ai/execute\`.`,
   '- You need cited web evidence for a question — use `POST /v1/search/free` or `POST /v1/search/paid`.',
-  '- You need to run sandboxed Node.js code safely with a receipt — use `POST /v1/sandbox/execute`.',
+  '- You need to run sandboxed Node.js or Python code safely with a receipt — use `POST /v1/sandbox/execute`.',
+  '- You need read-only JSON-RPC on Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, or Solana — use `POST /v1/rpc/execute`.',
   '- You need real-time prediction market data (Polymarket, Kalshi, Manifold, Limitless) — use `POST /v1/prediction/execute`.',
   '- You need EVM wallet intelligence for Ethereum or Base — use `POST /v1/crypto/execute`.',
   '- You want per-request payment with no account, no API key, and safe retry on failure.',
   '- You need the same request to be safely retryable without being charged twice.',
   '',
-  '## Observed capability',
+  '## Current availability',
   '',
   ...observedTable,
   '',
-  'Lifecycle state is what the runtime serves right now. Proof level is what has',
-  'actually been demonstrated: `quote_observed_unpaid` means a price and a valid',
-  'payment challenge were returned and nothing more. Do not treat a priced route',
-  'as a proven paid outcome.',
+  'Availability is current at the time shown in the public status document. Paid routes return a 402',
+  'before execution; inspect that request-specific quote before authorizing it.',
   '',
   ...(quickStartCurl === null ? [
     '## Calling it',
@@ -1404,9 +1968,9 @@ const skillDocument = [
   '',
   '- `/.well-known/clervo.json` — discovery, products, and observed truth.',
   '- `/.well-known/x402` — x402 v2 payment manifest with the exact quote each paid resource returns.',
-  `- \`/v1/models\` — ${dynamicModelAuthority ? 'authoritative AI catalog with stable IDs, aliases, capabilities, price, free/paid state, availability, health, and commerce contract' : 'catalogued AI routes with lifecycle state, proof level, and observed price'}.`,
+  `- \`/v1/models\` — ${dynamicModelAuthority ? 'authoritative AI catalog with stable IDs, aliases, capabilities, price, free/paid state, availability, health, and commerce contract' : 'catalogued AI routes with availability and observed price'}.`,
   '- `/openapi.json` — request and response contracts.',
-  '- `/status.json` — current lifecycle state, proof level, and open conformance defects.',
+  '- `/status.json` — current availability, health, and open conformance defects.',
   '- `/pricing.json` — the public offer boundary.',
   '- `/llms.txt` — this service as a documentation map.',
   '',
@@ -1415,11 +1979,12 @@ const skillDocument = [
 const agentDocument = [
   '# Clervo for agents',
   '',
-  'This document is written for an autonomous caller. It states what is callable,',
-  'what it costs, and what has actually been proven. It contains no marketing',
-  'claim and no capability that the deployed system does not serve.',
+  COMMERCIAL_DESCRIPTION,
   '',
-  `Source: \`${observedProvenance.source}\`, probed at ${observedProvenance.observedAt}. Release: \`${observedProvenance.releaseId ?? 'unknown'}\`.`,
+  'This document lists the callable routes, current prices, setup paths, and safe',
+  'payment behavior an autonomous caller needs.',
+  '',
+  `Current availability was generated at ${publicObservedProvenance.observedAt}.`,
   '',
   '## Identity',
   '',
@@ -1428,13 +1993,12 @@ const agentDocument = [
   '- Payment protocols: x402 and MPP EVM charge intents, USDC on Base.',
   '- Authentication: none. The free sample needs no credential; paid routes need a payment, not an account.',
   '',
-  '## Observed state',
+  '## Current availability',
   '',
   ...observedTable,
   '',
-  'These are two independent facts. A `live` product with proof level',
-  '`quote_observed_unpaid` is offered and priced; it is not a demonstrated paid',
-  'outcome. Report it that way if you cite it.',
+  'A `live` product accepts requests. Paid resources return their binding quote',
+  'in the 402 response; unavailable resources have no public execution route.',
   '',
   ...(freeEntryRoute === null ? [] : [
     '## Free entry point',
@@ -1465,7 +2029,7 @@ const agentDocument = [
   '',
   '- `/.well-known/clervo.json`',
   '- `/.well-known/x402` — x402 v2 payment manifest; each item carries the exact quote its resource returns.',
-  `- \`/v1/models\` — ${dynamicModelAuthority ? 'authoritative AI catalog, OpenAI list shape, including stable canonical IDs and aliases plus capability, price, availability, health, and commerce metadata' : 'every catalogued AI route, OpenAI list shape, with lifecycle state, proof level, and observed price'}.`,
+  `- \`/v1/models\` — ${dynamicModelAuthority ? 'authoritative AI catalog, OpenAI list shape, including stable canonical IDs and aliases plus capability, price, availability, health, and commerce metadata' : 'every catalogued AI route, OpenAI list shape, with availability and observed price'}.`,
   '- `/openapi.json`',
   '- `/catalog.json`',
   '- `/capabilities.json`',
@@ -1502,6 +2066,7 @@ const llmsFull = [
 
 await writeFile(path.join(outputDirectory, 'skill.md'), skillDocument);
 await writeFile(path.join(outputDirectory, 'agent.md'), agentDocument);
+await writeFile(path.join(outputDirectory, 'agents.txt'), agentDocument);
 await writeFile(path.join(outputDirectory, 'llms-full.txt'), llmsFull);
 
 // The API edge is a Worker with no filesystem, so it cannot read these
@@ -1531,4 +2096,4 @@ await writeFile(path.join(workerDirectory, 'agent-documents.js'), [
 
 const publicOperationCount = discovery.products.filter(({ publicAvailable }) => publicAvailable === true).length;
 const liveFamilyLabels = observedTruth.filter(({ lifecycleState }) => lifecycleState === 'live').map(({ label }) => label);
-console.log(`distribution discovery generation: PASS (${liveFamilyLabels.length === 0 ? 'private candidate' : `public ${liveFamilyLabels.join(', ')} preview`}, ${publicOperationCount} operations, ${Object.keys(schemas).length} schemas)`);
+console.log(`distribution discovery generation: PASS (${liveFamilyLabels.length === 0 ? 'no public families' : `public ${liveFamilyLabels.join(', ')}`}, ${publicOperationCount} operations, ${Object.keys(schemas).length} schemas)`);

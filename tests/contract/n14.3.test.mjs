@@ -6,6 +6,7 @@ import {
   createSearchResponse,
 } from '../../dist/packages/contracts/src/index.js';
 import { createSearchServer } from '../../apps/api/src/search-server.mjs';
+import { SharedCapacityController } from '../../apps/api/src/shared-boundary.mjs';
 import { InMemorySearchStateStore } from '../../apps/api/src/search-state-store.mjs';
 
 const now = '2026-08-02T08:00:00.000Z';
@@ -75,7 +76,10 @@ test('bounded execution sheds overload, preserves admitted work, and recovers wi
     executor,
     stateStore,
     now: () => now,
-    maxConcurrentExecutions: 2,
+    // Four global slots with a two-slot free reservation prove that
+    // free overload sheds while leaving capacity for paid work.
+    maxConcurrentExecutions: 4,
+    capacityController: new SharedCapacityController({ maximumExecutions: 4, maximumFreeExecutions: 2 }),
   });
   assert.equal(server.requestTimeout, 15_000);
   assert.equal(server.headersTimeout, 5_000);

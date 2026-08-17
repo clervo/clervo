@@ -77,7 +77,7 @@ jobs:
             name: '@clervo/router',
             version: '0.3.1',
             repository: 'git+https://github.com/clervo/clervo.git',
-            homepage: 'https://github.com/clervo/clervo/tree/main/packages/router#readme',
+            homepage: 'https://clervo.dev/docs/cli',
           };
           if (packageMetadata.name !== expected.name || packageMetadata.version !== expected.version) throw new Error('router_package_identity_mismatch');
           if (packageMetadata.repository?.url !== expected.repository || packageMetadata.repository?.directory !== 'packages/router') throw new Error('router_repository_identity_mismatch');

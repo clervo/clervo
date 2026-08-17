@@ -35,6 +35,6 @@ jobs:
       - name: Install locked workspace dependencies
         run: npm ci --ignore-scripts
       - name: Verify package contracts and metadata
-        run: npm run test:stage13:clients && npm run verify:distribution-release
+        run: npm run test:b13:clients && npm run verify:distribution-release
       - name: Prove clean consumer onboarding
-        run: npm run prove:distribution-onboarding
+        run: npm run verify:package-consumers

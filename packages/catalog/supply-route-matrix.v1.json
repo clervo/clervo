@@ -329,15 +329,23 @@
     {
       "capabilityId": "search.web",
       "publicAssets": [
-        "open-wikimedia-search",
+        "research-multi-source-federation",
         "open-crossref-metadata"
       ],
       "lifecycle": "production",
-      "routeState": "qualified_commercial_open_primary_with_health_fallback",
+      "routeState": "qualified_multi_source_primary_preference_with_controlled_degradation",
       "primaryServices": [
-        "supply.wikimedia_open_data"
+        "supply.research_federation"
       ],
       "fallbackServices": [
+        "supply.gdelt_news",
+        "supply.google_news_rss",
+        "supply.github_public",
+        "supply.npm_registry",
+        "supply.openalex",
+        "supply.federal_register",
+        "supply.socrata",
+        "supply.wikimedia_open_data",
         "supply.crossref_open_metadata"
       ],
       "pricingCatalogs": [
@@ -345,18 +353,16 @@
       ],
       "quality": "good",
       "termsStatus": "allowed",
-      "quotaRunway": "Open no-fee APIs are selected under explicit license/metadata permissions with hard per-process call ceilings, polite identity, maxlag, and no paid overage. Brave and Serper remain technical-only because current resale terms are not approved.",
+      "quotaRunway": "Credential-free public APIs with hard per-operation source/page/byte/deadline ceilings, source-level failure isolation, canonical deduplication, primary-source ranking, and no automatic paid overage. Exa, Parallel, Tavily, Firecrawl and Brave/Serper remain technically stronger optional suppliers pending owner-controlled credentials and commercial review.",
       "healthMethod": [
-        "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
-        "https://www.mediawiki.org/wiki/API:Etiquette",
-        "https://www.crossref.org/documentation/retrieve-metadata/rest-api/rest-api-etiquette/",
+        "services/search/src/research-pipeline.ts",
         "tests/contract/search-supply-routing.test.mjs",
         "tests/contract/b10-search-sandbox.test.mjs"
       ],
       "secretLocations": [
-        "none:OPEN_DATA_ROUTE"
+        "none:CREDENTIAL_FREE_RESEARCH_FEDERATION"
       ],
-      "replacementPlan": "Keep the open licensed/metadata route bounded and attribution-preserving. Re-evaluate a paid general-web supplier only after written commercial permission and owner approval."
+      "replacementPlan": "Add an owner-approved semantic search or deep-research supplier only when credentials and resale terms are explicitly approved; preserve this federation as an independent no-key fallback."
     },
     {
       "capabilityId": "rpc.multichain",

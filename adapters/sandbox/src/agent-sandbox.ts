@@ -1,4 +1,6 @@
+import { createHash } from 'node:crypto';
 import type { SandboxAttestation, SandboxExecutor, SandboxLimits } from '../../../services/sandbox/src/control-plane.js';
+import { SANDBOX_MAX_REQUEST_BYTES, type SandboxArtifactInput, type SandboxFileInput } from '../../../packages/contracts/src/sandbox.js';
 import {
   agentSandboxResourceName,
   buildAgentSandboxResources,
@@ -41,7 +43,8 @@ interface RunnerResult {
   cpuMillis: number;
   durationMs: number;
   maximumProcessesObserved: number;
-  limitFailure: null | 'process_limit' | 'output_limit' | 'wall_time_limit' | 'cpu_limit';
+  limitFailure: null | 'process_limit' | 'output_limit' | 'wall_time_limit' | 'cpu_limit' | 'artifact_limit';
+  artifacts: readonly { path: string; filename: string; mimeType: string; bytes: number; sha256: string; contentBase64: string }[];
 }
 
 function parseRecord(value: unknown): Record<string, unknown> {
@@ -61,6 +64,10 @@ function canonicalBase64(value: unknown, maximumBytes: number): Uint8Array {
   return new Uint8Array(bytes);
 }
 
+function maximumRunnerResponseBytes(limits: SandboxLimits): number {
+  return Math.ceil(limits.outputBytes / 3) * 4 + Math.ceil(limits.artifactBytes / 3) * 4 + 65_536;
+}
+
 function parseRunnerResult(bytes: Uint8Array, maximumOutputBytes: number, limits: SandboxLimits): Readonly<RunnerResult & { stdout: Uint8Array; stderr: Uint8Array }> {
   let source: Record<string, unknown>;
   try { source = parseRecord(JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes))); }
@@ -69,7 +76,22 @@ function parseRunnerResult(bytes: Uint8Array, maximumOutputBytes: number, limits
   const stderr = canonicalBase64(source.stderrBase64, maximumOutputBytes);
   if (stdout.byteLength + stderr.byteLength > maximumOutputBytes) throw new Error('agent_sandbox_runner_response_invalid');
   const limitFailure = source.limitFailure;
-  if (limitFailure !== null && !['process_limit', 'output_limit', 'wall_time_limit', 'cpu_limit'].includes(String(limitFailure))) throw new Error('agent_sandbox_runner_response_invalid');
+  if (limitFailure !== null && !['process_limit', 'output_limit', 'wall_time_limit', 'cpu_limit', 'artifact_limit'].includes(String(limitFailure))) throw new Error('agent_sandbox_runner_response_invalid');
+  const rawArtifacts = source.artifacts ?? [];
+  if (!Array.isArray(rawArtifacts) || rawArtifacts.length > 32) throw new Error('agent_sandbox_runner_response_invalid');
+  const artifacts = rawArtifacts.map((item) => {
+    if (item === null || typeof item !== 'object' || Array.isArray(item)) throw new Error('agent_sandbox_runner_response_invalid');
+    const value = item as Record<string, unknown>;
+    if (typeof value.path !== 'string' || !/^(?!\/)(?!.*(?:^|\/)\.\.?(?:\/|$))(?!.*\\)[A-Za-z0-9._ -]+(?:\/[A-Za-z0-9._ -]+)*$/u.test(value.path)
+      || typeof value.filename !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._ -]{0,127}$/u.test(value.filename)
+      || typeof value.mimeType !== 'string' || !/^[a-z0-9][a-z0-9.+-]{0,63}\/[a-z0-9][a-z0-9.+-]{0,63}$/u.test(value.mimeType)
+      || !/^sha256:[a-f0-9]{64}$/u.test(String(value.sha256))) throw new Error('agent_sandbox_runner_response_invalid');
+    const content = canonicalBase64(value.contentBase64, limits.artifactBytes);
+    if (content.byteLength !== value.bytes || !Number.isSafeInteger(value.bytes) || Number(value.bytes) < 1 || Number(value.bytes) > limits.artifactBytes
+      || `sha256:${createHash('sha256').update(content).digest('hex')}` !== value.sha256) throw new Error('agent_sandbox_runner_response_invalid');
+    return Object.freeze({ path: value.path, filename: value.filename, mimeType: value.mimeType, bytes: Number(value.bytes), sha256: String(value.sha256), contentBase64: String(value.contentBase64) });
+  });
+  if (artifacts.reduce((sum, item) => sum + item.bytes, 0) > limits.artifactBytes) throw new Error('agent_sandbox_runner_response_invalid');
   return Object.freeze({
     exitCode: integer(source.exitCode, 0, 255),
     stdoutBase64: source.stdoutBase64 as string,
@@ -78,6 +100,7 @@ function parseRunnerResult(bytes: Uint8Array, maximumOutputBytes: number, limits
     durationMs: integer(source.durationMs, 0, limits.wallTimeMs),
     maximumProcessesObserved: integer(source.maximumProcessesObserved, 0, 100_000),
     limitFailure: limitFailure as RunnerResult['limitFailure'],
+    artifacts,
     stdout,
     stderr,
   });
@@ -116,9 +139,10 @@ export class AgentSandboxExecutor implements SandboxExecutor {
     }
   }
 
-  async execute(input: Readonly<{ sessionId: string; executionId: string; command: readonly string[]; stdin: Uint8Array; limits: SandboxLimits }>): Promise<Readonly<{ exitCode: number; stdout: Uint8Array; stderr: Uint8Array; cpuMillis: number; durationMs: number }>> {
+  async execute(input: Readonly<{ sessionId: string; executionId: string; command: readonly string[]; stdin: Uint8Array; limits: SandboxLimits; files?: readonly SandboxFileInput[]; artifactPaths?: readonly SandboxArtifactInput[] }>): Promise<Readonly<{ exitCode: number; stdout: Uint8Array; stderr: Uint8Array; cpuMillis: number; durationMs: number; artifacts: readonly { path: string; filename: string; mimeType: string; bytes: number; sha256: string; contentBase64: string }[] }>> {
     const podName = agentSandboxResourceName(input.sessionId);
-    const payload = new TextEncoder().encode(JSON.stringify({ command: input.command, stdinBase64: Buffer.from(input.stdin).toString('base64'), limits: input.limits }));
+    const payload = new TextEncoder().encode(JSON.stringify({ command: input.command, stdinBase64: Buffer.from(input.stdin).toString('base64'), files: input.files, artifactPaths: input.artifactPaths, limits: input.limits }));
+    if (payload.byteLength > SANDBOX_MAX_REQUEST_BYTES) throw new Error('agent_sandbox_request_too_large');
     let response: Readonly<{ stdout: Uint8Array; stderr: Uint8Array; exitCode: number }>;
     try {
       response = await this.#transport.exec({
@@ -127,12 +151,12 @@ export class AgentSandboxExecutor implements SandboxExecutor {
         command: Object.freeze(['node', '/opt/clervo/runner.mjs']),
         stdin: payload,
         timeoutMs: input.limits.wallTimeMs + 15_000,
-        maximumOutputBytes: input.limits.outputBytes + 65_536,
+        maximumOutputBytes: maximumRunnerResponseBytes(input.limits),
       });
     } catch { throw new Error('agent_sandbox_execute_failed'); }
     if (response.exitCode !== 0 || response.stderr.byteLength !== 0) throw new Error('agent_sandbox_runner_failed');
     const result = parseRunnerResult(response.stdout, input.limits.outputBytes, input.limits);
-    return Object.freeze({ exitCode: result.exitCode, stdout: result.stdout, stderr: result.stderr, cpuMillis: result.cpuMillis, durationMs: result.durationMs });
+    return Object.freeze({ exitCode: result.exitCode, stdout: result.stdout, stderr: result.stderr, cpuMillis: result.cpuMillis, durationMs: result.durationMs, artifacts: result.artifacts });
   }
 
   async destroy(sessionId: string): Promise<void> {

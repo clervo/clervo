@@ -7,36 +7,26 @@ const onboarding = JSON.parse(await readFile('packages/distribution/onboarding.v
 const generated = JSON.parse(await readFile('generated/public/onboarding.json', 'utf8'));
 const discovery = JSON.parse(await readFile('generated/public/.well-known/clervo.json', 'utf8'));
 
-test('onboarding stays bound to the frozen candidate and tracks observed callability', () => {
+test('onboarding publishes the current customer journey', () => {
   const registry = JSON.parse(readFileSync('packages/catalog/live-registry.json', 'utf8'));
-  // The generated onboarding document is a projection of the source file: it
-  // keeps the source's identity and shape, and moves publicCallable,
-  // paymentImplemented, and the per-step states forward once the deployed
-  // system serves a public paid route. This test used to require the projected
-  // values to equal the frozen source and to pin publicCallable to false, which
-  // made the honest projection a build failure.
-  assert.equal(generated.schemaVersion, onboarding.schemaVersion);
-  assert.equal(generated.releaseCandidateId, undefined);
-  assert.equal(generated.interfaceHash, undefined);
+  assert.deepEqual(generated, onboarding);
   assert.equal(discovery.distribution.releaseCandidateId, undefined);
   assert.equal(discovery.distribution.interfaceHash, undefined);
-  assert.equal(typeof onboarding.releaseCandidateId, 'string');
-  assert.equal(typeof onboarding.interfaceHash, 'string');
-  assert.deepEqual(generated.recovery, onboarding.recovery);
 
   const searchLive = registry.products.find(({ id }) => id === 'search').publiclyReachable;
   assert.equal(generated.publicCallable, searchLive);
   assert.equal(generated.paymentImplemented, searchLive);
   assert.equal(generated.publicCallable, discovery.distribution.callable);
 
-  // The journey keeps its six steps in order, whatever their states become.
+  // The journey keeps its six customer actions in order.
   assert.deepEqual(
     generated.journey.map(({ step }) => step),
     ['install', 'ask', 'fund', 'approve', 'result', 'receipt'],
   );
-  assert.deepEqual(generated.journey.map(({ step }) => step), onboarding.journey.map(({ step }) => step));
   assert.equal(generated.journey.find(({ step }) => step === 'install').state, 'published_verified');
-  // Every step carries a concrete action; a projected step must never lose it.
+  assert.equal(generated.journey.find(({ step }) => step === 'fund').state, 'user_managed');
+  assert.equal(generated.journey.find(({ step }) => step === 'approve').state, 'explicit_wallet_action');
+  // Every step carries a concrete action.
   for (const step of generated.journey) assert.ok(step.action.length >= 20, `${step.step} needs a real action`);
   assert.equal(discovery.artifacts.onboarding, '/onboarding.json');
 });
@@ -66,5 +56,7 @@ test('raw HTTP onboarding is static, explicit, and reflects current payment avai
   assert.match(build, /Package availability is not endpoint availability/iu);
   assert.doesNotMatch(build, /funding, signing, or settlement is available today/iu);
   assert.match(html, /Raw HTTP(?:<!-- -->)? client/u);
-  assert.match(html, /Public packages verified/iu);
+  assert.match(html, /https:\/\/api\.clervo\.dev/u);
+  assert.match(html, /402/u);
+  assert.doesNotMatch(html, /release candidate|commercially unproven|owner[- ]funded|quote observed unpaid/iu);
 });

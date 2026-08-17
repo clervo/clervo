@@ -95,6 +95,7 @@ function evidence(input: SearchExecutorInput, routeEvidence: readonly Readonly<C
 
 export interface OpenCommercialSearchExecutor extends SearchExecutor {
   readonly calls: Readonly<{ primary: number; fallback: number }>;
+  health(checkedAt: string): Readonly<{ status: 'healthy' | 'degraded' | 'unavailable'; primary: unknown; fallback: unknown }>;
 }
 
 export function createOpenCommercialSearchExecutor(options: Readonly<{
@@ -126,17 +127,26 @@ export function createOpenCommercialSearchExecutor(options: Readonly<{
 
   return Object.freeze({
     get calls() { return Object.freeze({ primary: primaryCalls, fallback: fallbackCalls }); },
+    health(checkedAt: string) {
+      const primaryHealth = primary.health(checkedAt);
+      const fallbackHealth = fallback.health(checkedAt);
+      const status = primaryHealth.status === 'healthy' ? 'healthy' : fallbackHealth.status === 'healthy' ? 'degraded' : 'unavailable';
+      return Object.freeze({ status, primary: primaryHealth, fallback: fallbackHealth });
+    },
     async execute(input: Readonly<SearchExecutorInput>): Promise<SearchExecutionOutput> {
       if (input.synthesize) throw new Error('search_synthesis_unavailable');
       const observedAt = now();
+      const suppliedDeadline = Date.parse((input as SearchExecutorInput & { deadlineAt?: string }).deadlineAt ?? '');
+      const deadlineAt = new Date(Number.isFinite(suppliedDeadline) ? Math.min(Date.parse(observedAt) + 4_000, suppliedDeadline) : Date.parse(observedAt) + 4_000).toISOString();
+      const suppliedSignal = (input as SearchExecutorInput & { signal?: AbortSignal }).signal;
       const request = Object.freeze({
         query: input.query,
         language: input.language,
         region: input.region,
         maximumResults: input.maxResults,
         generatedAt: observedAt,
-        deadlineAt: new Date(Date.parse(observedAt) + 4_000).toISOString(),
-        signal: new AbortController().signal,
+        deadlineAt,
+        signal: suppliedSignal ?? new AbortController().signal,
       });
       let route: (typeof routeDefinitions)[keyof typeof routeDefinitions] = routeDefinitions.primary;
       let fallbackServed = false;

@@ -6,18 +6,15 @@ import { useActivation } from './experience';
 import { modelFromSlug } from './models';
 import { isCanonicalOperationId } from './operation';
 import { Docs } from './pages/Docs';
-import { Build } from './pages/Build';
 import { Capability } from './pages/Capability';
 import { Catalog } from './pages/Catalog';
 import { Home } from './pages/Home';
 import { Guide, type GuideTopic } from './pages/Guide';
 import { ModelPage } from './pages/Model';
 import { Operation } from './pages/Operation';
-import { ProofLab } from './pages/ProofLab';
 import { Product } from './pages/Product';
 import { Research } from './pages/Research';
 import { Start } from './pages/Start';
-import { TrustOverview } from './pages/TrustOverview';
 import { TrustSupport, type TrustSupportPage } from './pages/TrustSupport';
 import { observedTruth, publicApiCallable, type ExperiencePhase } from './product';
 import { Link, useRouter } from './router';
@@ -29,19 +26,19 @@ const liveFamilyCount = observedTruth.products.filter(({ lifecycleState }) => li
  * written, so it cannot outlive the fact it describes.
  */
 const footerNote = publicApiCallable
-  ? `${liveFamilyCount} of ${observedTruth.products.length} product families observed serving. Public packages verified. No customer revenue or demand is claimed.`
-  : 'Public packages verified. Private payment plumbing proven once. Public API and customer payment remain unavailable.';
+  ? `${liveFamilyCount} product families available through the public API.`
+  : 'The public API is currently unavailable.';
 
 const exactTitles: Record<string, string> = {
-  '/': 'Outcome infrastructure for agents',
-  '/start': 'Set up Clervo',
+  '/': 'AI and agent tools, paid per call',
+  '/start': 'Start using Clervo',
   '/catalog': 'AI model catalog',
   '/research': 'Research outcome',
   '/platform': 'Clervo Platform',
-  '/product': 'Product and capabilities',
+  '/product': 'Products',
   '/build': 'Build with Clervo',
   '/proof-lab': 'Proof Lab',
-  '/proof': 'Payment and replay proof',
+  '/proof': 'Payment and replay behavior',
   '/docs': 'Developer docs',
   '/docs/quickstart': 'Developer quickstart',
   '/docs/http': 'Raw HTTP developer docs',
@@ -50,7 +47,7 @@ const exactTitles: Record<string, string> = {
   '/docs/mcp': 'MCP developer docs',
   '/docs/cli': 'Router and CLI developer docs',
   '/docs/openai': 'OpenAI-compatible client docs',
-  '/pricing': 'Pricing truth',
+  '/pricing': 'Pricing',
   '/benchmarks': 'Benchmark truth',
   '/security': 'Security controls',
   '/legal': 'Legal boundaries',
@@ -71,15 +68,15 @@ const exactTitles: Record<string, string> = {
 };
 
 const exactDescriptions: Record<string, string> = {
-  '/': 'Give your agent a task. Get a verified result. Clervo qualifies capability, cost and policy, executes within a bounded contract, and keeps evidence, receipt and replay state inspectable.',
-  '/start': 'Set up Clervo in an agent with explicit approval boundaries, environment checks, recovery states and a verified first-task workflow.',
-  '/catalog': 'Inspect Clervo model identities, capabilities, current availability, proof state and published pricing without guessing provider or lifecycle state.',
+  '/': 'Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.',
+  '/start': 'Make a free AI call, connect Claude through MCP, or start with an OpenAI-compatible app, CLI, TypeScript, or Python.',
+  '/catalog': 'Inspect Clervo model identities, capabilities, current availability and pricing without guessing provider or route state.',
   '/research': 'Use Clervo Research for fresh source retrieval with citations, evidence and explicit outcome boundaries.',
   '/platform': 'One operating contract for bounded requests, capability qualification, execution, verification, evidence and safe replay.',
-  '/product': 'Explore ClervoRouter and the six permanent capability families behind one bounded outcome contract.',
+  '/product': 'Explore the AI, Search, Sandbox, Multi-chain RPC, Prediction, and Crypto products currently available through Clervo, with routes and pricing.',
   '/build': 'Build agent workflows against Clervo machine contracts, published clients, explicit approvals and inspectable recovery semantics.',
   '/proof-lab': 'Interact with Clervo proof-state fixtures to understand request, qualification, verification, receipt and replay boundaries without creating a live transaction.',
-  '/proof': 'Inspect Clervo proof classes, owner-funded settlement evidence, replay guarantees and the boundary between verified, refused, unresolved and unproven claims.',
+  '/proof': 'Follow Clervo payment requirements, receipts, replay, refusal and unknown-settlement recovery.',
   '/docs': 'Clervo developer documentation for the first free call, exact public operations, clients, wallet opt-in, payment boundaries, receipts, replay and recovery.',
   '/docs/quickstart': 'Install a published Clervo client, make a first free request, inspect the exact operation contract and opt into paid work only when needed.',
   '/docs/http': 'Call Clervo through raw HTTP using the current OpenAPI contract, explicit idempotency and typed payment or recovery states.',
@@ -97,13 +94,13 @@ const exactDescriptions: Record<string, string> = {
   '/benchmarks': 'Clervo benchmark methodology and evidence boundaries: no performance number without the method, scope and reproducible proof behind it.',
   '/security': 'Inspect Clervo authority, wallet, execution, replay and recovery controls with explicit scope and fail-closed boundaries.',
   '/legal': 'Clervo legal and product boundaries for usage, payments, privacy and acceptable operation without overstating unsupported guarantees.',
-  '/status': 'Current Clervo product lifecycle, package, API and proof state generated from the observed registry rather than marketing interpretation.',
-  '/changelog': 'Dated, source-bound Clervo changes to public product, distribution, runtime and proof state.',
+  '/status': 'Current Clervo product, package, API, route and price availability generated from the observed registry.',
+  '/changelog': 'Dated changes to Clervo public product, distribution and runtime behavior.',
   '/trust': 'Inspect Clervo proof, status, security, benchmark, pricing and legal boundaries from one trust center.',
-  '/products/search': 'Clervo Research retrieves fresh sources with citations and evidence while keeping route, price and proof state explicit.',
+  '/products/search': 'Clervo Research retrieves fresh sources with citations while keeping route, availability and price explicit.',
   '/products/ai': 'Clervo AI exposes a qualified model catalog behind one request contract with exact model identity, capability, price and availability boundaries.',
   '/products/sandbox': 'Clervo Secure Sandbox runs bounded no-network code execution with resource limits, receipt and replay-safe outcome semantics.',
-  '/products/rpc': 'Clervo Multi-chain RPC product identity and current commercial-rights availability boundary.',
+  '/products/rpc': 'Clervo Multi-chain RPC product identity and current public availability boundary.',
   '/products/prediction': 'Clervo Prediction Intelligence returns normalized market context, freshness, evidence and provenance across supported public market data routes.',
   '/products/crypto': 'Clervo Crypto Intelligence returns bounded wallet and on-chain signals with chain coverage, evidence and provenance.',
 };
@@ -129,7 +126,7 @@ function NotFound() {
 }
 
 const trustSupportPages = new Set<TrustSupportPage>([
-  'pricing', 'proof', 'docs', 'status', 'security', 'benchmarks', 'changelog', 'legal',
+  'pricing', 'docs', 'status', 'security', 'changelog', 'legal',
 ]);
 
 export function App() {
@@ -231,10 +228,9 @@ export function App() {
       return <Capability routeId={capabilityMatch[1]} onPhase={updatePhase} />;
     }
     if (pathname === '/product' || pathname === '/platform') return <Product onPhase={updatePhase} />;
-    if (pathname === '/build') return <Build activation={activation} onPhase={updatePhase} />;
-    if (pathname === '/proof-lab') {
-      return <ProofLab activation={activation} updateActivation={updateActivation} onPhase={updatePhase} />;
-    }
+    if (pathname === '/build') return <Start onPhase={updatePhase} />;
+    if (pathname === '/proof-lab' || pathname === '/proof') return <Guide topic="replay" onPhase={updatePhase} />;
+    if (pathname === '/benchmarks') return <TrustSupport page="status" onPhase={updatePhase} />;
     const trustSupportPage = pathname.slice(1) as TrustSupportPage;
     if (trustSupportPages.has(trustSupportPage)) return <TrustSupport page={trustSupportPage} onPhase={updatePhase} />;
     if (pathname === '/docs/quickstart') {
@@ -247,7 +243,7 @@ export function App() {
     if (docsMatch?.[1] !== undefined && ['receipts', 'replay', 'failures', 'x402', 'catalog'].includes(docsMatch[1])) {
       return <Guide topic={docsMatch[1] as GuideTopic} onPhase={updatePhase} />;
     }
-    if (pathname === '/trust') return <TrustOverview onPhase={updatePhase} />;
+    if (pathname === '/trust') return <TrustSupport page="security" onPhase={updatePhase} />;
     return <NotFound />;
   })();
 

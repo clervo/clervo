@@ -63,10 +63,10 @@ jobs:
         run: |
           test "$(npm view @clervo/router@0.3.1 version --registry=https://registry.npmjs.org)" = 0.3.1
           npm view @clervo/router@0.3.1 dist.attestations.provenance.predicateType --json --registry=https://registry.npmjs.org | grep -q 'https://slsa.dev/provenance/v1'
-          npm run test:stage13:clients
+          npm run test:b13:clients
           npm run test:b11
           npm run verify:distribution-release:registry
-          npm run prove:distribution-onboarding
+          npm run verify:package-consumers
       - name: Build immutable package archives
         run: |
           mkdir -p release-artifacts/npm release-artifacts/pypi

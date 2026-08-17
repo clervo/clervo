@@ -128,7 +128,12 @@ export function operationExecutionRequest({
   boundAmountAtomic,
   now,
   deadlineMs,
+  deadlineAt,
 }) {
+  const suppliedDeadline = Date.parse(deadlineAt ?? '');
+  const localDeadline = (Number.isFinite(suppliedDeadline) ? Date.now() : Date.parse(now)) + deadlineMs;
+  const effectiveDeadline = Number.isFinite(suppliedDeadline) ? Math.min(localDeadline, suppliedDeadline) : localDeadline;
+  if (!Number.isFinite(effectiveDeadline) || effectiveDeadline <= Date.parse(now)) throw Object.assign(new Error('request_deadline_exceeded'), { status: 504 });
   return Object.freeze({
     contractVersion: CONTRACT_VERSION,
     schemaVersion,
@@ -136,7 +141,7 @@ export function operationExecutionRequest({
     productId,
     input,
     maximumCharge: Object.freeze({ asset: 'USD', amountAtomic: boundAmountAtomic, decimals: 6 }),
-    deadlineAt: new Date(Date.parse(now) + deadlineMs).toISOString(),
+    deadlineAt: new Date(effectiveDeadline).toISOString(),
   });
 }
 
@@ -217,11 +222,12 @@ function safeSettlement(settled, operationId, observedAt) {
   });
 }
 
-export function createX402PaidOperationProcessor({ service, stateStore, acquireExecution } = {}) {
+export function createX402PaidOperationProcessor({ service, stateStore, acquireExecution, acquireQuote } = {}) {
   if (!service || !['challenge_only', 'settlement_enabled'].includes(service.mode)) throw new TypeError('invalid_x402_service');
   const requiredStoreMethods = ['lookup', 'challenge', 'claimExecution', 'recordExecution', 'markExecutionUnknown', 'claimSettlement', 'markSettlementUnknown', 'complete'];
   if (!stateStore || requiredStoreMethods.some((method) => typeof stateStore[method] !== 'function')) throw new TypeError('invalid_x402_state_store');
   if (acquireExecution !== undefined && typeof acquireExecution !== 'function') throw new TypeError('invalid_x402_execution_acquirer');
+  if (acquireQuote !== undefined && typeof acquireQuote !== 'function') throw new TypeError('invalid_x402_quote_acquirer');
 
   return Object.freeze({
     mode: service.mode,
@@ -242,6 +248,8 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       resourcePath,
       discovery,
       overloadCode = 'operation_overloaded',
+      deadlineAt,
+      signal,
     }) {
       if (typeof execute !== 'function' || typeof createResponse !== 'function') throw new TypeError('invalid_x402_operation_handler');
       if (prepare !== undefined && typeof prepare !== 'function') throw new TypeError('invalid_x402_operation_prepare');
@@ -249,6 +257,11 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       const effectiveResourcePath = resourcePath ?? (productId.startsWith('ai.') ? '/v1/ai/execute' : '/v1/search/paid');
       if (!payableResourcePaths.has(effectiveResourcePath)) throw new TypeError('invalid_x402_operation_resource');
       const base = { idempotencyKey, requestHash, operationId, now };
+      const deadlineMs = Date.parse(deadlineAt ?? '');
+      const assertWithinDeadline = () => {
+        if (signal?.aborted || Number.isFinite(deadlineMs) && Date.now() >= deadlineMs) refuse('request_deadline_exceeded', 504);
+      };
+      assertWithinDeadline();
       let state = await stateStore.lookup(base);
       if (state.kind === 'conflict') refuse('idempotency_conflict');
       if (state.kind === 'replay') {
@@ -262,8 +275,12 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       const effectiveExecutionInput = prepared?.executionInput ?? executionInput;
       const effectiveDiscovery = prepared?.discovery ?? discovery;
       assertPricing(effectivePricing);
+      assertWithinDeadline();
 
       if (state.kind === 'missing') {
+        const releaseQuote = acquireQuote?.();
+        if (acquireQuote !== undefined && releaseQuote === undefined) refuse('quote_capacity_exhausted', 503);
+        try {
         const quote = sealQuote({
           contractVersion: CONTRACT_VERSION,
           quoteId: identifier('quote', `${operationId}:${requestHash}`),
@@ -273,10 +290,14 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
           priceVersion: effectivePricing.priceVersion,
           maximumCharge: effectivePricing.maximumCharge,
           issuedAt: now,
-          expiresAt: new Date(Date.parse(now) + 300_000).toISOString(),
+          expiresAt: new Date(Date.parse(now) + 180_000).toISOString(),
         });
         const challenge = await service.challenge({ quote, description: `Bounded ${productId} execution`, now, resourcePath: effectiveResourcePath, discovery: effectiveDiscovery });
+        assertWithinDeadline();
         state = await stateStore.challenge({ ...base, quote, challenge });
+        } finally {
+          releaseQuote?.();
+        }
       }
       if (state.kind === 'conflict') refuse('idempotency_conflict');
       if (state.quote.priceVersion !== effectivePricing.priceVersion || !sameAmount(state.quote.maximumCharge, effectivePricing.maximumCharge)) refuse('quote_pricing_changed');
@@ -285,11 +306,13 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       if (service.mode !== 'settlement_enabled') refuse('x402_settlement_disabled', 503);
 
       const authorization = await service.authorize({ paymentHeader, authorizationHeader, challenge: state.challenge });
+      assertWithinDeadline();
       let execution = state.execution;
       if (state.state === 'challenged') {
-        const release = acquireExecution?.();
+        const release = acquireExecution?.({ productId, fundingMode: 'paid' });
         if (acquireExecution !== undefined && release === undefined) refuse(overloadCode, 503);
         let claimed;
+        let executionRecorded = false;
         try {
           claimed = await stateStore.claimExecution({ ...base, paymentFingerprint: authorization.fingerprint });
           if (claimed.kind === 'payment_conflict') refuse('x402_payment_already_bound');
@@ -302,8 +325,13 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
             provenance: Object.freeze(completed.provenance.map((entry) => Object.freeze({ ...entry }))),
           });
           await stateStore.recordExecution({ idempotencyKey, leaseId: claimed.leaseId, execution, now });
+          executionRecorded = true;
+          assertWithinDeadline();
         } catch (error) {
-          if (claimed?.kind === 'claimed') await stateStore.markExecutionUnknown({ idempotencyKey, leaseId: claimed.leaseId, now });
+          // A completed execution is durable even if the public deadline expires
+          // immediately afterward. Its retry must settle/replay that exact result,
+          // not overwrite the durable state with a false "execution unknown".
+          if (claimed?.kind === 'claimed' && !executionRecorded) await stateStore.markExecutionUnknown({ idempotencyKey, leaseId: claimed.leaseId, now });
           throw error;
         } finally {
           release?.();
@@ -311,6 +339,7 @@ export function createX402PaidOperationProcessor({ service, stateStore, acquireE
       }
       if (!execution) refuse('x402_execution_state_missing', 503);
 
+      assertWithinDeadline();
       const settlementClaim = await stateStore.claimSettlement({ ...base, paymentFingerprint: authorization.fingerprint });
       if (settlementClaim.kind !== 'claimed') refuse(settlementClaim.kind === 'unknown' ? settlementClaim.state : 'idempotency_in_progress', settlementClaim.kind === 'unknown' ? 503 : 409);
       const settled = await service.settle(authorization);

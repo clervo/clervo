@@ -4,8 +4,6 @@ from pathlib import Path
 
 from clervo import (
     CLERVO_CONTRACT_VERSION,
-    CLERVO_RELEASE_CANDIDATE_ID,
-    CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH,
     Clervo,
     ClervoPaymentRequiredError,
     ClervoProblemError,
@@ -50,15 +48,10 @@ def result(product_id: str, funding_mode: str) -> bytes:
 
 
 class ClientTests(unittest.TestCase):
-    def test_package_identity_matches_shared_transcript(self) -> None:
-        self.assertEqual(CLERVO_RELEASE_CANDIDATE_ID, TRANSCRIPT["releaseCandidateId"])
-        self.assertEqual(
-            CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH,
-            TRANSCRIPT["interfaceHash"],
-        )
-
     def test_wire_behavior_matches_shared_cross_client_transcript(self) -> None:
-        for fixture in TRANSCRIPT["cases"][:2]:
+        for fixture in TRANSCRIPT["cases"]:
+            if fixture["method"] != "search.web" or fixture["response"].get("operation") != "search.query":
+                continue
             observed = {}
 
             def transport(method, url, headers, body, _timeout, _maximum_bytes):
@@ -99,18 +92,17 @@ class ClientTests(unittest.TestCase):
                 },
             )
 
-    def test_web_and_answer_bind_exact_product(self) -> None:
+    def test_search_exposes_only_the_callable_web_product(self) -> None:
         observed = []
 
         def transport(method, url, headers, body, timeout, maximum_bytes):
             observed.append((method, url, headers, json.loads(body), timeout, maximum_bytes))
-            product_id = "search.answer" if json.loads(body)["synthesize"] else "search.web"
-            return HttpResponse(200, {"content-type": "application/json"}, result(product_id, "free"))
+            return HttpResponse(200, {"content-type": "application/json"}, result("search.web", "free"))
 
         client = Clervo(base_url="http://127.0.0.1:8080/", transport=transport)
         self.assertEqual(client.search.web(query="evidence", idempotency_key="idem_web").get("productId"), "search.web")
-        self.assertEqual(client.search.answer(query="evidence", idempotency_key="idem_answer").get("productId"), "search.answer")
-        self.assertEqual([item[3]["synthesize"] for item in observed], [False, True])
+        self.assertFalse(hasattr(client.search, "answer"))
+        self.assertEqual([item[3]["synthesize"] for item in observed], [False])
         self.assertTrue(all(item[1].endswith("/v1/search/free") for item in observed))
 
     def test_402_remains_non_payable_and_visible(self) -> None:

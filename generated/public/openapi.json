@@ -2,9 +2,9 @@
   "openapi": "3.1.1",
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
-    "title": "Clervo Search, AI, Secure Sandbox, Prediction Intelligence, Crypto Intelligence API",
+    "title": "Clervo Search, AI, Secure Sandbox, Multi-chain RPC, Prediction Intelligence, Crypto Intelligence API",
     "version": "2026-07-29.1",
-    "description": "Publicly callable previews: raw cited Search, bounded paid AI, bounded one-shot Secure Sandbox execution, derived Prediction Intelligence, bounded provider-neutral Crypto Intelligence. Lifecycle and proof state are generated from the probed live registry; unavailable operations fail closed.",
+    "description": "Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys. Current operations, routes, prices, and limitations are listed below.",
     "contact": {
       "name": "Clervo",
       "email": "mo@clervo.dev",
@@ -19,7 +19,7 @@
     "/v1/search/free": {
       "post": {
         "summary": "Execute a bounded search preview",
-        "description": "Public idempotent raw web-search sample. Set synthesize to false; synthesized answers are unavailable.",
+        "description": "Public idempotent fast Research sample. Set synthesize to false for ranked evidence; set synthesize to true for a bounded cited synthesis.",
         "operationId": "searchPreview",
         "parameters": [
           {
@@ -192,18 +192,6 @@
               }
             }
           },
-          "422": {
-            "description": "Released-client compatibility request selected synthesize=true, which remains unsupported",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "type": "object",
-                  "description": "Fail-closed RFC 9457-style problem details.",
-                  "additionalProperties": true
-                }
-              }
-            }
-          },
           "429": {
             "description": "Preview quota exceeded",
             "content": {
@@ -249,8 +237,8 @@
     },
     "/v1/search/paid": {
       "post": {
-        "summary": "Request or settle a raw Search payment",
-        "description": "Returns an exact x402 challenge for raw cited web retrieval. The same idempotency key replays the completed receipt without another charge. Set synthesize to false.",
+        "summary": "Request or settle a bounded Research payment",
+        "description": "Returns an exact x402 challenge for fast or deep Research. Deep mode performs bounded multi-source retrieval, page reading, synthesis, citations, conflicts, and uncertainty reporting. The same idempotency key replays the completed receipt without another charge.",
         "operationId": "searchPaymentChallenge",
         "parameters": [
           {
@@ -290,8 +278,8 @@
                   },
                   "synthesize": {
                     "type": "boolean",
-                    "const": false,
-                    "default": false
+                    "default": true,
+                    "description": "false selects fast evidence; true selects bounded deep Research with multi-source synthesis, page reading, citations, conflicts, and uncertainty."
                   },
                   "language": {
                     "type": "string",
@@ -309,7 +297,7 @@
               "example": {
                 "query": "current x402 protocol documentation",
                 "maxResults": 3,
-                "synthesize": false,
+                "synthesize": true,
                 "language": "en",
                 "region": "US"
               }
@@ -318,7 +306,7 @@
         },
         "responses": {
           "200": {
-            "description": "Raw cited Search completed or replayed",
+            "description": "Fast cited Search or deep multi-source Research completed or replayed",
             "content": {
               "application/json": {
                 "schema": {
@@ -472,18 +460,6 @@
               }
             }
           },
-          "422": {
-            "description": "Released-client compatibility request selected synthesize=true, which remains unsupported",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "type": "object",
-                  "description": "Fail-closed RFC 9457-style problem details.",
-                  "additionalProperties": true
-                }
-              }
-            }
-          },
           "502": {
             "description": "Mock test execution failed closed",
             "content": {
@@ -517,7 +493,7 @@
           "price": {
             "mode": "fixed",
             "currency": "USD",
-            "amount": "0.006000"
+            "amount": "0.012000"
           },
           "protocols": [
             {
@@ -653,7 +629,7 @@
                   "maximumOutputTokens": {
                     "type": "integer",
                     "minimum": 1,
-                    "maximum": 16384,
+                    "maximum": 65536,
                     "default": 64
                   }
                 },
@@ -947,10 +923,1130 @@
         ]
       }
     },
+    "/v1/chat/completions": {
+      "post": {
+        "summary": "Create an OpenAI-compatible chat completion",
+        "description": "Thin OpenAI Chat Completions compatibility adapter over Clervo AI execution. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Unsupported non-default controls still fail closed.",
+        "operationId": "openAiChatCompletions",
+        "security": [],
+        "tags": [
+          "AI"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "description": "Stable replay key. When omitted before payment, the service generates one and returns it in the response headers.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "messages"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "const": "clervo/allam-2-7b"
+                  },
+                  "messages": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "system",
+                            "developer",
+                            "user",
+                            "assistant"
+                          ]
+                        },
+                        "content": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "stream": {
+                    "type": "boolean"
+                  },
+                  "max_completion_tokens": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65536
+                  },
+                  "response_format": {
+                    "type": "object",
+                    "required": [
+                      "type"
+                    ],
+                    "properties": {
+                      "type": {
+                        "enum": [
+                          "text",
+                          "json_object"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": true
+              },
+              "example": {
+                "model": "clervo/allam-2-7b",
+                "messages": [
+                  {
+                    "role": "user",
+                    "content": "Explain in one sentence why idempotency matters for paid API retries."
+                  }
+                ],
+                "stream": false,
+                "max_completion_tokens": 64,
+                "response_format": {
+                  "type": "text"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OpenAI-compatible chat completion",
+            "headers": {
+              "PAYMENT-RESPONSE": {
+                "description": "Base64-encoded x402 v2 settlement response when x402 was used.",
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "Payment-Receipt": {
+                "description": "MPP receipt when MPP was used.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Idempotency-Replayed": {
+                "description": "true when the completed logical operation was replayed without another charge.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "object",
+                    "created",
+                    "model",
+                    "choices",
+                    "usage"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "object": {
+                      "const": "chat.completion"
+                    },
+                    "created": {
+                      "type": "integer"
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "choices": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "index",
+                          "message",
+                          "finish_reason"
+                        ]
+                      }
+                    },
+                    "usage": {
+                      "type": "object"
+                    }
+                  },
+                  "additionalProperties": true
+                },
+                "example": {
+                  "id": "chatcmpl-example",
+                  "object": "chat.completion",
+                  "created": 0,
+                  "model": "clervo/allam-2-7b",
+                  "choices": [
+                    {
+                      "index": 0,
+                      "message": {
+                        "role": "assistant",
+                        "content": "Idempotency prevents a retry from becoming a second logical operation or charge.",
+                        "refusal": null
+                      },
+                      "logprobs": null,
+                      "finish_reason": "stop"
+                    }
+                  ],
+                  "usage": {
+                    "prompt_tokens": 1,
+                    "completion_tokens": 1,
+                    "total_tokens": 2
+                  }
+                }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "description": "OpenAI Chat Completions SSE emitted after execution completes; paid streams begin only after settlement succeeds."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid compatibility request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "x402 or MPP payment required",
+            "headers": {
+              "PAYMENT-REQUIRED": {
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested model ID is not present in the current catalog",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency or quote conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unsupported compatibility behavior or unavailable model",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Published free-tier quota exhausted",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No qualified route, capacity, or settlement path is available",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "x-payment-info": {
+          "price": {
+            "mode": "dynamic",
+            "currency": "USD",
+            "min": "0.001000",
+            "max": "42.500000"
+          },
+          "protocols": [
+            {
+              "x402": {}
+            },
+            {
+              "mpp": {
+                "method": "evm",
+                "intent": "charge",
+                "currency": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "/v1/messages": {
+      "post": {
+        "summary": "Create an Anthropic-compatible message",
+        "description": "Thin Anthropic Messages compatibility adapter over Clervo AI execution. Text-only user/assistant messages and top-level system text are supported. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Unsupported richer content, tools, thinking, and non-default controls still fail closed.",
+        "operationId": "anthropicMessages",
+        "security": [],
+        "tags": [
+          "AI"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "description": "Stable replay key. When omitted before payment, the service generates one and returns it in the response headers.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "max_tokens",
+                  "messages"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "const": "clervo/allam-2-7b"
+                  },
+                  "max_tokens": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65536
+                  },
+                  "messages": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "user",
+                            "assistant"
+                          ]
+                        },
+                        "content": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "minItems": 1,
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "text"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "const": "text"
+                                  },
+                                  "text": {
+                                    "type": "string"
+                                  }
+                                },
+                                "additionalProperties": false
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "system": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "text"
+                          ],
+                          "properties": {
+                            "type": {
+                              "const": "text"
+                            },
+                            "text": {
+                              "type": "string"
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      }
+                    ]
+                  },
+                  "stream": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": true
+              },
+              "example": {
+                "model": "clervo/allam-2-7b",
+                "max_tokens": 64,
+                "messages": [
+                  {
+                    "role": "user",
+                    "content": "Explain in one sentence why idempotency matters for paid API retries."
+                  }
+                ],
+                "stream": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Anthropic-compatible Message response",
+            "headers": {
+              "PAYMENT-RESPONSE": {
+                "description": "Base64-encoded x402 v2 settlement response when x402 was used.",
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "Payment-Receipt": {
+                "description": "MPP receipt when MPP was used.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Idempotency-Replayed": {
+                "description": "true when the completed logical operation was replayed without another charge.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "type",
+                    "role",
+                    "model",
+                    "content",
+                    "stop_reason",
+                    "stop_sequence",
+                    "usage"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "const": "message"
+                    },
+                    "role": {
+                      "const": "assistant"
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "type",
+                          "text"
+                        ],
+                        "properties": {
+                          "type": {
+                            "const": "text"
+                          },
+                          "text": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "stop_reason": {
+                      "enum": [
+                        "end_turn",
+                        "max_tokens"
+                      ]
+                    },
+                    "stop_sequence": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "usage": {
+                      "type": "object",
+                      "required": [
+                        "input_tokens",
+                        "output_tokens"
+                      ]
+                    }
+                  },
+                  "additionalProperties": true
+                },
+                "example": {
+                  "id": "msg_example",
+                  "type": "message",
+                  "role": "assistant",
+                  "model": "clervo/allam-2-7b",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Idempotency keeps retries from becoming a second logical operation or charge."
+                    }
+                  ],
+                  "stop_reason": "end_turn",
+                  "stop_sequence": null,
+                  "usage": {
+                    "input_tokens": 1,
+                    "output_tokens": 1
+                  }
+                }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "description": "Anthropic Messages SSE emitted after execution completes; paid streams begin only after settlement succeeds."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid compatibility request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "x402 or MPP payment required",
+            "headers": {
+              "PAYMENT-REQUIRED": {
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested model ID is not present in the current catalog",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency or quote conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unsupported compatibility behavior or unavailable model",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Published free-tier quota exhausted",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No qualified route, capacity, or settlement path is available",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "x-payment-info": {
+          "price": {
+            "mode": "dynamic",
+            "currency": "USD",
+            "min": "0.001000",
+            "max": "42.500000"
+          },
+          "protocols": [
+            {
+              "x402": {}
+            },
+            {
+              "mpp": {
+                "method": "evm",
+                "intent": "charge",
+                "currency": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "/v1/responses": {
+      "post": {
+        "summary": "Create an OpenAI-compatible response",
+        "description": "Thin stateless OpenAI Responses compatibility adapter over Clervo AI execution. store defaults to false when omitted; store=true remains unsupported. stream=true returns SSE after the operation completes; paid SSE begins only after successful settlement. Stateful continuation, tools, background execution, and unsupported controls fail closed.",
+        "operationId": "openAiResponses",
+        "security": [],
+        "tags": [
+          "AI"
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "description": "Stable replay key. When omitted before payment, the service generates one and returns it in the response headers.",
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "input"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "const": "clervo/allam-2-7b"
+                  },
+                  "input": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "role",
+                            "content"
+                          ],
+                          "properties": {
+                            "type": {
+                              "const": "message"
+                            },
+                            "role": {
+                              "enum": [
+                                "system",
+                                "developer",
+                                "user",
+                                "assistant"
+                              ]
+                            },
+                            "content": {
+                              "oneOf": [
+                                {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "items": {
+                                    "type": "object",
+                                    "required": [
+                                      "type",
+                                      "text"
+                                    ],
+                                    "properties": {
+                                      "type": {
+                                        "const": "input_text"
+                                      },
+                                      "text": {
+                                        "type": "string",
+                                        "minLength": 1
+                                      }
+                                    },
+                                    "additionalProperties": false
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      }
+                    ]
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "max_output_tokens": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65536
+                  },
+                  "stream": {
+                    "type": "boolean"
+                  },
+                  "store": {
+                    "const": false
+                  },
+                  "text": {
+                    "type": "object",
+                    "required": [
+                      "format"
+                    ],
+                    "properties": {
+                      "format": {
+                        "type": "object",
+                        "required": [
+                          "type"
+                        ],
+                        "properties": {
+                          "type": {
+                            "enum": [
+                              "text",
+                              "json_object"
+                            ]
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": true
+              },
+              "example": {
+                "model": "clervo/allam-2-7b",
+                "input": "Explain in one sentence why idempotency matters for paid API retries.",
+                "stream": false,
+                "store": false,
+                "max_output_tokens": 64,
+                "text": {
+                  "format": {
+                    "type": "text"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OpenAI-compatible Response object",
+            "headers": {
+              "PAYMENT-RESPONSE": {
+                "description": "Base64-encoded x402 v2 settlement response when x402 was used.",
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "Payment-Receipt": {
+                "description": "MPP receipt when MPP was used.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Idempotency-Replayed": {
+                "description": "true when the completed logical operation was replayed without another charge.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "object",
+                    "created_at",
+                    "status",
+                    "completed_at",
+                    "error",
+                    "incomplete_details",
+                    "model",
+                    "output",
+                    "store",
+                    "usage"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "object": {
+                      "const": "response"
+                    },
+                    "created_at": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "enum": [
+                        "completed",
+                        "incomplete"
+                      ]
+                    },
+                    "completed_at": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "error": {
+                      "type": [
+                        "object",
+                        "null"
+                      ]
+                    },
+                    "incomplete_details": {
+                      "type": [
+                        "object",
+                        "null"
+                      ]
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "output": {
+                      "type": "array",
+                      "minItems": 1
+                    },
+                    "store": {
+                      "const": false
+                    },
+                    "usage": {
+                      "type": "object"
+                    }
+                  },
+                  "additionalProperties": true
+                },
+                "example": {
+                  "id": "resp_example",
+                  "object": "response",
+                  "created_at": 0,
+                  "status": "completed",
+                  "completed_at": 0,
+                  "error": null,
+                  "incomplete_details": null,
+                  "instructions": null,
+                  "max_output_tokens": 64,
+                  "model": "clervo/allam-2-7b",
+                  "output": [
+                    {
+                      "id": "msg_example",
+                      "type": "message",
+                      "status": "completed",
+                      "role": "assistant",
+                      "content": [
+                        {
+                          "type": "output_text",
+                          "text": "Idempotency keeps retries from becoming a second logical operation or charge.",
+                          "annotations": []
+                        }
+                      ]
+                    }
+                  ],
+                  "parallel_tool_calls": true,
+                  "previous_response_id": null,
+                  "reasoning": {
+                    "effort": null,
+                    "summary": null
+                  },
+                  "store": false,
+                  "temperature": 1,
+                  "text": {
+                    "format": {
+                      "type": "text"
+                    }
+                  },
+                  "tool_choice": "auto",
+                  "tools": [],
+                  "top_p": 1,
+                  "truncation": "disabled",
+                  "usage": {
+                    "input_tokens": 1,
+                    "input_tokens_details": {
+                      "cached_tokens": 0
+                    },
+                    "output_tokens": 1,
+                    "output_tokens_details": {
+                      "reasoning_tokens": 0
+                    },
+                    "total_tokens": 2
+                  },
+                  "metadata": {}
+                }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "description": "OpenAI Responses SSE emitted after execution completes; paid streams begin only after settlement succeeds."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid compatibility request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "x402 or MPP payment required",
+            "headers": {
+              "PAYMENT-REQUIRED": {
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Requested model ID is not present in the current catalog",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency or quote conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unsupported Responses behavior, unavailable model, or stateful request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Published free-tier quota exhausted",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No qualified route, capacity, or settlement path is available",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "x-payment-info": {
+          "price": {
+            "mode": "dynamic",
+            "currency": "USD",
+            "min": "0.001000",
+            "max": "42.500000"
+          },
+          "protocols": [
+            {
+              "x402": {}
+            },
+            {
+              "mpp": {
+                "method": "evm",
+                "intent": "charge",
+                "currency": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              }
+            }
+          ]
+        }
+      }
+    },
     "/v1/sandbox/execute": {
       "post": {
         "summary": "Request or settle a bounded one-shot Secure Sandbox execution",
-        "description": "Runs one command in the pinned qualified Node.js gVisor image with no network, strict resources, cleanup, a receipt, and no-charge replay. The short class is 0.010 USDC; larger bounded requests quote the standard class. Sessions and artifact retrieval are not yet public.",
+        "description": "Runs one Node.js or Python program (or a raw command) in the pinned qualified gVisor image with no network, strict resources, bounded files and returned artifacts, cleanup, a receipt, and no-charge replay. Generated artifacts are hashed but explicitly not malware-scanned. The short class is 0.010 USDC; larger bounded requests quote the standard class. Sessions and artifact retrieval are not yet public.",
         "operationId": "sandboxExecute",
         "parameters": [
           {
@@ -971,10 +2067,44 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "command"
-                ],
                 "additionalProperties": false,
+                "oneOf": [
+                  {
+                    "required": [
+                      "command"
+                    ],
+                    "not": {
+                      "anyOf": [
+                        {
+                          "required": [
+                            "runtime"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "code"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "args"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "required": [
+                      "runtime",
+                      "code"
+                    ],
+                    "not": {
+                      "required": [
+                        "command"
+                      ]
+                    }
+                  }
+                ],
                 "properties": {
                   "command": {
                     "type": "array",
@@ -991,8 +2121,82 @@
                       "process.stdout.write('ready')"
                     ]
                   },
+                  "runtime": {
+                    "type": "string",
+                    "enum": [
+                      "node",
+                      "python"
+                    ]
+                  },
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 262144
+                  },
+                  "args": {
+                    "type": "array",
+                    "maxItems": 29,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    }
+                  },
                   "stdinBase64": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 1398104
+                  },
+                  "files": {
+                    "type": "array",
+                    "maxItems": 32,
+                    "description": "Decoded code, stdin, and file content share a 1 MiB aggregate envelope.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "path",
+                        "contentBase64"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 256
+                        },
+                        "contentBase64": {
+                          "type": "string",
+                          "maxLength": 1398104
+                        }
+                      }
+                    }
+                  },
+                  "artifactPaths": {
+                    "type": "array",
+                    "maxItems": 32,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "path"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 256
+                        },
+                        "filename": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        },
+                        "mimeType": {
+                          "type": "string",
+                          "minLength": 3,
+                          "maxLength": 129
+                        }
+                      }
+                    }
                   },
                   "limits": {
                     "type": "object",
@@ -1035,7 +2239,7 @@
                       "artifactBytes": {
                         "type": "integer",
                         "minimum": 1,
-                        "maximum": 10485760
+                        "maximum": 1048576
                       },
                       "wallTimeMs": {
                         "type": "integer",
@@ -1248,6 +2452,354 @@
               }
             }
           ]
+        }
+      }
+    },
+    "/v1/rpc/execute": {
+      "post": {
+        "summary": "Request or settle a bounded Multi-chain RPC read",
+        "description": "Serves allowlisted read-only methods across Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, and Solana. Archive reads and transaction broadcast are not public operations.",
+        "operationId": "rpcExecute",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            },
+            "example": "my-unique-key-550e8400"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "chainId",
+                      "call"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "chainId": {
+                        "enum": [
+                          "eip155:1",
+                          "eip155:10",
+                          "eip155:56",
+                          "eip155:137",
+                          "eip155:8453",
+                          "eip155:42161",
+                          "eip155:43114",
+                          "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"
+                        ]
+                      },
+                      "call": {
+                        "type": "object",
+                        "required": [
+                          "method",
+                          "params"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                          "method": {
+                            "type": "string",
+                            "minLength": 2,
+                            "maxLength": 64
+                          },
+                          "params": {}
+                        }
+                      },
+                      "quorum": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 3
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "chainId",
+                      "calls"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "chainId": {
+                        "enum": [
+                          "eip155:1",
+                          "eip155:10",
+                          "eip155:56",
+                          "eip155:137",
+                          "eip155:8453",
+                          "eip155:42161",
+                          "eip155:43114",
+                          "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"
+                        ]
+                      },
+                      "calls": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 20,
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "method",
+                            "params"
+                          ],
+                          "additionalProperties": false,
+                          "properties": {
+                            "method": {
+                              "type": "string",
+                              "minLength": 2,
+                              "maxLength": 64
+                            },
+                            "params": {}
+                          }
+                        }
+                      },
+                      "quorum": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 3
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "chainId": "eip155:1",
+                "call": {
+                  "method": "eth_chainId",
+                  "params": []
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "RPC read completed or replayed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "operationId",
+                    "state",
+                    "replayed",
+                    "requestHash"
+                  ],
+                  "properties": {
+                    "operationId": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "const": "RECEIPTED"
+                    },
+                    "replayed": {
+                      "type": "boolean"
+                    },
+                    "requestHash": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "receipt": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "route": {
+                          "type": "object",
+                          "required": [
+                            "routeId",
+                            "qualificationId",
+                            "servingAdapters",
+                            "degraded",
+                            "fallback",
+                            "cost"
+                          ],
+                          "properties": {
+                            "routeId": {
+                              "type": "string"
+                            },
+                            "qualificationId": {
+                              "type": "string"
+                            },
+                            "servingAdapters": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "degraded": {
+                              "type": "boolean"
+                            },
+                            "fallback": {
+                              "type": "boolean"
+                            },
+                            "cost": {
+                              "type": "object",
+                              "additionalProperties": true
+                            }
+                          },
+                          "additionalProperties": true
+                        }
+                      },
+                      "additionalProperties": true
+                    },
+                    "execution": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              }
+            },
+            "headers": {
+              "PAYMENT-RESPONSE": {
+                "description": "Base64-encoded x402 v2 settlement response when x402 was used.",
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "Payment-Receipt": {
+                "description": "MPP receipt when MPP was used.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Idempotency-Replayed": {
+                "description": "true when the completed logical operation was replayed without another charge.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "true"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain, method, batch, quorum, or body",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "x402 or MPP payment required",
+            "headers": {
+              "PAYMENT-REQUIRED": {
+                "schema": {
+                  "type": "string",
+                  "contentEncoding": "base64"
+                }
+              },
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency or quote conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Healthy RPC supply, capacity, or settlement is unavailable",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "security": [],
+        "tags": [
+          "RPC"
+        ],
+        "x-payment-info": {
+          "price": {
+            "mode": "dynamic",
+            "currency": "USD",
+            "min": "0.001000",
+            "max": "0.020000"
+          },
+          "protocols": [
+            {
+              "x402": {}
+            },
+            {
+              "mpp": {
+                "method": "evm",
+                "intent": "charge",
+                "currency": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "/v1/rpc/chains": {
+      "get": {
+        "summary": "Read current health for all supported RPC chains",
+        "operationId": "rpcListChains",
+        "security": [],
+        "tags": [
+          "RPC"
+        ],
+        "responses": {
+          "200": {
+            "description": "Every advertised chain has at least one semantically healthy route",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "One or more advertised chains could not be verified healthy",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Fail-closed RFC 9457-style problem details.",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -4592,7 +6144,7 @@
           "synthesize": {
             "type": "boolean",
             "default": false,
-            "description": "Public HTTP omission selects false. true is accepted only as a released-client compatibility input and returns search_synthesis_unavailable."
+            "description": "Public HTTP omission selects false for fast evidence. Set true for bounded deep Research with multi-source synthesis and citations."
           },
           "language": {
             "type": "string",
@@ -4638,9 +6190,10 @@
           },
           "productId": {
             "enum": [
-              "search.web"
+              "search.web",
+              "search.answer"
             ],
-            "description": "Callable public Search operation identity. search.answer remains a released-client compatibility identifier but is not callable."
+            "description": "Callable public Research operation identity: search.web for fast evidence or search.answer for deep cited synthesis."
           },
           "state": {
             "const": "RECEIPTED"
@@ -4949,13 +6502,14 @@
   },
   "x-clervo-status": {
     "lifecycle": "preview",
-    "distribution": "public_preview",
+    "distribution": "public",
     "noPublicDistribution": false,
     "publicCallable": true,
     "paymentImplemented": true,
     "deploymentVerified": true,
     "operationIds": [
       "search.web",
+      "search.answer",
       "ai.chat",
       "ai.embed",
       "ai.image",
@@ -4964,6 +6518,8 @@
       "ai.music",
       "ai.virtual_try_on",
       "sandbox.run",
+      "rpc.call",
+      "rpc.batch",
       "prediction.markets",
       "prediction.market",
       "prediction.compare",
@@ -4973,8 +6529,7 @@
       "crypto.wallet.tokens",
       "crypto.wallet.transactions",
       "crypto.wallet.report"
-    ],
-    "runtimeRelease": "763601c4688fd9b2e3eedb4c7829b4586b329368"
+    ]
   },
   "servers": [
     {
@@ -4995,6 +6550,10 @@
       "description": "Bounded one-shot isolated code execution."
     },
     {
+      "name": "RPC",
+      "description": "Bounded allowlisted reads across eight supported chains."
+    },
+    {
       "name": "Prediction",
       "description": "Normalized prediction-market discovery and derived intelligence."
     },
@@ -5002,5 +6561,54 @@
       "name": "Crypto Intelligence",
       "description": "Bounded wallet facts and deterministic on-chain derivations."
     }
-  ]
+  ],
+  "x-clervo-shared-boundary": {
+    "schemaVersion": "clervo.shared-public-boundary.v1",
+    "request": {
+      "mediaType": "application/json",
+      "maximumHeaderBytes": 32768,
+      "maximumHeaderCount": 64,
+      "maximumJsonDepth": 32,
+      "maximumJsonNodes": 20000,
+      "maximumArrayItems": 1000,
+      "maximumBodyBytesByPath": {
+        "/v1/search/free": 16384,
+        "/v1/search/paid": 16384,
+        "/v1/ai/execute": 10485760,
+        "/v1/chat/completions": 10485760,
+        "/v1/messages": 10485760,
+        "/v1/responses": 10485760,
+        "/v1/sandbox/execute": 1500000,
+        "/v1/rpc/execute": 262144,
+        "/v1/prediction/execute": 262144,
+        "/v1/crypto/execute": 262144
+      }
+    },
+    "rateLimitsPerMinute": {
+      "free": 12,
+      "unpaidQuote": 30,
+      "paid": 180
+    },
+    "quoteTtlSeconds": 180,
+    "deadlineMillisecondsByPath": {
+      "/v1/search/free": 12000,
+      "/v1/search/paid": 15000,
+      "/v1/ai/execute": 120000,
+      "/v1/chat/completions": 120000,
+      "/v1/messages": 120000,
+      "/v1/responses": 120000,
+      "/v1/sandbox/execute": 75000,
+      "/v1/rpc/execute": 35000,
+      "/v1/prediction/execute": 35000,
+      "/v1/crypto/execute": 35000
+    },
+    "retry": {
+      "overload": [
+        429,
+        503
+      ],
+      "deadline": 504,
+      "useSameIdempotencyKeyAfterUnknownOutcome": true
+    }
+  }
 }

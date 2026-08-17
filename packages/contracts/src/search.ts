@@ -24,6 +24,11 @@ export interface SearchEvidence {
   publishedAt?: string;
   authorityScore: number;
   relevanceScore: number;
+  /** Source-aware signals retained for agent ranking and audit consumers. */
+  sourceType?: string;
+  primarySource?: boolean;
+  independenceKey?: string;
+  pageRead?: boolean;
   attribution?: {
     sourceName: string;
     sourceUrl: string;

@@ -8,7 +8,7 @@
     "priceVersion": { "type": "string", "pattern": "^rpc-product-[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[1-9][0-9]*$" },
     "effectiveAt": { "type": "string", "format": "date-time" },
     "currency": { "const": "USD" },
-    "lifecycle": { "const": "unavailable" },
+    "lifecycle": { "enum": ["available", "unavailable"] },
     "providerNamesPublic": { "const": false },
     "products": {
       "type": "array",
@@ -16,18 +16,20 @@
       "maxItems": 5,
       "items": {
         "type": "object",
-        "required": ["productId", "billingUnit", "customerPriceMicrousd", "listingStatus", "maximumBatchSize", "maximumResponseBytes"],
+        "required": ["productId", "billingUnit", "customerPriceMicrousd", "supplierCostMicrousd", "contributionMarginMicrousd", "listingStatus", "maximumBatchSize", "maximumResponseBytes"],
         "properties": {
           "productId": { "enum": ["rpc.call", "rpc.batch", "rpc.health", "rpc.archive", "rpc.broadcast"] },
           "billingUnit": { "enum": ["request", "call"] },
           "customerPriceMicrousd": { "type": "integer", "minimum": 0, "maximum": 1000000 },
-          "listingStatus": { "enum": ["terms_blocked", "free_unavailable", "unqualified"] },
+          "supplierCostMicrousd": { "type": "integer", "minimum": 0, "maximum": 1000000 },
+          "contributionMarginMicrousd": { "type": "integer", "minimum": 0, "maximum": 1000000 },
+          "listingStatus": { "enum": ["sellable", "terms_blocked", "free_unavailable", "unqualified"] },
           "maximumBatchSize": { "type": "integer", "minimum": 1, "maximum": 100 },
           "maximumResponseBytes": { "type": "integer", "minimum": 1024, "maximum": 52428800 }
         },
         "allOf": [
           { "if": { "properties": { "productId": { "const": "rpc.health" } }, "required": ["productId"] }, "then": { "properties": { "customerPriceMicrousd": { "const": 0 }, "listingStatus": { "const": "free_unavailable" } } } },
-          { "if": { "properties": { "productId": { "enum": ["rpc.call", "rpc.batch"] } }, "required": ["productId"] }, "then": { "properties": { "customerPriceMicrousd": { "type": "integer", "minimum": 1 }, "listingStatus": { "const": "terms_blocked" } } } },
+          { "if": { "properties": { "productId": { "enum": ["rpc.call", "rpc.batch"] } }, "required": ["productId"] }, "then": { "properties": { "customerPriceMicrousd": { "const": 1000 }, "supplierCostMicrousd": { "const": 0 }, "contributionMarginMicrousd": { "const": 1000 }, "listingStatus": { "const": "sellable" } } } },
           { "if": { "properties": { "productId": { "enum": ["rpc.archive", "rpc.broadcast"] } }, "required": ["productId"] }, "then": { "properties": { "customerPriceMicrousd": { "type": "integer", "minimum": 1 }, "listingStatus": { "const": "unqualified" } } } }
         ],
         "additionalProperties": false

@@ -1,27 +1,48 @@
 {
   "schemaVersion": "clervo.production-load-qualification.v1",
-  "qualifiedAt": "2026-08-02T20:14:19.843Z",
-  "sourceCommit": "f0c23b4a0b41",
+  "qualifiedAt": "2026-08-15T16:58:23.994Z",
+  "sourceCommit": "8be1c380b073",
   "burst": {
     "requests": 1000,
-    "admitted": 16,
-    "overloaded": 984,
+    "admitted": 4,
+    "overloaded": 996,
     "unexpectedStatuses": 0,
-    "overloadP95Ms": 1223.583655,
-    "replayedWithoutExecution": 16
+    "overloadP95Ms": 1292.9244410000001,
+    "replayedWithoutExecution": 4
   },
   "steady": {
     "requests": 256,
-    "clientConcurrency": 8,
+    "clientConcurrency": 4,
     "succeeded": 256,
-    "p50Ms": 5.370130999999901,
-    "p95Ms": 8.010555999999951
+    "p50Ms": 4.767324999999801,
+    "p95Ms": 5.272029999999631
   },
+  "ramp": [
+    {
+      "name": "normal",
+      "requests": 32,
+      "clientConcurrency": 1,
+      "p95Ms": 4.058299999999917
+    },
+    {
+      "name": "elevated",
+      "requests": 64,
+      "clientConcurrency": 2,
+      "p95Ms": 4.637958999999682
+    },
+    {
+      "name": "heavy",
+      "requests": 128,
+      "clientConcurrency": 4,
+      "p95Ms": 5.690861999999925
+    }
+  ],
   "runtime": {
-    "maximumActiveExecutions": 16,
-    "executionCeiling": 16,
-    "totalExecutorCalls": 272,
-    "rssGrowthBytes": 133263360,
+    "maximumActiveExecutions": 4,
+    "globalExecutionCeiling": 16,
+    "freeExecutionCeiling": 4,
+    "totalExecutorCalls": 484,
+    "rssGrowthBytes": 122466304,
     "requestTimeoutMs": 15000,
     "headersTimeoutMs": 5000,
     "maximumRequestsPerSocket": 100

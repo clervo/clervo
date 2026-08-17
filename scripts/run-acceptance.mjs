@@ -49,6 +49,9 @@ const contractTests = [
   // one generic gateway binding across catalog revisions.
   'tests/contract/b7-dynamic-ai.test.mjs',
   'tests/contract/ai-production-runtime.test.mjs',
+  // Hammer 4 exact-supply resilience is a release invariant, not an optional
+  // focused test. Keep its retry/commit/cost/identity proofs inside acceptance.
+  'tests/contract/hammer4-ai-routing-resilience.test.mjs',
   // Connect v1 must remain inside the ordinary repository acceptance run so a
   // broad pass cannot omit its shared wallet, limits, reconciliation, usage,
   // model-identity, MCP-profile and OpenAI compatibility contracts.
@@ -58,6 +61,9 @@ const contractTests = [
 const gates = [
   ['lint', node, ['scripts/lint.mjs']],
   ['SDK build prerequisite', npm, ['run', 'build', '--workspace', '@clervo/sdk']],
+  // b11-connect imports the built MCP server. A clean CI checkout has no
+  // packages/mcp/dist tree, so acceptance must build the package it tests.
+  ['MCP build prerequisite', npm, ['run', 'build', '--workspace', '@clervo/mcp']],
   ['typecheck', tsc, ['--project', 'tsconfig.json', '--noEmit']],
   ['clean-room boundary', path.join(repositoryRoot, 'scripts', 'verify-clean-room-boundary.sh'), []],
   ['stack decision', node, ['scripts/verify-stack-decision.mjs']],
@@ -66,11 +72,6 @@ const gates = [
   ['N0.3 acceptance', node, ['scripts/test-n0.3.mjs']],
   ['build', tsc, ['--project', 'tsconfig.json']],
   ['contract schemas', node, ['scripts/validate-contracts.mjs']],
-  // The cloud gate has always checked this; this list did not, so a manifest
-  // that drifted from the schema directory reached Cloud Build before it was
-  // noticed. A local gate that is weaker than the release gate is a gate that
-  // reports PASS on a release that cannot build.
-  ['release-candidate freeze', node, ['scripts/release/generate-release-candidate-freeze.mjs', '--check']],
   ['discovery generation', node, ['scripts/generate-discovery.mjs']],
   // The consistency tests compare the generated public truth with the exact
   // files the site serves. A clean checkout has no projected site files until

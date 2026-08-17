@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "clervo.rpc-chain-registry.v1", "lifecycle": "unavailable",
+  "schemaVersion": "clervo.rpc-chain-registry.v1", "lifecycle": "available",
   "chains": [
     { "chainId": "eip155:1", "name": "Ethereum", "protocol": "evm", "enabled": true, "finalityDepth": 64, "maximumReorgDepth": 32, "staleAfterMs": 15000, "maximumBatchSize": 20, "maximumResponseBytes": 10485760, "archiveQualified": false, "broadcastQualified": false },
     { "chainId": "eip155:10", "name": "Optimism", "protocol": "evm", "enabled": true, "finalityDepth": 100, "maximumReorgDepth": 50, "staleAfterMs": 10000, "maximumBatchSize": 20, "maximumResponseBytes": 10485760, "archiveQualified": false, "broadcastQualified": false },

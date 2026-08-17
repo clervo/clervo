@@ -85,16 +85,15 @@ test('independent traffic control stops new work and requires a successful probe
   }
 });
 
-test('rollback policy requires immutable target and keeps Stage 14 payment disabled', async () => {
+test('rollback policy requires an immutable target and current health before traffic restore', async () => {
   const policy = JSON.parse(await readFile('infra/production/rollback-policy.v1.json', 'utf8'));
   assert.equal(policy.trafficStopEnvironment, 'CLERVO_TRAFFIC_MODE=stopped');
   assert.equal(policy.rollbackTarget, 'previous_verified_immutable_registry_digest');
   assert.equal(policy.rollbackFailsClosedWithoutTarget, true);
-  assert.equal(policy.paymentExecutionDuringStage14, false);
   assert.equal(policy.productionMutationRequiresOwnerApproval, true);
   assert.deepEqual(policy.trafficRestoreRequires, [
     'database_readiness',
     'monitoring_delivery',
-    'nonpayable_useful_smoke',
+    'current_live_health',
   ]);
 });

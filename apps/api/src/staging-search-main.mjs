@@ -2,7 +2,7 @@
 
 import { createRecordedSearchExecutor } from '../../../dist/services/search/src/recorded-pipeline.js';
 import { createLiveExternalSearchExecutor } from '../../../dist/services/search/src/live-external-pipeline.js';
-import { createOpenCommercialSearchExecutor } from '../../../dist/services/search/src/open-commercial-pipeline.js';
+import { createResearchSearchExecutor } from '../../../dist/services/search/src/research-pipeline.js';
 import { createSearchMonitor } from '../../../dist/services/search/src/monitoring.js';
 import { createSearchServer } from './search-server.mjs';
 import {
@@ -25,6 +25,7 @@ import {
   InMemoryAiFreeTierQuotaStore,
   PostgresAiFreeTierQuotaStore,
 } from '../../../dist/services/ai/src/free-tier.js';
+import { SupplierCircuitBreaker, containSupplierRuntime } from './shared-boundary.mjs';
 
 const environment = process.env.CLERVO_ENV ?? 'staging';
 const releaseId = process.env.CLERVO_RELEASE_ID;
@@ -70,7 +71,8 @@ if (x402Mode !== 'disabled' && (typeof process.env.CLERVO_MPP_SECRET_KEY !== 'st
 if (sandboxMode !== 'disabled' && stateBackend !== 'postgres') throw new Error('sandbox requires PostgreSQL state');
 if (aiMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres')) throw new Error('public AI requires production x402 and PostgreSQL state');
 if (sandboxPublicMode === 'paid' && (sandboxMode !== 'private' || x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || !/^sha256:[a-f0-9]{64}$/u.test(process.env.CLERVO_SANDBOX_RUNNER_DIGEST ?? ''))) throw new Error('public Sandbox requires qualified private execution, production x402, PostgreSQL state, and an exact runner digest');
-if (rpcMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || typeof process.env.CLERVO_RPC_ETHEREUM_ENDPOINT !== 'string')) throw new Error('public RPC requires production x402, PostgreSQL state, and a qualified Ethereum endpoint');
+if (rpcMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres'
+  || typeof process.env.CLERVO_RPC_DRPC_API_KEY !== 'string' || typeof process.env.CLERVO_RPC_HELIUS_API_KEY !== 'string')) throw new Error('public RPC requires production x402, PostgreSQL state, and qualified eight-network supply');
 if (predictionMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres')) throw new Error('public Prediction requires production x402 and PostgreSQL state');
 if (cryptoMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || typeof process.env.CLERVO_BLOCKSCOUT_API_KEY !== 'string')) throw new Error('public Crypto requires production x402, PostgreSQL state, and qualified EVM supply');
 if (privateMockCommerceEnabled && (environment !== 'stage4-private-qualification' || !['127.0.0.1', 'localhost'].includes(new URL(publicOrigin).hostname))) {
@@ -99,10 +101,7 @@ const sandboxGateway = sandboxMode === 'disabled' ? undefined : createSandboxPri
   environment,
 });
 const executor = searchMode === 'open_federation'
-  ? createOpenCommercialSearchExecutor({
-    primaryCallCeiling: Number(process.env.CLERVO_SEARCH_PRIMARY_CALL_CEILING ?? '1000'),
-    fallbackCallCeiling: Number(process.env.CLERVO_SEARCH_FALLBACK_CALL_CEILING ?? '1000'),
-  })
+  ? createResearchSearchExecutor({ sourceCallCeiling: 8, pageReadCeiling: 3 })
   : searchMode === 'live_external' ? createLiveExternalSearchExecutor({
     primaryCredential: process.env.CLERVO_SEARCH_PRIMARY_KEY ?? '',
     fallbackCredential: process.env.CLERVO_SEARCH_FALLBACK_KEY ?? '',
@@ -111,16 +110,33 @@ const executor = searchMode === 'open_federation'
     }) : createRecordedSearchExecutor();
 const aiArtifactRuntime = aiArtifactMode === 'r2' ? createAiArtifactRuntime() : undefined;
 const aiRuntime = aiMode === 'paid' ? await createAiProductionRuntime({ artifactStoreFactory: aiArtifactRuntime?.forAuthorization }) : undefined;
+const aiSupplierCircuit = new SupplierCircuitBreaker({ threshold: 3, cooldownMs: 30_000 });
+const containAiAdapter = (adapter) => Object.freeze({
+  ...adapter,
+  routeId: adapter.routeId,
+  execute: (input) => aiSupplierCircuit.execute(`ai:${input.exactModelId}`, () => adapter.execute(input)),
+});
+const containedAiAdapters = aiRuntime?.adapters.map(containAiAdapter);
+const containedAiAdapterFactory = aiRuntime?.adapterFactory === undefined
+  ? undefined
+  : (authorization) => aiRuntime.adapterFactory(authorization).map(containAiAdapter);
 const aiFreeTier = aiRuntime === undefined ? undefined : Object.freeze({
   policy: aiRuntime.freeTierPolicy,
   store: stateStore.kind === 'postgres'
     ? new PostgresAiFreeTierQuotaStore(stateStore.client, stateStore.environmentNamespace)
     : new InMemoryAiFreeTierQuotaStore(),
 });
-const rpcRuntime = rpcMode === 'paid' ? createRpcProductionRuntime({ ethereumEndpoint: process.env.CLERVO_RPC_ETHEREUM_ENDPOINT }) : undefined;
+const rpcRuntimeUncontained = rpcMode === 'paid' ? createRpcProductionRuntime({
+  drpcApiKey: process.env.CLERVO_RPC_DRPC_API_KEY,
+  heliusApiKey: process.env.CLERVO_RPC_HELIUS_API_KEY,
+  dailyCallCeiling: Number(process.env.CLERVO_RPC_DAILY_CALL_CEILING ?? '100000'),
+}) : undefined;
+const rpcRuntime = containSupplierRuntime(rpcRuntimeUncontained, new SupplierCircuitBreaker({ threshold: 4, cooldownMs: 20_000 }), (request) => `rpc:${request.input.chainId}`);
 const predictionStore = predictionMode === 'paid' ? await createPostgresPredictionMarketStoreFromEnvironment() : undefined;
-const predictionRuntime = predictionMode === 'paid' ? createPredictionProductionRuntime({ store: predictionStore }) : undefined;
-const cryptoRuntime = cryptoMode === 'paid' ? createCryptoProductionRuntime({ credential: process.env.CLERVO_BLOCKSCOUT_API_KEY, hardDailyCallCeiling: Number(process.env.CLERVO_CRYPTO_DAILY_CALL_CEILING ?? '100000') }) : undefined;
+const predictionRuntimeUncontained = predictionMode === 'paid' ? createPredictionProductionRuntime({ store: predictionStore }) : undefined;
+const predictionRuntime = containSupplierRuntime(predictionRuntimeUncontained, new SupplierCircuitBreaker({ threshold: 3, cooldownMs: 30_000 }), () => 'prediction:pdata');
+const cryptoRuntimeUncontained = cryptoMode === 'paid' ? createCryptoProductionRuntime({ credential: process.env.CLERVO_BLOCKSCOUT_API_KEY, hardDailyCallCeiling: Number(process.env.CLERVO_CRYPTO_DAILY_CALL_CEILING ?? '100000') }) : undefined;
+const cryptoRuntime = containSupplierRuntime(cryptoRuntimeUncontained, new SupplierCircuitBreaker({ threshold: 3, cooldownMs: 30_000 }), (request) => `crypto:${request.input.chains.join(',')}`);
 
 const monitoringExporter = monitoringDriver === 'sentry'
   ? createSentryMonitoringExporter({ dsn: sentryDsn, environment, release: releaseId })
@@ -149,12 +165,12 @@ const server = createSearchServer({
   x402StateStore,
   sandboxGateway,
   sandboxApiToken: sandboxMode === 'disabled' ? undefined : process.env.CLERVO_SANDBOX_API_TOKEN,
-  synthesisEnabled: searchMode === 'recorded',
+  synthesisEnabled: true,
   retrievalMode: searchMode,
   edgeAuthorization,
   aiPublicPricing: aiRuntime?.publicPricing,
-  aiAdapters: aiRuntime?.adapters,
-  aiAdapterFactory: aiRuntime?.adapterFactory,
+  aiAdapters: containedAiAdapters,
+  aiAdapterFactory: containedAiAdapterFactory,
   aiRuntimeBindings: aiRuntime?.runtimeBindings,
   aiReady: aiRuntime?.ready,
   aiFreeTier,

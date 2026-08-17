@@ -14,9 +14,9 @@ test('the only qualified runner is hash-bound to its SBOM and passed live contai
   const supply = await json('docs/evidence/sandbox/runner-supply-chain.v5.json');
   const qualified = registry.images.filter(({ lifecycle }) => lifecycle === 'qualified');
   assert.equal(qualified.length, 1);
-  assert.equal(qualified[0].imageId, 'sandbox.nodejs-24');
+  assert.equal(qualified[0].imageId, 'sandbox.nodejs-24-python3-12');
   assert.equal(qualified[0].digest, qualification.digest);
-  assert.equal(qualified[0].sbomSha256, await sha256('docs/evidence/sandbox/runner-sbom.spdx.json'));
+  assert.equal(qualified[0].sbomSha256, await sha256('docs/evidence/sandbox/runner-sbom-hammer3.spdx.json'));
   assert.equal(qualification.decision, 'qualified');
   assert.equal(qualification.productAvailability, 'unavailable');
   assert.equal(qualification.runtimeChecks.liveRedTeamReportSha256, report.reportSha256);
@@ -31,7 +31,7 @@ test('the only qualified runner is hash-bound to its SBOM and passed live contai
   assert.equal(supply.artifactAnalysis.effectiveHigh, 0);
   assert.equal(report.imageDigest, qualified[0].digest);
   assert.equal(report.status, 'passed');
-  assert.equal(report.probeCount, 10);
+  assert.equal(report.probeCount, 14);
   assert.equal(report.cleanupVerified, true);
   assert.deepEqual(report.qualificationContext, {
     mode: 'persistent-production',
@@ -43,6 +43,10 @@ test('the only qualified runner is hash-bound to its SBOM and passed live contai
   assert.equal(report.runtimeMetrics.forkDenied, true);
   assert.ok(report.runtimeMetrics.maximumProcessesObserved <= 32);
   assert.equal(report.runtimeMetrics.remainingSleeps, 0);
+  assert.match(report.runtimeMetrics.nodeVersion, /^v24\./u);
+  assert.match(report.runtimeMetrics.pythonVersion, /^3\.12\./u);
+  assert.ok(report.runtimeMetrics.nodeProgramBytes > 4_096);
+  assert.ok(report.runtimeMetrics.pythonProgramBytes > 4_096);
   assert.ok(report.observations.every(({ outcome, runtimeAttested, cleanupVerified, chargedMicrousd, controls }) =>
     outcome === 'contained' && runtimeAttested === true && cleanupVerified === true && chargedMicrousd === 0
       && Object.values(controls).every(Boolean)));

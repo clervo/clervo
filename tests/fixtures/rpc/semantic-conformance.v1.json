@@ -8,6 +8,6 @@
     { "chainId": "eip155:8453", "identity": "0x2105", "height": 4096, "finalizedHash": "0x5555555555555555555555555555555555555555555555555555555555555555" },
     { "chainId": "eip155:42161", "identity": "0xa4b1", "height": 4096, "finalizedHash": "0x6666666666666666666666666666666666666666666666666666666666666666" },
     { "chainId": "eip155:43114", "identity": "0xa86a", "height": 4096, "finalizedHash": "0x7777777777777777777777777777777777777777777777777777777777777777" },
-    { "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp", "identity": "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp", "height": 4096, "finalizedHash": "11111111111111111111111111111111" }
+    { "chainId": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp", "identity": "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d", "height": 4096, "finalizedHash": "11111111111111111111111111111111" }
   ]
 }

@@ -22,6 +22,31 @@ import { aiPricingRateKeys } from './product-catalog.js';
 
 const minimumChargeAtomic = 1_000n;
 
+function quoteCapabilities(
+  normalized: unknown,
+): AiCapability[] {
+  const input = (
+    normalized as {
+      input?: {
+        kind?: string;
+        stream?: boolean;
+        responseFormat?: string;
+      };
+    }
+  ).input;
+
+  if (input?.kind !== 'chat') return [];
+
+  return [
+    ...(input.stream === true
+      ? ['streaming' as const]
+      : []),
+    ...(input.responseFormat === 'json_object'
+      ? ['structured_output' as const]
+      : []),
+  ];
+}
+
 function earliest(...values: string[]): string {
   return values.reduce((left, right) => Date.parse(left) <= Date.parse(right) ? left : right);
 }
@@ -132,7 +157,7 @@ export function createDynamicAiPublicPricing(projection: Readonly<AiProductRunti
         operationId,
         productId: normalized.productId,
         requestedModel: normalized.model,
-        requiredCapabilities: [],
+        requiredCapabilities: quoteCapabilities(normalized),
         usageBounds: normalized.usageBounds,
         maximumSupplierCost: { asset: 'USD', amountAtomic: estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, projection.routes.reduce((highest, route) => {
           const left = BigInt(estimateAiSupplierCost(AI_MAXIMUM_AUTHORIZATION_USAGE_BOUNDS, highest).amountAtomic);

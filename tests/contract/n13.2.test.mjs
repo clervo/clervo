@@ -35,10 +35,6 @@ test('MCP handlers force the exact product method and preserve idempotency', asy
       calls.push({ productId: 'search.web', request, options });
       return { productId: 'search.web' };
     },
-    answer: async (request, options) => {
-      calls.push({ productId: 'search.answer', request, options });
-      return { productId: 'search.answer' };
-    },
   }));
   const input = {
     query: 'evidence',
@@ -49,8 +45,8 @@ test('MCP handlers force the exact product method and preserve idempotency', asy
     mode: 'preview',
   };
   assert.equal(JSON.parse((await handlers.search_web(input)).content[0].text).productId, 'search.web');
-  assert.equal(JSON.parse((await handlers.search_answer(input)).content[0].text).productId, 'search.answer');
-  assert.deepEqual(calls.map(({ productId }) => productId), ['search.web', 'search.answer']);
+  assert.equal(handlers.search_answer, undefined);
+  assert.deepEqual(calls.map(({ productId }) => productId), ['search.web']);
   assert.ok(calls.every(({ options }) => options.idempotencyKey === 'idem_mcp_fixture' && options.mode === 'preview'));
   assert.ok(calls.every(({ request }) => request.query === 'evidence' && request.maxResults === 4));
 });

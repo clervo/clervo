@@ -27,9 +27,10 @@
     },
     "productId": {
       "enum": [
-        "search.web"
+        "search.web",
+        "search.answer"
       ],
-      "description": "Callable public Search operation identity. search.answer remains a released-client compatibility identifier but is not callable."
+      "description": "Callable public Research operation identity: search.web for fast evidence or search.answer for deep cited synthesis."
     },
     "state": {
       "const": "RECEIPTED"

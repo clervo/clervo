@@ -1,7 +1,7 @@
 {
   "name": "@clervo/router",
   "version": "0.3.1",
-  "description": "Clervo Connect core and free-first CLI with one local wallet, x402 safety, usage, reconciliation, and OpenAI compatibility.",
+  "description": "Clervo CLI and local OpenAI-compatible proxy with bounded x402 payments, receipts, and safe replay.",
   "license": "MIT",
   "type": "module",
   "keywords": [
@@ -12,7 +12,7 @@
     "base",
     "usdc"
   ],
-  "homepage": "https://github.com/clervo/clervo/tree/main/packages/router#readme",
+  "homepage": "https://clervo.dev/docs/cli",
   "bugs": {
     "url": "https://github.com/clervo/clervo/issues"
   },

@@ -9,8 +9,9 @@ import { normalizeRpcHttpRequest, rpcPublicPricing } from '../../apps/api/src/x4
 const observedAt = '2026-08-04T12:00:00.000Z';
 
 test('RPC HTTP normalization is strict and prices batches by bounded call count', () => {
-  assert.equal(rpcPublicPricing(normalizeRpcHttpRequest({ chainId: 'eip155:1', call: { method: 'eth_chainId', params: [] } })).maximumCharge.amountAtomic, '1');
-  assert.equal(rpcPublicPricing(normalizeRpcHttpRequest({ chainId: 'eip155:1', calls: [{ method: 'eth_chainId', params: [] }, { method: 'eth_blockNumber', params: [] }] })).maximumCharge.amountAtomic, '2');
+  assert.equal(rpcPublicPricing(normalizeRpcHttpRequest({ chainId: 'eip155:1', call: { method: 'eth_chainId', params: [] } })).maximumCharge.amountAtomic, '1000');
+  assert.equal(rpcPublicPricing(normalizeRpcHttpRequest({ chainId: 'eip155:1', calls: [{ method: 'eth_chainId', params: [] }, { method: 'eth_blockNumber', params: [] }] })).maximumCharge.amountAtomic, '2000');
+  assert.equal(rpcPublicPricing(normalizeRpcHttpRequest({ chainId: 'eip155:1', call: { method: 'eth_chainId', params: [] } })).supplierCost.amountAtomic, '0');
   assert.throws(() => normalizeRpcHttpRequest({ chainId: 'eip155:1', call: { method: 'eth_chainId', params: [] }, calls: [] }), /rpc_http_calls_invalid/u);
   assert.throws(() => normalizeRpcHttpRequest({ chainId: 'eip155:1', call: { method: 'eth_chainId', params: [] }, endpoint: 'https:\/\/attacker.invalid' }), /rpc_http_request_additional_property/u);
 });
@@ -28,6 +29,10 @@ test('public RPC route is edge-only, challenges before body validation, returns 
   };
   const runtime = {
     durable: true,
+    chains: Array.from({ length: 8 }, (_, index) => ({ chainId: `chain:${index}` })),
+    limits: { maximumBatchSize: 20 },
+    async ready() { return true; },
+    async health() { return this.chains.map(({ chainId }) => ({ chainId, status: 'healthy', healthyRoutes: 1 })); },
     async execute(request) {
       calls.execute += 1;
       return {
@@ -62,13 +67,16 @@ test('public RPC route is edge-only, challenges before body validation, returns 
   const body = JSON.stringify({ chainId: 'eip155:1', call: { method: 'eth_chainId', params: [] } });
   const edge = { 'x-clervo-edge-authorization': 'Bearer edge-authorization-at-least-32-characters' };
   assert.equal((await fetch(`${origin}/v1/rpc/execute`, { method: 'POST', body })).status, 401);
+  const chainHealth = await fetch(`${origin}/v1/rpc/chains`, { headers: edge });
+  assert.equal(chainHealth.status, 200);
+  assert.equal((await chainHealth.json()).chains.length, 8);
 
   const probe = await fetch(`${origin}/v1/rpc/execute`, { method: 'POST', headers: edge });
   assert.equal(probe.status, 402);
   assert.equal(probe.headers.has('payment-required'), true);
   assert.equal(probe.headers.has('www-authenticate'), true);
   const probeBody = await probe.json();
-  assert.equal(probeBody.accepts[0].amount, '1');
+  assert.equal(probeBody.accepts[0].amount, '1000');
   assert.equal(probeBody.resource.url, 'https://api.clervo.dev/v1/rpc/execute');
 
   const headers = { ...edge, 'content-type': 'application/json', 'idempotency-key': 'idem_rpc_http_001' };

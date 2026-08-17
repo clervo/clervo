@@ -5,14 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "clervo-sdk"
 version = "0.4.2"
-description = "Clervo Connect Python SDK for live products through the shared local wallet, limits, replay, reconciliation, usage, and diagnostics."
+description = "Python SDK for Clervo AI and agent tools with explicit x402 payment controls and replay-safe requests."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [{ name = "Clervo" }]
-keywords = ["clervo", "ai-agents", "agent-infrastructure", "search", "sdk"]
+keywords = ["clervo", "ai-agents", "x402", "search", "sdk"]
 classifiers = [
-  "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",

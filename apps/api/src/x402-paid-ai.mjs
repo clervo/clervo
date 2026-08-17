@@ -10,16 +10,16 @@ function refuse(code, status = 503) {
   throw Object.assign(new Error(code), { status });
 }
 
-export function createX402PaidAiProcessor({ service, stateStore, publicPricing, adapters, adapterFactory, runtimeBindings, acquireExecution, monitor } = {}) {
+export function createX402PaidAiProcessor({ service, stateStore, publicPricing, adapters, adapterFactory, runtimeBindings, acquireExecution, acquireQuote, monitor } = {}) {
   if (!publicPricing || typeof publicPricing.quote !== 'function' || typeof publicPricing.discoveryRequest !== 'function') throw new TypeError('invalid_ai_public_pricing');
   if (!Array.isArray(adapters) || adapters.some((adapter) => typeof adapter?.routeId !== 'string' || typeof adapter?.execute !== 'function')) throw new TypeError('invalid_ai_adapters');
   if (adapterFactory !== undefined && typeof adapterFactory !== 'function') throw new TypeError('invalid_ai_adapter_factory');
-  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution });
+  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution, acquireQuote });
 
   return Object.freeze({
     mode: processor.mode,
     durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, resourcePath = '/v1/ai/execute', discovery, deadlineAt, signal }) {
       let prepared;
       return processor.process({
         idempotencyKey,
@@ -29,7 +29,7 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
         paymentHeader,
         authorizationHeader,
         now,
-        resourcePath: '/v1/ai/execute',
+        resourcePath,
         overloadCode: 'ai_overloaded',
         prepare() {
           const quote = publicPricing.quote({ normalized, operationId, now });
@@ -38,15 +38,17 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
             normalized,
             operationId,
             maximumSupplierCost: quote.decision.maximumSupplierCost,
-            deadlineAt: new Date(Date.parse(now) + deadlineMs).toISOString(),
+            deadlineAt: new Date(Number.isFinite(Date.parse(deadlineAt ?? '')) ? Math.min(Date.now() + deadlineMs, Date.parse(deadlineAt)) : Date.parse(now) + deadlineMs).toISOString(),
           });
           prepared = Object.freeze({ quote, request });
           return Object.freeze({
             pricing: quote.pricing,
             executionInput: request,
-            discovery: createAiDiscoveryContract(publicPricing.discoveryRequest(now)),
+            discovery: discovery ?? createAiDiscoveryContract(publicPricing.discoveryRequest(now)),
           });
         },
+        deadlineAt,
+        signal,
         async execute(request, { authorization }) {
           if (prepared === undefined) throw new TypeError('ai_execution_not_prepared');
           const executionAdapters = adapterFactory === undefined ? adapters : adapterFactory(authorization);
@@ -59,7 +61,8 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
             runtimeBindings: prepared.quote.runtimeBindings ?? runtimeBindings,
             aliasTargets: prepared.quote.aliasTargets,
             startedAt: now,
-            clock: () => Date.parse(now),
+            signal,
+            ...(deadlineAt === undefined ? { clock: () => Date.parse(now) } : {}),
             monitor,
           });
           if (outcome.outcome !== 'completed') refuse(`ai_execution_${outcome.failureCode}`);

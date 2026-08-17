@@ -1,10 +1,6 @@
 {
   "schemaVersion": "clervo.production-release-policy.v1",
-  "releaseCandidateId": "clervo-private-core-2026-08-02.2",
-  "interfaceHash": "sha256:1b32a86f5725499f90d3e2f167f4432563f67bac477a3ca0e552f0958bf26622",
-  "state": "local_qualified_cloud_unapplied",
-  "publicDeploymentEnabled": false,
-  "paymentEnabled": false,
+  "state": "current_local_container_policy",
   "container": {
     "dockerfile": "Dockerfile",
     "buildBaseImage": "node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9b581ef1dd7d96ced463b8e7",
@@ -30,17 +26,5 @@
     "temporaryFilesystem": "/tmp",
     "providerCallsAllowed": false,
     "realPaymentsAllowed": false
-  },
-  "deploymentPrerequisites": [
-    "immutable_registry_digest",
-    "signed_build_provenance",
-    "dependency_and_container_scans",
-    "staging_restore_and_rollback",
-    "durable_idempotency_and_quota",
-    "backup_restore_recovery",
-    "load_and_overload_proof",
-    "monitoring_and_incident_delivery",
-    "retention_deletion_proof",
-    "owner_approved_cloud_release"
-  ]
+  }
 }

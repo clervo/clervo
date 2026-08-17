@@ -1,6 +1,8 @@
-import type {
-  AiAdapterExecution,
-  AiExecutionAdapter,
+import {
+  createAiAdapterFailureError,
+  type AiAdapterExecution,
+  type AiAdapterFailureMetadata,
+  type AiExecutionAdapter,
 } from '../../../services/ai/src/execution.js';
 import type {
   AiExecutionRequest,
@@ -9,6 +11,7 @@ import type {
 import {
   OpenAiCompatibleAdapter,
   type AiArtifactStore,
+  type AiHttpResponse,
   type AiHttpTransport,
 } from './openai-compatible.js';
 
@@ -35,6 +38,54 @@ const aliasReasoningEffort = Object.freeze({
   'clervo/code': 'medium',
   'clervo/deep': 'high',
 } as const);
+
+function gatewayErrorCode(response: Readonly<AiHttpResponse>): string | undefined {
+  try {
+    const parsed = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(response.body)) as unknown;
+    if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) return undefined;
+    const error = (parsed as Record<string, unknown>).error;
+    if (error === null || typeof error !== 'object' || Array.isArray(error)) return undefined;
+    const value = (error as Record<string, unknown>).code ?? (error as Record<string, unknown>).type;
+    if (typeof value !== 'string') return undefined;
+    const normalized = value.trim();
+    return /^[A-Za-z0-9_.:-]{1,96}$/u.test(normalized) ? normalized : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function gatewayFailure(response: Readonly<AiHttpResponse>): Readonly<AiAdapterFailureMetadata> {
+  const providerErrorCode = gatewayErrorCode(response);
+  const provider = {
+    providerStatus: response.status,
+    ...(providerErrorCode === undefined ? {} : { providerErrorCode }),
+  };
+  if (response.status === 401 || response.status === 403) {
+    return Object.freeze({ failureClass: 'authentication', commitState: 'not_committed', retryDisposition: 'next_exact_route', ...provider });
+  }
+  if (response.status === 429) {
+    const quota = providerErrorCode !== undefined && /(?:usage|quota|limit)/iu.test(providerErrorCode);
+    return Object.freeze({ failureClass: quota ? 'quota' : 'rate_limit', commitState: 'not_committed', retryDisposition: 'next_exact_route', ...provider });
+  }
+  if (response.status >= 500) {
+    return Object.freeze({ failureClass: 'transient', commitState: 'unknown', retryDisposition: 'stop', ...provider });
+  }
+  return Object.freeze({ failureClass: 'provider_rejected', commitState: 'not_committed', retryDisposition: 'stop', ...provider });
+}
+
+function localGatewayFailure(error: unknown): Readonly<AiAdapterFailureMetadata> | undefined {
+  if (!(error instanceof Error)) return undefined;
+  if (error.message === 'ai_provider_credential_unavailable' || error.message === 'ai_provider_credential_invalid') {
+    return Object.freeze({ failureClass: 'authentication', commitState: 'not_started', retryDisposition: 'next_exact_route' });
+  }
+  if (error.message === 'ai_provider_request_binding_invalid' || error.message === 'clervo_ai_gateway_binding_invalid' || error.message === 'clervo_ai_gateway_runtime_model_invalid') {
+    return Object.freeze({ failureClass: 'configuration', commitState: 'not_started', retryDisposition: 'next_exact_route' });
+  }
+  if (error.message === 'ai_provider_transport_failed') {
+    return Object.freeze({ failureClass: 'transport', commitState: 'unknown', retryDisposition: 'stop' });
+  }
+  return undefined;
+}
 
 export class ClervoAiGatewayAdapter implements AiExecutionAdapter {
   readonly routeId = 'ai.route.dynamic_gateway';
@@ -69,7 +120,26 @@ export class ClervoAiGatewayAdapter implements AiExecutionAdapter {
     routeId?: string;
     signal: AbortSignal;
   }>): Promise<Readonly<AiAdapterExecution>> {
-    if (input.runtimeModelId === undefined || input.routeId === undefined || !this.supportsRoute(input.routeId)) throw new TypeError('clervo_ai_gateway_binding_invalid');
+    if (input.runtimeModelId === undefined || input.routeId === undefined || !this.supportsRoute(input.routeId)) {
+      throw createAiAdapterFailureError('clervo_ai_gateway_binding_invalid', { failureClass: 'configuration', commitState: 'not_started', retryDisposition: 'next_exact_route' });
+    }
+    const alternateModelIdentity = input.runtimeModelId.startsWith('clervo/')
+      ? input.runtimeModelId.slice('clervo/'.length)
+      : input.runtimeModelId;
+
+    if (alternateModelIdentity.length === 0) {
+      throw createAiAdapterFailureError('clervo_ai_gateway_runtime_model_invalid', { failureClass: 'configuration', commitState: 'not_started', retryDisposition: 'next_exact_route' });
+    }
+
+    let observedFailure: Readonly<AiAdapterFailureMetadata> | undefined;
+    const observedTransport: AiHttpTransport = Object.freeze({
+      request: async (request: Parameters<AiHttpTransport['request']>[0]) => {
+        const response = await this.#transport.request(request);
+        if (response.status < 200 || response.status >= 300) observedFailure = gatewayFailure(response);
+        return response;
+      },
+    });
+
     const adapter = new OpenAiCompatibleAdapter({
       config: {
         routeId: input.routeId,
@@ -81,11 +151,33 @@ export class ClervoAiGatewayAdapter implements AiExecutionAdapter {
         maximumResponseBytes: this.#config.maximumResponseBytes,
         ...(input.request.requestedModel in aliasReasoningEffort ? { reasoningEffort: aliasReasoningEffort[input.request.requestedModel as keyof typeof aliasReasoningEffort] } : {}),
       },
-      transport: this.#transport,
+      transport: observedTransport,
       secret: this.#secret,
       ...(this.#artifacts === undefined ? {} : { artifacts: this.#artifacts }),
       clock: this.#clock,
     });
-    return adapter.execute({ request: input.request, exactModelId: input.runtimeModelId, signal: input.signal });
+
+    let execution: Readonly<AiAdapterExecution>;
+    try {
+      execution = await adapter.execute({
+        request: input.request,
+        exactModelId: input.runtimeModelId,
+        signal: input.signal,
+      });
+    } catch (error) {
+      if (observedFailure !== undefined) throw createAiAdapterFailureError('clervo_ai_gateway_upstream_rejected', observedFailure);
+      const local = localGatewayFailure(error);
+      if (local !== undefined) throw createAiAdapterFailureError(error instanceof Error ? error.message : 'clervo_ai_gateway_failed', local);
+      throw error;
+    }
+
+    if (execution.modelIdentity !== input.runtimeModelId && execution.modelIdentity !== alternateModelIdentity) {
+      throw createAiAdapterFailureError('clervo_ai_gateway_model_identity_mismatch', { failureClass: 'identity_mismatch', commitState: 'committed', retryDisposition: 'stop' });
+    }
+
+    return Object.freeze({
+      ...execution,
+      modelIdentity: input.runtimeModelId,
+    });
   }
 }

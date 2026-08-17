@@ -4,8 +4,6 @@ import test from 'node:test';
 
 import {
   CLERVO_CONTRACT_VERSION,
-  CLERVO_RELEASE_CANDIDATE_ID,
-  CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH,
   ClervoClient,
   ClervoPaymentRequiredError,
   ClervoProblemError,
@@ -14,7 +12,6 @@ import {
 } from '../../dist/packages/sdk-typescript/src/index.js';
 
 const transcript = JSON.parse(await readFile('packages/distribution/fixtures/search-client-transcript.v1.json', 'utf8'));
-const freeze = JSON.parse(await readFile('packages/catalog/release-candidate-freeze.v1.json', 'utf8'));
 const onboarding = JSON.parse(await readFile('packages/distribution/onboarding.v1.json', 'utf8'));
 
 function result(productId, fundingMode = 'free') {
@@ -31,14 +28,7 @@ function result(productId, fundingMode = 'free') {
   };
 }
 
-test('TypeScript package binds the exact frozen candidate identity', () => {
-  assert.equal(CLERVO_RELEASE_CANDIDATE_ID, freeze.releaseCandidateId);
-  assert.equal(CLERVO_RELEASE_CANDIDATE_INTERFACE_HASH, freeze.interfaceHash);
-  assert.equal(transcript.releaseCandidateId, freeze.releaseCandidateId);
-  assert.equal(transcript.interfaceHash, freeze.interfaceHash);
-});
-
-test('TypeScript web and answer methods force distinct product selection', async () => {
+test('TypeScript exposes only the current callable Search operation', async () => {
   const observed = [];
   const client = new ClervoClient({
     baseUrl: 'http://127.0.0.1:8080/',
@@ -49,14 +39,14 @@ test('TypeScript web and answer methods force distinct product selection', async
     },
   });
   assert.equal((await client.search.web({ query: 'evidence' }, { idempotencyKey: 'idem_web' })).productId, 'search.web');
-  assert.equal((await client.search.answer({ query: 'evidence' }, { idempotencyKey: 'idem_answer' })).productId, 'search.answer');
-  assert.deepEqual(observed.map(({ body }) => body.synthesize), [false, true]);
+  assert.equal(client.search.answer, undefined);
+  assert.deepEqual(observed.map(({ body }) => body.synthesize), [false]);
   assert.ok(observed.every(({ url }) => url === 'http://127.0.0.1:8080/v1/search/free'));
-  assert.deepEqual(observed.map(({ init }) => init.headers['idempotency-key']), ['idem_web', 'idem_answer']);
+  assert.deepEqual(observed.map(({ init }) => init.headers['idempotency-key']), ['idem_web']);
 });
 
 test('TypeScript wire behavior matches the shared cross-client transcript', async () => {
-  for (const fixture of transcript.cases.slice(0, 2)) {
+  for (const fixture of transcript.cases.filter(({ method, response }) => method === 'search.web' && response.operation === 'search.query')) {
     let observed;
     const client = new ClervoClient({
       baseUrl: 'http://127.0.0.1:8080',
@@ -125,7 +115,7 @@ test('TypeScript client fails closed on problems, contract mismatch, unsafe orig
   await assert.rejects(oversized.search.web({ query: 'evidence' }), /clervo_response_too_large/u);
 });
 
-test('TypeScript recovery actions match all six shared onboarding classes', () => {
+test('TypeScript recovery actions preserve retry and reconciliation safety', () => {
   for (const expected of onboarding.recovery) {
     for (const problemCode of expected.problemCodes) {
       assert.deepEqual(

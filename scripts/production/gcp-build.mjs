@@ -18,6 +18,9 @@ const status = cloudAcceptance
   ? ''
   : execFileSync('git', ['status', '--porcelain=v1', '--untracked-files=all'], { encoding: 'utf8' }).trim();
 assert.match(releaseSha, /^[a-f0-9]{40}$/u, 'release commit must be exact');
+const recoveryConfirmation = process.env.CLERVO_PRODUCTION_RECOVERY_CONFIRM;
+const recoveryMode = recoveryConfirmation === undefined ? 'none' : 'expired-prediction-qualification';
+if (recoveryConfirmation !== undefined) assert.equal(recoveryConfirmation, `expired-prediction-qualification:${releaseSha}`, 'production recovery confirmation mismatch');
 
 const serviceAccount = `projects/${policy.project}/serviceAccounts/${policy.resources.buildServiceAccount}@${policy.project}.iam.gserviceaccount.com`;
 const tag = `${policy.region}-docker.pkg.dev/${policy.project}/${policy.resources.artifactRepository}/${policy.resources.image}:${releaseSha}`;
@@ -30,6 +33,7 @@ const plan = {
   tag,
   serviceAccount,
   config: policy.build.config,
+  recoveryMode,
 };
 
 if (action === 'plan') {
@@ -43,7 +47,7 @@ if (action === 'plan') {
     '--region', policy.region,
     '--config', policy.build.config,
     '--service-account', serviceAccount,
-    '--substitutions', `_RELEASE_SHA=${releaseSha}`,
+    '--substitutions', `_RELEASE_SHA=${releaseSha},_RECOVERY_MODE=${recoveryMode}`,
     '--format=json',
     '--quiet',
   ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'], maxBuffer: 16 * 1024 * 1024 });

@@ -1,4 +1,5 @@
 import { Readable, Writable } from 'node:stream';
+import { SANDBOX_MAX_REQUEST_BYTES } from '../../../packages/contracts/src/sandbox.js';
 
 import {
   CoreV1Api,
@@ -178,9 +179,9 @@ export class KubernetesAgentSandboxTransport implements AgentSandboxTransport {
 
   async exec(input: Readonly<{ namespace: string; podName: string; command: readonly string[]; stdin: Uint8Array; timeoutMs: number; maximumOutputBytes: number }>): Promise<Readonly<{ stdout: Uint8Array; stderr: Uint8Array; exitCode: number }>> {
     if (input.namespace !== expectedNamespace || !/^sbx-[a-f0-9]{24}$/u.test(input.podName)
-      || input.command.length < 1 || input.command.length > 16 || input.stdin.byteLength > 1_500_000
+      || input.command.length < 1 || input.command.length > 16 || input.stdin.byteLength > SANDBOX_MAX_REQUEST_BYTES
       || !Number.isSafeInteger(input.timeoutMs) || input.timeoutMs < 1_000 || input.timeoutMs > 315_000
-      || !Number.isSafeInteger(input.maximumOutputBytes) || input.maximumOutputBytes < 1 || input.maximumOutputBytes > 10_551_296) throw new TypeError('kubernetes_transport_exec_invalid');
+      || !Number.isSafeInteger(input.maximumOutputBytes) || input.maximumOutputBytes < 1 || input.maximumOutputBytes > 3_000_000) throw new TypeError('kubernetes_transport_exec_invalid');
     const stdout = new BoundedWritable(input.maximumOutputBytes);
     const stderr = new BoundedWritable(input.maximumOutputBytes);
     let observedStatus: V1Status | undefined;

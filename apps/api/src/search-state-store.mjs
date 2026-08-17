@@ -316,6 +316,8 @@ export async function createPostgresSearchStateStoreFromEnvironment(environment 
     max: 4,
     connectionTimeoutMillis: 5_000,
     idleTimeoutMillis: 10_000,
+    query_timeout: 5_000,
+    statement_timeout: 5_000,
     allowExitOnIdle: true,
     application_name: 'clervo-search-api',
   });

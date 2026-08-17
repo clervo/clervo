@@ -6,12 +6,11 @@ import statusSource from '../../../generated/public/status.json';
 import {
   discovery,
   familyOf,
-  launchState,
   lifecycleLabels,
+  publicStatus,
   observedProduct,
   observedRoutes,
   onboarding,
-  proofLabels,
   type LaunchProductId,
 } from './product';
 
@@ -80,6 +79,10 @@ type OpenApiDocument = {
 
 const pricing = pricingSource as unknown as PricingDocument;
 const status = statusSource as unknown as StatusDocument;
+
+if (status.schemaVersion !== publicStatus.schemaVersion) {
+  throw new Error('public_status_schema_mismatch');
+}
 const catalog = catalogSource as unknown as CatalogDocument;
 const openapi = openapiSource as unknown as OpenApiDocument;
 
@@ -144,16 +147,14 @@ export function operationContract(operationId: string) {
 
   const familyId = familyOf(operationId);
   const family = observedProduct(familyId);
-  const launch = launchState.products.find(({ id }) => id === familyId);
   const published = discovery.products.find((entry) => entry.operationId === operationId);
-  const offer = pricing.offers.find((entry) => entry.productId === operationId);
+  const offer = pricing.offers.find((entry) => entry.productId === (published?.productId ?? operationId));
   const publicRoute = published?.publicAvailable === true && published.payment.challengeImplemented
-    ? (published.routes?.paidChallenge ?? published.routes?.freeSample ?? null)
+    ? (published.routes?.paidChallenge ?? published.routes?.execute ?? published.routes?.freeSample ?? null)
     : null;
   const method = publicRoute === null ? undefined : openapi.paths?.[publicRoute]?.post;
   const operationRoutes = observedRoutes.filter((route) => route.productIds.includes(operationId));
   const relatedOperationIds = family.operations.filter((id) => id !== operationId);
-  const exactPrivateProof = launchState.paymentProof.productId === operationId ? launchState.paymentProof : null;
   const exactPublicPrice = pricing.publicPrice?.productId === operationId ? pricing.publicPrice : null;
   const idempotencyRequired = method?.parameters?.some((parameter) =>
     parameter.name?.toLowerCase() === 'idempotency-key' && parameter.required === true,
@@ -162,7 +163,7 @@ export function operationContract(operationId: string) {
   const lifecycle = published === undefined
     ? 'Unavailable'
     : `${published.lifecycle[0]?.toUpperCase() ?? ''}${published.lifecycle.slice(1)}`;
-  const access = published?.publicAvailable === true ? 'Publicly callable preview' : 'No public execution path';
+  const access = published?.publicAvailable === true ? 'Publicly callable' : 'No public execution path';
   const summary = published?.summary ?? 'No public human summary is currently bound to this canonical operation identity.';
   const title = published?.title ?? operationId;
   const offerAmount = priceAmount(offer, operationId);
@@ -180,7 +181,11 @@ export function operationContract(operationId: string) {
     summary,
     lifecycle,
     observedFamilyLifecycle: lifecycleLabels[family.lifecycleState],
-    proofLabel: proofLabels[family.proofLevel],
+    paymentBehavior: offer === undefined || !offer.publicAvailable
+      ? 'Not publicly offered'
+      : offer.model === 'x402_request_quote'
+        ? 'Request-specific 402 quote'
+        : 'Maximum shown before authorization',
     health: 'No operation-specific incident feed is bound',
     actionClass: 'Not bound in public operation truth',
     access,
@@ -209,9 +214,6 @@ export function operationContract(operationId: string) {
       idempotencyRequired,
     },
     operationRoutes,
-    exactPrivateProof,
-    familyAllowedClaims: launch?.allowedClaims ?? [],
-    familyProhibitedClaims: launch?.prohibitedClaims ?? [],
     recovery: onboarding.recovery,
     relatedOperationIds,
     artifacts: {

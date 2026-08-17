@@ -230,6 +230,13 @@ const cryptoPaidProof = await (async () => {
     return null;
   }
 })();
+const rpcPaidProof = await (async () => {
+  try {
+    return JSON.parse(await readFile(path.join(root, 'infra/production/gcp/rpc-x402-proof.v1.json'), 'utf8'));
+  } catch {
+    return null;
+  }
+})();
 const searchSandboxPaidProof = await (async () => {
   try {
     return JSON.parse(await readFile(path.join(root, 'infra/production/gcp/search-sandbox-x402-proof.v1.json'), 'utf8'));
@@ -267,6 +274,12 @@ const surfaceProbes = await Promise.all([
   observe('api.ai_paid_current', `${API_ORIGIN}/v1/ai/execute`, postJson(currentAiProbeBody(currentPaidAiModel), `idem_probe_ai_paid_${probeNonce}`)),
   observe('api.ai_free_current', `${API_ORIGIN}/v1/ai/execute`, postJson(currentAiProbeBody(currentFreeAiModel), `idem_probe_ai_free_${probeNonce}`)),
   observe('api.ai_alias_current', `${API_ORIGIN}/v1/ai/execute`, postJson(currentAiProbeBody(currentAliasAiModel), `idem_probe_ai_alias_${probeNonce}`)),
+  observe('api.openai_chat_completions', `${API_ORIGIN}/v1/chat/completions`,
+    postJson({ model: currentPaidAiModel.id, messages: [{ role: 'user', content: 'Reply with the single word ready.' }], stream: false, max_completion_tokens: 16 }, `idem_probe_openai_chat_${probeNonce}`)),
+  observe('api.anthropic_messages', `${API_ORIGIN}/v1/messages`,
+    postJson({ model: currentPaidAiModel.id, max_tokens: 16, messages: [{ role: 'user', content: 'Reply with the single word ready.' }], stream: false }, `idem_probe_anthropic_messages_${probeNonce}`)),
+  observe('api.openai_responses', `${API_ORIGIN}/v1/responses`,
+    postJson({ model: currentPaidAiModel.id, input: 'Reply with the single word ready.', max_output_tokens: 16, stream: false, store: false, text: { format: { type: 'text' } } }, `idem_probe_openai_responses_${probeNonce}`)),
   observe('api.search_free_naive', `${API_ORIGIN}/v1/search/free`,
     postJson({ query: 'clervo live registry probe', maxResults: 1, synthesize: false })),
   observe('api.search_free_keyed', `${API_ORIGIN}/v1/search/free`,
@@ -277,6 +290,9 @@ const surfaceProbes = await Promise.all([
     postJson({ command: ['node', '-e', "process.stdout.write('ready')"], limits: { wallTimeMs: 5_000, memoryBytes: 67_108_864 } }, `idem_probe_sandbox_${probeNonce}`)),
   observe('api.sandbox_short_execute', `${API_ORIGIN}/v1/sandbox/execute`,
     postJson({ command: ['node', '-e', "process.stdout.write('ready')"], limits: { cpuMillis: 5_000, memoryBytes: 268_435_456, processes: 16, diskBytes: 67_108_864, outputBytes: 65_536, artifactBytes: 1_048_576, wallTimeMs: 10_000 } }, `idem_probe_sandbox_short_${probeNonce}`)),
+  observe('api.rpc_execute', `${API_ORIGIN}/v1/rpc/execute`,
+    postJson({ chainId: 'eip155:1', call: { method: 'eth_chainId', params: [] } }, `idem_probe_rpc_${probeNonce}`)),
+  observe('api.rpc_chains', `${API_ORIGIN}/v1/rpc/chains`),
   observe('api.prediction_execute', `${API_ORIGIN}/v1/prediction/execute`,
     postJson({ kind: 'markets', status: 'open', limit: 3 }, `idem_probe_prediction_${probeNonce}`)),
   observe('api.crypto_execute', `${API_ORIGIN}/v1/crypto/execute`,
@@ -474,6 +490,44 @@ const livePublicModelById = new Map(Array.isArray(livePublicModelList?.data)
 const paidAiProbe = surfaceById['api.ai_paid_current'];
 const freeAiProbe = surfaceById['api.ai_free_current'];
 const aliasAiProbe = surfaceById['api.ai_alias_current'];
+const openAiChatProbe = surfaceById['api.openai_chat_completions'];
+const openAiChatQuote = quoteFrom(openAiChatProbe);
+const openAiChatAccepted = openAiChatProbe.status === 402
+  && openAiChatQuote !== null
+  && openAiChatProbe.body?.resource?.url === `${API_ORIGIN}/v1/chat/completions`
+  && openAiChatProbe.body?.extensions?.bazaar?.info?.output?.example?.object === 'chat.completion';
+const openAiChatState = openAiChatAccepted
+  ? STATE_LIVE
+  : openAiChatProbe.status === 404
+    ? STATE_UNAVAILABLE
+    : STATE_PAUSED;
+
+const anthropicMessagesProbe = surfaceById['api.anthropic_messages'];
+const anthropicMessagesQuote = quoteFrom(anthropicMessagesProbe);
+const anthropicMessagesAccepted = anthropicMessagesProbe.status === 402
+  && anthropicMessagesQuote !== null
+  && anthropicMessagesProbe.body?.resource?.url === `${API_ORIGIN}/v1/messages`
+  && anthropicMessagesProbe.body?.extensions?.bazaar?.info?.output?.example?.type === 'message'
+  && anthropicMessagesProbe.body?.extensions?.bazaar?.info?.output?.example?.role === 'assistant';
+const anthropicMessagesState = anthropicMessagesAccepted
+  ? STATE_LIVE
+  : anthropicMessagesProbe.status === 404
+    ? STATE_UNAVAILABLE
+    : STATE_PAUSED;
+
+const openAiResponsesProbe = surfaceById['api.openai_responses'];
+const openAiResponsesQuote = quoteFrom(openAiResponsesProbe);
+const openAiResponsesAccepted = openAiResponsesProbe.status === 402
+  && openAiResponsesQuote !== null
+  && openAiResponsesProbe.body?.resource?.url === `${API_ORIGIN}/v1/responses`
+  && openAiResponsesProbe.body?.extensions?.bazaar?.info?.output?.example?.object === 'response'
+  && openAiResponsesProbe.body?.extensions?.bazaar?.info?.output?.example?.output?.[0]?.type === 'message';
+const openAiResponsesState = openAiResponsesAccepted
+  ? STATE_LIVE
+  : openAiResponsesProbe.status === 404
+    ? STATE_UNAVAILABLE
+    : STATE_PAUSED;
+
 const paidAiQuote = quoteFrom(paidAiProbe);
 const paidProbeAccepted = paidAiProbe.status === 402 && paidAiQuote !== null;
 const freeProbeAccepted = freeAiProbe.status === 200
@@ -909,6 +963,60 @@ function cryptoPaidProofValidation(quote) {
   };
 }
 
+function rpcPaidProofValidation(quote) {
+  const proof = rpcPaidProof;
+  const operation = proof?.operation;
+  const accepted = proof?.schemaVersion === 'clervo.rpc-x402-proof.v1'
+    && proof.state === 'settled_reconciled'
+    && proof.publicOrigin === `${API_ORIGIN}/`
+    && proof.endpoint === `${API_ORIGIN}/v1/rpc/execute`
+    && /^[a-f0-9]{40}$/u.test(proof.releaseCommit ?? '')
+    && proof.network === quote?.network
+    && proof.asset === quote?.asset
+    && proof.payTo === quote?.payTo
+    && proof.observedChallenge?.status === 402
+    && proof.observedChallenge?.amountAtomic === quote?.amountAtomic
+    && proof.observedChallenge?.networkMatched === true
+    && proof.observedChallenge?.assetMatched === true
+    && proof.observedChallenge?.payToMatched === true
+    && proof.ownerAuthorization?.maximumSpendAtomic === '10000'
+    && proof.ownerAuthorization?.maximumExecutionCount === 1
+    && proof.ownerAuthorization?.paymentEffects === 1
+    && proof.ownerAuthorization?.automaticRetry === false
+    && operation?.productId === 'rpc.call'
+    && operation?.chainId === 'eip155:1'
+    && operation?.method === 'eth_chainId'
+    && operation?.customerChargeAtomic === '1000'
+    && operation?.supplierCostAtomic === '0'
+    && operation?.settlementStatus === 'settled'
+    && operation?.usefulResult === true
+    && operation?.resultVerified === true
+    && operation?.replay?.sameOperation === true
+    && operation?.replay?.sameReceipt === true
+    && operation?.replay?.sameResult === true
+    && operation?.replay?.idempotencyReplayed === true
+    && operation?.replay?.paymentHeaderSent === false
+    && operation?.replay?.secondAuthorization === false
+    && operation?.replay?.secondUpstreamExecution === false
+    && operation?.replay?.secondCharge === false
+    && operation?.durable?.state === 'completed'
+    && operation?.durable?.operationRows === 1
+    && operation?.durable?.accountingRows === 1
+    && proof.observedDurability?.databaseIdentityVerified === true
+    && proof.observedDurability?.operationRows === 1
+    && proof.observedDurability?.accountingRowsForOperation === 1
+    && proof.observedDurability?.receiverLedgerChainValid === true
+    && proof.observedDurability?.receiverLedgerBalanced === true;
+  if (!accepted) return { accepted: false, reason: proof === null ? 'paid_proof_absent' : 'paid_proof_invariant_failed' };
+  return {
+    accepted: true, reason: null, proofLevel: PROOF_PAID,
+    source: 'infra/production/gcp/rpc-x402-proof.v1.json', releaseCommit: proof.releaseCommit,
+    operationCount: 1, totalChargeAtomic: '1000', usefulResultCount: 1,
+    replayNoSecondChargeCount: 1, ownerFunded: true, revenueEvidence: false,
+    demandEvidence: false, externallyRepeated: false,
+  };
+}
+
 function productFromProbes({ id, label, operations, probeIds, freeProbeId = null, commercialBlocker = null, paidProof = null }) {
   if (commercialBlocker !== null) {
     return {
@@ -1066,6 +1174,51 @@ const aiProductRecord = {
   publiclyReachable: surfaceById['api.health'].reachable,
   proof: aiLiveRoutes.length > 0 ? aiPaidOutcome.accepted ? PROOF_PAID : PROOF_QUOTED : PROOF_NONE,
   observedQuote: paidAiQuote,
+  compatibilityRoutes: [{
+    protocol: 'openai_chat_completions',
+    path: '/v1/chat/completions',
+    state: openAiChatState,
+    reason: openAiChatAccepted
+      ? null
+      : problemCode(openAiChatProbe) ?? (openAiChatProbe.reachable ? `edge_unexpected_status_${openAiChatProbe.status}` : 'edge_unreachable'),
+    publiclyReachable: openAiChatProbe.reachable && openAiChatProbe.status !== 404,
+    observedQuote: openAiChatQuote,
+    evidence: {
+      observedStatus: openAiChatProbe.status,
+      resourceUrl: openAiChatProbe.body?.resource?.url ?? null,
+      responseObject: openAiChatProbe.body?.extensions?.bazaar?.info?.output?.example?.object ?? null,
+    },
+  }, {
+    protocol: 'anthropic_messages',
+    path: '/v1/messages',
+    state: anthropicMessagesState,
+    reason: anthropicMessagesAccepted
+      ? null
+      : problemCode(anthropicMessagesProbe) ?? (anthropicMessagesProbe.reachable ? `edge_unexpected_status_${anthropicMessagesProbe.status}` : 'edge_unreachable'),
+    publiclyReachable: anthropicMessagesProbe.reachable && anthropicMessagesProbe.status !== 404,
+    observedQuote: anthropicMessagesQuote,
+    evidence: {
+      observedStatus: anthropicMessagesProbe.status,
+      resourceUrl: anthropicMessagesProbe.body?.resource?.url ?? null,
+      responseObject: anthropicMessagesProbe.body?.extensions?.bazaar?.info?.output?.example?.type ?? null,
+      responseRole: anthropicMessagesProbe.body?.extensions?.bazaar?.info?.output?.example?.role ?? null,
+    },
+  }, {
+    protocol: 'openai_responses',
+    path: '/v1/responses',
+    state: openAiResponsesState,
+    reason: openAiResponsesAccepted
+      ? null
+      : problemCode(openAiResponsesProbe) ?? (openAiResponsesProbe.reachable ? `edge_unexpected_status_${openAiResponsesProbe.status}` : 'edge_unreachable'),
+    publiclyReachable: openAiResponsesProbe.reachable && openAiResponsesProbe.status !== 404,
+    observedQuote: openAiResponsesQuote,
+    evidence: {
+      observedStatus: openAiResponsesProbe.status,
+      resourceUrl: openAiResponsesProbe.body?.resource?.url ?? null,
+      responseObject: openAiResponsesProbe.body?.extensions?.bazaar?.info?.output?.example?.object ?? null,
+      responseItemType: openAiResponsesProbe.body?.extensions?.bazaar?.info?.output?.example?.output?.[0]?.type ?? null,
+    },
+  }],
   freeEntry: {
     route: `${API_ORIGIN}/v1/ai/execute`,
     modelId: currentFreeAiModel.id,
@@ -1091,11 +1244,34 @@ const aiProductRecord = {
   },
 };
 
+const rpcExpectedChains = new Set(['eip155:1', 'eip155:10', 'eip155:56', 'eip155:137', 'eip155:8453', 'eip155:42161', 'eip155:43114', 'solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp']);
+const rpcHealthProbe = surfaceById['api.rpc_chains'];
+const rpcHealthChains = Array.isArray(rpcHealthProbe.body?.chains) ? rpcHealthProbe.body.chains : [];
+const rpcHealthVerified = rpcHealthProbe.status === 200
+  && rpcHealthProbe.body?.status === 'healthy'
+  && rpcHealthChains.length === rpcExpectedChains.size
+  && rpcHealthChains.every(({ chainId, status, healthyRoutes }) => rpcExpectedChains.has(chainId) && status === 'healthy' && Number(healthyRoutes) >= 1);
+const rpcProductRecord = productFromProbes({
+  id: 'rpc', label: 'Multi-chain RPC', operations: ['rpc.call', 'rpc.batch'],
+  probeIds: { paid: 'api.rpc_execute' }, paidProof: rpcPaidProofValidation,
+});
+if (!rpcHealthVerified && rpcProductRecord.state === STATE_LIVE) {
+  rpcProductRecord.state = STATE_PAUSED;
+  rpcProductRecord.reason = 'rpc_chain_health_unavailable';
+  rpcProductRecord.proof = PROOF_NONE;
+}
+rpcProductRecord.evidence.chainHealth = {
+  status: rpcHealthProbe.status,
+  verified: rpcHealthVerified,
+  advertisedChains: rpcExpectedChains.size,
+  healthyChains: rpcHealthChains.filter(({ status }) => status === 'healthy').length,
+};
+
 const products = [
   productFromProbes({
     id: 'search',
     label: 'Research',
-    // search.answer remains a compatibility identifier in released clients,
+    // Historical search.answer builds remain compatible with deterministic rejection,
     // but synthesize=true is not implemented and therefore is not callable
     // discovery inventory.
     operations: ['search.web'],
@@ -1111,13 +1287,7 @@ const products = [
     probeIds: { paid: 'api.sandbox_execute' },
     paidProof: sandboxPaidProofValidation,
   }),
-  productFromProbes({
-    id: 'rpc',
-    label: 'Multi-chain RPC',
-    operations: ['rpc.call', 'rpc.batch', 'rpc.health', 'rpc.archive', 'rpc.broadcast'],
-    probeIds: {},
-    commercialBlocker: 'commercial_rights_blocked',
-  }),
+  rpcProductRecord,
   productFromProbes({
     id: 'prediction',
     label: 'Prediction Intelligence',
@@ -1207,6 +1377,9 @@ const BAZAAR_MERCHANT_URL = 'https://api.cdp.coinbase.com/platform/v2/x402/disco
 const bazaarResourcePaths = [
   { productId: 'search', resourcePath: '/v1/search/paid' },
   { productId: 'ai', resourcePath: '/v1/ai/execute' },
+  { productId: 'ai', resourcePath: '/v1/chat/completions' },
+  { productId: 'ai', resourcePath: '/v1/messages' },
+  { productId: 'ai', resourcePath: '/v1/responses' },
   { productId: 'sandbox', resourcePath: '/v1/sandbox/execute' },
   { productId: 'prediction', resourcePath: '/v1/prediction/execute' },
   { productId: 'crypto_intelligence', resourcePath: '/v1/crypto/execute' },
@@ -1215,7 +1388,7 @@ const bazaarResourcePaths = [
 // The receiver is read from the quote the deployed system actually returned,
 // never from configuration, so the merchant lookup can only ever ask about the
 // address production is really advertising.
-const observedPayTo = [surfaceById['api.search_paid'], surfaceById['api.sandbox_execute'], surfaceById['api.prediction_execute'], surfaceById['api.crypto_execute'], ...routeProbes]
+const observedPayTo = [surfaceById['api.search_paid'], surfaceById['api.openai_chat_completions'], surfaceById['api.anthropic_messages'], surfaceById['api.openai_responses'], surfaceById['api.sandbox_execute'], surfaceById['api.prediction_execute'], surfaceById['api.crypto_execute'], ...routeProbes]
   .map((probe) => quoteFrom(probe)?.payTo)
   .find((value) => typeof value === 'string' && /^0x[a-fA-F0-9]{40}$/u.test(value)) ?? null;
 

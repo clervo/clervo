@@ -32,12 +32,13 @@ test('all eight declared chains pass recorded EVM or Solana semantic conformance
   }
 });
 
-test('RPC product pricing covers every product without making blocked supply sellable', async () => {
+test('RPC product pricing makes only qualified reads sellable with exact positive contribution', async () => {
   const pricing = await json('packages/catalog/rpc-product-pricing.v1.json');
   assert.deepEqual(new Set(pricing.products.map(({ productId }) => productId)), new Set(['rpc.call', 'rpc.batch', 'rpc.health', 'rpc.archive', 'rpc.broadcast']));
-  assert.equal(pricing.lifecycle, 'unavailable');
+  assert.equal(pricing.lifecycle, 'available');
   assert.equal(pricing.providerNamesPublic, false);
   assert.equal(pricing.products.find(({ productId }) => productId === 'rpc.health').customerPriceMicrousd, 0);
   assert.ok(pricing.products.filter(({ productId }) => productId !== 'rpc.health').every(({ customerPriceMicrousd }) => customerPriceMicrousd > 0));
-  assert.ok(pricing.products.every(({ listingStatus }) => ['terms_blocked', 'free_unavailable', 'unqualified'].includes(listingStatus)));
+  assert.ok(pricing.products.filter(({ productId }) => ['rpc.call', 'rpc.batch'].includes(productId)).every(({ customerPriceMicrousd, supplierCostMicrousd, contributionMarginMicrousd, listingStatus }) => customerPriceMicrousd === supplierCostMicrousd + contributionMarginMicrousd && contributionMarginMicrousd > 0 && listingStatus === 'sellable'));
+  assert.ok(pricing.products.filter(({ productId }) => ['rpc.archive', 'rpc.broadcast'].includes(productId)).every(({ listingStatus }) => listingStatus === 'unqualified'));
 });

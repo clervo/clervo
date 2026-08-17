@@ -33,3 +33,7 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Run repository acceptance gate
         run: npm test
+      - name: Run qualified AI release regression
+        run: npm run test:b7
+      - name: Run paid AI replay regression
+        run: node --test ./tests/contract/ai-paid-operation.test.mjs

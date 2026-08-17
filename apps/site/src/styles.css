@@ -26,7 +26,7 @@
    * mentioned a receipt, including routes where nothing had been verified.
    * Gold asserts that something happened, so the alias resolves to neutral
    * text: gold is emitted only by `.state--verified` in controls.css, against
-   * an observed proof level. Rebuilt proof pages will opt in explicitly.
+   * a completed operation state. Pages opt in explicitly.
    */
   --receipt: var(--text-secondary);
   --phase: var(--request);

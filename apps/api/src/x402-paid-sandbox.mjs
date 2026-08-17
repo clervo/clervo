@@ -2,6 +2,8 @@ import { createHash } from 'node:crypto';
 
 import {
   CONTRACT_VERSION,
+  SANDBOX_MAX_ARTIFACT_BYTES,
+  SANDBOX_MAX_INLINE_INPUT_BYTES,
   SANDBOX_OPERATION_REQUEST_SCHEMA_VERSION,
   assertSandboxOperationRequest,
 } from '../../../dist/packages/contracts/src/index.js';
@@ -40,7 +42,7 @@ const maximumLimits = Object.freeze({
   processes: 64,
   diskBytes: 1_073_741_824,
   outputBytes: 1_048_576,
-  artifactBytes: 10_485_760,
+  artifactBytes: SANDBOX_MAX_ARTIFACT_BYTES,
   wallTimeMs: 60_000,
 });
 const minimumLimits = Object.freeze({
@@ -84,11 +86,26 @@ function normalizedLimits(value = {}) {
 
 export function normalizeSandboxHttpRequest(value) {
   object(value, 'sandbox_http_request_invalid');
-  exactKeys(value, ['command', 'stdinBase64', 'limits'], 'sandbox_http_request_additional_property');
-  if (!Array.isArray(value.command)) throw new TypeError('sandbox_command_invalid');
+  exactKeys(value, ['command', 'runtime', 'code', 'args', 'stdinBase64', 'limits', 'files', 'artifactPaths'], 'sandbox_http_request_additional_property');
+  const hasCommand = value.command !== undefined;
+  const hasProgram = value.runtime !== undefined || value.code !== undefined || value.args !== undefined;
+  if (hasCommand === hasProgram) throw new TypeError('sandbox_command_or_program_required');
+  let command;
+  if (hasCommand) {
+    if (!Array.isArray(value.command) || value.command.length < 1 || value.command.length > 32 || value.command.some((part) => typeof part !== 'string' || part.length < 1 || part.length > 4_096 || /[\u0000-\u001F\u007F]/u.test(part))) throw new TypeError('sandbox_command_invalid');
+    command = [...value.command];
+  } else {
+    if (!['node', 'python'].includes(value.runtime) || typeof value.code !== 'string' || value.code.length < 1 || value.code.length > 262_144 || /[\u0000-\u001F\u007F]/u.test(value.code)) throw new TypeError('sandbox_program_invalid');
+    if (value.args !== undefined && (!Array.isArray(value.args) || value.args.length > 29 || value.args.some((part) => typeof part !== 'string' || part.length < 1 || part.length > 4_096 || /[\u0000-\u001F\u007F]/u.test(part)))) throw new TypeError('sandbox_args_invalid');
+    command = [value.runtime === 'python' ? 'python3' : 'node', value.runtime === 'python' ? '-c' : '-e', value.code, ...(value.args ?? [])];
+  }
+  if (value.files !== undefined && !Array.isArray(value.files)) throw new TypeError('sandbox_files_invalid');
+  if (value.artifactPaths !== undefined && !Array.isArray(value.artifactPaths)) throw new TypeError('sandbox_artifacts_invalid');
   const normalized = Object.freeze({
-    command: Object.freeze([...value.command]),
+    command: Object.freeze(command),
     ...(value.stdinBase64 === undefined ? {} : { stdinBase64: value.stdinBase64 }),
+    ...(value.files === undefined ? {} : { files: Object.freeze(value.files.map((item) => Object.freeze({ ...item }))) }),
+    ...(value.artifactPaths === undefined ? {} : { artifactPaths: Object.freeze(value.artifactPaths.map((item) => Object.freeze({ ...item }))) }),
     limits: normalizedLimits(value.limits),
   });
   const probe = {
@@ -130,10 +147,19 @@ export const SANDBOX_DISCOVERY = Object.freeze({
   bodyType: 'json',
   input: Object.freeze({ command: Object.freeze(['node', '-e', "process.stdout.write('ready')"]), limits: shortLimits }),
   inputSchema: Object.freeze({
-    type: 'object', required: ['command'], additionalProperties: false,
+    type: 'object', additionalProperties: false,
+    oneOf: Object.freeze([
+      Object.freeze({ required: Object.freeze(['command']), not: Object.freeze({ anyOf: Object.freeze([Object.freeze({ required: Object.freeze(['runtime']) }), Object.freeze({ required: Object.freeze(['code']) }), Object.freeze({ required: Object.freeze(['args']) })]) }) }),
+      Object.freeze({ required: Object.freeze(['runtime', 'code']), not: Object.freeze({ required: Object.freeze(['command']) }) }),
+    ]),
     properties: Object.freeze({
       command: Object.freeze({ type: 'array', minItems: 1, maxItems: 32, items: Object.freeze({ type: 'string', minLength: 1, maxLength: 4096 }) }),
-      stdinBase64: Object.freeze({ type: 'string' }),
+      runtime: Object.freeze({ type: 'string', enum: ['node', 'python'] }),
+      code: Object.freeze({ type: 'string', minLength: 1, maxLength: 262144 }),
+      args: Object.freeze({ type: 'array', maxItems: 29, items: Object.freeze({ type: 'string', minLength: 1, maxLength: 4096 }) }),
+      stdinBase64: Object.freeze({ type: 'string', maxLength: Math.ceil(SANDBOX_MAX_INLINE_INPUT_BYTES / 3) * 4 }),
+      files: Object.freeze({ type: 'array', maxItems: 32, description: `Decoded code, stdin, and file content share a ${SANDBOX_MAX_INLINE_INPUT_BYTES}-byte aggregate envelope.`, items: Object.freeze({ type: 'object', required: ['path', 'contentBase64'], additionalProperties: false, properties: Object.freeze({ path: Object.freeze({ type: 'string', minLength: 1, maxLength: 256 }), contentBase64: Object.freeze({ type: 'string', maxLength: Math.ceil(SANDBOX_MAX_INLINE_INPUT_BYTES / 3) * 4 }) }) }) }),
+      artifactPaths: Object.freeze({ type: 'array', maxItems: 32, items: Object.freeze({ type: 'object', required: ['path'], additionalProperties: false, properties: Object.freeze({ path: Object.freeze({ type: 'string', minLength: 1, maxLength: 256 }), filename: Object.freeze({ type: 'string', minLength: 1, maxLength: 128 }), mimeType: Object.freeze({ type: 'string', minLength: 3, maxLength: 129 }) }) }) }),
       limits: Object.freeze({ type: 'object', additionalProperties: false, properties: Object.freeze(Object.fromEntries(Object.entries(maximumLimits).map(([key, maximum]) => [key, { type: 'integer', minimum: minimumLimits[key], maximum }]))) }),
     }),
   }),
@@ -143,14 +169,14 @@ export const SANDBOX_DISCOVERY = Object.freeze({
   }),
 });
 
-export function createX402PaidSandboxProcessor({ service, stateStore, gateway, runnerDigest, acquireExecution } = {}) {
+export function createX402PaidSandboxProcessor({ service, stateStore, gateway, runnerDigest, acquireExecution, acquireQuote } = {}) {
   if (!gateway || typeof gateway.run !== 'function' || gateway.durable !== true) throw new TypeError('invalid_public_sandbox_gateway');
   if (!/^sha256:[a-f0-9]{64}$/u.test(runnerDigest ?? '')) throw new TypeError('invalid_public_sandbox_runner_digest');
-  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution });
+  const processor = createX402PaidOperationProcessor({ service, stateStore, acquireExecution, acquireQuote });
   return Object.freeze({
     mode: processor.mode,
     durable: processor.durable,
-    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now }) {
+    async process({ idempotencyKey, requestHash, operationId, normalized, paymentHeader, authorizationHeader, now, deadlineAt, signal }) {
       const pricing = sandboxRunPricing(normalized);
       /* Sandbox bounds the runtime by the supplier cost: it rents real
        * compute per run. Its deadline is the only content-dependent one on the
@@ -164,12 +190,14 @@ export function createX402PaidSandboxProcessor({ service, stateStore, gateway, r
         boundAmountAtomic: pricing.supplierCost.amountAtomic,
         now,
         deadlineMs: normalized.limits.wallTimeMs + 60_000,
+        deadlineAt,
       });
       assertSandboxOperationRequest(request);
       return processor.process({
         idempotencyKey, requestHash, operationId, productId: 'sandbox.run', executionInput: request,
         paymentHeader, authorizationHeader, now, pricing,
         resourcePath: SANDBOX_PAID_PATH, discovery: SANDBOX_DISCOVERY, overloadCode: 'sandbox_overloaded',
+        deadlineAt, signal,
         async execute(executionRequest, { authorization }) {
           const completed = await gateway.run({ tenantId: payerTenant(authorization), request: executionRequest });
           return Object.freeze({

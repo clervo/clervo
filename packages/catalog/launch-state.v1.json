@@ -24,7 +24,7 @@
       ]
     },
     "publicApi": {
-      "state": "public_search_ai_sandbox_prediction_and_crypto_verified",
+      "state": "public_search_ai_sandbox_rpc_prediction_and_crypto_verified",
       "endpoint": "https://api.clervo.dev",
       "publicCallable": true,
       "publicTraffic": true,
@@ -33,6 +33,7 @@
         "infra/production/cloudflare/public-search-release.v1.json",
         "infra/production/gcp/ai-x402-proof.v1.json",
         "infra/production/gcp/sandbox-public-release.v1.json",
+        "infra/production/gcp/rpc-x402-proof.v1.json",
         "infra/production/gcp/prediction-x402-proof.v1.json",
         "infra/production/gcp/crypto-x402-proof.v1.json"
       ]
@@ -129,14 +130,23 @@
     {
       "id": "rpc",
       "label": "Multi-chain RPC",
-      "operations": ["rpc.call", "rpc.batch", "rpc.health", "rpc.archive", "rpc.broadcast"],
-      "engineeringState": "private_core_qualified",
-      "customerLifecycle": "unavailable",
-      "commercialProof": "unproven",
-      "paymentState": "unavailable",
-      "supplierRights": "commercial_rights_blocked",
-      "allowedClaims": ["The RPC core is privately qualified."],
-      "prohibitedClaims": ["Publicly available", "Resale rights verified", "Archive and broadcast ready"]
+      "operations": ["rpc.call", "rpc.batch"],
+      "engineeringState": "public_production_qualified_eight_network_reads",
+      "customerLifecycle": "publicly_callable_paid_outcome_verified",
+      "commercialProof": "owner_funded_paid_outcome_verified",
+      "paymentState": "public_x402_one_owner_funded_settlement_and_replay_verified",
+      "supplierRights": "owner_managed_provider_configuration",
+      "allowedClaims": [
+        "Multi-chain RPC reads are publicly callable across eight production networks through deterministic Base USDC x402 offers starting at 0.001 USDC per call.",
+        "One 0.001 USDC owner-funded production rpc.call settled, returned a real Ethereum eth_chainId result, and replayed without another authorization, upstream execution, settlement, or charge.",
+        "rpc.call and rpc.batch are the only publicly supported RPC operations; archive access and transaction broadcast remain unavailable."
+      ],
+      "prohibitedClaims": [
+        "Customer revenue or demand",
+        "Unrelated-customer demand or externally repeated proof",
+        "Archive access or transaction broadcast",
+        "Provider-policy, resale-rights, or legal conclusions"
+      ]
     },
     {
       "id": "prediction",

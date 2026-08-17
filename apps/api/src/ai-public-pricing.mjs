@@ -11,6 +11,19 @@ import { estimateAiSupplierCost, selectAiRoute, verifyAiModelCatalog } from '../
 const MINIMUM_CHARGE_ATOMIC = 1_000n;
 const PRICE_POLICY = `min${MINIMUM_CHARGE_ATOMIC}`;
 
+function quoteCapabilities(normalized) {
+  const input = normalized?.input;
+
+  if (input?.kind !== 'chat') return [];
+
+  return [
+    ...(input.stream === true ? ['streaming'] : []),
+    ...(input.responseFormat === 'json_object'
+      ? ['structured_output']
+      : []),
+  ];
+}
+
 const aliasModels = Object.freeze({
   'clervo/fast': Object.freeze(['gpt-5.6-luna', 'openai/gpt-oss-20b', '@cf/qwen/qwen3-30b-a3b-fp8']),
   'clervo/smart': Object.freeze(['gpt-5.6-terra', 'openai/gpt-oss-120b', 'gemini-3.6-flash', '@cf/nvidia/nemotron-3-120b-a12b']),
@@ -194,7 +207,7 @@ export function createAiPublicPricing(catalogs, { enabledRouteIds } = {}) {
         operationId,
         productId: normalized.productId,
         requestedModel: normalized.model,
-        requiredCapabilities: [],
+        requiredCapabilities: quoteCapabilities(normalized),
         usageBounds: normalized.usageBounds,
         maximumSupplierCost: { asset: 'USD', amountAtomic: '1000000000', decimals: 6 },
         routes,

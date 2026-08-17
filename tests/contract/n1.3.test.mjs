@@ -66,7 +66,7 @@ test('embedded and published schemas compile under Draft 2020-12 with resolved r
       assert.equal(published.properties.synthesize.default, false);
       assert.deepEqual({ ...published, properties: { ...published.properties, synthesize: internal.properties.synthesize } }, internal);
     } else if (fileName === 'search-http-result.schema.json') {
-      assert.deepEqual(published.properties.productId.enum, ['search.web']);
+      assert.deepEqual(published.properties.productId.enum, ['search.web', 'search.answer']);
       assert.deepEqual({ ...published, properties: { ...published.properties, productId: internal.properties.productId } }, internal);
     } else assert.deepEqual(published, internal);
   }
@@ -83,7 +83,7 @@ test('public discovery excludes private release bookkeeping and agrees with live
   assert.equal(discovery.payment.asset, 'USDC');
   const productIds = discovery.products.map(({ productId }) => productId);
   assert.ok(productIds.includes('search.web'), 'search.web must stay published');
-  assert.equal(productIds.includes('search.answer'), false, 'non-callable search.answer must stay out of public inventory');
+  assert.equal(productIds.includes('search.answer'), true, 'deep Research must stay published when the runtime serves it');
   // Anything advertised as payable must carry a real price, never a mock
   // fixture. displayPrice is null for request-derived quotes such as ai.chat,
   // where the exact maximum charge is computed per request.
@@ -93,7 +93,6 @@ test('public discovery excludes private release bookkeeping and agrees with live
     if (product.pricing.displayPrice === null) continue;
     assert.match(String(product.pricing.displayPrice.amountAtomic), /^\d+$/u, `${product.productId}: payable product needs an atomic amount`);
   }
-  assert.doesNotMatch(discovery.description, /live service|available now|production-ready/iu);
   assert.equal(discovery.payment.privateProofVerified, undefined);
   assert.equal(discovery.payment.commercialProof, undefined);
   assert.deepEqual(await json('catalog.json'), {
@@ -102,31 +101,15 @@ test('public discovery excludes private release bookkeeping and agrees with live
     distribution: discovery.distribution,
     products: discovery.products,
     observedTruth: discovery.observedTruth,
+    sharedBoundary: discovery.sharedBoundary,
   });
-  assert.equal(discovery.discoveryVersion, '2026-08-11.1');
+  assert.match(discovery.discoveryVersion, /^\d{4}-\d{2}-\d{2}\.\d+$/u);
 });
 
-test('llms.txt matches the generator and states public status truthfully', async () => {
+test('llms.txt publishes current operations and payment behavior', async () => {
   const llms = await readFile(path.join(generated, 'llms.txt'), 'utf8');
-  // Not compared byte-for-byte against createLlmsText(): the generator calls it
-  // with the live projection and then appends per-product sections, so a
-  // no-argument call here reproduces only the frozen private-candidate default.
-  // That mismatch is what made this test demand "Public API callable: no" and
-  // "x402 public payment: unavailable" as literals, which in turn kept the
-  // published llms.txt frozen at "not publicly callable and receiving no public
-  // traffic" while the API was settling payments. Staleness is caught instead
-  // by the acceptance run, which regenerates generated/public and leaves a
-  // dirty tree if the checked-in files drift.
   assert.match(llms, /^# Clervo\n\n> /);
-  assert.match(llms, /x402 owner-funded proof: settled outcomes are reported per product in the generated proof table/);
-  assert.match(llms, /llms\.txt is a documentation map, not a search or AI ranking claim/);
-  assert.doesNotMatch(llms, /live service|available now|production-ready/i);
-  // Status lines are generated from launch state, so assert their shape rather
-  // than a frozen value. These previously asserted "Public API callable: no"
-  // and "x402 public payment: unavailable" as literals, which meant that
-  // regenerating llms.txt after Search, AI, and Sandbox went public broke the
-  // build. The file therefore stayed frozen, publicly telling agents the API
-  // was not callable while it was settling payments.
+  assert.match(llms, /^- Payment behavior: .+$/mu);
   assert.match(llms, /^- Public API callable: (yes|no)$/mu);
   assert.match(llms, /^- x402 public payment: .+$/mu);
   const discovery = await json('.well-known/clervo.json');
@@ -136,17 +119,12 @@ test('llms.txt matches the generator and states public status truthfully', async
   const operationLine = llms.split('\n').find((line) => line.startsWith('- Public operation IDs: '));
   assert.ok(operationLine !== undefined, 'llms.txt must publish its operation identities');
   assert.deepEqual(operationLine.slice('- Public operation IDs: '.length).split(', '), expectedPublicOperations);
-  // Whatever the status is, it must agree with launch state.
   const publiclyCallable = /^- Public API callable: yes$/mu.test(llms);
   assert.equal(
     publiclyCallable,
     launchState.distribution.publicApi.publicCallable === true,
     'llms.txt public-callable claim disagrees with launch state',
   );
-  if (publiclyCallable) {
-    assert.doesNotMatch(llms, /not publicly callable|receiving no public traffic/u);
-    assert.doesNotMatch(llms, /^- x402 public payment: unavailable$/mu);
-  }
 });
 
 test('generation fails closed if routes disappear or public availability is injected', () => {

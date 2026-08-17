@@ -42,7 +42,6 @@ export const CLERVO_MCP_TOOLS = Object.freeze([
 export interface ClervoMcpClient {
   search: {
     web(request: ClervoSearchRequest, options?: { idempotencyKey?: string; mode?: 'preview' | 'challenge' }): Promise<unknown>;
-    answer(request: ClervoSearchRequest, options?: { idempotencyKey?: string; mode?: 'preview' | 'challenge' }): Promise<unknown>;
   };
   models: { list(): Promise<unknown> };
   ai: { execute(request: ClervoAiRequest, options?: { idempotencyKey?: string }): Promise<unknown> };
@@ -79,7 +78,15 @@ export interface ToolResult {
 }
 
 function text(value: unknown): ToolResult {
-  return { content: [{ type: 'text', text: JSON.stringify(value) }] };
+  const customerValue = value !== null
+    && typeof value === 'object'
+    && (value as { status?: unknown }).status === 'payment_required'
+    ? {
+        ...(value as Record<string, unknown>),
+        nextAction: 'Review the quoted maximum, asset, network, recipient, and expiry. To approve it, explicitly enable payment in a Clervo client after setting local spend limits; otherwise stop here. No payment has been sent.',
+      }
+    : value;
+  return { content: [{ type: 'text', text: JSON.stringify(customerValue) }] };
 }
 
 function failure(error: unknown): ToolResult {
@@ -131,7 +138,6 @@ function failure(error: unknown): ToolResult {
 
 export function createToolHandlers(client: ClervoMcpClient): {
   search_web(input: ToolInput): Promise<ToolResult>;
-  search_answer(input: ToolInput): Promise<ToolResult>;
   models_list(): Promise<ToolResult>;
   ai_execute(input: AiToolInput): Promise<ToolResult>;
   clervo_execute(input: ExecuteToolInput): Promise<ToolResult>;
@@ -151,11 +157,11 @@ function familyFor(productId: string): string {
 }
 
 export function createConnectToolHandlers(client: ClervoMcpClient, connect: ClervoConnect, profile: ClervoMcpProfile, legacyClient = false): ReturnType<typeof createToolHandlers> {
-  const execute = async (productId: 'search.web' | 'search.answer', input: ToolInput): Promise<ToolResult> => {
+  const execute = async (input: ToolInput): Promise<ToolResult> => {
     try {
       const request = {
         query: input.query,
-        synthesize: productId === 'search.answer',
+        synthesize: false,
         ...(input.maxResults === undefined ? {} : { maxResults: input.maxResults }),
         ...(input.language === undefined ? {} : { language: input.language }),
         ...(input.region === undefined ? {} : { region: input.region }),
@@ -164,17 +170,14 @@ export function createConnectToolHandlers(client: ClervoMcpClient, connect: Cler
         ...(input.idempotencyKey === undefined ? {} : { idempotencyKey: input.idempotencyKey }),
         ...(input.mode === undefined ? {} : { mode: input.mode }),
       };
-      const value = productId === 'search.web'
-        ? legacyClient ? await client.search.web(request, options) : await connect.execute('search.web', request, input.idempotencyKey, { paid: input.mode === 'challenge' })
-        : await client.search.answer(request, options);
+      const value = legacyClient ? await client.search.web(request, options) : await connect.execute('search.web', request, input.idempotencyKey, { paid: input.mode === 'challenge' });
       return text(value);
     } catch (error) {
       return failure(error);
     }
   };
   return Object.freeze({
-    search_web: (input) => execute('search.web', input),
-    search_answer: (input) => execute('search.answer', input),
+    search_web: (input) => execute(input),
     models_list: async () => {
       try { return text(await client.models.list()); } catch (error) { return failure(error); }
     },
@@ -245,7 +248,7 @@ export function createClervoMcpServer(options: {
   if (PROFILE_FAMILIES[profile].includes('search')) server.registerTool(
     'search_web',
     {
-      title: 'Clervo web evidence preview',
+      title: 'Search the web with Clervo',
       description: 'Runs the live bounded free Search route or obtains its exact paid challenge without signing.',
       inputSchema,
       annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },

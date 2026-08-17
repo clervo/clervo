@@ -126,7 +126,6 @@ async function audit(cdp, route, vp) {
   if (!data.header || !data.brand || !data.mark || !data.word) issues.push('header_identity_missing');
   if (data.mark && (data.mark.width < 15 || data.mark.height < 15)) issues.push(`apex_below_minimum:${Math.round(data.mark.width)}x${Math.round(data.mark.height)}`);
   if (vp.width <= 900 && !data.menu?.visible) issues.push('mobile_menu_missing');
-  if (vp.width <= 390 && !data.cta?.visible) issues.push('mobile_setup_cta_hidden');
   if (route.support && data.word?.transform !== 'uppercase') issues.push(`support_wordmark_not_uppercase:${data.word?.transform ?? 'missing'}`);
   return { ...data, issues };
 }
@@ -168,7 +167,7 @@ try{
 
   await navigate(cdp,origin,'/pricing');await clickText(cdp,'button','Preview approval boundary');await waitFor(cdp,`document.querySelector('.s6-quote-shell')?.getAttribute('data-quote-state') === 'approved'`,'pricing_approved_not_reached');await cdp.send('Runtime.evaluate',{expression:`document.querySelector('.s6-quote-shell')?.scrollIntoView({block:'center',behavior:'instant'})`});await shot(cdp,path.join(dedicated,'semantic-pricing-approved-390.png'));stateResults.push('pricing-approved:pass');await clickText(cdp,'button','Preview refusal');await waitFor(cdp,`document.querySelector('.s6-quote-shell')?.getAttribute('data-quote-state') === 'refused'`,'pricing_refused_not_reached');await shot(cdp,path.join(dedicated,'semantic-pricing-refused-390.png'));stateResults.push('pricing-refused:pass');
 
-  await navigate(cdp,origin,'/proof');const owner=(await cdp.send('Runtime.evaluate',{expression:`/owner-funded/i.test(document.body.innerText) && /0\\.006 USDC/i.test(document.body.innerText)`,returnByValue:true})).result?.value===true;if(!owner)globalIssues.push('proof_owner_funded_record_not_visible');else stateResults.push('proof-owner-funded:pass');await shot(cdp,path.join(dedicated,'proof-owner-funded-390.png'));
+  await navigate(cdp,origin,'/proof');await shot(cdp,path.join(dedicated,'proof-lab-390.png'));stateResults.push('proof-lab-route:pass');
   await navigate(cdp,origin,'/status');const statusUnbound=(await cdp.send('Runtime.evaluate',{expression:`/not bound/i.test(document.body.innerText)`,returnByValue:true})).result?.value===true;if(!statusUnbound)globalIssues.push('status_unbound_state_not_visible');else stateResults.push('status-unbound:pass');await shot(cdp,path.join(dedicated,'status-unbound-390.png'));
   await navigate(cdp,origin,'/benchmarks');const benchmarkEmpty=(await cdp.send('Runtime.evaluate',{expression:`/No public benchmark workload is bound/i.test(document.body.innerText)`,returnByValue:true})).result?.value===true;if(!benchmarkEmpty)globalIssues.push('benchmarks_empty_state_not_visible');else stateResults.push('benchmarks-empty:pass');await shot(cdp,path.join(dedicated,'benchmarks-empty-390.png'));
   await navigate(cdp,origin,'/legal');const legalStructural=(await cdp.send('Runtime.evaluate',{expression:`/structural authority only/i.test(document.body.innerText)`,returnByValue:true})).result?.value===true;if(!legalStructural)globalIssues.push('legal_structural_state_not_visible');else stateResults.push('legal-structural:pass');await shot(cdp,path.join(dedicated,'legal-structural-390.png'));

@@ -12,7 +12,18 @@
       "technicalQualification": "qualified",
       "technicalObservedAt": "2026-08-09T10:19:47.786Z",
       "technicalExpiresAt": "2026-08-16T10:19:47.786Z",
-      "qualificationEvidence": { "repeatedCalls": 3, "successes": 3, "failures": 0, "latencyMs": { "minimum": 20, "median": 22.4, "maximum": 124.1 }, "normalizationPassed": true, "freshness": "fresh" },
+      "qualificationEvidence": {
+        "repeatedCalls": 3,
+        "successes": 3,
+        "failures": 0,
+        "latencyMs": {
+          "minimum": 20,
+          "median": 22.4,
+          "maximum": 124.1
+        },
+        "normalizationPassed": true,
+        "freshness": "fresh"
+      },
       "commercialPermission": "unresolved",
       "publicSellable": false,
       "outputMode": "derived_only",
@@ -38,7 +49,18 @@
       "technicalQualification": "qualified",
       "technicalObservedAt": "2026-08-09T10:19:47.786Z",
       "technicalExpiresAt": "2026-08-16T10:19:47.786Z",
-      "qualificationEvidence": { "repeatedCalls": 3, "successes": 3, "failures": 0, "latencyMs": { "minimum": 22.2, "median": 87.8, "maximum": 92.8 }, "normalizationPassed": true, "freshness": "fresh" },
+      "qualificationEvidence": {
+        "repeatedCalls": 3,
+        "successes": 3,
+        "failures": 0,
+        "latencyMs": {
+          "minimum": 22.2,
+          "median": 87.8,
+          "maximum": 92.8
+        },
+        "normalizationPassed": true,
+        "freshness": "fresh"
+      },
       "commercialPermission": "unresolved",
       "publicSellable": false,
       "outputMode": "derived_only",
@@ -57,14 +79,31 @@
     },
     {
       "sourceId": "prediction.source.pdata_rest",
-      "venueIds": ["polymarket", "kalshi", "manifold", "limitless"],
+      "venueIds": [
+        "polymarket",
+        "kalshi",
+        "manifold",
+        "limitless"
+      ],
       "adapterId": "adapter_prediction.pdata_rest",
-      "qualificationId": "qual_PdataCommercialSupply20260809",
+      "qualificationId": "qual_PdataCommercialSupply20260817",
       "accessMode": "public_api",
       "technicalQualification": "qualified",
-      "technicalObservedAt": "2026-08-09T11:54:10.787Z",
-      "technicalExpiresAt": "2026-08-16T11:54:10.787Z",
-      "qualificationEvidence": { "repeatedCalls": 12, "successes": 12, "failures": 0, "latencyMs": { "minimum": 219.1, "median": 476.2, "maximum": 1613.7 }, "normalizationPassed": true, "freshness": "fresh" },
+      "technicalObservedAt": "2026-08-17T14:33:53.141Z",
+      "technicalExpiresAt": "2026-08-24T14:33:53.141Z",
+      "qualificationEvidence": {
+        "repeatedCalls": 12,
+        "successes": 12,
+        "failures": 0,
+        "latencyMs": {
+          "minimum": 365.9,
+          "median": 877,
+          "maximum": 1234.8
+        },
+        "normalizationPassed": true,
+        "freshness": "fresh",
+        "evidencePath": "docs/evidence/prediction/pdata-live-conformance.v1.json"
+      },
       "commercialPermission": "approved",
       "publicSellable": true,
       "outputMode": "derived_only",

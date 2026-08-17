@@ -17,6 +17,8 @@ function version(name) { const value = env(name); if (!/^[1-9][0-9]*$/u.test(val
 function release() { const value = env('CLERVO_RELEASE_ID'); if (!/^[a-f0-9]{40}$/u.test(value)) refuse('invalid_release_id'); return value; }
 function image() { const value = env('CLERVO_PRODUCTION_IMAGE'); if (!/^us-central1-docker\.pkg\.dev\/bloxsniper-prod\/clervo-production\/clervo-api@sha256:[a-f0-9]{64}$/u.test(value)) refuse('invalid_image'); return value; }
 function revision() { const value = env('CLERVO_CANDIDATE_REVISION'); if (!/^clervo-api-production-[0-9]{5}-[a-z0-9]{3}$/u.test(value)) refuse('invalid_revision'); return value; }
+function previousRevision() { const value = env('CLERVO_PREVIOUS_REVISION'); if (!/^clervo-api-production-[0-9]{5}-[a-z0-9]{3}$/u.test(value)) refuse('invalid_previous_revision'); return value; }
+function previousImage() { const value = env('CLERVO_PREVIOUS_IMAGE'); if (!/^us-central1-docker\.pkg\.dev\/bloxsniper-prod\/clervo-production\/clervo-api@sha256:[a-f0-9]{64}$/u.test(value)) refuse('invalid_previous_image'); return value; }
 function gcloud(args, capture = false) {
   const result = spawnSync('gcloud', args, { encoding: 'utf8', stdio: capture ? ['ignore', 'pipe', 'pipe'] : 'inherit', maxBuffer: 16 * 1024 * 1024 });
   if (result.error || result.status !== 0) { if (capture && result.stderr) process.stderr.write(result.stderr); refuse(`gcloud_${args.slice(0, 3).join('_').replaceAll(/[^a-z0-9]+/giu, '_').toLowerCase()}`); }
@@ -51,8 +53,10 @@ const plan = Object.freeze({
   publicOrigin: policy.publicOrigin, searchMode: policy.search.mode, synthesisEnabled: policy.search.synthesisEnabled,
   x402Mode: policy.commerce.mode, sandboxMode: policy.sandbox.mode, sandboxPublicMode: policy.sandbox.publicMode, deployTrafficPercent: 0,
   predictionMode: policy.prediction.mode, predictionQualifiedAdapter: policy.prediction.qualifiedAdapter,
+  rpcMode: policy.rpc.mode, rpcSupportedChains: policy.rpc.supportedChains,
   cryptoMode: policy.crypto.mode, cryptoQualifiedAdapter: policy.crypto.qualifiedAdapter,
   publicAccessEnabledOnlyAfterPromotion: true, publicAccessMethod: policy.rollout.publicAccessMethod, protectedResources: policy.protectedResources,
+  mutationActions: ['deploy', 'promote', 'rollback', 'privatize'],
 });
 
 let result;
@@ -73,6 +77,7 @@ else if (action === 'observe') {
     aiClervo: version('CLERVO_AI_CLERVO_SECRET_VERSION'), r2Access: version('CLERVO_R2_ACCESS_KEY_SECRET_VERSION'),
     r2Secret: version('CLERVO_R2_SECRET_ACCESS_KEY_SECRET_VERSION'), artifactSigning: version('CLERVO_ARTIFACT_SIGNING_SECRET_VERSION'),
     mpp: version('CLERVO_MPP_SECRET_VERSION'), blockscout: version('CLERVO_BLOCKSCOUT_SECRET_VERSION'),
+    rpcDrpc: version('CLERVO_RPC_DRPC_SECRET_VERSION'), rpcHelius: version('CLERVO_RPC_HELIUS_SECRET_VERSION'),
   };
   const artifact = verifyArtifact(candidateImage);
   const before = service();
@@ -95,6 +100,7 @@ else if (action === 'observe') {
     `R2_BUCKET_NAME=${policy.ai.artifacts.bucket}`, `CLERVO_ARTIFACT_RETENTION_SECONDS=${policy.ai.artifacts.retentionSeconds}`,
     `CLERVO_ARTIFACT_MAXIMUM_OBJECT_BYTES=${policy.ai.artifacts.maximumObjectBytes}`,
     `CLERVO_PREDICTION_MODE=${policy.prediction.mode}`,
+    `CLERVO_RPC_MODE=${policy.rpc.mode}`, `CLERVO_RPC_DAILY_CALL_CEILING=${policy.rpc.dailyCallCeilingPerInstance}`,
     `CLERVO_CRYPTO_MODE=${policy.crypto.mode}`, `CLERVO_CRYPTO_DAILY_CALL_CEILING=${policy.crypto.dailyCallCeiling}`,
   ];
   const secrets = [
@@ -113,12 +119,14 @@ else if (action === 'observe') {
     `R2_SECRET_ACCESS_KEY=${policy.ai.artifacts.secretAccessKeySecret}:${versions.r2Secret}`,
     `CLERVO_ARTIFACT_SIGNING_SECRET=${policy.ai.artifacts.signingSecret}:${versions.artifactSigning}`,
     `CLERVO_BLOCKSCOUT_API_KEY=${policy.crypto.credentialSecret}:${versions.blockscout}`,
+    `CLERVO_RPC_DRPC_API_KEY=${policy.rpc.drpcCredentialSecret}:${versions.rpcDrpc}`,
+    `CLERVO_RPC_HELIUS_API_KEY=${policy.rpc.heliusCredentialSecret}:${versions.rpcHelius}`,
   ];
   gcloud([
     'run', 'deploy', policy.service, '--project', policy.project, '--region', policy.region, '--image', candidateImage,
     '--service-account', `${deployment.resources.runtimeServiceAccount}@${policy.project}.iam.gserviceaccount.com`, '--execution-environment', 'gen2',
     '--ingress', 'all', '--no-allow-unauthenticated', '--no-traffic', '--tag', tag, '--cpu', '1', '--memory', '512Mi',
-    '--concurrency', '16', '--min-instances', '0', '--max-instances', '1', '--timeout', `${sandbox.cloudRun.requestTimeoutSeconds}s`,
+    '--concurrency', '16', '--min-instances', '0', '--max-instances', '5', '--timeout', `${sandbox.cloudRun.requestTimeoutSeconds}s`,
     '--no-cpu-throttling', '--no-session-affinity', '--port', '8080', '--set-cloudsql-instances', `${policy.project}:${policy.region}:${deployment.resources.databaseInstance}`,
     '--network', sandbox.network, '--subnet', sandbox.serverlessSubnet.name, '--vpc-egress', sandbox.cloudRun.directVpcEgress, '--network-tags', sandbox.cloudRun.networkTag,
     '--set-env-vars', `^@^${environment.join('@')}`, '--set-secrets', secrets.join(','),
@@ -151,12 +159,26 @@ else if (action === 'observe') {
   gcloud(['run', 'services', 'update', policy.service, '--project', policy.project, '--region', policy.region, '--no-invoker-iam-check', '--quiet']);
   assert.equal(invokerIamDisabled(), true, 'invoker IAM check remained enabled after promotion');
   result = { action: 'public-origin-promoted', revision: candidateRevision, image: candidateImage, trafficPercent: 100, publicAccess: true, accessMethod: 'invoker_iam_check_disabled' };
+} else if (action === 'rollback') {
+  const releaseId = release();
+  const targetRevision = previousRevision();
+  const targetImage = previousImage();
+  assert.equal(env('CLERVO_PUBLIC_LAUNCH_CONFIRM'), `rollback:${releaseId}:${targetRevision}`, 'confirmation mismatch');
+  assert.equal(env('CLERVO_DATABASE_READINESS'), 'ready', 'database readiness missing');
+  assert.equal(env('CLERVO_MONITORING_DELIVERY'), 'acknowledged', 'monitoring delivery missing');
+  assert.equal(env('CLERVO_CURRENT_LIVE_HEALTH'), 'passed', 'current live health missing');
+  assert.equal(describedImage(targetRevision), targetImage, 'rollback image mismatch');
+  verifyArtifact(targetImage);
+  gcloud(['run', 'services', 'update-traffic', policy.service, '--project', policy.project, '--region', policy.region, '--to-revisions', `${targetRevision}=100`, '--quiet']);
+  const restored = traffic(service());
+  assert.deepEqual(restored, [{ revisionName: targetRevision, percent: 100 }], 'rollback traffic did not converge');
+  result = { action: 'public-origin-rolled-back', revision: targetRevision, image: targetImage, trafficPercent: 100, publicAccess: publicAccess() };
 } else if (action === 'privatize') {
   const releaseId = release();
   assert.equal(env('CLERVO_PUBLIC_LAUNCH_CONFIRM'), `privatize:${releaseId}`, 'confirmation mismatch');
   gcloud(['run', 'services', 'update', policy.service, '--project', policy.project, '--region', policy.region, '--invoker-iam-check', '--quiet']);
   assert.equal(publicAccess(), false, 'public access remained after privatize');
   result = { action: 'public-origin-privatized', publicAccess: false };
-} else refuse('usage_plan_observe_deploy_promote_privatize');
+} else refuse('usage_plan_observe_deploy_promote_rollback_privatize');
 
 process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
