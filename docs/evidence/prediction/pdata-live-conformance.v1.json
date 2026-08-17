@@ -1,0 +1,397 @@
+{
+  "schemaVersion": "clervo.pdata-live-conformance.v1",
+  "evaluatedAt": "2026-08-17T14:33:53.141Z",
+  "qualified": true,
+  "qualification": {
+    "qualificationId": "qual_PdataCommercialSupply20260817",
+    "technicalObservedAt": "2026-08-17T14:33:53.141Z",
+    "technicalExpiresAt": "2026-08-24T14:33:53.141Z",
+    "ttlMs": 604800000
+  },
+  "externalCalls": 39,
+  "ownerCashSpentUsd": 0,
+  "mutationCount": 0,
+  "authenticationRequired": false,
+  "legal": {
+    "datasetLicensePublished": true,
+    "apiIncludedOnLicensePage": true,
+    "commercialUseGranted": true,
+    "adaptationGranted": true,
+    "redistributionGranted": true,
+    "attributionRequired": true,
+    "noAuthPublished": true,
+    "noRateCardsPublished": true,
+    "designatedTermsSurfaceReachable": true,
+    "openapiLicenseNotice": {
+      "name": "Per-source attribution; aggregation under MIT",
+      "url": "https://pdata.world/methodology"
+    },
+    "competingServiceRestriction": "none_published_on_data_license_openapi_or_designated_terms_surface",
+    "upstreamProvenanceLimitation": "pdata identifies each upstream venue and underlying market URL; Clervo must preserve both and does not treat pdata as the venue",
+    "conservativeLicenseBasis": "CC BY 4.0 with pdata and per-source attribution; Clervo marks all normalized output as modified"
+  },
+  "legalEndpointResults": [
+    {
+      "id": "dataset",
+      "status": "fulfilled",
+      "latencyMs": 315.3
+    },
+    {
+      "id": "terms",
+      "status": "fulfilled",
+      "latencyMs": 314.4
+    },
+    {
+      "id": "agent_guide",
+      "status": "fulfilled",
+      "latencyMs": 79.3
+    },
+    {
+      "id": "openapi",
+      "status": "fulfilled",
+      "latencyMs": 297.2
+    },
+    {
+      "id": "cc_by_4",
+      "status": "fulfilled",
+      "latencyMs": 77.2
+    }
+  ],
+  "apiVersion": "1.17.0",
+  "venueCoverage": [
+    "polymarket",
+    "kalshi",
+    "manifold",
+    "myriad",
+    "limitless",
+    "predict",
+    "opinion",
+    "gemini"
+  ],
+  "recommendedSellableVenueIds": [
+    "polymarket",
+    "kalshi",
+    "manifold",
+    "limitless",
+    "predict",
+    "gemini"
+  ],
+  "productionSellableVenueIds": [
+    "polymarket",
+    "kalshi",
+    "manifold",
+    "limitless"
+  ],
+  "excludedVenueIds": [
+    {
+      "venueId": "myriad",
+      "failureCodes": [
+        "pdata_no_fresh_usable_market"
+      ],
+      "latencyMs": null,
+      "freshnessAgeMs": null
+    },
+    {
+      "venueId": "opinion",
+      "failureCodes": [
+        "pdata_no_fresh_usable_market"
+      ],
+      "latencyMs": null,
+      "freshnessAgeMs": null
+    }
+  ],
+  "sources": [
+    {
+      "venueId": "polymarket",
+      "repeatedCalls": 3,
+      "successes": 3,
+      "failures": 0,
+      "failureCodes": [],
+      "latencyMs": {
+        "minimum": 969.4,
+        "median": 1108.4,
+        "maximum": 1213.4
+      },
+      "freshnessAgeMs": {
+        "minimum": 1013803,
+        "maximum": 1013803
+      },
+      "normalizationPassed": true,
+      "sample": {
+        "eventId": "45915",
+        "marketRef": "pmkt_bc1d6a80106892fac99eea65d4394233",
+        "status": "open",
+        "outcomeCount": 2
+      }
+    },
+    {
+      "venueId": "kalshi",
+      "repeatedCalls": 3,
+      "successes": 3,
+      "failures": 0,
+      "failureCodes": [],
+      "latencyMs": {
+        "minimum": 518.3,
+        "median": 877,
+        "maximum": 1210.3
+      },
+      "freshnessAgeMs": {
+        "minimum": 778646,
+        "maximum": 778646
+      },
+      "normalizationPassed": true,
+      "sample": {
+        "eventId": "KXGOVFLNOMR-26",
+        "marketRef": "pmkt_6566a3967ca5ade23794845dc37833b4",
+        "status": "open",
+        "outcomeCount": 2
+      }
+    },
+    {
+      "venueId": "manifold",
+      "repeatedCalls": 3,
+      "successes": 3,
+      "failures": 0,
+      "failureCodes": [],
+      "latencyMs": {
+        "minimum": 702.4,
+        "median": 791.2,
+        "maximum": 810.7
+      },
+      "freshnessAgeMs": {
+        "minimum": 1675288,
+        "maximum": 1675288
+      },
+      "normalizationPassed": true,
+      "sample": {
+        "eventId": "9qxuM0rVznCVGHQtSSum",
+        "marketRef": "pmkt_3cc309e5797672d50da812d5fec4bdb5",
+        "status": "open",
+        "outcomeCount": 2
+      }
+    },
+    {
+      "venueId": "myriad",
+      "repeatedCalls": 3,
+      "successes": 0,
+      "failures": 3,
+      "failureCodes": [
+        "pdata_no_fresh_usable_market"
+      ],
+      "latencyMs": null,
+      "freshnessAgeMs": null,
+      "normalizationPassed": false,
+      "sample": null
+    },
+    {
+      "venueId": "limitless",
+      "repeatedCalls": 3,
+      "successes": 3,
+      "failures": 0,
+      "failureCodes": [],
+      "latencyMs": {
+        "minimum": 365.9,
+        "median": 733.6,
+        "maximum": 1234.8
+      },
+      "freshnessAgeMs": {
+        "minimum": 7672,
+        "maximum": 7672
+      },
+      "normalizationPassed": true,
+      "sample": {
+        "eventId": "33521",
+        "marketRef": "pmkt_86827a6e210b001d63ce19c6b659d304",
+        "status": "open",
+        "outcomeCount": 2
+      }
+    },
+    {
+      "venueId": "predict",
+      "repeatedCalls": 3,
+      "successes": 3,
+      "failures": 0,
+      "failureCodes": [],
+      "latencyMs": {
+        "minimum": 222.4,
+        "median": 657.8,
+        "maximum": 1143.7
+      },
+      "freshnessAgeMs": {
+        "minimum": 2352199,
+        "maximum": 2352199
+      },
+      "normalizationPassed": true,
+      "sample": {
+        "eventId": "271901",
+        "marketRef": "pmkt_0e5698ad7c94e5f6f98ce38acb394345",
+        "status": "open",
+        "outcomeCount": 2
+      }
+    },
+    {
+      "venueId": "opinion",
+      "repeatedCalls": 3,
+      "successes": 0,
+      "failures": 3,
+      "failureCodes": [
+        "pdata_no_fresh_usable_market"
+      ],
+      "latencyMs": null,
+      "freshnessAgeMs": null,
+      "normalizationPassed": false,
+      "sample": null
+    },
+    {
+      "venueId": "gemini",
+      "repeatedCalls": 3,
+      "successes": 3,
+      "failures": 0,
+      "failureCodes": [],
+      "latencyMs": {
+        "minimum": 2939.7,
+        "median": 4029.3,
+        "maximum": 4470.2
+      },
+      "freshnessAgeMs": {
+        "minimum": 2282843,
+        "maximum": 2282843
+      },
+      "normalizationPassed": true,
+      "sample": {
+        "eventId": "103644",
+        "marketRef": "pmkt_2c90fce6de254a22bc148fa54db9f8fd",
+        "status": "open",
+        "outcomeCount": 2
+      }
+    }
+  ],
+  "pagination": {
+    "passed": true,
+    "pageOneLatencyMs": 1747.9,
+    "pageTwoLatencyMs": 1743.8,
+    "failureCodes": []
+  },
+  "search": {
+    "passed": true,
+    "resultCount": 5,
+    "literalMatchCount": 4,
+    "upstreamFalsePositiveCount": 1,
+    "runtimeClientSideFilteringQualified": true,
+    "latencyMs": 633.9,
+    "failureCode": null
+  },
+  "history": {
+    "publishedRetention": "approximately 30 days of snapshots",
+    "results": [
+      {
+        "status": "fulfilled",
+        "value": {
+          "venueId": "polymarket",
+          "latencyMs": 170.1,
+          "seriesCount": 2,
+          "pointCount": 210
+        }
+      },
+      {
+        "status": "fulfilled",
+        "value": {
+          "venueId": "kalshi",
+          "latencyMs": 178,
+          "seriesCount": 2,
+          "pointCount": 210
+        }
+      },
+      {
+        "status": "fulfilled",
+        "value": {
+          "venueId": "manifold",
+          "latencyMs": 355.7,
+          "seriesCount": 1,
+          "pointCount": 100
+        }
+      },
+      {
+        "status": "fulfilled",
+        "value": {
+          "venueId": "limitless",
+          "latencyMs": 156.2,
+          "seriesCount": 1,
+          "pointCount": 102
+        }
+      },
+      {
+        "status": "fulfilled",
+        "value": {
+          "venueId": "predict",
+          "latencyMs": 147.2,
+          "seriesCount": 2,
+          "pointCount": 22
+        }
+      },
+      {
+        "status": "fulfilled",
+        "value": {
+          "venueId": "gemini",
+          "latencyMs": 157.4,
+          "seriesCount": 2,
+          "pointCount": 79
+        }
+      }
+    ]
+  },
+  "runtimeProbe": {
+    "passed": true,
+    "state": "degraded",
+    "marketCount": 8,
+    "searchPassed": true,
+    "searchMarketCount": 8,
+    "venueStates": [
+      {
+        "venueId": "polymarket",
+        "state": "available",
+        "marketCount": 2,
+        "failureCode": null
+      },
+      {
+        "venueId": "kalshi",
+        "state": "available",
+        "marketCount": 2,
+        "failureCode": null
+      },
+      {
+        "venueId": "manifold",
+        "state": "degraded",
+        "marketCount": 2,
+        "failureCode": "partial_stale_source"
+      },
+      {
+        "venueId": "limitless",
+        "state": "degraded",
+        "marketCount": 2,
+        "failureCode": "partial_malformed_source"
+      }
+    ],
+    "sourceBindings": [
+      {
+        "adapterId": "adapter_prediction.pdata_rest",
+        "qualificationId": "qual_PdataCommercialSupply20260817"
+      }
+    ],
+    "resultHash": "sha256:d5e4d53d73be8f62b859829c2caa0dd34b16c236cdae6f517a401701115fb717"
+  },
+  "resilience": {
+    "malformedResponseRejected": true,
+    "boundedTimeoutMs": 12000,
+    "maximumResponseBytes": 10485760,
+    "redirectsRejected": true,
+    "partialMalformedItemsDegradePerVenue": true
+  },
+  "ratePosture": {
+    "publishedNumericLimit": null,
+    "publishedRateCards": false,
+    "observedRateHeaders": [],
+    "clientConcurrency": 2,
+    "runtimeMaximumPagesPerSearch": 5
+  }
+}

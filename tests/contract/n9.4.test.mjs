@@ -21,6 +21,15 @@ test('prediction source registry enables only explicitly licensed supply and kee
   assert.equal(pdata.publicSellable, true);
   assert.equal(pdata.historyPermission, 'approved');
   assert.equal(pdata.customerRoutingEnabled, true);
+  assert.ok(Date.parse(pdata.technicalObservedAt) < Date.parse(pdata.technicalExpiresAt));
+  assert.equal(Date.parse(pdata.technicalExpiresAt) - Date.parse(pdata.technicalObservedAt), 7 * 24 * 60 * 60 * 1_000);
+  const qualification = await read('docs/evidence/prediction/pdata-live-conformance.v1.json');
+  assert.equal(qualification.qualified, true);
+  assert.equal(qualification.qualification.qualificationId, pdata.qualificationId);
+  assert.equal(qualification.qualification.technicalObservedAt, pdata.technicalObservedAt);
+  assert.equal(qualification.qualification.technicalExpiresAt, pdata.technicalExpiresAt);
+  assert.equal(qualification.runtimeProbe.passed, true);
+  assert.equal(qualification.search.runtimeClientSideFilteringQualified, true);
   assert.deepEqual(
     { licenseId: pdata.commercialRights.licenseId, commercialUse: pdata.commercialRights.commercialUse, adaptation: pdata.commercialRights.adaptation, redistribution: pdata.commercialRights.redistribution, apiReuse: pdata.commercialRights.apiReuse },
     { licenseId: 'CC BY 4.0', commercialUse: true, adaptation: true, redistribution: true, apiReuse: true },

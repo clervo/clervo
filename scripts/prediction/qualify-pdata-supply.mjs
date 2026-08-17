@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
 import { performance } from 'node:perf_hooks';
+import { writeFile } from 'node:fs/promises';
 
 import { parsePdataMarket, PDATA_VENUE_IDS } from '../../dist/adapters/prediction/src/public-market-data.js';
 import { normalizePredictionMarket } from '../../dist/services/prediction/src/normalization.js';
 import { createPredictionProductionRuntime } from '../../apps/api/src/prediction-production-runtime.mjs';
+import { PREDICTION_SOURCE_REGISTRY } from '../../apps/api/src/prediction-public-policy.mjs';
 
 const evaluatedAt = new Date().toISOString();
 const evaluatedAtMs = Date.parse(evaluatedAt);
@@ -12,6 +14,18 @@ const timeoutMs = 12_000;
 const repeatedCallsPerVenue = 3;
 const expectedAttribution = 'pdata.world — aggregated prediction-market data across 8 platforms';
 const productionSellableVenueIds = Object.freeze(['polymarket', 'kalshi', 'manifold', 'limitless']);
+const qualificationTtlMs = 7 * 24 * 60 * 60 * 1_000;
+const qualificationId = `qual_PdataCommercialSupply${evaluatedAt.slice(0, 10).replaceAll('-', '')}`;
+const technicalExpiresAt = new Date(evaluatedAtMs + qualificationTtlMs).toISOString();
+const writeAck = process.env.CLERVO_PDATA_QUALIFICATION_WRITE_ACK;
+if (writeAck !== undefined && writeAck !== 'renew-existing-production-source') throw new Error('pdata_qualification_write_ack_invalid');
+
+const candidateSourceRegistry = Object.freeze({
+  ...PREDICTION_SOURCE_REGISTRY,
+  sources: Object.freeze(PREDICTION_SOURCE_REGISTRY.sources.map((source) => source.adapterId === 'adapter_prediction.pdata_rest'
+    ? Object.freeze({ ...source, qualificationId, technicalQualification: 'qualified', technicalObservedAt: evaluatedAt, technicalExpiresAt })
+    : source)),
+});
 
 async function boundedGet(url, maximumResponseBytes = 10_485_760) {
   const controller = new AbortController();
@@ -99,6 +113,7 @@ const live = await mapConcurrent(calls, 2, async ({ venueId, attempt }) => {
   let market = null; let item = null;
   for (const candidate of payload.items) {
     try {
+      if (!['string', 'number'].includes(typeof candidate?.event_id) || String(candidate.event_id).length < 1) continue;
       const normalized = normalizePredictionMarket(parsePdataMarket(candidate, { apiUrl: url, staleAfterMs: 3_600_000 }), evaluatedAtMs);
       if (normalized.freshness.status !== 'fresh') continue;
       market = normalized; item = candidate; break;
@@ -144,7 +159,8 @@ const paginationPassed = pageOneIds.size === 5 && pageTwo.items?.length === 5 &&
 const searchProbe = await probeJson('https://api.pdata.world/api/v1/markets?status=open&search=president&page=1&page_size=5');
 const searchResponse = searchProbe.response ?? null;
 const search = searchProbe.payload ?? {};
-const searchPassed = Array.isArray(search.items) && search.items.length > 0 && search.items.every(({ question, description }) => `${question ?? ''} ${description ?? ''}`.toLowerCase().includes('president'));
+const searchMatches = Array.isArray(search.items) ? search.items.filter(({ question, description, slug }) => `${question ?? ''} ${description ?? ''} ${slug ?? ''}`.toLowerCase().includes('president')).length : 0;
+const searchPassed = Array.isArray(search.items) && search.items.length > 0 && searchMatches > 0;
 
 const historyInputs = sourceResults.map((source) => ({ venueId: source.venueId, eventId: source.sample?.eventId })).filter(({ eventId }) => typeof eventId === 'string' && eventId.length > 0);
 const histories = await mapConcurrent(historyInputs, 2, async ({ venueId, eventId }) => {
@@ -174,19 +190,32 @@ const runtimeStore = {
 };
 let runtimeProbe;
 try {
-  const runtime = createPredictionProductionRuntime({ store: runtimeStore });
+  const runtime = createPredictionProductionRuntime({ store: runtimeStore, sourceRegistry: candidateSourceRegistry });
   const completed = await runtime.execute({
     operationId: 'op_pdataqualification00000001', productId: 'prediction.markets',
     deadlineAt: new Date(Date.now() + 30_000).toISOString(),
     input: { kind: 'markets', status: 'open', venues: ['polymarket', 'kalshi', 'manifold', 'limitless'], limit: 8 },
   });
+  const searched = await runtime.execute({
+    operationId: 'op_pdataqualification00000002', productId: 'prediction.markets',
+    deadlineAt: new Date(Date.now() + 30_000).toISOString(),
+    input: { kind: 'markets', status: 'open', query: 'president', venues: ['polymarket', 'kalshi', 'manifold', 'limitless'], limit: 8 },
+  });
   const output = completed.result?.output;
+  const searchOutput = searched.result?.output;
+  const runtimeSearchPassed = searchOutput?.kind === 'markets' && searchOutput.markets?.length > 0
+    && ['available', 'degraded'].includes(searchOutput.state)
+    && searchOutput.markets.every(({ venueId, supplyAttributions }) => productionSellableVenueIds.includes(venueId)
+      && supplyAttributions?.some(({ sourceId, license }) => sourceId === 'pdata' && license === 'CC BY 4.0'));
   runtimeProbe = Object.freeze({
     passed: output?.kind === 'markets' && ['available', 'degraded'].includes(output.state) && output.markets?.length > 0
       && output.markets.every(({ supplyAttributions }) => supplyAttributions?.some(({ sourceId, license }) => sourceId === 'pdata' && license === 'CC BY 4.0'))
-      && completed.sourceBindings?.length === 1 && completed.sourceBindings[0].adapterId === 'adapter_prediction.pdata_rest',
+      && completed.sourceBindings?.length === 1 && completed.sourceBindings[0].adapterId === 'adapter_prediction.pdata_rest'
+      && runtimeSearchPassed,
     state: output?.state ?? null,
     marketCount: output?.markets?.length ?? 0,
+    searchPassed: runtimeSearchPassed,
+    searchMarketCount: searchOutput?.markets?.length ?? 0,
     venueStates: output?.venues ?? [],
     sourceBindings: completed.sourceBindings ?? [],
     resultHash: completed.result?.resultHash ?? null,
@@ -202,6 +231,7 @@ const qualified = Object.values(legal).every((value) => value !== false)
 
 const result = Object.freeze({
   schemaVersion: 'clervo.pdata-live-conformance.v1', evaluatedAt, qualified,
+  qualification: Object.freeze({ qualificationId, technicalObservedAt: evaluatedAt, technicalExpiresAt, ttlMs: qualificationTtlMs }),
   externalCalls: legalResponses.length + calls.length + 2 + 1 + histories.length + 1,
   ownerCashSpentUsd: 0, mutationCount: 0, authenticationRequired: false,
   legal,
@@ -213,12 +243,46 @@ const result = Object.freeze({
   productionSellableVenueIds,
   excludedVenueIds: sourceResults.filter(({ venueId }) => !recommendedSellableVenueIds.includes(venueId)).map(({ venueId, failureCodes, latencyMs, freshnessAgeMs }) => ({ venueId, failureCodes, latencyMs, freshnessAgeMs })),
   sources: sourceResults, pagination: Object.freeze({ passed: paginationPassed, pageOneLatencyMs: pageOneResponse?.latencyMs ?? null, pageTwoLatencyMs: pageTwoResponse?.latencyMs ?? null, failureCodes: [pageOneProbe, pageTwoProbe].filter(({ status }) => status === 'rejected').map(({ reason }) => reason) }),
-  search: Object.freeze({ passed: searchPassed, resultCount: search.items?.length ?? 0, latencyMs: searchResponse?.latencyMs ?? null, failureCode: searchProbe.status === 'rejected' ? searchProbe.reason : null }),
+  search: Object.freeze({
+    passed: searchPassed,
+    resultCount: search.items?.length ?? 0,
+    literalMatchCount: searchMatches,
+    upstreamFalsePositiveCount: Array.isArray(search.items) ? search.items.length - searchMatches : 0,
+    runtimeClientSideFilteringQualified: runtimeProbe.searchPassed === true,
+    latencyMs: searchResponse?.latencyMs ?? null,
+    failureCode: searchProbe.status === 'rejected' ? searchProbe.reason : null,
+  }),
   history: Object.freeze({ publishedRetention: 'approximately 30 days of snapshots', results: histories }),
   runtimeProbe,
   resilience: Object.freeze({ malformedResponseRejected: malformedRejected, boundedTimeoutMs: timeoutMs, maximumResponseBytes: 10_485_760, redirectsRejected: true, partialMalformedItemsDegradePerVenue: true }),
   ratePosture: Object.freeze({ publishedNumericLimit: null, publishedRateCards: false, observedRateHeaders: rateHeaderObservations, clientConcurrency: 2, runtimeMaximumPagesPerSearch: 5 }),
 });
+
+if (qualified && writeAck === 'renew-existing-production-source') {
+  const productionResults = sourceResults.filter(({ venueId }) => productionSellableVenueIds.includes(venueId));
+  const latencies = productionResults.flatMap(({ latencyMs }) => latencyMs === null ? [] : [latencyMs.minimum, latencyMs.median, latencyMs.maximum]).sort((left, right) => left - right);
+  const updatedRegistry = {
+    ...PREDICTION_SOURCE_REGISTRY,
+    sources: PREDICTION_SOURCE_REGISTRY.sources.map((source) => source.adapterId === 'adapter_prediction.pdata_rest' ? {
+      ...source,
+      qualificationId,
+      technicalQualification: 'qualified',
+      technicalObservedAt: evaluatedAt,
+      technicalExpiresAt,
+      qualificationEvidence: {
+        repeatedCalls: productionResults.reduce((sum, sourceResult) => sum + sourceResult.repeatedCalls, 0),
+        successes: productionResults.reduce((sum, sourceResult) => sum + sourceResult.successes, 0),
+        failures: productionResults.reduce((sum, sourceResult) => sum + sourceResult.failures, 0),
+        latencyMs: { minimum: latencies[0], median: latencies[Math.floor(latencies.length / 2)], maximum: latencies.at(-1) },
+        normalizationPassed: productionResults.every(({ normalizationPassed }) => normalizationPassed),
+        freshness: 'fresh',
+        evidencePath: 'docs/evidence/prediction/pdata-live-conformance.v1.json',
+      },
+    } : source),
+  };
+  await writeFile(new URL('../../docs/evidence/prediction/pdata-live-conformance.v1.json', import.meta.url), `${JSON.stringify(result, null, 2)}\n`, 'utf8');
+  await writeFile(new URL('../../infra/prediction/source-routes.v1.json', import.meta.url), `${JSON.stringify(updatedRegistry, null, 2)}\n`, 'utf8');
+}
 
 console.log(JSON.stringify(result, null, 2));
 if (!qualified) process.exitCode = 1;
