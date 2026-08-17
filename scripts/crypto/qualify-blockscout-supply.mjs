@@ -7,6 +7,11 @@ import { normalizeBlockscoutActivity, normalizeBlockscoutWallet } from '../../di
 const credential = process.env.BLOCKSCOUT_API_KEY;
 if (typeof credential !== 'string' || credential.length < 8) throw new Error('BLOCKSCOUT_API_KEY is required');
 
+const evaluatedAt = new Date().toISOString();
+const evaluatedAtMs = Date.parse(evaluatedAt);
+if (!Number.isFinite(evaluatedAtMs)) throw new Error('blockscout_qualification_clock_invalid');
+const qualificationId = `qual_BlockscoutValueAdded${evaluatedAt.slice(0, 10).replaceAll('-', '')}`;
+const expiresAt = new Date(evaluatedAtMs + 7 * 86_400_000).toISOString();
 const origin = 'https://api.blockscout.com';
 const maximumResponseBytes = 2_000_000;
 const chains = Object.freeze([
@@ -96,13 +101,27 @@ const latencies = transportObservations.filter(({ status }) => status === 200).m
 const percentile = (fraction) => latencies[Math.min(latencies.length - 1, Math.floor(latencies.length * fraction))] ?? null;
 const newestTransactionAt = checks.filter(({ id }) => id.endsWith('.active.transactions')).map(({ id }) => id);
 const passed = checks.every(({ passed: value }) => value) && localRejections.every(({ passed: value }) => value) && burst.some(({ status }) => status === 'fulfilled') && cooldown !== null;
+const qualificationEvidence = Object.freeze({
+  externalCalls: transportObservations.length,
+  successes: successfulNetworkRequests,
+  failures: transportObservations.length - successfulNetworkRequests,
+  checksPassed: checks.filter(({ passed: value }) => value).length,
+  paginationPassed: checks.find(({ id }) => id === 'base.pagination_100')?.passed === true,
+  emptyWalletsPassed: checks.filter(({ id }) => id.includes('.empty.')).every(({ passed: value }) => value),
+  highActivityPassed: checks.find(({ id }) => id === 'base.pagination_100')?.passed === true,
+  burstSuccesses: burst.filter(({ status }) => status === 'fulfilled').length,
+  cooldownRecovered: cooldown !== null,
+  latencyMs: Object.freeze({ minimum: latencies[0] ?? null, median: percentile(0.5), p95: percentile(0.95), maximum: latencies.at(-1) ?? null }),
+  normalizationPassed: checks.filter(({ id }) => id.endsWith('.normalization')).every(({ passed: value }) => value),
+});
 
 const report = Object.freeze({
   schemaVersion: 'clervo.blockscout-b9-qualification.v1',
-  evaluatedAt: new Date().toISOString(),
+  evaluatedAt,
   sourceId: 'crypto.source.blockscout_pro',
-  qualificationId: 'qual_BlockscoutValueAdded20260809',
-  expiresAt: '2026-08-16T17:30:00.000Z',
+  qualificationId,
+  expiresAt,
+  qualificationWindowDays: 7,
   ownerCashSpentUsd: 0,
   externalCalls: transportObservations.length,
   successfulNetworkRequests,
@@ -114,15 +133,15 @@ const report = Object.freeze({
     checksPassed: checks.filter(({ passed: value }) => value).length,
     checksFailed: checks.filter(({ passed: value }) => !value).length,
     repeatedCallsCharacterized: true,
-    paginationPassed: checks.find(({ id }) => id === 'base.pagination_100')?.passed === true,
-    emptyWalletsPassed: checks.filter(({ id }) => id.includes('.empty.')).every(({ passed: value }) => value),
-    highActivityPassed: checks.find(({ id }) => id === 'base.pagination_100')?.passed === true,
+    paginationPassed: qualificationEvidence.paginationPassed,
+    emptyWalletsPassed: qualificationEvidence.emptyWalletsPassed,
+    highActivityPassed: qualificationEvidence.highActivityPassed,
     malformedAndUnsupportedRejected: localRejections.every(({ passed: value }) => value),
-    burstSuccesses: burst.filter(({ status }) => status === 'fulfilled').length,
+    burstSuccesses: qualificationEvidence.burstSuccesses,
     burstFailures: burst.filter(({ status }) => status === 'rejected').length,
-    cooldownRecovered: cooldown !== null,
-    latencyMs: Object.freeze({ minimum: latencies[0] ?? null, median: percentile(0.5), p95: percentile(0.95), maximum: latencies.at(-1) ?? null }),
-    normalizationPassed: checks.filter(({ id }) => id.endsWith('.normalization')).every(({ passed: value }) => value),
+    cooldownRecovered: qualificationEvidence.cooldownRecovered,
+    latencyMs: qualificationEvidence.latencyMs,
+    normalizationPassed: qualificationEvidence.normalizationPassed,
     newestTransactionChecks: newestTransactionAt.length,
   }),
   capability: Object.freeze({
@@ -146,6 +165,14 @@ const report = Object.freeze({
     supplierVariableCostMicrousd: 0,
     allowance: '100000 credits/day; 5 requests/second; no automatic paid upgrade',
     evidenceUrls: Object.freeze(['https://docs.blockscout.com/devs/pro-api', 'https://dev.blockscout.com/', 'https://eaas.blockscout.com/terms-and-conditions']),
+  }),
+  sourceRouteUpdate: Object.freeze({
+    qualificationId,
+    technicalQualification: passed ? 'qualified' : 'failed',
+    technicalObservedAt: evaluatedAt,
+    technicalExpiresAt: expiresAt,
+    qualificationEvidence,
+    termsObservedAt: evaluatedAt,
   }),
   checks,
   localRejections,
