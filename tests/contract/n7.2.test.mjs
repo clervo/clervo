@@ -34,10 +34,11 @@ test('sandbox rejects weak attestation and destroys a limit-breaching runtime', 
   assert.equal(flooding.calls.some(([name]) => name === 'destroy'), true);
 });
 
-test('sandbox reaper destroys expired sessions and reports foreign orphans', async () => {
+test('sandbox reaper destroys expired sessions and owned foreign orphans', async () => {
   let now = 0; const runtime = executor({ async list() { return ['sbx_FOREIGNORPHAN0123456789']; } }); const plane = new SandboxControlPlane(runtime, () => now, images);
   await plane.create({ sessionId, tenantId, imageDigest, limits, ttlMs: 1000 }); now = 1000;
-  assert.deepEqual(await plane.reap(), { destroyed: 1, quarantined: 0, foreignOrphans: 1 });
+  assert.deepEqual(await plane.reap(), { destroyed: 2, quarantined: 0, foreignOrphans: 0 });
+  assert.equal(runtime.calls.some(([name, id]) => name === 'destroy' && id === 'sbx_FOREIGNORPHAN0123456789'), true);
 });
 
 test('sandbox rejects an unapproved image before touching the executor', async () => {

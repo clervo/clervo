@@ -48,7 +48,8 @@ Product access:
 
 ## Secure Sandbox
 
-- `POST /v1/sandbox/execute`: class-derived 0.010000–0.060000 USDC quote on Base for one bounded Node.js gVisor execution.
+- `POST /v1/sandbox/execute`: class-derived 0.010000–0.060000 USDC quote on Base for one bounded Node.js 24 or Python 3.12 gVisor execution.
+- Requests may include bounded stdin and files and may return requested artifacts; decoded code, stdin, and files share a 1 MiB envelope, artifact transport is capped at 1 MiB, and returned artifacts are hashed but not malware-scanned.
 - The short class is capped at 5 CPU seconds, 256 MiB, 16 processes, 64 MiB disk, 64 KiB output, 1 MiB artifacts, and 10 seconds wall time; larger requests use the standard class without weaker ceilings.
 - The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.
 
@@ -229,7 +230,7 @@ Current availability was generated at 2026-08-15T14:28:34.287Z.
 
 - You need an AI model call (89 model IDs) — use `POST /v1/ai/execute`.
 - You need cited web evidence for a question — use `POST /v1/search/free` or `POST /v1/search/paid`.
-- You need to run sandboxed Node.js code safely with a receipt — use `POST /v1/sandbox/execute`.
+- You need to run sandboxed Node.js or Python code safely with a receipt — use `POST /v1/sandbox/execute`.
 - You need read-only JSON-RPC on Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, or Solana — use `POST /v1/rpc/execute`.
 - You need real-time prediction market data (Polymarket, Kalshi, Manifold, Limitless) — use `POST /v1/prediction/execute`.
 - You need EVM wallet intelligence for Ethereum or Base — use `POST /v1/crypto/execute`.

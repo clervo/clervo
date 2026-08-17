@@ -7,7 +7,7 @@ steps:
       - |
         npm ci
         npm run build
-        node --test tests/contract/n7.10.test.mjs tests/contract/n7.13.test.mjs tests/contract/n7.14.test.mjs tests/contract/n7.15.test.mjs
+        node --test tests/contract/hammer3-sandbox-recovery.test.mjs tests/contract/n7.2.test.mjs tests/contract/n7.10.test.mjs tests/contract/n7.13.test.mjs tests/contract/n7.14.test.mjs tests/contract/sandbox-public-commerce.test.mjs tests/contract/sandbox-public-http.test.mjs
   - id: image
     name: gcr.io/cloud-builders/docker@sha256:f8b08c609fdc392ee6827ff3e1725e4980f7d96bde9f76f4695086405c96c147
     args:
@@ -15,10 +15,10 @@ steps:
       - --file
       - infra/sandbox/control/Dockerfile
       - --tag
-      - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/control:private-control-v4-20260803
+      - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/control:hammer3-recovery-20260816-r2
       - .
 images:
-  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/control:private-control-v4-20260803
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/control:hammer3-recovery-20260816-r2
 options:
   requestedVerifyOption: VERIFIED
   logging: CLOUD_LOGGING_ONLY

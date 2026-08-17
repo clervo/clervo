@@ -1,12 +1,12 @@
 {
   "schemaVersion": "clervo.sandbox-runner-image-qualification.v1",
-  "evaluatedAt": "2026-08-10T14:25:43.440Z",
-  "imageId": "sandbox.nodejs-24",
-  "digest": "sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a",
+  "evaluatedAt": "2026-08-17T00:30:58.884Z",
+  "imageId": "sandbox.nodejs-24-python3-12",
+  "digest": "sha256:fe0c81bd0cc5b77b643d2fa0017f48aa3fcfcd470326a00c4ba3a037a09170e9",
   "build": {
     "status": "passed",
     "builder": "google-cloud-build",
-    "buildId": "f9d07aef-1ed6-4eb7-b9df-8f54c39869cd",
+    "buildId": "cee53f8b-3005-4657-96db-b645ddb1fae2",
     "slsaBuildLevel": 3,
     "provenanceAttestations": 2
   },
@@ -22,10 +22,10 @@
     "status": "passed",
     "scanner": "clamav",
     "scannerVersion": "1.5.2",
-    "databaseVersion": 28088,
+    "databaseVersion": 28094,
     "databaseDownloadedBeforeIsolation": true,
     "scanNetwork": "none",
-    "filesScanned": 622,
+    "filesScanned": 2002,
     "infectedFiles": 0,
     "scannerImageDigest": "sha256:1b6443c4a7b456baa1abfaf9796815f8d21e2fb558dbaed5b682fd4552d8b0c3"
   },
@@ -33,9 +33,9 @@
     "format": "SPDX-2.3",
     "generator": "syft-1.44.0",
     "generatorImageDigest": "sha256:86fde6445b483d902fe011dd9f68c4987dd94e07da1e9edc004e3c2422650de6",
-    "path": "docs/evidence/sandbox/runner-sbom.spdx.json",
-    "sha256": "sha256:1d18c36379fde2d02c8bacf552ec6d6a630a8db17620d973bbebe9bff163956c",
-    "packageCount": 20
+    "path": "docs/evidence/sandbox/runner-sbom-hammer3.spdx.json",
+    "sha256": "sha256:a98e3ca23a482359510e876ca10067f4ba9fa204b061596b89cc9c6f25f297f9",
+    "packageCount": 35
   },
   "runtimeChecks": {
     "mode": "persistent-production",
@@ -43,17 +43,21 @@
     "clusterZone": "us-central1-a",
     "runtimeClass": "gvisor",
     "liveRedTeamStatus": "passed",
-    "liveRedTeamProbeCount": 10,
+    "liveRedTeamProbeCount": 14,
     "forkDenied": true,
     "maximumProcessesObserved": 32,
     "orphanProcessesObserved": 0,
     "cleanupVerified": true,
     "liveRedTeamReport": "docs/evidence/sandbox/gvisor-production-red-team.v1.json",
-    "liveRedTeamReportSha256": "sha256:ee22f5f17706b5394cd72c03558fc5588e90ea5553854ae7915109b4ef01b6fd"
+    "nodeVersion": "v24.18.1",
+    "pythonVersion": "3.12.14",
+    "nodeProgramBytes": 5899,
+    "pythonProgramBytes": 5061,
+    "liveRedTeamReportSha256": "sha256:ba50a9db56acd442dc60cb127e268d6d3b92d964f1c2549960cf713d2951a06d"
   },
   "supplyChainReport": {
     "path": "docs/evidence/sandbox/runner-supply-chain.v5.json",
-    "sha256": "sha256:f699b091988a9bdbf07586da40589785b8ac045b1ac42ca64564e0290f3ae402"
+    "sha256": "sha256:be2c7b7da97f14bfe098100d1affff61247fed585371100dada6a6b9943043ff"
   },
   "decision": "qualified",
   "productAvailability": "unavailable"

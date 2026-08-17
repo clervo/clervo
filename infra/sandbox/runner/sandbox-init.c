@@ -75,9 +75,9 @@ static rlim_t bounded(const char *name, rlim_t minimum, rlim_t maximum) {
 
 /* RLIMIT_NPROC is charged to the real uid, so it includes the long-lived
  * session supervisor and the per-request runner even though neither belongs
- * to the customer's traced process tree. Reserve the tasks that already
- * exist for this uid; ptrace and the independent /proc monitor below still
- * enforce the customer's exact requested ceiling. */
+ * to the customer's traced process tree. The traced root already appears in
+ * existing_uid_tasks(), so reserve only processes - 1 additional tasks.
+ * ptrace and the independent /proc monitor below remain fail-closed checks. */
 static rlim_t existing_uid_tasks(void) {
   uid_t uid = getuid(); rlim_t count = 0;
   DIR *processes = opendir("/proc"); if (processes == NULL) return 0;
@@ -116,8 +116,8 @@ int main(int argc, char **argv) {
     if (setpgid(0, 0) != 0 || prctl(PR_SET_PDEATHSIG, SIGKILL) != 0 || ptrace(PTRACE_TRACEME, 0, NULL, NULL) != 0) _exit(125);
     if (raise(SIGSTOP) != 0) _exit(125);
     rlim_t supervisor_tasks = existing_uid_tasks();
-    if (supervisor_tasks > 4096 || processes > RLIM_INFINITY - supervisor_tasks) _exit(125);
-    limit(RLIMIT_NPROC, supervisor_tasks + processes); limit(RLIMIT_CPU, (cpu_millis + 999) / 1000); limit(RLIMIT_FSIZE, file_bytes); limit(RLIMIT_CORE, 0); limit(RLIMIT_NOFILE, 128);
+    if (supervisor_tasks > 4096 || processes - 1 > RLIM_INFINITY - supervisor_tasks) _exit(125);
+    limit(RLIMIT_NPROC, supervisor_tasks + processes - 1); limit(RLIMIT_CPU, (cpu_millis + 999) / 1000); limit(RLIMIT_FSIZE, file_bytes); limit(RLIMIT_CORE, 0); limit(RLIMIT_NOFILE, 128);
     if (prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0) != 0) _exit(125);
     execvp(argv[1], &argv[1]); _exit(errno == ENOENT ? 127 : 126);
   }

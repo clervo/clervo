@@ -1,10 +1,15 @@
 import type { AssetAmount } from './types.js';
+import { createHash } from 'node:crypto';
 import { CONTRACT_VERSION } from './types.js';
 import { hashJson } from './receipt.js';
 import type { JsonValue } from './types.js';
 
 export const SANDBOX_OPERATION_REQUEST_SCHEMA_VERSION = 'sandbox-operation-request.v1' as const;
 export const SANDBOX_OPERATION_RESULT_SCHEMA_VERSION = 'sandbox-operation-result.v1' as const;
+export const SANDBOX_MAX_REQUEST_BYTES = 1_500_000;
+export const SANDBOX_MAX_INLINE_INPUT_BYTES = 1_048_576;
+export const SANDBOX_MAX_ARTIFACT_BYTES = 1_048_576;
+export const SANDBOX_MAX_OUTPUT_BYTES = 1_048_576;
 export const sandboxProductIds = ['sandbox.run', 'sandbox.session.create', 'sandbox.session.exec', 'sandbox.artifact.get', 'sandbox.session.destroy'] as const;
 export type SandboxProductId = (typeof sandboxProductIds)[number];
 
@@ -18,8 +23,19 @@ export interface SandboxResourceLimits {
   wallTimeMs: number;
 }
 
+export interface SandboxFileInput {
+  path: string;
+  contentBase64: string;
+}
+
+export interface SandboxArtifactInput {
+  path: string;
+  filename?: string;
+  mimeType?: string;
+}
+
 export type SandboxOperationInput =
-  | { kind: 'run'; executionId: string; imageDigest: string; command: readonly string[]; stdinBase64?: string; limits: SandboxResourceLimits }
+  | { kind: 'run'; executionId: string; imageDigest: string; command: readonly string[]; stdinBase64?: string; limits: SandboxResourceLimits; files?: readonly SandboxFileInput[]; artifactPaths?: readonly SandboxArtifactInput[] }
   | { kind: 'session_create'; imageDigest: string; limits: SandboxResourceLimits; ttlMs: number }
   | { kind: 'session_exec'; sessionId: string; executionId: string; command: readonly string[]; stdinBase64?: string }
   | { kind: 'artifact_get'; artifactId: string }
@@ -42,7 +58,8 @@ export interface SandboxArtifactResult {
   bytes: number;
   sha256: string;
   artifactUri: string;
-  scan: Readonly<{ verdict: 'clean'; scannerVersion: string }>;
+  scan: Readonly<{ verdict: 'clean'; scannerVersion: string } | { verdict: 'not_scanned'; scannerVersion: null }>;
+  contentBase64?: string;
 }
 
 export type SandboxOperationOutput =
@@ -76,18 +93,57 @@ function amount(value: AssetAmount): void {
 
 function limits(value: SandboxResourceLimits): void {
   const bounds: Readonly<Record<keyof SandboxResourceLimits, readonly [number, number]>> = {
-    cpuMillis: [1, 300_000], memoryBytes: [16_777_216, 8_589_934_592], processes: [1, 256], diskBytes: [1_048_576, 10_737_418_240], outputBytes: [1, 10_485_760], artifactBytes: [1, 104_857_600], wallTimeMs: [100, 300_000],
+    cpuMillis: [1, 300_000], memoryBytes: [16_777_216, 8_589_934_592], processes: [1, 256], diskBytes: [1_048_576, 10_737_418_240], outputBytes: [1, SANDBOX_MAX_OUTPUT_BYTES], artifactBytes: [1, SANDBOX_MAX_ARTIFACT_BYTES], wallTimeMs: [100, 300_000],
   };
   for (const key of Object.keys(bounds) as (keyof SandboxResourceLimits)[]) { const [minimum, maximum] = bounds[key]; if (!Number.isSafeInteger(value[key]) || value[key] < minimum || value[key] > maximum) throw new TypeError(`sandbox_request_limit_invalid:${key}`); }
 }
 
 function command(value: readonly string[]): void {
-  if (value.length < 1 || value.length > 32 || value.some((part) => part.length < 1 || part.length > 4096 || /[\u0000-\u001F\u007F]/u.test(part))) throw new TypeError('sandbox_request_command_invalid');
+  if (!Array.isArray(value) || value.length < 1 || value.length > 32) throw new TypeError('sandbox_request_command_invalid');
+  const inlineProgram = (value[0] === 'node' && value[1] === '-e') || ((value[0] === 'python' || value[0] === 'python3') && value[1] === '-c');
+  if (value.some((part, index) => typeof part !== 'string' || part.length < 1 || part.length > (inlineProgram && index === 2 ? 262_144 : 4_096) || /[\u0000-\u001F\u007F]/u.test(part))) throw new TypeError('sandbox_request_command_invalid');
 }
 
-function base64(value: string | undefined, maximumBytes = 1_048_576): void {
+function workspacePath(value: string, code: string): void {
+  if (typeof value !== 'string' || value.length < 1 || value.length > 256 || value.startsWith('/') || value.includes('\\') || value.split('/').some((part) => part === '' || part === '.' || part === '..' || !/^[A-Za-z0-9._ -]+$/u.test(part)) || value.split('/')[0] === '.clervo-runtime') throw new TypeError(code);
+}
+
+function files(value: readonly SandboxFileInput[] | undefined): void {
   if (value === undefined) return;
-  if (value.length > Math.ceil(maximumBytes / 3) * 4 || value.length % 4 !== 0 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/u.test(value) || Buffer.from(value, 'base64').byteLength > maximumBytes) throw new TypeError('sandbox_request_stdin_invalid');
+  if (!Array.isArray(value) || value.length > 32) throw new TypeError('sandbox_request_files_invalid');
+  let total = 0; const paths = new Set<string>();
+  for (const item of value) {
+    if (item === null || typeof item !== 'object' || Array.isArray(item) || Object.keys(item).some((key) => !['path', 'contentBase64'].includes(key))) throw new TypeError('sandbox_request_file_invalid');
+    workspacePath(item.path, 'sandbox_request_file_path_invalid');
+    if (paths.has(item.path)) throw new TypeError('sandbox_request_file_path_duplicate'); paths.add(item.path);
+    base64(item.contentBase64, SANDBOX_MAX_INLINE_INPUT_BYTES, 'sandbox_request_file_content_invalid');
+    total += Buffer.from(item.contentBase64, 'base64').byteLength;
+    if (total > SANDBOX_MAX_INLINE_INPUT_BYTES) throw new TypeError('sandbox_request_files_too_large');
+  }
+}
+
+function artifactPaths(value: readonly SandboxArtifactInput[] | undefined): void {
+  if (value === undefined) return;
+  if (!Array.isArray(value) || value.length > 32) throw new TypeError('sandbox_request_artifacts_invalid');
+  const paths = new Set<string>();
+  for (const item of value) {
+    if (item === null || typeof item !== 'object' || Array.isArray(item) || Object.keys(item).some((key) => !['path', 'filename', 'mimeType'].includes(key))) throw new TypeError('sandbox_request_artifact_invalid');
+    workspacePath(item.path, 'sandbox_request_artifact_path_invalid');
+    if (paths.has(item.path)) throw new TypeError('sandbox_request_artifact_path_duplicate'); paths.add(item.path);
+    if (item.filename !== undefined && !/^[A-Za-z0-9][A-Za-z0-9._ -]{0,127}$/u.test(item.filename)) throw new TypeError('sandbox_request_artifact_filename_invalid');
+    if (item.mimeType !== undefined && !/^[a-z0-9][a-z0-9.+-]{0,63}\/[a-z0-9][a-z0-9.+-]{0,63}$/u.test(item.mimeType)) throw new TypeError('sandbox_request_artifact_mime_invalid');
+  }
+}
+
+function base64(value: string | undefined, maximumBytes = SANDBOX_MAX_INLINE_INPUT_BYTES, code = 'sandbox_request_stdin_invalid'): void {
+  if (value === undefined) return;
+  if (typeof value !== 'string' || value.length > Math.ceil(maximumBytes / 3) * 4 || value.length % 4 !== 0 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/u.test(value) || Buffer.from(value, 'base64').byteLength > maximumBytes || Buffer.from(value, 'base64').toString('base64') !== value) throw new TypeError(code);
+}
+
+function inlineInputBytes(input: Extract<SandboxOperationInput, { kind: 'run' }>): number {
+  return input.command.reduce((total, part) => total + Buffer.byteLength(part), 0)
+    + (input.stdinBase64 === undefined ? 0 : Buffer.from(input.stdinBase64, 'base64').byteLength)
+    + (input.files ?? []).reduce((total, item) => total + Buffer.from(item.contentBase64, 'base64').byteLength, 0);
 }
 
 export function assertSandboxOperationRequest(value: SandboxOperationRequest): void {
@@ -97,7 +153,9 @@ export function assertSandboxOperationRequest(value: SandboxOperationRequest): v
   const input = value.input;
   if (input.kind === 'run') {
     if (!/^exec_[A-Za-z0-9]{20,64}$/u.test(input.executionId) || !/^sha256:[a-f0-9]{64}$/u.test(input.imageDigest)) throw new TypeError('sandbox_request_run_invalid');
-    command(input.command); base64(input.stdinBase64); limits(input.limits);
+    command(input.command); base64(input.stdinBase64); limits(input.limits); files(input.files); artifactPaths(input.artifactPaths);
+    if (inlineInputBytes(input) > SANDBOX_MAX_INLINE_INPUT_BYTES) throw new TypeError('sandbox_request_inline_input_too_large');
+    if (Buffer.byteLength(JSON.stringify(value)) > SANDBOX_MAX_REQUEST_BYTES) throw new TypeError('sandbox_request_envelope_too_large');
   } else if (input.kind === 'session_create') {
     if (!/^sha256:[a-f0-9]{64}$/u.test(input.imageDigest) || !Number.isSafeInteger(input.ttlMs) || input.ttlMs < 1_000 || input.ttlMs > 900_000) throw new TypeError('sandbox_request_create_invalid');
     limits(input.limits);
@@ -110,14 +168,20 @@ export function assertSandboxOperationRequest(value: SandboxOperationRequest): v
 }
 
 function artifact(value: SandboxArtifactResult): void {
-  if (!/^art_[a-f0-9]{32}$/u.test(value.artifactId) || !/^[A-Za-z0-9][A-Za-z0-9._ -]{0,127}$/u.test(value.filename) || !/^[a-z0-9][a-z0-9.+-]{0,63}\/[a-z0-9][a-z0-9.+-]{0,63}$/u.test(value.mimeType) || !Number.isSafeInteger(value.bytes) || value.bytes < 1 || value.bytes > 104_857_600 || !/^sha256:[a-f0-9]{64}$/u.test(value.sha256) || !/^artifact:\/\/generated\/tenant_[A-Za-z0-9]{20,64}\/[a-f0-9]{64}$/u.test(value.artifactUri) || value.scan.verdict !== 'clean' || !/^[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$/u.test(value.scan.scannerVersion)) throw new TypeError('sandbox_result_artifact_invalid');
+  const validScan = value.scan?.verdict === 'not_scanned' ? value.scan.scannerVersion === null : value.scan?.verdict === 'clean' && /^[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$/u.test(value.scan.scannerVersion);
+  if (!/^art_[a-f0-9]{32}$/u.test(value.artifactId) || !/^[A-Za-z0-9][A-Za-z0-9._ -]{0,127}$/u.test(value.filename) || !/^[a-z0-9][a-z0-9.+-]{0,63}\/[a-z0-9][a-z0-9.+-]{0,63}$/u.test(value.mimeType) || !Number.isSafeInteger(value.bytes) || value.bytes < 1 || value.bytes > SANDBOX_MAX_ARTIFACT_BYTES || !/^sha256:[a-f0-9]{64}$/u.test(value.sha256) || !/^artifact:\/\/generated\/tenant_[A-Za-z0-9]{20,64}\/[a-f0-9]{64}$/u.test(value.artifactUri) || !validScan) throw new TypeError('sandbox_result_artifact_invalid');
+  if (value.contentBase64 !== undefined) {
+    base64(value.contentBase64, SANDBOX_MAX_ARTIFACT_BYTES, 'sandbox_result_artifact_content_invalid');
+    const bytes = Buffer.from(value.contentBase64, 'base64');
+    if (bytes.byteLength !== value.bytes || `sha256:${createHash('sha256').update(bytes).digest('hex')}` !== value.sha256) throw new TypeError('sandbox_result_artifact_content_invalid');
+  }
 }
 
 function output(request: SandboxOperationRequest, value: SandboxOperationOutput): void {
   if (request.input.kind === 'run' || request.input.kind === 'session_exec') {
     if (value.kind !== 'execution' || !/^sbx_[A-Za-z0-9]{20,64}$/u.test(value.sessionId) || value.executionId !== request.input.executionId || (request.input.kind === 'run' ? value.sessionState !== 'destroyed' : value.sessionState !== 'ready') || !Number.isSafeInteger(value.exitCode) || value.exitCode < 0 || value.exitCode > 255 || !Number.isSafeInteger(value.cpuMillis) || value.cpuMillis < 0 || !Number.isSafeInteger(value.durationMs) || value.durationMs < 0) throw new TypeError('sandbox_result_execution_invalid');
-    const maximumOutput = request.input.kind === 'run' ? request.input.limits.outputBytes : 10_485_760;
-    base64(value.stdoutBase64, 10_485_760); base64(value.stderrBase64, 10_485_760);
+    const maximumOutput = request.input.kind === 'run' ? request.input.limits.outputBytes : SANDBOX_MAX_OUTPUT_BYTES;
+    base64(value.stdoutBase64, SANDBOX_MAX_OUTPUT_BYTES); base64(value.stderrBase64, SANDBOX_MAX_OUTPUT_BYTES);
     if (Buffer.from(value.stdoutBase64, 'base64').byteLength + Buffer.from(value.stderrBase64, 'base64').byteLength > maximumOutput || (request.input.kind === 'run' && (value.cpuMillis > request.input.limits.cpuMillis || value.durationMs > request.input.limits.wallTimeMs))) throw new TypeError('sandbox_result_limit_exceeded');
     if (value.artifacts.length > 64) throw new TypeError('sandbox_result_artifacts_invalid'); for (const item of value.artifacts) artifact(item);
   } else if (request.input.kind === 'session_create') {

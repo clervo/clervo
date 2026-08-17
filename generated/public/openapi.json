@@ -2046,7 +2046,7 @@
     "/v1/sandbox/execute": {
       "post": {
         "summary": "Request or settle a bounded one-shot Secure Sandbox execution",
-        "description": "Runs one command in the pinned qualified Node.js gVisor image with no network, strict resources, cleanup, a receipt, and no-charge replay. The short class is 0.010 USDC; larger bounded requests quote the standard class. Sessions and artifact retrieval are not yet public.",
+        "description": "Runs one Node.js or Python program (or a raw command) in the pinned qualified gVisor image with no network, strict resources, bounded files and returned artifacts, cleanup, a receipt, and no-charge replay. Generated artifacts are hashed but explicitly not malware-scanned. The short class is 0.010 USDC; larger bounded requests quote the standard class. Sessions and artifact retrieval are not yet public.",
         "operationId": "sandboxExecute",
         "parameters": [
           {
@@ -2067,10 +2067,44 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "command"
-                ],
                 "additionalProperties": false,
+                "oneOf": [
+                  {
+                    "required": [
+                      "command"
+                    ],
+                    "not": {
+                      "anyOf": [
+                        {
+                          "required": [
+                            "runtime"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "code"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "args"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "required": [
+                      "runtime",
+                      "code"
+                    ],
+                    "not": {
+                      "required": [
+                        "command"
+                      ]
+                    }
+                  }
+                ],
                 "properties": {
                   "command": {
                     "type": "array",
@@ -2087,8 +2121,82 @@
                       "process.stdout.write('ready')"
                     ]
                   },
+                  "runtime": {
+                    "type": "string",
+                    "enum": [
+                      "node",
+                      "python"
+                    ]
+                  },
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 262144
+                  },
+                  "args": {
+                    "type": "array",
+                    "maxItems": 29,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    }
+                  },
                   "stdinBase64": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 1398104
+                  },
+                  "files": {
+                    "type": "array",
+                    "maxItems": 32,
+                    "description": "Decoded code, stdin, and file content share a 1 MiB aggregate envelope.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "path",
+                        "contentBase64"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 256
+                        },
+                        "contentBase64": {
+                          "type": "string",
+                          "maxLength": 1398104
+                        }
+                      }
+                    }
+                  },
+                  "artifactPaths": {
+                    "type": "array",
+                    "maxItems": 32,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "path"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 256
+                        },
+                        "filename": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        },
+                        "mimeType": {
+                          "type": "string",
+                          "minLength": 3,
+                          "maxLength": 129
+                        }
+                      }
+                    }
                   },
                   "limits": {
                     "type": "object",
@@ -2131,7 +2239,7 @@
                       "artifactBytes": {
                         "type": "integer",
                         "minimum": 1,
-                        "maximum": 10485760
+                        "maximum": 1048576
                       },
                       "wallTimeMs": {
                         "type": "integer",

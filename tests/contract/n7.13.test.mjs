@@ -82,6 +82,6 @@ test('production Kubernetes transport fails closed on foreign resources, credent
   const credentialed = dependencies({ core: { async readNamespacedPod() { const pod = await deps.clients.core.readNamespacedPod(); pod.spec.automountServiceAccountToken = true; return pod; } } });
   const observed = await credentialed.executor.create({ sessionId, tenantId, imageDigest, limits });
   assert.equal(observed.serviceAccountTokenMounted, true);
-  const flooding = dependencies({ exec: { async exec(_namespace, _pod, _container, _command, stdout) { const socket = new EventEmitter(); socket.close = () => socket.emit('close'); setImmediate(() => stdout.write(Buffer.alloc(70_000))); return socket; } } });
+  const flooding = dependencies({ exec: { async exec(_namespace, _pod, _container, _command, stdout) { const socket = new EventEmitter(); socket.close = () => socket.emit('close'); setImmediate(() => stdout.write(Buffer.alloc(3_000_001))); return socket; } } });
   await assert.rejects(flooding.executor.execute({ sessionId, executionId, command: ['node'], stdin: new Uint8Array(), limits }), /execute_failed/u);
 });

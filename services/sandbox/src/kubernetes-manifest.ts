@@ -33,7 +33,7 @@ function requireRepository(value: string): void {
 function requireLimits(value: SandboxLimits): void {
   const bounds: Readonly<Record<keyof SandboxLimits, readonly [number, number]>> = {
     cpuMillis: [1, 300_000], memoryBytes: [16_777_216, 8_589_934_592], processes: [1, 256], diskBytes: [1_048_576, 10_737_418_240],
-    outputBytes: [1, 10_485_760], artifactBytes: [1, 104_857_600], wallTimeMs: [100, 300_000], maximumChargeMicrousd: [1, 1_000_000],
+    outputBytes: [1, 1_048_576], artifactBytes: [1, 1_048_576], wallTimeMs: [100, 300_000], maximumChargeMicrousd: [1, 1_000_000],
   };
   for (const key of Object.keys(bounds) as (keyof SandboxLimits)[]) {
     const [minimum, maximum] = bounds[key];

@@ -132,7 +132,7 @@
         "sync"
       ],
       "selection": {
-        "image": "Pinned qualified sandbox.nodejs-24 image; caller cannot select an arbitrary image."
+        "image": "Pinned qualified sandbox.nodejs-24-python3-12 image; caller cannot select an arbitrary image."
       },
       "pricing": {
         "model": "class_derived_quote",

@@ -69,7 +69,7 @@
   },
   "runner": {
     "repository": "us-central1-docker.pkg.dev/bloxsniper-prod/clervo-sandbox/runner",
-    "imageDigest": "sha256:07685aab603d011ab3c881a359911f14b7a11bbf175285fdb17a4156eb7d025a",
+    "imageDigest": "sha256:fe0c81bd0cc5b77b643d2fa0017f48aa3fcfcd470326a00c4ba3a037a09170e9",
     "signatureVerified": true,
     "provenanceVerified": true,
     "vulnerabilityScan": "passed",
@@ -91,7 +91,7 @@
     "all unrelated and legacy cloud resources"
   ],
   "observed": {
-    "evaluatedAt": "2026-08-03T13:58:06.534Z",
+    "evaluatedAt": "2026-08-17T00:30:34.211Z",
     "clusterStatus": "RUNNING",
     "currentMasterVersion": "1.36.2-gke.2281000",
     "currentNodeVersion": "1.36.2-gke.2281000",
@@ -114,9 +114,9 @@
     "requiredCrdsPresent": true,
     "publicWorkload": false,
     "failedZoneAttemptRemoved": true,
-    "runnerBuildId": "f9d07aef-1ed6-4eb7-b9df-8f54c39869cd",
+    "runnerBuildId": "cee53f8b-3005-4657-96db-b645ddb1fae2",
     "runnerSupplyChainReport": "docs/evidence/sandbox/runner-supply-chain.v5.json",
     "runnerRedTeamReport": "docs/evidence/sandbox/gvisor-production-red-team.v1.json",
-    "runnerRedTeamReportSha256": "sha256:ee22f5f17706b5394cd72c03558fc5588e90ea5553854ae7915109b4ef01b6fd"
+    "runnerRedTeamReportSha256": "sha256:ba50a9db56acd442dc60cb127e268d6d3b92d964f1c2549960cf713d2951a06d"
   }
 }

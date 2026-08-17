@@ -99,11 +99,11 @@ export function createSandboxControlServer(input) {
     let created = false;
     try {
       await input.plane.create({ sessionId, tenantId, imageDigest: value.input.imageDigest, limits, ttlMs: Math.min(900_000, Math.max(1_000, limits.wallTimeMs + 60_000)) }); created = true;
-      const observed = await input.plane.execute({ sessionId, executionId: value.input.executionId, tenantId, command: value.input.command, stdin: value.input.stdinBase64 ? Buffer.from(value.input.stdinBase64, 'base64') : new Uint8Array() });
+      const observed = await input.plane.execute({ sessionId, executionId: value.input.executionId, tenantId, command: value.input.command, stdin: value.input.stdinBase64 ? Buffer.from(value.input.stdinBase64, 'base64') : new Uint8Array(), files: value.input.files, artifactPaths: value.input.artifactPaths });
       await input.plane.destroy(sessionId, tenantId); created = false;
       const result = createSandboxOperationResult({
         request: value, completedAt: new Date().toISOString(), meteredCharge: { asset: 'USD', amountAtomic: '0', decimals: 6 },
-        output: { kind: 'execution', sessionId, executionId: observed.executionId, sessionState: 'destroyed', exitCode: observed.exitCode, stdoutBase64: Buffer.from(observed.stdout).toString('base64'), stderrBase64: Buffer.from(observed.stderr).toString('base64'), cpuMillis: observed.cpuMillis, durationMs: observed.durationMs, artifacts: [] },
+        output: { kind: 'execution', sessionId, executionId: observed.executionId, sessionState: 'destroyed', exitCode: observed.exitCode, stdoutBase64: Buffer.from(observed.stdout).toString('base64'), stderrBase64: Buffer.from(observed.stderr).toString('base64'), cpuMillis: observed.cpuMillis, durationMs: observed.durationMs, artifacts: (observed.artifacts ?? []).map((artifact) => ({ artifactId: `art_${artifact.sha256.slice('sha256:'.length, 'sha256:'.length + 32)}`, filename: artifact.filename, mimeType: artifact.mimeType, bytes: artifact.bytes, sha256: artifact.sha256, artifactUri: `artifact://generated/${tenantId}/${artifact.sha256.slice('sha256:'.length)}`, scan: { verdict: 'not_scanned', scannerVersion: null }, contentBase64: artifact.contentBase64 })) },
       });
       completed.set(value.operationId, { hash, result });
       while (completed.size > 256) completed.delete(completed.keys().next().value);
@@ -127,12 +127,27 @@ async function main() {
   if (!token || !/^[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?\/[a-z0-9][a-z0-9._/-]{2,255}$/u.test(repository ?? '') || !/^sha256:[a-f0-9]{64}$/u.test(digest ?? '')) throw new Error('sandbox_control_environment_invalid');
   const transport = KubernetesAgentSandboxTransport.fromCluster();
   const executor = new AgentSandboxExecutor({ transport, config: { imageRepository: repository, readinessTimeoutMs: 120_000 } });
-  const images = new SandboxImageRegistry([{ imageId: 'sandbox.nodejs-24', digest, lifecycle: 'qualified', signatureVerified: true, provenanceVerified: true, vulnerabilityScan: 'passed', malwareScan: 'passed', sbomSha256: process.env.CLERVO_SANDBOX_RUNNER_SBOM_SHA256 ?? '' }]);
+  const images = new SandboxImageRegistry([{ imageId: 'sandbox.nodejs-24-python3-12', digest, lifecycle: 'qualified', signatureVerified: true, provenanceVerified: true, vulnerabilityScan: 'passed', malwareScan: 'passed', sbomSha256: process.env.CLERVO_SANDBOX_RUNNER_SBOM_SHA256 ?? '' }]);
   const plane = new SandboxControlPlane(executor, Date.now, images);
-  const server = createSandboxControlServer({ token, plane, ready: () => transport.listSessionIds('clervo-sandbox-execution') });
+  let cleanupHealthy = false; let reaping = false;
+  const reap = async () => {
+    if (reaping) return;
+    reaping = true;
+    try {
+      const result = await plane.reap(); cleanupHealthy = result.quarantined === 0 && result.foreignOrphans === 0;
+    } catch { cleanupHealthy = false; }
+    finally { reaping = false; }
+  };
+  await reap();
+  if (!cleanupHealthy) throw new Error('sandbox_control_startup_cleanup_failed');
+  const server = createSandboxControlServer({ token, plane, ready: async () => {
+    if (!cleanupHealthy) throw new Error('sandbox_control_cleanup_unhealthy');
+    return transport.listSessionIds('clervo-sandbox-execution');
+  } });
   const port = Number(process.env.PORT ?? 8080);
   server.listen(port, '0.0.0.0');
-  const stop = () => server.close(() => process.exit(0));
+  const reaper = setInterval(reap, 30_000); reaper.unref();
+  const stop = () => { clearInterval(reaper); server.close(() => process.exit(0)); };
   process.once('SIGTERM', stop); process.once('SIGINT', stop);
 }
 

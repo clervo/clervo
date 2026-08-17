@@ -244,10 +244,19 @@ const sandboxProbeExample = Object.freeze({
   limits: Object.freeze({ cpuMillis: 5_000, memoryBytes: 268_435_456, processes: 16, diskBytes: 67_108_864, outputBytes: 65_536, artifactBytes: 1_048_576, wallTimeMs: 10_000 }),
 });
 const sandboxProbeSchema = Object.freeze({
-  type: 'object', required: ['command'], additionalProperties: false,
+  type: 'object', additionalProperties: false,
+  oneOf: [
+    { required: ['command'], not: { anyOf: [{ required: ['runtime'] }, { required: ['code'] }, { required: ['args'] }] } },
+    { required: ['runtime', 'code'], not: { required: ['command'] } },
+  ],
   properties: {
     command: { type: 'array', minItems: 1, maxItems: 32, items: { type: 'string', minLength: 1, maxLength: 4096 }, default: sandboxProbeExample.command },
-    stdinBase64: { type: 'string' },
+    runtime: { type: 'string', enum: ['node', 'python'] },
+    code: { type: 'string', minLength: 1, maxLength: 262_144 },
+    args: { type: 'array', maxItems: 29, items: { type: 'string', minLength: 1, maxLength: 4_096 } },
+    stdinBase64: { type: 'string', maxLength: 1_398_104 },
+    files: { type: 'array', maxItems: 32, description: 'Decoded code, stdin, and file content share a 1 MiB aggregate envelope.', items: { type: 'object', required: ['path', 'contentBase64'], additionalProperties: false, properties: { path: { type: 'string', minLength: 1, maxLength: 256 }, contentBase64: { type: 'string', maxLength: 1_398_104 } } } },
+    artifactPaths: { type: 'array', maxItems: 32, items: { type: 'object', required: ['path'], additionalProperties: false, properties: { path: { type: 'string', minLength: 1, maxLength: 256 }, filename: { type: 'string', minLength: 1, maxLength: 128 }, mimeType: { type: 'string', minLength: 3, maxLength: 129 } } } },
     limits: {
       type: 'object', additionalProperties: false, default: sandboxProbeExample.limits,
       properties: {
@@ -256,7 +265,7 @@ const sandboxProbeSchema = Object.freeze({
         processes: { type: 'integer', minimum: 1, maximum: 64 },
         diskBytes: { type: 'integer', minimum: 1_048_576, maximum: 1_073_741_824 },
         outputBytes: { type: 'integer', minimum: 1, maximum: 1_048_576 },
-        artifactBytes: { type: 'integer', minimum: 1, maximum: 10_485_760 },
+        artifactBytes: { type: 'integer', minimum: 1, maximum: 1_048_576 },
         wallTimeMs: { type: 'integer', minimum: 100, maximum: 60_000 },
       },
     },
@@ -994,7 +1003,7 @@ if (publicSandbox) {
   openapi.paths['/v1/sandbox/execute'] = {
     post: {
       summary: 'Request or settle a bounded one-shot Secure Sandbox execution',
-      description: 'Runs one command in the pinned qualified Node.js gVisor image with no network, strict resources, cleanup, a receipt, and no-charge replay. The short class is 0.010 USDC; larger bounded requests quote the standard class. Sessions and artifact retrieval are not yet public.',
+      description: 'Runs one Node.js or Python program (or a raw command) in the pinned qualified gVisor image with no network, strict resources, bounded files and returned artifacts, cleanup, a receipt, and no-charge replay. Generated artifacts are hashed but explicitly not malware-scanned. The short class is 0.010 USDC; larger bounded requests quote the standard class. Sessions and artifact retrieval are not yet public.',
       operationId: 'sandboxExecute',
       parameters: [{ name: 'Idempotency-Key', in: 'header', required: true, schema: { type: 'string', minLength: 8, maxLength: 128 } }],
       requestBody: { required: true, content: { 'application/json': { schema: sandboxProbeSchema } } },
@@ -1022,7 +1031,7 @@ if (publicSandbox) {
     productId: 'sandbox.run', operationId: 'sandbox.run', title: 'Secure one-shot code execution',
     summary: 'Bounded Node.js execution in a pinned gVisor image with no network, strict resource ceilings, cleanup, receipt, and no-charge replay.',
     lifecycle: 'preview', publicAvailable: true, deliveryModes: ['sync'],
-    selection: { image: 'Pinned qualified sandbox.nodejs-24 image; caller cannot select an arbitrary image.' },
+    selection: { image: 'Pinned qualified sandbox.nodejs-24-python3-12 image; caller cannot select an arbitrary image.' },
     pricing: { model: 'class_derived_quote', displayPrice: { asset: 'USDC', amountAtomic: '10000', decimals: 6 }, maximumChargeRequired: true, priceVersion: 'sandbox-run-short-2026-08-09.1', priceRange: { minimumAtomic: '10000', maximumAtomic: '60000' } },
     routes: { paidChallenge: '/v1/sandbox/execute' },
     payment: { challengeImplemented: true, payable: true, mockExecutionAvailableByInjectionOnly: false },
@@ -1035,7 +1044,7 @@ if (publicSandbox) {
     'The Sandbox production origin, useful gVisor output, replay, and cleanup are verified; a bounded paid Sandbox proof remains pending.',
     'No external customer payment, revenue, or demand is claimed.',
   ];
-  llms += '\n## Secure Sandbox preview\n\n- `POST /v1/sandbox/execute`: class-derived 0.010000–0.060000 USDC quote on Base for one bounded Node.js gVisor execution.\n- The short class is capped at 5 CPU seconds, 256 MiB, 16 processes, 64 MiB disk, 64 KiB output, 1 MiB artifacts, and 10 seconds wall time; larger requests use the standard class without weaker ceilings.\n- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.\n';
+  llms += '\n## Secure Sandbox preview\n\n- `POST /v1/sandbox/execute`: class-derived 0.010000–0.060000 USDC quote on Base for one bounded Node.js 24 or Python 3.12 gVisor execution.\n- Requests may include bounded stdin and files and may return requested artifacts; decoded code, stdin, and files share a 1 MiB envelope, artifact transport is capped at 1 MiB, and returned artifacts are hashed but not malware-scanned.\n- The short class is capped at 5 CPU seconds, 256 MiB, 16 processes, 64 MiB disk, 64 KiB output, 1 MiB artifacts, and 10 seconds wall time; larger requests use the standard class without weaker ceilings.\n- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.\n';
 }
 if (publicRpc) {
   const priceByProduct = new Map(rpcPricing.products.map((product) => [product.productId, product]));
@@ -1894,7 +1903,7 @@ const skillDocument = [
   '',
   `- You need an AI model call (${b7Inventory.callableIds} model IDs) — use \`POST /v1/ai/execute\`.`,
   '- You need cited web evidence for a question — use `POST /v1/search/free` or `POST /v1/search/paid`.',
-  '- You need to run sandboxed Node.js code safely with a receipt — use `POST /v1/sandbox/execute`.',
+  '- You need to run sandboxed Node.js or Python code safely with a receipt — use `POST /v1/sandbox/execute`.',
   '- You need read-only JSON-RPC on Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, or Solana — use `POST /v1/rpc/execute`.',
   '- You need real-time prediction market data (Polymarket, Kalshi, Manifold, Limitless) — use `POST /v1/prediction/execute`.',
   '- You need EVM wallet intelligence for Ethereum or Base — use `POST /v1/crypto/execute`.',

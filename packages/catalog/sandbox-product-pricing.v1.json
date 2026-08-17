@@ -20,7 +20,7 @@
       "priceVersion": "sandbox-run-standard-2026-08-09.1",
       "customerPriceMicrousd": 60000,
       "fullyLoadedCostMicrousd": 45000,
-      "limits": { "cpuMillis": 30000, "memoryBytes": 536870912, "processes": 64, "diskBytes": 1073741824, "outputBytes": 1048576, "artifactBytes": 10485760, "wallTimeMs": 60000 },
+      "limits": { "cpuMillis": 30000, "memoryBytes": 536870912, "processes": 64, "diskBytes": 1073741824, "outputBytes": 1048576, "artifactBytes": 1048576, "wallTimeMs": 60000 },
       "selection": "the existing maximum bounded one-shot envelope",
       "competitiveReference": "BlockRun Modal public sandbox is published at approximately 0.018 USDC for a smaller 1 vCPU/1 GiB short session; standard Clervo preserves a larger envelope and owned isolation plane",
       "costBasisId": "sandbox-owned-gke-standard-2026-08-09.1"

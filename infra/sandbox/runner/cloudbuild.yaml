@@ -3,10 +3,10 @@ steps:
     args:
       - build
       - --pull=false
-      - --tag=us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/runner:b10-supervisor-reserve-20260810
+      - --tag=us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/runner:hammer3-recovery-20260816-r4
       - .
 images:
-  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/runner:b10-supervisor-reserve-20260810
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-sandbox/runner:hammer3-recovery-20260816-r4
 options:
   requestedVerifyOption: VERIFIED
   logging: CLOUD_LOGGING_ONLY

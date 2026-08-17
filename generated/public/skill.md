@@ -11,7 +11,7 @@ Current availability was generated at 2026-08-15T14:28:34.287Z.
 
 - You need an AI model call (89 model IDs) — use `POST /v1/ai/execute`.
 - You need cited web evidence for a question — use `POST /v1/search/free` or `POST /v1/search/paid`.
-- You need to run sandboxed Node.js code safely with a receipt — use `POST /v1/sandbox/execute`.
+- You need to run sandboxed Node.js or Python code safely with a receipt — use `POST /v1/sandbox/execute`.
 - You need read-only JSON-RPC on Ethereum, Optimism, BNB Smart Chain, Polygon, Base, Arbitrum One, Avalanche C-Chain, or Solana — use `POST /v1/rpc/execute`.
 - You need real-time prediction market data (Polymarket, Kalshi, Manifold, Limitless) — use `POST /v1/prediction/execute`.
 - You need EVM wallet intelligence for Ethereum or Base — use `POST /v1/crypto/execute`.
