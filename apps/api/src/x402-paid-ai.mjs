@@ -10,6 +10,12 @@ function refuse(code, status = 503) {
   throw Object.assign(new Error(code), { status });
 }
 
+export function qualificationIdForExecutedAiRoute(routes, routeId) {
+  const successfulRoute = routes.find(({ definition }) => definition.routeId === routeId);
+  if (successfulRoute === undefined) throw new TypeError('ai_execution_successful_route_missing');
+  return successfulRoute.definition.qualification.qualificationId;
+}
+
 export function createX402PaidAiProcessor({ service, stateStore, publicPricing, adapters, adapterFactory, runtimeBindings, acquireExecution, acquireQuote, monitor } = {}) {
   if (!publicPricing || typeof publicPricing.quote !== 'function' || typeof publicPricing.discoveryRequest !== 'function') throw new TypeError('invalid_ai_public_pricing');
   if (!Array.isArray(adapters) || adapters.some((adapter) => typeof adapter?.routeId !== 'string' || typeof adapter?.execute !== 'function')) throw new TypeError('invalid_ai_adapters');
@@ -71,7 +77,7 @@ export function createX402PaidAiProcessor({ service, stateStore, publicPricing, 
             supplierCost: Object.freeze({ ...outcome.result.supplierCost, asset: 'usd' }),
             provenance: Object.freeze([Object.freeze({
               adapterId: 'adapter_ai.qualified_route',
-              qualificationId: prepared.quote.selected.definition.qualification.qualificationId,
+              qualificationId: qualificationIdForExecutedAiRoute(prepared.quote.routes, outcome.result.routeId),
               providerReferenceHash: outcome.result.resultHash,
             })]),
           });

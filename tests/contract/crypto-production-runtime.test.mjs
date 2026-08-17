@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 import { CONTRACT_VERSION } from '../../dist/packages/contracts/src/index.js';
-import { createCryptoProductionRuntime } from '../../apps/api/src/crypto-production-runtime.mjs';
+import { CRYPTO_COMMERCIAL_QUALIFICATION, createCryptoProductionRuntime } from '../../apps/api/src/crypto-production-runtime.mjs';
 import { CRYPTO_REQUEST_SCHEMA_VERSION } from '../../apps/api/src/x402-paid-crypto.mjs';
 
 const nowMs = Date.parse('2026-08-09T18:00:00.000Z');
@@ -37,6 +38,21 @@ function request(kind, amountAtomic) {
   };
 }
 
+test('crypto production runtime qualification matches the active sellable source route', async () => {
+  const routes = JSON.parse(await readFile(new URL('../../infra/crypto/source-routes.v1.json', import.meta.url), 'utf8'));
+  const source = routes.sources.find(({ sourceId }) => sourceId === 'crypto.source.blockscout_pro');
+  assert.ok(source);
+  assert.equal(source.technicalQualification, 'qualified');
+  assert.equal(source.publicSellable, true);
+  assert.equal(source.customerRoutingEnabled, true);
+  assert.equal(source.qualificationId, CRYPTO_COMMERCIAL_QUALIFICATION.qualificationId);
+  assert.equal(source.technicalObservedAt, CRYPTO_COMMERCIAL_QUALIFICATION.evaluatedAt);
+  assert.equal(source.technicalExpiresAt, CRYPTO_COMMERCIAL_QUALIFICATION.expiresAt);
+  assert.equal(source.qualificationEvidence.checksPassed, 22);
+  assert.equal(source.qualificationEvidence.paginationPassed, true);
+  assert.equal(source.qualificationEvidence.normalizationPassed, true);
+});
+
 test('crypto production runtime returns bounded balances, holdings, activity, and deterministic report evidence', async () => {
   const runtime = createCryptoProductionRuntime({ credential: 'test-private-key', fetcher, now: () => nowMs, hardDailyCallCeiling: 20, minimumRequestIntervalMs: 0 });
   assert.deepEqual(runtime.supportedChains, ['eip155:1', 'eip155:8453']);
@@ -55,7 +71,7 @@ test('crypto production runtime returns bounded balances, holdings, activity, an
   assert.equal(report.result.output.provenance.rawApiResale, false);
   assert.equal(report.result.output.provenance.thirdPartyLabelsUsed, false);
   assert.match(report.result.resultHash, /^sha256:[a-f0-9]{64}$/u);
-  assert.deepEqual(report.qualificationIds, ['qual_BlockscoutValueAdded20260809']);
+  assert.deepEqual(report.qualificationIds, ['qual_BlockscoutValueAdded20260817']);
 });
 
 test('crypto production runtime preserves useful partial chain output and explicit source degradation', async () => {
@@ -78,9 +94,9 @@ test('crypto production runtime fails closed on total source failure, malformed 
   const malformed = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => nowMs, minimumRequestIntervalMs: 0, async fetcher() { return Response.json({ hash: token, coin_balance: '-1', is_contract: false }); } });
   await assert.rejects(malformed.execute(request('balances', '2000')), /sources_unavailable/u);
 
-  const expired = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => Date.parse('2026-08-17T00:00:00.000Z'), fetcher, minimumRequestIntervalMs: 0 });
+  const expired = createCryptoProductionRuntime({ credential: 'test-private-key', now: () => Date.parse('2026-08-25T00:00:00.000Z'), fetcher, minimumRequestIntervalMs: 0 });
   assert.equal(await expired.ready(), false);
-  await assert.rejects(expired.execute({ ...request('balances', '2000'), deadlineAt: '2026-08-17T00:00:30.000Z' }), /qualification_expired/u);
+  await assert.rejects(expired.execute({ ...request('balances', '2000'), deadlineAt: '2026-08-25T00:00:30.000Z' }), /qualification_expired/u);
   await assert.rejects(unavailable.execute({ ...request('report', '4000'), input: { ...request('report', '4000').input, kind: 'protocol' } }), /kind_unavailable/u);
 });
 
