@@ -49,6 +49,9 @@ const contractTests = [
   // one generic gateway binding across catalog revisions.
   'tests/contract/b7-dynamic-ai.test.mjs',
   'tests/contract/ai-production-runtime.test.mjs',
+  // Hammer 4 exact-supply resilience is a release invariant, not an optional
+  // focused test. Keep its retry/commit/cost/identity proofs inside acceptance.
+  'tests/contract/hammer4-ai-routing-resilience.test.mjs',
   // Connect v1 must remain inside the ordinary repository acceptance run so a
   // broad pass cannot omit its shared wallet, limits, reconciliation, usage,
   // model-identity, MCP-profile and OpenAI compatibility contracts.
@@ -58,6 +61,9 @@ const contractTests = [
 const gates = [
   ['lint', node, ['scripts/lint.mjs']],
   ['SDK build prerequisite', npm, ['run', 'build', '--workspace', '@clervo/sdk']],
+  // b11-connect imports the built MCP server. A clean CI checkout has no
+  // packages/mcp/dist tree, so acceptance must build the package it tests.
+  ['MCP build prerequisite', npm, ['run', 'build', '--workspace', '@clervo/mcp']],
   ['typecheck', tsc, ['--project', 'tsconfig.json', '--noEmit']],
   ['clean-room boundary', path.join(repositoryRoot, 'scripts', 'verify-clean-room-boundary.sh'), []],
   ['stack decision', node, ['scripts/verify-stack-decision.mjs']],
