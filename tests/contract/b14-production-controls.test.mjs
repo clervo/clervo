@@ -56,9 +56,25 @@ test('Cloud Build runs the one current production gate before immutable images a
   assert.match(build, /node:24\.18\.1-bookworm-slim@sha256:[a-f0-9]{64}/u);
   assert.match(build, /requestedVerifyOption: VERIFIED/u);
   assert.match(build, /npm run test:b14/u);
+  assert.match(build, /CLERVO_PRODUCTION_RECOVERY_BUILD=\$_RECOVERY_MODE/u);
+  assert.match(build, /_RECOVERY_MODE: none/u);
   assert.doesNotMatch(build, /test:stage14|release-candidate|:latest/u);
   assert.equal(rootPackage.scripts['test:stage14'], undefined);
   assert.equal(rootPackage.scripts['test:b14'], 'node ./scripts/verify-runtime.mjs && node ./scripts/production/verify-production.mjs');
+});
+
+test('expired Prediction qualification recovery is explicit, release-bound, and evidence-gated', async () => {
+  const [buildControl, productionGate, recoveryVerifier] = await Promise.all([
+    readFile('scripts/production/gcp-build.mjs', 'utf8'),
+    readFile('scripts/production/verify-production.mjs', 'utf8'),
+    readFile('scripts/prediction/verify-pdata-recovery.mjs', 'utf8'),
+  ]);
+  assert.match(buildControl, /expired-prediction-qualification:\$\{releaseSha\}/u);
+  assert.match(productionGate, /CLERVO_CLOUD_ACCEPTANCE/u);
+  assert.match(productionGate, /verify-pdata-recovery\.mjs/u);
+  assert.match(recoveryVerifier, /maximumEvidenceAgeMs = 60 \* 60 \* 1_000/u);
+  assert.match(recoveryVerifier, /evidence\.runtimeProbe\?\.passed, true/u);
+  assert.doesNotMatch(recoveryVerifier, /fetch\(|https:\/\//u);
 });
 
 test('current release control exposes guarded deploy, promotion, rollback, and containment', async () => {

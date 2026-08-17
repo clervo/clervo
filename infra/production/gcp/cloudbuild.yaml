@@ -12,6 +12,7 @@ steps:
     env:
       - CLERVO_CLOUD_ACCEPTANCE=true
       - CLERVO_EXPECTED_RELEASE_SHA=$_RELEASE_SHA
+      - CLERVO_PRODUCTION_RECOVERY_BUILD=$_RECOVERY_MODE
       - SECRET_SCAN_SOURCE_ARCHIVE=1
     args:
       - -ceu
@@ -43,3 +44,5 @@ options:
   requestedVerifyOption: VERIFIED
   logging: CLOUD_LOGGING_ONLY
 timeout: 1800s
+substitutions:
+  _RECOVERY_MODE: none

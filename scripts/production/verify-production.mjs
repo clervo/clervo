@@ -6,6 +6,9 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+const recoveryMode = process.env.CLERVO_PRODUCTION_RECOVERY_BUILD ?? 'none';
+if (!['none', 'expired-prediction-qualification'].includes(recoveryMode)) throw new Error('production_recovery_build_mode_invalid');
+if (recoveryMode !== 'none' && process.env.CLERVO_CLOUD_ACCEPTANCE !== 'true') throw new Error('production_recovery_build_context_invalid');
 
 const steps = [
   ['build', npm, ['run', 'build']],
@@ -21,7 +24,9 @@ const steps = [
   ['receiver accounting and unit economics', process.execPath, ['--test', 'tests/contract/n14.11.test.mjs', 'tests/contract/n14.12.test.mjs']],
   ['lint', npm, ['run', 'lint']],
   ['clean-room boundary', path.join(root, 'scripts/verify-clean-room-boundary.sh'), []],
-  ['current live health', process.execPath, ['scripts/production/verify-public-api.mjs']],
+  recoveryMode === 'expired-prediction-qualification'
+    ? ['expired Prediction qualification recovery', process.execPath, ['scripts/prediction/verify-pdata-recovery.mjs']]
+    : ['current live health', process.execPath, ['scripts/production/verify-public-api.mjs']],
 ];
 
 for (const [name, command, args] of steps) {
