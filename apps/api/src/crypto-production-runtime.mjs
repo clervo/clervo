@@ -10,9 +10,9 @@ const CHAIN_CONFIG = Object.freeze({
 });
 const SUPPORTED_CHAINS = Object.freeze(Object.keys(CHAIN_CONFIG));
 export const CRYPTO_COMMERCIAL_QUALIFICATION = Object.freeze({
-  qualificationId: 'qual_BlockscoutValueAdded20260809',
-  evaluatedAt: '2026-08-09T17:30:00.000Z',
-  expiresAt: '2026-08-16T17:30:00.000Z',
+  qualificationId: 'qual_BlockscoutValueAdded20260817',
+  evaluatedAt: '2026-08-17T23:36:48.183Z',
+  expiresAt: '2026-08-24T23:36:48.183Z',
   source: 'Blockscout PRO API',
   permission: 'value_added_application',
   rawApiResaleAllowed: false,
