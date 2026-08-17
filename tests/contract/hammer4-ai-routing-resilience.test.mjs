@@ -15,6 +15,7 @@ import {
 } from '../../dist/services/ai/src/execution.js';
 import { createAiExecutionMonitor } from '../../dist/services/ai/src/monitoring.js';
 import { ClervoAiGatewayAdapter } from '../../dist/adapters/ai/src/clervo-ai-gateway.js';
+import { qualificationIdForExecutedAiRoute } from '../../apps/api/src/x402-paid-ai.mjs';
 
 const startedAt = '2026-08-17T17:00:00.000Z';
 const deadlineAt = '2026-08-17T18:00:00.000Z';
@@ -149,7 +150,7 @@ function authorizedCost(route) {
 }
 
 test('Hammer 4 retries a pre-commit auth failure only onto exact-equivalent authorized supply and receipts the successful route', async () => {
-  const { catalog, routes, first } = fixture();
+  const { catalog, routes, first, second } = fixture();
   const calls = [];
   const monitor = createAiExecutionMonitor();
   const outcome = await executeAiOperation({
@@ -168,6 +169,9 @@ test('Hammer 4 retries a pre-commit auth failure only onto exact-equivalent auth
   assert.equal(outcome.result.routeId, 'ai.route.h4_b');
   assert.equal(outcome.result.exactModelId, 'clervo/h4-exact');
   assert.deepEqual(calls, ['ai.route.h4_a', 'ai.route.h4_b']);
+  assert.equal(qualificationIdForExecutedAiRoute(routes, outcome.result.routeId), second.definition.qualification.qualificationId);
+  assert.notEqual(qualificationIdForExecutedAiRoute(routes, outcome.result.routeId), first.definition.qualification.qualificationId);
+  assert.throws(() => qualificationIdForExecutedAiRoute(routes, 'ai.route.missing'), /ai_execution_successful_route_missing/u);
 
   const snapshot = monitor.snapshot();
   assert.deepEqual(snapshot.logs.map(({ eventName }) => eventName), [
