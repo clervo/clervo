@@ -141,5 +141,56 @@
     "clervo-production-postgres REGIONAL availability",
     "bloxsniper-r13",
     "AI gateway containers and Cloudflare tunnel"
-  ]
+  ],
+  "finalSafePass": {
+    "evaluatedAt": "2026-08-20T05:25:45.000Z",
+    "result": "no_safe_further_cut",
+    "monthlyUsdBefore": 257.7,
+    "monthlyUsdAfter": 257.7,
+    "additionalMonthlySavingsUsd": 0,
+    "utilization": {
+      "monitoringWindowDays": 30,
+      "cpuSamples": 5515,
+      "cpuAveragePercent": 1.26,
+      "cpuP95Percent": 2.4,
+      "cpuP99Percent": 44.9,
+      "cpuMaximumPercent": 62.3,
+      "sysstatWindowDays": 9,
+      "load15Maximum": 0.78,
+      "workingMemoryGiBMaximum": 3.15,
+      "recentWorkingMemoryGiBMaximum": 1.02,
+      "networkReceivedGiB": 23.31,
+      "networkSentGiB": 25.01,
+      "conclusion": "two CPUs and 7 GiB have runtime headroom; rare build bursts require green validation"
+    },
+    "capacity": {
+      "us-central1-f": "stockout",
+      "us-central1-b": "c4-standard-2 probe booted with 2 CPUs and 6.8 GiB usable memory",
+      "probeReceivedTraffic": false,
+      "probeDeleted": true
+    },
+    "storageConstraint": {
+      "diskTypeRequiredByC4": "hyperdisk-balanced",
+      "currentRegionalUsageGb": 240,
+      "regionalLimitGb": 250,
+      "faithfulGreenCloneGb": 240,
+      "requestedLimitGb": 500,
+      "grantedLimitGb": 250,
+      "requestOutcome": "denied",
+      "quotaPreferenceRestoredToGb": 250
+    },
+    "migration": {
+      "greenReplacementProvisioned": false,
+      "trafficShifted": false,
+      "blueStopped": false,
+      "blueRetired": false,
+      "reason": "faithful blue-green storage cannot coexist within granted quota; cross-region or undersized storage changes topology or functionality"
+    },
+    "cleanup": {
+      "temporaryInstances": 0,
+      "temporaryDisks": 0,
+      "temporarySnapshots": 0,
+      "temporaryFirewallRules": 0
+    }
+  }
 }

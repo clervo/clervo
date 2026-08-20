@@ -1,6 +1,6 @@
 {
   "schemaVersion": "clervo.sandbox-control-live-smoke.v1",
-  "evaluatedAt": "2026-08-20T04:58:15.534Z",
+  "evaluatedAt": "2026-08-20T05:25:01.493Z",
   "status": "passed",
   "controlImageDigest": "sha256:6c57b4a371e448f9d141287516437ca8e5a91fa1e483b01b4aecc10132a1f7d2",
   "runnerImageDigest": "sha256:fe0c81bd0cc5b77b643d2fa0017f48aa3fcfcd470326a00c4ba3a037a09170e9",

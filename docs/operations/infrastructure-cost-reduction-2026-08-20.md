@@ -89,8 +89,20 @@ The live unpaid 402 checks returned the expected products and atomic maximums af
 - Error rate: Cloud Run measured 3/93 5xx (3.2%) in the 25-minute before window and 2/30 (6.7%) in the short after window. Both after-window 5xx responses were deliberately reproduced AI acceptance failures. Infrastructure acceptance introduced no new failure; the existing AI 503 and Crypto health defect persisted before and after.
 - Availability: API and Sandbox remained available during the online disk change. Sandbox availability was restored from the unsafe pre-audit zero-node state.
 
+## Final safe pass
+
+The follow-up pass measured 5,515 thirty-day CPU samples: 1.26% average, 2.40% p95, 44.9% p99, and 62.3% maximum on four vCPUs. Nine days of host sysstat history showed a 0.78 maximum load-15 and 3.15 GiB maximum working memory; the latest four hours peaked at 1.02 GiB. The workload therefore fits two vCPUs and 7 GiB in steady state, with rare build bursts requiring real green validation. Thirty-day network totals were 23.31 GiB received and 25.01 GiB sent.
+
+A quarantined `c4-standard-2` probe found a stockout in `us-central1-f` and successfully booted in `us-central1-b` with two CPUs and 6.8 GiB usable memory. It had no external address, was blocked from egress, received no production traffic, and was deleted after the capacity proof.
+
+The faithful green clone could not be provisioned. C4 supports Hyperdisk but not Persistent Disk, blue consumes 240 GB of the 250 GB regional Hyperdisk Balanced quota, and green requires the same 240 GB. Google immediately denied the temporary request for a 500 GB limit and retained 250 GB. Deleting or shrinking blue to create quota room would destroy the required live rollback. Cross-region NAT/subnet infrastructure or an undersized 10 GB rebuild would change topology or functionality, so both were rejected.
+
+No traffic shifted, blue never stopped, and the cost remains approximately $258/month. The probe VM/disk, quarantine firewall, and temporary snapshots were deleted; the quota preference was returned to 250 GB.
+
+Final acceptance remained no worse: B14 API/readiness/durable-state and monitoring passed; Search returned 200; Sandbox useful execution/isolation/replay/cleanup passed; Prediction, Crypto, RPC, Search, and Sandbox returned valid unpaid 402 challenges; RPC remained 8/8 healthy; AI and MCP retained the existing `ai_execution_adapter_missing`; Crypto health retained the existing `unavailable` state. No payment was sent.
+
 ## Stop point and next opportunity
 
-The next large safe opportunity is a staged devbox migration to a zone with `c4-standard-2` capacity, worth approximately another $70.7/month at list rates. An in-place attempt in `us-central1-c` failed with `ZONE_RESOURCE_POOL_EXHAUSTED` and was rolled back to `c4-standard-4`; retrying by stopping the only private gateway host would create unjustified availability risk. A blue/green cross-zone replacement should be planned separately with gateway/tunnel cutover acceptance.
+The next large opportunity remains worth approximately $70.7/month at list rates, but it is not currently executable as a safe blue/green change. It requires a granted `us-central1` Hyperdisk Balanced limit of at least 480 GB before provisioning a faithful `c4-standard-2` green in `us-central1-b`. No in-place stop/resize should be attempted.
 
 Cloud SQL regional HA, the Sandbox system/execution nodes, Sandbox load balancer, NAT, backups, and rollback artifacts are intentionally kept. Removing HA or scaling Sandbox to zero would manufacture savings by reducing reliability or functionality and is rejected.
