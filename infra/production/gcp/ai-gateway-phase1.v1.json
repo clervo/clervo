@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "clervo.ai-gateway-phase1.v1",
+  "evaluatedAt": "2026-08-20T19:00:00.000Z",
+  "project": "bloxsniper-prod",
+  "region": "us-central1",
+  "dependencyGraph": [
+    "client -> clervo-api-production -> ai.clervo.dev -> Cloudflare Tunnel -> clervo-devbox-primary:clervo-ai-gateway -> provider",
+    "green: client -> clervo-api-production -> clervo-ai-gateway (Cloud Run, application bearer authentication) -> provider"
+  ],
+  "devboxInventory": [
+    { "component": "clervo-ai-gateway", "classification": "PRODUCTION REQUIRED", "greenDisposition": "move_to_cloud_run" },
+    { "component": "clervo-ai-cloudflared", "classification": "PRODUCTION REQUIRED", "greenDisposition": "remove_after_direct_cloud_run_cutover" },
+    { "component": "cliproxy-personal", "classification": "DEVELOPMENT ONLY", "greenDisposition": "retain_credentials_off_production_path" },
+    { "component": "clervo-codex-pool-manager.timer", "classification": "DEVELOPMENT ONLY", "greenDisposition": "disable_after_devbox_independence" },
+    { "component": "Codex processes and toolchains", "classification": "DEVELOPMENT ONLY", "greenDisposition": "retain_on_devbox" },
+    { "component": "/workspace 200 GB disk", "classification": "DEVELOPMENT ONLY", "greenDisposition": "retain_on_devbox" },
+    { "component": "/opt/clervo-ai OAuth state and backups", "classification": "DEVELOPMENT ONLY", "greenDisposition": "retain_off_production_path; do_not_destroy" },
+    { "component": "Docker and host maintenance services", "classification": "DEVELOPMENT ONLY", "greenDisposition": "retain_on_devbox" }
+  ],
+  "activeAi": {
+    "canonicalModels": 75,
+    "publicAliases": 4,
+    "temporarilyUnavailableModels": 10,
+    "providerRouteCounts": {
+      "google": 22,
+      "nvidia": 12,
+      "groq": 5,
+      "siliconflow": 31,
+      "mistral": 2,
+      "sambanova": 1,
+      "openrouter": 1,
+      "hcnsec": 1
+    },
+    "cliproxyRoutes": 0,
+    "codexOauthRoutes": 0,
+    "gpt56Routes": 0,
+    "claudeRoutes": 0
+  },
+  "cloudRunCompatibility": {
+    "result": "compatible",
+    "statelessRequests": true,
+    "streamingSupportedByPlatform": true,
+    "applicationDisconnectAbort": true,
+    "maximumApplicationTimeoutSeconds": 600,
+    "targetCloudRunTimeoutSeconds": 900,
+    "persistentFilesystemRequired": false,
+    "temporaryFilesystemRequired": false,
+    "publicProviderEgress": true,
+    "vertexWorkloadIdentity": true,
+    "secretManagerMounts": true,
+    "tunnelRequired": false
+  },
+  "greenService": {
+    "name": "clervo-ai-gateway",
+    "cpu": "1",
+    "memory": "512Mi",
+    "concurrency": 8,
+    "minimumInstances": 0,
+    "maximumInstances": 2,
+    "timeoutSeconds": 900,
+    "billing": "request_based",
+    "authentication": "application_bearer_token",
+    "providerProvenanceHeaders": true
+  },
+  "secretBindings": [
+    "clervo-production-ai-api-key",
+    "clervo-production-groq-api-key",
+    "clervo-production-ai-gateway-nvidia-api-key",
+    "clervo-production-ai-gateway-siliconflow-api-key",
+    "clervo-production-ai-gateway-mistral-api-key",
+    "clervo-production-ai-gateway-sambanova-api-key",
+    "clervo-production-ai-gateway-openrouter-api-key",
+    "clervo-production-ai-gateway-hcnsec-api-keys"
+  ],
+  "bloxsniperR13": {
+    "clervoDependency": false,
+    "evidence": [
+      "no production Cloud Run environment reference",
+      "no source or runtime URL/address reference",
+      "no Clervo DNS record reference",
+      "no Clervo cron or systemd dependency",
+      "no queue dependency; Cloud Scheduler API disabled"
+    ],
+    "modified": false
+  },
+  "rollback": {
+    "blue": "clervo-devbox-primary gateway plus ai.clervo.dev tunnel retained until green acceptance",
+    "api": "restore clervo-api-production-00116-mos to 100 percent traffic",
+    "devbox": "start VM and existing Docker Compose stack before restoring blue API traffic"
+  }
+}

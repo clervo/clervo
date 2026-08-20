@@ -16,6 +16,12 @@ function env(name) { const value = process.env[name]; if (!value) refuse(`missin
 function version(name) { const value = env(name); if (!/^[1-9][0-9]*$/u.test(value)) refuse(`invalid_${name.toLowerCase()}`); return value; }
 function release() { const value = env('CLERVO_RELEASE_ID'); if (!/^[a-f0-9]{40}$/u.test(value)) refuse('invalid_release_id'); return value; }
 function image() { const value = env('CLERVO_PRODUCTION_IMAGE'); if (!/^us-central1-docker\.pkg\.dev\/bloxsniper-prod\/clervo-production\/clervo-api@sha256:[a-f0-9]{64}$/u.test(value)) refuse('invalid_image'); return value; }
+function aiGatewayBaseUrl() {
+  const value = process.env.CLERVO_AI_BASE_URL_OVERRIDE ?? policy.ai.baseUrl;
+  const parsed = new URL(value);
+  if (parsed.protocol !== 'https:' || parsed.username !== '' || parsed.password !== '' || parsed.search !== '' || parsed.hash !== '' || !/^ai\.clervo\.dev$|^clervo-ai-gateway-[a-z0-9-]+\.a\.run\.app$/u.test(parsed.hostname)) refuse('invalid_ai_gateway_base_url');
+  return parsed;
+}
 function revision() { const value = env('CLERVO_CANDIDATE_REVISION'); if (!/^clervo-api-production-[0-9]{5}-[a-z0-9]{3}$/u.test(value)) refuse('invalid_revision'); return value; }
 function previousRevision() { const value = env('CLERVO_PREVIOUS_REVISION'); if (!/^clervo-api-production-[0-9]{5}-[a-z0-9]{3}$/u.test(value)) refuse('invalid_previous_revision'); return value; }
 function previousImage() { const value = env('CLERVO_PREVIOUS_IMAGE'); if (!/^us-central1-docker\.pkg\.dev\/bloxsniper-prod\/clervo-production\/clervo-api@sha256:[a-f0-9]{64}$/u.test(value)) refuse('invalid_previous_image'); return value; }
@@ -80,6 +86,7 @@ else if (action === 'observe') {
     rpcDrpc: version('CLERVO_RPC_DRPC_SECRET_VERSION'), rpcHelius: version('CLERVO_RPC_HELIUS_SECRET_VERSION'),
   };
   const artifact = verifyArtifact(candidateImage);
+  const aiGateway = aiGatewayBaseUrl();
   const before = service();
   const beforeTraffic = traffic(before);
   const beforePublicAccess = publicAccess();
@@ -95,7 +102,8 @@ else if (action === 'observe') {
     `CLERVO_SANDBOX_RUNNER_DIGEST=${policy.sandbox.runnerDigest}`, `CLERVO_SANDBOX_CONTROL_ORIGIN=${sandbox.cloudRun.controlOrigin}`,
     'CLERVO_RELEASE_CHANNEL=public-live-candidate',
     `CLERVO_AI_MODE=${policy.ai.mode}`, `CLERVO_AI_RUNTIME_MODE=${policy.ai.runtimeMode}`,
-    `CLERVO_AI_ROUTE_FAMILIES=${policy.ai.routeFamilies}`, `CLERVO_AI_BASE_URL=${policy.ai.baseUrl}`,
+    `CLERVO_AI_ROUTE_FAMILIES=${policy.ai.routeFamilies}`, `CLERVO_AI_BASE_URL=${aiGateway.href}`,
+    `CLERVO_AI_ALLOWED_HOSTS=${aiGateway.hostname}`,
     `CLERVO_AI_ARTIFACT_MODE=${policy.ai.artifacts.mode}`, `R2_S3_ENDPOINT=${env('CLERVO_R2_S3_ENDPOINT')}`,
     `R2_BUCKET_NAME=${policy.ai.artifacts.bucket}`, `CLERVO_ARTIFACT_RETENTION_SECONDS=${policy.ai.artifacts.retentionSeconds}`,
     `CLERVO_ARTIFACT_MAXIMUM_OBJECT_BYTES=${policy.ai.artifacts.maximumObjectBytes}`,

@@ -107,7 +107,9 @@ export async function createDynamicAiProductionRuntime({
   if (typeof fetcher !== 'function' || typeof clock !== 'function') throw new TypeError('ai_dynamic_runtime_configuration_invalid');
   if (artifactStoreFactory !== undefined && typeof artifactStoreFactory !== 'function') throw new TypeError('ai_dynamic_runtime_artifact_store_factory_invalid');
   const baseUrl = new URL(required(env, 'CLERVO_AI_BASE_URL'));
-  if (baseUrl.protocol !== 'https:' || baseUrl.hostname !== 'ai.clervo.dev' || baseUrl.username !== '' || baseUrl.password !== '' || baseUrl.search !== '' || baseUrl.hash !== '') throw new TypeError('ai_dynamic_runtime_base_url_invalid');
+  const allowedGatewayHosts = Object.freeze((env.CLERVO_AI_ALLOWED_HOSTS ?? 'ai.clervo.dev').split(',').map((host) => host.trim()).filter(Boolean));
+  if (allowedGatewayHosts.length === 0 || allowedGatewayHosts.length > 4 || allowedGatewayHosts.some((host) => !/^[a-z0-9.-]{1,253}$/u.test(host))) throw new TypeError('ai_dynamic_runtime_allowed_hosts_invalid');
+  if (baseUrl.protocol !== 'https:' || !allowedGatewayHosts.includes(baseUrl.hostname) || baseUrl.username !== '' || baseUrl.password !== '' || baseUrl.search !== '' || baseUrl.hash !== '') throw new TypeError('ai_dynamic_runtime_base_url_invalid');
   const runtimeSecretName = typeof env.CLERVO_AI_GATEWAY_TOKEN === 'string' ? 'CLERVO_AI_GATEWAY_TOKEN' : 'CLERVO_AI_API_KEY';
   required(env, runtimeSecretName);
   const source = catalogSource ?? new RevisionGuardedQualifiedAiSupplyCatalogSource(
@@ -151,7 +153,7 @@ export async function createDynamicAiProductionRuntime({
   const projection = createAiProductRuntimeProjection(productCatalog);
   const transport = createBoundedAiHttpTransport(fetcher);
   const makeAdapter = (artifacts) => new ClervoAiGatewayAdapter({
-    config: { baseUrl: baseUrl.href, allowedHosts: ['ai.clervo.dev'], secretName: runtimeSecretName, maximumResponseBytes: 80_000_000 },
+    config: { baseUrl: baseUrl.href, allowedHosts: allowedGatewayHosts, secretName: runtimeSecretName, maximumResponseBytes: 80_000_000 },
     transport,
     secret: async (name) => required(env, name),
     ...(artifacts === undefined ? {} : { artifacts }),

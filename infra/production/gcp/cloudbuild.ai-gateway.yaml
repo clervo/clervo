@@ -1,0 +1,22 @@
+steps:
+  - id: test
+    name: node:24.18.1-bookworm-slim@sha256:235600a8101ab264e117b1768e925532262668dc9b581ef1dd7d96ced463b8e7
+    entrypoint: bash
+    args:
+      - -ceu
+      - node --test infra/production/ai-gateway/gateway.test.mjs
+  - id: image
+    name: gcr.io/cloud-builders/docker@sha256:f8b08c609fdc392ee6827ff3e1725e4980f7d96bde9f76f4695086405c96c147
+    args:
+      - build
+      - --file
+      - infra/production/ai-gateway/Dockerfile
+      - --tag
+      - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-ai-gateway:$_RELEASE_SHA
+      - infra/production/ai-gateway
+images:
+  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-production/clervo-ai-gateway:$_RELEASE_SHA
+options:
+  requestedVerifyOption: VERIFIED
+  logging: CLOUD_LOGGING_ONLY
+timeout: 1200s
