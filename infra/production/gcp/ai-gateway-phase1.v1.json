@@ -52,6 +52,7 @@
   },
   "greenService": {
     "name": "clervo-ai-gateway",
+    "serviceAccount": "clervo-ai-gateway-production@bloxsniper-prod.iam.gserviceaccount.com",
     "cpu": "1",
     "memory": "512Mi",
     "concurrency": 8,
@@ -72,6 +73,14 @@
     "clervo-production-ai-gateway-openrouter-api-key",
     "clervo-production-ai-gateway-hcnsec-api-keys"
   ],
+  "secretSources": {
+    "clervo-production-ai-gateway-nvidia-api-key": "/opt/clervo-ai/nvidia-api-key.txt",
+    "clervo-production-ai-gateway-siliconflow-api-key": "/opt/clervo-ai/runtime-provider-keys/siliconflow.key",
+    "clervo-production-ai-gateway-mistral-api-key": "/opt/clervo-ai/runtime-provider-keys/mistral.key",
+    "clervo-production-ai-gateway-sambanova-api-key": "/opt/clervo-ai/runtime-provider-keys/sambanova.key",
+    "clervo-production-ai-gateway-openrouter-api-key": "/opt/clervo-ai/runtime-provider-keys/openrouter.key",
+    "clervo-production-ai-gateway-hcnsec-api-keys": "/opt/clervo-ai/hcnsec-keys/account-*.key"
+  },
   "bloxsniperR13": {
     "clervoDependency": false,
     "evidence": [
