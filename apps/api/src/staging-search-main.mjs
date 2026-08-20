@@ -32,7 +32,6 @@ const releaseId = process.env.CLERVO_RELEASE_ID;
 const host = process.env.CLERVO_HTTP_HOST ?? '0.0.0.0';
 const port = Number(process.env.PORT ?? process.env.CLERVO_HTTP_PORT ?? '8080');
 const publicOrigin = process.env.CLERVO_PUBLIC_ORIGIN ?? 'https://unverified.invalid';
-const privateMockCommerceEnabled = process.env.CLERVO_STAGE4_PRIVATE_MOCK_COMMERCE === 'enabled';
 const stateBackend = process.env.CLERVO_STATE_BACKEND ?? 'memory';
 const maxConcurrentExecutions = Number(process.env.CLERVO_MAX_CONCURRENT_EXECUTIONS ?? '16');
 const monitoringEndpoint = process.env.CLERVO_MONITORING_ENDPOINT;
@@ -75,9 +74,6 @@ if (rpcMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !==
   || typeof process.env.CLERVO_RPC_DRPC_API_KEY !== 'string' || typeof process.env.CLERVO_RPC_HELIUS_API_KEY !== 'string')) throw new Error('public RPC requires production x402, PostgreSQL state, and qualified eight-network supply');
 if (predictionMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres')) throw new Error('public Prediction requires production x402 and PostgreSQL state');
 if (cryptoMode === 'paid' && (x402Mode !== 'settlement_enabled' || stateBackend !== 'postgres' || typeof process.env.CLERVO_BLOCKSCOUT_API_KEY !== 'string')) throw new Error('public Crypto requires production x402, PostgreSQL state, and qualified EVM supply');
-if (privateMockCommerceEnabled && (environment !== 'stage4-private-qualification' || !['127.0.0.1', 'localhost'].includes(new URL(publicOrigin).hostname))) {
-  throw new Error('private_mock_commerce_boundary_invalid');
-}
 const stateStore = stateBackend === 'postgres'
   ? await createPostgresSearchStateStoreFromEnvironment()
   : new InMemorySearchStateStore({ environmentNamespace: 'local' });

@@ -1,8 +1,0 @@
-{
-  "schemaVersion": "clervo.codex-studio.validation-attempt.v1",
-  "attempt": 2,
-  "result": "failed",
-  "completedBeforeFailure": ["inventory JSON parse", "health JSON parse", "visual summary JSON parse", "Node syntax checks", "ShellCheck"],
-  "failure": "The sandboxed npm audit could not resolve registry.npmjs.org (EAI_AGAIN); no audit result was returned.",
-  "repair": "Rerun the same checks with network permission. Both the studio lock and repository lock then reported zero vulnerabilities."
-}

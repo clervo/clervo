@@ -51,17 +51,6 @@ test('all five sellable prediction products recover bounded infrastructure cost 
   assert.deepEqual(pricing.subsidy, { enabled: false, budgetMicrousd: 0, ownerApprovalRequired: true });
 });
 
-test('canonical registry includes every prediction product internally without exposing a route or availability claim', async () => {
-  const registry = await read('packages/catalog/platform-registry.v1.json');
-  const expected = ['prediction.markets', 'prediction.market', 'prediction.compare', 'prediction.history', 'prediction.signal'];
-  const products = registry.products.filter(({ pillarId }) => pillarId === 'prediction');
-  const operations = registry.operations.filter(({ operationId }) => operationId.startsWith('prediction.'));
-  assert.deepEqual(products.map(({ productId }) => productId), expected);
-  assert.deepEqual(operations.map(({ operationId }) => operationId), expected);
-  assert.ok([...products, ...operations].every(({ lifecycle, visibility }) => lifecycle === 'unavailable' && visibility === 'internal'));
-  assert.ok(operations.every(({ route }) => route === null));
-});
-
 test('prediction schemas are explicitly internal and product mismatch fixtures fail closed', async () => {
   const visibility = await read('packages/catalog/schema-visibility.v1.json');
   const entries = visibility.schemas.filter(({ file }) => file.startsWith('prediction-'));

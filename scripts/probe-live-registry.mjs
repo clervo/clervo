@@ -594,7 +594,7 @@ const aiRoutes = b7PublicModels.data.map((entry) => {
 // `quote_observed_unpaid`. It may elevate a product to
 // `paid_outcome_verified` only after validating an explicit settled proof
 // against the current release and the fresh 402 above. It never writes
-// `externally_repeated`: owner-funded production proof is not unrelated-customer
+// `externally_repeated`: a bounded production qualification is not evidence of
 // demand, however many times the bounded mechanism was exercised.
 const PROOF_NONE = 'none';
 const PROOF_QUOTED = 'quote_observed_unpaid';
@@ -1101,7 +1101,7 @@ function aiPaidProofValidation(quote) {
   const totalCharge = operations.reduce((sum, operation) => sum + BigInt(operation.customerChargeAtomic ?? '0'), 0n);
   const invariant = proof?.schemaVersion === 'clervo.ai-x402-proof.v1'
     && proof.state === 'settled_reconciled'
-    // This is a reconciled owner-funded proof from an earlier runtime. Like
+    // This is a reconciled payment qualification from an earlier runtime. Like
     // the search/sandbox proof, its settlement and replay evidence remain
     // valid across later deploys; bind the shape, not the historical release.
     && /^[a-f0-9]{40}$/u.test(proof.releaseCommit ?? '')

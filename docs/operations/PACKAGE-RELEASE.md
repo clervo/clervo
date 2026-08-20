@@ -1,86 +1,22 @@
 # Package release
 
-The candidate package archives are built from the frozen Stage 12 interface.
-This procedure publishes no API deployment and does not change capability
-lifecycle.
-
-## Current verified release
-
-GitHub run `31490359812` published the exact source commit
-`bae9342f9fc5034349c4bbe25a74b368b9da903a` through trusted publishing:
-
-- `@clervo/sdk@0.5.2` and `@clervo/mcp@0.5.2` have npm SLSA provenance;
-- `clervo-sdk==0.4.2` has PyPI trusted-publisher attestations for its wheel and
-  source distribution; and
-- all three install and import from their public registries in clean consumers.
-
-The same protected run published `io.github.clervo/connect@0.5.2` to the
-official MCP Registry through GitHub OIDC and verified its active public record.
-
-Router run `31490120955` published `@clervo/router@0.3.1` from commit
-`6362d9a65fc5068fc6b467ffe0c71e037b2e4193` with npm SLSA provenance. The
-prior `0.2.0` and `0.3.0` identities remain frozen in
-`packages/router/release-history.v1.json`.
-
-`npm run verify:distribution-release:published` rechecks the observed immutable
-integrities in `packages/distribution/release-targets.v1.json`. While a
-`nextRelease` block exists, the ordinary and registry preflight modes validate
-that candidate; published mode continues to validate the frozen current
-release. Do not rerun a completed workflow for an immutable version.
-
-## One-time account setup
-
-After the public `clervo/clervo` repository exists:
-
-1. Create a protected GitHub environment named `package-release` with required
-   owner review. While the organization has only one member, self-review must
-   remain enabled or every release deadlocks; the exact commit and confirmation
-   checks remain mandatory. Disable self-review after adding another trusted
-   release reviewer.
-2. For both `@clervo/sdk` and `@clervo/mcp`, configure the npm trusted publisher
-   as GitHub organization `clervo`, repository `clervo`, workflow
-   `publish-packages.yml`, environment `package-release`, allowed action
-   `npm publish`.
-3. For PyPI project `clervo-sdk`, configure its GitHub trusted publisher with
-   owner `clervo`, repository `clervo`, workflow `publish-packages.yml`, and
-   environment `package-release`.
-
-No npm or PyPI write token belongs in GitHub, this repository, or chat. The
-workflow uses short-lived OIDC credentials and a public-repository provenance
-record.
-
-## Release
-
-Before a Connect release, run:
+Package versions and published artifact integrity are defined by
+`packages/distribution/release-targets.v1.json`. Verify the current candidate
+before dispatching a release:
 
 ```sh
-npm run test:b6
+npm run test:b13:clients
 npm run test:b11
-npm run test:stage13:distribution
 npm run verify:distribution-release:registry
+npm run verify:package-consumers
 ```
 
-Dispatch `Publish Clervo Router` from the default branch first, using its exact
-40-character main-branch commit and confirmation string, and verify the public
-registry provenance. Then dispatch `Publish verified packages` for that same
-main-branch source and approve the protected environment. The second workflow
-fails closed unless the exact Router dependency is already public with SLSA
-provenance.
+The protected GitHub workflows publish through OIDC/trusted publishing. npm or
+PyPI write tokens do not belong in GitHub secrets, this repository, or chat.
+Each workflow requires the exact main-branch commit and confirmation string.
 
-The workflow verifies that all three versions are unpublished before the first
-publish. It publishes the TypeScript SDK, then the MCP package that depends on
-it, then the Python distributions. If any publish succeeds and a later publish
-fails, do not blindly rerun: registry versions are immutable and the preflight
-will fail. Inspect the published artifacts and provenance, reconcile the exact
-partial state, increment only versions that require a new artifact, and update
-the release target manifest before another approved run.
-
-## Legacy releases
-
-After all three replacement versions are observed in their registries, apply
-`packages/distribution/legacy-release-policy.v1.json`. Deprecate the stale npm
-previews with the exact bounded messages in that file. Preserve npm and PyPI
-history; do not unpublish, delete, or yank ordinary legacy releases. Deletion is
-reserved for a confirmed compromise or malicious artifact and requires owner
-approval. The unsupported `clervo@0.0.0` and `@clervo/beacon@0.1.0` releases
-receive explicit deprecation notices rather than invented replacements.
+Registry versions are immutable. If a multi-package publish partially succeeds,
+do not rerun blindly: inspect the public artifacts and provenance, reconcile the
+exact state, increment only versions that require a new artifact, and update the
+release target before another approved run. Preserve earlier releases; removal
+is reserved for a confirmed compromise and requires owner approval.

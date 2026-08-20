@@ -1,6 +1,5 @@
 {
   "schemaVersion": "clervo.public-pricing-state.v1",
-  "observedAt": "2026-08-11T08:48:34.576Z",
   "publicOfferAvailable": true,
   "publicPrice": {
     "productId": "search.web",

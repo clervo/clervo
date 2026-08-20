@@ -12,7 +12,6 @@ const openAiChatCompat = await import(pathToFileURL(path.join(root, 'apps/api/sr
 const anthropicMessagesCompat = await import(pathToFileURL(path.join(root, 'apps/api/src/anthropic-messages-compat.mjs')));
 const openAiResponsesCompat = await import(pathToFileURL(path.join(root, 'apps/api/src/openai-responses-compat.mjs')));
 const schemaVisibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
-const registry = JSON.parse(await readFile(path.join(root, 'packages/catalog/platform-registry.v1.json'), 'utf8'));
 const onboarding = JSON.parse(await readFile(path.join(root, 'packages/distribution/onboarding.v1.json'), 'utf8'));
 const launchState = JSON.parse(await readFile(path.join(root, 'packages/catalog/launch-state.v1.json'), 'utf8'));
 const liveRegistry = JSON.parse(await readFile(path.join(root, 'packages/catalog/live-registry.json'), 'utf8'));
@@ -180,13 +179,6 @@ const searchProbeSchema = Object.freeze({
     region: { type: 'string', pattern: '^[A-Z]{2}$', default: 'US' },
   },
   additionalProperties: false,
-});
-const searchResearchProbeSchema = Object.freeze({
-  ...searchProbeSchema,
-  properties: {
-    ...searchProbeSchema.properties,
-    synthesize: { type: 'boolean', default: true, description: 'false selects fast evidence; true selects bounded deep Research with multi-source synthesis, page reading, citations, conflicts, and uncertainty.' },
-  },
 });
 const aiProbeExample = Object.freeze({
   model: currentPaidDiscoveryModel,
@@ -510,8 +502,7 @@ if (
   // the API is publicly callable, and this asserts the hand-written record has
   // not silently disagreed with it.
   || publicApiFlags.some((value) => value !== publicSearch)
-  || launchState.products.length !== 6
-  || launchState.products.some(({ id }) => !registry.pillars.some(({ pillarId }) => pillarId === id))
+  || launchState.products.map(({ id }) => id).join(',') !== 'search,ai,sandbox,rpc,prediction,crypto_intelligence'
 ) throw new Error('launch_state_invalid');
 const projection = publicSearch
   ? contractModule.PUBLIC_SEARCH_DISTRIBUTION_PROJECTION
@@ -522,12 +513,7 @@ await mkdir(path.join(outputDirectory, 'schemas', contractModule.CONTRACT_VERSIO
 
 const schemas = {};
 const allSchemaFiles = (await readdir(schemaDirectory)).filter((name) => name.endsWith('.schema.json')).sort();
-// ProductScope is internal release bookkeeping, not an invocation contract.
-// It remains available to repository tooling but must not be republished as
-// part of the external machine surface merely because its historical schema
-// visibility predates the public/private discovery split.
-const projectedSchemaFiles = contractModule.publicSchemaFiles(schemaVisibility, allSchemaFiles)
-  .filter((name) => name !== 'product-scope.schema.json');
+const projectedSchemaFiles = contractModule.publicSchemaFiles(schemaVisibility, allSchemaFiles);
 for (const fileName of projectedSchemaFiles) {
   const source = await readFile(path.join(schemaDirectory, fileName), 'utf8');
   const schema = JSON.parse(source);
@@ -568,10 +554,13 @@ if (publicSearch) {
     tags: ['Search'],
   });
   openapi.paths['/v1/search/paid'].post = scannerSafeOperation(openapi.paths['/v1/search/paid'].post, {
-    requestSchema: searchResearchProbeSchema,
-    example: { ...searchProbeExample, synthesize: true },
+    requestSchema: {
+      ...searchProbeSchema,
+      properties: { ...searchProbeSchema.properties, synthesize: { type: 'boolean', default: false } },
+    },
+    example: searchProbeExample,
     paymentInfo: {
-      price: { mode: 'fixed', currency: 'USD', amount: '0.012000' },
+      price: { mode: 'dynamic', currency: 'USD', min: '0.006000', max: '0.012000' },
       protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
     },
     tags: ['Search'],
@@ -1038,11 +1027,10 @@ if (publicSandbox) {
     commercialProof: false,
   });
   discovery.limitations = [
-    'Raw cited Search, bounded paid AI chat, and bounded paid one-shot Secure Sandbox execution are publicly callable previews.',
+    'Raw cited Search, bounded paid AI chat, and bounded paid one-shot Secure Sandbox execution are publicly callable operations.',
     'The Sandbox has one qualified execution node; high availability, sessions, arbitrary images, network access, and public artifact retrieval are not claimed.',
     'Deep Research is bounded and callable; AI media, RPC, Prediction, and Crypto Intelligence remain unavailable.',
     'The Sandbox production origin, useful gVisor output, replay, and cleanup are verified; a bounded paid Sandbox proof remains pending.',
-    'No external customer payment, revenue, or demand is claimed.',
   ];
   llms += '\n## Secure Sandbox preview\n\n- `POST /v1/sandbox/execute`: class-derived 0.010000–0.060000 USDC quote on Base for one bounded Node.js 24 or Python 3.12 gVisor execution.\n- Requests may include bounded stdin and files and may return requested artifacts; decoded code, stdin, and files share a 1 MiB envelope, artifact transport is capped at 1 MiB, and returned artifacts are hashed but not malware-scanned.\n- The short class is capped at 5 CPU seconds, 256 MiB, 16 processes, 64 MiB disk, 64 KiB output, 1 MiB artifacts, and 10 seconds wall time; larger requests use the standard class without weaker ceilings.\n- The public operation is one-shot, no-network, resource-capped, receipt-bearing, and replay-safe. Sessions and artifact retrieval remain unavailable.\n';
 }
@@ -1155,7 +1143,7 @@ if (publicPrediction) {
     });
   }
   discovery.limitations = [
-    'Raw cited Search, bounded paid AI chat, one-shot Secure Sandbox execution, and derived Prediction Intelligence are publicly callable previews.',
+    'Raw cited Search, bounded paid AI chat, one-shot Secure Sandbox execution, and derived Prediction Intelligence are publicly callable operations.',
     'Prediction uses the qualified pdata supply path for Polymarket, Kalshi, Manifold, and Limitless; unresolved direct venue adapters remain disabled.',
     'Prediction output is transformed and attributed under CC BY 4.0; Clervo does not redistribute the raw pdata feed or provide trading execution or custody.',
     'A 402 response is a quote, not payment authorization or settlement.',
@@ -1212,7 +1200,7 @@ if (publicCrypto) {
     });
   }
   discovery.limitations = [
-    'Publicly callable previews include bounded provider-neutral Crypto Intelligence for Ethereum and Base.',
+    'Publicly callable operations include bounded provider-neutral Crypto Intelligence for Ethereum and Base.',
     'Crypto amounts stay exact in asset-native atomic units; USD valuation and cross-asset concentration remain unavailable without commercially qualified price supply.',
     'Reports expose observed facts, deterministic signals, coverage, missing sources, freshness, evidence, and provenance; they do not infer wallet identity, risk, advice, custody, signing, or trading.',
     'A 402 response is a quote, not payment authorization or settlement.',
@@ -1230,7 +1218,7 @@ const liveApiFamilies = [
 ].filter(Boolean);
 if (liveApiFamilies.length > 0) {
   openapi.info.title = `Clervo ${liveApiFamilies.map(({ title }) => title).join(', ')} API`;
-  openapi.info.description = `Publicly callable previews: ${liveApiFamilies.map(({ description }) => description).join(', ')}. Availability, routes, and prices are generated from the probed live registry; unavailable operations fail closed.`;
+  openapi.info.description = `Publicly callable operations: ${liveApiFamilies.map(({ description }) => description).join(', ')}. Availability, routes, and prices are generated from the probed live registry; unavailable operations fail closed.`;
   const tagDescriptions = {
     Search: 'Free-first raw web evidence and paid replay-safe retrieval.',
     AI: 'Provider-neutral model discovery and normalized free-or-paid execution.',
@@ -1245,7 +1233,7 @@ if (liveApiFamilies.length > 0) {
     return { name, description: tagDescriptions[name] };
   });
   if (Array.isArray(discovery.limitations) && discovery.limitations.length > 0) {
-    discovery.limitations[0] = `Publicly callable previews: ${liveApiFamilies.map(({ description }) => description).join(', ')}.`;
+    discovery.limitations[0] = `Publicly callable operations: ${liveApiFamilies.map(({ description }) => description).join(', ')}.`;
   }
 }
 const catalog = contractModule.createCatalogDocument(projection);
@@ -1299,9 +1287,8 @@ openapi.info.description = `${COMMERCIAL_DESCRIPTION} Current operations, routes
 
 // Public discovery describes how an external caller uses the deployed system.
 // Historical release-candidate gates, B-number readiness, private proof ledgers,
-// and frozen-core bookkeeping remain repository authority but are not part of
+// Internal compatibility bookkeeping is not part of
 // that caller contract.
-delete discovery.releaseScope;
 discovery.distribution = {
   state: publicSearch ? 'public' : 'unavailable',
   publicAvailable: publicSearch,
@@ -1321,12 +1308,10 @@ for (const product of discovery.products) {
 // not in the invocable public inventory returned to unrelated agents.
 discovery.products = discovery.products.filter(({ publicAvailable }) => publicAvailable === true);
 catalog.products = discovery.products;
-delete catalog.releaseScope;
 catalog.distribution = discovery.distribution;
 discovery.limitations = discovery.limitations
   .filter((line) => !/(proof|proven|pending|customer payment|revenue|demand)/iu.test(line))
   .map((line) => line
-    .replace(/Publicly callable previews:/iu, 'Publicly callable operations:')
     .replace(/ without commercially qualified price supply/iu, '')
     .replace(/Qualified supply, /iu, '')
     .replace(/The qualified pdata supply path/iu, 'pdata')
@@ -1647,7 +1632,7 @@ async function dynamicModelList() {
   return value;
 }
 
-// B7's frozen commercial catalog is now the default public AI authority. An
+// The qualified AI catalog is the default public AI source. An
 // explicit empty setting retains the legacy probe projection for historical
 // validation only; normal catalog revisions change data, never this generator.
 const dynamicModelSource = await dynamicModelList();

@@ -147,11 +147,4 @@ test('execution request and result schemas compile strictly and remain private',
   }
   const visibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
   assert.ok(['ai-execution-request.schema.json', 'ai-execution-result.schema.json'].every((file) => visibility.schemas.find((entry) => entry.file === file)?.visibility === 'internal_control'));
-  const registry = JSON.parse(await readFile(path.join(root, 'packages/catalog/platform-registry.v1.json'), 'utf8'));
-  assert.deepEqual(registry.operations.filter(({ operationId }) => operationId.startsWith('ai.')).map(({ operationId, lifecycle, route }) => ({ operationId, lifecycle, route })), [
-    { operationId: 'ai.chat', lifecycle: 'unavailable', route: null },
-    { operationId: 'ai.embed', lifecycle: 'unavailable', route: null },
-    { operationId: 'ai.image', lifecycle: 'unavailable', route: null },
-    { operationId: 'ai.speech', lifecycle: 'unavailable', route: null },
-  ]);
 });

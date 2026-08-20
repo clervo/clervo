@@ -66,7 +66,7 @@ test('machine discovery publishes every live public product and payment contract
   assert.deepEqual(openapi.paths['/v1/search/free'].post.security, []);
   assert.deepEqual(openapi.paths['/v1/models'].get.security, []);
   assert.deepEqual(openapi.paths['/v1/search/paid'].post['x-payment-info'], {
-    price: { mode: 'fixed', currency: 'USD', amount: '0.006000' },
+    price: { mode: 'dynamic', currency: 'USD', min: '0.006000', max: '0.012000' },
     protocols: [{ x402: {} }, { mpp: { method: 'evm', intent: 'charge', currency: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' } }],
   });
   const maximumAiAtomic = aiPricing.models.filter(({ billingMode }) => billingMode === 'metered')

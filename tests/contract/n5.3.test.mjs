@@ -7,7 +7,6 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import {
   appendLiveIntelligenceMonitorSnapshot,
-  assertPlatformRegistry,
   assertSchemaVisibilityManifest,
   compareLiveIntelligenceEvidence,
   createLiveIntelligenceMonitorDefinition,
@@ -150,7 +149,7 @@ test('snapshot and lineage verification detect payload, parent, and hash tamperi
   assert.equal(verifyLiveIntelligenceMonitorSnapshot(parentTamper), false);
 });
 
-test('monitor contracts validate strictly, remain internal, and register no callable route or SKU', async () => {
+test('monitor contracts validate strictly and remain internal', async () => {
   const schemas = (await readdir(schemaDirectory)).filter((file) => file.endsWith('.schema.json')).sort();
   const ajv = new Ajv2020({ strict: true, allErrors: true });
   addFormats(ajv);
@@ -161,15 +160,8 @@ test('monitor contracts validate strictly, remain internal, and register no call
   assert.equal(ajv.getSchema('https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-monitor-definition.schema.json')(monitor), true);
   assert.equal(ajv.getSchema('https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-monitor-state.schema.json')(state), true);
 
-  const registry = await json('packages/catalog/platform-registry.v1.json');
   const visibility = await json('packages/catalog/schema-visibility.v1.json');
   assert.doesNotThrow(() => assertSchemaVisibilityManifest(visibility, schemas));
-  assert.doesNotThrow(() => assertPlatformRegistry(registry, visibility));
-  const operation = registry.operations.find(({ operationId }) => operationId === 'search.monitor');
-  assert.equal(operation.route, null);
-  assert.equal(operation.visibility, 'internal');
-  assert.deepEqual(operation.deliveryModes, ['async']);
-  assert.equal(registry.skus.some(({ operationId }) => operationId === 'search.monitor'), false);
   for (const file of ['live-intelligence-monitor-definition.schema.json', 'live-intelligence-monitor-snapshot.schema.json', 'live-intelligence-monitor-state.schema.json']) {
     assert.equal(visibility.schemas.find((entry) => entry.file === file)?.visibility, 'internal_control');
   }

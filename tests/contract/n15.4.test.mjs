@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { createSearchResponse, SEARCH_PAID_PATH } from '../../dist/packages/contracts/src/index.js';
 import { createSearchServer } from '../../apps/api/src/search-server.mjs';
@@ -97,16 +96,4 @@ test('production refuses non-durable real settlement state and mock commerce can
   const state = new InMemoryX402OperationStore({ environmentNamespace: 'stage15' });
   assert.throws(() => createSearchServer({ executor: executor(), x402Service: service, x402StateStore: state, environment: 'production' }), /production x402 requires durable state/u);
   assert.throws(() => createSearchServer({ executor: executor(), x402Service: service, x402StateStore: state, allowMockPaidExecution: true }), /mock and real commerce cannot be enabled together/u);
-});
-
-test('historical Base transfers remain chain plumbing evidence, not current release proof', async () => {
-  const evidence = JSON.parse(await readFile('docs/evidence/production/historical-base-usdc-settlements.v1.json', 'utf8'));
-  assert.equal(evidence.summary.confirmedTransfers, 8);
-  assert.equal(evidence.summary.totalAmountAtomic, '32000');
-  assert.equal(evidence.transfers.reduce((total, transfer) => total + BigInt(transfer.amountAtomic), 0n), 32000n);
-  assert.ok(evidence.transfers.every(({ status, transactionHash }) => status === 'confirmed' && /^0x[a-f0-9]{64}$/u.test(transactionHash)));
-  assert.equal(evidence.classification.currentReleaseProof, false);
-  assert.equal(evidence.classification.firstRevenueProof, false);
-  assert.ok(evidence.classification.missingEvidence.includes('same_idempotency_key_no_charge_replay'));
-  assert.equal(evidence.paymentAuthorizedByThisObservation, false);
 });

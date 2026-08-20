@@ -23,7 +23,7 @@ another HTTPS deployment or loopback development.
 
 Use `--profile research|ai|prediction|crypto|sandbox|full` to load only the
 schemas relevant to an agent. Profiles are checked against the live registry on
-every execution. RPC is not exposed while runtime truth reports it unavailable.
+every execution, and unavailable operations are not exposed.
 
 Alongside useful Search and AI tools, `clervo_execute` safely exposes operations
 served in the selected profile. `connect_status`, `spend_limits`, `local_usage`,

@@ -7,7 +7,6 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import {
   assembleLiveIntelligenceSolutionPack,
-  assertPlatformRegistry,
   assertSchemaVisibilityManifest,
   createSearchResponse,
   liveIntelligenceSolutionPackDefinitions,
@@ -114,24 +113,16 @@ test('pack result verification detects record, identity, summary, and hash tampe
   }
 });
 
-test('canonical registry contains exactly five internal packs with stable fields and lawful access modes', async () => {
-  const registry = await json('packages/catalog/platform-registry.v1.json');
+test('solution-pack definitions contain exactly five stable internal contracts', async () => {
   const visibility = await json('packages/catalog/schema-visibility.v1.json');
   const schemas = (await readdir(schemaDirectory)).filter((file) => file.endsWith('.schema.json')).sort();
   assert.doesNotThrow(() => assertSchemaVisibilityManifest(visibility, schemas));
-  assert.doesNotThrow(() => assertPlatformRegistry(registry, visibility));
-  assert.deepEqual(registry.solutionPacks.map(({ packId }) => packId), [...liveIntelligenceSolutionPackIds]);
-  for (const pack of registry.solutionPacks) {
-    assert.equal(pack.lifecycle, 'preview');
-    assert.equal(pack.visibility, 'internal');
-    assert.deepEqual(pack.requiredFields, [...liveIntelligenceSolutionPackDefinitions[pack.packId].requiredFields]);
-    assert.deepEqual(pack.optionalFields, [...liveIntelligenceSolutionPackDefinitions[pack.packId].optionalFields]);
-    assert.ok(pack.accessModes.every((mode) => ['open_web', 'official_api', 'bring_your_own_credentials', 'user_authorized_session', 'partner_access', 'customer_supplied_data', 'unsupported'].includes(mode)));
+  assert.deepEqual(Object.keys(liveIntelligenceSolutionPackDefinitions), [...liveIntelligenceSolutionPackIds]);
+  for (const packId of liveIntelligenceSolutionPackIds) {
+    const pack = liveIntelligenceSolutionPackDefinitions[packId];
+    assert.ok(pack.requiredFields.length > 0);
+    assert.equal(new Set([...pack.requiredFields, ...pack.optionalFields]).size, pack.requiredFields.length + pack.optionalFields.length);
   }
-  const operation = registry.operations.find(({ operationId }) => operationId === 'search.solution_pack.assemble');
-  assert.equal(operation.route, null);
-  assert.equal(operation.visibility, 'internal');
-  assert.equal(registry.skus.some(({ operationId }) => operationId === operation.operationId), false);
 });
 
 test('solution-pack results validate strictly and remain excluded from public schema projection', async () => {

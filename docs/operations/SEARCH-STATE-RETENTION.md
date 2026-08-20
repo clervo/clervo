@@ -1,6 +1,6 @@
 # Search state retention
 
-The production candidate stores canonical request hashes, operation identity,
+The production service stores canonical request hashes, operation identity,
 completed response envelopes, and quota counters. It does not store raw request
 bodies or raw network addresses in the state tables. Quota subjects are
 namespace-bound SHA-256 values.

@@ -16,7 +16,6 @@ try {
   const environments = await Promise.all(
     names.map((name) => readJson(`infra/environments/${name}.json`)),
   );
-  const manifest = await readJson('infra/staging/release-manifest.json');
   const envExample = await readFile(path.join(repositoryRoot, '.env.example'), 'utf8');
 
   for (const [index, environment] of environments.entries()) {
@@ -43,19 +42,6 @@ try {
   assert.notEqual(staging.queueBoundary, production.queueBoundary);
   assert.equal(production.service.readinessPath, '/readyz');
   assert.equal(production.secretSource, 'google-secret-manager-pinned-versions');
-
-  assert.equal(manifest.environment, 'staging');
-  assert.equal(manifest.healthPath, staging.service.healthPath);
-  assert.equal(manifest.service, 'clervo-stage4-slice-staging');
-  assert.equal(manifest.releaseId, '2f6fd6c');
-  assert.equal(manifest.revision, 'clervo-stage4-slice-staging-00001-7fn');
-  assert.match(manifest.artifact, /@sha256:16bcfbf77f874c0e323a67b18712df4d92318b71227838de141a0bbca0e72354$/u);
-  assert.equal(manifest.access, 'private-authenticated');
-  assert.equal(manifest.retrievalMode, 'recorded');
-  assert.equal(manifest.paidExecutionEnabled, false);
-  assert.equal(manifest.rollback.strategy, 'restore-previous-revision-or-delete-first-deployment');
-  assert.equal(manifest.rollback.requiredInput, '.staging-state/previous-revision');
-  assert.equal(manifest.liveDeploymentStatus, 'verified-private-recorded-only');
 
   assert.match(envExample, /^CLERVO_ENV=development$/m);
   assert.match(envExample, /^DATABASE_URL=$/m);

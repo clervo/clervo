@@ -1,4 +1,0 @@
-command=npm list --all
-exit=0
-lines=1
-bytes=0

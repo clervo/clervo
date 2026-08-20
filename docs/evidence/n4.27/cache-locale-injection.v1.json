@@ -1,8 +1,0 @@
-{
-  "schemaVersion": "clervo.n4.27.cache-locale-injection.v1",
-  "evaluatedAt": "2026-07-31T19:35:00.000Z",
-  "cache":{"connectedPathImplemented":true,"repositoryTests":{"miss":true,"freshHit":true,"staleRevalidated":true,"staleDegradedDisclosed":true,"eviction":true,"denylistInvalidation":true,"routeUrlPolicyBoundKeys":true,"crossRouteSubstitutionRejected":true,"integrityFailureRejected":true},"fullStagingTranscript":false,"mandatoryGatePass":false},
-  "locale":{"requestPropagationImplemented":true,"regressionEvaluatorObserved":1,"holdoutEvaluatorObserved":1,"upstreamHonorDisclosureComplete":false,"silentUnsupportedSubstitutionExcluded":false,"mandatoryGatePass":false,"reason":"Evaluator locale equality measures response propagation; Wikimedia and Crossref locale honoring was not independently demonstrated."},
-  "promptInjection":{"untrustedEvidenceBoundaryImplemented":true,"repositoryAdversarialFixturesPass":true,"hostileLiveControlledPagesExecuted":false,"attemptedInstructionClasses":["route","ranking","payment","tools","citations","secrets","embedded_commands","system_policy"],"stagingPassRate":null,"mandatoryGatePass":false},
-  "overallMandatoryGatePass":false
-}

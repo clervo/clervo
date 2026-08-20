@@ -2,7 +2,9 @@
 
 Clervo lets software use AI models and agent tools with pay-per-use x402 payments, without managing separate provider accounts or API keys.
 
-The public API is `https://api.clervo.dev`. Current products include AI, Web Search, Secure Sandbox, Prediction Intelligence, and Crypto Intelligence. Multi-chain RPC is not currently available through the public API.
+The public API is `https://api.clervo.dev`. Current products, routes, models,
+prices, and availability are published by the machine-readable discovery
+documents linked below.
 
 ## Start
 
@@ -52,8 +54,7 @@ The repository requires Node.js `24.18.1` and npm `10.9.8`.
 
 ```sh
 npm ci --ignore-scripts
-npm run generate:discovery
-npm run test:b13:clients
+npm test
 npm run site:build
 ```
 

@@ -1,6 +1,5 @@
 {
   "schemaVersion": "clervo.capabilities.v1",
-  "observedAt": "2026-08-11T08:48:34.576Z",
   "publicCallable": true,
   "observedTruth": {
     "provenance": {

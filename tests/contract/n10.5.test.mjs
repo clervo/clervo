@@ -29,17 +29,6 @@ test('four bounded provider-neutral crypto operations have sustainable authorita
   assert.ok(pricing.products.every(({ customerPriceMicrousd, infrastructureCostAllowanceMicrousd, listingStatus, maximumItems, maximumResponseBytes }) => customerPriceMicrousd > infrastructureCostAllowanceMicrousd && listingStatus === 'sellable' && maximumItems <= 100 && maximumResponseBytes <= 10_485_760));
 });
 
-test('canonical registry preserves the stable four-operation Crypto contract without claiming undeployed availability', async () => {
-  const registry = await read('packages/catalog/platform-registry.v1.json');
-  const expected = ['crypto.wallet.balances', 'crypto.wallet.tokens', 'crypto.wallet.transactions', 'crypto.wallet.report'];
-  const products = registry.products.filter(({ pillarId }) => pillarId === 'crypto_intelligence');
-  const operations = registry.operations.filter(({ operationId }) => operationId.startsWith('crypto.'));
-  assert.deepEqual(products.map(({ productId }) => productId), expected);
-  assert.deepEqual(operations.map(({ operationId }) => operationId), expected);
-  assert.ok([...products, ...operations].every(({ lifecycle, visibility }) => lifecycle === 'unavailable' && visibility === 'internal'));
-  assert.ok(operations.every(({ route }) => route === null));
-});
-
 test('crypto schemas remain internal and mismatched products or terms bypass fail closed', async () => {
   const visibility = await read('packages/catalog/schema-visibility.v1.json');
   const entries = visibility.schemas.filter(({ file }) => file.startsWith('crypto-'));

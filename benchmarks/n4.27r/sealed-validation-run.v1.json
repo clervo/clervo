@@ -1,8 +1,0 @@
-{
-  "schemaVersion": "clervo.n4.27r.sealed-validation-run.v1",
-  "executedAt": "2026-07-31T21:16:26.369Z",
-  "runCount": 1,
-  "scorecardSha256": "sha256:0be4d7d9528bf058881616e0535e9f72a70175e7429dc2dec84320485c41ce82",
-  "rawSha256": "sha256:ad66d23f87da7a775f9a98fc8ec858162de4146d9367a92015bc8c2584efc56f",
-  "mandatoryQualityGatePass": true
-}

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Clervo Benchmark Freeze"
-  short_description: "Freeze and protect benchmark evidence"
-  default_prompt: "Use $clervo-benchmark-freeze to define an independent corpus, freeze it, and enforce once-only evidence rules."

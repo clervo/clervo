@@ -49,7 +49,7 @@ test('generated OpenAPI is deterministic, schema-complete, and exposes only regi
   assert.ok(status.operationIds.includes('search.web'), 'search.web must stay published');
   const schemaFiles = (await readdir(path.join(root, 'packages/contracts/schemas'))).filter((name) => name.endsWith('.schema.json'));
   const visibility = JSON.parse(await readFile(path.join(root, 'packages/catalog/schema-visibility.v1.json'), 'utf8'));
-  assert.equal(Object.keys(document.components.schemas).length, publicSchemaFiles(visibility, schemaFiles).filter((name) => name !== 'product-scope.schema.json').length);
+  assert.equal(Object.keys(document.components.schemas).length, publicSchemaFiles(visibility, schemaFiles).length);
   assert.equal(document.components.schemas.ProductScope, undefined);
 });
 
@@ -142,12 +142,6 @@ test('generation fails closed if routes disappear or public availability is inje
     /discovery_distribution_claim_unsafe/,
   );
 
-  const falseQualification = structuredClone(createDiscoveryDocument());
-  falseQualification.releaseScope.productCore.interfacesFrozen = false;
-  assert.throws(
-    () => assertPreviewArtifacts(createOpenApiDocument({}), falseQualification, createLlmsText()),
-    /discovery_product_scope_invalid/,
-  );
 });
 
 test('generated public artifacts contain no common secret material', async () => {

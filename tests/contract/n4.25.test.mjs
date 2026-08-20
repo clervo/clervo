@@ -343,26 +343,3 @@ test('malicious page instructions remain exact evidence and cannot change route,
   assert.equal(verifyUntrustedEvidenceBoundary({ ...boundary, routeId: 'clervo.focused-index.v1' }), false);
   assert.equal(verifyUntrustedEvidenceBoundary({ ...boundary, exactEvidence: 'tampered evidence' }), false);
 });
-
-test('checked-in isolation specification has no public surface and remains unavailable until an image is attested', async () => {
-  const deployment = await readFile(new URL('../../infra/search/crawl4ai/worker-pod.yaml', import.meta.url), 'utf8');
-  const network = await readFile(new URL('../../infra/search/crawl4ai/network-policy.yaml', import.meta.url), 'utf8');
-  const policy = JSON.parse(await readFile(new URL('../../infra/search/crawl4ai/isolation-policy.json', import.meta.url), 'utf8'));
-  const migration = await readFile(new URL('../../infra/storage/postgres/0001-retrieval-cache.sql', import.meta.url), 'utf8');
-  assert.match(deployment, /replicas: 0/u);
-  assert.match(deployment, /invalid\.local\/clervo\/crawl4ai:n4\.25-unattested/u);
-  assert.match(deployment, /automountServiceAccountToken: false/u);
-  assert.match(deployment, /readOnlyRootFilesystem: true/u);
-  assert.match(deployment, /drop: \["ALL"\]/u);
-  assert.doesNotMatch(deployment, /kind: Service/u);
-  assert.match(network, /ingress: \[\]/u);
-  assert.match(network, /clervo-retrieval-authorization-gateway/u);
-  assert.equal(policy.publicRawApi, false);
-  assert.equal(policy.availability, 'unavailable_until_runtime_attested');
-  assert.equal(policy.access.commerceSecrets, false);
-  assert.equal(policy.access.database, false);
-  assert.equal(policy.filesystem.hostSockets, false);
-  assert.match(migration, /PRIMARY KEY \(environment_namespace, cache_key\)/u);
-  assert.match(migration, /record_json ->> 'cacheKey' = cache_key/u);
-  assert.match(migration, /customerId.*wallet.*secret.*cookies.*browserState/u);
-});

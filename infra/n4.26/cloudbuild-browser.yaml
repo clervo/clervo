@@ -1,8 +1,0 @@
-steps:
-  - name: gcr.io/cloud-builders/docker
-    args: [build, -f, infra/n4.26/browser.Dockerfile, -t, us-central1-docker.pkg.dev/$PROJECT_ID/clervo-n426/browser:$BUILD_ID, .]
-images:
-  - us-central1-docker.pkg.dev/$PROJECT_ID/clervo-n426/browser:$BUILD_ID
-options:
-  logging: CLOUD_LOGGING_ONLY
-timeout: 1200s

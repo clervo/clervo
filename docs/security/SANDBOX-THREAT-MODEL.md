@@ -1,6 +1,6 @@
 # Secure Sandbox threat model
 
-Status: architecture selected; runtime unavailable pending qualification.
+Status: enforced by the current qualified runtime and release policy.
 
 Clervo treats submitted code, dependencies, archives, artifacts, stdout, and
 filenames as hostile. The protected assets are tenant data, Clervo/provider
@@ -39,12 +39,12 @@ no commerce, provider, wallet, database, R2, or model-gateway credentials.
 - Deadline termination, namespace/workload deletion, artifact cleanup, and an
   orphan reaper are mandatory. Unknown cleanup state fails closed.
 
-## Qualification gate
+## Qualification and release gate
 
-No sandbox capability leaves `unavailable` until a separate runtime passes
-escape, fork-bomb, decompression-bomb, output-flood, metadata, SSRF, filesystem,
-cross-tenant, secret, deadline, kill, cleanup, orphan, accounting, and replay
-tests. Local mocks prove only control-plane logic and never isolation.
+Every runner image must pass escape, fork-bomb, decompression-bomb,
+output-flood, metadata, SSRF, filesystem, cross-tenant, secret, deadline, kill,
+cleanup, orphan, accounting, and replay checks before it can serve traffic.
+Local mocks prove only control-plane logic and never isolation.
 
 Primary design references:
 

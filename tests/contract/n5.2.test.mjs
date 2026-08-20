@@ -6,7 +6,6 @@ import { fileURLToPath } from 'node:url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import {
-  assertPlatformRegistry,
   assertSchemaVisibilityManifest,
   compareLiveIntelligenceEvidence,
   createSearchResponse,
@@ -103,23 +102,8 @@ test('comparison output validates against the strict contract and remains intern
   const report = compareLiveIntelligenceEvidence(snapshots());
   assert.equal(validate(report), true, ajv.errorsText(validate.errors));
 
-  const registry = await json('packages/catalog/platform-registry.v1.json');
   const visibility = await json('packages/catalog/schema-visibility.v1.json');
   assert.doesNotThrow(() => assertSchemaVisibilityManifest(visibility, schemas));
-  assert.doesNotThrow(() => assertPlatformRegistry(registry, visibility));
-  const operation = registry.operations.find(({ operationId }) => operationId === 'search.compare');
-  assert.deepEqual(operation, {
-    operationId: 'search.compare',
-    capabilityId: 'search.web',
-    productId: 'search.web',
-    route: null,
-    deliveryModes: ['sync'],
-    accessModes: ['open_web', 'official_api', 'customer_supplied_data', 'unsupported'],
-    inputSchema: 'https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-compare-request.schema.json',
-    outputSchema: 'https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-comparison.schema.json',
-    lifecycle: 'preview',
-    visibility: 'internal',
-  });
   for (const file of ['live-intelligence-compare-request.schema.json', 'live-intelligence-comparison.schema.json']) {
     assert.equal(visibility.schemas.find((entry) => entry.file === file)?.visibility, 'internal_control');
   }

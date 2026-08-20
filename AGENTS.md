@@ -1,25 +1,30 @@
-# Clervo — agent instructions
+# Clervo engineering rules
 
-The full instructions are in `CLAUDE.md` at this repository root. Read that
-file. It applies to every agent working in this repository, not only Claude.
+The owner's current explicit task determines the work. Runtime behavior and the
+current catalog and generated discovery artifacts determine product truth;
+roadmaps, milestones, screenshots, old proofs, and chat history do not.
 
-Summary of the parts most often gotten wrong:
+Codex owns ordinary engineering decisions and should continue through
+implementation, testing, and documentation without waiting on unrelated
+commercial decisions. The owner decides provider/commercial approval, pricing,
+legal and contractual matters, branding and business direction, and any real
+spend. Missing owner decisions block only the action that needs them.
 
-- Current product truth comes from directly observed deployed behavior and the
-  canonical catalog/launch-state data.
-- `ROADMAP.md` is a **public product-direction document**, not an internal
-  operations log, deployment runbook, recovery authority, payment ledger, or
-  private milestone tracker.
-- Work selection comes from the owner's explicit instruction and the concrete
-  issue, pull request, branch, or scoped task in front of you.
-- `docs/` is research/history unless the current task explicitly names a file as
-  input. Historical material does not override live behavior or the canonical
-  registry.
-- Do not place deployment IDs, secret versions, wallet material, rollback
-  targets, private recovery state, spending authorizations, supplier
-  credentials, or similar operational details in public planning documents.
-- A capability is public only when the externally reachable system proves the
-  claimed lifecycle. A passing local test or source-code presence is not enough.
-- If a production-sensitive action needs private context that is unavailable,
-  stop before that action rather than reconstructing it from historical public
-  artifacts.
+Permanent safety requirements:
+
+- Never expose secrets, credentials, wallet material, customer payloads, or
+  authentication files in source, logs, commits, or reports.
+- Preserve payment idempotency, replay and reconciliation correctness. Unknown
+  settlement state fails closed; never authorize or spend real money without
+  explicit owner approval.
+- Preserve wallet isolation, Sandbox isolation, SSRF and redirect protection,
+  exact-model identity, hard resource and cost bounds, cleanup, and truthful
+  failure reporting.
+- Do not destructively change unrelated infrastructure, production or customer
+  data, IAM, billing, domains, registries, backups, or other projects.
+- Public availability claims must match the externally reachable system and
+  generated catalog. Source presence or a local test is not availability.
+
+Use specialist skills only when the current task matches their stated purpose.
+Avoid repeated research or planning once the facts needed to implement are
+known. Preserve unrelated work and make the smallest coherent change.

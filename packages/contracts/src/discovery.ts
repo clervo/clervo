@@ -8,7 +8,6 @@ import {
 } from './search-http.js';
 import type { AssetAmount } from './types.js';
 import { CONTRACT_VERSION } from './types.js';
-import { assertProductScope, createProductScopeDocument, type ProductScopeDocument } from './product-scope.js';
 
 export const DISCOVERY_VERSION = '2026-08-02.2' as const;
 export const RELEASE_CANDIDATE_ID = 'clervo-private-core-2026-08-02.2' as const;
@@ -118,7 +117,6 @@ export interface DiscoveryDocument {
     privateProofVerified: true;
     commercialProof: false;
   };
-  releaseScope: ProductScopeDocument;
   artifacts: {
     openapi: string;
     catalog: string;
@@ -293,7 +291,6 @@ export function createDiscoveryDocument(
       privateProofVerified: true,
       commercialProof: false,
     },
-    releaseScope: createProductScopeDocument(),
     artifacts: {
       openapi: '/openapi.json',
       catalog: '/catalog.json',
@@ -331,7 +328,6 @@ export function createCatalogDocument(
     contractVersion: CONTRACT_VERSION,
     catalogVersion: DISCOVERY_VERSION,
     distribution: discovery.distribution,
-    releaseScope: discovery.releaseScope,
     products: discovery.products,
   };
 }
@@ -402,13 +398,6 @@ export function assertPreviewArtifacts(
     || product.payment.payable
   )) failures.push('discovery_product_projection_invalid');
   if (discovery.payment.implemented || discovery.payment.settlementVerified) failures.push('discovery_payment_claim_unsafe');
-  try {
-    assertProductScope(discovery.releaseScope);
-  } catch {
-    failures.push('discovery_product_scope_invalid');
-  }
-  if (!discovery.releaseScope.productCore.ready || discovery.releaseScope.firstRevenueRelease.ready) failures.push('discovery_release_scope_invalid');
-  if (!discovery.releaseScope.pillars.every(({ coreQualified }) => coreQualified)) failures.push('discovery_private_core_qualification_incomplete');
   if (!llms.includes('Public API callable: no')) failures.push('llms_missing_callable_status');
   if (!llms.includes('x402 public payment: unavailable')) failures.push('llms_missing_payment_status');
   if (/\b(?:live service|available now|production-ready)\b/iu.test(llms)) failures.push('llms_unsafe_public_claim');
@@ -443,11 +432,6 @@ export function assertPublicArtifacts(
   if (!raw?.publicAvailable || raw.pricing.model !== 'x402_exact' || !raw.payment.payable) failures.push('raw_search_public_offer_invalid');
   if (!answer?.publicAvailable || answer.pricing.model !== 'x402_exact' || answer.pricing.displayPrice?.amountAtomic !== SEARCH_PRODUCT_PRICING[SEARCH_SYNTHESIS_PRODUCT_ID].maximumCharge.amountAtomic || !answer.payment.payable) failures.push('search_answer_public_offer_invalid');
   if (!discovery.payment.implemented || !discovery.payment.settlementVerified || !discovery.payment.publicAvailable) failures.push('public_payment_status_invalid');
-  try {
-    assertProductScope(discovery.releaseScope);
-  } catch {
-    failures.push('discovery_product_scope_invalid');
-  }
   if (!llms.includes('Public API callable: yes')) failures.push('llms_missing_callable_status');
   if (!llms.includes('x402 public payment: available for search.web')) failures.push('llms_missing_payment_status');
   if (failures.length > 0) throw new TypeError(`unsafe public discovery artifacts: ${failures.join(', ')}`);

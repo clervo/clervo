@@ -93,7 +93,7 @@ function paidProofValidation() {
     && paidProof.state === 'settled_reconciled'
     && paidProof.publicOrigin === `${origin}/`
     && paidProof.endpoint === `${origin}/v1/ai/execute`
-    // The reconciled owner-funded proof is historical evidence. Its
+    // The reconciled payment qualification is historical evidence. Its
     // settlement/replay invariants remain valid across later deploys; only
     // require a well-formed recorded release rather than the current one.
     && /^[a-f0-9]{40}$/u.test(paidProof.releaseCommit ?? '')

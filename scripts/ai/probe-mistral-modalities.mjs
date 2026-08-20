@@ -64,7 +64,7 @@ let transcriptionBody;
 try { transcriptionBody = JSON.parse(transcriptionText); } catch { transcriptionBody = null; }
 const normalizedTranscript = typeof transcriptionBody?.text === 'string' ? transcriptionBody.text.toLowerCase().replace(/[^a-z0-9]+/gu, ' ').trim() : '';
 
-const image = await readFile(path.join(root, 'docs/evidence/codex-studio/raw/visual-qa/chromium-mobile.png'));
+const image = await readFile(path.join(root, 'apps/site/visual-baseline/home-320.png'));
 const ocr = await jsonRequest('https://api.mistral.ai/v1/ocr', { model: 'mistral-ocr-4', document: { type: 'image_url', image_url: `data:image/png;base64,${image.toString('base64')}` }, include_image_base64: false }, 4_000_000);
 const ocrMarkdown = Array.isArray(ocr.body?.pages) ? ocr.body.pages.map(({ markdown }) => typeof markdown === 'string' ? markdown : '').join('\n') : '';
 

@@ -22,7 +22,6 @@ import { FAMILY_CODE, FAMILY_DISPLAY, FAMILY_ORDER } from './b12Slice4';
 export type TrustSupportPage = 'pricing' | 'proof' | 'docs' | 'status' | 'security' | 'benchmarks' | 'changelog' | 'legal';
 
 type DocsObjective = 'coding' | 'agent' | 'backend' | 'http' | 'provider';
-type BenchmarkTopic = 'qualification' | 'replay' | 'evidence';
 type LegalTopic = 'terms' | 'privacy' | 'payments' | 'acceptable';
 
 const SUPPORT_PAGES: Array<{ id: TrustSupportPage; label: string }> = [
@@ -232,7 +231,7 @@ const docsObjectives: Record<DocsObjective, { number: string; title: string; kic
   agent: { number: '02', title: 'Build an autonomous agent', kicker: 'Agent integration', body: 'Start from catalog and operation contracts. Qualification, price boundaries, evidence, errors, and replay should remain explicit agent inputs.', code: 'GET https://clervo.dev/catalog.json\nGET https://clervo.dev/openapi.yaml\n\n# Select a current operation by task, not vendor.' },
   backend: { number: '03', title: 'Integrate a backend', kicker: 'First callable path', body: publicApiCallable ? `The observed public origin is ${observedApiOrigin}. The current quickstart below is generated from the observed free Search entry.` : 'No public origin is currently observed serving, so a callable backend example is intentionally omitted.', code: quickStartCurl ?? '# No current public callable quickstart is bound.' },
   http: { number: '04', title: 'Use raw HTTP / OpenAPI', kicker: 'Machine contract', body: 'Read the generated discovery, OpenAPI, pricing, and status surfaces directly. Human documentation must not contradict these generated contracts.', code: 'GET /openapi.yaml\nGET /catalog.json\nGET /pricing.json\nGET /status.json\nGET /models.json' },
-  provider: { number: '05', title: 'Publish a provider or service', kicker: 'Provider integration', body: 'The locked design includes a provider publication path, but a public provider-admission contract is not currently bound. Do not infer one from internal supplier identifiers.', code: '# Provider publication contract: not publicly bound\n# Required before publication:\n# capability · schema · rights · health · pricing · evidence · recovery' },
+  provider: { number: '05', title: 'Publish a provider or service', kicker: 'Provider integration', body: 'Provider admission is not currently public.', code: '# Provider admission: unavailable' },
 };
 
 function DocsPage() {
@@ -251,7 +250,7 @@ function DocsPage() {
         </div>
       </Section>
 
-      <Section eyebrow="Developer workspace" title="Human guidance beside machine truth." copy="The locked three-pane documentation grammar is preserved: navigation, explanation, and exact code/data stay visible together.">
+      <Section eyebrow="Developer workspace" title="Human guidance beside machine truth." copy="Navigation, explanation, and exact code or data stay visible together.">
         <div className="s6-docs-shell">
           <nav className="s6-docs-tree" aria-label="Documentation tree">
             <p className="s6-label">Documentation</p>
@@ -361,41 +360,12 @@ function SecurityPage() {
   );
 }
 
-const benchmarkTopics: Record<BenchmarkTopic, { label: string; hypothesis: string; workload: string; baseline: string; evidence: string }> = {
-  qualification: { label: 'Qualification', hypothesis: 'Qualification should reduce invalid or unavailable paid attempts.', workload: 'No public benchmark workload is bound.', baseline: 'No comparative baseline is bound.', evidence: 'No public measured result is bound.' },
-  replay: { label: 'Replay', hypothesis: 'Same-key same-input replay should avoid a duplicate effect.', workload: 'A benchmark must exercise durable completed, conflict, and unknown-settlement states.', baseline: 'A naive-retry comparison corpus is not published.', evidence: 'No aggregate performance metric is published.' },
-  evidence: { label: 'Evidence', hypothesis: 'Structured evidence contracts should improve inspectability.', workload: 'No public scoring corpus or rubric is bound.', baseline: 'No free-form comparison baseline is bound.', evidence: 'No public measured result is bound.' },
-};
-
 function BenchmarksPage() {
-  const [topic, setTopic] = useState<BenchmarkTopic>('qualification');
-  const current = benchmarkTopics[topic];
   return (
     <>
-      <Hero page="benchmarks" eyebrow="Benchmarks / method before number" title="No number without the method behind it." lede="Clervo does not publish comparative performance bars, latency claims, percentage improvements, or superiority statements without a reproducible public method and evidence bundle.">
-        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-benchmark-record">Inspect benchmark format</a><Link className="s6-button s6-button--secondary" to="/proof">Inspect task proof</Link></div>
+      <Hero page="benchmarks" eyebrow="Benchmarks" title="Comparative benchmarks are not currently published." lede="Current availability, prices, and operation contracts remain available through generated discovery.">
+        <div className="s6-hero-actions"><Link className="s6-button s6-button--primary" to="/status">Current status</Link><Link className="s6-button s6-button--secondary" to="/catalog">Browse operations</Link></div>
       </Hero>
-
-      <Section id="s6-benchmark-record" eyebrow="Benchmark publication contract" title="Method first. Result only when earned." copy="The locked benchmark surface is preserved, but invented fixture bars are removed because no public measured benchmark authority is currently bound.">
-        <div className="s6-benchmark-shell">
-          <div className="s6-benchmark-menu" role="tablist" aria-label="Benchmark topics">
-            {(Object.keys(benchmarkTopics) as BenchmarkTopic[]).map((key) => <button key={key} role="tab" aria-selected={topic === key} className={topic === key ? 'is-active' : ''} onClick={() => setTopic(key)} type="button">{benchmarkTopics[key].label}</button>)}
-          </div>
-          <article className="s6-benchmark-record">
-            <span className="s6-state">measured result not bound</span>
-            <h3>{current.label}</h3>
-            <p>{current.hypothesis}</p>
-            <dl className="s6-method-grid">
-              <div><dt>Environment</dt><dd>Must be published with any future result.</dd></div>
-              <div><dt>Workload</dt><dd>{current.workload}</dd></div>
-              <div><dt>Baseline</dt><dd>{current.baseline}</dd></div>
-              <div><dt>Method</dt><dd>Must define sampling, failure accounting, and raw evidence.</dd></div>
-            </dl>
-            <div className="s6-empty-result"><span className="s6-eyebrow">Result</span><strong>No public measured benchmark record is bound.</strong><p>{current.evidence} No superiority number is published.</p></div>
-            <p className="s6-boundary-note">Private engineering qualification is not a public comparative benchmark and is not rendered as one.</p>
-          </article>
-        </div>
-      </Section>
     </>
   );
 }
@@ -409,20 +379,20 @@ function ChangelogPage() {
       body: 'Availability and route prices were regenerated from the current public product data.',
       boundary: 'This is an observation timestamp, not an uptime or release-history claim.',
     },
-    {
+    ...(typeof publicStatus.packages.verifiedAt === 'string' ? [{
       at: publicStatus.packages.verifiedAt,
       type: 'Developer distribution',
       title: 'Published client versions verified.',
       body: publicStatus.packages.items.map(({ name, version }) => `${name} ${version}`).join(', '),
       boundary: 'Package publication and live API availability remain separate facts.',
-    },
+    }] : []),
   ].sort((left, right) => right.at.localeCompare(left.at));
   return (
     <>
-      <Hero page="changelog" eyebrow="Changelog / evidence-backed chronology" title="What changed, what broke, and what replaces it." lede="Only dated evidence already present in canonical generated truth appears here. This is not an invented marketing release log, and current operational truth remains on Status.">
-        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-changelog-records">Read releases</a><Link className="s6-button s6-button--secondary" to="/status">Current status</Link></div>
+      <Hero page="changelog" eyebrow="Changelog" title="Current published updates." lede="Updates shown here come from generated catalog and package state.">
+        <div className="s6-hero-actions"><a className="s6-button s6-button--primary" href="#s6-changelog-records">Read updates</a><Link className="s6-button s6-button--secondary" to="/status">Current status</Link></div>
       </Hero>
-      <Section id="s6-changelog-records" eyebrow="Chronology" title="Evidence-backed changes only." copy="Each row carries both the evidence-backed event and the boundary of what that event does not prove.">
+      <Section id="s6-changelog-records" eyebrow="Updates" title="Generated from current state." copy="Use Status for current availability and the catalog for callable operations.">
         <ol className="s6-changelog-list">
           {entries.map((entry) => <li key={`${entry.at}-${entry.type}`}><time dateTime={entry.at}>{entry.at.slice(0, 10)}</time><div><span className="s6-eyebrow">{entry.type}</span><h3>{entry.title}</h3><p>{entry.body}</p><small>{entry.boundary}</small></div><Link to="/status">current truth →</Link></li>)}
         </ol>

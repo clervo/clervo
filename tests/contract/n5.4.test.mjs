@@ -183,7 +183,7 @@ test('runner fails closed on repository lineage drift and commit races', async (
   }), /monitor_repository_compare_and_swap_failed/u);
 });
 
-test('alert schemas and registry remain internal while PostgreSQL storage binds identities and blocks delivery claims', async () => {
+test('alert schemas remain internal while PostgreSQL storage binds identities and blocks delivery claims', async () => {
   const schemaDirectory = path.join(root, 'packages/contracts/schemas');
   const schemas = (await readdir(schemaDirectory)).filter((file) => file.endsWith('.schema.json')).sort();
   const ajv = new Ajv2020({ strict: true, allErrors: true });
@@ -192,11 +192,8 @@ test('alert schemas and registry remain internal while PostgreSQL storage binds 
   const alertPolicy = policy();
   assert.equal(ajv.getSchema('https://api.clervo.dev/schemas/2026-07-29.1/live-intelligence-alert-policy.schema.json')(alertPolicy), true);
 
-  const registry = await json('packages/catalog/platform-registry.v1.json');
-  const operation = registry.operations.find(({ operationId }) => operationId === 'search.alert.evaluate');
-  assert.equal(operation.route, null);
-  assert.equal(operation.visibility, 'internal');
-  assert.equal(registry.skus.some(({ operationId }) => operationId === 'search.alert.evaluate'), false);
+  const visibility = await json('packages/catalog/schema-visibility.v1.json');
+  assert.equal(visibility.schemas.find(({ file }) => file === 'live-intelligence-alert-policy.schema.json')?.visibility, 'internal_control');
 
   const migration = await readFile(path.join(root, 'infra/storage/postgres/0002-live-intelligence-monitoring.sql'), 'utf8');
   for (const fragment of ['UNIQUE (environment_namespace, monitor_id, sequence)', 'previous_snapshot_hash', 'state_hash', "deliveryState' = 'not_delivered'", 'FOREIGN KEY (environment_namespace, current_snapshot_id)']) assert.match(migration, new RegExp(fragment.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&'), 'u'));

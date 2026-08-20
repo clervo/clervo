@@ -18,4 +18,6 @@ description: Fail-closed preflight and execution workflow for an explicitly owne
 3. Authorize once, retry only with the same safe identity, verify useful result, settlement, balanced ledger, receipt, and chain evidence, then replay the same idempotency key and prove no second execution or charge.
 4. If verification or settlement is unknown, quarantine and reconcile. Never create a new authorization automatically.
 
-Record exact spend, owner funding, provider cost, transaction evidence by safe identifier only, replay outcome, reconciliation, and remaining balance. Owner-funded proof is plumbing evidence, never revenue or demand. Never begin another payment without fresh explicit approval.
+Record exact spend, provider cost, transaction evidence by safe identifier only,
+replay outcome, reconciliation, and remaining balance. Never begin another
+payment without fresh explicit approval.

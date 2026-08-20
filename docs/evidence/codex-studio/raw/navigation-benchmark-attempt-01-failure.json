@@ -1,8 +1,0 @@
-{
-  "schemaVersion": "clervo.codex-studio.benchmark-attempt.v1",
-  "benchmark": "codebase-navigation",
-  "attempt": 1,
-  "result": "failed",
-  "failure": "The initial fixture named a symbol absent from the repository and used the removed TypeScript 5 compiler API against TypeScript 7.0.2.",
-  "repair": "Use an existing symbol and TypeScript 7's supported unstable/sync API to compare native text navigation with compiler-backed references."
-}
