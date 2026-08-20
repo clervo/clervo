@@ -24,7 +24,7 @@ COPY packages/mcp/package.json ./packages/mcp/package.json
 COPY packages/sdk-typescript/package.json ./packages/sdk-typescript/package.json
 RUN npm ci --omit=dev --omit=optional --ignore-scripts --no-audit --no-fund --workspaces=false
 
-FROM gcr.io/distroless/nodejs24-debian13:nonroot@sha256:af85d11ce7ef10172855a6e3649e3e8125b1b9e3ca41849ec2918036f05cb212 AS runtime
+FROM gcr.io/distroless/nodejs24-debian12:nonroot@sha256:14d42e2511532589a7c7e01a753667a74fcc96266e137e8125006b87b0c32d0a AS runtime
 
 LABEL org.opencontainers.image.title="Clervo API distribution candidate"
 LABEL org.opencontainers.image.source="https://github.com/clervo/clervo"
