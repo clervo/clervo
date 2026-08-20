@@ -44,7 +44,7 @@ test('OpenAI-compatible chat binds endpoint, credential, exact model, usage, and
   const result = await value.execute({ request: req, exactModelId: 'chat-v1', signal: new AbortController().signal });
   assert.equal(capture.value.url, 'https://api.example.test/openai/v1/chat/completions');
   assert.equal(capture.value.headers.authorization, 'Bearer opaque-test-credential');
-  assert.deepEqual(JSON.parse(new TextDecoder().decode(capture.value.body)), { model: 'chat-v1', messages: req.input.messages, stream: false, max_completion_tokens: 600 });
+  assert.deepEqual(JSON.parse(new TextDecoder().decode(capture.value.body)), { model: 'chat-v1', messages: req.input.messages, stream: false, max_completion_tokens: 500 });
   assert.deepEqual(result.usage, { inputTokens: 10, cachedInputTokens: 1, outputTokens: 2, reasoningTokens: 0, images: 0, audioCharacters: 0, videoSeconds: 0, musicGenerations: 0, virtualTryOnImages: 0 });
   assert.deepEqual(result.output, { kind: 'chat', content: 'Hello.', finishReason: 'stop' });
   assert.equal(JSON.stringify(result).includes('opaque-test-credential'), false);
@@ -56,6 +56,22 @@ test('OpenAI-compatible usage separates hidden reasoning from total completion t
   const result = await value.execute({ request: req, exactModelId: 'chat-v1', signal: new AbortController().signal });
   assert.equal(result.usage.outputTokens, 2);
   assert.equal(result.usage.reasoningTokens, 12);
+});
+
+test('OpenAI-compatible tool calls accept provider-omitted content and retain exact call identity', async () => {
+  const providerCall = { id: 'fc_a1121a3d-f797-4417-828f-562abffeeb93', type: 'function', function: { name: 'get_weather', arguments: '{"city":"Paris"}' } };
+  const { value } = adapter('ai.chat', 'CHAT', response({
+    model: 'chat-v1',
+    choices: [{ message: { role: 'assistant', tool_calls: [providerCall] }, finish_reason: 'tool_calls' }],
+    usage: { prompt_tokens: 122, completion_tokens: 44, completion_tokens_details: { reasoning_tokens: 21 } },
+  }));
+  const req = request('ai.chat', {
+    kind: 'chat', messages: [{ role: 'user', content: 'Use get_weather for Paris.' }], responseFormat: 'text', stream: false,
+    tools: [{ type: 'function', function: { name: 'get_weather', parameters: { type: 'object', required: ['city'], properties: { city: { type: 'string' } }, additionalProperties: false }, strict: true } }],
+    toolChoice: { type: 'function', function: { name: 'get_weather' } },
+  }, 'CHAT');
+  const result = await value.execute({ request: req, exactModelId: 'chat-v1', signal: new AbortController().signal });
+  assert.deepEqual(result.output, { kind: 'chat', content: '', finishReason: 'tool_calls', toolCalls: [providerCall] });
 });
 
 test('OpenAI-compatible chat applies bounded provider reasoning controls without exposing them to non-chat products', async () => {
@@ -70,7 +86,7 @@ test('OpenAI-compatible chat applies bounded provider reasoning controls without
   const payload = JSON.parse(new TextDecoder().decode(capture.value.body));
   assert.equal(payload.reasoning_effort, 'low');
   assert.equal(payload.reasoning_format, 'hidden');
-  assert.equal(payload.max_completion_tokens, 600);
+  assert.equal(payload.max_completion_tokens, 500);
   assert.throws(() => new OpenAiCompatibleAdapter({ config: { ...config('ai.embed', 'EMBED'), reasoningEffort: 'low' }, transport: transport(response({})), secret: async () => 'credential' }), /config_invalid/u);
 });
 

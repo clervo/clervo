@@ -232,7 +232,9 @@ function parseChatJson(response: Record<string, unknown>, request: AiExecutionRe
   const reason = finishReason(choice.finish_reason);
   const toolCalls = message.tool_calls === undefined ? undefined : parseToolCalls(message.tool_calls);
   if (toolCalls !== undefined) validateToolCallsForRequest(toolCalls, request);
-  const content = message.content === null && toolCalls !== undefined ? '' : typeof message.content === 'string' ? message.content : (() => { throw new TypeError('ai_provider_chat_content_invalid'); })();
+  const content = (message.content === null || message.content === undefined) && toolCalls !== undefined
+    ? ''
+    : typeof message.content === 'string' ? message.content : (() => { throw new TypeError('ai_provider_chat_content_invalid'); })();
   if (content.length > 1_000_000 || reason === 'tool_calls' !== (toolCalls !== undefined)) throw new TypeError('ai_provider_chat_content_invalid');
   const output = chatOutput(content, request, reason, toolCalls);
   return { model: string(response.model, 'model', 160), usage: usageFrom(response.usage, request), output };
@@ -333,7 +335,13 @@ function requestPayload(request: AiExecutionRequest, config: Readonly<OpenAiComp
       ...(toolCalls === undefined ? {} : { tool_calls: toolCalls }),
     })) as unknown as JsonValue,
     stream: request.input.stream,
-    max_completion_tokens: request.usageBounds.outputTokens + request.usageBounds.reasoningTokens,
+    // OpenAI-compatible providers apply this limit to visible output plus
+    // hidden reasoning as one shared completion budget. Using the sum of
+    // Clervo's independent bounds lets either component exceed its own
+    // authorized ceiling. The larger individual bound is conservative: the
+    // provider may allocate it between the two components, but neither can
+    // cross the customer-approved maximum.
+    max_completion_tokens: Math.max(request.usageBounds.outputTokens, request.usageBounds.reasoningTokens),
     ...((request.input.reasoningEffort ?? config.reasoningEffort) === undefined ? {} : { reasoning_effort: request.input.reasoningEffort ?? config.reasoningEffort! }),
     ...(config.reasoningFormat === undefined ? {} : { reasoning_format: config.reasoningFormat }),
     ...(request.input.stream ? { stream_options: { include_usage: true } } : {}),
