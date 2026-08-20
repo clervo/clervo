@@ -139,9 +139,8 @@ async function main() {
     finally { reaping = false; }
   };
   await reap();
-  if (!cleanupHealthy) throw new Error('sandbox_control_startup_cleanup_failed');
   const server = createSandboxControlServer({ token, plane, ready: async () => {
-    if (!cleanupHealthy) throw new Error('sandbox_control_cleanup_unhealthy');
+    if (!cleanupHealthy || plane.cleanupUncertain()) throw new Error('sandbox_control_cleanup_unhealthy');
     return transport.listSessionIds('clervo-sandbox-execution');
   } });
   const port = Number(process.env.PORT ?? 8080);

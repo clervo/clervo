@@ -198,7 +198,19 @@ async function smoke() {
     });
     const invokeForTenant = (value, invocationTenant = tenantId) => fetch('http://127.0.0.1:18976/internal/v1/sandbox/run', { method: 'POST', headers: { authorization: `Bearer ${token}`, 'x-clervo-tenant-id': invocationTenant, 'content-type': 'application/json' }, body: JSON.stringify(value), signal: AbortSignal.timeout(150_000) });
     const invoke = (value) => invokeForTenant(value);
-    const nodeCode = `const f=require('node:fs');const b=f.readFileSync('input/node.bin');const s=f.readFileSync(0,'utf8');f.mkdirSync('out',{recursive:true});f.writeFileSync('out/node.bin',Buffer.concat([b,Buffer.from(process.argv[1]+'|'+s)]));process.stdout.write(process.version);process.stderr.write('node-stderr');${'void 0;'.repeat(800)}`;
+    const nodeCode = `const f = require('node:fs');
+
+function hello() {
+  const b = f.readFileSync('input/node.bin');
+  const s = f.readFileSync(0, 'utf8');
+  f.mkdirSync('out', { recursive: true });
+  f.writeFileSync('out/node.bin', Buffer.concat([b, Buffer.from(process.argv[1] + '|' + s)]));
+  process.stdout.write(process.version);
+  process.stderr.write('node-stderr');
+}
+
+hello();
+${'void 0;'.repeat(800)}`;
     const nodeRequest = request('node', ['node', '-e', nodeCode, 'node-arg'], 'node-stdin', 'input/node.bin', 'out/node.bin');
     const first = await invoke(nodeRequest); const nodeResult = await first.json();
     if (first.status !== 200) throw new Error(`sandbox_control_smoke_http_${first.status}_${typeof nodeResult?.code === 'string' ? nodeResult.code : 'unknown'}`);
@@ -209,7 +221,7 @@ async function smoke() {
     const replay = await invoke(nodeRequest); assert.equal(replay.status, 200); assert.equal(replay.headers.get('x-clervo-replay'), 'true'); assert.deepEqual(await replay.json(), nodeResult);
     const altered = structuredClone(nodeRequest); altered.input.files[0].contentBase64 = Buffer.from('changed').toString('base64');
     const conflict = await invoke(altered); assert.equal(conflict.status, 409); assert.equal((await conflict.json()).code, 'sandbox_idempotency_conflict');
-    const pythonCode = `import os,sys;b=open('input/python.bin','rb').read();s=sys.stdin.read();os.makedirs('out',exist_ok=True);open('out/python.bin','wb').write(b+(sys.argv[1]+'|'+s).encode());print(sys.version.split()[0],end='');print('python-stderr',end='',file=sys.stderr);${'x=1;'.repeat(1200)}`;
+    const pythonCode = `import os, sys\r\n\r\ndef hello():\r\n\tb = open('input/python.bin', 'rb').read()\r\n\ts = sys.stdin.read()\r\n\tos.makedirs('out', exist_ok=True)\r\n\topen('out/python.bin', 'wb').write(b + (sys.argv[1] + '|' + s).encode())\r\n\tprint(sys.version.split()[0], end='')\r\n\tprint('python-stderr', end='', file=sys.stderr)\r\n\r\nhello()\r\n${'x=1;'.repeat(1200)}`;
     const pythonRequest = request('python', ['python3', '-c', pythonCode, 'python-arg'], 'python-stdin', 'input/python.bin', 'out/python.bin');
     const pythonResponse = await invoke(pythonRequest); const pythonResult = await pythonResponse.json(); assert.equal(pythonResponse.status, 200); assert.match(Buffer.from(pythonResult.output.stdoutBase64, 'base64').toString(), /^3\.12\./u); assert.equal(Buffer.from(pythonResult.output.stderrBase64, 'base64').toString(), 'python-stderr');
     const pythonArtifact = pythonResult.output.artifacts[0]; assert.equal(pythonArtifact.sha256, `sha256:${createHash('sha256').update(Buffer.from(pythonArtifact.contentBase64, 'base64')).digest('hex')}`); assert.deepEqual(pythonArtifact.scan, { verdict: 'not_scanned', scannerVersion: null });
@@ -228,7 +240,8 @@ async function smoke() {
     const recovered = await invoke(concurrencyRequest('capacityrecovered', 'recovered')); assert.equal(recovered.status, 200); assert.equal(Buffer.from((await recovered.json()).output.stdoutBase64, 'base64').toString(), 'recovered');
     const claims = JSON.parse(kubectl(['get', 'sandboxclaims', '-n', policy.executionNamespace, '-l', 'clervo.dev/owner=sandbox-control-plane', '-o', 'json'], { capture: true }).stdout);
     const templates = JSON.parse(kubectl(['get', 'sandboxtemplates', '-n', policy.executionNamespace, '-l', 'clervo.dev/owner=sandbox-control-plane', '-o', 'json'], { capture: true }).stdout);
-    assert.equal(claims.items.length, 0); assert.equal(templates.items.length, 0);
+    const runtimePods = JSON.parse(kubectl(['get', 'pods', '-n', policy.executionNamespace, '-l', 'clervo.dev/owner=sandbox-control-plane', '-o', 'json'], { capture: true }).stdout);
+    assert.equal(claims.items.length, 0); assert.equal(templates.items.length, 0); assert.equal(runtimePods.items.length, 0);
     const report = {
       schemaVersion: 'clervo.sandbox-control-live-smoke.v1', evaluatedAt: new Date().toISOString(), status: 'passed',
       controlImageDigest: policy.imageDigest, runnerImageDigest: policy.runnerDigest, privateService: true, publicEndpoint: false,

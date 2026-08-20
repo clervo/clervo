@@ -4,6 +4,7 @@ import {
   SANDBOX_MAX_ARTIFACT_BYTES,
   SANDBOX_MAX_INLINE_INPUT_BYTES,
   SANDBOX_MAX_OUTPUT_BYTES,
+  validSandboxInlineProgram,
   type SandboxArtifactInput,
   type SandboxFileInput,
 } from '../../../packages/contracts/src/sandbox.js';
@@ -84,7 +85,9 @@ function workspacePath(value: unknown): value is string {
 function validCommand(command: readonly string[]): boolean {
   if (!Array.isArray(command) || command.length < 1 || command.length > 32) return false;
   const inlineProgram = (command[0] === 'node' && command[1] === '-e') || ((command[0] === 'python' || command[0] === 'python3') && command[1] === '-c');
-  return command.every((part, index) => typeof part === 'string' && part.length > 0 && part.length <= (inlineProgram && index === 2 ? 262_144 : 4_096) && !/[\u0000-\u001f\u007f]/u.test(part));
+  return command.every((part, index) => inlineProgram && index === 2
+    ? validSandboxInlineProgram(part)
+    : typeof part === 'string' && part.length > 0 && part.length <= 4_096 && !/[\u0000-\u001f\u007f]/u.test(part));
 }
 
 function canonicalFileBytes(value: unknown): number | undefined {
@@ -132,6 +135,10 @@ export class SandboxControlPlane {
   private readonly sessions = new Map<string, Session>();
 
   constructor(private readonly executor: SandboxExecutor, private readonly now: () => number, private readonly images: SandboxImagePolicy) {}
+
+  cleanupUncertain(): boolean {
+    return [...this.sessions.values()].some(({ state }) => state === 'quarantined');
+  }
 
   async create(input: Readonly<{ sessionId: string; tenantId: string; imageDigest: string; limits: SandboxLimits; ttlMs: number }>): Promise<void> {
     identity(input.sessionId, 'sbx'); identity(input.tenantId, 'tenant'); limits(input.limits);

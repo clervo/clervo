@@ -14,11 +14,13 @@ const limits = { cpuMillis: 1000, memoryBytes: 134217728, processes: 16, diskByt
 
 function dependencies(overrides = {}) {
   const calls = [];
+  const resources = new Map();
+  const key = (resource) => `${resource.apiVersion}/${resource.kind}/${resource.metadata.namespace}/${resource.metadata.name}`;
   const objects = {
-    async create(resource) { calls.push(['create', resource.kind]); return resource; },
-    async delete(resource, ...options) { calls.push(['delete', resource.kind, options]); return {}; },
-    async read() { const error = new Error('not found'); error.code = 404; throw error; },
-    async list() { return { items: [{ metadata: { annotations: { 'clervo.dev/session-id': sessionId } } }] }; },
+    async create(resource) { calls.push(['create', resource.kind]); const stored = structuredClone(resource); stored.metadata.uid = `uid-${resource.kind.toLowerCase()}`; resources.set(key(stored), stored); return stored; },
+    async delete(resource, ...options) { calls.push(['delete', resource.kind, options]); resources.delete(key(resource)); return {}; },
+    async read(resource) { const found = resources.get(key(resource)); if (found) return structuredClone(found); const error = new Error('not found'); error.code = 404; throw error; },
+    async list(apiVersion, kind) { return { items: [...resources.values()].filter((item) => item.apiVersion === apiVersion && item.kind === kind).map((item) => structuredClone(item)) }; },
   };
   const core = {
     async readNamespacedPod() {
@@ -67,13 +69,14 @@ test('production Kubernetes transport creates only Agent Sandbox resources and o
 
 test('production Kubernetes transport streams only the fixed runner and deletes in foreground order', async () => {
   const deps = dependencies();
+  await deps.executor.create({ sessionId, tenantId, imageDigest, limits });
   const result = await deps.executor.execute({ sessionId, executionId, command: ['node', 'main.js'], stdin: new Uint8Array(), limits });
   assert.equal(new TextDecoder().decode(result.stdout), 'ok');
   assert.deepEqual(deps.calls.find(([operation]) => operation === 'exec')[1], ['node', '/opt/clervo/runner.mjs']);
   assert.match(deps.calls.find(([operation]) => operation === 'stdin')[1], /^\{"command":\["node","main\.js"\]/u);
   await deps.executor.destroy(sessionId);
   assert.deepEqual(deps.calls.filter(([operation]) => operation === 'delete').map(([, kind]) => kind), ['SandboxClaim', 'SandboxTemplate']);
-  assert.ok(deps.calls.filter(([operation]) => operation === 'delete').every(([, , options]) => options.at(-1) === 'Foreground'));
+  assert.ok(deps.calls.filter(([operation]) => operation === 'delete').every(([, , options]) => options[4] === 'Foreground' && options[5].preconditions.uid.startsWith('uid-')));
 });
 
 test('production Kubernetes transport fails closed on foreign resources, credentials, and excess output', async () => {

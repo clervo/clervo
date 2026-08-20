@@ -15,6 +15,7 @@ test('sandbox uses a managed air-gapped Agent Sandbox template and claim instead
   assert.equal(template.spec.networkPolicyManagement, 'Managed');
   assert.deepEqual(template.spec.networkPolicy, { ingress: [], egress: [] });
   assert.equal(claim.kind, 'SandboxClaim');
+  assert.equal(claim.metadata.annotations['clervo.dev/session-id'], input.sessionId);
   assert.equal(claim.spec.sandboxTemplateRef.name, template.metadata.name);
   assert.equal(claim.spec.lifecycle.shutdownPolicy, 'DeleteForeground');
   assert.equal(spec.runtimeClassName, 'gvisor');

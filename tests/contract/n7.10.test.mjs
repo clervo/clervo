@@ -22,7 +22,7 @@ function dependencies(overrides = {}) {
       return { exitCode: 0, stderr: new Uint8Array(), stdout: new TextEncoder().encode(JSON.stringify({ exitCode: 0, stdoutBase64: Buffer.from('ok').toString('base64'), stderrBase64: '', cpuMillis: 10, durationMs: 20, maximumProcessesObserved: 1, limitFailure: null })) };
     },
     async delete(input) { calls.push(['delete', input]); },
-    async listSessionIds() { return [sessionId]; },
+    async listSessionIds() { return calls.filter(([name]) => name === 'delete').length >= 2 ? [] : [sessionId]; },
     ...overrides,
   };
   return { calls, transport, executor: new AgentSandboxExecutor({ transport, config: { imageRepository, readinessTimeoutMs: 5000 } }) };
@@ -59,5 +59,5 @@ test('Agent Sandbox executor fails closed on weak observation and deletes claim 
   assert.equal(attestation.imageDigest, imageDigest);
   await deps.executor.destroy(sessionId);
   assert.deepEqual(deps.calls.filter(([name]) => name === 'delete').map(([, input]) => input.kind), ['SandboxClaim', 'SandboxTemplate']);
-  assert.deepEqual(await deps.executor.list(), [sessionId]);
+  assert.deepEqual(await deps.executor.list(), []);
 });

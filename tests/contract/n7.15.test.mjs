@@ -32,7 +32,7 @@ test('private Sandbox control is digest pinned, authenticated, non-public, and s
   assert.match(server, /\/internal\/v1\/sandbox\/run/u);
   assert.match(server, /active >= 2/u);
   assert.match(server, /await plane\.reap\(\)/u);
-  assert.match(server, /sandbox_control_startup_cleanup_failed/u);
+  assert.match(server, /!cleanupHealthy \|\| plane\.cleanupUncertain\(\)/u);
 });
 
 test('control identity receives only namespaced Agent Sandbox lifecycle and runner access', () => {

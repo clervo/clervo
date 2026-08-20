@@ -111,7 +111,7 @@ export function buildAgentSandboxResources(input: Readonly<AgentSandboxResourceI
   const claim = Object.freeze({
     apiVersion: 'extensions.agents.x-k8s.io/v1alpha1',
     kind: 'SandboxClaim',
-    metadata: { name: resourceName, namespace: executionNamespace, labels },
+    metadata: { name: resourceName, namespace: executionNamespace, labels, annotations },
     spec: { sandboxTemplateRef: { name: resourceName }, lifecycle: { shutdownPolicy: 'DeleteForeground', ttlSecondsAfterFinished: 60 } },
   });
   return Object.freeze([template, claim]);

@@ -8,6 +8,7 @@ export const SANDBOX_OPERATION_REQUEST_SCHEMA_VERSION = 'sandbox-operation-reque
 export const SANDBOX_OPERATION_RESULT_SCHEMA_VERSION = 'sandbox-operation-result.v1' as const;
 export const SANDBOX_MAX_REQUEST_BYTES = 1_500_000;
 export const SANDBOX_MAX_INLINE_INPUT_BYTES = 1_048_576;
+export const SANDBOX_MAX_INLINE_PROGRAM_BYTES = 262_144;
 export const SANDBOX_MAX_ARTIFACT_BYTES = 1_048_576;
 export const SANDBOX_MAX_OUTPUT_BYTES = 1_048_576;
 export const sandboxProductIds = ['sandbox.run', 'sandbox.session.create', 'sandbox.session.exec', 'sandbox.artifact.get', 'sandbox.session.destroy'] as const;
@@ -98,10 +99,18 @@ function limits(value: SandboxResourceLimits): void {
   for (const key of Object.keys(bounds) as (keyof SandboxResourceLimits)[]) { const [minimum, maximum] = bounds[key]; if (!Number.isSafeInteger(value[key]) || value[key] < minimum || value[key] > maximum) throw new TypeError(`sandbox_request_limit_invalid:${key}`); }
 }
 
+export function validSandboxInlineProgram(value: unknown): value is string {
+  return typeof value === 'string' && value.length > 0
+    && Buffer.byteLength(value) <= SANDBOX_MAX_INLINE_PROGRAM_BYTES
+    && !/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/u.test(value);
+}
+
 function command(value: readonly string[]): void {
   if (!Array.isArray(value) || value.length < 1 || value.length > 32) throw new TypeError('sandbox_request_command_invalid');
   const inlineProgram = (value[0] === 'node' && value[1] === '-e') || ((value[0] === 'python' || value[0] === 'python3') && value[1] === '-c');
-  if (value.some((part, index) => typeof part !== 'string' || part.length < 1 || part.length > (inlineProgram && index === 2 ? 262_144 : 4_096) || /[\u0000-\u001F\u007F]/u.test(part))) throw new TypeError('sandbox_request_command_invalid');
+  if (value.some((part, index) => inlineProgram && index === 2
+    ? !validSandboxInlineProgram(part)
+    : typeof part !== 'string' || part.length < 1 || part.length > 4_096 || /[\u0000-\u001F\u007F]/u.test(part))) throw new TypeError('sandbox_request_command_invalid');
 }
 
 function workspacePath(value: string, code: string): void {

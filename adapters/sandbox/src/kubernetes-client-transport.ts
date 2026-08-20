@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { Readable, Writable } from 'node:stream';
 import { SANDBOX_MAX_REQUEST_BYTES } from '../../../packages/contracts/src/sandbox.js';
 
@@ -10,6 +11,7 @@ import {
   type KubernetesObject,
   type V1NetworkPolicy,
   type V1Pod,
+  type V1DeleteOptions,
   type V1Status,
 } from '@kubernetes/client-node';
 
@@ -22,7 +24,7 @@ type JsonObject = Readonly<Record<string, unknown>>;
 
 interface ObjectClient {
   create(resource: KubernetesObject): Promise<KubernetesObject>;
-  delete(resource: KubernetesObject, pretty?: string, dryRun?: string, gracePeriodSeconds?: number, orphanDependents?: boolean, propagationPolicy?: string): Promise<unknown>;
+  delete(resource: KubernetesObject, pretty?: string, dryRun?: string, gracePeriodSeconds?: number, orphanDependents?: boolean, propagationPolicy?: string, body?: V1DeleteOptions): Promise<unknown>;
   read(resource: Readonly<{ apiVersion: string; kind: string; metadata: { name: string; namespace?: string } }>): Promise<KubernetesObject>;
   list(apiVersion: string, kind: string, namespace?: string, pretty?: string, exact?: boolean, exportValue?: boolean, fieldSelector?: string, labelSelector?: string): Promise<Readonly<{ items: readonly KubernetesObject[] }>>;
 }
@@ -48,6 +50,10 @@ interface Clients {
 
 const expectedNamespace = 'clervo-sandbox-execution';
 const expectedOwner = 'sandbox-control-plane';
+const expectedApplication = 'clervo-sandbox';
+const agentSandboxApiVersion = 'extensions.agents.x-k8s.io/v1alpha1';
+
+type InventoryKind = 'SandboxTemplate' | 'SandboxClaim' | 'Pod';
 
 function errorStatus(error: unknown): number | undefined {
   if (error === null || typeof error !== 'object') return undefined;
@@ -56,10 +62,31 @@ function errorStatus(error: unknown): number | undefined {
   return undefined;
 }
 
-function metadata(resource: JsonObject): Readonly<{ name: string; namespace?: string; labels?: Readonly<Record<string, string>>; annotations?: Readonly<Record<string, string>> }> {
+function metadata(resource: JsonObject): Readonly<{ name: string; namespace?: string; uid?: string; labels?: Readonly<Record<string, string>>; annotations?: Readonly<Record<string, string>> }> {
   const value = resource.metadata;
   if (value === null || typeof value !== 'object' || Array.isArray(value)) throw new TypeError('kubernetes_transport_resource_invalid');
-  return value as { name: string; namespace?: string; labels?: Readonly<Record<string, string>>; annotations?: Readonly<Record<string, string>> };
+  return value as { name: string; namespace?: string; uid?: string; labels?: Readonly<Record<string, string>>; annotations?: Readonly<Record<string, string>> };
+}
+
+function sessionHash(sessionId: string): string {
+  return createHash('sha256').update(sessionId).digest('hex').slice(0, 24);
+}
+
+function inventorySessionId(resource: KubernetesObject, kind: InventoryKind): string {
+  const resourceMetadata = metadata(resource as JsonObject);
+  const expectedApiVersion = kind === 'Pod' ? 'v1' : agentSandboxApiVersion;
+  const sessionId = resourceMetadata.annotations?.['clervo.dev/session-id'];
+  if (resource.apiVersion !== expectedApiVersion || resource.kind !== kind || resourceMetadata.namespace !== expectedNamespace
+    || resourceMetadata.labels?.['app.kubernetes.io/name'] !== expectedApplication
+    || resourceMetadata.labels?.['clervo.dev/owner'] !== expectedOwner
+    || typeof sessionId !== 'string' || !/^sbx_[A-Za-z0-9]{20,64}$/u.test(sessionId)) {
+    throw new Error('kubernetes_transport_session_inventory_invalid');
+  }
+  const hash = sessionHash(sessionId);
+  if (resourceMetadata.name !== `sbx-${hash}` || resourceMetadata.labels['clervo.dev/session-hash'] !== hash) {
+    throw new Error('kubernetes_transport_session_inventory_invalid');
+  }
+  return sessionId;
 }
 
 function validateResource(resource: JsonObject): 'boundary' | 'template' | 'claim' {
@@ -68,7 +95,7 @@ function validateResource(resource: JsonObject): 'boundary' | 'template' | 'clai
     if (resource.apiVersion !== 'v1' || resourceMetadata.name !== expectedNamespace) throw new TypeError('kubernetes_transport_boundary_invalid');
     return 'boundary';
   }
-  if (resource.apiVersion !== 'extensions.agents.x-k8s.io/v1alpha1' || resourceMetadata.namespace !== expectedNamespace
+  if (resource.apiVersion !== agentSandboxApiVersion || resourceMetadata.namespace !== expectedNamespace
     || resourceMetadata.labels?.['clervo.dev/owner'] !== expectedOwner || !/^sbx-[a-f0-9]{24}$/u.test(resourceMetadata.name)) {
     throw new TypeError('kubernetes_transport_resource_invalid');
   }
@@ -199,23 +226,45 @@ export class KubernetesAgentSandboxTransport implements AgentSandboxTransport {
 
   async delete(input: Readonly<{ namespace: string; kind: 'SandboxClaim' | 'SandboxTemplate'; name: string; foreground: boolean }>): Promise<void> {
     if (input.namespace !== expectedNamespace || !/^sbx-[a-f0-9]{24}$/u.test(input.name) || input.foreground !== true) throw new TypeError('kubernetes_transport_delete_invalid');
-    await this.#deleteResource({ apiVersion: 'extensions.agents.x-k8s.io/v1alpha1', kind: input.kind, metadata: { namespace: input.namespace, name: input.name } });
+    await this.#deleteResource({ apiVersion: agentSandboxApiVersion, kind: input.kind, metadata: { namespace: input.namespace, name: input.name } });
   }
 
   async listSessionIds(namespace: string): Promise<readonly string[]> {
     if (namespace !== expectedNamespace) throw new TypeError('kubernetes_transport_list_invalid');
-    const listed = await this.#clients.objects.list('extensions.agents.x-k8s.io/v1alpha1', 'SandboxTemplate', namespace, undefined, undefined, undefined, undefined, `clervo.dev/owner=${expectedOwner}`);
-    const ids = listed.items.map((item) => item.metadata?.annotations?.['clervo.dev/session-id']).filter((value): value is string => typeof value === 'string' && /^sbx_[A-Za-z0-9]{20,64}$/u.test(value));
-    if (ids.length !== listed.items.length || new Set(ids).size !== ids.length) throw new Error('kubernetes_transport_session_inventory_invalid');
-    return Object.freeze(ids);
+    const kinds = Object.freeze([
+      Object.freeze({ apiVersion: agentSandboxApiVersion, kind: 'SandboxTemplate' as const }),
+      Object.freeze({ apiVersion: agentSandboxApiVersion, kind: 'SandboxClaim' as const }),
+      Object.freeze({ apiVersion: 'v1', kind: 'Pod' as const }),
+    ]);
+    const listed = await Promise.all(kinds.map(({ apiVersion, kind }) => this.#clients.objects.list(apiVersion, kind, namespace, undefined, undefined, undefined, undefined, `clervo.dev/owner=${expectedOwner}`)));
+    const ids = new Set<string>();
+    for (let index = 0; index < kinds.length; index += 1) {
+      const kind = kinds[index]?.kind;
+      const resources = listed[index]?.items;
+      if (kind === undefined || resources === undefined) throw new Error('kubernetes_transport_session_inventory_invalid');
+      for (const resource of resources) ids.add(inventorySessionId(resource, kind));
+    }
+    return Object.freeze([...ids].sort());
   }
 
   async #deleteResource(resource: KubernetesObject): Promise<void> {
-    try { await this.#clients.objects.delete(resource, undefined, undefined, 0, undefined, 'Foreground'); }
-    catch (error) { if (errorStatus(error) !== 404) throw error; }
+    const requested = metadata(resource as JsonObject);
+    const kind = resource.kind;
+    if (kind !== 'SandboxClaim' && kind !== 'SandboxTemplate') throw new TypeError('kubernetes_transport_delete_invalid');
+    let observed: KubernetesObject;
+    try { observed = await this.#clients.objects.read(resource as { apiVersion: string; kind: string; metadata: { name: string; namespace?: string } }); }
+    catch (error) { if (errorStatus(error) === 404) return; throw error; }
+    inventorySessionId(observed, kind);
+    const observedMetadata = metadata(observed as JsonObject);
+    if (observedMetadata.name !== requested.name || typeof observedMetadata.uid !== 'string' || observedMetadata.uid.length < 8 || observedMetadata.uid.length > 128) throw new Error('kubernetes_transport_cleanup_identity_invalid');
+    try {
+      await this.#clients.objects.delete(observed, undefined, undefined, 0, undefined, 'Foreground', {
+        apiVersion: 'v1', kind: 'DeleteOptions', preconditions: { uid: observedMetadata.uid }, propagationPolicy: 'Foreground', gracePeriodSeconds: 0,
+      });
+    } catch (error) { if (errorStatus(error) !== 404) throw error; }
     const deadline = Date.now() + 120_000;
     while (Date.now() < deadline) {
-      try { await this.#clients.objects.read(resource as { apiVersion: string; kind: string; metadata: { name: string; namespace?: string } }); }
+      try { await this.#clients.objects.read(observed as { apiVersion: string; kind: string; metadata: { name: string; namespace?: string } }); }
       catch (error) { if (errorStatus(error) === 404) return; throw error; }
       await new Promise((resolve) => setTimeout(resolve, this.#pollIntervalMs));
     }

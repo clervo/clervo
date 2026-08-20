@@ -168,6 +168,9 @@ export class AgentSandboxExecutor implements SandboxExecutor {
       this.#transport.delete({ namespace: sandboxExecutionNamespace, kind: 'SandboxTemplate', name, foreground: true }),
     ]);
     if ([...claim, ...template].some(({ status }) => status === 'rejected')) throw new Error('agent_sandbox_cleanup_unknown');
+    try {
+      if ((await this.#transport.listSessionIds(sandboxExecutionNamespace)).includes(sessionId)) throw new Error('agent_sandbox_cleanup_residual');
+    } catch { throw new Error('agent_sandbox_cleanup_unknown'); }
   }
 
   async list(): Promise<readonly string[]> {
