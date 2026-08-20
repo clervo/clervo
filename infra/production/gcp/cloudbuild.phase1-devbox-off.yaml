@@ -1,0 +1,45 @@
+steps:
+  - id: stop-and-prove-devbox-terminated
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: bash
+    args:
+      - -euo
+      - pipefail
+      - -c
+      - |
+        gcloud compute instances stop clervo-devbox-primary --project=bloxsniper-prod --zone=us-central1-c --quiet
+        test "$(gcloud compute instances describe clervo-devbox-primary --project=bloxsniper-prod --zone=us-central1-c --format='value(status)')" = "TERMINATED"
+        touch /workspace/phase1-devbox-terminated
+  - id: verify-production-with-devbox-off
+    name: node:24.18.1-bookworm-slim
+    entrypoint: node
+    args: [scripts/production/verify-phase1-devbox-off.mjs]
+    allowFailure: true
+  - id: remove-temporary-stop-authority
+    name: gcr.io/cloud-builders/gcloud
+    entrypoint: bash
+    args:
+      - -euo
+      - pipefail
+      - -c
+      - |
+        gcloud compute instances remove-iam-policy-binding clervo-devbox-primary \
+          --project=bloxsniper-prod \
+          --zone=us-central1-c \
+          --member=serviceAccount:1056938182028-compute@developer.gserviceaccount.com \
+          --role=roles/compute.instanceAdmin.v1 \
+          --quiet
+  - id: enforce-verification-result
+    name: node:24.18.1-bookworm-slim
+    entrypoint: node
+    args:
+      - -e
+      - "const r=require('/workspace/phase1-devbox-off-result.json');if(r.status!=='PASS')process.exit(1);console.log('INFRA RE-ARCH PHASE 1 DEVBOX-OFF: PASS')"
+timeout: 1200s
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: E2_HIGHCPU_8
+tags:
+  - clervo
+  - infra-rearch-phase1
+  - devbox-off-verification
