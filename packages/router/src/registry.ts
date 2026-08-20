@@ -71,6 +71,7 @@ export interface AiCatalogModel {
   readonly productIds: readonly string[];
   readonly capabilities: readonly string[];
   readonly availability: string;
+  readonly availabilityReason: string | null;
   readonly health: string;
   readonly publicSellable: boolean;
   readonly billingMode: 'free' | 'metered';
@@ -240,6 +241,7 @@ export async function loadAiModelCatalog({ env = process.env, fetchImpl = fetch 
       productIds: Object.freeze(clervo.productIds.map(String)),
       capabilities: Object.freeze(clervo.capabilities.map(String)),
       availability: String(clervo.availability ?? 'unavailable'),
+      availabilityReason: typeof clervo.availabilityReason === 'string' ? clervo.availabilityReason : null,
       health: String(clervo.health ?? 'unavailable'),
       publicSellable: clervo.publicSellable === true,
       billingMode: clervo.billingMode as 'free' | 'metered',

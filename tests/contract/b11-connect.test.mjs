@@ -54,7 +54,7 @@ function discovery() {
   };
 }
 
-function modelList({ substituted = false, alias = false, billingMode = 'free' } = {}) {
+function modelList({ substituted = false, alias = false, billingMode = 'free', temporarilyUnavailable = false } = {}) {
   return {
     object: 'list',
     data: [{
@@ -66,9 +66,10 @@ function modelList({ substituted = false, alias = false, billingMode = 'free' } 
         ...(alias ? { aliasFor: 'clervo/exact' } : {}),
         productIds: ['ai.chat'],
         capabilities: ['text_input', 'text_output'],
-        availability: 'available',
-        health: 'healthy',
-        publicSellable: true,
+        availability: temporarilyUnavailable ? 'unavailable' : 'available',
+        ...(temporarilyUnavailable ? { availabilityReason: 'temporarily_unavailable' } : {}),
+        health: temporarilyUnavailable ? 'unavailable' : 'healthy',
+        publicSellable: !temporarilyUnavailable,
         billingMode,
         customerPricing: billingMode === 'free' ? null : { amountAtomic: '2000' },
         commerce: {},
@@ -276,6 +277,22 @@ test('B11 canonical AI identity fails on substitution while an explicit alias ex
   const routed = await new ClervoConnect({ surface: 'openai', env: freshEnv(), fetch: aliasFetch }).execute('ai.chat', { model: 'clervo/route', input: { kind: 'chat', messages: [], responseFormat: 'text', stream: false } }, 'alias_model_0001');
   assert.equal(routed.outcome.result.exactModelId, 'clervo/exact');
   assert.equal(routed.outcome.result.result.route.routeId, 'route.actual');
+});
+
+test('B11 unavailable exact models fail truthfully before supplier execution or payment', async () => {
+  let executionCalls = 0;
+  const fetchImpl = async (url) => {
+    if (String(url).endsWith('/.well-known/clervo.json')) return response(200, discovery());
+    if (String(url).endsWith('/v1/models')) return response(200, modelList({ billingMode: 'metered', temporarilyUnavailable: true }));
+    executionCalls += 1;
+    throw new Error(`unexpected ${url}`);
+  };
+  const connect = new ClervoConnect({ surface: 'mcp', env: freshEnv(), fetch: fetchImpl });
+  await assert.rejects(
+    connect.execute('ai.chat', { model: 'clervo/exact', input: { kind: 'chat', messages: [{ role: 'user', content: 'hello' }], responseFormat: 'text', stream: false } }),
+    (error) => error.code === 'ai_model_temporarily_unavailable' && error.message === 'Model temporarily unavailable. Please choose another available model.',
+  );
+  assert.equal(executionCalls, 0);
 });
 
 test('B11 local OpenAI compatibility provides models, non-streaming chat and SSE without creating a wallet', async () => {

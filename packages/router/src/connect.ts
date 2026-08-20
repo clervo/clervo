@@ -1,4 +1,4 @@
-import { callAiFree, callFree, callPaid, newIdempotencyKey, reconcileOperation, requestQuote, type PaidOutcome, type Quote } from './client.js';
+import { callAiFree, callFree, callPaid, newIdempotencyKey, reconcileOperation, requestQuote, RouterError, type PaidOutcome, type Quote } from './client.js';
 import { diagnose, type Diagnosis } from './doctor.js';
 import { loadLimits, saveLimits, type SpendLimits } from './limits.js';
 import { loadAiModelCatalog, loadRegistry, type AiModelCatalog, type Registry } from './registry.js';
@@ -34,7 +34,7 @@ export type ConnectExecution =
 
 function assertExactModel(requested: string, outcome: Record<string, unknown>, catalog: AiModelCatalog): void {
   const selected = catalog.models.find(({ id }) => id === requested);
-  if (selected === undefined || !selected.publicSellable) throw new Error('model_unavailable');
+  if (selected === undefined || !selected.publicSellable) throw new RouterError('model_unavailable');
   if (selected.identityKind !== 'canonical') return;
   if (outcome.exactModelId !== requested || outcome.model !== requested) throw new Error('canonical_model_substituted');
 }
@@ -75,7 +75,13 @@ export class ClervoConnect {
       const requested = typeof body.model === 'string' ? body.model : '';
       models = await this.models();
       const selected = models.models.find(({ id }) => id === requested);
-      if (selected === undefined || !selected.publicSellable || !selected.productIds.includes(productId)) throw new Error('model_unavailable');
+      if (selected === undefined || !selected.productIds.includes(productId)) throw new RouterError('model_unavailable');
+      if (!selected.publicSellable) throw new RouterError(
+        selected.availabilityReason === 'temporarily_unavailable' ? 'ai_model_temporarily_unavailable' : 'model_unavailable',
+        selected.availabilityReason === 'temporarily_unavailable'
+          ? 'Model temporarily unavailable. Please choose another available model.'
+          : `${requested} is not a sellable model in the live catalog`,
+      );
       if (selected.billingMode === 'free') {
         const outcome = await callAiFree({ registry, body, idempotencyKey, env: this.env, fetchImpl: this.fetchImpl, surface: this.surface });
         assertExactModel(requested, outcome.result, models);
