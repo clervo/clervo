@@ -63,6 +63,13 @@ test('H4 product policy preserves the full catalog while removing GPT-5.6 and Cl
   }
 });
 
+test('production entrypoint cannot enable removed private mock commerce', async () => {
+  const entrypoint = await readFile(path.join(root, 'apps/api/src/staging-search-main.mjs'), 'utf8');
+  assert.doesNotMatch(entrypoint, /privateMockCommerceEnabled|CLERVO_STAGE4_PRIVATE_MOCK_COMMERCE/u);
+  assert.match(entrypoint, /allowMockPaidExecution: false/u);
+  assert.match(entrypoint, /paidExecutionEnabled: x402Mode === 'settlement_enabled'/u);
+});
+
 test('exact compatibility identities never cross models and modern agent inputs normalize canonically', () => {
   assert.equal(normalizeOpenAiChatCompletionRequest({ model: 'gpt-4o', messages: [{ role: 'user', content: 'hello' }] }).model, 'gpt-4o');
   assert.equal(normalizeAnthropicMessagesRequest({ model: 'claude-3-5-sonnet-20241022', max_tokens: 10, messages: [{ role: 'user', content: 'hello' }] }).model, 'claude-3-5-sonnet-20241022');
