@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "clervo.fixed-infrastructure-cost-baseline.v1",
+  "evaluatedAt": "2026-08-20T05:00:00.000Z",
+  "project": "bloxsniper-prod",
+  "region": "us-central1",
+  "billing": {
+    "invoiceAccess": false,
+    "billingExportPresent": false,
+    "reportedFixedMonthlyUsd": 400,
+    "estimationBasis": "730-hour public list-price reconstruction; discounts, commitments, credits, taxes, and variable request charges excluded",
+    "grossListMonthlyUsdBefore": 711.3,
+    "grossListMonthlyUsdAfter": 458.2,
+    "grossListMonthlySavingsUsd": 253.1,
+    "grossListSavingsPercent": 35.6,
+    "normalizedBilledMonthlyUsdAfter": 257.7,
+    "normalizedBilledEstimateMethod": "reported baseline multiplied by the gross-list after/before ratio"
+  },
+  "resources": {
+    "virtualMachines": [
+      {
+        "name": "clervo-devbox-primary",
+        "zone": "us-central1-c",
+        "beforeMachineType": "c4-standard-8",
+        "machineType": "c4-standard-4",
+        "required": true,
+        "rollbackMachineType": "c4-standard-8",
+        "rollbackSnapshots": [
+          "clervo-boot-precut-20260820-020952",
+          "clervo-workspace-precut-20260820-020952"
+        ]
+      },
+      {
+        "name": "bloxsniper-r13",
+        "zone": "us-central1-b",
+        "machineType": "custom-1-6144",
+        "required": true,
+        "optimization": "none; CPU p95 is approximately 98.7 percent and the active recommender requests two vCPUs"
+      }
+    ],
+    "cloudSql": {
+      "name": "clervo-production-postgres",
+      "availability": "REGIONAL",
+      "beforeTier": "db-custom-2-7680",
+      "tier": "db-custom-1-6656",
+      "storageGb": 20,
+      "storageType": "PD_SSD",
+      "backupRetentionDays": 14,
+      "pointInTimeRecoveryDays": 7,
+      "required": true,
+      "rollbackTier": "db-custom-2-7680"
+    },
+    "gke": {
+      "cluster": "clervo-sandbox-production",
+      "location": "us-central1-a",
+      "privateNodes": true,
+      "privateEndpoint": true,
+      "agentSandboxEnabled": true,
+      "systemPool": {
+        "name": "sandbox-system",
+        "machineType": "e2-medium",
+        "nodes": 1,
+        "required": true
+      },
+      "executionPool": {
+        "name": "sandbox-execution",
+        "machineType": "e2-standard-2",
+        "minimumNodes": 1,
+        "maximumNodes": 3,
+        "currentNodes": 1,
+        "runtimeClass": "gvisor",
+        "required": true,
+        "restoredByThisAudit": true
+      }
+    },
+    "devboxDisks": [
+      {
+        "name": "clervo-devbox-primary",
+        "sizeGb": 40,
+        "type": "hyperdisk-balanced",
+        "beforeIops": 3240,
+        "beforeThroughputMBps": 200,
+        "iops": 3000,
+        "throughputMBps": 140,
+        "rollbackIops": 3240,
+        "rollbackThroughputMBps": 200
+      },
+      {
+        "name": "clervo-devbox-workspace",
+        "sizeGb": 200,
+        "type": "hyperdisk-balanced",
+        "beforeIops": 6000,
+        "beforeThroughputMBps": 250,
+        "iops": 3000,
+        "throughputMBps": 140,
+        "rollbackIops": 6000,
+        "rollbackThroughputMBps": 250
+      }
+    ],
+    "cloudRun": {
+      "services": [
+        "clervo-api-production",
+        "clervo-stage4-slice-staging",
+        "fruitdrama"
+      ],
+      "minimumInstances": 0,
+      "fixedMonthlyUsd": 0
+    },
+    "network": {
+      "cloudNat": "clervo-nat",
+      "sandboxInternalLoadBalancer": "clervo-sandbox-control-ilb",
+      "required": true
+    },
+    "logging": {
+      "defaultRetentionDays": 30,
+      "requiredRetentionDays": 400,
+      "requiredBucketLocked": true,
+      "sevenDayIngestedGiB": 0.523,
+      "optimization": "none; projected ingestion is below the 50 GiB monthly free allotment"
+    }
+  },
+  "removedWaste": [
+    {
+      "resource": "bloxsniper",
+      "kind": "terminated_vm_and_50gb_pd_ssd",
+      "rollbackSnapshot": "old-bloxsniper-20260820-060505"
+    },
+    {
+      "resource": "bounty-verifier",
+      "kind": "terminated_vm_and_60gb_pd_balanced",
+      "rollbackSnapshot": "old-bounty-verifier-20260820-060505"
+    },
+    {
+      "resource": "venom-dashboard-ip",
+      "kind": "unused_static_external_ip"
+    }
+  ],
+  "protected": [
+    "sandbox-system",
+    "sandbox-execution",
+    "clervo-sandbox-control-ilb",
+    "clervo-production-postgres REGIONAL availability",
+    "bloxsniper-r13",
+    "AI gateway containers and Cloudflare tunnel"
+  ]
+}
